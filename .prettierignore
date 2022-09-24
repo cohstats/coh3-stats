@@ -1,0 +1,9 @@
+build*/
+dist/
+lib/
+fbexport
+scripts/
+.webpack/
+.resources/
+out/
+.next
