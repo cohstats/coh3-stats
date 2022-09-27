@@ -1,28 +1,15 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from 'next/link';
-import { Button } from '@mantine/core';
+import { Footer } from '../components/Footer/Footer';
+import { Header } from '../components/Header/Header';
+import { NewsSection } from '../components/NewsSection/NewsSection';
 
-const Home: NextPage = () => {
+export default function HomePage() {
   return (
-    <div>
-      <Head>
-        <title>COH3 Stats</title>
-        <meta name="description" content="Company of heroes 3" />
-        <link rel="icon" href="/logo/favicon.ico" />
-      </Head>
-
-      <main >
-          <Link href="/hello" passHref>
-              <Button component="a">Next link button</Button>
-          </Link>
-      </main>
-
-      <footer >
-        Eat my shorts
-      </footer>
-    </div>
+    <>
+      <Header />
+      <NewsSection />
+      <NewsSection />
+      <NewsSection />
+      <Footer />
+    </>
   );
-};
-
-export default Home;
+}
