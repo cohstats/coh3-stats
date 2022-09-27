@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
                   <Link href="/">
                     <a className={classes.link}>
                       <Group spacing={3}>
-                        Leaderboard
+                        Leaderboards
                         <IconChevronDown size={16} />
                       </Group>
                     </a>
@@ -91,7 +91,6 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
             <Link href="/">
               <a className={classes.link}>App</a>
             </Link>
-            {children}
           </Group>
 
           <Group spacing={5} className={classes.hiddenMobile}>
@@ -113,7 +112,15 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
           >
             <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
               <Divider my="sm" />
-              {children}
+              <Link href="/">
+              <a className={classes.link}>Leaderboards</a>
+            </Link>
+              <Link href="/">
+              <a className={classes.link}>Statistics</a>
+            </Link>
+            <Link href="/">
+              <a className={classes.link}>App</a>
+            </Link>
               <Divider my="sm" />
 
               <Group>
