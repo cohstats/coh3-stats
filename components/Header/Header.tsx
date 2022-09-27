@@ -11,7 +11,6 @@ import {
   HoverCard,
   Text,
   SimpleGrid,
-  UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
@@ -25,10 +24,10 @@ import { Github } from '../Github/Github';
 import { Donate } from '../Donate/Donate';
 
 export interface HeaderProps {
-  children?: React.ReactNode;
+  // children?: React.ReactNode;
 }
 
-export const Header: React.FC<HeaderProps> = ({ children }) => {
+export const Header: React.FC<HeaderProps> = () => {
   const { classes } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
 
@@ -44,10 +43,10 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
     <div>
       <Text weight={700}>{gamemode}</Text>
       <Divider my="sm" />
-      {factionLink('OST')}
-      {factionLink('DAK')}
-      {factionLink('USF')}
-      {factionLink('UKF')}
+      {factionLink('Wehrmacht')}
+      {factionLink('Deutsche Afrikakorps')}
+      {factionLink('US Forces')}
+      {factionLink('British Forces')}
     </div>
   );
   return (
@@ -62,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
           </Group>
 
           <Group className={classes.hiddenMobile}>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+            <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <div>
                   <Link href="/">
@@ -113,14 +112,14 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
             <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
               <Divider my="sm" />
               <Link href="/">
-              <a className={classes.link}>Leaderboards</a>
-            </Link>
+                <a className={classes.link}>Leaderboards</a>
+              </Link>
               <Link href="/">
-              <a className={classes.link}>Statistics</a>
-            </Link>
-            <Link href="/">
-              <a className={classes.link}>App</a>
-            </Link>
+                <a className={classes.link}>Statistics</a>
+              </Link>
+              <Link href="/">
+                <a className={classes.link}>App</a>
+              </Link>
               <Divider my="sm" />
 
               <Group>
