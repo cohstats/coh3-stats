@@ -1,7 +1,7 @@
 import { Container, Grid, Skeleton, useMantineTheme } from "@mantine/core";
 import React from "react";
 
-const PRIMARY_COL_HEIGHT = 300;
+const PRIMARY_COL_HEIGHT = 200;
 
 export const NewsSection: React.FC = () => {
   const theme = useMantineTheme();

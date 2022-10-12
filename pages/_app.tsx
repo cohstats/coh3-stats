@@ -43,5 +43,5 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 // I want to investigate this - what is it ? Why we have serverside props?
 // How the cookie works?
 App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
-  colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
+  colorScheme: getCookie("mantine-color-scheme", ctx) || "dark",
 });

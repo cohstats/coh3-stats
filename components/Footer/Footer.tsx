@@ -1,8 +1,8 @@
 import { Container, Group, Text } from "@mantine/core";
 import React from "react";
 import { DiscordChannel } from "../DiscordChannel/DiscordChannel";
-import { Donate } from "../Donate/Donate";
-import { Github } from "../Github/Github";
+import { Donate } from "../Icons/Donate";
+import { Github } from "../Icons/Github";
 import useStyles from "./Footer.styles";
 
 export const Footer: React.FC = () => {

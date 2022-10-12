@@ -20,8 +20,8 @@ import useStyles from "./Header.styles";
 import { ColorSchemeToggle } from "../ColorSchemeToggle/ColorSchemeToggle";
 import { SearchButton } from "../SearchButton/SearchButton";
 import { DiscordChannel } from "../DiscordChannel/DiscordChannel";
-import { Github } from "../Github/Github";
-import { Donate } from "../Donate/Donate";
+import { Github } from "../Icons/Github";
+import { Donate } from "../Icons/Donate";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -94,9 +94,6 @@ export const Header: React.FC<HeaderProps> = () => {
 
           <Group spacing={5} className={classes.hiddenMobile}>
             <SearchButton />
-            <DiscordChannel />
-            <Github />
-            <Donate />
             <ColorSchemeToggle />
           </Group>
           <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
@@ -124,9 +121,6 @@ export const Header: React.FC<HeaderProps> = () => {
 
               <Group>
                 <SearchButton />
-                <DiscordChannel />
-                <Github />
-                <Donate />
                 <ColorSchemeToggle />
               </Group>
             </ScrollArea>

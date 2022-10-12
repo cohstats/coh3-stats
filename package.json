@@ -8,7 +8,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "fix": "prettier --loglevel warn --write .",
     "fix:prettier": "prettier --loglevel warn --write ."
+  },
+  "repository": {
+    "url": "https://github.com/cohstats/coh3-stats"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
