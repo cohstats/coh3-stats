@@ -1,0 +1,36 @@
+name: Run pr checks
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-prettify:
+    name: Build the app and prettify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14.x"
+          cache: "yarn"
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules-v1
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Install the app
+        run: yarn install
+      - name: Build the app
+        run: yarn build
+        # WIP
+      - name: Run prettier
+        run: |
+          yarn fix:prettier
