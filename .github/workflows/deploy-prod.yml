@@ -1,18 +1,18 @@
-name: Build and Deploy Web - DEV
+name: Build and Deploy Web - PROD
 on:
   push:
-    branches:
-      - master
+    tags:
+      - v*
 
 env:
-  EDGIO_ENV: dev
+  EDGIO_ENV: prod
 
 jobs:
   build-deploy-web:
-    name: Deploy Web Dev
+    name: Deploy Web Prod
     environment:
-      name: dev
-      url: https://dev.coh3stats.com/
+      name: prod
+      url: https://coh3stats.com
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
