@@ -36,6 +36,8 @@ jobs:
             ${{ runner.os }}-
       - name: Install Deps
         run: yarn install
+      - name: Disable Vercel telemetry
+        run: yarn next telemetry disable
       - name: Install edgio CLI
         run: yarn global add @edgio/cli
       - name: Deploy to Edgio hosting
