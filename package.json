@@ -1,9 +1,8 @@
 {
-  "name": "coh3-stats",
-  "version": "0.1.0",
-  "private": true,
-  "license": "GNU LGPLv3",
   "scripts": {
+    "edgio:dev": "edgio dev",
+    "edgio:build": "edgio build",
+    "edgio:deploy": "edgio deploy",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -11,6 +10,10 @@
     "fix": "prettier --loglevel warn --write .",
     "fix:prettier": "prettier --loglevel warn --write ."
   },
+  "name": "coh3-stats",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GNU LGPLv3",
   "repository": {
     "url": "https://github.com/cohstats/coh3-stats"
   },
@@ -30,6 +33,12 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@edgio/cli": "^5.0.1",
+    "@edgio/core": "^5.0.1",
+    "@edgio/devtools": "^5.0.1",
+    "@edgio/next": "^5.0.1",
+    "@edgio/prefetch": "^5.0.1",
+    "@edgio/react": "^5.0.1",
     "@types/node": "18.7.20",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
