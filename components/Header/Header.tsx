@@ -19,9 +19,6 @@ import { IconChevronDown } from "@tabler/icons";
 import useStyles from "./Header.styles";
 import { ColorSchemeToggle } from "../ColorSchemeToggle/ColorSchemeToggle";
 import { SearchButton } from "../SearchButton/SearchButton";
-import { DiscordChannel } from "../DiscordChannel/DiscordChannel";
-import { Github } from "../Icons/Github";
-import { Donate } from "../Icons/Donate";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -54,7 +51,12 @@ export const Header: React.FC<HeaderProps> = () => {
       <MantineHeader height={60} className={classes.root}>
         <Container className={classes.container} fluid>
           <Group spacing="xs">
-            <Image src="/logo/android-icon-36x36.png" width={30} height={30} />
+            <Image
+              src="/logo/android-icon-36x36.png"
+              width={30}
+              height={30}
+              alt={"COH3 Stats logo"}
+            />
             <Title order={1} size="h3">
               COH3 Stats
             </Title>

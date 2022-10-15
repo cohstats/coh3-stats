@@ -1,6 +1,6 @@
 import { Container, Group, Text } from "@mantine/core";
 import React from "react";
-import { DiscordChannel } from "../DiscordChannel/DiscordChannel";
+import { Discord } from "../Icons/Discord";
 import { Donate } from "../Icons/Donate";
 import { Github } from "../Icons/Github";
 import useStyles from "./Footer.styles";
@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
               © 2022 coh3stats.com. All rights reserved.
             </Text>
             <Group spacing={5} className={classes.social} position="right" noWrap>
-              <DiscordChannel />
+              <Discord />
               <Github />
               <Donate />
             </Group>

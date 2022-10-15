@@ -1,4 +1,5 @@
-import { repository } from "./package.json";
+import packageJson from "./package.json";
+const { repository } = packageJson;
 
 const config = {
   DiscordInviteLink: "https://discord.gg/jRrnwqMfkr",

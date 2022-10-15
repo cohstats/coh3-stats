@@ -7,7 +7,7 @@ export const Donate: React.FC = () => (
   <>
     <IconButton label="Donate">
       <a href={config.DonationLink} target="_blank" rel="noopener noreferrer">
-        <Image src="/kofi_s_logo_nolabel.webp" width={22} height={22} />
+        <Image src="/kofi_s_logo_nolabel.webp" width={22} height={22} alt={"donate button"} />
       </a>
     </IconButton>
   </>
