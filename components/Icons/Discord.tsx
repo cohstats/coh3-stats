@@ -1,11 +1,12 @@
 import React from "react";
+import config from "../../config";
 import { IconButton } from "../IconButton/IconButton";
 import useStyles from "./Discord.styles";
 
 export const Discord: React.FC = () => {
   const { classes } = useStyles();
   return (
-    <>
+    <a href={config.DonationLink} target="_blank" rel="noopener noreferrer">
       <IconButton label="Discord channel" className={classes.root}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -20,6 +21,6 @@ export const Discord: React.FC = () => {
           />
         </svg>
       </IconButton>
-    </>
+    </a>
   );
 };
