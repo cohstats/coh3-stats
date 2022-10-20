@@ -17,8 +17,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconChevronDown } from "@tabler/icons";
 import useStyles from "./Header.styles";
-import { ColorSchemeToggle } from "../ColorSchemeToggle/ColorSchemeToggle";
+import { ColorSchemeToggle } from "../color-scheme-toggle";
 import { SearchButton } from "../SearchButton/SearchButton";
+import { OnlinePlayers } from "../online-players";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -95,6 +96,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </Group>
 
           <Group spacing={5} className={classes.hiddenMobile}>
+            <OnlinePlayers />
             <SearchButton />
             <ColorSchemeToggle />
           </Group>

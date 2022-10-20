@@ -13,4 +13,16 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
+  .match("/api/onlineSteamPlayers", ({ cache }) => {
+    cache({
+      browser: {
+        maxAgeSeconds: 5 * 60, // Cache 5 minutes
+      },
+      edge: {
+        maxAgeSeconds: 5 * 60, // Cache for 5 minutes
+        staleWhileRevalidateSeconds: 3 * 60, // If we are older than 3 minutes, refresh the value
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages
