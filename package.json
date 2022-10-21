@@ -8,6 +8,7 @@
     "next:dev": "next dev",
     "next:build": "next build",
     "lint": "next lint",
+    "lint:prettier": "prettier --check .",
     "fix": "prettier --loglevel warn --write .",
     "fix:prettier": "prettier --loglevel warn --write ."
   },

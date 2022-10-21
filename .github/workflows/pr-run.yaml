@@ -5,8 +5,8 @@ on:
       - master
 
 jobs:
-  build-and-prettify:
-    name: Build the app and prettify
+  build-and-run-prettier:
+    name: Build and run prettier
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -26,11 +26,10 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
-      - name: Install the app
+      - name: Install
         run: yarn install
-      - name: Build the app
+      - name: Build
         run: yarn build
-        # WIP
       - name: Run prettier
         run: |
-          yarn fix:prettier
+          yarn lint:prettier
