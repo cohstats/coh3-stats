@@ -8,7 +8,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps, router } = props;
   // const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -19,6 +19,21 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  let layoutContent = true;
+  if ([`/landing`].includes(router.pathname)) {
+    layoutContent = false;
+  }
+
+  const contentWithLayout = (
+    <>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
+    </>
+  );
+
+  const contentWithoutLayout = <Component {...pageProps} />;
 
   return (
     <>
@@ -42,9 +57,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <NotificationsProvider>
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
+            {layoutContent && contentWithLayout}
+            {!layoutContent && contentWithoutLayout}
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>

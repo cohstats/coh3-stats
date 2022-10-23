@@ -13,6 +13,17 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
+  .match(
+    {
+      path: "/",
+      headers: {
+        host: "coh3stats.com",
+      },
+    },
+    ({ redirect }) => {
+      redirect("/landing", { statusCode: 302 });
+    },
+  )
   .match("/api/onlineSteamPlayers", ({ cache }) => {
     cache({
       browser: {
