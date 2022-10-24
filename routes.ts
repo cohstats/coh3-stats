@@ -17,11 +17,16 @@ export default new Router()
     {
       path: "/",
       headers: {
-        host: "coh3stats.com",
+        host: "dev.coh3stats.com",
       },
     },
-    ({ redirect }) => {
-      redirect("/landing", { statusCode: 302 });
+    ({ proxy, cache }) => {
+      cache({
+        edge: {
+          maxAgeSeconds: 30 * 24 * 60 * 60,
+        },
+      });
+      proxy("self", { path: "/landing" });
     },
   )
   .match("/api/onlineSteamPlayers", ({ cache }) => {
