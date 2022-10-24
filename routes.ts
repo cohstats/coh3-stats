@@ -17,7 +17,7 @@ export default new Router()
     {
       path: "/",
       headers: {
-        host: "dev.coh3stats.com",
+        host: "coh3stats.com",
       },
     },
     ({ proxy, cache }) => {
