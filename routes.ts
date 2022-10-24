@@ -20,13 +20,13 @@ export default new Router()
         host: "coh3stats.com",
       },
     },
-    ({ proxy, cache }) => {
+    ({ renderWithApp, cache }) => {
       cache({
         edge: {
           maxAgeSeconds: 30 * 24 * 60 * 60,
         },
       });
-      proxy("self", { path: "/landing" });
+      renderWithApp({ path: "/landing" });
     },
   )
   .match("/api/onlineSteamPlayers", ({ cache }) => {
