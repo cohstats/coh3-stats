@@ -128,7 +128,7 @@ const Leaderboards: React.FC = () => {
     const directedData = sortStatus.direction === "asc" ? sortedData.reverse() : sortedData;
 
     setData(directedData);
-  }, [sortStatus]);
+  }, [data, sortStatus]);
 
   return (
     <>
@@ -161,10 +161,14 @@ const Leaderboards: React.FC = () => {
                 const steamId = convertSteamNameToID(name);
                 const path = `/players/${steamId}`;
 
-                return <Anchor href={path}>{alias}</Anchor>;
+                return (
+                  <Anchor key={member.profile_id} href={path}>
+                    {alias}
+                  </Anchor>
+                );
               });
 
-              return <>{NameAnchors}</>;
+              return NameAnchors;
             },
           },
           {
