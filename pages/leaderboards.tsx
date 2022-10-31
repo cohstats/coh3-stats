@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, Anchor } from "@mantine/core";
+import { Text, Anchor, Container } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import sortBy from "lodash/sortBy";
 import { format } from "timeago.js";
@@ -98,7 +98,7 @@ const leaderboardResponseToTableData = (response: LeaderboardResponse): TableDat
 
 const Leaderboards: React.FC = () => {
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
-    columnAccessor: "rank",
+    columnAccessor: "",
     direction: "asc",
   });
   const [data, setData] = useState<TableData[]>();
@@ -124,21 +124,24 @@ const Leaderboards: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const sortedData = sortBy(data, [sortStatus.columnAccessor, "rank"]);
+    const sortedData = sortBy(data, sortStatus.columnAccessor);
     const directedData = sortStatus.direction === "asc" ? sortedData.reverse() : sortedData;
 
     setData(directedData);
-  }, [data, sortStatus]);
+  }, [sortStatus]);
 
   return (
-    <>
+    <Container fluid={true}>
       <DataTable
         withBorder
-        borderRadius="sm"
+        borderRadius="md"
         highlightOnHover
+        verticalSpacing="md"
+        minHeight={300}
         // provide data
         records={data || []}
         // define columns
+        fetching={isLoading}
         columns={[
           {
             accessor: "rank",
@@ -197,6 +200,9 @@ const Leaderboards: React.FC = () => {
             accessor: "ratio",
             sortable: true,
             textAlignment: "center",
+            render: ({ ratio }) => {
+              return `${ratio}%`;
+            },
           },
           {
             accessor: "total",
@@ -219,14 +225,14 @@ const Leaderboards: React.FC = () => {
             sortable: true,
             textAlignment: "right",
             render: ({ lastmatchdate }) => {
-              return <Text>{format(lastmatchdate)}</Text>;
+              return <Text>{format(lastmatchdate * 1000)}</Text>;
             },
           },
         ]}
         sortStatus={sortStatus}
         onSortStatusChange={setSortStatus}
       />
-    </>
+    </Container>
   );
 };
 

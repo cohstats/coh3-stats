@@ -1,7 +1,9 @@
 import { createStyles } from "@mantine/core";
 
 export default createStyles((theme) => ({
-  root: {},
+  root: {
+    marginBottom: theme.spacing.xl,
+  },
   container: {
     display: "flex",
     justifyContent: "space-between",
