@@ -38,11 +38,9 @@ jobs:
         run: yarn install
       - name: Disable Vercel telemetry
         run: yarn next telemetry disable
-      - name: Install edgio CLI
-        run: yarn global add @edgio/cli
       - name: Deploy to Edgio hosting
         env:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN
+          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN
