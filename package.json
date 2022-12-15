@@ -37,12 +37,12 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "^5.0.3",
-    "@edgio/core": "^5.0.3",
-    "@edgio/devtools": "^5.0.3",
-    "@edgio/next": "^5.0.3",
-    "@edgio/prefetch": "^5.0.3",
-    "@edgio/react": "^5.0.3",
+    "@edgio/cli": "6.0.3-next-1671120419-9dd0340.0",
+    "@edgio/core": "6.0.3-next-1671120419-9dd0340.0",
+    "@edgio/devtools": "6.0.3-next-1671120419-9dd0340.0",
+    "@edgio/next": "6.0.3-next-1671120419-9dd0340.0",
+    "@edgio/prefetch": "6.0.3-next-1671120419-9dd0340.0",
+    "@edgio/react": "6.0.3-next-1671120419-9dd0340.0",
     "@types/node": "18.7.20",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
