@@ -35,8 +35,9 @@ export default new Router()
         maxAgeSeconds: 5 * 60, // Cache 5 minutes
       },
       edge: {
-        maxAgeSeconds: 5 * 60, // Cache for 5 minutes
-        staleWhileRevalidateSeconds: 3 * 60, // If we are older than 3 minutes, refresh the value
+        // Cache for 3 minutes, if we are older than 3 minutes, revalidate, still serve cache
+        maxAgeSeconds: 3 * 60,
+        staleWhileRevalidateSeconds: 10 * 60,
         forcePrivateCaching: true,
       },
     });
