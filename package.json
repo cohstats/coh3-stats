@@ -21,6 +21,10 @@
   "repository": {
     "url": "https://github.com/cohstats/coh3-stats"
   },
+  "engines": {
+    "node": ">=16",
+    "npm": "please-use-yarn"
+  },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.10.0",
@@ -40,6 +44,7 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
+    "lint-staged": "^13.1.0",
     "@edgio/cli": "6.1.0",
     "@edgio/core": "6.1.0",
     "@edgio/devtools": "6.1.0",

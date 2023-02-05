@@ -31,9 +31,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const factionLink = (faction: string) => (
     <Text>
-      <Link href="/">
-          {faction}
-      </Link>
+      <Link href="/">{faction}</Link>
     </Text>
   );
 
@@ -68,10 +66,10 @@ export const Header: React.FC<HeaderProps> = () => {
               <HoverCard.Target>
                 <div>
                   <Link href="/">
-                      <Group spacing={3}>
-                        Leaderboards
-                        <IconChevronDown size={16} />
-                      </Group>
+                    <Group spacing={3}>
+                      Leaderboards
+                      <IconChevronDown size={16} />
+                    </Group>
                   </Link>
                 </div>
               </HoverCard.Target>
@@ -85,9 +83,7 @@ export const Header: React.FC<HeaderProps> = () => {
               </HoverCard.Dropdown>
             </HoverCard>
 
-            <Link href="/">
-                 Statistics
-            </Link>
+            <Link href="/">Statistics</Link>
             <Link href="/">
               {/*<a className={classes.link}>App</a>*/}
               App
@@ -111,15 +107,9 @@ export const Header: React.FC<HeaderProps> = () => {
           >
             <ScrollArea sx={{ height: "calc(100vh - 60px)" }} mx="-md">
               <Divider my="sm" />
-              <Link href="/">
-               Leaderboards
-              </Link>
-              <Link href="/">
-               Statistics
-              </Link>
-              <Link href="/">
-               App
-              </Link>
+              <Link href="/">Leaderboards</Link>
+              <Link href="/">Statistics</Link>
+              <Link href="/">App</Link>
               <Divider my="sm" />
 
               <Group>
