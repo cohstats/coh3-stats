@@ -24,7 +24,7 @@ const init = (): void => {
     setUserProperties(analytics, { custom_platform: "web_app" });
   }
 
-  db = getFirestore(app);
+  // db = getFirestore(app);
 
   // if (useEmulators) {
   //     connectFirestoreEmulator(db, "localhost", 8080);
