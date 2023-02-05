@@ -20,6 +20,8 @@ const init = (): void => {
   app = initializeApp(config.getFirebaseConfig());
   if (app.name && typeof window !== "undefined") {
     analytics = getAnalytics(app);
+    // This is OK we just need to "getPerf" to initialize it
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     performance = getPerformance(app);
     setUserProperties(analytics, { custom_platform: "web_app" });
   }
