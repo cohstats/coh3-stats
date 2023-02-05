@@ -1,5 +1,4 @@
-// This file was automatically added by edgio deploy.
-// You should commit this file to source control.
+// This is the config file for the web hosting and CDN
 import { Router } from "@edgio/core/router";
 import { nextRoutes } from "@edgio/next";
 
