@@ -1,4 +1,15 @@
 {
+  "name": "coh3-stats",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GNU LGPLv3",
+  "repository": {
+    "url": "https://github.com/cohstats/coh3-stats"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": "please-use-yarn"
+  },
   "scripts": {
     "start": "yarn edgio:dev",
     "edgio:dev": "edgio dev",
@@ -12,18 +23,13 @@
     "lint:prettier": "prettier --check .",
     "fix": "prettier --loglevel warn --write .",
     "fix:prettier": "prettier --loglevel warn --write .",
-    "clean": "rm -fr .next && rm -fr node_modules"
+    "clean": "rm -fr .next && rm -fr node_modules",
+    "prepare": "husky install"
   },
-  "name": "coh3-stats",
-  "version": "0.1.0",
-  "private": true,
-  "license": "GNU LGPLv3",
-  "repository": {
-    "url": "https://github.com/cohstats/coh3-stats"
-  },
-  "engines": {
-    "node": ">=16",
-    "npm": "please-use-yarn"
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "prettier --loglevel warn --write"
+    ]
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -44,7 +50,6 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "lint-staged": "^13.1.0",
     "@edgio/cli": "6.1.0",
     "@edgio/core": "6.1.0",
     "@edgio/devtools": "6.1.0",
@@ -55,6 +60,8 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.24.0",
     "eslint-config-next": "^13.0.7",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.1.0",
     "prettier": "^2.7.1",
     "typescript": "4.8.4"
   }

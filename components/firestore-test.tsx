@@ -8,8 +8,8 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 const FirestoreTest: React.FC = () => {
   useEffect(() => {
     try {
-      (async () =>{
-        const docRef= doc(getFirestore(), "tests", "document");
+      (async () => {
+        const docRef = doc(getFirestore(), "tests", "document");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -17,7 +17,6 @@ const FirestoreTest: React.FC = () => {
         }
       })();
     } catch (e) {
-
       console.error("Failed to get amount of analyzed matchess", e);
     }
   }, []);
