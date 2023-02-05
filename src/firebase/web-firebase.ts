@@ -2,14 +2,14 @@ import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAnalytics, Analytics, setUserProperties } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
 import { getFunctions } from "firebase/functions";
-import { getFirestore, Firestore } from "firebase/firestore";
+// import { getFirestore, Firestore } from "firebase/firestore";
 
 import config from "../../config";
 
 let performance;
 let app: FirebaseApp | undefined;
 let analytics: Analytics;
-let db: Firestore | undefined;
+// let db: Firestore | undefined;
 
 const useEmulators = false;
 
