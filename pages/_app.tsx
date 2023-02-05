@@ -7,6 +7,9 @@ import { Footer } from "../components/Footer/Footer";
 import { useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 
+// import webFirebase from "../src/firebase/web-firebase";
+// webFirebase.init()
+
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps, router } = props;
   // const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
