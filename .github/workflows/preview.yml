@@ -6,13 +6,14 @@ on:
 
 env:
   EDGIO_ENV: preview
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   build-deploy-web:
     name: Deploy Web Preview
     environment:
       name: preview
-      url: https://preview.coh3stats.com/
+      url: https://coh-stats-coh3-stats-${BRANCH_NAME}.alt.free.layer0-perma.link
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -43,4 +44,4 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN --branch=${GITHUB_REF##*/}
+          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
