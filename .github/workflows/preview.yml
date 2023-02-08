@@ -7,17 +7,16 @@ on:
 env:
   EDGIO_ENV: preview
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  GITHUB_WORKFLOW_URL: https://coh-stats-coh3-stats-$BRANCH_NAME.alt.free.layer0-perma.link
 
 jobs:
   build-deploy-web:
     name: Deploy Web Preview
     environment:
       name: preview
-      url: ${{ env.GITHUB_WORKFLOW_URL }}
+      url: https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link
 
     concurrency:
-      group: unit-tests-${{ github.ref }}
+      group: preview-${{ github.ref }}
       cancel-in-progress: true
 
     runs-on: ubuntu-latest
@@ -50,4 +49,4 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+          npx edgio deploy --site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME

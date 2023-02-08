@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     concurrency:
-      group: unit-tests-${{ github.ref }}
+      group: tests-${{ github.ref }}
       cancel-in-progress: true
 
     steps:
