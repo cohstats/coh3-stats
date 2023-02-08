@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { Title, Group, Stack, Space } from "@mantine/core";
-import { Discord } from "../../components/icons/Discord";
-import { Github } from "../../components/icons/Github";
+import { Discord } from "../../components/icon/discord";
+import { Github } from "../../components/icon/github";
 import React from "react";
 
 const Landing: NextPage = () => {
