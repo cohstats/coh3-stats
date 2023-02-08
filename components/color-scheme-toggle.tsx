@@ -1,6 +1,6 @@
 import { useMantineColorScheme } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons";
-import { IconButton } from "./IconButton/IconButton";
+import { IconButton } from "./icon-button/icon-button";
 
 export function ColorSchemeToggle() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
