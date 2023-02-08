@@ -7,13 +7,14 @@ on:
 env:
   EDGIO_ENV: preview
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  GITHUB_WORKFLOW_URL: https://coh-stats-coh3-stats-$BRANCH_NAME.alt.free.layer0-perma.link
 
 jobs:
   build-deploy-web:
     name: Deploy Web Preview
     environment:
       name: preview
-      url: https://coh-stats-coh3-stats-${BRANCH_NAME}.alt.free.layer0-perma.link
+      url: $GITHUB_WORKFLOW_URL
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
