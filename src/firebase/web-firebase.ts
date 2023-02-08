@@ -6,6 +6,7 @@ import { getFunctions } from "firebase/functions";
 
 import config from "../../config";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let performance;
 let app: FirebaseApp | undefined;
 let analytics: Analytics;

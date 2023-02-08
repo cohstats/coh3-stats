@@ -8,6 +8,11 @@ jobs:
   build-and-run-prettier:
     name: Build and run prettier
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: tests-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -19,7 +24,7 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-node-modules-v1
+          cache-name: cache-node-modules-v2
         with:
           path: |
             node_modules

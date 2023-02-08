@@ -1,3 +1,8 @@
+/**
+ * This is unique API component, we won't be using this much.
+ * The reason we have this here is, so we can cache it.
+ */
+
 import { getNumberOfOnlinePlayersSteamUrl } from "../../src/steam-api";
 import { logger } from "../../src/logger";
 

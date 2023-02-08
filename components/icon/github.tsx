@@ -1,6 +1,6 @@
 import React from "react";
 import config from "../../config";
-import { IconButton } from "../IconButton/IconButton";
+import { IconButton } from "../icon-button/icon-button";
 
 export const Github: React.FC = () => (
   <>

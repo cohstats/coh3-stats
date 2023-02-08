@@ -18,7 +18,7 @@ import Link from "next/link";
 import { IconChevronDown } from "@tabler/icons";
 import useStyles from "./Header.styles";
 import { ColorSchemeToggle } from "../color-scheme-toggle";
-import { SearchButton } from "../SearchButton/SearchButton";
+import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
 
 export interface HeaderProps {

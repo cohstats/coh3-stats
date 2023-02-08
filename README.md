@@ -28,36 +28,41 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 ## Development aproach
 
 ### High level architecture
+
 ![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
 
 ### NextJS development
 
-#### We would like to have most of the pages which require some data SSR ( Server Side Rendered).  
-  https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props. 
-  
-  Example pages:
-  - Home Page 
-  - Player Cards
-  - Leaderboards 
-  - ...
-  - Generally any page which loads data from DB or API 
-  
-#### The rest of the pages should be SSG (Static Site Generation). 
-Example pages:  
-- Unit Stats 
+#### We would like to have most of the pages which require some data SSR ( Server Side Rendered).
+
+https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props.
+
+Example pages:
+
+- Home Page
+- Player Cards
+- Leaderboards
 - ...
-- Generally any page which doesn't load any data from API 
+- Generally any page which loads data from DB or API
+
+#### The rest of the pages should be SSG (Static Site Generation).
+
+Example pages:
+
+- Unit Stats
+- ...
+- Generally any page which doesn't load any data from API
 
 #### Reasons:
+
 - Because it's public website, SSR pages will be much better readed by search engines and generally it will provide better experience
-- All the data fetching (from DB, cloud functions and other) should happen in SSR, because GCP services are blocked in some countries ( China, Russia), that way we can offer site avaliabily everywhere. 
-- The SSR functions can connect to some public APIs and will fetch the data from Firestore and may call some cloud functions 
-- The SSR functions should be "light weight" if we need to run some big data computations we should do so Cloud Functions on GCP where we can control the performance 
-- The whole source code for NextJS will be in this repo and will be open source 
-- The BE of the CF will be closed source because, we will most likely connect to sensitive APIs 
+- All the data fetching (from DB, cloud functions and other) should happen in SSR, because GCP services are blocked in some countries ( China, Russia), that way we can offer site avaliabily everywhere.
+- The SSR functions can connect to some public APIs and will fetch the data from Firestore and may call some cloud functions
+- The SSR functions should be "light weight" if we need to run some big data computations we should do so Cloud Functions on GCP where we can control the performance
+- The whole source code for NextJS will be in this repo and will be open source
+- The BE of the CF will be closed source because, we will most likely connect to sensitive APIs
 
 ![image](https://user-images.githubusercontent.com/8086995/217599315-ff660c70-e9d6-4e99-88b9-c4ea21892433.png)
-
 
 ## COH3 Stats technology stack
 

@@ -11,6 +11,16 @@ export const OnlinePlayers: React.FC = () => {
     (async () => {
       const fetchData = await fetch("/api/onlineSteamPlayers");
       setOnlinePlayersData(await fetchData.json());
+
+      // Update the data every 5 minutes
+      const intervalId = setInterval(async () => {
+        const fetchData = await fetch("/api/onlineSteamPlayers");
+        setOnlinePlayersData(await fetchData.json());
+      }, 1000 * 60 * 5);
+
+      return () => {
+        clearInterval(intervalId);
+      };
     })();
   }, []);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import config from "../../config";
-import { IconButton } from "../IconButton/IconButton";
-import useStyles from "./Discord.styles";
+import { IconButton } from "../icon-button/icon-button";
+import useStyles from "./discord.styles";
 
 export const Discord: React.FC = () => {
   const { classes } = useStyles();

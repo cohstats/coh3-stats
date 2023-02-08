@@ -1,18 +1,24 @@
-name: Build and Deploy Web - DEV
+name: Build and Deploy Web - Preview
 on:
-  push:
+  pull_request:
     branches:
       - master
 
 env:
-  EDGIO_ENV: dev
+  EDGIO_ENV: preview
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   build-deploy-web:
-    name: Deploy Web Dev
+    name: Deploy Web Preview
     environment:
-      name: dev
-      url: https://dev.coh3stats.com/
+      name: preview
+      url: https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link
+
+    concurrency:
+      group: preview-${{ github.ref }}
+      cancel-in-progress: true
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -42,4 +48,14 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN
+          npx edgio deploy --site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+      - name: Publish Preview Link
+        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        with:
+          number: ${{ steps.finder.outputs.pr }}
+          header: preview
+          message: |
+            🌐 Branch deployed as preview to:
+            https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link

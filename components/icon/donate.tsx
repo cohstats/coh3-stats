@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { IconButton } from "../IconButton/IconButton";
+import { IconButton } from "../icon-button/icon-button";
 import config from "../../config";
 
 export const Donate: React.FC = () => (
