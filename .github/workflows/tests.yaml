@@ -8,6 +8,11 @@ jobs:
   build-and-run-prettier:
     name: Build and run prettier
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: unit-tests-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3

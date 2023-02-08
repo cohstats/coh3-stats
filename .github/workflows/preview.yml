@@ -14,7 +14,12 @@ jobs:
     name: Deploy Web Preview
     environment:
       name: preview
-      url: $GITHUB_WORKFLOW_URL
+      url: ${{ env.GITHUB_WORKFLOW_URL }}
+
+    concurrency:
+      group: unit-tests-${{ github.ref }}
+      cancel-in-progress: true
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
