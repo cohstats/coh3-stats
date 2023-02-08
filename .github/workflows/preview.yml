@@ -30,11 +30,10 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-node-modules-v1
+          cache-name: cache-node-modules-v2
         with:
           path: |
             node_modules
-            */*/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -50,3 +49,13 @@ jobs:
         # Deploy command automatically runs the build
         run: |
           npx edgio deploy --site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+      - name: Publish Preview Link
+        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        with:
+          number: ${{ steps.finder.outputs.pr }}
+          header: preview
+          message: |
+            🌐 Branch deployed as preview to:
+            https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link
