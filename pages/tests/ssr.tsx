@@ -7,7 +7,7 @@ import React from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const SSR: NextPage = ({ data }: any) => {
-  return <>THIS IS EXAMPLE OF SSR PAGE - lading {JSON.stringify(data)}</>;
+  return <>BRANCH-SSR THIS IS EXAMPLE OF SSR PAGE - lading {JSON.stringify(data)}</>;
 };
 
 export async function getServerSideProps() {
