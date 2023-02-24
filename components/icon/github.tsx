@@ -4,7 +4,7 @@ import { IconButton } from "../icon-button/icon-button";
 
 export const Github: React.FC = () => (
   <>
-    <a href={config.GitHubLink} target="_blank" rel="noopener noreferrer">
+    <a href={config.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
       <IconButton label="Github">
         <svg
           xmlns="http://www.w3.org/2000/svg"
