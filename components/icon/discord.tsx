@@ -6,7 +6,7 @@ import useStyles from "./discord.styles";
 export const Discord: React.FC = () => {
   const { classes } = useStyles();
   return (
-    <a href={config.DiscordInviteLink} target="_blank" rel="noopener noreferrer">
+    <a href={config.DISCORD_INVITE_LINK} target="_blank" rel="noopener noreferrer">
       <IconButton label="Discord channel" className={classes.root}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

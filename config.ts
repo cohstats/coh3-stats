@@ -22,9 +22,10 @@ const firebaseFunctions = {
 const config = {
   getFirebaseConfig,
   firebaseFunctions,
-  DiscordInviteLink: "https://discord.gg/jRrnwqMfkr",
-  DonationLink: "https://ko-fi.com/cohstats",
-  GitHubLink: repository.url,
+  DISCORD_INVITE_LINK: "https://discord.gg/jRrnwqMfkr",
+  DONATION_LINK: "https://ko-fi.com/cohstats",
+  GITHUB_LINK: repository.url,
+  BASE_CLOUD_FUNCTIONS_URL: `https://${firebaseFunctions.location}-coh3-stats-prod.cloudfunctions.net`,
 };
 
 export default config;
