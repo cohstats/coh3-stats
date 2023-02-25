@@ -32,13 +32,14 @@
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.10.4",
+    "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
-    "@mantine/core": "^5.6.0",
-    "@mantine/dates": "^5.6.0",
-    "@mantine/hooks": "^5.6.0",
-    "@mantine/next": "^5.6.0",
-    "@mantine/notifications": "^5.6.0",
+    "@mantine/core": "^5.10.4",
+    "@mantine/dates": "^5.10.4",
+    "@mantine/hooks": "^5.10.4",
+    "@mantine/next": "^5.10.4",
+    "@mantine/notifications": "^5.10.4",
+    "@mantine/spotlight": "^5.10.4",
     "@tabler/icons": "^1.106.0",
     "dayjs": "^1.11.7",
     "firebase": "^9.17.1",
@@ -50,8 +51,6 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
     "@edgio/cli": "6.1.0",
     "@edgio/core": "6.1.0",
     "@edgio/devtools": "6.1.0",
@@ -60,6 +59,8 @@
     "@types/node": "16.11.7",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
     "eslint": "8.33.0",
     "eslint-config-next": "^13.1.6",
     "husky": "^8.0.3",

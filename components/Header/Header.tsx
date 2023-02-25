@@ -11,12 +11,13 @@ import {
   HoverCard,
   Text,
   SimpleGrid,
+  createStyles,
+  Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { IconChevronDown } from "@tabler/icons";
-import useStyles from "./Header.styles";
 import { ColorSchemeToggle } from "../color-scheme-toggle";
 import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
@@ -24,6 +25,84 @@ import { OnlinePlayers } from "../online-players";
 export interface HeaderProps {
   // children?: React.ReactNode;
 }
+
+const useStyles = createStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing.xl,
+  },
+  container: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "100%",
+  },
+  burger: {
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
+    },
+  },
+  link: {
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingTop: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+    textDecoration: "none",
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    fontWeight: 500,
+    fontSize: theme.fontSizes.sm,
+
+    [theme.fn.smallerThan("sm")]: {
+      height: 42,
+      display: "flex",
+      alignItems: "center",
+      width: "100%",
+    },
+
+    ...theme.fn.hover({
+      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+    }),
+  },
+  subLink: {
+    width: "100%",
+    textDecoration: "none",
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    borderRadius: theme.radius.md,
+
+    ...theme.fn.hover({
+      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
+    }),
+
+    "&:active": theme.activeStyles,
+  },
+  dropdown: {
+    position: "absolute",
+    top: 60,
+    left: 0,
+    right: 0,
+    zIndex: 0,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    borderTopWidth: 0,
+    overflow: "hidden",
+
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
+    },
+  },
+  hiddenDesktop: {
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
+    },
+  },
+  hiddenMobile: {
+    [theme.fn.smallerThan("sm")]: {
+      display: "none",
+    },
+  },
+}));
 
 export const Header: React.FC<HeaderProps> = () => {
   const { classes } = useStyles();
@@ -107,14 +186,25 @@ export const Header: React.FC<HeaderProps> = () => {
           >
             <ScrollArea sx={{ height: "calc(100vh - 60px)" }} mx="-md">
               <Divider my="sm" />
-              <Link href="/">Leaderboards</Link>
-              <Link href="/">Statistics</Link>
-              <Link href="/">App</Link>
+              <Stack px="md">
+                <Group grow>
+                  <SearchButton onClick={() => close()} />
+                </Group>
+                <Link href="/" onClick={() => close()}>
+                  Leaderboards
+                </Link>
+                <Link href="/" onClick={() => close()}>
+                  Statistics
+                </Link>
+                <Link href="/" onClick={() => close()}>
+                  App
+                </Link>
+              </Stack>
+
               <Divider my="sm" />
 
-              <Group>
-                <SearchButton />
-                <ColorSchemeToggle />
+              <Group px="md">
+                <ColorSchemeToggle onClick={() => close()} />
               </Group>
             </ScrollArea>
           </Drawer>
