@@ -1,7 +1,18 @@
+import { createStyles } from "@mantine/core";
 import React from "react";
 import config from "../../config";
 import { IconButton } from "../icon-button/icon-button";
-import useStyles from "./discord.styles";
+
+const useStyles = createStyles(() => ({
+  root: {
+    color: "rgb(255, 255, 255)",
+    backgroundColor: "rgb(88, 101, 242)",
+    "&:hover": {
+      color: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(105, 116, 243)",
+    },
+  },
+}));
 
 export const Discord: React.FC = () => {
   const { classes } = useStyles();
