@@ -18,7 +18,7 @@ yarn install
 Run the development server:
 
 ```bash
-yarn dev
+yarn next:dev
 ```
 
 Note: if images does not show up, you can also use `yarn next:dev`

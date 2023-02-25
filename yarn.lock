@@ -7177,11 +7177,6 @@ mantine-datatable@^1.7.11:
   resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-1.7.11.tgz#e0c905965f23e29b1721431880952c15db882a5f"
   integrity sha512-gQ/VnvN2H9ahnRLVr+F4oq5w++AKi4yo9lLgrnj4YGXyAmcM5trIbjEM7dr0IR/h3YFJ4Bfy3JCRXuN1CixeqA==
 
-mantine-flagpack@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/mantine-flagpack/-/mantine-flagpack-1.0.1.tgz#26b45e36912754286edc69182d1ce085102c6920"
-  integrity sha512-ej2o82IfMVo5LGdeVW9fxIrGBmT2yiDN/E2ZeK8FRvDlJ8LLc3R60pnSvXHr25NfdPuePYYoQrlc0qNGJAMeNg==
-
 map-cache@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
