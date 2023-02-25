@@ -1,4 +1,18 @@
 import config from "../../config";
+import {
+  Indicator,
+  Image,
+  Avatar,
+  Container,
+  Group,
+  Stack,
+  Title,
+  Text,
+  Table,
+  SimpleGrid,
+} from "@mantine/core";
+import { Steam } from "../../components/icon/steam";
+import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
 
 /**
  *
@@ -15,15 +29,105 @@ import config from "../../config";
 
 // @ts-ignore
 const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
+  const imageUrl =
+    "https://avatars.akamai.steamstatic.com/d486a516597e3834c07a14cfd3afb89789bac1e9_medium.jpg";
+  const name = "John";
+  const country = "us";
+
   return (
     <>
-      <p>playerID: {playerID}</p>
-      <div>Error: |{error}|</div>
-      {JSON.stringify(playerCardData)}
-      <div>
-        Player MATCHES
-        <div>{JSON.stringify(playerMatchesData)}</div>
-      </div>
+      <Container size={"lg"}>
+        <Group>
+          <Avatar src={imageUrl} alt={name} size="xl" />
+          <Stack spacing={0}>
+            <Group>
+              <Image src={"/flags/4x3/" + country + ".svg"} alt={country} width={40} />
+              <Title> {name}</Title>
+              <a href={config.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
+                <Steam label="Steam Profile" />
+              </a>
+            </Group>
+            <Text>Last played:</Text>
+            <Text>Play time:</Text>
+          </Stack>
+        </Group>
+
+        <SimpleGrid cols={2} mt="xl">
+          <PlayerFactionOverview />
+          <PlayerFactionOverview />
+          <PlayerFactionOverview />
+          <PlayerFactionOverview />
+        </SimpleGrid>
+
+        <Table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Rank</th>
+              <th>Rating</th>
+              <th>Streak</th>
+              <th>Wins</th>
+              <th>Losses</th>
+              <th>Ratio</th>
+              <th>Total</th>
+              <th>Drops</th>
+              <th>Disputes</th>
+              <th>Last Game</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>1v1</th>
+              <td>Second</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>1v1</th>
+              <td>Second</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Summary</th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>10</td>
+              <td>10</td>
+              <td>60%</td>
+              <td>100</td>
+              <td>0</td>
+              <td>0</td>
+              <td>date</td>
+            </tr>
+          </tfoot>
+        </Table>
+
+        <p>playerID: {playerID}</p>
+        <div>Error: |{error}|</div>
+        {JSON.stringify(playerCardData)}
+        <div>
+          Player MATCHES
+          <div>{JSON.stringify(playerMatchesData)}</div>
+        </div>
+      </Container>
     </>
   );
 };
