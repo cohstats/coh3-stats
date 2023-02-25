@@ -12,6 +12,7 @@ import {
   Text,
   SimpleGrid,
   createStyles,
+  Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
@@ -185,17 +186,25 @@ export const Header: React.FC<HeaderProps> = () => {
           >
             <ScrollArea sx={{ height: "calc(100vh - 60px)" }} mx="-md">
               <Divider my="sm" />
-              <Group>
-                <SearchButton />
-              </Group>
-              <Link href="/">Leaderboards</Link>
-              <Link href="/">Statistics</Link>
-              <Link href="/">App</Link>
+              <Stack px="md">
+                <Group grow>
+                  <SearchButton onClick={() => close()} />
+                </Group>
+                <Link href="/" onClick={() => close()}>
+                  Leaderboards
+                </Link>
+                <Link href="/" onClick={() => close()}>
+                  Statistics
+                </Link>
+                <Link href="/" onClick={() => close()}>
+                  App
+                </Link>
+              </Stack>
+
               <Divider my="sm" />
 
-              <Group>
-                <SearchButton />
-                <ColorSchemeToggle />
+              <Group px="md">
+                <ColorSchemeToggle onClick={() => close()} />
               </Group>
             </ScrollArea>
           </Drawer>
