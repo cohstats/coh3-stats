@@ -85,7 +85,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       // Also check status code if not 200
       data = await res.json();
       const newEntries: SpotlightAction[] = [];
-      for (let playerKey in data) {
+      for (const playerKey in data) {
         const playerData = data[playerKey];
         newEntries.push({
           id: playerData.relicProfile.id,
