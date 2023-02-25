@@ -39,7 +39,7 @@ export const SearchPlayerEntry: React.FC<any> = ({
       <UnstyledButton
         className={cx(classes.action, { [classes.actionHovered]: hovered })}
         tabIndex={-1}
-        onMouseDown={(event) => event.preventDefault()}
+        onMouseDown={(event: any) => event.preventDefault()}
         onClick={onTrigger}
         {...others}
       >

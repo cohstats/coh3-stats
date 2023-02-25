@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
           </Group>
           <br />
         </Container>
-        <Text color="dimmed" size="sm" style={{ textAlign: "center" }}>
+        <Text color="dimmed" size="xs" style={{ textAlign: "center" }}>
           The Company of Heroes is registered trademark of SEGA Holdings. Co
           <br />
           The COH Images and other assets are owned by Relic Entertainment and/or SEGA
