@@ -18,6 +18,7 @@ import {
 import { IconDashboard, IconFileText, IconHome, IconSearch } from "@tabler/icons";
 import { useRef, useState } from "react";
 import { SearchPlayerEntry } from "../components/SearchPlayerEntry";
+import { useRouter } from "next/router";
 webFirebase.init();
 
 const demoItems: SpotlightAction[] = [
@@ -81,14 +82,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         `${config.BASE_CLOUD_FUNCTIONS_URL}/searchPlayersHttp?alias=${query}`,
       );
 
-      console.log("fetching");
       // Also check status code if not 200
       data = await res.json();
       const newEntries: SpotlightAction[] = [];
       for (let playerKey in data) {
         const playerData = data[playerKey];
-        console.log(playerData);
-        console.log(playerData.avatarmedium);
         newEntries.push({
           id: playerData.relicProfile.id,
           image: playerData.steamProfile.avatarmedium,
@@ -97,8 +95,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           country: playerData.relicProfile.members[0].country,
           playerID: playerData.relicProfile.members[0].profile_id,
           title: playerData.relicProfile.members[0].alias,
-          description: "View",
-          onTrigger: () => console.log("Player Profile"),
+          onTrigger: () =>
+            router.replace("/players/" + playerData.relicProfile.members[0].profile_id),
           icon: <IconFileText size={18} />,
         });
       }

@@ -1,4 +1,14 @@
-import { createStyles, UnstyledButton, Group, Center, Image, Text, Badge } from "@mantine/core";
+import {
+  createStyles,
+  UnstyledButton,
+  Group,
+  Center,
+  Image,
+  Text,
+  Badge,
+  Avatar,
+  Indicator,
+} from "@mantine/core";
 import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
@@ -26,29 +36,40 @@ export const SearchPlayerEntry: React.FC<any> = ({
   const { classes, cx } = useStyles();
   return (
     <>
-      <Link href={"/players/" + action.playerID}>
-        <UnstyledButton
-          className={cx(classes.action, { [classes.actionHovered]: hovered })}
-          tabIndex={-1}
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={onTrigger}
-          {...others}
-        >
-          <Group noWrap>
-            <Center>
-              <Image src={action.image} alt={action.title} width={50} height={50} />
-            </Center>
+      <UnstyledButton
+        className={cx(classes.action, { [classes.actionHovered]: hovered })}
+        tabIndex={-1}
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={onTrigger}
+        {...others}
+      >
+        <Group noWrap>
+          <Center>
+            <Indicator
+              position="bottom-end"
+              label={
+                <Image
+                  src={"/flags/4x3/" + action.country + ".svg"}
+                  alt={action.country}
+                  width={20}
+                />
+              }
+              color="rgba(0,0,0,0)"
+              dot={false}
+            >
+              <Avatar src={action.image} alt={action.title} />
+            </Indicator>
+          </Center>
 
-            <div style={{ flex: 1 }}>
-              <Text>{action.title}</Text>
+          <div style={{ flex: 1 }}>
+            <Text>{action.title}</Text>
 
-              <Text color="dimmed" size="xs">
-                country: {action.country} xp: {action.xp} level: {action.level}
-              </Text>
-            </div>
-          </Group>
-        </UnstyledButton>
-      </Link>
+            <Text color="dimmed" size="xs">
+              xp: {action.xp} level: {action.level}
+            </Text>
+          </div>
+        </Group>
+      </UnstyledButton>
     </>
   );
 };
