@@ -16,6 +16,7 @@ import {
   Indicator,
   ActionIcon,
   Tooltip,
+  Anchor,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
@@ -67,6 +68,7 @@ const useStyles = createStyles((theme) => ({
 
     ...theme.fn.hover({
       backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+      textDecoration: "none",
     }),
   },
   disabledLink: {
@@ -135,7 +137,7 @@ export const Header: React.FC<HeaderProps> = () => {
     <>
       <MantineHeader height={60} className={classes.root}>
         <Container className={classes.container} fluid>
-          <Link href={"/"}>
+          <Anchor component={Link} href={"/"}>
             <Group spacing="xs">
               <Image
                 src="/logo/android-icon-36x36.png"
@@ -148,28 +150,36 @@ export const Header: React.FC<HeaderProps> = () => {
                 COH3 Stats
               </Title>
             </Group>
-          </Link>
+          </Anchor>
 
           <Group className={classes.hiddenMobile} spacing={0}>
-            <Link href="/leaderboards" className={cx(classes.link)}>
+            <Anchor component={Link} href="/leaderboards" className={cx(classes.link)}>
               Leaderboards{" "}
-            </Link>
+            </Anchor>
             <Tooltip label="Coming soon" color="orange">
-              <Link href="#" className={cx(classes.link, classes.disabledLink)}>
+              <Anchor
+                component={Link}
+                href="#"
+                className={cx(classes.link, classes.disabledLink)}
+              >
                 Statistics{" "}
                 <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
                   <IconBarrierBlock size={16} />
                 </ActionIcon>
-              </Link>
+              </Anchor>
             </Tooltip>
 
             <Tooltip label="Coming soon" color="orange">
-              <Link href="#" className={cx(classes.link, classes.disabledLink)}>
+              <Anchor
+                component={Link}
+                href="#"
+                className={cx(classes.link, classes.disabledLink)}
+              >
                 App{" "}
                 <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
                   <IconBarrierBlock size={16} />
                 </ActionIcon>
-              </Link>
+              </Anchor>
             </Tooltip>
           </Group>
 
@@ -194,20 +204,17 @@ export const Header: React.FC<HeaderProps> = () => {
                 <Group grow>
                   <SearchButton onClick={() => close()} />
                 </Group>
+                <Anchor
+                  component={Link}
+                  href="/leaderboards"
+                  className={classes.link}
+                  onClick={() => close()}
+                >
+                  Leaderboards{" "}
+                </Anchor>
                 <Tooltip label="Coming soon" color="orange">
-                  <Link
-                    href="#"
-                    className={cx(classes.link, classes.disabledLink)}
-                    onClick={() => close()}
-                  >
-                    Leaderboards{" "}
-                    <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                      <IconBarrierBlock size={16} />
-                    </ActionIcon>
-                  </Link>
-                </Tooltip>
-                <Tooltip label="Coming soon" color="orange">
-                  <Link
+                  <Anchor
+                    component={Link}
                     href="#"
                     className={cx(classes.link, classes.disabledLink)}
                     onClick={() => close()}
@@ -216,11 +223,12 @@ export const Header: React.FC<HeaderProps> = () => {
                     <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
                       <IconBarrierBlock size={16} />
                     </ActionIcon>
-                  </Link>
+                  </Anchor>
                 </Tooltip>
 
                 <Tooltip label="Coming soon" color="orange">
-                  <Link
+                  <Anchor
+                    component={Link}
                     href="#"
                     className={cx(classes.link, classes.disabledLink)}
                     onClick={() => close()}
@@ -229,7 +237,7 @@ export const Header: React.FC<HeaderProps> = () => {
                     <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
                       <IconBarrierBlock size={16} />
                     </ActionIcon>
-                  </Link>
+                  </Anchor>
                 </Tooltip>
               </Stack>
 

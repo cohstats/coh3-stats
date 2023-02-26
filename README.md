@@ -1,4 +1,5 @@
-# COH3 Stats 
+# COH3 Stats
+
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cohstats/coh3-stats)
 
 Website https://coh3stats.com/
@@ -11,6 +12,7 @@ be open source for anyone to use! We need people to get the data from the game
 Anyone can put a hand in building this site. Please consider joining our [Discord](https://discord.gg/jRrnwqMfkr).
 
 ## Getting Started with development
+
 https://dev.coh3stats.com/
 
 First install dependencies:
