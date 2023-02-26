@@ -1,4 +1,4 @@
-import { LaddersDataArrayObject, LaddersDataObject, raceType } from "./coh3-types";
+import { LaddersDataArrayObject, LaddersDataObject } from "./coh3-types";
 import { raceIDsAsObject } from "./coh3-data";
 
 /**
