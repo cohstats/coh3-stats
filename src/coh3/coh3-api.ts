@@ -12,7 +12,7 @@ const BASE_API_URL = "https://coh3-api.reliclink.com";
  */
 const getLeaderBoardsUrl = (leaderboard_id: number, sortBy = 0, count = 100, start = 1) => {
   return encodeURI(
-    `${BASE_API_URL}/community/leaderboard/getleaderboard2?count=${count}&leaderboard_id=${leaderboard_id}&start=${start}&sortBy=0&title=coh3`,
+    `${BASE_API_URL}/community/leaderboard/getleaderboard2?count=${count}&leaderboard_id=${leaderboard_id}&start=${start}&sortBy=${sortBy}&title=coh3`,
   );
 };
 

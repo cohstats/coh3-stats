@@ -5,9 +5,18 @@
 import { NextPage } from "next";
 import React from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { DataTable } from "mantine-datatable";
 
-const SSR: NextPage = ({ data }: any) => {
-  return <>THIS IS EXAMPLE OF SSR PAGE - lading {JSON.stringify(data)}</>;
+const SSR: NextPage = ({ data, tableData }: any) => {
+  return (
+    <>
+      THIS IS EXAMPLE OF SSR PAGE - lading {JSON.stringify(data)}
+      <DataTable
+        columns={[{ accessor: "name" }, { accessor: "age" }]}
+        records={tableData}
+      ></DataTable>
+    </>
+  );
 };
 
 export async function getServerSideProps() {
@@ -18,7 +27,14 @@ export async function getServerSideProps() {
     console.log(docSnap.data());
   }
 
-  return { props: { data: docSnap.data() } };
+  const tableData = [
+    { name: " thomas", age: 4 },
+    { name: " thomas", age: 4 },
+    { name: " thomas", age: 4 },
+    { name: " thomas", age: 4 },
+  ];
+
+  return { props: { data: docSnap.data(), tableData } };
 }
 
 export default SSR;

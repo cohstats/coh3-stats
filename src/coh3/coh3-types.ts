@@ -42,9 +42,17 @@ type RawLeaderboardStat = {
   lastmatchdate: number;
 };
 
-export interface RawLaddersObject {
+export interface RawLaddersObject extends LaddersDataObject {
   result?: RelicAPIResult;
-  statGroups: Array<RawStatGroup>;
+}
+
+export interface LaddersDataObject {
   leaderboardStats: Array<RawLeaderboardStat>;
+  statGroups: Array<RawStatGroup>;
   rankTotal: number;
+}
+
+export interface LaddersDataArrayObject extends RawLeaderboardStat {
+  change: number | string;
+  members: Array<Record<string, any>>;
 }
