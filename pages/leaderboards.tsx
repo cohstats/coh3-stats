@@ -88,7 +88,7 @@ const Leaderboards = ({
                   const path = `/players/${profile_id}`;
 
                   return (
-                    <Link href={path} key={profile_id} passHref>
+                    <Link href={path} key={profile_id} passHref target={"_blank"}>
                       {/*//   <Anchor component="a">*/}
                       <Group spacing="xs">
                         <CountryFlag countryCode={country} />
