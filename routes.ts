@@ -50,4 +50,14 @@ export default new Router()
       },
     });
   })
+  .match("/_next/data/:version/leaderboards.json", ({ cache }) => {
+    cache({
+      edge: {
+        // Cache for 30 seconds, revalidated after 5 seconds
+        maxAgeSeconds: 5,
+        staleWhileRevalidateSeconds: 30,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages
