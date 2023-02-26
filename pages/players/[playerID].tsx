@@ -34,6 +34,15 @@ const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
   const name = "John";
   const country = "us";
 
+  const modeData = { rank: 1, streak: -2, wins: 10, losses: 2 };
+  const factionOverviewData = {
+    faction: "Americans",
+    ones: modeData,
+    twos: modeData,
+    threes: modeData,
+    fours: modeData,
+  };
+
   return (
     <>
       <Container size={"lg"}>
@@ -49,14 +58,22 @@ const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
             </Group>
             <Text>Last played:</Text>
             <Text>Play time:</Text>
+            <Text>Rating: ?! what does it mean?</Text>
           </Stack>
         </Group>
 
-        <SimpleGrid cols={2} mt="xl">
-          <PlayerFactionOverview />
-          <PlayerFactionOverview />
-          <PlayerFactionOverview />
-          <PlayerFactionOverview />
+        <SimpleGrid
+          cols={3}
+          mt="xl"
+          breakpoints={[
+            { maxWidth: 1300, cols: 2 },
+            { maxWidth: 650, cols: 1 },
+          ]}
+        >
+          <PlayerFactionOverview {...factionOverviewData} />
+          <PlayerFactionOverview {...factionOverviewData} />
+          <PlayerFactionOverview {...factionOverviewData} />
+          <PlayerFactionOverview {...factionOverviewData} />
         </SimpleGrid>
 
         <Table>
