@@ -25,4 +25,18 @@ const leaderboardsIDAsObject = {
   },
 };
 
-export { leaderboardsIDAsObject };
+const localizedNames = {
+  german: "Wehrmacht",
+  american: "US Forces",
+  dak: "Deutsches Afrikakorps",
+  british: "British Forces",
+};
+
+const localizedGameTypes = {
+  "1v1": "1 vs 1",
+  "2v2": "2 vs 2",
+  "3v3": "3 vs 3",
+  "4v4": "4 vs 4",
+};
+
+export { leaderboardsIDAsObject, localizedNames, localizedGameTypes };

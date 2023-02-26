@@ -1,4 +1,4 @@
-import { LaddersDataArrayObject, LaddersDataObject } from "./coh3-types";
+import { LaddersDataArrayObject, LaddersDataObject, raceType } from "./coh3-types";
 
 /**
  * Extracts just the string ID from the steam name used in the results of API.

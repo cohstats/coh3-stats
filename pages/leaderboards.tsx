@@ -10,6 +10,9 @@ import dynamic from "next/dynamic";
 import { calculatePageNumber, calculatePositionNumber } from "../src/utils";
 import ErrorCard from "../components/error-card";
 import CountryFlag from "../components/country-flag";
+import Head from "next/head";
+import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
+import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side
@@ -164,8 +167,20 @@ const Leaderboards = ({
     }
   })();
 
+  const localizedRace = localizedNames[raceToFetch as raceType];
+  const localizedType = localizedGameTypes[typeToFetch as leaderBoardType];
+
   return (
     <>
+      <Head>
+        <title>
+          Leaderboards for {localizedRace} {localizedType}
+        </title>
+        <meta
+          name="description"
+          content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}`}
+        />
+      </Head>
       <Container size={"lg"}>
         <Container fluid>
           <Group position={"apart"}>
