@@ -135,27 +135,25 @@ export const Header: React.FC<HeaderProps> = () => {
     <>
       <MantineHeader height={60} className={classes.root}>
         <Container className={classes.container} fluid>
-          <Group spacing="xs">
-            <Image
-              src="/logo/android-icon-36x36.png"
-              width={30}
-              height={30}
-              alt={"COH3 Stats logo"}
-            />
-            <Title order={1} size="h3">
-              COH3 Stats
-            </Title>
-          </Group>
+          <Link href={"/"}>
+            <Group spacing="xs">
+              <Image
+                src="/logo/android-icon-36x36.png"
+                width={30}
+                height={30}
+                alt={"COH3 Stats logo"}
+              />
+
+              <Title order={1} size="h3">
+                COH3 Stats
+              </Title>
+            </Group>
+          </Link>
 
           <Group className={classes.hiddenMobile} spacing={0}>
-            <Tooltip label="Coming soon" color="orange">
-              <Link href="#" className={cx(classes.link, classes.disabledLink)}>
-                Leaderboards{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Link>
-            </Tooltip>
+            <Link href="/leaderboards" className={cx(classes.link)}>
+              Leaderboards{" "}
+            </Link>
             <Tooltip label="Coming soon" color="orange">
               <Link href="#" className={cx(classes.link, classes.disabledLink)}>
                 Statistics{" "}
