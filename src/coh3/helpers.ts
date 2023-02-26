@@ -1,4 +1,5 @@
 import { LaddersDataArrayObject, LaddersDataObject, raceType } from "./coh3-types";
+import { raceIDsAsObject } from "./coh3-data";
 
 /**
  * Extracts just the string ID from the steam name used in the results of API.
@@ -8,6 +9,20 @@ const convertSteamNameToID = (name: string): string => {
   const res = name.match(/\/steam\/(\d+)/);
   if (res) return res[1];
   return "";
+};
+
+const getMatchDuration = (startTime: number, endTime: number) => {
+  return new Date((endTime - startTime) * 1000).toISOString().substr(11, 8); //return duration in HH:MM:SS format
+};
+
+const getMatchPlayersByFaction = (
+  reportedPlayerResults: Array<any>,
+  faction: "axis" | "allies",
+) => {
+  const factionId = faction === "axis" ? 1 : 2;
+  return reportedPlayerResults.filter(
+    (playerResult) => raceIDsAsObject[playerResult.race_id]?.faction_id === factionId,
+  );
 };
 
 const findAndMergeStatGroups = (
@@ -52,4 +67,9 @@ const findAndMergeStatGroups = (
   return statGroupsArray;
 };
 
-export { findAndMergeStatGroups, convertSteamNameToID };
+export {
+  findAndMergeStatGroups,
+  convertSteamNameToID,
+  getMatchDuration,
+  getMatchPlayersByFaction,
+};

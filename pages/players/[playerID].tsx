@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { Steam } from "../../components/icon/steam";
 import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
+import PlayerRecentMatches from "../../components/player-matches/player-recent-matches";
 
 /**
  *
@@ -142,8 +143,13 @@ const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
         {JSON.stringify(playerCardData)}
         <div>
           Player MATCHES
-          <div>{JSON.stringify(playerMatchesData)}</div>
+          {/*<div>{JSON.stringify(playerMatchesData)}</div>*/}
         </div>
+        <PlayerRecentMatches
+          playerMatchesData={playerMatchesData}
+          error={error}
+          profileID={playerID}
+        />
       </Container>
     </>
   );
@@ -181,7 +187,7 @@ export async function getServerSideProps({ params, query }) {
 
     if (view === "recentMatches") {
       // @ts-ignore
-      playerMatchesData = await PlayerMatchesRes.json();
+      playerMatchesData = (await PlayerMatchesRes.json()).playerMatches;
     }
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
