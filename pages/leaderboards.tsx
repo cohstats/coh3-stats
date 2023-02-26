@@ -36,7 +36,7 @@ const Leaderboards = ({
   const { push, query } = useRouter();
 
   const onPageChange = (p: number) => {
-    const startPositionNumber = calculatePositionNumber(p);
+    const startPositionNumber = calculatePositionNumber(p, RECORD_PER_PAGE);
     push({ query: { ...query, start: startPositionNumber } }, undefined);
   };
 
@@ -54,7 +54,7 @@ const Leaderboards = ({
           minHeight={300}
           // provide data
           records={leaderBoardData || []}
-          page={calculatePageNumber(start)}
+          page={calculatePageNumber(start, RECORD_PER_PAGE)}
           totalRecords={totalRecords}
           recordsPerPage={RECORD_PER_PAGE}
           onPageChange={onPageChange}
@@ -184,7 +184,9 @@ const Leaderboards = ({
       <Container size={"lg"}>
         <Container fluid>
           <Group position={"apart"}>
-            <Title order={1}>Leaderboards</Title>
+            <Group>
+              <Title order={2}>Leaderboards for {localizedRace}</Title>
+            </Group>
             <Group position="right">
               <Select
                 label="Race"
