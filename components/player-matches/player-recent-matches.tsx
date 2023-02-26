@@ -1,7 +1,5 @@
-import { calculatePageNumber } from "../../src/utils";
 import Link from "next/link";
 import { Badge, Anchor, Text, Group } from "@mantine/core";
-import CountryFlag from "../country-flag";
 import { DataTable } from "mantine-datatable";
 import React from "react";
 import { localizedNames, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
@@ -101,7 +99,7 @@ const PlayerRecentMatches = ({
         verticalSpacing="sm"
         minHeight={300}
         // provide data
-        records={playerMatchesData || []}
+        records={playerMatchesData}
         // define columns
         columns={[
           {
