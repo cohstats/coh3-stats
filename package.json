@@ -52,11 +52,12 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "6.1.0",
-    "@edgio/core": "6.1.0",
-    "@edgio/devtools": "6.1.0",
-    "@edgio/next": "6.1.0",
-    "@edgio/react": "6.1.0",
+    "@edgio/cli": "^6.1.1",
+    "@edgio/core": "^6.1.1",
+    "@edgio/devtools": "^6.1.1",
+    "@edgio/next": "^6.1.1",
+    "@edgio/prefetch": "^6.1.1",
+    "@edgio/react": "^6.1.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/node": "16.11.7",

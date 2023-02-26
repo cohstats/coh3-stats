@@ -39,4 +39,15 @@ export default new Router()
       },
     });
   })
+  // Caching for leaderboards
+  .match("/leaderboards(.*)", ({ cache }) => {
+    cache({
+      edge: {
+        // Cache for 30 seconds, revalidated after 5 seconds
+        maxAgeSeconds: 5,
+        staleWhileRevalidateSeconds: 30,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages
