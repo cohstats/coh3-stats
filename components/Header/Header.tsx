@@ -25,6 +25,7 @@ import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
 import { ColorSchemeToggle } from "../color-scheme-toggle";
 import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
+import { Factions, getFactionName } from "../../util/factions";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -117,9 +118,11 @@ export const Header: React.FC<HeaderProps> = () => {
   const { classes, cx } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
 
-  const factionLink = (faction: string) => (
+  const factionLink = (faction: Factions, gamemode: string) => (
     <Text>
-      <Link href="/">{faction}</Link>
+      <Anchor component={Link} href={"/leaderboards?race=" + faction + "&type=" + gamemode}>
+        {getFactionName(faction)}
+      </Anchor>
     </Text>
   );
 
@@ -127,10 +130,10 @@ export const Header: React.FC<HeaderProps> = () => {
     <div>
       <Text weight={700}>{gamemode}</Text>
       <Divider my="sm" />
-      {factionLink("Wehrmacht")}
-      {factionLink("Deutsche Afrikakorps")}
-      {factionLink("US Forces")}
-      {factionLink("British Forces")}
+      {factionLink("american", gamemode)}
+      {factionLink("german", gamemode)}
+      {factionLink("dak", gamemode)}
+      {factionLink("british", gamemode)}
     </div>
   );
   return (
@@ -153,9 +156,26 @@ export const Header: React.FC<HeaderProps> = () => {
           </Anchor>
 
           <Group className={classes.hiddenMobile} spacing={0}>
-            <Anchor component={Link} href="/leaderboards" className={cx(classes.link)}>
-              Leaderboards{" "}
-            </Anchor>
+            <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+              <HoverCard.Target>
+                <div>
+                  <Anchor component={Link} href="/leaderboards" className={cx(classes.link)}>
+                    <Group spacing={3}>
+                      Leaderboards
+                      <IconChevronDown size={16} />
+                    </Group>
+                  </Anchor>
+                </div>
+              </HoverCard.Target>
+              <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
+                <SimpleGrid cols={4} spacing={0}>
+                  {gamemodeLeaderboards("1v1")}
+                  {gamemodeLeaderboards("2v2")}
+                  {gamemodeLeaderboards("3v3")}
+                  {gamemodeLeaderboards("4v4")}
+                </SimpleGrid>
+              </HoverCard.Dropdown>
+            </HoverCard>
             <Tooltip label="Coming soon" color="orange">
               <Anchor
                 component={Link}
@@ -253,24 +273,3 @@ export const Header: React.FC<HeaderProps> = () => {
     </>
   );
 };
-
-/*<HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
-              <HoverCard.Target>
-                <div>
-                  <Link href="/" className={classes.link}>
-                    <Group spacing={3}>
-                      Leaderboards
-                      <IconChevronDown size={16} />
-                    </Group>
-                  </Link>
-                </div>
-              </HoverCard.Target>
-              <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                <SimpleGrid cols={4} spacing={0}>
-                  {gamemodeLeaderboards("1v1")}
-                  {gamemodeLeaderboards("2v2")}
-                  {gamemodeLeaderboards("3v3")}
-                  {gamemodeLeaderboards("4v4")}
-                </SimpleGrid>
-              </HoverCard.Dropdown>
-            </HoverCard>*/

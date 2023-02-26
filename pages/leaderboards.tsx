@@ -5,7 +5,7 @@ import { DataTable } from "mantine-datatable";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { calculatePageNumber, calculatePositionNumber } from "../src/utils";
 import ErrorCard from "../components/error-card";
@@ -13,6 +13,7 @@ import CountryFlag from "../components/country-flag";
 import Head from "next/head";
 import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
 import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
+import { useDidUpdate } from "@mantine/hooks";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side
@@ -188,6 +189,7 @@ const Leaderboards = ({
               <Select
                 label="Race"
                 defaultValue={raceToFetch}
+                value={raceToFetch}
                 data={[
                   { value: "american", label: "US Forces" },
                   { value: "german", label: "Wehrmacht" },
@@ -202,6 +204,7 @@ const Leaderboards = ({
               <Select
                 label="Type"
                 defaultValue={typeToFetch}
+                value={typeToFetch}
                 data={[
                   { value: "1v1", label: "1 vs 1" },
                   { value: "2v2", label: "2 vs 2" },
