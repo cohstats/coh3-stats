@@ -148,14 +148,12 @@ export const Header: React.FC<HeaderProps> = () => {
           </Group>
 
           <Group className={classes.hiddenMobile} spacing={0}>
-            <Tooltip label="Coming soon" color="orange">
-              <Link href="#" className={cx(classes.link, classes.disabledLink)}>
-                Leaderboards{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Link>
-            </Tooltip>
+            <Link href="" className={cx(classes.link)}>
+              Leaderboards{" "}
+              <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
+                <IconBarrierBlock size={16} />
+              </ActionIcon>
+            </Link>
             <Tooltip label="Coming soon" color="orange">
               <Link href="#" className={cx(classes.link, classes.disabledLink)}>
                 Statistics{" "}

@@ -9,6 +9,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { calculatePageNumber, calculatePositionNumber } from "../src/utils";
 import ErrorCard from "../components/error-card";
+import CountryFlag from "../components/country-flag";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side
@@ -80,13 +81,17 @@ const Leaderboards = ({
               // @ts-ignore
               render: ({ members }) => {
                 return members.map((member: any) => {
-                  const { alias, profile_id } = member;
+                  const { alias, profile_id, country } = member;
                   const path = `/players/${profile_id}`;
 
                   return (
                     <Link href={path} key={profile_id} passHref>
                       {/*//   <Anchor component="a">*/}
-                      {alias}
+                      <Group spacing="xs">
+                        <CountryFlag countryCode={country} />
+                        {alias}
+                      </Group>
+
                       {/*//   </Anchor>*/}
                     </Link>
                   );
