@@ -7,7 +7,6 @@ import { Footer } from "../components/Footer/Footer";
 import { useDebouncedState, useDidUpdate, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import config from "../config";
-
 import webFirebase from "../src/firebase/web-firebase";
 import {
   registerSpotlightActions,
@@ -15,36 +14,13 @@ import {
   SpotlightAction,
   SpotlightProvider,
 } from "@mantine/spotlight";
-import { IconDashboard, IconFileText, IconHome, IconSearch } from "@tabler/icons";
-import { useRef, useState } from "react";
+import { IconFileText, IconSearch } from "@tabler/icons";
+import { useRef } from "react";
 import { SearchPlayerEntry } from "../components/SearchPlayerEntry";
-import { useRouter } from "next/router";
 webFirebase.init();
-
-const demoItems: SpotlightAction[] = [
-  {
-    title: "Home",
-    description: "Get to home page",
-    onTrigger: () => console.log("Home"),
-    icon: <IconHome size={18} />,
-  },
-  {
-    title: "Dashboard",
-    description: "Get full information about current system status",
-    onTrigger: () => console.log("Dashboard"),
-    icon: <IconDashboard size={18} />,
-  },
-  {
-    title: "Documentation",
-    description: "Visit documentation to lean more about all features",
-    onTrigger: () => console.log("Documentation"),
-    icon: <IconFileText size={18} />,
-  },
-];
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps, router } = props;
-  // const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
@@ -69,8 +45,14 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   );
 
   const contentWithoutLayout = <Component {...pageProps} />;
+  /* Spotlight Search Related */
   const fetchingRef = useRef(false);
+  // debounce query (wait till user stopped actively entering stuff in the search field)
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState("", 200);
+  /**
+   * Request additional results for the spotlight search based on the user input and add to spotlight entries
+   * @param query Search input
+   */
   const fetchResults = async (query: string) => {
     console.log("SEARCH", query);
 
@@ -111,8 +93,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       error = e.message;
     }
   };
+  // when debounced query entry changes fetch player results
   useDidUpdate(() => {
-    console.log("value changed", debouncedQuery);
     if (debouncedQuery.length > 1) {
       fetchingRef.current = true;
       fetchResults(debouncedQuery);

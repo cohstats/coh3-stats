@@ -47,10 +47,15 @@ const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
     <>
       <Container size={"lg"}>
         <Group>
-          <Avatar src={imageUrl} alt={name} size="xl" />
+          <Avatar src={imageUrl} imageProps={{ loading: "lazy" }} alt={name} size="xl" />
           <Stack spacing={0}>
             <Group>
-              <Image src={"/flags/4x3/" + country + ".svg"} alt={country} width={40} />
+              <Image
+                src={"/flags/4x3/" + country + ".svg"}
+                imageProps={{ loading: "lazy" }}
+                alt={country}
+                width={40}
+              />
               <Title> {name}</Title>
               <a href={config.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
                 <Steam label="Steam Profile" />
