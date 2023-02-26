@@ -104,7 +104,6 @@ const races = [
     id: 137123,
     name: "Germans",
     faction_id: 1,
-
     localizedName: "Wehrmacht",
   },
   {

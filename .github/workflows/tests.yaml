@@ -38,3 +38,6 @@ jobs:
       - name: Run prettier
         run: |
           yarn lint:prettier
+      - name: Run Jest Test
+        run: |
+          yarn test
