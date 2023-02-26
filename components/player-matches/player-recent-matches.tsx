@@ -7,6 +7,7 @@ import React from "react";
 import { localizedNames, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
 import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
+import ErrorCard from "../error-card";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -17,14 +18,18 @@ const PlayerRecentMatches = ({
   playerMatchesData: Array<any>;
   error: string;
 }) => {
-  console.log("WTF?", playerMatchesData, profileID);
-  if (!playerMatchesData || !profileID) {
-    return <></>;
+  if (error) {
+    return <ErrorCard title={"Error rendering recent matches"} body={JSON.stringify(error)} />;
   }
 
-  console.log(profileID);
-  console.log(playerMatchesData);
-  console.log(error);
+  if (!playerMatchesData || !profileID) {
+    return (
+      <ErrorCard
+        title={"Error rendering recent matches"}
+        body={"Missing playerMatchesData or profileID"}
+      />
+    );
+  }
 
   const isPlayerVictorious = (matchRecord: any): boolean => {
     if (!matchRecord) return false;
