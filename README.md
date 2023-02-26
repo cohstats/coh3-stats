@@ -1,4 +1,7 @@
-# COH3 Stats
+# COH3 Stats 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/cohstats/coh3-stats)
+
+Website https://coh3stats.com/
 
 We are looking not only for developers but anyone who would like to contribute
 in building the best site with most info for Company of Heroes 3. All the data will
@@ -7,7 +10,8 @@ be open source for anyone to use! We need people to get the data from the game
 
 Anyone can put a hand in building this site. Please consider joining our [Discord](https://discord.gg/jRrnwqMfkr).
 
-## Getting Started
+## Getting Started with development
+https://dev.coh3stats.com/
 
 First install dependencies:
 
