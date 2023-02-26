@@ -18,13 +18,13 @@ export const Steam: React.FC<SteamProps> = ({ label }) => {
         <use xlinkHref="#B" x=".5" y=".5" />
         <defs>
           <linearGradient id="A" x2="50%" x1="50%" y2="100%" y1="0%">
-            <stop stop-color="#111d2e" offset="0%" />
-            <stop stop-color="#051839" offset="21.2%" />
-            <stop stop-color="#0a1b48" offset="40.7%" />
-            <stop stop-color="#132e62" offset="58.1%" />
-            <stop stop-color="#144b7e" offset="73.8%" />
-            <stop stop-color="#136497" offset="87.3%" />
-            <stop stop-color="#1387b8" offset="100%" />
+            <stop stopColor="#111d2e" offset="0%" />
+            <stop stopColor="#051839" offset="21.2%" />
+            <stop stopColor="#0a1b48" offset="40.7%" />
+            <stop stopColor="#132e62" offset="58.1%" />
+            <stop stopColor="#144b7e" offset="73.8%" />
+            <stop stopColor="#136497" offset="87.3%" />
+            <stop stopColor="#1387b8" offset="100%" />
           </linearGradient>
         </defs>
         <symbol id="B">
