@@ -1,6 +1,6 @@
 import { getLeaderBoardData } from "../src/coh3/coh3-api";
 import { findAndMergeStatGroups } from "../src/coh3/helpers";
-import { Container, Group, Select, Space, Text, Title } from "@mantine/core";
+import { Container, Group, Select, Space, Text, Title, Anchor } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -88,15 +88,12 @@ const Leaderboards = ({
                   const path = `/players/${profile_id}`;
 
                   return (
-                    <Link href={path} key={profile_id} passHref target={"_blank"}>
-                      {/*//   <Anchor component="a">*/}
+                    <Anchor key={profile_id} component={Link} href={path}>
                       <Group spacing="xs">
                         <CountryFlag countryCode={country} />
                         {alias}
                       </Group>
-
-                      {/*//   </Anchor>*/}
-                    </Link>
+                    </Anchor>
                   );
                 });
               },
