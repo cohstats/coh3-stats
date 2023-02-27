@@ -49,8 +49,8 @@ const About: NextPage = () => {
           All the donations are used for covering the server costs and expenses for running the
           site.
           <br />
-          If we want to expand the functionality of the site long history of matches / match
-          analysis / history of player cards), it will significantly eat up the system resources -
+          If we want to expand the functionality of the site - long history of matches / match
+          analysis / history of player cards, it will significantly eat up the system resources -
           increase the cost.
           <br />
           <br />
@@ -58,7 +58,7 @@ const About: NextPage = () => {
           <Anchor component={Link} href={"https://coh2stats.com"} target={"_blank"}>
             coh2stats.com{" "}
           </Anchor>
-          have been already used to pay for 2022 server costs.
+          have been already used to pay for 2022 server costs. So all of them are appreciated.
           <br />
           <br />
           All the donations are listed at Ko-Fi.
