@@ -9,10 +9,15 @@ import {
   Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
-import { getLeaderBoardStatsRoute, getPlayersStatsRoute } from "../../../src/routes";
+import {
+  getGameStatsRoute,
+  getLeaderBoardStatsRoute,
+  getPlayersStatsRoute,
+} from "../../../src/routes";
 import React from "react";
 import {
   IconBarrierBlock,
+  IconChartAreaLine,
   IconChevronDown,
   IconDeviceDesktopAnalytics,
   IconUsersGroup,
@@ -37,15 +42,21 @@ const StatisticsMenu = ({
           <Accordion.Panel>
             <Stack>
               <Group spacing={"xs"}>
-                <IconDeviceDesktopAnalytics size={16} />
-                <Anchor component={Link} href={getLeaderBoardStatsRoute()} onClick={close}>
-                  Leaderboards Stats
+                <IconChartAreaLine size={16} />
+                <Anchor component={Link} href={getGameStatsRoute()}>
+                  Games Stats
                 </Anchor>
               </Group>
               <Group spacing={"xs"}>
                 <IconUsersGroup size={16} />
                 <Anchor component={Link} href={getPlayersStatsRoute()} onClick={close}>
                   Player Stats
+                </Anchor>
+              </Group>
+              <Group spacing={"xs"}>
+                <IconDeviceDesktopAnalytics size={16} />
+                <Anchor component={Link} href={getLeaderBoardStatsRoute()} onClick={close}>
+                  Leaderboards Stats
                 </Anchor>
               </Group>
             </Stack>
@@ -69,15 +80,21 @@ const StatisticsMenu = ({
         <HoverCard.Dropdown sx={{ overflow: "hidden" }} style={{ textAlign: "left" }}>
           <Group>
             <Group spacing={"xs"}>
-              <IconDeviceDesktopAnalytics size={16} />
-              <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
-                Leaderboards Stats
+              <IconChartAreaLine size={16} />
+              <Anchor component={Link} href={getGameStatsRoute()}>
+                Games Stats
               </Anchor>
             </Group>
             <Group spacing={"xs"}>
               <IconUsersGroup size={16} />
               <Anchor component={Link} href={getPlayersStatsRoute()}>
-                Player Stats
+                Players Stats
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
+              <IconDeviceDesktopAnalytics size={16} />
+              <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
+                Leaderboards Stats
               </Anchor>
             </Group>
             <Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>
@@ -90,7 +107,7 @@ const StatisticsMenu = ({
                   <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
                     <IconBarrierBlock size={16} />
                   </ActionIcon>
-                  <span> Game Statistics</span>
+                  <span> Map Statistics</span>
                 </Group>
               </Anchor>
             </Tooltip>

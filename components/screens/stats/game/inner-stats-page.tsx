@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../../src/coh3stats-api";
 import { getAnalysisStatsHttpResponse } from "../../../../src/analysis-types";
-import { Card, Center, Flex, Loader, Space, Title, Text } from "@mantine/core";
+import { Card, Center, Flex, Loader, Space, Title, Text, Group } from "@mantine/core";
 import ErrorCard from "../../../error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import { FactionVsFactionCard } from "../../../charts/card-factions-heatmap";
+import HelperIcon from "../../../icon/helper";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -25,7 +26,7 @@ const ChartCard = ({
   size,
   children,
 }: {
-  title: string;
+  title: string | React.ReactNode;
   size: "md" | "xl";
   children: React.ReactNode;
 }) => {
@@ -150,27 +151,37 @@ const InnerStatsPage = ({
           <ChartCard title={`Faction Winrate ${mode}`} size={"md"}>
             <DynamicWinRateBarChart data={analysisData} />
           </ChartCard>
+
+          <ChartCard
+            title={
+              <Group spacing={"xs"}>
+                <Text>Maps {mode}</Text>
+                <HelperIcon
+                  width={280}
+                  text={"This chart has no value until we get map bans as we have in coh2."}
+                />
+              </Group>
+            }
+            size={"md"}
+          >
+            <DynamicMapsPlayedBarChart data={analysisData} />
+          </ChartCard>
         </Flex>
 
         <Space h="xl" />
         <Flex gap={"xl"} wrap="wrap" justify="center">
           <FactionVsFactionCard
             data={analysisData}
-            title={`Team composition matrix ${mode}`}
+            title={`Team composition ${mode}`}
             style={{}}
           />
-        </Flex>
-        <Space h="xl" />
-
-        <Flex gap={"xl"} wrap="wrap" justify="center">
           <ChartCard title={`Game Time ${mode}`} size={"xl"}>
             <DynamicPlayTimeHistogramChart data={analysisData} />
           </ChartCard>
-
-          <ChartCard title={`Maps ${mode}`} size={"xl"}>
-            <DynamicMapsPlayedBarChart data={analysisData} />
-          </ChartCard>
         </Flex>
+        <Space h="xl" />
+
+        <Flex gap={"xl"} wrap="wrap" justify="center"></Flex>
 
         <Text fz="xs" align={"center"} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}

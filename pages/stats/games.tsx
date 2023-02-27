@@ -3,35 +3,21 @@ import React, { useEffect, useRef, useState } from "react";
 // import { AnalyticsGameStatsPageView } from "../../src/firebase/analytics";
 import { generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
-import {
-  Container,
-  Loader,
-  Text,
-  Title,
-  Button,
-  Group,
-  Flex,
-  SegmentedControl,
-  Select,
-  Tooltip,
-} from "@mantine/core";
-import { getStatsData } from "../../src/coh3stats-api";
-import { getAnalysisStatsHttpResponse } from "../../src/analysis-types";
+import { Container, Flex, SegmentedControl, Select, Tooltip } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-// import {getDateTimestamp} from "../../src/utils";
 import { useRouter } from "next/router";
 import {
   convertFromDateString,
   convertToDateString,
   findPatchVersionByToAndFrom,
-  getDateTimestamp,
   getGMTTimeStamp,
 } from "../../src/utils";
 import config from "../../config";
 import InnerStatsPage from "../../components/screens/stats/game/inner-stats-page";
 
-const pageTitle = `Game Stats - Company of Heroes 3`;
-const description = "Game Stats for Company of Heroes 3. See winrate of each faction and more.";
+const pageTitle = `Game Stats & Charts - Company of Heroes 3`;
+const description =
+  "Game Stats for Company of Heroes 3. See winrate of each faction / mode and much more.";
 const keywords = generateKeywordsString([
   "coh3 winrate",
   "factions winrate",
@@ -43,15 +29,11 @@ const GameStats: NextPage = () => {
   const { push, query } = useRouter();
   const [patchSelectValue, setPatchSelectValue] = useState<string | null>(null);
 
-  const [data, setData] = useState<null | getAnalysisStatsHttpResponse>(null);
   const [mode, setMode] = useState<"all" | "1v1" | "2v2" | "3v3" | "4v4">("1v1");
   const [valueDatePicker, setValueDatePicker] = useState<[Date | null, Date | null]>([
     null,
     null,
   ]);
-
-  const [error, setError] = useState<null | string>(null);
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     // Todo add analytics
@@ -135,7 +117,7 @@ const GameStats: NextPage = () => {
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <>
-        <Container size={"xl"}>
+        <Container fluid p={0}>
           <Flex align={"flex-end"} justify="center" wrap={"wrap"} gap="md">
             <Select
               value={patchSelectValue}

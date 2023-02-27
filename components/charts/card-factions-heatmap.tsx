@@ -3,6 +3,7 @@ import { Tooltip, Text, Card, Title, Radio, Group, Divider, Space } from "@manti
 import { AnalysisObjectType } from "../../src/analysis-types";
 import FactionIcon from "../faction-icon";
 import dynamic from "next/dynamic";
+import HelperIcon from "../icon/helper";
 
 const DynamicHeatMapChart = dynamic(() => import("./factions-heatmap"), { ssr: false });
 
@@ -72,23 +73,24 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
     }
   }
 
-  console.log(`faction_data: ${JSON.stringify(factionData)}`);
-
   // We should use useMemo for these values, there is lot of iterations which are recalculated "unnecessary"
   const factionDataByKey: Record<string, Record<string, any>> = {};
 
   const [SelectedSide, setSelectedSide] = React.useState("axis");
-  const [SelectedType, setSelectedType] = React.useState("winRate");
+  const [SelectedType, setSelectedType] = React.useState<"amountOfGames" | "winRate">("winRate");
 
-  const changeHeatMapStyle = (value: string) => {
+  const changeHeatMapStyle = (value: "amountOfGames" | "winRate") => {
     // firebaseAnalytics.teamCompositionUsed(factionWinRate, value);
     setSelectedType(value);
   };
 
-  const changeFactionDisplay = (value: string) => {
+  const changeFactionDisplay = (value: "amountOfGames" | "winRate") => {
     // firebaseAnalytics.teamCompositionUsed(value, heatmapValues);
     setSelectedSide(value);
   };
+
+  // Follows the spaghetti code from coh2 stats. It would be best to completely
+  // rewrite the data generation for the chart. But it works for now.
 
   // Prepare transformation
   for (const [key, value] of Object.entries(factionData)) {
@@ -113,8 +115,6 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
       }
     })();
   }
-
-  console.log(`factionDataByKey ORIGINAL: ${JSON.stringify(factionDataByKey)}`);
 
   // Add total summary for axis (on the right side of the heatmap)
   if (SelectedSide === "axis") {
@@ -156,37 +156,11 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
       }
     }
 
-    // if(SelectedType === "winRate") {
-    //   (alliesKeys[key] /= Object.keys(value).length).toFixed(2);
-    // }
-
     factionDataByKey["sum"] = alliesKeys;
   }
 
-  console.log(`factionDataByKey AXIS: ${JSON.stringify(factionDataByKey)}`);
-
   // Transform for the heatmap
   const dataForHeatmap: Array<Record<string, any>> = [];
-
-  // const newFormat = [
-  //   {
-  //     id: "W",
-  //     data: [
-  //       { x: "B", y: 0.49 },
-  //       { x: "A", y: 0.51 },
-  //       { x: "sum", y: 0.5 },
-  //     ],
-  //   },
-  //   {
-  //     id: "D",
-  //     data: [
-  //       { x: "A", y: 0.51 },
-  //       { x: "B", y: 0.46 },
-  //       { x: "sum", y: 0.48 },
-  //     ],
-  //   },
-  // ];
-  //
 
   for (const [key, value] of Object.entries(factionDataByKey)) {
     dataForHeatmap.push({
@@ -199,8 +173,6 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
       }),
     });
   }
-
-  console.log(`dataForHeatmap: ${JSON.stringify(dataForHeatmap)}`);
 
   dataForHeatmap.sort((firstObject, secondObject) => {
     // Sum should be always on the last
@@ -217,16 +189,21 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
     return 0;
   });
 
-  console.log(`Data for heatmap: ${JSON.stringify(dataForHeatmap)}`);
-
   return (
-    <Card p="md" shadow="sm" w={800} withBorder>
+    <Card p="md" shadow="sm" w={780} withBorder>
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">
         <Group position={"apart"}>
           <Title order={3}>{title}</Title>
           <Group>
+            <HelperIcon
+              width={360}
+              text={
+                "Check if winrate for the particular combination has enough games to provide valid results." +
+                " Preferably you need at least 1k games for the particular combination to be valid."
+              }
+            />
             <Radio.Group onChange={changeHeatMapStyle} value={SelectedType}>
               <Group mt={"xs"}>
                 <Radio value="winRate" label="Winrate" />
@@ -243,42 +220,20 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
           </Group>
         </Group>
       </Card.Section>
-      {/* right, left margins are negative – -1 * theme.spacing.xl */}
       <Card.Section w={995} h={440} p="xs">
         <div>
           {legend}
           <div style={{ display: "inline-block" }}>
-            <DynamicHeatMapChart data={dataForHeatmap} width={600} height={400} />
+            <DynamicHeatMapChart
+              data={dataForHeatmap}
+              width={600}
+              height={400}
+              type={SelectedType}
+            />
           </div>
         </div>
       </Card.Section>
     </Card>
-
-    //
-    // <Card
-    //   title={
-    //     <>
-    //       <span>{title}</span>{" "}
-    //       <Helper
-    //         text={
-    //           "We are not able to distinguish between Arranged Teams and Random team matches. Games from both " +
-    //           "types are included here."
-    //         }
-    //       />
-    //     </>
-    //   }
-    //   style={{ ...{ width: 995, height: 440 }, ...style }}
-    //   extra={menu}
-    // >
-    //
-    //     <div>
-    //       {legend}
-    //       <div style={{ display: "inline-block" }}>
-    //         <HeatMapChart data={dataForHeatmap} keys={keysForHeatMap} width={820} height={400} />
-    //       </div>
-    //     </div>
-    //
-    // </Card>
   );
 };
 

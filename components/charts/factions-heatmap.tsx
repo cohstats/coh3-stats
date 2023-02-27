@@ -7,10 +7,29 @@ interface IProps {
   data: Array<Record<string, any>>;
   width: number;
   height: number;
+  type: "amountOfGames" | "winRate";
 }
 
-const HeatMapChart: React.FC<IProps> = ({ data, width, height }) => {
+const HeatMapChart: React.FC<IProps> = ({ data, width, height, type = "winRate" }) => {
   const { colorScheme } = useMantineColorScheme();
+
+  const colorsDefinition = (() => {
+    if (type === "winRate") {
+      return {
+        type: "diverging",
+        scheme: "red_yellow_green",
+        minValue: 0.35,
+        maxValue: 0.65,
+        divergeAt: 0.5,
+      };
+    } else {
+      return {
+        type: "quantize",
+        scheme: "greens",
+        steps: 16,
+      };
+    }
+  })();
 
   return (
     <HeatMap
@@ -54,13 +73,8 @@ const HeatMapChart: React.FC<IProps> = ({ data, width, height }) => {
           spacing: 7,
         },
       ]}
-      colors={{
-        type: "diverging",
-        scheme: "red_yellow_green",
-        minValue: 0.35,
-        maxValue: 0.65,
-        divergeAt: 0.5,
-      }}
+      //@ts-ignore
+      colors={colorsDefinition}
       // fill={[{ id: "lines" }]}
       // animate={true}
       motionConfig="wobbly"

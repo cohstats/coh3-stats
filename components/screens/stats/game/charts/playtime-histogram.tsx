@@ -38,7 +38,7 @@ const PlayTimeHistogramChart: React.FC<IProps> = ({ data }) => {
 
   return (
     <ResponsiveBar
-      margin={{ top: 10, right: 20, bottom: 40, left: 60 }}
+      margin={{ top: 10, right: 20, bottom: 40, left: 65 }}
       // @ts-ignore
       data={chartData as data[] | undefined}
       layout={"vertical"}
@@ -55,7 +55,7 @@ const PlayTimeHistogramChart: React.FC<IProps> = ({ data }) => {
         tickPadding: 5,
         tickRotation: 0,
         legendPosition: "middle",
-        legendOffset: -45,
+        legendOffset: -50,
         legend: "Amount of games",
       }}
       axisBottom={{
