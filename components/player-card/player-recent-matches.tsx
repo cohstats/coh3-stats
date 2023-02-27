@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge, Anchor, Text, Group } from "@mantine/core";
+import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import React from "react";
 import { matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
@@ -199,6 +199,25 @@ const PlayerRecentMatches = ({
               completiontime: number;
             }) => {
               return <p>{getMatchDuration(startgametime, completiontime)}</p>;
+            },
+          },
+          {
+            title: "Debug",
+            accessor: "debug",
+            render: (record) => {
+              return (
+                <>
+                  {" "}
+                  <Button
+                    onClick={() => {
+                      console.log("Debug selected match");
+                      console.log(record);
+                    }}
+                  >
+                    D
+                  </Button>
+                </>
+              );
             },
           },
         ]}

@@ -39,7 +39,7 @@ const preparePlayerStandings = (leaderboardStats: Array<RawLeaderboardStat>) => 
   // Populate the player standings
   for (const stat of leaderboardStats) {
     const lt = leaderboardsIDsToTypes[stat.leaderboard_id];
-    playerStandings[lt.race][lt.type] = stat;
+    if (lt) playerStandings[lt.race][lt.type] = stat;
   }
 
   return playerStandings;
