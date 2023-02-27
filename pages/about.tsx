@@ -1,10 +1,12 @@
 import { NextPage } from "next";
 import Head from "next/head";
 
-import { Container, Text, Title, Anchor } from "@mantine/core";
+import { Container, Text, Title, Anchor, ActionIcon, Group } from "@mantine/core";
 import { PayPalDonation } from "../components/paypal-donations";
 import { Donate } from "../components/icon/donate";
 import Link from "next/link";
+import { IconBarrierBlock } from "@tabler/icons";
+import React from "react";
 
 /**
  * This is example page you can find it by going on ur /example
@@ -22,8 +24,14 @@ const About: NextPage = () => {
         <Container size={"md"}>
           {" "}
           <Title order={1} size="h4" pt="md">
-            About page
+            About coh3stats.com
           </Title>
+          <Group>
+            <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
+              <IconBarrierBlock size={24} />
+            </ActionIcon>{" "}
+            BETA version of the site.
+          </Group>
           <Text pt="sm">
             Find your player card using search or leaderboards.
             <br />
