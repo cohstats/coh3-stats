@@ -5,7 +5,7 @@ import { DataTable } from "mantine-datatable";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import React, { useState } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 import { calculatePageNumber, calculatePositionNumber } from "../src/utils";
 import ErrorCard from "../components/error-card";
@@ -13,7 +13,7 @@ import CountryFlag from "../components/country-flag";
 import Head from "next/head";
 import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
 import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
-import { useDidUpdate } from "@mantine/hooks";
+import FactionIcon from "./faction-icon";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side
@@ -167,13 +167,11 @@ const Leaderboards = ({
 
   const localizedRace = localizedNames[raceToFetch as raceType];
   const localizedType = localizedGameTypes[typeToFetch as leaderBoardType];
-
+  const pageTitle = `Leaderboards for ${localizedRace} ${localizedType}`;
   return (
     <>
       <Head>
-        <title>
-          Leaderboards for {localizedRace} {localizedType}
-        </title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}`}
@@ -183,6 +181,7 @@ const Leaderboards = ({
         <Container fluid>
           <Group position={"apart"}>
             <Group>
+              <FactionIcon name={raceToFetch} width={35} />
               <Title order={2}>Leaderboards for {localizedRace}</Title>
             </Group>
             <Group position="right">

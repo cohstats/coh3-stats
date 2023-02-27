@@ -27,6 +27,73 @@ const leaderboardsIDAsObject = {
   },
 };
 
+const leaderboardsIDsToTypes: Record<number, { type: leaderBoardType; race: raceType }> = {
+  2130255: {
+    type: "1v1",
+    race: "american",
+  },
+  2130257: {
+    type: "1v1",
+    race: "british",
+  },
+  2130259: {
+    type: "1v1",
+    race: "dak",
+  },
+  2130261: {
+    type: "1v1",
+    race: "german",
+  },
+  2130300: {
+    type: "2v2",
+    race: "american",
+  },
+  2130302: {
+    type: "2v2",
+    race: "british",
+  },
+  2130304: {
+    type: "2v2",
+    race: "dak",
+  },
+  2130306: {
+    type: "2v2",
+    race: "german",
+  },
+  2130329: {
+    type: "3v3",
+    race: "american",
+  },
+  2130331: {
+    type: "3v3",
+    race: "british",
+  },
+  2130333: {
+    type: "3v3",
+    race: "dak",
+  },
+  2130335: {
+    type: "3v3",
+    race: "german",
+  },
+  2130353: {
+    type: "4v4",
+    race: "american",
+  },
+  2130356: {
+    type: "4v4",
+    race: "british",
+  },
+  2130358: {
+    type: "4v4",
+    race: "dak",
+  },
+  2130360: {
+    type: "4v4",
+    race: "german",
+  },
+};
+
 const localizedNames: Record<raceType, string> = {
   german: "Wehrmacht",
   american: "US Forces",
@@ -221,4 +288,5 @@ export {
   raceIDs,
   matchTypesAsObject,
   raceIDsAsObject,
+  leaderboardsIDsToTypes,
 };
