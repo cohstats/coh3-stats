@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 export const BetaVersion: React.FC = () => {
   return (
-    <a href="/about" style={{ color: "#fff" }}>
+    <Link href="/about" style={{ color: "#fff" }}>
       <div
         style={{
           position: "fixed",
@@ -21,6 +23,6 @@ export const BetaVersion: React.FC = () => {
       >
         BETA
       </div>
-    </a>
+    </Link>
   );
 };
