@@ -47,7 +47,6 @@ const PlayerCard = ({
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
-  console.log("playerData", playerData);
 
   if (error) {
     return <Container size="lg">{error}</Container>;
