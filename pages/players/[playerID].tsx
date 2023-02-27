@@ -47,13 +47,14 @@ const PlayerCard = ({
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
-  console.log("playerData", playerData);
 
   if (error) {
     return <Container size="lg">{error}</Container>;
   }
 
-  const pageTitle = `Player card - ${playerData.info.name}`;
+  const pageTitle = `Player card - ${playerData.info.name} ${
+    view === "recentMatches" ? "recent matches" : ""
+  }`;
 
   return (
     <>

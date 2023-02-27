@@ -174,7 +174,7 @@ const Leaderboards = ({
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}`}
+          content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}.`}
         />
       </Head>
       <Container size={"lg"}>

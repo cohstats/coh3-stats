@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
+import { Badge, Anchor, Text, Group, Button, Container } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import React from "react";
 import { matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
@@ -8,6 +8,7 @@ import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpe
 import ErrorCard from "../error-card";
 import FactionIcon from "../../pages/faction-icon";
 import { formatMatchTime } from "../../src/utils";
+import { IconInfoCircle } from "@tabler/icons";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -224,6 +225,13 @@ const PlayerRecentMatches = ({
         // sortStatus={sortStatus}
         // onSortStatusChange={setSortStatus}
       />
+      <Group position={"apart"}>
+        <Text size={"sm"}>Data provided by Relic</Text>
+        <Group spacing={5} position={"right"}>
+          <IconInfoCircle size={18} />
+          <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
+        </Group>
+      </Group>
     </>
   );
 };
