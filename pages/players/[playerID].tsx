@@ -16,6 +16,7 @@ import { Steam } from "../../components/icon/steam";
 import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
 import { Factions, getFactionName, getLeaderboardID } from "../../util/factions";
 import Link from "next/link";
+import PlayerRecentMatches from "../../components/player-matches/player-recent-matches";
 
 /**
  *
@@ -166,7 +167,7 @@ export async function getServerSideProps({ params, query }) {
 
     if (view === "recentMatches") {
       // @ts-ignore
-      playerMatchesData = await PlayerMatchesRes.json();
+      playerMatchesData = (await PlayerMatchesRes.json()).playerMatches;
     }
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
