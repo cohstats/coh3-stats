@@ -55,7 +55,7 @@ const PlayerCard = ({
     return <Container size="lg">{error}</Container>;
   }
 
-  const pageTitle = `Player card for ${playerData.info.name}`;
+  const pageTitle = `Player card - ${playerData.info.name}`;
 
   return (
     <>
@@ -63,7 +63,7 @@ const PlayerCard = ({
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`COH3 Player card for player ${playerData.info.name}.`}
+          content={`COH3 Stats - player card for player ${playerData.info.name}.`}
         />
       </Head>
       <Container size={"lg"}>
