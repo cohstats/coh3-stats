@@ -10,22 +10,6 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
-  .match(
-    {
-      path: "/",
-      headers: {
-        host: "coh3stats.com",
-      },
-    },
-    ({ renderWithApp, cache }) => {
-      cache({
-        edge: {
-          maxAgeSeconds: 30 * 24 * 60 * 60,
-        },
-      });
-      renderWithApp({ path: "/landing" });
-    },
-  )
   .match("/api/onlineSteamPlayers", ({ cache }) => {
     cache({
       browser: {
