@@ -40,8 +40,6 @@ export async function getServerSideProps({ query }) {
     // Also check status code if not 200
 
     data = await res.json();
-
-    console.log(data);
   } catch (e: any) {
     console.error(`Failed getting data for player id ${q}`);
     console.error(e);

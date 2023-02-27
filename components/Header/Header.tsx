@@ -141,7 +141,7 @@ export const Header: React.FC<HeaderProps> = () => {
     <>
       <MantineHeader height={60} className={classes.root}>
         <Container className={classes.container} fluid>
-          <Anchor component={Link} href={"/"}>
+          <Anchor component={Link} href={"/"} className={cx(classes.link)}>
             <Group spacing="xs">
               <Image
                 src="/logo/android-icon-36x36.png"
@@ -202,6 +202,10 @@ export const Header: React.FC<HeaderProps> = () => {
                 </ActionIcon>
               </Anchor>
             </Tooltip>
+
+            <Anchor component={Link} href="/about" className={cx(classes.link)}>
+              About{" "}
+            </Anchor>
           </Group>
 
           <Group spacing={5} className={classes.hiddenMobile}>
@@ -260,6 +264,15 @@ export const Header: React.FC<HeaderProps> = () => {
                     </ActionIcon>
                   </Anchor>
                 </Tooltip>
+
+                <Anchor
+                  component={Link}
+                  href="/about"
+                  className={cx(classes.link)}
+                  onClick={() => close()}
+                >
+                  About{" "}
+                </Anchor>
               </Stack>
 
               <Divider my="sm" />

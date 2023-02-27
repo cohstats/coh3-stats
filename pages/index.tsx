@@ -1,7 +1,4 @@
 import type { NextPage } from "next";
-// import Link from "next/link";
-// import { Button } from "@mantine/core";
-import { NewsSection } from "../components/news-section/news-section";
 import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
@@ -14,8 +11,14 @@ const Home: NextPage = () => {
       <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
         <Title order={1}>Company of Heroes 3 is out🎉</Title>
         <Title order={2} size="h4" pt="md">
-          We have a lot to do. Help us build this site
+          Leaderboards, Player Cards, Player Matches are done. <br />
+          But a lot of it still needs to be build. All the help is welcomed.
         </Title>
+        <Text pt="sm">
+          Find your player card using search or leaderboards.
+          <br />
+          Search now works only with exact name match (case-sensitive)
+        </Text>
         <Text pt="sm">More info on Github or Discord</Text>
         <Group pt="md">
           <Discord />

@@ -47,8 +47,6 @@ const PlayerCard = ({
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
-  console.log("view", view);
-
   console.log("playerData", playerData);
 
   if (error) {
@@ -177,15 +175,19 @@ export async function getServerSideProps({ params, query }) {
     if (view === "recentMatches") {
       // @ts-ignore
       playerMatchesData = (await PlayerMatchesRes.json()).playerMatches;
-      playerMatchesData = playerMatchesData.sort(
-        (a: { completiontime: number }, b: { completiontime: number }) => {
-          if (a.completiontime > b.completiontime) {
-            return -1;
-          } else {
-            return 1;
-          }
-        },
-      );
+      if (playerMatchesData.errors) {
+        throw Error(playerAPIData.errors[0].msg + " " + playerAPIData.errors[0].param);
+      } else {
+        playerMatchesData = playerMatchesData.sort(
+          (a: { completiontime: number }, b: { completiontime: number }) => {
+            if (a.completiontime > b.completiontime) {
+              return -1;
+            } else {
+              return 1;
+            }
+          },
+        );
+      }
     }
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
