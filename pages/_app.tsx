@@ -17,6 +17,7 @@ import {
 import { IconFileText, IconSearch } from "@tabler/icons";
 import { useRef } from "react";
 import { SearchPlayerEntry } from "../components/SearchPlayerEntry";
+import { BetaVersion } from "../components/beta-version";
 webFirebase.init();
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
@@ -137,6 +138,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                 setDebouncedQuery((event.target as any).value);
               }}
             >
+              <BetaVersion />
               {layoutContent && contentWithLayout}
               {!layoutContent && contentWithoutLayout}
             </SpotlightProvider>

@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Badge, Anchor, Text, Group } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import React from "react";
-import { localizedNames, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
+import { matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
 import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
+import FactionIcon from "../../pages/faction-icon";
+import { formatMatchTime } from "../../src/utils";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -65,7 +67,7 @@ const PlayerRecentMatches = ({
           return (
             <div key={playerInfo.profile_id}>
               <Group spacing={"xs"}>
-                {localizedNames[raceIDs[playerInfo?.race_id as raceID]].substring(0, 1)}
+                <FactionIcon name={raceIDs[playerInfo?.race_id as raceID]} width={20} />
                 <>
                   {" "}
                   {ratingPlayedWith} {ratingChangeAsElement}
@@ -105,10 +107,17 @@ const PlayerRecentMatches = ({
           {
             accessor: "Played",
             textAlignment: "center",
+            width: 120,
             render: (record) => {
               const player = getPlayerMatchHistoryResult(record);
-              // TODO: Add faction icon
-              return <>{localizedNames[raceIDs[player?.race_id as raceID]]}</>;
+              return (
+                <>
+                  <div>
+                    <FactionIcon name={raceIDs[player?.race_id as raceID]} width={50} />
+                  </div>
+                  <Text size={"xs"}> {formatMatchTime(record.completiontime)}</Text>
+                </>
+              );
             },
           },
           {

@@ -11,6 +11,8 @@ import {
   Table,
   SimpleGrid,
   Anchor,
+  Tabs,
+  Space,
 } from "@mantine/core";
 import { Steam } from "../../components/icon/steam";
 import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
@@ -18,6 +20,7 @@ import Link from "next/link";
 import PlayerRecentMatches from "../../components/player-matches/player-recent-matches";
 import { leaderboardsIDAsObject, localizedNames } from "../../src/coh3/coh3-data";
 import { raceType } from "../../src/coh3/coh3-types";
+import { useRouter } from "next/router";
 
 /**
  *
@@ -34,6 +37,10 @@ import { raceType } from "../../src/coh3/coh3-types";
 
 // @ts-ignore
 const PlayerCard = ({ playerID, playerCardData, playerData, error, playerMatchesData }) => {
+  const { push, query } = useRouter();
+  const { view } = query;
+  console.log("view", view);
+
   console.log(playerCardData);
   console.log(playerMatchesData);
   console.log(error);
@@ -71,20 +78,43 @@ const PlayerCard = ({ playerID, playerCardData, playerData, error, playerMatches
             <Text>Play time:</Text>*/}
           </Stack>
         </Group>
-
-        <SimpleGrid
-          cols={3}
-          mt="xl"
-          breakpoints={[
-            { maxWidth: 1300, cols: 2 },
-            { maxWidth: 650, cols: 1 },
-          ]}
+        <Tabs
+          variant={"outline"}
+          value={(view as string) || "standings"}
+          defaultValue={(view as string) || "standings"}
+          onTabChange={async (value) => {
+            await push({ query: { ...query, view: value } });
+          }}
         >
-          <PlayerFactionOverview faction={localizedNames.american} {...playerData.american} />
-          <PlayerFactionOverview faction={localizedNames.german} {...playerData.german} />
-          <PlayerFactionOverview faction={localizedNames.dak} {...playerData.dak} />
-          <PlayerFactionOverview faction={localizedNames.british} {...playerData.british} />
-        </SimpleGrid>
+          <Tabs.List position="center">
+            <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
+            <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="standings">
+            <SimpleGrid
+              cols={3}
+              mt="xl"
+              breakpoints={[
+                { maxWidth: 1300, cols: 2 },
+                { maxWidth: 650, cols: 1 },
+              ]}
+            >
+              <PlayerFactionOverview faction={localizedNames.american} {...playerData.american} />
+              <PlayerFactionOverview faction={localizedNames.german} {...playerData.german} />
+              <PlayerFactionOverview faction={localizedNames.dak} {...playerData.dak} />
+              <PlayerFactionOverview faction={localizedNames.british} {...playerData.british} />
+            </SimpleGrid>
+          </Tabs.Panel>
+          <Tabs.Panel value={"recentMatches"}>
+            <Space h="lg" />
+            <PlayerRecentMatches
+              playerMatchesData={playerMatchesData}
+              profileID={playerID}
+              error={error}
+            />
+          </Tabs.Panel>
+        </Tabs>
       </Container>
     </>
   );
@@ -169,6 +199,15 @@ export async function getServerSideProps({ params, query }) {
     if (view === "recentMatches") {
       // @ts-ignore
       playerMatchesData = (await PlayerMatchesRes.json()).playerMatches;
+      playerMatchesData = playerMatchesData.sort(
+        (a: { completiontime: number }, b: { completiontime: number }) => {
+          if (a.completiontime > b.completiontime) {
+            return -1;
+          } else {
+            return 1;
+          }
+        },
+      );
     }
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
