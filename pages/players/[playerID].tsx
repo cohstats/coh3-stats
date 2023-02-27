@@ -10,9 +10,12 @@ import {
   Text,
   Table,
   SimpleGrid,
+  Anchor,
 } from "@mantine/core";
 import { Steam } from "../../components/icon/steam";
 import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
+import { Factions, getFactionName, getLeaderboardID } from "../../util/factions";
+import Link from "next/link";
 import PlayerRecentMatches from "../../components/player-matches/player-recent-matches";
 
 /**
@@ -29,42 +32,42 @@ import PlayerRecentMatches from "../../components/player-matches/player-recent-m
  */
 
 // @ts-ignore
-const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
-  const imageUrl =
-    "https://avatars.akamai.steamstatic.com/d486a516597e3834c07a14cfd3afb89789bac1e9_medium.jpg";
-  const name = "John";
-  const country = "us";
+const PlayerCard = ({ playerID, playerCardData, playerData, error, playerMatchesData }) => {
+  console.log(playerCardData);
+  console.log(playerMatchesData);
+  console.log(error);
+  console.log(playerID);
+  console.log(playerData);
 
-  const modeData = { rank: 1, streak: -2, wins: 10, losses: 2 };
-  const factionOverviewData = {
-    faction: "Americans",
-    ones: modeData,
-    twos: modeData,
-    threes: modeData,
-    fours: modeData,
-  };
+  if (error) {
+    return <Container size="lg">{error}</Container>;
+  }
 
   return (
     <>
       <Container size={"lg"}>
         <Group>
-          <Avatar src={imageUrl} imageProps={{ loading: "lazy" }} alt={name} size="xl" />
+          <Avatar
+            src={playerData.avatarURL}
+            imageProps={{ loading: "lazy" }}
+            alt={playerData.name}
+            size="xl"
+          />
           <Stack spacing={0}>
             <Group>
               <Image
-                src={"/flags/4x3/" + country + ".svg"}
+                src={"/flags/4x3/" + playerData.country + ".svg"}
                 imageProps={{ loading: "lazy" }}
-                alt={country}
+                alt={playerData.country}
                 width={40}
               />
-              <Title> {name}</Title>
-              <a href={config.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
+              <Title> {playerData.name}</Title>
+              <Anchor component={Link} href={playerData.steamURL} target="_blank">
                 <Steam label="Steam Profile" />
-              </a>
+              </Anchor>
             </Group>
-            <Text>Last played:</Text>
-            <Text>Play time:</Text>
-            <Text>Rating: ?! what does it mean?</Text>
+            {/*<Text>Last played:</Text>
+            <Text>Play time:</Text>*/}
           </Stack>
         </Group>
 
@@ -76,85 +79,11 @@ const PlayerCard = ({ playerID, playerCardData, error, playerMatchesData }) => {
             { maxWidth: 650, cols: 1 },
           ]}
         >
-          <PlayerFactionOverview {...factionOverviewData} />
-          <PlayerFactionOverview {...factionOverviewData} />
-          <PlayerFactionOverview {...factionOverviewData} />
-          <PlayerFactionOverview {...factionOverviewData} />
+          <PlayerFactionOverview faction={getFactionName("american")} {...playerData.american} />
+          <PlayerFactionOverview faction={getFactionName("german")} {...playerData.german} />
+          <PlayerFactionOverview faction={getFactionName("dak")} {...playerData.dak} />
+          <PlayerFactionOverview faction={getFactionName("british")} {...playerData.british} />
         </SimpleGrid>
-
-        <Table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Rank</th>
-              <th>Rating</th>
-              <th>Streak</th>
-              <th>Wins</th>
-              <th>Losses</th>
-              <th>Ratio</th>
-              <th>Total</th>
-              <th>Drops</th>
-              <th>Disputes</th>
-              <th>Last Game</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>1v1</th>
-              <td>Second</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <th>1v1</th>
-              <td>Second</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Summary</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>10</td>
-              <td>10</td>
-              <td>60%</td>
-              <td>100</td>
-              <td>0</td>
-              <td>0</td>
-              <td>date</td>
-            </tr>
-          </tfoot>
-        </Table>
-
-        <p>playerID: {playerID}</p>
-        <div>Error: |{error}|</div>
-        {JSON.stringify(playerCardData)}
-        <div>
-          Player MATCHES
-          {/*<div>{JSON.stringify(playerMatchesData)}</div>*/}
-        </div>
-        <PlayerRecentMatches
-          playerMatchesData={playerMatchesData}
-          error={error}
-          profileID={playerID}
-        />
       </Container>
     </>
   );
@@ -169,6 +98,7 @@ export async function getServerSideProps({ params, query }) {
   const { view } = query;
 
   let playerCardData = null;
+  let playerData = null;
   let playerMatchesData = null;
   let error = null;
 
@@ -189,6 +119,51 @@ export async function getServerSideProps({ params, query }) {
 
     // Also check status code if not 200
     playerCardData = await PlayerCardRes.json();
+    if (playerCardData.errors) {
+      throw Error(playerCardData.errors[0].msg + " " + playerCardData.errors[0].param);
+    }
+    console.log(playerCardData);
+    const { RelicProfile, SteamProfile } = playerCardData;
+    const leaderboardStats = RelicProfile.leaderboardStats as any[];
+    const member = RelicProfile.statGroups[0].members[0];
+
+    const steamID = (member.name as string).split("/").at(-1)!;
+    const { avatarmedium, profileurl } = SteamProfile[steamID];
+    const getFactionLeaderboards = (faction: Factions) => {
+      const intermediate = {
+        ones: leaderboardStats.find(
+          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "1v1"),
+        ),
+        twos: leaderboardStats.find(
+          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "2v2"),
+        ),
+        threes: leaderboardStats.find(
+          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "3v3"),
+        ),
+        fours: leaderboardStats.find(
+          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "4v4"),
+        ),
+      };
+      return {
+        ones: intermediate.ones ? intermediate.ones : null,
+        twos: intermediate.twos ? intermediate.twos : null,
+        threes: intermediate.threes ? intermediate.threes : null,
+        fours: intermediate.fours ? intermediate.fours : null,
+      };
+    };
+    playerData = {
+      name: member.alias,
+      country: member.country,
+      level: member.level,
+      xp: member.xp,
+      steamURL: profileurl,
+      avatarURL: avatarmedium,
+      american: getFactionLeaderboards("american"),
+      british: getFactionLeaderboards("british"),
+      german: getFactionLeaderboards("german"),
+      dak: getFactionLeaderboards("dak"),
+    };
+    console.log(playerData);
 
     if (view === "recentMatches") {
       // @ts-ignore
@@ -201,7 +176,7 @@ export async function getServerSideProps({ params, query }) {
   }
 
   return {
-    props: { playerID, playerCardData, error, playerMatchesData }, // will be passed to the page component as props
+    props: { playerID, playerCardData, playerData, error, playerMatchesData }, // will be passed to the page component as props
   };
 }
 

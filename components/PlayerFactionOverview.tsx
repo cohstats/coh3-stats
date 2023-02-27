@@ -12,10 +12,10 @@ const useStyles = createStyles((theme) => ({
 
 export interface ModeOverviewProps {
   mode: string;
-  rank: number;
-  streak: number;
-  wins: number;
-  losses: number;
+  rank?: number;
+  streak?: number;
+  wins?: number;
+  losses?: number;
 }
 
 const ModeOverview: React.FC<ModeOverviewProps> = ({ mode, rank, streak, wins, losses }) => {
@@ -29,28 +29,38 @@ const ModeOverview: React.FC<ModeOverviewProps> = ({ mode, rank, streak, wins, l
           </Text>
           <Tooltip label="Rank">
             <Text size="sm" weight={700}>
-              #{rank}
+              {rank !== undefined && rank > -1 ? <>#{rank}</> : <>-</>}
             </Text>
           </Tooltip>
           <Tooltip label="Win/Lose Streak">
-            <Text size="sm" color={streak > 0 ? "green" : "red"} weight={700}>
-              {streak > 0 ? "+" : null}
-              {streak}
-            </Text>
+            {streak !== undefined ? (
+              <Text size="sm" color={streak > 0 ? "green" : "red"} weight={700}>
+                {streak > 0 ? "+" : null}
+                {streak}
+              </Text>
+            ) : (
+              <Text size="sm" weight={700}>
+                -
+              </Text>
+            )}
           </Tooltip>
           <Tooltip label="Win ratio">
             <Text size="sm" weight={700}>
-              {((wins / (wins + losses)) * 100).toFixed(0)}%
+              {wins !== undefined && losses !== undefined ? (
+                <>{((wins / (wins + losses)) * 100).toFixed(0)}%</>
+              ) : (
+                <>-</>
+              )}
             </Text>
           </Tooltip>
           <Tooltip label="Wins">
             <Text size="sm" weight={700} color="green">
-              {wins}W
+              {wins !== undefined ? <>{wins}W</> : <>-</>}
             </Text>
           </Tooltip>
           <Tooltip label="Losses">
             <Text size="sm" weight={700} color="red">
-              {losses}L
+              {losses !== undefined ? <>{losses}L</> : <>-</>}
             </Text>
           </Tooltip>
         </Group>
