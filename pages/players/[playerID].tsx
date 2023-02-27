@@ -14,9 +14,10 @@ import {
 } from "@mantine/core";
 import { Steam } from "../../components/icon/steam";
 import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
-import { Factions, getFactionName, getLeaderboardID } from "../../util/factions";
 import Link from "next/link";
 import PlayerRecentMatches from "../../components/player-matches/player-recent-matches";
+import { leaderboardsIDAsObject, localizedNames } from "../../src/coh3/coh3-data";
+import { raceType } from "../../src/coh3/coh3-types";
 
 /**
  *
@@ -79,10 +80,10 @@ const PlayerCard = ({ playerID, playerCardData, playerData, error, playerMatches
             { maxWidth: 650, cols: 1 },
           ]}
         >
-          <PlayerFactionOverview faction={getFactionName("american")} {...playerData.american} />
-          <PlayerFactionOverview faction={getFactionName("german")} {...playerData.german} />
-          <PlayerFactionOverview faction={getFactionName("dak")} {...playerData.dak} />
-          <PlayerFactionOverview faction={getFactionName("british")} {...playerData.british} />
+          <PlayerFactionOverview faction={localizedNames.american} {...playerData.american} />
+          <PlayerFactionOverview faction={localizedNames.german} {...playerData.german} />
+          <PlayerFactionOverview faction={localizedNames.dak} {...playerData.dak} />
+          <PlayerFactionOverview faction={localizedNames.british} {...playerData.british} />
         </SimpleGrid>
       </Container>
     </>
@@ -129,19 +130,19 @@ export async function getServerSideProps({ params, query }) {
 
     const steamID = (member.name as string).split("/").at(-1)!;
     const { avatarmedium, profileurl } = SteamProfile[steamID];
-    const getFactionLeaderboards = (faction: Factions) => {
+    const getFactionLeaderboards = (faction: raceType) => {
       const intermediate = {
         ones: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "1v1"),
+          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["1v1"][faction],
         ),
         twos: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "2v2"),
+          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["2v2"][faction],
         ),
         threes: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "3v3"),
+          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["3v3"][faction],
         ),
         fours: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === getLeaderboardID(faction, "4v4"),
+          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["4v4"][faction],
         ),
       };
       return {

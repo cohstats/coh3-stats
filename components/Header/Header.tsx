@@ -25,7 +25,8 @@ import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
 import { ColorSchemeToggle } from "../color-scheme-toggle";
 import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
-import { Factions, getFactionName } from "../../util/factions";
+import { raceType } from "../../src/coh3/coh3-types";
+import { localizedNames } from "../../src/coh3/coh3-data";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -118,10 +119,10 @@ export const Header: React.FC<HeaderProps> = () => {
   const { classes, cx } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
 
-  const factionLink = (faction: Factions, gamemode: string) => (
+  const factionLink = (faction: raceType, gamemode: string) => (
     <Text>
       <Anchor component={Link} href={"/leaderboards?race=" + faction + "&type=" + gamemode}>
-        {getFactionName(faction)}
+        {localizedNames[faction]}
       </Anchor>
     </Text>
   );
