@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Badge, Anchor, Text, Group, Button, Container } from "@mantine/core";
+import { Badge, Anchor, Text, Group, Button, Card, Center } from "@mantine/core";
+import Image from "next/image";
 import { DataTable } from "mantine-datatable";
 import React from "react";
-import { matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
+import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
 import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
@@ -47,6 +48,19 @@ const PlayerRecentMatches = ({
     }
 
     return matchRecord.matchhistoryreportresults[0];
+  };
+
+  const renderMap = (name: any) => {
+    return (
+      <Card style={{ background: "none" }}>
+        <Card.Section>
+          <Center>
+            <Image src={maps[name]?.url} width={160} height={160} alt={name} loading="lazy" />
+          </Center>
+        </Card.Section>
+        <Text align="center">{maps[name]?.name}</Text>
+      </Card>
+    );
   };
 
   const renderPlayers = (arrayOfPlayerReports: Array<any>, matchHistoryMember: Array<any>) => {
@@ -171,8 +185,12 @@ const PlayerRecentMatches = ({
           },
           {
             accessor: "mapname",
+            title: "Map",
             // sortable: true,
-            textAlignment: "left",
+            textAlignment: "center",
+            render: (record) => {
+              return <>{renderMap(record.mapname)}</>;
+            },
           },
           {
             title: "Mode",
