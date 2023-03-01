@@ -1,10 +1,12 @@
+/**
+ * This is special function used by tournaments organizations to generate
+ * the latest info for their tables.
+ */
 import { logger } from "../../src/logger";
 import {getPlayerCardInfoUrl} from "../../src/coh3stats-api";
 import {processPlayerInfoAPIResponse} from "../../src/players/standings";
 import {leaderBoardType, PlayerCardDataType, raceType} from "../../src/coh3/coh3-types";
 import { json2csvAsync } from 'json-2-csv';
-
-
 
 const getPlayerCardInfo = async (profileID: string)  => {
   const PlayerCardRes = await fetch(getPlayerCardInfoUrl(profileID))
@@ -29,8 +31,7 @@ const generateCSVObject = (playerInfo: PlayerCardDataType, profileID: string) =>
 
         playerInfoAsObject[`${race}_${type}_rank`] = standing?.rank || null
         playerInfoAsObject[`${race}_${type}_elo`] = standing?.rating || null
-        playerInfoAsObject[`${race}_${type}_total`] = standing ? (standing?.wins + standing?.losses) : null
-
+        playerInfoAsObject[`${race}_${type}_total`] = standing ? (standing.wins + standing.losses) : null
 
     }
   }
