@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Badge, Anchor, Text, Group, Button, Image, Card, Center } from "@mantine/core";
+import { Badge, Anchor, Text, Group, Button, Card, Center } from "@mantine/core";
+import Image from "next/image";
 import { DataTable } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
@@ -54,7 +55,7 @@ const PlayerRecentMatches = ({
       <Card style={{ background: "none" }}>
         <Card.Section>
           <Center>
-            <Image src={maps[name]?.url} width={160} />
+            <Image src={maps[name]?.url} width={160} height={160} alt={name} loading="lazy" />
           </Center>
         </Card.Section>
         <Text align="center">{maps[name]?.name}</Text>
