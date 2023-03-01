@@ -17,32 +17,56 @@ const getPlayerInfo = async (profileID: string): Promise<PlayerCardDataType> => 
   return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID));
 };
 
-const generateCSVObject = (playerInfo: PlayerCardDataType, profileID: string) => {
+const generateCSVObject = (
+  playerInfo: PlayerCardDataType,
+  profileID: string,
+  types = ["1v1", "2v2", "3v3", "4v4"],
+) => {
+  console.log("TYPEs", types);
+
+  const standingsObject: any = {};
+
+  for (const race of ["german", "american", "dak", "british"]) {
+    for (const type of types) {
+      const standing = playerInfo.standings[race as raceType][type as leaderBoardType];
+
+      standingsObject[`${race}_${type}_rank`] = standing?.rank || null;
+      standingsObject[`${race}_${type}_elo`] = standing?.rating || null;
+      standingsObject[`${race}_${type}_total`] = standing
+        ? standing.wins + standing.losses
+        : null;
+    }
+  }
+
+  // We do this because of the order of the keys on the object
   const playerInfoAsObject: any = {
     alias: playerInfo.info.name,
     relic_id: profileID,
     steam_id: playerInfo.steamData.steamid,
   };
 
-  for (const race of ["german", "american", "dak", "british"]) {
-    for (const type of ["1v1", "2v2", "3v3", "4v4"]) {
-      const standing = playerInfo.standings[race as raceType][type as leaderBoardType];
-
-      playerInfoAsObject[`${race}_${type}_rank`] = standing?.rank || null;
-      playerInfoAsObject[`${race}_${type}_elo`] = standing?.rating || null;
-      playerInfoAsObject[`${race}_${type}_total`] = standing
-        ? standing.wins + standing.losses
-        : null;
-    }
+  for (const type of types) {
+    playerInfoAsObject[`${type}_axis_elo`] = Math.max(
+      standingsObject[`german_${type}_elo`],
+      standingsObject[`dak_${type}_elo`],
+    );
+    playerInfoAsObject[`${type}_allies_elo`] = Math.max(
+      standingsObject[`american_${type}_elo`],
+      standingsObject[`british_${type}_elo`],
+    );
   }
 
-  return playerInfoAsObject;
+  return {
+    ...playerInfoAsObject,
+    ...standingsObject,
+  };
 };
 
 export default async function handler(req: any, res: any) {
   try {
     const query = req.query;
     const { profileIDs } = query;
+    const { types } = query;
 
     if (!profileIDs) {
       throw new Error("Invalid params");
@@ -52,14 +76,19 @@ export default async function handler(req: any, res: any) {
     logger.log(`Going to parse ${arrayOfIds.length} ids`);
     logger.log(`List of IDs ${arrayOfIds}`);
     if (arrayOfIds.length > 100) {
-      throw new Error("Invalid params");
+      throw new Error("Too much records");
     }
+    const parsedTypes = JSON.parse(types || null);
 
     const finalArray = [];
 
     for (const profileId of arrayOfIds) {
       const playerInfo = await getPlayerInfo(profileId);
-      const playerInfoAsCSVObject = generateCSVObject(playerInfo, profileId);
+      const playerInfoAsCSVObject = generateCSVObject(
+        playerInfo,
+        profileId,
+        parsedTypes || undefined,
+      );
       finalArray.push(playerInfoAsCSVObject);
     }
 
@@ -69,6 +98,6 @@ export default async function handler(req: any, res: any) {
       .send(await json2csvAsync(finalArray, {}));
   } catch (e) {
     logger.error(e);
-    res.status(500).json();
+    res.status(500).json({ error: "error processing the request" });
   }
 }
