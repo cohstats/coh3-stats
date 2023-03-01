@@ -44,6 +44,7 @@
     "@tabler/icons": "^1.106.0",
     "dayjs": "^1.11.7",
     "firebase": "^9.17.1",
+    "json-2-csv": "^3.19.0",
     "lodash": "^4.17.21",
     "mantine-datatable": "^1.8.6",
     "next": "^13.1.6",
