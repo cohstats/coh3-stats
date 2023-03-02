@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <Title order={1}>Company of Heroes 3 is out🎉</Title>
         <Title order={2} size="h4" pt="md">
           Leaderboards, Player Cards, Player Matches are done. <br />
-          But a lot of it still needs to be build. All the help is welcomed.
+          But we want to do a lot more! All the help is welcome.
         </Title>
         <Text pt="sm">
           Find your player card using search or leaderboards.
