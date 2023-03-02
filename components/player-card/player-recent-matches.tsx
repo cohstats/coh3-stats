@@ -50,16 +50,25 @@ const PlayerRecentMatches = ({
     return matchRecord.matchhistoryreportresults[0];
   };
 
-  const renderMap = (name: any) => {
+  const renderMap = (name: string) => {
+    // In case we don't track the map, eg custom maps
+    if (!maps[name]) {
+      return (
+        <div>
+          <Text align="center" style={{ whiteSpace: "nowrap" }}>
+            {name}
+          </Text>
+        </div>
+      );
+    }
+
     return (
-      <Card style={{ background: "none" }}>
-        <Card.Section>
-          <Center>
-            <Image src={maps[name]?.url} width={160} height={160} alt={name} loading="lazy" />
-          </Center>
-        </Card.Section>
-        <Text align="center">{maps[name]?.name}</Text>
-      </Card>
+      <div>
+        <Image src={maps[name]?.url} width={60} height={60} alt={name} loading="lazy" />
+        <Text align="center" style={{ whiteSpace: "nowrap" }}>
+          {maps[name]?.name}
+        </Text>
+      </div>
     );
   };
 
@@ -73,7 +82,7 @@ const PlayerRecentMatches = ({
           const ratingPlayedWith = matchHistory.oldrating;
           const ratingChange = matchHistory.newrating - matchHistory.oldrating;
           const ratingChangeAsElement =
-            ratingChange > 0 ? (
+            ratingChange >= 0 ? (
               <Text color={"green"}>+{ratingChange}</Text>
             ) : (
               <Text color={"red"}>{ratingChange}</Text>
@@ -202,7 +211,7 @@ const PlayerRecentMatches = ({
                 matchTypesAsObject[matchtype_id]["localizedName"] ||
                 matchTypesAsObject[matchtype_id]["name"] ||
                 "unknown";
-              return <>{matchType.toLowerCase()}</>;
+              return <div style={{ whiteSpace: "nowrap" }}>{matchType.toLowerCase()}</div>;
             },
           },
           {
