@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge, Anchor, Text, Group, Button, Card, Center } from "@mantine/core";
+import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
 import Image from "next/image";
 import { DataTable } from "mantine-datatable";
 import React from "react";
