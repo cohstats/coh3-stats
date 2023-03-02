@@ -1,15 +1,15 @@
-import { leaderBoardType, raceID, raceType, RawLeaderboardStat } from "../../src/coh3/coh3-types";
+import { leaderBoardType, raceType, RawLeaderboardStat } from "../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
 import FactionIcon from "../../pages/faction-icon";
-import { localizedNames, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
+import { localizedNames } from "../../src/coh3/coh3-data";
 import { Space, Group, Text, Title, Anchor } from "@mantine/core";
 
 import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import CountryFlag from "../country-flag";
 import { getLeaderBoardRoute } from "../../src/routes";
 
+// We need to do this because of the SSR. It would have different time while the data reach FE
 const DynamicTimeAgo = dynamic(() => import("../internal-timeago"), {
   ssr: false,
   // @ts-ignore
@@ -59,8 +59,7 @@ const PlayerStandingsTable = ({
               if (!rank || rank < 0) {
                 return "-";
               }
-
-              const startPosition = Math.abs(rank - 10) + 1;
+              const startPosition = Math.max(rank - 10, 0) + 1;
 
               return (
                 <Anchor
