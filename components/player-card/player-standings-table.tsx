@@ -1,7 +1,7 @@
 import { leaderBoardType, raceType, RawLeaderboardStat } from "../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
 import FactionIcon from "../../pages/faction-icon";
-import { localizedNames} from "../../src/coh3/coh3-data";
+import { localizedNames } from "../../src/coh3/coh3-data";
 import { Space, Group, Text, Title, Anchor } from "@mantine/core";
 
 import React from "react";
