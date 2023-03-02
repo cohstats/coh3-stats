@@ -125,7 +125,13 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       />
 
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+        <MantineProvider
+          theme={{
+            colorScheme,
+          }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
           <NotificationsProvider>
             <SpotlightProvider
               actions={[]}

@@ -14,6 +14,7 @@ import Head from "next/head";
 import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
 import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
 import FactionIcon from "./faction-icon";
+import { ContentContainer } from "../components/ContentContainer";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side
@@ -177,7 +178,7 @@ const Leaderboards = ({
           content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}.`}
         />
       </Head>
-      <Container size={"lg"}>
+      <ContentContainer>
         <Container fluid>
           <Group position={"apart"}>
             <Group>
@@ -219,7 +220,7 @@ const Leaderboards = ({
         </Container>
         <Space h="md" />
         {content}
-      </Container>
+      </ContentContainer>
     </>
   );
 };

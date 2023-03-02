@@ -3,10 +3,11 @@ import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
+import { ContentContainer } from "../components/ContentContainer";
 
 const Home: NextPage = () => {
   return (
-    <Container size={"lg"}>
+    <ContentContainer>
       <Image src="/coming-soon/coh3-background.jpg" radius="md" height={400} />
       <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
         <Title order={1}>Company of Heroes 3 is out🎉</Title>
@@ -26,7 +27,7 @@ const Home: NextPage = () => {
           <Donate />
         </Group>
       </Paper>
-    </Container>
+    </ContentContainer>
   );
 };
 

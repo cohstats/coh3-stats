@@ -20,6 +20,7 @@ import Head from "next/head";
 import React from "react";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
+import { ContentContainer } from "../../components/ContentContainer";
 
 /**
  *
@@ -66,7 +67,7 @@ const PlayerCard = ({
           content={`COH3 Stats - player card for player ${playerData.info.name}.`}
         />
       </Head>
-      <Container size={"lg"}>
+      <ContentContainer>
         <Container fluid>
           <Group>
             <Avatar
@@ -134,7 +135,7 @@ const PlayerCard = ({
             />
           </Tabs.Panel>
         </Tabs>
-      </Container>
+      </ContentContainer>
     </>
   );
 };
