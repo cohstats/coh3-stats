@@ -50,7 +50,7 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          npx edgio deploy --skip-build--site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+          npx edgio deploy --skip-build --site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
       - uses: jwalton/gh-find-current-pr@v1
         id: finder
       - name: Publish Preview Link
