@@ -19,6 +19,7 @@ import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
 import React from "react";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
+import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
 
 /**
  *
@@ -151,9 +152,7 @@ export async function getServerSideProps({ params, query }) {
   let error = null;
 
   try {
-    const PromisePlayerCardFetch = fetch(
-      `${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerCardInfoHttp?relicId=${playerID}`,
-    );
+    const PromisePlayerCardFetch = fetch(getPlayerCardInfoUrl(playerID));
 
     const PromisePlayerMatchesFetch =
       view == "recentMatches"

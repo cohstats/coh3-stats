@@ -281,6 +281,23 @@ const matchTypesAsObject: Record<number, { id: number; name: string; localizedNa
   },
 };
 
+const maps: { [key: string]: { name: string; url: string } } = {
+  twin_beach_2p_mkii: { name: "Twin Beaches", url: "/icons/maps/twin_beaches.webp" },
+  desert_village_2p_mkiii: { name: "Road to Tunis", url: "/icons/maps/road_to_tunis.webp" },
+  cliff_crossing_2p: { name: "Taranto Coastline", url: "/icons/maps/taranto_coastline.webp" },
+  rails_and_sand_4p: { name: "Campbell's Convoy", url: "/icons/maps/campbells_convoy.webp" },
+  rural_town_4p: { name: "Pachino Farmlands", url: "/icons/maps/pachino_farmlands.webp" },
+  torrente_4p_mkiii: { name: "Torrente", url: "/icons/maps/torrente.webp" },
+  rural_castle_4p: { name: "Aere Perennius", url: "/icons/maps/aere_perennius.webp" },
+  desert_airfield_6p_mkii: {
+    name: "Gazala Landing Ground",
+    url: "/icons/maps/gazala_landing_ground.webp",
+  },
+  industrial_railyard_6p_mkii: { name: "L'Aquila", url: "/icons/maps/laquila.webp" },
+  winter_line_8p_mkii: { name: "Winter Line", url: "/icons/maps/winter_line.webp" },
+  mountain_ruins_8p_mkii: { name: "Mignano Gap", url: "/icons/maps/mignano_gap.webp" },
+};
+
 export {
   leaderboardsIDAsObject,
   localizedNames,
@@ -289,4 +306,5 @@ export {
   matchTypesAsObject,
   raceIDsAsObject,
   leaderboardsIDsToTypes,
+  maps,
 };
