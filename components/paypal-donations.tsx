@@ -9,7 +9,6 @@ export const PayPalDonation = () => {
         title="PayPal"
         alt="Donate with PayPal button"
       />
-      <img alt="" src="https://www.paypal.com/en_CZ/i/scr/pixel.gif" width="1" height="1" />
     </form>
   );
 };
