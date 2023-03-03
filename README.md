@@ -33,7 +33,7 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 Before making an MR please create an issue describing what you want to change / how you want to change it.
 So we can have some discussion, also it avoids multiple people working on the same thing.
 
-Feel free to create fork and make MR.
+Feel free to create fork and make MR. Before PR you can test your code with `yarn build` to make sure it can be build.
 
 Development conventions:
 
