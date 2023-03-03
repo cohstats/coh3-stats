@@ -101,10 +101,10 @@ Backend:
 - GCP Cloud
 - Firebase Cloud Functions - in TypeScript
 - Database:
-    - Firestore - for basic data
-    - Other DB? We might need a different DB for storing the info - as we might expect high amount of reads / writes --
-      not perfect for FireStore
-    - Big Query - for stored matches (we need to do pricing calculations on this)
+  - Firestore - for basic data
+  - Other DB? We might need a different DB for storing the info - as we might expect high amount of reads / writes --
+    not perfect for FireStore
+  - Big Query - for stored matches (we need to do pricing calculations on this)
 
 ## Learn More
 
