@@ -128,6 +128,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <NotificationsProvider>
             <SpotlightProvider
+              onSpotlightClose={() => setDebouncedQuery("")}
               actions={[]}
               searchIcon={<IconSearch size={18} />}
               searchPlaceholder="Search..."
