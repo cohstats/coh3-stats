@@ -242,13 +242,7 @@ const PlayerRecentMatches = ({
             accessor: "match_duration",
             sortable: true,
             textAlignment: "center",
-            render: ({
-              startgametime,
-              completiontime,
-            }: {
-              startgametime: number;
-              completiontime: number;
-            }) => {
+            render: ({ startgametime, completiontime }) => {
               return <p>{getMatchDuration(startgametime, completiontime)}</p>;
             },
           },
