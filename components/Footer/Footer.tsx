@@ -1,8 +1,9 @@
-import { Container, createStyles, Group, Text } from "@mantine/core";
+import { Container, createStyles, Group, Space, Text, Anchor } from "@mantine/core";
 import React from "react";
 import { Discord } from "../icon/discord";
 import { Donate } from "../icon/donate";
 import { Github } from "../icon/github";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -39,9 +40,16 @@ export const Footer: React.FC = () => {
           <br />
         </Container>
         <Text color="dimmed" size="xs" style={{ textAlign: "center" }}>
-          The Company of Heroes is registered trademark of SEGA Holdings. Co
+          The Company of Heroes is registered trademark of SEGA&nbsp;Holdings.&nbsp;Co
           <br />
-          The COH Images and other assets are owned by Relic Entertainment and/or SEGA
+          The COH Images and other assets are owned by
+          Relic&nbsp;Entertainment&nbsp;and/or&nbsp;SEGA
+          <Space h="xs" />
+          Visit{" "}
+          <Anchor component={Link} href={"https://coh2stats.com"} target={"_blank"}>
+            coh2stats.com{" "}
+          </Anchor>{" "}
+          for Company of Heroes 2 stats and analytics
         </Text>
       </footer>
     </>
