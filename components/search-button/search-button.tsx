@@ -1,4 +1,4 @@
-import { Button, createStyles, Group, Text } from "@mantine/core";
+import { Button, Group, Text } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
 import React from "react";
 import { openSpotlight } from "@mantine/spotlight";
@@ -8,10 +8,10 @@ interface SearchButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const useStyles = createStyles((theme) => ({}));
+// const useStyles = createStyles((theme) => ({}));
 
 export const SearchButton: React.FC<SearchButtonProps> = ({ mobile, onClick }) => {
-  const { classes } = useStyles();
+  // const { classes } = useStyles();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     openSpotlight();

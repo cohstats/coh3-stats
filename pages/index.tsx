@@ -7,7 +7,12 @@ import { Discord } from "../components/icon/discord";
 const Home: NextPage = () => {
   return (
     <Container size={"lg"}>
-      <Image src="/coming-soon/coh3-background.jpg" radius="md" height={400} />
+      <Image
+        src="/coming-soon/coh3-background.jpg"
+        alt={"coh3-background"}
+        radius="md"
+        height={400}
+      />
       <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
         <Title order={1}>Company of Heroes 3 is out🎉</Title>
         <Title order={2} size="h4" pt="md">
