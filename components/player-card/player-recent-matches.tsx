@@ -28,7 +28,14 @@ const PlayerRecentMatches = ({
   const [sortedData, setSortedData] = React.useState(sortBy(playerMatchesData, "Played"));
 
   React.useEffect(() => {
-    const resortedData = sortBy(playerMatchesData, sortStatus.columnAccessor);
+    const resortedData = sortBy(
+      playerMatchesData,
+      sortStatus.columnAccessor === "match_duration"
+        ? (matchData) => {
+            return matchData.startgametime - matchData.completiontime;
+          }
+        : sortStatus.columnAccessor,
+    );
     setSortedData(sortStatus.direction === "desc" ? resortedData.reverse() : resortedData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortStatus]);
@@ -130,7 +137,6 @@ const PlayerRecentMatches = ({
 
   return (
     <>
-      {sortStatus.columnAccessor}
       <DataTable
         withBorder
         borderRadius="md"
@@ -266,7 +272,6 @@ const PlayerRecentMatches = ({
             },
           },
         ]}
-        // onSortStatusChange={setSortStatus}
       />
       <Group position={"apart"}>
         <Text size={"sm"}>Data provided by Relic</Text>
