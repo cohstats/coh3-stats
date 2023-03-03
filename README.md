@@ -36,6 +36,7 @@ So we can have some discussion, also it avoids multiple people working on the sa
 Feel free to create fork and make MR.
 
 Development conventions:
+
 - Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
 - Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though)
 - Prettier and eslint should cover the rest
@@ -100,10 +101,10 @@ Backend:
 - GCP Cloud
 - Firebase Cloud Functions - in TypeScript
 - Database:
-  - Firestore - for basic data
-  - Other DB? We might need a different DB for storing the info - as we might expect high amount of reads / writes --
-    not perfect for FireStore
-  - Big Query - for stored matches (we need to do pricing calculations on this)
+    - Firestore - for basic data
+    - Other DB? We might need a different DB for storing the info - as we might expect high amount of reads / writes --
+      not perfect for FireStore
+    - Big Query - for stored matches (we need to do pricing calculations on this)
 
 ## Learn More
 
