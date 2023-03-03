@@ -6,7 +6,7 @@ import { StatCosts } from "../components/Stats";
  * This is example page you can find it by going on ur /unit-example
  * @constructor
  */
-const UnitExample = (props) => {
+const UnitExample = () => {
   return (
     <Container size="lg">
       <Title order={2} mb={8}>
