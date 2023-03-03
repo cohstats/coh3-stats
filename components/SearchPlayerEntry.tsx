@@ -5,11 +5,9 @@ import {
   Center,
   Image,
   Text,
-  Badge,
   Avatar,
   Indicator,
 } from "@mantine/core";
-import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   action: {

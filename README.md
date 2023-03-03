@@ -33,6 +33,13 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 Before making an MR please create an issue describing what you want to change / how you want to change it.
 So we can have some discussion, also it avoids multiple people working on the same thing.
 
+Feel free to create fork and make MR.
+
+Development conventions:
+- Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
+- Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though)
+- Prettier and eslint should cover the rest
+
 ## Development aproach
 
 ### High level architecture

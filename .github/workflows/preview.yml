@@ -43,12 +43,14 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile install
       - name: Disable Vercel telemetry
         run: yarn next telemetry disable
+      - name: Run the build
+        run: yarn build
       - name: Deploy to Edgio hosting
         env:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          npx edgio deploy --site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+          npx edgio deploy --skip-build--site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
       - uses: jwalton/gh-find-current-pr@v1
         id: finder
       - name: Publish Preview Link
