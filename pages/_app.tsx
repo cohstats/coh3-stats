@@ -4,7 +4,7 @@ import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core
 import { NotificationsProvider } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
-import { useLocalStorage } from "@mantine/hooks";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
 import { BetaVersion } from "../components/beta-version";
@@ -15,9 +15,11 @@ webFirebase.init();
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps, router } = props;
 
+  const systemColorScheme = useColorScheme();
+
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
-    defaultValue: "dark",
+    defaultValue: systemColorScheme,
     getInitialValueInEffect: true,
   });
 
