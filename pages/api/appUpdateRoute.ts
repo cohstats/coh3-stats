@@ -2,9 +2,10 @@
  * This route is used be the desktop app to determine if the auto updater should update the app
  */
 
+import { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const octokit = new Octokit();
   const response = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
     owner: "cohstats",
