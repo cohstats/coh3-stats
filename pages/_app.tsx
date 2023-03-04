@@ -15,14 +15,17 @@ webFirebase.init();
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps, router } = props;
 
+  // get system colorscheme
   const systemColorScheme = useColorScheme();
 
+  // create a cookie on browser to store colorscheme starting out with system colorscheme as default
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
     defaultValue: systemColorScheme,
     getInitialValueInEffect: true,
   });
 
+  // switch colorscheme
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
