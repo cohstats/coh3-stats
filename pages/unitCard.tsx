@@ -1,11 +1,13 @@
 import { NextPage } from "next";
 import ErrorCard from "../components/error-card";
-import { getWeaponData, WeaponData } from "../src/unitStats/unitStatsLib";
+import { getWeaponData, WeaponData } from "../src/unitStats/WeaponLib";
 import { DpsChart } from "../components/units/DpsChart";
-import { AnyKindOfDictionary } from "lodash";
 
 interface UnitCardProps {
   weaponData: WeaponData[];
+  squadData: any;
+  generalInfo: any;
+  properties: any;
 }
 
 // Parameter in Curly brackets is destructuring for
