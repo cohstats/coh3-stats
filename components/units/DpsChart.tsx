@@ -24,7 +24,7 @@ import {
   Container,
 } from "@mantine/core";
 import { UnitSearch } from "./UnitSearch";
-import { getSingleWeaponDPS } from "../../src/unitStats/unitStatsUtils";
+import { getSingleWeaponDPS } from "../../src/unitStats/unitStatsLib";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -97,22 +97,6 @@ export var options = {
   },
 };
 
-// export var chartData = {
-
-//     datasets: [{
-//         label: 'K98_panzergrenadier_AK',
-//         data: [{x:0,y:20}, {x:7,y:20}, {x:23,y:12}, {x:35,y:5}],
-//         borderWidth: 2,
-//         borderColor:'#4dabf7', // '#d048b6',
-//         cubicInterpolationMode : 'monotone' as const,
-//         tension : 0.5,
-//         fill : true,
-//         backgroundColor : 'rgba(0, 100, 150, 0.3)',
-//         pointRadius: 5,
-//     }]
-
-// };
-
 // image: item.icon_name,
 // label: item.id,
 // value: item.id,
@@ -120,8 +104,8 @@ export var options = {
 // description: item.ui_name || 'No Description Available',
 const mapChartData = (searchItem: any) => {
   var chartLine = {
-    label: searchItem.value,
-    data: getWeaponDPSData(searchItem.data),
+    label: "No Item Selected",
+    data: [],
     borderWidth: 2,
     borderColor: "#4dabf7", // '#d048b6',
     cubicInterpolationMode: "monotone" as const,
@@ -130,6 +114,19 @@ const mapChartData = (searchItem: any) => {
     backgroundColor: "rgba(0, 100, 150, 0.3)",
     pointRadius: 5,
   };
+
+  if (searchItem)
+    chartLine = {
+      label: searchItem.value,
+      data: getWeaponDPSData(searchItem.data),
+      borderWidth: 2,
+      borderColor: "#4dabf7", // '#d048b6',
+      cubicInterpolationMode: "monotone" as const,
+      tension: 0.5,
+      fill: true,
+      backgroundColor: "rgba(0, 100, 150, 0.3)",
+      pointRadius: 5,
+    };
   return { datasets: [chartLine] };
 };
 
@@ -155,7 +152,20 @@ export const DpsChart = (searchItems: IDPSProps) => {
 
   //const selectItem = searchItems.searchData.find(item => item.value = activeData );
   const chartData = mapChartData(activeData);
-  var maxY = Math.max(chartData.datasets[0].data[0].y, chartData.datasets[0].data[3].y) * 1.3;
+
+  var maxY = 1;
+  if (chartData.datasets[0]) {
+    // for(var dataSet in chartData.datasets[0].data)
+    // {
+    //   if(dataSet.y > maxY  )
+    //     maxY = dataSet.y;
+    // }
+    chartData.datasets[0].data.forEach((point) => {
+      if (point.y > maxY) maxY = point.y;
+    });
+    maxY = maxY * 1.3;
+  }
+
   options.scales.y.suggestedMax = maxY;
 
   return (

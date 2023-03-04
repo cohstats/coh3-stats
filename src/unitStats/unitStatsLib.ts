@@ -1,13 +1,37 @@
-const traverseTree = (o: any, func: any, mapper: any) => {
+interface WeaponData {
+  id: string; // file name in essence editor
+  ui_name: string; // name in game
+  icon_name: string; // icon path in game
+  unit_name: string; // referencing squad
+  weapon_bag: any; // weapon data
+  pbgid: string; // essence id
+  parent_pbg: string; // essence parent path
+  root: any; // root object e.g africa_korps
+  image_weapon: string; // image for weapon e.g. in search selection
+  image_faction: string; // image for faction e.g. in search selection
+  label: string; // label for search selection
+  value: string; // value for search selection
+  data: any; // weapon_data (duplicate)
+  description: string; // search selection description
+  faction: string; // faction string e.g. afrika_korps
+  parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
+}
+
+const traverseTree = (o: any, func: any, mapper: any, root: string = "", parent: string = "") => {
   var relevantSet = new Set();
+  //var parent = parent;
+  if (parent === "") parent = root;
 
   for (var i in o) {
     // check if object is relevant (eg. is weapon_bag?)
     const isRelevant = func.apply(this, [i, o[i]]);
 
     if (!isRelevant && o[i] !== null && typeof o[i] == "object") {
+      // remember current node as parrent (parent folder e.g. rifle)
+      parent = i;
+
       //going one step down in the object tree!!
-      var childSet = traverseTree(o[i], func, mapper);
+      var childSet = traverseTree(o[i], func, mapper, root, parent);
 
       childSet.forEach(relevantSet.add, relevantSet);
       // merge relevant object of child
@@ -15,7 +39,7 @@ const traverseTree = (o: any, func: any, mapper: any) => {
 
       // add relevant object to return list
     } else if (isRelevant) {
-      if (mapper != "undefined") relevantSet.add(mapper.apply(this, [i, o[i]]));
+      if (mapper != "undefined") relevantSet.add(mapper.apply(this, [i, o[i], root, parent]));
       else relevantSet.add(o(i));
     }
   }
@@ -23,15 +47,97 @@ const traverseTree = (o: any, func: any, mapper: any) => {
   return relevantSet;
 };
 
-interface WeaponData {
-  id: string;
-  ui_name: string;
-  icon_name: string;
-  unit_name: string;
-  weapon_bag: any;
-  pbgid: string;
-  parent_pbg: string;
-}
+// Helper eg. to have a more comfortable structure for for drop downs.
+const mapWeaponData = (key: string, node: any, root: string, parent: string) => {
+  if (key === "75_mm_leig_direct_shot_ak") console.log("undefined");
+
+  var weaponData: WeaponData = {
+    id: "",
+    ui_name: "",
+    icon_name: "",
+    unit_name: "",
+    weapon_bag: null,
+    pbgid: "",
+    parent_pbg: "",
+    root: "",
+    image_weapon: "",
+    image_faction: "",
+    label: "",
+    value: "",
+    data: "",
+    description: "",
+    faction: "",
+    parent: "",
+  };
+
+  weaponData.id = key;
+
+  const weapon_bag: any = node.weapon_bag;
+  weaponData.ui_name = weapon_bag.ui_name;
+  weaponData.icon_name = weapon_bag.icon_name;
+  weaponData.weapon_bag = weapon_bag;
+  weaponData.pbgid = node.pbgid;
+  weaponData.parent_pbg = node.parent_pbg;
+  weaponData.root = root;
+  weaponData.faction = root;
+  weaponData.label = key;
+  weaponData.value = key;
+  weaponData.data = weapon_bag;
+  weaponData.description = weapon_bag.ui_name || "No Description Available";
+  weaponData.parent = parent;
+
+  return weaponData;
+};
+
+const isWeaponBagContainer = (key: string, obj: any) => {
+  // check if first child is weapon_bag
+  return Object.keys(obj)[0] === "weapon_bag";
+};
+
+const getWeaponData = (root: any) => {
+  var weaponSetAll: WeaponData[] = [];
+
+  for (var obj in root) {
+    var weaponSet = traverseTree(root[obj], isWeaponBagContainer, mapWeaponData, obj);
+    // weaponSet.forEach(weaponSetAll.add, weaponSetAll);
+    weaponSet.forEach((item: any) => {
+      var weapon_icon;
+
+      if (!item.weapon_bag.weapon_class) return;
+
+      // filter by relevant weapon types
+      switch (item.parent) {
+        case "sub_machine_gun":
+          weapon_icon = "m1_thompson_sub_machine_gun.png";
+          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          weaponSetAll.push(item);
+          break;
+        case "light_machine_gun":
+          weapon_icon = "weapon_lmg_mg34.png";
+          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          weaponSetAll.push(item);
+          break;
+        case "heavy_machine_gun":
+          weapon_icon = "hmg_mg42_ger.png";
+          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          weaponSetAll.push(item);
+          break;
+        case "rifle":
+          weapon_icon = "weapon_dp_28_lmg.png";
+          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          weaponSetAll.push(item);
+          break;
+        default:
+          return;
+          break;
+      }
+
+      //weaponData.
+    });
+  }
+
+  return weaponSetAll;
+};
 
 const getSingleWeaponDPS = (weapon_bag: any) => {
   //Formular: Hitchance * RateOfFire * Damage * ChanceToDamage(E.g. penetration)
@@ -80,7 +186,7 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
 
   // 4 wind up/down
   const windUp = weapon_bag.fire.wind_up;
-  const windDown = weapon_bag.fire_wind_down;
+  const windDown = weapon_bag.fire.wind_down;
 
   // Reload duration
   const avgReloadDuration =
@@ -91,9 +197,11 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
 
   // Avg clipSize (measured in number of cooldowns, thus we need to add the first shot)
   const avgClipSize =
-    parseFloat(weapon_bag.reload.frequency.min) +
-    1 +
-    (parseFloat(weapon_bag.reload.frequency.max) + 1) / 2;
+    (parseFloat(weapon_bag.reload.frequency.min) +
+      1 +
+      parseFloat(weapon_bag.reload.frequency.max) +
+      1) /
+    2;
 
   // duration per shot
   const shotDuration_n =
@@ -143,39 +251,6 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
     { x: range_m, y: dps_m },
     { x: range_f, y: dps_f },
   ];
-};
-
-// Helper eg. to have a more comfortable structure for for drop downs.
-const mapWeaponData = (key: string, root: any) => {
-  var weaponData: WeaponData = {
-    id: "",
-    ui_name: "",
-    icon_name: "",
-    unit_name: "",
-    weapon_bag: null,
-    pbgid: "",
-    parent_pbg: "",
-  };
-
-  weaponData.id = key;
-  const weapon_bag: any = root.weapon_bag;
-  weaponData.ui_name = weapon_bag.ui_name;
-  weaponData.icon_name = weapon_bag.icon_name;
-  weaponData.weapon_bag = weapon_bag;
-  weaponData.pbgid = root.pbgid;
-  weaponData.parent_pbg = root.parent_pbg;
-
-  return weaponData;
-};
-
-const isWeaponBagContainer = (key: string, obj: any) => {
-  // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "weapon_bag";
-};
-
-const getWeaponData = (root: any) => {
-  var weaponBags = traverseTree(root, isWeaponBagContainer, mapWeaponData);
-  return weaponBags;
 };
 
 export { traverseTree, getWeaponData, getSingleWeaponDPS };
