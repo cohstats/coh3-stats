@@ -24,7 +24,7 @@ import {
   Container,
 } from "@mantine/core";
 import { UnitSearch } from "./UnitSearch";
-import { getSingleWeaponDPS } from "../../src/unitStats/unitStatsLib";
+import { getSingleWeaponDPS } from "../../src/unitStats/WeaponLib";
 
 const useStyles = createStyles((theme) => ({
   root: {
