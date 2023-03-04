@@ -47,9 +47,8 @@ export default async function handler(req: any, res: any) {
     pub_date: date.toISOString(),
     platforms: {
       "windows-x86_64": {
-        signature:
-          "https://github.com/cohstats/coh3-stats-desktop-app/releases/download/0.0.2/Coh3.Stats.Desktop.App_0.0.2_x64_en-US.msi.zip.sig",
-        url: "https://github.com/cohstats/coh3-stats-desktop-app/releases/download/0.0.2/Coh3.Stats.Desktop.App_0.0.2_x64_en-US.msi.zip",
+        signature: sigURL,
+        url: zipURL,
       },
     },
   });
