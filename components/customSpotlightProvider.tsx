@@ -22,7 +22,7 @@ const CustomSpotlightProvider = ({ children }: { children: ReactNode[] | null })
   const fetchResults = async (query: string) => {
     console.log("SEARCH", query);
     let data = null;
-    let error = null;
+    // let error = null;
 
     try {
       const res = await fetch(
@@ -52,7 +52,7 @@ const CustomSpotlightProvider = ({ children }: { children: ReactNode[] | null })
     } catch (e: any) {
       console.error(`Failed getting data for player id ${query}`);
       console.error(e);
-      error = e.message;
+      // error = e.message;
     } finally {
       setFetchLoading(false);
     }
