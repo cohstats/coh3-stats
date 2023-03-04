@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
 import Image from "next/image";
-import { DataTable } from "mantine-datatable";
+import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
 import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
-import FactionIcon from "../../pages/faction-icon";
+import FactionIcon from "../faction-icon";
 import { formatMatchTime } from "../../src/utils";
 import { IconInfoCircle } from "@tabler/icons";
+import sortBy from "lodash/sortBy";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -20,6 +21,25 @@ const PlayerRecentMatches = ({
   playerMatchesData: Array<any>;
   error: string;
 }) => {
+  const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
+    columnAccessor: "Played",
+    direction: "asc",
+  });
+  const [sortedData, setSortedData] = React.useState(sortBy(playerMatchesData, "Played"));
+
+  React.useEffect(() => {
+    const resortedData = sortBy(
+      playerMatchesData,
+      sortStatus.columnAccessor === "match_duration"
+        ? (matchData) => {
+            return matchData.startgametime - matchData.completiontime;
+          }
+        : sortStatus.columnAccessor,
+    );
+    setSortedData(sortStatus.direction === "desc" ? resortedData.reverse() : resortedData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortStatus]);
+
   if (error) {
     return <ErrorCard title={"Error rendering recent matches"} body={JSON.stringify(error)} />;
   }
@@ -125,11 +145,14 @@ const PlayerRecentMatches = ({
         verticalSpacing="sm"
         minHeight={300}
         // provide data
-        records={playerMatchesData}
+        records={sortedData}
         // define columns
+        sortStatus={sortStatus}
+        onSortStatusChange={setSortStatus}
         columns={[
           {
             accessor: "Played",
+            sortable: true,
             textAlignment: "center",
             width: 120,
             render: (record) => {
@@ -217,15 +240,9 @@ const PlayerRecentMatches = ({
           {
             title: "Match duration",
             accessor: "match_duration",
-            // sortable: true,
+            sortable: true,
             textAlignment: "center",
-            render: ({
-              startgametime,
-              completiontime,
-            }: {
-              startgametime: number;
-              completiontime: number;
-            }) => {
+            render: ({ startgametime, completiontime }) => {
               return <p>{getMatchDuration(startgametime, completiontime)}</p>;
             },
           },
@@ -249,8 +266,6 @@ const PlayerRecentMatches = ({
             },
           },
         ]}
-        // sortStatus={sortStatus}
-        // onSortStatusChange={setSortStatus}
       />
       <Group position={"apart"}>
         <Text size={"sm"}>Data provided by Relic</Text>

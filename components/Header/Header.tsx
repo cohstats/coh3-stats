@@ -13,7 +13,6 @@ import {
   SimpleGrid,
   createStyles,
   Stack,
-  Indicator,
   ActionIcon,
   Tooltip,
   Anchor,

@@ -1,5 +1,6 @@
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withEdgio, withServiceWorker } = require("@edgio/next/config");
 
 /** @type {import('next').NextConfig} */

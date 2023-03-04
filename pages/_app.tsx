@@ -58,7 +58,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     console.log("SEARCH", query);
 
     let data = null;
-    let error = null;
+    // let error = null;
 
     try {
       const res = await fetch(
@@ -91,7 +91,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     } catch (e: any) {
       console.error(`Failed getting data for player id ${query}`);
       console.error(e);
-      error = e.message;
+      // error = e.message;
     }
   };
   // when debounced query entry changes fetch player results
@@ -128,6 +128,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <NotificationsProvider>
             <SpotlightProvider
+              onSpotlightClose={() => setDebouncedQuery("")}
               actions={[]}
               searchIcon={<IconSearch size={18} />}
               searchPlaceholder="Search..."

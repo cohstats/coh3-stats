@@ -13,7 +13,7 @@ import CountryFlag from "../components/country-flag";
 import Head from "next/head";
 import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
 import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
-import FactionIcon from "./faction-icon";
+import FactionIcon from "../components/faction-icon";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side

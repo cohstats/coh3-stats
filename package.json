@@ -11,16 +11,14 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "start": "yarn edgio:dev",
-    "edgio:dev": "edgio dev",
-    "edgio:build": "edgio build",
-    "edgio:deploy": "edgio deploy",
+    "start": "edgio dev",
     "dev": "edgio dev",
     "build": "edgio build",
     "next:dev": "next dev",
     "next:build": "next build",
-    "lint": "next lint",
     "test": "jest",
+    "lint": "next lint",
+    "lint:eslint": "eslint **/*.{ts,tsx,js}",
     "lint:prettier": "prettier --check .",
     "fix": "prettier --loglevel warn --write .",
     "fix:prettier": "prettier --loglevel warn --write .",
@@ -29,7 +27,8 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
-      "prettier --loglevel warn --write"
+      "prettier --loglevel warn --write",
+      "eslint --config .eslintrc.js"
     ]
   },
   "dependencies": {
