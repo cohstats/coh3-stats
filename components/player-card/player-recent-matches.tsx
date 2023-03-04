@@ -25,7 +25,6 @@ const PlayerRecentMatches = ({
     columnAccessor: "Played",
     direction: "asc",
   });
-  // const [sortedData, setSortedData] = React.useState<any[]>([]);
 
   const sortedData = React.useMemo(() => {
     const resortedData = sortBy(
@@ -37,7 +36,6 @@ const PlayerRecentMatches = ({
         : sortStatus.columnAccessor,
     );
     return sortStatus.direction === "desc" ? resortedData.reverse() : resortedData;
-    // setSortedData(sortStatus.direction === "desc" ? resortedData.reverse() : resortedData);
   }, [sortStatus, playerMatchesData]);
 
   if (error) {
