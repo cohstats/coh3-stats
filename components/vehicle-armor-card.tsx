@@ -34,9 +34,9 @@ const VehicleTypeColor: Record<VehicleType, DefaultMantineColor> = {
 } as const;
 
 const VehicleArmorCover = [
-  { cover: "/icons/common/cover/heavy_mip0.png", armor: "frontal" },
-  { cover: "/icons/common/cover/light_mip0.png", armor: "side" },
-  { cover: "/icons/common/cover/negative_mip0.png", armor: "rear" },
+  { icon: "/icons/common/cover/heavy.png", armor: "frontal" },
+  { icon: "/icons/common/cover/light.png", armor: "side" },
+  { icon: "/icons/common/cover/negative.png", armor: "rear" },
 ] as const;
 
 export const StatsVehicleArmor = (cfg: StatsVehicleInput) => (
@@ -63,12 +63,12 @@ export const StatsVehicleArmor = (cfg: StatsVehicleInput) => (
 );
 
 function generateArmorRow(armorValues: VehicleArmor) {
-  return VehicleArmorCover.map(({ cover, armor }) => {
+  return VehicleArmorCover.map(({ icon, armor }) => {
     return (
       <Grid key={`vehicle_armor_${armor}`} fz="xs" align="center" columns={3} grow>
         <Grid.Col span={2}>
           <Flex key={armor} direction="row" align="center" gap={8}>
-            <Image height={24} width={24} fit="contain" src={cover} alt="Frontal Armor" />
+            <Image height={24} width={24} fit="contain" src={icon} alt="Frontal Armor" />
             <Text transform="capitalize">{armor}</Text>
           </Flex>
         </Grid.Col>

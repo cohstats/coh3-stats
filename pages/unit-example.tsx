@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Title, Text, Grid, Flex, Tooltip, Card } from "@mantine/core";
-import { StatCosts } from "../components/Stats";
+import { StatsCosts } from "../components/cost-card";
 import { StatsVehicleArmor } from "../components/vehicle-armor-card";
 
 /**
@@ -21,7 +21,7 @@ const UnitExample = () => {
           <Flex gap="md" direction="column">
             <Tooltip label="Stats Card tooltip">
               <Card bg="dark" p="lg" radius="md" withBorder>
-                <StatCosts key="ex_cost" fuel={120} manpower={50} pop={100}></StatCosts>
+                <StatsCosts key="ex_cost" fuel={120} manpower={50} popcap={100}></StatsCosts>
               </Card>
             </Tooltip>
             <Tooltip label="Example heavy tank">
