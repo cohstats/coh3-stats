@@ -20,6 +20,7 @@ import Head from "next/head";
 import React from "react";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
+import { GetServerSideProps } from "next";
 
 /**
  *
@@ -142,9 +143,12 @@ const PlayerCard = ({
 // THIS code is super dirty to get the things done, needs to be fixed
 // I am not sure if it's a good idea to have it as query parameter
 // I am counting with the old url setup as we had on coh2stats https://coh2stats.com/players/76561198051168720-F3riG?view=recentMatches
-// @ts-ignore
-export async function getServerSideProps({ params, query }) {
-  const { playerID } = params;
+export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
+  params,
+  query,
+  res,
+}) => {
+  const { playerID } = params!;
   const { view } = query;
 
   let playerData = null;
@@ -198,6 +202,6 @@ export async function getServerSideProps({ params, query }) {
   return {
     props: { playerID, playerData, error, playerMatchesData }, // will be passed to the page component as props
   };
-}
+};
 
 export default PlayerCard;

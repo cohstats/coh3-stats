@@ -1,3 +1,4 @@
+import { GetServerSideProps, NextPage } from "next";
 import config from "../config";
 
 /**
@@ -11,8 +12,7 @@ import config from "../config";
  * @constructor
  */
 
-// @ts-ignore
-function Search({ searchQuery, data, error }) {
+const Search: NextPage<any> = ({ searchQuery, data, error }) => {
   // Render data...
 
   return (
@@ -22,10 +22,9 @@ function Search({ searchQuery, data, error }) {
       <div>error {JSON.stringify(error)}</div>
     </>
   );
-}
+};
 
-// @ts-ignore
-export async function getServerSideProps({ query }) {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { q } = query;
 
   console.log("SEARCH", q);
@@ -49,6 +48,6 @@ export async function getServerSideProps({ query }) {
   return {
     props: { searchQuery: q, data, error }, // will be passed to the page component as props
   };
-}
+};
 
 export default Search;

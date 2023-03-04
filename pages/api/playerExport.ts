@@ -7,6 +7,7 @@ import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { leaderBoardType, PlayerCardDataType, raceType } from "../../src/coh3/coh3-types";
 import { json2csvAsync } from "json-2-csv";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const getPlayerCardInfo = async (profileID: string) => {
   const PlayerCardRes = await fetch(getPlayerCardInfoUrl(profileID));
@@ -62,23 +63,33 @@ const generateCSVObject = (
   };
 };
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const query = req.query;
-    const { profileIDs } = query;
-    const { types } = query;
+    const { profileIDs, types } = query;
 
     if (!profileIDs) {
-      throw new Error("Invalid params");
+      return res.status(400).json({ error: "profile id param is missing" });
+    }
+
+    if (typeof profileIDs !== "string") {
+      return res.status(400).json({ error: "profile id contains invalid params" });
+    }
+    let parsedTypes;
+
+    if (types !== undefined && typeof types !== "string") {
+      return res.status(400).json({ error: "profile id contains invalid params" });
+    }
+    if (types !== undefined) {
+      parsedTypes = JSON.parse(types);
     }
 
     const arrayOfIds = JSON.parse(profileIDs);
     logger.log(`Going to parse ${arrayOfIds.length} ids`);
     logger.log(`List of IDs ${arrayOfIds}`);
     if (arrayOfIds.length > 100) {
-      throw new Error("Too much records");
+      return res.status(500).json({ error: "Too many records requested" });
     }
-    const parsedTypes = JSON.parse(types || null);
 
     const finalArray = [];
 
