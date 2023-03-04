@@ -1,23 +1,25 @@
 import config from "../../config";
 import {
-  Indicator,
   Image,
   Avatar,
   Container,
   Group,
   Stack,
   Title,
-  Text,
-  Table,
-  SimpleGrid,
   Anchor,
+  Tabs,
+  Space,
 } from "@mantine/core";
 import { Steam } from "../../components/icon/steam";
-import { PlayerFactionOverview } from "../../components/PlayerFactionOverview";
 import Link from "next/link";
-import PlayerRecentMatches from "../../components/player-matches/player-recent-matches";
-import { leaderboardsIDAsObject, localizedNames } from "../../src/coh3/coh3-data";
-import { raceType } from "../../src/coh3/coh3-types";
+import PlayerRecentMatches from "../../components/player-card/player-recent-matches";
+import { useRouter } from "next/router";
+import { processPlayerInfoAPIResponse } from "../../src/players/standings";
+import PlayerStandings from "../../components/player-card/player-standings";
+import Head from "next/head";
+import React from "react";
+import { PlayerCardDataType } from "../../src/coh3/coh3-types";
+import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
 
 /**
  *
@@ -33,58 +35,105 @@ import { raceType } from "../../src/coh3/coh3-types";
  */
 
 // @ts-ignore
-const PlayerCard = ({ playerID, playerCardData, playerData, error, playerMatchesData }) => {
-  console.log(playerCardData);
-  console.log(playerMatchesData);
-  console.log(error);
-  console.log(playerID);
-  console.log(playerData);
+const PlayerCard = ({
+  playerID,
+  playerData,
+  error,
+  playerMatchesData,
+}: {
+  playerID: string;
+  playerData: PlayerCardDataType;
+  error: string;
+  playerMatchesData: any;
+}) => {
+  const { push, query } = useRouter();
+  const { view } = query;
 
   if (error) {
     return <Container size="lg">{error}</Container>;
   }
 
+  const pageTitle = `Player card - ${playerData.info.name} ${
+    view === "recentMatches" ? "recent matches" : ""
+  }`;
+
   return (
     <>
+      <Head>
+        <title>{pageTitle}</title>
+        <meta
+          name="description"
+          content={`COH3 Stats - player card for player ${playerData.info.name}.`}
+        />
+      </Head>
       <Container size={"lg"}>
-        <Group>
-          <Avatar
-            src={playerData.avatarURL}
-            imageProps={{ loading: "lazy" }}
-            alt={playerData.name}
-            size="xl"
-          />
-          <Stack spacing={0}>
-            <Group>
-              <Image
-                src={"/flags/4x3/" + playerData.country + ".svg"}
-                imageProps={{ loading: "lazy" }}
-                alt={playerData.country}
-                width={40}
-              />
-              <Title> {playerData.name}</Title>
-              <Anchor component={Link} href={playerData.steamURL} target="_blank">
-                <Steam label="Steam Profile" />
-              </Anchor>
-            </Group>
-            {/*<Text>Last played:</Text>
-            <Text>Play time:</Text>*/}
-          </Stack>
-        </Group>
+        <Container fluid>
+          <Group>
+            <Avatar
+              src={playerData.steamData.avatarmedium}
+              imageProps={{ loading: "lazy" }}
+              alt={playerData.info.name}
+              size="xl"
+            />
+            <Stack spacing={"xs"}>
+              <Group>
+                <Image
+                  src={"/flags/4x3/" + playerData.info.country + ".svg"}
+                  imageProps={{ loading: "lazy" }}
+                  alt={playerData.info.country}
+                  width={40}
+                />
+                <Title> {playerData.info.name}</Title>
+              </Group>
+              <Group spacing={"xs"}>
+                <Anchor component={Link} href={playerData.steamData.profileurl} target="_blank">
+                  <Steam label="Steam Profile" />
+                </Anchor>
+              </Group>
 
-        <SimpleGrid
-          cols={3}
-          mt="xl"
-          breakpoints={[
-            { maxWidth: 1300, cols: 2 },
-            { maxWidth: 650, cols: 1 },
-          ]}
+              {/*<Text>Last played:</Text>
+            <Text>Play time:</Text>*/}
+            </Stack>
+          </Group>
+        </Container>
+        <Tabs
+          variant={"outline"}
+          value={(view as string) || "standings"}
+          defaultValue={(view as string) || "standings"}
+          onTabChange={async (value) => {
+            await push({ query: { ...query, view: value } });
+          }}
         >
-          <PlayerFactionOverview faction={localizedNames.american} {...playerData.american} />
-          <PlayerFactionOverview faction={localizedNames.german} {...playerData.german} />
-          <PlayerFactionOverview faction={localizedNames.dak} {...playerData.dak} />
-          <PlayerFactionOverview faction={localizedNames.british} {...playerData.british} />
-        </SimpleGrid>
+          <Tabs.List position="center">
+            <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
+            <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="standings">
+            <PlayerStandings playerStandings={playerData.standings} />
+            {/*<SimpleGrid*/}
+            {/*  cols={3}*/}
+            {/*  mt="xl"*/}
+            {/*  breakpoints={[*/}
+            {/*    { maxWidth: 1300, cols: 2 },*/}
+            {/*    { maxWidth: 650, cols: 1 },*/}
+            {/*  ]}*/}
+            {/*>*/}
+            {/*  <PlayerFactionOverview faction={localizedNames.american} {...playerData.american} />*/}
+            {/*  <PlayerFactionOverview faction={localizedNames.german} {...playerData.german} />*/}
+            {/*  <PlayerFactionOverview faction={localizedNames.dak} {...playerData.dak} />*/}
+            {/*  <PlayerFactionOverview faction={localizedNames.british} {...playerData.british} />*/}
+            {/*</SimpleGrid>*/}
+          </Tabs.Panel>
+          <Tabs.Panel value={"recentMatches"}>
+            <Space h="lg" />
+            <PlayerRecentMatches
+              playerMatchesData={playerMatchesData}
+              profileID={playerID}
+              error={error}
+            />
+          </Tabs.Panel>
+        </Tabs>
       </Container>
     </>
   );
@@ -98,15 +147,12 @@ export async function getServerSideProps({ params, query }) {
   const { playerID } = params;
   const { view } = query;
 
-  let playerCardData = null;
   let playerData = null;
   let playerMatchesData = null;
   let error = null;
 
   try {
-    const PromisePlayerCardFetch = fetch(
-      `${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerCardInfoHttp?relicId=${playerID}`,
-    );
+    const PromisePlayerCardFetch = fetch(getPlayerCardInfoUrl(playerID));
 
     const PromisePlayerMatchesFetch =
       view == "recentMatches"
@@ -119,56 +165,29 @@ export async function getServerSideProps({ params, query }) {
     ]);
 
     // Also check status code if not 200
-    playerCardData = await PlayerCardRes.json();
-    if (playerCardData.errors) {
-      throw Error(playerCardData.errors[0].msg + " " + playerCardData.errors[0].param);
+    const playerAPIData = await PlayerCardRes.json();
+    if (playerAPIData.errors) {
+      throw Error(playerAPIData.errors[0].msg + " " + playerAPIData.errors[0].param);
+    } else {
+      playerData = processPlayerInfoAPIResponse(playerAPIData);
     }
-    console.log(playerCardData);
-    const { RelicProfile, SteamProfile } = playerCardData;
-    const leaderboardStats = RelicProfile.leaderboardStats as any[];
-    const member = RelicProfile.statGroups[0].members[0];
-
-    const steamID = (member.name as string).split("/").at(-1)!;
-    const { avatarmedium, profileurl } = SteamProfile[steamID];
-    const getFactionLeaderboards = (faction: raceType) => {
-      const intermediate = {
-        ones: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["1v1"][faction],
-        ),
-        twos: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["2v2"][faction],
-        ),
-        threes: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["3v3"][faction],
-        ),
-        fours: leaderboardStats.find(
-          (stats) => stats.leaderboard_id === leaderboardsIDAsObject["4v4"][faction],
-        ),
-      };
-      return {
-        ones: intermediate.ones ? intermediate.ones : null,
-        twos: intermediate.twos ? intermediate.twos : null,
-        threes: intermediate.threes ? intermediate.threes : null,
-        fours: intermediate.fours ? intermediate.fours : null,
-      };
-    };
-    playerData = {
-      name: member.alias,
-      country: member.country,
-      level: member.level,
-      xp: member.xp,
-      steamURL: profileurl,
-      avatarURL: avatarmedium,
-      american: getFactionLeaderboards("american"),
-      british: getFactionLeaderboards("british"),
-      german: getFactionLeaderboards("german"),
-      dak: getFactionLeaderboards("dak"),
-    };
-    console.log(playerData);
 
     if (view === "recentMatches") {
       // @ts-ignore
       playerMatchesData = (await PlayerMatchesRes.json()).playerMatches;
+      if (playerMatchesData.errors) {
+        throw Error(playerAPIData.errors[0].msg + " " + playerAPIData.errors[0].param);
+      } else {
+        playerMatchesData = playerMatchesData.sort(
+          (a: { completiontime: number }, b: { completiontime: number }) => {
+            if (a.completiontime > b.completiontime) {
+              return -1;
+            } else {
+              return 1;
+            }
+          },
+        );
+      }
     }
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
@@ -177,7 +196,7 @@ export async function getServerSideProps({ params, query }) {
   }
 
   return {
-    props: { playerID, playerCardData, playerData, error, playerMatchesData }, // will be passed to the page component as props
+    props: { playerID, playerData, error, playerMatchesData }, // will be passed to the page component as props
   };
 }
 

@@ -11,16 +11,14 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "start": "yarn edgio:dev",
-    "edgio:dev": "edgio dev",
-    "edgio:build": "edgio build",
-    "edgio:deploy": "edgio deploy",
+    "start": "edgio dev",
     "dev": "edgio dev",
     "build": "edgio build",
     "next:dev": "next dev",
     "next:build": "next build",
-    "lint": "next lint",
     "test": "jest",
+    "lint": "next lint",
+    "lint:eslint": "eslint **/*.{ts,tsx,js}",
     "lint:prettier": "prettier --check .",
     "fix": "prettier --loglevel warn --write .",
     "fix:prettier": "prettier --loglevel warn --write .",
@@ -29,7 +27,8 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
-      "prettier --loglevel warn --write"
+      "prettier --loglevel warn --write",
+      "eslint --config .eslintrc.js"
     ]
   },
   "dependencies": {
@@ -48,12 +47,14 @@
     "chart.js": "^4.2.1",
     "dayjs": "^1.11.7",
     "firebase": "^9.17.1",
+    "json-2-csv": "^3.19.0",
     "inherits": "^2.0.4",
     "is-glob": "^4.0.3",
     "jsesc": "^3.0.2",
     "lodash": "^4.17.21",
     "mantine-datatable": "^1.8.6",
     "next": "^13.1.6",
+    "octokit": "^2.0.14",
     "next-offline": "^5.0.5",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",

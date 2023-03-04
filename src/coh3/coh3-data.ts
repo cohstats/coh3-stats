@@ -27,6 +27,73 @@ const leaderboardsIDAsObject = {
   },
 };
 
+const leaderboardsIDsToTypes: Record<number, { type: leaderBoardType; race: raceType }> = {
+  2130255: {
+    type: "1v1",
+    race: "american",
+  },
+  2130257: {
+    type: "1v1",
+    race: "british",
+  },
+  2130259: {
+    type: "1v1",
+    race: "dak",
+  },
+  2130261: {
+    type: "1v1",
+    race: "german",
+  },
+  2130300: {
+    type: "2v2",
+    race: "american",
+  },
+  2130302: {
+    type: "2v2",
+    race: "british",
+  },
+  2130304: {
+    type: "2v2",
+    race: "dak",
+  },
+  2130306: {
+    type: "2v2",
+    race: "german",
+  },
+  2130329: {
+    type: "3v3",
+    race: "american",
+  },
+  2130331: {
+    type: "3v3",
+    race: "british",
+  },
+  2130333: {
+    type: "3v3",
+    race: "dak",
+  },
+  2130335: {
+    type: "3v3",
+    race: "german",
+  },
+  2130353: {
+    type: "4v4",
+    race: "american",
+  },
+  2130356: {
+    type: "4v4",
+    race: "british",
+  },
+  2130358: {
+    type: "4v4",
+    race: "dak",
+  },
+  2130360: {
+    type: "4v4",
+    race: "german",
+  },
+};
+
 const localizedNames: Record<raceType, string> = {
   german: "Wehrmacht",
   american: "US Forces",
@@ -214,6 +281,23 @@ const matchTypesAsObject: Record<number, { id: number; name: string; localizedNa
   },
 };
 
+const maps: { [key: string]: { name: string; url: string } } = {
+  twin_beach_2p_mkii: { name: "Twin Beaches", url: "/icons/maps/twin_beaches.webp" },
+  desert_village_2p_mkiii: { name: "Road to Tunis", url: "/icons/maps/road_to_tunis.webp" },
+  cliff_crossing_2p: { name: "Taranto Coastline", url: "/icons/maps/taranto_coastline.webp" },
+  rails_and_sand_4p: { name: "Campbell's Convoy", url: "/icons/maps/campbells_convoy.webp" },
+  rural_town_4p: { name: "Pachino Farmlands", url: "/icons/maps/pachino_farmlands.webp" },
+  torrente_4p_mkiii: { name: "Torrente", url: "/icons/maps/torrente.webp" },
+  rural_castle_4p: { name: "Aere Perennius", url: "/icons/maps/aere_perennius.webp" },
+  desert_airfield_6p_mkii: {
+    name: "Gazala Landing Ground",
+    url: "/icons/maps/gazala_landing_ground.webp",
+  },
+  industrial_railyard_6p_mkii: { name: "L'Aquila", url: "/icons/maps/laquila.webp" },
+  winter_line_8p_mkii: { name: "Winter Line", url: "/icons/maps/winter_line.webp" },
+  mountain_ruins_8p_mkii: { name: "Mignano Gap", url: "/icons/maps/mignano_gap.webp" },
+};
+
 export {
   leaderboardsIDAsObject,
   localizedNames,
@@ -221,4 +305,6 @@ export {
   raceIDs,
   matchTypesAsObject,
   raceIDsAsObject,
+  leaderboardsIDsToTypes,
+  maps,
 };

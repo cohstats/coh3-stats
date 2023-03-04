@@ -13,7 +13,7 @@ Anyone can put a hand in building this site. Please consider joining our [Discor
 
 ## Getting Started with development
 
-https://dev.coh3stats.com/
+Master branch is deployed to https://dev.coh3stats.com/
 
 First install dependencies:
 
@@ -27,11 +27,19 @@ Run the development server:
 yarn next:dev
 ```
 
-Note: if images does not show up, you can also use `yarn next:dev`
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+
+Before making an MR please create an issue describing what you want to change / how you want to change it.
+So we can have some discussion, also it avoids multiple people working on the same thing.
+
+Feel free to create fork and make MR. Before PR you can test your code with `yarn build` to make sure it can be build.
+
+Development conventions:
+
+- Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
+- Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though)
+- Prettier and eslint should cover the rest
 
 ## Development aproach
 
@@ -63,10 +71,14 @@ Example pages:
 
 #### Reasons:
 
-- Because it's public website, SSR pages will be much better readed by search engines and generally it will provide better experience
-- All the data fetching (from DB, cloud functions and other) should happen in SSR, because GCP services are blocked in some countries ( China, Russia), that way we can offer site avaliabily everywhere.
-- The SSR functions can connect to some public APIs and will fetch the data from Firestore and may call some cloud functions
-- The SSR functions should be "light weight" if we need to run some big data computations we should do so Cloud Functions on GCP where we can control the performance
+- Because it's public website, SSR pages will be much better readed by search engines and generally it will provide
+  better experience
+- All the data fetching (from DB, cloud functions and other) should happen in SSR, because GCP services are blocked in
+  some countries ( China, Russia), that way we can offer site avaliabily everywhere.
+- The SSR functions can connect to some public APIs and will fetch the data from Firestore and may call some cloud
+  functions
+- The SSR functions should be "light weight" if we need to run some big data computations we should do so Cloud
+  Functions on GCP where we can control the performance
 - The whole source code for NextJS will be in this repo and will be open source
 - The BE of the CF will be closed source because, we will most likely connect to sensitive APIs
 
@@ -90,7 +102,8 @@ Backend:
 - Firebase Cloud Functions - in TypeScript
 - Database:
   - Firestore - for basic data
-  - Other DB? We might need a different DB for storing the info - as we might expect high amount of reads / writes -- not perfect for FireStore
+  - Other DB? We might need a different DB for storing the info - as we might expect high amount of reads / writes --
+    not perfect for FireStore
   - Big Query - for stored matches (we need to do pricing calculations on this)
 
 ## Learn More
@@ -100,4 +113,5 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
+are welcome!

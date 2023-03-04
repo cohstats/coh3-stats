@@ -1,11 +1,16 @@
 import Link from "next/link";
-import { Badge, Anchor, Text, Group } from "@mantine/core";
-import { DataTable } from "mantine-datatable";
+import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
+import Image from "next/image";
+import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
-import { localizedNames, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
+import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
 import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
+import FactionIcon from "../faction-icon";
+import { formatMatchTime } from "../../src/utils";
+import { IconInfoCircle } from "@tabler/icons";
+import sortBy from "lodash/sortBy";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -16,6 +21,25 @@ const PlayerRecentMatches = ({
   playerMatchesData: Array<any>;
   error: string;
 }) => {
+  const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
+    columnAccessor: "Played",
+    direction: "asc",
+  });
+  const [sortedData, setSortedData] = React.useState(sortBy(playerMatchesData, "Played"));
+
+  React.useEffect(() => {
+    const resortedData = sortBy(
+      playerMatchesData,
+      sortStatus.columnAccessor === "match_duration"
+        ? (matchData) => {
+            return matchData.startgametime - matchData.completiontime;
+          }
+        : sortStatus.columnAccessor,
+    );
+    setSortedData(sortStatus.direction === "desc" ? resortedData.reverse() : resortedData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortStatus, playerMatchesData]);
+
   if (error) {
     return <ErrorCard title={"Error rendering recent matches"} body={JSON.stringify(error)} />;
   }
@@ -46,6 +70,28 @@ const PlayerRecentMatches = ({
     return matchRecord.matchhistoryreportresults[0];
   };
 
+  const renderMap = (name: string) => {
+    // In case we don't track the map, eg custom maps
+    if (!maps[name]) {
+      return (
+        <div>
+          <Text align="center" style={{ whiteSpace: "nowrap" }}>
+            {name}
+          </Text>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <Image src={maps[name]?.url} width={60} height={60} alt={name} loading="lazy" />
+        <Text align="center" style={{ whiteSpace: "nowrap" }}>
+          {maps[name]?.name}
+        </Text>
+      </div>
+    );
+  };
+
   const renderPlayers = (arrayOfPlayerReports: Array<any>, matchHistoryMember: Array<any>) => {
     return (
       <>
@@ -56,7 +102,7 @@ const PlayerRecentMatches = ({
           const ratingPlayedWith = matchHistory.oldrating;
           const ratingChange = matchHistory.newrating - matchHistory.oldrating;
           const ratingChangeAsElement =
-            ratingChange > 0 ? (
+            ratingChange >= 0 ? (
               <Text color={"green"}>+{ratingChange}</Text>
             ) : (
               <Text color={"red"}>{ratingChange}</Text>
@@ -65,7 +111,7 @@ const PlayerRecentMatches = ({
           return (
             <div key={playerInfo.profile_id}>
               <Group spacing={"xs"}>
-                {localizedNames[raceIDs[playerInfo?.race_id as raceID]].substring(0, 1)}
+                <FactionIcon name={raceIDs[playerInfo?.race_id as raceID]} width={20} />
                 <>
                   {" "}
                   {ratingPlayedWith} {ratingChangeAsElement}
@@ -99,16 +145,26 @@ const PlayerRecentMatches = ({
         verticalSpacing="sm"
         minHeight={300}
         // provide data
-        records={playerMatchesData}
+        records={sortedData}
         // define columns
+        sortStatus={sortStatus}
+        onSortStatusChange={setSortStatus}
         columns={[
           {
             accessor: "Played",
+            sortable: true,
             textAlignment: "center",
+            width: 120,
             render: (record) => {
               const player = getPlayerMatchHistoryResult(record);
-              // TODO: Add faction icon
-              return <>{localizedNames[raceIDs[player?.race_id as raceID]]}</>;
+              return (
+                <>
+                  <div>
+                    <FactionIcon name={raceIDs[player?.race_id as raceID]} width={50} />
+                  </div>
+                  <Text size={"xs"}> {formatMatchTime(record.completiontime)}</Text>
+                </>
+              );
             },
           },
           {
@@ -161,8 +217,12 @@ const PlayerRecentMatches = ({
           },
           {
             accessor: "mapname",
+            title: "Map",
             // sortable: true,
-            textAlignment: "left",
+            textAlignment: "center",
+            render: (record) => {
+              return <>{renderMap(record.mapname)}</>;
+            },
           },
           {
             title: "Mode",
@@ -174,28 +234,46 @@ const PlayerRecentMatches = ({
                 matchTypesAsObject[matchtype_id]["localizedName"] ||
                 matchTypesAsObject[matchtype_id]["name"] ||
                 "unknown";
-              return <>{matchType.toLowerCase()}</>;
+              return <div style={{ whiteSpace: "nowrap" }}>{matchType.toLowerCase()}</div>;
             },
           },
           {
             title: "Match duration",
             accessor: "match_duration",
-            // sortable: true,
+            sortable: true,
             textAlignment: "center",
-            render: ({
-              startgametime,
-              completiontime,
-            }: {
-              startgametime: number;
-              completiontime: number;
-            }) => {
+            render: ({ startgametime, completiontime }) => {
               return <p>{getMatchDuration(startgametime, completiontime)}</p>;
             },
           },
+          {
+            title: "Debug",
+            accessor: "debug",
+            render: (record) => {
+              return (
+                <>
+                  {" "}
+                  <Button
+                    onClick={() => {
+                      console.log("Debug selected match");
+                      console.log(record);
+                    }}
+                  >
+                    D
+                  </Button>
+                </>
+              );
+            },
+          },
         ]}
-        // sortStatus={sortStatus}
-        // onSortStatusChange={setSortStatus}
       />
+      <Group position={"apart"}>
+        <Text size={"sm"}>Data provided by Relic</Text>
+        <Group spacing={5} position={"right"}>
+          <IconInfoCircle size={18} />
+          <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
+        </Group>
+      </Group>
     </>
   );
 };

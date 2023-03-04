@@ -34,12 +34,14 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install Deps
-        run: yarn install
+        run: yarn --prefer-offline --frozen-lockfile install
       - name: Disable Vercel telemetry
         run: yarn next telemetry disable
+      - name: Run the build
+        run: yarn build
       - name: Deploy to Edgio hosting
         env:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         run: |
-          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN
+          npx edgio deploy --skip-build -e $EDGIO_ENV --token $DEPLOY_TOKEN

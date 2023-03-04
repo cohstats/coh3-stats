@@ -20,14 +20,14 @@ type RawPlayerProfile = {
   country: string;
 };
 
-type RawStatGroup = {
+export type RawStatGroup = {
   id: number;
   name?: string; // empty
   type?: number;
   members: Array<RawPlayerProfile>;
 };
 
-type RawLeaderboardStat = {
+export type RawLeaderboardStat = {
   statgroup_id: number;
   leaderboard_id: number;
   wins: number;
@@ -58,3 +58,24 @@ export interface LaddersDataArrayObject extends RawLeaderboardStat {
   change: number | string;
   members: Array<Record<string, any>>;
 }
+
+export interface COH3StatsPlayerInfoAPI {
+  COH3PlayTime: null;
+  RelicProfile: {
+    leaderboardStats: Array<RawLeaderboardStat>;
+    statGroups: Array<RawStatGroup>;
+  };
+  SteamProfile: Record<string, { steamid: string; profileurl: string; avatarmedium: string }>;
+}
+
+export type InternalStandings = Record<
+  "german" | "american" | "dak" | "british",
+  Record<"1v1" | "2v2" | "3v3" | "4v4", RawLeaderboardStat | null>
+>;
+
+export type PlayerCardDataType = {
+  steamData: { steamid: string; profileurl: string; avatarmedium: string };
+  COH3PlayTime: null;
+  standings: InternalStandings;
+  info: { country: string; level: number; name: string; xp: number | undefined };
+};

@@ -10,22 +10,6 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
-  .match(
-    {
-      path: "/",
-      headers: {
-        host: "coh3stats.com",
-      },
-    },
-    ({ renderWithApp, cache }) => {
-      cache({
-        edge: {
-          maxAgeSeconds: 30 * 24 * 60 * 60,
-        },
-      });
-      renderWithApp({ path: "/landing" });
-    },
-  )
   .match("/api/onlineSteamPlayers", ({ cache }) => {
     cache({
       browser: {
@@ -52,6 +36,33 @@ export default new Router()
   })
   .match("/_next/data/:version/leaderboards.json", ({ cache }) => {
     cache({
+      browser: {
+        serviceWorkerSeconds: 10,
+      },
+      edge: {
+        // Cache for 30 seconds, revalidated after 5 seconds
+        maxAgeSeconds: 5,
+        staleWhileRevalidateSeconds: 30,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  // Caching for players
+  .match("/players(.*)", ({ cache }) => {
+    cache({
+      edge: {
+        // Cache for 30 seconds, revalidated after 5 seconds
+        maxAgeSeconds: 5,
+        staleWhileRevalidateSeconds: 30,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/players/:id.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 10,
+      },
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
         maxAgeSeconds: 5,
