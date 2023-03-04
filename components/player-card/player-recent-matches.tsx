@@ -38,7 +38,7 @@ const PlayerRecentMatches = ({
     );
     setSortedData(sortStatus.direction === "desc" ? resortedData.reverse() : resortedData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortStatus]);
+  }, [sortStatus, playerMatchesData]);
 
   if (error) {
     return <ErrorCard title={"Error rendering recent matches"} body={JSON.stringify(error)} />;
