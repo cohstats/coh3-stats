@@ -1,13 +1,8 @@
-import React, { ChangeEvent, ReactNode, useDeferredValue, useRef, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { IconFileText, IconSearch } from "@tabler/icons";
 import { SearchPlayerEntry } from "./SearchPlayerEntry";
 import { Loader } from "@mantine/core";
-import {
-  registerSpotlightActions,
-  removeSpotlightActions,
-  SpotlightAction,
-  SpotlightProvider,
-} from "@mantine/spotlight";
+import { SpotlightAction, SpotlightProvider } from "@mantine/spotlight";
 import { useDebouncedState, useDidUpdate } from "@mantine/hooks";
 import config from "../config";
 import { useRouter } from "next/router";
