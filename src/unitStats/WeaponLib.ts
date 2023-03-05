@@ -110,22 +110,22 @@ const getWeaponData = (root: any) => {
       switch (item.parent) {
         case "sub_machine_gun":
           weapon_icon = "m1_thompson_sub_machine_gun.png";
-          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          item.image = "/unitStats/weaponClass/" + weapon_icon;
           weaponSetAll.push(item);
           break;
         case "light_machine_gun":
           weapon_icon = "weapon_lmg_mg34.png";
-          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          item.image = "/unitStats/weaponClass/" + weapon_icon;
           weaponSetAll.push(item);
           break;
         case "heavy_machine_gun":
           weapon_icon = "hmg_mg42_ger.png";
-          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          item.image = "/unitStats/weaponClass/" + weapon_icon;
           weaponSetAll.push(item);
           break;
         case "rifle":
           weapon_icon = "weapon_dp_28_lmg.png";
-          item.image = "/game_stats/weapon_icons/" + weapon_icon;
+          item.image = "/unitStats/weaponClass/" + weapon_icon;
           weaponSetAll.push(item);
           break;
         default:

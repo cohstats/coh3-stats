@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { getWeaponData, WeaponData } from "../src/unitStats/WeaponLib";
-import { DpsChart } from "../components/units/DpsChart";
+import { DpsChart } from "../components/unitStats/DpsChart";
 
 interface UnitCardProps {
   weaponData: WeaponData[];
