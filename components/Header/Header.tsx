@@ -186,9 +186,9 @@ export const Header: React.FC<HeaderProps> = () => {
             <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <div>
-                  <Anchor component={Link} href="/explorer" className={cx(classes.link)}>
+                  <Anchor component={Link} href="/statistics" className={cx(classes.link)}>
                     <Group spacing={3}>
-                      Explorer
+                      Statistics
                       <IconChevronDown size={16} />
                     </Group>
                   </Anchor>
@@ -198,36 +198,23 @@ export const Header: React.FC<HeaderProps> = () => {
                 <Flex justify="space-between">
                   <Flex gap="xs" align="center">
                     <FactionIcon name="american" width={18} />
-                    <FactionLink faction="american" href="/factions/american" />
+                    <FactionLink faction="american" href="/statistics/factions/american" />
                   </Flex>
                   <Flex gap="xs" align="center">
                     <FactionIcon name="british" width={18} />
-                    <FactionLink faction="british" href="/factions/british" />
+                    <FactionLink faction="british" href="/statistics/factions/british" />
                   </Flex>
                   <Flex gap="xs" align="center">
                     <FactionIcon name="dak" width={18} />
-                    <FactionLink faction="dak" href="/factions/dak" />
+                    <FactionLink faction="dak" href="/statistics/factions/dak" />
                   </Flex>
                   <Flex gap="xs" align="center">
                     <FactionIcon name="german" width={18} />
-                    <FactionLink faction="german" href="/factions/german" />
+                    <FactionLink faction="german" href="/statistics/factions/german" />
                   </Flex>
                 </Flex>
               </HoverCard.Dropdown>
             </HoverCard>
-
-            <Tooltip label="Coming soon" color="orange">
-              <Anchor
-                component={Link}
-                href="#"
-                className={cx(classes.link, classes.disabledLink)}
-              >
-                Statistics{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Anchor>
-            </Tooltip>
 
             <Tooltip label="Coming soon" color="orange">
               <Anchor

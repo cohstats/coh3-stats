@@ -18,11 +18,11 @@ const Explorer: NextPage = () => {
       <>
         <Container size={"md"}>
           <Title order={1} size="h4" pt="md">
-            Explorer
+            Statistics
           </Title>
           <Group>
             {factions.map((link) => (
-              <Anchor key={link} component={Link} href={`factions/${link}`}>
+              <Anchor key={link} component={Link} href={`/statistics/factions/${link}`}>
                 <Flex>
                   <FactionIcon name={link} width={40} />
                   <Group spacing="xs">{localizedNames[link]}</Group>
