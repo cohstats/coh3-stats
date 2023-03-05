@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Title, Text, Grid, Flex, Tooltip, Card, SimpleGrid } from "@mantine/core";
-import { StatsCosts } from "../components/cost-card";
-import { StatsVehicleArmor } from "../components/vehicle-armor-card";
-import { UnitDescriptionCard } from "../components/unit-description-card";
+import { StatsCosts } from "../components/Cards/cost-card";
+import { StatsVehicleArmor } from "../components/Cards/vehicle-armor-card";
+import { UnitDescriptionCard } from "../components/Cards/unit-description-card";
 
 /**
  * This is example page you can find it by going on ur /unit-example
