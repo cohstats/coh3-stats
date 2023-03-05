@@ -1,4 +1,4 @@
-import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
+import { getMatchDuration, getMatchPlayersByFaction } from "../../../src/coh3/helpers";
 
 describe("getMatchDuration", () => {
   test("calculates the duration between start and end times (1 hour)", () => {
@@ -47,7 +47,7 @@ describe("getMatchPlayersByFaction", () => {
     { race_id: 129494, name: "Player 5", score: 500 },
   ];
 
-  it('should return all axis players when "axis" is passed as the faction', () => {
+  test('should return all axis players when "axis" is passed as the faction', () => {
     const result = getMatchPlayersByFaction(reportedPlayerResults, "axis");
     expect(result).toEqual([
       { race_id: 137123, name: "Player 2", score: 200 },
@@ -55,7 +55,7 @@ describe("getMatchPlayersByFaction", () => {
     ]);
   });
 
-  it('should return all allies players when "allies" is passed as the faction', () => {
+  test('should return all allies players when "allies" is passed as the faction', () => {
     const result = getMatchPlayersByFaction(reportedPlayerResults, "allies");
     expect(result).toEqual([
       { race_id: 129494, name: "Player 1", score: 100 },
