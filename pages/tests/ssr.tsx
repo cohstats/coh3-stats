@@ -12,6 +12,8 @@ const SSR: NextPage = ({ data, tableData }: any) => {
   return (
     <>
       ENV NAME |{config.getEdgioEnvName()}| IS DEV: |{`${config.isDevEnv()}`}|<br />
+      TTEST: ${process.env.TEST_CONFIG}
+      <br />
       THIS IS EXAMPLE OF SSR PAGE - lading {JSON.stringify(data)}
       <DataTable
         columns={[{ accessor: "name" }, { accessor: "age" }]}

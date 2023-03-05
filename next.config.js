@@ -7,10 +7,6 @@ const { withEdgio, withServiceWorker } = require("@edgio/next/config");
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  publicRuntimeConfig: {
-    // EDGIO_ENVIRONMENT_NAME is added at the deploy & build step
-    NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME: process.env.EDGIO_ENVIRONMENT_NAME,
-  },
 };
 
 const _preEdgioExport = nextConfig;

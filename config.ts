@@ -20,7 +20,12 @@ const firebaseFunctions = {
 };
 
 const isDevEnv = (): boolean => {
-  return !(process.env.NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME === "prod");
+  // Browser env
+  if (window) {
+    return window.location.hostname !== "coh3stats.com";
+  }
+  // Server env
+  return process.env.NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME !== "prod";
 };
 
 const getEdgioEnvName = (): string | null => {

@@ -11,6 +11,7 @@ import FactionIcon from "../faction-icon";
 import { formatMatchTime } from "../../src/utils";
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
+import config from "../../config";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -247,6 +248,7 @@ const PlayerRecentMatches = ({
           {
             title: "Debug",
             accessor: "debug",
+            hidden: !config.isDevEnv(),
             render: (record) => {
               return (
                 <>
