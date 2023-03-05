@@ -40,7 +40,7 @@ Development conventions:
 
 - Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
 - Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though)
-- Prettier and eslint should cover the rest 
+- Prettier and eslint should cover the rest
 
 ## Development aproach
 
@@ -84,7 +84,6 @@ Example pages:
 ### High level architecture
 
 ![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
-
 
 ## COH3 Stats technology stack
 
