@@ -14,7 +14,6 @@ import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
 import config from "../../config";
 import FilterableHeader from "./filterable-header";
-import { match } from "assert";
 
 export type FilterInformation = { label: string; checked: boolean; filter: string | number };
 
