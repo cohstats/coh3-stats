@@ -199,9 +199,8 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
   // Avg clipSize (measured in number of cooldowns, thus we need to add the first shot)
   const avgClipSize =
     (parseFloat(weapon_bag.reload.frequency.min) +
-      1 +
       parseFloat(weapon_bag.reload.frequency.max) +
-      1) /
+      +2) /
     2;
 
   // duration per shot
@@ -213,9 +212,9 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
     aimTime_f + burstTime_f + cooldown_f + parseFloat(windDown || 0) + parseFloat(windUp);
 
   // Time to empty the clip and reload
-  const clipTime_n = avgClipSize * shotDuration_n + reloadTime_n;
-  const clipTime_m = avgClipSize * shotDuration_m + reloadTime_m;
-  const clipTime_f = avgClipSize * shotDuration_f + reloadTime_f;
+  const clipTime_n = avgClipSize * shotDuration_n - avgCooldown + reloadTime_n;
+  const clipTime_m = avgClipSize * shotDuration_m - avgCooldown + reloadTime_m;
+  const clipTime_f = avgClipSize * shotDuration_f - avgCooldown + reloadTime_f;
 
   const avgDamage = (parseFloat(weapon_bag.damage.max) + parseFloat(weapon_bag.damage.min)) / 2;
 
@@ -226,10 +225,9 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
 
   // dmg for burst weapons
   if (weapon_bag.burst.can_burst === "True") {
-    dmgPerClip_n =
-      avgClipSize * avgDamage * burstRate_n * avgBurstTime * weapon_bag.accuracy.near;
-    dmgPerClip_m = avgClipSize * avgDamage * burstRate_m * avgBurstTime * weapon_bag.accuracy.mid;
-    dmgPerClip_f = avgClipSize * avgDamage * burstRate_f * avgBurstTime * weapon_bag.accuracy.far;
+    dmgPerClip_n = avgClipSize * avgDamage * burstRate_n * burstTime_n * weapon_bag.accuracy.near;
+    dmgPerClip_m = avgClipSize * avgDamage * burstRate_m * burstTime_m * weapon_bag.accuracy.mid;
+    dmgPerClip_f = avgClipSize * avgDamage * burstRate_f * burstTime_f * weapon_bag.accuracy.far;
   }
 
   // DPS infinite engagement with target size 1
