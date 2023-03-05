@@ -1,34 +1,47 @@
-import { Button, Checkbox, Flex, List, Popover, Text } from "@mantine/core";
+import { Button, Checkbox, Flex, Group, List, Popover, Text } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
-import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
+import { FilterInformation } from "./player-recent-matches";
 
 type FilterableHeaderProps = {
   title: string;
-  options: { label: string; checked: boolean; filter: string }[];
+  options: { [key: string | number]: FilterInformation };
+  onChange: (filter: string | number) => void;
+  onReset: () => void;
 };
-const FilterableHeader = ({ options, title }: FilterableHeaderProps) => {
+const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeaderProps) => {
+  function handleCheckboxChange(filter: string | number) {
+    onChange(filter);
+  }
   return (
     <Popover position="bottom" withArrow shadow="md">
       <Popover.Target>
-        <Flex>
-          <Text>{title}</Text>
-          <IconFilter cursor="pointer" />
-        </Flex>
+        <Group position="center">
+          <Flex>
+            <Text>{title}</Text>
+            <IconFilter cursor="pointer" />
+          </Flex>
+        </Group>
       </Popover.Target>
       <Popover.Dropdown>
-        <List listStyleType="none">
-          {options.map(({ checked, label }) => {
+        <List listStyleType="none" style={{ textAlign: "left" }}>
+          {Object.entries(options).map(([filter, { checked, label }]) => {
             return (
               <List.Item key={label}>
-                <Checkbox label={label} checked={checked} />
+                <Checkbox
+                  label={label}
+                  checked={checked}
+                  styles={{ input: { cursor: "pointer" }, label: { cursor: "pointer" } }}
+                  onChange={() => handleCheckboxChange(filter)}
+                />
               </List.Item>
             );
           })}
         </List>
-        <Flex gap={4}>
-          <Button size="xs">Reset</Button>
-          <Button size="xs">Apply</Button>
-        </Flex>
+        <Group position="center">
+          <Button onClick={onReset} size="xs">
+            Reset
+          </Button>
+        </Group>
       </Popover.Dropdown>
     </Popover>
   );
