@@ -4,23 +4,52 @@ import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core
 import { NotificationsProvider } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
-import { useLocalStorage } from "@mantine/hooks";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
 import { BetaVersion } from "../components/beta-version";
 import CustomSpotlightProvider from "../components/customSpotlightProvider";
+import { useEffect, useRef } from "react";
 
 webFirebase.init();
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps, router } = props;
 
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: "mantine-color-scheme",
-    defaultValue: "dark",
+  // get system colorscheme
+  const systemColorScheme = useColorScheme("dark");
+  const prevSystemColorSchemeRef = useRef(systemColorScheme);
+
+  // create a cookie on browser to store if the user is visiting the site for the first time
+  const [firstVisit, setFirstVisit] = useLocalStorage<boolean>({
+    key: "first-visit",
+    defaultValue: true,
     getInitialValueInEffect: true,
   });
 
+  // create a cookie on browser to store colorscheme starting out with system colorscheme as default
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: systemColorScheme,
+    getInitialValueInEffect: true,
+  });
+
+  // useColorScheme returns an incorrect initial value due to serverside rendering
+  // when on the client for the first time set the colorscheme to system preferences
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      // only run on client side
+      if (prevSystemColorSchemeRef.current !== systemColorScheme) {
+        if (firstVisit) {
+          setColorScheme(systemColorScheme);
+          setFirstVisit(false);
+        }
+      }
+      prevSystemColorSchemeRef.current = systemColorScheme;
+    }
+  }, [systemColorScheme]);
+
+  // switch colorscheme
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 

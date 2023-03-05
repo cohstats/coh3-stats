@@ -5,8 +5,9 @@
 
 import { getNumberOfOnlinePlayersSteamUrl } from "../../src/steam-api";
 import { logger } from "../../src/logger";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const fetchResponse = await fetch(getNumberOfOnlinePlayersSteamUrl());
     const { response } = await fetchResponse.json();
@@ -17,6 +18,6 @@ export default async function handler(req: any, res: any) {
       .json({ playerCount: response.player_count, timeStampMs: new Date().valueOf() });
   } catch (e) {
     logger.error(e);
-    res.status(500).json();
+    res.status(500).json({});
   }
 }
