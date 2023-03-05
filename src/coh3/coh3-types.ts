@@ -79,3 +79,63 @@ export type PlayerCardDataType = {
   standings: InternalStandings;
   info: { country: string; level: number; name: string; xp: number | undefined };
 };
+
+export interface Profile {
+  profile_id: number;
+  name: string;
+  alias: string;
+  personal_statgroup_id: number;
+  xp: number;
+  level: number;
+  leaderboardregion_id: number;
+  country: string;
+}
+
+export interface Matchhistoryreportresult {
+  matchhistory_id: number;
+  profile_id: number;
+  resulttype: number;
+  teamid: number;
+  race_id: number;
+  counters: string;
+  profile: Profile;
+}
+
+export interface Matchhistoryitem {
+  profile_id: number;
+  iteminstance_id: number;
+  itemdefinition_id: number;
+  itemlocation_id: number;
+}
+
+export interface Matchhistorymember {
+  matchhistory_id: number;
+  profile_id: number;
+  race_id: number;
+  statgroup_id: number;
+  teamid: number;
+  wins: number;
+  losses: number;
+  streak: number;
+  arbitration: number;
+  outcome: number;
+  oldrating: number;
+  newrating: number;
+  reporttype: number;
+}
+
+export interface MatchHistory {
+  id: number;
+  creator_profile_id: number;
+  mapname: string;
+  maxplayers: number;
+  matchtype_id: number;
+  description: string;
+  startgametime: number;
+  completiontime: number;
+  matchhistoryreportresults: Matchhistoryreportresult[];
+  matchhistoryitems: Matchhistoryitem[];
+  matchhistorymember: Matchhistorymember[];
+  profile_ids: number[];
+  steam_ids: string[];
+}

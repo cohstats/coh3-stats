@@ -4,7 +4,7 @@ import Image from "next/image";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
-import { raceID } from "../../src/coh3/coh3-types";
+import { MatchHistory, raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
 import FactionIcon from "../faction-icon";
@@ -12,6 +12,7 @@ import { formatMatchTime } from "../../src/utils";
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
 import config from "../../config";
+import FilterableHeader from "./filterable-header";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -19,12 +20,18 @@ const PlayerRecentMatches = ({
   error,
 }: {
   profileID: string;
-  playerMatchesData: Array<any>;
+  playerMatchesData: Array<MatchHistory>;
   error: string;
 }) => {
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
     columnAccessor: "Played",
     direction: "asc",
+  });
+  const [sortedData, setSortedData] = React.useState(sortBy(playerMatchesData, "Played"));
+  const [filters, setFilters] = React.useState({
+    result: [],
+    map: [],
+    mode: [],
   });
 
   const sortedData = React.useMemo(() => {
@@ -38,6 +45,25 @@ const PlayerRecentMatches = ({
     );
     return sortStatus.direction === "desc" ? resortedData.reverse() : resortedData;
   }, [sortStatus, playerMatchesData]);
+
+  React.useEffect(() => {
+    const mapNameSet = new Set<string>();
+    const mapTypeIdSet = new Set<string>();
+    playerMatchesData.forEach((record) => {
+      console.log("map", record.mapname);
+      mapNameSet.add(record.mapname);
+    });
+    const updatedFilters = {
+      result: [
+        { label: "victory", checked: true, filter: "victory" },
+        { label: "defeat", checked: true, filter: "defeat" },
+      ],
+      map: Array.from(mapNameSet).map((mapname) => {
+        return { label: mapname, checked: true, filter: mapname };
+      }),
+      mode: [],
+    };
+  }, [playerMatchesData]);
 
   if (error) {
     return <ErrorCard title={"Error rendering recent matches"} body={JSON.stringify(error)} />;
@@ -168,7 +194,7 @@ const PlayerRecentMatches = ({
           },
           {
             accessor: "result",
-            title: "Result",
+            title: <FilterableHeader title="Result" options={filters.result} />,
             textAlignment: "center",
             render: (record) => {
               if (isPlayerVictorious(record)) {
@@ -216,7 +242,7 @@ const PlayerRecentMatches = ({
           },
           {
             accessor: "mapname",
-            title: "Map",
+            title: <FilterableHeader title="Map" options={filters.map} />,
             // sortable: true,
             textAlignment: "center",
             render: (record) => {
@@ -224,7 +250,7 @@ const PlayerRecentMatches = ({
             },
           },
           {
-            title: "Mode",
+            title: <FilterableHeader title="Mode" options={filters.mode} />,
             accessor: "matchtype_id",
             // sortable: true,
             textAlignment: "center",
