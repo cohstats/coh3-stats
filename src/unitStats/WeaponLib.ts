@@ -17,12 +17,12 @@ interface WeaponData {
   parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
 }
 
-const traverseTree = (o: any, func: any, mapper: any, root: string = "", parent: string = "") => {
-  var relevantSet = new Set();
-  //var parent = parent;
+const traverseTree = (o: any, func: any, mapper: any, root: string, parent: string) => {
+  const relevantSet = new Set();
+  //let parent = parent;
   if (parent === "") parent = root;
 
-  for (var i in o) {
+  for (const i in o) {
     // check if object is relevant (eg. is weapon_bag?)
     const isRelevant = func.apply(this, [i, o[i]]);
 
@@ -31,11 +31,11 @@ const traverseTree = (o: any, func: any, mapper: any, root: string = "", parent:
       parent = i;
 
       //going one step down in the object tree!!
-      var childSet = traverseTree(o[i], func, mapper, root, parent);
+      const childSet = traverseTree(o[i], func, mapper, root, parent);
 
       childSet.forEach(relevantSet.add, relevantSet);
       // merge relevant object of child
-      for (var s in childSet) relevantSet.add(s);
+      for (const s in childSet) relevantSet.add(s);
 
       // add relevant object to return list
     } else if (isRelevant) {
@@ -51,7 +51,7 @@ const traverseTree = (o: any, func: any, mapper: any, root: string = "", parent:
 const mapWeaponData = (key: string, node: any, root: string, parent: string) => {
   if (key === "75_mm_leig_direct_shot_ak") console.log("undefined");
 
-  var weaponData: WeaponData = {
+  const weaponData: WeaponData = {
     id: "",
     ui_name: "",
     icon_name: "",
@@ -73,17 +73,18 @@ const mapWeaponData = (key: string, node: any, root: string, parent: string) => 
   weaponData.id = key;
 
   const weapon_bag: any = node.weapon_bag;
-  weaponData.ui_name = weapon_bag.ui_name;
+
+  // weaponData.ui_name = weapon_bag.ui_name.locstring.value; //@todo localization
   weaponData.icon_name = weapon_bag.icon_name;
   weaponData.weapon_bag = weapon_bag;
   weaponData.pbgid = node.pbgid;
-  weaponData.parent_pbg = node.parent_pbg;
+  //weaponData.parent_pbg = node.parent_pbg.instance_reference;
   weaponData.root = root;
   weaponData.faction = root;
   weaponData.label = key;
   weaponData.value = key;
   weaponData.data = weapon_bag;
-  weaponData.description = weapon_bag.ui_name || "No Description Available";
+  weaponData.description = weaponData.ui_name || "No Description Available";
   weaponData.parent = parent;
 
   return weaponData;
@@ -95,13 +96,13 @@ const isWeaponBagContainer = (key: string, obj: any) => {
 };
 
 const getWeaponData = (root: any) => {
-  var weaponSetAll: WeaponData[] = [];
+  const weaponSetAll: WeaponData[] = [];
 
-  for (var obj in root) {
-    var weaponSet = traverseTree(root[obj], isWeaponBagContainer, mapWeaponData, obj);
+  for (const obj in root) {
+    const weaponSet = traverseTree(root[obj], isWeaponBagContainer, mapWeaponData, obj, obj);
     // weaponSet.forEach(weaponSetAll.add, weaponSetAll);
     weaponSet.forEach((item: any) => {
-      var weapon_icon;
+      let weapon_icon;
 
       if (!item.weapon_bag.weapon_class) return;
 
@@ -171,9 +172,9 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
     (parseFloat(weapon_bag.burst.rate_of_fire.max) +
       parseFloat(weapon_bag.burst.rate_of_fire.min)) /
     2;
-  var burstRate_n = weapon_bag.burst.rate_of_fire_multiplier.near * avgBurstRate;
-  var burstRate_m = weapon_bag.burst.rate_of_fire_multiplier.mid * avgBurstRate;
-  var burstRate_f = weapon_bag.burst.rate_of_fire_multiplier.far * avgBurstRate;
+  const burstRate_n = weapon_bag.burst.rate_of_fire_multiplier.near * avgBurstRate;
+  const burstRate_m = weapon_bag.burst.rate_of_fire_multiplier.mid * avgBurstRate;
+  const burstRate_f = weapon_bag.burst.rate_of_fire_multiplier.far * avgBurstRate;
 
   // 3. Cooldown
   const avgCooldown =
@@ -219,9 +220,9 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
   const avgDamage = (parseFloat(weapon_bag.damage.max) + parseFloat(weapon_bag.damage.min)) / 2;
 
   // expected damage per clip including accuracy
-  var dmgPerClip_n = avgClipSize * avgDamage * weapon_bag.accuracy.near;
-  var dmgPerClip_m = avgClipSize * avgDamage * weapon_bag.accuracy.mid;
-  var dmgPerClip_f = avgClipSize * avgDamage * weapon_bag.accuracy.far;
+  let dmgPerClip_n = avgClipSize * avgDamage * weapon_bag.accuracy.near;
+  let dmgPerClip_m = avgClipSize * avgDamage * weapon_bag.accuracy.mid;
+  let dmgPerClip_f = avgClipSize * avgDamage * weapon_bag.accuracy.far;
 
   // dmg for burst weapons
   if (weapon_bag.burst.can_burst === "True") {
@@ -237,9 +238,9 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
   const dps_f = dmgPerClip_f / clipTime_f;
 
   // range
-  var range_n = weapon_bag.range.distance.near;
-  var range_m = weapon_bag.range.distance.mid;
-  var range_f = weapon_bag.range.distance.far;
+  let range_n = weapon_bag.range.distance.near;
+  let range_m = weapon_bag.range.distance.mid;
+  let range_f = weapon_bag.range.distance.far;
 
   if (range_n === -1) range_n = weapon_bag.range.min;
   if (range_m === -1) range_m = (weapon_bag.range.max - weapon_bag.range.min) / 2;

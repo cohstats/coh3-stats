@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import ErrorCard from "../components/error-card";
 import { getWeaponData, WeaponData } from "../src/unitStats/WeaponLib";
 import { DpsChart } from "../components/units/DpsChart";
 
@@ -27,13 +26,13 @@ export const getStaticProps = async () => {
   // relative path are not supported as far as I understood
   //const myReq = await fetch("http://localhost:3000/game_stats/weapons.json");
   const myReq = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/weapon/weapon.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/weapon.json",
   );
 
   const data = await myReq.json();
 
   // map Weapon Data at built time
-  var weaponData = getWeaponData(data);
+  const weaponData = getWeaponData(data);
 
   return { props: { weaponData: weaponData } };
 };

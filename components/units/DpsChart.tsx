@@ -15,11 +15,11 @@ import {
 import { Line } from "react-chartjs-2";
 import {
   Paper,
-  Title,
-  Group,
-  Text,
-  Avatar,
-  Tooltip,
+  // Title,
+  // Group,
+  // Text,
+  // Avatar,
+  // Tooltip,
   createStyles,
   Container,
 } from "@mantine/core";
@@ -48,7 +48,7 @@ ChartJS.register(
 );
 
 // Line Chart Options
-export var options = {
+export const options = {
   responsive: true,
   plugins: {
     legend: {
@@ -103,7 +103,7 @@ export var options = {
 // data : item.weapon_bag,
 // description: item.ui_name || 'No Description Available',
 const mapChartData = (searchItem: any) => {
-  var chartLine = {
+  let chartLine = {
     label: "No Item Selected",
     data: [],
     borderWidth: 2,
@@ -118,7 +118,7 @@ const mapChartData = (searchItem: any) => {
   if (searchItem)
     chartLine = {
       label: searchItem.value,
-      data: getWeaponDPSData(searchItem.data),
+      data: getWeaponDPSData(searchItem.data), // no clue
       borderWidth: 2,
       borderColor: "#4dabf7", // '#d048b6',
       cubicInterpolationMode: "monotone" as const,
@@ -153,15 +153,15 @@ export const DpsChart = (searchItems: IDPSProps) => {
   //const selectItem = searchItems.searchData.find(item => item.value = activeData );
   const chartData = mapChartData(activeData);
 
-  var maxY = 1;
+  let maxY = 1;
   if (chartData.datasets[0]) {
-    // for(var dataSet in chartData.datasets[0].data)
+    // for(let dataSet in chartData.datasets[0].data)
     // {
     //   if(dataSet.y > maxY  )
     //     maxY = dataSet.y;
     // }
     chartData.datasets[0].data.forEach((point) => {
-      if (point.y > maxY) maxY = point.y;
+      if (point.y > maxY) maxY = point.y; // who is never? :/
     });
     maxY = maxY * 1.3;
   }
