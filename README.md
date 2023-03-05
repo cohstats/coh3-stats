@@ -34,18 +34,15 @@ Before making an MR please create an issue describing what you want to change / 
 So we can have some discussion, also it avoids multiple people working on the same thing.
 
 Feel free to create fork and make MR. Before PR you can test your code with `yarn build` to make sure it can be build.
+Also make sure the prettier is right `yarn fix` and `yarn test`
 
 Development conventions:
 
 - Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
 - Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though)
-- Prettier and eslint should cover the rest
+- Prettier and eslint should cover the rest 
 
 ## Development aproach
-
-### High level architecture
-
-![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
 
 ### NextJS development
 
@@ -83,6 +80,11 @@ Example pages:
 - The BE of the CF will be closed source because, we will most likely connect to sensitive APIs
 
 ![image](https://user-images.githubusercontent.com/8086995/217599315-ff660c70-e9d6-4e99-88b9-c4ea21892433.png)
+
+### High level architecture
+
+![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
+
 
 ## COH3 Stats technology stack
 
