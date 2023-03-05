@@ -7,11 +7,19 @@ const { withEdgio, withServiceWorker } = require("@edgio/next/config");
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  // Maybe fixes rehydration issues with Mantine components - should verify this before merging into master
+  styledComponents: true,
+  maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+  largePageDataBytes: 10 * 1024 * 1024,
+  experimental: {
+    maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+    largePageDataBytes: 10 * 1024 * 1024,
+  },
 };
 
 const _preEdgioExport = nextConfig;
 
-module.exports = (phase, config) =>
+module.exports = async () =>
   withEdgio(
     withServiceWorker({
       // Output sourcemaps so that stack traces have original source filenames and line numbers when tailing
