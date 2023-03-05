@@ -8,7 +8,7 @@ import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
 import FactionIcon from "../faction-icon";
-import { formatMatchTime } from "../../src/utils";
+import * as timeago from 'timeago.js';
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
 
@@ -162,7 +162,7 @@ const PlayerRecentMatches = ({
                   <div>
                     <FactionIcon name={raceIDs[player?.race_id as raceID]} width={50} />
                   </div>
-                  <Text size={"xs"}> {formatMatchTime(record.completiontime)}</Text>
+                  <Text size={"xs"}>{timeago.format(record.completiontime * 1000)}</Text>
                 </>
               );
             },
