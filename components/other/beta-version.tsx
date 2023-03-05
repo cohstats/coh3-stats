@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const BetaVersion: React.FC = () => {
   return (
-    <Link href="/about" style={{ color: "#fff" }}>
+    <Link href="/pages/about" style={{ color: "#fff" }}>
       <div
         style={{
           position: "fixed",

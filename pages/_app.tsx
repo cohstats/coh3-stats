@@ -7,7 +7,7 @@ import { Footer } from "../components/Footer/Footer";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
-import { BetaVersion } from "../components/beta-version";
+import { BetaVersion } from "../components/other/beta-version";
 import CustomSpotlightProvider from "../components/customSpotlightProvider";
 import { useEffect, useRef } from "react";
 

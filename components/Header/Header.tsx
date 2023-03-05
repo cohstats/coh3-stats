@@ -21,7 +21,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
-import { ColorSchemeToggle } from "../color-scheme-toggle";
+import { ColorSchemeToggle } from "../other/color-scheme-toggle";
 import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
 import { raceType } from "../../src/coh3/coh3-types";

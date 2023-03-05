@@ -1,6 +1,6 @@
 import { useMantineColorScheme } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons";
-import { IconButton } from "./icon-button/icon-button";
+import { IconButton } from "../icon-button/icon-button";
 
 interface ColorSchemeToggleProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
