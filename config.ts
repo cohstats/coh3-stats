@@ -26,11 +26,11 @@ const isDevEnv = (): boolean => {
     return window.location.hostname !== "coh3stats.com";
   }
   // Server env
-  return process.env.NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME !== "prod";
+  return process.env.EDGIO_ENVIRONMENT_NAME !== "prod";
 };
 
 const getEdgioEnvName = (): string | null => {
-  return process.env.NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME || null;
+  return process.env.EDGIO_ENVIRONMENT_NAME || null;
 };
 
 const config = {
