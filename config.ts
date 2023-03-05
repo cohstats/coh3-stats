@@ -19,8 +19,23 @@ const firebaseFunctions = {
   location: "us-east4",
 };
 
+const isDevEnv = (): boolean => {
+  // Browser env
+  if (window) {
+    return window.location.hostname !== "coh3stats.com";
+  }
+  // Server env
+  return process.env.NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME !== "prod";
+};
+
+const getEdgioEnvName = (): string | null => {
+  return process.env.NEXT_PUBLIC_EDGIO_ENVIRONMENT_NAME || null;
+};
+
 const config = {
   getFirebaseConfig,
+  isDevEnv,
+  getEdgioEnvName,
   firebaseFunctions,
   DISCORD_INVITE_LINK: "https://discord.gg/jRrnwqMfkr",
   DONATION_LINK: "https://ko-fi.com/cohstats",
