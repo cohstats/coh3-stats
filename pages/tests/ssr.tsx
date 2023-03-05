@@ -6,10 +6,12 @@ import { NextPage } from "next";
 import React from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { DataTable } from "mantine-datatable";
+import config from "../../config";
 
 const SSR: NextPage = ({ data, tableData }: any) => {
   return (
     <>
+      ENV NAME |{config.getEdgioEnvName()}| IS DEV: |{`${config.isDevEnv()}`}|<br />
       THIS IS EXAMPLE OF SSR PAGE - lading {JSON.stringify(data)}
       <DataTable
         columns={[{ accessor: "name" }, { accessor: "age" }]}
