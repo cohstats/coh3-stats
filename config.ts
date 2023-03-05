@@ -1,4 +1,5 @@
 import packageJson from "./package.json";
+import { isBrowserEnv } from "./src/utils";
 const { repository } = packageJson;
 
 export interface FirebaseConfig {
@@ -21,7 +22,7 @@ const firebaseFunctions = {
 
 const isDevEnv = (): boolean => {
   // Browser env
-  if (window) {
+  if (isBrowserEnv()) {
     return window.location.hostname !== "coh3stats.com";
   }
   // Server env

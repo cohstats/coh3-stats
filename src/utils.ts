@@ -48,4 +48,8 @@ function formatMatchTime(startTime: number, onlyDate = false) {
   return timeDifference; //return duration in HH:MM:SS format
 }
 
-export { calculatePageNumber, calculatePositionNumber, formatMatchTime };
+const isBrowserEnv = () => {
+  return typeof window !== "undefined";
+};
+
+export { calculatePageNumber, calculatePositionNumber, formatMatchTime, isBrowserEnv };
