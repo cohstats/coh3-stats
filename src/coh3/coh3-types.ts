@@ -80,17 +80,6 @@ export type PlayerCardDataType = {
   info: { country: string; level: number; name: string; xp: number | undefined };
 };
 
-export interface Profile {
-  profile_id: number;
-  name: string;
-  alias: string;
-  personal_statgroup_id: number;
-  xp: number;
-  level: number;
-  leaderboardregion_id: number;
-  country: string;
-}
-
 export interface Matchhistoryreportresult {
   matchhistory_id: number;
   profile_id: number;
@@ -98,7 +87,7 @@ export interface Matchhistoryreportresult {
   teamid: number;
   race_id: number;
   counters: string;
-  profile: Profile;
+  profile: RawPlayerProfile;
 }
 
 export interface Matchhistoryitem {
