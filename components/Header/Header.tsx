@@ -198,19 +198,19 @@ export const Header: React.FC<HeaderProps> = () => {
                 <Flex justify="space-between">
                   <Flex gap="xs" align="center">
                     <FactionIcon name="american" width={18} />
-                    <FactionLink faction="american" href="/statistics/factions/american" />
+                    <FactionLink faction="american" href="/statistics/american" />
                   </Flex>
                   <Flex gap="xs" align="center">
                     <FactionIcon name="british" width={18} />
-                    <FactionLink faction="british" href="/statistics/factions/british" />
+                    <FactionLink faction="british" href="/statistics/british" />
                   </Flex>
                   <Flex gap="xs" align="center">
                     <FactionIcon name="dak" width={18} />
-                    <FactionLink faction="dak" href="/statistics/factions/dak" />
+                    <FactionLink faction="dak" href="/statistics/dak" />
                   </Flex>
                   <Flex gap="xs" align="center">
                     <FactionIcon name="german" width={18} />
-                    <FactionLink faction="german" href="/statistics/factions/german" />
+                    <FactionLink faction="german" href="/statistics/german" />
                   </Flex>
                 </Flex>
               </HoverCard.Dropdown>

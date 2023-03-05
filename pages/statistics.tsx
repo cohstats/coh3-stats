@@ -22,7 +22,7 @@ const Explorer: NextPage = () => {
           </Title>
           <Group>
             {factions.map((link) => (
-              <Anchor key={link} component={Link} href={`/statistics/factions/${link}`}>
+              <Anchor key={link} component={Link} href={`/statistics/${link}`}>
                 <Flex>
                   <FactionIcon name={link} width={40} />
                   <Group spacing="xs">{localizedNames[link]}</Group>

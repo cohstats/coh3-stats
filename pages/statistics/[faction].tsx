@@ -1,13 +1,13 @@
 import { Container, Flex, Table, Title, TextInput } from "@mantine/core";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { localizedNames } from "../../../src/coh3/coh3-data";
-import { normalizeWeapons, NullableNormalizedWeapon } from "../../../tools/weapon-normalizer";
-import FactionIcon from "../../../components/faction-icon";
+import { localizedNames } from "../../src/coh3/coh3-data";
+import { normalizeWeapons, NullableNormalizedWeapon } from "../../tools/weapon-normalizer";
+import FactionIcon from "../../components/faction-icon";
 import { useState } from "react";
 import { IconSearch } from "@tabler/icons";
 import { keys } from "lodash";
-import { raceType } from "../../../src/coh3/coh3-types";
+import { raceType } from "../../src/coh3/coh3-types";
 
 function filterData(data: NullableNormalizedWeapon[], search: string) {
   const query = search.toLowerCase().trim();
@@ -26,6 +26,7 @@ export interface FactionsProps {
 }
 
 const Faction = ({ faction, weapons }: FactionsProps) => {
+  console.log(faction);
   const [search, setSearch] = useState("");
   const wehrmachtWeapons = weapons?.filter((weapon) =>
     // compensating for a little mismatch between our raceType and the game's name for DAK
@@ -126,7 +127,7 @@ export const getStaticPaths: GetStaticPaths<{ faction: raceType }> = async () =>
         params: { faction: "dak" },
       },
     ],
-    fallback: true,
+    fallback: false,
   };
 };
 
@@ -150,6 +151,7 @@ export const getStaticProps: GetStaticProps<FactionsProps> = async ({ params }) 
     props: {
       weapons: flattenedWeapons,
       faction,
+      key: faction,
     },
   };
 };
