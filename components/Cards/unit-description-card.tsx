@@ -1,3 +1,4 @@
+import slash from "slash";
 import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
 
 /**
@@ -31,7 +32,7 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
         width={96}
         height={96}
         fit="contain"
-        src={`/icons/${desc.icon_name}.png`}
+        src={`/icons/${slash(desc.icon_name)}.png`}
         alt={desc.screen_name}
       />
       <Flex direction="column" gap={4}>
@@ -49,7 +50,7 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
             width={32}
             height={32}
             fit="contain"
-            src={`/icons/${desc.symbol_icon_name}.png`}
+            src={`/icons/${slash(desc.symbol_icon_name)}.png`}
             alt={`${desc.screen_name} symbol`}
           />
           <Tooltip label={desc.brief_text}>

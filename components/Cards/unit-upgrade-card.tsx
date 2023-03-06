@@ -1,3 +1,4 @@
+import slash from "slash";
 import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
 import { ResourceValues, StatsCosts } from "./cost-card";
 
@@ -43,7 +44,7 @@ const UnitUpgradeCardHeader = (desc: UnitUpgradeDescription) => (
         width={64}
         height={64}
         fit="contain"
-        src={`/icons/${desc.icon_name}.png`}
+        src={`/icons/${slash(desc.icon_name)}.png`}
         alt={desc.screen_name}
       ></Image>
       <Flex direction="column">
