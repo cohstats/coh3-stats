@@ -59,6 +59,7 @@ const UnitExample = () => {
               <Card bg="dark" p="lg" radius="md" withBorder>
                 <UnitUpgradeCard
                   desc={{
+                    extra_text: "Conversion upgrade",
                     screen_name: "L6 Lanciafiamme Conversion",
                     help_text: "Deals Area of Effect damage and ignores cover.",
                     brief_text: "Upgrades the unit into the L6/40 Light Flame Tank.",
@@ -73,6 +74,7 @@ const UnitExample = () => {
               <Card bg="dark" p="lg" radius="md" withBorder>
                 <UnitUpgradeCard
                   desc={{
+                    extra_text: "Support upgrade",
                     screen_name: "Spotting Scopes",
                     help_text: "Increases Line of Sight when stationary.",
                     brief_text: "Upgrades the unit with a spotting scope.",

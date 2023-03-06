@@ -22,6 +22,8 @@ type UnitUpgradeDescription = {
   screen_name: string;
   /** Locstring value. Found at `help_text/locstring/value`. */
   help_text: string;
+  /** Locstring value. Found at `extra_text/locstring/value`. */
+  extra_text: string;
   /** Locstring value. Found at `brief_text/locstring/value`. */
   brief_text: string;
   /** File path. Found at `icon_name`. */
@@ -49,16 +51,21 @@ const UnitUpgradeCardHeader = (desc: UnitUpgradeDescription) => (
       ></Image>
       <Flex direction="column">
         <Tooltip label={desc.screen_name}>
-          <Title order={4} transform="capitalize" lineClamp={1} color="dimmed">
+          <Title order={4} transform="capitalize" lineClamp={1}>
             {desc.screen_name}
           </Title>
         </Tooltip>
-        <Text fz="sm" fw={700} lineClamp={2} color="yellow.4">
-          {desc.help_text}
+        <Text fz="md" lineClamp={2} color="yellow.4">
+          {desc.extra_text}
         </Text>
         <Tooltip label={desc.brief_text}>
-          <Text fz="xs" fw={700} lineClamp={2} color="dimmed">
+          <Text fz="sm" lineClamp={1}>
             {desc.brief_text}
+          </Text>
+        </Tooltip>
+        <Tooltip label={desc.help_text}>
+          <Text fz="sm" lineClamp={1}>
+            {desc.help_text}
           </Text>
         </Tooltip>
       </Flex>
@@ -73,6 +80,7 @@ export const UnitUpgradeCard = ({ desc, time_cost }: UnitUpgrade) => (
         screen_name={desc.screen_name}
         help_text={desc.help_text}
         brief_text={desc.brief_text}
+        extra_text={desc.extra_text}
         icon_name={desc.icon_name}
       ></UnitUpgradeCardHeader>
       <StatsCosts
