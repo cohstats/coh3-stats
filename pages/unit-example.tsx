@@ -10,10 +10,10 @@ import {
   SimpleGrid,
   Stack,
 } from "@mantine/core";
-import { StatsCosts } from "../components/Cards/cost-card";
-import { StatsVehicleArmor } from "../components/Cards/vehicle-armor-card";
-import { UnitDescriptionCard } from "../components/Cards/unit-description-card";
-import { UnitUpgradeCard } from "../components/Cards/unit-upgrade-card";
+import { StatsCosts } from "../components/unit-cards/cost-card";
+import { StatsVehicleArmor } from "../components/unit-cards/vehicle-armor-card";
+import { UnitDescriptionCard } from "../components/unit-cards/unit-description-card";
+import { UnitUpgradeCard } from "../components/unit-cards/unit-upgrade-card";
 
 /**
  * This is example page you can find it by going on ur /unit-example
