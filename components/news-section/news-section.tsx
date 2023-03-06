@@ -1,11 +1,11 @@
-import { Container, Grid, Skeleton, useMantineTheme } from "@mantine/core";
+import { Container, Grid, Skeleton, useMantineTheme, px } from "@mantine/core";
 import React from "react";
 
 const PRIMARY_COL_HEIGHT = 200;
 
 export const NewsSection: React.FC = () => {
   const theme = useMantineTheme();
-  const SECONDARY_COL_HEIGHT = PRIMARY_COL_HEIGHT / 2 - theme.spacing.md / 2;
+  const SECONDARY_COL_HEIGHT = `calc(calc(${PRIMARY_COL_HEIGHT} / 2) - calc(${theme.spacing.md} / 2))`;
 
   return (
     <Container my="md">
