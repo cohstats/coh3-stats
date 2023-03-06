@@ -1,4 +1,3 @@
-import React from "react";
 import { DefaultMantineColor, Flex, Grid, Image, Text, Title } from "@mantine/core";
 
 /**
@@ -26,11 +25,11 @@ type StatsVehicleInput = {
 
 const VehicleTypeColor: Record<VehicleType, DefaultMantineColor> = {
   heavy_tank: "red.5",
-  medium_tank: "orange.4",
-  light_tank: "yellow.4",
-  light_halftrack: "lime.4",
-  light_armoured_car: "indigo.4",
-  ultra_light_carrier: "blue.4",
+  medium_tank: "orange.5",
+  light_tank: "yellow.5",
+  light_halftrack: "lime.5",
+  light_armoured_car: "indigo.5",
+  ultra_light_carrier: "blue.5",
 } as const;
 
 const VehicleArmorCover = [
@@ -42,7 +41,7 @@ const VehicleArmorCover = [
 export const StatsVehicleArmor = (cfg: StatsVehicleInput) => (
   <>
     <Flex direction="column">
-      <Title order={6} transform="uppercase" color="dimmed">
+      <Title order={6} transform="uppercase">
         Vehicle Armor
       </Title>
       <Text fz="xs" fw={700} transform="capitalize" color={VehicleTypeColor[cfg.type]}>
