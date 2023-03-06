@@ -78,6 +78,7 @@ const CustomSpotlightProvider = ({ children }: { children: ReactNode[] | null })
       actionComponent={SearchPlayerEntry}
       shortcut="mod + K"
       nothingFoundMessage={fetchLoading ? <Loader /> : "Nothing found..."}
+      highlightQuery={false}
     >
       {children}
     </SpotlightProvider>
