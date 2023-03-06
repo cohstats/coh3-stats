@@ -28,6 +28,7 @@ import { OnlinePlayers } from "../online-players";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../faction-icon";
+import config from "../../config";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -183,38 +184,53 @@ export const Header: React.FC<HeaderProps> = () => {
               </HoverCard.Dropdown>
             </HoverCard>
 
-            <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
-              <HoverCard.Target>
-                <div>
-                  <Anchor component={Link} href="/statistics" className={cx(classes.link)}>
-                    <Group spacing={3}>
-                      Statistics
-                      <IconChevronDown size={16} />
-                    </Group>
-                  </Anchor>
-                </div>
-              </HoverCard.Target>
-              <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                <Flex justify="space-between">
-                  <Flex gap="xs" align="center">
-                    <FactionIcon name="american" width={18} />
-                    <FactionLink faction="american" href="/statistics/american" />
+            {config.isDevEnv() ? (
+              <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+                <HoverCard.Target>
+                  <div>
+                    <Anchor component={Link} href="/statistics" className={cx(classes.link)}>
+                      <Group spacing={3}>
+                        Statistics
+                        <IconChevronDown size={16} />
+                      </Group>
+                    </Anchor>
+                  </div>
+                </HoverCard.Target>
+                <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
+                  <Flex justify="space-between">
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="american" width={18} />
+                      <FactionLink faction="american" href="/statistics/american" />
+                    </Flex>
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="british" width={18} />
+                      <FactionLink faction="british" href="/statistics/british" />
+                    </Flex>
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="dak" width={18} />
+                      <FactionLink faction="dak" href="/statistics/dak" />
+                    </Flex>
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="german" width={18} />
+                      <FactionLink faction="german" href="/statistics/german" />
+                    </Flex>
                   </Flex>
-                  <Flex gap="xs" align="center">
-                    <FactionIcon name="british" width={18} />
-                    <FactionLink faction="british" href="/statistics/british" />
-                  </Flex>
-                  <Flex gap="xs" align="center">
-                    <FactionIcon name="dak" width={18} />
-                    <FactionLink faction="dak" href="/statistics/dak" />
-                  </Flex>
-                  <Flex gap="xs" align="center">
-                    <FactionIcon name="german" width={18} />
-                    <FactionLink faction="german" href="/statistics/german" />
-                  </Flex>
-                </Flex>
-              </HoverCard.Dropdown>
-            </HoverCard>
+                </HoverCard.Dropdown>
+              </HoverCard>
+            ) : (
+              <Tooltip label="Coming soon" color="orange">
+                <Anchor
+                  component={Link}
+                  href="#"
+                  className={cx(classes.link, classes.disabledLink)}
+                >
+                  Statistics{" "}
+                  <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
+                    <IconBarrierBlock size={16} />
+                  </ActionIcon>
+                </Anchor>
+              </Tooltip>
+            )}
 
             <Tooltip label="Coming soon" color="orange">
               <Anchor
