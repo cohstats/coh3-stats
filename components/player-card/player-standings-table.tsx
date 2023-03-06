@@ -45,6 +45,7 @@ const PlayerStandingsTable = ({
         verticalSpacing="xs"
         // minHeight={300}
         // provide data
+        idAccessor={"type"}
         records={dataForTable}
         // define columns
         columns={[
