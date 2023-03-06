@@ -11,6 +11,7 @@ import FactionIcon from "../faction-icon";
 import { formatMatchTime } from "../../src/utils";
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
+import config from "../../config";
 
 const PlayerRecentMatches = ({
   profileID,
@@ -25,9 +26,8 @@ const PlayerRecentMatches = ({
     columnAccessor: "Played",
     direction: "asc",
   });
-  const [sortedData, setSortedData] = React.useState(sortBy(playerMatchesData, "Played"));
 
-  React.useEffect(() => {
+  const sortedData = React.useMemo(() => {
     const resortedData = sortBy(
       playerMatchesData,
       sortStatus.columnAccessor === "match_duration"
@@ -36,8 +36,7 @@ const PlayerRecentMatches = ({
           }
         : sortStatus.columnAccessor,
     );
-    setSortedData(sortStatus.direction === "desc" ? resortedData.reverse() : resortedData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return sortStatus.direction === "desc" ? resortedData.reverse() : resortedData;
   }, [sortStatus, playerMatchesData]);
 
   if (error) {
@@ -249,6 +248,7 @@ const PlayerRecentMatches = ({
           {
             title: "Debug",
             accessor: "debug",
+            hidden: !config.isDevEnv(),
             render: (record) => {
               return (
                 <>

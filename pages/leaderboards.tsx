@@ -14,6 +14,7 @@ import Head from "next/head";
 import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
 import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
 import FactionIcon from "../components/faction-icon";
+import { GetServerSideProps } from "next";
 
 /**
  * Timeago is causing issues with SSR, move to clinet side
@@ -229,13 +230,20 @@ const sortById = {
   elo: 1,
 };
 
-export async function getServerSideProps({ query }: any) {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { race, type, sortBy, start } = query;
 
-  const raceToFetch = race || "american";
-  const typeToFetch = type || "1v1";
+  const raceToFetch = (race as raceType) || "american";
+  const typeToFetch = (type as leaderBoardType) || "1v1";
   const sortByToFetch = sortById[sortBy as "wins" | "elo"] || 1;
-  const startToFetch = start || 1;
+  let startNumber: number | undefined;
+  if (start) {
+    const number = Number(start);
+    if (!isNaN(number)) {
+      startNumber = number;
+    }
+  }
+  const startToFetch = startNumber || 1;
 
   let leaderBoardData = null;
   let error = null;
@@ -267,6 +275,6 @@ export async function getServerSideProps({ query }: any) {
       typeToFetch,
     }, // will be passed to the page component as props
   };
-}
+};
 
 export default Leaderboards;
