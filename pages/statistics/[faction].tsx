@@ -20,12 +20,12 @@ function filterData(data: NullableNormalizedWeapon[], search: string) {
   );
 }
 
-export interface FactionsProps {
-  faction?: keyof typeof localizedNames;
+export interface FactionProps {
+  faction?: raceType;
   weapons?: NullableNormalizedWeapon[];
 }
 
-const Faction = ({ faction, weapons }: FactionsProps) => {
+const Faction = ({ faction, weapons }: FactionProps) => {
   console.log(faction);
   const [search, setSearch] = useState("");
   const wehrmachtWeapons = weapons?.filter((weapon) =>
@@ -131,8 +131,8 @@ export const getStaticPaths: GetStaticPaths<{ faction: raceType }> = async () =>
   };
 };
 
-export const getStaticProps: GetStaticProps<FactionsProps> = async ({ params }) => {
-  const faction = params?.faction as keyof typeof localizedNames | undefined;
+export const getStaticProps: GetStaticProps<FactionProps> = async ({ params }) => {
+  const faction = params?.faction as raceType | undefined;
 
   const weaponsReq = await fetch(
     "https://github.com/cohstats/coh3-data/raw/xml-data/scripts/xml-to-json/exported/weapon.json",
