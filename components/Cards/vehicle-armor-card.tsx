@@ -1,4 +1,3 @@
-import React from "react";
 import { DefaultMantineColor, Flex, Grid, Image, Text, Title } from "@mantine/core";
 
 /**

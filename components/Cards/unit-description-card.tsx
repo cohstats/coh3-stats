@@ -1,4 +1,3 @@
-import React from "react";
 import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
 
 /**
