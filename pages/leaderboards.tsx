@@ -55,6 +55,7 @@ const Leaderboards = ({
           verticalSpacing="sm"
           minHeight={300}
           // provide data
+          idAccessor={"statgroup_id"}
           records={leaderBoardData || []}
           page={calculatePageNumber(start, RECORD_PER_PAGE)}
           totalRecords={totalRecords}
