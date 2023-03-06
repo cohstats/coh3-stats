@@ -1,4 +1,5 @@
 import packageJson from "./package.json";
+import { isBrowserEnv } from "./src/utils";
 const { repository } = packageJson;
 
 export interface FirebaseConfig {
@@ -19,8 +20,23 @@ const firebaseFunctions = {
   location: "us-east4",
 };
 
+const isDevEnv = (): boolean => {
+  // Browser env
+  if (isBrowserEnv()) {
+    return window.location.hostname !== "coh3stats.com";
+  }
+  // Server env
+  return process.env.EDGIO_ENVIRONMENT_NAME !== "prod";
+};
+
+const getEdgioEnvName = (): string | null => {
+  return process.env.EDGIO_ENVIRONMENT_NAME || null;
+};
+
 const config = {
   getFirebaseConfig,
+  isDevEnv,
+  getEdgioEnvName,
   firebaseFunctions,
   DISCORD_INVITE_LINK: "https://discord.gg/jRrnwqMfkr",
   DONATION_LINK: "https://ko-fi.com/cohstats",

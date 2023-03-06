@@ -7,4 +7,8 @@ const calculatePositionNumber = (pageNumber: number, RECORD_PER_PAGE = 100) => {
   return (pageNumber - 1) * RECORD_PER_PAGE + 1;
 };
 
-export { calculatePageNumber, calculatePositionNumber };
+const isBrowserEnv = () => {
+  return typeof window !== "undefined";
+};
+
+export { calculatePageNumber, calculatePositionNumber, isBrowserEnv };

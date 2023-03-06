@@ -1,4 +1,5 @@
 import { AppProps } from "next/app";
+import Router from "next/router";
 import Head from "next/head";
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
@@ -7,11 +8,15 @@ import { Footer } from "../components/Footer/Footer";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
-import { BetaVersion } from "../components/beta-version";
+import { BetaVersion } from "../components/other/beta-version";
 import CustomSpotlightProvider from "../components/customSpotlightProvider";
 import { useEffect, useRef } from "react";
+import NProgress from "nprogress";
+import "../components/other/nprogress.css";
 
 webFirebase.init();
+
+NProgress.configure({ showSpinner: false });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps, router } = props;
@@ -52,6 +57,20 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   // switch colorscheme
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  useEffect(() => {
+    Router.events.on("routeChangeStart", () => {
+      NProgress.start();
+    });
+
+    Router.events.on("routeChangeComplete", () => {
+      NProgress.done(false);
+    });
+
+    Router.events.on("routeChangeError", () => {
+      NProgress.done(false);
+    });
+  }, []);
 
   let layoutContent = true;
   if ([`/landing`].includes(router.pathname)) {
