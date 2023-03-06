@@ -7,8 +7,7 @@ const InternalTimeAgo = ({ timestamp }: { timestamp: number }) => {
     <Tooltip label={new Date(timestamp * 1000).toLocaleString()}>
       <Text>{format(timestamp * 1000, "en")}</Text>
     </Tooltip>
-  )
-  
+  );
 };
 
 export default InternalTimeAgo;
