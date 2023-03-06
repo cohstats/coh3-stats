@@ -1,4 +1,4 @@
-import { Container, Grid, Skeleton, useMantineTheme, px } from "@mantine/core";
+import { Container, Grid, Skeleton, useMantineTheme } from "@mantine/core";
 import React from "react";
 
 const PRIMARY_COL_HEIGHT = 200;
