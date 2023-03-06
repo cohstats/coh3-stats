@@ -1,8 +1,19 @@
 import React from "react";
-import { Container, Title, Text, Grid, Flex, Tooltip, Card, SimpleGrid } from "@mantine/core";
+import {
+  Container,
+  Title,
+  Text,
+  Grid,
+  Flex,
+  Tooltip,
+  Card,
+  SimpleGrid,
+  Stack,
+} from "@mantine/core";
 import { StatsCosts } from "../components/Cards/cost-card";
 import { StatsVehicleArmor } from "../components/Cards/vehicle-armor-card";
 import { UnitDescriptionCard } from "../components/Cards/unit-description-card";
+import { UnitUpgradeCard } from "../components/Cards/unit-upgrade-card";
 
 /**
  * This is example page you can find it by going on ur /unit-example
@@ -11,10 +22,11 @@ import { UnitDescriptionCard } from "../components/Cards/unit-description-card";
 const UnitExample = () => {
   return (
     <Container size="lg">
-      <Title order={2} mb={8}>
+      <Title order={3} mb={8}>
         <Text fw={700}>This is an example Unit Stats Page.</Text>
       </Title>
       <Grid columns={3} gutter="md">
+        {/* Left Side */}
         <Grid.Col span={3} sm={2}>
           <SimpleGrid cols={2}>
             <Card bg="dark" p="lg" radius="md" withBorder>
@@ -40,12 +52,54 @@ const UnitExample = () => {
               </Flex>
             </Card>
           </SimpleGrid>
+
+          <Stack mt={16}>
+            <Title order={4}>Upgrades</Title>
+            <Stack>
+              <Card bg="dark" p="lg" radius="md" withBorder>
+                <UnitUpgradeCard
+                  desc={{
+                    screen_name: "L6 Lanciafiamme Conversion",
+                    help_text: "Deals Area of Effect damage and ignores cover.",
+                    brief_text: "Upgrades the unit into the L6/40 Light Flame Tank.",
+                    icon_name: "races\\afrika_corps\\upgrades\\lanciaflamme",
+                  }}
+                  time_cost={{
+                    munition: 75.0,
+                    time_seconds: 30.0,
+                  }}
+                ></UnitUpgradeCard>
+              </Card>
+              <Card bg="dark" p="lg" radius="md" withBorder>
+                <UnitUpgradeCard
+                  desc={{
+                    screen_name: "Spotting Scopes",
+                    help_text: "Increases Line of Sight when stationary.",
+                    brief_text: "Upgrades the unit with a spotting scope.",
+                    icon_name: "common\\abilities\\scan_kettenkrad_ger",
+                  }}
+                  time_cost={{
+                    munition: 30.0,
+                    time_seconds: 30.0,
+                  }}
+                ></UnitUpgradeCard>
+              </Card>
+            </Stack>
+          </Stack>
         </Grid.Col>
+
+        {/* Right Side */}
         <Grid.Col span={3} sm={1}>
           <Flex gap="md" direction="column">
             <Tooltip label="Stats Card tooltip">
               <Card bg="dark" p="lg" radius="md" withBorder>
-                <StatsCosts key="ex_cost" fuel={120} manpower={50} popcap={100}></StatsCosts>
+                <StatsCosts
+                  key="ex_cost"
+                  fuel={15.0}
+                  manpower={225.0}
+                  popcap={6}
+                  time_seconds={45.0}
+                ></StatsCosts>
               </Card>
             </Tooltip>
             <Tooltip label="Example heavy tank">
