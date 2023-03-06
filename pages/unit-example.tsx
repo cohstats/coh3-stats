@@ -29,7 +29,7 @@ const UnitExample = () => {
         {/* Left Side */}
         <Grid.Col span={3} sm={2}>
           <SimpleGrid cols={2}>
-            <Card bg="dark" p="lg" radius="md" withBorder>
+            <Card p="lg" radius="md" withBorder>
               <Flex h="100%">
                 <UnitDescriptionCard
                   screen_name="L6/40 Light Tank"
@@ -40,7 +40,7 @@ const UnitExample = () => {
                 ></UnitDescriptionCard>
               </Flex>
             </Card>
-            <Card bg="dark" p="lg" radius="md" withBorder>
+            <Card p="lg" radius="md" withBorder>
               <Flex h="100%">
                 <UnitDescriptionCard
                   screen_name="Carro Armato M13/40 Light Tank"
@@ -56,7 +56,7 @@ const UnitExample = () => {
           <Stack mt={16}>
             <Title order={4}>Upgrades</Title>
             <Stack>
-              <Card bg="dark" p="lg" radius="md" withBorder>
+              <Card p="lg" radius="md" withBorder>
                 <UnitUpgradeCard
                   desc={{
                     extra_text: "Conversion upgrade",
@@ -71,7 +71,7 @@ const UnitExample = () => {
                   }}
                 ></UnitUpgradeCard>
               </Card>
-              <Card bg="dark" p="lg" radius="md" withBorder>
+              <Card p="lg" radius="md" withBorder>
                 <UnitUpgradeCard
                   desc={{
                     extra_text: "Support upgrade",
@@ -94,7 +94,7 @@ const UnitExample = () => {
         <Grid.Col span={3} sm={1}>
           <Flex gap="md" direction="column">
             <Tooltip label="Stats Card tooltip">
-              <Card bg="dark" p="lg" radius="md" withBorder>
+              <Card p="lg" radius="md" withBorder>
                 <StatsCosts
                   key="ex_cost"
                   fuel={15.0}
@@ -105,7 +105,7 @@ const UnitExample = () => {
               </Card>
             </Tooltip>
             <Tooltip label="Example heavy tank">
-              <Card bg="dark" p="lg" radius="md" withBorder>
+              <Card p="lg" radius="md" withBorder>
                 <StatsVehicleArmor
                   key="ex_vehc_ht"
                   type="heavy_tank"
@@ -118,7 +118,7 @@ const UnitExample = () => {
               </Card>
             </Tooltip>
             <Tooltip label="Example ultra light carrier">
-              <Card bg="dark" p="lg" radius="md" withBorder>
+              <Card p="lg" radius="md" withBorder>
                 <StatsVehicleArmor
                   key="ex_vehc_ulc"
                   type="ultra_light_carrier"

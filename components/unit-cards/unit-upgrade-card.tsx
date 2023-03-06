@@ -55,7 +55,7 @@ const UnitUpgradeCardHeader = (desc: UnitUpgradeDescription) => (
             {desc.screen_name}
           </Title>
         </Tooltip>
-        <Text fz="md" lineClamp={2} color="yellow.4">
+        <Text fz="md" lineClamp={2} color="yellow.5">
           {desc.extra_text}
         </Text>
         <Tooltip label={desc.brief_text}>

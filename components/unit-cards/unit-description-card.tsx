@@ -36,11 +36,11 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
         alt={desc.screen_name}
       />
       <Flex direction="column" gap={4}>
-        <Title order={6} transform="capitalize" color="yellow.4">
+        <Title order={6} transform="capitalize" color="yellow.5">
           {desc.help_text}
         </Title>
         <Tooltip label={desc.screen_name}>
-          <Title order={4} transform="capitalize" lineClamp={1} color="dimmed">
+          <Title order={4} transform="capitalize" lineClamp={1}>
             {desc.screen_name}
           </Title>
         </Tooltip>
@@ -54,7 +54,7 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
             alt={`${desc.screen_name} symbol`}
           />
           <Tooltip label={desc.brief_text}>
-            <Text fz="xs" fw={700} lineClamp={2} color="dimmed">
+            <Text fz="xs" fw={700} lineClamp={2}>
               {desc.brief_text}
             </Text>
           </Tooltip>

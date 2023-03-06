@@ -34,7 +34,7 @@ const ResourceIcons = [
 export const StatsCosts = (costs: ResourceValues) => (
   <>
     <Stack spacing={0}>
-      <Title order={6} transform="uppercase" color="dimmed">
+      <Title order={6} transform="uppercase">
         Costs
       </Title>
       <Flex key="stats_costs_list" align="center" gap={16} mt={4}>
@@ -42,7 +42,7 @@ export const StatsCosts = (costs: ResourceValues) => (
           return costs[type] ? (
             <Flex key={type} direction="row" align="center" gap={4}>
               <Image height={24} width={24} fit="contain" src={icon} alt="Test text" />
-              <Text color="dimmed">{costs[type]}</Text>
+              <Text>{costs[type]}</Text>
             </Flex>
           ) : (
             <Fragment key={type}></Fragment>
