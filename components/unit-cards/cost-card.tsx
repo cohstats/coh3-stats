@@ -1,4 +1,5 @@
 import { Flex, Image, Stack, Text, Title } from "@mantine/core";
+import { Fragment } from "react";
 
 /**
  * These fields can be found at `ebps` / `upgrade` inside each entity object.
@@ -44,7 +45,7 @@ export const StatsCosts = (costs: ResourceValues) => (
               <Text color="dimmed">{costs[type]}</Text>
             </Flex>
           ) : (
-            <></>
+            <Fragment key={type}></Fragment>
           );
         })}
       </Flex>
