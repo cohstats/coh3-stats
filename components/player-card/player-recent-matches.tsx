@@ -53,8 +53,8 @@ const PlayerRecentMatches = ({
   }
 
   /**
- * Timeago is causing issues with SSR, move to client side
- */
+   * Timeago is causing issues with SSR, move to client side
+   */
   const DynamicTimeAgo = dynamic(() => import("../../components/internal-timeago"), {
     ssr: false,
     // @ts-ignore
