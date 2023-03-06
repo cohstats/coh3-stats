@@ -61,7 +61,6 @@ const PlayerRecentMatches = ({
     loading: () => "Calculating...",
   });
 
-
   const isPlayerVictorious = (matchRecord: any): boolean => {
     if (!matchRecord) return false;
 
