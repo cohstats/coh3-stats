@@ -2,7 +2,7 @@ import { AppProps } from "next/app";
 import Router from "next/router";
 import Head from "next/head";
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
@@ -111,13 +111,12 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <NotificationsProvider>
-            <CustomSpotlightProvider>
-              <BetaVersion />
-              {layoutContent && contentWithLayout}
-              {!layoutContent && contentWithoutLayout}
-            </CustomSpotlightProvider>
-          </NotificationsProvider>
+          <CustomSpotlightProvider>
+            <Notifications />
+            <BetaVersion />
+            {layoutContent && contentWithLayout}
+            {!layoutContent && contentWithoutLayout}
+          </CustomSpotlightProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
