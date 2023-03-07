@@ -15,18 +15,76 @@ import {
 import { Line } from "react-chartjs-2";
 import {
   Paper,
-  // Title,
-  // Group,
-  // Text,
-  // Avatar,
-  // Tooltip,
   createStyles,
   Container,
   Space,
   useMantineTheme,
+  SimpleGrid,
+  Rating,
+  Avatar,
+  Group,
+  Image,
+  Text,
+  NumberInput,
+  ActionIcon,
+  Box,
+  Stack,
 } from "@mantine/core";
 import { UnitSearch } from "./UnitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/WeaponLib";
+import { WeaponSearch } from "./weaponSearch";
+import { resolveLocstring } from "../../pages/unitCard";
+import { WeaponStats } from "../../src/unitStats/mappingWeapon";
+
+type UnitType = {
+  id: string;
+  text: string;
+  unitSymbol: string;
+  unitIcon: string;
+  sizeMax: number;
+  loadout: UnitEntityType[];
+  defaultWeapon: string;
+  slots: number;
+  cover: boolean;
+  moving: boolean;
+  vet: number;
+};
+
+type UnitEntityType = {
+  id: string;
+  text: string;
+  numMax: number;
+  number: number;
+  weaponSymbol: string;
+  replaceDefault: boolean;
+};
+
+const mapUnitData = (fileName: string, spbs: any) => {
+  const uiInfo = spbs.squad_ui_ext.race_data[0].info;
+  return {
+    id: fileName,
+    briefText: resolveLocstring(uiInfo.brief_text),
+    symbolIconName: uiInfo.symbol_icon_name,
+    iconName: uiInfo.icon_name,
+    weaponSymbol: "",
+    squadType: spbs.squad_type_ext,
+    loadout: [
+      {
+        id: "panzergrenadier_ak",
+        text: "Panzergrenadier",
+        numMax: 5,
+        currentWeapon: "kar98k_panzergrenadier_ak",
+        weaponSymbol: "/unitStats/weaponClass/weapon_dp_28_lmg.png",
+        unitSymbol: "",
+        active: true,
+      },
+    ],
+    defaultWeapon: "kar98k_panzergrenadier_ak",
+    slots: 5,
+    cover: false,
+    moving: false,
+  };
+};
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -112,30 +170,24 @@ export const options = {
 const mapChartData = (searchItem: any) => {
   const noData: any[] = [];
 
-  let chartLine = {
+  const chartLine = {
     label: "No Item Selected",
     data: noData,
     borderWidth: 2,
     borderColor: "#4dabf7", // '#d048b6',
-    cubicInterpolationMode: "monotone" as const,
+    //cubicInterpolationMode: "monotone" as const,
+    stepped: "after",
     tension: 0.5,
-    fill: true,
+    pointStyle: "rect",
+    fill: false,
     backgroundColor: "rgba(0, 100, 150, 0.3)",
     pointRadius: 5,
+    intersect: true,
   };
 
-  if (searchItem)
-    chartLine = {
-      label: searchItem.value,
-      data: getWeaponDPSData(searchItem.data), // no clue
-      borderWidth: 2,
-      borderColor: "#4dabf7", // '#d048b6',
-      cubicInterpolationMode: "monotone" as const,
-      tension: 0.5,
-      fill: true,
-      backgroundColor: "rgba(0, 100, 150, 0.3)",
-      pointRadius: 5,
-    };
+  if (searchItem) {
+    (chartLine.label = searchItem.value), (chartLine.data = getWeaponDPSData(searchItem.data)); // no clue
+  }
   return chartLine;
 };
 
@@ -162,7 +214,8 @@ interface IDPSProps {
   searchData: any[];
 }
 
-export const DpsChart = (searchItems: IDPSProps) => {
+//export const DpsChart = (searchItems: IDPSProps) => {
+export const DpsChart = () => {
   const searchData_default: any[] = [];
   const [activeData, setActiveData] = useState(searchData_default);
   const { classes } = useStyles();
@@ -189,29 +242,287 @@ export const DpsChart = (searchItems: IDPSProps) => {
     chartData.datasets.forEach(function (set, i) {
       set.borderColor = theme.colors.blue[5];
       set.backgroundColor = hexToRgbA(theme.colors.blue[5], "0.3");
+      // set.fill = true;
       if (i > 0) {
         set.borderColor = theme.colors.red[5];
         set.backgroundColor = hexToRgbA(theme.colors.red[5], "0.3");
+        //set.fill = false;
       }
 
       set.data.forEach((point: any) => {
-        if (point.y > maxY) maxY = point.y; // who is never? :/
+        if (point.y > maxY) maxY = point.y;
       });
     });
   }
   // some scale buffer above the highest point
-  maxY = maxY * 1.3;
+  maxY = maxY * 1.1;
 
   options.scales.y.suggestedMax = maxY;
 
   return (
-    <Container size={"sm"} p={"md"}>
-      <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
-        <Space h="sm" />
-        <UnitSearch searchData={searchItems.searchData} onSelect={onSelectionChange}></UnitSearch>
-        <Space h="sm" />
-        <Line options={options} data={chartData} redraw={true} />
-      </Paper>
-    </Container>
+    <>
+      <Container size="md">
+        <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
+          <Space h="sm" />
+          <UnitSearch searchData={WeaponStats} onSelect={onSelectionChange}></UnitSearch>
+          <Space h="sm" />
+          {false && (
+            <>
+              <SimpleGrid cols={2} spacing="sm" verticalSpacing="xs">
+                <Stack align="left" justify="flex-start" spacing="xs">
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark"
+                          ? theme.colors.dark[9]
+                          : theme.colors.gray[0],
+                      border: "solid 1px " + theme.colors.dark[6],
+                      textAlign: "left",
+                      padding: theme.spacing.xs,
+                      borderRadius: theme.radius.md,
+                    })}
+                  >
+                    <Group>
+                      <Avatar
+                        src="/icons/races/afrika_corps/infantry/panzergrenadier_ak.png"
+                        alt="Panzergrenadier"
+                        radius="xs"
+                        size="md"
+                      />
+                      <Rating defaultValue={0} size="sm" count={3} />
+
+                      <ActionIcon size="lg">
+                        <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png">
+                          {" "}
+                        </Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/cover/heavy.png"></Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/cover/light.png"></Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/cover/negative.png"></Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/units/garrisoned.png"></Image>
+                      </ActionIcon>
+                    </Group>
+                  </Box>
+                  <WeaponSearch
+                    searchData={WeaponStats}
+                    onSelect={onSelectionChange}
+                  ></WeaponSearch>
+                  <Group spacing="xs">
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[7]
+                            : theme.colors.gray[0],
+                        border: "solid 1px " + theme.colors.dark[4],
+                        padding: theme.spacing.xs,
+                        borderRadius: theme.radius.md,
+                      })}
+                    >
+                      <Image
+                        width={60}
+                        height={30}
+                        src="\unitStats\weaponClass\weapon_lmg_mg34.png"
+                        fit="contain"
+                        alt="K98"
+                      />
+                      <Text size="xs">weapon_lmg_mg34</Text>
+                      <Space h="xs"></Space>
+                      <Box
+                        sx={(theme) => ({
+                          width: "60px",
+                        })}
+                      >
+                        <NumberInput defaultValue={5} size="xs" />
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[7]
+                            : theme.colors.gray[0],
+                        border: "solid 1px " + theme.colors.dark[4],
+                        padding: theme.spacing.xs,
+                        borderRadius: theme.radius.md,
+                      })}
+                    >
+                      <Image
+                        width={60}
+                        height={30}
+                        src="\unitStats\weaponClass\weapon_lmg_mg34.png"
+                        fit="contain"
+                        alt="K98"
+                      />
+                      <Text size="xs">weapon_lmg_mg34</Text>
+                      <Space h="xs"></Space>
+                      <Box
+                        sx={(theme) => ({
+                          width: "60px",
+                        })}
+                      >
+                        <NumberInput defaultValue={5} size="xs" />
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[9]
+                            : theme.colors.gray[0],
+                        border: "solid 1px " + theme.colors.dark[4],
+                        padding: theme.spacing.xs,
+                        borderRadius: theme.radius.md,
+                      })}
+                    >
+                      <Image
+                        width={60}
+                        height={30}
+                        src="\unitStats\weaponClass\weapon_lmg_mg34.png"
+                        fit="contain"
+                        alt="K98"
+                      />
+                      <Text size="xs">weapon_lmg_mg34</Text>
+                      <Space h="xs"></Space>
+                      <Box
+                        sx={(theme) => ({
+                          border:
+                            theme.colorScheme === "dark"
+                              ? theme.colors.dark[9]
+                              : theme.colors.gray[0],
+                          width: "60px",
+                        })}
+                      >
+                        <NumberInput defaultValue={5} size="xs" />
+                      </Box>
+                    </Box>
+                  </Group>
+                </Stack>
+
+                <Stack align="left" justify="flex-start" spacing="xs">
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark"
+                          ? theme.colors.dark[9]
+                          : theme.colors.gray[0],
+                      border: "solid 1px " + theme.colors.dark[6],
+                      textAlign: "left",
+                      padding: theme.spacing.xs,
+                      borderRadius: theme.radius.md,
+                    })}
+                  >
+                    <Group>
+                      <Avatar
+                        src="/icons/races/british/infantry/tommy_uk.png"
+                        alt="Panzergrenadier"
+                        radius="xs"
+                        size="md"
+                      />
+                      <Rating defaultValue={0} size="sm" count={3} />
+
+                      <ActionIcon size="lg">
+                        <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png">
+                          {" "}
+                        </Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/cover/heavy.png"></Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/cover/light.png"></Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/cover/negative.png"></Image>
+                      </ActionIcon>
+                      <ActionIcon size="lg">
+                        <Image src="/icons/common/units/garrisoned.png"></Image>
+                      </ActionIcon>
+                    </Group>
+                  </Box>
+
+                  <Group spacing="xs">
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[7]
+                            : theme.colors.gray[0],
+                        border: "solid 1px " + theme.colors.dark[4],
+                        padding: theme.spacing.xs,
+                        borderRadius: theme.radius.md,
+                      })}
+                    >
+                      <Image
+                        width={60}
+                        height={30}
+                        src="/unitStats/weaponClass/weapon_dp_28_lmg.png"
+                        fit="contain"
+                        alt="K98"
+                      />
+                      <Text size="xs">weapon_lmg_mg34</Text>
+                      <Space h="xs"></Space>
+                      <Box
+                        sx={(theme) => ({
+                          width: "60px",
+                        })}
+                      >
+                        <NumberInput defaultValue={5} size="xs" />
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[7]
+                            : theme.colors.gray[0],
+                        border: "solid 1px " + theme.colors.dark[4],
+                        padding: theme.spacing.xs,
+                        borderRadius: theme.radius.md,
+                      })}
+                    >
+                      <Image
+                        width={60}
+                        height={30}
+                        src="/unitStats/weaponClass/weapon_dp_28_lmg.png"
+                        fit="contain"
+                        alt="K98"
+                      />
+                      <Text size="xs">weapon_lmg_mg34</Text>
+                      <Space h="xs"></Space>
+                      <Box
+                        sx={(theme) => ({
+                          width: "60px",
+                        })}
+                      >
+                        <NumberInput defaultValue={5} size="xs" />
+                      </Box>
+                    </Box>
+                  </Group>
+                </Stack>
+
+                <Space h="sm" />
+              </SimpleGrid>
+              <Space h="sm" />
+            </>
+          )}
+        </Paper>
+      </Container>
+      <Container size="md">
+        <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
+          <Line options={options} data={chartData as any} redraw={true} />
+        </Paper>
+      </Container>
+    </>
   );
 };
