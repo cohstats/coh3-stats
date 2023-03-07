@@ -1,4 +1,4 @@
-import { calculatePageNumber, calculatePositionNumber } from "../../src/utils";
+import { calculatePageNumber, calculatePositionNumber, isBrowserEnv } from "../../src/utils";
 
 describe("calculatePositionNumber", () => {
   test("returns 0 for page 1", () => {
@@ -33,5 +33,33 @@ describe("calculatePageNumber", () => {
   // Define a test case for a large position
   test("position 1000 should be on page 10", () => {
     expect(calculatePageNumber(1000)).toBe(10);
+  });
+});
+
+describe("isBrowserEnv", () => {
+  let windowSpy: any;
+
+  beforeEach(() => {
+    windowSpy = jest.spyOn(global, "window", "get");
+  });
+
+  afterEach(() => {
+    windowSpy.mockRestore();
+  });
+
+  it("should return true in a browser environment", () => {
+    windowSpy.mockImplementation(() => ({
+      location: {
+        href: "https://example.com",
+      },
+    }));
+
+    expect(isBrowserEnv()).toBe(true);
+  });
+
+  it("should return false in a non-browser environment", () => {
+    windowSpy.mockImplementation(() => undefined);
+
+    expect(isBrowserEnv()).toBe(false);
   });
 });
