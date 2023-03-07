@@ -1,9 +1,6 @@
-import { WeaponBag, WeaponsData } from "../src/coh3/coh3-types";
-import {
-  getWeaponProperties,
-  normalizeWeapons,
-  NullableNormalizedWeapon,
-} from "./weapon-normalizer";
+import { WeaponBag, WeaponsData } from "../coh3/coh3-types";
+import { NullableNormalizedWeapon } from "./types";
+import { getWeaponProperties, normalizeWeapons } from "./weapon-normalizer";
 
 describe("normalizeWeapons", () => {
   it("should return an empty array when weaponData is empty", () => {
