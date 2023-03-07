@@ -2,7 +2,7 @@ import { Container, Flex, Table, Title, TextInput } from "@mantine/core";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { localizedNames } from "../../src/coh3/coh3-data";
-import { normalizeWeapons, NullableNormalizedWeapon } from "../../tools/weapon-normalizer";
+import { normalizeWeapons, NullableNormalizedWeapon } from "../../lib/weapon-normalizer";
 import FactionIcon from "../../components/faction-icon";
 import { useState } from "react";
 import { IconSearch } from "@tabler/icons";
