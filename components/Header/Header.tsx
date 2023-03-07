@@ -16,6 +16,7 @@ import {
   ActionIcon,
   Tooltip,
   Anchor,
+  Flex,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
@@ -26,6 +27,8 @@ import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
+import FactionIcon from "../faction-icon";
+import config from "../../config";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -114,26 +117,30 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+const FactionLink = ({ faction, href }: { faction: raceType; href: string }) => (
+  <Text>
+    <Anchor component={Link} href={href}>
+      {localizedNames[faction]}
+    </Anchor>
+  </Text>
+);
+
 export const Header: React.FC<HeaderProps> = () => {
   const { classes, cx } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
 
-  const factionLink = (faction: raceType, gamemode: string) => (
-    <Text>
-      <Anchor component={Link} href={"/leaderboards?race=" + faction + "&type=" + gamemode}>
-        {localizedNames[faction]}
-      </Anchor>
-    </Text>
+  const factionLeaderboardLink = (faction: raceType, gamemode: string) => (
+    <FactionLink faction={faction} href={"/leaderboards?race=" + faction + "&type=" + gamemode} />
   );
 
   const gamemodeLeaderboards = (gamemode: string) => (
     <div>
       <Text weight={700}>{gamemode}</Text>
       <Divider my="sm" />
-      {factionLink("american", gamemode)}
-      {factionLink("german", gamemode)}
-      {factionLink("dak", gamemode)}
-      {factionLink("british", gamemode)}
+      {factionLeaderboardLink("american", gamemode)}
+      {factionLeaderboardLink("german", gamemode)}
+      {factionLeaderboardLink("dak", gamemode)}
+      {factionLeaderboardLink("british", gamemode)}
     </div>
   );
   return (
@@ -176,18 +183,54 @@ export const Header: React.FC<HeaderProps> = () => {
                 </SimpleGrid>
               </HoverCard.Dropdown>
             </HoverCard>
-            <Tooltip label="Coming soon" color="orange">
-              <Anchor
-                component={Link}
-                href="#"
-                className={cx(classes.link, classes.disabledLink)}
-              >
-                Statistics{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Anchor>
-            </Tooltip>
+
+            {config.isDevEnv() ? (
+              <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+                <HoverCard.Target>
+                  <div>
+                    <Anchor component={Link} href="/statistics" className={cx(classes.link)}>
+                      <Group spacing={3}>
+                        Statistics
+                        <IconChevronDown size={16} />
+                      </Group>
+                    </Anchor>
+                  </div>
+                </HoverCard.Target>
+                <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
+                  <Flex justify="space-between">
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="american" width={18} />
+                      <FactionLink faction="american" href="/statistics/american" />
+                    </Flex>
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="british" width={18} />
+                      <FactionLink faction="british" href="/statistics/british" />
+                    </Flex>
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="dak" width={18} />
+                      <FactionLink faction="dak" href="/statistics/dak" />
+                    </Flex>
+                    <Flex gap="xs" align="center">
+                      <FactionIcon name="german" width={18} />
+                      <FactionLink faction="german" href="/statistics/german" />
+                    </Flex>
+                  </Flex>
+                </HoverCard.Dropdown>
+              </HoverCard>
+            ) : (
+              <Tooltip label="Coming soon" color="orange">
+                <Anchor
+                  component={Link}
+                  href="#"
+                  className={cx(classes.link, classes.disabledLink)}
+                >
+                  Statistics{" "}
+                  <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
+                    <IconBarrierBlock size={16} />
+                  </ActionIcon>
+                </Anchor>
+              </Tooltip>
+            )}
 
             <Tooltip label="Coming soon" color="orange">
               <Anchor
