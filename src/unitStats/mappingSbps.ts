@@ -9,28 +9,34 @@ type SbpsType = {
 // exported variable holding mapped data for each
 // json file. Will be set via setSbpsStats.
 // Can be accessed from everywhere
-let spbsStats: SbpsType[];
+let sbpsStats: SbpsType[];
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
 const mapSbpsData = (subtree: any, filename: string, root: string) => {
-  const spbsEntity: SbpsType = {
+  const sbpsEntity: SbpsType = {
     filename: filename,
     root: root,
     // todo
   };
 
-  return spbsEntity;
+  return sbpsEntity;
 };
 
 // calls the mapping for each entity and
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const setSpbsStats = (sbpsJson: any) => {
+const getSbpsStats = (sbpsJson: any) => {
   //@todo to be filled
-  spbsStats = [];
+  return [];
 };
 
-export { mapSbpsData, setSpbsStats };
+//
+const setSbpsStats = (sbpsStats: SbpsType[]) => {
+  //@todo to be filled
+  sbpsStats = sbpsStats;
+};
+
+export { sbpsStats, setSbpsStats, getSbpsStats };
 export type { SbpsType };

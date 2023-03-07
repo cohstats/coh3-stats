@@ -1,6 +1,6 @@
 import { resolveLocstring } from "../../pages/unitCard";
-import { traverseTree } from "./UnitStatsLib";
-import { isWeaponBagContainer } from "./WeaponLib";
+import { traverseTree } from "./unitStatsLib";
+import { isWeaponBagContainer } from "./weaponLib";
 
 let WeaponStats: WeaponType[];
 

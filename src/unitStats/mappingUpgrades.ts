@@ -9,7 +9,7 @@ type UpgradesType = {
 // exported variable holding mapped data for each
 // json file. Will be set via setSbpsStats.
 // Can be accessed from everywhere
-let UpgradesStats: UpgradesType[];
+let upgradesStats: UpgradesType[];
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
@@ -27,10 +27,15 @@ const mapUpgradesData = (subtree: any, filename: string, root: string) => {
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const setUpgradesStats = (upgradesJson: any) => {
+const getUpgradesStats = (upgradesJson: any) => {
   //@todo to be filled
-  UpgradesStats = [];
+  return [];
 };
 
-export { UpgradesStats, setUpgradesStats };
+//
+const setUpgradesStats = (upgradesStats: UpgradesType[]) => {
+  upgradesStats = upgradesStats;
+};
+
+export { upgradesStats, setUpgradesStats, getUpgradesStats };
 export type { UpgradesType };

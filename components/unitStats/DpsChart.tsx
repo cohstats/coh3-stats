@@ -30,11 +30,11 @@ import {
   Box,
   Stack,
 } from "@mantine/core";
-import { UnitSearch } from "./UnitSearch";
-import { getSingleWeaponDPS } from "../../src/unitStats/WeaponLib";
+import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
 import { WeaponSearch } from "./weaponSearch";
 import { resolveLocstring } from "../../pages/unitCard";
 import { WeaponStats } from "../../src/unitStats/mappingWeapon";
+import { UnitSearch } from "./UnitSearch";
 
 type UnitType = {
   id: string;
