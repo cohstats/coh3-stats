@@ -13,7 +13,7 @@ const CustomSpotlightProvider = ({ children }: { children: ReactNode[] | null })
   const [actions, setActions] = useState<[] | SpotlightAction[]>([]);
   const [fetchLoading, setFetchLoading] = useState(false);
   // debounce query (wait till user stopped actively entering stuff in the search field)
-  const [debouncedQuery, setDebouncedQuery] = useDebouncedState("", 200);
+  const [debouncedQuery, setDebouncedQuery] = useDebouncedState("", 500);
 
   /**
    * Request additional results for the spotlight search based on the user input and add to spotlight entries
@@ -78,6 +78,7 @@ const CustomSpotlightProvider = ({ children }: { children: ReactNode[] | null })
       actionComponent={SearchPlayerEntry}
       shortcut="mod + K"
       nothingFoundMessage={fetchLoading ? <Loader /> : "Nothing found..."}
+      highlightQuery={false}
     >
       {children}
     </SpotlightProvider>

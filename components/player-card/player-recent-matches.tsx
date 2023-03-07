@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
@@ -8,7 +9,6 @@ import { raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
 import FactionIcon from "../faction-icon";
-import { formatMatchTime } from "../../src/utils";
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
 import config from "../../config";
@@ -51,6 +51,15 @@ const PlayerRecentMatches = ({
       />
     );
   }
+
+  /**
+   * Timeago is causing issues with SSR, move to client side
+   */
+  const DynamicTimeAgo = dynamic(() => import("../../components/internal-timeago"), {
+    ssr: false,
+    // @ts-ignore
+    loading: () => "Calculating...",
+  });
 
   const isPlayerVictorious = (matchRecord: any): boolean => {
     if (!matchRecord) return false;
@@ -161,7 +170,7 @@ const PlayerRecentMatches = ({
                   <div>
                     <FactionIcon name={raceIDs[player?.race_id as raceID]} width={50} />
                   </div>
-                  <Text size={"xs"}> {formatMatchTime(record.completiontime)}</Text>
+                  <DynamicTimeAgo timestamp={record.completiontime} />
                 </>
               );
             },

@@ -8,6 +8,7 @@ import {
   Avatar,
   Indicator,
 } from "@mantine/core";
+import { SpotlightActionProps } from "@mantine/spotlight";
 
 const useStyles = createStyles((theme) => ({
   action: {
@@ -23,12 +24,13 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const SearchPlayerEntry: React.FC<any> = ({
+export const SearchPlayerEntry: React.FC<SpotlightActionProps> = ({
   action,
   styles,
   classNames,
   hovered,
   onTrigger,
+  highlightQuery,
   ...others
 }) => {
   const { classes, cx } = useStyles();
@@ -53,7 +55,6 @@ export const SearchPlayerEntry: React.FC<any> = ({
                 />
               }
               color="rgba(0,0,0,0)"
-              dot={false}
             >
               <Avatar src={action.image} alt={action.title} />
             </Indicator>
