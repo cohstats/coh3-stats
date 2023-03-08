@@ -7,7 +7,14 @@ type SbpsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
   path: string; // folder from which the extraction got started. Eg. afrika_corps, american, british,.
   faction: string; // races\[factionName]
-  //todo
+  loadout: LoadoutData[]; // squad_loadout_ext.unit_list
+  unitType: string; //
+};
+
+type LoadoutData = {
+  isDefaultUnit: boolean;
+  num: number;
+  type: string;
 };
 
 // exported variable holding mapped data for each
@@ -17,14 +24,43 @@ let sbpsStats: SbpsType[];
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapSbpsData = (subtree: any, filename: string, jsonPath: string) => {
+const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
   const sbpsEntity: SbpsType = {
     id: filename,
     path: jsonPath,
     faction: jsonPath.split("//")[1],
+    unitType: parent,
+    loadout: [],
   };
 
+  mapExtensions(subtree, sbpsEntity);
+
+  // compute load out
+
   return sbpsEntity;
+};
+
+const mapExtensions = (root: any, spbps: SbpsType) => {
+  for (const squadext in root.extensions) {
+    const extension = root.extensions[squadext].squadexts;
+    for (const attribute in extension) {
+      const attr_obj = extension[attribute];
+      switch (attribute) {
+        case "squad_loadout_ext":
+          for (const unit in attr_obj) {
+            spbps.loadout.push({
+              isDefaultUnit: attr_obj.is_default_unit,
+              num: attr_obj.num,
+              type: attr_obj.type,
+            });
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
 };
 
 // calls the mapping for each entity and
@@ -84,7 +120,7 @@ const getSbpsStats = async () => {
 
 const isExtensionContainer = (key: string, obj: any) => {
   // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "extension";
+  return Object.keys(obj)[0] === "extensions";
 };
 
 //

@@ -266,7 +266,7 @@ export const DpsChart = () => {
           <Space h="sm" />
           <UnitSearch searchData={WeaponStats} onSelect={onSelectionChange}></UnitSearch>
           <Space h="sm" />
-          {true && (
+          {false && (
             <>
               <SimpleGrid cols={2} spacing="sm" verticalSpacing="xs">
                 <Stack align="left" justify="flex-start" spacing="xs">
