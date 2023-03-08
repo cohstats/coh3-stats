@@ -17,6 +17,7 @@ type LocstringObjectSchema = {
 
 // The input comes from the weapon / ebps / sbps / upgrade json.
 const resolveLocstring = (inLocstring: LocstringObjectSchema) => {
+  if (!unitStatsLocString) return "No text found.";
   // unitStatsLocString is a object (Record<string, string>
   return unitStatsLocString[inLocstring?.locstring?.value] ?? "No text found.";
 };
@@ -34,6 +35,8 @@ const fetchLocstring = async () => {
   // otherwise we cannot serialize it.
   for (const prop in unitStatsLocString)
     if (!unitStatsLocString[prop]) unitStatsLocString[prop] = "Missing Translation";
+
+  return unitStatsLocString;
 };
 
 const setLocstring = (locstring: any) => {
