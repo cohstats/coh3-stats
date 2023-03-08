@@ -1,6 +1,5 @@
 import { resolveLocstring } from "../../pages/unitCard";
 import { traverseTree } from "./unitStatsLib";
-import { isWeaponBagContainer } from "./weaponLib";
 
 let WeaponStats: WeaponType[];
 
@@ -8,16 +7,13 @@ let WeaponStats: WeaponType[];
 type WeaponType = {
   // might be a bit redundant by now
 
+  //@todo remvoe redundancy from prototyping
   id: string; // file name in essence editor
   ui_name: string; // name in game
   icon_name: string; // icon path in game
-  unit_name: string; // referencing squad
   weapon_bag: any; // weapon data
   pbgid: string; // essence id
-  parent_pbg: string; // essence parent path
-  root: any; // root object e.g africa_korps
-  image_weapon: string; // image for weapon e.g. in search selection
-  image_faction: string; // image for faction e.g. in search selection
+  path: string; // root object e.g africa_korps
   label: string; // label for search selection
   value: string; // value for search selection
   data: any; // weapon_data (duplicate)
@@ -26,55 +22,50 @@ type WeaponType = {
   parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
 };
 
-// Helper eg. to have a more comfortable structure for for drop downs.
-const mapWeaponData = (key: string, node: any, root: string, parent: string) => {
-  const weaponData: WeaponType = {
-    id: "",
-    ui_name: "",
-    icon_name: "",
-    unit_name: "",
-    weapon_bag: null,
-    pbgid: "",
-    parent_pbg: "",
-    root: "",
-    image_weapon: "",
-    image_faction: "",
-    label: "",
-    value: "",
-    data: "",
-    description: "",
-    faction: "",
-    parent: "",
-  };
-
-  weaponData.id = key;
-
+const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string) => {
   const weapon_bag: any = node.weapon_bag;
 
-  weaponData.ui_name = resolveLocstring(weapon_bag.ui_name); //@todo localization
-  weaponData.icon_name = weapon_bag.icon_name;
-  weaponData.weapon_bag = weapon_bag;
-  weaponData.pbgid = node.pbgid;
-  //weaponData.parent_pbg = node.parent_pbg.instance_reference;
-  weaponData.root = root;
-  weaponData.faction = root;
-  weaponData.label = key;
-  weaponData.value = key;
-  weaponData.data = weapon_bag;
-  weaponData.description = weaponData.ui_name || "No Description Available";
-  weaponData.parent = parent;
+  // todo remove redundancy
+  const weaponData: WeaponType = {
+    id: key,
+    ui_name: resolveLocstring(weapon_bag.ui_name),
+    icon_name: weapon_bag.icon_name,
+    weapon_bag: weapon_bag,
+    pbgid: node.pbgid,
+    path: jsonPath,
+    label: key,
+    value: key,
+    data: weapon_bag,
+    description: resolveLocstring(weapon_bag.ui_name),
+    faction: jsonPath.split("\\")[0],
+    parent: parent,
+  };
 
   return weaponData;
 };
 
 // parses the attribute tree and initiates the mapping. Save
 // the mapping array in global exporting variable.
-const getWeaponStats = (root: any) => {
+const getWeaponStats = async () => {
+  // make sure that this method is called only once among all pages
+  if (WeaponStats) return WeaponStats;
+
+  // Fetch JSON data
+  const myReqWeapon = await fetch(
+    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/weapon.json",
+  );
+
+  const root = await myReqWeapon.json();
+
   const weaponSetAll: WeaponType[] = [];
 
+  // Extract from JSON
   for (const obj in root) {
+    // find all weapon_bags
     const weaponSet = traverseTree(root[obj], isWeaponBagContainer, mapWeaponData, obj, obj);
     // weaponSet.forEach(weaponSetAll.add, weaponSetAll);
+
+    // Filter relevant objects
     weaponSet.forEach((item: any) => {
       let weapon_icon;
 
@@ -104,13 +95,11 @@ const getWeaponStats = (root: any) => {
           break;
         default:
           return;
-          break;
       }
-
-      //weaponData.
     });
   }
 
+  // Set singleton
   WeaponStats = weaponSetAll;
 
   return weaponSetAll;
@@ -118,6 +107,11 @@ const getWeaponStats = (root: any) => {
 
 const setWeaponStats = (weaponStats: WeaponType[]) => {
   WeaponStats = weaponStats;
+};
+
+const isWeaponBagContainer = (key: string, obj: any) => {
+  // check if first child is weapon_bag
+  return Object.keys(obj)[0] === "weapon_bag";
 };
 
 export { WeaponStats, setWeaponStats, getWeaponStats };

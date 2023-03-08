@@ -17,6 +17,8 @@ const mapEbpsData = (subtree: any, filename: string, root: string) => {
   const ebpsEntity: EbpsType = {
     filename: filename,
     root: root,
+    //  a       : subtree.a
+    //  z       : subtree.x.y.z
     // todo
   };
 
@@ -27,8 +29,17 @@ const mapEbpsData = (subtree: any, filename: string, root: string) => {
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const getEbpsStats = (ebpsJson: any) => {
-  //@todo to be filled
+const getEbpsStats = async () => {
+  if (ebpsStats) return;
+
+  const myReqEbps = await fetch(
+    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/ebps.json",
+  );
+
+  const root = await myReqEbps.json();
+
+  //@todo initiate mapping to target structure
+
   return [];
 };
 

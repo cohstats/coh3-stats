@@ -1,8 +1,3 @@
-const isWeaponBagContainer = (key: string, obj: any) => {
-  // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "weapon_bag";
-};
-
 const getSingleWeaponDPS = (weapon_bag: any) => {
   //Formular: Hitchance * RateOfFire * Damage * ChanceToDamage(E.g. penetration)
   // since we assume it is an endless engagement we also encounter reload time
@@ -115,4 +110,4 @@ const getSingleWeaponDPS = (weapon_bag: any) => {
   ];
 };
 
-export { getSingleWeaponDPS, isWeaponBagContainer };
+export { getSingleWeaponDPS };

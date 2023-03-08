@@ -34,7 +34,8 @@ import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
 import { WeaponSearch } from "./weaponSearch";
 import { resolveLocstring } from "../../pages/unitCard";
 import { WeaponStats } from "../../src/unitStats/mappingWeapon";
-import { UnitSearch } from "./UnitSearch";
+import { UnitSearch } from "./unitSearch";
+import { debug } from "console";
 
 type UnitType = {
   id: string;
@@ -214,7 +215,6 @@ interface IDPSProps {
   searchData: any[];
 }
 
-//export const DpsChart = (searchItems: IDPSProps) => {
 export const DpsChart = () => {
   const searchData_default: any[] = [];
   const [activeData, setActiveData] = useState(searchData_default);
@@ -266,7 +266,7 @@ export const DpsChart = () => {
           <Space h="sm" />
           <UnitSearch searchData={WeaponStats} onSelect={onSelectionChange}></UnitSearch>
           <Space h="sm" />
-          {false && (
+          {true && (
             <>
               <SimpleGrid cols={2} spacing="sm" verticalSpacing="xs">
                 <Stack align="left" justify="flex-start" spacing="xs">

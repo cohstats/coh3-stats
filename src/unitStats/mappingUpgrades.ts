@@ -27,8 +27,17 @@ const mapUpgradesData = (subtree: any, filename: string, root: string) => {
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const getUpgradesStats = (upgradesJson: any) => {
+const getUpgradesStats = async () => {
+  if (upgradesStats) return upgradesStats;
+
+  const myReqUpgrades = await fetch(
+    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/upgrade.json",
+  );
+
+  myReqUpgrades.json();
+
   //@todo to be filled
+
   return [];
 };
 

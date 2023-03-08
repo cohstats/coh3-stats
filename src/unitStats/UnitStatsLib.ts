@@ -1,33 +1,40 @@
-export const traverseTree = (o: any, func: any, mapper: any, root: string, parent: string) => {
+export const traverseTree = (
+  entity: any,
+  checkRelevant: any,
+  mapper: any,
+  path: string,
+  parent: string,
+) => {
   const relevantSet = new Set<any>();
   //let parent = parent;
-  if (parent === "") parent = root;
+  if (parent === "") parent = path;
 
-  for (const i in o) {
+  for (const i in entity) {
+    //extend path
+    path = path + "\\" + i;
+
     // check if object is relevant (eg. is weapon_bag?)
-    const isRelevant = func.apply(this, [i, o[i]]);
+    const isRelevant = checkRelevant.apply(this, [i, entity[i]]);
 
-    if (!isRelevant && o[i] !== null && typeof o[i] == "object") {
+    if (!isRelevant && entity[i] !== null && typeof entity[i] == "object") {
       // remember current node as parrent (parent folder e.g. rifle)
       parent = i;
 
       //going one step down in the object tree!!
-      const childSet = traverseTree(o[i], func, mapper, root, parent);
+      const childSet = traverseTree(entity[i], checkRelevant, mapper, path, parent);
 
       childSet.forEach(relevantSet.add, relevantSet);
+
       // merge relevant object of child
       for (const s in childSet) relevantSet.add(s);
 
       // add relevant object to return list
     } else if (isRelevant) {
-      if (mapper != "undefined") relevantSet.add(mapper.apply(this, [i, o[i], root, parent]));
-      else relevantSet.add(o(i));
+      if (mapper != "undefined")
+        relevantSet.add(mapper.apply(this, [i, entity[i], path, parent]));
+      else relevantSet.add(entity(i));
     }
   }
 
   return relevantSet;
-};
-
-export const mapSbpsTree = (sbps: any) => {
-  return sbps;
 };
