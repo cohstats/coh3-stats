@@ -1,4 +1,4 @@
-import { resolveLocstring } from "../../pages/unitCard";
+import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 
 let WeaponStats: WeaponType[];

@@ -28,7 +28,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   const sbpsEntity: SbpsType = {
     id: filename,
     path: jsonPath,
-    faction: jsonPath.split("//")[1],
+    faction: jsonPath.split("\\")[1] ?? jsonPath,
     unitType: parent,
     loadout: [],
   };
@@ -43,22 +43,25 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
 const mapExtensions = (root: any, spbps: SbpsType) => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
-    for (const attribute in extension) {
-      const attr_obj = extension[attribute];
-      switch (attribute) {
-        case "squad_loadout_ext":
-          for (const unit in attr_obj) {
-            spbps.loadout.push({
-              isDefaultUnit: attr_obj.is_default_unit,
-              num: attr_obj.num,
-              type: attr_obj.type,
-            });
-          }
-          break;
+    const extName = extension.template_reference.value.split("\\")[1];
+    switch (extName) {
+      case "squad_loadout_ext":
+        for (const unit in extension.unit_list) {
+          let unitNum = extension.unit_list[unit].loadout_data.num;
+          if (typeof unitNum == "undefined") unitNum = 5; // workaround aslong json is not complete
 
-        default:
-          break;
-      }
+          if (extension.unit_list[unit].loadout_data.type)
+            spbps.loadout.push({
+              isDefaultUnit: true,
+              num: unitNum, //@todo num not always avilable
+              type: extension.unit_list[unit].loadout_data.type.instance_reference,
+            });
+          else console.log("hmm");
+        }
+        break;
+
+      default:
+        break;
     }
   }
 };
@@ -87,27 +90,11 @@ const getSbpsStats = async () => {
     // Filter relevant objects
     sbpsSet.forEach((item: any) => {
       // filter by relevant weapon types
-      switch (item.parent) {
-        // case "sub_machine_gun":
-        //   weapon_icon = "m1_thompson_sub_machine_gun.png";
-        //   item.image = "/unitStats/weaponClass/" + weapon_icon;
-        //   weaponSetAll.push(item);
-        //   break;
-        // case "light_machine_gun":
-        //   weapon_icon = "weapon_lmg_mg34.png";
-        //   item.image = "/unitStats/weaponClass/" + weapon_icon;
-        //   weaponSetAll.push(item);
-        //   break;
-        // case "heavy_machine_gun":
-        //   weapon_icon = "hmg_mg42_ger.png";
-        //   item.image = "/unitStats/weaponClass/" + weapon_icon;
-        //   weaponSetAll.push(item);
-        //   break;
-        // case "rifle":
-        //   weapon_icon = "weapon_dp_28_lmg.png";
-        //   item.image = "/unitStats/weaponClass/" + weapon_icon;
-        //   weaponSetAll.push(item);
-        //   break;
+      switch (item.unitType) {
+        case "infantry":
+          sbpsSetAll.push(item);
+          break;
+
         default:
           return;
       }
@@ -115,7 +102,7 @@ const getSbpsStats = async () => {
   }
 
   //@todo to be filled
-  return [];
+  return sbpsSetAll;
 };
 
 const isExtensionContainer = (key: string, obj: any) => {

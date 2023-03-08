@@ -11,7 +11,7 @@ export const traverseTree = (
 
   for (const i in entity) {
     //extend path
-    path = path + "\\" + i;
+    const currentPath = path + "\\" + i;
 
     // check if object is relevant (eg. is weapon_bag?)
     const isRelevant = checkRelevant.apply(this, [i, entity[i]]);
@@ -21,7 +21,7 @@ export const traverseTree = (
       parent = i;
 
       //going one step down in the object tree!!
-      const childSet = traverseTree(entity[i], checkRelevant, mapper, path, parent);
+      const childSet = traverseTree(entity[i], checkRelevant, mapper, currentPath, parent);
 
       childSet.forEach(relevantSet.add, relevantSet);
 

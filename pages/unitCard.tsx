@@ -13,44 +13,37 @@ import {
   setUpgradesStats,
   UpgradesType,
 } from "../src/unitStats/mappingUpgrades";
-
-type Locstring = {
-  id: number;
-  value: string;
-};
-
-let unitStatsLocString: Locstring[];
-
-export const resolveLocstring = (locstring: any) => {
-  const numId = parseInt(locstring?.locstring?.value);
-
-  let result = unitStatsLocString?.find((entry) => entry.id == numId)?.value;
-  if (!result) result = "No text found.";
-
-  return result;
-};
+import { fetchLocstring, setLocstring, unitStatsLocString } from "../src/unitStats/locstring";
 
 interface UnitCardProps {
   weaponData: WeaponType[];
   spbsData: SbpsType[];
   epbsData: EbpsType[];
   upgradesData: UpgradesType[];
+  locstring: any;
   generalInfo: any;
   properties: any;
 }
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const UnitPage: NextPage<UnitCardProps> = ({ weaponData, spbsData, epbsData, upgradesData }) => {
-  if (!WeaponStats)
-    // Save data again in global varible for clientMode
-    setWeaponStats(weaponData);
+const UnitPage: NextPage<UnitCardProps> = ({
+  weaponData,
+  spbsData,
+  epbsData,
+  upgradesData,
+  locstring,
+}) => {
+  // Save data again in global varible for clientMode
+  if (!WeaponStats) setWeaponStats(weaponData);
 
   if (!epbsData) setEbpsStats(epbsData);
 
   if (!upgradesData) setUpgradesStats(upgradesData);
 
   if (!spbsData) setSbpsStats(spbsData);
+
+  if (!unitStatsLocString) setLocstring(locstring);
 
   return (
     <div>
@@ -60,7 +53,8 @@ const UnitPage: NextPage<UnitCardProps> = ({ weaponData, spbsData, epbsData, upg
 };
 
 export const getStaticProps = async () => {
-  //const weapon = await myReqWeapon.json();
+  const locstring = await fetchLocstring();
+
   // map Data at built time
   const weaponData = await getWeaponStats();
 
@@ -73,24 +67,13 @@ export const getStaticProps = async () => {
   // map Data at built time
   const upgradesData = await getUpgradesStats();
 
-  if (!unitStatsLocString) {
-    const myReqLocstring = await fetch(
-      "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/locstring.json",
-    );
-
-    // Map localization
-    const locstringJSON = await myReqLocstring.json();
-    unitStatsLocString = [];
-    for (const loc in locstringJSON)
-      unitStatsLocString.push({ id: parseInt(loc), value: locstringJSON[loc] });
-  }
-
   return {
     props: {
       weaponData: weaponData,
       sbpsData: sbpsData,
       ebpsData: ebpsData,
       upgradesData: upgradesData,
+      locstring: locstring,
     },
   };
 };
