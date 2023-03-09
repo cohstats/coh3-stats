@@ -305,7 +305,7 @@ const explorerFactionLink = (faction: raceType) => {
         width={24}
         fit="contain"
         src={`/icons/common/races/${iconFaction}.png`}
-        alt="Test text"
+        alt={localizedNames[faction]}
       />
       <Anchor color="orange" component={Link} href={`/explorer?race=${faction}`}>
         {localizedNames[faction]}
