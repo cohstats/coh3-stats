@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Group, List, Popover, Text } from "@mantine/core";
+import { Button, Checkbox, Flex, Group, List, Popover, Space, Text } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
 import { FilterInformation } from "./player-recent-matches";
 
@@ -12,6 +12,7 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
   function handleCheckboxChange(filter: string | number) {
     onChange(filter);
   }
+
   return (
     <Popover position="bottom" withArrow shadow="md">
       <Popover.Target>
@@ -37,7 +38,8 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
             );
           })}
         </List>
-        <Group position="center">
+        <Space h={"xs"} />
+        <Group position="left">
           <Button onClick={onReset} size="xs">
             Reset
           </Button>
