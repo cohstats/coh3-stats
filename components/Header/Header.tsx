@@ -4,6 +4,7 @@ import {
   Container,
   Group,
   Header as MantineHeader,
+  Image as MantineImage,
   Title,
   Divider,
   Drawer,
@@ -16,6 +17,8 @@ import {
   ActionIcon,
   Tooltip,
   Anchor,
+  Grid,
+  Flex,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
@@ -26,6 +29,7 @@ import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
+import config from "../../config";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -118,7 +122,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const { classes, cx } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
 
-  const factionLink = (faction: raceType, gamemode: string) => (
+  const leaderboardFactionLink = (faction: raceType, gamemode: string) => (
     <Text>
       <Anchor component={Link} href={"/leaderboards?race=" + faction + "&type=" + gamemode}>
         {localizedNames[faction]}
@@ -130,10 +134,10 @@ export const Header: React.FC<HeaderProps> = () => {
     <div>
       <Text weight={700}>{gamemode}</Text>
       <Divider my="sm" />
-      {factionLink("american", gamemode)}
-      {factionLink("german", gamemode)}
-      {factionLink("dak", gamemode)}
-      {factionLink("british", gamemode)}
+      {leaderboardFactionLink("american", gamemode)}
+      {leaderboardFactionLink("german", gamemode)}
+      {leaderboardFactionLink("dak", gamemode)}
+      {leaderboardFactionLink("british", gamemode)}
     </div>
   );
   return (
@@ -202,6 +206,8 @@ export const Header: React.FC<HeaderProps> = () => {
               </Anchor>
             </Tooltip>
 
+            {config.isDevEnv() ? explorerOption({ cx, classes }) : <></>}
+
             <Anchor component={Link} href="/about" className={cx(classes.link)}>
               About{" "}
             </Anchor>
@@ -264,6 +270,8 @@ export const Header: React.FC<HeaderProps> = () => {
                   </Anchor>
                 </Tooltip>
 
+                {config.isDevEnv() ? explorerOption({ cx, classes }) : <></>}
+
                 <Anchor
                   component={Link}
                   href="/about"
@@ -286,3 +294,80 @@ export const Header: React.FC<HeaderProps> = () => {
     </>
   );
 };
+
+/** @TODO Got lazy to replace dak for afrika_korps :D */
+const explorerFactionLink = (faction: raceType) => {
+  const iconFaction = faction === "dak" ? "afrika_korps" : faction;
+  return (
+    <Flex direction="row" align="center" gap="md">
+      <MantineImage
+        height={24}
+        width={24}
+        fit="contain"
+        src={`/icons/common/races/${iconFaction}.png`}
+        alt="Test text"
+      />
+      <Anchor color="orange" component={Link} href={`/explorer?race=${faction}`}>
+        {localizedNames[faction]}
+      </Anchor>
+    </Flex>
+  );
+};
+
+/**
+ * @TODO Provide the toolName type for the routes. In the meantime, provide the
+ * route fragment as string.
+ */
+const explorerToolLink = (toolName: string, url: string) => (
+  <Text>
+    <Anchor color="orange" component={Link} href={`/explorer?tool=${url}`}>
+      {toolName}
+    </Anchor>
+  </Text>
+);
+
+const explorerOption = ({
+  cx,
+  classes,
+}: {
+  cx: (...args: any) => string;
+  classes: Record<string, string>;
+}) => (
+  <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+    <HoverCard.Target>
+      <Anchor href={config.isDevEnv() ? "/explorer" : "#"} className={cx(classes.link)}>
+        <Group spacing={3}>
+          Explorer
+          <IconChevronDown className={classes.hiddenMobile} size={16} />
+        </Group>
+      </Anchor>
+    </HoverCard.Target>
+    <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
+      <Grid gutter={0} columns={2}>
+        <Grid.Col span={1}>
+          <Stack>
+            {explorerFactionLink("german")}
+            {explorerFactionLink("american")}
+            {explorerFactionLink("dak")}
+            {explorerFactionLink("british")}
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Stack>
+            <Text weight={700}>Other Stuff</Text>
+            <Text>
+              <Anchor color="orange" component={Link} href="#">
+                Child stuff
+              </Anchor>
+            </Text>
+          </Stack>
+          <Divider my="sm" />
+          <Stack>
+            <Text weight={700}>Tools</Text>
+            {explorerToolLink("DPS Calculator", "dps_calculator")}
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </HoverCard.Dropdown>
+  </HoverCard>
+);
