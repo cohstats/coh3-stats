@@ -13,8 +13,8 @@ import {
   Title,
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons";
-import { raceType } from "../src/coh3/coh3-types";
-import { localizedNames } from "../src/coh3/coh3-data";
+import { raceType } from "../../src/coh3/coh3-types";
+import { localizedNames } from "../../src/coh3/coh3-data";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
@@ -66,7 +66,7 @@ const Explorer: NextPage = () => {
                   color="undefined"
                   underline={false}
                   component={Link}
-                  href={`/explorer?race=${faction}`}
+                  href={`/explorer/races/${faction}`}
                 >
                   <Card p="sm" radius="md" withBorder>
                     {explorerFactionLink(faction)}

@@ -307,7 +307,7 @@ const explorerFactionLink = (faction: raceType) => {
         src={`/icons/common/races/${iconFaction}.png`}
         alt={localizedNames[faction]}
       />
-      <Anchor color="orange" component={Link} href={`/explorer?race=${faction}`}>
+      <Anchor color="orange" component={Link} href={`/explorer/races/${faction}`}>
         {localizedNames[faction]}
       </Anchor>
     </Flex>
