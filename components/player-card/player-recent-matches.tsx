@@ -24,7 +24,6 @@ const DynamicTimeAgo = dynamic(() => import("../../components/internal-timeago")
   loading: () => "Calculating...",
 });
 
-
 export type FilterInformation = { label: string; checked: boolean; filter: string | number };
 
 const PlayerRecentMatches = ({
