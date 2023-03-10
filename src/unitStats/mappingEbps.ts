@@ -180,22 +180,12 @@ const getEbpsStats = async () => {
 
       // filter by relevant entity types
       switch (item.unitType) {
-        case "production":
-          ebpsSetAll.push(item);
-          break;
-        case "infantry":
-          ebpsSetAll.push(item);
-          break;
-        case "team_weapons":
-          ebpsSetAll.push(item);
-          break;
-        case "heavy_machine_gun":
-          ebpsSetAll.push(item);
-          break;
+        case "production": // Base buildings.
+        case "infantry": // General infantry
         // case "flame_throwers":
-        //   ebpsSetAll.push(item);
-        //   break;
-        case "vehicles":
+        case "team_weapons": // Team weapons (squad members).
+        case "heavy_machine_gun": // Crew member of MGs, which is the weapon itself (the main guy firing it).
+        case "vehicles": // General Vehicles
           ebpsSetAll.push(item);
           break;
         default:

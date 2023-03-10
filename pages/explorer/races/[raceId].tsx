@@ -84,29 +84,36 @@ const BuildingMapping = (
   race: "german" | "american" | "british" | "afrika_korps",
   data: { ebpsData: EbpsType[]; sbpsData: SbpsType[] },
 ) => {
-  // Filter by faction (dak, german, uk, us), unit type (production buildings)
-  // and validate if the buildings have at least spawnable units.
+  // Filter by faction (dak, german, uk, us), unit type (production buildings).
   const preFilteredBuildings = data.ebpsData.filter(
-    (entity) =>
-      entity.faction === race && entity.unitType === "production" && entity.spawnItems.length,
+    (entity) => entity.faction === race && entity.unitType === "production",
   );
-  // Filter invisible or unused buildings.
+  // Filter invisible or unused buildings in multiplayer.
   const filteredBuildings = preFilteredBuildings.filter((building) => {
-    // For DAK, building `heavy_weapon_kompanie_ak`.
     switch (race) {
+      // For DAK, buildings `halftrack_deployment_ak` and `heavy_weapon_kompanie_ak`.
       case "afrika_korps":
-        return !["heavy_weapon_kompanie_ak"].includes(building.id);
+        return !["halftrack_deployment_ak", "heavy_weapon_kompanie_ak"].includes(building.id);
+      // For American, the safe house of partisans (maybe campaign only).
+      case "american":
+        return !["safe_house_partisan"].includes(building.id);
       default:
         return true;
     }
   });
-  // console.log(
-  //   "🚀 ~ file: [raceId].tsx:103 ~ filteredBuildings ~ filteredBuildings:",
-  //   filteredBuildings,
-  // );
+  // Sort like in-game menu (no idea how to simplify it).
+  const sortedBuildings = [
+    ...filteredBuildings.filter((x) => x.unitTypes.includes("support_center")),
+    ...filteredBuildings.filter((x) => x.unitTypes.includes("hq")),
+    ...filteredBuildings.filter((x) => x.unitTypes.includes("production1")),
+    ...filteredBuildings.filter((x) => x.unitTypes.includes("production2")),
+    ...filteredBuildings.filter((x) => x.unitTypes.includes("production3")),
+    ...filteredBuildings.filter((x) => x.unitTypes.includes("production4")),
+  ];
+  console.log("🚀 ~ file: [raceId].tsx:115 ~ sortedBuildings:", sortedBuildings);
   return (
     <>
-      {filteredBuildings.map((building) => (
+      {sortedBuildings.map((building) => (
         <Card key={building.id} p="sm" radius="md" withBorder>
           <BuildingCard
             // @todo: Validate types.
@@ -148,7 +155,9 @@ function getBuildingTrainableUnits(
   for (const unitRef of building.spawnItems) {
     // Get the last element of the array, which is the id.
     const unitId = unitRef.split("/").slice(-1)[0];
+    // console.log("🚀 ~ file: [raceId].tsx:151 ~ unitId:", unitId)
     const sbpsUnitFound = sbpsData.find((x) => x.id === unitId);
+    // console.log("🚀 ~ file: [raceId].tsx:153 ~ sbpsUnitFound:", sbpsUnitFound)
     // Ignore those units not found.
     if (!sbpsUnitFound) continue;
     // Map the required fields.

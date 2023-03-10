@@ -161,20 +161,18 @@ const getSbpsStats = async () => {
     // Filter relevant objects
     sbpsSet.forEach((item: SbpsType) => {
       // filter by relevant weapon types
-      // if (item.id === "panzer_iii_50mm_long_ak") {
-      //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item.unitType)
+      // if (item.id === "panzer_iv_ger") {
+      //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item)
       // }
       switch (item.unitType) {
-        case "infantry":
-          sbpsSetAll.push(item);
-          break;
-        case "team_weapons":
-          sbpsSetAll.push(item);
-          break;
+        case "infantry": // General infantry.
+        case "pathfinder_us": // USF Airborne infantry.
+        case "team_weapons": // MGs, artillery (the mobile ones).
         case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.
-          sbpsSetAll.push(item);
-          break;
-        case "vehicles":
+        case "greyhound_recrewable_us": // USF Vehicles
+        case "halftrack_recrewable_ger": // German kettenrad and such.
+        case "l6_40_recrewable_ger": // German tanks, wtf?
+        case "vehicles": // General vehicles (tanks, armoured cars).
           sbpsSetAll.push(item);
           break;
         default:
