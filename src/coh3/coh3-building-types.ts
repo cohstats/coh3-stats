@@ -14,3 +14,13 @@ export type BuildingType =
   | "production2"
   | "production3"
   | "production4";
+
+/** The key is the enum within the game for the building type. The value is the icon name. */
+export const BuildingIcon: Record<BuildingType, string> = {
+  support_center: "support_center",
+  hq: "hq",
+  production1: "barracks",
+  production2: "weapon_support",
+  production3: "motor_pool",
+  production4: "tank_depot",
+};

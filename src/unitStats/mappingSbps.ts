@@ -72,8 +72,27 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
     switch (extName) {
       case "squad_loadout_ext":
         for (const unit in extension.unit_list) {
-          let unitNum = extension.unit_list[unit].loadout_data.num;
-          if (typeof unitNum == "undefined") unitNum = 5; // workaround aslong json is not complete
+          // The serializer will transform the missing field as "undefined". For
+          // better check, let's assign it as `-1`.
+          let unitNum: number = extension.unit_list[unit].loadout_data.num || -1;
+          // Workaround as long as the JSON is not complete. We will validate by unitType.
+          if (unitNum === -1) {
+            switch (spbps.unitType) {
+              // Vehicles are always 1.
+              case "vehicles":
+              case "armored_tractor_254_ak_signals_sp":
+                unitNum = 1;
+                break;
+              // Team weapons and infantry usually varies. Lets set as 4 by now.
+              case "infantry":
+              case "team_weapons":
+                unitNum = 4;
+              // Other stuff as 5.
+              default:
+                unitNum = 5;
+                break;
+            }
+          }
 
           if (extension.unit_list[unit].loadout_data.type)
             spbps.loadout.push({
@@ -140,13 +159,19 @@ const getSbpsStats = async () => {
     const sbpsSet = traverseTree(root[obj], isExtensionContainer, mapSbpsData, obj, obj);
 
     // Filter relevant objects
-    sbpsSet.forEach((item: any) => {
+    sbpsSet.forEach((item: SbpsType) => {
       // filter by relevant weapon types
+      // if (item.id === "panzer_iii_50mm_long_ak") {
+      //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item.unitType)
+      // }
       switch (item.unitType) {
         case "infantry":
           sbpsSetAll.push(item);
           break;
         case "team_weapons":
+          sbpsSetAll.push(item);
+          break;
+        case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.
           sbpsSetAll.push(item);
           break;
         case "vehicles":

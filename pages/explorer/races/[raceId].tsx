@@ -13,6 +13,8 @@ import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { SbpsType, getSbpsStats } from "../../../src/unitStats/mappingSbps";
 import { UpgradesType, getUpgradesStats } from "../../../src/unitStats/mappingUpgrades";
 import { WeaponType, getWeaponStats } from "../../../src/unitStats/mappingWeapon";
+import { BuildingType } from "../../../src/coh3";
+import { getSquadTotalCost } from "../../../src/unitStats";
 
 const RaceBagDescription: Record<raceType, string> = {
   // Locstring value: $11234530
@@ -36,8 +38,7 @@ interface RaceDetailProps {
   locstring: Record<string, string>;
 }
 
-const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData }) => {
-  console.log("🚀 ~ file: [raceId].tsx:39 ~ spbsData:", ebpsData);
+const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
 
@@ -72,7 +73,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData }) => {
           <Title order={4}>Buildings</Title>
           <Text>This is an example building card list.</Text>
 
-          {BuildingMapping(ebpsData, iconFaction)}
+          {BuildingMapping(iconFaction, { ebpsData, sbpsData })}
         </Stack>
       </Container>
     </>
@@ -80,69 +81,101 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData }) => {
 };
 
 const BuildingMapping = (
-  ebpsData: EbpsType[],
   race: "german" | "american" | "british" | "afrika_korps",
+  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[] },
 ) => {
-  // const sampleUnits: BuildingSchema["units"] = [
-  //   {
-  //     desc: {
-  //       id: "m13_40_ak",
-  //       screen_name: "Carro Armato M13/40 Light Tank",
-  //       brief_text: "Light tank armed with a 47mm gun and three Breda 38 machine guns.",
-  //       help_text: "Anti-infantry / Anti-vehicle",
-  //       icon_name: "races\\afrika_corps\\vehicles\\m13_40_ak",
-  //       symbol_icon_name: "races\\german\\symbols\\m13_40_ger",
-  //     },
-  //     time_cost: {
-  //       manpower: 240,
-  //       fuel: 120,
-  //     },
-  //   },
-  //   {
-  //     desc: {
-  //       id: "l6_40_ak",
-  //       screen_name: "L6/40 Light Tank",
-  //       brief_text: "Light tank armed with a 20mm autocannon.",
-  //       help_text: "Anti-infantry",
-  //       icon_name: "races\\afrika_corps\\vehicles\\l6_40_ak",
-  //       symbol_icon_name: "races\\afrika_corps\\symbols\\l6_40_ak",
-  //     },
-  //     time_cost: {
-  //       manpower: 280,
-  //       munition: 15,
-  //       fuel: 40,
-  //     },
-  //   },
-  // ];
-  const filteredBuildings = ebpsData.filter(
-    (entity) => entity.faction === race && entity.unitType === "production",
+  // Filter by faction (dak, german, uk, us), unit type (production buildings)
+  // and validate if the buildings have at least spawnable units.
+  const preFilteredBuildings = data.ebpsData.filter(
+    (entity) =>
+      entity.faction === race && entity.unitType === "production" && entity.spawnItems.length,
   );
+  // Filter invisible or unused buildings.
+  const filteredBuildings = preFilteredBuildings.filter((building) => {
+    // For DAK, building `heavy_weapon_kompanie_ak`.
+    switch (race) {
+      case "afrika_korps":
+        return !["heavy_weapon_kompanie_ak"].includes(building.id);
+      default:
+        return true;
+    }
+  });
+  // console.log(
+  //   "🚀 ~ file: [raceId].tsx:103 ~ filteredBuildings ~ filteredBuildings:",
+  //   filteredBuildings,
+  // );
   return (
     <>
       {filteredBuildings.map((building) => (
         <Card key={building.id} p="sm" radius="md" withBorder>
           <BuildingCard
             // @todo: Validate types.
-            type={"hq"}
+            types={building.unitTypes as BuildingType[]}
             desc={{
               screen_name: building.ui.screenName,
               help_text: building.ui.helpText,
               extra_text: building.ui.extraText,
               brief_text: building.ui.briefText,
               icon_name: building.ui.iconName,
+              symbol_icon_name: building.ui.symbolIconName,
             }}
-            units={[]}
-            time_cost={{
-              manpower: 500.0,
-              time_seconds: 15.0,
-            }}
+            units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
             upgrades={[]}
+            time_cost={{
+              fuel: building.cost.fuel,
+              munition: building.cost.munition,
+              manpower: building.cost.manpower,
+              popcap: building.cost.popcap,
+              time_seconds: building.cost.time,
+            }}
+            health={{
+              hitpoints: building.health.hitpoints,
+            }}
           ></BuildingCard>
         </Card>
       ))}
     </>
   );
 };
+
+function getBuildingTrainableUnits(
+  building: EbpsType,
+  sbpsData: SbpsType[],
+  ebpsData: EbpsType[],
+) {
+  const trainableUnits: BuildingSchema["units"] = [];
+  console.group(`Building ${building.id} - Squad Total Cost List`);
+  for (const unitRef of building.spawnItems) {
+    // Get the last element of the array, which is the id.
+    const unitId = unitRef.split("/").slice(-1)[0];
+    const sbpsUnitFound = sbpsData.find((x) => x.id === unitId);
+    // Ignore those units not found.
+    if (!sbpsUnitFound) continue;
+    // Map the required fields.
+    const totalCost = getSquadTotalCost(sbpsUnitFound, ebpsData);
+    const unitInfo: BuildingSchema["units"][number] = {
+      desc: {
+        id: unitId,
+        screen_name: sbpsUnitFound.ui.screenName,
+        help_text: sbpsUnitFound.ui.helpText,
+        brief_text: sbpsUnitFound.ui.briefText,
+        symbol_icon_name: sbpsUnitFound.ui.symbolIconName,
+        icon_name: sbpsUnitFound.ui.iconName,
+      },
+      time_cost: {
+        fuel: totalCost.fuel,
+        munition: totalCost.munition,
+        manpower: totalCost.manpower,
+        popcap: totalCost.popcap,
+        time_seconds: totalCost.time,
+      },
+    };
+    trainableUnits.push(unitInfo);
+  }
+  console.groupEnd();
+  // console.log("🚀 ~ file: [raceId].tsx:162 ~ getBuildingTrainableUnits ~ trainableUnits:", trainableUnits)
+  return trainableUnits;
+}
 
 // Generates `/dak`.
 export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {

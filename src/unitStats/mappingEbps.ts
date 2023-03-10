@@ -16,6 +16,28 @@ type EbpsType = {
   spawnItems: string[];
   /** Found at `ui_ext`. */
   ui: EntityUiData;
+  /** Found at `cost_ext`. */
+  cost: EntityCost;
+  /** Found at `health_ext`. */
+  health: {
+    hitpoints: number;
+    /** Only applies for buildings and vehicles. */
+    // armor: {
+    //   front: number;
+    //   side: number;
+    //   rear: number;
+    // };
+  };
+};
+
+/** These are found within `time_cost` at `ebpextensions\\cost_ext` */
+type EntityCost = {
+  fuel: number;
+  manpower: number;
+  munition: number;
+  popcap: number;
+  /** Training / research time. Found at `time_seconds` */
+  time: number;
 };
 
 type EntityUiData = {
@@ -51,6 +73,16 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
       briefText: "",
       screenName: "",
       extraText: "",
+    },
+    cost: {
+      fuel: 0,
+      manpower: 0,
+      munition: 0,
+      popcap: 0,
+      time: 0,
+    },
+    health: {
+      hitpoints: 0,
     },
     //  a       : subtree.a
     //  z       : subtree.x.y.z
@@ -103,6 +135,16 @@ const mapExtensions = (root: any, epbps: EbpsType) => {
           epbps.ui.briefText = resolveLocstring(briefText);
         }
         break;
+      case "cost_ext":
+        epbps.cost.time = extension.time_cost?.time_seconds || 0;
+        epbps.cost.fuel = extension.time_cost?.cost?.fuel || 0;
+        epbps.cost.munition = extension.time_cost?.cost?.munition || 0;
+        epbps.cost.manpower = extension.time_cost?.cost?.manpower || 0;
+        epbps.cost.popcap = extension.time_cost?.cost?.popcap || 0;
+        break;
+      case "health_ext":
+        epbps.health.hitpoints = extension.hitpoints || 0;
+        break;
       default:
         break;
     }
@@ -130,10 +172,30 @@ const getEbpsStats = async () => {
     const ebpsSet = traverseTree(root[obj], isExtensionContainer, mapEbpsData, obj, obj);
 
     // Filter relevant objects
-    ebpsSet.forEach((item: any) => {
-      // filter by relevant weapon types
+    ebpsSet.forEach((item: EbpsType) => {
+      /** Uncomment if you want to check for each entity type. */
+      // console.group(item.id);
+      // console.log("🚀 ~ file: mappingEbps.ts:161 ~ ebpsSet.forEach ~ unitType:", item.unitType);
+      // console.groupEnd();
+
+      // filter by relevant entity types
       switch (item.unitType) {
         case "production":
+          ebpsSetAll.push(item);
+          break;
+        case "infantry":
+          ebpsSetAll.push(item);
+          break;
+        case "team_weapons":
+          ebpsSetAll.push(item);
+          break;
+        case "heavy_machine_gun":
+          ebpsSetAll.push(item);
+          break;
+        // case "flame_throwers":
+        //   ebpsSetAll.push(item);
+        //   break;
+        case "vehicles":
           ebpsSetAll.push(item);
           break;
         default:
