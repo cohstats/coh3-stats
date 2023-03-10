@@ -81,7 +81,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const contentWithLayout = (
     <>
       <Header />
-      <ContentContainer> <Component {...pageProps} /></ContentContainer>
+      <ContentContainer>
+        {" "}
+        <Component {...pageProps} />
+      </ContentContainer>
       <Footer />
     </>
   );
