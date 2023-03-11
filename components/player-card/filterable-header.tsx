@@ -14,7 +14,7 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
   }
 
   return (
-    <Popover position="bottom" withArrow shadow="md">
+    <Popover position="bottom" withArrow withinPortal shadow="md">
       <Popover.Target>
         <Group position="center">
           <Flex>
