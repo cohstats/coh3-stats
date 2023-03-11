@@ -77,27 +77,31 @@ interface ISearchProps {
 }
 
 export const WeaponSearch = (props: ISearchProps) => {
-  function onSelectionChange(id: string[]) {
-    const selectedItems: any[] = [];
+  let selectedItems: any[] = [];
+  let selectedLabels: string[] = [];
 
-    // remove last element so we have never more than 2
-    if (id.length > 2) {
-      const second_item = id[2]; // remember
-      id.pop(); // pop will be recognized by the component
-      id.pop();
-      id.push(second_item);
-    }
+  function onSelectionChange(id: string[]) {
+    selectedItems = [];
+    selectedLabels = id; // remember what is selected so we can set it as long dropdown is open
     id.forEach((selection) => {
       const item = props.searchData.find((item) => item.value == selection);
       selectedItems.push(item);
     });
+  }
+
+  function onDropdownClose() {
     props.onSelect(selectedItems);
+    selectedItems = [];
+    selectedLabels.splice(0, selectedLabels.length);
   }
 
   return (
     <MultiSelect
       //label="Choose a unit"
-      placeholder="Add weapon to squad"
+      placeholder="Configure weapons and squad size"
+      clearSearchOnChange={true}
+      clearSearchOnBlur={true}
+      clearable
       itemComponent={SelectItem}
       data={props.searchData}
       valueComponent={Value}
@@ -105,6 +109,7 @@ export const WeaponSearch = (props: ISearchProps) => {
       maxDropdownHeight={600}
       nothingFound="Nothing here. War is over!"
       onChange={onSelectionChange}
+      onDropdownClose={onDropdownClose}
       filter={(value, selected, item) =>
         //@ts-ignore
         item.label.toLowerCase().includes(value.toLowerCase().trim()) ||

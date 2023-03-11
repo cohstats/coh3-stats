@@ -1,14 +1,19 @@
 // type description of mapped data
 
-import { traverseTree } from "./unitStatsLib";
+import slash from "slash";
+import { resolveLocstring } from "./locstring";
+import { isBaseFaction, traverseTree } from "./unitStatsLib";
 
 // need to be extended by all required fields
 type SbpsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
-  path: string; // folder from which the extraction got started. Eg. afrika_corps, american, british,.
-  faction: string; // races\[factionName]
+  screenName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+  path: string; // path to object
+  faction: string; // from folder structure races\[factionName]
   loadout: LoadoutData[]; // squad_loadout_ext.unit_list
-  unitType: string; //
+  unitType: string; // folder Infantry | vehicles | team_weapons | buildings
+  helpText: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
+  iconName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
 };
 
 type LoadoutData = {
@@ -26,11 +31,16 @@ let sbpsStats: SbpsType[];
 // subtree -> eg. extensions node
 const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
   const sbpsEntity: SbpsType = {
+    // default values
+
     id: filename,
-    path: jsonPath,
-    faction: jsonPath.split("\\")[1] ?? jsonPath,
+    screenName: filename,
+    path: slash(jsonPath),
+    faction: jsonPath.split("/")[1] ?? jsonPath,
     unitType: parent,
     loadout: [],
+    helpText: filename,
+    iconName: slash("/icons/general/infantry_icn.png"),
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -40,7 +50,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   return sbpsEntity;
 };
 
-const mapExtensions = (root: any, spbps: SbpsType) => {
+const mapExtensions = (root: any, sbps: SbpsType) => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
     const extName = extension.template_reference.value.split("\\")[1];
@@ -51,13 +61,23 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           if (typeof unitNum == "undefined") unitNum = 5; // workaround aslong json is not complete
 
           if (extension.unit_list[unit].loadout_data.type)
-            spbps.loadout.push({
+            sbps.loadout.push({
               isDefaultUnit: true,
               num: unitNum, //@todo num not always avilable
               type: extension.unit_list[unit].loadout_data.type.instance_reference,
             });
-          else console.log("hmm");
+          else console.log(sbps.id + ": Loadout not found");
         }
+        break;
+
+      case "squad_ui_ext":
+        const info = extension.race_list[0]?.race_data?.info;
+        if (info) {
+          sbps.helpText = resolveLocstring(info.help_text) || sbps.helpText; // otherwise keep default values
+          sbps.iconName = slash("icons/" + info.icon_name + ".png") || sbps.iconName;
+          sbps.screenName = resolveLocstring(info.screen_name) || sbps.screenName;
+        }
+
         break;
 
       default:
@@ -84,11 +104,14 @@ const getSbpsStats = async () => {
 
   // Extract from JSON
   for (const obj in root) {
-    // find all weapon_bags
+    // find all extensions
     const sbpsSet = traverseTree(root[obj], isExtensionContainer, mapSbpsData, obj, obj);
 
     // Filter relevant objects
     sbpsSet.forEach((item: any) => {
+      // skip non base factions
+      if (!isBaseFaction(item.faction)) return;
+
       // filter by relevant weapon types
       switch (item.unitType) {
         case "infantry":
@@ -100,6 +123,8 @@ const getSbpsStats = async () => {
       }
     });
   }
+
+  sbpsStats = sbpsSetAll;
 
   //@todo to be filled
   return sbpsSetAll;

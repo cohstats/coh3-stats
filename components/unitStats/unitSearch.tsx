@@ -10,12 +10,12 @@ import {
 } from "@mantine/core";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
-  image: string;
-  label: string;
-  description: string;
+  id: string;
+  factionIcon: string;
+  screenName: string;
 }
 
-function Value({ label, onRemove, ...others }: MultiSelectValueProps & { value: string }) {
+function Value({ id, onRemove, ...others }: MultiSelectValueProps & { value: string }) {
   return (
     <div {...others}>
       <Box
@@ -35,12 +35,12 @@ function Value({ label, onRemove, ...others }: MultiSelectValueProps & { value: 
           <Image
             width={30}
             height={20}
-            src={(others as any).image}
+            src={(others as any).factionIcon}
             fit="contain"
             alt="Weapon Class"
           />
         </Box>
-        <Box>{label}</Box>
+        <Box>{id}</Box>
         <CloseButton
           onMouseDown={onRemove}
           variant="transparent"
@@ -54,14 +54,14 @@ function Value({ label, onRemove, ...others }: MultiSelectValueProps & { value: 
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, label, description, ...others }: ItemProps, ref) => (
+  ({ id, factionIcon, screenName, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
-        <Image width={60} height={40} src={image} fit="contain" alt="Weapon Class" />
+        <Image width={60} height={40} src={factionIcon} fit="contain" alt="Faction" />
         <div>
-          <Text size="sm">{label}</Text>
+          <Text size="sm">{screenName}</Text>
           <Text size="xs" opacity={0.65}>
-            {description}
+            {id}
           </Text>
         </div>
       </Group>
@@ -81,14 +81,15 @@ export const UnitSearch = (props: ISearchProps) => {
     const selectedItems: any[] = [];
 
     // remove last element so we have never more than 2
-    if (id.length > 2) {
-      const second_item = id[2]; // remember
-      id.pop(); // pop will be recognized by the component
-      id.pop();
-      id.push(second_item);
-    }
+
+    if (id.length > 2) id.splice(1, 1);
+    //   const second_item = id[2]; // remember
+    //   id.pop(); // pop will be recognized by the component
+    //   id.pop();
+    //   id.push(second_item);
+    // }
     id.forEach((selection) => {
-      const item = props.searchData.find((item) => item.value == selection);
+      const item = props.searchData.find((item) => item.id == selection);
       selectedItems.push(item);
     });
     props.onSelect(selectedItems);
@@ -96,19 +97,18 @@ export const UnitSearch = (props: ISearchProps) => {
 
   return (
     <MultiSelect
-      //label="Choose a unit"
-      placeholder="Choose weapon"
+      placeholder="Choose up to two units"
       itemComponent={SelectItem}
       data={props.searchData}
       valueComponent={Value}
       searchable
       maxDropdownHeight={600}
-      nothingFound="Nothing here. War is over!"
+      nothingFound="Nobody here. War is over!"
       onChange={onSelectionChange}
       filter={(value, selected, item) =>
         //@ts-ignore
-        item.label.toLowerCase().includes(value.toLowerCase().trim()) ||
-        item.description.toLowerCase().includes(value.toLowerCase().trim())
+        item.id.toLowerCase().includes(value.toLowerCase().trim()) ||
+        item.screenName.toLowerCase().includes(value.toLowerCase().trim())
       }
     />
   );
