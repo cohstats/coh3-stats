@@ -1,28 +1,11 @@
 import React, { useState } from "react";
 //import { LevelContext } from './LevelContext.js';
 
-import {
-  Paper,
-  createStyles,
-  Container,
-  Space,
-  useMantineTheme,
-  SimpleGrid,
-  Rating,
-  Avatar,
-  Group,
-  Image,
-  Text,
-  NumberInput,
-  ActionIcon,
-  Box,
-  Stack,
-} from "@mantine/core";
+import { createStyles, Avatar, Group, Image, ActionIcon, Box, Stack } from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
-import { WeaponStats } from "../../src/unitStats/mappingWeapon";
-import { resolveLocstring } from "../../src/unitStats/locstring";
+import { WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard, weaponMember } from "./dpsWeaponCard";
-import { Interface } from "readline";
+import slash from "slash";
 
 export type CustomizableUnit = {
   id: string; // filename  -> eg. panzergrenadier_ak
@@ -51,15 +34,29 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+const computeWeaponList = (unit: CustomizableUnit) => {
+  const result: any[] = [];
+
+  for (const weapon of WeaponStats) {
+    if (weapon.faction == unit.faction && weapon.parent != "heavy_machine_gun")
+      result.push(weapon);
+  }
+  return result;
+};
+
 interface IUnitProps {
   unit: CustomizableUnit;
   onChange: any;
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
+  const weaponListInit: WeaponType[] = [];
   const [activeData, setActiveData] = useState(props.unit);
+  const [weaponList, setWeaponList] = useState(weaponListInit);
   //const [selWeapons,setSelWeapons] = useState(([] as weaponMember[]));
   const { classes } = useStyles();
+
+  if (weaponList.length == 0) setWeaponList(computeWeaponList(props.unit));
 
   function onAddWeapon(selectionItem: weaponMember[]) {
     const selectionClone: weaponMember[] = [];
@@ -128,26 +125,29 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
 
   return (
     <>
-      <Stack align="left" justify="flex-start" spacing="xs">
-        <Box
-          sx={(theme) => ({
-            backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[0],
-            border: "solid 1px " + theme.colors.dark[6],
-            textAlign: "left",
-            padding: theme.spacing.xs,
-            borderRadius: theme.radius.md,
-          })}
-        >
+      <Box
+        sx={(theme) => ({
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+          border:
+            theme.colorScheme === "dark"
+              ? "solid 1px " + theme.colors.dark[4]
+              : "solid 1px " + theme.colors.gray[4],
+          textAlign: "left",
+          padding: theme.spacing.xs,
+          borderRadius: theme.radius.md,
+        })}
+      >
+        <Stack align="left" justify="flex-start" spacing="xs">
           <Group>
             <Avatar
-              src={activeData.iconName}
+              src={slash(activeData.iconName)}
               alt={activeData.screenName}
               placeholder="/icons/common/cover/heavy.png"
               radius="xs"
               size="md"
             />
-            <Rating defaultValue={0} size="sm" count={3} />
+            {/* <Rating defaultValue={0} size="sm" count={3} /> */}
             <ActionIcon
               size="lg"
               onChange={onMovingChange}
@@ -179,18 +179,18 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
             </ActionIcon>
             <ActionIcon
               size="lg"
-              variant={activeData.cover == "garrisioned" ? "default" : "trannsparent"}
-              onClick={() => onCoverChange("garrisioned")}
+              variant={activeData.cover == "garrison" ? "default" : "trannsparent"}
+              onClick={() => onCoverChange("garrison")}
             >
               <Image src="/icons/common/units/garrisoned.png"></Image>
             </ActionIcon>
           </Group>
-        </Box>
 
-        <WeaponSearch searchData={WeaponStats} onSelect={onAddWeapon}></WeaponSearch>
+          <WeaponSearch searchData={weaponList} onSelect={onAddWeapon}></WeaponSearch>
 
-        <Group spacing="xs">{components}</Group>
-      </Stack>
+          <Group spacing="xs">{components}</Group>
+        </Stack>
+      </Box>
     </>
   );
 };

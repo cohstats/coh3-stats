@@ -23,10 +23,10 @@ function Value({ id, onRemove, ...others }: MultiSelectValueProps & { value: str
           display: "flex",
           cursor: "default",
           alignItems: "center",
-          backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-          border: ` solid ${
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
-          }`,
+          // backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4],
+          // border: ` solid ${
+          //   theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
+          // }`,
           paddingLeft: theme.spacing.xs,
           borderRadius: theme.radius.sm,
         })}
@@ -59,9 +59,9 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
       <Group noWrap>
         <Image width={60} height={40} src={factionIcon} fit="contain" alt="Faction" />
         <div>
-          <Text size="sm">{screenName}</Text>
+          <Text size="sm">{id}</Text>
           <Text size="xs" opacity={0.65}>
-            {id}
+            {screenName}
           </Text>
         </div>
       </Group>
@@ -77,22 +77,22 @@ interface ISearchProps {
 }
 
 export const UnitSearch = (props: ISearchProps) => {
-  function onSelectionChange(id: string[]) {
+  function onSelectionChange(ids: string[]) {
     const selectedItems: any[] = [];
 
     // remove last element so we have never more than 2
 
-    if (id.length > 2) id.splice(1, 1);
+    if (ids.length > 2) ids.splice(1, 1);
     //   const second_item = id[2]; // remember
     //   id.pop(); // pop will be recognized by the component
     //   id.pop();
     //   id.push(second_item);
     // }
-    id.forEach((selection) => {
-      const item = props.searchData.find((item) => item.id == selection);
-      selectedItems.push(item);
-    });
-    props.onSelect(selectedItems);
+    // id.forEach((selection) => {
+    //   const item = props.searchData.find((item) => item.id == selection);
+    //   selectedItems.push(item);
+    // });
+    props.onSelect(ids);
   }
 
   return (

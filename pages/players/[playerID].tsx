@@ -67,7 +67,7 @@ const PlayerCard = ({
           content={`COH3 Stats - player card for player ${playerData.info.name}.`}
         />
       </Head>
-      <Container size={"lg"}>
+      <Container fluid>
         <Container fluid>
           <Group>
             <Avatar

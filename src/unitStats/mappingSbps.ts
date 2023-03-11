@@ -11,9 +11,22 @@ type SbpsType = {
   path: string; // path to object
   faction: string; // from folder structure races\[factionName]
   loadout: LoadoutData[]; // squad_loadout_ext.unit_list
-  unitType: string; // folder Infantry | vehicles | team_weapons | buildings
-  helpText: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
-  iconName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
+  /** Found at `squad_ui_ext.race_list`. */
+  ui: SquadUiData;
+  /** Found at `squad_upgrade_ext.upgrades`. List of instance references. */
+  upgrades: string[];
+  unitType: string;
+};
+
+type SquadUiData = {
+  /* Icon paths in-game. */
+  iconName: string; // Could be empty.
+  symbolIconName: string; // Could be empty.
+  /* Locstring fields. Found at `sbpextensions\\squad_ui_ext`. */
+  helpText: string;
+  briefText: string;
+  screenName: string;
+  extraText: string; // Could be empty (Set as $0).
 };
 
 type LoadoutData = {
@@ -39,8 +52,15 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     faction: jsonPath.split("/")[1] ?? jsonPath,
     unitType: parent,
     loadout: [],
-    helpText: filename,
-    iconName: slash("/icons/general/infantry_icn.png"),
+    ui: {
+      iconName: "",
+      symbolIconName: "",
+      helpText: "",
+      briefText: "",
+      screenName: "",
+      extraText: "",
+    },
+    upgrades: [],
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -57,8 +77,27 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
     switch (extName) {
       case "squad_loadout_ext":
         for (const unit in extension.unit_list) {
-          let unitNum = extension.unit_list[unit].loadout_data.num;
-          if (typeof unitNum == "undefined") unitNum = 5; // workaround aslong json is not complete
+          // The serializer will transform the missing field as "undefined". For
+          // better check, let's assign it as `-1`.
+          let unitNum: number = extension.unit_list[unit].loadout_data.num || -1;
+          // Workaround as long as the JSON is not complete. We will validate by unitType.
+          if (unitNum === -1) {
+            switch (sbps.unitType) {
+              // Vehicles are always 1.
+              case "vehicles":
+              case "armored_tractor_254_ak_signals_sp": // Chrida: obsolete. Type bug fixed
+                unitNum = 1;
+                break;
+              // Team weapons and infantry usually varies. Lets set as 4 by now.
+              case "infantry":
+              case "team_weapons":
+                unitNum = 4;
+              // Other stuff as 5.
+              default:
+                unitNum = 5;
+                break;
+            }
+          }
 
           if (extension.unit_list[unit].loadout_data.type)
             sbps.loadout.push({
@@ -69,17 +108,34 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           else console.log(sbps.id + ": Loadout not found");
         }
         break;
-
       case "squad_ui_ext":
-        const info = extension.race_list[0]?.race_data?.info;
-        if (info) {
-          sbps.helpText = resolveLocstring(info.help_text) || sbps.helpText; // otherwise keep default values
-          sbps.iconName = slash("icons/" + info.icon_name + ".png") || sbps.iconName;
-          sbps.screenName = resolveLocstring(info.screen_name) || sbps.screenName;
+        {
+          // Check if the `race_list` is not empty, otherwise skip.
+          if (!extension.race_list?.length) break;
+          // The race_list is always one item.
+          const uiExtInfo = extension.race_list[0].race_data.info;
+          sbps.ui.iconName = uiExtInfo?.icon_name || "";
+          sbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
+          // When it is empty, it has a value of "0".
+          const screenName = uiExtInfo.screen_name;
+          sbps.ui.screenName = resolveLocstring(screenName);
+          const helpText = uiExtInfo.help_text;
+          sbps.ui.helpText = resolveLocstring(helpText);
+          const extraText = uiExtInfo.extra_text;
+          sbps.ui.extraText = resolveLocstring(extraText);
+          const briefText = uiExtInfo.brief_text;
+          sbps.ui.briefText = resolveLocstring(briefText);
         }
-
         break;
-
+      case "squad_upgrade_ext":
+        // Check if the `upgrades` is not empty, otherwise skip.
+        if (!extension.upgrades?.length) break;
+        for (const upg of extension.upgrades) {
+          if (upg.upgrade?.instance_reference) {
+            sbps.upgrades.push(upg.upgrade.instance_reference);
+          }
+        }
+        break;
       default:
         break;
     }
@@ -113,11 +169,20 @@ const getSbpsStats = async () => {
       if (!isBaseFaction(item.faction)) return;
 
       // filter by relevant weapon types
+      // if (item.id === "panzer_iv_ger") {
+      //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item)
+      // }
       switch (item.unitType) {
-        case "infantry":
+        case "infantry": // General infantry.
+        case "pathfinder_us": // USF Airborne infantry.                         // Chrida: obsolete. Type bug fixed
+        case "team_weapons": // MGs, artillery (the mobile ones).
+        case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.// Chrida: obsolete. Type bug fixed
+        case "greyhound_recrewable_us": // USF Vehicles                         // Chrida: obsolete. Type bug fixed
+        case "halftrack_recrewable_ger": // German kettenrad and such.          // Chrida: obsolete. Type bug fixed
+        case "l6_40_recrewable_ger": // German tanks, wtf?                      // Chrida: obsolete. Type bug fixed
+        case "vehicles": // General vehicles (tanks, armoured cars).
           sbpsSetAll.push(item);
           break;
-
         default:
           return;
       }
@@ -132,13 +197,13 @@ const getSbpsStats = async () => {
 
 const isExtensionContainer = (key: string, obj: any) => {
   // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "extensions";
+  return obj["extensions"];
 };
 
 //
-const setSbpsStats = (sbpsStats: SbpsType[]) => {
+const setSbpsStats = (stats: SbpsType[]) => {
   //@todo to be filled
-  sbpsStats = sbpsStats;
+  sbpsStats = stats;
 };
 
 export { sbpsStats, setSbpsStats, getSbpsStats };

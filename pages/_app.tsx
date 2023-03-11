@@ -13,6 +13,7 @@ import CustomSpotlightProvider from "../components/customSpotlightProvider";
 import { useEffect, useRef } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
+import ContentContainer from "../components/Content-container";
 
 webFirebase.init();
 
@@ -80,7 +81,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const contentWithLayout = (
     <>
       <Header />
-      <Component {...pageProps} />
+      <ContentContainer>
+        {" "}
+        <Component {...pageProps} />
+      </ContentContainer>
       <Footer />
     </>
   );

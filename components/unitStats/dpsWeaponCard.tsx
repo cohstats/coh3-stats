@@ -10,6 +10,7 @@ import {
   Box,
   Group,
   CloseButton,
+  Container,
 } from "@mantine/core";
 import { WeaponStats } from "../../src/unitStats/mappingWeapon";
 import { resolveLocstring } from "../../src/unitStats/locstring";
@@ -69,9 +70,9 @@ export const DpsWeaponCard = (props: IDPSProps) => {
     <>
       <Box
         sx={(theme) => ({
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-          border: "solid 1px " + theme.colors.dark[4],
+          // backgroundColor:
+          //   theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+          //border: theme.colorScheme === "dark" ? "solid 1px " + theme.colors.dark[4] : "solid 1px " + theme.colors.gray[4] ,
           padding: theme.spacing.xs,
           borderRadius: theme.radius.md,
         })}

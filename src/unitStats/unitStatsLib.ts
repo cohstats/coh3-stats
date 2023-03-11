@@ -20,10 +20,10 @@ export const traverseTree = (
 
     if (!isRelevant && entity[i] !== null && typeof entity[i] == "object") {
       // remember current node as parrent (parent folder e.g. rifle)
-      parent = i;
+      const newParent = i;
 
       //going one step down in the object tree!!
-      const childSet = traverseTree(entity[i], checkRelevant, mapper, currentPath, parent);
+      const childSet = traverseTree(entity[i], checkRelevant, mapper, currentPath, newParent);
 
       childSet.forEach(relevantSet.add, relevantSet);
 

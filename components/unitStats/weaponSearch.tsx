@@ -24,9 +24,9 @@ function Value({ label, onRemove, ...others }: MultiSelectValueProps & { value: 
           cursor: "default",
           alignItems: "center",
           backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-          border: ` solid ${
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
-          }`,
+          // border: ` solid ${
+          //   theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
+          // }`,
           paddingLeft: theme.spacing.xs,
           borderRadius: theme.radius.sm,
         })}

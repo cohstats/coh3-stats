@@ -15,21 +15,24 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { Paper, createStyles, Container, Space, useMantineTheme, Grid } from "@mantine/core";
-import { WeaponSearch } from "./weaponSearch";
-import { WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
+import {
+  Paper,
+  createStyles,
+  Container,
+  Space,
+  useMantineTheme,
+  Grid,
+  Divider,
+  Box,
+} from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
-import { resolveLocstring } from "../../src/unitStats/locstring";
 import { CustomizableUnit, DpsUnitCustomizing } from "./dpsUnitCustomizing";
-import { sbpsStats, SbpsType } from "../../src/unitStats/mappingSbps";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
-import { UpgradesType } from "../../src/unitStats/mappingUpgrades";
 import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
-
-type SelectedUnits = {
-  units: CustomizableUnit[];
-};
+import slash from "slash";
+import { WeaponType } from "../../src/unitStats/mappingWeapon";
+import { SbpsType } from "../../src/unitStats/mappingSbps";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
@@ -44,18 +47,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-function hexToRgbA(hex: string, opacity: string) {
-  let c: any;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split("");
-    if (c.length == 3) {
-      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-    }
-    c = "0x" + c.join("");
-    return "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + "," + opacity + ")";
-  }
-  throw new Error("Bad Hex");
-}
+// function hexToRgbA(hex: string, opacity: string) {
+//   let c: any;
+//   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+//     c = hex.substring(1).split("");
+//     if (c.length == 3) {
+//       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+//     }
+//     c = "0x" + c.join("");
+//     return "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + "," + opacity + ")";
+//   }
+//   throw new Error("Bad Hex");
+// }
 
 ChartJS.register(
   CategoryScale,
@@ -179,6 +182,7 @@ const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
       targetSize,
       armor,
       unit1.isMoving,
+      opponentCover,
     );
     dpsTotal = addDpsData(dpsTotal, weaponDps);
   });
@@ -231,7 +235,7 @@ const mergePoints = (xPoint: any, yPoint: any) => {
 };
 
 const getCoverMultiplier = (coverType: string, weaponBag: any) => {
-  let cover = weaponBag["tp_" + coverType + "_cover"];
+  let cover = weaponBag.cover_table["tp_" + coverType + "_cover"];
   if (!cover) cover = weaponBag.tp_defcover;
   return cover;
 };
@@ -251,18 +255,18 @@ const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
 const mapUnitDisplayData = (
   sbpsSelected: SbpsType,
   ebps?: EbpsType[],
-  weapons?: WeaponType[],
+  // weapons?: WeaponType[],
 ): any => {
   // Initilaize
   const custUnit: any = {
     id: sbpsSelected.id, // filename  -> eg. panzergrenadier_ak
-    screenName: sbpsSelected.screenName, // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+    screenName: sbpsSelected.ui.screenName, // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
     path: sbpsSelected.path, // path to object
     faction: sbpsSelected.faction, // from folder structure races\[factionName]
     loadout: [], // squad_loadout_ext.unit_list
     unitType: sbpsSelected.unitType, // folder Infantry | vehicles | team_weapons | buildings
-    helpText: sbpsSelected.helpText, // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
-    iconName: sbpsSelected.iconName, // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
+    helpText: sbpsSelected.ui.helpText, // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
+    iconName: slash("icons/" + sbpsSelected.ui.iconName + ".png"), // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
     factionIcon: getFactionIcon(sbpsSelected.faction),
     cover: "",
     isMoving: false,
@@ -282,7 +286,7 @@ const mapUnitSelection = (sbps: SbpsType[]) => {
   const selectionFields = [];
 
   for (const squad of sbps) {
-    selectionFields.push(mapUnitDisplayData(squad));
+    if (squad.unitType == "infantry") selectionFields.push(mapUnitDisplayData(squad));
   }
 
   return selectionFields;
@@ -307,16 +311,41 @@ export const DpsChart = (props: IDPSProps) => {
 
   setScreenOptions(options, isLargeScreen);
 
+  // Squad configration has changed
   function onSquadConfigChange(unit: CustomizableUnit) {
     const units = [...activeData];
     units.forEach((squad: CustomizableUnit, index: number) => {
-      if (squad.id == unit.id) units[index] = unit;
+      if (squad.id == unit.id) {
+        units[index] = unit;
+
+        // Beta: remember loadout
+        const unitBp = unitSelectionList.find((selUnit) => selUnit.id == unit.id);
+        if (unitBp) unitBp.loadout = unit.loadout;
+      }
     });
     setActiveData(units);
   }
 
-  function onSelectionChange(selectionItem: any[]) {
-    setActiveData(selectionItem);
+  // synchronize selection fild with presented units
+  function onSelectionChange(selection: any[]) {
+    // add new units
+    for (const id of selection) {
+      // check if unit is already selected
+      if (activeData.find((unit) => unit.id == id)) continue;
+
+      // get blueprint
+      const unitBp = unitSelectionList.find((unit) => unit.id == id);
+
+      // add unit
+      if (unitBp) activeData.push(unitBp);
+    }
+
+    // delete units not requested
+    activeData.forEach((unit, index) => {
+      if (!selection.includes(unit.id)) activeData.splice(index, 1);
+    });
+
+    setActiveData([...activeData]);
   }
 
   // default values
@@ -360,17 +389,19 @@ export const DpsChart = (props: IDPSProps) => {
   return (
     <>
       <Container>
-        <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
+        {/* */}
+
+        <Paper radius="md" px="lg" py={3} mt={6}>
           <Space h="sm" />
 
           <UnitSearch searchData={unitSelectionList} onSelect={onSelectionChange}></UnitSearch>
           <Space h="sm" />
-
           <>
             <Grid>
               {activeData.length > 0 && (
                 <Grid.Col md={6} lg={6}>
                   <DpsUnitCustomizing
+                    key={activeData[0].id}
                     unit={activeData[0]}
                     onChange={onSquadConfigChange}
                   ></DpsUnitCustomizing>
@@ -379,6 +410,7 @@ export const DpsChart = (props: IDPSProps) => {
               {activeData.length > 1 && (
                 <Grid.Col md={6} lg={6}>
                   <DpsUnitCustomizing
+                    key={activeData[1].id}
                     unit={activeData[1]}
                     onChange={onSquadConfigChange}
                   ></DpsUnitCustomizing>
@@ -386,14 +418,26 @@ export const DpsChart = (props: IDPSProps) => {
               )}
               <Space h="sm" />
             </Grid>
-
-            <Space h="sm" />
           </>
         </Paper>
       </Container>
+
       <Container>
-        <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
-          <Line options={options as any} data={chartData as any} redraw={true} />
+        <Paper radius="md" px="lg" py={3} mt={6}>
+          <Box
+            sx={(theme) => ({
+              backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+              border:
+                theme.colorScheme === "dark"
+                  ? "solid 1px " + theme.colors.dark[4]
+                  : "solid 1px " + theme.colors.gray[4],
+              textAlign: "left",
+              // padding: theme.spacing.xs,
+              borderRadius: theme.radius.md,
+            })}
+          >
+            <Line options={options as any} data={chartData as any} redraw={true} />
+          </Box>
         </Paper>
       </Container>
     </>
