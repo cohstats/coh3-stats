@@ -1,13 +1,15 @@
 // type description of mapped data
 
+import slash from "slash";
 import { resolveLocstring } from "./locstring";
-import { traverseTree } from "./unitStatsLib";
+import { isBaseFaction, traverseTree } from "./unitStatsLib";
 
 // need to be extended by all required fields
 type SbpsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
-  path: string; // folder from which the extraction got started. Eg. afrika_corps, american, british,.
-  faction: string; // races\[factionName]
+  screenName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+  path: string; // path to object
+  faction: string; // from folder structure races\[factionName]
   loadout: LoadoutData[]; // squad_loadout_ext.unit_list
   /** Found at `squad_ui_ext.race_list`. */
   ui: SquadUiData;
@@ -42,9 +44,12 @@ let sbpsStats: SbpsType[];
 // subtree -> eg. extensions node
 const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
   const sbpsEntity: SbpsType = {
+    // default values
+
     id: filename,
-    path: jsonPath,
-    faction: jsonPath.split("\\")[1] ?? jsonPath,
+    screenName: filename,
+    path: slash(jsonPath),
+    faction: jsonPath.split("/")[1] ?? jsonPath,
     unitType: parent,
     loadout: [],
     ui: {
@@ -65,7 +70,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   return sbpsEntity;
 };
 
-const mapExtensions = (root: any, spbps: SbpsType) => {
+const mapExtensions = (root: any, sbps: SbpsType) => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
     const extName = extension.template_reference.value.split("\\")[1];
@@ -77,10 +82,10 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           let unitNum: number = extension.unit_list[unit].loadout_data.num || -1;
           // Workaround as long as the JSON is not complete. We will validate by unitType.
           if (unitNum === -1) {
-            switch (spbps.unitType) {
+            switch (sbps.unitType) {
               // Vehicles are always 1.
               case "vehicles":
-              case "armored_tractor_254_ak_signals_sp":
+              case "armored_tractor_254_ak_signals_sp": // Chrida: obsolete. Type bug fixed
                 unitNum = 1;
                 break;
               // Team weapons and infantry usually varies. Lets set as 4 by now.
@@ -95,12 +100,12 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           }
 
           if (extension.unit_list[unit].loadout_data.type)
-            spbps.loadout.push({
+            sbps.loadout.push({
               isDefaultUnit: true,
               num: unitNum, //@todo num not always avilable
               type: extension.unit_list[unit].loadout_data.type.instance_reference,
             });
-          else console.log("hmm");
+          else console.log(sbps.id + ": Loadout not found");
         }
         break;
       case "squad_ui_ext":
@@ -109,17 +114,17 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           if (!extension.race_list?.length) break;
           // The race_list is always one item.
           const uiExtInfo = extension.race_list[0].race_data.info;
-          spbps.ui.iconName = uiExtInfo?.icon_name || "";
-          spbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
+          sbps.ui.iconName = uiExtInfo?.icon_name || "";
+          sbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = uiExtInfo.screen_name;
-          spbps.ui.screenName = resolveLocstring(screenName);
+          sbps.ui.screenName = resolveLocstring(screenName);
           const helpText = uiExtInfo.help_text;
-          spbps.ui.helpText = resolveLocstring(helpText);
+          sbps.ui.helpText = resolveLocstring(helpText);
           const extraText = uiExtInfo.extra_text;
-          spbps.ui.extraText = resolveLocstring(extraText);
+          sbps.ui.extraText = resolveLocstring(extraText);
           const briefText = uiExtInfo.brief_text;
-          spbps.ui.briefText = resolveLocstring(briefText);
+          sbps.ui.briefText = resolveLocstring(briefText);
         }
         break;
       case "squad_upgrade_ext":
@@ -127,7 +132,7 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
         if (!extension.upgrades?.length) break;
         for (const upg of extension.upgrades) {
           if (upg.upgrade?.instance_reference) {
-            spbps.upgrades.push(upg.upgrade.instance_reference);
+            sbps.upgrades.push(upg.upgrade.instance_reference);
           }
         }
         break;
@@ -155,23 +160,26 @@ const getSbpsStats = async () => {
 
   // Extract from JSON
   for (const obj in root) {
-    // find all weapon_bags
+    // find all extensions
     const sbpsSet = traverseTree(root[obj], isExtensionContainer, mapSbpsData, obj, obj);
 
     // Filter relevant objects
-    sbpsSet.forEach((item: SbpsType) => {
+    sbpsSet.forEach((item: any) => {
+      // skip non base factions
+      if (!isBaseFaction(item.faction)) return;
+
       // filter by relevant weapon types
       // if (item.id === "panzer_iv_ger") {
       //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item)
       // }
       switch (item.unitType) {
         case "infantry": // General infantry.
-        case "pathfinder_us": // USF Airborne infantry.
+        case "pathfinder_us": // USF Airborne infantry.                         // Chrida: obsolete. Type bug fixed
         case "team_weapons": // MGs, artillery (the mobile ones).
-        case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.
-        case "greyhound_recrewable_us": // USF Vehicles
-        case "halftrack_recrewable_ger": // German kettenrad and such.
-        case "l6_40_recrewable_ger": // German tanks, wtf?
+        case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.// Chrida: obsolete. Type bug fixed
+        case "greyhound_recrewable_us": // USF Vehicles                         // Chrida: obsolete. Type bug fixed
+        case "halftrack_recrewable_ger": // German kettenrad and such.          // Chrida: obsolete. Type bug fixed
+        case "l6_40_recrewable_ger": // German tanks, wtf?                      // Chrida: obsolete. Type bug fixed
         case "vehicles": // General vehicles (tanks, armoured cars).
           sbpsSetAll.push(item);
           break;
@@ -181,13 +189,15 @@ const getSbpsStats = async () => {
     });
   }
 
+  sbpsStats = sbpsSetAll;
+
   //@todo to be filled
   return sbpsSetAll;
 };
 
 const isExtensionContainer = (key: string, obj: any) => {
   // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "extensions";
+  return obj["extensions"];
 };
 
 //
