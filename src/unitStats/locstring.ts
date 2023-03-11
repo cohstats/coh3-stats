@@ -4,7 +4,7 @@
 //    "5678": "Value B"
 // }
 
-let unitStatsLocString: any;
+let unitStatsLocString: Record<string, string>;
 
 type LocstringSchema = {
   id: number;
