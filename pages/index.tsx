@@ -6,7 +6,7 @@ import { Discord } from "../components/icon/discord";
 
 const Home: NextPage = () => {
   return (
-    <Container size={"lg"}>
+    <Container fluid>
       <Image
         src="/coming-soon/coh3-background.jpg"
         alt={"coh3-background"}

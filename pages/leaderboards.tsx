@@ -179,7 +179,7 @@ const Leaderboards = ({
           content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}.`}
         />
       </Head>
-      <Container size={"lg"}>
+      <Container fluid>
         <Container fluid>
           <Group position={"apart"}>
             <Group>
