@@ -141,7 +141,7 @@ export const Header: React.FC<HeaderProps> = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              Leaderboards{" "}
+              Leaderboards
             </Anchor>
             <Tooltip label="Coming soon" color="orange">
               <Anchor
@@ -157,19 +157,9 @@ export const Header: React.FC<HeaderProps> = () => {
               </Anchor>
             </Tooltip>
 
-            <Tooltip label="Coming soon" color="orange">
-              <Anchor
-                component={Link}
-                href="#"
-                className={cx(classes.link, classes.disabledLink)}
-                onClick={() => close()}
-              >
-                App{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Anchor>
-            </Tooltip>
+            <Anchor component={Link} href="/app" className={classes.link} onClick={() => close()}>
+              App
+            </Anchor>
 
             {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
 
@@ -241,23 +231,14 @@ export const Header: React.FC<HeaderProps> = () => {
               </Anchor>
             </Tooltip>
 
-            <Tooltip label="Coming soon" color="orange">
-              <Anchor
-                component={Link}
-                href="#"
-                className={cx(classes.link, classes.disabledLink)}
-              >
-                App{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Anchor>
-            </Tooltip>
+            <Anchor component={Link} href="/app" className={classes.link}>
+              App
+            </Anchor>
 
             {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
 
             <Anchor component={Link} href="/about" className={cx(classes.link)}>
-              About{" "}
+              About
             </Anchor>
           </Group>
 

@@ -8986,7 +8986,7 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-next-offline@^5.0.3, next-offline@^5.0.5:
+next-offline@^5.0.3:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/next-offline/-/next-offline-5.0.5.tgz#91b2792f92a65e33eee00c9ab0dd1af9b9f71caa"
   integrity sha512-GOpq+mD7ecrgW+A8+Y31BLNca3b8EeyRMhW5C9PsCc/C2RO1AzrssgIgQIrRulFuXDvXuPE5hWI4/DTHeOUp6Q==
