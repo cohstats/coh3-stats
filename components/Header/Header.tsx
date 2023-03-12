@@ -25,6 +25,7 @@ import { OnlinePlayers } from "../online-players";
 import config from "../../config";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
+import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -137,7 +138,7 @@ export const Header: React.FC<HeaderProps> = () => {
             </Group>
             <Anchor
               component={Link}
-              href="/leaderboards"
+              href={getLeaderBoardRoute()}
               className={classes.link}
               onClick={() => close()}
             >
@@ -159,7 +160,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
             <Anchor
               component={Link}
-              href="/desktop-app"
+              href={getDesktopAppRoute()}
               className={classes.link}
               onClick={() => close()}
             >
@@ -170,7 +171,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
             <Anchor
               component={Link}
-              href="/about"
+              href={getAboutRoute()}
               className={cx(classes.link)}
               onClick={() => close()}
             >
@@ -211,7 +212,11 @@ export const Header: React.FC<HeaderProps> = () => {
             <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <div>
-                  <Anchor component={Link} href="/leaderboards" className={cx(classes.link)}>
+                  <Anchor
+                    component={Link}
+                    href={getLeaderBoardRoute()}
+                    className={cx(classes.link)}
+                  >
                     <Group spacing={3}>
                       Leaderboards
                       <IconChevronDown size={16} />
@@ -236,13 +241,13 @@ export const Header: React.FC<HeaderProps> = () => {
               </Anchor>
             </Tooltip>
 
-            <Anchor component={Link} href="/desktop-app" className={classes.link}>
+            <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
               App
             </Anchor>
 
             {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
 
-            <Anchor component={Link} href="/about" className={cx(classes.link)}>
+            <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About
             </Anchor>
           </Group>

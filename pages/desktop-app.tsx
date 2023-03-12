@@ -20,6 +20,20 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
     <Container fluid>
       <Image src="/statsapp.png" alt={"coh3 stats desktop app"} radius="md" mx="auto" maw={900} />
       <Paper radius="md" mt="md" p="lg">
+        <Stack align="center" spacing={5} mb={30}>
+          <Anchor href={downloadURL} target="_blank">
+            <Button>Download {version}</Button>
+          </Anchor>
+          <Text size="sm" color="dimmed">
+            {downloadCount} downloads
+          </Text>
+          <Anchor
+            href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
+            target="_blank"
+          >
+            Release Notes
+          </Anchor>
+        </Stack>
         <Title>Gain additional intel on your games with the desktop app!</Title>
         <List
           spacing="sm"
@@ -36,20 +50,6 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
           <List.Item>Get notified via sound when joining a game (optional)</List.Item>
           <List.Item>OBS Overlay feature</List.Item>
         </List>
-        <Stack align="end" spacing={5}>
-          <Anchor href={downloadURL} target="_blank">
-            <Button>Download {version}</Button>
-          </Anchor>
-          <Text size="sm" color="dimmed">
-            {downloadCount} downloads
-          </Text>
-          <Anchor
-            href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
-            target="_blank"
-          >
-            Release Notes
-          </Anchor>
-        </Stack>
       </Paper>
     </Container>
   );

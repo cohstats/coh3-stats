@@ -1,7 +1,20 @@
+import { isUndefined } from "lodash";
 import { leaderBoardType, raceType } from "./coh3/coh3-types";
 
-const getLeaderBoardRoute = (race: raceType, type: leaderBoardType, start?: number) => {
-  return encodeURI(`/leaderboards?race=${race}&type=${type}${start ? `&start=${start}` : ""}`);
+const getLeaderBoardRoute = (race?: raceType, type?: leaderBoardType, start?: number) => {
+  const searchParams = new URLSearchParams(
+    Object.assign(
+      {},
+      !isUndefined(race) && { race },
+      !isUndefined(type) && { type },
+      !isUndefined(start) && { start },
+    ) as any,
+  );
+  let searchParamString = searchParams.toString();
+  if (searchParamString.length > 0) {
+    searchParamString = "?" + searchParamString;
+  }
+  return encodeURI(`/leaderboards${searchParamString}`);
 };
 
 const getExplorerFactionRoute = (race: raceType) => {
@@ -12,4 +25,18 @@ const getDPSCalculatorRoute = () => {
   return encodeURI(`/explorer/dps`);
 };
 
-export { getLeaderBoardRoute, getExplorerFactionRoute, getDPSCalculatorRoute };
+const getDesktopAppRoute = () => {
+  return encodeURI(`/desktop-app`);
+};
+
+const getAboutRoute = () => {
+  return encodeURI(`/about`);
+};
+
+export {
+  getLeaderBoardRoute,
+  getExplorerFactionRoute,
+  getDPSCalculatorRoute,
+  getDesktopAppRoute,
+  getAboutRoute,
+};
