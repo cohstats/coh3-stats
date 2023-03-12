@@ -157,7 +157,12 @@ export const Header: React.FC<HeaderProps> = () => {
               </Anchor>
             </Tooltip>
 
-            <Anchor component={Link} href="/app" className={classes.link} onClick={() => close()}>
+            <Anchor
+              component={Link}
+              href="/desktop-app"
+              className={classes.link}
+              onClick={() => close()}
+            >
               App
             </Anchor>
 
@@ -231,7 +236,7 @@ export const Header: React.FC<HeaderProps> = () => {
               </Anchor>
             </Tooltip>
 
-            <Anchor component={Link} href="/app" className={classes.link}>
+            <Anchor component={Link} href="/desktop-app" className={classes.link}>
               App
             </Anchor>
 
