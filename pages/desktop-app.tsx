@@ -31,7 +31,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
             "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
           }
         />
-        <meta property="og:image" content="/desktop-app/desktop-app-main.webp" />
+        <meta property="og:image" content="/desktop-app/desktop-app-main-500x281.webp" />
       </Head>
       <Container fluid>
         <Image
@@ -40,6 +40,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
           radius="md"
           mx="auto"
           maw={900}
+          mah={506}
         />
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" spacing={5} mb={30}>
