@@ -18,7 +18,7 @@ import Head from "next/head";
 import React from "react";
 
 const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
-  const desktopAppDescription = `Download COH3 Stats Desktop app v${version}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.`;
+  const desktopAppDescription = `Download COH3 Stats Desktop app ${version}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.`;
 
   return (
     <>

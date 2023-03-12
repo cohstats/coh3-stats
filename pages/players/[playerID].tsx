@@ -63,7 +63,7 @@ const PlayerCard = ({
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`COH3 Stats - player card for player ${playerData.info.name}.`}
+          content={`Player card for player ${playerData.info.name}. COH3 Stats`}
         />
         <meta
           name="keywords"
