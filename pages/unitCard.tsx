@@ -66,7 +66,8 @@ export const getStaticProps = async () => {
   const weaponData = await getWeaponStats();
 
   // map Data at built time
-  const ebpsData = await getEbpsStats();
+  //const ebpsData = await getEbpsStats();
+  const ebpsData: any[] = [];
 
   // map Data at built time
   const sbpsData = await getSbpsStats();
