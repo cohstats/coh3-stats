@@ -22,8 +22,13 @@ import {
   Space,
   useMantineTheme,
   Grid,
+  Flex,
   Divider,
   Box,
+  SimpleGrid,
+  Text,
+  Stack,
+  Title,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
@@ -33,6 +38,7 @@ import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
 import slash from "slash";
 import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
+import Head from "next/head";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
@@ -144,9 +150,9 @@ const getWeaponDPSData = (units: CustomizableUnit[]) => {
   if (units.length == 0) return dpsSet;
 
   // we only have two units so we keep it simple -> No generic loop stuff
-  dpsSet.push(getCombatDps(units[0], units[1]));
+  if (units[0]) dpsSet[0] = getCombatDps(units[0], units[1]);
 
-  if (units.length == 2) dpsSet.push(getCombatDps(units[1], units[0]));
+  if (units[1]) dpsSet[1] = getCombatDps(units[1], units[0]);
 
   return dpsSet;
 };
@@ -260,18 +266,21 @@ const mapUnitDisplayData = (
   // Initilaize
   const custUnit: any = {
     id: sbpsSelected.id, // filename  -> eg. panzergrenadier_ak
-    screenName: sbpsSelected.ui.screenName, // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+    screenname: sbpsSelected.ui.screenName || "No text found", // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
     path: sbpsSelected.path, // path to object
     faction: sbpsSelected.faction, // from folder structure races\[factionName]
     loadout: [], // squad_loadout_ext.unit_list
     unitType: sbpsSelected.unitType, // folder Infantry | vehicles | team_weapons | buildings
     helpText: sbpsSelected.ui.helpText, // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
-    iconName: slash("icons/" + sbpsSelected.ui.iconName + ".png"), // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
-    factionIcon: getFactionIcon(sbpsSelected.faction),
+    iconName: slash("/icons/" + sbpsSelected.ui.iconName + ".png") || "icon", // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
+    factionicon: getFactionIcon(sbpsSelected.faction),
     cover: "",
     isMoving: false,
     targetSize: 1,
     armor: 1,
+    image: getFactionIcon(sbpsSelected.faction),
+    description: sbpsSelected.ui.screenName,
+    label: sbpsSelected.id,
     value: sbpsSelected.id,
   };
 
@@ -301,6 +310,7 @@ interface IDPSProps {
 export const DpsChart = (props: IDPSProps) => {
   const searchData_default: CustomizableUnit[] = [];
   const [activeData, setActiveData] = useState(searchData_default);
+  const [rerender, setRerender] = useState(false);
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
@@ -313,39 +323,25 @@ export const DpsChart = (props: IDPSProps) => {
 
   // Squad configration has changed
   function onSquadConfigChange(unit: CustomizableUnit) {
-    const units = [...activeData];
-    units.forEach((squad: CustomizableUnit, index: number) => {
-      if (squad.id == unit.id) {
-        units[index] = unit;
-
-        // Beta: remember loadout
-        const unitBp = unitSelectionList.find((selUnit) => selUnit.id == unit.id);
-        if (unitBp) unitBp.loadout = unit.loadout;
-      }
-    });
-    setActiveData(units);
+    setRerender(!rerender);
   }
 
-  // synchronize selection fild with presented units
-  function onSelectionChange(selection: any[]) {
+  // synchronize selection field with presented units
+  function onSelectionChange(selection: string, index: number) {
     // add new units
-    for (const id of selection) {
-      // check if unit is already selected
-      if (activeData.find((unit) => unit.id == id)) continue;
 
-      // get blueprint
-      const unitBp = unitSelectionList.find((unit) => unit.id == id);
+    // check if unit is already selected
+    if (activeData[index]?.id == selection) return;
 
-      // add unit
-      if (unitBp) activeData.push(unitBp);
+    // get blueprint
+    const unitBp = unitSelectionList.find((unit) => unit.id == selection);
+
+    // add unit
+    if (unitBp) {
+      activeData[index] = { ...unitBp };
+      activeData[index].loadout = []; // Clear loadout reference
+      setRerender(!rerender);
     }
-
-    // delete units not requested
-    activeData.forEach((unit, index) => {
-      if (!selection.includes(unit.id)) activeData.splice(index, 1);
-    });
-
-    setActiveData([...activeData]);
   }
 
   // default values
@@ -360,26 +356,24 @@ export const DpsChart = (props: IDPSProps) => {
     const dpsLines = getWeaponDPSData(activeData);
 
     //const selectItem = searchItems.searchData.find(item => item.value = activeData );
-    activeData.forEach((set, index) => {
-      // add line to graph
-      chartData.datasets.push(mapChartData(dpsLines[index], set.id));
-    });
 
-    // make lines beautifull
-    chartData.datasets.forEach(function (set, i) {
+    if (activeData[0]) {
+      const set = mapChartData(dpsLines[0], activeData[0].id);
       set.borderColor = theme.colors.blue[5];
-      //set.backgroundColor = hexToRgbA(theme.colors.blue[5], "0.3");
-      // set.fill = true;
-      if (i > 0) {
-        set.borderColor = theme.colors.red[5];
-        //set.backgroundColor = hexToRgbA(theme.colors.red[5], "0.3");
-        //set.fill = false;
-      }
-
+      chartData.datasets.push(set);
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
       });
-    });
+    }
+
+    if (activeData[1]) {
+      const set = mapChartData(dpsLines[1], activeData[1].id);
+      set.borderColor = theme.colors.red[5];
+      chartData.datasets.push(set);
+      set.data.forEach((point: any) => {
+        if (point.y > maxY) maxY = point.y;
+      });
+    }
   }
   // some scale buffer above the highest point
   maxY = maxY * 1.1;
@@ -388,45 +382,98 @@ export const DpsChart = (props: IDPSProps) => {
 
   return (
     <>
+      <Head>
+        <title>DPS - Calculator</title>
+        <meta name="Damage Per Second (DPS) Calculator " />
+      </Head>
       <Container>
         {/* */}
+        <Stack mb={24}>
+          <Title order={2}>Company of Heroes 3 DPS Tool</Title>
+        </Stack>
 
         <Paper radius="md" px="lg" py={3} mt={6}>
           <Space h="sm" />
 
-          <UnitSearch searchData={unitSelectionList} onSelect={onSelectionChange}></UnitSearch>
           <Space h="sm" />
           <>
             <Grid>
-              {activeData.length > 0 && (
-                <Grid.Col md={6} lg={6}>
-                  <DpsUnitCustomizing
-                    key={activeData[0].id}
-                    unit={activeData[0]}
-                    onChange={onSquadConfigChange}
-                  ></DpsUnitCustomizing>
-                </Grid.Col>
-              )}
-              {activeData.length > 1 && (
-                <Grid.Col md={6} lg={6}>
-                  <DpsUnitCustomizing
-                    key={activeData[1].id}
-                    unit={activeData[1]}
-                    onChange={onSquadConfigChange}
-                  ></DpsUnitCustomizing>
-                </Grid.Col>
-              )}
+              <Grid.Col md={6} lg={6}>
+                <UnitSearch
+                  key="Search1"
+                  searchData={unitSelectionList}
+                  onSelect={onSelectionChange}
+                  position={0}
+                ></UnitSearch>
+                <Space h="sm" />
+                {activeData[0] && (
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                      border:
+                        theme.colorScheme === "dark"
+                          ? "solid 1px " + theme.colors.dark[4]
+                          : "solid 2px " + theme.colors.blue[4],
+                      textAlign: "left",
+                      padding: theme.spacing.xs,
+                      borderRadius: theme.radius.md,
+                    })}
+                  >
+                    <DpsUnitCustomizing
+                      key={activeData[0].id + "0"}
+                      unit={activeData[0]}
+                      onChange={onSquadConfigChange}
+                      index={0}
+                    ></DpsUnitCustomizing>
+                  </Box>
+                )}
+              </Grid.Col>
+
+              <Grid.Col md={6} lg={6}>
+                <UnitSearch
+                  key="Search2"
+                  searchData={unitSelectionList}
+                  onSelect={onSelectionChange}
+                  position={1}
+                ></UnitSearch>
+                <Space h="sm" />
+                {activeData[1] && (
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                      border:
+                        theme.colorScheme === "dark"
+                          ? "solid 1px " + theme.colors.dark[4]
+                          : "solid 2px " + theme.colors.red[6],
+                      textAlign: "left",
+                      padding: theme.spacing.xs,
+                      borderRadius: theme.radius.md,
+                    })}
+                  >
+                    <DpsUnitCustomizing
+                      key={activeData[1].id + "1"}
+                      unit={activeData[1]}
+                      onChange={onSquadConfigChange}
+                      index={0}
+                    ></DpsUnitCustomizing>
+                  </Box>
+                )}
+              </Grid.Col>
+
               <Space h="sm" />
             </Grid>
           </>
         </Paper>
       </Container>
 
-      <Container>
+      <Container size="md">
         <Paper radius="md" px="lg" py={3} mt={6}>
           <Box
             sx={(theme) => ({
-              backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+              backgroundColor:
+                theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
               border:
                 theme.colorScheme === "dark"
                   ? "solid 1px " + theme.colors.dark[4]

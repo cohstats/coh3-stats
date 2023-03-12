@@ -320,7 +320,7 @@ const explorerFactionLink = (faction: raceType) => {
  */
 const explorerToolLink = (toolName: string, url: string) => (
   <Text>
-    <Anchor color="orange" component={Link} href={`/explorer?tool=${url}`}>
+    <Anchor color="orange" component={Link} href={`/explorer/${url}`}>
       {toolName}
     </Anchor>
   </Text>
@@ -354,17 +354,17 @@ const explorerOption = ({
         </Grid.Col>
         <Grid.Col span={1}>
           <Stack>
-            <Text weight={700}>Other Stuff</Text>
-            <Text>
-              <Anchor color="orange" component={Link} href="#">
-                Child stuff
-              </Anchor>
-            </Text>
+            <Text weight={700}>Tools</Text>
+            {explorerToolLink("DPS Tool", "dps")}
           </Stack>
           <Divider my="sm" />
           <Stack>
-            <Text weight={700}>Tools</Text>
-            {explorerToolLink("DPS Calculator", "dps_calculator")}
+            <Text weight={700}>Other Stuff</Text>
+            <Text>
+              <Anchor color="orange" component={Link} href="#">
+                Comming Soon
+              </Anchor>
+            </Text>
           </Stack>
         </Grid.Col>
       </Grid>

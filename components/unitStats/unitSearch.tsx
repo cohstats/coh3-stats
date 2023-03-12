@@ -7,12 +7,13 @@ import {
   Box,
   CloseButton,
   MultiSelectValueProps,
+  Select,
 } from "@mantine/core";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
-  id: string;
-  factionIcon: string;
-  screenName: string;
+  image: string;
+  label: string;
+  description: string;
 }
 
 function Value({ id, onRemove, ...others }: MultiSelectValueProps & { value: string }) {
@@ -54,14 +55,14 @@ function Value({ id, onRemove, ...others }: MultiSelectValueProps & { value: str
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ id, factionIcon, screenName, ...others }: ItemProps, ref) => (
+  ({ image, label, description, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
-        <Image width={60} height={40} src={factionIcon} fit="contain" alt="Faction" />
+        <Image width={60} height={40} src={image} fit="contain" alt="Faction" />
         <div>
-          <Text size="sm">{id}</Text>
+          <Text size="sm">{label}</Text>
           <Text size="xs" opacity={0.65}>
-            {screenName}
+            {description}
           </Text>
         </div>
       </Group>
@@ -73,16 +74,17 @@ SelectItem.displayName = "SelectItem";
 
 interface ISearchProps {
   searchData: any[];
-  onSelect(selection: any): any;
+  onSelect(selection: any, position: number): any;
+  position: number;
 }
 
 export const UnitSearch = (props: ISearchProps) => {
-  function onSelectionChange(ids: string[]) {
-    const selectedItems: any[] = [];
+  function onSelectionChange(id: string) {
+    //const selectedItems: any[] = [];
 
     // remove last element so we have never more than 2
 
-    if (ids.length > 2) ids.splice(1, 1);
+    //if (ids.length > 2) ids.splice(1, 1);
     //   const second_item = id[2]; // remember
     //   id.pop(); // pop will be recognized by the component
     //   id.pop();
@@ -92,24 +94,21 @@ export const UnitSearch = (props: ISearchProps) => {
     //   const item = props.searchData.find((item) => item.id == selection);
     //   selectedItems.push(item);
     // });
-    props.onSelect(ids);
+    props.onSelect(id, props.position);
   }
 
   return (
-    <MultiSelect
-      placeholder="Choose up to two units"
+    <Select
+      placeholder="Choose unit"
+      clearable
       itemComponent={SelectItem}
       data={props.searchData}
-      valueComponent={Value}
+      // data = {[]}
+      // valueComponent={Value}
       searchable
       maxDropdownHeight={600}
       nothingFound="Nobody here. War is over!"
       onChange={onSelectionChange}
-      filter={(value, selected, item) =>
-        //@ts-ignore
-        item.id.toLowerCase().includes(value.toLowerCase().trim()) ||
-        item.screenName.toLowerCase().includes(value.toLowerCase().trim())
-      }
     />
   );
 };

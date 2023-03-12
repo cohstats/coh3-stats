@@ -22,6 +22,9 @@ export type CustomizableUnit = {
   targetSize: number;
   armor: number;
   value: string; // must have value, otherwise multiselect will not work
+  label: string; // For drop down
+  image: string;
+  description: string;
 };
 
 const useStyles = createStyles((theme) => ({
@@ -47,53 +50,47 @@ const computeWeaponList = (unit: CustomizableUnit) => {
 interface IUnitProps {
   unit: CustomizableUnit;
   onChange: any;
+  index: number;
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
   const weaponListInit: WeaponType[] = [];
   const [activeData, setActiveData] = useState(props.unit);
   const [weaponList, setWeaponList] = useState(weaponListInit);
-  //const [selWeapons,setSelWeapons] = useState(([] as weaponMember[]));
   const { classes } = useStyles();
 
   if (weaponList.length == 0) setWeaponList(computeWeaponList(props.unit));
 
-  function onAddWeapon(selectionItem: weaponMember[]) {
-    const selectionClone: weaponMember[] = [];
+  function onAddWeapon(selectionItem: weaponMember) {
+    // check if weapon have already been added
+    if (activeData.loadout.find((weapon) => weapon.id == selectionItem.id)) return;
 
-    for (const item of selectionItem) {
-      const clone = { ...item };
-      if (!clone.num) clone.num = 1;
-      selectionClone.push(clone);
-    }
+    // Clone Weapon so we can configure it localy
+    // clone only when creating an instance. Not when changing.
+    const clone = { ...selectionItem };
+    if (!clone.num) clone.num = 1;
 
     //for (const weapon of selectionItem) {
-    activeData.loadout = [...activeData.loadout, ...selectionClone];
-    setActiveData({ ...activeData });
-    selectionItem = [];
+    activeData.loadout.push(clone);
+
     props.onChange(activeData);
-    //}
-    //selectionItem = [];
   }
 
   // Weapon number changed
   function onWeaponNumberChange(member: weaponMember) {
     const weapon = activeData.loadout.find((mem) => mem.id == member.id);
     if (weapon) weapon.num = member.num;
-    setActiveData(activeData);
     props.onChange(activeData);
   }
 
   function onMovingChange() {
     activeData.isMoving = !activeData.isMoving;
-    setActiveData({ ...activeData });
     props.onChange(activeData);
   }
 
   function onCoverChange(cover: string) {
     if (activeData.cover != cover) activeData.cover = cover;
     else activeData.cover = "";
-    setActiveData({ ...activeData });
     props.onChange(activeData);
   }
 
@@ -105,7 +102,6 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
         activeData.loadout.splice(index, 1);
       }
     });
-    setActiveData({ ...activeData });
     props.onChange(activeData);
   }
 
@@ -115,7 +111,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     components.push(
       <DpsWeaponCard
         defaultNum={member.num}
-        key={member.id}
+        key={member.id + props.index}
         weapon={member}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
@@ -125,72 +121,59 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
 
   return (
     <>
-      <Box
-        sx={(theme) => ({
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-          border:
-            theme.colorScheme === "dark"
-              ? "solid 1px " + theme.colors.dark[4]
-              : "solid 1px " + theme.colors.gray[4],
-          textAlign: "left",
-          padding: theme.spacing.xs,
-          borderRadius: theme.radius.md,
-        })}
-      >
-        <Stack align="left" justify="flex-start" spacing="xs">
-          <Group>
-            <Avatar
-              src={slash(activeData.iconName)}
-              alt={activeData.screenName}
-              placeholder="/icons/common/cover/heavy.png"
-              radius="xs"
-              size="md"
-            />
-            {/* <Rating defaultValue={0} size="sm" count={3} /> */}
-            <ActionIcon
-              size="lg"
-              onChange={onMovingChange}
-              onClick={onMovingChange}
-              variant={activeData.isMoving ? "default" : "trannsparent"}
-            >
-              <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png"></Image>
-            </ActionIcon>
-            <ActionIcon
-              size="lg"
-              variant={activeData.cover == "heavy" ? "default" : "trannsparent"}
-              onClick={() => onCoverChange("heavy")}
-            >
-              <Image src="/icons/common/cover/heavy.png"></Image>
-            </ActionIcon>
-            <ActionIcon
-              size="lg"
-              variant={activeData.cover == "light" ? "default" : "trannsparent"}
-              onClick={() => onCoverChange("light")}
-            >
-              <Image src="/icons/common/cover/light.png"></Image>
-            </ActionIcon>
-            <ActionIcon
-              size="lg"
-              variant={activeData.cover == "negative" ? "default" : "trannsparent"}
-              onClick={() => onCoverChange("negative")}
-            >
-              <Image src="/icons/common/cover/negative.png"></Image>
-            </ActionIcon>
-            <ActionIcon
-              size="lg"
-              variant={activeData.cover == "garrison" ? "default" : "trannsparent"}
-              onClick={() => onCoverChange("garrison")}
-            >
-              <Image src="/icons/common/units/garrisoned.png"></Image>
-            </ActionIcon>
-          </Group>
+      <Stack align="left" justify="flex-start" spacing="xs">
+        <Group>
+          <Avatar
+            src={slash(activeData.iconName)}
+            alt={activeData.screenName}
+            placeholder="/icons/common/cover/heavy.png"
+            radius="xs"
+            size="md"
+          />
+          {/* <Rating defaultValue={0} size="sm" count={3} /> */}
+          <ActionIcon
+            size="lg"
+            onChange={onMovingChange}
+            onClick={onMovingChange}
+            variant={activeData.isMoving ? "default" : "trannsparent"}
+          >
+            <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png"></Image>
+          </ActionIcon>
+          <ActionIcon
+            size="lg"
+            variant={activeData.cover == "heavy" ? "default" : "trannsparent"}
+            onClick={() => onCoverChange("heavy")}
+          >
+            <Image src="/icons/common/cover/heavy.png"></Image>
+          </ActionIcon>
+          <ActionIcon
+            size="lg"
+            variant={activeData.cover == "light" ? "default" : "trannsparent"}
+            onClick={() => onCoverChange("light")}
+          >
+            <Image src="/icons/common/cover/light.png"></Image>
+          </ActionIcon>
+          <ActionIcon
+            size="lg"
+            variant={activeData.cover == "negative" ? "default" : "trannsparent"}
+            onClick={() => onCoverChange("negative")}
+          >
+            <Image src="/icons/common/cover/negative.png"></Image>
+          </ActionIcon>
+          <ActionIcon
+            size="lg"
+            variant={activeData.cover == "garrison" ? "default" : "trannsparent"}
+            onClick={() => onCoverChange("garrison")}
+          >
+            <Image src="/icons/common/units/garrisoned.png"></Image>
+          </ActionIcon>
+        </Group>
 
-          <WeaponSearch searchData={weaponList} onSelect={onAddWeapon}></WeaponSearch>
+        <WeaponSearch searchData={weaponList} onSelect={onAddWeapon}></WeaponSearch>
 
-          <Group spacing="xs">{components}</Group>
-        </Stack>
-      </Box>
+        <Group spacing="xs">{components}</Group>
+      </Stack>
+      {/* </Box> */}
     </>
   );
 };

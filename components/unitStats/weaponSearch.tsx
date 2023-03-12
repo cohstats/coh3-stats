@@ -7,6 +7,7 @@ import {
   Box,
   CloseButton,
   MultiSelectValueProps,
+  Select,
 } from "@mantine/core";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -77,44 +78,36 @@ interface ISearchProps {
 }
 
 export const WeaponSearch = (props: ISearchProps) => {
-  let selectedItems: any[] = [];
-  let selectedLabels: string[] = [];
+  // let selectedLabels: string[] = [];
 
-  function onSelectionChange(id: string[]) {
-    selectedItems = [];
-    selectedLabels = id; // remember what is selected so we can set it as long dropdown is open
-    id.forEach((selection) => {
-      const item = props.searchData.find((item) => item.value == selection);
-      selectedItems.push(item);
-    });
-  }
-
-  function onDropdownClose() {
-    props.onSelect(selectedItems);
-    selectedItems = [];
-    selectedLabels.splice(0, selectedLabels.length);
+  function onSelectionChange(id: string) {
+    //selectedLabels = id; // remember what is selected so we can set it as long dropdown is open
+    //id.forEach((selection) => {
+    const item = props.searchData.find((item) => item.value == id);
+    if (item) props.onSelect(item);
+    //});
   }
 
   return (
-    <MultiSelect
+    <Select
       //label="Choose a unit"
       placeholder="Configure weapons and squad size"
-      clearSearchOnChange={true}
-      clearSearchOnBlur={true}
+      // clearSearchOnChange={true}
+      // clearSearchOnBlur={true}
       clearable
       itemComponent={SelectItem}
       data={props.searchData}
-      valueComponent={Value}
+      // valueComponent={Value}
       searchable
       maxDropdownHeight={600}
       nothingFound="Nothing here. War is over!"
       onChange={onSelectionChange}
-      onDropdownClose={onDropdownClose}
-      filter={(value, selected, item) =>
-        //@ts-ignore
-        item.label.toLowerCase().includes(value.toLowerCase().trim()) ||
-        item.description.toLowerCase().includes(value.toLowerCase().trim())
-      }
+      value=""
+      // filter={(value, selected, item) =>
+      //   //@ts-ignore
+      //   item.label.toLowerCase().includes(value.toLowerCase().trim()) ||
+      //   item.description.toLowerCase().includes(value.toLowerCase().trim())
+      // }
     />
   );
 };
