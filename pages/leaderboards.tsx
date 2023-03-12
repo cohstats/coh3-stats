@@ -176,8 +176,13 @@ const Leaderboards = ({
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`COH3 Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}.`}
+          content={`Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}. Company of Heroes 3`}
         />
+        <meta
+          name="keywords"
+          content={`coh3, coh3 leaderboards, coh3 ${raceToFetch} leaderboards, coh3 live leaderboards, coh3 stats`}
+        />
+        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
       <Container fluid>
         <Container fluid>

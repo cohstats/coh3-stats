@@ -18,24 +18,29 @@ import Head from "next/head";
 import React from "react";
 
 const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
+  const desktopAppDescription = `Download COH3 Stats Desktop app ${version}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.`;
+
   return (
     <>
       <Head>
         <title>Desktop App from COH3 Stats</title>
+        <meta name="description" content={desktopAppDescription} />
         <meta
-          name="description"
-          content={`Download COH3 Stats Desktop app v${version}. No configuration required.
-          OBS Overlay feature. Detailed info on your current match opponents.
-           Sound notifications of new game and more.`}
+          name="keywords"
+          content={
+            "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
+          }
         />
+        <meta property="og:image" content="/desktop-app/desktop-app-main-500x281.webp" />
       </Head>
       <Container fluid>
         <Image
-          src="/statsapp.png"
+          src="/desktop-app/desktop-app-main.webp"
           alt={"coh3 stats desktop app"}
           radius="md"
           mx="auto"
           maw={900}
+          mah={506}
         />
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" spacing={5} mb={30}>

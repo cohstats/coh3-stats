@@ -63,8 +63,13 @@ const PlayerCard = ({
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`COH3 Stats - player card for player ${playerData.info.name}.`}
+          content={`Player card for player ${playerData.info.name}. COH3 Stats`}
         />
+        <meta
+          name="keywords"
+          content={`coh3, coh3stats,${playerData.info.name} stats, ${playerData.info.name} matches`}
+        />
+        <meta property="og:image" content={playerData.steamData.avatarmedium} />
       </Head>
       <Container fluid>
         <Container fluid>
