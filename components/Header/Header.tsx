@@ -164,7 +164,7 @@ export const Header: React.FC<HeaderProps> = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              App
+              Desktop App
             </Anchor>
 
             {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
@@ -242,7 +242,7 @@ export const Header: React.FC<HeaderProps> = () => {
             </Tooltip>
 
             <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
-              App
+              Desktop App
             </Anchor>
 
             {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
