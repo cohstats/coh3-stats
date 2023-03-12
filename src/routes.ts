@@ -4,4 +4,12 @@ const getLeaderBoardRoute = (race: raceType, type: leaderBoardType, start?: numb
   return encodeURI(`/leaderboards?race=${race}&type=${type}${start ? `&start=${start}` : ""}`);
 };
 
-export { getLeaderBoardRoute };
+const getExplorerFactionRoute = (race: raceType) => {
+  return encodeURI(`/explorer/races/${race}`);
+};
+
+const getDPSCalculatorRoute = () => {
+  return encodeURI(`/explorer/dps`);
+};
+
+export { getLeaderBoardRoute, getExplorerFactionRoute, getDPSCalculatorRoute };
