@@ -3,6 +3,7 @@ import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
+import TwitchPanel from "../components/twitch-panel/twitch-panel";
 
 const Home: NextPage = () => {
   return (
@@ -31,6 +32,7 @@ const Home: NextPage = () => {
           <Donate />
         </Group>
       </Paper>
+      <TwitchPanel />
     </Container>
   );
 };
