@@ -77,8 +77,8 @@ export default new Router()
       edge: {
         // Add 5 minutes cache
         maxAgeSeconds: 60 * 5,
-        // Cache for 12 hours
-        staleWhileRevalidateSeconds: 12 * 60 * 60,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
         forcePrivateCaching: true,
       },
     });
@@ -89,10 +89,10 @@ export default new Router()
         serviceWorkerSeconds: 60,
       },
       edge: {
-        // Cache for 5 minutes, revalidated after 5 minutes
-        maxAgeSeconds: 60 * 5,
-        // Server stale page up to 12 hours
-        staleWhileRevalidateSeconds: 12 * 60 * 60,
+        // Cache for 15 minutes
+        maxAgeSeconds: 60 * 15,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
         forcePrivateCaching: true,
       },
     });
