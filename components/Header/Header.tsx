@@ -191,7 +191,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-      <MantineHeader height={60} className={classes.root}>
+      <MantineHeader height={60} className={classes.root} style={{ position: "sticky" }}>
         <Container className={classes.container} fluid>
           <Anchor component={Link} href={"/"} className={cx(classes.link)}>
             <Group spacing="xs">

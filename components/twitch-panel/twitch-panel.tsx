@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { Paper } from "@mantine/core";
+import { Group, Paper } from "@mantine/core";
 import { TwitchStream } from "../../src/coh3/coh3-types";
+import ChannelList from "./channel-list";
 
 declare global {
   interface Window {
@@ -25,7 +26,6 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
-      console.log("hmm");
       const embed = new window.Twitch.Embed("twitch-embed", {
         width: 854,
         height: 480,
@@ -43,9 +43,12 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
     });
   }, [twitchStreams]);
   return (
-    <Paper shadow="xs" radius="md" mt="md" color="gray" style={{ width: "fit-content" }}>
-      <div style={{ borderRadius: "0.5rem", overflow: "hidden" }} id="twitch-embed"></div>
-    </Paper>
+    <Group>
+      <Paper shadow="xs" radius="md" mt="md" color="gray" style={{ width: "fit-content" }}>
+        <div style={{ borderRadius: "0.5rem", overflow: "hidden" }} id="twitch-embed"></div>
+      </Paper>
+      {twitchStreams && <ChannelList twitchStreams={twitchStreams} />}
+    </Group>
   );
 };
 

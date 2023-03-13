@@ -51,7 +51,6 @@ export async function getServerSideProps() {
 
   try {
     twitchStreams = await getTwitchStreams();
-    console.log(twitchStreams);
   } catch (e: any) {
     console.error(`Failed getting data for twitch streams`);
     console.error(e);
