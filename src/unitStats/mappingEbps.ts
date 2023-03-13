@@ -1,7 +1,9 @@
 // type description of mapped data
 
+import { type } from "os";
+import slash from "slash";
 import { resolveLocstring } from "./locstring";
-import { traverseTree } from "./unitStatsLib";
+import { isBaseFaction, traverseTree } from "./unitStatsLib";
 
 // need to be extended by all required fields
 type EbpsType = {
@@ -21,13 +23,11 @@ type EbpsType = {
   /** Found at `health_ext`. */
   health: {
     hitpoints: number;
-    /** Only applies for buildings and vehicles. */
-    // armor: {
-    //   front: number;
-    //   side: number;
-    //   rear: number;
-    // };
+    /** Found at `health_ext`. */
+    armorLayout: armorLayoutOption;
   };
+  /** Found at `combat_ext`. */
+  weaponRef: combatExt[];
 };
 
 /** These are found within `time_cost` at `ebpextensions\\cost_ext` */
@@ -51,6 +51,20 @@ type EntityUiData = {
   extraText: string; // Could be empty (Set as $0).
 };
 
+type armorLayoutOption = {
+  type: string;
+  armor: number;
+  frontArmor: number;
+  rearArmor: number;
+  sideArmor: number;
+};
+
+// Extensions -> combat_ext -> hardpoints -> Weapon
+type combatExt = {
+  type: string;
+  ebp: string;
+};
+
 // exported variable holding mapped data for each
 // json file. Will be set via setSbpsStats.
 // Can be accessed from everywhere
@@ -62,7 +76,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   const ebpsEntity: EbpsType = {
     id: filename,
     path: jsonPath,
-    faction: jsonPath.split("\\")[1] ?? jsonPath,
+    faction: slash(jsonPath).split("/")[1] ?? jsonPath,
     spawnItems: [],
     unitType: parent,
     unitTypes: [],
@@ -83,18 +97,24 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     },
     health: {
       hitpoints: 0,
+      armorLayout: {
+        type: "",
+        armor: 1,
+        frontArmor: 1,
+        rearArmor: 1,
+        sideArmor: 1,
+      },
     },
-    //  a       : subtree.a
-    //  z       : subtree.x.y.z
-    // todo
+    weaponRef: [],
   };
 
+  // clearUndefined(ebpsEntity);
   mapExtensions(subtree, ebpsEntity);
 
   return ebpsEntity;
 };
 
-const mapExtensions = (root: any, epbps: EbpsType) => {
+const mapExtensions = (root: any, ebps: EbpsType) => {
   for (const entityExt in root.extensions) {
     const extension = root.extensions[entityExt].exts;
     const extName = extension.template_reference.value.split("\\")[1];
@@ -106,7 +126,7 @@ const mapExtensions = (root: any, epbps: EbpsType) => {
           for (const spawnItem of extension.spawn_items) {
             const squadInstRef = spawnItem.spawn_item.squad?.instance_reference;
             if (squadInstRef) {
-              epbps.spawnItems.push(squadInstRef);
+              ebps.spawnItems.push(squadInstRef);
             }
           }
         }
@@ -116,35 +136,62 @@ const mapExtensions = (root: any, epbps: EbpsType) => {
         if (!extension.unit_type_list?.length) break;
         for (const unitType of extension.unit_type_list) {
           if (unitType.unit_type) {
-            epbps.unitTypes.push(unitType.unit_type);
+            ebps.unitTypes.push(unitType.unit_type);
           }
         }
         break;
       case "ui_ext":
         {
-          epbps.ui.iconName = extension?.icon_name || "";
-          epbps.ui.symbolIconName = extension?.symbol_icon_name || "";
+          ebps.ui.iconName = extension?.icon_name || "";
+          ebps.ui.symbolIconName = extension?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = extension.screen_name;
-          epbps.ui.screenName = resolveLocstring(screenName);
+          ebps.ui.screenName = resolveLocstring(screenName);
           const helpText = extension.help_text;
-          epbps.ui.helpText = resolveLocstring(helpText);
+          ebps.ui.helpText = resolveLocstring(helpText);
           const extraText = extension.extra_text;
-          epbps.ui.extraText = resolveLocstring(extraText);
+          ebps.ui.extraText = resolveLocstring(extraText);
           const briefText = extension.brief_text;
-          epbps.ui.briefText = resolveLocstring(briefText);
+          ebps.ui.briefText = resolveLocstring(briefText);
         }
         break;
       case "cost_ext":
-        epbps.cost.time = extension.time_cost?.time_seconds || 0;
-        epbps.cost.fuel = extension.time_cost?.cost?.fuel || 0;
-        epbps.cost.munition = extension.time_cost?.cost?.munition || 0;
-        epbps.cost.manpower = extension.time_cost?.cost?.manpower || 0;
-        epbps.cost.popcap = extension.time_cost?.cost?.popcap || 0;
+        ebps.cost.time = extension.time_cost?.time_seconds || 0;
+        ebps.cost.fuel = extension.time_cost?.cost?.fuel || 0;
+        ebps.cost.munition = extension.time_cost?.cost?.munition || 0;
+        ebps.cost.manpower = extension.time_cost?.cost?.manpower || 0;
+        ebps.cost.popcap = extension.time_cost?.cost?.popcap || 0;
         break;
       case "health_ext":
-        epbps.health.hitpoints = extension.hitpoints || 0;
+        ebps.health.hitpoints = extension.hitpoints || 0;
+        // armor
+        if (extension?.armor_layout_option) {
+          const refValue = extension.armor_layout_option?.template_reference?.value;
+          ebps.health.armorLayout.type = refValue.split("\\")[4] || "";
+          ebps.health.armorLayout.armor = extension.armor_layout_option?.armor || 1; // infantry
+          ebps.health.armorLayout.frontArmor = extension.armor_layout_option?.front_armor || 1;
+          ebps.health.armorLayout.rearArmor = extension.armor_layout_option?.rear_armor || 1;
+          ebps.health.armorLayout.sideArmor = extension.armor_layout_option?.side_armor || 1;
+        }
+
         break;
+
+      case "combat_ext":
+        for (const index in extension.hardpoints) {
+          if (extension.hardpoints[index]?.hardpoint?.weapon_table)
+            for (const weapon_i in extension.hardpoints[index].hardpoint.weapon_table) {
+              const weapon = extension.hardpoints[index].hardpoint.weapon_table[weapon_i];
+              const weapon_ref: combatExt = {
+                type: weapon.weapon.type || "",
+                ebp:
+                  weapon.weapon.weapon_entity_attachment?.entity_attach_data.ebp
+                    ?.instance_reference || "",
+              };
+              ebps.weaponRef.push(weapon_ref);
+            }
+        }
+        break;
+
       default:
         break;
     }
@@ -156,7 +203,8 @@ const mapExtensions = (root: any, epbps: EbpsType) => {
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
 const getEbpsStats = async () => {
-  if (ebpsStats) return;
+  // ebps needs to be returned to avoid double computation
+  if (ebpsStats) return ebpsStats;
 
   const myReqEbps = await fetch(
     "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/ebps.json",
@@ -173,6 +221,9 @@ const getEbpsStats = async () => {
 
     // Filter relevant objects
     ebpsSet.forEach((item: EbpsType) => {
+      //  only entities with faction should be relevant
+      if (!isBaseFaction(item.faction)) return;
+
       /** Uncomment if you want to check for each entity type. */
       // console.group(item.id);
       // console.log("🚀 ~ file: mappingEbps.ts:161 ~ ebpsSet.forEach ~ unitType:", item.unitType);

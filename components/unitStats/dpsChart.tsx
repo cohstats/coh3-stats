@@ -16,19 +16,16 @@ import {
 
 import { Line } from "react-chartjs-2";
 import {
-  Paper,
   createStyles,
   Container,
   Space,
   useMantineTheme,
   Grid,
   Flex,
-  Divider,
   Box,
-  SimpleGrid,
-  Text,
   Stack,
   Title,
+  Switch,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
@@ -129,9 +126,10 @@ const mapChartData = (data: any[], id?: string) => {
     data: data,
     borderWidth: 2,
     borderColor: "#4dabf7", // '#d048b6',
-    //cubicInterpolationMode: "monotone" as const,
-    stepped: "after",
-    tension: 0.5,
+    cubicInterpolationMode: "monotone" as const,
+    //stepped: "after",
+    stepped: "",
+    tension: 0.1,
     pointStyle: "rect",
     fill: false,
     backgroundColor: "rgba(0, 100, 150, 0.3)",
@@ -311,6 +309,7 @@ export const DpsChart = (props: IDPSProps) => {
   const searchData_default: CustomizableUnit[] = [];
   const [activeData, setActiveData] = useState(searchData_default);
   const [rerender, setRerender] = useState(false);
+  const [isCurve, setCurve] = useState(true);
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
@@ -361,6 +360,16 @@ export const DpsChart = (props: IDPSProps) => {
       const set = mapChartData(dpsLines[0], activeData[0].id);
       set.borderColor = theme.colors.blue[5];
       chartData.datasets.push(set);
+
+      if (isCurve) {
+        //set.cubicInterpolationMode = "monotone";
+        set.stepped = "";
+      } else {
+        //@ts-ignore
+        //set.cubicInterpolationMode = 'default';
+        set.stepped = "after";
+      }
+
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
       });
@@ -369,6 +378,14 @@ export const DpsChart = (props: IDPSProps) => {
     if (activeData[1]) {
       const set = mapChartData(dpsLines[1], activeData[1].id);
       set.borderColor = theme.colors.red[5];
+      if (isCurve) {
+        //set.cubicInterpolationMode = "monotone";
+        set.stepped = "";
+      } else {
+        //@ts-ignore
+        //set.cubicInterpolationMode = 'default';
+        set.stepped = "after";
+      }
       chartData.datasets.push(set);
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
@@ -386,106 +403,119 @@ export const DpsChart = (props: IDPSProps) => {
         <title>DPS - Calculator</title>
         <meta name="Damage Per Second (DPS) Calculator " />
       </Head>
+
       <Container>
         {/* */}
         <Stack mb={24}>
           <Title order={2}>Company of Heroes 3 DPS Tool</Title>
         </Stack>
 
-        <Paper radius="md" px="lg" py={3} mt={6}>
-          <Space h="sm" />
+        <Flex
+          // mih={50}
+          gap="xs"
+          justify="flex-end"
+          align="center"
+          direction="row"
+          wrap="wrap"
+        >
+          <Switch
+            label={isCurve ? "Curve" : "Staircase"}
+            checked={isCurve}
+            onChange={(event) => setCurve(event.currentTarget.checked)}
+            //onClick={() => setCurve(isCurve)}
+            size="xs"
+          />
+        </Flex>
 
-          <Space h="sm" />
-          <>
-            <Grid>
-              <Grid.Col md={6} lg={6}>
-                <UnitSearch
-                  key="Search1"
-                  searchData={unitSelectionList}
-                  onSelect={onSelectionChange}
-                  position={0}
-                ></UnitSearch>
-                <Space h="sm" />
-                {activeData[0] && (
-                  <Box
-                    sx={(theme) => ({
-                      backgroundColor:
-                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                      border:
-                        theme.colorScheme === "dark"
-                          ? "solid 1px " + theme.colors.dark[4]
-                          : "solid 2px " + theme.colors.blue[4],
-                      textAlign: "left",
-                      padding: theme.spacing.xs,
-                      borderRadius: theme.radius.md,
-                    })}
-                  >
-                    <DpsUnitCustomizing
-                      key={activeData[0].id + "0"}
-                      unit={activeData[0]}
-                      onChange={onSquadConfigChange}
-                      index={0}
-                    ></DpsUnitCustomizing>
-                  </Box>
-                )}
-              </Grid.Col>
-
-              <Grid.Col md={6} lg={6}>
-                <UnitSearch
-                  key="Search2"
-                  searchData={unitSelectionList}
-                  onSelect={onSelectionChange}
-                  position={1}
-                ></UnitSearch>
-                <Space h="sm" />
-                {activeData[1] && (
-                  <Box
-                    sx={(theme) => ({
-                      backgroundColor:
-                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                      border:
-                        theme.colorScheme === "dark"
-                          ? "solid 1px " + theme.colors.dark[4]
-                          : "solid 2px " + theme.colors.red[6],
-                      textAlign: "left",
-                      padding: theme.spacing.xs,
-                      borderRadius: theme.radius.md,
-                    })}
-                  >
-                    <DpsUnitCustomizing
-                      key={activeData[1].id + "1"}
-                      unit={activeData[1]}
-                      onChange={onSquadConfigChange}
-                      index={0}
-                    ></DpsUnitCustomizing>
-                  </Box>
-                )}
-              </Grid.Col>
-
+        <Space h="sm" />
+        <>
+          <Grid>
+            <Grid.Col md={6} lg={6}>
+              <UnitSearch
+                key="Search1"
+                searchData={unitSelectionList}
+                onSelect={onSelectionChange}
+                position={0}
+              ></UnitSearch>
               <Space h="sm" />
-            </Grid>
-          </>
-        </Paper>
-      </Container>
+              {activeData[0] && (
+                <Box
+                  sx={(theme) => ({
+                    backgroundColor:
+                      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                    border:
+                      theme.colorScheme === "dark"
+                        ? "solid 1px " + theme.colors.dark[4]
+                        : "solid 2px " + theme.colors.blue[4],
+                    textAlign: "left",
+                    padding: theme.spacing.xs,
+                    borderRadius: theme.radius.md,
+                  })}
+                >
+                  <DpsUnitCustomizing
+                    key={activeData[0].id + "0"}
+                    unit={activeData[0]}
+                    onChange={onSquadConfigChange}
+                    index={0}
+                  ></DpsUnitCustomizing>
+                </Box>
+              )}
+            </Grid.Col>
 
+            <Grid.Col md={6} lg={6}>
+              <UnitSearch
+                key="Search2"
+                searchData={unitSelectionList}
+                onSelect={onSelectionChange}
+                position={1}
+              ></UnitSearch>
+              <Space h="sm" />
+              {activeData[1] && (
+                <Box
+                  sx={(theme) => ({
+                    backgroundColor:
+                      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                    border:
+                      theme.colorScheme === "dark"
+                        ? "solid 1px " + theme.colors.dark[4]
+                        : "solid 2px " + theme.colors.red[6],
+                    textAlign: "left",
+                    padding: theme.spacing.xs,
+                    borderRadius: theme.radius.md,
+                  })}
+                >
+                  <DpsUnitCustomizing
+                    key={activeData[1].id + "1"}
+                    unit={activeData[1]}
+                    onChange={onSquadConfigChange}
+                    index={0}
+                  ></DpsUnitCustomizing>
+                </Box>
+              )}
+            </Grid.Col>
+
+            <Space h="sm" />
+          </Grid>
+        </>
+      </Container>
+      <Space h="sm" />
       <Container size="md">
-        <Paper radius="md" px="lg" py={3} mt={6}>
-          <Box
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-              border:
-                theme.colorScheme === "dark"
-                  ? "solid 1px " + theme.colors.dark[4]
-                  : "solid 1px " + theme.colors.gray[4],
-              textAlign: "left",
-              // padding: theme.spacing.xs,
-              borderRadius: theme.radius.md,
-            })}
-          >
-            <Line options={options as any} data={chartData as any} redraw={true} />
-          </Box>
-        </Paper>
+        <Box
+          sx={(theme) => ({
+            backgroundColor:
+              theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+            border:
+              theme.colorScheme === "dark"
+                ? "solid 1px " + theme.colors.dark[4]
+                : "solid 1px " + theme.colors.gray[4],
+            textAlign: "left",
+            // padding: theme.spacing.xs,
+            borderRadius: theme.radius.md,
+          })}
+        >
+          <Line options={options as any} data={chartData as any} redraw={true} />
+        </Box>
+        <Space h="sm" />
       </Container>
     </>
   );

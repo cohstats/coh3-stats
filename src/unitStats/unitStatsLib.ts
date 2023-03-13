@@ -67,5 +67,18 @@ export const getFactionIcon = (folderName: string): string => {
 };
 
 export const isBaseFaction = (faction: string): boolean => {
-  return ["afrika_korps", "american", "british", "german"].includes(faction);
+  return ["afrika_corps", "afrika_korps", "american", "british", "german"].includes(faction);
 };
+
+// maybe this can be helpful to find undefined properties
+// const clearUndefined = ( obj : any )=>
+// {
+
+//     if( typeof obj == 'object')
+
+//       for(const prop in obj)
+//         clearUndefined(obj[prop])
+//     else
+//       if( typeof obj === "undefined")
+//         obj = '';
+// }
