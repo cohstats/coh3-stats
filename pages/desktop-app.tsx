@@ -18,7 +18,13 @@ import { Octokit } from "octokit";
 const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
   return (
     <Container fluid>
-      <Image src="/statsapp.png" alt={"coh3 stats desktop app"} radius="md" mx="auto" maw={900} />
+      <Image
+        src="/desktop-app.webp"
+        alt={"coh3 stats desktop app"}
+        radius="md"
+        mx="auto"
+        maw={900}
+      />
       <Paper radius="md" mt="md" p="lg">
         <Stack align="center" spacing={5} mb={30}>
           <Anchor href={downloadURL} target="_blank">
