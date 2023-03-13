@@ -28,8 +28,8 @@ export default new Router()
     cache({
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 10,
+        staleWhileRevalidateSeconds: 60,
         forcePrivateCaching: true,
       },
     });
@@ -37,12 +37,12 @@ export default new Router()
   .match("/_next/data/:version/leaderboards.json", ({ cache }) => {
     cache({
       browser: {
-        serviceWorkerSeconds: 10,
+        serviceWorkerSeconds: 15,
       },
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 10,
+        staleWhileRevalidateSeconds: 60,
         forcePrivateCaching: true,
       },
     });
@@ -52,8 +52,8 @@ export default new Router()
     cache({
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 15,
+        staleWhileRevalidateSeconds: 45,
         forcePrivateCaching: true,
       },
     });
@@ -61,12 +61,12 @@ export default new Router()
   .match("/_next/data/:version/players/:id.json", ({ cache }) => {
     cache({
       browser: {
-        serviceWorkerSeconds: 10,
+        serviceWorkerSeconds: 15,
       },
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 14,
+        staleWhileRevalidateSeconds: 45,
         forcePrivateCaching: true,
       },
     });
