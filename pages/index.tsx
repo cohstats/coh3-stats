@@ -1,11 +1,17 @@
 import type { NextPage } from "next";
+import { getTwitchStreams } from "../src/coh3stats-api";
 import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
 import TwitchPanel from "../components/twitch-panel/twitch-panel";
+import { TwitchStream } from "../src/coh3/coh3-types";
 
-const Home: NextPage = () => {
+type Props = {
+  twitchStreams: TwitchStream[] | null;
+  error: Error | null;
+};
+const Home: NextPage<Props> = ({ twitchStreams, error }) => {
   return (
     <Container fluid>
       <Image
@@ -32,9 +38,25 @@ const Home: NextPage = () => {
           <Donate />
         </Group>
       </Paper>
-      <TwitchPanel />
+      <TwitchPanel twitchStreams={twitchStreams} error={error} />
     </Container>
   );
 };
 
 export default Home;
+
+export async function getServerSideProps() {
+  let error: Error | null = null;
+  let twitchStreams: TwitchStream[] | null = null;
+
+  try {
+    twitchStreams = await getTwitchStreams();
+    console.log(twitchStreams);
+  } catch (e: any) {
+    console.error(`Failed getting data for twitch streams`);
+    console.error(e);
+    error = e.message;
+  }
+
+  return { props: { twitchStreams, error } };
+}

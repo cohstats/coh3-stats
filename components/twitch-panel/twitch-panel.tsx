@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Paper } from "@mantine/core";
+import { TwitchStream } from "../../src/coh3/coh3-types";
 
 declare global {
   interface Window {
@@ -7,10 +8,16 @@ declare global {
   }
 }
 
-const TwitchPanel = () => {
+type Props = {
+  twitchStreams: TwitchStream[] | null;
+  error: Error | null;
+};
+const TwitchPanel = ({ twitchStreams, error }: Props) => {
   useEffect(() => {
     // this gate only be needed because of react strict mode running things twice
-    if (document.getElementById("twitch-script") !== null) return;
+    if (document.getElementById("twitch-script") !== null || twitchStreams === null) return;
+
+    console.log(twitchStreams);
 
     const script = document.createElement("script");
     script.src = "https://player.twitch.tv/js/embed/v1.js";
@@ -18,10 +25,11 @@ const TwitchPanel = () => {
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
+      console.log("hmm");
       const embed = new window.Twitch.Embed("twitch-embed", {
         width: 854,
         height: 480,
-        channel: "monstercat",
+        channel: twitchStreams[0].user_login,
         layout: "video",
         autoplay: false,
         // Only needed if this page is going to be embedded on other websites
@@ -33,10 +41,10 @@ const TwitchPanel = () => {
         player.play();
       });
     });
-  }, []);
+  }, [twitchStreams]);
   return (
-    <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
-      <div id="twitch-embed"></div>
+    <Paper shadow="xs" radius="md" mt="md" color="gray" style={{ width: "fit-content" }}>
+      <div style={{ borderRadius: "0.5rem", overflow: "hidden" }} id="twitch-embed"></div>
     </Paper>
   );
 };
