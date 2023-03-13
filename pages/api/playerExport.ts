@@ -3,17 +3,12 @@
  * the latest info for their tables.
  */
 import { logger } from "../../src/logger";
-import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
+import { getPlayerCardInfo } from "../../src/coh3stats-api";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { json2csvAsync } from "json-2-csv";
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateCSVObject } from "../../src/players/export";
-
-const getPlayerCardInfo = async (profileID: string) => {
-  const PlayerCardRes = await fetch(getPlayerCardInfoUrl(profileID));
-  return await PlayerCardRes.json();
-};
 
 const getPlayerInfo = async (profileID: string): Promise<PlayerCardDataType> => {
   return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID));

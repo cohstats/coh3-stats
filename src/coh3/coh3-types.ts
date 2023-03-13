@@ -1,6 +1,10 @@
-export type raceType = "german" | "american" | "dak" | "british";
+export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
-export type leaderBoardType = "1v1" | "2v2" | "3v3" | "4v4";
+export type raceType = (typeof raceTypeArray)[number];
+
+export const leaderBoardTypeArray = ["1v1", "2v2", "3v3", "4v4"] as const;
+
+export type leaderBoardType = (typeof leaderBoardTypeArray)[number];
 
 export type raceID = 129494 | 137123 | 197345 | 198437 | 203852;
 
