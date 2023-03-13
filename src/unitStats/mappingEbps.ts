@@ -28,6 +28,8 @@ type EbpsType = {
   };
   /** Found at `combat_ext`. */
   weaponRef: combatExt[];
+  // weapon_ext.weapon
+  weaponId: string; // Id of weapon template
 };
 
 /** These are found within `time_cost` at `ebpextensions\\cost_ext` */
@@ -106,6 +108,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
       },
     },
     weaponRef: [],
+    weaponId: "",
   };
 
   // clearUndefined(ebpsEntity);
@@ -188,8 +191,13 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
                     ?.instance_reference || "",
               };
               ebps.weaponRef.push(weapon_ref);
+              break; // choose main weapon only
             }
         }
+        break;
+      case "weapon_ext":
+        const weaponPath = extension.weapon.instance_reference.split("/");
+        ebps.weaponId = weaponPath[weaponPath.length - 1];
         break;
 
       default:
@@ -236,6 +244,11 @@ const getEbpsStats = async () => {
         // case "flame_throwers":
         case "team_weapons": // Team weapons (squad members).
         case "heavy_machine_gun": // Crew member of MGs, which is the weapon itself (the main guy firing it).
+        case "sub_machine_gun":
+        case "light_machine_gun":
+        case "rifle":
+        case "sidearm":
+
         case "vehicles": // General Vehicles
           ebpsSetAll.push(item);
           break;

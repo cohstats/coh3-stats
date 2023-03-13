@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 //import { LevelContext } from './LevelContext.js';
 
-import { createStyles, Avatar, Group, Image, ActionIcon, Box, Stack } from "@mantine/core";
+import {
+  createStyles,
+  Avatar,
+  Group,
+  Image,
+  ActionIcon,
+  Stack,
+  Flex,
+  Grid,
+  Tooltip,
+} from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
 import { WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard, weaponMember } from "./dpsWeaponCard";
@@ -122,52 +132,73 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   return (
     <>
       <Stack align="left" justify="flex-start" spacing="xs">
-        <Group>
-          <Avatar
-            src={slash(activeData.iconName)}
-            alt={activeData.screenName}
-            placeholder="/icons/common/cover/heavy.png"
-            radius="xs"
-            size="md"
-          />
-          {/* <Rating defaultValue={0} size="sm" count={3} /> */}
-          <ActionIcon
-            size="lg"
-            onChange={onMovingChange}
-            onClick={onMovingChange}
-            variant={activeData.isMoving ? "default" : "trannsparent"}
-          >
-            <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png"></Image>
-          </ActionIcon>
-          <ActionIcon
-            size="lg"
-            variant={activeData.cover == "heavy" ? "default" : "trannsparent"}
-            onClick={() => onCoverChange("heavy")}
-          >
-            <Image src="/icons/common/cover/heavy.png"></Image>
-          </ActionIcon>
-          <ActionIcon
-            size="lg"
-            variant={activeData.cover == "light" ? "default" : "trannsparent"}
-            onClick={() => onCoverChange("light")}
-          >
-            <Image src="/icons/common/cover/light.png"></Image>
-          </ActionIcon>
-          <ActionIcon
-            size="lg"
-            variant={activeData.cover == "negative" ? "default" : "trannsparent"}
-            onClick={() => onCoverChange("negative")}
-          >
-            <Image src="/icons/common/cover/negative.png"></Image>
-          </ActionIcon>
-          <ActionIcon
-            size="lg"
-            variant={activeData.cover == "garrison" ? "default" : "trannsparent"}
-            onClick={() => onCoverChange("garrison")}
-          >
-            <Image src="/icons/common/units/garrisoned.png"></Image>
-          </ActionIcon>
-        </Group>
+        <Grid gutter="xs">
+          <Grid.Col span={4}>
+            <Tooltip label={activeData.screenName}>
+              <Avatar
+                src={slash(activeData.iconName)}
+                alt={activeData.screenName}
+                placeholder="/icons/common/cover/heavy.png"
+                radius="xs"
+                size="md"
+              />
+            </Tooltip>
+          </Grid.Col>
+          <Grid.Col span={8}>
+            <Flex gap="xs" justify="flex-end" align="center" direction="row" wrap="wrap">
+              {/* <Rating defaultValue={0} size="sm" count={3} /> */}
+              <Tooltip label="Moving">
+                <ActionIcon
+                  size="lg"
+                  onChange={onMovingChange}
+                  onClick={onMovingChange}
+                  variant={activeData.isMoving ? "default" : "trannsparent"}
+                >
+                  <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png"></Image>
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Heavy Cover">
+                <ActionIcon
+                  size="lg"
+                  variant={activeData.cover == "heavy" ? "default" : "trannsparent"}
+                  onClick={() => onCoverChange("heavy")}
+                >
+                  <Image src="/icons/common/cover/heavy.png"></Image>
+                </ActionIcon>
+              </Tooltip>
+
+              <Tooltip label="Light Cover">
+                <ActionIcon
+                  size="lg"
+                  variant={activeData.cover == "light" ? "default" : "trannsparent"}
+                  onClick={() => onCoverChange("light")}
+                >
+                  <Image src="/icons/common/cover/light.png"></Image>
+                </ActionIcon>
+              </Tooltip>
+
+              <Tooltip label="Negative Cover">
+                <ActionIcon
+                  size="lg"
+                  variant={activeData.cover == "negative" ? "default" : "trannsparent"}
+                  onClick={() => onCoverChange("negative")}
+                >
+                  <Image src="/icons/common/cover/negative.png"></Image>
+                </ActionIcon>
+              </Tooltip>
+
+              <Tooltip label="Garrison">
+                <ActionIcon
+                  size="lg"
+                  variant={activeData.cover == "garrison" ? "default" : "trannsparent"}
+                  onClick={() => onCoverChange("garrison")}
+                >
+                  <Image src="/icons/common/units/garrisoned.png"></Image>
+                </ActionIcon>
+              </Tooltip>
+            </Flex>
+          </Grid.Col>
+        </Grid>
 
         <WeaponSearch searchData={weaponList} onSelect={onAddWeapon}></WeaponSearch>
 

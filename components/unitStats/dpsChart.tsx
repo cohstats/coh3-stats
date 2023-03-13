@@ -36,6 +36,7 @@ import slash from "slash";
 import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
+import { weaponMember } from "./dpsWeaponCard";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
@@ -258,13 +259,15 @@ const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
 
 const mapUnitDisplayData = (
   sbpsSelected: SbpsType,
-  ebps?: EbpsType[],
+  ebps: EbpsType[],
+  weapons: WeaponType[],
+
   // weapons?: WeaponType[],
 ): any => {
   // Initilaize
   const custUnit: any = {
     id: sbpsSelected.id, // filename  -> eg. panzergrenadier_ak
-    screenname: sbpsSelected.ui.screenName || "No text found", // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+    screenName: sbpsSelected.ui.screenName || "No text found", // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
     path: sbpsSelected.path, // path to object
     faction: sbpsSelected.faction, // from folder structure races\[factionName]
     loadout: [], // squad_loadout_ext.unit_list
@@ -284,16 +287,51 @@ const mapUnitDisplayData = (
 
   // Get loadouts
   if (ebps) {
+    custUnit.loadout = getDefaultLoadout(custUnit, ebps, sbpsSelected, weapons);
   }
 
   return custUnit;
 };
+const getDefaultLoadout = (
+  unit: CustomizableUnit,
+  ebpsList: EbpsType[],
+  sbps: SbpsType,
+  weapons: WeaponType[],
+) => {
+  const loadoutUnit: weaponMember[] = [];
 
-const mapUnitSelection = (sbps: SbpsType[]) => {
+  // loop through loadout to get path to unit entity
+  for (const loadout of sbps.loadout) {
+    const type = loadout.type.split("/");
+    const ebps = ebpsList.find((unit) => unit.id == type[type.length - 1]);
+    if (ebps)
+      // loop throup hardpoints get weapon ebps
+      for (const weaponRef of ebps.weaponRef) {
+        // find weapon ebps
+        const refPath = weaponRef.ebp.split("/");
+        const weaponEbp = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
+        if (!weaponEbp) continue;
+
+        // find referenced weapon template
+        const weapon = weapons.find((gun) => gun.id == weaponEbp?.weaponId);
+
+        if (!weapon) continue;
+
+        // add weapon clone and set number
+        const clone = { ...weapon };
+        (clone as any).num = loadout.num;
+        loadoutUnit.push(clone as any);
+      }
+  }
+  return loadoutUnit;
+};
+
+const mapUnitSelection = (sbps: SbpsType[], ebps: EbpsType[], weapons: WeaponType[]) => {
   const selectionFields = [];
 
   for (const squad of sbps) {
-    if (squad.unitType == "infantry") selectionFields.push(mapUnitDisplayData(squad));
+    if (squad.unitType == "infantry")
+      selectionFields.push(mapUnitDisplayData(squad, ebps, weapons));
   }
 
   return selectionFields;
@@ -316,7 +354,7 @@ export const DpsChart = (props: IDPSProps) => {
 
   // create selection List
   if (unitSelectionList.length == 0 && props.sbpsData.length > 0)
-    unitSelectionList = mapUnitSelection(props.sbpsData);
+    unitSelectionList = mapUnitSelection(props.sbpsData, props.ebpsData, props.weaponData);
 
   setScreenOptions(options, isLargeScreen);
 
@@ -339,6 +377,7 @@ export const DpsChart = (props: IDPSProps) => {
     if (unitBp) {
       activeData[index] = { ...unitBp };
       activeData[index].loadout = []; // Clear loadout reference
+      for (const loadout of unitBp.loadout) activeData[index].loadout.push({ ...loadout });
       setRerender(!rerender);
     }
   }
@@ -407,7 +446,7 @@ export const DpsChart = (props: IDPSProps) => {
       <Container>
         {/* */}
         <Stack mb={24}>
-          <Title order={2}>Company of Heroes 3 DPS Tool</Title>
+          <Title order={2}>Company of Heroes 3 DPS Tool </Title>
         </Stack>
 
         <Flex
