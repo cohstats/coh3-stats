@@ -1,4 +1,3 @@
-import config from "../../config";
 import {
   Image,
   Avatar,
@@ -19,7 +18,7 @@ import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
 import React from "react";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
-import { getPlayerCardInfoUrl } from "../../src/coh3stats-api";
+import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
 
 /**
@@ -64,10 +63,15 @@ const PlayerCard = ({
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`COH3 Stats - player card for player ${playerData.info.name}.`}
+          content={`Player card for player ${playerData.info.name}. COH3 Stats`}
         />
+        <meta
+          name="keywords"
+          content={`coh3, coh3stats,${playerData.info.name} stats, ${playerData.info.name} matches`}
+        />
+        <meta property="og:image" content={playerData.steamData.avatarmedium} />
       </Head>
-      <Container size={"lg"}>
+      <Container fluid>
         <Container fluid>
           <Group>
             <Avatar
@@ -140,9 +144,6 @@ const PlayerCard = ({
   );
 };
 
-// THIS code is super dirty to get the things done, needs to be fixed
-// I am not sure if it's a good idea to have it as query parameter
-// I am counting with the old url setup as we had on coh2stats https://coh2stats.com/players/76561198051168720-F3riG?view=recentMatches
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   params,
   query,
@@ -151,48 +152,26 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   const { playerID } = params!;
   const { view } = query;
 
+  const viewPlayerMatches = view === "recentMatches";
+
   let playerData = null;
   let playerMatchesData = null;
   let error = null;
 
   try {
-    const PromisePlayerCardFetch = fetch(getPlayerCardInfoUrl(playerID));
+    const PromisePlayerCardData = getPlayerCardInfo(playerID);
 
-    const PromisePlayerMatchesFetch =
-      view == "recentMatches"
-        ? fetch(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerMatchesHttp?relicId=${playerID}`)
-        : Promise.resolve();
+    const PromisePlayerMatchesData = viewPlayerMatches
+      ? getPlayerRecentMatches(playerID)
+      : Promise.resolve();
 
-    const [PlayerCardRes, PlayerMatchesRes] = await Promise.all([
-      PromisePlayerCardFetch,
-      PromisePlayerMatchesFetch,
+    const [playerAPIData, PlayerMatchesAPIData] = await Promise.all([
+      PromisePlayerCardData,
+      PromisePlayerMatchesData,
     ]);
 
-    // Also check status code if not 200
-    const playerAPIData = await PlayerCardRes.json();
-    if (playerAPIData.errors) {
-      throw Error(playerAPIData.errors[0].msg + " " + playerAPIData.errors[0].param);
-    } else {
-      playerData = processPlayerInfoAPIResponse(playerAPIData);
-    }
-
-    if (view === "recentMatches") {
-      // @ts-ignore
-      playerMatchesData = (await PlayerMatchesRes.json()).playerMatches;
-      if (playerMatchesData.errors) {
-        throw Error(playerAPIData.errors[0].msg + " " + playerAPIData.errors[0].param);
-      } else {
-        playerMatchesData = playerMatchesData.sort(
-          (a: { completiontime: number }, b: { completiontime: number }) => {
-            if (a.completiontime > b.completiontime) {
-              return -1;
-            } else {
-              return 1;
-            }
-          },
-        );
-      }
-    }
+    playerData = processPlayerInfoAPIResponse(playerAPIData);
+    playerMatchesData = viewPlayerMatches ? PlayerMatchesAPIData : null;
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
     console.error(e);

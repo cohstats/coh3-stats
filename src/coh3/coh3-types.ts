@@ -1,6 +1,10 @@
-export type raceType = "german" | "american" | "dak" | "british";
+export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
-export type leaderBoardType = "1v1" | "2v2" | "3v3" | "4v4";
+export type raceType = (typeof raceTypeArray)[number];
+
+export const leaderBoardTypeArray = ["1v1", "2v2", "3v3", "4v4"] as const;
+
+export type leaderBoardType = (typeof leaderBoardTypeArray)[number];
 
 export type raceID = 129494 | 137123 | 197345 | 198437 | 203852;
 
@@ -79,3 +83,70 @@ export type PlayerCardDataType = {
   standings: InternalStandings;
   info: { country: string; level: number; name: string; xp: number | undefined };
 };
+
+export interface Matchhistoryreportresult {
+  matchhistory_id: number;
+  profile_id: number;
+  resulttype: number;
+  teamid: number;
+  race_id: number;
+  counters: string;
+  profile: RawPlayerProfile;
+}
+
+export interface Matchhistoryitem {
+  profile_id: number;
+  iteminstance_id: number;
+  itemdefinition_id: number;
+  itemlocation_id: number;
+}
+
+export interface Matchhistorymember {
+  matchhistory_id: number;
+  profile_id: number;
+  race_id: number;
+  statgroup_id: number;
+  teamid: number;
+  wins: number;
+  losses: number;
+  streak: number;
+  arbitration: number;
+  outcome: number;
+  oldrating: number;
+  newrating: number;
+  reporttype: number;
+}
+
+export interface MatchHistory {
+  id: number;
+  creator_profile_id: number;
+  mapname: string;
+  maxplayers: number;
+  matchtype_id: number;
+  description: string;
+  startgametime: number;
+  completiontime: number;
+  matchhistoryreportresults: Matchhistoryreportresult[];
+  matchhistoryitems: Matchhistoryitem[];
+  matchhistorymember: Matchhistorymember[];
+  profile_ids: number[];
+  steam_ids: string[];
+}
+
+export interface TwitchStream {
+  id: string;
+  user_id: string;
+  user_login: string;
+  user_name: string;
+  game_id: string;
+  game_name: string;
+  type: string;
+  title: string;
+  viewer_count: number;
+  started_at: string;
+  language: string;
+  thumbnail_url: string;
+  tag_ids: string[];
+  tags: string[];
+  is_mature: boolean;
+}

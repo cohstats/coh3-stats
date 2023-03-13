@@ -12,7 +12,8 @@ import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
  *
  * Specific paths defined per property.
  */
-type UnitDescription = {
+export type UnitDescription = {
+  id?: string;
   /** Locstring value. Found at `screen_name/locstring/value`. */
   screen_name: string;
   /** Locstring value. Found at `help_text/locstring/value`. */
@@ -54,7 +55,7 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
             alt={`${desc.screen_name} symbol`}
           />
           <Tooltip label={desc.brief_text}>
-            <Text fz="xs" fw={700} lineClamp={2}>
+            <Text fz="xs" lineClamp={2}>
               {desc.brief_text}
             </Text>
           </Tooltip>

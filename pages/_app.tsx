@@ -13,6 +13,7 @@ import CustomSpotlightProvider from "../components/customSpotlightProvider";
 import { useEffect, useRef } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
+import ContentContainer from "../components/Content-container";
 
 webFirebase.init();
 
@@ -80,7 +81,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const contentWithLayout = (
     <>
       <Header />
-      <Component {...pageProps} />
+      <ContentContainer>
+        {" "}
+        <Component {...pageProps} />
+      </ContentContainer>
       <Footer />
     </>
   );
@@ -96,6 +100,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           content="Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats and much more"
         />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+        <meta
+          name="keywords"
+          content="Company of Heroes 3, COH3, COH3 Stats, COH3 Leaderboards, COH3 Player Cards, COH3 Info"
+        />
         <link rel="shortcut icon" href="/logo/favicon.ico" />
       </Head>
       <Script

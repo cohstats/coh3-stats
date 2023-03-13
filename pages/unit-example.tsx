@@ -21,7 +21,7 @@ import { UnitUpgradeCard } from "../components/unit-cards/unit-upgrade-card";
  */
 const UnitExample = () => {
   return (
-    <Container size="lg">
+    <Container fluid>
       <Title order={3} mb={8}>
         <Text fw={700}>This is an example Unit Stats Page.</Text>
       </Title>

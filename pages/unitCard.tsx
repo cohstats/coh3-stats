@@ -1,40 +1,81 @@
 import { NextPage } from "next";
-import { getWeaponData, WeaponData } from "../src/unitStats/WeaponLib";
-import { DpsChart } from "../components/unitStats/DpsChart";
+import { DpsChart } from "../components/unitStats/dpsChart";
+import { EbpsType, getEbpsStats, setEbpsStats } from "../src/unitStats/mappingEbps";
+import { getSbpsStats, SbpsType, setSbpsStats } from "../src/unitStats/mappingSbps";
+import {
+  getWeaponStats,
+  setWeaponStats,
+  WeaponStats,
+  WeaponType,
+} from "../src/unitStats/mappingWeapon";
+import {
+  getUpgradesStats,
+  setUpgradesStats,
+  UpgradesType,
+} from "../src/unitStats/mappingUpgrades";
+import { fetchLocstring, setLocstring, unitStatsLocString } from "../src/unitStats/locstring";
 
 interface UnitCardProps {
-  weaponData: WeaponData[];
-  squadData: any;
+  weaponData: WeaponType[];
+  spbsData: SbpsType[];
+  epbsData: EbpsType[];
+  upgradesData: UpgradesType[];
+  locstring: any;
   generalInfo: any;
   properties: any;
 }
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const UnitPage: NextPage<UnitCardProps> = ({ weaponData }) => {
-  //const [searchValue, onSearchChange] = useState('');
+const UnitPage: NextPage<UnitCardProps> = ({
+  weaponData,
+  spbsData,
+  epbsData,
+  upgradesData,
+  locstring,
+}) => {
+  // Save data again in global varible for clientMode
+  if (!WeaponStats) setWeaponStats(weaponData);
 
-  //<div style={{"height": "800px"}}>
+  if (!epbsData) setEbpsStats(epbsData);
+
+  if (!upgradesData) setUpgradesStats(upgradesData);
+
+  if (!spbsData) setSbpsStats(spbsData);
+
+  if (!unitStatsLocString) setLocstring(locstring);
+
   return (
     <div>
-      <DpsChart searchData={weaponData}></DpsChart>
+      <DpsChart></DpsChart>
     </div>
   );
 };
 
 export const getStaticProps = async () => {
-  // relative path are not supported as far as I understood
-  //const myReq = await fetch("http://localhost:3000/game_stats/weapons.json");
-  const myReq = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/weapon.json",
-  );
+  const locstring = await fetchLocstring();
 
-  const data = await myReq.json();
+  // map Data at built time
+  const weaponData = await getWeaponStats();
 
-  // map Weapon Data at built time
-  const weaponData = getWeaponData(data);
+  // map Data at built time
+  const ebpsData = await getEbpsStats();
 
-  return { props: { weaponData: weaponData } };
+  // map Data at built time
+  const sbpsData = await getSbpsStats();
+
+  // map Data at built time
+  const upgradesData = await getUpgradesStats();
+
+  return {
+    props: {
+      weaponData: weaponData,
+      sbpsData: sbpsData,
+      ebpsData: ebpsData,
+      upgradesData: upgradesData,
+      locstring: locstring,
+    },
+  };
 };
 
 export default UnitPage;
