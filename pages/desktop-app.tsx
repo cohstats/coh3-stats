@@ -14,50 +14,67 @@ import {
 import { IconCheck } from "@tabler/icons";
 import { GetServerSideProps, NextPage } from "next";
 import { Octokit } from "octokit";
+import Head from "next/head";
+import React from "react";
 
 const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
+  const desktopAppDescription = `Download COH3 Stats Desktop app ${version}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.`;
+
   return (
-    <Container fluid>
-      <Image
-        src="/desktop-app.webp"
-        alt={"coh3 stats desktop app"}
-        radius="md"
-        mx="auto"
-        maw={900}
-      />
-      <Paper radius="md" mt="md" p="lg">
-        <Stack align="center" spacing={5} mb={30}>
-          <Anchor href={downloadURL} target="_blank">
-            <Button>Download {version}</Button>
-          </Anchor>
-          <Text size="sm" color="dimmed">
-            {downloadCount} downloads
-          </Text>
-          <Anchor
-            href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
-            target="_blank"
-          >
-            Release Notes
-          </Anchor>
-        </Stack>
-        <Title>Gain additional intel on your games with the desktop app!</Title>
-        <List
-          spacing="sm"
-          mt={30}
-          mb={50}
-          icon={
-            <ThemeIcon size={20} radius="xl">
-              <IconCheck size={rem(12)} stroke={1.5} />
-            </ThemeIcon>
+    <>
+      <Head>
+        <title>Desktop App from COH3 Stats</title>
+        <meta name="description" content={desktopAppDescription} />
+        <meta
+          name="keywords"
+          content={
+            "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
           }
-        >
-          <List.Item>Easy to use, no configuration required - just start the app</List.Item>
-          <List.Item>See detailed leaderboard stats of players in your game</List.Item>
-          <List.Item>Get notified via sound when joining a game (optional)</List.Item>
-          <List.Item>OBS Overlay feature</List.Item>
-        </List>
-      </Paper>
-    </Container>
+        />
+        <meta property="og:image" content="/desktop-app/desktop-app-main-500x281.webp" />
+      </Head>
+      <Container fluid>
+        <Image
+          src="/desktop-app.webp"
+          alt={"coh3 stats desktop app"}
+          radius="md"
+          mx="auto"
+          maw={900}
+        />
+        <Paper radius="md" mt="md" p="lg">
+          <Stack align="center" spacing={5} mb={30}>
+            <Anchor href={downloadURL} target="_blank">
+              <Button>Download {version}</Button>
+            </Anchor>
+            <Text size="sm" color="dimmed">
+              {downloadCount} downloads
+            </Text>
+            <Anchor
+              href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
+              target="_blank"
+            >
+              Release Notes
+            </Anchor>
+          </Stack>
+          <Title>Gain additional intel on your games with the desktop app!</Title>
+          <List
+            spacing="sm"
+            mt={30}
+            mb={50}
+            icon={
+              <ThemeIcon size={20} radius="xl">
+                <IconCheck size={rem(12)} stroke={1.5} />
+              </ThemeIcon>
+            }
+          >
+            <List.Item>Easy to use, no configuration required - just start the app</List.Item>
+            <List.Item>See detailed leaderboard stats of players in your game</List.Item>
+            <List.Item>Get notified via sound when joining a game (optional)</List.Item>
+            <List.Item>OBS Overlay feature</List.Item>
+          </List>
+        </Paper>
+      </Container>
+    </>
   );
 };
 

@@ -71,4 +71,30 @@ export default new Router()
       },
     });
   })
+  // Caching for desktop app
+  .match("/desktop-app(.*)", ({ cache }) => {
+    cache({
+      edge: {
+        // Add 5 minutes cache
+        maxAgeSeconds: 60 * 5,
+        // Cache for 12 hours
+        staleWhileRevalidateSeconds: 12 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/desktop-app.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60,
+      },
+      edge: {
+        // Cache for 5 minutes, revalidated after 5 minutes
+        maxAgeSeconds: 60 * 5,
+        // Server stale page up to 12 hours
+        staleWhileRevalidateSeconds: 12 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages
