@@ -40,7 +40,6 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
           radius="md"
           mx="auto"
           maw={900}
-          mah={506}
         />
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" spacing={5} mb={30}>
