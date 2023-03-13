@@ -35,7 +35,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
       </Head>
       <Container fluid>
         <Image
-          src="/desktop-app.webp"
+          src="/desktop-app/desktop-app-main.webp"
           alt={"coh3 stats desktop app"}
           radius="md"
           mx="auto"
