@@ -10,7 +10,6 @@ import {
   Box,
   Group,
   CloseButton,
-  Container,
 } from "@mantine/core";
 import { WeaponStats } from "../../src/unitStats/mappingWeapon";
 import { resolveLocstring } from "../../src/unitStats/locstring";

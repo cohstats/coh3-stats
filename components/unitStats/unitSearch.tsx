@@ -3,7 +3,6 @@ import {
   Group,
   Text,
   Image,
-  MultiSelect,
   Box,
   CloseButton,
   MultiSelectValueProps,
