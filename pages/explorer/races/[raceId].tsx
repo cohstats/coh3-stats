@@ -90,34 +90,37 @@ const BuildingMapping = (
   const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
   return (
     <div>
-      {buildings.map((building) => (
-        <Card key={building.id} p="sm" radius="md" withBorder>
-          <BuildingCard
-            // @todo: Validate types.
-            types={building.unitTypes as BuildingType[]}
-            desc={{
-              screen_name: building.ui.screenName,
-              help_text: building.ui.helpText,
-              extra_text: building.ui.extraText,
-              brief_text: building.ui.briefText,
-              icon_name: building.ui.iconName,
-              symbol_icon_name: building.ui.symbolIconName,
-            }}
-            units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
-            upgrades={getBuildingUpgrades(building, data.upgradesData)}
-            time_cost={{
-              fuel: building.cost.fuel,
-              munition: building.cost.munition,
-              manpower: building.cost.manpower,
-              popcap: building.cost.popcap,
-              time_seconds: building.cost.time,
-            }}
-            health={{
-              hitpoints: building.health.hitpoints,
-            }}
-          ></BuildingCard>
-        </Card>
-      ))}
+      {buildings.map((building) => {
+        console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
+        return (
+          <Card key={building.id} p="sm" radius="md" withBorder>
+            <BuildingCard
+              // @todo: Validate types.
+              types={building.unitTypes as BuildingType[]}
+              desc={{
+                screen_name: building.ui.screenName,
+                help_text: building.ui.helpText,
+                extra_text: building.ui.extraText,
+                brief_text: building.ui.briefText,
+                icon_name: building.ui.iconName,
+                symbol_icon_name: building.ui.symbolIconName,
+              }}
+              units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
+              upgrades={getBuildingUpgrades(building, data.upgradesData)}
+              time_cost={{
+                fuel: building.cost.fuel,
+                munition: building.cost.munition,
+                manpower: building.cost.manpower,
+                popcap: building.cost.popcap,
+                time_seconds: building.cost.time,
+              }}
+              health={{
+                hitpoints: building.health.hitpoints,
+              }}
+            ></BuildingCard>
+          </Card>
+        );
+      })}
     </div>
   );
 };
@@ -182,17 +185,21 @@ function getBuildingUpgrades(building: EbpsType, upgradesData: UpgradesType[]) {
         icon_name: upgradeFound.ui.iconName,
       },
       time_cost: {
-        fuel: undefined,
-        munition: undefined,
-        manpower: undefined,
-        popcap: undefined,
-        time_seconds: undefined,
+        fuel: upgradeFound.cost.fuel,
+        munition: upgradeFound.cost.munition,
+        manpower: upgradeFound.cost.manpower,
+        popcap: upgradeFound.cost.popcap,
+        time_seconds: upgradeFound.cost.time,
       },
     };
 
     researchableUpgrades.push(upgradeInfo);
   }
 
+  console.log(
+    "🚀 ~ file: [raceId].tsx:198 ~ getBuildingUpgrades ~ researchableUpgrades:",
+    researchableUpgrades,
+  );
   return researchableUpgrades;
 }
 
