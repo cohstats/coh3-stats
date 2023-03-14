@@ -45,6 +45,7 @@ export function filterMultiplayerBuildings(
   });
   // Sort like in-game menu (no idea how to simplify it).
   const sortedBuildings = [
+    ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("armory")),
     ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("support_center")),
     ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("hq")),
     ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("production1")),
