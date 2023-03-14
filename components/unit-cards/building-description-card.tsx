@@ -180,6 +180,30 @@ function BuildingAccordionLabel({ label, symbolIcon }: AccordionLabelProps) {
 }
 
 export const BuildingCard = ({ desc, units, time_cost, health, upgrades }: BuildingSchema) => {
+  let productionSection, upgradeSection;
+
+  if (units.length) {
+    productionSection = (
+      <Accordion.Item value="unit_production">
+        <Accordion.Control>
+          <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Produces"} />
+        </Accordion.Control>
+        <Accordion.Panel>{BuildingUnitMapper(units)}</Accordion.Panel>
+      </Accordion.Item>
+    );
+  }
+
+  if (upgrades.length) {
+    upgradeSection = (
+      <Accordion.Item value="upgrades">
+        <Accordion.Control>
+          <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Upgrades"} />
+        </Accordion.Control>
+        <Accordion.Panel>{BuildingUpgradeMapper(upgrades)}</Accordion.Panel>
+      </Accordion.Item>
+    );
+  }
+
   return (
     <Flex direction="column" gap={8}>
       {BuildingCardHeader(desc, time_cost, health)}
@@ -187,18 +211,8 @@ export const BuildingCard = ({ desc, units, time_cost, health, upgrades }: Build
       <Divider mt={8}></Divider>
 
       <Accordion chevronPosition="right">
-        <Accordion.Item value="unit_production">
-          <Accordion.Control>
-            <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Produces"} />
-          </Accordion.Control>
-          <Accordion.Panel>{BuildingUnitMapper(units)}</Accordion.Panel>
-        </Accordion.Item>
-        <Accordion.Item value="upgrades">
-          <Accordion.Control>
-            <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Upgrades"} />
-          </Accordion.Control>
-          <Accordion.Panel>{BuildingUpgradeMapper(upgrades)}</Accordion.Panel>
-        </Accordion.Item>
+        {productionSection}
+        {upgradeSection}
       </Accordion>
     </Flex>
   );
