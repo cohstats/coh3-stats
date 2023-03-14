@@ -1,7 +1,7 @@
-import { raceMultiplayer, raceType } from "../coh3/coh3-types";
+import { raceAttributesMultiplayer, raceType } from "../coh3/coh3-types";
 import { EbpsType } from "./mappingEbps";
 
-export function transformToMultiplayerFaction(race: raceType): raceMultiplayer {
+export function transformToMultiplayerFaction(race: raceType): raceAttributesMultiplayer {
   switch (race) {
     case "british":
       return "british_africa";
@@ -15,11 +15,14 @@ export function transformToMultiplayerFaction(race: raceType): raceMultiplayer {
 /** Similar to Chrida `isBaseFaction` function but exported in a separate file
  * and takes into account the multiplayer faction names. */
 export function isMultiplayerFaction(faction: string) {
-  return raceMultiplayer.includes(faction as raceMultiplayer);
+  return raceAttributesMultiplayer.includes(faction as raceAttributesMultiplayer);
 }
 
 /** Filter invisible or unused buildings in multiplayer. */
-export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceMultiplayer) {
+export function filterMultiplayerBuildings(
+  buildings: EbpsType[],
+  race: raceAttributesMultiplayer,
+) {
   // Filter by faction (dak, german, uk, us), unit type (production buildings).
   const filteredByRace = buildings.filter(
     (entity) => entity.faction === race && entity.unitType === "production",
