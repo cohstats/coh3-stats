@@ -15,9 +15,10 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
     loadout,
     entity: ebpsData.find((x) => x.id === loadout.id),
   }));
-  console.group("🚀 ~ file: squadTotalCost.ts:18 ~ ebpsUnits:");
-  console.log(ebpsUnits);
-  console.groupEnd();
+  /* Debugging total cost. */
+  // console.group("🚀 ~ file: squadTotalCost.ts:18 ~ ebpsUnits:");
+  // console.log(ebpsUnits);
+  // console.groupEnd();
   const totalCost = ebpsUnits.reduce<EbpsType["cost"]>(
     (totalCost, ebpsUnit) => {
       totalCost.manpower += (ebpsUnit.entity?.cost.manpower || 0) * ebpsUnit.loadout.num;
