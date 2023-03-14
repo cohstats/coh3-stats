@@ -1,6 +1,7 @@
 import slash from "slash";
-import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
+import { Flex, Text, Title, Tooltip } from "@mantine/core";
 import { ResourceValues, StatsCosts } from "./cost-card";
+import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 
 /**
  * These fields can be found at `sbps` inside each unit object.
@@ -43,13 +44,13 @@ export type UnitUpgrade = {
 const UnitUpgradeCardHeader = (desc: UnitUpgradeDescription) => (
   <>
     <Flex direction="row" align="center" gap={16}>
-      <Image
+      <ImageWithFallback
         width={64}
         height={64}
-        fit="contain"
         src={`/icons/${slash(desc.icon_name)}.png`}
         alt={desc.screen_name}
-      ></Image>
+        fallbackSrc={iconPlaceholder}
+      ></ImageWithFallback>
       <Flex direction="column">
         <Tooltip label={desc.screen_name}>
           <Title order={4} transform="capitalize" lineClamp={1}>
