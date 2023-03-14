@@ -31,6 +31,7 @@ type UnitUpgradeDescription = {
 };
 
 export type UnitUpgrade = {
+  id: string;
   desc: UnitUpgradeDescription;
   /**
    * Map the `time_cost` object to display the upgrade cost (time, resources)

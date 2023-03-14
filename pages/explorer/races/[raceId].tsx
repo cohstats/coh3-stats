@@ -47,7 +47,7 @@ interface RaceDetailProps {
   locstring: Record<string, string>;
 }
 
-const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
+const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesData }) => {
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
 
@@ -75,7 +75,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
           <Title order={4}>Buildings</Title>
           <Text>This is an example building card list.</Text>
 
-          {BuildingMapping(raceToFetch, { ebpsData, sbpsData })}
+          {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
         </Stack>
       </Container>
     </>
@@ -84,7 +84,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
 
 const BuildingMapping = (
   race: raceType,
-  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[] },
+  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[]; upgradesData: UpgradesType[] },
 ) => {
   const faction = transformToMultiplayerFaction(race);
   const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
@@ -104,7 +104,7 @@ const BuildingMapping = (
               symbol_icon_name: building.ui.symbolIconName,
             }}
             units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
-            upgrades={[]}
+            upgrades={getBuildingUpgrades(building, data.upgradesData)}
             time_cost={{
               fuel: building.cost.fuel,
               munition: building.cost.munition,
@@ -128,7 +128,7 @@ function getBuildingTrainableUnits(
   ebpsData: EbpsType[],
 ) {
   const trainableUnits: BuildingSchema["units"] = [];
-  console.group(`Building ${building.id} - Squad Total Cost List`);
+  // console.group(`Building ${building.id} - Squad Total Cost List`);
   for (const unitRef of building.spawnItems) {
     // Get the last element of the array, which is the id.
     const unitId = unitRef.split("/").slice(-1)[0];
@@ -158,9 +158,42 @@ function getBuildingTrainableUnits(
     };
     trainableUnits.push(unitInfo);
   }
-  console.groupEnd();
+  // console.groupEnd();
   // console.log("🚀 ~ file: [raceId].tsx:162 ~ getBuildingTrainableUnits ~ trainableUnits:", trainableUnits)
   return trainableUnits;
+}
+
+function getBuildingUpgrades(building: EbpsType, upgradesData: UpgradesType[]) {
+  const researchableUpgrades: BuildingSchema["upgrades"] = [];
+  for (const upgradeRef of building.upgradeRefs) {
+    // Get the last element of the array, which is the id.
+    const upgradeId = upgradeRef.split("/").slice(-1)[0];
+    const upgradeFound = upgradesData.find((x) => x.id === upgradeId);
+    // Ignore those upgrades not found.
+    if (!upgradeFound) continue;
+
+    const upgradeInfo: BuildingSchema["upgrades"][number] = {
+      id: upgradeFound.id,
+      desc: {
+        screen_name: upgradeFound.ui.screenName,
+        help_text: upgradeFound.ui.helpText,
+        extra_text: upgradeFound.ui.extraText,
+        brief_text: upgradeFound.ui.briefText,
+        icon_name: upgradeFound.ui.iconName,
+      },
+      time_cost: {
+        fuel: undefined,
+        munition: undefined,
+        manpower: undefined,
+        popcap: undefined,
+        time_seconds: undefined,
+      },
+    };
+
+    researchableUpgrades.push(upgradeInfo);
+  }
+
+  return researchableUpgrades;
 }
 
 // Generates `/dak`.
