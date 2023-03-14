@@ -35,5 +35,10 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
       time: 0,
     },
   );
+  // Round the costs, so we avoid floating numbers being displayed in the UI
+  // like 399.999995.
+  (Object.keys(totalCost) as Array<keyof EbpsType["cost"]>).forEach(
+    (key) => (totalCost[key] = Math.round(totalCost[key])),
+  );
   return totalCost;
 }
