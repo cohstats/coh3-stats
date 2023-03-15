@@ -11,9 +11,6 @@ import {
   Group,
   CloseButton,
 } from "@mantine/core";
-import { WeaponStats } from "../../src/unitStats/mappingWeapon";
-import { resolveLocstring } from "../../src/unitStats/locstring";
-import { IconAdjustments } from "@tabler/icons";
 
 export type weaponMember = {
   id: string;
