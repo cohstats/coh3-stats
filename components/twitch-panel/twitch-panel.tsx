@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { Container, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
+import { useEffect, useMemo, useState } from "react";
+import { Container, Flex, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
+import { IconBrandTwitch } from "@tabler/icons";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
 
@@ -16,10 +17,16 @@ type Props = {
 const TwitchPanel = ({ twitchStreams, error }: Props) => {
   const { colorScheme } = useMantineColorScheme();
   const [player, setPlayer] = useState<any>();
+  const [currentChannelIndex, setCurrentChannelIndex] = useState(0);
+
+  const currentStream = useMemo(() => {
+    return twitchStreams && twitchStreams[currentChannelIndex];
+  }, [twitchStreams, currentChannelIndex]);
 
   useEffect(() => {
     // this gate only be needed because of react strict mode running things twice
     if (document.getElementById("twitch-script") !== null || twitchStreams === null) return;
+    console.log(twitchStreams);
 
     const script = document.createElement("script");
     script.src = "https://player.twitch.tv/js/embed/v1.js";
@@ -46,18 +53,38 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
     });
   }, [twitchStreams, colorScheme]);
 
-  function handleChangeChannel(channel: string) {
-    player.setChannel(channel);
+  function handleChangeChannel(channelIndex: number) {
+    if (!twitchStreams) return;
+    setCurrentChannelIndex(channelIndex);
+    player.setChannel(twitchStreams[channelIndex].user_login);
     player.play();
   }
 
   return (
-    <Container size="xl">
-      <Title order={2} size="h4" pt="md">
-        Watch Live Streams
-      </Title>
+    <Container size="fluid">
+      <Flex justify="flex-start" align="center" gap={10} pb="sm">
+        <IconBrandTwitch size={40} />
+        <Title order={2} size="h2">
+          Watch Live Streams
+        </Title>
+      </Flex>
+
       <Group>
-        <div style={{ borderRadius: "0.5rem", overflow: "hidden" }} id="twitch-embed"></div>
+        <Container>
+          <div id="twitch-embed"></div>
+          <Container>
+            {currentStream && (
+              <>
+                <Group>
+                  <Text fw={700}>{currentStream.user_name}</Text>
+                  <Text>{currentStream.viewer_count} viewers</Text>
+                </Group>
+                <Text>{currentStream.title}</Text>
+              </>
+            )}
+          </Container>
+        </Container>
+
         {twitchStreams && (
           <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
         )}

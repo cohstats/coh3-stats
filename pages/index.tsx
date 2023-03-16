@@ -38,7 +38,9 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
           <Donate />
         </Group>
       </Paper>
-      <TwitchPanel twitchStreams={twitchStreams} error={error} />
+      <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
+        <TwitchPanel twitchStreams={twitchStreams} error={error} />
+      </Paper>
     </Container>
   );
 };
