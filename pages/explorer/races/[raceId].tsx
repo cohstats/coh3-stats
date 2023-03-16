@@ -1,20 +1,30 @@
 import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Card, Container, Flex, Image, Stack, Text, Title } from "@mantine/core";
+import { IconBarrierBlock } from "@tabler/icons";
+import { Card, Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
 import {
   BuildingCard,
   BuildingSchema,
 } from "../../../components/unit-cards/building-description-card";
-import { fetchLocstring } from "../../../src/unitStats/locstring";
-import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
-import { SbpsType, getSbpsStats } from "../../../src/unitStats/mappingSbps";
-import { UpgradesType, getUpgradesStats } from "../../../src/unitStats/mappingUpgrades";
-import { WeaponType, getWeaponStats } from "../../../src/unitStats/mappingWeapon";
+import FactionIcon from "../../../components/faction-icon";
 import { BuildingType } from "../../../src/coh3";
-import { getSquadTotalCost } from "../../../src/unitStats";
+import {
+  SbpsType,
+  EbpsType,
+  UpgradesType,
+  transformToMultiplayerFaction,
+  filterMultiplayerBuildings,
+  getSquadTotalCost,
+  fetchLocstring,
+  getEbpsStats,
+  getSbpsStats,
+  getUpgradesStats,
+  WeaponType,
+  getWeaponStats,
+} from "../../../src/unitStats";
 
 const RaceBagDescription: Record<raceType, string> = {
   // Locstring value: $11234530
@@ -38,13 +48,12 @@ interface RaceDetailProps {
   locstring: Record<string, string>;
 }
 
-const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
+const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesData }) => {
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
 
-  const raceToFetch: raceType = (query.raceId as raceType) || "american";
+  const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
-  const iconFaction = raceToFetch === "dak" ? "afrika_korps" : raceToFetch;
 
   return (
     <>
@@ -55,25 +64,27 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
       <Container size="md">
         <Stack>
           <Flex direction="row" align="center" gap="md">
-            <Image
-              height={64}
-              width={64}
-              fit="contain"
-              src={`/icons/common/races/${iconFaction}.png`}
-              alt={localizedRace}
-            />
+            <FactionIcon name={raceToFetch} width={64} />
             <Title order={2}>{localizedRace}</Title>
           </Flex>
 
           <Text size="lg">{RaceBagDescription[raceToFetch]}</Text>
         </Stack>
 
+        <Flex direction="row" gap={16} mt={24}>
+          <IconBarrierBlock size={50} />
+          <Text color="orange.6" italic>
+            Important Note: This section may contain some inacurracies regarding the unit costs.
+            We still working to refine the calculation for infantry so feel free to report any
+            bug.
+          </Text>
+        </Flex>
+
         {/* Buildings Section */}
         <Stack mt={32}>
           <Title order={4}>Buildings</Title>
-          <Text>This is an example building card list.</Text>
 
-          {BuildingMapping(iconFaction, { ebpsData, sbpsData })}
+          {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
         </Stack>
       </Container>
     </>
@@ -81,67 +92,45 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData }) => {
 };
 
 const BuildingMapping = (
-  race: "german" | "american" | "british" | "afrika_korps",
-  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[] },
+  race: raceType,
+  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[]; upgradesData: UpgradesType[] },
 ) => {
-  // Filter by faction (dak, german, uk, us), unit type (production buildings).
-  const preFilteredBuildings = data.ebpsData.filter(
-    (entity) => entity.faction === race && entity.unitType === "production",
-  );
-  // Filter invisible or unused buildings in multiplayer.
-  const filteredBuildings = preFilteredBuildings.filter((building) => {
-    switch (race) {
-      // For DAK, buildings `halftrack_deployment_ak` and `heavy_weapon_kompanie_ak`.
-      case "afrika_korps":
-        return !["halftrack_deployment_ak", "heavy_weapon_kompanie_ak"].includes(building.id);
-      // For American, the safe house of partisans (maybe campaign only).
-      case "american":
-        return !["safe_house_partisan"].includes(building.id);
-      default:
-        return true;
-    }
-  });
-  // Sort like in-game menu (no idea how to simplify it).
-  const sortedBuildings = [
-    ...filteredBuildings.filter((x) => x.unitTypes.includes("support_center")),
-    ...filteredBuildings.filter((x) => x.unitTypes.includes("hq")),
-    ...filteredBuildings.filter((x) => x.unitTypes.includes("production1")),
-    ...filteredBuildings.filter((x) => x.unitTypes.includes("production2")),
-    ...filteredBuildings.filter((x) => x.unitTypes.includes("production3")),
-    ...filteredBuildings.filter((x) => x.unitTypes.includes("production4")),
-  ];
-  console.log("🚀 ~ file: [raceId].tsx:115 ~ sortedBuildings:", sortedBuildings);
+  const faction = transformToMultiplayerFaction(race);
+  const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
   return (
-    <>
-      {sortedBuildings.map((building) => (
-        <Card key={building.id} p="sm" radius="md" withBorder>
-          <BuildingCard
-            // @todo: Validate types.
-            types={building.unitTypes as BuildingType[]}
-            desc={{
-              screen_name: building.ui.screenName,
-              help_text: building.ui.helpText,
-              extra_text: building.ui.extraText,
-              brief_text: building.ui.briefText,
-              icon_name: building.ui.iconName,
-              symbol_icon_name: building.ui.symbolIconName,
-            }}
-            units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
-            upgrades={[]}
-            time_cost={{
-              fuel: building.cost.fuel,
-              munition: building.cost.munition,
-              manpower: building.cost.manpower,
-              popcap: building.cost.popcap,
-              time_seconds: building.cost.time,
-            }}
-            health={{
-              hitpoints: building.health.hitpoints,
-            }}
-          ></BuildingCard>
-        </Card>
-      ))}
-    </>
+    <div>
+      {buildings.map((building) => {
+        console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
+        return (
+          <Card key={building.id} p="sm" radius="md" withBorder>
+            <BuildingCard
+              // @todo: Validate types.
+              types={building.unitTypes as BuildingType[]}
+              desc={{
+                screen_name: building.ui.screenName,
+                help_text: building.ui.helpText,
+                extra_text: building.ui.extraText,
+                brief_text: building.ui.briefText,
+                icon_name: building.ui.iconName,
+                symbol_icon_name: building.ui.symbolIconName,
+              }}
+              units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
+              upgrades={getBuildingUpgrades(building, data.upgradesData)}
+              time_cost={{
+                fuel: building.cost.fuel,
+                munition: building.cost.munition,
+                manpower: building.cost.manpower,
+                popcap: building.cost.popcap,
+                time_seconds: building.cost.time,
+              }}
+              health={{
+                hitpoints: building.health.hitpoints,
+              }}
+            ></BuildingCard>
+          </Card>
+        );
+      })}
+    </div>
   );
 };
 
@@ -151,7 +140,7 @@ function getBuildingTrainableUnits(
   ebpsData: EbpsType[],
 ) {
   const trainableUnits: BuildingSchema["units"] = [];
-  console.group(`Building ${building.id} - Squad Total Cost List`);
+  // console.group(`Building ${building.id} - Squad Total Cost List`);
   for (const unitRef of building.spawnItems) {
     // Get the last element of the array, which is the id.
     const unitId = unitRef.split("/").slice(-1)[0];
@@ -181,9 +170,46 @@ function getBuildingTrainableUnits(
     };
     trainableUnits.push(unitInfo);
   }
-  console.groupEnd();
+  // console.groupEnd();
   // console.log("🚀 ~ file: [raceId].tsx:162 ~ getBuildingTrainableUnits ~ trainableUnits:", trainableUnits)
   return trainableUnits;
+}
+
+function getBuildingUpgrades(building: EbpsType, upgradesData: UpgradesType[]) {
+  const researchableUpgrades: BuildingSchema["upgrades"] = [];
+  for (const upgradeRef of building.upgradeRefs) {
+    // Get the last element of the array, which is the id.
+    const upgradeId = upgradeRef.split("/").slice(-1)[0];
+    const upgradeFound = upgradesData.find((x) => x.id === upgradeId);
+    // Ignore those upgrades not found.
+    if (!upgradeFound) continue;
+
+    const upgradeInfo: BuildingSchema["upgrades"][number] = {
+      id: upgradeFound.id,
+      desc: {
+        screen_name: upgradeFound.ui.screenName,
+        help_text: upgradeFound.ui.helpText,
+        extra_text: upgradeFound.ui.extraText,
+        brief_text: upgradeFound.ui.briefText,
+        icon_name: upgradeFound.ui.iconName,
+      },
+      time_cost: {
+        fuel: upgradeFound.cost.fuel,
+        munition: upgradeFound.cost.munition,
+        manpower: upgradeFound.cost.manpower,
+        popcap: upgradeFound.cost.popcap,
+        time_seconds: upgradeFound.cost.time,
+      },
+    };
+
+    researchableUpgrades.push(upgradeInfo);
+  }
+
+  console.log(
+    "🚀 ~ file: [raceId].tsx:198 ~ getBuildingUpgrades ~ researchableUpgrades:",
+    researchableUpgrades,
+  );
+  return researchableUpgrades;
 }
 
 // Generates `/dak`.

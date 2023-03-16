@@ -245,7 +245,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
+            <ExplorerMenu cx={cx} classes={classes} />
 
             <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About

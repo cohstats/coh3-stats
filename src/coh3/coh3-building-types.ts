@@ -8,6 +8,7 @@
  * `support_center` type or if missing as special entity.
  */
 export type BuildingType =
+  | "armory"
   | "support_center"
   | "hq"
   | "production1"
@@ -17,6 +18,7 @@ export type BuildingType =
 
 /** The key is the enum within the game for the building type. The value is the icon name. */
 export const BuildingIcon: Record<BuildingType, string> = {
+  armory: "support_center",
   support_center: "support_center",
   hq: "hq",
   production1: "barracks",

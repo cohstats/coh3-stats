@@ -28,6 +28,9 @@ type EbpsType = {
     //   rear: number;
     // };
   };
+  /** Found at `upgrade_ext.standard_upgrades`. List of instance references.
+   * Applies to buildings only. */
+  upgradeRefs: string[];
 };
 
 /** These are found within `time_cost` at `ebpextensions\\cost_ext` */
@@ -84,6 +87,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     health: {
       hitpoints: 0,
     },
+    upgradeRefs: [],
     //  a       : subtree.a
     //  z       : subtree.x.y.z
     // todo
@@ -144,6 +148,16 @@ const mapExtensions = (root: any, epbps: EbpsType) => {
         break;
       case "health_ext":
         epbps.health.hitpoints = extension.hitpoints || 0;
+        break;
+      case "upgrade_ext":
+        // Check if the `standard_upgrades` is not empty, otherwise skip.
+        if (!extension.standard_upgrades?.length) break;
+
+        for (const upg of extension.standard_upgrades) {
+          if (upg.upgrade?.instance_reference) {
+            epbps.upgradeRefs.push(upg.upgrade.instance_reference);
+          }
+        }
         break;
       default:
         break;

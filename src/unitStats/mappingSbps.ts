@@ -79,13 +79,17 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           if (unitNum === -1) {
             switch (spbps.unitType) {
               // Vehicles are always 1.
-              case "vehicles":
-              case "armored_tractor_254_ak_signals_sp":
+              case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.
+              case "greyhound_recrewable_us": // USF Vehicles
+              case "halftrack_recrewable_ger": // German kettenrad and such.
+              case "l6_40_recrewable_ger": // German tanks, wtf?
+              case "vehicles": // General vehicles (tanks, armoured cars).
                 unitNum = 1;
                 break;
               // Team weapons and infantry usually varies. Lets set as 4 by now.
-              case "infantry":
-              case "team_weapons":
+              case "infantry": // General infantry.
+              case "pathfinder_us": // USF Airborne infantry.
+              case "team_weapons": // MGs, artillery (the mobile ones).
                 unitNum = 4;
               // Other stuff as 5.
               default:
