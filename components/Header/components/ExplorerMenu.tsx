@@ -57,7 +57,7 @@ const ExplorerMenu = ({
             {explorerFactionLink("british")}
           </Stack>
         </Grid.Col>
-        <Grid.Col span={1}>
+        {/* <Grid.Col span={1}>
           <Stack>
             <Text weight={700}>Other Stuff</Text>
             <Text>
@@ -71,7 +71,7 @@ const ExplorerMenu = ({
             <Text weight={700}>Tools</Text>
             {explorerToolLink("DPS Calculator")}
           </Stack>
-        </Grid.Col>
+        </Grid.Col> */}
       </Grid>
     </HoverCard.Dropdown>
   </HoverCard>
