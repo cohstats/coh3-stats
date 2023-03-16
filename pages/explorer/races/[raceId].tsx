@@ -1,6 +1,7 @@
 import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { IconBarrierBlock } from "@tabler/icons";
 import { Card, Container, Flex, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
@@ -70,10 +71,18 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesDat
           <Text size="lg">{RaceBagDescription[raceToFetch]}</Text>
         </Stack>
 
+        <Flex direction="row" gap={16} mt={24}>
+          <IconBarrierBlock size={50} />
+          <Text color="orange.6" italic>
+            Important Note: This section may contain some inacurracies regarding the unit costs.
+            We still working to refine the calculation for infantry so feel free to report any
+            bug.
+          </Text>
+        </Flex>
+
         {/* Buildings Section */}
         <Stack mt={32}>
           <Title order={4}>Buildings</Title>
-          <Text>This is an example building card list.</Text>
 
           {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
         </Stack>
