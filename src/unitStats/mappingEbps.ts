@@ -1,6 +1,5 @@
 // type description of mapped data
 
-import { type } from "os";
 import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
@@ -275,8 +274,8 @@ const getEbpsStats = async () => {
 };
 
 const isExtensionContainer = (key: string, obj: any) => {
-  // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "extensions";
+  // check if first child is "extensions"
+  return Object.keys(obj).includes("extensions");
 };
 
 //

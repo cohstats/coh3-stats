@@ -27,10 +27,10 @@ export function filterMultiplayerBuildings(
   const filteredByRace = buildings.filter(
     (entity) => entity.faction === race && entity.unitType === "production",
   );
-  console.log(
-    "🚀 ~ file: faction.ts:27 ~ filterMultiplayerBuildings ~ filteredByRace:",
-    filteredByRace,
-  );
+  // console.log(
+  //   "🚀 ~ file: faction.ts:27 ~ filterMultiplayerBuildings ~ filteredByRace:",
+  //   filteredByRace,
+  // );
   const filteredByMultiplayer = filteredByRace.filter((building) => {
     switch (race) {
       // For DAK, buildings `halftrack_deployment_ak` and `heavy_weapon_kompanie_ak`.
