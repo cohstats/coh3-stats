@@ -458,7 +458,7 @@ export const DpsChart = (props: IDPSProps) => {
           wrap="wrap"
         >
           <Switch
-            label={isCurve ? "Curve" : "Staircase"}
+            label={isCurve ? "Line" : "Staircase"}
             checked={isCurve}
             onChange={(event) => setCurve(event.currentTarget.checked)}
             //onClick={() => setCurve(isCurve)}
