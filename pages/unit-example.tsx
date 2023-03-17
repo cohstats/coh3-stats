@@ -58,6 +58,7 @@ const UnitExample = () => {
             <Stack>
               <Card p="lg" radius="md" withBorder>
                 <UnitUpgradeCard
+                  id={"up_lanciafiamme"}
                   desc={{
                     extra_text: "Conversion upgrade",
                     screen_name: "L6 Lanciafiamme Conversion",
@@ -73,6 +74,7 @@ const UnitExample = () => {
               </Card>
               <Card p="lg" radius="md" withBorder>
                 <UnitUpgradeCard
+                  id={"up_spotting_scopes"}
                   desc={{
                     extra_text: "Support upgrade",
                     screen_name: "Spotting Scopes",

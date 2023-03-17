@@ -28,8 +28,8 @@ export default new Router()
     cache({
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 10,
+        staleWhileRevalidateSeconds: 60,
         forcePrivateCaching: true,
       },
     });
@@ -37,12 +37,12 @@ export default new Router()
   .match("/_next/data/:version/leaderboards.json", ({ cache }) => {
     cache({
       browser: {
-        serviceWorkerSeconds: 10,
+        serviceWorkerSeconds: 15,
       },
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 10,
+        staleWhileRevalidateSeconds: 60,
         forcePrivateCaching: true,
       },
     });
@@ -52,8 +52,8 @@ export default new Router()
     cache({
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 15,
+        staleWhileRevalidateSeconds: 45,
         forcePrivateCaching: true,
       },
     });
@@ -61,12 +61,12 @@ export default new Router()
   .match("/_next/data/:version/players/:id.json", ({ cache }) => {
     cache({
       browser: {
-        serviceWorkerSeconds: 10,
+        serviceWorkerSeconds: 15,
       },
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 5,
-        staleWhileRevalidateSeconds: 30,
+        maxAgeSeconds: 14,
+        staleWhileRevalidateSeconds: 45,
         forcePrivateCaching: true,
       },
     });
@@ -77,8 +77,8 @@ export default new Router()
       edge: {
         // Add 5 minutes cache
         maxAgeSeconds: 60 * 5,
-        // Cache for 12 hours
-        staleWhileRevalidateSeconds: 12 * 60 * 60,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
         forcePrivateCaching: true,
       },
     });
@@ -89,10 +89,10 @@ export default new Router()
         serviceWorkerSeconds: 60,
       },
       edge: {
-        // Cache for 5 minutes, revalidated after 5 minutes
-        maxAgeSeconds: 60 * 5,
-        // Server stale page up to 12 hours
-        staleWhileRevalidateSeconds: 12 * 60 * 60,
+        // Cache for 15 minutes
+        maxAgeSeconds: 60 * 15,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
         forcePrivateCaching: true,
       },
     });

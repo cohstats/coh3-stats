@@ -58,7 +58,7 @@ const ExplorerMenu = ({
           </Stack>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Stack>
+          {/* <Stack>
             <Text weight={700}>Other Stuff</Text>
             <Text>
               <Anchor color="orange" component={Link} href="#">
@@ -66,10 +66,10 @@ const ExplorerMenu = ({
               </Anchor>
             </Text>
           </Stack>
-          <Divider my="sm" />
+          <Divider my="sm" /> */}
           <Stack>
             <Text weight={700}>Tools</Text>
-            {explorerToolLink("DPS Calculator")}
+            {explorerToolLink("DPS - Unit Comparison")}
           </Stack>
         </Grid.Col>
       </Grid>

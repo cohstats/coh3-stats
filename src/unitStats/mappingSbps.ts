@@ -89,8 +89,9 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
                 unitNum = 1;
                 break;
               // Team weapons and infantry usually varies. Lets set as 4 by now.
-              case "infantry":
-              case "team_weapons":
+              case "infantry": // General infantry.
+              case "pathfinder_us": // USF Airborne infantry.
+              case "team_weapons": // MGs, artillery (the mobile ones).
                 unitNum = 4;
               // Other stuff as 5.
               default:

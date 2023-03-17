@@ -1,4 +1,5 @@
 import config from "../config";
+import { TwitchStream } from "./coh3/coh3-types";
 
 const getPlayerCardInfoUrl = (playerID: string | number) => {
   return encodeURI(
@@ -8,6 +9,28 @@ const getPlayerCardInfoUrl = (playerID: string | number) => {
 
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerMatchesHttp?relicId=${playerID}`);
+};
+
+const getTwitchStreamsUrl = () => {
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getTwitchStreamsHttp`);
+};
+
+/**
+ * Returns the array of EN twitch streams sorted by viewer count
+ */
+const getTwitchStreams = async (): Promise<Array<TwitchStream>> => {
+  const response = await fetch(getTwitchStreamsUrl());
+  const data = await response.json();
+
+  if (response.ok) {
+    return data.twitchStreams;
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting twitch streams: ${data.error}`);
+    }
+    throw new Error(`Error getting twitch streams`);
+  }
 };
 
 const getPlayerCardInfo = async (playerID: string | number) => {
@@ -51,4 +74,4 @@ const getPlayerRecentMatches = async (playerID: string | number) => {
   }
 };
 
-export { getPlayerCardInfo, getPlayerRecentMatches };
+export { getPlayerCardInfo, getPlayerRecentMatches, getTwitchStreams };

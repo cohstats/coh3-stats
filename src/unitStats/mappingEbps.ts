@@ -26,6 +26,9 @@ type EbpsType = {
     /** Found at `health_ext`. */
     armorLayout: armorLayoutOption;
   };
+  /** Found at `upgrade_ext.standard_upgrades`. List of instance references.
+   * Applies to buildings only. */
+  upgradeRefs: string[];
   /** Found at `combat_ext`. */
   weaponRef: combatExt[];
   // weapon_ext.weapon
@@ -107,6 +110,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
         sideArmor: 1,
       },
     },
+    upgradeRefs: [],
     weaponRef: [],
     weaponId: "",
   };
@@ -199,7 +203,16 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
         const weaponPath = extension.weapon.instance_reference.split("/");
         ebps.weaponId = weaponPath[weaponPath.length - 1];
         break;
+      case "upgrade_ext":
+        // Check if the `standard_upgrades` is not empty, otherwise skip.
+        if (!extension.standard_upgrades?.length) break;
 
+        for (const upg of extension.standard_upgrades) {
+          if (upg.upgrade?.instance_reference) {
+            ebps.upgradeRefs.push(upg.upgrade.instance_reference);
+          }
+        }
+        break;
       default:
         break;
     }

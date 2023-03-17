@@ -2,6 +2,15 @@ export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
 export type raceType = (typeof raceTypeArray)[number];
 
+/** The british is different for multiplayer. */
+export const raceAttributesMultiplayer = [
+  "german",
+  "american",
+  "british_africa",
+  "afrika_korps",
+] as const;
+export type raceAttributesMultiplayer = (typeof raceAttributesMultiplayer)[number];
+
 export const leaderBoardTypeArray = ["1v1", "2v2", "3v3", "4v4"] as const;
 
 export type leaderBoardType = (typeof leaderBoardTypeArray)[number];
@@ -131,4 +140,22 @@ export interface MatchHistory {
   matchhistorymember: Matchhistorymember[];
   profile_ids: number[];
   steam_ids: string[];
+}
+
+export interface TwitchStream {
+  id: string;
+  user_id: string;
+  user_login: string;
+  user_name: string;
+  game_id: string;
+  game_name: string;
+  type: string;
+  title: string;
+  viewer_count: number;
+  started_at: string;
+  language: string;
+  thumbnail_url: string;
+  tag_ids: string[];
+  tags: string[];
+  is_mature: boolean;
 }
