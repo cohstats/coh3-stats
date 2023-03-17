@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useMediaQuery } from "@mantine/hooks";
+
 //import { LevelContext } from './LevelContext.js';
 import {
   Chart as ChartJS,
@@ -14,77 +16,30 @@ import {
 
 import { Line } from "react-chartjs-2";
 import {
-  Paper,
   createStyles,
   Container,
   Space,
   useMantineTheme,
-  SimpleGrid,
-  Rating,
-  Avatar,
-  Group,
-  Image,
-  Text,
-  NumberInput,
-  ActionIcon,
+  Grid,
+  Flex,
   Box,
   Stack,
+  Title,
+  Switch,
 } from "@mantine/core";
-import { WeaponSearch } from "./weaponSearch";
-import { WeaponStats } from "../../src/unitStats/mappingWeapon";
 import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
-import { resolveLocstring } from "../../src/unitStats/locstring";
+import { CustomizableUnit, DpsUnitCustomizing } from "./dpsUnitCustomizing";
+import { EbpsType } from "../../src/unitStats/mappingEbps";
+import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
+import slash from "slash";
+import { WeaponType } from "../../src/unitStats/mappingWeapon";
+import { SbpsType } from "../../src/unitStats/mappingSbps";
+import Head from "next/head";
+import { weaponMember } from "./dpsWeaponCard";
 
-type UnitType = {
-  id: string;
-  text: string;
-  unitSymbol: string;
-  unitIcon: string;
-  sizeMax: number;
-  loadout: UnitEntityType[];
-  defaultWeapon: string;
-  slots: number;
-  cover: boolean;
-  moving: boolean;
-  vet: number;
-};
-
-type UnitEntityType = {
-  id: string;
-  text: string;
-  numMax: number;
-  number: number;
-  weaponSymbol: string;
-  replaceDefault: boolean;
-};
-
-const mapUnitData = (fileName: string, spbs: any) => {
-  const uiInfo = spbs.squad_ui_ext.race_data[0].info;
-  return {
-    id: fileName,
-    briefText: resolveLocstring(uiInfo.brief_text),
-    symbolIconName: uiInfo.symbol_icon_name,
-    iconName: uiInfo.icon_name,
-    weaponSymbol: "",
-    squadType: spbs.squad_type_ext,
-    loadout: [
-      {
-        id: "panzergrenadier_ak",
-        text: "Panzergrenadier",
-        numMax: 5,
-        currentWeapon: "kar98k_panzergrenadier_ak",
-        weaponSymbol: "/unitStats/weaponClass/weapon_dp_28_lmg.png",
-        unitSymbol: "",
-        active: true,
-      },
-    ],
-    defaultWeapon: "kar98k_panzergrenadier_ak",
-    slots: 5,
-    cover: false,
-    moving: false,
-  };
-};
+// let unitSelectionList :  CustomizableUnit[] = [];
+let unitSelectionList: CustomizableUnit[] = [];
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -95,6 +50,19 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.colors.gray[0],
   },
 }));
+
+// function hexToRgbA(hex: string, opacity: string) {
+//   let c: any;
+//   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+//     c = hex.substring(1).split("");
+//     if (c.length == 3) {
+//       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+//     }
+//     c = "0x" + c.join("");
+//     return "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + "," + opacity + ")";
+//   }
+//   throw new Error("Bad Hex");
+// }
 
 ChartJS.register(
   CategoryScale,
@@ -112,7 +80,8 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "top" as const,
+      position: "top",
+      display: true,
     },
   },
   scales: {
@@ -127,15 +96,7 @@ export const options = {
 
       grid: {
         lineWidth: 0.5,
-        // color: "#6a6a6a",
         display: true,
-      },
-      ticks: {
-        padding: 20,
-        //    color: "#9a9a9a",
-        font: {
-          size: 12,
-        },
       },
     },
     y: {
@@ -151,13 +112,6 @@ export const options = {
         display: true,
         text: "DPS",
       },
-      ticks: {
-        padding: 20,
-        //  color: "#9a9a9a",
-        font: {
-          size: 12,
-        },
-      },
     },
   },
 };
@@ -167,17 +121,16 @@ export const options = {
 // value: item.id,
 // data : item.weapon_bag,
 // description: item.ui_name || 'No Description Available',
-const mapChartData = (searchItem: any) => {
-  const noData: any[] = [];
-
+const mapChartData = (data: any[], id?: string) => {
   const chartLine = {
     label: "No Item Selected",
-    data: noData,
+    data: data,
     borderWidth: 2,
     borderColor: "#4dabf7", // '#d048b6',
     //cubicInterpolationMode: "monotone" as const,
-    stepped: "after",
-    tension: 0.5,
+    //stepped: "after",
+    stepped: "",
+    tension: 0.0,
     pointStyle: "rect",
     fill: false,
     backgroundColor: "rgba(0, 100, 150, 0.3)",
@@ -185,73 +138,298 @@ const mapChartData = (searchItem: any) => {
     intersect: true,
   };
 
-  if (searchItem) {
-    (chartLine.label = searchItem.value), (chartLine.data = getWeaponDPSData(searchItem.data)); // no clue
-  }
+  if (id) chartLine.label = id;
+
   return chartLine;
 };
 
-function hexToRgbA(hex: string, opacity: string) {
-  let c: any;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split("");
-    if (c.length == 3) {
-      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+const getWeaponDPSData = (units: CustomizableUnit[]) => {
+  const dpsSet: any[] = [];
+
+  if (units.length == 0) return dpsSet;
+
+  // we only have two units so we keep it simple -> No generic loop stuff
+  if (units[0]) dpsSet[0] = getCombatDps(units[0], units[1]);
+
+  if (units[1]) dpsSet[1] = getCombatDps(units[1], units[0]);
+
+  return dpsSet;
+};
+
+const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
+  // compute dps for first squad
+  let dpsTotal: any[] = [];
+
+  // compute total dps for complete loadout
+  unit1.loadout.forEach((ldout) => {
+    const weapon = ldout as unknown as WeaponType;
+    let weaponDps = [];
+    // opponent default values
+    let targetSize = 1;
+    let armor = 1;
+    let opponentCover = {
+      accuracy_multiplier: 1,
+      damage_multiplier: 1,
+      penetration_multiplier: 1,
+    };
+
+    // Check if we also need to consider opponent multiplier
+    if (unit2) {
+      // get cover stats
+      opponentCover = getCoverMultiplier(unit2.cover, weapon.weapon_bag);
+      targetSize = unit2.targetSize;
+      armor = unit2.armor;
     }
-    c = "0x" + c.join("");
-    return "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + "," + opacity + ")";
+
+    weaponDps = getSingleWeaponDPS(
+      weapon.weapon_bag,
+      ldout.num,
+      targetSize,
+      armor,
+      unit1.isMoving,
+      opponentCover,
+    );
+    dpsTotal = addDpsData(dpsTotal, weaponDps);
+  });
+
+  return dpsTotal;
+};
+
+// sums up two dps lines
+const addDpsData = (dps1: any[], dps2: any[]) => {
+  if (dps1.length == 0) return dps2;
+  // set with {x,y} touples
+  const newSet: any[] = [];
+
+  let ind_2 = 0; // loop only once through second line
+  for (let ind_1 = 0; ind_1 < dps1.length; ind_1++) {
+    const point1 = dps1[ind_1];
+
+    for (ind_2; ind_2 < dps2.length; ind_2++) {
+      const point2 = dps2[ind_2];
+
+      // ideal case. Both weapons address the same range. simply merge
+      // and check the next points.
+      if (point1.x == point2.x || point1.x < point2.x) {
+        newSet.push(mergePoints(point1, point2));
+        if (point1.x == point2.x) ind_2++;
+        break;
+      }
+
+      // weapon 2 has has a range which do not exist for weapon 1
+      // eg. weapon1.mid = 22 != weapon2.mid = 20
+      // merge into range of weapon2
+      if (point1.x > point2.x) newSet.push(mergePoints(point2, point1));
+
+      // // weapon2 range is more fare a way than
+      // // current weapon1 range. We need to merge
+      // // into weapon1 range and stop.
+      // if(point1.x < point2.x)
+      // {
+      //   newSet.push(mergePoints(point1,point2))
+      //   break;
+      // }
+    }
   }
-  throw new Error("Bad Hex");
-}
 
-const getWeaponDPSData = (weapon_bag: any) => {
-  if (!weapon_bag || !weapon_bag.accuracy) return [];
+  return newSet;
+};
 
-  return getSingleWeaponDPS(weapon_bag);
+const mergePoints = (xPoint: any, yPoint: any) => {
+  return { x: xPoint.x, y: xPoint.y + yPoint.y };
+};
+
+const getCoverMultiplier = (coverType: string, weaponBag: any) => {
+  let cover = weaponBag.cover_table["tp_" + coverType + "_cover"];
+  if (!cover) cover = weaponBag.tp_defcover;
+  return cover;
+};
+
+const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
+  if (!isLargeScreen) {
+    options.scales.x.title.display = false;
+    options.scales.y.title.display = false;
+    options.plugins.legend.display = false;
+  } else {
+    options.scales.x.title.display = true;
+    options.scales.y.title.display = true;
+    options.plugins.legend.display = true;
+  }
+};
+
+const mapUnitDisplayData = (
+  sbpsSelected: SbpsType,
+  ebps: EbpsType[],
+  weapons: WeaponType[],
+
+  // weapons?: WeaponType[],
+): any => {
+  // Initilaize
+  const custUnit: any = {
+    id: sbpsSelected.id, // filename  -> eg. panzergrenadier_ak
+    screenName: sbpsSelected.ui.screenName || "No text found", // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+    path: sbpsSelected.path, // path to object
+    faction: sbpsSelected.faction, // from folder structure races\[factionName]
+    loadout: [], // squad_loadout_ext.unit_list
+    unitType: sbpsSelected.unitType, // folder Infantry | vehicles | team_weapons | buildings
+    helpText: sbpsSelected.ui.helpText, // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
+    iconName: slash("/icons/" + sbpsSelected.ui.iconName + ".png") || "icon", // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
+    factionicon: getFactionIcon(sbpsSelected.faction),
+    cover: "",
+    isMoving: false,
+    targetSize: 1,
+    armor: 1,
+    image: getFactionIcon(sbpsSelected.faction),
+    description: sbpsSelected.ui.screenName,
+    label: sbpsSelected.id,
+    value: sbpsSelected.id,
+  };
+
+  // Get loadouts
+  if (ebps) {
+    custUnit.loadout = getDefaultLoadout(custUnit, ebps, sbpsSelected, weapons);
+  }
+
+  return custUnit;
+};
+const getDefaultLoadout = (
+  unit: CustomizableUnit,
+  ebpsList: EbpsType[],
+  sbps: SbpsType,
+  weapons: WeaponType[],
+) => {
+  const loadoutUnit: weaponMember[] = [];
+
+  // loop through loadout to get path to unit entity
+  for (const loadout of sbps.loadout) {
+    const type = loadout.type.split("/");
+    const ebps = ebpsList.find((unit) => unit.id == type[type.length - 1]);
+    if (ebps)
+      // loop throup hardpoints get weapon ebps
+      for (const weaponRef of ebps.weaponRef) {
+        // find weapon ebps
+        const refPath = weaponRef.ebp.split("/");
+        const weaponEbp = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
+        if (!weaponEbp) continue;
+
+        // find referenced weapon template
+        const weapon = weapons.find((gun) => gun.id == weaponEbp?.weaponId);
+
+        if (!weapon) continue;
+
+        // add weapon clone and set number
+        const clone = { ...weapon };
+        (clone as any).num = loadout.num;
+        loadoutUnit.push(clone as any);
+      }
+  }
+  return loadoutUnit;
+};
+
+const mapUnitSelection = (sbps: SbpsType[], ebps: EbpsType[], weapons: WeaponType[]) => {
+  const selectionFields = [];
+
+  for (const squad of sbps) {
+    if (squad.unitType == "infantry")
+      selectionFields.push(mapUnitDisplayData(squad, ebps, weapons));
+  }
+
+  return selectionFields;
 };
 
 interface IDPSProps {
-  searchData: any[];
+  weaponData: WeaponType[];
+  sbpsData: SbpsType[];
+  ebpsData: EbpsType[];
 }
 
-export const DpsChart = () => {
-  const searchData_default: any[] = [];
+export const DpsChart = (props: IDPSProps) => {
+  const searchData_default: CustomizableUnit[] = [];
   const [activeData, setActiveData] = useState(searchData_default);
+  const [rerender, setRerender] = useState(false);
+  const [isCurve, setCurve] = useState(true);
   const { classes } = useStyles();
+  const theme = useMantineTheme();
+  const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
-  function onSelectionChange(selectionItem: any[]) {
-    setActiveData(selectionItem);
+  // create selection List
+  if (unitSelectionList.length == 0 && props.sbpsData.length > 0)
+    unitSelectionList = mapUnitSelection(props.sbpsData, props.ebpsData, props.weaponData);
+
+  setScreenOptions(options, isLargeScreen);
+
+  // Squad configration has changed
+  function onSquadConfigChange(unit: CustomizableUnit) {
+    setRerender(!rerender);
+  }
+
+  // synchronize selection field with presented units
+  function onSelectionChange(selection: string, index: number) {
+    // add new units
+
+    // check if unit is already selected
+    if (activeData[index]?.id == selection) return;
+
+    // get blueprint
+    const unitBp = unitSelectionList.find((unit) => unit.id == selection);
+
+    // add unit
+    if (unitBp) {
+      activeData[index] = { ...unitBp };
+      activeData[index].loadout = []; // Clear loadout reference
+      for (const loadout of unitBp.loadout) activeData[index].loadout.push({ ...loadout });
+      setRerender(!rerender);
+    }
   }
 
   // default values
-  const chartData = { datasets: [mapChartData(null)] };
+  const chartData = { datasets: [mapChartData([])] };
   let maxY = 1;
-
-  const colorIndex = [];
-  const theme = useMantineTheme();
-  for (const c in theme.colors) colorIndex.push(c);
 
   if (activeData.length > 0) {
     chartData.datasets = [];
-    //const selectItem = searchItems.searchData.find(item => item.value = activeData );
-    activeData.forEach((set) => {
-      chartData.datasets.push(mapChartData(set));
-    });
 
-    chartData.datasets.forEach(function (set, i) {
+    // compute dps lines
+    // should be an array of max two dps Lines;
+    const dpsLines = getWeaponDPSData(activeData);
+
+    //const selectItem = searchItems.searchData.find(item => item.value = activeData );
+
+    if (activeData[0]) {
+      const set = mapChartData(dpsLines[0], activeData[0].id);
       set.borderColor = theme.colors.blue[5];
-      set.backgroundColor = hexToRgbA(theme.colors.blue[5], "0.3");
-      // set.fill = true;
-      if (i > 0) {
-        set.borderColor = theme.colors.red[5];
-        set.backgroundColor = hexToRgbA(theme.colors.red[5], "0.3");
-        //set.fill = false;
+      chartData.datasets.push(set);
+
+      if (isCurve) {
+        //set.cubicInterpolationMode = "monotone";
+        set.stepped = "";
+      } else {
+        //@ts-ignore
+        //set.cubicInterpolationMode = 'default';
+        set.stepped = "after";
       }
 
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
       });
-    });
+    }
+
+    if (activeData[1]) {
+      const set = mapChartData(dpsLines[1], activeData[1].id);
+      set.borderColor = theme.colors.red[5];
+      if (isCurve) {
+        //set.cubicInterpolationMode = "monotone";
+        set.stepped = "";
+      } else {
+        //@ts-ignore
+        //set.cubicInterpolationMode = 'default';
+        set.stepped = "after";
+      }
+      chartData.datasets.push(set);
+      set.data.forEach((point: any) => {
+        if (point.y > maxY) maxY = point.y;
+      });
+    }
   }
   // some scale buffer above the highest point
   maxY = maxY * 1.1;
@@ -260,267 +438,123 @@ export const DpsChart = () => {
 
   return (
     <>
-      <Container size="md">
-        <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
-          <Space h="sm" />
-          <UnitSearch searchData={WeaponStats} onSelect={onSelectionChange}></UnitSearch>
-          <Space h="sm" />
-          {false && (
-            <>
-              <SimpleGrid cols={2} spacing="sm" verticalSpacing="xs">
-                <Stack align="left" justify="flex-start" spacing="xs">
-                  <Box
-                    sx={(theme) => ({
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.dark[9]
-                          : theme.colors.gray[0],
-                      border: "solid 1px " + theme.colors.dark[6],
-                      textAlign: "left",
-                      padding: theme.spacing.xs,
-                      borderRadius: theme.radius.md,
-                    })}
-                  >
-                    <Group>
-                      <Avatar
-                        src="/icons/races/afrika_corps/infantry/panzergrenadier_ak.png"
-                        alt="Panzergrenadier"
-                        radius="xs"
-                        size="md"
-                      />
-                      <Rating defaultValue={0} size="sm" count={3} />
+      <Head>
+        <title>DPS - Calculator</title>
+        <meta name="Damage Per Second (DPS) Calculator " />
+      </Head>
 
-                      <ActionIcon size="lg">
-                        <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png">
-                          {" "}
-                        </Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/cover/heavy.png"></Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/cover/light.png"></Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/cover/negative.png"></Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/units/garrisoned.png"></Image>
-                      </ActionIcon>
-                    </Group>
-                  </Box>
-                  <WeaponSearch
-                    searchData={WeaponStats}
-                    onSelect={onSelectionChange}
-                  ></WeaponSearch>
-                  <Group spacing="xs">
-                    <Box
-                      sx={(theme) => ({
-                        backgroundColor:
-                          theme.colorScheme === "dark"
-                            ? theme.colors.dark[7]
-                            : theme.colors.gray[0],
-                        border: "solid 1px " + theme.colors.dark[4],
-                        padding: theme.spacing.xs,
-                        borderRadius: theme.radius.md,
-                      })}
-                    >
-                      <Image
-                        width={60}
-                        height={30}
-                        src="\unitStats\weaponClass\weapon_lmg_mg34.png"
-                        fit="contain"
-                        alt="K98"
-                      />
-                      <Text size="xs">weapon_lmg_mg34</Text>
-                      <Space h="xs"></Space>
-                      <Box
-                        sx={(theme) => ({
-                          width: "60px",
-                        })}
-                      >
-                        <NumberInput defaultValue={5} size="xs" />
-                      </Box>
-                    </Box>
+      <Container>
+        {/* */}
+        <Stack mb={24}>
+          <Title order={2}>Company of Heroes 3 DPS Tool </Title>
+        </Stack>
 
-                    <Box
-                      sx={(theme) => ({
-                        backgroundColor:
-                          theme.colorScheme === "dark"
-                            ? theme.colors.dark[7]
-                            : theme.colors.gray[0],
-                        border: "solid 1px " + theme.colors.dark[4],
-                        padding: theme.spacing.xs,
-                        borderRadius: theme.radius.md,
-                      })}
-                    >
-                      <Image
-                        width={60}
-                        height={30}
-                        src="\unitStats\weaponClass\weapon_lmg_mg34.png"
-                        fit="contain"
-                        alt="K98"
-                      />
-                      <Text size="xs">weapon_lmg_mg34</Text>
-                      <Space h="xs"></Space>
-                      <Box
-                        sx={(theme) => ({
-                          width: "60px",
-                        })}
-                      >
-                        <NumberInput defaultValue={5} size="xs" />
-                      </Box>
-                    </Box>
+        <Flex
+          // mih={50}
+          gap="xs"
+          justify="flex-end"
+          align="center"
+          direction="row"
+          wrap="wrap"
+        >
+          <Switch
+            label={isCurve ? "Line" : "Staircase"}
+            checked={isCurve}
+            onChange={(event) => setCurve(event.currentTarget.checked)}
+            //onClick={() => setCurve(isCurve)}
+            size="xs"
+          />
+        </Flex>
 
-                    <Box
-                      sx={(theme) => ({
-                        backgroundColor:
-                          theme.colorScheme === "dark"
-                            ? theme.colors.dark[9]
-                            : theme.colors.gray[0],
-                        border: "solid 1px " + theme.colors.dark[4],
-                        padding: theme.spacing.xs,
-                        borderRadius: theme.radius.md,
-                      })}
-                    >
-                      <Image
-                        width={60}
-                        height={30}
-                        src="\unitStats\weaponClass\weapon_lmg_mg34.png"
-                        fit="contain"
-                        alt="K98"
-                      />
-                      <Text size="xs">weapon_lmg_mg34</Text>
-                      <Space h="xs"></Space>
-                      <Box
-                        sx={(theme) => ({
-                          border:
-                            theme.colorScheme === "dark"
-                              ? theme.colors.dark[9]
-                              : theme.colors.gray[0],
-                          width: "60px",
-                        })}
-                      >
-                        <NumberInput defaultValue={5} size="xs" />
-                      </Box>
-                    </Box>
-                  </Group>
-                </Stack>
-
-                <Stack align="left" justify="flex-start" spacing="xs">
-                  <Box
-                    sx={(theme) => ({
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.dark[9]
-                          : theme.colors.gray[0],
-                      border: "solid 1px " + theme.colors.dark[6],
-                      textAlign: "left",
-                      padding: theme.spacing.xs,
-                      borderRadius: theme.radius.md,
-                    })}
-                  >
-                    <Group>
-                      <Avatar
-                        src="/icons/races/british/infantry/tommy_uk.png"
-                        alt="Panzergrenadier"
-                        radius="xs"
-                        size="md"
-                      />
-                      <Rating defaultValue={0} size="sm" count={3} />
-
-                      <ActionIcon size="lg">
-                        <Image src="\icons\common\abilities\tactical_movement_riflemen_us.png">
-                          {" "}
-                        </Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/cover/heavy.png"></Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/cover/light.png"></Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/cover/negative.png"></Image>
-                      </ActionIcon>
-                      <ActionIcon size="lg">
-                        <Image src="/icons/common/units/garrisoned.png"></Image>
-                      </ActionIcon>
-                    </Group>
-                  </Box>
-
-                  <Group spacing="xs">
-                    <Box
-                      sx={(theme) => ({
-                        backgroundColor:
-                          theme.colorScheme === "dark"
-                            ? theme.colors.dark[7]
-                            : theme.colors.gray[0],
-                        border: "solid 1px " + theme.colors.dark[4],
-                        padding: theme.spacing.xs,
-                        borderRadius: theme.radius.md,
-                      })}
-                    >
-                      <Image
-                        width={60}
-                        height={30}
-                        src="/unitStats/weaponClass/weapon_dp_28_lmg.png"
-                        fit="contain"
-                        alt="K98"
-                      />
-                      <Text size="xs">weapon_lmg_mg34</Text>
-                      <Space h="xs"></Space>
-                      <Box
-                        sx={(theme) => ({
-                          width: "60px",
-                        })}
-                      >
-                        <NumberInput defaultValue={5} size="xs" />
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={(theme) => ({
-                        backgroundColor:
-                          theme.colorScheme === "dark"
-                            ? theme.colors.dark[7]
-                            : theme.colors.gray[0],
-                        border: "solid 1px " + theme.colors.dark[4],
-                        padding: theme.spacing.xs,
-                        borderRadius: theme.radius.md,
-                      })}
-                    >
-                      <Image
-                        width={60}
-                        height={30}
-                        src="/unitStats/weaponClass/weapon_dp_28_lmg.png"
-                        fit="contain"
-                        alt="K98"
-                      />
-                      <Text size="xs">weapon_lmg_mg34</Text>
-                      <Space h="xs"></Space>
-                      <Box
-                        sx={(theme) => ({
-                          width: "60px",
-                        })}
-                      >
-                        <NumberInput defaultValue={5} size="xs" />
-                      </Box>
-                    </Box>
-                  </Group>
-                </Stack>
-
-                <Space h="sm" />
-              </SimpleGrid>
+        <Space h="sm" />
+        <>
+          <Grid>
+            <Grid.Col md={6} lg={6}>
+              <UnitSearch
+                key="Search1"
+                searchData={unitSelectionList}
+                onSelect={onSelectionChange}
+                position={0}
+              ></UnitSearch>
               <Space h="sm" />
-            </>
-          )}
-        </Paper>
+              {activeData[0] && (
+                <Box
+                  sx={(theme) => ({
+                    backgroundColor:
+                      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                    border:
+                      theme.colorScheme === "dark"
+                        ? "solid 1px " + theme.colors.dark[4]
+                        : "solid 2px " + theme.colors.blue[4],
+                    textAlign: "left",
+                    padding: theme.spacing.xs,
+                    borderRadius: theme.radius.md,
+                  })}
+                >
+                  <DpsUnitCustomizing
+                    key={activeData[0].id + "0"}
+                    unit={activeData[0]}
+                    onChange={onSquadConfigChange}
+                    index={0}
+                  ></DpsUnitCustomizing>
+                </Box>
+              )}
+            </Grid.Col>
+
+            <Grid.Col md={6} lg={6}>
+              <UnitSearch
+                key="Search2"
+                searchData={unitSelectionList}
+                onSelect={onSelectionChange}
+                position={1}
+              ></UnitSearch>
+              <Space h="sm" />
+              {activeData[1] && (
+                <Box
+                  sx={(theme) => ({
+                    backgroundColor:
+                      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                    border:
+                      theme.colorScheme === "dark"
+                        ? "solid 1px " + theme.colors.dark[4]
+                        : "solid 2px " + theme.colors.red[6],
+                    textAlign: "left",
+                    padding: theme.spacing.xs,
+                    borderRadius: theme.radius.md,
+                  })}
+                >
+                  <DpsUnitCustomizing
+                    key={activeData[1].id + "1"}
+                    unit={activeData[1]}
+                    onChange={onSquadConfigChange}
+                    index={0}
+                  ></DpsUnitCustomizing>
+                </Box>
+              )}
+            </Grid.Col>
+
+            <Space h="sm" />
+          </Grid>
+        </>
       </Container>
+      <Space h="sm" />
       <Container size="md">
-        <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
-          <Line options={options} data={chartData as any} redraw={true} />
-        </Paper>
+        <Box
+          sx={(theme) => ({
+            backgroundColor:
+              theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+            border:
+              theme.colorScheme === "dark"
+                ? "solid 1px " + theme.colors.dark[4]
+                : "solid 1px " + theme.colors.gray[4],
+            textAlign: "left",
+            // padding: theme.spacing.xs,
+            borderRadius: theme.radius.md,
+          })}
+        >
+          <Line options={options as any} data={chartData as any} redraw={true} />
+        </Box>
+        <Space h="sm" />
       </Container>
     </>
   );

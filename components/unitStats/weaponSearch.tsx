@@ -3,10 +3,10 @@ import {
   Group,
   Text,
   Image,
-  MultiSelect,
   Box,
   CloseButton,
   MultiSelectValueProps,
+  Select,
 } from "@mantine/core";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -24,9 +24,9 @@ function Value({ label, onRemove, ...others }: MultiSelectValueProps & { value: 
           cursor: "default",
           alignItems: "center",
           backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-          border: ` solid ${
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
-          }`,
+          // border: ` solid ${
+          //   theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
+          // }`,
           paddingLeft: theme.spacing.xs,
           borderRadius: theme.radius.sm,
         })}
@@ -77,39 +77,36 @@ interface ISearchProps {
 }
 
 export const WeaponSearch = (props: ISearchProps) => {
-  function onSelectionChange(id: string[]) {
-    const selectedItems: any[] = [];
+  // let selectedLabels: string[] = [];
 
-    // remove last element so we have never more than 2
-    if (id.length > 2) {
-      const second_item = id[2]; // remember
-      id.pop(); // pop will be recognized by the component
-      id.pop();
-      id.push(second_item);
-    }
-    id.forEach((selection) => {
-      const item = props.searchData.find((item) => item.value == selection);
-      selectedItems.push(item);
-    });
-    props.onSelect(selectedItems);
+  function onSelectionChange(id: string) {
+    //selectedLabels = id; // remember what is selected so we can set it as long dropdown is open
+    //id.forEach((selection) => {
+    const item = props.searchData.find((item) => item.value == id);
+    if (item) props.onSelect(item);
+    //});
   }
 
   return (
-    <MultiSelect
+    <Select
       //label="Choose a unit"
-      placeholder="Add weapon to squad"
+      placeholder="Configure weapons and squad size"
+      // clearSearchOnChange={true}
+      // clearSearchOnBlur={true}
+      clearable
       itemComponent={SelectItem}
       data={props.searchData}
-      valueComponent={Value}
+      // valueComponent={Value}
       searchable
       maxDropdownHeight={600}
       nothingFound="Nothing here. War is over!"
       onChange={onSelectionChange}
-      filter={(value, selected, item) =>
-        //@ts-ignore
-        item.label.toLowerCase().includes(value.toLowerCase().trim()) ||
-        item.description.toLowerCase().includes(value.toLowerCase().trim())
-      }
+      value=""
+      // filter={(value, selected, item) =>
+      //   //@ts-ignore
+      //   item.label.toLowerCase().includes(value.toLowerCase().trim()) ||
+      //   item.description.toLowerCase().includes(value.toLowerCase().trim())
+      // }
     />
   );
 };

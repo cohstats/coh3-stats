@@ -37,7 +37,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     value: key,
     data: weapon_bag,
     description: resolveLocstring(weapon_bag.ui_name),
-    faction: jsonPath.split("\\")[0],
+    faction: jsonPath.split("/")[0],
     parent: parent,
   };
 
@@ -89,6 +89,7 @@ const getWeaponStats = async () => {
           weaponSetAll.push(item);
           break;
         case "rifle":
+        case "sidearm":
           weapon_icon = "weapon_dp_28_lmg.png";
           item.image = "/unitStats/weaponClass/" + weapon_icon;
           weaponSetAll.push(item);

@@ -1,22 +1,23 @@
 import { NextPage } from "next";
-import { DpsChart } from "../components/unitStats/dpsChart";
-import { ebpsStats, EbpsType, getEbpsStats, setEbpsStats } from "../src/unitStats/mappingEbps";
-import { getSbpsStats, sbpsStats, SbpsType, setSbpsStats } from "../src/unitStats/mappingSbps";
+import { DpsChart } from "../../components/unitStats/dpsChart";
+import { ebpsStats, EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
+import { getSbpsStats, sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import {
   getWeaponStats,
   setWeaponStats,
   WeaponStats,
   WeaponType,
-} from "../src/unitStats/mappingWeapon";
+} from "../../src/unitStats/mappingWeapon";
 import {
   getUpgradesStats,
   setUpgradesStats,
   upgradesStats,
   UpgradesType,
-} from "../src/unitStats/mappingUpgrades";
-import { fetchLocstring, setLocstring, unitStatsLocString } from "../src/unitStats/locstring";
+} from "../../src/unitStats/mappingUpgrades";
+import { fetchLocstring, setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
+import Head from "next/head";
 
-interface UnitCardProps {
+interface DpsProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
@@ -28,7 +29,7 @@ interface UnitCardProps {
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const UnitPage: NextPage<UnitCardProps> = ({
+const DpsPage: NextPage<DpsProps> = ({
   weaponData,
   sbpsData,
   ebpsData,
@@ -53,9 +54,11 @@ const UnitPage: NextPage<UnitCardProps> = ({
   };
 
   return (
-    <div>
-      <DpsChart {...dbpsData}></DpsChart>
-    </div>
+    <>
+      <div>
+        <DpsChart {...dbpsData}></DpsChart>
+      </div>
+    </>
   );
 };
 
@@ -86,4 +89,4 @@ export const getStaticProps = async () => {
   };
 };
 
-export default UnitPage;
+export default DpsPage;
