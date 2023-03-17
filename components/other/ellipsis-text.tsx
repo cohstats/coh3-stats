@@ -6,7 +6,7 @@ interface EllipsisTextProps {
 }
 
 const EllipsisText = ({ text, maxWidth }: EllipsisTextProps) => {
-  maxWidth = maxWidth || "18ch";
+  maxWidth = maxWidth || "17ch";
 
   const style = {
     float: "left",
