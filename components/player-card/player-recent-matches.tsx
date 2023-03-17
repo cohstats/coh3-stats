@@ -5,15 +5,15 @@ import dynamic from "next/dynamic";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
-import { MatchHistory, raceID } from "../../src/coh3/coh3-types";
+import { PlayerReport, ProcessedMatch, raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
 import FactionIcon from "../faction-icon";
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
-import config from "../../config";
 import FilterableHeader from "./filterable-header";
+import EllipsisText from "../other/ellipsis-text";
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -32,7 +32,7 @@ const PlayerRecentMatches = ({
   error,
 }: {
   profileID: string;
-  playerMatchesData: Array<MatchHistory>;
+  playerMatchesData: Array<ProcessedMatch>;
   error: string;
 }) => {
   const isPlayerVictorious = (matchRecord: any): boolean => {
@@ -170,13 +170,11 @@ const PlayerRecentMatches = ({
     );
   };
 
-  const renderPlayers = (arrayOfPlayerReports: Array<any>, matchHistoryMember: Array<any>) => {
+  const renderPlayers = (arrayOfPlayerReports: Array<PlayerReport>) => {
     return (
       <>
-        {arrayOfPlayerReports.map((playerInfo: Record<string, any>) => {
-          const matchHistory = matchHistoryMember.find(
-            (e) => e.profile_id === playerInfo.profile_id,
-          );
+        {arrayOfPlayerReports.map((playerInfo: PlayerReport) => {
+          const matchHistory = playerInfo.matchhistorymember;
           const ratingPlayedWith = matchHistory.oldrating;
           const ratingChange = matchHistory.newrating - matchHistory.oldrating;
           const ratingChangeAsElement =
@@ -186,23 +184,36 @@ const PlayerRecentMatches = ({
               <Text color={"red"}>{ratingChange}</Text>
             );
 
+          const displayRating = matchHistory.losses + matchHistory.wins >= 10;
+          const ratingElement = displayRating ? (
+            <>
+              <span style={{ width: "4ch", textAlign: "left" }}>{ratingPlayedWith}</span>
+              <span>{ratingChangeAsElement}</span>
+            </>
+          ) : (
+            <Text color={"dimmed"} fz={"xs"}>
+              UNRANKED
+            </Text>
+          );
+
           return (
             <div key={playerInfo.profile_id}>
               <Group spacing={"xs"}>
                 <FactionIcon name={raceIDs[playerInfo?.race_id as raceID]} width={20} />
-                <>
-                  {" "}
-                  {ratingPlayedWith} {ratingChangeAsElement}
-                </>
+                <> {ratingElement}</>
                 <Anchor
                   key={playerInfo.profile_id}
                   component={Link}
                   href={`/players/${playerInfo.profile_id}`}
                 >
                   {`${playerInfo.profile_id}` === `${profileID}` ? (
-                    <Text fw={700}>{playerInfo.profile["alias"]}</Text>
+                    <Text fw={700}>
+                      <EllipsisText text={playerInfo.profile["alias"]} />
+                    </Text>
                   ) : (
-                    <Text>{playerInfo.profile["alias"]}</Text>
+                    <Text>
+                      <EllipsisText text={playerInfo.profile["alias"]} />
+                    </Text>
                   )}
                 </Anchor>
               </Group>
@@ -295,7 +306,7 @@ const PlayerRecentMatches = ({
                 record.matchhistoryreportresults,
                 "axis",
               );
-              return renderPlayers(axisPlayers, record.matchhistorymember);
+              return renderPlayers(axisPlayers);
             },
           },
           {
@@ -305,11 +316,11 @@ const PlayerRecentMatches = ({
             textAlignment: "center",
             width: "50%",
             render: (record) => {
-              const axisPlayers = getMatchPlayersByFaction(
+              const alliesPlayers = getMatchPlayersByFaction(
                 record.matchhistoryreportresults,
                 "allies",
               );
-              return renderPlayers(axisPlayers, record.matchhistorymember);
+              return renderPlayers(alliesPlayers);
             },
           },
           {
@@ -360,7 +371,7 @@ const PlayerRecentMatches = ({
           {
             title: "Debug",
             accessor: "debug",
-            hidden: !config.isDevEnv(),
+            hidden: true,
             render: (record) => {
               return (
                 <>
