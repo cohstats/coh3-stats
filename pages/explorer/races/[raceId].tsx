@@ -24,6 +24,10 @@ import {
   getUpgradesStats,
   WeaponType,
   getWeaponStats,
+  getAbilitiesStats,
+  AbilitiesType,
+  getBattlegroupStats,
+  BattlegroupsType,
 } from "../../../src/unitStats";
 
 const RaceBagDescription: Record<raceType, string> = {
@@ -45,14 +49,30 @@ interface RaceDetailProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
+  abilitiesData: AbilitiesType[];
+  battlegroupData: BattlegroupsType[];
   locstring: Record<string, string>;
 }
 
-const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesData }) => {
+const RaceDetail: NextPage<RaceDetailProps> = ({
+  ebpsData,
+  sbpsData,
+  upgradesData,
+  battlegroupData,
+}) => {
+  // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
 
   const raceToFetch = (query.raceId as raceType) || "american";
+
+  // Fast check. Should be done in a function.
+  const faction = transformToMultiplayerFaction(raceToFetch);
+  console.log(
+    "🚀 ~ file: [raceId].tsx:63 ~ battlegroupData:",
+    battlegroupData.filter((x) => x.faction === faction),
+  );
+
   const localizedRace = localizedNames[raceToFetch];
 
   return (
@@ -98,7 +118,7 @@ const BuildingMapping = (
   const faction = transformToMultiplayerFaction(race);
   const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
   return (
-    <div>
+    <Stack>
       {buildings.map((building) => {
         // console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
         return (
@@ -130,7 +150,7 @@ const BuildingMapping = (
           </Card>
         );
       })}
-    </div>
+    </Stack>
   );
 };
 
@@ -233,7 +253,6 @@ export const getStaticProps = async () => {
 
   // map Data at built time
   const ebpsData = await getEbpsStats();
-  //const ebpsData: any[] = [];
 
   // map Data at built time
   const sbpsData = await getSbpsStats();
@@ -241,12 +260,17 @@ export const getStaticProps = async () => {
   // map Data at built time
   const upgradesData = await getUpgradesStats();
 
+  const abilitiesData = await getAbilitiesStats();
+  const battlegroupData = await getBattlegroupStats();
+
   return {
     props: {
       weaponData,
       sbpsData,
       ebpsData,
       upgradesData,
+      abilitiesData,
+      battlegroupData,
       locstring,
     },
   };
