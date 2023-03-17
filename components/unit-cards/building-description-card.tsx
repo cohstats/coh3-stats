@@ -103,15 +103,20 @@ const BuildingCardHeader = (
           <Text ml={24}>{health.hitpoints}</Text>
         </Flex>
 
-        <Divider />
-
-        <StatsCosts
-          manpower={cost.manpower}
-          fuel={cost.fuel}
-          time_seconds={cost.time_seconds}
-          munition={cost.munition}
-          popcap={cost.popcap}
-        ></StatsCosts>
+        {cost.fuel || cost.manpower || cost.munition || cost.popcap || cost.time_seconds ? (
+          <>
+            <Divider />
+            <StatsCosts
+              manpower={cost.manpower}
+              fuel={cost.fuel}
+              time_seconds={cost.time_seconds}
+              munition={cost.munition}
+              popcap={cost.popcap}
+            ></StatsCosts>
+          </>
+        ) : (
+          <></>
+        )}
       </Stack>
     </Grid.Col>
   </Grid>
