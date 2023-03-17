@@ -17,7 +17,7 @@ import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
 import React from "react";
-import { PlayerCardDataType } from "../../src/coh3/coh3-types";
+import { PlayerCardDataType, ProcessedMatch } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
 
@@ -44,7 +44,7 @@ const PlayerCard = ({
   playerID: string;
   playerData: PlayerCardDataType;
   error: string;
-  playerMatchesData: any;
+  playerMatchesData: Array<ProcessedMatch>;
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
