@@ -100,7 +100,7 @@ const BuildingMapping = (
   return (
     <div>
       {buildings.map((building) => {
-        console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
+        // console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard
@@ -205,10 +205,10 @@ function getBuildingUpgrades(building: EbpsType, upgradesData: UpgradesType[]) {
     researchableUpgrades.push(upgradeInfo);
   }
 
-  console.log(
-    "🚀 ~ file: [raceId].tsx:198 ~ getBuildingUpgrades ~ researchableUpgrades:",
-    researchableUpgrades,
-  );
+  // console.log(
+  //   "🚀 ~ file: [raceId].tsx:198 ~ getBuildingUpgrades ~ researchableUpgrades:",
+  //   researchableUpgrades,
+  // );
   return researchableUpgrades;
 }
 
