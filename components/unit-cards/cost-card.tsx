@@ -8,6 +8,7 @@ const ResourceIcons = [
   { icon: "/icons/common/resources/resource_munition.png", type: "munition" },
   { icon: "/icons/common/resources/resource_fuel.png", type: "fuel" },
   { icon: "/icons/common/resources/resource_population.png", type: "popcap" },
+  { icon: "/icons/common/resources/resource_skill_points.png", type: "command" },
 ] as const;
 
 export const StatsCosts = (costs: ResourceValues) => (

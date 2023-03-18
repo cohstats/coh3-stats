@@ -213,6 +213,8 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
                       munition: branchUpg.ability.cost.munition,
                       fuel: branchUpg.ability.cost.fuel,
                       popcap: branchUpg.ability.cost.popcap,
+                      time_seconds: branchUpg.ability.rechargeTime,
+                      command: branchUpg.upg.cost.command,
                     }}
                   ></UnitUpgradeCard>
                 </Card>

@@ -12,6 +12,8 @@ type AbilitiesType = {
   abilityType: string;
   /** Found at `ui_info`. */
   ui: AbilitiesUiData;
+  /** Recharge time when casted the ability. */
+  rechargeTime: number;
   /** Found at `cost_to_player`. */
   cost: AbilitiesCost;
   /**
@@ -49,8 +51,6 @@ type AbilitiesCost = {
   manpower: number;
   munition: number;
   popcap: number;
-  /** Training / research time. Found at `time_seconds` */
-  time: number;
 };
 
 // Exported variable holding mapped data for each json file. Will be set via
@@ -73,12 +73,12 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
       screenName: "",
       extraText: "",
     },
+    rechargeTime: 0,
     cost: {
       fuel: 0,
       manpower: 0,
       munition: 0,
       popcap: 0,
-      time: 0,
     },
     requirements: {
       playerUpgrade: "",
@@ -107,6 +107,7 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
   ability.cost.munition = abilityBag.cost_to_player?.munition || 0;
   ability.cost.manpower = abilityBag.cost_to_player?.manpower || 0;
   ability.cost.popcap = abilityBag.cost_to_player?.popcap || 0;
+  ability.rechargeTime = abilityBag.recharge_time || 0;
 
   /* --------- REQUIREMENTS SECTION --------- */
   if (Array.isArray(abilityBag.requirements)) {

@@ -92,6 +92,7 @@ export const UnitUpgradeCard = ({ desc, time_cost }: UnitUpgrade) => (
           munition={time_cost.munition}
           fuel={time_cost.fuel}
           time_seconds={time_cost.time_seconds}
+          command={time_cost.command}
         ></StatsCosts>
       ) : (
         <></>

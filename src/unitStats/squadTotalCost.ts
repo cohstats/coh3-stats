@@ -21,6 +21,8 @@ export type ResourceValues = {
   popcap?: number;
   /** Value at `time_seconds`. */
   time_seconds?: number;
+  /** Value at `command`. */
+  command?: number;
 };
 
 export function hasCost(costObjc: ResourceValues | undefined) {
