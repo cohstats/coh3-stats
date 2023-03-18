@@ -14,6 +14,12 @@ type UpgradesType = {
   ui: UpgradeUiData;
   /** Found at `time_cost`. */
   cost: UpgradeCost;
+  /**
+   * As the battlegroup contains a branching display, we gonna use the abilities
+   * reference to get the position within the row / column. This is found at
+   * `abilities/upgrade_id/upgrade_bag/ui_position`.
+   */
+  uiPosition: { row: number; column: number };
 };
 
 /**
@@ -71,6 +77,10 @@ const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, paren
       popcap: 0,
       time: 0,
     },
+    uiPosition: {
+      row: -1,
+      column: -1,
+    },
   };
 
   mapUpgradeBag(subtree, upgradesEntity);
@@ -100,6 +110,10 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   upgrade.cost.munition = upgradeBag.time_cost?.cost?.munition || 0;
   upgrade.cost.manpower = upgradeBag.time_cost?.cost?.manpower || 0;
   upgrade.cost.popcap = upgradeBag.time_cost?.cost?.popcap || 0;
+
+  /* --------- UI POSITION SECTION --------- */
+  upgrade.uiPosition.row = upgradeBag.ui_position?.ui_position_row || -1;
+  upgrade.uiPosition.column = upgradeBag.ui_position?.ui_position_column || -1;
 };
 
 // Calls the mapping for each entity and puts the result array into the exported

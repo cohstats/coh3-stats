@@ -15,12 +15,6 @@ type AbilitiesType = {
   /** Found at `cost_to_player`. */
   cost: AbilitiesCost;
   /**
-   * As the battlegroup contains a branching display, we gonna use the abilities
-   * reference to get the position within the row / column. This is found at
-   * `abilities/upgrade_id/upgrade_bag/ui_position`.
-   */
-  uiPosition: { row: number; column: number };
-  /**
    * The ability is actually linked to the upgrade via
    * `requirements/required_player_upgrade/upgrade_name` path.
    */
@@ -86,10 +80,6 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
       popcap: 0,
       time: 0,
     },
-    uiPosition: {
-      row: -1,
-      column: -1,
-    },
     requirements: {
       playerUpgrade: "",
     },
@@ -117,10 +107,6 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
   ability.cost.munition = abilityBag.cost_to_player?.munition || 0;
   ability.cost.manpower = abilityBag.cost_to_player?.manpower || 0;
   ability.cost.popcap = abilityBag.cost_to_player?.popcap || 0;
-
-  /* --------- UI POSITION SECTION --------- */
-  ability.uiPosition.row = abilityBag.ui_position?.ui_position_row || -1;
-  ability.uiPosition.column = abilityBag.ui_position?.ui_position_column || -1;
 
   /* --------- REQUIREMENTS SECTION --------- */
   if (Array.isArray(abilityBag.requirements)) {
