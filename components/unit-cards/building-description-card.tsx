@@ -13,8 +13,9 @@ import {
 } from "@mantine/core";
 import { UnitDescription, UnitDescriptionCard } from "./unit-description-card";
 import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
-import { ResourceValues, StatsCosts } from "./cost-card";
+import { StatsCosts } from "./cost-card";
 import { BuildingType } from "../../src/coh3";
+import { hasCost, ResourceValues } from "../../src/unitStats";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -103,7 +104,7 @@ const BuildingCardHeader = (
           <Text ml={24}>{health.hitpoints}</Text>
         </Flex>
 
-        {cost.fuel || cost.manpower || cost.munition || cost.popcap || cost.time_seconds ? (
+        {hasCost(cost) ? (
           <>
             <Divider />
             <StatsCosts

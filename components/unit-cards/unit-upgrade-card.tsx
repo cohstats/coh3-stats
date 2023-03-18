@@ -1,7 +1,8 @@
 import slash from "slash";
 import { Flex, Text, Title, Tooltip } from "@mantine/core";
-import { ResourceValues, StatsCosts } from "./cost-card";
+import { StatsCosts } from "./cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
+import { hasCost, ResourceValues } from "../../src/unitStats";
 
 /**
  * These fields can be found at `sbps` inside each unit object.
@@ -85,12 +86,16 @@ export const UnitUpgradeCard = ({ desc, time_cost }: UnitUpgrade) => (
         extra_text={desc.extra_text}
         icon_name={desc.icon_name}
       ></UnitUpgradeCardHeader>
-      <StatsCosts
-        manpower={time_cost.manpower}
-        munition={time_cost.munition}
-        fuel={time_cost.fuel}
-        time_seconds={time_cost.time_seconds}
-      ></StatsCosts>
+      {hasCost(time_cost) ? (
+        <StatsCosts
+          manpower={time_cost.manpower}
+          munition={time_cost.munition}
+          fuel={time_cost.fuel}
+          time_seconds={time_cost.time_seconds}
+        ></StatsCosts>
+      ) : (
+        <></>
+      )}
     </Flex>
   </>
 );

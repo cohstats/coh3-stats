@@ -1,6 +1,32 @@
 import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 
+/**
+ * These fields can be found at `ebps` / `upgrade` inside each entity object.
+ *
+ * - For the units, look at `ebps` -> `exts` -> `template_reference` which gives
+ *   the group within the Essence editor as `ebpextensions\\cost_ext`.
+ * - For the upgrades, look at `upgrade` -> `upgrade_bag`.
+ *
+ * For both entities, the field is called `time_cost`.
+ */
+export type ResourceValues = {
+  /** Value at `cost/fuel`. */
+  fuel?: number;
+  /** Value at `cost/munition`. */
+  munition?: number;
+  /** Value at `cost/munition`. */
+  manpower?: number;
+  /** Value at `cost/popcap`. */
+  popcap?: number;
+  /** Value at `time_seconds`. */
+  time_seconds?: number;
+};
+
+export function hasCost(costObjc: ResourceValues | undefined) {
+  return Object.values(costObjc || {}).some((x) => x && x > 0);
+}
+
 /** Obtain the total cost of a squad by looking at `loadout`. */
 export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
   // Use the `loadout` data to link to the proper entities as an squad can
