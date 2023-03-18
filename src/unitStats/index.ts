@@ -1,3 +1,4 @@
+export * from "./battlegroup";
 export * from "./faction";
 export * from "./squadTotalCost";
 export * from "./locstring";

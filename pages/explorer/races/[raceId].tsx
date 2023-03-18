@@ -28,6 +28,7 @@ import {
   AbilitiesType,
   getBattlegroupStats,
   BattlegroupsType,
+  resolveBattlegroupBranches,
 } from "../../../src/unitStats";
 
 const RaceBagDescription: Record<raceType, string> = {
@@ -59,6 +60,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   sbpsData,
   upgradesData,
   battlegroupData,
+  abilitiesData,
 }) => {
   // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
@@ -68,10 +70,13 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
   // Fast check. Should be done in a function.
   const faction = transformToMultiplayerFaction(raceToFetch);
-  console.log(
-    "🚀 ~ file: [raceId].tsx:63 ~ battlegroupData:",
-    battlegroupData.filter((x) => x.faction === faction),
+  const raceBattlegroups = battlegroupData.filter((x) => x.faction === faction);
+  const resolvedBattlegroups = resolveBattlegroupBranches(
+    raceBattlegroups,
+    upgradesData,
+    abilitiesData,
   );
+  // console.log("🚀 ~ file: [raceId].tsx:75 ~ resolvedBattlegroups:", resolvedBattlegroups);
 
   const localizedRace = localizedNames[raceToFetch];
 
@@ -99,6 +104,11 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
             bug.
           </Text>
         </Flex>
+
+        {/* Battlegroups Section */}
+        <Stack mt={32}>
+          <Title order={4}>Battlegroups</Title>
+        </Stack>
 
         {/* Buildings Section */}
         <Stack mt={32}>

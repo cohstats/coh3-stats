@@ -14,6 +14,21 @@ type AbilitiesType = {
   ui: AbilitiesUiData;
   /** Found at `cost_to_player`. */
   cost: AbilitiesCost;
+  /**
+   * As the battlegroup contains a branching display, we gonna use the abilities
+   * reference to get the position within the row / column. This is found at
+   * `abilities/upgrade_id/upgrade_bag/ui_position`.
+   */
+  uiPosition: { row: number; column: number };
+  /**
+   * The ability is actually linked to the upgrade via
+   * `requirements/required_player_upgrade/upgrade_name` path.
+   */
+  requirements: {
+    /** If the template reference is `requirements\\required_player_upgrade`,
+     * populate it with `upgrade_name` -> `instance_reference`. */
+    playerUpgrade: "";
+  };
 };
 
 /**
@@ -71,6 +86,13 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
       popcap: 0,
       time: 0,
     },
+    uiPosition: {
+      row: -1,
+      column: -1,
+    },
+    requirements: {
+      playerUpgrade: "",
+    },
   };
 
   mapAbilityBag(subtree, abilityEntity);
@@ -91,10 +113,28 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
   ability.ui.briefText = resolveLocstring(abilityBag.ui_info?.brief_text);
 
   /* --------- COST SECTION --------- */
-  ability.cost.fuel = abilityBag.cost_to_player?.cost?.fuel || 0;
-  ability.cost.munition = abilityBag.cost_to_player?.cost?.munition || 0;
-  ability.cost.manpower = abilityBag.cost_to_player?.cost?.manpower || 0;
-  ability.cost.popcap = abilityBag.cost_to_player?.cost?.popcap || 0;
+  ability.cost.fuel = abilityBag.cost_to_player?.fuel || 0;
+  ability.cost.munition = abilityBag.cost_to_player?.munition || 0;
+  ability.cost.manpower = abilityBag.cost_to_player?.manpower || 0;
+  ability.cost.popcap = abilityBag.cost_to_player?.popcap || 0;
+
+  /* --------- UI POSITION SECTION --------- */
+  ability.uiPosition.row = abilityBag.ui_position?.ui_position_row || -1;
+  ability.uiPosition.column = abilityBag.ui_position?.ui_position_column || -1;
+
+  /* --------- REQUIREMENTS SECTION --------- */
+  if (Array.isArray(abilityBag.requirements)) {
+    // Find the required player upgrade, which points to the upgrade reference.
+    const reqPlayerUpgrade = abilityBag.requirements.find(
+      (req: any) =>
+        req.required.template_reference.value.split("\\").slice(-1)[0] ===
+        "required_player_upgrade",
+    );
+    if (reqPlayerUpgrade) {
+      ability.requirements.playerUpgrade =
+        reqPlayerUpgrade.required.upgrade_name?.instance_reference || "";
+    }
+  }
 };
 
 // Calls the mapping for each entity and puts the result array into the exported
