@@ -21,6 +21,11 @@ type BattleGroupUpgradeType = {
   ability: AbilitiesType;
 };
 
+export type BattlegroupResolvedBranchType = {
+  name: string;
+  upgrades: BattleGroupUpgradeType[];
+};
+
 /** Resolved battlegroup upgrades and branches. */
 export type BattlegroupResolvedType = {
   /* Inherited fields from `BattlegroupsType`. */
@@ -37,14 +42,8 @@ export type BattlegroupResolvedType = {
    * and the resolved data as value.
    */
   branches: {
-    LEFT: {
-      name: string;
-      upgrades: BattleGroupUpgradeType[];
-    };
-    RIGHT: {
-      name: string;
-      upgrades: BattleGroupUpgradeType[];
-    };
+    LEFT: BattlegroupResolvedBranchType;
+    RIGHT: BattlegroupResolvedBranchType;
   };
 };
 
@@ -108,11 +107,19 @@ export function resolveBattlegroupBranches(
       branches: {
         LEFT: {
           name: rawBattlegroup.branchesRefs.LEFT.name,
-          upgrades: leftBranchUpgrades,
+          upgrades: leftBranchUpgrades.sort(
+            (a, b) =>
+              a.upg.uiPosition.row - b.upg.uiPosition.row ||
+              a.upg.uiPosition.column - b.upg.uiPosition.column,
+          ),
         },
         RIGHT: {
           name: rawBattlegroup.branchesRefs.RIGHT.name,
-          upgrades: rightBranchUpgrades,
+          upgrades: rightBranchUpgrades.sort(
+            (a, b) =>
+              a.upg.uiPosition.row - b.upg.uiPosition.row ||
+              a.upg.uiPosition.column - b.upg.uiPosition.column,
+          ),
         },
       },
     };

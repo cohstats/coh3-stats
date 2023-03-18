@@ -2,9 +2,9 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
-import { Card, Container, Flex, Stack, Text, Title } from "@mantine/core";
+import { Card, Container, Divider, Flex, Grid, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
-import { raceType } from "../../../src/coh3/coh3-types";
+import { raceAttributesMultiplayer, raceType } from "../../../src/coh3/coh3-types";
 import {
   BuildingCard,
   BuildingSchema,
@@ -29,7 +29,10 @@ import {
   getBattlegroupStats,
   BattlegroupsType,
   resolveBattlegroupBranches,
+  BattlegroupResolvedBranchType,
 } from "../../../src/unitStats";
+import { UnitUpgradeCard } from "../../../components/unit-cards/unit-upgrade-card";
+import ContentContainer from "../../../components/Content-container";
 
 const RaceBagDescription: Record<raceType, string> = {
   // Locstring value: $11234530
@@ -67,18 +70,8 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   const { query } = useRouter();
 
   const raceToFetch = (query.raceId as raceType) || "american";
-
-  // Fast check. Should be done in a function.
-  const faction = transformToMultiplayerFaction(raceToFetch);
-  const raceBattlegroups = battlegroupData.filter((x) => x.faction === faction);
-  const resolvedBattlegroups = resolveBattlegroupBranches(
-    raceBattlegroups,
-    upgradesData,
-    abilitiesData,
-  );
-  // console.log("🚀 ~ file: [raceId].tsx:75 ~ resolvedBattlegroups:", resolvedBattlegroups);
-
   const localizedRace = localizedNames[raceToFetch];
+  const mpFaction = transformToMultiplayerFaction(raceToFetch);
 
   return (
     <>
@@ -86,7 +79,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <title>{localizedRace} - COH3 Explorer</title>
         <meta name="description" content={`${localizedRace} - COH3 Explorer`} />
       </Head>
-      <Container size="md">
+      <ContentContainer>
         <Stack>
           <Flex direction="row" align="center" gap="md">
             <FactionIcon name={raceToFetch} width={64} />
@@ -108,24 +101,123 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         {/* Battlegroups Section */}
         <Stack mt={32}>
           <Title order={4}>Battlegroups</Title>
+
+          {BattlegroupMapping(mpFaction, { battlegroupData, upgradesData, abilitiesData })}
         </Stack>
 
         {/* Buildings Section */}
         <Stack mt={32}>
           <Title order={4}>Buildings</Title>
 
-          {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
+          {BuildingMapping(mpFaction, { ebpsData, sbpsData, upgradesData })}
         </Stack>
-      </Container>
+      </ContentContainer>
     </>
   );
 };
 
+const BattlegroupMapping = (
+  faction: raceAttributesMultiplayer,
+  data: {
+    battlegroupData: BattlegroupsType[];
+    abilitiesData: AbilitiesType[];
+    upgradesData: UpgradesType[];
+  },
+) => {
+  const raceBattlegroups = data.battlegroupData.filter((x) => x.faction === faction);
+  const resolvedBattlegroups = resolveBattlegroupBranches(
+    raceBattlegroups,
+    data.upgradesData,
+    data.abilitiesData,
+  );
+  // console.log("🚀 ~ file: [raceId].tsx:130 ~ resolvedBattlegroups:", resolvedBattlegroups);
+
+  return (
+    <Stack>
+      {resolvedBattlegroups.map((battlegroup) => {
+        return (
+          <Card key={battlegroup.id} p="sm" radius="md" withBorder>
+            <UnitUpgradeCard
+              id={battlegroup.id}
+              desc={{
+                screen_name: battlegroup.uiParent.screenName,
+                help_text: "",
+                extra_text: "",
+                brief_text: battlegroup.uiParent.briefText,
+                icon_name: battlegroup.uiParent.iconName,
+              }}
+            ></UnitUpgradeCard>
+
+            {/* Branches Section */}
+            <Divider my={12} size="md"></Divider>
+            <Stack>
+              {BattlegroupBranchMapping(battlegroup.branches.LEFT)}
+              <Divider></Divider>
+              {BattlegroupBranchMapping(battlegroup.branches.RIGHT)}
+            </Stack>
+          </Card>
+        );
+      })}
+    </Stack>
+  );
+};
+
+function groupBy<T>(arr: T[], fn: (item: T) => any) {
+  return arr.reduce<Record<string, T[]>>((prev, curr) => {
+    const groupKey = fn(curr);
+    const group = prev[groupKey] || [];
+    group.push(curr);
+    return { ...prev, [groupKey]: group };
+  }, {});
+}
+
+const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
+  const groupedRows = groupBy(branch.upgrades, (item) => item.upg.uiPosition.row);
+  // console.log(
+  //   "🚀 ~ file: [raceId].tsx:174 ~ BattlegroupBranchMapping ~ groupedRows:",
+  //   groupedRows,
+  // );
+  // Create a series of grid elements per row.
+  return (
+    <Stack align="center">
+      <Title order={4} color="orange.5" transform="uppercase">
+        {branch.name}
+      </Title>
+
+      {Object.entries(groupedRows).map(([rowIndex, branchUpgrades]) => {
+        return (
+          <Grid
+            key={`${rowIndex}_${branch.name}`}
+            columns={branchUpgrades.length}
+            sx={{ width: branchUpgrades.length === 1 ? "" : "100%" }}
+          >
+            {branchUpgrades.map((branchUpg) => (
+              <Grid.Col key={branchUpg.upg.id} span={1}>
+                <Card p="lg" radius="md" withBorder>
+                  <UnitUpgradeCard
+                    id={branchUpg.upg.id}
+                    desc={{
+                      screen_name: branchUpg.upg.ui.screenName,
+                      help_text: branchUpg.upg.ui.helpText,
+                      extra_text: branchUpg.upg.ui.extraText,
+                      brief_text: branchUpg.upg.ui.briefText,
+                      icon_name: branchUpg.upg.ui.iconName,
+                    }}
+                  ></UnitUpgradeCard>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        );
+      })}
+    </Stack>
+  );
+};
+
 const BuildingMapping = (
-  race: raceType,
+  faction: raceAttributesMultiplayer,
   data: { ebpsData: EbpsType[]; sbpsData: SbpsType[]; upgradesData: UpgradesType[] },
 ) => {
-  const faction = transformToMultiplayerFaction(race);
   const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
   return (
     <Stack>
