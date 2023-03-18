@@ -49,6 +49,7 @@ export const getFactionIcon = (folderName: string): string => {
       break;
 
     case "british":
+    case "british_africa":
       iconName = "/icons/general/british.webp";
       break;
 

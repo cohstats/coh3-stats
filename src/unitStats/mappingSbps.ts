@@ -30,6 +30,7 @@ type SquadUiData = {
 };
 
 type LoadoutData = {
+  id: string;
   isDefaultUnit: boolean;
   num: number;
   type: string;
@@ -98,13 +99,17 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             }
           }
 
-          if (extension.unit_list[unit].loadout_data.type)
+          if (extension.unit_list[unit].loadout_data.type) {
+            const ldType = extension.unit_list[unit].loadout_data.type.instance_reference;
+            const ldPath = ldType.split("/");
+            const ebpsId = ldPath[ldPath.length - 1];
             sbps.loadout.push({
               isDefaultUnit: true,
               num: unitNum, //@todo num not always avilable
-              type: extension.unit_list[unit].loadout_data.type.instance_reference,
+              type: ldType,
+              id: ebpsId,
             });
-          else console.log(sbps.id + ": Loadout not found");
+          } else console.log(sbps.id + ": Loadout not found");
         }
         break;
       case "squad_ui_ext":
