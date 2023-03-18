@@ -2,7 +2,7 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
-import { Card, Container, Divider, Flex, Grid, Stack, Text, Title } from "@mantine/core";
+import { Card, Divider, Flex, Grid, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceAttributesMultiplayer, raceType } from "../../../src/coh3/coh3-types";
 import {
@@ -146,6 +146,13 @@ const BattlegroupMapping = (
                 brief_text: battlegroup.uiParent.briefText,
                 icon_name: battlegroup.uiParent.iconName,
               }}
+              time_cost={{
+                fuel: undefined,
+                munition: undefined,
+                manpower: undefined,
+                popcap: undefined,
+                time_seconds: undefined,
+              }}
             ></UnitUpgradeCard>
 
             {/* Branches Section */}
@@ -202,6 +209,12 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
                       extra_text: branchUpg.upg.ui.extraText,
                       brief_text: branchUpg.upg.ui.briefText,
                       icon_name: branchUpg.upg.ui.iconName,
+                    }}
+                    time_cost={{
+                      manpower: branchUpg.ability.cost.manpower,
+                      munition: branchUpg.ability.cost.munition,
+                      fuel: branchUpg.ability.cost.fuel,
+                      popcap: branchUpg.ability.cost.popcap,
                     }}
                   ></UnitUpgradeCard>
                 </Card>
