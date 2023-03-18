@@ -52,7 +52,7 @@ const RenderPlayers = ({ playerReports, profileID }: RenderPlayersProps) => {
         return (
           <div key={playerInfo.profile_id}>
             <Group spacing={"xs"}>
-              <FactionIcon name={raceIDs[playerInfo?.race_id as raceID]} width={20} />
+              <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
               <> {ratingElement}</>
               <Anchor
                 key={playerInfo.profile_id}
