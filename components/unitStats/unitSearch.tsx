@@ -1,56 +1,10 @@
 import { forwardRef } from "react";
-import {
-  Group,
-  Text,
-  Image,
-  Box,
-  CloseButton,
-  MultiSelectValueProps,
-  Select,
-} from "@mantine/core";
+import { Group, Text, Image, Select } from "@mantine/core";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
   label: string;
   description: string;
-}
-
-function Value({ id, onRemove, ...others }: MultiSelectValueProps & { value: string }) {
-  return (
-    <div {...others}>
-      <Box
-        sx={(theme) => ({
-          display: "flex",
-          cursor: "default",
-          alignItems: "center",
-          // backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4],
-          // border: ` solid ${
-          //   theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[4]
-          // }`,
-          paddingLeft: theme.spacing.xs,
-          borderRadius: theme.radius.sm,
-        })}
-      >
-        <Box mr={10}>
-          <Image
-            width={30}
-            height={20}
-            src={(others as any).factionIcon}
-            fit="contain"
-            alt="Weapon Class"
-          />
-        </Box>
-        <Box>{id}</Box>
-        <CloseButton
-          onMouseDown={onRemove}
-          variant="transparent"
-          size={22}
-          iconSize={14}
-          tabIndex={-1}
-        />
-      </Box>
-    </div>
-  );
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(

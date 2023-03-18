@@ -2,7 +2,7 @@ import React, { useState } from "react";
 //import { LevelContext } from './LevelContext.js';
 
 import {
-  createStyles,
+  // createStyles,
   Space,
   Image,
   Text,
@@ -15,33 +15,25 @@ import {
 export type weaponMember = {
   id: string;
   num: number;
+  unit: string;
 };
-
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: theme.colors.blue[5],
-    color: theme.white,
-  },
-  inner: {
-    backgroundColor: theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.colors.gray[0],
-  },
-}));
 
 interface IDPSProps {
   weapon: any;
   defaultNum: number;
   onNumberChange: any;
   onDeleteMember: any;
+  unit: string;
 }
 
 export const DpsWeaponCard = (props: IDPSProps) => {
   const weaponMember: weaponMember = {
     id: props.weapon.id,
     num: props.defaultNum,
+    unit: props.unit,
   };
 
   const [activeData, setActiveData] = useState(weaponMember);
-  const { classes } = useStyles();
 
   function onNumberChanged(value: number) {
     if (value <= 0 && activeData.num == 0) {
@@ -87,7 +79,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
         <Text size="xs">{activeData.id}</Text>
         <Space h="xs"></Space>
         <Box
-          sx={(theme) => ({
+          sx={() => ({
             width: "60px",
           })}
         >

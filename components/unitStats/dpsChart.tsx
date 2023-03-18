@@ -16,7 +16,6 @@ import {
 
 import { Line } from "react-chartjs-2";
 import {
-  createStyles,
   Container,
   Space,
   useMantineTheme,
@@ -26,6 +25,9 @@ import {
   Stack,
   Title,
   Switch,
+  HoverCard,
+  Text,
+  Group,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
@@ -37,19 +39,10 @@ import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
 import { weaponMember } from "./dpsWeaponCard";
+import { IconAdjustments } from "@tabler/icons";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
-
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: theme.colors.blue[5],
-    color: theme.white,
-  },
-  inner: {
-    backgroundColor: theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.colors.gray[0],
-  },
-}));
 
 // function hexToRgbA(hex: string, opacity: string) {
 //   let c: any;
@@ -121,7 +114,7 @@ export const options = {
 // value: item.id,
 // data : item.weapon_bag,
 // description: item.ui_name || 'No Description Available',
-const mapChartData = (data: any[], id?: string) => {
+const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
   const chartLine = {
     label: "No Item Selected",
     data: data,
@@ -140,6 +133,11 @@ const mapChartData = (data: any[], id?: string) => {
 
   if (id) chartLine.label = id;
 
+  if (isStaircase) {
+    //set.cubicInterpolationMode = "monotone";
+    chartLine.stepped = "after";
+  }
+
   return chartLine;
 };
 
@@ -156,6 +154,31 @@ const getWeaponDPSData = (units: CustomizableUnit[]) => {
   return dpsSet;
 };
 
+const updateHealth = (unit: CustomizableUnit, ebpsData: EbpsType[]) => {
+  let health = 0;
+  for (const member of unit.loadout) {
+    let ebps = ebpsData.find((ebps) => ebps.id == member.unit);
+
+    if (!ebps) ebps = ebpsData.find((ebps) => ebps.id == unit.defLoadout[0].unit);
+
+    if (ebps) health += ebps.health.hitpoints * member.num;
+    if (!ebps || ebps.health.hitpoints == 0) health += 80 * member.num; // default
+  }
+  unit.health = health;
+};
+
+const getDpsVsHealth = (ebps: EbpsType[], unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
+  const dpsData: any[] = getCombatDps(unit1, unit2);
+  let health = unit1.health;
+
+  // compute opponents health
+  if (unit2) health = unit2.health;
+
+  for (const dps of dpsData) dps.y = (dps.y / health) * 100;
+
+  return dpsData;
+};
+
 const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
   // compute dps for first squad
   let dpsTotal: any[] = [];
@@ -165,13 +188,9 @@ const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
     const weapon = ldout as unknown as WeaponType;
     let weaponDps = [];
     // opponent default values
-    let targetSize = 1;
-    let armor = 1;
-    let opponentCover = {
-      accuracy_multiplier: 1,
-      damage_multiplier: 1,
-      penetration_multiplier: 1,
-    };
+    let targetSize = unit1.targetSize;
+    let armor = unit1.armor;
+    let opponentCover = getCoverMultiplier(unit1.cover, weapon.weapon_bag);
 
     // Check if we also need to consider opponent multiplier
     if (unit2) {
@@ -216,19 +235,8 @@ const addDpsData = (dps1: any[], dps2: any[]) => {
         break;
       }
 
-      // weapon 2 has has a range which do not exist for weapon 1
-      // eg. weapon1.mid = 22 != weapon2.mid = 20
       // merge into range of weapon2
       if (point1.x > point2.x) newSet.push(mergePoints(point2, point1));
-
-      // // weapon2 range is more fare a way than
-      // // current weapon1 range. We need to merge
-      // // into weapon1 range and stop.
-      // if(point1.x < point2.x)
-      // {
-      //   newSet.push(mergePoints(point1,point2))
-      //   break;
-      // }
     }
   }
 
@@ -265,7 +273,7 @@ const mapUnitDisplayData = (
   // weapons?: WeaponType[],
 ): any => {
   // Initilaize
-  const custUnit: any = {
+  const custUnit: CustomizableUnit = {
     id: sbpsSelected.id, // filename  -> eg. panzergrenadier_ak
     screenName: sbpsSelected.ui.screenName || "No text found", // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
     path: sbpsSelected.path, // path to object
@@ -283,15 +291,22 @@ const mapUnitDisplayData = (
     description: sbpsSelected.ui.screenName,
     label: sbpsSelected.id,
     value: sbpsSelected.id,
+    defLoadout: [],
+    health: 0,
   };
 
   // Get loadouts
   if (ebps) {
     custUnit.loadout = getDefaultLoadout(custUnit, ebps, sbpsSelected, weapons);
+    custUnit.defLoadout = [...custUnit.loadout];
+    // setHealthData(custUnit.id, ebps, custUnit);
+    const ebpsUnit = ebps.find((unit) => unit.id == custUnit.id);
+    custUnit.armor = ebpsUnit?.health.armorLayout?.armor || 1;
   }
 
   return custUnit;
 };
+
 const getDefaultLoadout = (
   unit: CustomizableUnit,
   ebpsList: EbpsType[],
@@ -320,6 +335,7 @@ const getDefaultLoadout = (
         // add weapon clone and set number
         const clone = { ...weapon };
         (clone as any).num = loadout.num;
+        (clone as any).unit = loadout.id;
         loadoutUnit.push(clone as any);
       }
   }
@@ -345,10 +361,11 @@ interface IDPSProps {
 
 export const DpsChart = (props: IDPSProps) => {
   const searchData_default: CustomizableUnit[] = [];
-  const [activeData, setActiveData] = useState(searchData_default);
+  const [activeData] = useState(searchData_default);
   const [rerender, setRerender] = useState(false);
-  const [isCurve, setCurve] = useState(true);
-  const { classes } = useStyles();
+  const [isStaircase, setStaircase] = useState(false);
+  const [showDpsHealth, setShowDpsHealth] = useState(false);
+  // const { classes } = useStyles();
   const theme = useMantineTheme();
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
@@ -359,7 +376,7 @@ export const DpsChart = (props: IDPSProps) => {
   setScreenOptions(options, isLargeScreen);
 
   // Squad configration has changed
-  function onSquadConfigChange(unit: CustomizableUnit) {
+  function onSquadConfigChange() {
     setRerender(!rerender);
   }
 
@@ -386,45 +403,41 @@ export const DpsChart = (props: IDPSProps) => {
   const chartData = { datasets: [mapChartData([])] };
   let maxY = 1;
 
+  for (const unit of activeData) {
+    updateHealth(unit, props.ebpsData);
+  }
+
   if (activeData.length > 0) {
     chartData.datasets = [];
 
     // compute dps lines
     // should be an array of max two dps Lines;
-    const dpsLines = getWeaponDPSData(activeData);
+    let dpsLines: any[] = [];
+    if (!showDpsHealth) {
+      dpsLines = getWeaponDPSData(activeData);
+      options.scales.y.title.text = "Damage Per Second (DPS)";
+    } else {
+      options.scales.y.title.text = "DPS vs Health (%)";
+      if (activeData[0])
+        dpsLines[0] = getDpsVsHealth(props.ebpsData, activeData[0], activeData[1]);
+      if (activeData[1])
+        dpsLines[1] = getDpsVsHealth(props.ebpsData, activeData[1], activeData[0]);
+    }
 
     //const selectItem = searchItems.searchData.find(item => item.value = activeData );
 
     if (activeData[0]) {
-      const set = mapChartData(dpsLines[0], activeData[0].id);
+      const set = mapChartData(dpsLines[0], activeData[0].id, isStaircase);
       set.borderColor = theme.colors.blue[5];
       chartData.datasets.push(set);
-
-      if (isCurve) {
-        //set.cubicInterpolationMode = "monotone";
-        set.stepped = "";
-      } else {
-        //@ts-ignore
-        //set.cubicInterpolationMode = 'default';
-        set.stepped = "after";
-      }
-
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
       });
     }
 
     if (activeData[1]) {
-      const set = mapChartData(dpsLines[1], activeData[1].id);
+      const set = mapChartData(dpsLines[1], activeData[1].id, isStaircase);
       set.borderColor = theme.colors.red[5];
-      if (isCurve) {
-        //set.cubicInterpolationMode = "monotone";
-        set.stepped = "";
-      } else {
-        //@ts-ignore
-        //set.cubicInterpolationMode = 'default';
-        set.stepped = "after";
-      }
       chartData.datasets.push(set);
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
@@ -445,28 +458,58 @@ export const DpsChart = (props: IDPSProps) => {
 
       <Container>
         {/* */}
-        <Stack mb={24}>
+        <Stack mb={12}>
           <Title order={2}>Company of Heroes 3 DPS Tool </Title>
+          <Space></Space>
+          <Flex
+            // mih={50}
+            gap="xs"
+            justify="flex-end"
+            align="center"
+            direction="row"
+            wrap="wrap"
+          >
+            <Group position="center">
+              <HoverCard width={400} shadow="md">
+                <HoverCard.Target>
+                  <div>
+                    <IconAdjustments opacity={0.6} />
+                  </div>
+                </HoverCard.Target>
+                <HoverCard.Dropdown>
+                  <Stack mb={12}>
+                    <Text size="sm">
+                      {isStaircase
+                        ? "Staircase: Show changes at near/mid/far only"
+                        : "Line: Applied damage changes linearly over distance"}
+                    </Text>
+                    <Switch
+                      label={isStaircase ? "Staircase" : "Line"}
+                      checked={isStaircase}
+                      onChange={(event) => setStaircase(event.currentTarget.checked)}
+                      size="xs"
+                    />
+                    <Space></Space>
+                    <Text size="sm">
+                      {showDpsHealth
+                        ? "DPS(%)  : Estimated damage per second in %, respecting enemies health"
+                        : "DPS  : Estimated damage per second"}
+                    </Text>
+                    <Switch
+                      label={showDpsHealth ? "DPS(%)" : "DPS Simple"}
+                      checked={showDpsHealth}
+                      onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
+                      //onClick={() => setCurve(isCurve)}
+                      size="xs"
+                    />
+                  </Stack>
+                </HoverCard.Dropdown>
+              </HoverCard>
+            </Group>
+          </Flex>
         </Stack>
 
-        <Flex
-          // mih={50}
-          gap="xs"
-          justify="flex-end"
-          align="center"
-          direction="row"
-          wrap="wrap"
-        >
-          <Switch
-            label={isCurve ? "Line" : "Staircase"}
-            checked={isCurve}
-            onChange={(event) => setCurve(event.currentTarget.checked)}
-            //onClick={() => setCurve(isCurve)}
-            size="xs"
-          />
-        </Flex>
-
-        <Space h="sm" />
+        {/* <Space h="sm" /> */}
         <>
           <Grid>
             <Grid.Col md={6} lg={6}>
@@ -496,6 +539,7 @@ export const DpsChart = (props: IDPSProps) => {
                     unit={activeData[0]}
                     onChange={onSquadConfigChange}
                     index={0}
+                    ebps={props.ebpsData}
                   ></DpsUnitCustomizing>
                 </Box>
               )}
@@ -528,6 +572,7 @@ export const DpsChart = (props: IDPSProps) => {
                     unit={activeData[1]}
                     onChange={onSquadConfigChange}
                     index={0}
+                    ebps={props.ebpsData}
                   ></DpsUnitCustomizing>
                 </Box>
               )}
