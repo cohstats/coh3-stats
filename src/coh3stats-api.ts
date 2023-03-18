@@ -1,5 +1,5 @@
 import config from "../config";
-import { TwitchStream } from "./coh3/coh3-types";
+import { ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
 
 const getPlayerCardInfoUrl = (playerID: string | number) => {
   return encodeURI(
@@ -53,7 +53,7 @@ const getPlayerRecentMatches = async (playerID: string | number) => {
 
   if (response.ok) {
     const data = await response.json();
-    const playerMatchesData = data.playerMatches;
+    const playerMatchesData: Array<ProcessedMatch> = data.playerMatches;
 
     // Sort by completion time
     return playerMatchesData.sort(

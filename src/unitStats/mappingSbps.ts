@@ -86,12 +86,10 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             switch (sbps.unitType) {
               // Vehicles are always 1.
               case "vehicles":
-              case "armored_tractor_254_ak_signals_sp": // Chrida: obsolete. Type bug fixed
                 unitNum = 1;
                 break;
               // Team weapons and infantry usually varies. Lets set as 4 by now.
               case "infantry": // General infantry.
-              case "pathfinder_us": // USF Airborne infantry.
               case "team_weapons": // MGs, artillery (the mobile ones).
                 unitNum = 4;
               // Other stuff as 5.
@@ -170,22 +168,14 @@ const getSbpsStats = async () => {
     const sbpsSet = traverseTree(root[obj], isExtensionContainer, mapSbpsData, obj, obj);
 
     // Filter relevant objects
-    sbpsSet.forEach((item: any) => {
+    sbpsSet.forEach((item: SbpsType) => {
       // skip non base factions
       if (!isBaseFaction(item.faction)) return;
 
       // filter by relevant weapon types
-      // if (item.id === "panzer_iv_ger") {
-      //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item)
-      // }
       switch (item.unitType) {
         case "infantry": // General infantry.
-        case "pathfinder_us": // USF Airborne infantry.                         // Chrida: obsolete. Type bug fixed
         case "team_weapons": // MGs, artillery (the mobile ones).
-        case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.// Chrida: obsolete. Type bug fixed
-        case "greyhound_recrewable_us": // USF Vehicles                         // Chrida: obsolete. Type bug fixed
-        case "halftrack_recrewable_ger": // German kettenrad and such.          // Chrida: obsolete. Type bug fixed
-        case "l6_40_recrewable_ger": // German tanks, wtf?                      // Chrida: obsolete. Type bug fixed
         case "vehicles": // General vehicles (tanks, armoured cars).
           sbpsSetAll.push(item);
           break;
@@ -202,8 +192,8 @@ const getSbpsStats = async () => {
 };
 
 const isExtensionContainer = (key: string, obj: any) => {
-  // check if first child is weapon_bag
-  return obj["extensions"];
+  // check if first child is "extensions"
+  return Object.keys(obj).includes("extensions");
 };
 
 //
