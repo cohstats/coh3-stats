@@ -2,15 +2,6 @@ export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
 export type raceType = (typeof raceTypeArray)[number];
 
-/** The british is different for multiplayer. */
-export const raceAttributesMultiplayer = [
-  "german",
-  "american",
-  "british_africa",
-  "afrika_korps",
-] as const;
-export type raceAttributesMultiplayer = (typeof raceAttributesMultiplayer)[number];
-
 export const leaderBoardTypeArray = ["1v1", "2v2", "3v3", "4v4"] as const;
 
 export type leaderBoardType = (typeof leaderBoardTypeArray)[number];

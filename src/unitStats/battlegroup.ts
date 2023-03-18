@@ -1,3 +1,4 @@
+import { raceType } from "../coh3/coh3-types";
 import { AbilitiesType } from "./mappingAbilities";
 import { BattlegroupsType } from "./mappingBattlegroups";
 import { UpgradesType } from "./mappingUpgrades";
@@ -49,11 +50,14 @@ export type BattlegroupResolvedType = {
 
 /** Resolve the battlegroup branches with the corresponding upgrades. */
 export function resolveBattlegroupBranches(
+  race: raceType,
   battlegroups: BattlegroupsType[],
   upgrades: UpgradesType[],
   abilities: AbilitiesType[],
 ) {
-  return battlegroups.map<BattlegroupResolvedType>((rawBattlegroup) => {
+  const faction = race === "dak" ? "afrika_korps" : race;
+  const battlegroupsByFaction = battlegroups.filter((x) => x.faction === faction);
+  return battlegroupsByFaction.map<BattlegroupResolvedType>((rawBattlegroup) => {
     const leftBranchUpgrades: BattleGroupUpgradeType[] = [];
     const rightBranchUpgrades: BattleGroupUpgradeType[] = [];
 

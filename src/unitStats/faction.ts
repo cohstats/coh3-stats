@@ -1,7 +1,17 @@
-import { raceAttributesMultiplayer, raceType } from "../coh3/coh3-types";
+import { raceType } from "../coh3/coh3-types";
 import { EbpsType } from "./mappingEbps";
 
-export function transformToMultiplayerFaction(race: raceType): raceAttributesMultiplayer {
+/** The british is different for multiplayer within the ebps and sbps. */
+const buildingFactionMultiplayer = [
+  "german",
+  "american",
+  "british_africa",
+  "afrika_korps",
+] as const;
+
+type buildingFactionMultiplayer = (typeof buildingFactionMultiplayer)[number];
+
+function transformToMultiplayerBuildingFaction(race: raceType): buildingFactionMultiplayer {
   switch (race) {
     case "british":
       return "british_africa";
@@ -12,27 +22,19 @@ export function transformToMultiplayerFaction(race: raceType): raceAttributesMul
   }
 }
 
-/** Similar to Chrida `isBaseFaction` function but exported in a separate file
- * and takes into account the multiplayer faction names. */
-export function isMultiplayerFaction(faction: string) {
-  return raceAttributesMultiplayer.includes(faction as raceAttributesMultiplayer);
-}
-
 /** Filter invisible or unused buildings in multiplayer. */
-export function filterMultiplayerBuildings(
-  buildings: EbpsType[],
-  race: raceAttributesMultiplayer,
-) {
+export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType) {
+  const faction = transformToMultiplayerBuildingFaction(race);
   // Filter by faction (dak, german, uk, us), unit type (production buildings).
   const filteredByRace = buildings.filter(
-    (entity) => entity.faction === race && entity.unitType === "production",
+    (entity) => entity.faction === faction && entity.unitType === "production",
   );
   // console.log(
   //   "🚀 ~ file: faction.ts:27 ~ filterMultiplayerBuildings ~ filteredByRace:",
   //   filteredByRace,
   // );
   const filteredByMultiplayer = filteredByRace.filter((building) => {
-    switch (race) {
+    switch (faction) {
       // For DAK, buildings `halftrack_deployment_ak` and
       // `heavy_weapon_kompanie_ak`. The `halftrack_deployment_ak` will be
       // populated manually as the unit call-ins are hardcoded.
@@ -46,7 +48,7 @@ export function filterMultiplayerBuildings(
     }
   });
   // Only for DAK, we add the Call-Ins as "Halftrack Deployment" building.
-  if (race === "afrika_korps") {
+  if (faction === "afrika_korps") {
     filteredByMultiplayer.unshift(generateAfrikaKorpsCallInsBuilding());
   }
   // Sort like in-game menu (no idea how to simplify it).

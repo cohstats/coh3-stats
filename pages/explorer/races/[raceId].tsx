@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
 import { Card, Divider, Flex, Grid, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
-import { raceAttributesMultiplayer, raceType } from "../../../src/coh3/coh3-types";
+import { raceType } from "../../../src/coh3/coh3-types";
 import {
   BuildingCard,
   BuildingSchema,
@@ -15,7 +15,6 @@ import {
   SbpsType,
   EbpsType,
   UpgradesType,
-  transformToMultiplayerFaction,
   filterMultiplayerBuildings,
   getSquadTotalCost,
   fetchLocstring,
@@ -71,7 +70,6 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
   const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
-  const mpFaction = transformToMultiplayerFaction(raceToFetch);
 
   return (
     <>
@@ -102,14 +100,14 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>Battlegroups</Title>
 
-          {BattlegroupMapping(mpFaction, { battlegroupData, upgradesData, abilitiesData })}
+          {BattlegroupMapping(raceToFetch, { battlegroupData, upgradesData, abilitiesData })}
         </Stack>
 
         {/* Buildings Section */}
         <Stack mt={32}>
           <Title order={4}>Buildings</Title>
 
-          {BuildingMapping(mpFaction, { ebpsData, sbpsData, upgradesData })}
+          {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
         </Stack>
       </ContentContainer>
     </>
@@ -117,16 +115,16 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 };
 
 const BattlegroupMapping = (
-  faction: raceAttributesMultiplayer,
+  race: raceType,
   data: {
     battlegroupData: BattlegroupsType[];
     abilitiesData: AbilitiesType[];
     upgradesData: UpgradesType[];
   },
 ) => {
-  const raceBattlegroups = data.battlegroupData.filter((x) => x.faction === faction);
   const resolvedBattlegroups = resolveBattlegroupBranches(
-    raceBattlegroups,
+    race,
+    data.battlegroupData,
     data.upgradesData,
     data.abilitiesData,
   );
@@ -228,10 +226,10 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
 };
 
 const BuildingMapping = (
-  faction: raceAttributesMultiplayer,
+  race: raceType,
   data: { ebpsData: EbpsType[]; sbpsData: SbpsType[]; upgradesData: UpgradesType[] },
 ) => {
-  const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
+  const buildings = filterMultiplayerBuildings(data.ebpsData, race);
   return (
     <Stack>
       {buildings.map((building) => {
