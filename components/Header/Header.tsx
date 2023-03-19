@@ -200,6 +200,7 @@ export const Header: React.FC<HeaderProps> = () => {
                 width={30}
                 height={30}
                 alt={"COH3 Stats logo"}
+                unoptimized
               />
 
               <Title order={1} size="h3">
