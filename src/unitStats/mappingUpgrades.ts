@@ -109,7 +109,7 @@ const getUpgradesStats = async () => {
   if (upgradesStats) return upgradesStats;
 
   const myReqUpgrades = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/upgrade.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/upgrade.json",
   );
 
   const root = await myReqUpgrades.json();

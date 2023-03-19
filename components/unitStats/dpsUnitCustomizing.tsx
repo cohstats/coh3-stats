@@ -41,7 +41,7 @@ export type CustomizableUnit = {
 };
 
 const computeWeaponList = (unit: CustomizableUnit) => {
-  const result: any[] = [];
+  const result: WeaponType[] = [];
 
   for (const weapon of WeaponStats) {
     if (weapon.faction == unit.faction && weapon.parent != "heavy_machine_gun")

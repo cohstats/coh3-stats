@@ -231,7 +231,7 @@ const getEbpsStats = async () => {
   if (ebpsStats) return ebpsStats;
 
   const myReqEbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/ebps.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/ebps.json",
   );
 
   const root = await myReqEbps.json();
@@ -264,7 +264,10 @@ const getEbpsStats = async () => {
         case "light_machine_gun":
         case "rifle":
         case "sidearm":
-
+        case "anti_tank_gun":
+        case "infantry_anti_tank_weapon":
+        case "tank_gun":
+        case "flame_throwers":
         case "vehicles": // General Vehicles
           ebpsSetAll.push(item);
           break;

@@ -35,7 +35,7 @@ import { CustomizableUnit, DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
 import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
 import slash from "slash";
-import { WeaponType } from "../../src/unitStats/mappingWeapon";
+import { WeaponStatsType, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
 import { weaponMember } from "./dpsWeaponCard";
@@ -109,10 +109,6 @@ export const options = {
   },
 };
 
-// image: item.icon_name,
-// label: item.id,
-// value: item.id,
-// data : item.weapon_bag,
 // description: item.ui_name || 'No Description Available',
 const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
   const chartLine = {
@@ -247,9 +243,14 @@ const mergePoints = (xPoint: any, yPoint: any) => {
   return { x: xPoint.x, y: xPoint.y + yPoint.y };
 };
 
-const getCoverMultiplier = (coverType: string, weaponBag: any) => {
-  let cover = weaponBag.cover_table["tp_" + coverType + "_cover"];
-  if (!cover) cover = weaponBag.tp_defcover;
+const getCoverMultiplier = (coverType: string, weaponBag: WeaponStatsType) => {
+  let cover = (weaponBag as any)["cover_table_tp_" + coverType + "_cover"];
+  if (!cover)
+    cover = {
+      accuracy_multiplier: weaponBag.cover_table_tp_defcover_accuracy_multiplier, // opponent cover penalty
+      damage_multiplier: weaponBag.cover_table_tp_defcover_damage_multiplier,
+      penetration_multiplier: weaponBag.cover_table_tp_defcover_penetration_multiplier,
+    };
   return cover;
 };
 
@@ -324,8 +325,12 @@ const getDefaultLoadout = (
       for (const weaponRef of ebps.weaponRef) {
         // find weapon ebps
         const refPath = weaponRef.ebp.split("/");
-        const weaponEbp = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
-        if (!weaponEbp) continue;
+        let weaponEbp = ebps;
+        if (refPath[refPath.length - 1] != ebps.id) {
+          const weaponEbp2 = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
+          if (!weaponEbp2) continue;
+          weaponEbp = weaponEbp2;
+        }
 
         // find referenced weapon template
         const weapon = weapons.find((gun) => gun.id == weaponEbp?.weaponId);
@@ -346,8 +351,8 @@ const mapUnitSelection = (sbps: SbpsType[], ebps: EbpsType[], weapons: WeaponTyp
   const selectionFields = [];
 
   for (const squad of sbps) {
-    if (squad.unitType == "infantry")
-      selectionFields.push(mapUnitDisplayData(squad, ebps, weapons));
+    //if (squad.unitType == "infantry")
+    selectionFields.push(mapUnitDisplayData(squad, ebps, weapons));
   }
 
   return selectionFields;
