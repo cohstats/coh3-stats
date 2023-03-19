@@ -72,23 +72,23 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
       <Group>
         <Container>
           <div id="twitch-embed"></div>
-          <Container>
-            {currentStream && (
-              <>
-                <Group>
-                  <Text fw={700}>{currentStream.user_name}</Text>
-                  <Text>{currentStream.viewer_count} viewers</Text>
-                </Group>
-                <Text>{currentStream.title}</Text>
-              </>
-            )}
-          </Container>
         </Container>
 
         {twitchStreams && (
           <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
         )}
       </Group>
+      <Container>
+        {currentStream && (
+          <>
+            <Group>
+              <Text fw={700}>{currentStream.user_name}</Text>
+              <Text>{currentStream.viewer_count} viewers</Text>
+            </Group>
+            <Text>{currentStream.title}</Text>
+          </>
+        )}
+      </Container>
     </Container>
   );
 };
