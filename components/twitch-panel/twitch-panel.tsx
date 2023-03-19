@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Container, Flex, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
-import { IconBrandTwitch } from "@tabler/icons";
+import { IconBrandTwitch, IconCircle } from "@tabler/icons";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
 
@@ -82,6 +82,7 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
         {currentStream && (
           <>
             <Group>
+              <IconCircle fill="red" color="red" size={10} />
               <Text fw={700}>{currentStream.user_name}</Text>
               <Text>{currentStream.viewer_count} viewers</Text>
             </Group>

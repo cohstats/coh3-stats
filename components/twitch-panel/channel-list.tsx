@@ -1,4 +1,5 @@
-import { BackgroundImage, List, Group, Text, Box, Flex } from "@mantine/core";
+import { BackgroundImage, List, Text, Box, Flex } from "@mantine/core";
+import { IconCircle } from "@tabler/icons";
 import { useState } from "react";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 
@@ -32,7 +33,7 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
                   h={110}
                   mx="auto"
                   style={{
-                    border: `${selected === idx ? "2px solid white" : "none"}`,
+                    border: `${selected === idx ? "2px solid gold" : "2px solid black"}`,
                     borderRadius: "12px",
                     color: "white",
                   }}
@@ -48,7 +49,10 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
                     justify="space-between"
                     px={10}
                   >
-                    <Text>{stream.user_name}</Text>
+                    <Flex align="center" gap={4}>
+                      <IconCircle fill="red" color="black" size={8} />
+                      <Text>{stream.user_name}</Text>
+                    </Flex>
                     <Text>{stream.viewer_count}</Text>
                   </Flex>
                 </BackgroundImage>
