@@ -6,7 +6,13 @@ import config from "../../config";
 export const Donate: React.FC = () => (
   <a href={config.DONATION_LINK} target="_blank" rel="noopener noreferrer">
     <IconButton label="Donate">
-      <Image src="/kofi_s_logo_nolabel.webp" width={22} height={22} alt={"donate button"} />
+      <Image
+        src="/kofi_s_logo_nolabel.webp"
+        width={22}
+        height={22}
+        alt={"donate button"}
+        unoptimized
+      />
     </IconButton>
   </a>
 );
