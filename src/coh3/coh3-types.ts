@@ -84,29 +84,8 @@ export type PlayerCardDataType = {
   info: { country: string; level: number; name: string; xp: number | undefined };
 };
 
-export interface Matchhistoryreportresult {
-  matchhistory_id: number;
-  profile_id: number;
-  resulttype: number;
-  teamid: number;
-  race_id: number;
-  counters: string;
-  profile: RawPlayerProfile;
-}
-
-export interface Matchhistoryitem {
-  profile_id: number;
-  iteminstance_id: number;
-  itemdefinition_id: number;
-  itemlocation_id: number;
-}
-
-export interface Matchhistorymember {
-  matchhistory_id: number;
-  profile_id: number;
-  race_id: number;
+interface ProcessedMatchHistoryMember {
   statgroup_id: number;
-  teamid: number;
   wins: number;
   losses: number;
   streak: number;
@@ -117,7 +96,33 @@ export interface Matchhistorymember {
   reporttype: number;
 }
 
-export interface MatchHistory {
+interface ProcessedProfile {
+  name: string;
+  alias: string;
+  personal_statgroup_id: number;
+  xp: number;
+  level: number;
+  leaderboardregion_id: number;
+  country: string;
+}
+
+export interface PlayerReport {
+  profile_id: number;
+  resulttype: number;
+  teamid: number;
+  race_id: number;
+  counters: string;
+  profile: ProcessedProfile;
+  matchhistorymember: ProcessedMatchHistoryMember;
+}
+
+export interface ProcessedMatchHistoryItem {
+  profile_id: number;
+  itemdefinition_id: number;
+  itemlocation_id: number;
+}
+
+export interface ProcessedMatch {
   id: number;
   creator_profile_id: number;
   mapname: string;
@@ -126,11 +131,9 @@ export interface MatchHistory {
   description: string;
   startgametime: number;
   completiontime: number;
-  matchhistoryreportresults: Matchhistoryreportresult[];
-  matchhistoryitems: Matchhistoryitem[];
-  matchhistorymember: Matchhistorymember[];
-  profile_ids: number[];
-  steam_ids: string[];
+  matchhistoryreportresults: Array<PlayerReport>;
+  matchhistoryitems: Array<ProcessedMatchHistoryItem>;
+  profile_ids: Array<number>;
 }
 
 export interface TwitchStream {

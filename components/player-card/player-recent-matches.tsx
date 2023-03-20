@@ -1,28 +1,23 @@
-import Link from "next/link";
-import { Badge, Anchor, Text, Group, Button } from "@mantine/core";
-import Image from "next/image";
-import dynamic from "next/dynamic";
+import { Badge, Text, Group, Button } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
-import { MatchHistory, raceID } from "../../src/coh3/coh3-types";
+import { ProcessedMatch, raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
 import FactionIcon from "../faction-icon";
 import { IconInfoCircle } from "@tabler/icons";
 import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
-import config from "../../config";
 import FilterableHeader from "./filterable-header";
+import RenderPlayers from "../matches-table/render-players";
+import RenderMap from "../matches-table/render-map";
+import DynamicTimeAgo from "../other/dynamic-timeago";
+import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../src/players/utils";
 
 /**
  * Timeago is causing issues with SSR, move to client side
  */
-const DynamicTimeAgo = dynamic(() => import("../../components/internal-timeago"), {
-  ssr: false,
-  // @ts-ignore
-  loading: () => "Calculating...",
-});
 
 export type FilterInformation = { label: string; checked: boolean; filter: string | number };
 
@@ -32,25 +27,9 @@ const PlayerRecentMatches = ({
   error,
 }: {
   profileID: string;
-  playerMatchesData: Array<MatchHistory>;
+  playerMatchesData: Array<ProcessedMatch>;
   error: string;
 }) => {
-  const isPlayerVictorious = (matchRecord: any): boolean => {
-    if (!matchRecord) return false;
-
-    const playerResult = getPlayerMatchHistoryResult(matchRecord);
-    return playerResult.resulttype === 1;
-  };
-
-  const getPlayerMatchHistoryResult = (matchRecord: any) => {
-    for (const record of matchRecord.matchhistoryreportresults) {
-      if (`${record.profile_id}` === `${profileID}`) {
-        return record;
-      }
-    }
-
-    return matchRecord.matchhistoryreportresults[0];
-  };
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
     columnAccessor: "Played",
     direction: "asc",
@@ -86,8 +65,8 @@ const PlayerRecentMatches = ({
       // thats why this messy logic is here
       let include = true;
       toExclude["result"]?.forEach((filter) => {
-        if (filter === "victory" && isPlayerVictorious(matchData)) include = false;
-        if (filter === "defeat" && !isPlayerVictorious(matchData)) include = false;
+        if (filter === "victory" && isPlayerVictorious(matchData, profileID)) include = false;
+        if (filter === "defeat" && !isPlayerVictorious(matchData, profileID)) include = false;
       });
       toExclude["map"].forEach((map: string) => {
         if (matchData.mapname === map) include = false;
@@ -126,8 +105,8 @@ const PlayerRecentMatches = ({
 
     const updatedFilters = {
       result: {
-        victory: { label: "victory", checked: true, filter: "victory" },
-        defeat: { label: "defeat", checked: true, filter: "defeat" },
+        victory: { label: "Victory", checked: true, filter: "victory" },
+        defeat: { label: "Defeat", checked: true, filter: "defeat" },
       },
       map: mapNameMap,
       mode: matchTypeMap,
@@ -147,71 +126,6 @@ const PlayerRecentMatches = ({
       />
     );
   }
-
-  const renderMap = (name: string) => {
-    // In case we don't track the map, eg custom maps
-    if (!maps[name]) {
-      return (
-        <div>
-          <Text align="center" style={{ whiteSpace: "nowrap" }}>
-            {name}
-          </Text>
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        <Image src={maps[name]?.url} width={60} height={60} alt={name} loading="lazy" />
-        <Text align="center" style={{ whiteSpace: "nowrap" }}>
-          {maps[name]?.name}
-        </Text>
-      </div>
-    );
-  };
-
-  const renderPlayers = (arrayOfPlayerReports: Array<any>, matchHistoryMember: Array<any>) => {
-    return (
-      <>
-        {arrayOfPlayerReports.map((playerInfo: Record<string, any>) => {
-          const matchHistory = matchHistoryMember.find(
-            (e) => e.profile_id === playerInfo.profile_id,
-          );
-          const ratingPlayedWith = matchHistory.oldrating;
-          const ratingChange = matchHistory.newrating - matchHistory.oldrating;
-          const ratingChangeAsElement =
-            ratingChange >= 0 ? (
-              <Text color={"green"}>+{ratingChange}</Text>
-            ) : (
-              <Text color={"red"}>{ratingChange}</Text>
-            );
-
-          return (
-            <div key={playerInfo.profile_id}>
-              <Group spacing={"xs"}>
-                <FactionIcon name={raceIDs[playerInfo?.race_id as raceID]} width={20} />
-                <>
-                  {" "}
-                  {ratingPlayedWith} {ratingChangeAsElement}
-                </>
-                <Anchor
-                  key={playerInfo.profile_id}
-                  component={Link}
-                  href={`/players/${playerInfo.profile_id}`}
-                >
-                  {`${playerInfo.profile_id}` === `${profileID}` ? (
-                    <Text fw={700}>{playerInfo.profile["alias"]}</Text>
-                  ) : (
-                    <Text>{playerInfo.profile["alias"]}</Text>
-                  )}
-                </Anchor>
-              </Group>
-            </div>
-          );
-        })}
-      </>
-    );
-  };
 
   const handleFilterChange = (column: string, filter: string | number) => {
     const updatedFilters = cloneDeep(filters);
@@ -246,7 +160,7 @@ const PlayerRecentMatches = ({
             textAlignment: "center",
             width: 120,
             render: (record) => {
-              const player = getPlayerMatchHistoryResult(record);
+              const player = getPlayerMatchHistoryResult(record, profileID);
               return (
                 <>
                   <div>
@@ -269,7 +183,7 @@ const PlayerRecentMatches = ({
             ),
             textAlignment: "center",
             render: (record) => {
-              if (isPlayerVictorious(record)) {
+              if (isPlayerVictorious(record, profileID)) {
                 return (
                   <Badge color={"blue"} variant="filled">
                     VICTORY
@@ -295,7 +209,7 @@ const PlayerRecentMatches = ({
                 record.matchhistoryreportresults,
                 "axis",
               );
-              return renderPlayers(axisPlayers, record.matchhistorymember);
+              return <RenderPlayers playerReports={axisPlayers} profileID={profileID} />;
             },
           },
           {
@@ -305,11 +219,11 @@ const PlayerRecentMatches = ({
             textAlignment: "center",
             width: "50%",
             render: (record) => {
-              const axisPlayers = getMatchPlayersByFaction(
+              const alliesPlayers = getMatchPlayersByFaction(
                 record.matchhistoryreportresults,
                 "allies",
               );
-              return renderPlayers(axisPlayers, record.matchhistorymember);
+              return <RenderPlayers playerReports={alliesPlayers} profileID={profileID} />;
             },
           },
           {
@@ -325,7 +239,7 @@ const PlayerRecentMatches = ({
             // sortable: true,
             textAlignment: "center",
             render: (record) => {
-              return <>{renderMap(record.mapname)}</>;
+              return <RenderMap mapName={record.mapname} />;
             },
           },
           {
@@ -360,7 +274,7 @@ const PlayerRecentMatches = ({
           {
             title: "Debug",
             accessor: "debug",
-            hidden: !config.isDevEnv(),
+            hidden: true,
             render: (record) => {
               return (
                 <>
@@ -380,8 +294,10 @@ const PlayerRecentMatches = ({
         ]}
       />
       <Group position={"apart"}>
-        <Text size={"sm"}>Data provided by Relic</Text>
-        <Group spacing={5} position={"right"}>
+        <Text size={"sm"} style={{ paddingLeft: 5 }}>
+          Data provided by Relic
+        </Text>
+        <Group spacing={5} position={"right"} style={{ paddingRight: 5 }}>
           <IconInfoCircle size={18} />
           <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
         </Group>

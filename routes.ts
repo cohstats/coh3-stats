@@ -97,4 +97,7 @@ export default new Router()
       },
     });
   })
+  .get("/assets/:path*", ({ serveStatic }) => {
+    serveStatic("assets/:path*");
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages

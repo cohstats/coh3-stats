@@ -28,15 +28,19 @@ const Explorer: NextPage = () => {
       <Head>
         <title>COH3 Explorer</title>
         <meta name="description" content="COH3 Factions Explorer." />
+        <meta
+          name="keywords"
+          content="COh3, Wehrmacht, US Forces, DAK, Deutsches Afrikakorps, British Forces, units, damage, buildings, costs, man power, fuel, munition"
+        />
       </Head>
       <Container size="md">
         <Stack mb={24}>
-          <Title order={2}>Company of Heroes 3 Explorer</Title>
+          <Title order={2}>Company of Heroes 3 Factions Explorer</Title>
           <Text size="lg" mt={4}>
             Discover all units, buildings and more in the game.
           </Text>
           <Text size="md" mt={16}>
-            Provide some long text description here. <br /> I am too lazy to do right now.
+            Please provide feedback on the Discord for this section. Thank you.
           </Text>
         </Stack>
 

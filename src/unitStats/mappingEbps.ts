@@ -22,8 +22,10 @@ type EbpsType = {
   /** Found at `health_ext`. */
   health: {
     hitpoints: number;
-    /** Found at `health_ext`. */
+
     armorLayout: armorLayoutOption;
+    /** Found at `health_ext`. */
+    targetSize: number;
   };
   /** Found at `upgrade_ext.standard_upgrades`. List of instance references.
    * Applies to buildings only. */
@@ -101,6 +103,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     },
     health: {
       hitpoints: 0,
+      targetSize: 1,
       armorLayout: {
         type: "",
         armor: 1,
@@ -178,6 +181,7 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.health.armorLayout.frontArmor = extension.armor_layout_option?.front_armor || 1;
           ebps.health.armorLayout.rearArmor = extension.armor_layout_option?.rear_armor || 1;
           ebps.health.armorLayout.sideArmor = extension.armor_layout_option?.side_armor || 1;
+          ebps.health.targetSize = extension.targe_size || 1;
         }
 
         break;
