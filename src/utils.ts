@@ -19,8 +19,8 @@ const isBrowserEnv = () => {
  * @param iconPath The path of the icon, can be full path or just filename.
  * @param folder By default we look for whole path, but if you can't find the icon, you can try using "export_flatten" folder.
  */
-// @ts-ignore
 const getIconsPathOnCDN = (
+  // @ts-ignore
   iconPath: string | StaticRequire | StaticImageData,
   folder: "export" | "export_flatten" = "export",
 ) => {
