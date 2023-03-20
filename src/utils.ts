@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import config from "../config";
 
 const calculatePageNumber = (position: number, RECORD_PER_PAGE = 100) => {
   // Calculate the page number
@@ -14,26 +15,29 @@ const isBrowserEnv = () => {
 };
 
 /**
- * This function returns path to an icon based just on its name.
- * It's utilizing all exported icons which are flattened.
- * @param iconName
+ * Get the path of the icon on our CDN hosting for images
+ * @param iconPath The path of the icon, can be full path or just filename.
+ * @param folder By default we look for whole path, but if you can't find the icon, you can try using "export_flatten" folder.
  */
 // @ts-ignore
-const exportedIconPath = (iconName: string | StaticRequire | StaticImageData) => {
-  if (typeof iconName !== "string") {
-    return iconName;
-  }
-  let filename = iconName.split(/[\\/]/).pop() || "";
-
-  if (!filename) {
-    return "/icons/common/units/icons/placeholder_unit_icon.png";
+const getIconsPathOnCDN = (
+  iconPath: string | StaticRequire | StaticImageData,
+  folder: "export" | "export_flatten" = "export",
+) => {
+  if (typeof iconPath !== "string") {
+    return iconPath;
   }
 
-  if (!filename.endsWith(".png")) {
-    filename += ".png";
+  // If we are in export_flatten folder, we need to remove the whole path and just keep filename
+  if (folder === "export_flatten") {
+    iconPath = iconPath.split(/[\\/]/).pop() || "";
   }
 
-  return `/assets/icons/exported/${filename}`;
+  if (!iconPath.endsWith(".png")) {
+    iconPath += ".png";
+  }
+
+  return `${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`;
 };
 
-export { calculatePageNumber, calculatePositionNumber, isBrowserEnv, exportedIconPath };
+export { calculatePageNumber, calculatePositionNumber, isBrowserEnv, getIconsPathOnCDN };
