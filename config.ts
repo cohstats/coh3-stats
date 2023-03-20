@@ -41,6 +41,7 @@ const config = {
   DISCORD_INVITE_LINK: "https://discord.gg/jRrnwqMfkr",
   DONATION_LINK: "https://ko-fi.com/cohstats",
   GITHUB_LINK: repository.url,
+  CDN_ASSETS_HOSTING: "https://cdn.coh3stats.com",
   BASE_CLOUD_FUNCTIONS_URL: `https://${firebaseFunctions.location}-coh3-stats-prod.cloudfunctions.net`,
 };
 
