@@ -124,6 +124,7 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
       extraText: "Call-Ins",
     },
     health: {
+      targetSize: 0,
       hitpoints: 1500,
       armorLayout: {
         frontArmor: 1,

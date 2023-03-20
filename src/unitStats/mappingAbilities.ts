@@ -131,7 +131,7 @@ const getAbilitiesStats = async () => {
   if (abilitiesStats) return abilitiesStats;
 
   const myReqAbilities = await fetch(
-    "https://raw.githubusercontent.com/KingDarBoja/coh3-data/export-battlegroups/scripts/xml-to-json/exported/abilities.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/abilities.json",
   );
 
   const root = await myReqAbilities.json();
