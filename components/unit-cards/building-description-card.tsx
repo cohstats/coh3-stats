@@ -113,6 +113,7 @@ const BuildingCardHeader = (
               time_seconds={cost.time_seconds}
               munition={cost.munition}
               popcap={cost.popcap}
+              command={cost.command}
             ></StatsCosts>
           </>
         ) : (
