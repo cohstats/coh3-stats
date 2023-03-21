@@ -137,7 +137,7 @@ export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType
  * The keys of this object are the abilities ids whereas the values are the
  * squads that conforms those call-ins.
  */
-const HalfTrackDeploymentUnitsAfrikaKorps = {
+export const HalfTrackDeploymentUnitsAfrikaKorps = {
   halftrack_deployment_panzerjager_inf_1_ak: ["halftrack_250_ak", "panzerjaeger_inf_ak"],
   halftrack_deployment_assault_grenadier_1_ak: ["halftrack_250_ak", "assault_panzergrenadier_ak"],
   halftrack_deployment_at_gun_1_ak: ["halftrack_250_ak", "at_gun_50mm_pak_38_ak"],

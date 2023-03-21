@@ -31,6 +31,8 @@ import {
   BattlegroupResolvedBranchType,
   getResolvedUpgrades,
   getResolvedSquads,
+  HalfTrackDeploymentUnitsAfrikaKorps,
+  getResolvedAbilities,
 } from "../../../src/unitStats";
 import { UnitUpgradeCard } from "../../../components/unit-cards/unit-upgrade-card";
 import ContentContainer from "../../../components/Content-container";
@@ -109,7 +111,12 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>Buildings</Title>
 
-          {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
+          {BuildingMapping(raceToFetch, {
+            ebpsData,
+            sbpsData,
+            upgradesData,
+            abilitiesData,
+          })}
         </Stack>
       </ContentContainer>
     </>
@@ -231,12 +238,22 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
 
 const BuildingMapping = (
   race: raceType,
-  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[]; upgradesData: UpgradesType[] },
+  data: {
+    ebpsData: EbpsType[];
+    sbpsData: SbpsType[];
+    upgradesData: UpgradesType[];
+    abilitiesData: AbilitiesType[];
+  },
 ) => {
   const buildings = filterMultiplayerBuildings(data.ebpsData, race);
   return (
     <Stack>
       {buildings.map((building) => {
+        // Temporary workaround while a better idea to display call-ins of DAK shows up.
+        const upgrades =
+          race === "dak" && building.id === "halftrack_deployment_ak"
+            ? generateAfrikaKorpsCallIns(data.abilitiesData)
+            : getBuildingUpgrades(building, data.upgradesData);
         // console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
@@ -252,7 +269,7 @@ const BuildingMapping = (
                 symbol_icon_name: building.ui.symbolIconName,
               }}
               units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
-              upgrades={getBuildingUpgrades(building, data.upgradesData)}
+              upgrades={upgrades}
               time_cost={{
                 fuel: building.cost.fuel,
                 munition: building.cost.munition,
@@ -314,6 +331,29 @@ function getBuildingUpgrades(
       },
     }),
   );
+}
+
+/** Generate the call-ins as upgrades although those are abilities under the hood. */
+function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSchema["upgrades"] {
+  return Object.entries(
+    getResolvedAbilities(Object.keys(HalfTrackDeploymentUnitsAfrikaKorps), abilitiesData),
+  ).map(([id, { ui, cost, rechargeTime }]) => ({
+    id,
+    desc: {
+      screen_name: ui.screenName,
+      help_text: ui.helpText,
+      extra_text: ui.extraText,
+      brief_text: ui.briefText,
+      icon_name: ui.iconName,
+    },
+    time_cost: {
+      fuel: cost.fuel,
+      munition: cost.munition,
+      manpower: cost.manpower,
+      popcap: cost.popcap,
+      time_seconds: rechargeTime,
+    },
+  }));
 }
 
 // Generates `/dak`.
