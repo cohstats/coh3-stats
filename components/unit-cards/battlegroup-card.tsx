@@ -1,4 +1,4 @@
-import { Stack, Card, Divider, Grid, Title, Accordion } from "@mantine/core";
+import { Stack, Card, Divider, Grid, Title, Accordion, Box } from "@mantine/core";
 import { raceType } from "../../src/coh3/coh3-types";
 import {
   BattlegroupsType,
@@ -32,11 +32,21 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
           <Grid
             key={`${rowIndex}_${branch.name}`}
             columns={branchUpgrades.length}
-            sx={{ width: branchUpgrades.length === 1 ? "" : "100%" }}
+            // sx={{ width: branchUpgrades.length === 1 ? "" : "100%" }}
+            w="100%"
           >
             {branchUpgrades.map(({ upg, ability }) => (
               <Grid.Col key={upg.id} span={1}>
-                <Card p="lg" radius="md" withBorder>
+                <Box
+                  p="sm"
+                  sx={(theme) => ({
+                    borderRadius: theme.radius.md,
+                    borderWidth: 2,
+                    borderStyle: "solid",
+                    borderColor:
+                      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
+                  })}
+                >
                   <UnitUpgradeCard
                     id={upg.id}
                     desc={{
@@ -54,8 +64,9 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
                       time_seconds: ability.rechargeTime,
                       command: upg.cost.command,
                     }}
+                    cfg={{ compact: true }}
                   ></UnitUpgradeCard>
-                </Card>
+                </Box>
               </Grid.Col>
             ))}
           </Grid>
@@ -148,20 +159,29 @@ export const BattlegroupCard = (
             {/* Branches Section */}
             <Divider my={12} size="md"></Divider>
 
-            <Accordion chevronPosition="right">
-              <Accordion.Item value="left_branch">
-                <Accordion.Control>
-                  <Title order={4}>{branches.LEFT.name}</Title>
-                </Accordion.Control>
-                <Accordion.Panel>{BattlegroupBranchMapping(branches.LEFT)}</Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value="right_branch">
-                <Accordion.Control>
-                  <Title order={4}>{branches.RIGHT.name}</Title>
-                </Accordion.Control>
-                <Accordion.Panel>{BattlegroupBranchMapping(branches.RIGHT)}</Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+            <Grid columns={2} gutter={0}>
+              <Grid.Col md={1}>
+                <Accordion p={0} chevronPosition="right">
+                  <Accordion.Item value="left_branch">
+                    <Accordion.Control>
+                      <Title order={4}>{branches.LEFT.name}</Title>
+                    </Accordion.Control>
+                    <Accordion.Panel>{BattlegroupBranchMapping(branches.LEFT)}</Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion>
+              </Grid.Col>
+
+              <Grid.Col md={1}>
+                <Accordion p={0} chevronPosition="right">
+                  <Accordion.Item value="right_branch">
+                    <Accordion.Control>
+                      <Title order={4}>{branches.RIGHT.name}</Title>
+                    </Accordion.Control>
+                    <Accordion.Panel>{BattlegroupBranchMapping(branches.RIGHT)}</Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion>
+              </Grid.Col>
+            </Grid>
           </Card>
         );
       })}

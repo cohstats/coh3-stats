@@ -1,5 +1,5 @@
 import slash from "slash";
-import { Flex, Text, Title, Tooltip } from "@mantine/core";
+import { Flex, HoverCard, Text, Title, Tooltip } from "@mantine/core";
 import { StatsCosts } from "./cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
@@ -40,51 +40,92 @@ export type UnitUpgrade = {
    * with the `StatsCosts` card.
    */
   time_cost: ResourceValues;
+  /** Extra configs for switching views. */
+  cfg?: {
+    // Enable Compact mode.
+    compact?: boolean;
+  };
 };
 
-const UnitUpgradeCardHeader = (desc: UnitUpgradeDescription) => (
-  <>
-    <Flex direction="row" align="center" gap={16}>
-      <ImageWithFallback
-        width={64}
-        height={64}
-        src={`/icons/${slash(desc.icon_name)}.png`}
-        alt={desc.screen_name}
-        fallbackSrc={iconPlaceholder}
-      ></ImageWithFallback>
-      <Flex direction="column">
-        <Tooltip label={desc.screen_name}>
-          <Title order={4} transform="capitalize" lineClamp={1}>
-            {desc.screen_name}
-          </Title>
-        </Tooltip>
-        <Text fz="md" lineClamp={2} color="yellow.5">
-          {desc.extra_text}
-        </Text>
-        <Tooltip label={desc.brief_text}>
-          <Text fz="sm" lineClamp={1}>
-            {desc.brief_text}
-          </Text>
-        </Tooltip>
-        <Tooltip label={desc.help_text}>
-          <Text fz="sm" lineClamp={1}>
-            {desc.help_text}
-          </Text>
-        </Tooltip>
-      </Flex>
-    </Flex>
-  </>
-);
+const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">) => {
+  if (cfg?.compact) {
+    return (
+      <>
+        <HoverCard position="top" width={280} shadow="md" withArrow>
+          <HoverCard.Target>
+            <Flex direction="column" align="center" gap={16}>
+              <ImageWithFallback
+                width={64}
+                height={64}
+                src={`/icons/${slash(desc.icon_name)}.png`}
+                alt={desc.screen_name}
+                fallbackSrc={iconPlaceholder}
+              ></ImageWithFallback>
+            </Flex>
+          </HoverCard.Target>
+          <HoverCard.Dropdown>
+            <Flex direction="column">
+              <Title order={4} transform="capitalize">
+                {desc.screen_name}
+              </Title>
+              <Text fz="md" color="yellow.5">
+                {desc.extra_text}
+              </Text>
+              <Text fz="sm">{desc.brief_text}</Text>
+              <Text fz="sm">{desc.help_text}</Text>
+            </Flex>
+          </HoverCard.Dropdown>
+        </HoverCard>
+      </>
+    );
+  } else {
+    return (
+      <Flex direction="row" align="center" gap={16}>
+        <ImageWithFallback
+          width={64}
+          height={64}
+          src={`/icons/${slash(desc.icon_name)}.png`}
+          alt={desc.screen_name}
+          fallbackSrc={iconPlaceholder}
+        ></ImageWithFallback>
 
-export const UnitUpgradeCard = ({ desc, time_cost }: UnitUpgrade) => (
+        <Flex direction="column">
+          <Tooltip label={desc.screen_name}>
+            <Title order={4} transform="capitalize" lineClamp={1}>
+              {desc.screen_name}
+            </Title>
+          </Tooltip>
+          <Text fz="md" lineClamp={2} color="yellow.5">
+            {desc.extra_text}
+          </Text>
+          <Tooltip label={desc.brief_text}>
+            <Text fz="sm" lineClamp={1}>
+              {desc.brief_text}
+            </Text>
+          </Tooltip>
+          <Tooltip label={desc.help_text}>
+            <Text fz="sm" lineClamp={1}>
+              {desc.help_text}
+            </Text>
+          </Tooltip>
+        </Flex>
+      </Flex>
+    );
+  }
+};
+
+export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => (
   <>
     <Flex direction="column" gap={16}>
       <UnitUpgradeCardHeader
-        screen_name={desc.screen_name}
-        help_text={desc.help_text}
-        brief_text={desc.brief_text}
-        extra_text={desc.extra_text}
-        icon_name={desc.icon_name}
+        desc={{
+          screen_name: desc.screen_name,
+          help_text: desc.help_text,
+          brief_text: desc.brief_text,
+          extra_text: desc.extra_text,
+          icon_name: desc.icon_name,
+        }}
+        cfg={cfg}
       ></UnitUpgradeCardHeader>
       {hasCost(time_cost) ? (
         <StatsCosts
