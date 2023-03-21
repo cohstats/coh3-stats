@@ -17,11 +17,11 @@ export const StatsCosts = (costs: ResourceValues) => (
       <Title order={6} transform="uppercase">
         Costs
       </Title>
-      <Flex key="stats_costs_list" align="center" gap={16} mt={4}>
+      <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
         {ResourceIcons.map(({ icon, type }) => {
           return costs[type] ? (
             <Flex key={type} direction="row" align="center" gap={4}>
-              <Image height={24} width={24} fit="contain" src={icon} alt="Test text" />
+              <Image height={20} width={20} fit="contain" src={icon} alt="Test text" />
               <Text>{costs[type]}</Text>
             </Flex>
           ) : (
