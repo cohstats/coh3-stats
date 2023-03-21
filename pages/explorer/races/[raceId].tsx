@@ -29,6 +29,8 @@ import {
   BattlegroupsType,
   resolveBattlegroupBranches,
   BattlegroupResolvedBranchType,
+  getResolvedUpgrades,
+  getResolvedSquads,
 } from "../../../src/unitStats";
 import { UnitUpgradeCard } from "../../../components/unit-cards/unit-upgrade-card";
 import ContentContainer from "../../../components/Content-container";
@@ -273,78 +275,45 @@ function getBuildingTrainableUnits(
   building: EbpsType,
   sbpsData: SbpsType[],
   ebpsData: EbpsType[],
-) {
-  const trainableUnits: BuildingSchema["units"] = [];
-  // console.group(`Building ${building.id} - Squad Total Cost List`);
-  for (const unitRef of building.spawnItems) {
-    // Get the last element of the array, which is the id.
-    const unitId = unitRef.split("/").slice(-1)[0];
-    // console.log("🚀 ~ file: [raceId].tsx:151 ~ unitId:", unitId)
-    const sbpsUnitFound = sbpsData.find((x) => x.id === unitId);
-    // console.log("🚀 ~ file: [raceId].tsx:153 ~ sbpsUnitFound:", sbpsUnitFound)
-    // Ignore those units not found.
-    if (!sbpsUnitFound) continue;
-    // Map the required fields.
-    const totalCost = getSquadTotalCost(sbpsUnitFound, ebpsData);
-    const unitInfo: BuildingSchema["units"][number] = {
+): BuildingSchema["units"] {
+  return Object.entries(getResolvedSquads(building.spawnItems, sbpsData, ebpsData)).map(
+    ([id, { ui, time_cost }]) => ({
       desc: {
-        id: unitId,
-        screen_name: sbpsUnitFound.ui.screenName,
-        help_text: sbpsUnitFound.ui.helpText,
-        brief_text: sbpsUnitFound.ui.briefText,
-        symbol_icon_name: sbpsUnitFound.ui.symbolIconName,
-        icon_name: sbpsUnitFound.ui.iconName,
+        id,
+        screen_name: ui.screenName,
+        help_text: ui.helpText,
+        brief_text: ui.briefText,
+        symbol_icon_name: ui.symbolIconName,
+        icon_name: ui.iconName,
       },
-      time_cost: {
-        fuel: totalCost.fuel,
-        munition: totalCost.munition,
-        manpower: totalCost.manpower,
-        popcap: totalCost.popcap,
-        time_seconds: totalCost.time,
-      },
-    };
-    trainableUnits.push(unitInfo);
-  }
-  // console.groupEnd();
-  // console.log("🚀 ~ file: [raceId].tsx:162 ~ getBuildingTrainableUnits ~ trainableUnits:", trainableUnits)
-  return trainableUnits;
+      time_cost,
+    }),
+  );
 }
 
-function getBuildingUpgrades(building: EbpsType, upgradesData: UpgradesType[]) {
-  const researchableUpgrades: BuildingSchema["upgrades"] = [];
-  for (const upgradeRef of building.upgradeRefs) {
-    // Get the last element of the array, which is the id.
-    const upgradeId = upgradeRef.split("/").slice(-1)[0];
-    const upgradeFound = upgradesData.find((x) => x.id === upgradeId);
-    // Ignore those upgrades not found.
-    if (!upgradeFound) continue;
-
-    const upgradeInfo: BuildingSchema["upgrades"][number] = {
-      id: upgradeFound.id,
+function getBuildingUpgrades(
+  building: EbpsType,
+  upgradesData: UpgradesType[],
+): BuildingSchema["upgrades"] {
+  return Object.entries(getResolvedUpgrades(building.upgradeRefs, upgradesData)).map(
+    ([id, { ui, cost }]) => ({
+      id,
       desc: {
-        screen_name: upgradeFound.ui.screenName,
-        help_text: upgradeFound.ui.helpText,
-        extra_text: upgradeFound.ui.extraText,
-        brief_text: upgradeFound.ui.briefText,
-        icon_name: upgradeFound.ui.iconName,
+        screen_name: ui.screenName,
+        help_text: ui.helpText,
+        extra_text: ui.extraText,
+        brief_text: ui.briefText,
+        icon_name: ui.iconName,
       },
       time_cost: {
-        fuel: upgradeFound.cost.fuel,
-        munition: upgradeFound.cost.munition,
-        manpower: upgradeFound.cost.manpower,
-        popcap: upgradeFound.cost.popcap,
-        time_seconds: upgradeFound.cost.time,
+        fuel: cost.fuel,
+        munition: cost.munition,
+        manpower: cost.manpower,
+        popcap: cost.popcap,
+        time_seconds: cost.time,
       },
-    };
-
-    researchableUpgrades.push(upgradeInfo);
-  }
-
-  // console.log(
-  //   "🚀 ~ file: [raceId].tsx:198 ~ getBuildingUpgrades ~ researchableUpgrades:",
-  //   researchableUpgrades,
-  // );
-  return researchableUpgrades;
+    }),
+  );
 }
 
 // Generates `/dak`.

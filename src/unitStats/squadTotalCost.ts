@@ -47,13 +47,13 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
   // console.group("🚀 ~ file: squadTotalCost.ts:18 ~ ebpsUnits:");
   // console.log(ebpsUnits);
   // console.groupEnd();
-  const totalCost = ebpsUnits.reduce<EbpsType["cost"]>(
+  const totalCost = ebpsUnits.reduce<Required<ResourceValues>>(
     (totalCost, ebpsUnit) => {
       totalCost.manpower += (ebpsUnit.entity?.cost.manpower || 0) * ebpsUnit.loadout.num;
       totalCost.fuel += (ebpsUnit.entity?.cost.fuel || 0) * ebpsUnit.loadout.num;
       totalCost.munition += (ebpsUnit.entity?.cost.munition || 0) * ebpsUnit.loadout.num;
       totalCost.popcap += (ebpsUnit.entity?.cost.popcap || 0) * ebpsUnit.loadout.num;
-      totalCost.time += (ebpsUnit.entity?.cost.time || 0) * ebpsUnit.loadout.num;
+      totalCost.time_seconds += (ebpsUnit.entity?.cost.time || 0) * ebpsUnit.loadout.num;
       return totalCost;
     },
     {
@@ -61,12 +61,13 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
       manpower: 0,
       munition: 0,
       popcap: 0,
-      time: 0,
+      time_seconds: 0,
+      command: 0,
     },
   );
   // Round the costs, so we avoid floating numbers being displayed in the UI
   // like 399.999995.
-  (Object.keys(totalCost) as Array<keyof EbpsType["cost"]>).forEach(
+  (Object.keys(totalCost) as Array<keyof ResourceValues>).forEach(
     (key) => (totalCost[key] = Math.round(totalCost[key])),
   );
   return totalCost;

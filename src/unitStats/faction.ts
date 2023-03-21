@@ -1,5 +1,53 @@
 import { raceType } from "../coh3/coh3-types";
+import { AbilitiesType } from "./mappingAbilities";
 import { EbpsType } from "./mappingEbps";
+import { SbpsType } from "./mappingSbps";
+import { UpgradesType } from "./mappingUpgrades";
+import { getSquadTotalCost, ResourceValues } from "./squadTotalCost";
+
+export function getResolvedAbilities(refs: string[], abilities: AbilitiesType[]) {
+  // The key is the ability id.
+  const foundAbilities: Record<string, AbilitiesType> = {};
+  for (const refId of refs) {
+    const foundAbility = abilities.find((x) => x.id === refId);
+    if (!foundAbility) continue;
+
+    foundAbilities[refId] ??= foundAbility;
+  }
+  return foundAbilities;
+}
+
+export function getResolvedUpgrades(refs: string[], upgradesData: UpgradesType[]) {
+  // The key is the upgrade id.
+  const researchableUpgrades: Record<string, UpgradesType> = {};
+  for (const refPath of refs) {
+    // Get the last element of the array, which is the id.
+    const upgradeId = refPath.split("/").slice(-1)[0];
+    const upgradeFound = upgradesData.find((x) => x.id === upgradeId);
+    // Ignore those upgrades not found.
+    if (!upgradeFound) continue;
+
+    researchableUpgrades[upgradeId] ??= upgradeFound;
+  }
+  return researchableUpgrades;
+}
+
+export function getResolvedSquads(refs: string[], sbpsData: SbpsType[], ebpsData: EbpsType[]) {
+  // The key is the squad id.
+  const squadEntities: Record<string, SbpsType & { time_cost: ResourceValues }> = {};
+  for (const refPath of refs) {
+    // Get the last element of the array, which is the id.
+    const sbpsId = refPath.split("/").slice(-1)[0];
+    const sbpsUnitFound = sbpsData.find((x) => x.id === sbpsId);
+    // Ignore those squad entities not found.
+    if (!sbpsUnitFound) continue;
+    // Map the required fields.
+    const totalCost = getSquadTotalCost(sbpsUnitFound, ebpsData);
+
+    squadEntities[sbpsId] ??= { ...sbpsUnitFound, time_cost: totalCost };
+  }
+  return squadEntities;
+}
 
 /** The british is different for multiplayer within the ebps and sbps. */
 const buildingFactionMultiplayer = [
@@ -90,14 +138,17 @@ export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType
  * squads that conforms those call-ins.
  */
 const HalfTrackDeploymentUnitsAfrikaKorps = {
-  halftrack_deployment_panzerjager_inf_1_ak: [""],
-  halftrack_deployment_assault_grenadier_1_ak: [""],
-  halftrack_deployment_at_gun_1_ak: [""],
-  halftrack_deployment_leig_1_ak: [""],
-  halftrack_deployment_piv_tank_hunter_group_ak: [""],
-  halftrack_deployment_stug_assault_group_ak: [""],
-  halftrack_deployment_panzer_iii_assault_group_ak: [""],
-  halftrack_deployment_tiger_ak: [""],
+  halftrack_deployment_panzerjager_inf_1_ak: ["halftrack_250_ak", "panzerjaeger_inf_ak"],
+  halftrack_deployment_assault_grenadier_1_ak: ["halftrack_250_ak", "assault_panzergrenadier_ak"],
+  halftrack_deployment_at_gun_1_ak: ["halftrack_250_ak", "at_gun_50mm_pak_38_ak"],
+  halftrack_deployment_leig_1_ak: ["halftrack_250_ak", "leig_75mm_ak"],
+  halftrack_deployment_piv_tank_hunter_group_ak: ["panzer_iv_ak", "panzerjaeger_inf_ak"],
+  halftrack_deployment_stug_assault_group_ak: ["stug_iii_ak"],
+  halftrack_deployment_panzer_iii_assault_group_ak: [
+    "panzer_iii_ak",
+    "assault_panzergrenadier_ak",
+  ],
+  halftrack_deployment_tiger_ak: ["tiger_ak"],
 } as const;
 
 function generateAfrikaKorpsCallInsBuilding(): EbpsType {
