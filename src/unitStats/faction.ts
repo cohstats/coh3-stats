@@ -166,6 +166,9 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
       munition: 0,
       time: 0,
     },
+    populationExt: {
+      personnel_pop: 0,
+    },
     ui: {
       iconName: "races/afrika_corps/vehicles/halftrack_logistics_ak",
       symbolIconName: "races/common/symbols/building_support_center",

@@ -138,6 +138,7 @@ const BuildingMapping = (
           race === "dak" && building.id === "halftrack_deployment_ak"
             ? generateAfrikaKorpsCallIns(data.abilitiesData)
             : getBuildingUpgrades(building, data.upgradesData);
+        const units = getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData);
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard
@@ -151,7 +152,7 @@ const BuildingMapping = (
                 icon_name: building.ui.iconName,
                 symbol_icon_name: building.ui.symbolIconName,
               }}
-              units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
+              units={units}
               upgrades={upgrades}
               time_cost={{
                 fuel: building.cost.fuel,

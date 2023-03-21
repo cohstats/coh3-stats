@@ -43,16 +43,19 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
     loadout,
     entity: ebpsData.find((x) => x.id === loadout.id),
   }));
-  /* Debugging total cost. */
-  // console.group("🚀 ~ file: squadTotalCost.ts:18 ~ ebpsUnits:");
-  // console.log(ebpsUnits);
-  // console.groupEnd();
+  /**
+   * Important note found in the editor from designer:
+   * - The population cost of this SQUAD is stored as
+   *   `squad_population_ext/personnel_pop` which stacks with
+   *   `population_ext/personnel_pop` in the EBPS.
+   */
   const totalCost = ebpsUnits.reduce<Required<ResourceValues>>(
     (totalCost, ebpsUnit) => {
       totalCost.manpower += (ebpsUnit.entity?.cost.manpower || 0) * ebpsUnit.loadout.num;
       totalCost.fuel += (ebpsUnit.entity?.cost.fuel || 0) * ebpsUnit.loadout.num;
       totalCost.munition += (ebpsUnit.entity?.cost.munition || 0) * ebpsUnit.loadout.num;
-      totalCost.popcap += (ebpsUnit.entity?.cost.popcap || 0) * ebpsUnit.loadout.num;
+      totalCost.popcap +=
+        (ebpsUnit.entity?.populationExt.personnel_pop || 0) * ebpsUnit.loadout.num;
       totalCost.time_seconds += (ebpsUnit.entity?.cost.time || 0) * ebpsUnit.loadout.num;
       return totalCost;
     },
@@ -60,11 +63,12 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
       fuel: 0,
       manpower: 0,
       munition: 0,
-      popcap: 0,
+      popcap: sbpsUnit.populationExt.personnel_pop,
       time_seconds: 0,
       command: 0,
     },
   );
+  // console.log("🚀 ~ file: squadTotalCost.ts:71 ~ getSquadTotalCost ~ totalCost:", totalCost);
   // Round the costs, so we avoid floating numbers being displayed in the UI
   // like 399.999995.
   (Object.keys(totalCost) as Array<keyof ResourceValues>).forEach(
