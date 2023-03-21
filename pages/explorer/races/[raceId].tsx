@@ -2,7 +2,7 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
-import { Card, Divider, Flex, Grid, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
 import {
@@ -16,7 +16,6 @@ import {
   EbpsType,
   UpgradesType,
   filterMultiplayerBuildings,
-  getSquadTotalCost,
   fetchLocstring,
   getEbpsStats,
   getSbpsStats,
@@ -27,15 +26,13 @@ import {
   AbilitiesType,
   getBattlegroupStats,
   BattlegroupsType,
-  resolveBattlegroupBranches,
-  BattlegroupResolvedBranchType,
   getResolvedUpgrades,
   getResolvedSquads,
   HalfTrackDeploymentUnitsAfrikaKorps,
   getResolvedAbilities,
 } from "../../../src/unitStats";
-import { UnitUpgradeCard } from "../../../components/unit-cards/unit-upgrade-card";
 import ContentContainer from "../../../components/Content-container";
+import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 
 const RaceBagDescription: Record<raceType, string> = {
   // Locstring value: $11234530
@@ -104,7 +101,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>Battlegroups</Title>
 
-          {BattlegroupMapping(raceToFetch, { battlegroupData, upgradesData, abilitiesData })}
+          {BattlegroupCard(raceToFetch, { battlegroupData, upgradesData, abilitiesData })}
         </Stack>
 
         {/* Buildings Section */}
@@ -120,119 +117,6 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         </Stack>
       </ContentContainer>
     </>
-  );
-};
-
-const BattlegroupMapping = (
-  race: raceType,
-  data: {
-    battlegroupData: BattlegroupsType[];
-    abilitiesData: AbilitiesType[];
-    upgradesData: UpgradesType[];
-  },
-) => {
-  const resolvedBattlegroups = resolveBattlegroupBranches(
-    race,
-    data.battlegroupData,
-    data.upgradesData,
-    data.abilitiesData,
-  );
-  // console.log("🚀 ~ file: [raceId].tsx:130 ~ resolvedBattlegroups:", resolvedBattlegroups);
-
-  return (
-    <Stack>
-      {resolvedBattlegroups.map((battlegroup) => {
-        return (
-          <Card key={battlegroup.id} p="sm" radius="md" withBorder>
-            <UnitUpgradeCard
-              id={battlegroup.id}
-              desc={{
-                screen_name: battlegroup.uiParent.screenName,
-                help_text: "",
-                extra_text: "",
-                brief_text: battlegroup.uiParent.briefText,
-                icon_name: battlegroup.uiParent.iconName,
-              }}
-              time_cost={{
-                fuel: undefined,
-                munition: undefined,
-                manpower: undefined,
-                popcap: undefined,
-                time_seconds: undefined,
-              }}
-            ></UnitUpgradeCard>
-
-            {/* Branches Section */}
-            <Divider my={12} size="md"></Divider>
-            <Stack>
-              {BattlegroupBranchMapping(battlegroup.branches.LEFT)}
-              <Divider></Divider>
-              {BattlegroupBranchMapping(battlegroup.branches.RIGHT)}
-            </Stack>
-          </Card>
-        );
-      })}
-    </Stack>
-  );
-};
-
-function groupBy<T>(arr: T[], fn: (item: T) => any) {
-  return arr.reduce<Record<string, T[]>>((prev, curr) => {
-    const groupKey = fn(curr);
-    const group = prev[groupKey] || [];
-    group.push(curr);
-    return { ...prev, [groupKey]: group };
-  }, {});
-}
-
-const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
-  const groupedRows = groupBy(branch.upgrades, (item) => item.upg.uiPosition.row);
-  // console.log(
-  //   "🚀 ~ file: [raceId].tsx:174 ~ BattlegroupBranchMapping ~ groupedRows:",
-  //   groupedRows,
-  // );
-  // Create a series of grid elements per row.
-  return (
-    <Stack align="center">
-      <Title order={4} color="orange.5" transform="uppercase">
-        {branch.name}
-      </Title>
-
-      {Object.entries(groupedRows).map(([rowIndex, branchUpgrades]) => {
-        return (
-          <Grid
-            key={`${rowIndex}_${branch.name}`}
-            columns={branchUpgrades.length}
-            sx={{ width: branchUpgrades.length === 1 ? "" : "100%" }}
-          >
-            {branchUpgrades.map((branchUpg) => (
-              <Grid.Col key={branchUpg.upg.id} span={1}>
-                <Card p="lg" radius="md" withBorder>
-                  <UnitUpgradeCard
-                    id={branchUpg.upg.id}
-                    desc={{
-                      screen_name: branchUpg.upg.ui.screenName,
-                      help_text: branchUpg.upg.ui.helpText,
-                      extra_text: branchUpg.upg.ui.extraText,
-                      brief_text: branchUpg.upg.ui.briefText,
-                      icon_name: branchUpg.upg.ui.iconName,
-                    }}
-                    time_cost={{
-                      manpower: branchUpg.ability.cost.manpower,
-                      munition: branchUpg.ability.cost.munition,
-                      fuel: branchUpg.ability.cost.fuel,
-                      popcap: branchUpg.ability.cost.popcap,
-                      time_seconds: branchUpg.ability.rechargeTime,
-                      command: branchUpg.upg.cost.command,
-                    }}
-                  ></UnitUpgradeCard>
-                </Card>
-              </Grid.Col>
-            ))}
-          </Grid>
-        );
-      })}
-    </Stack>
   );
 };
 
@@ -254,7 +138,6 @@ const BuildingMapping = (
           race === "dak" && building.id === "halftrack_deployment_ak"
             ? generateAfrikaKorpsCallIns(data.abilitiesData)
             : getBuildingUpgrades(building, data.upgradesData);
-        // console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard

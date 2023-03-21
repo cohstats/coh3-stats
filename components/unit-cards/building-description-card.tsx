@@ -216,7 +216,7 @@ export const BuildingCard = ({ desc, units, time_cost, health, upgrades }: Build
 
       <Divider mt={8}></Divider>
 
-      <Accordion chevronPosition="right">
+      <Accordion multiple chevronPosition="right">
         {productionSection}
         {upgradeSection}
       </Accordion>
