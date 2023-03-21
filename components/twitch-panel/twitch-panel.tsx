@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Container, Flex, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
+import { Box, Container, Flex, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
 import { IconBrandTwitch, IconCircle } from "@tabler/icons";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
@@ -35,8 +35,8 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
 
     script.addEventListener("load", () => {
       const embed = new window.Twitch.Embed("twitch-embed", {
-        width: 854,
-        height: 480,
+        width: "100%",
+        height: "100%",
         channel: twitchStreams[0].user_login,
         layout: "video",
         autoplay: false,
@@ -70,8 +70,8 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
       </Flex>
 
       <Group>
-        <Container>
-          <div id="twitch-embed"></div>
+        <Container w="80%" h="auto" style={{ aspectRatio: 16 / 8.657 }} maw={854}>
+          <Box id="twitch-embed" w="100%" h="100%"></Box>
         </Container>
 
         {twitchStreams && (
@@ -81,7 +81,13 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
       <Container>
         {currentStream && (
           <>
-            <Group>
+            <Group
+              sx={() => ({
+                "@media (max-width: 1250px)": {
+                  display: "none",
+                },
+              })}
+            >
               <IconCircle fill="red" color="red" size={10} />
               <Text fw={700}>{currentStream.user_name}</Text>
               <Text>{currentStream.viewer_count} viewers</Text>
