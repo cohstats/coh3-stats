@@ -81,7 +81,7 @@ const getBattlegroupStats = async () => {
   if (battlegroupStats) return battlegroupStats;
 
   const myReqBattlegroup = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/battlegroup.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/battlegroup.json",
   );
 
   const root = await myReqBattlegroup.json();

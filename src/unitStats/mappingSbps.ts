@@ -165,7 +165,7 @@ const getSbpsStats = async () => {
   if (sbpsStats) return sbpsStats;
 
   const myReqSbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/sbps.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/sbps.json",
   );
 
   const root = await myReqSbps.json();

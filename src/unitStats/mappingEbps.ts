@@ -242,7 +242,7 @@ const getEbpsStats = async () => {
   if (ebpsStats) return ebpsStats;
 
   const myReqEbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/ebps.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/ebps.json",
   );
 
   const root = await myReqEbps.json();

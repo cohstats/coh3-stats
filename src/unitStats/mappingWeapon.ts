@@ -52,7 +52,7 @@ const getWeaponStats = async () => {
 
   // Fetch JSON data
   const myReqWeapon = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/weapon.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/weapon.json",
   );
 
   const root = await myReqWeapon.json();
