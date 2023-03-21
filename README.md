@@ -44,6 +44,18 @@ Development conventions:
 
 ## Development aproach
 
+
+### How to:
+
+#### Add new map image and name
+Maps are specified in https://github.com/cohstats/coh3-stats/blob/master/src/coh3/coh3-data.ts#L284
+
+### Utilize images from the game
+You can use function getIconsPathOnCDN where you can pass the image name or the full path and it should automatically resolve it on our hosting
+https://github.com/cohstats/coh3-stats/blob/master/src/utils.ts#L22
+If the image is not found there, you can always add it to the /public folder. 
+
+
 ### NextJS development
 
 #### We would like to have most of the pages which require some data SSR ( Server Side Rendered).
