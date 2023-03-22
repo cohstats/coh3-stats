@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { Box, Container, Flex, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
+import {
+  Box,
+  Container,
+  Flex,
+  Grid,
+  Group,
+  Text,
+  Title,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { IconBrandTwitch, IconCircle } from "@tabler/icons";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
@@ -62,22 +71,35 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
 
   return (
     <Container size="fluid">
-      <Flex justify="flex-start" align="center" gap={10} pb="sm">
+      <Flex justify="flex-start" align="center" gap={5} pb="sm">
         <IconBrandTwitch size={40} />
         <Title order={2} size="h2">
           Watch Live Streams
         </Title>
       </Flex>
 
-      <Group>
-        <Container w="80%" h="auto" style={{ aspectRatio: 16 / 8.657 }} maw={854}>
-          <Box id="twitch-embed" w="100%" h="100%"></Box>
-        </Container>
+      <Grid grow>
+        <Grid.Col md={9} sm={12}>
+          <Box
+            h="auto"
+            style={{
+              aspectRatio: 854 / 480,
+              borderRadius: "12px",
+              overflow: "hidden",
+              border: "2px solid black",
+            }}
+            maw={854}
+            id="twitch-embed"
+            w="100%"
+          ></Box>
+        </Grid.Col>
 
-        {twitchStreams && (
-          <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
-        )}
-      </Group>
+        <Grid.Col md={3} sm={12}>
+          {twitchStreams && (
+            <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
+          )}
+        </Grid.Col>
+      </Grid>
       <Container>
         {currentStream && (
           <>
@@ -92,7 +114,15 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
               <Text fw={700}>{currentStream.user_name}</Text>
               <Text>{currentStream.viewer_count} viewers</Text>
             </Group>
-            <Text>{currentStream.title}</Text>
+            <Text
+              sx={() => ({
+                "@media (max-width: 1250px)": {
+                  display: "none",
+                },
+              })}
+            >
+              {currentStream.title}
+            </Text>
           </>
         )}
       </Container>

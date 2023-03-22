@@ -14,54 +14,50 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
     setSelected(idx);
   }
   return (
-    <List listStyleType="none" pb="xl">
-      <Flex direction="column" gap={10} justify="space-between">
-        {twitchStreams.slice(0, 4).map((stream: TwitchStream, idx: number) => {
-          return (
-            <List.Item
-              key={stream.id}
+    <Flex
+      style={{
+        justifyContent: "space-around",
+      }}
+      direction={{ md: "column" }}
+      gap={2}
+    >
+      {twitchStreams.slice(0, 3).map((stream: TwitchStream, idx: number) => {
+        return (
+          <Box
+            w={{
+              xs: "33%",
+              sm: "33%",
+              md: "100%",
+              lg: "100%",
+            }}
+            key={stream.id}
+            onClick={() => handleChangeChannel(idx)}
+            pos="relative"
+          >
+            <BackgroundImage
+              radius="md"
               style={{
-                cursor: "pointer",
+                border: `${selected === idx ? "2px solid gold" : "2px solid black"}`,
+                color: "white",
+                aspectRatio: 16 / 9,
+                width: "100%",
               }}
-              onClick={() => handleChangeChannel(idx)}
+              src={`${stream.thumbnail_url
+                .replace("{width}", "1280")
+                .replace("{height}", "720")}`}
             >
-              <Box maw={300} mx="auto" pos="relative">
-                <BackgroundImage
-                  radius="md"
-                  maw={200}
-                  w={200}
-                  h={110}
-                  mx="auto"
-                  style={{
-                    border: `${selected === idx ? "2px solid gold" : "2px solid black"}`,
-                    borderRadius: "12px",
-                    color: "white",
-                  }}
-                  src={`${stream.thumbnail_url
-                    .replace("{width}", "1280")
-                    .replace("{height}", "720")}`}
-                >
-                  <Flex
-                    pos="absolute"
-                    bottom={5}
-                    left={0}
-                    w="100%"
-                    justify="space-between"
-                    px={10}
-                  >
-                    <Flex align="center" gap={4}>
-                      <IconCircle fill="red" color="black" size={8} />
-                      <Text>{stream.user_name}</Text>
-                    </Flex>
-                    <Text>{stream.viewer_count}</Text>
-                  </Flex>
-                </BackgroundImage>
-              </Box>
-            </List.Item>
-          );
-        })}
-      </Flex>
-    </List>
+              <Flex pos="absolute" bottom={5} left={0} w="100%" justify="space-between" px={10}>
+                <Flex align="center" gap={4}>
+                  <IconCircle fill="red" color="black" size={8} />
+                  <Text>{stream.user_name}</Text>
+                </Flex>
+                <Text>{stream.viewer_count}</Text>
+              </Flex>
+            </BackgroundImage>
+          </Box>
+        );
+      })}
+    </Flex>
   );
 };
 export default ChannelList;
