@@ -17,6 +17,11 @@ type EbpsType = {
   spawnItems: string[];
   /** Found at `ui_ext`. */
   ui: EntityUiData;
+  /** To differentiate from the `cost_ext`, the entity has the popcap stored
+   * within the `population_ext` along with the unkeep per pop per minute. */
+  populationExt: {
+    personnel_pop: number;
+  };
   /** Found at `cost_ext`. */
   cost: EntityCost;
   /** Found at `health_ext`. */
@@ -115,6 +120,9 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     upgradeRefs: [],
     weaponRef: [],
     weaponId: "",
+    populationExt: {
+      personnel_pop: 0,
+    },
   };
 
   // clearUndefined(ebpsEntity);
@@ -170,6 +178,9 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
         ebps.cost.munition = extension.time_cost?.cost?.munition || 0;
         ebps.cost.manpower = extension.time_cost?.cost?.manpower || 0;
         ebps.cost.popcap = extension.time_cost?.cost?.popcap || 0;
+        break;
+      case "population_ext":
+        ebps.populationExt.personnel_pop = extension.personnel_pop || 0;
         break;
       case "health_ext":
         ebps.health.hitpoints = extension.hitpoints || 0;
@@ -231,7 +242,7 @@ const getEbpsStats = async () => {
   if (ebpsStats) return ebpsStats;
 
   const myReqEbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/ebps.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/ebps.json",
   );
 
   const root = await myReqEbps.json();

@@ -14,6 +14,12 @@ type UpgradesType = {
   ui: UpgradeUiData;
   /** Found at `time_cost`. */
   cost: UpgradeCost;
+  /**
+   * As the battlegroup contains a branching display, we gonna use the abilities
+   * reference to get the position within the row / column. This is found at
+   * `abilities/upgrade_id/upgrade_bag/ui_position`.
+   */
+  uiPosition: { row: number; column: number };
 };
 
 /**
@@ -42,6 +48,8 @@ type UpgradeCost = {
   popcap: number;
   /** Training / research time. Found at `time_seconds` */
   time: number;
+  /** Command points required. */
+  command: number;
 };
 
 // Exported variable holding mapped data for each json file. Will be set via
@@ -70,6 +78,11 @@ const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, paren
       munition: 0,
       popcap: 0,
       time: 0,
+      command: 0,
+    },
+    uiPosition: {
+      row: -1,
+      column: -1,
     },
   };
 
@@ -100,6 +113,23 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   upgrade.cost.munition = upgradeBag.time_cost?.cost?.munition || 0;
   upgrade.cost.manpower = upgradeBag.time_cost?.cost?.manpower || 0;
   upgrade.cost.popcap = upgradeBag.time_cost?.cost?.popcap || 0;
+
+  // The command points are stored within `requirements/required_player_resources`.
+  if (Array.isArray(upgradeBag.requirements)) {
+    // Find the required player resources, which points to the command points.
+    const reqPlayerResources = upgradeBag.requirements.find(
+      (req: any) =>
+        req.required.template_reference.value.split("\\").slice(-1)[0] ===
+        "required_player_resources",
+    );
+    if (reqPlayerResources) {
+      upgrade.cost.command = reqPlayerResources.required.resource?.command || 0;
+    }
+  }
+
+  /* --------- UI POSITION SECTION --------- */
+  upgrade.uiPosition.row = upgradeBag.ui_position?.ui_position_row || -1;
+  upgrade.uiPosition.column = upgradeBag.ui_position?.ui_position_column || -1;
 };
 
 // Calls the mapping for each entity and puts the result array into the exported
@@ -109,7 +139,7 @@ const getUpgradesStats = async () => {
   if (upgradesStats) return upgradesStats;
 
   const myReqUpgrades = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/upgrade.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/upgrade.json",
   );
 
   const root = await myReqUpgrades.json();

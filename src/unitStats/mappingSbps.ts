@@ -16,6 +16,11 @@ type SbpsType = {
   /** Found at `squad_upgrade_ext.upgrades`. List of instance references. */
   upgrades: string[];
   unitType: string;
+  /** The `squad_population_ext` holds the base popcap and upkeep per pop per
+   * minute costs, which will be stacked with the ebps. */
+  populationExt: {
+    personnel_pop: number;
+  };
 };
 
 type SquadUiData = {
@@ -46,7 +51,6 @@ let sbpsStats: SbpsType[];
 const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
   const sbpsEntity: SbpsType = {
     // default values
-
     id: filename,
     screenName: filename,
     path: slash(jsonPath),
@@ -62,6 +66,9 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
       extraText: "",
     },
     upgrades: [],
+    populationExt: {
+      personnel_pop: 0,
+    },
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -112,6 +119,9 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           } else console.log(sbps.id + ": Loadout not found");
         }
         break;
+      case "squad_population_ext":
+        sbps.populationExt.personnel_pop = extension.personnel_pop || 0;
+        break;
       case "squad_ui_ext":
         {
           // Check if the `race_list` is not empty, otherwise skip.
@@ -155,7 +165,7 @@ const getSbpsStats = async () => {
   if (sbpsStats) return sbpsStats;
 
   const myReqSbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/sbps.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/sbps.json",
   );
 
   const root = await myReqSbps.json();
