@@ -5,6 +5,7 @@ import {
   Flex,
   Grid,
   Group,
+  MediaQuery,
   Text,
   Title,
   useMantineColorScheme,
@@ -100,32 +101,20 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
           )}
         </Grid.Col>
       </Grid>
-      <Container>
-        {currentStream && (
-          <>
-            <Group
-              sx={() => ({
-                "@media (max-width: 1250px)": {
-                  display: "none",
-                },
-              })}
-            >
+      {currentStream && (
+        <>
+          <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+            <Group mt={10}>
               <IconCircle fill="red" color="red" size={10} />
               <Text fw={700}>{currentStream.user_name}</Text>
               <Text>{currentStream.viewer_count} viewers</Text>
             </Group>
-            <Text
-              sx={() => ({
-                "@media (max-width: 1250px)": {
-                  display: "none",
-                },
-              })}
-            >
-              {currentStream.title}
-            </Text>
-          </>
-        )}
-      </Container>
+          </MediaQuery>
+          <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+            <Text>{currentStream.title}</Text>
+          </MediaQuery>
+        </>
+      )}
     </Container>
   );
 };

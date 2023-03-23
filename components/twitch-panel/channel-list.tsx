@@ -19,16 +19,20 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
         justifyContent: "space-around",
       }}
       direction={{ md: "column" }}
-      gap={2}
+      wrap="wrap"
+      h="100%"
     >
       {twitchStreams.slice(0, 3).map((stream: TwitchStream, idx: number) => {
         return (
           <Box
             w={{
+              base: "50%",
               xs: "33%",
-              sm: "33%",
               md: "100%",
               lg: "100%",
+            }}
+            style={{
+              cursor: "pointer",
             }}
             key={stream.id}
             onClick={() => handleChangeChannel(idx)}
