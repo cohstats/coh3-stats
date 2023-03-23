@@ -2,15 +2,19 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
-import { Flex, Grid, Space, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Grid, Space, Stack, Text, Title } from "@mantine/core";
 import ContentContainer from "../../../../../components/Content-container";
 import {
   EbpsType,
   fetchLocstring,
   getEbpsStats,
+  getResolvedUpgrades,
   getSbpsStats,
+  getSquadTotalCost,
+  getUpgradesStats,
   RaceBagDescription,
   SbpsType,
+  UpgradesType,
 } from "../../../../../src/unitStats";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import FactionIcon from "../../../../../components/faction-icon";
@@ -20,31 +24,54 @@ import {
   StatsVehicleArmor,
   VehicleArmorType,
 } from "../../../../../components/unit-cards/vehicle-armor-card";
+import { StatsCosts } from "../../../../../components/unit-cards/cost-card";
+import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
+  upgradesData: UpgradesType[];
   locstring: Record<string, string>;
 }
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData, upgradesData }) => {
   const { query } = useRouter();
 
   const unitId = query.unitId as string;
   const raceId = query.raceId as raceType;
 
   const resolvedSquad = sbpsData.find((x) => x.id === unitId);
-  const resolvedEntity = ebpsData.find((x) => x.id === unitId);
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntity:", resolvedEntity);
+  const resolvedEntities: EbpsType[] = [];
 
-  if (!resolvedSquad || !resolvedEntity) {
+  for (const loadout of resolvedSquad?.loadout || []) {
+    const id = loadout.type.split("/").slice(-1)[0];
+    const foundEntity = ebpsData.find((x) => x.id === id);
+    if (foundEntity) {
+      resolvedEntities.push(foundEntity);
+    }
+  }
+
+  // The resolved entity does not matter at all, as we can obtain such from the squad loadout.
+  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
+  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
+
+  if (!resolvedSquad || !resolvedEntities?.length) {
     // How to redirect back?
     return <Error statusCode={404} title="Unit Not Found" />;
   }
 
   const localizedRace = localizedNames[raceId];
   const descriptionRace = RaceBagDescription[raceId];
+
+  // Only vehicles have armor values and a single entity usually.
+  const armorValues = {
+    frontal: resolvedEntities[0].health.armorLayout.frontArmor || 0,
+    side: resolvedEntities[0].health.armorLayout.sideArmor || 0,
+    rear: resolvedEntities[0].health.armorLayout.rearArmor || 0,
+  };
+
+  // Obtain the total cost of the squad by looking at the loadout.
+  const totalCost = getSquadTotalCost(resolvedSquad, ebpsData);
 
   return (
     <>
@@ -63,28 +90,44 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData }) => {
         </Flex>
         <Space h={32}></Space>
         <Grid columns={3}>
-          <Grid.Col md={2}>
-            <UnitDescriptionCard
-              screen_name={resolvedSquad.ui.screenName}
-              help_text={resolvedSquad.ui.helpText}
-              brief_text={resolvedSquad.ui.briefText}
-              symbol_icon_name={resolvedSquad.ui.symbolIconName}
-              icon_name={resolvedSquad.ui.iconName}
-            ></UnitDescriptionCard>
+          <Grid.Col span={3}>
+            <Card p="lg" radius="md" withBorder>
+              <UnitDescriptionCard
+                screen_name={resolvedSquad.ui.screenName}
+                help_text={resolvedSquad.ui.helpText}
+                brief_text={resolvedSquad.ui.briefText}
+                symbol_icon_name={resolvedSquad.ui.symbolIconName}
+                icon_name={resolvedSquad.ui.iconName}
+              ></UnitDescriptionCard>
+            </Card>
           </Grid.Col>
-          <Grid.Col md={1}>
-            {resolvedSquad.unitType === "vehicles" ? (
-              <StatsVehicleArmor
-                type={resolvedSquad.ui.armorIcon as VehicleArmorType}
-                armorValues={{
-                  frontal: resolvedEntity.health.armorLayout.frontArmor,
-                  side: resolvedEntity.health.armorLayout.sideArmor,
-                  rear: resolvedEntity.health.armorLayout.rearArmor,
-                }}
-              ></StatsVehicleArmor>
-            ) : (
-              <></>
-            )}
+          <Grid.Col md={2} order={2} orderMd={1}>
+            <Stack>{UnitUpgradeSection(resolvedSquad, upgradesData)}</Stack>
+          </Grid.Col>
+          <Grid.Col md={1} order={1} orderMd={2}>
+            <Stack>
+              <Title order={4}>Stats</Title>
+              <Card p="lg" radius="md" withBorder>
+                <StatsCosts
+                  command={totalCost.command}
+                  manpower={totalCost.manpower}
+                  munition={totalCost.munition}
+                  fuel={totalCost.fuel}
+                  popcap={totalCost.popcap}
+                  time_seconds={totalCost.time_seconds}
+                ></StatsCosts>
+              </Card>
+              {resolvedSquad.unitType === "vehicles" ? (
+                <Card p="lg" radius="md" withBorder>
+                  <StatsVehicleArmor
+                    type={resolvedSquad.ui.armorIcon as VehicleArmorType}
+                    armorValues={armorValues}
+                  ></StatsVehicleArmor>
+                </Card>
+              ) : (
+                <></>
+              )}
+            </Stack>
           </Grid.Col>
         </Grid>
       </ContentContainer>
@@ -92,16 +135,48 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData }) => {
   );
 };
 
+const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
+  // Resolve unit upgrades.
+  const upgrades = getResolvedUpgrades(squad.upgrades, upgradesData);
+
+  return (
+    <Stack>
+      <Title order={4}>Upgrades</Title>
+      <Stack>
+        {Object.values(upgrades).map(({ id, ui, cost }) => {
+          return (
+            <Card key={id} p="lg" radius="md" withBorder>
+              {UnitUpgradeCard({
+                id,
+                desc: {
+                  screen_name: ui.screenName,
+                  help_text: ui.helpText,
+                  extra_text: ui.extraText,
+                  brief_text: ui.briefText,
+                  icon_name: ui.iconName,
+                },
+                time_cost: cost,
+              })}
+            </Card>
+          );
+        })}
+      </Stack>
+    </Stack>
+  );
+};
+
 export const getStaticProps = async () => {
   const locstring = await fetchLocstring();
   const ebpsData = await getEbpsStats();
   const sbpsData = await getSbpsStats();
+  const upgradesData = await getUpgradesStats();
 
   return {
     props: {
+      locstring,
       sbpsData,
       ebpsData,
-      locstring,
+      upgradesData,
     },
   };
 };
