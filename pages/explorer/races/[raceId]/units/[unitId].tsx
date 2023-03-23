@@ -26,6 +26,7 @@ import {
 } from "../../../../../components/unit-cards/vehicle-armor-card";
 import { StatsCosts } from "../../../../../components/unit-cards/cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
+import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -116,6 +117,13 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData, upgradesDat
                   popcap={totalCost.popcap}
                   time_seconds={totalCost.time_seconds}
                 ></StatsCosts>
+              </Card>
+              <Card p="lg" radius="md" withBorder>
+                <VeterancyCard
+                  one={resolvedSquad.veterancyInfo.one}
+                  two={resolvedSquad.veterancyInfo.two}
+                  three={resolvedSquad.veterancyInfo.three}
+                ></VeterancyCard>
               </Card>
               {resolvedSquad.unitType === "vehicles" ? (
                 <Card p="lg" radius="md" withBorder>

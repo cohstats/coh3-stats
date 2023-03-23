@@ -21,6 +21,13 @@ type SbpsType = {
   populationExt: {
     personnel_pop: number;
   };
+  /** Found at `squad_veterancy_ext`. This contains a list of veterancy
+   * description / required xp per level. */
+  veterancyInfo: {
+    one: { exp: number; screenName: string };
+    two: { exp: number; screenName: string };
+    three: { exp: number; screenName: string };
+  };
 };
 
 type SquadUiData = {
@@ -73,6 +80,20 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     upgrades: [],
     populationExt: {
       personnel_pop: 0,
+    },
+    veterancyInfo: {
+      one: {
+        exp: 0,
+        screenName: "",
+      },
+      two: {
+        exp: 0,
+        screenName: "",
+      },
+      three: {
+        exp: 0,
+        screenName: "",
+      },
     },
   };
 
@@ -154,6 +175,27 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           if (upg.upgrade?.instance_reference) {
             sbps.upgrades.push(upg.upgrade.instance_reference);
           }
+        }
+        break;
+      case "squad_veterancy_ext":
+        {
+          // Check if the `race_list` is not empty, otherwise skip.
+          if (!extension.race_list?.length) break;
+          // The race_list is always one item.
+          const vetExtInfo: any[] = extension.race_list[0].race_data.info.veterancy_rank_info;
+          // Technically the first one is vet 1, second is vet 2 and third is vet 3.
+          sbps.veterancyInfo.one = {
+            exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text),
+          };
+          sbps.veterancyInfo.two = {
+            exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text),
+          };
+          sbps.veterancyInfo.three = {
+            exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text),
+          };
         }
         break;
       default:
