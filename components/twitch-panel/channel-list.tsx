@@ -53,7 +53,7 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
               <Flex pos="absolute" bottom={5} left={0} w="100%" justify="space-between" px={10}>
                 <Flex align="center" gap={4}>
                   <IconCircle fill="red" color="black" size={8} />
-                  <Text>{stream.user_name}</Text>
+                  <Text fw={600}>{stream.user_name}</Text>
                 </Flex>
                 <Text>{stream.viewer_count}</Text>
               </Flex>

@@ -81,18 +81,7 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
 
       <Grid grow>
         <Grid.Col md={9} sm={12}>
-          <Box
-            h="auto"
-            style={{
-              aspectRatio: 854 / 480,
-              borderRadius: "12px",
-              overflow: "hidden",
-              border: "2px solid black",
-            }}
-            maw={854}
-            id="twitch-embed"
-            w="100%"
-          ></Box>
+          <Box style={{ aspectRatio: 16 / 9 }} id="twitch-embed"></Box>
         </Grid.Col>
 
         <Grid.Col md={3} sm={12}>
@@ -106,7 +95,7 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <Group mt={10}>
               <IconCircle fill="red" color="red" size={10} />
-              <Text fw={700}>{currentStream.user_name}</Text>
+              <Text fw={600}>{currentStream.user_name}</Text>
               <Text>{currentStream.viewer_count} viewers</Text>
             </Group>
           </MediaQuery>
