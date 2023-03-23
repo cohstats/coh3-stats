@@ -1,10 +1,11 @@
 import { DefaultMantineColor, Flex, Grid, Image, Text, Title } from "@mantine/core";
 
 /**
- * Vehicle type, found within `ebps` -> `ebpextensions\\type_ext` ->
- * `unit_type_list`.
+ * Armor type, found within `sbps` ->
+ * `sbpextensions\\squad_ui_ext\race_list\race_data\info` ->
+ * `ui_armor_info\armor_icon`.
  */
-type VehicleType =
+export type VehicleArmorType =
   | "heavy_tank"
   | "medium_tank"
   | "light_tank"
@@ -19,11 +20,11 @@ type VehicleArmor = {
 };
 
 type StatsVehicleInput = {
-  type: VehicleType;
+  type: VehicleArmorType;
   armorValues: VehicleArmor;
 };
 
-const VehicleTypeColor: Record<VehicleType, DefaultMantineColor> = {
+const VehicleTypeColor: Record<VehicleArmorType, DefaultMantineColor> = {
   heavy_tank: "red.5",
   medium_tank: "orange.5",
   light_tank: "yellow.5",

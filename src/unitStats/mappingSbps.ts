@@ -32,6 +32,10 @@ type SquadUiData = {
   briefText: string;
   screenName: string;
   extraText: string; // Could be empty (Set as $0).
+  /* Armor type icon, found within `sbps` ->
+  `sbpextensions\\squad_ui_ext\race_list\race_data\info` ->
+  `ui_armor_info\armor_icon`. Applies to only vehicles. */
+  armorIcon: string;
 };
 
 type LoadoutData = {
@@ -64,6 +68,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
       briefText: "",
       screenName: "",
       extraText: "",
+      armorIcon: "",
     },
     upgrades: [],
     populationExt: {
@@ -139,6 +144,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.extraText = resolveLocstring(extraText);
           const briefText = uiExtInfo.brief_text;
           sbps.ui.briefText = resolveLocstring(briefText);
+          sbps.ui.armorIcon = uiExtInfo.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }
         break;
       case "squad_upgrade_ext":

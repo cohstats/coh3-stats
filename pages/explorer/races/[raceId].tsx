@@ -30,23 +30,10 @@ import {
   getResolvedSquads,
   HalfTrackDeploymentUnitsAfrikaKorps,
   getResolvedAbilities,
+  RaceBagDescription,
 } from "../../../src/unitStats";
 import ContentContainer from "../../../components/Content-container";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-
-const RaceBagDescription: Record<raceType, string> = {
-  // Locstring value: $11234530
-  german:
-    "A steadfast and elite force that can hold against even the most stubborn foe. Unlock unique arsenals to specialize your forces.",
-  // Locstring value: $11234529
-  american:
-    "Versatile infantry and weaponry that can displace any opponent. Experience is key to improving your forces for the fight ahead.",
-  // Locstring value: $11220490
-  dak: "A combined-arms force of aggressive vehicles, plentiful reinforcements and stubborn tanks that can break down any enemy line.",
-  // Locstring value: $11234532
-  british:
-    "Infantry and team weapons form a backbone that is tough to break. Myriad vehicles will create the opening you need to seize the day.",
-};
 
 interface RaceDetailProps {
   weaponData: WeaponType[];
@@ -142,6 +129,7 @@ const BuildingMapping = (
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard
+              faction={race}
               // @todo: Validate types.
               types={building.unitTypes as BuildingType[]}
               desc={{
@@ -179,8 +167,8 @@ function getBuildingTrainableUnits(
 ): BuildingSchema["units"] {
   return Object.entries(getResolvedSquads(building.spawnItems, sbpsData, ebpsData)).map(
     ([id, { ui, time_cost }]) => ({
+      id,
       desc: {
-        id,
         screen_name: ui.screenName,
         help_text: ui.helpText,
         brief_text: ui.briefText,
