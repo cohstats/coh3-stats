@@ -3,6 +3,7 @@ import { AbilitiesType } from "./mappingAbilities";
 import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 import { UpgradesType } from "./mappingUpgrades";
+import { WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, ResourceValues } from "./squadTotalCost";
 
 export function getResolvedAbilities(refs: string[], abilities: AbilitiesType[]) {
@@ -30,6 +31,21 @@ export function getResolvedUpgrades(refs: string[], upgradesData: UpgradesType[]
     researchableUpgrades[upgradeId] ??= upgradeFound;
   }
   return researchableUpgrades;
+}
+
+export function getResolvedWeapons(refs: string[], weaponsData: WeaponType[]) {
+  // The key is the weapon id.
+  const loadoutWeapons: Record<string, WeaponType> = {};
+  for (const refPath of refs) {
+    // Get the last element of the array, which is the id.
+    const weaponId = refPath.split("/").slice(-1)[0];
+    const weaponFound = weaponsData.find((x) => x.id === weaponId);
+    // Ignore those upgrades not found.
+    if (!weaponFound) continue;
+
+    loadoutWeapons[weaponId] ??= weaponFound;
+  }
+  return loadoutWeapons;
 }
 
 export function getResolvedSquads(refs: string[], sbpsData: SbpsType[], ebpsData: EbpsType[]) {

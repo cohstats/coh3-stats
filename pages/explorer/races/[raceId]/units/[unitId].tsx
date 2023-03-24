@@ -9,12 +9,15 @@ import {
   fetchLocstring,
   getEbpsStats,
   getResolvedUpgrades,
+  getResolvedWeapons,
   getSbpsStats,
   getSquadTotalCost,
   getUpgradesStats,
+  getWeaponStats,
   RaceBagDescription,
   SbpsType,
   UpgradesType,
+  WeaponType,
 } from "../../../../../src/unitStats";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import FactionIcon from "../../../../../components/faction-icon";
@@ -32,10 +35,16 @@ interface UnitDetailProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
+  weaponsData: WeaponType[];
   locstring: Record<string, string>;
 }
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData, upgradesData }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({
+  sbpsData,
+  ebpsData,
+  upgradesData,
+  weaponsData,
+}) => {
   const { query } = useRouter();
 
   const unitId = query.unitId as string;
@@ -53,8 +62,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData, upgradesDat
   }
 
   // The resolved entity does not matter at all, as we can obtain such from the squad loadout.
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
+  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
+  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
 
   if (!resolvedSquad || !resolvedEntities?.length) {
     // How to redirect back?
@@ -135,6 +144,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ sbpsData, ebpsData, upgradesDat
               ) : (
                 <></>
               )}
+              <Card p="lg" radius="md" withBorder>
+                {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
+              </Card>
             </Stack>
           </Grid.Col>
         </Grid>
@@ -173,11 +185,80 @@ const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
   );
 };
 
+const UnitWeaponSection = (
+  resolvedSquad: SbpsType,
+  resolvedEntities: EbpsType[],
+  entitiesData: EbpsType[],
+  weaponsData: WeaponType[],
+) => {
+  // console.log("🚀 ~ file: [unitId].tsx:194 ~ entitiesData:", entitiesData)
+  // Store the quantity of each weapon using the loadouts.
+  const weaponSquadDict: Record<string, { count: number; bag: WeaponType }> = {};
+
+  for (const entity of resolvedEntities) {
+    // Loop over the weapon list entities from each squad ebps.
+    for (const weaponEntity of entity.weaponRef) {
+      const weaponEntityId = weaponEntity.ebp.split("/").slice(-1)[0];
+      // console.log("🚀 ~ file: [unitId].tsx:201 ~ weaponEntityId:", weaponEntityId)
+
+      // Now extract the weapon from the entities with the extracted id.
+      const weaponEbps = entitiesData.find((x) => x.id === weaponEntityId);
+      console.log("🚀 ~ file: [unitId].tsx:204 ~ weaponEbps:", weaponEbps);
+
+      // Skip if weapon entity not found.
+      if (!weaponEbps) continue;
+
+      // Resolve the weapon entity with `weaponId` (only applies to weapon entities).
+      const weapon = weaponsData.find((x) => x.id === weaponEbps.weaponId);
+
+      console.log("🚀 ~ file: [unitId].tsx:216 ~ weapon:", weapon);
+      // Skip if the weapon (not entity!) could not be found.
+      if (!weapon) continue;
+
+      // Find the quantity via loadout.
+      const count =
+        resolvedSquad.loadout.find((x) => x.type.split("/").slice(-1)[0] === entity.id)?.num || 0;
+
+      // Add weapon to dictionary.
+      weaponSquadDict[weapon.id] = { count, bag: weapon };
+    }
+  }
+
+  // console.log(
+  //   "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
+  //   weaponSquadDict,
+  // );
+
+  return (
+    <Stack>
+      <Title order={4}>Default Loadout</Title>
+      <Stack>
+        {Object.entries(weaponSquadDict).map(([id, { count, bag }]) => {
+          return (
+            <Card key={id} p="lg" radius="md" withBorder>
+              <Text>
+                {id} - {count}
+              </Text>
+              <Text>Accuracy</Text>
+              <Stack spacing={4}>
+                <Text>FAR - {bag.weapon_bag.accuracy.far}</Text>
+                <Text>MID - {bag.weapon_bag.accuracy.mid}</Text>
+                <Text>NEAR - {bag.weapon_bag.accuracy.near}</Text>
+              </Stack>
+            </Card>
+          );
+        })}
+      </Stack>
+    </Stack>
+  );
+};
+
 export const getStaticProps = async () => {
   const locstring = await fetchLocstring();
   const ebpsData = await getEbpsStats();
   const sbpsData = await getSbpsStats();
   const upgradesData = await getUpgradesStats();
+  const weaponsData = await getWeaponStats();
 
   return {
     props: {
@@ -185,6 +266,7 @@ export const getStaticProps = async () => {
       sbpsData,
       ebpsData,
       upgradesData,
+      weaponsData,
     },
   };
 };
