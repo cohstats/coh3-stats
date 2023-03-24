@@ -11,29 +11,18 @@ import {
   Group,
   CloseButton,
 } from "@mantine/core";
-
-export type weaponMember = {
-  id: string;
-  num: number;
-  unit: string;
-};
+import { WeaponMember } from "../../src/unitStats/dpsCommon";
 
 interface IDPSProps {
-  weapon: any;
-  defaultNum: number;
+  weapon_member: WeaponMember;
   onNumberChange: any;
   onDeleteMember: any;
-  unit: string;
 }
 
 export const DpsWeaponCard = (props: IDPSProps) => {
-  const weaponMember: weaponMember = {
-    id: props.weapon.id,
-    num: props.defaultNum,
-    unit: props.unit,
-  };
+  // const weaponMember =
 
-  const [activeData, setActiveData] = useState(weaponMember);
+  const [activeData] = useState(props.weapon_member);
 
   function onNumberChanged(value: number) {
     if (value <= 0 && activeData.num == 0) {
@@ -45,7 +34,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
     if (value <= 0) value = 0;
 
     activeData.num = value;
-    setActiveData({ ...activeData });
+    // setActiveData({ ...activeData });
     props.onNumberChange(activeData);
   }
 
@@ -69,22 +58,24 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           <Image
             width={60}
             height={30}
-            src={props.weapon.image}
+            src={props.weapon_member.image}
             fit="contain"
-            alt={activeData.id}
+            alt={activeData.weapon_id}
           />
           <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
         </Group>
 
-        <Text size="xs">{activeData.id}</Text>
+        <Text size="xs">{activeData.weapon_id}</Text>
         <Space h="xs"></Space>
-        <Box
-          sx={() => ({
-            width: "60px",
-          })}
-        >
-          <NumberInput defaultValue={activeData.num} size="xs" onChange={onNumberChanged} />
-        </Box>
+        {activeData.ebps.unitType == "infantry" && (
+          <Box
+            sx={() => ({
+              width: "60px",
+            })}
+          >
+            <NumberInput defaultValue={activeData.num} size="xs" onChange={onNumberChanged} />
+          </Box>
+        )}
       </Box>
     </>
   );

@@ -15,7 +15,6 @@ import {
   UpgradesType,
 } from "../../src/unitStats/mappingUpgrades";
 import { fetchLocstring, setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
-import Head from "next/head";
 
 interface DpsProps {
   weaponData: WeaponType[];
