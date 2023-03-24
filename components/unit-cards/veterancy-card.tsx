@@ -1,7 +1,4 @@
-// icons/hud/decorators/vet_star.png
-// icons/hud/decorators/vet_star_empty.png
-
-import { Flex, Grid, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Grid, Group, Image, Stack, Text, Title } from "@mantine/core";
 
 const vetStarIconPath = "/icons/hud/decorators/vet_star.png";
 const vetStarEmptyIconPath = "/icons/hud/decorators/vet_star_empty.png";

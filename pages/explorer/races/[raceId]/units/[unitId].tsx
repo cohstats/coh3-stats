@@ -2,7 +2,7 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
-import { Card, Flex, Grid, Space, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Grid, SimpleGrid, Space, Stack, Text, Title } from "@mantine/core";
 import ContentContainer from "../../../../../components/Content-container";
 import {
   EbpsType,
@@ -30,6 +30,7 @@ import {
 import { StatsCosts } from "../../../../../components/unit-cards/cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
+import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -112,7 +113,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
             </Card>
           </Grid.Col>
           <Grid.Col md={2} order={2} orderMd={1}>
-            <Stack>{UnitUpgradeSection(resolvedSquad, upgradesData)}</Stack>
+            <Stack>
+              {UnitUpgradeSection(resolvedSquad, upgradesData)}
+              {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
+            </Stack>
           </Grid.Col>
           <Grid.Col md={1} order={1} orderMd={2}>
             <Stack>
@@ -144,9 +148,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
               ) : (
                 <></>
               )}
-              <Card p="lg" radius="md" withBorder>
-                {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
-              </Card>
             </Stack>
           </Grid.Col>
         </Grid>
@@ -158,6 +159,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
 const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
   // Resolve unit upgrades.
   const upgrades = getResolvedUpgrades(squad.upgrades, upgradesData);
+
+  if (!upgrades.length) return <></>;
 
   return (
     <Stack>
@@ -193,7 +196,7 @@ const UnitWeaponSection = (
 ) => {
   // console.log("🚀 ~ file: [unitId].tsx:194 ~ entitiesData:", entitiesData)
   // Store the quantity of each weapon using the loadouts.
-  const weaponSquadDict: Record<string, { count: number; bag: WeaponType }> = {};
+  const weaponSquadDict: Record<string, { count: number; weapon: WeaponType }> = {};
 
   for (const entity of resolvedEntities) {
     // Loop over the weapon list entities from each squad ebps.
@@ -203,7 +206,7 @@ const UnitWeaponSection = (
 
       // Now extract the weapon from the entities with the extracted id.
       const weaponEbps = entitiesData.find((x) => x.id === weaponEntityId);
-      console.log("🚀 ~ file: [unitId].tsx:204 ~ weaponEbps:", weaponEbps);
+      // console.log("🚀 ~ file: [unitId].tsx:204 ~ weaponEbps:", weaponEbps);
 
       // Skip if weapon entity not found.
       if (!weaponEbps) continue;
@@ -211,7 +214,7 @@ const UnitWeaponSection = (
       // Resolve the weapon entity with `weaponId` (only applies to weapon entities).
       const weapon = weaponsData.find((x) => x.id === weaponEbps.weaponId);
 
-      console.log("🚀 ~ file: [unitId].tsx:216 ~ weapon:", weapon);
+      // console.log("🚀 ~ file: [unitId].tsx:216 ~ weapon:", weapon);
       // Skip if the weapon (not entity!) could not be found.
       if (!weapon) continue;
 
@@ -220,36 +223,28 @@ const UnitWeaponSection = (
         resolvedSquad.loadout.find((x) => x.type.split("/").slice(-1)[0] === entity.id)?.num || 0;
 
       // Add weapon to dictionary.
-      weaponSquadDict[weapon.id] = { count, bag: weapon };
+      weaponSquadDict[weapon.id] = { count, weapon };
     }
   }
 
-  // console.log(
-  //   "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
-  //   weaponSquadDict,
-  // );
+  console.log(
+    "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
+    weaponSquadDict,
+  );
 
   return (
     <Stack>
       <Title order={4}>Default Loadout</Title>
-      <Stack>
-        {Object.entries(weaponSquadDict).map(([id, { count, bag }]) => {
+
+      <SimpleGrid cols={2}>
+        {Object.entries(weaponSquadDict).map(([id, { count, weapon }]) => {
           return (
             <Card key={id} p="lg" radius="md" withBorder>
-              <Text>
-                {id} - {count}
-              </Text>
-              <Text>Class: {bag.weapon_class}</Text>
-              <Text>Accuracy</Text>
-              <Stack spacing={4}>
-                <Text>FAR - {bag.weapon_bag.accuracy_far}</Text>
-                <Text>MID - {bag.weapon_bag.accuracy_mid}</Text>
-                <Text>NEAR - {bag.weapon_bag.accuracy_near}</Text>
-              </Stack>
+              {WeaponLoadoutCard(weapon)}
             </Card>
           );
         })}
-      </Stack>
+      </SimpleGrid>
     </Stack>
   );
 };

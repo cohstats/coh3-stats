@@ -21,6 +21,39 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
 const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
   const groupedRows = groupBy(branch.upgrades, (item) => item.upg.uiPosition.row);
   // Create a series of grid elements per row.
+
+  const bgCallInCard = ({ upg, ability }: { upg: UpgradesType; ability: AbilitiesType }) => (
+    <Box
+      p="sm"
+      sx={(theme) => ({
+        borderRadius: theme.radius.md,
+        borderWidth: 2,
+        borderStyle: "solid",
+        borderColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
+      })}
+    >
+      <UnitUpgradeCard
+        id={upg.id}
+        desc={{
+          screen_name: upg.ui.screenName,
+          help_text: upg.ui.helpText,
+          extra_text: upg.ui.extraText,
+          brief_text: upg.ui.briefText,
+          icon_name: upg.ui.iconName,
+        }}
+        time_cost={{
+          manpower: ability.cost.manpower,
+          munition: ability.cost.munition,
+          fuel: ability.cost.fuel,
+          popcap: ability.cost.popcap,
+          time_seconds: ability.rechargeTime,
+          command: upg.cost.command,
+        }}
+        cfg={{ compact: true }}
+      ></UnitUpgradeCard>
+    </Box>
+  );
+
   return (
     <Stack align="center">
       <Title order={4} color="orange.5" transform="uppercase">
@@ -29,44 +62,10 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
 
       {Object.entries(groupedRows).map(([rowIndex, branchUpgrades]) => {
         return (
-          <Grid
-            key={`${rowIndex}_${branch.name}`}
-            columns={branchUpgrades.length}
-            // sx={{ width: branchUpgrades.length === 1 ? "" : "100%" }}
-            w="100%"
-          >
+          <Grid key={`${rowIndex}_${branch.name}`} columns={branchUpgrades.length} w="100%">
             {branchUpgrades.map(({ upg, ability }) => (
               <Grid.Col key={upg.id} span={1}>
-                <Box
-                  p="sm"
-                  sx={(theme) => ({
-                    borderRadius: theme.radius.md,
-                    borderWidth: 2,
-                    borderStyle: "solid",
-                    borderColor:
-                      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
-                  })}
-                >
-                  <UnitUpgradeCard
-                    id={upg.id}
-                    desc={{
-                      screen_name: upg.ui.screenName,
-                      help_text: upg.ui.helpText,
-                      extra_text: upg.ui.extraText,
-                      brief_text: upg.ui.briefText,
-                      icon_name: upg.ui.iconName,
-                    }}
-                    time_cost={{
-                      manpower: ability.cost.manpower,
-                      munition: ability.cost.munition,
-                      fuel: ability.cost.fuel,
-                      popcap: ability.cost.popcap,
-                      time_seconds: ability.rechargeTime,
-                      command: upg.cost.command,
-                    }}
-                    cfg={{ compact: true }}
-                  ></UnitUpgradeCard>
-                </Box>
+                {bgCallInCard({ upg, ability })}
               </Grid.Col>
             ))}
           </Grid>
