@@ -119,16 +119,18 @@ const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
   const chartLine = {
     label: "No Item Selected",
     data: data,
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: "#4dabf7", // '#d048b6',
     //cubicInterpolationMode: "monotone" as const,
     //stepped: "after",
     stepped: "",
-    tension: 0.0,
-    pointStyle: "rect",
+    tension: 0.1,
+    pointStyle: "cross",
     fill: false,
-    backgroundColor: "rgba(0, 100, 150, 0.3)",
-    pointRadius: 5,
+    backgroundColor: "rgba(200, 200, 200, 0.2)",
+    pointRadius: 0,
+    pointHoverRadius: 30,
+    pointHitRadius: 10,
     intersect: true,
   };
 
@@ -186,20 +188,18 @@ const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
 
   // compute total dps for complete loadout
   unit1.weapon_member.forEach((ldout) => {
-    const weapon_member = ldout as WeaponMember;
-    let weaponDps = [];
-    // opponent default values
-    let targetSize = 1;
-    let armor = 1;
+    const weapon_member = ldout;
+    const weaponDps = [];
 
-    // Check if we also need to consider opponent multiplier
-    if (unit2) {
-      // get cover stats
-      targetSize = unit2.target_size;
-      armor = unit2.armor;
+    const range_min = weapon_member.weapon.weapon_bag.range_min;
+    const range_max = weapon_member.weapon.weapon_bag.range_max;
+    // opponent default values
+
+    for (let distance = range_min; distance <= range_max; distance++) {
+      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
+      weaponDps.push({ x: distance, y: dps });
     }
 
-    weaponDps = getSingleWeaponDPS(weapon_member, unit1.is_moving, unit2);
     dpsTotal = addDpsData(dpsTotal, weaponDps);
   });
 

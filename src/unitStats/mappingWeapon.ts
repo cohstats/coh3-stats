@@ -22,6 +22,10 @@ export type WeaponStatsType = {
   aoe_damage_mid: number;
   aoe_damage_near: number;
 
+  aoe_distance_near: number;
+  aoe_distance_mid: number;
+  aoe_distance_far: number;
+
   aim_time_multiplier_near: number;
   aim_time_multiplier_mid: number;
   aim_time_multiplier_far: number;
@@ -153,11 +157,15 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       aoe_penetration_mid: weapon_bag.area_effect?.aoe_penetration?.mid || 0,
       aoe_penetration_near: weapon_bag.area_effect?.aoe_penetration?.near || 0,
 
+      aoe_distance_near: weapon_bag.area_effect?.distance.near || 0,
+      aoe_distance_mid: weapon_bag.area_effect?.distance.mid || 0,
+      aoe_distance_far: weapon_bag.area_effect?.distance.far || 0,
+
       aoe_outer_radius: weapon_bag.area_effect?.area_info?.outer_radius || 0,
 
       aoe_damage_far: weapon_bag.area_effect?.damage?.far || 1,
-      aoe_damage_mid: weapon_bag.area_effect?.damage?.far || 1,
-      aoe_damage_near: weapon_bag.area_effect?.damage?.far || 1,
+      aoe_damage_mid: weapon_bag.area_effect?.damage?.mid || 1,
+      aoe_damage_near: weapon_bag.area_effect?.damage?.near || 1,
 
       aim_time_multiplier_near: weapon_bag.aim?.aim_time_multiplier?.near || 1,
       aim_time_multiplier_mid: weapon_bag.aim?.aim_time_multiplier?.mid || 1,
@@ -219,7 +227,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       default_attack_type: weapon_bag.default_attack_type || "",
 
       fire_wind_down: weapon_bag.fire?.wind_down || 0,
-      fire_wind_up: weapon_bag.fire?.wind_down || 0,
+      fire_wind_up: weapon_bag.fire?.wind_up || 0,
 
       moving_accuracy_multiplier: weapon_bag.moving?.accuracy_multiplier || 1,
       moving_burst_multiplier: weapon_bag.moving?.burst_multiplier || 1,
