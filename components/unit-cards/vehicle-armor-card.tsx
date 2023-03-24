@@ -11,7 +11,8 @@ export type VehicleArmorType =
   | "light_tank"
   | "light_halftrack"
   | "light_armoured_car"
-  | "ultra_light_carrier";
+  | "ultra_light_carrier"
+  | "ultra_light_motorcycle";
 
 type VehicleArmor = {
   frontal: number;
@@ -31,6 +32,7 @@ const VehicleTypeColor: Record<VehicleArmorType, DefaultMantineColor> = {
   light_halftrack: "lime.5",
   light_armoured_car: "indigo.5",
   ultra_light_carrier: "blue.5",
+  ultra_light_motorcycle: "violet.5",
 } as const;
 
 const VehicleArmorCover = [

@@ -2,6 +2,7 @@ import slash from "slash";
 import { Divider, Flex, Group, Image, Space, Stack, Text, Title } from "@mantine/core";
 import { WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
+import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 
 type WeaponCardInput = {
   id: string;
@@ -24,7 +25,17 @@ export const WeaponLoadoutCard = ({
   return (
     <Stack>
       <Flex align="center" gap={16}>
-        <Image width={48} height={16} src={iconName} alt={id}></Image>
+        {icon_name !== "" ? (
+          <ImageWithFallback
+            width={48}
+            height={16}
+            src={iconName}
+            alt={id}
+            fallbackSrc={symbolPlaceholder}
+          ></ImageWithFallback>
+        ) : (
+          <Image width={48} height={16} src={iconName} alt={id}></Image>
+        )}
         <Flex direction="column">
           <Text fw="bold" transform="capitalize">
             {id.split("_").join(" ")}
