@@ -239,11 +239,12 @@ const UnitWeaponSection = (
               <Text>
                 {id} - {count}
               </Text>
+              <Text>Class: {bag.weapon_class}</Text>
               <Text>Accuracy</Text>
               <Stack spacing={4}>
-                <Text>FAR - {bag.weapon_bag.accuracy.far}</Text>
-                <Text>MID - {bag.weapon_bag.accuracy.mid}</Text>
-                <Text>NEAR - {bag.weapon_bag.accuracy.near}</Text>
+                <Text>FAR - {bag.weapon_bag.accuracy_far}</Text>
+                <Text>MID - {bag.weapon_bag.accuracy_mid}</Text>
+                <Text>NEAR - {bag.weapon_bag.accuracy_near}</Text>
               </Stack>
             </Card>
           );
