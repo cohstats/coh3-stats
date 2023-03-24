@@ -1,6 +1,5 @@
 import { maps } from "../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
-import Image from "next/image";
 import React from "react";
 import ImageWithModal from "../image-with-modal";
 
