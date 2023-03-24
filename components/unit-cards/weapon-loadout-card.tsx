@@ -46,7 +46,7 @@ export const WeaponLoadoutCard = ({
               {weapon_bag.accuracy_near}
             </Text>
           </Flex>
-          <Flex justify="space-between" align="center" gap={8} color="yellow.6">
+          <Flex justify="space-between" align="center" gap={8}>
             <Text fw="bold" color="yellow.6">
               Mid
             </Text>
@@ -54,7 +54,7 @@ export const WeaponLoadoutCard = ({
               {weapon_bag.accuracy_mid}
             </Text>
           </Flex>
-          <Flex justify="space-between" align="center" gap={8} color="red.6">
+          <Flex justify="space-between" align="center" gap={8}>
             <Text fw="bold" color="red.6">
               Far
             </Text>

@@ -2,14 +2,13 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
-import { Card, Flex, Grid, SimpleGrid, Space, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Grid, Space, Stack, Text, Title } from "@mantine/core";
 import ContentContainer from "../../../../../components/Content-container";
 import {
   EbpsType,
   fetchLocstring,
   getEbpsStats,
   getResolvedUpgrades,
-  getResolvedWeapons,
   getSbpsStats,
   getSquadTotalCost,
   getUpgradesStats,
@@ -31,6 +30,7 @@ import { StatsCosts } from "../../../../../components/unit-cards/cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
+import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -63,8 +63,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   }
 
   // The resolved entity does not matter at all, as we can obtain such from the squad loadout.
-  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
-  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
+  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
+  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
 
   if (!resolvedSquad || !resolvedEntities?.length) {
     // How to redirect back?
@@ -132,6 +132,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                 ></StatsCosts>
               </Card>
               <Card p="lg" radius="md" withBorder>
+                {HitpointCard({ squad: resolvedSquad, entities: resolvedEntities })}
+              </Card>
+              <Card p="lg" radius="md" withBorder>
                 <VeterancyCard
                   one={resolvedSquad.veterancyInfo.one}
                   two={resolvedSquad.veterancyInfo.two}
@@ -158,10 +161,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
 
 const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
   // Resolve unit upgrades.
-  const upgrades = getResolvedUpgrades(squad.upgrades, upgradesData);
-
+  const upgrades = Object.values(getResolvedUpgrades(squad.upgrades, upgradesData));
   if (!upgrades.length) return <></>;
-
   return (
     <Stack>
       <Title order={4}>Upgrades</Title>
@@ -236,15 +237,17 @@ const UnitWeaponSection = (
     <Stack>
       <Title order={4}>Default Loadout</Title>
 
-      <SimpleGrid cols={2}>
+      <Grid columns={2} grow>
         {Object.entries(weaponSquadDict).map(([id, { count, weapon }]) => {
           return (
-            <Card key={id} p="lg" radius="md" withBorder>
-              {WeaponLoadoutCard(weapon)}
-            </Card>
+            <Grid.Col span={1} key={id}>
+              <Card p="lg" radius="md" withBorder>
+                {WeaponLoadoutCard(weapon)}
+              </Card>
+            </Grid.Col>
           );
         })}
-      </SimpleGrid>
+      </Grid>
     </Stack>
   );
 };
