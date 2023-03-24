@@ -17,7 +17,7 @@ const RenderMap = ({ mapName }: { mapName: string }) => {
 
   return (
     <>
-      <div style={{ cursor: "pointer" }}>
+      <div>
         <ImageWithModal
           height={60}
           width={60}

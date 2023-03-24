@@ -19,7 +19,15 @@ const ImageWithModal = ({ height, width, modalW, modalH, src, alt, title }: Prop
       <Modal opened={opened} onClose={close} title={title}>
         <Image src={src} width={modalW} height={modalH} alt={alt} loading="lazy" />
       </Modal>
-      <Image onClick={open} src={src} width={width} height={height} alt={alt} loading="lazy" />
+      <Image
+        style={{ cursor: "pointer" }}
+        onClick={open}
+        src={src}
+        width={width}
+        height={height}
+        alt={alt}
+        loading="lazy"
+      />
     </>
   );
 };
