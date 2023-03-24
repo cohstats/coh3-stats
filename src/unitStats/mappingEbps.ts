@@ -34,6 +34,10 @@ type EbpsType = {
   weaponRef: combatExt[];
   // weapon_ext.weapon
   weaponId: string; // Id of weapon template
+
+  // crew size to use the weapon
+  /** Found at `recrewable_ext`. */
+  crew_size: number;
 };
 
 /** These are found within `time_cost` at `ebpextensions\\cost_ext` */
@@ -115,6 +119,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     upgradeRefs: [],
     weaponRef: [],
     weaponId: "",
+    crew_size: 0,
   };
 
   // clearUndefined(ebpsEntity);
@@ -128,6 +133,11 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
     const extension = root.extensions[entityExt].exts;
     const extName = extension.template_reference.value.split("\\")[1];
     switch (extName) {
+      case "recrewable_ext":
+        if (extension.race_list.length > 0)
+          ebps.crew_size = extension.race_list[0].race_data.info.min_capture_crew_size;
+        break;
+
       case "spawner_ext":
         {
           // Check if `spawn_items` is not empty, otherwise skip.
@@ -181,7 +191,7 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.health.armorLayout.frontArmor = extension.armor_layout_option?.front_armor || 1;
           ebps.health.armorLayout.rearArmor = extension.armor_layout_option?.rear_armor || 1;
           ebps.health.armorLayout.sideArmor = extension.armor_layout_option?.side_armor || 1;
-          ebps.health.targetSize = extension.targe_size || 1;
+          ebps.health.targetSize = extension.target_size || 1;
         }
 
         break;
@@ -264,6 +274,7 @@ const getEbpsStats = async () => {
         case "light_machine_gun":
         case "rifle":
         case "sidearm":
+        case "mortar":
         case "anti_tank_gun":
         case "infantry_anti_tank_weapon":
         case "tank_gun":

@@ -13,42 +13,16 @@ import {
   Text,
 } from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
-import { WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import { DpsWeaponCard, weaponMember } from "./dpsWeaponCard";
+import { WeaponStats } from "../../src/unitStats/mappingWeapon";
+import { DpsWeaponCard } from "./dpsWeaponCard";
 import slash from "slash";
 import { EbpsType } from "../../src/unitStats";
-
-export type CustomizableUnit = {
-  id: string; // filename  -> eg. panzergrenadier_ak
-  screenName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
-  path: string; // path to object
-  faction: string; // from folder structure races\[factionName]
-  loadout: weaponMember[]; // set of weapons + amount
-  defLoadout: weaponMember[];
-  unitType: string; // folder Infantry | vehicles | team_weapons | buildings
-  helpText: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
-  iconName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
-  factionicon: string;
-  cover: string;
-  isMoving: boolean;
-  targetSize: number;
-  armor: number;
-  value: string; // must have value, otherwise multiselect will not work
-  label: string; // For drop down
-  image: string;
-  description: string;
-  health: number;
-};
-
-const computeWeaponList = (unit: CustomizableUnit) => {
-  const result: WeaponType[] = [];
-
-  for (const weapon of WeaponStats) {
-    if (weapon.faction == unit.faction && weapon.parent != "heavy_machine_gun")
-      result.push(weapon);
-  }
-  return result;
-};
+import {
+  CustomizableUnit,
+  getSbpsUpgrades,
+  getSbpsWeapons,
+  WeaponMember,
+} from "../../src/unitStats/dpsCommon";
 
 interface IUnitProps {
   unit: CustomizableUnit;
@@ -58,16 +32,26 @@ interface IUnitProps {
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
-  const weaponListInit: WeaponType[] = [];
+  const weaponListInit: WeaponMember[] = [];
   const [activeData] = useState(props.unit);
   const [weaponList, setWeaponList] = useState(weaponListInit);
-  // const { classes } = useStyles();
 
-  if (weaponList.length == 0) setWeaponList(computeWeaponList(props.unit));
+  // create weapon list
+  if (weaponList.length == 0) {
+    const weapons = getSbpsWeapons(props.unit.sbps, props.ebps, WeaponStats);
+    const weaponUpgrades = getSbpsUpgrades(props.unit.sbps, props.ebps, WeaponStats);
+    for (const weaponUpgrade of weaponUpgrades) {
+      // check if weapon is already available
+      if (weapons.find((member) => member.weapon_id == weaponUpgrade.weapon_id)) continue;
+      weapons.push(weaponUpgrade);
+    }
+    setWeaponList(weapons);
+  }
 
-  function onAddWeapon(selectionItem: weaponMember) {
+  function onAddWeapon(selectionItem: WeaponMember) {
     // check if weapon have already been added
-    if (activeData.loadout.find((weapon) => weapon.id == selectionItem.id)) return;
+    if (activeData.weapon_member.find((weapon) => weapon.weapon_id == selectionItem.weapon_id))
+      return;
 
     // Clone Weapon so we can configure it localy
     // clone only when creating an instance. Not when changing.
@@ -75,19 +59,19 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     if (!clone.num) clone.num = 1;
 
     //for (const weapon of selectionItem) {
-    activeData.loadout.push(clone);
+    activeData.weapon_member.push(clone);
     props.onChange(activeData);
   }
 
   // Weapon number changed
-  function onWeaponNumberChange(member: weaponMember) {
-    const weapon = activeData.loadout.find((mem) => mem.id == member.id);
-    if (weapon) weapon.num = member.num;
+  function onWeaponNumberChange() {
+    //const weapon = activeData.weapon_member.find((mem) => mem.weapon_id == member.weapon_id);
+    //if (weapon) weapon.num = member.num;
     props.onChange(activeData);
   }
 
   function onMovingChange() {
-    activeData.isMoving = !activeData.isMoving;
+    activeData.is_moving = !activeData.is_moving;
     props.onChange(activeData);
   }
 
@@ -98,11 +82,11 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   }
 
   // Weapon card deleted
-  function onDelete(member: weaponMember) {
-    activeData.loadout.forEach((ldout) => {
-      if (ldout.id == member.id) {
-        const index = activeData.loadout.indexOf(ldout);
-        activeData.loadout.splice(index, 1);
+  function onDelete(member: WeaponMember) {
+    activeData.weapon_member.forEach((ldout) => {
+      if (ldout.weapon_id == member.weapon_id) {
+        const index = activeData.weapon_member.indexOf(ldout);
+        activeData.weapon_member.splice(index, 1);
       }
     });
     props.onChange(activeData);
@@ -110,15 +94,13 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
 
   const components: any[] = [];
   // create weapon member
-  for (const member of activeData.loadout) {
+  for (const member of activeData.weapon_member) {
     components.push(
       <DpsWeaponCard
-        defaultNum={member.num}
-        key={member.id + props.index}
-        weapon={member}
+        weapon_member={member}
+        key={member.weapon_id + props.index}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
-        unit={member.id}
       ></DpsWeaponCard>,
     );
   }
@@ -129,17 +111,17 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
         <Grid gutter="xs">
           <Grid.Col span={4}>
             <Group noWrap>
-              <Tooltip label={activeData.screenName}>
+              <Tooltip label={activeData.screen_name}>
                 <Avatar
-                  src={slash(activeData.iconName)}
-                  alt={activeData.screenName}
+                  src={slash(activeData.icon_name)}
+                  alt={activeData.screen_name}
                   placeholder="/icons/general/infantry_icn.png"
                   radius="xs"
                   size="md"
                 />
               </Tooltip>
               <Flex align="center">
-                <Tooltip label={activeData.screenName}>
+                <Tooltip label={activeData.screen_name}>
                   <Image
                     src="\icons\general\health.png"
                     alt="Health"
@@ -159,7 +141,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   size="lg"
                   onChange={onMovingChange}
                   onClick={onMovingChange}
-                  variant={activeData.isMoving ? "default" : "trannsparent"}
+                  variant={activeData.is_moving ? "default" : "trannsparent"}
                 >
                   <Image
                     src="\icons\common\abilities\tactical_movement_riflemen_us.png"

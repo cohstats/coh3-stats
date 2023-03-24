@@ -1,16 +1,10 @@
-import { WeaponStatsType, WeaponType } from "./mappingWeapon";
+import { CustomizableUnit, getCoverMultiplier, WeaponMember } from "./dpsCommon";
+import { WeaponStatsType } from "./mappingWeapon";
 
 const getSingleWeaponDPS = (
-  weapon_bag: WeaponStatsType,
-  qty = 1, // Qantity of weapons
-  targetSize = 1, // opponent target size
-  armor = 1, // opponent armor
-  isMoving = false, // move penalty multiplier
-  cover = {
-    accuracy_multiplier: 1, // opponent cover penalty
-    damage_multiplier: 1,
-    penetration_multiplier: 1,
-  },
+  weapon_member: WeaponMember,
+  isMoving = false,
+  target_unit?: CustomizableUnit,
 ) => {
   //Formular: Hitchance * RateOfFire * Damage * ChanceToDamage(E.g. penetration)
   // since we assume it is an endless engagement we also encounter reload time
@@ -19,11 +13,42 @@ const getSingleWeaponDPS = (
   // The default target size is 1. Possibly this can be parametrized
   // in future
 
+  // initialize variables
+  //
+
+  const qty = weapon_member.num;
+
+  if (qty <= 0) return [];
+
+  let cover = {
+    accuracy_multiplier: 1, // opponent cover penalty
+    damage_multiplier: 1,
+    penetration_multiplier: 1,
+  };
+  let targetSize = 1;
+  let armor = 1;
+
+  if (target_unit) {
+    cover = getCoverMultiplier(target_unit.cover, weapon_member.weapon.weapon_bag);
+    targetSize = target_unit.target_size;
+    armor = target_unit.armor;
+  }
+
+  const weapon_bag = weapon_member.weapon.weapon_bag;
   // _n = near, _m = mid _f = far
 
   // 1. compute rate of fire
 
-  if (qty < 0) return [];
+  if (weapon_member.num < 0) return [];
+
+  // range
+  let range_n = weapon_bag.range_distance_near;
+  let range_m = weapon_bag.range_distance_mid;
+  let range_f = weapon_bag.range_distance_far;
+
+  if (range_n === -1) range_n = weapon_bag.range_min;
+  if (range_m === -1) range_m = (weapon_bag.range_max - weapon_bag.range_min) / 2;
+  if (range_f === -1) range_f = weapon_bag.range_max;
 
   // average aim time
   const avgAimTime = (weapon_bag.fire_aim_time_max + weapon_bag.fire_aim_time_min) / 2;
@@ -61,8 +86,7 @@ const getSingleWeaponDPS = (
   let burstTime_f = 0;
 
   // Avg clipSize (measured in number of cooldowns, thus we need to add the first shot)
-  const avgClipSize =
-    (weapon_bag.reload_frequency_min + weapon_bag.reload_frequency_max + +2) / 2;
+  const avgClipSize = (weapon_bag.reload_frequency_min + weapon_bag.reload_frequency_max + 2) / 2;
 
   if (weapon_bag.burst_can_burst) {
     let movingBurstMp = 1;
@@ -105,20 +129,50 @@ const getSingleWeaponDPS = (
   if (isMoving) moveAccuracyMp = weapon_bag.moving_accuracy_multiplier;
 
   // expected accuracy
-  const accuracy_n =
-    weapon_bag.accuracy_near * targetSize * moveAccuracyMp * cover.accuracy_multiplier;
-  const accuracy_m =
-    weapon_bag.accuracy_mid * targetSize * moveAccuracyMp * cover.accuracy_multiplier;
-  const accuracy_f =
-    weapon_bag.accuracy_far * targetSize * moveAccuracyMp * cover.accuracy_multiplier;
+  const accuracy_n = Math.min(
+    weapon_bag.accuracy_near * targetSize * moveAccuracyMp * cover.accuracy_multiplier,
+    1,
+  );
+  const accuracy_m = Math.min(
+    weapon_bag.accuracy_mid * targetSize * moveAccuracyMp * cover.accuracy_multiplier,
+    1,
+  );
+  const accuracy_f = Math.min(
+    weapon_bag.accuracy_far * targetSize * moveAccuracyMp * cover.accuracy_multiplier,
+    1,
+  );
 
   let movePenalty = 1;
   if (!weapon_bag.moving_can_fire_while_moving && isMoving == true) movePenalty = 0;
 
+  const width = 3.5;
+  const length = targetSize / 3;
+
+  const scatter_acc_n = getScatterHitChance(
+    weapon_bag,
+    range_n != 0 ? range_n : range_m,
+    width,
+    length,
+  );
+  const scatter_acc_m = getScatterHitChance(weapon_bag, range_m, width, length);
+  const scatter_acc_f = getScatterHitChance(weapon_bag, range_f, width, length);
+
+  const acc_combined_n = accuracy_n + (1 - accuracy_n) * scatter_acc_n;
+  const acc_combined_m = accuracy_m + (1 - accuracy_m) * scatter_acc_m;
+  const acc_combined_f = accuracy_f + (1 - accuracy_f) * scatter_acc_f;
+
+  const dmgPerDirectShot_n = avgDamage * acc_combined_n * penetration_n * movePenalty;
+  const dmgPerDirectShot_m = avgDamage * acc_combined_m * penetration_m * movePenalty;
+  const dmgPerDirectShot_f = avgDamage * acc_combined_f * penetration_f * movePenalty;
+
+  // const dmgPerScatter_n = avgDamage * scatter_acc_n * penetration_n * movePenalty;
+  // const dmgPerScatter_m = avgDamage * scatter_acc_m * penetration_m * movePenalty;
+  // const dmgPerScatter_f = avgDamage * scatter_acc_f * penetration_f * movePenalty;
+
   // expected damage per clip including accuracy
-  let dmgPerClip_n = avgClipSize * avgDamage * accuracy_n * penetration_n * movePenalty;
-  let dmgPerClip_m = avgClipSize * avgDamage * accuracy_m * penetration_m * movePenalty;
-  let dmgPerClip_f = avgClipSize * avgDamage * accuracy_f * penetration_f * movePenalty;
+  let dmgPerClip_n = avgClipSize * dmgPerDirectShot_n;
+  let dmgPerClip_m = avgClipSize * dmgPerDirectShot_m;
+  let dmgPerClip_f = avgClipSize * dmgPerDirectShot_f;
 
   // dmg for burst weapons
   if (weapon_bag.burst_can_burst) {
@@ -160,15 +214,6 @@ const getSingleWeaponDPS = (
   const dps_m = dmgPerClip_m / clipTime_m;
   const dps_f = dmgPerClip_f / clipTime_f;
 
-  // range
-  let range_n = weapon_bag.range_distance_near;
-  let range_m = weapon_bag.range_distance_mid;
-  let range_f = weapon_bag.range_distance_far;
-
-  if (range_n === -1) range_n = weapon_bag.range_min;
-  if (range_m === -1) range_m = (weapon_bag.range_max - weapon_bag.range_min) / 2;
-  if (range_f === -1) range_f = weapon_bag.range_max;
-
   return [
     { x: 0, y: dps_n * qty },
     { x: range_n, y: dps_n * qty },
@@ -177,4 +222,38 @@ const getSingleWeaponDPS = (
   ];
 };
 
+const getScatterHitChance = (
+  weapon: WeaponStatsType,
+  distance: number,
+  width = 1,
+  length = 1,
+) => {
+  //   const area = ((distance + (1 + weapon_bag.scatter_distance_scatter_offset) * weapon_bag.scatter_distance_scatter_max)^2 -
+  //                 (distance - (1 - weapon_bag.scatter_distance_scatter_offset) * weapon_bag.scatter_distance_scatter_max)^2) *
+  //                 Math.PI * (weapon_bag.scatter_angle_scatter/360)
+
+  //  return targe_size/area;
+  const scatter_max = weapon.scatter_distance_scatter_max;
+  const ratio = weapon.scatter_distance_scatter_ratio;
+  const angle = weapon.scatter_angle_scatter;
+  const offset = weapon.scatter_distance_scatter_offset;
+
+  const chance =
+    ((distance +
+      Math.min(scatter_max, distance * ratio) * (1 + offset) -
+      Math.max(
+        distance - Math.min(scatter_max, distance * ratio) * (1 - offset),
+        distance - length / 2,
+      )) *
+      Math.min(
+        (distance * Math.PI * angle) / 180,
+        (width * (distance + length / 2)) / distance,
+      )) /
+    Math.max(
+      (Math.min(scatter_max, distance * ratio) * 2 * distance * Math.PI * angle) / 180,
+      0.1,
+    );
+
+  return chance;
+};
 export { getSingleWeaponDPS };

@@ -8,6 +8,20 @@ export type WeaponStatsType = {
   accuracy_mid: number;
   accuracy_far: number;
 
+  aoe_accuracy_far: number;
+  aoe_accuracy_mid: number;
+  aoe_accuracy_near: number;
+
+  aoe_penetration_far: number;
+  aoe_penetration_mid: number;
+  aoe_penetration_near: number;
+
+  aoe_outer_radius: number;
+
+  aoe_damage_far: number;
+  aoe_damage_mid: number;
+  aoe_damage_near: number;
+
   aim_time_multiplier_near: number;
   aim_time_multiplier_mid: number;
   aim_time_multiplier_far: number;
@@ -83,6 +97,11 @@ export type WeaponStatsType = {
   reload_frequency_min: number;
   reload_frequency_max: number;
 
+  scatter_angle_scatter: number;
+  scatter_distance_scatter_max: number;
+  scatter_distance_scatter_offset: number;
+  scatter_distance_scatter_ratio: number;
+
   target_type_table: [];
 };
 
@@ -102,6 +121,7 @@ type WeaponType = {
   description: string; // search selection description
   faction: string; // faction string e.g. afrika_korps
   parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
+  weapon_class: string;
 };
 
 const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string) => {
@@ -116,6 +136,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     path: jsonPath,
     label: key,
     value: key,
+    weapon_class: weapon_bag.weapon_class || "",
     description: resolveLocstring(weapon_bag.ui_name),
     faction: jsonPath.split("/")[0],
     parent: parent,
@@ -124,9 +145,24 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       accuracy_mid: weapon_bag.accuracy?.mid || 0,
       accuracy_far: weapon_bag.accuracy?.far || 0,
 
+      aoe_accuracy_far: weapon_bag.area_effect?.accuracy?.far || 1,
+      aoe_accuracy_mid: weapon_bag.area_effect?.accuracy?.mid || 1,
+      aoe_accuracy_near: weapon_bag.area_effect?.accuracy?.near || 1,
+
+      aoe_penetration_far: weapon_bag.area_effect?.aoe_penetration?.far || 0,
+      aoe_penetration_mid: weapon_bag.area_effect?.aoe_penetration?.mid || 0,
+      aoe_penetration_near: weapon_bag.area_effect?.aoe_penetration?.near || 0,
+
+      aoe_outer_radius: weapon_bag.area_effect?.area_info?.outer_radius || 0,
+
+      aoe_damage_far: weapon_bag.area_effect?.damage?.far || 1,
+      aoe_damage_mid: weapon_bag.area_effect?.damage?.far || 1,
+      aoe_damage_near: weapon_bag.area_effect?.damage?.far || 1,
+
       aim_time_multiplier_near: weapon_bag.aim?.aim_time_multiplier?.near || 1,
       aim_time_multiplier_mid: weapon_bag.aim?.aim_time_multiplier?.mid || 1,
       aim_time_multiplier_far: weapon_bag.aim?.aim_time_multiplier?.far || 1,
+
       fire_aim_time_min: weapon_bag?.fire_aim_time?.min || 0,
       fire_aim_time_max: weapon_bag?.fire_aim_time?.max || 0,
 
@@ -212,6 +248,11 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       reload_frequency_min: weapon_bag.reload?.frequency?.min || 0,
       reload_frequency_max: weapon_bag.reload?.frequency?.max || 0,
 
+      scatter_angle_scatter: weapon_bag.scatter?.angle_scatter || 0,
+      scatter_distance_scatter_max: weapon_bag.scatter?.distance_scatter_max || 0,
+      scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
+      scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
+
       target_type_table: [],
     },
   };
@@ -242,47 +283,7 @@ const getWeaponStats = async () => {
 
     // Filter relevant objects
     weaponSet.forEach((item: any) => {
-      let weapon_icon;
-
-      //if (!item.weapon_bag.weapon_class) return;
-
-      // filter by relevant weapon types
-      switch (item.parent) {
-        case "sub_machine_gun":
-          weapon_icon = "m1_thompson_sub_machine_gun.png";
-          item.image = "/unitStats/weaponClass/" + weapon_icon;
-          weaponSetAll.push(item);
-          break;
-        case "light_machine_gun":
-          weapon_icon = "weapon_lmg_mg34.png";
-          item.image = "/unitStats/weaponClass/" + weapon_icon;
-          weaponSetAll.push(item);
-          break;
-        case "heavy_machine_gun":
-          weapon_icon = "hmg_mg42_ger.png";
-          item.image = "/unitStats/weaponClass/" + weapon_icon;
-          weaponSetAll.push(item);
-          break;
-        case "rifle":
-        case "sidearm":
-          weapon_icon = "weapon_dp_28_lmg.png";
-          item.image = "/unitStats/weaponClass/" + weapon_icon;
-          weaponSetAll.push(item);
-          break;
-        case "anti_tank_gun":
-          weapon_icon = "at_gun_icn.png";
-          item.image = "/unitStats/weaponClass/" + weapon_icon;
-          weaponSetAll.push(item);
-          break;
-        case "tank_gun":
-        case "tungsten_round_upgrade":
-          weapon_icon = "tanks2_icn.png";
-          item.image = "/unitStats/weaponClass/" + weapon_icon;
-          weaponSetAll.push(item);
-          break;
-        default:
-          return;
-      }
+      weaponSetAll.push(item);
     });
   }
 

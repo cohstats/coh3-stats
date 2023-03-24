@@ -31,15 +31,20 @@ import {
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
-import { CustomizableUnit, DpsUnitCustomizing } from "./dpsUnitCustomizing";
+import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
 import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
-import slash from "slash";
+// import slash from "slash";
 import { WeaponStatsType, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
-import { weaponMember } from "./dpsWeaponCard";
 import { IconAdjustments } from "@tabler/icons";
+import { getIconsPathOnCDN } from "../../src/utils";
+import {
+  CustomizableUnit,
+  mapCustomizableUnit,
+  WeaponMember,
+} from "../../src/unitStats/dpsCommon";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
@@ -150,15 +155,15 @@ const getWeaponDPSData = (units: CustomizableUnit[]) => {
   return dpsSet;
 };
 
-const updateHealth = (unit: CustomizableUnit, ebpsData: EbpsType[]) => {
+const updateHealth = (unit: CustomizableUnit) => {
   let health = 0;
-  for (const member of unit.loadout) {
-    let ebps = ebpsData.find((ebps) => ebps.id == member.unit);
-
-    if (!ebps) ebps = ebpsData.find((ebps) => ebps.id == unit.defLoadout[0].unit);
-
-    if (ebps) health += ebps.health.hitpoints * member.num;
-    if (!ebps || ebps.health.hitpoints == 0) health += 80 * member.num; // default
+  if (unit.unit_type != "vehicles")
+    for (const member of unit.weapon_member) {
+      health += unit.hitpoints * member.num * Math.max(member.crew_size, 1);
+    }
+  // is vehicle
+  else {
+    health += unit.hitpoints;
   }
   unit.health = health;
 };
@@ -180,30 +185,21 @@ const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
   let dpsTotal: any[] = [];
 
   // compute total dps for complete loadout
-  unit1.loadout.forEach((ldout) => {
-    const weapon = ldout as unknown as WeaponType;
+  unit1.weapon_member.forEach((ldout) => {
+    const weapon_member = ldout as WeaponMember;
     let weaponDps = [];
     // opponent default values
-    let targetSize = unit1.targetSize;
-    let armor = unit1.armor;
-    let opponentCover = getCoverMultiplier(unit1.cover, weapon.weapon_bag);
+    let targetSize = 1;
+    let armor = 1;
 
     // Check if we also need to consider opponent multiplier
     if (unit2) {
       // get cover stats
-      opponentCover = getCoverMultiplier(unit2.cover, weapon.weapon_bag);
-      targetSize = unit2.targetSize;
+      targetSize = unit2.target_size;
       armor = unit2.armor;
     }
 
-    weaponDps = getSingleWeaponDPS(
-      weapon.weapon_bag,
-      ldout.num,
-      targetSize,
-      armor,
-      unit1.isMoving,
-      opponentCover,
-    );
+    weaponDps = getSingleWeaponDPS(weapon_member, unit1.is_moving, unit2);
     dpsTotal = addDpsData(dpsTotal, weaponDps);
   });
 
@@ -243,17 +239,6 @@ const mergePoints = (xPoint: any, yPoint: any) => {
   return { x: xPoint.x, y: xPoint.y + yPoint.y };
 };
 
-const getCoverMultiplier = (coverType: string, weaponBag: WeaponStatsType) => {
-  let cover = (weaponBag as any)["cover_table_tp_" + coverType + "_cover"];
-  if (!cover)
-    cover = {
-      accuracy_multiplier: weaponBag.cover_table_tp_defcover_accuracy_multiplier, // opponent cover penalty
-      damage_multiplier: weaponBag.cover_table_tp_defcover_damage_multiplier,
-      penetration_multiplier: weaponBag.cover_table_tp_defcover_penetration_multiplier,
-    };
-  return cover;
-};
-
 const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
   if (!isLargeScreen) {
     options.scales.x.title.display = false;
@@ -266,95 +251,15 @@ const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
   }
 };
 
-const mapUnitDisplayData = (
-  sbpsSelected: SbpsType,
-  ebps: EbpsType[],
-  weapons: WeaponType[],
-
-  // weapons?: WeaponType[],
-): any => {
-  // Initilaize
-  const custUnit: CustomizableUnit = {
-    id: sbpsSelected.id, // filename  -> eg. panzergrenadier_ak
-    screenName: sbpsSelected.ui.screenName || "No text found", // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
-    path: sbpsSelected.path, // path to object
-    faction: sbpsSelected.faction, // from folder structure races\[factionName]
-    loadout: [], // squad_loadout_ext.unit_list
-    unitType: sbpsSelected.unitType, // folder Infantry | vehicles | team_weapons | buildings
-    helpText: sbpsSelected.ui.helpText, // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
-    iconName: slash("/icons/" + sbpsSelected.ui.iconName + ".png") || "icon", // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
-    factionicon: getFactionIcon(sbpsSelected.faction),
-    cover: "",
-    isMoving: false,
-    targetSize: 1,
-    armor: 1,
-    image: getFactionIcon(sbpsSelected.faction),
-    description: sbpsSelected.ui.screenName,
-    label: sbpsSelected.id,
-    value: sbpsSelected.id,
-    defLoadout: [],
-    health: 0,
-  };
-
-  // Get loadouts
-  if (ebps) {
-    custUnit.loadout = getDefaultLoadout(custUnit, ebps, sbpsSelected, weapons);
-    custUnit.defLoadout = [...custUnit.loadout];
-    // setHealthData(custUnit.id, ebps, custUnit);
-    const ebpsUnit = ebps.find((unit) => unit.id == custUnit.id);
-    custUnit.armor = ebpsUnit?.health.armorLayout?.armor || 1;
-  }
-
-  return custUnit;
-};
-
-const getDefaultLoadout = (
-  unit: CustomizableUnit,
-  ebpsList: EbpsType[],
-  sbps: SbpsType,
-  weapons: WeaponType[],
-) => {
-  const loadoutUnit: weaponMember[] = [];
-
-  // loop through loadout to get path to unit entity
-  for (const loadout of sbps.loadout) {
-    const type = loadout.type.split("/");
-    const ebps = ebpsList.find((unit) => unit.id == type[type.length - 1]);
-    if (ebps)
-      // loop throup hardpoints get weapon ebps
-      for (const weaponRef of ebps.weaponRef) {
-        // find weapon ebps
-        const refPath = weaponRef.ebp.split("/");
-        let weaponEbp = ebps;
-        if (refPath[refPath.length - 1] != ebps.id) {
-          const weaponEbp2 = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
-          if (!weaponEbp2) continue;
-          weaponEbp = weaponEbp2;
-        }
-
-        // find referenced weapon template
-        const weapon = weapons.find((gun) => gun.id == weaponEbp?.weaponId);
-
-        if (!weapon) continue;
-
-        // add weapon clone and set number
-        const clone = { ...weapon };
-        (clone as any).num = loadout.num;
-        (clone as any).unit = loadout.id;
-        loadoutUnit.push(clone as any);
-      }
-  }
-  return loadoutUnit;
-};
-
 const mapUnitSelection = (sbps: SbpsType[], ebps: EbpsType[], weapons: WeaponType[]) => {
   const selectionFields = [];
 
   for (const squad of sbps) {
-    //if (squad.unitType == "infantry")
-    selectionFields.push(mapUnitDisplayData(squad, ebps, weapons));
+    if (squad.ui.symbolIconName != "" && squad.faction != "british") {
+      const custUnit = mapCustomizableUnit(squad, ebps, weapons);
+      if (custUnit.weapon_member.length > 0) selectionFields.push(custUnit);
+    }
   }
-
   return selectionFields;
 };
 
@@ -398,8 +303,9 @@ export const DpsChart = (props: IDPSProps) => {
     // add unit
     if (unitBp) {
       activeData[index] = { ...unitBp };
-      activeData[index].loadout = []; // Clear loadout reference
-      for (const loadout of unitBp.loadout) activeData[index].loadout.push({ ...loadout });
+      activeData[index].weapon_member = []; // Clear loadout reference
+      for (const loadout of unitBp.weapon_member)
+        activeData[index].weapon_member.push({ ...loadout });
       setRerender(!rerender);
     }
   }
@@ -408,9 +314,7 @@ export const DpsChart = (props: IDPSProps) => {
   const chartData = { datasets: [mapChartData([])] };
   let maxY = 1;
 
-  for (const unit of activeData) {
-    updateHealth(unit, props.ebpsData);
-  }
+  for (const unit of activeData) if (unit) updateHealth(unit);
 
   if (activeData.length > 0) {
     chartData.datasets = [];
