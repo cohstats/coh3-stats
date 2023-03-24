@@ -228,7 +228,7 @@ export const getSbpsUpgrades = (sbps: SbpsType, ebpsList: EbpsType[], weapons: W
       if (!weapon || weapon.weapon_bag.damage_max == 0 || weapon.weapon_bag.accuracy_near >= 1)
         continue;
 
-      const weaponMember = mapWeaponMember(sbps, unit_ebps, weapon, loadout.num);
+      const weaponMember = mapWeaponMember(sbps, unit_ebps, weapon, 1);
       loadoutMember.push(weaponMember);
     }
   }

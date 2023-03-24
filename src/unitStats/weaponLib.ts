@@ -108,10 +108,20 @@ const getSingleWeaponDPS = (
     length = targetSize / 3;
   }
 
+  // count units
+  let units = 1;
+  if (target_unit?.weapon_member) {
+    units = 0;
+    for (const target_member of target_unit.weapon_member) {
+      units += target_member.num;
+    }
+    if (units == 0) return 0;
+  }
+
   let scatter_acc = 0;
 
   const weapon_class = weapon_member.weapon.path.split("/")[1];
-  if (weapon_class == "ballistic_weapon")
+  if (weapon_class == "ballistic_weapon" && target_unit?.unit_type == "vehicles")
     scatter_acc = getScatterHitChance(weapon_bag, distance != 0 ? distance : 1, width, length);
 
   let aoeDamageCombines = 0;
@@ -121,48 +131,68 @@ const getSingleWeaponDPS = (
     const scatter_area = getScatterArea(distance, weapon_bag);
 
     const aoeAreaFar =
-      Math.PI * Math.pow(Math.min(weapon_bag.aoe_accuracy_far, weapon_bag.aoe_outer_radius), 2);
+      Math.PI * Math.pow(Math.min(weapon_bag.aoe_distance_far, weapon_bag.aoe_outer_radius), 2);
     const aoeAreaMid =
       Math.PI * Math.pow(Math.min(weapon_bag.aoe_distance_mid, weapon_bag.aoe_outer_radius), 2);
     const aoeAreaNear =
       Math.PI * Math.pow(Math.min(weapon_bag.aoe_distance_near, weapon_bag.aoe_outer_radius), 2);
 
     // @todo check accuracy multiplyer
-    const aoeHitchanceFar =
-      Math.min((aoeAreaFar - aoeAreaMid) / scatter_area, 1) *
-      Math.min(weapon_bag.aoe_penetration_far / armor, 1);
-    const aoeHitchanceMid =
-      Math.min((aoeAreaMid - aoeAreaNear) / scatter_area, 1) *
-      Math.min(weapon_bag.aoe_penetration_mid / armor, 1);
-    const aoeHitchancenear =
-      Math.min(aoeAreaNear / scatter_area, 1) *
-      Math.min(weapon_bag.aoe_penetration_near / armor, 1);
+    let aoe_accuracy_far = 1;
+    let aoe_accuracy_mid = 1;
+    let aoe_accuracy_near = 1;
 
-    const aoeDamageMidFar = (1 - aoeHitchancenear) * aoeHitchanceMid;
-    const aoeDamageFarMax = (1 - aoeDamageMidFar) * aoeHitchanceFar;
+    if (scatter_area != 0) {
+      aoe_accuracy_far = Math.min((aoeAreaFar - aoeAreaMid) / scatter_area, 1);
+      aoe_accuracy_mid = Math.min((aoeAreaMid - aoeAreaNear) / scatter_area, 1);
+      aoe_accuracy_near = Math.min(aoeAreaNear / scatter_area, 1);
+    }
+
+    const aoeHitChanceFar =
+      aoe_accuracy_far * Math.min(weapon_bag.aoe_penetration_far / armor, 1);
+    const aoeHitChanceMid =
+      aoe_accuracy_mid * Math.min(weapon_bag.aoe_penetration_mid / armor, 1);
+    const aoeHitChancenear =
+      aoe_accuracy_near * Math.min(weapon_bag.aoe_penetration_near / armor, 1);
+
+    const aoeDamageMidFar = (1 - aoeHitChancenear) * aoeHitChanceMid;
+    const aoeDamageFarMax = (1 - aoeDamageMidFar) * aoeHitChanceFar;
 
     let health = target_unit?.hitpoints;
     if (!health) health = 100;
 
+    // check how much units will fit into the area
+    // const unitPerAreaApproximation = Math.min(Math.max(scatter_area / Math.pow(width,2),1),units)
+
+    let type_damage_mp = 1;
+    if (target_unit && target_unit.weapon_member)
+      for (const modifier of weapon_bag.target_type_table) {
+        if (modifier.unit_type && target_unit.unit_type)
+          type_damage_mp = modifier.damage_multiplier;
+      }
+
     // Restrict damage multiplyer by max model health and maximum affected models.
     const aoeDamageFar = Math.min(
       Math.min(avgDamage * weapon_bag.aoe_damage_far, health),
-      avgDamage * weapon_bag.aoe_damage_far,
+      avgDamage * type_damage_mp * weapon_bag.aoe_damage_far,
     );
     const aoeDamageMid = Math.min(
       Math.min(avgDamage * weapon_bag.aoe_damage_mid, health),
-      avgDamage * weapon_bag.aoe_damage_mid,
+      avgDamage * type_damage_mp * weapon_bag.aoe_damage_mid,
     );
     const aoeDamageNear = Math.min(
       Math.min(avgDamage * weapon_bag.aoe_damage_near, health),
-      avgDamage * weapon_bag.aoe_damage_near,
+      avgDamage * type_damage_mp * weapon_bag.aoe_damage_near,
     );
+
+    // const memberHit =  Math.min(units, weapon_bag.aoe_damage_max_member!=-1? weapon_bag.aoe_damage_max_member:units)
 
     // Expected Damage via Area Effect
     aoeDamageCombines =
-      aoeHitchancenear * aoeDamageNear +
-      aoeDamageMidFar * aoeDamageMid +
-      aoeDamageFarMax * aoeDamageFar;
+      (aoeHitChancenear * aoeDamageNear +
+        aoeDamageMidFar * aoeDamageMid +
+        aoeDamageFarMax * aoeDamageFar) *
+      Math.min(units / 2, 1);
   }
 
   /* Combined accuracy */

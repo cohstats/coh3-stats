@@ -33,18 +33,12 @@ import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
-import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
 // import slash from "slash";
-import { WeaponStatsType, WeaponType } from "../../src/unitStats/mappingWeapon";
+import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
 import { IconAdjustments } from "@tabler/icons";
-import { getIconsPathOnCDN } from "../../src/utils";
-import {
-  CustomizableUnit,
-  mapCustomizableUnit,
-  WeaponMember,
-} from "../../src/unitStats/dpsCommon";
+import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
@@ -368,7 +362,7 @@ export const DpsChart = (props: IDPSProps) => {
       <Container>
         {/* */}
         <Stack mb={12}>
-          <Title order={2}>Company of Heroes 3 DPS Tool </Title>
+          <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
           <Space></Space>
           <Flex
             // mih={50}
@@ -387,7 +381,7 @@ export const DpsChart = (props: IDPSProps) => {
                 </HoverCard.Target>
                 <HoverCard.Dropdown>
                   <Stack mb={12}>
-                    <Text size="sm">
+                    {/* <Text size="sm">
                       {isStaircase
                         ? "Staircase: Show changes at near/mid/far only"
                         : "Line: Applied damage changes linearly over distance"}
@@ -397,7 +391,7 @@ export const DpsChart = (props: IDPSProps) => {
                       checked={isStaircase}
                       onChange={(event) => setStaircase(event.currentTarget.checked)}
                       size="xs"
-                    />
+                    /> */}
                     <Space></Space>
                     <Text size="sm">
                       {showDpsHealth

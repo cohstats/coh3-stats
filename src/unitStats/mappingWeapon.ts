@@ -22,6 +22,8 @@ export type WeaponStatsType = {
   aoe_damage_mid: number;
   aoe_damage_near: number;
 
+  aoe_damage_max_member: number;
+
   aoe_distance_near: number;
   aoe_distance_mid: number;
   aoe_distance_far: number;
@@ -105,8 +107,9 @@ export type WeaponStatsType = {
   scatter_distance_scatter_max: number;
   scatter_distance_scatter_offset: number;
   scatter_distance_scatter_ratio: number;
+  scatter_distance_object_min: number;
 
-  target_type_table: [];
+  target_type_table: TargetType[];
 };
 
 // Maps a single weapon entity
@@ -128,6 +131,14 @@ type WeaponType = {
   weapon_class: string;
 };
 
+type TargetType = {
+  unit_type: string;
+  dmg_modifier: number;
+  accuracy_multiplier: number;
+  penetration_multiplier: number;
+  damage_multiplier: number;
+};
+
 const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string) => {
   const weapon_bag: any = node.weapon_bag;
 
@@ -144,6 +155,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     description: resolveLocstring(weapon_bag.ui_name),
     faction: jsonPath.split("/")[0],
     parent: parent,
+
     weapon_bag: {
       accuracy_near: weapon_bag.accuracy?.near || 0,
       accuracy_mid: weapon_bag.accuracy?.mid || 0,
@@ -160,6 +172,8 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       aoe_distance_near: weapon_bag.area_effect?.distance.near || 0,
       aoe_distance_mid: weapon_bag.area_effect?.distance.mid || 0,
       aoe_distance_far: weapon_bag.area_effect?.distance.far || 0,
+
+      aoe_damage_max_member: weapon_bag.area_effect?.damage_max_members_per_squad || -1,
 
       aoe_outer_radius: weapon_bag.area_effect?.area_info?.outer_radius || 0,
 
@@ -260,10 +274,26 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       scatter_distance_scatter_max: weapon_bag.scatter?.distance_scatter_max || 0,
       scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
       scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
-
+      scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_object_min_hit || 0,
+      //aoe_distance_object_min : weapon_bag.scatt
       target_type_table: [],
     },
   };
+
+  if (weapon_bag?.target_type_table)
+    for (const target_types of weapon_bag?.target_type_table) {
+      weaponData.weapon_bag.target_type_table.push({
+        unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
+        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
+        accuracy_multiplier:
+          target_types.target_unit_type_multipliers?.weapon_multiplier?.accuracy_multiplier || 1,
+        penetration_multiplier:
+          target_types.target_unit_type_multipliers?.weapon_multiplier?.penetration_multiplier ||
+          1,
+        damage_multiplier:
+          target_types.target_unit_type_multiplier?.weapon_multipliers?.damage_multiplier || 1,
+      });
+    }
 
   return weaponData;
 };
