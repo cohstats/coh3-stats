@@ -121,7 +121,19 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
             <Stack>
               <Title order={4}>Stats</Title>
               <Card p="lg" radius="md" withBorder>
-                {UnitSquadCard(resolvedSquad)}
+                {UnitSquadCard({
+                  id: resolvedSquad.id,
+                  armor: resolvedEntities[0].health.armorLayout.armor,
+                  sight: {
+                    coneAngle: resolvedEntities[0].sight_ext.sight_package.cone_angle,
+                    outerRadius: resolvedEntities[0].sight_ext.sight_package.outer_radius,
+                  },
+                  moving: {
+                    defaultSpeed:
+                      resolvedEntities[0].moving_ext.speed_scaling_table.default_speed,
+                    maxSpeed: resolvedEntities[0].moving_ext.speed_scaling_table.max_speed,
+                  },
+                })}
               </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
               {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
