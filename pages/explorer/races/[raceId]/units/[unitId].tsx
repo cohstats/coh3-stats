@@ -252,14 +252,14 @@ const UnitWeaponSection = (
 
   return (
     <Stack>
-      <Title order={4}>Default Loadout</Title>
+      <Title order={4}>Loadout</Title>
 
       <Grid columns={2} grow>
         {Object.entries(weaponSquadDict).map(([id, { count, weapon }]) => {
           return (
             <Grid.Col span={1} key={id}>
               <Card p="lg" radius="md" withBorder>
-                {WeaponLoadoutCard(weapon)}
+                {WeaponLoadoutCard(weapon, count)}
               </Card>
             </Grid.Col>
           );
