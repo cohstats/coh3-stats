@@ -197,9 +197,6 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
       munition: 0,
       time: 0,
     },
-    populationExt: {
-      personnel_pop: 0,
-    },
     ui: {
       iconName: "races/afrika_corps/vehicles/halftrack_logistics_ak",
       symbolIconName: "races/common/symbols/building_support_center",
@@ -222,5 +219,25 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
     upgradeRefs: [],
     weaponRef: [],
     weaponId: "",
+    populationExt: {
+      personnel_pop: 0,
+      upkeep_per_pop: {
+        fuel: 0,
+        manpower: 0,
+        munition: 0,
+      },
+    },
+    moving_ext: {
+      speed_scaling_table: {
+        default_speed: 0,
+        max_speed: 0,
+      },
+    },
+    sight_ext: {
+      sight_package: {
+        cone_angle: 0,
+        outer_radius: 0,
+      },
+    },
   };
 }
