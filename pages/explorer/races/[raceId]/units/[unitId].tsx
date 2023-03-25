@@ -26,7 +26,7 @@ import {
   StatsVehicleArmor,
   VehicleArmorType,
 } from "../../../../../components/unit-cards/vehicle-armor-card";
-import { StatsCosts } from "../../../../../components/unit-cards/cost-card";
+import { UnitCostCard } from "../../../../../components/unit-cards/unit-cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
@@ -114,6 +114,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
           </Grid.Col>
           <Grid.Col md={2} order={2} orderMd={1}>
             <Stack>
+              <Title order={4}>Stats</Title>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
               {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
             </Stack>
@@ -122,14 +123,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
             <Stack>
               <Title order={4}>Stats</Title>
               <Card p="lg" radius="md" withBorder>
-                <StatsCosts
-                  command={totalCost.command}
-                  manpower={totalCost.manpower}
-                  munition={totalCost.munition}
-                  fuel={totalCost.fuel}
-                  popcap={totalCost.popcap}
-                  time_seconds={totalCost.time_seconds}
-                ></StatsCosts>
+                {UnitCostCard(totalCost)}
               </Card>
               <Card p="lg" radius="md" withBorder>
                 {HitpointCard({ squad: resolvedSquad, entities: resolvedEntities })}
@@ -228,10 +222,10 @@ const UnitWeaponSection = (
     }
   }
 
-  console.log(
-    "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
-    weaponSquadDict,
-  );
+  // console.log(
+  //   "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
+  //   weaponSquadDict,
+  // );
 
   return (
     <Stack>

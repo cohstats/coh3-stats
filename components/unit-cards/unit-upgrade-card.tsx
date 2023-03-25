@@ -1,6 +1,6 @@
 import slash from "slash";
 import { createStyles, Flex, Group, HoverCard, Text, Title, Tooltip } from "@mantine/core";
-import { StatsCosts } from "./cost-card";
+import { UnitCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
 
@@ -161,18 +161,7 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
         }}
         cfg={cfg}
       ></UnitUpgradeCardHeader>
-      {hasCost(time_cost) ? (
-        <StatsCosts
-          manpower={time_cost.manpower}
-          munition={time_cost.munition}
-          fuel={time_cost.fuel}
-          popcap={time_cost.popcap}
-          time_seconds={time_cost.time_seconds}
-          command={time_cost.command}
-        ></StatsCosts>
-      ) : (
-        <></>
-      )}
+      {hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}
     </Flex>
   );
 };

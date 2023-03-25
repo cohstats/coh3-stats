@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { UnitDescription, UnitDescriptionCard } from "./unit-description-card";
 import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
-import { StatsCosts } from "./cost-card";
+import { UnitCostCard } from "./unit-cost-card";
 import { BuildingType } from "../../src/coh3";
 import { hasCost, ResourceValues } from "../../src/unitStats";
 import Link from "next/link";
@@ -111,14 +111,7 @@ const BuildingCardHeader = (
         {hasCost(cost) ? (
           <>
             <Divider />
-            <StatsCosts
-              manpower={cost.manpower}
-              fuel={cost.fuel}
-              time_seconds={cost.time_seconds}
-              munition={cost.munition}
-              popcap={cost.popcap}
-              command={cost.command}
-            ></StatsCosts>
+            {UnitCostCard(cost)}
           </>
         ) : (
           <></>
@@ -165,7 +158,7 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
             >
               <Card p="lg" radius="md" withBorder>
                 {UnitDescriptionCard(desc)}
-                {StatsCosts(time_cost)}
+                {UnitCostCard(time_cost)}
               </Card>
             </Anchor>
           </Grid.Col>
