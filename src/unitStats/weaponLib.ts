@@ -1,13 +1,6 @@
 import { CustomizableUnit, getCoverMultiplier, WeaponMember } from "./dpsCommon";
-import { WeaponStatsType } from "./mappingWeapon";
+import { RangeType, WeaponStatsType } from "./mappingWeapon";
 
-type RangeType = {
-  near: number;
-  mid: number;
-  far: number;
-  min: number;
-  max: number;
-};
 const getSingleWeaponDPS = (
   weapon_member: WeaponMember,
   distance = 0,
@@ -204,7 +197,7 @@ const getSingleWeaponDPS = (
   /*   get rounds per minute 
     --------------------------------------------------
   */
-  const rpm = getWeaponRpm(weapon_bag, range, distance, isMoving);
+  const rpm = getWeaponRpm(weapon_bag, distance, isMoving);
   if (rpm == 0) return 0;
 
   /*   Damage per Second *
@@ -215,17 +208,12 @@ const getSingleWeaponDPS = (
   return dps * weapon_member.num;
 };
 
-const getWeaponRpm = (
-  weapon_bag: WeaponStatsType,
-  range: RangeType,
-  distance = 0,
-  isMoving = false,
-) => {
+export const getWeaponRpm = (weapon_bag: WeaponStatsType, distance = 0, isMoving = false) => {
   // average aim time
 
   const aimTime = getInterpolationByDistance(
     distance,
-    range,
+    weapon_bag.range,
     weapon_bag.fire_aim_time_min,
     weapon_bag.fire_aim_time_max,
     weapon_bag.aim_time_multiplier_near,
@@ -240,7 +228,7 @@ const getWeaponRpm = (
   const cooldown =
     getInterpolationByDistance(
       distance,
-      range,
+      weapon_bag.range,
       weapon_bag.cooldown_duration_min,
       weapon_bag.cooldown_duration_max,
       weapon_bag.cooldown_duration_multiplier_near,
@@ -255,7 +243,7 @@ const getWeaponRpm = (
   // Reload duration
   const reloadTime = getInterpolationByDistance(
     distance,
-    range,
+    weapon_bag.range,
     weapon_bag.reload_duration_min,
     weapon_bag.reload_duration_max,
     weapon_bag.reload_duration_multiplier_near,
@@ -285,7 +273,7 @@ const getWeaponRpm = (
     burstTime =
       getInterpolationByDistance(
         distance,
-        range,
+        weapon_bag.range,
         weapon_bag.burst_duration_min,
         weapon_bag.burst_duration_max,
         weapon_bag.burst_duration_multiplier_near,
@@ -295,7 +283,7 @@ const getWeaponRpm = (
 
     burstRate = getInterpolationByDistance(
       distance,
-      range,
+      weapon_bag.range,
       weapon_bag.burst_rate_of_fire_min,
       weapon_bag.burst_rate_of_fire_max,
       weapon_bag.burst_rate_of_fire_multiplier_near,
@@ -417,4 +405,4 @@ const getScatterArea = (distance = 0, weapon_bag: WeaponStatsType) => {
   return scatter_area;
 };
 
-export { getSingleWeaponDPS };
+export { getSingleWeaponDPS, getScatterArea };

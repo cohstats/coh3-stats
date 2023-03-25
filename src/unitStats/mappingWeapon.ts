@@ -3,6 +3,14 @@ import { traverseTree } from "./unitStatsLib";
 
 let WeaponStats: WeaponType[];
 
+type RangeType = {
+  near: number;
+  mid: number;
+  far: number;
+  min: number;
+  max: number;
+};
+
 export type WeaponStatsType = {
   accuracy_near: number;
   accuracy_mid: number;
@@ -86,6 +94,8 @@ export type WeaponStatsType = {
   penetration_mid: number;
   penetration_far: number;
 
+  range: RangeType;
+
   range_distance_near: number;
   range_distance_mid: number;
   range_distance_far: number;
@@ -128,7 +138,8 @@ type WeaponType = {
   description: string; // search selection description
   faction: string; // faction string e.g. afrika_korps
   parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
-  weapon_class: string;
+  weapon_class: string; // Class defined in the weapon bag (cannon, at_gun)
+  weapon_cat: string; // category defined by high_level folder structure (ballistic, small arms, explosive)
 };
 
 type TargetType = {
@@ -155,6 +166,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     description: resolveLocstring(weapon_bag.ui_name),
     faction: jsonPath.split("/")[0],
     parent: parent,
+    weapon_cat: jsonPath.split("/")[1] || "",
 
     weapon_bag: {
       accuracy_near: weapon_bag.accuracy?.near || 0,
@@ -260,6 +272,14 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       range_min: weapon_bag.range?.min || 0,
       range_max: weapon_bag.range?.max || 0,
 
+      range: {
+        far: weapon_bag.range?.distance?.far || -1,
+        mid: weapon_bag.range?.distance?.mid || -1,
+        near: weapon_bag.range?.distance?.near || -1,
+        min: weapon_bag.range?.min || 0,
+        max: weapon_bag.range?.max || 0,
+      },
+
       reload_duration_min: weapon_bag.reload?.duration?.min || 0,
       reload_duration_max: weapon_bag.reload?.duration?.max || 0,
 
@@ -279,6 +299,11 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       target_type_table: [],
     },
   };
+
+  if (weapon_bag.range.near === -1) weapon_bag.range.near = weapon_bag.range.min;
+  if (weapon_bag.range.mid === -1)
+    weapon_bag.range.mid = (weapon_bag.range.max - weapon_bag.range.min) / 2;
+  if (weapon_bag.range.far === -1) weapon_bag.range.far = weapon_bag.range.max;
 
   if (weapon_bag?.target_type_table)
     for (const target_types of weapon_bag?.target_type_table) {
@@ -341,4 +366,4 @@ const isWeaponBagContainer = (key: string, obj: any) => {
 };
 
 export { WeaponStats, setWeaponStats, getWeaponStats };
-export type { WeaponType };
+export type { WeaponType, RangeType };

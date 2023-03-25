@@ -267,7 +267,8 @@ export const DpsChart = (props: IDPSProps) => {
   const searchData_default: CustomizableUnit[] = [];
   const [activeData] = useState(searchData_default);
   const [rerender, setRerender] = useState(false);
-  const [isStaircase, setStaircase] = useState(false);
+  // const [isStaircase, setStaircase] = useState(false);
+  const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
   // const { classes } = useStyles();
   const theme = useMantineTheme();
