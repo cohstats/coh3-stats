@@ -255,7 +255,7 @@ export const getWeaponRpm = (weapon_bag: WeaponStatsType, distance = 0, isMoving
   const avgClipSize = (weapon_bag.reload_frequency_min + weapon_bag.reload_frequency_max + 2) / 2;
 
   let burstTime = 0;
-  let burstRate = 1;
+
   let shotsPerClip = avgClipSize;
 
   // dmg for burst weapons
@@ -281,7 +281,7 @@ export const getWeaponRpm = (weapon_bag: WeaponStatsType, distance = 0, isMoving
         weapon_bag.burst_duration_multiplier_far,
       ) * movingBurstMp;
 
-    burstRate = getInterpolationByDistance(
+    const burstRate = getInterpolationByDistance(
       distance,
       weapon_bag.range,
       weapon_bag.burst_rate_of_fire_min,

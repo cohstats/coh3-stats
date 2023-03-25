@@ -197,10 +197,10 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       aim_time_multiplier_mid: weapon_bag.aim?.aim_time_multiplier?.mid || 1,
       aim_time_multiplier_far: weapon_bag.aim?.aim_time_multiplier?.far || 1,
 
-      fire_aim_time_min: weapon_bag?.fire_aim_time?.min || 0,
-      fire_aim_time_max: weapon_bag?.fire_aim_time?.max || 0,
+      fire_aim_time_min: weapon_bag.fire_aim_time?.min || 0,
+      fire_aim_time_max: weapon_bag.fire_aim_time?.max || 0,
 
-      burst_can_burst: weapon_bag?.burst?.can_burst == "True" ? true : false,
+      burst_can_burst: weapon_bag.burst?.can_burst == "True" ? true : false,
       burst_duration_min: weapon_bag.burst?.duration?.min || 0,
       burst_duration_max: weapon_bag.burst?.duration?.max || 0,
       burst_duration_multiplier_near: weapon_bag.burst?.duration_multiplier?.near || 1,
@@ -283,9 +283,9 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       reload_duration_min: weapon_bag.reload?.duration?.min || 0,
       reload_duration_max: weapon_bag.reload?.duration?.max || 0,
 
-      reload_duration_multiplier_near: weapon_bag?.reload?.duration_multiplier?.near || 1,
-      reload_duration_multiplier_mid: weapon_bag?.reload?.duration_multiplier?.mid || 1,
-      reload_duration_multiplier_far: weapon_bag?.reload?.duration_multiplier?.far || 1,
+      reload_duration_multiplier_near: weapon_bag.reload?.duration_multiplier?.near || 1,
+      reload_duration_multiplier_mid: weapon_bag.reload?.duration_multiplier?.mid || 1,
+      reload_duration_multiplier_far: weapon_bag.reload?.duration_multiplier?.far || 1,
 
       reload_frequency_min: weapon_bag.reload?.frequency?.min || 0,
       reload_frequency_max: weapon_bag.reload?.frequency?.max || 0,
@@ -305,8 +305,8 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     weapon_bag.range.mid = (weapon_bag.range.max - weapon_bag.range.min) / 2;
   if (weapon_bag.range.far === -1) weapon_bag.range.far = weapon_bag.range.max;
 
-  if (weapon_bag?.target_type_table)
-    for (const target_types of weapon_bag?.target_type_table) {
+  if (weapon_bag.target_type_table)
+    for (const target_types of weapon_bag.target_type_table) {
       weaponData.weapon_bag.target_type_table.push({
         unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
         dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
