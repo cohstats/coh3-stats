@@ -159,6 +159,7 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
     unitType: "production",
     unitTypes: ["halftrack_deployment"],
     spawnItems: [],
+    crew_size: 0, // Chrida: crewsize added / was missing.
     cost: {
       fuel: 0,
       manpower: 0,

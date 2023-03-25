@@ -5,13 +5,15 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
   label: string;
   description: string;
+  type_icon: string;
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, label, description, ...others }: ItemProps, ref) => (
+  ({ image, label, description, type_icon, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
         <Image width={60} height={40} src={image} fit="contain" alt="Faction" />
+        <Image width={60} height={40} src={type_icon} fit="contain" alt="Faction" />
         <div>
           <Text size="sm">{label}</Text>
           <Text size="xs" opacity={0.65}>
