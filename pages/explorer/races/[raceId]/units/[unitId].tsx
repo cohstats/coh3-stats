@@ -11,6 +11,7 @@ import {
   getResolvedUpgrades,
   getSbpsStats,
   getSquadTotalCost,
+  getSquadTotalUpkeepCost,
   getUpgradesStats,
   getWeaponStats,
   RaceBagDescription,
@@ -31,6 +32,7 @@ import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgra
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
+import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -84,6 +86,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   // Obtain the total cost of the squad by looking at the loadout.
   const totalCost = getSquadTotalCost(resolvedSquad, ebpsData);
 
+  // Obtain the total upkeep cost of the squad.
+  const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
+
   return (
     <>
       <Head>
@@ -115,6 +120,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
           <Grid.Col md={2} order={2} orderMd={1}>
             <Stack>
               <Title order={4}>Stats</Title>
+              <Card p="lg" radius="md" withBorder>
+                {UnitSquadCard(resolvedSquad)}
+              </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
               {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
             </Stack>
@@ -127,6 +135,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
               </Card>
               <Card p="lg" radius="md" withBorder>
                 {HitpointCard({ squad: resolvedSquad, entities: resolvedEntities })}
+              </Card>
+              <Card p="lg" radius="md" withBorder>
+                {UnitCostCard(totalUpkeepCost, "Upkeep per minute")}
               </Card>
               <Card p="lg" radius="md" withBorder>
                 <VeterancyCard

@@ -20,6 +20,14 @@ type SbpsType = {
    * minute costs, which will be stacked with the ebps. */
   populationExt: {
     personnel_pop: number;
+    /** Found at `upkeep_per_pop_per_minute_override`. This is a multiplier,
+     * which goes with `personnel_pop`. If greater than zero, overrides the
+     * army/global tuning tables. */
+    upkeep_per_pop: {
+      fuel: number;
+      manpower: number;
+      munition: number;
+    };
   };
   /** Found at `squad_veterancy_ext`. This contains a list of veterancy
    * description / required xp per level. */
@@ -80,6 +88,11 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     upgrades: [],
     populationExt: {
       personnel_pop: 0,
+      upkeep_per_pop: {
+        fuel: 0,
+        manpower: 0,
+        munition: 0,
+      },
     },
     veterancyInfo: {
       one: {
@@ -146,7 +159,15 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
         }
         break;
       case "squad_population_ext":
-        sbps.populationExt.personnel_pop = extension.personnel_pop || 0;
+        {
+          const upkeepPerPop = extension.upkeep_per_pop_per_minute_override;
+          sbps.populationExt.personnel_pop = extension.personnel_pop || 0;
+          sbps.populationExt.upkeep_per_pop = {
+            manpower: upkeepPerPop?.manpower || 0,
+            munition: upkeepPerPop?.munition || 0,
+            fuel: upkeepPerPop?.fuel || 0,
+          };
+        }
         break;
       case "squad_ui_ext":
         {

@@ -21,13 +21,35 @@ type EbpsType = {
    * within the `population_ext` along with the unkeep per pop per minute. */
   populationExt: {
     personnel_pop: number;
+    /** Found at `upkeep_per_pop_per_minute_override`. This is a multiplier,
+     * which goes with `personnel_pop`. If greater than zero, overrides the
+     * army/global tuning tables. */
+    upkeep_per_pop: {
+      fuel: number;
+      manpower: number;
+      munition: number;
+    };
+  };
+  moving_ext: {
+    speed_scaling_table: {
+      default_speed: number;
+      max_speed: number;
+    };
+  };
+  sight_ext: {
+    sight_package: {
+      /**  */
+      cone_angle: number;
+      /**  */
+      outer_radius: number;
+    };
   };
   /** Found at `cost_ext`. */
   cost: EntityCost;
   /** Found at `health_ext`. */
   health: {
     hitpoints: number;
-
+    /** For infantry -> armor, for vehicles -> front, rear, side. */
     armorLayout: armorLayoutOption;
     /** Found at `health_ext`. */
     targetSize: number;
@@ -124,10 +146,27 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     upgradeRefs: [],
     weaponRef: [],
     weaponId: "",
+    crew_size: 0,
     populationExt: {
       personnel_pop: 0,
+      upkeep_per_pop: {
+        fuel: 0,
+        manpower: 0,
+        munition: 0,
+      },
     },
-    crew_size: 0,
+    moving_ext: {
+      speed_scaling_table: {
+        default_speed: 0,
+        max_speed: 0,
+      },
+    },
+    sight_ext: {
+      sight_package: {
+        cone_angle: 0,
+        outer_radius: 0,
+      },
+    },
   };
 
   // clearUndefined(ebpsEntity);
@@ -190,7 +229,15 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
         ebps.cost.popcap = extension.time_cost?.cost?.popcap || 0;
         break;
       case "population_ext":
-        ebps.populationExt.personnel_pop = extension.personnel_pop || 0;
+        {
+          const upkeepPerPop = extension.upkeep_per_pop_per_minute_override;
+          ebps.populationExt.personnel_pop = extension.personnel_pop || 0;
+          ebps.populationExt.upkeep_per_pop = {
+            manpower: upkeepPerPop?.manpower || 0,
+            munition: upkeepPerPop?.munition || 0,
+            fuel: upkeepPerPop?.fuel || 0,
+          };
+        }
         break;
       case "health_ext":
         ebps.health.hitpoints = extension.hitpoints || 0;
@@ -204,9 +251,22 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.health.armorLayout.sideArmor = extension.armor_layout_option?.side_armor || 1;
           ebps.health.targetSize = extension.target_size || 1;
         }
-
         break;
-
+      case "moving_ext":
+        {
+          const speedScalingTable = extension.speed_scaling_table;
+          ebps.moving_ext.speed_scaling_table.default_speed =
+            speedScalingTable?.default_speed || 0;
+          ebps.moving_ext.speed_scaling_table.max_speed = speedScalingTable?.max_speed || 0;
+        }
+        break;
+      case "sight_ext":
+        {
+          const sightPackage = extension.sight_package;
+          ebps.sight_ext.sight_package.cone_angle = sightPackage?.cone_angle || 0;
+          ebps.sight_ext.sight_package.outer_radius = sightPackage?.outer_radius || 0;
+        }
+        break;
       case "combat_ext":
         for (const index in extension.hardpoints) {
           if (extension.hardpoints[index]?.hardpoint?.weapon_table)
