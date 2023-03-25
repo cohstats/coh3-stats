@@ -3,6 +3,14 @@ import { traverseTree } from "./unitStatsLib";
 
 let WeaponStats: WeaponType[];
 
+type RangeType = {
+  near: number;
+  mid: number;
+  far: number;
+  min: number;
+  max: number;
+};
+
 export type WeaponStatsType = {
   accuracy_near: number;
   accuracy_mid: number;
@@ -21,6 +29,12 @@ export type WeaponStatsType = {
   aoe_damage_far: number;
   aoe_damage_mid: number;
   aoe_damage_near: number;
+
+  aoe_damage_max_member: number;
+
+  aoe_distance_near: number;
+  aoe_distance_mid: number;
+  aoe_distance_far: number;
 
   aim_time_multiplier_near: number;
   aim_time_multiplier_mid: number;
@@ -80,6 +94,8 @@ export type WeaponStatsType = {
   penetration_mid: number;
   penetration_far: number;
 
+  range: RangeType;
+
   range_distance_near: number;
   range_distance_mid: number;
   range_distance_far: number;
@@ -101,8 +117,9 @@ export type WeaponStatsType = {
   scatter_distance_scatter_max: number;
   scatter_distance_scatter_offset: number;
   scatter_distance_scatter_ratio: number;
+  scatter_distance_object_min: number;
 
-  target_type_table: [];
+  target_type_table: TargetType[];
 };
 
 // Maps a single weapon entity
@@ -121,7 +138,16 @@ type WeaponType = {
   description: string; // search selection description
   faction: string; // faction string e.g. afrika_korps
   parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
-  weapon_class: string;
+  weapon_class: string; // Class defined in the weapon bag (cannon, at_gun)
+  weapon_cat: string; // category defined by high_level folder structure (ballistic, small arms, explosive)
+};
+
+type TargetType = {
+  unit_type: string;
+  dmg_modifier: number;
+  accuracy_multiplier: number;
+  penetration_multiplier: number;
+  damage_multiplier: number;
 };
 
 const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string) => {
@@ -140,6 +166,8 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     description: resolveLocstring(weapon_bag.ui_name),
     faction: jsonPath.split("/")[0],
     parent: parent,
+    weapon_cat: jsonPath.split("/")[1] || "",
+
     weapon_bag: {
       accuracy_near: weapon_bag.accuracy?.near || 0,
       accuracy_mid: weapon_bag.accuracy?.mid || 0,
@@ -153,20 +181,26 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       aoe_penetration_mid: weapon_bag.area_effect?.aoe_penetration?.mid || 0,
       aoe_penetration_near: weapon_bag.area_effect?.aoe_penetration?.near || 0,
 
+      aoe_distance_near: weapon_bag.area_effect?.distance.near || 0,
+      aoe_distance_mid: weapon_bag.area_effect?.distance.mid || 0,
+      aoe_distance_far: weapon_bag.area_effect?.distance.far || 0,
+
+      aoe_damage_max_member: weapon_bag.area_effect?.damage_max_members_per_squad || -1,
+
       aoe_outer_radius: weapon_bag.area_effect?.area_info?.outer_radius || 0,
 
       aoe_damage_far: weapon_bag.area_effect?.damage?.far || 1,
-      aoe_damage_mid: weapon_bag.area_effect?.damage?.far || 1,
-      aoe_damage_near: weapon_bag.area_effect?.damage?.far || 1,
+      aoe_damage_mid: weapon_bag.area_effect?.damage?.mid || 1,
+      aoe_damage_near: weapon_bag.area_effect?.damage?.near || 1,
 
       aim_time_multiplier_near: weapon_bag.aim?.aim_time_multiplier?.near || 1,
       aim_time_multiplier_mid: weapon_bag.aim?.aim_time_multiplier?.mid || 1,
       aim_time_multiplier_far: weapon_bag.aim?.aim_time_multiplier?.far || 1,
 
-      fire_aim_time_min: weapon_bag?.fire_aim_time?.min || 0,
-      fire_aim_time_max: weapon_bag?.fire_aim_time?.max || 0,
+      fire_aim_time_min: weapon_bag.fire_aim_time?.min || 0,
+      fire_aim_time_max: weapon_bag.fire_aim_time?.max || 0,
 
-      burst_can_burst: weapon_bag?.burst?.can_burst == "True" ? true : false,
+      burst_can_burst: weapon_bag.burst?.can_burst == "True" ? true : false,
       burst_duration_min: weapon_bag.burst?.duration?.min || 0,
       burst_duration_max: weapon_bag.burst?.duration?.max || 0,
       burst_duration_multiplier_near: weapon_bag.burst?.duration_multiplier?.near || 1,
@@ -219,7 +253,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       default_attack_type: weapon_bag.default_attack_type || "",
 
       fire_wind_down: weapon_bag.fire?.wind_down || 0,
-      fire_wind_up: weapon_bag.fire?.wind_down || 0,
+      fire_wind_up: weapon_bag.fire?.wind_up || 0,
 
       moving_accuracy_multiplier: weapon_bag.moving?.accuracy_multiplier || 1,
       moving_burst_multiplier: weapon_bag.moving?.burst_multiplier || 1,
@@ -238,12 +272,20 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       range_min: weapon_bag.range?.min || 0,
       range_max: weapon_bag.range?.max || 0,
 
+      range: {
+        far: weapon_bag.range?.distance?.far || -1,
+        mid: weapon_bag.range?.distance?.mid || -1,
+        near: weapon_bag.range?.distance?.near || -1,
+        min: weapon_bag.range?.min || 0,
+        max: weapon_bag.range?.max || 0,
+      },
+
       reload_duration_min: weapon_bag.reload?.duration?.min || 0,
       reload_duration_max: weapon_bag.reload?.duration?.max || 0,
 
-      reload_duration_multiplier_near: weapon_bag?.reload?.duration_multiplier?.near || 1,
-      reload_duration_multiplier_mid: weapon_bag?.reload?.duration_multiplier?.mid || 1,
-      reload_duration_multiplier_far: weapon_bag?.reload?.duration_multiplier?.far || 1,
+      reload_duration_multiplier_near: weapon_bag.reload?.duration_multiplier?.near || 1,
+      reload_duration_multiplier_mid: weapon_bag.reload?.duration_multiplier?.mid || 1,
+      reload_duration_multiplier_far: weapon_bag.reload?.duration_multiplier?.far || 1,
 
       reload_frequency_min: weapon_bag.reload?.frequency?.min || 0,
       reload_frequency_max: weapon_bag.reload?.frequency?.max || 0,
@@ -252,10 +294,31 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       scatter_distance_scatter_max: weapon_bag.scatter?.distance_scatter_max || 0,
       scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
       scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
-
+      scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_object_min_hit || 0,
+      //aoe_distance_object_min : weapon_bag.scatt
       target_type_table: [],
     },
   };
+
+  if (weapon_bag.range.near === -1) weapon_bag.range.near = weapon_bag.range.min;
+  if (weapon_bag.range.mid === -1)
+    weapon_bag.range.mid = (weapon_bag.range.max - weapon_bag.range.min) / 2;
+  if (weapon_bag.range.far === -1) weapon_bag.range.far = weapon_bag.range.max;
+
+  if (weapon_bag.target_type_table)
+    for (const target_types of weapon_bag.target_type_table) {
+      weaponData.weapon_bag.target_type_table.push({
+        unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
+        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
+        accuracy_multiplier:
+          target_types.target_unit_type_multipliers?.weapon_multiplier?.accuracy_multiplier || 1,
+        penetration_multiplier:
+          target_types.target_unit_type_multipliers?.weapon_multiplier?.penetration_multiplier ||
+          1,
+        damage_multiplier:
+          target_types.target_unit_type_multiplier?.weapon_multipliers?.damage_multiplier || 1,
+      });
+    }
 
   return weaponData;
 };
@@ -303,4 +366,4 @@ const isWeaponBagContainer = (key: string, obj: any) => {
 };
 
 export { WeaponStats, setWeaponStats, getWeaponStats };
-export type { WeaponType };
+export type { WeaponType, RangeType };

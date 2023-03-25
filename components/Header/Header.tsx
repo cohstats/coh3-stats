@@ -22,7 +22,6 @@ import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
 import { ColorSchemeToggle } from "../other/color-scheme-toggle";
 import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
-import config from "../../config";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
 import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";

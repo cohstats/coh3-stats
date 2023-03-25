@@ -26,7 +26,7 @@ const fetchLocstring = async () => {
   if (unitStatsLocString) return unitStatsLocString;
 
   const myReqLocstring = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/locstring.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/locstring.json",
   );
 
   unitStatsLocString = await myReqLocstring.json();

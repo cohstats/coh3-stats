@@ -33,18 +33,12 @@ import { UnitSearch } from "./unitSearch";
 import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
-import { getFactionIcon } from "../../src/unitStats/unitStatsLib";
 // import slash from "slash";
-import { WeaponStatsType, WeaponType } from "../../src/unitStats/mappingWeapon";
+import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
 import { IconAdjustments } from "@tabler/icons";
-import { getIconsPathOnCDN } from "../../src/utils";
-import {
-  CustomizableUnit,
-  mapCustomizableUnit,
-  WeaponMember,
-} from "../../src/unitStats/dpsCommon";
+import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList: CustomizableUnit[] = [];
@@ -119,16 +113,18 @@ const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
   const chartLine = {
     label: "No Item Selected",
     data: data,
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: "#4dabf7", // '#d048b6',
     //cubicInterpolationMode: "monotone" as const,
     //stepped: "after",
     stepped: "",
-    tension: 0.0,
-    pointStyle: "rect",
+    tension: 0.1,
+    pointStyle: "cross",
     fill: false,
-    backgroundColor: "rgba(0, 100, 150, 0.3)",
-    pointRadius: 5,
+    backgroundColor: "rgba(200, 200, 200, 0.2)",
+    pointRadius: 0,
+    pointHoverRadius: 30,
+    pointHitRadius: 10,
     intersect: true,
   };
 
@@ -186,20 +182,18 @@ const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
 
   // compute total dps for complete loadout
   unit1.weapon_member.forEach((ldout) => {
-    const weapon_member = ldout as WeaponMember;
-    let weaponDps = [];
-    // opponent default values
-    let targetSize = 1;
-    let armor = 1;
+    const weapon_member = ldout;
+    const weaponDps = [];
 
-    // Check if we also need to consider opponent multiplier
-    if (unit2) {
-      // get cover stats
-      targetSize = unit2.target_size;
-      armor = unit2.armor;
+    const range_min = weapon_member.weapon.weapon_bag.range_min;
+    const range_max = weapon_member.weapon.weapon_bag.range_max;
+    // opponent default values
+
+    for (let distance = range_min; distance <= range_max; distance++) {
+      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
+      weaponDps.push({ x: distance, y: dps });
     }
 
-    weaponDps = getSingleWeaponDPS(weapon_member, unit1.is_moving, unit2);
     dpsTotal = addDpsData(dpsTotal, weaponDps);
   });
 
@@ -273,7 +267,8 @@ export const DpsChart = (props: IDPSProps) => {
   const searchData_default: CustomizableUnit[] = [];
   const [activeData] = useState(searchData_default);
   const [rerender, setRerender] = useState(false);
-  const [isStaircase, setStaircase] = useState(false);
+  // const [isStaircase, setStaircase] = useState(false);
+  const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
   // const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -368,7 +363,7 @@ export const DpsChart = (props: IDPSProps) => {
       <Container>
         {/* */}
         <Stack mb={12}>
-          <Title order={2}>Company of Heroes 3 DPS Tool </Title>
+          <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
           <Space></Space>
           <Flex
             // mih={50}
@@ -387,7 +382,7 @@ export const DpsChart = (props: IDPSProps) => {
                 </HoverCard.Target>
                 <HoverCard.Dropdown>
                   <Stack mb={12}>
-                    <Text size="sm">
+                    {/* <Text size="sm">
                       {isStaircase
                         ? "Staircase: Show changes at near/mid/far only"
                         : "Line: Applied damage changes linearly over distance"}
@@ -397,7 +392,7 @@ export const DpsChart = (props: IDPSProps) => {
                       checked={isStaircase}
                       onChange={(event) => setStaircase(event.currentTarget.checked)}
                       size="xs"
-                    />
+                    /> */}
                     <Space></Space>
                     <Text size="sm">
                       {showDpsHealth
