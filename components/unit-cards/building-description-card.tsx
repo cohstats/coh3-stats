@@ -13,8 +13,9 @@ import {
 } from "@mantine/core";
 import { UnitDescription, UnitDescriptionCard } from "./unit-description-card";
 import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
-import { ResourceValues, StatsCosts } from "./cost-card";
+import { StatsCosts } from "./cost-card";
 import { BuildingType } from "../../src/coh3";
+import { hasCost, ResourceValues } from "../../src/unitStats";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -103,15 +104,21 @@ const BuildingCardHeader = (
           <Text ml={24}>{health.hitpoints}</Text>
         </Flex>
 
-        <Divider />
-
-        <StatsCosts
-          manpower={cost.manpower}
-          fuel={cost.fuel}
-          time_seconds={cost.time_seconds}
-          munition={cost.munition}
-          popcap={cost.popcap}
-        ></StatsCosts>
+        {hasCost(cost) ? (
+          <>
+            <Divider />
+            <StatsCosts
+              manpower={cost.manpower}
+              fuel={cost.fuel}
+              time_seconds={cost.time_seconds}
+              munition={cost.munition}
+              popcap={cost.popcap}
+              command={cost.command}
+            ></StatsCosts>
+          </>
+        ) : (
+          <></>
+        )}
       </Stack>
     </Grid.Col>
   </Grid>
@@ -210,7 +217,7 @@ export const BuildingCard = ({ desc, units, time_cost, health, upgrades }: Build
 
       <Divider mt={8}></Divider>
 
-      <Accordion chevronPosition="right">
+      <Accordion multiple chevronPosition="right">
         {productionSection}
         {upgradeSection}
       </Accordion>

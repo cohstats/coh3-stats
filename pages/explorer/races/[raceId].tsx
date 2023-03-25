@@ -2,7 +2,7 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
-import { Card, Container, Flex, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Stack, Text, Title } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
 import {
@@ -15,16 +15,24 @@ import {
   SbpsType,
   EbpsType,
   UpgradesType,
-  transformToMultiplayerFaction,
   filterMultiplayerBuildings,
-  getSquadTotalCost,
   fetchLocstring,
   getEbpsStats,
   getSbpsStats,
   getUpgradesStats,
   WeaponType,
   getWeaponStats,
+  getAbilitiesStats,
+  AbilitiesType,
+  getBattlegroupStats,
+  BattlegroupsType,
+  getResolvedUpgrades,
+  getResolvedSquads,
+  HalfTrackDeploymentUnitsAfrikaKorps,
+  getResolvedAbilities,
 } from "../../../src/unitStats";
+import ContentContainer from "../../../components/Content-container";
+import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 
 const RaceBagDescription: Record<raceType, string> = {
   // Locstring value: $11234530
@@ -45,10 +53,19 @@ interface RaceDetailProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
+  abilitiesData: AbilitiesType[];
+  battlegroupData: BattlegroupsType[];
   locstring: Record<string, string>;
 }
 
-const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesData }) => {
+const RaceDetail: NextPage<RaceDetailProps> = ({
+  ebpsData,
+  sbpsData,
+  upgradesData,
+  battlegroupData,
+  abilitiesData,
+}) => {
+  // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
 
@@ -61,7 +78,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesDat
         <title>{localizedRace} - COH3 Explorer</title>
         <meta name="description" content={`${localizedRace} - COH3 Explorer`} />
       </Head>
-      <Container size="md">
+      <ContentContainer>
         <Stack>
           <Flex direction="row" align="center" gap="md">
             <FactionIcon name={raceToFetch} width={64} />
@@ -80,27 +97,48 @@ const RaceDetail: NextPage<RaceDetailProps> = ({ ebpsData, sbpsData, upgradesDat
           </Text>
         </Flex>
 
+        {/* Battlegroups Section */}
+        <Stack mt={32}>
+          <Title order={4}>Battlegroups</Title>
+
+          {BattlegroupCard(raceToFetch, { battlegroupData, upgradesData, abilitiesData })}
+        </Stack>
+
         {/* Buildings Section */}
         <Stack mt={32}>
           <Title order={4}>Buildings</Title>
 
-          {BuildingMapping(raceToFetch, { ebpsData, sbpsData, upgradesData })}
+          {BuildingMapping(raceToFetch, {
+            ebpsData,
+            sbpsData,
+            upgradesData,
+            abilitiesData,
+          })}
         </Stack>
-      </Container>
+      </ContentContainer>
     </>
   );
 };
 
 const BuildingMapping = (
   race: raceType,
-  data: { ebpsData: EbpsType[]; sbpsData: SbpsType[]; upgradesData: UpgradesType[] },
+  data: {
+    ebpsData: EbpsType[];
+    sbpsData: SbpsType[];
+    upgradesData: UpgradesType[];
+    abilitiesData: AbilitiesType[];
+  },
 ) => {
-  const faction = transformToMultiplayerFaction(race);
-  const buildings = filterMultiplayerBuildings(data.ebpsData, faction);
+  const buildings = filterMultiplayerBuildings(data.ebpsData, race);
   return (
-    <div>
+    <Stack>
       {buildings.map((building) => {
-        // console.log("🚀 ~ file: [raceId].tsx:123 ~ {buildings.map ~ building:", building);
+        // Temporary workaround while a better idea to display call-ins of DAK shows up.
+        const upgrades =
+          race === "dak" && building.id === "halftrack_deployment_ak"
+            ? generateAfrikaKorpsCallIns(data.abilitiesData)
+            : getBuildingUpgrades(building, data.upgradesData);
+        const units = getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData);
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard
@@ -114,8 +152,8 @@ const BuildingMapping = (
                 icon_name: building.ui.iconName,
                 symbol_icon_name: building.ui.symbolIconName,
               }}
-              units={getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData)}
-              upgrades={getBuildingUpgrades(building, data.upgradesData)}
+              units={units}
+              upgrades={upgrades}
               time_cost={{
                 fuel: building.cost.fuel,
                 munition: building.cost.munition,
@@ -130,7 +168,7 @@ const BuildingMapping = (
           </Card>
         );
       })}
-    </div>
+    </Stack>
   );
 };
 
@@ -138,78 +176,68 @@ function getBuildingTrainableUnits(
   building: EbpsType,
   sbpsData: SbpsType[],
   ebpsData: EbpsType[],
-) {
-  const trainableUnits: BuildingSchema["units"] = [];
-  // console.group(`Building ${building.id} - Squad Total Cost List`);
-  for (const unitRef of building.spawnItems) {
-    // Get the last element of the array, which is the id.
-    const unitId = unitRef.split("/").slice(-1)[0];
-    // console.log("🚀 ~ file: [raceId].tsx:151 ~ unitId:", unitId)
-    const sbpsUnitFound = sbpsData.find((x) => x.id === unitId);
-    // console.log("🚀 ~ file: [raceId].tsx:153 ~ sbpsUnitFound:", sbpsUnitFound)
-    // Ignore those units not found.
-    if (!sbpsUnitFound) continue;
-    // Map the required fields.
-    const totalCost = getSquadTotalCost(sbpsUnitFound, ebpsData);
-    const unitInfo: BuildingSchema["units"][number] = {
+): BuildingSchema["units"] {
+  return Object.entries(getResolvedSquads(building.spawnItems, sbpsData, ebpsData)).map(
+    ([id, { ui, time_cost }]) => ({
       desc: {
-        id: unitId,
-        screen_name: sbpsUnitFound.ui.screenName,
-        help_text: sbpsUnitFound.ui.helpText,
-        brief_text: sbpsUnitFound.ui.briefText,
-        symbol_icon_name: sbpsUnitFound.ui.symbolIconName,
-        icon_name: sbpsUnitFound.ui.iconName,
+        id,
+        screen_name: ui.screenName,
+        help_text: ui.helpText,
+        brief_text: ui.briefText,
+        symbol_icon_name: ui.symbolIconName,
+        icon_name: ui.iconName,
       },
-      time_cost: {
-        fuel: totalCost.fuel,
-        munition: totalCost.munition,
-        manpower: totalCost.manpower,
-        popcap: totalCost.popcap,
-        time_seconds: totalCost.time,
-      },
-    };
-    trainableUnits.push(unitInfo);
-  }
-  // console.groupEnd();
-  // console.log("🚀 ~ file: [raceId].tsx:162 ~ getBuildingTrainableUnits ~ trainableUnits:", trainableUnits)
-  return trainableUnits;
+      time_cost,
+    }),
+  );
 }
 
-function getBuildingUpgrades(building: EbpsType, upgradesData: UpgradesType[]) {
-  const researchableUpgrades: BuildingSchema["upgrades"] = [];
-  for (const upgradeRef of building.upgradeRefs) {
-    // Get the last element of the array, which is the id.
-    const upgradeId = upgradeRef.split("/").slice(-1)[0];
-    const upgradeFound = upgradesData.find((x) => x.id === upgradeId);
-    // Ignore those upgrades not found.
-    if (!upgradeFound) continue;
-
-    const upgradeInfo: BuildingSchema["upgrades"][number] = {
-      id: upgradeFound.id,
+function getBuildingUpgrades(
+  building: EbpsType,
+  upgradesData: UpgradesType[],
+): BuildingSchema["upgrades"] {
+  return Object.entries(getResolvedUpgrades(building.upgradeRefs, upgradesData)).map(
+    ([id, { ui, cost }]) => ({
+      id,
       desc: {
-        screen_name: upgradeFound.ui.screenName,
-        help_text: upgradeFound.ui.helpText,
-        extra_text: upgradeFound.ui.extraText,
-        brief_text: upgradeFound.ui.briefText,
-        icon_name: upgradeFound.ui.iconName,
+        screen_name: ui.screenName,
+        help_text: ui.helpText,
+        extra_text: ui.extraText,
+        brief_text: ui.briefText,
+        icon_name: ui.iconName,
       },
       time_cost: {
-        fuel: upgradeFound.cost.fuel,
-        munition: upgradeFound.cost.munition,
-        manpower: upgradeFound.cost.manpower,
-        popcap: upgradeFound.cost.popcap,
-        time_seconds: upgradeFound.cost.time,
+        fuel: cost.fuel,
+        munition: cost.munition,
+        manpower: cost.manpower,
+        popcap: cost.popcap,
+        time_seconds: cost.time,
       },
-    };
+    }),
+  );
+}
 
-    researchableUpgrades.push(upgradeInfo);
-  }
-
-  // console.log(
-  //   "🚀 ~ file: [raceId].tsx:198 ~ getBuildingUpgrades ~ researchableUpgrades:",
-  //   researchableUpgrades,
-  // );
-  return researchableUpgrades;
+/** Generate the call-ins as upgrades although those are abilities under the hood. */
+function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSchema["upgrades"] {
+  return Object.entries(
+    getResolvedAbilities(Object.keys(HalfTrackDeploymentUnitsAfrikaKorps), abilitiesData),
+  ).map(([id, { ui, cost, rechargeTime }]) => ({
+    id,
+    desc: {
+      screen_name: ui.screenName,
+      help_text: ui.helpText,
+      extra_text: ui.extraText,
+      brief_text: ui.briefText,
+      icon_name: ui.iconName,
+    },
+    time_cost: {
+      fuel: cost.fuel,
+      munition: cost.munition,
+      manpower: cost.manpower,
+      popcap: cost.popcap,
+      time_seconds: rechargeTime,
+    },
+  }));
 }
 
 // Generates `/dak`.
@@ -233,7 +261,6 @@ export const getStaticProps = async () => {
 
   // map Data at built time
   const ebpsData = await getEbpsStats();
-  //const ebpsData: any[] = [];
 
   // map Data at built time
   const sbpsData = await getSbpsStats();
@@ -241,12 +268,17 @@ export const getStaticProps = async () => {
   // map Data at built time
   const upgradesData = await getUpgradesStats();
 
+  const abilitiesData = await getAbilitiesStats();
+  const battlegroupData = await getBattlegroupStats();
+
   return {
     props: {
       weaponData,
       sbpsData,
       ebpsData,
       upgradesData,
+      abilitiesData,
+      battlegroupData,
       locstring,
     },
   };
