@@ -15,6 +15,9 @@ import {
   UpgradesType,
 } from "../../src/unitStats/mappingUpgrades";
 import { fetchLocstring, setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
+import Head from "next/head";
+import React from "react";
+import { generateKeywordsString } from "../../src/head-utils";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -52,8 +55,28 @@ const DpsPage: NextPage<DpsProps> = ({
     ebpsData: ebpsData,
   };
 
+  const keywords = generateKeywordsString([
+    "coh3 dps",
+    "dps tools",
+    "coh3 units calculator",
+    "coh3 damage calculator",
+    "damage per second coh3",
+  ]);
+
   return (
     <>
+      <Head>
+        <title>COH3 Stats - DPS Calculator </title>
+        <meta
+          name="description"
+          content={
+            "DPS Calculator for all units. Calculate with types of covers. " +
+            "Setup different squad combinations, weapons and much more."
+          }
+        />
+        <meta name="keywords" content={keywords} />
+        {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
+      </Head>
       <div>
         <DpsChart {...dbpsData}></DpsChart>
       </div>
@@ -62,20 +85,29 @@ const DpsPage: NextPage<DpsProps> = ({
 };
 
 export const getStaticProps = async () => {
-  const locstring = await fetchLocstring();
-
   // map Data at built time
-  const weaponData = await getWeaponStats();
+  const [weaponData, ebpsData, sbpsData, upgradesData, locstring] = await Promise.all([
+    getWeaponStats(),
+    getEbpsStats(),
+    getSbpsStats(),
+    getUpgradesStats(),
+    fetchLocstring(),
+  ]);
 
-  // map Data at built time
-  const ebpsData = await getEbpsStats();
-  //const ebpsData: any[] = [];
-
-  // map Data at built time
-  const sbpsData = await getSbpsStats();
-
-  // map Data at built time
-  const upgradesData = await getUpgradesStats();
+  // const locstring = await fetchLocstring();
+  //
+  // // map Data at built time
+  // const weaponData = await getWeaponStats();
+  //
+  // // map Data at built time
+  // const ebpsData = await getEbpsStats();
+  // //const ebpsData: any[] = [];
+  //
+  // // map Data at built time
+  // const sbpsData = await getSbpsStats();
+  //
+  // // map Data at built time
+  // const upgradesData = await getUpgradesStats();
 
   return {
     props: {
