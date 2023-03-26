@@ -73,7 +73,7 @@ export interface COH3StatsPlayerInfoAPI {
 }
 
 export type InternalStandings = Record<
-  "german" | "american" | "dak" | "british",
+  raceType,
   Record<leaderBoardType, RawLeaderboardStat | null>
 >;
 

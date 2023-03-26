@@ -1,9 +1,4 @@
-import {
-  InternalStandings,
-  leaderBoardType,
-  raceType,
-  RawLeaderboardStat,
-} from "../../../src/coh3/coh3-types";
+import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../src/coh3/coh3-types";
 import PlayerStandingsTable from "./player-standings-table";
 import React from "react";
 import { Group, Space, Title } from "@mantine/core";

@@ -25,13 +25,13 @@ const PlayerStandingsTable = ({
       <DataTable
         style={{
           flexGrow: 1,
+          maxHeight: "212px",
         }}
         withBorder
         borderRadius="md"
         highlightOnHover
         striped
         verticalSpacing="xs"
-        // minHeight={300}
         // provide data
         idAccessor={"type"}
         records={dataForTable}
@@ -143,9 +143,9 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "lastmatchdate",
-            title: "Last Game",
+            title: "Last Match",
             textAlignment: "right",
-            width: 120,
+            width: 125,
             // @ts-ignore
             render: ({ lastmatchdate }) => {
               if (!lastmatchdate) {
