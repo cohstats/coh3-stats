@@ -1,20 +1,20 @@
 import { InternalStandings } from "../../src/coh3/coh3-types";
-import PlayerStandingsTable from "./player-standings-table";
-import { Space } from "@mantine/core";
+import { Container, Space } from "@mantine/core";
 import React from "react";
+import PlayerStandingsFaction from "./standings/player-standings-faction";
 
 const PlayerStandings = ({ playerStandings }: { playerStandings: InternalStandings }) => {
   return (
-    <>
+    <Container size={"xl"}>
       <Space h="xs" />
-      <PlayerStandingsTable faction={"german"} data={playerStandings.german} />
+      <PlayerStandingsFaction faction={"german"} data={playerStandings.german} />
       <Space h="xs" />
-      <PlayerStandingsTable faction={"american"} data={playerStandings.american} />
+      <PlayerStandingsFaction faction={"american"} data={playerStandings.american} />
       <Space h="xs" />
-      <PlayerStandingsTable faction={"dak"} data={playerStandings.dak} />
+      <PlayerStandingsFaction faction={"dak"} data={playerStandings.dak} />
       <Space h="xs" />
-      <PlayerStandingsTable faction={"british"} data={playerStandings.british} />
-    </>
+      <PlayerStandingsFaction faction={"british"} data={playerStandings.british} />
+    </Container>
   );
 };
 

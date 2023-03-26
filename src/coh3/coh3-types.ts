@@ -74,7 +74,7 @@ export interface COH3StatsPlayerInfoAPI {
 
 export type InternalStandings = Record<
   "german" | "american" | "dak" | "british",
-  Record<"1v1" | "2v2" | "3v3" | "4v4", RawLeaderboardStat | null>
+  Record<leaderBoardType, RawLeaderboardStat | null>
 >;
 
 export type PlayerCardDataType = {
