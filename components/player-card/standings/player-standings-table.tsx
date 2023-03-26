@@ -1,20 +1,11 @@
-import { leaderBoardType, raceType, RawLeaderboardStat } from "../../src/coh3/coh3-types";
+import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
-import FactionIcon from "../faction-icon";
-import { localizedNames } from "../../src/coh3/coh3-data";
-import { Space, Group, Text, Title, Anchor } from "@mantine/core";
+import { Text, Anchor } from "@mantine/core";
 
 import React from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { getLeaderBoardRoute } from "../../src/routes";
-
-// We need to do this because of the SSR. It would have different time while the data reach FE
-const DynamicTimeAgo = dynamic(() => import("../internal-timeago"), {
-  ssr: false,
-  // @ts-ignore
-  loading: () => "Calculating...",
-});
+import { getLeaderBoardRoute } from "../../../src/routes";
+import DynamicTimeAgo from "../../other/dynamic-timeago";
 
 const PlayerStandingsTable = ({
   faction,
@@ -31,19 +22,16 @@ const PlayerStandingsTable = ({
 
   return (
     <>
-      <Group>
-        <FactionIcon name={faction} width={35} />{" "}
-        <Title order={2}>{localizedNames[faction]}</Title>
-      </Group>
-      <Space h="xs" />
-
       <DataTable
+        style={{
+          flexGrow: 1,
+          maxHeight: "212px",
+        }}
         withBorder
         borderRadius="md"
         highlightOnHover
         striped
         verticalSpacing="xs"
-        // minHeight={300}
         // provide data
         idAccessor={"type"}
         records={dataForTable}
@@ -155,9 +143,9 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "lastmatchdate",
-            title: "Last Game",
+            title: "Last Match",
             textAlignment: "right",
-            width: 120,
+            width: 125,
             // @ts-ignore
             render: ({ lastmatchdate }) => {
               if (!lastmatchdate) {
