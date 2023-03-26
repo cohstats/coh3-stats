@@ -11,7 +11,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { getScatterArea, WeaponStatsType } from "../../src/unitStats";
+import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 
@@ -113,10 +113,33 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
         </Grid>
 
+        {/* Second Row: RPM (rounds per minutes) */}
+
+        <Grid gutter="xs">
+          <Grid.Col md={4} span={4}>
+            <Text>Round per minutes (RPM)</Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="green.6">
+              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_near))}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="yellow.6">
+              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_mid))}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={2} span={2}>
+            <Text align="center" color="red.6">
+              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_far))}
+            </Text>
+          </Grid.Col>
+        </Grid>
+
         {/* These rows only apply if activeData.weapon.weapon_cat == "ballistic_weapon"
           || activeData.weapon.weapon_cat == "explosive_weapon" */}
 
-        {/* Second Row: Penetration */}
+        {/* Row: Penetration */}
         <Grid gutter="xs">
           <Grid.Col md={4} span={4}>
             <Text>Penetration</Text>
@@ -138,7 +161,7 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
         </Grid>
 
-        {/* Third Row: Scatter Area */}
+        {/* Row: Scatter Area */}
         <Grid gutter="xs">
           <Grid.Col md={4} span={4}>
             <Text>Scatter Area</Text>
@@ -211,7 +234,30 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
         </Grid>
 
-        {/* Second row: Damage */}
+        {/* Third Row: Range of fire */}
+
+        <Grid gutter="xs">
+          <Grid.Col md={4} span={4}>
+            <Text>Range of Fire</Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="green.6">
+              {weapon_bag.range.min}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="yellow.6">
+              {"-"}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={2} span={2}>
+            <Text align="center" color="red.6">
+              {weapon_bag.range.max}
+            </Text>
+          </Grid.Col>
+        </Grid>
+
+        {/* Third row: Area of effect */}
 
         <Grid gutter="xs">
           <Grid.Col md={4} span={4}>
