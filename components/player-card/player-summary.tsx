@@ -10,6 +10,9 @@ const PlayerSummary = ({
 }: {
   playerSummary: PlayerSummaryType;
 }) => {
+  const bestAxisEloText = bestAxisElo.bestElo ? bestAxisElo.bestElo : "-";
+  const bestAlliesEloText = bestAlliesElo.bestElo ? bestAlliesElo.bestElo : "-";
+
   return (
     <Paper
       style={{
@@ -27,7 +30,7 @@ const PlayerSummary = ({
         >
           <Group position={"right"} spacing={"xs"}>
             <>
-              Best AXIS ELO <Text fw={600}>{bestAxisElo.bestElo}</Text>
+              Best AXIS ELO <Text fw={600}>{bestAxisEloText}</Text>
             </>
           </Group>
         </Tooltip>
@@ -41,7 +44,7 @@ const PlayerSummary = ({
           }
         >
           <Group position={"right"} spacing={"xs"}>
-            Best ALLIES ELO <Text fw={600}>{bestAlliesElo.bestElo}</Text>{" "}
+            Best ALLIES ELO <Text fw={600}>{bestAlliesEloText}</Text>
           </Group>
         </Tooltip>
         <Tooltip label={"Win Ratio in leaderboard games only."}>

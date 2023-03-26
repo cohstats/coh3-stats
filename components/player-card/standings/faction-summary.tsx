@@ -58,6 +58,19 @@ const PlayerStandingsFactionInfo = ({
   // Use only DAK for title, as it's too long
   const cardTitle = faction != "dak" ? localizedNames[faction] : faction.toUpperCase();
 
+  const bestRankElement =
+    (bestRank.bestValue || 0) != Infinity
+      ? `${bestRank.bestValue} in ${bestRank.bestValueKey}`
+      : "-";
+  const bestLevelElement =
+    (bestRankLevel.bestValue || 0) > 0
+      ? `${bestRankLevel.bestValue} in ${bestRankLevel.bestValueKey}`
+      : "-";
+  const bestEloElement =
+    (bestElo.bestValue || 0) > 0 ? `${bestElo.bestValue} in ${bestElo.bestValueKey}` : "-";
+  const winRateElement = (winRate || 0) > 0 ? `${Math.round(winRate * 100)}%` : "-";
+  const totalGamesElement = (totalGames || 0) > 0 ? `${totalGames}` : "-";
+
   return (
     <>
       <Card padding="lg" radius="md" withBorder className={classes.mainCard}>
@@ -68,29 +81,20 @@ const PlayerStandingsFactionInfo = ({
         </Card.Section>
         <Text size={"sm"}>
           <Group position="apart">
-            <span>Best Rank</span>{" "}
-            <Text fw={600}>
-              {bestRank.bestValue} in {bestRank.bestValueKey}
-            </Text>
+            <span>Best Rank</span> <Text fw={600}>{bestRankElement}</Text>
           </Group>
           <Group position="apart">
-            <span>Best Level</span>{" "}
-            <Text fw={600}>
-              {bestRankLevel.bestValue} in {bestRankLevel.bestValueKey}
-            </Text>
+            <span>Best Level</span> <Text fw={600}>{bestLevelElement}</Text>
           </Group>
           <Group position="apart">
-            <span>Best ELO</span>{" "}
-            <Text fw={600}>
-              {bestElo.bestValue} in {bestElo.bestValueKey}
-            </Text>
+            <span>Best ELO</span> <Text fw={600}>{bestEloElement}</Text>
           </Group>
           <Space h="xl" />
           <Group position="apart">
-            <span>Overall win Rate</span> <Text fw={600}>{Math.round(winRate * 100)}%</Text>
+            <span>Overall win Rate</span> <Text fw={600}>{winRateElement}</Text>
           </Group>
           <Group position="apart">
-            <span>Total Games</span> <Text fw={600}>{totalGames}</Text>
+            <span>Total Games</span> <Text fw={600}>{totalGamesElement}</Text>
           </Group>
           <Group position="apart">
             <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
