@@ -2,7 +2,7 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
-import { Card, Flex, Grid, Space, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core";
 import ContentContainer from "../../../../../components/Content-container";
 import {
   EbpsType,
@@ -76,11 +76,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   const localizedRace = localizedNames[raceId];
   const descriptionRace = RaceBagDescription[raceId];
 
-  // Only vehicles have armor values and a single entity usually.
+  // Only vehicles have armor values and a single entity usually. The infantry
+  // uses the plain `armor`.
   const armorValues = {
+    armor: resolvedEntities[0].health.armorLayout.armor || 0,
     frontal: resolvedEntities[0].health.armorLayout.frontArmor || 0,
     side: resolvedEntities[0].health.armorLayout.sideArmor || 0,
     rear: resolvedEntities[0].health.armorLayout.rearArmor || 0,
+    targetSize: resolvedEntities[0].health.targetSize || 0,
   };
 
   // Obtain the total cost of the squad by looking at the loadout.
@@ -123,7 +126,11 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
               <Card p="lg" radius="md" withBorder>
                 {UnitSquadCard({
                   id: resolvedSquad.id,
-                  armor: resolvedEntities[0].health.armorLayout.armor,
+                  type: resolvedSquad.unitType,
+                  health: armorValues,
+                  ui: {
+                    armorIcon: resolvedSquad.ui.armorIcon,
+                  },
                   sight: {
                     coneAngle: resolvedEntities[0].sight_ext.sight_package.cone_angle,
                     outerRadius: resolvedEntities[0].sight_ext.sight_package.outer_radius,
@@ -158,7 +165,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   three={resolvedSquad.veterancyInfo.three}
                 ></VeterancyCard>
               </Card>
-              {resolvedSquad.unitType === "vehicles" ? (
+              {/* {resolvedSquad.unitType === "vehicles" ? (
                 <Card p="lg" radius="md" withBorder>
                   <StatsVehicleArmor
                     type={resolvedSquad.ui.armorIcon as VehicleArmorType}
@@ -167,7 +174,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                 </Card>
               ) : (
                 <></>
-              )}
+              )} */}
             </Stack>
           </Grid.Col>
         </Grid>
@@ -265,6 +272,17 @@ const UnitWeaponSection = (
           );
         })}
       </Grid>
+
+      {/* Section: Small notes for players */}
+
+      <List size="xs">
+        <List.Item>
+          <Text color="orange.5">
+            The effective accuracy is always computed by weapon accuracy + penetration (attacking
+            unit) vs receiving accuracy (target size) + Armor (target unit).
+          </Text>
+        </List.Item>
+      </List>
     </Stack>
   );
 };

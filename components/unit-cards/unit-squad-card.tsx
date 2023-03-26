@@ -1,5 +1,6 @@
 import { Flex, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
+import { StatsVehicleArmor, VehicleArmorType } from "./vehicle-armor-card";
 
 // So have to split and make another card for the squad info like Sight Range,
 // Speed (walking, driving), Range of Fire, Reload Time (for tanks), Armor
@@ -10,8 +11,18 @@ import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 
 type UnitSquadInput = {
   id: string;
-  /** Only applies to infantry. Zero by default. */
-  armor: number;
+  ui: {
+    armorIcon: string;
+  };
+  health: {
+    /** Only applies to infantry. Zero by default. */
+    armor: number;
+    frontal: number;
+    rear: number;
+    side: number;
+    targetSize: number;
+  };
+  type: string;
   sight: {
     coneAngle: number;
     outerRadius: number;
@@ -25,18 +36,22 @@ type UnitSquadInput = {
 const UnitSquadIcons = {
   sight_range: "/icons/common/units/symbols/spotter.png",
   max_speed: "/icons/common/units/symbols/unit_aef_vehicle_crew_symbol.png",
-  range_of_fire: "/icons/common/units/symbols/flag_null_symbol.png",
-  reload_time: "/icons/common/units/symbols/flag_munitions_symbol.png",
+  target_size: "/icons/common/units/symbols/flag_null_symbol.png",
   infantry_armor: "/icons/common/units/symbols/unit_soviet_shock_symbol.png",
 } as const;
 
-export const UnitSquadCard = ({ id, sight, moving, armor }: UnitSquadInput) => {
+export const UnitSquadCard = ({ id, sight, moving, health, ui, type }: UnitSquadInput) => {
   return (
     <Stack>
-      <Title order={6} transform="uppercase">
-        Squad Stats - {id}
-      </Title>
-      <Grid fz="sm" columns={12} align="center" gutter="xs" grow>
+      <Stack spacing={4}>
+        <Title order={6} transform="uppercase">
+          {id}
+        </Title>
+        <Text color="yellow.5" transform="capitalize">
+          {type}
+        </Text>
+      </Stack>
+      <Grid fz="sm" columns={12} align="center" gutter="xs">
         <Grid.Col span={4}>
           <Flex gap={4} align="center" justify="space-between">
             <Group spacing={4}>
@@ -69,12 +84,21 @@ export const UnitSquadCard = ({ id, sight, moving, armor }: UnitSquadInput) => {
           </Flex>
         </Grid.Col>
 
-        {/* <Grid.Col span={4}>
-          <Text>Range of fire (ROF)</Text>
+        <Grid.Col span={4}>
+          <Flex gap={4} align="center" justify="space-between">
+            <Group spacing={4}>
+              <ImageWithFallback
+                height={32}
+                width={32}
+                fallbackSrc={symbolPlaceholder}
+                src={UnitSquadIcons["target_size"]}
+                alt="squad target size"
+              ></ImageWithFallback>
+              <Text>Target Size</Text>
+            </Group>
+            <Text align="end">{health?.targetSize || 0}</Text>
+          </Flex>
         </Grid.Col>
-        <Grid.Col span={2} offset={6}>
-          <Text align="end">0</Text>
-        </Grid.Col> */}
 
         <Grid.Col span={4}>
           <Flex gap={4} align="center" justify="space-between">
@@ -88,10 +112,19 @@ export const UnitSquadCard = ({ id, sight, moving, armor }: UnitSquadInput) => {
               ></ImageWithFallback>
               <Text>Armor (Infantry)</Text>
             </Group>
-            <Text align="end">{armor || 0}</Text>
+            <Text align="end">{health?.armor || 0}</Text>
           </Flex>
         </Grid.Col>
       </Grid>
+
+      {type === "vehicles" ? (
+        StatsVehicleArmor({
+          type: ui.armorIcon as VehicleArmorType,
+          armorValues: health,
+        })
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 };
