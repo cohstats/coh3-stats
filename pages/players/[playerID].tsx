@@ -30,16 +30,16 @@ const createPlayerHeadDescription = (
   playerSummary: PlayerSummaryType,
 ): string => {
   return `Player card for player ${playerData.info.name} - coh3stats.com
-  Best ALLIES ELO: ${playerSummary.bestAlliesElo.bestElo} in ${
+  Best ALLIES ELO ${playerSummary.bestAlliesElo.bestElo} in ${
     playerSummary.bestAlliesElo.inMode
   } as ${localizedNames[playerSummary.bestAlliesElo.inFaction]}.
-  Best AXIS ELO: ${playerSummary.bestAxisElo.bestElo} in ${playerSummary.bestAxisElo.inMode} as ${
+  Best AXIS ELO ${playerSummary.bestAxisElo.bestElo} in ${playerSummary.bestAxisElo.inMode} as ${
     localizedNames[playerSummary.bestAxisElo.inFaction]
   }.
-  Total games: ${playerSummary.totalGames} with Win rate: ${Math.round(
+  Total games ${playerSummary.totalGames} with Win Rate ${Math.round(
     playerSummary.winRate * 100,
   )}%.
-  Last match: ${format(playerSummary.lastMatchDate * 1000, "en")}.`;
+  Last match ${format(playerSummary.lastMatchDate * 1000, "en")}`;
 };
 
 /**
