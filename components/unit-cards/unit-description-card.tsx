@@ -15,7 +15,6 @@ import ImageWithFallback from "../placeholders";
  * Specific paths defined per property.
  */
 export type UnitDescription = {
-  id?: string;
   /** Locstring value. Found at `screen_name/locstring/value`. */
   screen_name: string;
   /** Locstring value. Found at `help_text/locstring/value`. */
