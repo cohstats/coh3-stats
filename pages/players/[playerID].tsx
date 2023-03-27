@@ -24,6 +24,7 @@ import PlayerSummary from "../../components/player-card/player-summary";
 import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
+import { generateKeywordsString } from "../../src/head-utils";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -81,16 +82,18 @@ const PlayerCard = ({
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
   const description = createPlayerHeadDescription(playerData, playerSummary);
+  const metaKeywords = generateKeywordsString([
+    `${playerData.info.name} stats`,
+    `${playerData.info.name} matches`,
+    `coh3 ${playerData.info.name} stats`,
+  ]);
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={description} />
-        <meta
-          name="keywords"
-          content={`coh3, coh3stats,${playerData.info.name} stats, ${playerData.info.name} matches`}
-        />
+        <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={playerData.steamData.avatarmedium} />
       </Head>
       <Container fluid>
