@@ -278,8 +278,8 @@ const UnitWeaponSection = (
       <List size="xs">
         <List.Item>
           <Text color="orange.5">
-            The effective accuracy is always computed by weapon accuracy + penetration (attacking
-            unit) vs receiving accuracy (target size) + Armor (target unit).
+            The effective accuracy is impacted by several factors like target size or armor of the
+            receiving unit as well as accuracy or penetration of the attacking one.
           </Text>
         </List.Item>
       </List>
