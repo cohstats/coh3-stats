@@ -1,6 +1,5 @@
 import { StaticImageData } from "next/image";
 import config from "../config";
-import slash from "slash";
 
 const calculatePageNumber = (position: number, RECORD_PER_PAGE = 100) => {
   // Calculate the page number
@@ -13,6 +12,21 @@ const calculatePositionNumber = (pageNumber: number, RECORD_PER_PAGE = 100) => {
 
 const isBrowserEnv = () => {
   return typeof window !== "undefined";
+};
+
+/**
+ * Converts the slashes to the correct ones
+ * We don't need to use 3rd party shit module for this
+ * @param path
+ */
+const internalSlash = (path: string) => {
+  const isExtendedLengthPath = /^\\\\\?\\/.test(path);
+
+  if (isExtendedLengthPath) {
+    return path;
+  }
+
+  return path.replace(/\\/g, "/");
 };
 
 /**
@@ -38,7 +52,7 @@ const getIconsPathOnCDN = (
     iconPath += ".png";
   }
 
-  return slash(`${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`);
+  return internalSlash(`${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`);
 };
 
 export { calculatePageNumber, calculatePositionNumber, isBrowserEnv, getIconsPathOnCDN };
