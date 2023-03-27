@@ -48,7 +48,6 @@ import {
   mapCustomizableUnit,
   updateHealth,
 } from "../../src/unitStats/dpsCommon";
-import { filter } from "lodash";
 import { getFactionIcon } from "../../src/unitStats";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
@@ -167,7 +166,6 @@ const mapUnitSelection = (
   ebps: EbpsType[],
   weapons: WeaponType[],
   unitFilter: string[] = [],
-  unitIndex = 1,
 ) => {
   const selectionFields = [];
 
@@ -243,7 +241,6 @@ export const DpsChart = (props: IDPSProps) => {
       props.ebpsData,
       props.weaponData,
       unitFilter1,
-      1,
     );
   if (unitSelectionList2.length == 0 && props.sbpsData.length > 0)
     unitSelectionList2 = mapUnitSelection(
@@ -251,7 +248,6 @@ export const DpsChart = (props: IDPSProps) => {
       props.ebpsData,
       props.weaponData,
       unitFilter2,
-      2,
     );
 
   useEffect(() => {
