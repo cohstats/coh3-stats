@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
 //import { LevelContext } from './LevelContext.js';
@@ -229,10 +229,13 @@ export const DpsChart = (props: IDPSProps) => {
   // const [isStaircase, setStaircase] = useState(false);
   const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
-  const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
-  const chartRef = useRef<ChartJS>(null);
+
   // const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
+
+  setScreenOptions(options, isLargeScreen);
 
   // create selection List
   if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
@@ -249,12 +252,17 @@ export const DpsChart = (props: IDPSProps) => {
       props.weaponData,
       unitFilter2,
     );
+  const chartData = { datasets: [mapChartData([])] };
 
-  useEffect(() => {
-    const chart = chartRef.current;
-    setScreenOptions(options, isLargeScreen);
-    chart?.update();
-  }, [isLargeScreen]);
+  // useEffect(() => {
+  //   const chart = chartRef.current;
+  //   setScreenOptions(options, isLargeScreen);
+
+  //     //setScreenOptions(options, isLargeScreen);
+  //     chart?.update();
+  // }, [isLargeScreen]);
+
+  // setScreenOptions(options, isLargeScreen);
 
   // Squad configration has changed
   function onSquadConfigChange() {
@@ -299,12 +307,10 @@ export const DpsChart = (props: IDPSProps) => {
     else setFilter2([...unitFilter]);
   }
 
-  // default values
-  const chartData = { datasets: [mapChartData([])] };
   let maxY = 1;
 
   for (const unit of activeData) if (unit) updateHealth(unit);
-
+  options.scales.y.title.text = "Damage Per Second (DPS)";
   if (activeData.length > 0) {
     chartData.datasets = [];
 
@@ -346,6 +352,12 @@ export const DpsChart = (props: IDPSProps) => {
   maxY = maxY * 1.1;
 
   options.scales.y.suggestedMax = maxY;
+
+  // if(chartRef.current)
+  // default values
+  const chartRef = useRef<ChartJS>(null);
+  if (chartRef.current) chartRef.current.config.options = options as any;
+  chartRef.current?.update("show");
 
   return (
     <>
@@ -441,13 +453,9 @@ export const DpsChart = (props: IDPSProps) => {
                       size="xs"
                     /> */}
                           <Space></Space>
-                          <Text size="sm">
-                            {showDpsHealth
-                              ? "DPS(%)  : Estimated damage per second in %, respecting enemies health"
-                              : "DPS  : Estimated damage per second"}
-                          </Text>
+                          <Text size="sm">Toggle DPS mode.</Text>
                           <Switch
-                            label={showDpsHealth ? "DPS(%)" : "DPS Simple"}
+                            label={"DPS / Target Health (%)"}
                             checked={showDpsHealth}
                             onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
                             //onClick={() => setCurve(isCurve)}
@@ -513,9 +521,14 @@ export const DpsChart = (props: IDPSProps) => {
             borderRadius: theme.radius.md,
           })}
         >
-          <Line options={options as any} data={chartData as any} />
+          <Line ref={chartRef as any} options={options as any} data={chartData as any} />
         </Box>
         <Space h="sm" />
+        <Text color={theme.colors.gray[7]}>
+          {" "}
+          * Computation results are based on approximation models using stats from the game files.
+          In-Game values might vary.
+        </Text>
       </Container>
     </>
   );
