@@ -3,6 +3,7 @@ import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getFactionIcon } from "./unitStatsLib";
+import { getSingleWeaponDPS } from "./weaponLib";
 
 type WeaponMember = {
   weapon_id: string; // Weapon id
@@ -236,13 +237,27 @@ export const getSbpsUpgrades = (sbps: SbpsType, ebpsList: EbpsType[], weapons: W
 };
 
 export const getCoverMultiplier = (coverType: string, weaponBag: WeaponStatsType) => {
-  let cover = (weaponBag as any)["cover_table_tp_" + coverType + "_cover"];
-  if (!cover)
-    cover = {
-      accuracy_multiplier: weaponBag.cover_table_tp_defcover_accuracy_multiplier, // opponent cover penalty
-      damage_multiplier: weaponBag.cover_table_tp_defcover_damage_multiplier,
-      penetration_multiplier: weaponBag.cover_table_tp_defcover_penetration_multiplier,
-    };
+  const cover = {
+    accuracy_multiplier: weaponBag.cover_table_tp_defcover_accuracy_multiplier, // opponent cover penalty
+    damage_multiplier: weaponBag.cover_table_tp_defcover_damage_multiplier,
+    penetration_multiplier: weaponBag.cover_table_tp_defcover_penetration_multiplier,
+  };
+
+  const accuracy_mp = (weaponBag as any)[
+    "cover_table_tp_" + coverType + "_cover_accuracy_multiplier"
+  ];
+  if (accuracy_mp) cover.accuracy_multiplier = accuracy_mp;
+
+  const damage_mp = (weaponBag as any)[
+    "cover_table_tp_" + coverType + "_cover_damage_multiplier"
+  ];
+  if (accuracy_mp) cover.damage_multiplier = damage_mp;
+
+  const penetration_mp = (weaponBag as any)[
+    "cover_table_tp_" + coverType + "_cover_penetration_multiplier"
+  ];
+  if (penetration_mp) cover.penetration_multiplier = penetration_mp;
+
   return cover;
 };
 
@@ -276,6 +291,105 @@ const getDefaultWeaponIcon = (parent_folder: string) => {
     default:
       return "";
   }
+};
+
+export const getWeaponDPSData = (units: CustomizableUnit[]) => {
+  const dpsSet: any[] = [];
+
+  if (units.length == 0) return dpsSet;
+
+  // we only have two units so we keep it simple -> No generic loop stuff
+  if (units[0]) dpsSet[0] = getCombatDps(units[0], units[1]);
+
+  if (units[1]) dpsSet[1] = getCombatDps(units[1], units[0]);
+
+  return dpsSet;
+};
+
+export const updateHealth = (unit: CustomizableUnit) => {
+  let health = 0;
+  if (unit.unit_type != "vehicles")
+    for (const member of unit.weapon_member) {
+      health += unit.hitpoints * member.num * Math.max(member.crew_size, 1);
+    }
+  // is vehicle
+  else {
+    health += unit.hitpoints;
+  }
+  unit.health = health;
+};
+
+export const getDpsVsHealth = (
+  ebps: EbpsType[],
+  unit1: CustomizableUnit,
+  unit2?: CustomizableUnit,
+) => {
+  const dpsData: any[] = getCombatDps(unit1, unit2);
+  let health = unit1.health;
+
+  // compute opponents health
+  if (unit2) health = unit2.health;
+
+  for (const dps of dpsData) dps.y = (dps.y / health) * 100;
+
+  return dpsData;
+};
+
+export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
+  // compute dps for first squad
+  let dpsTotal: any[] = [];
+
+  // compute total dps for complete loadout
+  unit1.weapon_member.forEach((ldout) => {
+    const weapon_member = ldout;
+    const weaponDps = [];
+
+    const range_min = weapon_member.weapon.weapon_bag.range_min;
+    const range_max = weapon_member.weapon.weapon_bag.range_max;
+    // opponent default values
+
+    for (let distance = range_min; distance <= range_max; distance++) {
+      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
+      weaponDps.push({ x: distance, y: dps });
+    }
+
+    dpsTotal = addDpsData(dpsTotal, weaponDps);
+  });
+
+  return dpsTotal;
+};
+
+// sums up two dps lines
+export const addDpsData = (dps1: any[], dps2: any[]) => {
+  if (dps1.length == 0) return dps2;
+  // set with {x,y} touples
+  const newSet: any[] = [];
+
+  let ind_2 = 0; // loop only once through second line
+  for (let ind_1 = 0; ind_1 < dps1.length; ind_1++) {
+    const point1 = dps1[ind_1];
+
+    for (ind_2; ind_2 < dps2.length; ind_2++) {
+      const point2 = dps2[ind_2];
+
+      // ideal case. Both weapons address the same range. simply merge
+      // and check the next points.
+      if (point1.x == point2.x || point1.x < point2.x) {
+        newSet.push(mergePoints(point1, point2));
+        if (point1.x == point2.x) ind_2++;
+        break;
+      }
+
+      // merge into range of weapon2
+      if (point1.x > point2.x) newSet.push(mergePoints(point2, point1));
+    }
+  }
+
+  return newSet;
+};
+
+export const mergePoints = (xPoint: any, yPoint: any) => {
+  return { x: xPoint.x, y: xPoint.y + yPoint.y };
 };
 
 export type { WeaponMember, CustomizableUnit };

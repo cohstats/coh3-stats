@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
 //import { LevelContext } from './LevelContext.js';
@@ -26,11 +26,14 @@ import {
   Title,
   Switch,
   HoverCard,
+  Image,
   Text,
   Group,
+  SimpleGrid,
+  Tooltip,
+  ActionIcon,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
-import { getSingleWeaponDPS } from "../../src/unitStats/weaponLib";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
 // import slash from "slash";
@@ -38,10 +41,19 @@ import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import Head from "next/head";
 import { IconAdjustments } from "@tabler/icons";
-import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
+import {
+  CustomizableUnit,
+  getDpsVsHealth,
+  getWeaponDPSData,
+  mapCustomizableUnit,
+  updateHealth,
+} from "../../src/unitStats/dpsCommon";
+import { filter } from "lodash";
+import { getFactionIcon } from "../../src/unitStats";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
-let unitSelectionList: CustomizableUnit[] = [];
+let unitSelectionList1: CustomizableUnit[] = [];
+let unitSelectionList2: CustomizableUnit[] = [];
 
 // function hexToRgbA(hex: string, opacity: string) {
 //   let c: any;
@@ -109,7 +121,7 @@ export const options = {
 };
 
 // description: item.ui_name || 'No Description Available',
-const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
+export const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
   const chartLine = {
     label: "No Item Selected",
     data: data,
@@ -138,101 +150,6 @@ const mapChartData = (data: any[], id?: string, isStaircase?: boolean) => {
   return chartLine;
 };
 
-const getWeaponDPSData = (units: CustomizableUnit[]) => {
-  const dpsSet: any[] = [];
-
-  if (units.length == 0) return dpsSet;
-
-  // we only have two units so we keep it simple -> No generic loop stuff
-  if (units[0]) dpsSet[0] = getCombatDps(units[0], units[1]);
-
-  if (units[1]) dpsSet[1] = getCombatDps(units[1], units[0]);
-
-  return dpsSet;
-};
-
-const updateHealth = (unit: CustomizableUnit) => {
-  let health = 0;
-  if (unit.unit_type != "vehicles")
-    for (const member of unit.weapon_member) {
-      health += unit.hitpoints * member.num * Math.max(member.crew_size, 1);
-    }
-  // is vehicle
-  else {
-    health += unit.hitpoints;
-  }
-  unit.health = health;
-};
-
-const getDpsVsHealth = (ebps: EbpsType[], unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
-  const dpsData: any[] = getCombatDps(unit1, unit2);
-  let health = unit1.health;
-
-  // compute opponents health
-  if (unit2) health = unit2.health;
-
-  for (const dps of dpsData) dps.y = (dps.y / health) * 100;
-
-  return dpsData;
-};
-
-const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
-  // compute dps for first squad
-  let dpsTotal: any[] = [];
-
-  // compute total dps for complete loadout
-  unit1.weapon_member.forEach((ldout) => {
-    const weapon_member = ldout;
-    const weaponDps = [];
-
-    const range_min = weapon_member.weapon.weapon_bag.range_min;
-    const range_max = weapon_member.weapon.weapon_bag.range_max;
-    // opponent default values
-
-    for (let distance = range_min; distance <= range_max; distance++) {
-      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
-      weaponDps.push({ x: distance, y: dps });
-    }
-
-    dpsTotal = addDpsData(dpsTotal, weaponDps);
-  });
-
-  return dpsTotal;
-};
-
-// sums up two dps lines
-const addDpsData = (dps1: any[], dps2: any[]) => {
-  if (dps1.length == 0) return dps2;
-  // set with {x,y} touples
-  const newSet: any[] = [];
-
-  let ind_2 = 0; // loop only once through second line
-  for (let ind_1 = 0; ind_1 < dps1.length; ind_1++) {
-    const point1 = dps1[ind_1];
-
-    for (ind_2; ind_2 < dps2.length; ind_2++) {
-      const point2 = dps2[ind_2];
-
-      // ideal case. Both weapons address the same range. simply merge
-      // and check the next points.
-      if (point1.x == point2.x || point1.x < point2.x) {
-        newSet.push(mergePoints(point1, point2));
-        if (point1.x == point2.x) ind_2++;
-        break;
-      }
-
-      // merge into range of weapon2
-      if (point1.x > point2.x) newSet.push(mergePoints(point2, point1));
-    }
-  }
-
-  return newSet;
-};
-
-const mergePoints = (xPoint: any, yPoint: any) => {
-  return { x: xPoint.x, y: xPoint.y + yPoint.y };
-};
-
 const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
   if (!isLargeScreen) {
     options.scales.x.title.display = false;
@@ -245,16 +162,54 @@ const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
   }
 };
 
-const mapUnitSelection = (sbps: SbpsType[], ebps: EbpsType[], weapons: WeaponType[]) => {
+const mapUnitSelection = (
+  sbps: SbpsType[],
+  ebps: EbpsType[],
+  weapons: WeaponType[],
+  unitFilter: string[] = [],
+  unitIndex = 1,
+) => {
   const selectionFields = [];
 
   for (const squad of sbps) {
-    if (squad.ui.symbolIconName != "" && squad.faction != "british") {
+    if (
+      squad.ui.symbolIconName != "" &&
+      squad.faction != "british" &&
+      (unitFilter.length == 0 || unitFilter.includes(squad.faction))
+    ) {
       const custUnit = mapCustomizableUnit(squad, ebps, weapons);
       if (custUnit.weapon_member.length > 0) selectionFields.push(custUnit);
     }
   }
   return selectionFields;
+};
+
+const generateFilterButtons = (
+  unitFilter: string[],
+  callback: any,
+  index = 1,
+  unitSelectionList: CustomizableUnit[],
+) => {
+  const factions = ["afrika_korps", "american", "british_africa", "german"];
+  const filterButtons: any[] = [];
+
+  for (const faction of factions) {
+    const source = getFactionIcon(faction);
+    filterButtons.push(
+      <Tooltip key={faction + index} label="Filter">
+        <ActionIcon
+          key={faction + index}
+          size="sm"
+          variant={unitFilter.includes(faction) ? "gradient" : "trannsparent"}
+          onClick={() => callback(faction, index, unitFilter, unitSelectionList)}
+        >
+          <Image src={source} alt={"Filter"}></Image>
+        </ActionIcon>
+      </Tooltip>,
+    );
+  }
+
+  return filterButtons;
 };
 
 interface IDPSProps {
@@ -264,21 +219,46 @@ interface IDPSProps {
 }
 
 export const DpsChart = (props: IDPSProps) => {
+  const filter_def1: string[] = [];
+  const filter_def2: string[] = [];
   const searchData_default: CustomizableUnit[] = [];
+
   const [activeData] = useState(searchData_default);
+  const [unitFilter1, setFilter1] = useState(filter_def1);
+  const [unitFilter2, setFilter2] = useState(filter_def2);
+
   const [rerender, setRerender] = useState(false);
   // const [isStaircase, setStaircase] = useState(false);
   const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
+  const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
+  const chartRef = useRef<ChartJS>(null);
   // const { classes } = useStyles();
   const theme = useMantineTheme();
-  const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
   // create selection List
-  if (unitSelectionList.length == 0 && props.sbpsData.length > 0)
-    unitSelectionList = mapUnitSelection(props.sbpsData, props.ebpsData, props.weaponData);
+  if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
+    unitSelectionList1 = mapUnitSelection(
+      props.sbpsData,
+      props.ebpsData,
+      props.weaponData,
+      unitFilter1,
+      1,
+    );
+  if (unitSelectionList2.length == 0 && props.sbpsData.length > 0)
+    unitSelectionList2 = mapUnitSelection(
+      props.sbpsData,
+      props.ebpsData,
+      props.weaponData,
+      unitFilter2,
+      2,
+    );
 
-  setScreenOptions(options, isLargeScreen);
+  useEffect(() => {
+    const chart = chartRef.current;
+    setScreenOptions(options, isLargeScreen);
+    chart?.update();
+  }, [isLargeScreen]);
 
   // Squad configration has changed
   function onSquadConfigChange() {
@@ -293,7 +273,8 @@ export const DpsChart = (props: IDPSProps) => {
     if (activeData[index]?.id == selection) return;
 
     // get blueprint
-    const unitBp = unitSelectionList.find((unit) => unit.id == selection);
+    let unitBp = unitSelectionList1.find((unit) => unit.id == selection);
+    if (index == 1) unitBp = unitSelectionList2.find((unit) => unit.id == selection);
 
     // add unit
     if (unitBp) {
@@ -303,6 +284,23 @@ export const DpsChart = (props: IDPSProps) => {
         activeData[index].weapon_member.push({ ...loadout });
       setRerender(!rerender);
     }
+  }
+
+  function toggleFilter(
+    filterValue: string,
+    unitIndex = 1,
+    unitFilter: string[],
+    unitSelectionList: CustomizableUnit[],
+  ) {
+    const filterValueIndex = unitFilter.indexOf(filterValue);
+
+    if (filterValueIndex < 0) unitFilter.push(filterValue);
+    else unitFilter.splice(filterValueIndex, 1);
+
+    unitSelectionList.splice(0, unitSelectionList.length);
+
+    if (unitIndex == 1) setFilter1([...unitFilter]);
+    else setFilter2([...unitFilter]);
   }
 
   // default values
@@ -356,74 +354,37 @@ export const DpsChart = (props: IDPSProps) => {
   return (
     <>
       <Head>
-        <title>DPS - Calculator</title>
+        <title>CoH3 DPS - Calculator</title>
         <meta name="Damage Per Second (DPS) Calculator " />
       </Head>
 
       <Container>
         {/* */}
-        <Stack mb={12}>
-          <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
-          <Space></Space>
-          <Flex
-            // mih={50}
-            gap="xs"
-            justify="flex-end"
-            align="center"
-            direction="row"
-            wrap="wrap"
-          >
-            <Group position="center">
-              <HoverCard width={400} shadow="md">
-                <HoverCard.Target>
-                  <div>
-                    <IconAdjustments opacity={0.6} />
-                  </div>
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                  <Stack mb={12}>
-                    {/* <Text size="sm">
-                      {isStaircase
-                        ? "Staircase: Show changes at near/mid/far only"
-                        : "Line: Applied damage changes linearly over distance"}
-                    </Text>
-                    <Switch
-                      label={isStaircase ? "Staircase" : "Line"}
-                      checked={isStaircase}
-                      onChange={(event) => setStaircase(event.currentTarget.checked)}
-                      size="xs"
-                    /> */}
-                    <Space></Space>
-                    <Text size="sm">
-                      {showDpsHealth
-                        ? "DPS(%)  : Estimated damage per second in %, respecting enemies health"
-                        : "DPS  : Estimated damage per second"}
-                    </Text>
-                    <Switch
-                      label={showDpsHealth ? "DPS(%)" : "DPS Simple"}
-                      checked={showDpsHealth}
-                      onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
-                      //onClick={() => setCurve(isCurve)}
-                      size="xs"
-                    />
-                  </Stack>
-                </HoverCard.Dropdown>
-              </HoverCard>
-            </Group>
-          </Flex>
-        </Stack>
 
-        {/* <Space h="sm" /> */}
+        <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
+        <Space></Space>
+
+        <Space h="xl" />
         <>
           <Grid>
             <Grid.Col md={6} lg={6}>
+              <SimpleGrid cols={2}>
+                <Group>
+                  {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
+                </Group>
+                <Space h="2rem" />
+              </SimpleGrid>
+              <Space h="sm" />
+
               <UnitSearch
                 key="Search1"
-                searchData={unitSelectionList}
+                searchData={unitSelectionList1}
                 onSelect={onSelectionChange}
                 position={0}
               ></UnitSearch>
+
               <Space h="sm" />
+
               {activeData[0] && (
                 <Box
                   sx={(theme) => ({
@@ -450,13 +411,69 @@ export const DpsChart = (props: IDPSProps) => {
             </Grid.Col>
 
             <Grid.Col md={6} lg={6}>
+              <SimpleGrid cols={2}>
+                <Group>
+                  {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
+                </Group>
+                <Flex
+                  // mih={50}
+                  // gap="xs"
+                  justify="flex-end"
+                  //  align="center"
+                  //direction="row"
+                  wrap="wrap"
+                >
+                  <Space h="2rem" />
+                  <Group>
+                    <HoverCard width={400} shadow="md">
+                      <HoverCard.Target>
+                        <div>
+                          <IconAdjustments opacity={0.6} />
+                        </div>
+                      </HoverCard.Target>
+                      <HoverCard.Dropdown>
+                        <Stack mb={12}>
+                          {/* <Text size="sm">
+                      {isStaircase
+                        ? "Staircase: Show changes at near/mid/far only"
+                        : "Line: Applied damage changes linearly over distance"}
+                    </Text>
+                    <Switch
+                      label={isStaircase ? "Staircase" : "Line"}
+                      checked={isStaircase}
+                      onChange={(event) => setStaircase(event.currentTarget.checked)}
+                      size="xs"
+                    /> */}
+                          <Space></Space>
+                          <Text size="sm">
+                            {showDpsHealth
+                              ? "DPS(%)  : Estimated damage per second in %, respecting enemies health"
+                              : "DPS  : Estimated damage per second"}
+                          </Text>
+                          <Switch
+                            label={showDpsHealth ? "DPS(%)" : "DPS Simple"}
+                            checked={showDpsHealth}
+                            onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
+                            //onClick={() => setCurve(isCurve)}
+                            size="xs"
+                          />
+                        </Stack>
+                      </HoverCard.Dropdown>
+                    </HoverCard>
+                  </Group>
+                </Flex>
+              </SimpleGrid>
+              <Space h="sm" />
+
               <UnitSearch
                 key="Search2"
-                searchData={unitSelectionList}
+                searchData={unitSelectionList2}
                 onSelect={onSelectionChange}
                 position={1}
               ></UnitSearch>
+
               <Space h="sm" />
+
               {activeData[1] && (
                 <Box
                   sx={(theme) => ({
@@ -481,11 +498,10 @@ export const DpsChart = (props: IDPSProps) => {
                 </Box>
               )}
             </Grid.Col>
-
-            <Space h="sm" />
           </Grid>
         </>
       </Container>
+
       <Space h="sm" />
       <Container size="md">
         <Box
@@ -501,7 +517,7 @@ export const DpsChart = (props: IDPSProps) => {
             borderRadius: theme.radius.md,
           })}
         >
-          <Line options={options as any} data={chartData as any} redraw={true} />
+          <Line options={options as any} data={chartData as any} />
         </Box>
         <Space h="sm" />
       </Container>
