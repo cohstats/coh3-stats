@@ -23,16 +23,19 @@ import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-d
 import FactionIcon from "../../../../../components/faction-icon";
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
-import {
-  StatsVehicleArmor,
-  VehicleArmorType,
-} from "../../../../../components/unit-cards/vehicle-armor-card";
+// import {
+//   StatsVehicleArmor,
+//   VehicleArmorType,
+// } from "../../../../../components/unit-cards/vehicle-armor-card";
 import { UnitCostCard } from "../../../../../components/unit-cards/unit-cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
+import slash from "slash";
+import { getIconsPathOnCDN } from "../../../../../src/utils";
+import { generateKeywordsString } from "../../../../../src/head-utils";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -92,11 +95,23 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   // Obtain the total upkeep cost of the squad.
   const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
 
+  const metaKeywords = generateKeywordsString([
+    `${resolvedSquad.ui.screenName} coh3`,
+    `${resolvedSquad.ui.screenName} ${localizedRace}`,
+    `${resolvedSquad.ui.screenName}`,
+    `${resolvedSquad.ui.screenName} ${raceId}`,
+  ]);
+
   return (
     <>
       <Head>
-        <title>{resolvedSquad.ui.screenName} - COH3 Explorer</title>
+        <title>{`${resolvedSquad.ui.screenName} - COH3 Explorer`}</title>
         <meta name="description" content={`${resolvedSquad.ui.screenName} - COH3 Explorer`} />
+        <meta name="keywords" content={metaKeywords} />
+        <meta
+          property="og:image"
+          content={getIconsPathOnCDN(`/icons/${slash(resolvedSquad.ui.iconName)}.png`)}
+        />
       </Head>
       <ContentContainer>
         <Space h={32}></Space>
@@ -288,11 +303,13 @@ const UnitWeaponSection = (
 };
 
 export const getStaticProps = async () => {
-  const locstring = await fetchLocstring();
-  const ebpsData = await getEbpsStats();
-  const sbpsData = await getSbpsStats();
-  const upgradesData = await getUpgradesStats();
-  const weaponsData = await getWeaponStats();
+  const [locstring, ebpsData, sbpsData, upgradesData, weaponsData] = await Promise.all([
+    fetchLocstring(),
+    getEbpsStats(),
+    getSbpsStats(),
+    getUpgradesStats(),
+    getWeaponStats(),
+  ]);
 
   return {
     props: {

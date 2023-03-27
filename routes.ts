@@ -97,7 +97,14 @@ export default new Router()
       },
     });
   })
-  .get("/assets/:path*", ({ serveStatic }) => {
-    serveStatic("assets/:path*");
+  // Caching for SSG - explorer
+  .match("/_next/data/:version/explorer/races/(.*)", ({ cache }) => {
+    cache({
+      browser: {
+        // Cache for 1 day in browser
+        serviceWorkerSeconds: 60 * 60 * 24,
+      },
+      // Edge cache should be automatic for SSG pages
+    });
   })
   .use(nextRoutes); // automatically adds routes for all files under /pages

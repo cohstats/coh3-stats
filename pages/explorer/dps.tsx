@@ -66,7 +66,7 @@ const DpsPage: NextPage<DpsProps> = ({
   return (
     <>
       <Head>
-        <title>COH3 Stats - DPS Calculator </title>
+        <title>COH3 Stats - DPS Calculator</title>
         <meta
           name="description"
           content={
@@ -93,21 +93,6 @@ export const getStaticProps = async () => {
     getUpgradesStats(),
     fetchLocstring(),
   ]);
-
-  // const locstring = await fetchLocstring();
-  //
-  // // map Data at built time
-  // const weaponData = await getWeaponStats();
-  //
-  // // map Data at built time
-  // const ebpsData = await getEbpsStats();
-  // //const ebpsData: any[] = [];
-  //
-  // // map Data at built time
-  // const sbpsData = await getSbpsStats();
-  //
-  // // map Data at built time
-  // const upgradesData = await getUpgradesStats();
 
   return {
     props: {

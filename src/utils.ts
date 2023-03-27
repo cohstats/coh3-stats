@@ -1,5 +1,6 @@
 import { StaticImageData } from "next/image";
 import config from "../config";
+import slash from "slash";
 
 const calculatePageNumber = (position: number, RECORD_PER_PAGE = 100) => {
   // Calculate the page number
@@ -37,7 +38,7 @@ const getIconsPathOnCDN = (
     iconPath += ".png";
   }
 
-  return `${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`;
+  return slash(`${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`);
 };
 
 export { calculatePageNumber, calculatePositionNumber, isBrowserEnv, getIconsPathOnCDN };
