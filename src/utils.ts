@@ -15,6 +15,21 @@ const isBrowserEnv = () => {
 };
 
 /**
+ * Converts the slashes to the correct ones
+ * We don't need to use 3rd party shit module for this
+ * @param path
+ */
+const internalSlash = (path: string) => {
+  const isExtendedLengthPath = /^\\\\\?\\/.test(path);
+
+  if (isExtendedLengthPath) {
+    return path;
+  }
+
+  return path.replace(/\\/g, "/");
+};
+
+/**
  * Get the path of the icon on our CDN hosting for images
  * @param iconPath The path of the icon, can be full path or just filename.
  * @param folder By default we look for whole path, but if you can't find the icon, you can try using "export_flatten" folder.
@@ -37,7 +52,7 @@ const getIconsPathOnCDN = (
     iconPath += ".png";
   }
 
-  return `${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`;
+  return internalSlash(`${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`);
 };
 
 export { calculatePageNumber, calculatePositionNumber, isBrowserEnv, getIconsPathOnCDN };

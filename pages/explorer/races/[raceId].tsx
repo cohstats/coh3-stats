@@ -34,6 +34,7 @@ import {
 } from "../../../src/unitStats";
 import ContentContainer from "../../../components/Content-container";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
+import { generateKeywordsString } from "../../../src/head-utils";
 
 interface RaceDetailProps {
   weaponData: WeaponType[];
@@ -59,11 +60,20 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
 
+  const metaKeywords = generateKeywordsString([
+    `${localizedRace}`,
+    `${localizedRace} explorer`,
+    `${localizedRace} battle groups`,
+    `${localizedRace} units`,
+  ]);
+
   return (
     <>
       <Head>
-        <title>{localizedRace} - COH3 Explorer</title>
+        <title>{`${localizedRace} - COH3 Explorer`}</title>
         <meta name="description" content={`${localizedRace} - COH3 Explorer`} />
+        <meta name="keywords" content={metaKeywords} />
+        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
       <ContentContainer>
         <Stack>
@@ -242,22 +252,23 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 };
 
 export const getStaticProps = async () => {
-  const locstring = await fetchLocstring();
-
-  // map Data at built time
-  const weaponData = await getWeaponStats();
-
-  // map Data at built time
-  const ebpsData = await getEbpsStats();
-
-  // map Data at built time
-  const sbpsData = await getSbpsStats();
-
-  // map Data at built time
-  const upgradesData = await getUpgradesStats();
-
-  const abilitiesData = await getAbilitiesStats();
-  const battlegroupData = await getBattlegroupStats();
+  const [
+    locstring,
+    weaponData,
+    ebpsData,
+    sbpsData,
+    upgradesData,
+    abilitiesData,
+    battlegroupData,
+  ] = await Promise.all([
+    fetchLocstring(),
+    getWeaponStats(),
+    getEbpsStats(),
+    getSbpsStats(),
+    getUpgradesStats(),
+    getAbilitiesStats(),
+    getBattlegroupStats(),
+  ]);
 
   return {
     props: {
