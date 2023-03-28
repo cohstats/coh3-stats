@@ -11,18 +11,43 @@ import {
   Group,
   CloseButton,
   HoverCard,
-  Stack,
-  Grid,
-  Divider,
+  Card,
 } from "@mantine/core";
 import { WeaponMember } from "../../src/unitStats/dpsCommon";
-import { getScatterArea, getWeaponRpm } from "../../src/unitStats";
+import { WeaponLoadoutCard } from "../unit-cards/weapon-loadout-card";
+import { Line } from "react-chartjs-2";
 
 interface IDPSProps {
   weapon_member: WeaponMember;
   onNumberChange: any;
   onDeleteMember: any;
 }
+
+const config = {
+  type: "line",
+  data: [],
+  plugins: {
+    legend: {
+      position: "top",
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      type: "linear" as const,
+      min: 0,
+      suggestedMax: 35,
+      title: {
+        display: false,
+      },
+
+      grid: {
+        lineWidth: 0.5,
+        display: false,
+      },
+    },
+  },
+};
 
 export const DpsWeaponCard = (props: IDPSProps) => {
   // const weaponMember =
@@ -47,7 +72,20 @@ export const DpsWeaponCard = (props: IDPSProps) => {
     props.onDeleteMember(activeData);
     return;
   }
-  const weapon_bag = activeData.weapon.weapon_bag;
+
+  const lineData = {
+    // labels: labels,
+    datasets: [
+      {
+        label: "My First Dataset",
+        data: activeData.dps_default,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+        pointRadius: 0,
+      },
+    ],
+  };
 
   return (
     <>
@@ -61,7 +99,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
         })}
       >
         <Group>
-          <HoverCard shadow="md" width={400}>
+          <HoverCard shadow="md" width={400} position="left" offset={50}>
             <HoverCard.Target>
               <Group>
                 <Image
@@ -75,7 +113,16 @@ export const DpsWeaponCard = (props: IDPSProps) => {
               </Group>
             </HoverCard.Target>
             <HoverCard.Dropdown>
-              <Stack mb={12}>
+              <Card p="lg" radius="md">
+                {WeaponLoadoutCard(activeData.weapon, 1)}
+              </Card>
+              <Line
+                key={activeData.weapon_id}
+                data={lineData}
+                options={config as any}
+                redraw
+              ></Line>
+              {/* <Stack mb={12}>
                 <Space></Space>
 
                 <Text>{activeData.weapon_id}</Text>
@@ -164,7 +211,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                     </Grid>
                   </>
                 )}
-              </Stack>
+              </Stack> */}
             </HoverCard.Dropdown>
           </HoverCard>
         </Group>

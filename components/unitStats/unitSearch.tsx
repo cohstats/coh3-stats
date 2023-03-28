@@ -1,5 +1,9 @@
 import { forwardRef } from "react";
-import { Group, Text, Image, Select } from "@mantine/core";
+import { Group, Text, Image, Select, HoverCard, Stack } from "@mantine/core";
+import { UnitCostCard } from "../unit-cards/unit-cost-card";
+import { CustomizableUnit } from "../../src/unitStats/dpsCommon";
+import { ebpsStats, getSquadTotalCost } from "../../src/unitStats";
+import { Line } from "react-chartjs-2";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
@@ -7,22 +11,109 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   description: string;
   type_icon: string;
 }
+// const labels = [1, 2, 3, 4, 5, 67];
+const data = {
+  // labels: labels,
+  datasets: [
+    {
+      label: "My First Dataset",
+      data: [
+        { x: 0, y: 10 },
+        { x: 10, y: 8 },
+        { x: 20, y: 6 },
+        { x: 35, y: 4 },
+      ],
+      fill: false,
+      borderColor: "rgb(75, 192, 192)",
+      tension: 0.1,
+      pointRadius: 0,
+    },
+  ],
+};
+
+const config = {
+  type: "line",
+  data: data,
+  plugins: {
+    legend: {
+      position: "top",
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      type: "linear" as const,
+      min: 0,
+      suggestedMax: 35,
+      title: {
+        display: false,
+      },
+
+      grid: {
+        lineWidth: 0.5,
+        display: false,
+      },
+    },
+  },
+};
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, label, description, type_icon, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <Image width={60} height={40} src={image} fit="contain" alt="Faction" />
-        <Image width={60} height={40} src={type_icon} fit="contain" alt="Faction" />
-        <div>
-          <Text size="sm">{label}</Text>
-          <Text size="xs" opacity={0.65}>
-            {description}
-          </Text>
-        </div>
-      </Group>
-    </div>
-  ),
+  ({ image, label, description, type_icon, ...others }: ItemProps, ref) => {
+    const lineData = {
+      // labels: labels,
+      datasets: [
+        {
+          label: "My First Dataset",
+          data: (others as CustomizableUnit).dps_preview,
+          fill: false,
+          borderColor: "rgb(75, 192, 192)",
+          tension: 0.1,
+          pointRadius: 0,
+        },
+      ],
+    };
+
+    return (
+      <div ref={ref} {...others}>
+        <Group noWrap>
+          <Image width={60} height={40} src={image} fit="contain" alt="Faction" />
+
+          <HoverCard shadow={"lg"} offset={60}>
+            <HoverCard.Target>
+              <Image width={60} height={40} src={type_icon} fit="contain" alt="type" />
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              <Stack>
+                <Image
+                  width={60}
+                  height={40}
+                  src={(others as CustomizableUnit).icon_name}
+                  fit="contain"
+                  alt="type"
+                />
+                {(others as CustomizableUnit).sbps.ui.screenName}
+                {UnitCostCard(getSquadTotalCost((others as CustomizableUnit).sbps, ebpsStats))}
+                <Line
+                  key={label}
+                  data={lineData}
+                  options={config as any}
+                  height={100}
+                  width={200}
+                ></Line>
+              </Stack>
+            </HoverCard.Dropdown>
+          </HoverCard>
+
+          <div>
+            <Text size="sm">{label}</Text>
+            <Text size="xs" opacity={0.65}>
+              {description}
+            </Text>
+          </div>
+        </Group>
+      </div>
+    );
+  },
 );
 
 SelectItem.displayName = "SelectItem";

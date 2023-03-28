@@ -11,18 +11,26 @@ import {
   Grid,
   Tooltip,
   Text,
+  Anchor,
+  Card,
+  HoverCard,
 } from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
 import { WeaponStats } from "../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
 import slash from "slash";
-import { EbpsType } from "../../src/unitStats";
+import { ebpsStats, EbpsType, getSquadTotalCost } from "../../src/unitStats";
 import {
   CustomizableUnit,
   getSbpsUpgrades,
   getSbpsWeapons,
+  resolveFactionLinkid,
   WeaponMember,
 } from "../../src/unitStats/dpsCommon";
+import Link from "next/link";
+import { UnitSquadCard } from "../unit-cards/unit-squad-card";
+import { UnitCostCard } from "../unit-cards/unit-cost-card";
+import { HitpointCard } from "../unit-cards/hitpoints-card";
 
 interface IUnitProps {
   unit: CustomizableUnit;
@@ -104,7 +112,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
       ></DpsWeaponCard>,
     );
   }
-
+  const totalCost = getSquadTotalCost(activeData.sbps, props.ebps);
   return (
     <>
       <Stack align="left" justify="flex-start" spacing="xs">
@@ -112,23 +120,86 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
           <Grid.Col span={4}>
             <Group noWrap>
               <Tooltip label={activeData.screen_name}>
-                <Avatar
-                  src={slash(activeData.icon_name)}
-                  alt={activeData.screen_name}
-                  placeholder="/icons/general/infantry_icn.png"
-                  radius="xs"
-                  size="md"
-                />
+                <HoverCard shadow="md" width={400} position="left" offset={50}>
+                  <HoverCard.Target>
+                    <Group>
+                      <Anchor
+                        color="undefined"
+                        underline={false}
+                        sx={{
+                          "&:hover": {
+                            textDecoration: "none",
+                          },
+                        }}
+                        component={Link}
+                        href={
+                          `/explorer/races/${resolveFactionLinkid(activeData.faction)}/units/` +
+                          activeData.id
+                        }
+                      >
+                        <Avatar
+                          src={slash(activeData.icon_name)}
+                          alt={activeData.screen_name}
+                          placeholder="/icons/general/infantry_icn.png"
+                          radius="xs"
+                          size="md"
+                        />
+                        {/* <Card p="lg" radius="md" withBorder>
+                  {UnitDescriptionCard(desc)}
+                  {UnitCostCard(time_cost)}
+                </Card> */}
+                      </Anchor>
+                    </Group>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    <Stack>
+                      <UnitSquadCard
+                        id={activeData.id}
+                        ui={{
+                          armorIcon: activeData.sbps.ui.armorIcon,
+                        }}
+                        health={{
+                          armor: activeData.ebps_default.health.armorLayout.armor,
+                          frontal: activeData.ebps_default.health.armorLayout.frontArmor,
+                          rear: activeData.ebps_default.health.armorLayout.rearArmor,
+                          side: activeData.ebps_default.health.armorLayout.sideArmor,
+                          targetSize: activeData.ebps_default.health.targetSize,
+                        }}
+                        type={activeData.unit_type}
+                        sight={{
+                          coneAngle: 1,
+                          outerRadius:
+                            activeData.ebps_default.sight_ext.sight_package.outer_radius,
+                        }}
+                        moving={{
+                          defaultSpeed:
+                            activeData.ebps_default.moving_ext.speed_scaling_table.default_speed,
+                          maxSpeed:
+                            activeData.ebps_default.moving_ext.speed_scaling_table.max_speed,
+                        }}
+                      />
+                      {UnitCostCard(totalCost)}
+                    </Stack>
+                  </HoverCard.Dropdown>
+                </HoverCard>
               </Tooltip>
               <Flex align="center">
-                <Tooltip label={activeData.screen_name}>
-                  <Image
-                    src="\icons\general\health.png"
-                    alt="Health"
-                    width={32}
-                    height={32}
-                  ></Image>
-                </Tooltip>
+                <HoverCard width={400} position="left" offset={80}>
+                  <HoverCard.Target>
+                    <Image
+                      src="\icons\general\health.png"
+                      alt="Health"
+                      width={32}
+                      height={32}
+                    ></Image>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    <Card p="lg" radius="md">
+                      {HitpointCard({ squad: activeData.sbps, entities: ebpsStats })}
+                    </Card>
+                  </HoverCard.Dropdown>
+                </HoverCard>
+
                 <Text size="xs">{activeData.health} HP</Text>
               </Flex>
             </Group>
