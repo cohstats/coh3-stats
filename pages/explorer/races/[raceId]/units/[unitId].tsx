@@ -65,8 +65,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   }
 
   // The resolved entity does not matter at all, as we can obtain such from the squad loadout.
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
+  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
+  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
 
   if (!resolvedSquad || !resolvedEntities?.length) {
     // How to redirect back?
@@ -76,14 +76,31 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   const localizedRace = localizedNames[raceId];
   const descriptionRace = RaceBagDescription[raceId];
 
+  // For team_weapons, get default members.
+  let defaultSquadMember: EbpsType;
+  if (resolvedSquad.unitType === "team_weapons" && resolvedSquad.loadout.length > 1) {
+    defaultSquadMember = resolvedEntities[resolvedEntities.length - 1];
+  } else {
+    defaultSquadMember = resolvedEntities[0];
+  }
+
   // Only vehicles have armor values and a single entity usually. The infantry
   // uses the plain `armor`.
   const armorValues = {
-    armor: resolvedEntities[0].health.armorLayout.armor || 0,
-    frontal: resolvedEntities[0].health.armorLayout.frontArmor || 0,
-    side: resolvedEntities[0].health.armorLayout.sideArmor || 0,
-    rear: resolvedEntities[0].health.armorLayout.rearArmor || 0,
-    targetSize: resolvedEntities[0].health.targetSize || 0,
+    armor: defaultSquadMember.health.armorLayout.armor || 0,
+    frontal: defaultSquadMember.health.armorLayout.frontArmor || 0,
+    side: defaultSquadMember.health.armorLayout.sideArmor || 0,
+    rear: defaultSquadMember.health.armorLayout.rearArmor || 0,
+    targetSize: defaultSquadMember.health.targetSize || 0,
+  };
+
+  const sightValues = {
+    coneAngle: defaultSquadMember.sight_ext.sight_package.cone_angle,
+    outerRadius: defaultSquadMember.sight_ext.sight_package.outer_radius,
+  };
+  const movingValues = {
+    defaultSpeed: defaultSquadMember.moving_ext.speed_scaling_table.default_speed,
+    maxSpeed: defaultSquadMember.moving_ext.speed_scaling_table.max_speed,
   };
 
   // Obtain the total cost of the squad by looking at the loadout.
@@ -146,15 +163,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   ui: {
                     armorIcon: resolvedSquad.ui.armorIcon,
                   },
-                  sight: {
-                    coneAngle: resolvedEntities[0].sight_ext.sight_package.cone_angle,
-                    outerRadius: resolvedEntities[0].sight_ext.sight_package.outer_radius,
-                  },
-                  moving: {
-                    defaultSpeed:
-                      resolvedEntities[0].moving_ext.speed_scaling_table.default_speed,
-                    maxSpeed: resolvedEntities[0].moving_ext.speed_scaling_table.max_speed,
-                  },
+                  sight: sightValues,
+                  moving: movingValues,
                 })}
               </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
@@ -180,16 +190,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   three={resolvedSquad.veterancyInfo.three}
                 ></VeterancyCard>
               </Card>
-              {/* {resolvedSquad.unitType === "vehicles" ? (
-                <Card p="lg" radius="md" withBorder>
-                  <StatsVehicleArmor
-                    type={resolvedSquad.ui.armorIcon as VehicleArmorType}
-                    armorValues={armorValues}
-                  ></StatsVehicleArmor>
-                </Card>
-              ) : (
-                <></>
-              )} */}
             </Stack>
           </Grid.Col>
         </Grid>
