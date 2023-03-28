@@ -174,7 +174,8 @@ const mapUnitSelection = (
       squad.faction != "british" &&
       (unitFilter.length == 0 || unitFilter.includes(squad.faction))
     ) {
-      const custUnit = mapCustomizableUnit(squad, ebps, weapons);
+      const custUnit = units.find((custUnit) => custUnit.id == squad.id);
+      if (!custUnit) continue;
       if (custUnit.weapon_member.length > 0) selectionFields.push(custUnit);
     }
   }
@@ -209,6 +210,7 @@ const generateFilterButtons = (
   return filterButtons;
 };
 
+const units: CustomizableUnit[] = [];
 interface IDPSProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
@@ -231,6 +233,11 @@ export const DpsChart = (props: IDPSProps) => {
 
   // const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  // get all customizable units once
+  if (units.length == 0)
+    for (const sbps of props.sbpsData)
+      units.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData));
 
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
@@ -521,7 +528,7 @@ export const DpsChart = (props: IDPSProps) => {
         <Text color={theme.colors.gray[7]}>
           {" "}
           * Computation results are based on approximation models using stats from the game files.
-          In-Game values might vary.
+          In-Game values vary.
         </Text>
       </Container>
     </>

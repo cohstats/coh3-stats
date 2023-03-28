@@ -17,6 +17,18 @@ type WeaponMember = {
   label: string;
   description: string;
   value: string;
+  dps_default: [];
+};
+
+export const resolveFactionLinkid = (factionFolderName: string) => {
+  switch (factionFolderName) {
+    case "afrika_korps":
+      return "dak";
+    case "british_africa":
+      return "british";
+    default:
+      return factionFolderName;
+  }
 };
 
 const mapWeaponMember = (
@@ -37,10 +49,20 @@ const mapWeaponMember = (
     label: weapon.id,
     description: weapon.description,
     value: weapon.id,
+    dps_default: [] as any,
   };
   //   (clone as any).unit = loadout.id;
   if (weapon.icon_name != "") member.image = getIconsPathOnCDN("icons/" + weapon.icon_name);
   else member.image = getDefaultWeaponIcon(weapon.parent);
+
+  for (let i = 0; i <= member.weapon.weapon_bag.range.max; i++) {
+    const memberClone = { ...member };
+    memberClone.num = 1;
+    member.dps_default.push({
+      x: i,
+      y: getSingleWeaponDPS(memberClone, i),
+    });
+  }
 
   //   loadoutUnit.push(clone as any);
   return member;
@@ -71,6 +93,8 @@ type CustomizableUnit = {
   def_member: string;
   def_damage_type: string;
   sbps: SbpsType;
+  ebps_default: EbpsType;
+  dps_preview: any[];
 };
 
 export const mapCustomizableUnit = (
@@ -106,7 +130,9 @@ export const mapCustomizableUnit = (
     def_weapon_member: [], // default member with weapon
     def_member: "", // required to get health of non weapon vehicles. Loadout[0]
     health: 0,
+    ebps_default: {} as EbpsType,
     sbps: sbpsSelected,
+    dps_preview: [],
   };
 
   if (sbpsSelected.ui.symbolIconName != "")
@@ -139,10 +165,13 @@ export const mapCustomizableUnit = (
     // squad hitpoints
     const def_ebps = ebps.find((unit) => unit.id == custUnit.def_member);
     if (def_ebps) {
+      custUnit.ebps_default = def_ebps;
       custUnit.hitpoints = def_ebps.health.hitpoints;
       custUnit.target_size = def_ebps.health.targetSize;
     } else custUnit.hitpoints = 80;
   }
+
+  custUnit.dps_preview = getCombatDps(custUnit);
 
   return custUnit;
 };
