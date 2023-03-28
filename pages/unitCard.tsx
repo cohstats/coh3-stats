@@ -15,6 +15,7 @@ import {
   UpgradesType,
 } from "../src/unitStats/mappingUpgrades";
 import { fetchLocstring, setLocstring, unitStatsLocString } from "../src/unitStats/locstring";
+import { getMappings } from "../src/unitStats/mappings";
 
 interface UnitCardProps {
   weaponData: WeaponType[];
@@ -60,20 +61,7 @@ const UnitPage: NextPage<UnitCardProps> = ({
 };
 
 export const getStaticProps = async () => {
-  const locstring = await fetchLocstring();
-
-  // map Data at built time
-  const weaponData = await getWeaponStats();
-
-  // map Data at built time
-  const ebpsData = await getEbpsStats();
-  //const ebpsData: any[] = [];
-
-  // map Data at built time
-  const sbpsData = await getSbpsStats();
-
-  // map Data at built time
-  const upgradesData = await getUpgradesStats();
+  const { weaponData, sbpsData, upgradesData, ebpsData, locstring } = await getMappings();
 
   return {
     props: {

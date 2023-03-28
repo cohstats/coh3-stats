@@ -6,14 +6,9 @@ import { Card, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core
 import ContentContainer from "../../../../../components/Content-container";
 import {
   EbpsType,
-  fetchLocstring,
-  getEbpsStats,
   getResolvedUpgrades,
-  getSbpsStats,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
-  getUpgradesStats,
-  getWeaponStats,
   RaceBagDescription,
   SbpsType,
   UpgradesType,
@@ -36,6 +31,7 @@ import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-c
 import slash from "slash";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { generateKeywordsString } from "../../../../../src/head-utils";
+import { getMappings } from "../../../../../src/unitStats/mappings";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -303,13 +299,7 @@ const UnitWeaponSection = (
 };
 
 export const getStaticProps = async () => {
-  const [locstring, ebpsData, sbpsData, upgradesData, weaponsData] = await Promise.all([
-    fetchLocstring(),
-    getEbpsStats(),
-    getSbpsStats(),
-    getUpgradesStats(),
-    getWeaponStats(),
-  ]);
+  const { locstring, ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
 
   return {
     props: {
@@ -317,7 +307,7 @@ export const getStaticProps = async () => {
       sbpsData,
       ebpsData,
       upgradesData,
-      weaponsData,
+      weaponsData: weaponData,
     },
   };
 };

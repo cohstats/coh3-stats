@@ -1,23 +1,18 @@
 import { NextPage } from "next";
 import { DpsChart } from "../../components/unitStats/dpsChart";
-import { ebpsStats, EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
-import { getSbpsStats, sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
+import { ebpsStats, EbpsType, setEbpsStats } from "../../src/unitStats/mappingEbps";
+import { sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
+import { setWeaponStats, WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import {
-  getWeaponStats,
-  setWeaponStats,
-  WeaponStats,
-  WeaponType,
-} from "../../src/unitStats/mappingWeapon";
-import {
-  getUpgradesStats,
   setUpgradesStats,
   upgradesStats,
   UpgradesType,
 } from "../../src/unitStats/mappingUpgrades";
-import { fetchLocstring, setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
+import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import Head from "next/head";
 import React from "react";
 import { generateKeywordsString } from "../../src/head-utils";
+import { getMappings } from "../../src/unitStats/mappings";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -86,13 +81,7 @@ const DpsPage: NextPage<DpsProps> = ({
 
 export const getStaticProps = async () => {
   // map Data at built time
-  const [weaponData, ebpsData, sbpsData, upgradesData, locstring] = await Promise.all([
-    getWeaponStats(),
-    getEbpsStats(),
-    getSbpsStats(),
-    getUpgradesStats(),
-    fetchLocstring(),
-  ]);
+  const { weaponData, ebpsData, sbpsData, upgradesData, locstring } = await getMappings();
 
   return {
     props: {
