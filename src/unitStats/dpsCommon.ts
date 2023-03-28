@@ -261,7 +261,7 @@ export const getCoverMultiplier = (coverType: string, weaponBag: WeaponStatsType
   return cover;
 };
 
-const getDefaultWeaponIcon = (parent_folder: string) => {
+export const getDefaultWeaponIcon = (parent_folder: string) => {
   const image = "/unitStats/weaponClass/";
 
   switch (parent_folder) {

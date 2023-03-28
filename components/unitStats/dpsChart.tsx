@@ -39,7 +39,6 @@ import { EbpsType } from "../../src/unitStats/mappingEbps";
 // import slash from "slash";
 import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
-import Head from "next/head";
 import { IconAdjustments } from "@tabler/icons";
 import {
   CustomizableUnit,
@@ -361,11 +360,6 @@ export const DpsChart = (props: IDPSProps) => {
 
   return (
     <>
-      <Head>
-        <title>CoH3 DPS - Calculator</title>
-        <meta name="Damage Per Second (DPS) Calculator " />
-      </Head>
-
       <Container>
         {/* */}
 

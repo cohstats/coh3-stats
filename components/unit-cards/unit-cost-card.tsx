@@ -11,11 +11,11 @@ const ResourceIcons = [
   { icon: "/icons/common/resources/resource_skill_points.png", type: "command" },
 ] as const;
 
-export const StatsCosts = (costs: ResourceValues) => (
+export const UnitCostCard = (costs: ResourceValues, title = "Costs") => (
   <>
     <Stack spacing={0}>
       <Title order={6} transform="uppercase">
-        Costs
+        {title}
       </Title>
       <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
         {ResourceIcons.map(({ icon, type }) => {

@@ -1,6 +1,7 @@
 import slash from "slash";
 import {
   Accordion,
+  Anchor,
   Card,
   Divider,
   Flex,
@@ -13,9 +14,11 @@ import {
 } from "@mantine/core";
 import { UnitDescription, UnitDescriptionCard } from "./unit-description-card";
 import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
-import { StatsCosts } from "./cost-card";
+import { UnitCostCard } from "./unit-cost-card";
 import { BuildingType } from "../../src/coh3";
 import { hasCost, ResourceValues } from "../../src/unitStats";
+import Link from "next/link";
+import { raceType } from "../../src/coh3/coh3-types";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -33,10 +36,11 @@ type BuildingDescription = {
 };
 
 export type BuildingSchema = {
+  faction: raceType;
   types: BuildingType[];
   desc: BuildingDescription;
   /** Extracted from `ebpextensions\\spawner_ext` within the building `ebps`. */
-  units: Array<{ desc: UnitDescription; time_cost: ResourceValues }>;
+  units: Array<{ id: string; desc: UnitDescription; time_cost: ResourceValues }>;
   /** Extracted from `ebpextensions\\cost_ext` within the building `ebps`. */
   time_cost: ResourceValues;
   /**
@@ -107,14 +111,7 @@ const BuildingCardHeader = (
         {hasCost(cost) ? (
           <>
             <Divider />
-            <StatsCosts
-              manpower={cost.manpower}
-              fuel={cost.fuel}
-              time_seconds={cost.time_seconds}
-              munition={cost.munition}
-              popcap={cost.popcap}
-              command={cost.command}
-            ></StatsCosts>
+            {UnitCostCard(cost)}
           </>
         ) : (
           <></>
@@ -141,17 +138,29 @@ const BuildingUpgradeMapper = (upgrades: BuildingSchema["upgrades"]) => {
   );
 };
 
-const BuildingUnitMapper = (units: BuildingSchema["units"]) => {
+const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) => {
   if (!units.length) return <></>;
   return (
     <Grid columns={1}>
-      {units.map(({ desc, time_cost }) => {
+      {units.map(({ id, desc, time_cost }) => {
         return (
-          <Grid.Col key={desc.id} span={1}>
-            <Card p="lg" radius="md" withBorder>
-              {UnitDescriptionCard(desc)}
-              {StatsCosts(time_cost)}
-            </Card>
+          <Grid.Col key={id} span={1}>
+            <Anchor
+              color="undefined"
+              underline={false}
+              sx={{
+                "&:hover": {
+                  textDecoration: "none",
+                },
+              }}
+              component={Link}
+              href={`/explorer/races/${faction}/units/${id}`}
+            >
+              <Card p="lg" radius="md" withBorder>
+                {UnitDescriptionCard(desc)}
+                {UnitCostCard(time_cost)}
+              </Card>
+            </Anchor>
           </Grid.Col>
         );
       })}
@@ -186,7 +195,14 @@ function BuildingAccordionLabel({ label, symbolIcon }: AccordionLabelProps) {
   );
 }
 
-export const BuildingCard = ({ desc, units, time_cost, health, upgrades }: BuildingSchema) => {
+export const BuildingCard = ({
+  faction,
+  desc,
+  units,
+  time_cost,
+  health,
+  upgrades,
+}: BuildingSchema) => {
   let productionSection, upgradeSection;
 
   if (units.length) {
@@ -195,7 +211,7 @@ export const BuildingCard = ({ desc, units, time_cost, health, upgrades }: Build
         <Accordion.Control>
           <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Produces"} />
         </Accordion.Control>
-        <Accordion.Panel>{BuildingUnitMapper(units)}</Accordion.Panel>
+        <Accordion.Panel>{BuildingUnitMapper(units, faction)}</Accordion.Panel>
       </Accordion.Item>
     );
   }

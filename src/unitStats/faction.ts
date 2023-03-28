@@ -3,6 +3,7 @@ import { AbilitiesType } from "./mappingAbilities";
 import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 import { UpgradesType } from "./mappingUpgrades";
+import { WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, ResourceValues } from "./squadTotalCost";
 
 export function getResolvedAbilities(refs: string[], abilities: AbilitiesType[]) {
@@ -30,6 +31,21 @@ export function getResolvedUpgrades(refs: string[], upgradesData: UpgradesType[]
     researchableUpgrades[upgradeId] ??= upgradeFound;
   }
   return researchableUpgrades;
+}
+
+export function getResolvedWeapons(refs: string[], weaponsData: WeaponType[]) {
+  // The key is the weapon id.
+  const loadoutWeapons: Record<string, WeaponType> = {};
+  for (const refPath of refs) {
+    // Get the last element of the array, which is the id.
+    const weaponId = refPath.split("/").slice(-1)[0];
+    const weaponFound = weaponsData.find((x) => x.id === weaponId);
+    // Ignore those upgrades not found.
+    if (!weaponFound) continue;
+
+    loadoutWeapons[weaponId] ??= weaponFound;
+  }
+  return loadoutWeapons;
 }
 
 export function getResolvedSquads(refs: string[], sbpsData: SbpsType[], ebpsData: EbpsType[]) {
@@ -69,6 +85,20 @@ function transformToMultiplayerBuildingFaction(race: raceType): buildingFactionM
       return race;
   }
 }
+
+export const RaceBagDescription = {
+  // Locstring value: $11234530
+  german:
+    "A steadfast and elite force that can hold against even the most stubborn foe. Unlock unique arsenals to specialize your forces.",
+  // Locstring value: $11234529
+  american:
+    "Versatile infantry and weaponry that can displace any opponent. Experience is key to improving your forces for the fight ahead.",
+  // Locstring value: $11220490
+  dak: "A combined-arms force of aggressive vehicles, plentiful reinforcements and stubborn tanks that can break down any enemy line.",
+  // Locstring value: $11234532
+  british:
+    "Infantry and team weapons form a backbone that is tough to break. Myriad vehicles will create the opening you need to seize the day.",
+} as const;
 
 /** Filter invisible or unused buildings in multiplayer. */
 export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType) {
@@ -167,9 +197,6 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
       munition: 0,
       time: 0,
     },
-    populationExt: {
-      personnel_pop: 0,
-    },
     ui: {
       iconName: "races/afrika_corps/vehicles/halftrack_logistics_ak",
       symbolIconName: "races/common/symbols/building_support_center",
@@ -192,5 +219,25 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
     upgradeRefs: [],
     weaponRef: [],
     weaponId: "",
+    populationExt: {
+      personnel_pop: 0,
+      upkeep_per_pop: {
+        fuel: 0,
+        manpower: 0,
+        munition: 0,
+      },
+    },
+    moving_ext: {
+      speed_scaling_table: {
+        default_speed: 0,
+        max_speed: 0,
+      },
+    },
+    sight_ext: {
+      sight_package: {
+        cone_angle: 0,
+        outer_radius: 0,
+      },
+    },
   };
 }

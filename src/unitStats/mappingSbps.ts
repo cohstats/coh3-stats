@@ -20,6 +20,21 @@ type SbpsType = {
    * minute costs, which will be stacked with the ebps. */
   populationExt: {
     personnel_pop: number;
+    /** Found at `upkeep_per_pop_per_minute_override`. This is a multiplier,
+     * which goes with `personnel_pop`. If greater than zero, overrides the
+     * army/global tuning tables. */
+    upkeep_per_pop: {
+      fuel: number;
+      manpower: number;
+      munition: number;
+    };
+  };
+  /** Found at `squad_veterancy_ext`. This contains a list of veterancy
+   * description / required xp per level. */
+  veterancyInfo: {
+    one: { exp: number; screenName: string };
+    two: { exp: number; screenName: string };
+    three: { exp: number; screenName: string };
   };
 };
 
@@ -32,6 +47,10 @@ type SquadUiData = {
   briefText: string;
   screenName: string;
   extraText: string; // Could be empty (Set as $0).
+  /* Armor type icon, found within `sbps` ->
+  `sbpextensions\\squad_ui_ext\race_list\race_data\info` ->
+  `ui_armor_info\armor_icon`. Applies to only vehicles. */
+  armorIcon: string;
 };
 
 type LoadoutData = {
@@ -64,10 +83,30 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
       briefText: "",
       screenName: "",
       extraText: "",
+      armorIcon: "",
     },
     upgrades: [],
     populationExt: {
       personnel_pop: 0,
+      upkeep_per_pop: {
+        fuel: 0,
+        manpower: 0,
+        munition: 0,
+      },
+    },
+    veterancyInfo: {
+      one: {
+        exp: 0,
+        screenName: "",
+      },
+      two: {
+        exp: 0,
+        screenName: "",
+      },
+      three: {
+        exp: 0,
+        screenName: "",
+      },
     },
   };
 
@@ -120,7 +159,15 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
         }
         break;
       case "squad_population_ext":
-        sbps.populationExt.personnel_pop = extension.personnel_pop || 0;
+        {
+          const upkeepPerPop = extension.upkeep_per_pop_per_minute_override;
+          sbps.populationExt.personnel_pop = extension.personnel_pop || 0;
+          sbps.populationExt.upkeep_per_pop = {
+            manpower: upkeepPerPop?.manpower || 0,
+            munition: upkeepPerPop?.munition || 0,
+            fuel: upkeepPerPop?.fuel || 0,
+          };
+        }
         break;
       case "squad_ui_ext":
         {
@@ -139,6 +186,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.extraText = resolveLocstring(extraText);
           const briefText = uiExtInfo.brief_text;
           sbps.ui.briefText = resolveLocstring(briefText);
+          sbps.ui.armorIcon = uiExtInfo.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }
         break;
       case "squad_upgrade_ext":
@@ -148,6 +196,27 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           if (upg.upgrade?.instance_reference) {
             sbps.upgrades.push(upg.upgrade.instance_reference);
           }
+        }
+        break;
+      case "squad_veterancy_ext":
+        {
+          // Check if the `race_list` is not empty, otherwise skip.
+          if (!extension.race_list?.length) break;
+          // The race_list is always one item.
+          const vetExtInfo: any[] = extension.race_list[0].race_data.info.veterancy_rank_info;
+          // Technically the first one is vet 1, second is vet 2 and third is vet 3.
+          sbps.veterancyInfo.one = {
+            exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text),
+          };
+          sbps.veterancyInfo.two = {
+            exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text),
+          };
+          sbps.veterancyInfo.three = {
+            exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text),
+          };
         }
         break;
       default:
