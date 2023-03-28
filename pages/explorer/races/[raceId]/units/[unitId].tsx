@@ -32,6 +32,7 @@ import slash from "slash";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { generateKeywordsString } from "../../../../../src/head-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
+import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -90,6 +91,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
 
   // Obtain the total upkeep cost of the squad.
   const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
+
+  // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
+  const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponsData);
 
   const metaKeywords = generateKeywordsString([
     `${resolvedSquad.ui.screenName} coh3`,
@@ -154,7 +158,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                 })}
               </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
-              {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
+              {UnitWeaponSection(squadWeapons)}
             </Stack>
           </Grid.Col>
           <Grid.Col md={1} order={1} orderMd={2}>
@@ -224,60 +228,17 @@ const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
   );
 };
 
-const UnitWeaponSection = (
-  resolvedSquad: SbpsType,
-  resolvedEntities: EbpsType[],
-  entitiesData: EbpsType[],
-  weaponsData: WeaponType[],
-) => {
-  // console.log("🚀 ~ file: [unitId].tsx:194 ~ entitiesData:", entitiesData)
-  // Store the quantity of each weapon using the loadouts.
-  const weaponSquadDict: Record<string, { count: number; weapon: WeaponType }> = {};
-
-  for (const entity of resolvedEntities) {
-    // Loop over the weapon list entities from each squad ebps.
-    for (const weaponEntity of entity.weaponRef) {
-      const weaponEntityId = weaponEntity.ebp.split("/").slice(-1)[0];
-      // console.log("🚀 ~ file: [unitId].tsx:201 ~ weaponEntityId:", weaponEntityId)
-
-      // Now extract the weapon from the entities with the extracted id.
-      const weaponEbps = entitiesData.find((x) => x.id === weaponEntityId);
-      // console.log("🚀 ~ file: [unitId].tsx:204 ~ weaponEbps:", weaponEbps);
-
-      // Skip if weapon entity not found.
-      if (!weaponEbps) continue;
-
-      // Resolve the weapon entity with `weaponId` (only applies to weapon entities).
-      const weapon = weaponsData.find((x) => x.id === weaponEbps.weaponId);
-
-      // console.log("🚀 ~ file: [unitId].tsx:216 ~ weapon:", weapon);
-      // Skip if the weapon (not entity!) could not be found.
-      if (!weapon) continue;
-
-      // Find the quantity via loadout.
-      const count =
-        resolvedSquad.loadout.find((x) => x.type.split("/").slice(-1)[0] === entity.id)?.num || 0;
-
-      // Add weapon to dictionary.
-      weaponSquadDict[weapon.id] = { count, weapon };
-    }
-  }
-
-  // console.log(
-  //   "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
-  //   weaponSquadDict,
-  // );
-
+const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
   return (
     <Stack>
       <Title order={4}>Loadout</Title>
 
       <Grid columns={2} grow>
-        {Object.entries(weaponSquadDict).map(([id, { count, weapon }]) => {
+        {squadWeapons.map(({ weapon_id, weapon, num }) => {
           return (
-            <Grid.Col span={1} key={id}>
+            <Grid.Col span={1} key={weapon_id}>
               <Card p="lg" radius="md" withBorder>
-                {WeaponLoadoutCard(weapon, count)}
+                {WeaponLoadoutCard(weapon, num)}
               </Card>
             </Grid.Col>
           );
