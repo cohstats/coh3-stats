@@ -166,7 +166,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            <ExplorerMenu cx={cx} classes={classes} />
+            <ExplorerMenu cx={cx} close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -245,7 +245,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            <ExplorerMenu cx={cx} classes={classes} />
+            <ExplorerMenu cx={cx} close={close} classes={classes} />
 
             <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About

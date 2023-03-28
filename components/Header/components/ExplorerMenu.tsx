@@ -17,11 +17,16 @@ import FactionIcon from "../../faction-icon";
 import { getDPSCalculatorRoute, getExplorerFactionRoute } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 
-const explorerFactionLink = (faction: raceType) => {
+const explorerFactionLink = (faction: raceType, close: () => void) => {
   return (
     <Flex direction="row" align="center" gap="md">
       <FactionIcon name={faction} width={24} />
-      <Anchor color="orange" component={Link} href={getExplorerFactionRoute(faction)}>
+      <Anchor
+        color="orange"
+        component={Link}
+        href={getExplorerFactionRoute(faction)}
+        onClick={close}
+      >
         {localizedNames[faction]}
       </Anchor>
     </Flex>
@@ -32,9 +37,9 @@ const explorerFactionLink = (faction: raceType) => {
  * @TODO Provide the toolName type for the routes. In the meantime, provide the
  * route fragment as string.
  */
-const explorerToolLink = (toolName: string) => (
+const explorerToolLink = (toolName: string, close: () => void) => (
   <Text>
-    <Anchor color="orange" component={Link} href={getDPSCalculatorRoute()}>
+    <Anchor color="orange" component={Link} href={getDPSCalculatorRoute()} onClick={close}>
       {toolName}
     </Anchor>
   </Text>
@@ -43,9 +48,11 @@ const explorerToolLink = (toolName: string) => (
 const ExplorerMenu = ({
   cx,
   classes,
+  close,
 }: {
   cx: (...args: any) => string;
   classes: Record<string, string>;
+  close: () => void;
 }) => {
   const mobileView = (
     <Group className={classes.hiddenDesktop} grow>
@@ -56,15 +63,15 @@ const ExplorerMenu = ({
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
-              {explorerFactionLink("german")}
-              {explorerFactionLink("american")}
-              {explorerFactionLink("dak")}
-              {explorerFactionLink("british")}
+              {explorerFactionLink("german", close)}
+              {explorerFactionLink("american", close)}
+              {explorerFactionLink("dak", close)}
+              {explorerFactionLink("british", close)}
             </Stack>
             <Divider my="sm"></Divider>
             <Stack>
               <Text weight={700}>Tools</Text>
-              {explorerToolLink("DPS - Unit Comparison")}
+              {explorerToolLink("DPS - Unit Comparison", close)}
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -87,16 +94,16 @@ const ExplorerMenu = ({
           <Grid gutter={0} columns={2}>
             <Grid.Col span={1}>
               <Stack>
-                {explorerFactionLink("german")}
-                {explorerFactionLink("american")}
-                {explorerFactionLink("dak")}
-                {explorerFactionLink("british")}
+                {explorerFactionLink("german", () => null)}
+                {explorerFactionLink("american", () => null)}
+                {explorerFactionLink("dak", () => null)}
+                {explorerFactionLink("british", () => null)}
               </Stack>
             </Grid.Col>
             <Grid.Col span={1}>
               <Stack>
                 <Text weight={700}>Tools</Text>
-                {explorerToolLink("DPS - Unit Comparison")}
+                {explorerToolLink("DPS - Unit Comparison", () => null)}
               </Stack>
             </Grid.Col>
           </Grid>
