@@ -336,6 +336,7 @@ const getEbpsStats = async () => {
 
       // filter by relevant entity types
       switch (item.unitType) {
+        case "emplacements": // Buildable outside base (AA guns, AT guns).
         case "production": // Base buildings.
         case "infantry": // General infantry
         // case "flame_throwers":
