@@ -12,12 +12,9 @@ export default new Router()
   })
   .match("/", ({ cache }) => {
     cache({
-      browser: {
-        serviceWorkerSeconds: 60,
-      },
       edge: {
-        // Cache for 10 minutes, revalidate under 30 minutes
-        maxAgeSeconds: 60 * 10,
+        // Cache for 5 minutes, revalidate under 30 minutes
+        maxAgeSeconds: 60 * 5,
         staleWhileRevalidateSeconds: 60 * 30,
         forcePrivateCaching: true,
       },
