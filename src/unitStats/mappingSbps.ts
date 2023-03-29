@@ -3,6 +3,7 @@
 import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
+import config from "../../config";
 
 // need to be extended by all required fields
 type SbpsType = {
@@ -233,9 +234,7 @@ const getSbpsStats = async () => {
   // check if data already extracted
   if (sbpsStats) return sbpsStats;
 
-  const myReqSbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/sbps.json",
-  );
+  const myReqSbps = await fetch(config.getPatchDataUrl("sbps.json"));
 
   const root = await myReqSbps.json();
 
