@@ -100,21 +100,25 @@ export const UnitSquadCard = ({ id, sight, moving, health, ui, type }: UnitSquad
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={4}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
-              <ImageWithFallback
-                height={32}
-                width={32}
-                fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["infantry_armor"]}
-                alt="squad armor (infantry only)"
-              ></ImageWithFallback>
-              <Text>Armor (Infantry)</Text>
-            </Group>
-            <Text align="end">{health?.armor || 0}</Text>
-          </Flex>
-        </Grid.Col>
+        {type !== "vehicles" ? (
+          <Grid.Col span={4}>
+            <Flex gap={4} align="center" justify="space-between">
+              <Group spacing={4}>
+                <ImageWithFallback
+                  height={32}
+                  width={32}
+                  fallbackSrc={symbolPlaceholder}
+                  src={UnitSquadIcons["infantry_armor"]}
+                  alt="squad armor (infantry only)"
+                ></ImageWithFallback>
+                <Text>Armor</Text>
+              </Group>
+              <Text align="end">{health?.armor || 0}</Text>
+            </Flex>
+          </Grid.Col>
+        ) : (
+          <></>
+        )}
       </Grid>
 
       {type === "vehicles" ? (

@@ -253,6 +253,7 @@ const getSbpsStats = async () => {
 
       // filter by relevant weapon types
       switch (item.unitType) {
+        case "emplacements": // Buildable outside base (AA guns, AT guns).
         case "infantry": // General infantry.
         case "team_weapons": // MGs, artillery (the mobile ones).
         case "vehicles": // General vehicles (tanks, armoured cars).
