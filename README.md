@@ -120,14 +120,12 @@ Backend:
     not perfect for FireStore
   - Big Query - for stored matches (we need to do pricing calculations on this)
 
-
 ## How to update the data after a new game patch
+
 1. Go to https://github.com/cohstats/coh3-data and generate the new data as per readme
 2. Create a new tag in coh3-data as per readme
-3. Update config.ts in the root
-   4. Add the patch into object patches
-   5. Update latestPatch variable with the key of the new patch
-6. Run the project and verify that all pages work as expected
+3. Update config.ts in the root 4. Add the patch into object patches 5. Update latestPatch variable with the key of the new patch
+4. Run the project and verify that all pages work as expected
 
 ## Learn More
 
