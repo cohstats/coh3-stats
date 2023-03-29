@@ -1,5 +1,7 @@
 import slash from "slash";
-import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
+import { Flex, Text, Title, Tooltip } from "@mantine/core";
+import { iconPlaceholder, symbolPlaceholder } from "../placeholders";
+import ImageWithFallback from "../placeholders";
 
 /**
  * These fields can be found at `sbps` inside each unit object.
@@ -13,7 +15,6 @@ import { Flex, Image, Text, Title, Tooltip } from "@mantine/core";
  * Specific paths defined per property.
  */
 export type UnitDescription = {
-  id?: string;
   /** Locstring value. Found at `screen_name/locstring/value`. */
   screen_name: string;
   /** Locstring value. Found at `help_text/locstring/value`. */
@@ -29,12 +30,12 @@ export type UnitDescription = {
 export const UnitDescriptionCard = (desc: UnitDescription) => (
   <>
     <Flex direction="row" align="center" gap={16}>
-      <Image
+      <ImageWithFallback
         width={96}
         height={96}
-        fit="contain"
         src={`/icons/${slash(desc.icon_name)}.png`}
         alt={desc.screen_name}
+        fallbackSrc={iconPlaceholder}
       />
       <Flex direction="column" gap={4}>
         <Title order={6} transform="capitalize" color="yellow.5">
@@ -47,12 +48,12 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
         </Tooltip>
         {/* Symbol horizontal aligned with brief text. */}
         <Flex direction="row" align="center" gap={4}>
-          <Image
+          <ImageWithFallback
             width={32}
             height={32}
-            fit="contain"
             src={`/icons/${slash(desc.symbol_icon_name)}.png`}
             alt={`${desc.screen_name} symbol`}
+            fallbackSrc={symbolPlaceholder}
           />
           <Tooltip label={desc.brief_text}>
             <Text fz="xs" lineClamp={2}>

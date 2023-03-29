@@ -7,6 +7,10 @@ const { withEdgio, withServiceWorker } = require("@edgio/next/config");
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    // All the images are served from the CF CDN, so we don't need to optimize them.
+    unoptimized: true,
+  },
 };
 
 const _preEdgioExport = nextConfig;

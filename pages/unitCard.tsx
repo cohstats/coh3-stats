@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { DpsChart } from "../components/unitStats/dpsChart";
-import { EbpsType, getEbpsStats, setEbpsStats } from "../src/unitStats/mappingEbps";
-import { getSbpsStats, SbpsType, setSbpsStats } from "../src/unitStats/mappingSbps";
+import { ebpsStats, EbpsType, getEbpsStats, setEbpsStats } from "../src/unitStats/mappingEbps";
+import { getSbpsStats, sbpsStats, SbpsType, setSbpsStats } from "../src/unitStats/mappingSbps";
 import {
   getWeaponStats,
   setWeaponStats,
@@ -11,14 +11,16 @@ import {
 import {
   getUpgradesStats,
   setUpgradesStats,
+  upgradesStats,
   UpgradesType,
 } from "../src/unitStats/mappingUpgrades";
 import { fetchLocstring, setLocstring, unitStatsLocString } from "../src/unitStats/locstring";
+import { getMappings } from "../src/unitStats/mappings";
 
 interface UnitCardProps {
   weaponData: WeaponType[];
-  spbsData: SbpsType[];
-  epbsData: EbpsType[];
+  sbpsData: SbpsType[];
+  ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
   locstring: any;
   generalInfo: any;
@@ -29,43 +31,37 @@ interface UnitCardProps {
 // accessing attributes of Props Structure directly
 const UnitPage: NextPage<UnitCardProps> = ({
   weaponData,
-  spbsData,
-  epbsData,
+  sbpsData,
+  ebpsData,
   upgradesData,
   locstring,
 }) => {
   // Save data again in global varible for clientMode
   if (!WeaponStats) setWeaponStats(weaponData);
 
-  if (!epbsData) setEbpsStats(epbsData);
+  if (!ebpsStats) setEbpsStats(ebpsData);
 
-  if (!upgradesData) setUpgradesStats(upgradesData);
+  if (!upgradesStats) setUpgradesStats(upgradesData);
 
-  if (!spbsData) setSbpsStats(spbsData);
+  if (!sbpsStats) setSbpsStats(sbpsData);
 
   if (!unitStatsLocString) setLocstring(locstring);
 
+  const dbpsData = {
+    weaponData: weaponData,
+    sbpsData: sbpsData,
+    ebpsData: ebpsData,
+  };
+
   return (
     <div>
-      <DpsChart></DpsChart>
+      <DpsChart {...dbpsData}></DpsChart>
     </div>
   );
 };
 
 export const getStaticProps = async () => {
-  const locstring = await fetchLocstring();
-
-  // map Data at built time
-  const weaponData = await getWeaponStats();
-
-  // map Data at built time
-  const ebpsData = await getEbpsStats();
-
-  // map Data at built time
-  const sbpsData = await getSbpsStats();
-
-  // map Data at built time
-  const upgradesData = await getUpgradesStats();
+  const { weaponData, sbpsData, upgradesData, ebpsData, locstring } = await getMappings();
 
   return {
     props: {

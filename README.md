@@ -24,7 +24,7 @@ yarn install
 Run the development server:
 
 ```bash
-yarn next:dev
+yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -43,6 +43,19 @@ Development conventions:
 - Prettier and eslint should cover the rest
 
 ## Development aproach
+
+### How to:
+
+#### Add new map image and name
+
+Maps are specified in https://github.com/cohstats/coh3-stats/blob/master/src/coh3/coh3-data.ts#L284
+
+### Utilize images from the game
+
+You can use function getIconsPathOnCDN where you can pass the image name or the full path and it should automatically
+resolve it on our hosting
+https://github.com/cohstats/coh3-stats/blob/master/src/utils.ts#L22
+If the image is not found there, you can always add it to the /public folder.
 
 ### NextJS development
 

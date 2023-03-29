@@ -22,7 +22,6 @@ import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
 import { ColorSchemeToggle } from "../other/color-scheme-toggle";
 import { SearchButton } from "../search-button/search-button";
 import { OnlinePlayers } from "../online-players";
-import config from "../../config";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
 import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";
@@ -167,7 +166,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
+            <ExplorerMenu cx={cx} close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -200,6 +199,7 @@ export const Header: React.FC<HeaderProps> = () => {
                 width={30}
                 height={30}
                 alt={"COH3 Stats logo"}
+                unoptimized
               />
 
               <Title order={1} size="h3">
@@ -245,7 +245,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            {config.isDevEnv() ? <ExplorerMenu cx={cx} classes={classes} /> : <></>}
+            <ExplorerMenu cx={cx} close={close} classes={classes} />
 
             <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About

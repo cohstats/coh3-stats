@@ -17,9 +17,31 @@ import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
 import React from "react";
-import { PlayerCardDataType } from "../../src/coh3/coh3-types";
+import { PlayerCardDataType, ProcessedMatch } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
+import PlayerSummary from "../../components/player-card/player-summary";
+import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
+import { localizedNames } from "../../src/coh3/coh3-data";
+import { format } from "timeago.js";
+import { generateKeywordsString } from "../../src/head-utils";
+
+const createPlayerHeadDescription = (
+  playerData: PlayerCardDataType,
+  playerSummary: PlayerSummaryType,
+): string => {
+  return `Player card for player ${playerData.info.name} - coh3stats.com
+  Best ALLIES ELO ${playerSummary.bestAlliesElo.bestElo} in ${
+    playerSummary.bestAlliesElo.inMode
+  } as ${localizedNames[playerSummary.bestAlliesElo.inFaction]}.
+  Best AXIS ELO ${playerSummary.bestAxisElo.bestElo} in ${playerSummary.bestAxisElo.inMode} as ${
+    localizedNames[playerSummary.bestAxisElo.inFaction]
+  }.
+  Total games ${playerSummary.totalGames} with Win Rate ${Math.round(
+    playerSummary.winRate * 100,
+  )}%.
+  Last match ${format(playerSummary.lastMatchDate * 1000, "en")}`;
+};
 
 /**
  *
@@ -44,7 +66,7 @@ const PlayerCard = ({
   playerID: string;
   playerData: PlayerCardDataType;
   error: string;
-  playerMatchesData: any;
+  playerMatchesData: Array<ProcessedMatch>;
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
@@ -57,48 +79,51 @@ const PlayerCard = ({
     view === "recentMatches" ? "recent matches" : ""
   }`;
 
+  const playerSummary = calculatePlayerSummary(playerData.standings);
+
+  const description = createPlayerHeadDescription(playerData, playerSummary);
+  const metaKeywords = generateKeywordsString([
+    `${playerData.info.name} stats`,
+    `${playerData.info.name} matches`,
+    `coh3 ${playerData.info.name} stats`,
+  ]);
+
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Player card for player ${playerData.info.name}. COH3 Stats`}
-        />
-        <meta
-          name="keywords"
-          content={`coh3, coh3stats,${playerData.info.name} stats, ${playerData.info.name} matches`}
-        />
+        <meta name="description" content={description} />
+        <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={playerData.steamData.avatarmedium} />
       </Head>
       <Container fluid>
         <Container fluid>
-          <Group>
-            <Avatar
-              src={playerData.steamData.avatarmedium}
-              imageProps={{ loading: "lazy" }}
-              alt={playerData.info.name}
-              size="xl"
-            />
-            <Stack spacing={"xs"}>
-              <Group>
-                <Image
-                  src={"/flags/4x3/" + playerData.info.country + ".svg"}
-                  imageProps={{ loading: "lazy" }}
-                  alt={playerData.info.country}
-                  width={40}
-                />
-                <Title> {playerData.info.name}</Title>
-              </Group>
-              <Group spacing={"xs"}>
-                <Anchor component={Link} href={playerData.steamData.profileurl} target="_blank">
-                  <Steam label="Steam Profile" />
-                </Anchor>
-              </Group>
-
-              {/*<Text>Last played:</Text>
-            <Text>Play time:</Text>*/}
-            </Stack>
+          <Group position={"apart"}>
+            <Group>
+              <Avatar
+                src={playerData.steamData.avatarmedium}
+                imageProps={{ loading: "lazy" }}
+                alt={playerData.info.name}
+                size="xl"
+              />
+              <Stack spacing={"xs"}>
+                <Group>
+                  <Image
+                    src={"/flags/4x3/" + playerData.info.country + ".svg"}
+                    imageProps={{ loading: "lazy" }}
+                    alt={playerData.info.country}
+                    width={40}
+                  />
+                  <Title> {playerData.info.name}</Title>
+                </Group>
+                <Group spacing={"xs"}>
+                  <Anchor component={Link} href={playerData.steamData.profileurl} target="_blank">
+                    <Steam label="Steam Profile" />
+                  </Anchor>
+                </Group>
+              </Stack>
+            </Group>
+            <PlayerSummary playerSummary={playerSummary} />
           </Group>
         </Container>
         <Tabs

@@ -25,7 +25,9 @@ const FactionIcon = ({ name, width }: { name: raceType; width: number }) => {
       icon = dakIcon;
   }
 
-  return <Image src={icon} alt={`${name} faction icon`} width={width} height={width} />;
+  return (
+    <Image src={icon} alt={`${name} faction icon`} width={width} height={width} unoptimized />
+  );
 };
 
 export default FactionIcon;

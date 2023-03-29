@@ -16,8 +16,16 @@ export interface FirebaseConfig {
 const getFirebaseConfig = (): FirebaseConfig =>
   JSON.parse(process.env.NEXT_PUBLIC_APP_FIREBASE_CONFIG || "{}");
 
+const useFirebaseEmulators = false;
+
 const firebaseFunctions = {
-  location: "us-east4",
+  LOCATION: "us-east4",
+  get EMULATORS_URL(): string {
+    return `http://localhost:5001/${getFirebaseConfig().projectId}/${this.LOCATION}`;
+  },
+  get CLOUD_URL(): string {
+    return `https://${this.LOCATION}-coh3-stats-prod.cloudfunctions.net`;
+  },
 };
 
 const isDevEnv = (): boolean => {
@@ -38,10 +46,14 @@ const config = {
   isDevEnv,
   getEdgioEnvName,
   firebaseFunctions,
+  useFirebaseEmulators,
   DISCORD_INVITE_LINK: "https://discord.gg/jRrnwqMfkr",
   DONATION_LINK: "https://ko-fi.com/cohstats",
   GITHUB_LINK: repository.url,
-  BASE_CLOUD_FUNCTIONS_URL: `https://${firebaseFunctions.location}-coh3-stats-prod.cloudfunctions.net`,
+  CDN_ASSETS_HOSTING: "https://cdn.coh3stats.com",
+  BASE_CLOUD_FUNCTIONS_URL: useFirebaseEmulators
+    ? firebaseFunctions.EMULATORS_URL
+    : firebaseFunctions.CLOUD_URL,
 };
 
 export default config;

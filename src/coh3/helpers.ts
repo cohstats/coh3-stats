@@ -1,4 +1,4 @@
-import { LaddersDataArrayObject, LaddersDataObject } from "./coh3-types";
+import { LaddersDataArrayObject, LaddersDataObject, PlayerReport } from "./coh3-types";
 import { raceIDsAsObject } from "./coh3-data";
 
 /**
@@ -16,9 +16,9 @@ const getMatchDuration = (startTime: number, endTime: number) => {
 };
 
 const getMatchPlayersByFaction = (
-  reportedPlayerResults: Array<any>,
+  reportedPlayerResults: Array<PlayerReport>,
   faction: "axis" | "allies",
-) => {
+): Array<PlayerReport> => {
   const factionId = faction === "axis" ? 1 : 2;
   return reportedPlayerResults.filter(
     (playerResult) => raceIDsAsObject[playerResult.race_id]?.faction_id === factionId,

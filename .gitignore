@@ -186,3 +186,9 @@ components/unitStats/dps-graph.txt
 .gitignore
 .gitignore
 components/unitStats/dps-graphLine.txt
+src/unitStats/SingletonTest.ts
+pages/examplePage.tsx
+tsconfig.json
+tsconfig.json
+tsconfig.json
+tsconfig.json

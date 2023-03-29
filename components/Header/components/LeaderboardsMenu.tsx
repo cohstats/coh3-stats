@@ -15,7 +15,7 @@ const LeaderboardsMenu = () => {
             <Divider my="sm" />
             {raceTypeArray.map((faction) => {
               return (
-                <Text key={type}>
+                <Text key={`${faction}_${type}`}>
                   <Anchor component={Link} href={getLeaderBoardRoute(faction, type)}>
                     {localizedNames[faction]}
                   </Anchor>

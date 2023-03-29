@@ -1,8 +1,8 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAnalytics, Analytics, setUserProperties } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
-import { getFunctions } from "firebase/functions";
-// import { getFirestore, Firestore } from "firebase/firestore";
+import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
+import { getFirestore, Firestore, connectFirestoreEmulator } from "firebase/firestore";
 
 import config from "../../config";
 
@@ -10,9 +10,7 @@ import config from "../../config";
 let performance;
 let app: FirebaseApp | undefined;
 let analytics: Analytics;
-// let db: Firestore | undefined;
-
-const useEmulators = false;
+let db: Firestore | undefined;
 
 /**
  * Initialize Firebase
@@ -26,19 +24,18 @@ const init = (): void => {
     setUserProperties(analytics, { custom_platform: "web_app" });
   }
 
-  // db = getFirestore(app);
-
-  // if (useEmulators) {
-  //     connectFirestoreEmulator(db, "localhost", 8080);
-  //     connectFunctionsEmulator(functions(), "localhost", 5001);
-  // }
+  if (config.useFirebaseEmulators) {
+    db = getFirestore(app);
+    connectFirestoreEmulator(db, "localhost", 8080);
+    connectFunctionsEmulator(functions(), "localhost", 5001);
+  }
 };
 
 /**
  * Instance of the FB functions
  */
 const functions = () =>
-  getFunctions(app, useEmulators ? undefined : config.firebaseFunctions.location);
+  getFunctions(app, config.useFirebaseEmulators ? undefined : config.firebaseFunctions.LOCATION);
 
 const webFirebase = {
   init,

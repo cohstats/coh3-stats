@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 import React from "react";
-import dynamic from "next/dynamic";
 import { calculatePageNumber, calculatePositionNumber } from "../src/utils";
 import ErrorCard from "../components/error-card";
 import CountryFlag from "../components/country-flag";
@@ -15,15 +14,7 @@ import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
 import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
 import FactionIcon from "../components/faction-icon";
 import { GetServerSideProps } from "next";
-
-/**
- * Timeago is causing issues with SSR, move to clinet side
- */
-const DynamicTimeAgo = dynamic(() => import("../components/internal-timeago"), {
-  ssr: false,
-  // @ts-ignore
-  loading: () => "Calculating...",
-});
+import DynamicTimeAgo from "../components/other/dynamic-timeago";
 
 const RECORD_PER_PAGE = 100;
 
@@ -153,7 +144,7 @@ const Leaderboards = ({
               accessor: "lastmatchdate",
               title: "Last Game",
               textAlignment: "right",
-              width: 120,
+              width: 125,
               // @ts-ignore
               render: ({ lastmatchdate }) => {
                 return <DynamicTimeAgo timestamp={lastmatchdate} />;

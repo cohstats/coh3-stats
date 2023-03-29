@@ -1,19 +1,41 @@
 // type description of mapped data
 
+import slash from "slash";
 import { resolveLocstring } from "./locstring";
-import { traverseTree } from "./unitStatsLib";
+import { isBaseFaction, traverseTree } from "./unitStatsLib";
 
 // need to be extended by all required fields
 type SbpsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
-  path: string; // folder from which the extraction got started. Eg. afrika_corps, american, british,.
-  faction: string; // races\[factionName]
+  screenName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
+  path: string; // path to object
+  faction: string; // from folder structure races\[factionName]
   loadout: LoadoutData[]; // squad_loadout_ext.unit_list
   /** Found at `squad_ui_ext.race_list`. */
   ui: SquadUiData;
   /** Found at `squad_upgrade_ext.upgrades`. List of instance references. */
   upgrades: string[];
   unitType: string;
+  /** The `squad_population_ext` holds the base popcap and upkeep per pop per
+   * minute costs, which will be stacked with the ebps. */
+  populationExt: {
+    personnel_pop: number;
+    /** Found at `upkeep_per_pop_per_minute_override`. This is a multiplier,
+     * which goes with `personnel_pop`. If greater than zero, overrides the
+     * army/global tuning tables. */
+    upkeep_per_pop: {
+      fuel: number;
+      manpower: number;
+      munition: number;
+    };
+  };
+  /** Found at `squad_veterancy_ext`. This contains a list of veterancy
+   * description / required xp per level. */
+  veterancyInfo: {
+    one: { exp: number; screenName: string };
+    two: { exp: number; screenName: string };
+    three: { exp: number; screenName: string };
+  };
 };
 
 type SquadUiData = {
@@ -25,9 +47,14 @@ type SquadUiData = {
   briefText: string;
   screenName: string;
   extraText: string; // Could be empty (Set as $0).
+  /* Armor type icon, found within `sbps` ->
+  `sbpextensions\\squad_ui_ext\race_list\race_data\info` ->
+  `ui_armor_info\armor_icon`. Applies to only vehicles. */
+  armorIcon: string;
 };
 
 type LoadoutData = {
+  id: string;
   isDefaultUnit: boolean;
   num: number;
   type: string;
@@ -42,9 +69,11 @@ let sbpsStats: SbpsType[];
 // subtree -> eg. extensions node
 const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
   const sbpsEntity: SbpsType = {
+    // default values
     id: filename,
-    path: jsonPath,
-    faction: jsonPath.split("\\")[1] ?? jsonPath,
+    screenName: filename,
+    path: slash(jsonPath),
+    faction: jsonPath.split("/")[1] ?? jsonPath,
     unitType: parent,
     loadout: [],
     ui: {
@@ -54,8 +83,31 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
       briefText: "",
       screenName: "",
       extraText: "",
+      armorIcon: "",
     },
     upgrades: [],
+    populationExt: {
+      personnel_pop: 0,
+      upkeep_per_pop: {
+        fuel: 0,
+        manpower: 0,
+        munition: 0,
+      },
+    },
+    veterancyInfo: {
+      one: {
+        exp: 0,
+        screenName: "",
+      },
+      two: {
+        exp: 0,
+        screenName: "",
+      },
+      three: {
+        exp: 0,
+        screenName: "",
+      },
+    },
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -65,7 +117,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   return sbpsEntity;
 };
 
-const mapExtensions = (root: any, spbps: SbpsType) => {
+const mapExtensions = (root: any, sbps: SbpsType) => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
     const extName = extension.template_reference.value.split("\\")[1];
@@ -77,15 +129,14 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           let unitNum: number = extension.unit_list[unit].loadout_data.num || -1;
           // Workaround as long as the JSON is not complete. We will validate by unitType.
           if (unitNum === -1) {
-            switch (spbps.unitType) {
+            switch (sbps.unitType) {
               // Vehicles are always 1.
               case "vehicles":
-              case "armored_tractor_254_ak_signals_sp":
                 unitNum = 1;
                 break;
               // Team weapons and infantry usually varies. Lets set as 4 by now.
-              case "infantry":
-              case "team_weapons":
+              case "infantry": // General infantry.
+              case "team_weapons": // MGs, artillery (the mobile ones).
                 unitNum = 4;
               // Other stuff as 5.
               default:
@@ -94,13 +145,28 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
             }
           }
 
-          if (extension.unit_list[unit].loadout_data.type)
-            spbps.loadout.push({
+          if (extension.unit_list[unit].loadout_data.type) {
+            const ldType = extension.unit_list[unit].loadout_data.type.instance_reference;
+            const ldPath = ldType.split("/");
+            const ebpsId = ldPath[ldPath.length - 1];
+            sbps.loadout.push({
               isDefaultUnit: true,
               num: unitNum, //@todo num not always avilable
-              type: extension.unit_list[unit].loadout_data.type.instance_reference,
+              type: ldType,
+              id: ebpsId,
             });
-          else console.log("hmm");
+          } else console.log(sbps.id + ": Loadout not found");
+        }
+        break;
+      case "squad_population_ext":
+        {
+          const upkeepPerPop = extension.upkeep_per_pop_per_minute_override;
+          sbps.populationExt.personnel_pop = extension.personnel_pop || 0;
+          sbps.populationExt.upkeep_per_pop = {
+            manpower: upkeepPerPop?.manpower || 0,
+            munition: upkeepPerPop?.munition || 0,
+            fuel: upkeepPerPop?.fuel || 0,
+          };
         }
         break;
       case "squad_ui_ext":
@@ -109,17 +175,18 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
           if (!extension.race_list?.length) break;
           // The race_list is always one item.
           const uiExtInfo = extension.race_list[0].race_data.info;
-          spbps.ui.iconName = uiExtInfo?.icon_name || "";
-          spbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
+          sbps.ui.iconName = uiExtInfo?.icon_name || "";
+          sbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = uiExtInfo.screen_name;
-          spbps.ui.screenName = resolveLocstring(screenName);
+          sbps.ui.screenName = resolveLocstring(screenName);
           const helpText = uiExtInfo.help_text;
-          spbps.ui.helpText = resolveLocstring(helpText);
+          sbps.ui.helpText = resolveLocstring(helpText);
           const extraText = uiExtInfo.extra_text;
-          spbps.ui.extraText = resolveLocstring(extraText);
+          sbps.ui.extraText = resolveLocstring(extraText);
           const briefText = uiExtInfo.brief_text;
-          spbps.ui.briefText = resolveLocstring(briefText);
+          sbps.ui.briefText = resolveLocstring(briefText);
+          sbps.ui.armorIcon = uiExtInfo.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }
         break;
       case "squad_upgrade_ext":
@@ -127,8 +194,29 @@ const mapExtensions = (root: any, spbps: SbpsType) => {
         if (!extension.upgrades?.length) break;
         for (const upg of extension.upgrades) {
           if (upg.upgrade?.instance_reference) {
-            spbps.upgrades.push(upg.upgrade.instance_reference);
+            sbps.upgrades.push(upg.upgrade.instance_reference);
           }
+        }
+        break;
+      case "squad_veterancy_ext":
+        {
+          // Check if the `race_list` is not empty, otherwise skip.
+          if (!extension.race_list?.length) break;
+          // The race_list is always one item.
+          const vetExtInfo: any[] = extension.race_list[0].race_data.info.veterancy_rank_info;
+          // Technically the first one is vet 1, second is vet 2 and third is vet 3.
+          sbps.veterancyInfo.one = {
+            exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text),
+          };
+          sbps.veterancyInfo.two = {
+            exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text),
+          };
+          sbps.veterancyInfo.three = {
+            exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
+            screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text),
+          };
         }
         break;
       default:
@@ -146,7 +234,7 @@ const getSbpsStats = async () => {
   if (sbpsStats) return sbpsStats;
 
   const myReqSbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/xml-data/scripts/xml-to-json/exported/sbps.json",
+    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/sbps.json",
   );
 
   const root = await myReqSbps.json();
@@ -155,23 +243,19 @@ const getSbpsStats = async () => {
 
   // Extract from JSON
   for (const obj in root) {
-    // find all weapon_bags
+    // find all extensions
     const sbpsSet = traverseTree(root[obj], isExtensionContainer, mapSbpsData, obj, obj);
 
     // Filter relevant objects
     sbpsSet.forEach((item: SbpsType) => {
+      // skip non base factions
+      if (!isBaseFaction(item.faction)) return;
+
       // filter by relevant weapon types
-      // if (item.id === "panzer_iv_ger") {
-      //   console.log("🚀 ~ file: mappingSbps.ts:144 ~ sbpsSet.forEach ~ item:", item)
-      // }
       switch (item.unitType) {
+        case "emplacements": // Buildable outside base (AA guns, AT guns).
         case "infantry": // General infantry.
-        case "pathfinder_us": // USF Airborne infantry.
         case "team_weapons": // MGs, artillery (the mobile ones).
-        case "armored_tractor_254_ak_signals_sp": // Things like the Marder III.
-        case "greyhound_recrewable_us": // USF Vehicles
-        case "halftrack_recrewable_ger": // German kettenrad and such.
-        case "l6_40_recrewable_ger": // German tanks, wtf?
         case "vehicles": // General vehicles (tanks, armoured cars).
           sbpsSetAll.push(item);
           break;
@@ -181,13 +265,15 @@ const getSbpsStats = async () => {
     });
   }
 
+  sbpsStats = sbpsSetAll;
+
   //@todo to be filled
   return sbpsSetAll;
 };
 
 const isExtensionContainer = (key: string, obj: any) => {
-  // check if first child is weapon_bag
-  return Object.keys(obj)[0] === "extensions";
+  // check if first child is "extensions"
+  return Object.keys(obj).includes("extensions");
 };
 
 //
