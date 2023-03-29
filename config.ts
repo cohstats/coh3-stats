@@ -41,10 +41,31 @@ const getEdgioEnvName = (): string | null => {
   return process.env.EDGIO_ENVIRONMENT_NAME || null;
 };
 
+// Latest patch needs to be a key to patches object
+const latestPatch = "1.1.0";
+
+const patches: Record<string, { dataTag: string; dataTime: string }> = {
+  "1.1.0": {
+    dataTag: "v1.1.0-1", // This is the tag of the data repo
+    dataTime: "29/March/2023", // The date when was the data tag created (the data extracted from game)
+  },
+  "1.0.7": {
+    dataTag: "v1.0.7-4",
+    dataTime: "26/March/2023",
+  },
+};
+
+const getPatchDataUrl = (patch = "latest", dataFile = "") => {
+  const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
+
+  return `https://raw.githubusercontent.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
+};
+
 const config = {
   getFirebaseConfig,
   isDevEnv,
   getEdgioEnvName,
+  getPatchDataUrl,
   firebaseFunctions,
   useFirebaseEmulators,
   DISCORD_INVITE_LINK: "https://discord.gg/jRrnwqMfkr",

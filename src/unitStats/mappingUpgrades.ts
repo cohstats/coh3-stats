@@ -3,6 +3,7 @@
 import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
+import config from "../../config";
 
 // Need to be extended by all required fields
 type UpgradesType = {
@@ -138,9 +139,7 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
 const getUpgradesStats = async () => {
   if (upgradesStats) return upgradesStats;
 
-  const myReqUpgrades = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/upgrade.json",
-  );
+  const myReqUpgrades = await fetch(config.getPatchDataUrl("latest", "upgrade.json"));
 
   const root = await myReqUpgrades.json();
 

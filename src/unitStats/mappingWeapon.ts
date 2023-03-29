@@ -1,5 +1,6 @@
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
+import config from "../../config";
 
 let WeaponStats: WeaponType[];
 
@@ -329,10 +330,7 @@ const getWeaponStats = async () => {
   // make sure that this method is called only once among all pages
   if (WeaponStats) return WeaponStats;
 
-  // Fetch JSON data
-  const myReqWeapon = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/weapon.json",
-  );
+  const myReqWeapon = await fetch(config.getPatchDataUrl("latest", "weapon.json"));
 
   const root = await myReqWeapon.json();
 

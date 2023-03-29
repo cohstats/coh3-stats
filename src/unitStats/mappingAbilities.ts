@@ -1,6 +1,7 @@
 // type description of mapped data
 
 import slash from "slash";
+import config from "../../config";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 
@@ -130,9 +131,7 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
 const getAbilitiesStats = async () => {
   if (abilitiesStats) return abilitiesStats;
 
-  const myReqAbilities = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/abilities.json",
-  );
+  const myReqAbilities = await fetch(config.getPatchDataUrl("latest", "abilities.json"));
 
   const root = await myReqAbilities.json();
 
