@@ -1,4 +1,5 @@
-import { Stack, Card, Divider, Grid, Title, Accordion, Box } from "@mantine/core";
+import { Stack, Card, Divider, Grid, Title, Accordion, Box, Anchor } from "@mantine/core";
+import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
 import {
   BattlegroupsType,
@@ -7,6 +8,7 @@ import {
   resolveBattlegroupBranches,
   BattlegroupResolvedBranchType,
 } from "../../src/unitStats";
+import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
@@ -18,7 +20,7 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
   }, {});
 }
 
-const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
+const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction: raceType) => {
   const groupedRows = groupBy(branch.upgrades, (item) => item.upg.uiPosition.row);
   // Create a series of grid elements per row.
 
@@ -63,9 +65,25 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType) => {
       {Object.entries(groupedRows).map(([rowIndex, branchUpgrades]) => {
         return (
           <Grid key={`${rowIndex}_${branch.name}`} columns={branchUpgrades.length} w="100%">
-            {branchUpgrades.map(({ upg, ability }) => (
+            {branchUpgrades.map(({ upg, ability, spawnItems }) => (
               <Grid.Col key={upg.id} span={1}>
-                {bgCallInCard({ upg, ability })}
+                {spawnItems.length ? (
+                  <Anchor
+                    color="undefined"
+                    underline={false}
+                    sx={{
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                    }}
+                    component={Link}
+                    href={`/explorer/races/${faction}/units/${spawnItems[0]}`}
+                  >
+                    {bgCallInCard({ upg, ability })}
+                  </Anchor>
+                ) : (
+                  bgCallInCard({ upg, ability })
+                )}
               </Grid.Col>
             ))}
           </Grid>
@@ -89,29 +107,41 @@ export const BattlegroupCard = (
     data.upgradesData,
     data.abilitiesData,
   );
+
+  for (const resBg of resolvedBattlegroups) {
+    for (const [override, { predicate, mutator, validator }] of bgWorkarounds) {
+      if (predicate(resBg)) {
+        mutator(resBg);
+        // console.info(`Overriding ${item.id} with ${override}`);
+        if (validator && !validator(resBg)) {
+          console.error(`Invalid item ${resBg.id} after override ${override}`, resBg);
+          // throw new Error("Error during bg workarounds");
+        }
+      }
+    }
+  }
+
+  // console.group("Resolved BG");
+  // console.log(resolvedBattlegroups);
+  // console.groupEnd();
+
   return (
     <Stack>
       {resolvedBattlegroups.map(({ id, uiParent, branches }) => {
         return (
           <Card key={id} p="sm" radius="md" withBorder>
             {/* Header Section */}
-            <UnitUpgradeCard
-              id={id}
-              desc={{
+            {UnitUpgradeCard({
+              id,
+              desc: {
                 screen_name: uiParent.screenName,
                 help_text: "",
                 extra_text: "",
                 brief_text: uiParent.briefText,
                 icon_name: uiParent.iconName,
-              }}
-              time_cost={{
-                fuel: undefined,
-                munition: undefined,
-                manpower: undefined,
-                popcap: undefined,
-                time_seconds: undefined,
-              }}
-            ></UnitUpgradeCard>
+              },
+              time_cost: {},
+            })}
 
             {/* Branches Section */}
             <Divider my={12} size="md"></Divider>
@@ -123,7 +153,9 @@ export const BattlegroupCard = (
                     <Accordion.Control>
                       <Title order={4}>{branches.LEFT.name}</Title>
                     </Accordion.Control>
-                    <Accordion.Panel>{BattlegroupBranchMapping(branches.LEFT)}</Accordion.Panel>
+                    <Accordion.Panel>
+                      {BattlegroupBranchMapping(branches.LEFT, race)}
+                    </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
               </Grid.Col>
@@ -134,7 +166,9 @@ export const BattlegroupCard = (
                     <Accordion.Control>
                       <Title order={4}>{branches.RIGHT.name}</Title>
                     </Accordion.Control>
-                    <Accordion.Panel>{BattlegroupBranchMapping(branches.RIGHT)}</Accordion.Panel>
+                    <Accordion.Panel>
+                      {BattlegroupBranchMapping(branches.RIGHT, race)}
+                    </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
               </Grid.Col>
