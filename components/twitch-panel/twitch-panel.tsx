@@ -49,7 +49,7 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
         height: "100%",
         channel: twitchStreams[0].user_login,
         layout: "video",
-        autoplay: false,
+        autoplay: true,
         theme: colorScheme,
         // Only needed if this page is going to be embedded on other websites
         parent: ["embed.example.com", "othersite.example.com"],
@@ -71,7 +71,7 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
   }
 
   return (
-    <Container size="fluid">
+    <Container size="fluid" px={"xs"} pb={5}>
       <Flex justify="flex-start" align="center" gap={5} pb="sm">
         <IconBrandTwitch size={40} />
         <Title order={2} size="h2">

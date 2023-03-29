@@ -13,7 +13,7 @@ type Props = {
 };
 const Home: NextPage<Props> = ({ twitchStreams, error }) => {
   return (
-    <Container fluid>
+    <Container fluid px={"xs"}>
       <Image
         src="/coming-soon/coh3-background.jpg"
         alt={"coh3-background"}
@@ -38,7 +38,7 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
           <Donate />
         </Group>
       </Paper>
-      <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
+      <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
         <TwitchPanel twitchStreams={twitchStreams} error={error} />
       </Paper>
     </Container>

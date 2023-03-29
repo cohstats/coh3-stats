@@ -10,6 +10,32 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
+  .match("/", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60,
+      },
+      edge: {
+        // Cache for 10 minutes, revalidate under 30 minutes
+        maxAgeSeconds: 60 * 10,
+        staleWhileRevalidateSeconds: 60 * 30,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/index.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60,
+      },
+      edge: {
+        // Cache for 10 minutes, revalidate under 30 minutes
+        maxAgeSeconds: 60 * 10,
+        staleWhileRevalidateSeconds: 60 * 30,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .match("/api/onlineSteamPlayers", ({ cache }) => {
     cache({
       browser: {
