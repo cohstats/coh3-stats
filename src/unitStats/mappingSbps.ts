@@ -234,7 +234,7 @@ const getSbpsStats = async () => {
   // check if data already extracted
   if (sbpsStats) return sbpsStats;
 
-  const myReqSbps = await fetch(config.getPatchDataUrl("latest", "sbps.json"));
+  const myReqSbps = await fetch(config.getPatchDataUrl("sbps.json"));
 
   const root = await myReqSbps.json();
 

@@ -312,7 +312,7 @@ const getEbpsStats = async () => {
   // ebps needs to be returned to avoid double computation
   if (ebpsStats) return ebpsStats;
 
-  const myReqEbps = await fetch(config.getPatchDataUrl("latest", "ebps.json"));
+  const myReqEbps = await fetch(config.getPatchDataUrl("ebps.json"));
 
   const root = await myReqEbps.json();
 

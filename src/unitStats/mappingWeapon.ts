@@ -330,7 +330,7 @@ const getWeaponStats = async () => {
   // make sure that this method is called only once among all pages
   if (WeaponStats) return WeaponStats;
 
-  const myReqWeapon = await fetch(config.getPatchDataUrl("latest", "weapon.json"));
+  const myReqWeapon = await fetch(config.getPatchDataUrl("weapon.json"));
 
   const root = await myReqWeapon.json();
 

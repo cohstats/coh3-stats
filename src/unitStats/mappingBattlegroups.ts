@@ -81,7 +81,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
 const getBattlegroupStats = async () => {
   if (battlegroupStats) return battlegroupStats;
 
-  const myReqBattlegroup = await fetch(config.getPatchDataUrl("latest", "battlegroup.json"));
+  const myReqBattlegroup = await fetch(config.getPatchDataUrl("battlegroup.json"));
 
   const root = await myReqBattlegroup.json();
 

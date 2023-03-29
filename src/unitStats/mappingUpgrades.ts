@@ -139,7 +139,7 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
 const getUpgradesStats = async () => {
   if (upgradesStats) return upgradesStats;
 
-  const myReqUpgrades = await fetch(config.getPatchDataUrl("latest", "upgrade.json"));
+  const myReqUpgrades = await fetch(config.getPatchDataUrl("upgrade.json"));
 
   const root = await myReqUpgrades.json();
 

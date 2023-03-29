@@ -55,7 +55,7 @@ const patches: Record<string, { dataTag: string; dataTime: string }> = {
   },
 };
 
-const getPatchDataUrl = (patch = "latest", dataFile = "") => {
+const getPatchDataUrl = (dataFile = "", patch = "latest") => {
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
 
   return `https://raw.githubusercontent.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
