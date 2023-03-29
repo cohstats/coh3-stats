@@ -27,7 +27,7 @@ export default new Router()
       },
       edge: {
         // Cache for 10 minutes, revalidate under 30 minutes
-        maxAgeSeconds: 60 * 10,
+        maxAgeSeconds: 60 * 5,
         staleWhileRevalidateSeconds: 60 * 30,
         forcePrivateCaching: true,
       },
