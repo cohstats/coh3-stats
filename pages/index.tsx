@@ -4,8 +4,13 @@ import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
-import TwitchPanel from "../components/twitch-panel/twitch-panel";
 import { TwitchStream } from "../src/coh3/coh3-types";
+import dynamic from "next/dynamic";
+
+//only render on client side
+const TwitchPanel = dynamic(() => import("../components/twitch-panel/twitch-panel"), {
+  ssr: false,
+});
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
