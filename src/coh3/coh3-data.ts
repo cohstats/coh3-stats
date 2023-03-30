@@ -296,7 +296,7 @@ const maps: { [key: string]: { name: string; url: string } } = {
   industrial_railyard_6p_mkii: { name: "L'Aquila", url: "/icons/maps/laquila.webp" },
   winter_line_8p_mkii: { name: "Winter Line", url: "/icons/maps/winter_line.webp" },
   mountain_ruins_8p_mkii: { name: "Mignano Gap", url: "/icons/maps/mignano_gap.webp" },
-  mountain_ruins_6p: { name: "Mignano Gap", url: "/icons/maps/mignano_gap_6p.webp" },
+  mountain_ruins_6p: { name: "Mignano Gap", url: "/icons/maps/mignano_gap_6p.png" },
   gardens_2p_mm: { name: "Gardens", url: "/icons/maps/gardens.png" },
   rural_town_2p_mkii: {
     name: "Pachino Farmlands",
