@@ -61,6 +61,8 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
 
       embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
         const player = embed.getPlayer();
+        // maybe unneeded because of option above but can't hurt
+        player.setMuted(true);
         player.play();
         setPlayer(player);
       });
