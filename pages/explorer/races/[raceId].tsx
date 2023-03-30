@@ -16,15 +16,8 @@ import {
   EbpsType,
   UpgradesType,
   filterMultiplayerBuildings,
-  fetchLocstring,
-  getEbpsStats,
-  getSbpsStats,
-  getUpgradesStats,
   WeaponType,
-  getWeaponStats,
-  getAbilitiesStats,
   AbilitiesType,
-  getBattlegroupStats,
   BattlegroupsType,
   getResolvedUpgrades,
   getResolvedSquads,
@@ -35,6 +28,7 @@ import {
 import ContentContainer from "../../../components/Content-container";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateKeywordsString } from "../../../src/head-utils";
+import { getMappings } from "../../../src/unitStats/mappings";
 
 interface RaceDetailProps {
   weaponData: WeaponType[];
@@ -252,23 +246,15 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 };
 
 export const getStaticProps = async () => {
-  const [
-    locstring,
+  const {
     weaponData,
-    ebpsData,
     sbpsData,
+    ebpsData,
     upgradesData,
     abilitiesData,
     battlegroupData,
-  ] = await Promise.all([
-    fetchLocstring(),
-    getWeaponStats(),
-    getEbpsStats(),
-    getSbpsStats(),
-    getUpgradesStats(),
-    getAbilitiesStats(),
-    getBattlegroupStats(),
-  ]);
+    locstring,
+  } = await getMappings();
 
   return {
     props: {

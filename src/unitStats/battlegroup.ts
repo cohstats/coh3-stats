@@ -20,6 +20,9 @@ type BattleGroupUpgradeType = {
    * ability and the upgrade) and `costs_to_player` fields that we require for
    * displaying the ability info. */
   ability: AbilitiesType;
+  /** A list of unit spawnable items. This is used for workarounds to re-direct
+   * those abilities that call-in a squad. */
+  spawnItems: string[];
 };
 
 export type BattlegroupResolvedBranchType = {
@@ -73,6 +76,7 @@ export function resolveBattlegroupBranches(
           leftBranchUpgrades.push({
             upg: foundUpgrade,
             ability: foundAbility,
+            spawnItems: [],
           });
         }
       }
@@ -90,6 +94,7 @@ export function resolveBattlegroupBranches(
           rightBranchUpgrades.push({
             upg: foundUpgrade,
             ability: foundAbility,
+            spawnItems: [],
           });
         }
       }

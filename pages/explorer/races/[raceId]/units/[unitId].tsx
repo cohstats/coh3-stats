@@ -6,14 +6,9 @@ import { Card, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core
 import ContentContainer from "../../../../../components/Content-container";
 import {
   EbpsType,
-  fetchLocstring,
-  getEbpsStats,
   getResolvedUpgrades,
-  getSbpsStats,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
-  getUpgradesStats,
-  getWeaponStats,
   RaceBagDescription,
   SbpsType,
   UpgradesType,
@@ -36,6 +31,8 @@ import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-c
 import slash from "slash";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { generateKeywordsString } from "../../../../../src/head-utils";
+import { getMappings } from "../../../../../src/unitStats/mappings";
+import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -68,8 +65,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   }
 
   // The resolved entity does not matter at all, as we can obtain such from the squad loadout.
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
-  console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
+  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
+  // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedEntities:", resolvedEntities);
 
   if (!resolvedSquad || !resolvedEntities?.length) {
     // How to redirect back?
@@ -79,14 +76,31 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   const localizedRace = localizedNames[raceId];
   const descriptionRace = RaceBagDescription[raceId];
 
+  // For team_weapons, get default members.
+  let defaultSquadMember: EbpsType;
+  if (resolvedSquad.unitType === "team_weapons" && resolvedSquad.loadout.length > 1) {
+    defaultSquadMember = resolvedEntities[resolvedEntities.length - 1];
+  } else {
+    defaultSquadMember = resolvedEntities[0];
+  }
+
   // Only vehicles have armor values and a single entity usually. The infantry
   // uses the plain `armor`.
   const armorValues = {
-    armor: resolvedEntities[0].health.armorLayout.armor || 0,
-    frontal: resolvedEntities[0].health.armorLayout.frontArmor || 0,
-    side: resolvedEntities[0].health.armorLayout.sideArmor || 0,
-    rear: resolvedEntities[0].health.armorLayout.rearArmor || 0,
-    targetSize: resolvedEntities[0].health.targetSize || 0,
+    armor: defaultSquadMember.health.armorLayout.armor || 0,
+    frontal: defaultSquadMember.health.armorLayout.frontArmor || 0,
+    side: defaultSquadMember.health.armorLayout.sideArmor || 0,
+    rear: defaultSquadMember.health.armorLayout.rearArmor || 0,
+    targetSize: defaultSquadMember.health.targetSize || 0,
+  };
+
+  const sightValues = {
+    coneAngle: defaultSquadMember.sight_ext.sight_package.cone_angle,
+    outerRadius: defaultSquadMember.sight_ext.sight_package.outer_radius,
+  };
+  const movingValues = {
+    defaultSpeed: defaultSquadMember.moving_ext.speed_scaling_table.default_speed,
+    maxSpeed: defaultSquadMember.moving_ext.speed_scaling_table.max_speed,
   };
 
   // Obtain the total cost of the squad by looking at the loadout.
@@ -94,6 +108,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
 
   // Obtain the total upkeep cost of the squad.
   const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
+
+  // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
+  const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponsData);
 
   const metaKeywords = generateKeywordsString([
     `${resolvedSquad.ui.screenName} coh3`,
@@ -146,19 +163,12 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   ui: {
                     armorIcon: resolvedSquad.ui.armorIcon,
                   },
-                  sight: {
-                    coneAngle: resolvedEntities[0].sight_ext.sight_package.cone_angle,
-                    outerRadius: resolvedEntities[0].sight_ext.sight_package.outer_radius,
-                  },
-                  moving: {
-                    defaultSpeed:
-                      resolvedEntities[0].moving_ext.speed_scaling_table.default_speed,
-                    maxSpeed: resolvedEntities[0].moving_ext.speed_scaling_table.max_speed,
-                  },
+                  sight: sightValues,
+                  moving: movingValues,
                 })}
               </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
-              {UnitWeaponSection(resolvedSquad, resolvedEntities, ebpsData, weaponsData)}
+              {UnitWeaponSection(squadWeapons)}
             </Stack>
           </Grid.Col>
           <Grid.Col md={1} order={1} orderMd={2}>
@@ -180,16 +190,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   three={resolvedSquad.veterancyInfo.three}
                 ></VeterancyCard>
               </Card>
-              {/* {resolvedSquad.unitType === "vehicles" ? (
-                <Card p="lg" radius="md" withBorder>
-                  <StatsVehicleArmor
-                    type={resolvedSquad.ui.armorIcon as VehicleArmorType}
-                    armorValues={armorValues}
-                  ></StatsVehicleArmor>
-                </Card>
-              ) : (
-                <></>
-              )} */}
             </Stack>
           </Grid.Col>
         </Grid>
@@ -228,60 +228,17 @@ const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
   );
 };
 
-const UnitWeaponSection = (
-  resolvedSquad: SbpsType,
-  resolvedEntities: EbpsType[],
-  entitiesData: EbpsType[],
-  weaponsData: WeaponType[],
-) => {
-  // console.log("🚀 ~ file: [unitId].tsx:194 ~ entitiesData:", entitiesData)
-  // Store the quantity of each weapon using the loadouts.
-  const weaponSquadDict: Record<string, { count: number; weapon: WeaponType }> = {};
-
-  for (const entity of resolvedEntities) {
-    // Loop over the weapon list entities from each squad ebps.
-    for (const weaponEntity of entity.weaponRef) {
-      const weaponEntityId = weaponEntity.ebp.split("/").slice(-1)[0];
-      // console.log("🚀 ~ file: [unitId].tsx:201 ~ weaponEntityId:", weaponEntityId)
-
-      // Now extract the weapon from the entities with the extracted id.
-      const weaponEbps = entitiesData.find((x) => x.id === weaponEntityId);
-      // console.log("🚀 ~ file: [unitId].tsx:204 ~ weaponEbps:", weaponEbps);
-
-      // Skip if weapon entity not found.
-      if (!weaponEbps) continue;
-
-      // Resolve the weapon entity with `weaponId` (only applies to weapon entities).
-      const weapon = weaponsData.find((x) => x.id === weaponEbps.weaponId);
-
-      // console.log("🚀 ~ file: [unitId].tsx:216 ~ weapon:", weapon);
-      // Skip if the weapon (not entity!) could not be found.
-      if (!weapon) continue;
-
-      // Find the quantity via loadout.
-      const count =
-        resolvedSquad.loadout.find((x) => x.type.split("/").slice(-1)[0] === entity.id)?.num || 0;
-
-      // Add weapon to dictionary.
-      weaponSquadDict[weapon.id] = { count, weapon };
-    }
-  }
-
-  // console.log(
-  //   "🚀 ~ file: [unitId].tsx:186 ~ UnitWeaponSection ~ weaponSquadDict:",
-  //   weaponSquadDict,
-  // );
-
+const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
   return (
     <Stack>
       <Title order={4}>Loadout</Title>
 
       <Grid columns={2} grow>
-        {Object.entries(weaponSquadDict).map(([id, { count, weapon }]) => {
+        {squadWeapons.map(({ weapon_id, weapon, num }) => {
           return (
-            <Grid.Col span={1} key={id}>
+            <Grid.Col span={1} key={weapon_id}>
               <Card p="lg" radius="md" withBorder>
-                {WeaponLoadoutCard(weapon, count)}
+                {WeaponLoadoutCard(weapon, num)}
               </Card>
             </Grid.Col>
           );
@@ -303,13 +260,7 @@ const UnitWeaponSection = (
 };
 
 export const getStaticProps = async () => {
-  const [locstring, ebpsData, sbpsData, upgradesData, weaponsData] = await Promise.all([
-    fetchLocstring(),
-    getEbpsStats(),
-    getSbpsStats(),
-    getUpgradesStats(),
-    getWeaponStats(),
-  ]);
+  const { locstring, ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
 
   return {
     props: {
@@ -317,7 +268,7 @@ export const getStaticProps = async () => {
       sbpsData,
       ebpsData,
       upgradesData,
-      weaponsData,
+      weaponsData: weaponData,
     },
   };
 };

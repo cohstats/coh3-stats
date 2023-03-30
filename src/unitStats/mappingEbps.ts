@@ -3,6 +3,7 @@
 import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
+import config from "../../config";
 
 // need to be extended by all required fields
 type EbpsType = {
@@ -311,9 +312,7 @@ const getEbpsStats = async () => {
   // ebps needs to be returned to avoid double computation
   if (ebpsStats) return ebpsStats;
 
-  const myReqEbps = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/ebps.json",
-  );
+  const myReqEbps = await fetch(config.getPatchDataUrl("ebps.json"));
 
   const root = await myReqEbps.json();
 
@@ -336,6 +335,7 @@ const getEbpsStats = async () => {
 
       // filter by relevant entity types
       switch (item.unitType) {
+        case "emplacements": // Buildable outside base (AA guns, AT guns).
         case "production": // Base buildings.
         case "infantry": // General infantry
         // case "flame_throwers":

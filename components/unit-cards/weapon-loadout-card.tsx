@@ -117,7 +117,7 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col md={4} span={4}>
-            <Text>Round per minutes (RPM)</Text>
+            <Text>Rounds per minute (RPM)</Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
             <Text align="center" color="green.6">

@@ -3,6 +3,7 @@
 import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
+import config from "../../config";
 
 // The battlegroup represents the parent BG with its children (branches).
 type BattlegroupsType = {
@@ -80,9 +81,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
 const getBattlegroupStats = async () => {
   if (battlegroupStats) return battlegroupStats;
 
-  const myReqBattlegroup = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/battlegroup.json",
-  );
+  const myReqBattlegroup = await fetch(config.getPatchDataUrl("battlegroup.json"));
 
   const root = await myReqBattlegroup.json();
 

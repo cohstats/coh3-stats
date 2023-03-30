@@ -166,7 +166,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            <ExplorerMenu cx={cx} classes={classes} />
+            <ExplorerMenu cx={cx} close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -190,7 +190,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-      <MantineHeader height={60} className={classes.root}>
+      <MantineHeader height={60} className={classes.root} style={{ position: "sticky" }}>
         <Container className={classes.container} fluid>
           <Anchor component={Link} href={"/"} className={cx(classes.link)}>
             <Group spacing="xs">
@@ -245,7 +245,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            <ExplorerMenu cx={cx} classes={classes} />
+            <ExplorerMenu cx={cx} close={close} classes={classes} />
 
             <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About

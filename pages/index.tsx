@@ -1,12 +1,24 @@
 import type { NextPage } from "next";
+import { getTwitchStreams } from "../src/coh3stats-api";
 import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
+import { TwitchStream } from "../src/coh3/coh3-types";
+import dynamic from "next/dynamic";
 
-const Home: NextPage = () => {
+//only render on client side
+const TwitchPanel = dynamic(() => import("../components/twitch-panel/twitch-panel"), {
+  ssr: false,
+});
+
+type Props = {
+  twitchStreams: TwitchStream[] | null;
+  error: Error | null;
+};
+const Home: NextPage<Props> = ({ twitchStreams, error }) => {
   return (
-    <Container fluid>
+    <Container fluid px={"xs"}>
       <Image
         src="/coming-soon/coh3-background.jpg"
         alt={"coh3-background"}
@@ -31,8 +43,26 @@ const Home: NextPage = () => {
           <Donate />
         </Group>
       </Paper>
+      <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
+        <TwitchPanel twitchStreams={twitchStreams} error={error} />
+      </Paper>
     </Container>
   );
 };
 
 export default Home;
+
+export async function getServerSideProps() {
+  let error: Error | null = null;
+  let twitchStreams: TwitchStream[] | null = null;
+
+  try {
+    twitchStreams = await getTwitchStreams();
+  } catch (e: any) {
+    console.error(`Failed getting data for twitch streams`);
+    console.error(e);
+    error = e.message;
+  }
+
+  return { props: { twitchStreams, error } };
+}
