@@ -36,7 +36,6 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
   useEffect(() => {
     // this gate only be needed because of react strict mode running things twice
     if (document.getElementById("twitch-script") !== null || twitchStreams === null) return;
-    console.log(twitchStreams);
 
     const script = document.createElement("script");
     script.src = "https://player.twitch.tv/js/embed/v1.js";
@@ -44,6 +43,12 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
+      //we have to embed video when component mount, this is not the best solution but works
+      //if there is iframe, to prevent embed
+
+      const liveDOM = document.getElementById("twitch-embed");
+      if (liveDOM?.children?.length !== 0) return null;
+
       const embed = new window.Twitch.Embed("twitch-embed", {
         width: "100%",
         height: "100%",
@@ -61,6 +66,11 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
         setPlayer(player);
       });
     });
+
+    return () => {
+      //remove twitch script when component unmount
+      document.getElementById("twitch-script")?.remove();
+    };
   }, [twitchStreams, colorScheme]);
 
   function handleChangeChannel(channelIndex: number) {
