@@ -1,16 +1,5 @@
 import slash from "slash";
-import {
-  Divider,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Indicator,
-  Space,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Divider, Flex, Grid, Image, Indicator, Stack, Text, Title } from "@mantine/core";
 import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
@@ -224,9 +213,8 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
-              Avg.
-            </Text>
+            {/* <Text align="center" color="yellow.6">
+            </Text> */}
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
@@ -246,9 +234,9 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
+            {/* <Text align="center" color="yellow.6">
               {"-"}
-            </Text>
+            </Text> */}
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
@@ -269,9 +257,9 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
+            {/* <Text align="center" color="yellow.6">
               {"-"}
-            </Text>
+            </Text> */}
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
