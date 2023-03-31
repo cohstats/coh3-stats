@@ -6,6 +6,7 @@ import {
   Grid,
   Group,
   HoverCard,
+  Image,
   Stack,
   Text,
 } from "@mantine/core";
@@ -20,32 +21,64 @@ import {
   getExplorerFactionUnitsRoute,
 } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
+import { getIconsPathOnCDN } from "../../../src/utils";
 
 const explorerFactionLink = (faction: raceType, close: () => void) => {
+  const name = faction !== "dak" ? localizedNames[faction] : "DAK";
+
   return (
     <Stack spacing={4}>
-      <Flex direction="row" align="center" gap="md">
-        <FactionIcon name={faction} width={24} />
-        <Text lineClamp={1}>{localizedNames[faction]}</Text>
-      </Flex>
-      <Divider></Divider>
-      <Stack spacing={4}>
+      <Flex direction="row" align="center" gap={"xs"}>
+        <FactionIcon name={faction} width={22} />
         <Anchor
           color="orange"
           component={Link}
           href={getExplorerFactionRoute(faction)}
           onClick={close}
         >
-          Buildings
+          <Text lineClamp={1} weight={500}>
+            {name}
+          </Text>
         </Anchor>
-        <Anchor
-          color="orange"
-          component={Link}
-          href={getExplorerFactionUnitsRoute(faction)}
-          onClick={close}
-        >
-          Units
-        </Anchor>
+      </Flex>
+      <Divider></Divider>
+      <Stack spacing={4}>
+        <Group spacing={4}>
+          <Image
+            width={20}
+            height={20}
+            fit="contain"
+            src={`/icons/races/common/symbols/building_hq.png`}
+            alt=""
+            withPlaceholder
+          />
+          <Anchor
+            color="orange"
+            component={Link}
+            href={getExplorerFactionRoute(faction)}
+            onClick={close}
+          >
+            Buildings
+          </Anchor>
+        </Group>
+        <Group spacing={4}>
+          <Image
+            width={20}
+            height={20}
+            fit="contain"
+            src={`/icons/races/common/symbols/building_barracks.png`}
+            alt=""
+            withPlaceholder
+          />
+          <Anchor
+            color="orange"
+            component={Link}
+            href={getExplorerFactionUnitsRoute(faction)}
+            onClick={close}
+          >
+            Units
+          </Anchor>
+        </Group>
       </Stack>
     </Stack>
   );
@@ -55,13 +88,25 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
  * @TODO Provide the toolName type for the routes. In the meantime, provide the
  * route fragment as string.
  */
-const explorerToolLink = (toolName: string, close: () => void) => (
-  <Text>
-    <Anchor color="orange" component={Link} href={getDPSCalculatorRoute()} onClick={close}>
-      {toolName}
-    </Anchor>
-  </Text>
-);
+const explorerToolLink = (close: () => void) => {
+  return (
+    <Group spacing={4}>
+      <Image
+        width={20}
+        height={20}
+        fit="contain"
+        src={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
+        alt=""
+        withPlaceholder
+      />
+      <Text weight={500}>
+        <Anchor color="orange" component={Link} href={getDPSCalculatorRoute()} onClick={close}>
+          DPS - Unit Comparison
+        </Anchor>
+      </Text>
+    </Group>
+  );
+};
 
 const ExplorerMenu = ({
   cx,
@@ -89,7 +134,7 @@ const ExplorerMenu = ({
             <Divider my="sm"></Divider>
             <Stack>
               <Text weight={700}>Tools</Text>
-              {explorerToolLink("DPS - Unit Comparison", close)}
+              {explorerToolLink(close)}
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -99,7 +144,7 @@ const ExplorerMenu = ({
 
   const desktopView = (
     <Group className={classes.hiddenMobile}>
-      <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+      <HoverCard width={830} position="bottom" radius="md" shadow="md" withinPortal>
         <HoverCard.Target>
           <Anchor href={"/explorer"} className={cx(classes.link)}>
             <Group spacing={3}>
@@ -121,8 +166,8 @@ const ExplorerMenu = ({
             <Grid.Col span={1}>
               <Stack spacing={4}>
                 <Text weight={700}>Tools</Text>
-                <Divider></Divider>
-                {explorerToolLink("DPS - Unit Comparison", () => null)}
+                <Divider />
+                {explorerToolLink(() => null)}
               </Stack>
             </Grid.Col>
           </Grid>
