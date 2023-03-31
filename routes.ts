@@ -10,6 +10,7 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
+  // Homepage caching
   .match("/", ({ cache }) => {
     cache({
       edge: {
@@ -20,15 +21,15 @@ export default new Router()
       },
     });
   })
+  // Homepage caching data
   .match("/_next/data/:version/index.json", ({ cache }) => {
     cache({
       browser: {
         serviceWorkerSeconds: 60,
       },
       edge: {
-        // Cache for 10 minutes, revalidate under 30 minutes
         maxAgeSeconds: 60 * 5,
-        staleWhileRevalidateSeconds: 60 * 30,
+        staleWhileRevalidateSeconds: 60 * 60,
         forcePrivateCaching: true,
       },
     });
@@ -36,12 +37,12 @@ export default new Router()
   .match("/api/onlineSteamPlayers", ({ cache }) => {
     cache({
       browser: {
-        maxAgeSeconds: 5 * 60, // Cache 5 minutes
+        serviceWorkerSeconds: 5 * 60, // Cache 5 minutes
       },
       edge: {
         // Cache for 3 minutes, if we are older than 3 minutes, revalidate, still serve cache
         maxAgeSeconds: 3 * 60,
-        staleWhileRevalidateSeconds: 10 * 60,
+        staleWhileRevalidateSeconds: 15 * 60,
         forcePrivateCaching: true,
       },
     });
