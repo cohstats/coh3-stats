@@ -99,6 +99,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
                   options={config as any}
                   height={100}
                   width={200}
+                  redraw
                 ></Line>
               </Stack>
             </HoverCard.Dropdown>

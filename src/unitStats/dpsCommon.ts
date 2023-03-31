@@ -412,6 +412,8 @@ export const addDpsData = (dps1: any[], dps2: any[]) => {
       // merge into range of weapon2
       if (point1.x > point2.x) newSet.push(mergePoints(point2, point1));
     }
+    // simply add DPS point when first series is outranging second series
+    if (ind_1 >= dps2.length) newSet.push(dps1[ind_1]);
   }
 
   return newSet;
