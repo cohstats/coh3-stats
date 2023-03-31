@@ -24,7 +24,7 @@ type Props = {
   twitchStreams: TwitchStream[] | null;
   error: Error | null;
 };
-const TwitchPanel = ({ twitchStreams, error }: Props) => {
+const TwitchPanel = ({ twitchStreams }: Props) => {
   const { colorScheme } = useMantineColorScheme();
   const [player, setPlayer] = useState<any>();
   const [currentChannelIndex, setCurrentChannelIndex] = useState(0);
@@ -56,12 +56,13 @@ const TwitchPanel = ({ twitchStreams, error }: Props) => {
         layout: "video",
         autoplay: true,
         theme: colorScheme,
-        // Only needed if this page is going to be embedded on other websites
-        parent: ["embed.example.com", "othersite.example.com"],
+        muted: true,
       });
 
       embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
         const player = embed.getPlayer();
+        // maybe unneeded because of option above but can't hurt
+        player.setMuted(true);
         player.play();
         setPlayer(player);
       });
