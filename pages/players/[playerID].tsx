@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { PlayerCardDataType, ProcessedMatch } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
@@ -25,6 +25,7 @@ import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/uti
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
 import { generateKeywordsString } from "../../src/head-utils";
+import { BOLD_WEIGHT } from "jest-matcher-utils";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -59,17 +60,33 @@ const createPlayerHeadDescription = (
 // @ts-ignore
 const PlayerCard = ({
   playerID,
-  playerData,
+  playerDataAPI,
   error,
   playerMatchesData,
 }: {
   playerID: string;
-  playerData: PlayerCardDataType;
+  playerDataAPI: PlayerCardDataType;
   error: string;
   playerMatchesData: Array<ProcessedMatch>;
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
+  //this state for store palyer data
+  const [playerDataStore, setPlayerDataStore] = useState(playerDataAPI);
+
+  const playerData: PlayerCardDataType = useMemo(() => {
+    if (playerDataAPI) {
+      return playerDataAPI;
+    } else {
+      return playerDataStore;
+    }
+  }, [playerDataAPI]);
+
+  useEffect(() => {
+    if (playerDataAPI) {
+      setPlayerDataStore(playerDataAPI);
+    }
+  }, [playerDataAPI]);
 
   if (error) {
     return <Container size="lg">{error}</Container>;
@@ -173,18 +190,29 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   params,
   query,
   res,
+  req,
 }) => {
   const { playerID } = params!;
   const { view } = query;
 
   const viewPlayerMatches = view === "recentMatches";
+  const viewStandings = view === "standings";
 
   let playerData = null;
   let playerMatchesData = null;
   let error = null;
 
+  const prevPage = req.headers.referer;
+  const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
+  const isSamePlayer = prevPlayerId === playerID;
+  const isFromPlayerPage = isSamePlayer && Boolean(prevPage?.includes("/players/"));
+
   try {
-    const PromisePlayerCardData = getPlayerCardInfo(playerID);
+    const PromisePlayerCardData = viewStandings
+      ? getPlayerCardInfo(playerID)
+      : isFromPlayerPage
+      ? Promise.resolve()
+      : getPlayerCardInfo(playerID);
 
     const PromisePlayerMatchesData = viewPlayerMatches
       ? getPlayerRecentMatches(playerID)
@@ -195,7 +223,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       PromisePlayerMatchesData,
     ]);
 
-    playerData = processPlayerInfoAPIResponse(playerAPIData);
+    playerData = playerAPIData ? processPlayerInfoAPIResponse(playerAPIData) : null;
     playerMatchesData = viewPlayerMatches ? PlayerMatchesAPIData : null;
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
@@ -204,7 +232,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   }
 
   return {
-    props: { playerID, playerData, error, playerMatchesData }, // will be passed to the page component as props
+    props: { playerID, playerDataAPI: playerData, error, playerMatchesData }, // will be passed to the page component as props
   };
 };
 
