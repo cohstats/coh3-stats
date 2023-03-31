@@ -66,7 +66,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
             width={20}
             height={20}
             fit="contain"
-            src={`/icons//races/common/symbols/building_barracks.png`}
+            src={`/icons/races/common/symbols/building_barracks.png`}
             alt=""
             withPlaceholder
           />

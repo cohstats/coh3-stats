@@ -10,6 +10,17 @@ export default new Router()
   .match("/service-worker.js", ({ serviceWorker }) => {
     return serviceWorker(".next/static/service-worker.js");
   })
+  // Do not index dev sites
+  .match(
+    {
+      headers: {
+        host: /dev.coh3stats.com|preview.coh3stats.com/,
+      },
+    },
+    ({ setResponseHeader }) => {
+      setResponseHeader("x-robots-tag", "noindex, nofollow");
+    },
+  )
   // Homepage caching
   .match("/", ({ cache }) => {
     cache({
