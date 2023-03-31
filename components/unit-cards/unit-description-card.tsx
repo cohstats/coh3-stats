@@ -55,7 +55,7 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
             fallbackSrc={symbolPlaceholder}
           />
           <Tooltip label={desc.brief_text}>
-            <Text fz="xs" lineClamp={2}>
+            <Text fz="sm" lineClamp={2}>
               {desc.brief_text}
             </Text>
           </Tooltip>

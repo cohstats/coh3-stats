@@ -169,7 +169,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                 })}
               </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
-              {UnitWeaponSection(squadWeapons)}
             </Stack>
           </Grid.Col>
           <Grid.Col md={1} order={1} orderMd={2}>
@@ -193,6 +192,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
               </Card>
             </Stack>
           </Grid.Col>
+        </Grid>
+        <Grid>
+          <Grid.Col>{UnitWeaponSection(squadWeapons)}</Grid.Col>
         </Grid>
       </ContentContainer>
     </>
@@ -237,7 +239,7 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
       <Grid columns={2} grow>
         {squadWeapons.map(({ weapon_id, weapon, num }) => {
           return (
-            <Grid.Col span={1} key={weapon_id}>
+            <Grid.Col span={2} md={1} key={weapon_id}>
               <Card p="lg" radius="md" withBorder>
                 {WeaponLoadoutCard(weapon, num)}
               </Card>

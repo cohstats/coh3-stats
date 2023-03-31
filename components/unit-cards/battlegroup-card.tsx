@@ -38,8 +38,8 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction
         id={upg.id}
         desc={{
           screen_name: upg.ui.screenName,
-          help_text: upg.ui.helpText,
-          extra_text: upg.ui.extraText,
+          help_text: "Ability / Call In",
+          extra_text: upg.ui.helpText,
           brief_text: upg.ui.briefText,
           icon_name: upg.ui.iconName,
         }}
