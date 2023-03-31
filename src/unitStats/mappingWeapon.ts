@@ -217,7 +217,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
       cooldown_duration_max: weapon_bag.cooldown?.duration?.max || 0,
       cooldown_duration_multiplier_near: weapon_bag.cooldown?.duration_multiplier?.near || 1,
       cooldown_duration_multiplier_mid: weapon_bag.cooldown?.duration_multiplier?.mid || 1,
-      cooldown_duration_multiplier_far: weapon_bag.cooldown?.duration_multiplier?.max || 1,
+      cooldown_duration_multiplier_far: weapon_bag.cooldown?.duration_multiplier?.far || 1,
 
       cover_table_tp_defcover_accuracy_multiplier:
         weapon_bag.cover_table?.tp_defcover?.accuracy_multiplier || 1,

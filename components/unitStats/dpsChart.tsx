@@ -530,6 +530,12 @@ export const DpsChart = (props: IDPSProps) => {
           * Computation results are based on approximation models using stats from the game files.
           In-Game values vary.
         </Text>
+        <Text color={theme.colors.gray[7]}>
+          {" "}
+          ** Area DPS (Eg. Mortar or Stug) vs soft targets are highly experimental. Since squad
+          formation and density are unknown, the calculation is simplified. In-Game damage should
+          be higher.
+        </Text>
       </Container>
     </>
   );
