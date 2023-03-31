@@ -401,6 +401,11 @@ export const addDpsData = (dps1: any[], dps2: any[]) => {
     for (ind_2; ind_2 < dps2.length; ind_2++) {
       const point2 = dps2[ind_2];
 
+      if (ind_2 >= dps1.length) {
+        newSet.push(point2);
+        continue;
+      }
+
       // ideal case. Both weapons address the same range. simply merge
       // and check the next points.
       if (point1.x == point2.x || point1.x < point2.x) {
@@ -415,6 +420,11 @@ export const addDpsData = (dps1: any[], dps2: any[]) => {
     // simply add DPS point when first series is outranging second series
     if (ind_1 >= dps2.length) newSet.push(dps1[ind_1]);
   }
+  // if the second weapon have higher range
+  // add this points also
+
+  if (dps2.length > dps1.length)
+    for (let ind_2 = dps1.length; ind_2 < dps2.length; ind_2++) newSet.push(dps2[ind_2]);
 
   return newSet;
 };

@@ -315,6 +315,7 @@ export const DpsChart = (props: IDPSProps) => {
   }
 
   let maxY = 1;
+  let maxX = 1;
 
   for (const unit of activeData) if (unit) updateHealth(unit);
   options.scales.y.title.text = "Damage Per Second (DPS)";
@@ -343,6 +344,7 @@ export const DpsChart = (props: IDPSProps) => {
       chartData.datasets.push(set);
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
+        if (point.x > maxX) maxX = point.x;
       });
     }
 
@@ -352,6 +354,7 @@ export const DpsChart = (props: IDPSProps) => {
       chartData.datasets.push(set);
       set.data.forEach((point: any) => {
         if (point.y > maxY) maxY = point.y;
+        if (point.x > maxX) maxX = point.x;
       });
     }
   }
@@ -359,7 +362,7 @@ export const DpsChart = (props: IDPSProps) => {
   maxY = maxY * 1.1;
 
   options.scales.y.suggestedMax = maxY;
-  // options.scales.x.suggestedMax = maxX;
+  options.scales.x.suggestedMax = maxX;
 
   // if(chartRef.current)
   // default values
