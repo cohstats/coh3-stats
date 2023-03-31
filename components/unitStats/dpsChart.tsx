@@ -211,6 +211,7 @@ const generateFilterButtons = (
 };
 
 const units: CustomizableUnit[] = [];
+
 interface IDPSProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
@@ -403,10 +404,7 @@ export const DpsChart = (props: IDPSProps) => {
                   sx={(theme) => ({
                     backgroundColor:
                       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                    border:
-                      theme.colorScheme === "dark"
-                        ? "solid 1px " + theme.colors.dark[4]
-                        : "solid 2px " + theme.colors.blue[4],
+                    border: "solid 2px " + theme.colors.blue[4],
                     textAlign: "left",
                     padding: theme.spacing.xs,
                     borderRadius: theme.radius.md,
@@ -488,10 +486,7 @@ export const DpsChart = (props: IDPSProps) => {
                   sx={(theme) => ({
                     backgroundColor:
                       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                    border:
-                      theme.colorScheme === "dark"
-                        ? "solid 1px " + theme.colors.dark[4]
-                        : "solid 2px " + theme.colors.red[6],
+                    border: "solid 2px " + theme.colors.red[6],
                     textAlign: "left",
                     padding: theme.spacing.xs,
                     borderRadius: theme.radius.md,
