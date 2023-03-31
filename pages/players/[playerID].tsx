@@ -203,7 +203,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   let error = null;
 
   const prevPage = req.headers.referer;
-  const prevPlayerId = prevPage?.split("/")[4];
+  const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
   const isSamePlayer = prevPlayerId === playerID;
   const isFromPlayerPage = isSamePlayer && Boolean(prevPage?.includes("/players/"));
 
