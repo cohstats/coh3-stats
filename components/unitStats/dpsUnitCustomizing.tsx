@@ -18,7 +18,6 @@ import {
 import { WeaponSearch } from "./weaponSearch";
 import { WeaponStats } from "../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
-import slash from "slash";
 import { ebpsStats, EbpsType, getSquadTotalCost } from "../../src/unitStats";
 import {
   CustomizableUnit,
@@ -113,6 +112,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     );
   }
   const totalCost = getSquadTotalCost(activeData.sbps, props.ebps);
+
   return (
     <>
       <Stack align="left" justify="flex-start" spacing="xs">
@@ -138,7 +138,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                         }
                       >
                         <Avatar
-                          src={slash(activeData.icon_name)}
+                          src={activeData.icon_name}
                           alt={activeData.screen_name}
                           placeholder="/icons/general/infantry_icn.png"
                           radius="xs"
@@ -176,6 +176,9 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                             activeData.ebps_default.moving_ext.speed_scaling_table.default_speed,
                           maxSpeed:
                             activeData.ebps_default.moving_ext.speed_scaling_table.max_speed,
+                        }}
+                        range={{
+                          max: activeData.weapon_member[0].weapon.weapon_bag.range.max,
                         }}
                       />
                       {UnitCostCard(totalCost)}

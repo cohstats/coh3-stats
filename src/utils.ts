@@ -55,4 +55,10 @@ const getIconsPathOnCDN = (
   return internalSlash(`${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`);
 };
 
-export { calculatePageNumber, calculatePositionNumber, isBrowserEnv, getIconsPathOnCDN };
+export {
+  calculatePageNumber,
+  calculatePositionNumber,
+  isBrowserEnv,
+  getIconsPathOnCDN,
+  internalSlash,
+};

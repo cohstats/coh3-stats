@@ -1,7 +1,7 @@
 // type description of mapped data
 
-import slash from "slash";
 import config from "../../config";
+import { internalSlash } from "../utils";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 
@@ -64,7 +64,7 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
   const abilityEntity: AbilitiesType = {
     id: filename,
     path: jsonPath,
-    faction: slash(jsonPath).split("/")[1] ?? jsonPath,
+    faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
     abilityType: parent,
     ui: {
       iconName: "",

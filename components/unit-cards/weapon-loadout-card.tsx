@@ -1,4 +1,3 @@
-import slash from "slash";
 import { Divider, Flex, Grid, Image, Indicator, Stack, Text, Title } from "@mantine/core";
 import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
@@ -18,8 +17,7 @@ export const WeaponLoadoutCard = (
   { id, parent, icon_name, weapon_class, weapon_cat, weapon_bag }: WeaponCardInput,
   count = 1,
 ) => {
-  const iconName =
-    icon_name !== "" ? `/icons/${slash(icon_name)}.png` : getDefaultWeaponIcon(parent);
+  const iconName = icon_name !== "" ? `/icons/${icon_name}.png` : getDefaultWeaponIcon(parent);
   const isBallisticOrExplosive =
     weapon_cat == "ballistic_weapon" || weapon_cat == "explosive_weapon";
   return (

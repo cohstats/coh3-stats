@@ -1,4 +1,4 @@
-import slash from "slash";
+import { internalSlash } from "../utils";
 
 export const traverseTree = (
   entity: any,
@@ -64,7 +64,7 @@ export const getFactionIcon = (folderName: string): string => {
     default:
       break;
   }
-  return slash(iconName);
+  return internalSlash(iconName);
 };
 
 export const isBaseFaction = (faction: string): boolean => {

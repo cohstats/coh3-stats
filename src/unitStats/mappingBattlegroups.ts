@@ -1,9 +1,9 @@
 // type description of mapped data
 
-import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
+import { internalSlash } from "../utils";
 
 // The battlegroup represents the parent BG with its children (branches).
 type BattlegroupsType = {
@@ -29,7 +29,7 @@ const mapBattlegroupData = (filename: string, subtree: any, jsonPath: string, pa
   const bgEntity: BattlegroupsType = {
     id: filename,
     path: jsonPath,
-    faction: slash(jsonPath).split("/")[1] ?? jsonPath,
+    faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
     activationRef: "",
     branchesRefs: {
       LEFT: {

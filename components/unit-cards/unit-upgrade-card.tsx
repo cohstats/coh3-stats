@@ -1,4 +1,3 @@
-import slash from "slash";
 import { createStyles, Flex, Group, HoverCard, Text, Title, Tooltip } from "@mantine/core";
 import { UnitCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
@@ -70,7 +69,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
           <ImageWithFallback
             width={64}
             height={64}
-            src={`/icons/${slash(desc.icon_name)}.png`}
+            src={`/icons/${desc.icon_name}.png`}
             alt={desc.screen_name}
             fallbackSrc={iconPlaceholder}
           ></ImageWithFallback>
@@ -96,7 +95,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
       <ImageWithFallback
         width={76}
         height={76}
-        src={`/icons/${slash(desc.icon_name)}.png`}
+        src={`/icons/${desc.icon_name}.png`}
         alt={desc.screen_name}
         fallbackSrc={iconPlaceholder}
       ></ImageWithFallback>
