@@ -136,6 +136,29 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
         </Grid>
 
+        {/* Third Row: Range of fire */}
+
+        <Grid gutter="xs">
+          <Grid.Col md={4} span={4}>
+            <Text>Range of Fire</Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="green.6">
+              {weapon_bag.range.near}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="yellow.6">
+              {weapon_bag.range.mid}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={2} span={2}>
+            <Text align="center" color="red.6">
+              {weapon_bag.range.max}
+            </Text>
+          </Grid.Col>
+        </Grid>
+
         {/* These rows only apply if activeData.weapon.weapon_cat == "ballistic_weapon"
           || activeData.weapon.weapon_cat == "explosive_weapon" */}
 
@@ -230,29 +253,6 @@ export const WeaponLoadoutCard = (
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
               {weapon_bag.damage_max}
-            </Text>
-          </Grid.Col>
-        </Grid>
-
-        {/* Third Row: Range of fire */}
-
-        <Grid gutter="xs">
-          <Grid.Col md={4} span={4}>
-            <Text>Range of Fire</Text>
-          </Grid.Col>
-          <Grid.Col md={3} span={3}>
-            <Text align="center" color="green.6">
-              {weapon_bag.range.min}
-            </Text>
-          </Grid.Col>
-          <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
-              {"-"}
-            </Text>
-          </Grid.Col>
-          <Grid.Col md={2} span={2}>
-            <Text align="center" color="red.6">
-              {weapon_bag.range.max}
             </Text>
           </Grid.Col>
         </Grid>
