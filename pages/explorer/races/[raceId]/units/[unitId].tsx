@@ -18,17 +18,12 @@ import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-d
 import FactionIcon from "../../../../../components/faction-icon";
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
-// import {
-//   StatsVehicleArmor,
-//   VehicleArmorType,
-// } from "../../../../../components/unit-cards/vehicle-armor-card";
 import { UnitCostCard } from "../../../../../components/unit-cards/unit-cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
-import slash from "slash";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { generateKeywordsString } from "../../../../../src/head-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
@@ -112,6 +107,11 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
   const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponsData);
 
+  // Use default weapon for max range.
+  const rangeValues = {
+    max: squadWeapons[0].weapon.weapon_bag.range.max,
+  };
+
   const metaKeywords = generateKeywordsString([
     `${resolvedSquad.ui.screenName} coh3`,
     `${resolvedSquad.ui.screenName} ${localizedRace}`,
@@ -127,7 +127,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
         <meta name="keywords" content={metaKeywords} />
         <meta
           property="og:image"
-          content={getIconsPathOnCDN(`/icons/${slash(resolvedSquad.ui.iconName)}.png`)}
+          content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
         />
       </Head>
       <ContentContainer>
@@ -165,6 +165,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   },
                   sight: sightValues,
                   moving: movingValues,
+                  range: rangeValues,
                 })}
               </Card>
               {UnitUpgradeSection(resolvedSquad, upgradesData)}
