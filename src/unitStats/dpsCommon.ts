@@ -113,7 +113,7 @@ export const mapCustomizableUnit = (
     weapon_member: [], // weapon_member owning one weapon each
     unit_type: sbpsSelected.unitType, // folder Infantry | vehicles | team_weapons | buildings
     help_text: sbpsSelected.ui.helpText, // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
-    //iconName: slash("/icons/" + sbpsSelected.ui.iconName + ".png") || "icon", // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
+    //iconName: internalSlash("/icons/" + sbpsSelected.ui.iconName + ".png") || "icon", // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
     icon_name: getIconsPathOnCDN("icons/" + sbpsSelected.ui.iconName) || "icon",
     type_icon: "",
     faction_icon: getFactionIcon(sbpsSelected.faction),

@@ -1,4 +1,3 @@
-import slash from "slash";
 import { Flex, Text, Title, Tooltip } from "@mantine/core";
 import { iconPlaceholder, symbolPlaceholder } from "../placeholders";
 import ImageWithFallback from "../placeholders";
@@ -33,7 +32,7 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
       <ImageWithFallback
         width={96}
         height={96}
-        src={`/icons/${slash(desc.icon_name)}.png`}
+        src={`/icons/${desc.icon_name}.png`}
         alt={desc.screen_name}
         fallbackSrc={iconPlaceholder}
       />
@@ -51,12 +50,12 @@ export const UnitDescriptionCard = (desc: UnitDescription) => (
           <ImageWithFallback
             width={32}
             height={32}
-            src={`/icons/${slash(desc.symbol_icon_name)}.png`}
+            src={`/icons/${desc.symbol_icon_name}.png`}
             alt={`${desc.screen_name} symbol`}
             fallbackSrc={symbolPlaceholder}
           />
           <Tooltip label={desc.brief_text}>
-            <Text fz="xs" lineClamp={2}>
+            <Text fz="sm" lineClamp={2}>
               {desc.brief_text}
             </Text>
           </Tooltip>

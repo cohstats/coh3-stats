@@ -1,9 +1,9 @@
 // type description of mapped data
 
-import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
+import { internalSlash } from "../utils";
 
 // Need to be extended by all required fields
 type UpgradesType = {
@@ -63,7 +63,7 @@ const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, paren
   const upgradesEntity: UpgradesType = {
     id: filename,
     path: jsonPath,
-    faction: slash(jsonPath).split("/")[1] ?? jsonPath,
+    faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
     upgradeType: parent,
     ui: {
       iconName: "",

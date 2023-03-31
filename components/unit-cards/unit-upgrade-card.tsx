@@ -1,4 +1,3 @@
-import slash from "slash";
 import { createStyles, Flex, Group, HoverCard, Text, Title, Tooltip } from "@mantine/core";
 import { UnitCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
@@ -70,7 +69,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
           <ImageWithFallback
             width={64}
             height={64}
-            src={`/icons/${slash(desc.icon_name)}.png`}
+            src={`/icons/${desc.icon_name}.png`}
             alt={desc.screen_name}
             fallbackSrc={iconPlaceholder}
           ></ImageWithFallback>
@@ -96,30 +95,30 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
       <ImageWithFallback
         width={76}
         height={76}
-        src={`/icons/${slash(desc.icon_name)}.png`}
+        src={`/icons/${desc.icon_name}.png`}
         alt={desc.screen_name}
         fallbackSrc={iconPlaceholder}
       ></ImageWithFallback>
 
       <Flex direction="column">
+        <Tooltip label={desc.help_text}>
+          <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
+            {desc.help_text}
+          </Title>
+        </Tooltip>
         <Tooltip label={desc.screen_name}>
           <Title order={4} transform="capitalize" lineClamp={1}>
             {desc.screen_name}
           </Title>
         </Tooltip>
-        <Tooltip label={desc.extra_text}>
-          <Text fz="md" lineClamp={1} color="yellow.5">
-            {desc.extra_text}
-          </Text>
-        </Tooltip>
         <Tooltip label={desc.brief_text}>
-          <Text fz="sm" lineClamp={1}>
+          <Text fz="sm" lineClamp={2}>
             {desc.brief_text}
           </Text>
         </Tooltip>
-        <Tooltip label={desc.help_text}>
+        <Tooltip label={desc.extra_text}>
           <Text fz="sm" lineClamp={1}>
-            {desc.help_text}
+            {desc.extra_text}
           </Text>
         </Tooltip>
       </Flex>

@@ -36,7 +36,6 @@ import {
 import { UnitSearch } from "./unitSearch";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType } from "../../src/unitStats/mappingEbps";
-// import slash from "slash";
 import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { SbpsType } from "../../src/unitStats/mappingSbps";
 import { IconAdjustments } from "@tabler/icons";

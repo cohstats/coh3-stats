@@ -1,4 +1,3 @@
-import slash from "slash";
 import {
   Accordion,
   Anchor,
@@ -70,7 +69,7 @@ const BuildingCardHeader = (
           width={96}
           height={96}
           fit="contain"
-          src={`/icons/${slash(desc.icon_name)}.png`}
+          src={`/icons/${desc.icon_name}.png`}
           alt={desc.screen_name}
           withPlaceholder
         />
