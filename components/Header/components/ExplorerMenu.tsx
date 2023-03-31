@@ -14,22 +14,40 @@ import Link from "next/link";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";
-import { getDPSCalculatorRoute, getExplorerFactionRoute } from "../../../src/routes";
+import {
+  getDPSCalculatorRoute,
+  getExplorerFactionRoute,
+  getExplorerFactionUnitsRoute,
+} from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 
 const explorerFactionLink = (faction: raceType, close: () => void) => {
   return (
-    <Flex direction="row" align="center" gap="md">
-      <FactionIcon name={faction} width={24} />
-      <Anchor
-        color="orange"
-        component={Link}
-        href={getExplorerFactionRoute(faction)}
-        onClick={close}
-      >
-        {localizedNames[faction]}
-      </Anchor>
-    </Flex>
+    <Stack spacing={4}>
+      <Flex direction="row" align="center" gap="md">
+        <FactionIcon name={faction} width={24} />
+        <Text lineClamp={1}>{localizedNames[faction]}</Text>
+      </Flex>
+      <Divider></Divider>
+      <Stack spacing={4}>
+        <Anchor
+          color="orange"
+          component={Link}
+          href={getExplorerFactionRoute(faction)}
+          onClick={close}
+        >
+          Buildings
+        </Anchor>
+        <Anchor
+          color="orange"
+          component={Link}
+          href={getExplorerFactionUnitsRoute(faction)}
+          onClick={close}
+        >
+          Units
+        </Anchor>
+      </Stack>
+    </Stack>
   );
 };
 
@@ -91,18 +109,19 @@ const ExplorerMenu = ({
           </Anchor>
         </HoverCard.Target>
         <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-          <Grid gutter={0} columns={2}>
-            <Grid.Col span={1}>
-              <Stack>
-                {explorerFactionLink("german", () => null)}
-                {explorerFactionLink("american", () => null)}
-                {explorerFactionLink("dak", () => null)}
-                {explorerFactionLink("british", () => null)}
-              </Stack>
+          <Grid gutter={8} columns={4}>
+            <Grid.Col span={3}>
+              <Grid columns={4} align="center">
+                <Grid.Col span={1}>{explorerFactionLink("german", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("american", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("dak", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("british", () => null)}</Grid.Col>
+              </Grid>
             </Grid.Col>
             <Grid.Col span={1}>
-              <Stack>
+              <Stack spacing={4}>
                 <Text weight={700}>Tools</Text>
+                <Divider></Divider>
                 {explorerToolLink("DPS - Unit Comparison", () => null)}
               </Stack>
             </Grid.Col>
