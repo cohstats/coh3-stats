@@ -109,7 +109,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
 
   // Use default weapon for max range.
   const rangeValues = {
-    max: squadWeapons[0].weapon.weapon_bag.range.max,
+    max: squadWeapons.length ? squadWeapons[0].weapon.weapon_bag.range.max : 0,
   };
 
   const metaKeywords = generateKeywordsString([
