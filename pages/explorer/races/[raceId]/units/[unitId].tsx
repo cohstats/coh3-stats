@@ -260,7 +260,6 @@ const createdCalculateValuesForUnits = (
     weaponData: WeaponType[];
     upgradesData: UpgradesType[];
   },
-  raceId: string,
   unitId: string,
 ) => {
   const { sbpsData, ebpsData, weaponData, upgradesData } = data;
@@ -285,7 +284,7 @@ const createdCalculateValuesForUnits = (
 
   const resolvedEntities: EbpsType[] = [];
 
-  for (const loadout of resolvedSquad?.loadout || []) {
+  for (const loadout of resolvedSquad.loadout || []) {
     const id = loadout.type.split("/").slice(-1)[0];
     const foundEntity = ebpsData.find((x) => x.id === id);
     if (foundEntity) {
@@ -306,14 +305,13 @@ const createdCalculateValuesForUnits = (
 export const getStaticProps: GetStaticProps = async (context) => {
   const { ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
 
-  const raceId = context.params?.raceId as string;
+  // const raceId = context.params?.raceId as string;
   const unitId = context.params?.unitId as string;
 
   return {
     props: {
       calculatedData: createdCalculateValuesForUnits(
         { sbpsData, ebpsData, weaponData, upgradesData },
-        raceId,
         unitId,
       ),
     },
