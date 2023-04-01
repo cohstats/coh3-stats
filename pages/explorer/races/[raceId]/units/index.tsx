@@ -1,7 +1,6 @@
-import { GetStaticPaths, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
 import { Anchor, Card, Flex, Grid, Stack, Text, Title } from "@mantine/core";
 
@@ -15,23 +14,17 @@ import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 
 interface UnitDetailProps {
-  sbpsData: SbpsType[];
-  locstring: Record<string, string>;
+  units: SbpsType[];
+  raceToFetch: raceType;
 }
 
-const ExplorerUnits: NextPage<UnitDetailProps> = ({ sbpsData }) => {
-  const { query } = useRouter();
-
-  const raceToFetch = (query.raceId as raceType) || "american";
+const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
   const localizedRace = localizedNames[raceToFetch];
 
   const metaKeywords = generateKeywordsString([
     `${localizedRace} coh3`,
     `Unit List ${localizedRace}`,
   ]);
-
-  const faction = raceToFetch === "dak" ? "afrika_korps" : raceToFetch;
-  const units = sbpsData.filter((squad) => squad.faction.includes(faction));
 
   return (
     <>
@@ -97,13 +90,19 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ sbpsData }) => {
   );
 };
 
-export const getStaticProps = async () => {
-  const { locstring, sbpsData } = await getMappings();
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { sbpsData } = await getMappings();
+
+  const raceId = context.params?.raceId as string;
+
+  const raceToFetch = (raceId as raceType) || "american";
+  const faction = raceToFetch === "dak" ? "afrika_korps" : raceToFetch;
+  const units = sbpsData.filter((squad) => squad.faction.includes(faction));
 
   return {
     props: {
-      locstring,
-      sbpsData,
+      raceToFetch,
+      units,
     },
   };
 };

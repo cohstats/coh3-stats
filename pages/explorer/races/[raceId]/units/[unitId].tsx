@@ -1,4 +1,4 @@
-import { GetStaticPaths, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ import {
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
   RaceBagDescription,
+  ResourceValues,
   SbpsType,
   UpgradesType,
   WeaponType,
@@ -30,34 +31,23 @@ import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 
 interface UnitDetailProps {
-  sbpsData: SbpsType[];
-  ebpsData: EbpsType[];
-  upgradesData: UpgradesType[];
-  weaponsData: WeaponType[];
-  locstring: Record<string, string>;
+  calculatedData: {
+    resolvedSquad: SbpsType;
+    totalCost: ResourceValues;
+    totalUpkeepCost: ResourceValues;
+    squadWeapons: WeaponMember[];
+    resolvedEntities: EbpsType[];
+    upgrades: UpgradesType[];
+  };
 }
 
-const UnitDetail: NextPage<UnitDetailProps> = ({
-  sbpsData,
-  ebpsData,
-  upgradesData,
-  weaponsData,
-}) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   const { query } = useRouter();
 
-  const unitId = query.unitId as string;
+  // const unitId = query.unitId as string;
   const raceId = query.raceId as raceType;
 
-  const resolvedSquad = sbpsData.find((x) => x.id === unitId);
-  const resolvedEntities: EbpsType[] = [];
-
-  for (const loadout of resolvedSquad?.loadout || []) {
-    const id = loadout.type.split("/").slice(-1)[0];
-    const foundEntity = ebpsData.find((x) => x.id === id);
-    if (foundEntity) {
-      resolvedEntities.push(foundEntity);
-    }
-  }
+  const { resolvedSquad, resolvedEntities } = calculatedData;
 
   // The resolved entity does not matter at all, as we can obtain such from the squad loadout.
   // console.log("🚀 ~ file: [unitId].tsx:35 ~ resolvedSquad:", resolvedSquad);
@@ -99,13 +89,15 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   };
 
   // Obtain the total cost of the squad by looking at the loadout.
-  const totalCost = getSquadTotalCost(resolvedSquad, ebpsData);
+  const { totalCost } = calculatedData;
 
   // Obtain the total upkeep cost of the squad.
-  const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
+  const { totalUpkeepCost } = calculatedData;
 
   // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
-  const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponsData);
+  const { squadWeapons } = calculatedData;
+
+  const { upgrades } = calculatedData;
 
   // Use default weapon for max range.
   const rangeValues = {
@@ -168,7 +160,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   range: rangeValues,
                 })}
               </Card>
-              {UnitUpgradeSection(resolvedSquad, upgradesData)}
+              {UnitUpgradeSection(upgrades)}
             </Stack>
           </Grid.Col>
           <Grid.Col md={1} order={1} orderMd={2}>
@@ -201,10 +193,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   );
 };
 
-const UnitUpgradeSection = (squad: SbpsType, upgradesData: UpgradesType[]) => {
+const UnitUpgradeSection = (upgrades: UpgradesType[]) => {
   // Resolve unit upgrades.
-  const upgrades = Object.values(getResolvedUpgrades(squad.upgrades, upgradesData));
-  if (!upgrades.length) return <></>;
+  if (!upgrades || !upgrades.length) return <></>;
   return (
     <Stack>
       <Title order={4}>Upgrades</Title>
@@ -262,16 +253,69 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
   );
 };
 
-export const getStaticProps = async () => {
-  const { locstring, ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
+const createdCalculateValuesForUnits = (
+  data: {
+    sbpsData: SbpsType[];
+    ebpsData: EbpsType[];
+    weaponData: WeaponType[];
+    upgradesData: UpgradesType[];
+  },
+  raceId: string,
+  unitId: string,
+) => {
+  const { sbpsData, ebpsData, weaponData, upgradesData } = data;
+  const resolvedSquad = sbpsData.find((x) => x.id === unitId);
+
+  if (!resolvedSquad) {
+    return {
+      error: "Squad not found",
+    };
+  }
+
+  // Obtain the total cost of the squad by looking at the loadout.
+  const totalCost = getSquadTotalCost(resolvedSquad, ebpsData);
+
+  // Obtain the total upkeep cost of the squad.
+  const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
+
+  // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
+  const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponData);
+
+  const upgrades = Object.values(getResolvedUpgrades(resolvedSquad.upgrades, upgradesData));
+
+  const resolvedEntities: EbpsType[] = [];
+
+  for (const loadout of resolvedSquad?.loadout || []) {
+    const id = loadout.type.split("/").slice(-1)[0];
+    const foundEntity = ebpsData.find((x) => x.id === id);
+    if (foundEntity) {
+      resolvedEntities.push(foundEntity);
+    }
+  }
+
+  return {
+    resolvedSquad,
+    totalCost,
+    totalUpkeepCost,
+    squadWeapons,
+    resolvedEntities,
+    upgrades,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
+
+  const raceId = context.params?.raceId as string;
+  const unitId = context.params?.unitId as string;
 
   return {
     props: {
-      locstring,
-      sbpsData,
-      ebpsData,
-      upgradesData,
-      weaponsData: weaponData,
+      calculatedData: createdCalculateValuesForUnits(
+        { sbpsData, ebpsData, weaponData, upgradesData },
+        raceId,
+        unitId,
+      ),
     },
   };
 };
