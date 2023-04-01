@@ -63,7 +63,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
         const player = embed.getPlayer();
         // maybe unneeded because of option above but can't hurt
         player.setMuted(true);
-        if (window.navigator.maxTouchPoints > 0) player.play();
+        if (window.navigator.maxTouchPoints === 0) player.play();
         setPlayer(player);
       });
     });
