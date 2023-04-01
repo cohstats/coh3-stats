@@ -25,7 +25,6 @@ import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/uti
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
 import { generateKeywordsString } from "../../src/head-utils";
-import { BOLD_WEIGHT } from "jest-matcher-utils";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
