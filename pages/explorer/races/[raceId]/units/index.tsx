@@ -1,6 +1,5 @@
 import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
 import { Anchor, Card, Flex, Grid, Stack, Text, Title } from "@mantine/core";
@@ -13,6 +12,7 @@ import { getMappings } from "../../../../../src/unitStats/mappings";
 import { RaceBagDescription, SbpsType } from "../../../../../src/unitStats";
 import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
+import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
 
 interface UnitDetailProps {
   sbpsData: SbpsType[];
@@ -74,7 +74,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ sbpsData }) => {
                         textDecoration: "none",
                       },
                     }}
-                    component={Link}
+                    component={LinkWithOutPrefetch}
                     href={`/explorer/races/${raceToFetch}/units/${id}`}
                   >
                     <Card p="lg" radius="md" withBorder>

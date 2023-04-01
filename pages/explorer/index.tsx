@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { NextPage } from "next";
-import Link from "next/link";
 import { Anchor, Card, Container, Flex, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
+import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
@@ -53,7 +53,7 @@ const Explorer: NextPage = () => {
                   key={`explorer_${faction}`}
                   color="undefined"
                   underline={false}
-                  component={Link}
+                  component={LinkWithOutPrefetch}
                   href={`/explorer/races/${faction}`}
                 >
                   <Card p="sm" radius="md" withBorder>
