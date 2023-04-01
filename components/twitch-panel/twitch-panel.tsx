@@ -54,7 +54,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
         height: "100%",
         channel: twitchStreams[0].user_login,
         layout: "video",
-        autoplay: true,
+        autoplay: false,
         theme: colorScheme,
         muted: true,
       });
