@@ -31,7 +31,7 @@ export const OnlinePlayers: React.FC = () => {
       ).toLocaleString()}`}
     >
       <div>
-        Ingame players{" "}
+        Players Online{" "}
         <Badge color="green" variant="filled" size="lg" style={{ minWidth: 60 }}>
           {onlinePlayersData?.playerCount}
         </Badge>
