@@ -20,7 +20,7 @@ webFirebase.init();
 NProgress.configure({ showSpinner: false });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
-  const { Component, pageProps, router } = props;
+  const { Component, pageProps } = props;
 
   // get system colorscheme
   const systemColorScheme = useColorScheme("dark");
