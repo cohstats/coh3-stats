@@ -56,6 +56,7 @@ const getIconsPathOnCDN = (
 };
 
 // https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser/11381730#11381730
+// prettier-ignore
 const mobileCheck = () => {
   let check = false;
   (function (a) {
