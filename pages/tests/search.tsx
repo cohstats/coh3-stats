@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
-import config from "../config";
+import config from "../../config";
 
 /**
  *

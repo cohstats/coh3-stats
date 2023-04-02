@@ -1,21 +1,21 @@
 import { NextPage } from "next";
-import { DpsChart } from "../components/unitStats/dpsChart";
-import { ebpsStats, EbpsType, getEbpsStats, setEbpsStats } from "../src/unitStats/mappingEbps";
-import { getSbpsStats, sbpsStats, SbpsType, setSbpsStats } from "../src/unitStats/mappingSbps";
+import { DpsChart } from "../../components/unitStats/dpsChart";
+import { ebpsStats, EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
+import { getSbpsStats, sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import {
   getWeaponStats,
   setWeaponStats,
   WeaponStats,
   WeaponType,
-} from "../src/unitStats/mappingWeapon";
+} from "../../src/unitStats/mappingWeapon";
 import {
   getUpgradesStats,
   setUpgradesStats,
   upgradesStats,
   UpgradesType,
-} from "../src/unitStats/mappingUpgrades";
-import { fetchLocstring, setLocstring, unitStatsLocString } from "../src/unitStats/locstring";
-import { getMappings } from "../src/unitStats/mappings";
+} from "../../src/unitStats/mappingUpgrades";
+import { fetchLocstring, setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
+import { getMappings } from "../../src/unitStats/mappings";
 
 interface UnitCardProps {
   weaponData: WeaponType[];
