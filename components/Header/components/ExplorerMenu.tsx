@@ -11,7 +11,6 @@ import {
   Text,
 } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons";
-import Link from "next/link";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";
@@ -22,6 +21,7 @@ import {
 } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { getIconsPathOnCDN } from "../../../src/utils";
+import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
 
 const explorerFactionLink = (faction: raceType, close: () => void) => {
   const name = faction !== "dak" ? localizedNames[faction] : "DAK";
@@ -32,7 +32,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
         <FactionIcon name={faction} width={22} />
         <Anchor
           color="orange"
-          component={Link}
+          component={LinkWithOutPrefetch}
           href={getExplorerFactionRoute(faction)}
           onClick={close}
         >
@@ -54,7 +54,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
           />
           <Anchor
             color="orange"
-            component={Link}
+            component={LinkWithOutPrefetch}
             href={getExplorerFactionRoute(faction)}
             onClick={close}
           >
@@ -72,7 +72,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
           />
           <Anchor
             color="orange"
-            component={Link}
+            component={LinkWithOutPrefetch}
             href={getExplorerFactionUnitsRoute(faction)}
             onClick={close}
           >
@@ -100,7 +100,12 @@ const explorerToolLink = (close: () => void) => {
         withPlaceholder
       />
       <Text weight={500}>
-        <Anchor color="orange" component={Link} href={getDPSCalculatorRoute()} onClick={close}>
+        <Anchor
+          color="orange"
+          component={LinkWithOutPrefetch}
+          href={getDPSCalculatorRoute()}
+          onClick={close}
+        >
           DPS - Unit Comparison
         </Anchor>
       </Text>
@@ -146,7 +151,7 @@ const ExplorerMenu = ({
     <Group className={classes.hiddenMobile}>
       <HoverCard width={830} position="bottom" radius="md" shadow="md" withinPortal>
         <HoverCard.Target>
-          <Anchor href={"/explorer"} className={cx(classes.link)}>
+          <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={cx(classes.link)}>
             <Group spacing={3}>
               <Text>Explorer</Text>
               <IconChevronDown className={classes.hiddenMobile} size={16} />
