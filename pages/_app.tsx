@@ -14,7 +14,6 @@ import { useEffect, useRef } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
 import ContentContainer from "../components/Content-container";
-import { isBrowserEnv } from "../src/utils";
 
 webFirebase.init();
 
