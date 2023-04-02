@@ -103,6 +103,8 @@ Example pages:
 
 ## How to update the sitemap after adding new pages
 
+We should also run this after the patch update.
+
 1. Run `yarn build`
 2. Run `yarn sitemap`
 3. Check changes in `public/sitemap.xml`
