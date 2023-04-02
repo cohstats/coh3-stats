@@ -13,6 +13,7 @@ import {
 import { IconBrandTwitch, IconCircle } from "@tabler/icons";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
+import { mobileCheck } from "../../src/utils";
 
 declare global {
   interface Window {
@@ -63,7 +64,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
         const player = embed.getPlayer();
         // maybe unneeded because of option above but can't hurt
         player.setMuted(true);
-        if (window.navigator.maxTouchPoints === 0) player.play();
+        if (!mobileCheck()) player.play();
         setPlayer(player);
       });
     });
