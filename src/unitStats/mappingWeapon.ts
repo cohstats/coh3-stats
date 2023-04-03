@@ -324,13 +324,17 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
   return weaponData;
 };
 
+let WeaponPatchData: any;
+
 // parses the attribute tree and initiates the mapping. Save
 // the mapping array in global exporting variable.
-const getWeaponStats = async () => {
+const getWeaponStats = async (patch = "latest") => {
+  if (patch == config.latestPatch) patch = "latest";
   // make sure that this method is called only once among all pages
-  if (WeaponStats) return WeaponStats;
+  // if (WeaponStats) return WeaponStats;
+  if (WeaponPatchData && WeaponPatchData[patch]) return WeaponPatchData[patch];
 
-  const myReqWeapon = await fetch(config.getPatchDataUrl("weapon.json"));
+  const myReqWeapon = await fetch(config.getPatchDataUrl("weapon.json", patch));
 
   const root = await myReqWeapon.json();
 
@@ -347,15 +351,21 @@ const getWeaponStats = async () => {
       weaponSetAll.push(item);
     });
   }
+  if (!WeaponPatchData) WeaponPatchData = {};
+  WeaponPatchData[patch] = weaponSetAll;
 
   // Set singleton
-  WeaponStats = weaponSetAll;
+  if (patch == "latest") WeaponStats = weaponSetAll;
 
   return weaponSetAll;
 };
 
 const setWeaponStats = (weaponStats: WeaponType[]) => {
   WeaponStats = weaponStats;
+  if (!WeaponStats) {
+    WeaponPatchData = {};
+    WeaponPatchData["latest"] = weaponStats;
+  }
 };
 
 const isWeaponBagContainer = (key: string, obj: any) => {
@@ -363,5 +373,5 @@ const isWeaponBagContainer = (key: string, obj: any) => {
   return Object.keys(obj)[0] === "weapon_bag";
 };
 
-export { WeaponStats, setWeaponStats, getWeaponStats };
+export { WeaponStats, setWeaponStats, getWeaponStats, WeaponPatchData };
 export type { WeaponType, RangeType };
