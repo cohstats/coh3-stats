@@ -41,7 +41,6 @@ const getPlayerCardInfo = async (playerID: string | number) => {
     return data;
   } else {
     if (response.status === 500) {
-      const data = await response.json();
       throw new Error(`Error getting player card info: ${data.error}`);
     }
     throw new Error(`Error getting player card info`);
