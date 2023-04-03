@@ -1,3 +1,10 @@
-# https://www.robotstxt.org/robotstxt.html
+# *
 User-agent: *
-Disallow:
+Allow: /
+
+# Host
+Host: https://coh3stats.com
+
+# Sitemaps
+Sitemap: https://coh3stats.com/sitemap.xml
+Sitemap: https://coh3stats.com/sitemap.txt

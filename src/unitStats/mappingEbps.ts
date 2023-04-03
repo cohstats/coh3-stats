@@ -1,9 +1,9 @@
 // type description of mapped data
 
-import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
+import { internalSlash } from "../utils";
 
 // need to be extended by all required fields
 type EbpsType = {
@@ -114,7 +114,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   const ebpsEntity: EbpsType = {
     id: filename,
     path: jsonPath,
-    faction: slash(jsonPath).split("/")[1] ?? jsonPath,
+    faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
     spawnItems: [],
     unitType: parent,
     unitTypes: [],

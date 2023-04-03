@@ -23,6 +23,10 @@ type UnitSquadInput = {
     targetSize: number;
   };
   type: string;
+  // Get the default weapon max range value.
+  range: {
+    max: number;
+  };
   sight: {
     coneAngle: number;
     outerRadius: number;
@@ -38,9 +42,10 @@ const UnitSquadIcons = {
   max_speed: "/icons/common/units/symbols/unit_aef_vehicle_crew_symbol.png",
   target_size: "/icons/common/units/symbols/flag_null_symbol.png",
   infantry_armor: "/icons/common/units/symbols/unit_soviet_shock_symbol.png",
+  range_of_fire: "/icons/common/units/symbols/ability_aef_beacon_symbol.png",
 } as const;
 
-export const UnitSquadCard = ({ id, sight, moving, health, ui, type }: UnitSquadInput) => {
+export const UnitSquadCard = ({ id, sight, range, moving, health, ui, type }: UnitSquadInput) => {
   return (
     <Stack>
       <Stack spacing={4}>
@@ -52,7 +57,7 @@ export const UnitSquadCard = ({ id, sight, moving, health, ui, type }: UnitSquad
         </Text>
       </Stack>
       <Grid fz="sm" columns={12} align="center" gutter="xs">
-        <Grid.Col span={4}>
+        <Grid.Col span={6} md={4}>
           <Flex gap={4} align="center" justify="space-between">
             <Group spacing={4}>
               <ImageWithFallback
@@ -68,7 +73,7 @@ export const UnitSquadCard = ({ id, sight, moving, health, ui, type }: UnitSquad
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={4}>
+        <Grid.Col span={6} md={4}>
           <Flex gap={4} align="center" justify="space-between">
             <Group spacing={4}>
               <ImageWithFallback
@@ -84,7 +89,23 @@ export const UnitSquadCard = ({ id, sight, moving, health, ui, type }: UnitSquad
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={4}>
+        <Grid.Col span={6} md={4}>
+          <Flex gap={4} align="center" justify="space-between">
+            <Group spacing={4}>
+              <ImageWithFallback
+                height={32}
+                width={32}
+                fallbackSrc={symbolPlaceholder}
+                src={UnitSquadIcons["range_of_fire"]}
+                alt="squad max range of fire"
+              ></ImageWithFallback>
+              <Text>Max Range</Text>
+            </Group>
+            <Text align="end">{range?.max || 0}</Text>
+          </Flex>
+        </Grid.Col>
+
+        <Grid.Col span={6} md={4}>
           <Flex gap={4} align="center" justify="space-between">
             <Group spacing={4}>
               <ImageWithFallback

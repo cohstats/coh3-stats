@@ -143,7 +143,7 @@ export const Header: React.FC<HeaderProps> = () => {
             >
               Leaderboards
             </Anchor>
-            <Tooltip label="Coming soon" color="orange">
+            <Tooltip label="Coming Later" color="orange">
               <Anchor
                 component={Link}
                 href="#"
@@ -228,7 +228,7 @@ export const Header: React.FC<HeaderProps> = () => {
                 <LeaderboardsMenu />
               </HoverCard.Dropdown>
             </HoverCard>
-            <Tooltip label="Coming soon" color="orange">
+            <Tooltip label="Coming Later" color="orange">
               <Anchor
                 component={Link}
                 href="#"

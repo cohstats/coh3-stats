@@ -18,7 +18,6 @@ import {
 import { WeaponSearch } from "./weaponSearch";
 import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
-import slash from "slash";
 import { ebpsStats, EbpsType, getSquadTotalCost } from "../../src/unitStats";
 import {
   CustomizableUnit,
@@ -139,7 +138,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                         }
                       >
                         <Avatar
-                          src={slash(props.unit.icon_name)}
+                          src={props.unit.icon_name}
                           alt={props.unit.screen_name}
                           placeholder="/icons/general/infantry_icn.png"
                           radius="xs"
@@ -177,6 +176,9 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                             props.unit.ebps_default.moving_ext.speed_scaling_table.default_speed,
                           maxSpeed:
                             props.unit.ebps_default.moving_ext.speed_scaling_table.max_speed,
+                        }}
+                        range={{
+                          max: props.unit.weapon_member[0].weapon.weapon_bag.range.max,
                         }}
                       />
                       {UnitCostCard(totalCost)}

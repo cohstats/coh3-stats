@@ -1,4 +1,17 @@
-import { Stack, Card, Divider, Grid, Title, Accordion, Box, Anchor } from "@mantine/core";
+import {
+  Stack,
+  Card,
+  Divider,
+  Grid,
+  Title,
+  Accordion,
+  Box,
+  Anchor,
+  ActionIcon,
+  Flex,
+  createStyles,
+  Tooltip,
+} from "@mantine/core";
 import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
 import {
@@ -10,6 +23,16 @@ import {
 } from "../../src/unitStats";
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
+import { useToggle } from "@mantine/hooks";
+import { IconAdjustments } from "@tabler/icons";
+
+const useStyles = createStyles((theme) => ({
+  hiddenMobile: {
+    [theme.fn.smallerThan("md")]: {
+      display: "none",
+    },
+  },
+}));
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
   return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -38,8 +61,8 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction
         id={upg.id}
         desc={{
           screen_name: upg.ui.screenName,
-          help_text: upg.ui.helpText,
-          extra_text: upg.ui.extraText,
+          help_text: "Ability / Call In",
+          extra_text: upg.ui.helpText,
           brief_text: upg.ui.briefText,
           icon_name: upg.ui.iconName,
         }}
@@ -101,6 +124,7 @@ export const BattlegroupCard = (
     upgradesData: UpgradesType[];
   },
 ) => {
+  const { classes } = useStyles();
   const resolvedBattlegroups = resolveBattlegroupBranches(
     race,
     data.battlegroupData,
@@ -125,29 +149,42 @@ export const BattlegroupCard = (
   // console.log(resolvedBattlegroups);
   // console.groupEnd();
 
+  // Options to toggle between comparison or full width mode for desktop.
+  const [value, toggle] = useToggle([1, 2]);
+
   return (
     <Stack>
       {resolvedBattlegroups.map(({ id, uiParent, branches }) => {
         return (
           <Card key={id} p="sm" radius="md" withBorder>
             {/* Header Section */}
-            {UnitUpgradeCard({
-              id,
-              desc: {
-                screen_name: uiParent.screenName,
-                help_text: "",
-                extra_text: "",
-                brief_text: uiParent.briefText,
-                icon_name: uiParent.iconName,
-              },
-              time_cost: {},
-            })}
+            <Flex justify="space-between" align="center">
+              {UnitUpgradeCard({
+                id,
+                desc: {
+                  screen_name: uiParent.screenName,
+                  help_text: "",
+                  extra_text: "",
+                  brief_text: uiParent.briefText,
+                  icon_name: uiParent.iconName,
+                },
+                time_cost: {},
+              })}
+              <Tooltip
+                className={classes.hiddenMobile}
+                label="Toggle between comparison or default mode."
+              >
+                <ActionIcon color={["yellow.6", "blue.6"][value - 1]} onClick={() => toggle()}>
+                  <IconAdjustments></IconAdjustments>
+                </ActionIcon>
+              </Tooltip>
+            </Flex>
 
             {/* Branches Section */}
             <Divider my={12} size="md"></Divider>
 
             <Grid columns={2} gutter={0}>
-              <Grid.Col md={1}>
+              <Grid.Col md={value}>
                 <Accordion p={0} chevronPosition="right">
                   <Accordion.Item value="left_branch">
                     <Accordion.Control>
@@ -160,7 +197,7 @@ export const BattlegroupCard = (
                 </Accordion>
               </Grid.Col>
 
-              <Grid.Col md={1}>
+              <Grid.Col md={value}>
                 <Accordion p={0} chevronPosition="right">
                   <Accordion.Item value="right_branch">
                     <Accordion.Control>

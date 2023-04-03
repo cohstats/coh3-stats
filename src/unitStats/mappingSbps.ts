@@ -1,9 +1,9 @@
 // type description of mapped data
 
-import slash from "slash";
 import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
+import { internalSlash } from "../utils";
 
 // need to be extended by all required fields
 type SbpsType = {
@@ -75,7 +75,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     // default values
     id: filename,
     screenName: filename,
-    path: slash(jsonPath),
+    path: internalSlash(jsonPath),
     faction: jsonPath.split("/")[1] ?? jsonPath,
     unitType: parent,
     loadout: [],

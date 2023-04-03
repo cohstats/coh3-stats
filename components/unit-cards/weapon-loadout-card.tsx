@@ -1,16 +1,4 @@
-import slash from "slash";
-import {
-  Divider,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Indicator,
-  Space,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Divider, Flex, Grid, Image, Indicator, Stack, Text, Title } from "@mantine/core";
 import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
@@ -29,8 +17,7 @@ export const WeaponLoadoutCard = (
   { id, parent, icon_name, weapon_class, weapon_cat, weapon_bag }: WeaponCardInput,
   count = 1,
 ) => {
-  const iconName =
-    icon_name !== "" ? `/icons/${slash(icon_name)}.png` : getDefaultWeaponIcon(parent);
+  const iconName = icon_name !== "" ? `/icons/${icon_name}.png` : getDefaultWeaponIcon(parent);
   const isBallisticOrExplosive =
     weapon_cat == "ballistic_weapon" || weapon_cat == "explosive_weapon";
   return (
@@ -136,6 +123,29 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
         </Grid>
 
+        {/* Third Row: Range of fire */}
+
+        <Grid gutter="xs">
+          <Grid.Col md={4} span={4}>
+            <Text>Range of Fire</Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="green.6">
+              {weapon_bag.range.near}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="yellow.6">
+              {weapon_bag.range.mid}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={2} span={2}>
+            <Text align="center" color="red.6">
+              {weapon_bag.range.max}
+            </Text>
+          </Grid.Col>
+        </Grid>
+
         {/* These rows only apply if activeData.weapon.weapon_cat == "ballistic_weapon"
           || activeData.weapon.weapon_cat == "explosive_weapon" */}
 
@@ -201,9 +211,8 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
-              Avg.
-            </Text>
+            {/* <Text align="center" color="yellow.6">
+            </Text> */}
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
@@ -223,36 +232,13 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
+            {/* <Text align="center" color="yellow.6">
               {"-"}
-            </Text>
+            </Text> */}
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
               {weapon_bag.damage_max}
-            </Text>
-          </Grid.Col>
-        </Grid>
-
-        {/* Third Row: Range of fire */}
-
-        <Grid gutter="xs">
-          <Grid.Col md={4} span={4}>
-            <Text>Range of Fire</Text>
-          </Grid.Col>
-          <Grid.Col md={3} span={3}>
-            <Text align="center" color="green.6">
-              {weapon_bag.range.min}
-            </Text>
-          </Grid.Col>
-          <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
-              {"-"}
-            </Text>
-          </Grid.Col>
-          <Grid.Col md={2} span={2}>
-            <Text align="center" color="red.6">
-              {weapon_bag.range.max}
             </Text>
           </Grid.Col>
         </Grid>
@@ -269,9 +255,9 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
-            <Text align="center" color="yellow.6">
+            {/* <Text align="center" color="yellow.6">
               {"-"}
-            </Text>
+            </Text> */}
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">

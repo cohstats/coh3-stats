@@ -6,30 +6,81 @@ import {
   Grid,
   Group,
   HoverCard,
+  Image,
   Stack,
   Text,
 } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons";
-import Link from "next/link";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";
-import { getDPSCalculatorRoute, getExplorerFactionRoute } from "../../../src/routes";
+import {
+  getDPSCalculatorRoute,
+  getExplorerFactionRoute,
+  getExplorerFactionUnitsRoute,
+} from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
+import { getIconsPathOnCDN } from "../../../src/utils";
+import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
 
 const explorerFactionLink = (faction: raceType, close: () => void) => {
+  const name = faction !== "dak" ? localizedNames[faction] : "DAK";
+
   return (
-    <Flex direction="row" align="center" gap="md">
-      <FactionIcon name={faction} width={24} />
-      <Anchor
-        color="orange"
-        component={Link}
-        href={getExplorerFactionRoute(faction)}
-        onClick={close}
-      >
-        {localizedNames[faction]}
-      </Anchor>
-    </Flex>
+    <Stack spacing={4}>
+      <Flex direction="row" align="center" gap={"xs"}>
+        <FactionIcon name={faction} width={22} />
+        <Anchor
+          color="orange"
+          component={LinkWithOutPrefetch}
+          href={getExplorerFactionRoute(faction)}
+          onClick={close}
+        >
+          <Text lineClamp={1} weight={500}>
+            {name}
+          </Text>
+        </Anchor>
+      </Flex>
+      <Divider></Divider>
+      <Stack spacing={4}>
+        <Group spacing={4}>
+          <Image
+            width={20}
+            height={20}
+            fit="contain"
+            src={`/icons/races/common/symbols/building_hq.png`}
+            alt=""
+            withPlaceholder
+          />
+          <Anchor
+            color="orange"
+            component={LinkWithOutPrefetch}
+            href={getExplorerFactionRoute(faction)}
+            onClick={close}
+          >
+            Buildings
+          </Anchor>
+        </Group>
+        <Group spacing={4}>
+          <Image
+            width={20}
+            height={20}
+            fit="contain"
+            src={`/icons/races/common/symbols/building_barracks.png`}
+            alt=""
+            withPlaceholder
+          />
+          <Anchor
+            color="orange"
+            component={LinkWithOutPrefetch}
+            href={getExplorerFactionUnitsRoute(faction)}
+            onClick={close}
+          >
+            Units
+          </Anchor>
+        </Group>
+      </Stack>
+    </Stack>
   );
 };
 
@@ -37,13 +88,30 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
  * @TODO Provide the toolName type for the routes. In the meantime, provide the
  * route fragment as string.
  */
-const explorerToolLink = (toolName: string, close: () => void) => (
-  <Text>
-    <Anchor color="orange" component={Link} href={getDPSCalculatorRoute()} onClick={close}>
-      {toolName}
-    </Anchor>
-  </Text>
-);
+const explorerToolLink = (close: () => void) => {
+  return (
+    <Group spacing={4}>
+      <Image
+        width={20}
+        height={20}
+        fit="contain"
+        src={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
+        alt=""
+        withPlaceholder
+      />
+      <Text weight={500}>
+        <Anchor
+          color="orange"
+          component={LinkWithOutPrefetch}
+          href={getDPSCalculatorRoute()}
+          onClick={close}
+        >
+          DPS - Unit Comparison
+        </Anchor>
+      </Text>
+    </Group>
+  );
+};
 
 const ExplorerMenu = ({
   cx,
@@ -71,7 +139,7 @@ const ExplorerMenu = ({
             <Divider my="sm"></Divider>
             <Stack>
               <Text weight={700}>Tools</Text>
-              {explorerToolLink("DPS - Unit Comparison", close)}
+              {explorerToolLink(close)}
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -81,9 +149,9 @@ const ExplorerMenu = ({
 
   const desktopView = (
     <Group className={classes.hiddenMobile}>
-      <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+      <HoverCard width={840} position="bottom" radius="md" shadow="md" withinPortal>
         <HoverCard.Target>
-          <Anchor href={"/explorer"} className={cx(classes.link)}>
+          <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={cx(classes.link)}>
             <Group spacing={3}>
               <Text>Explorer</Text>
               <IconChevronDown className={classes.hiddenMobile} size={16} />
@@ -91,19 +159,20 @@ const ExplorerMenu = ({
           </Anchor>
         </HoverCard.Target>
         <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-          <Grid gutter={0} columns={2}>
-            <Grid.Col span={1}>
-              <Stack>
-                {explorerFactionLink("german", () => null)}
-                {explorerFactionLink("american", () => null)}
-                {explorerFactionLink("dak", () => null)}
-                {explorerFactionLink("british", () => null)}
-              </Stack>
+          <Grid gutter={8} columns={4}>
+            <Grid.Col span={3}>
+              <Grid columns={4} align="center">
+                <Grid.Col span={1}>{explorerFactionLink("german", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("american", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("dak", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("british", () => null)}</Grid.Col>
+              </Grid>
             </Grid.Col>
             <Grid.Col span={1}>
-              <Stack>
+              <Stack spacing={4}>
                 <Text weight={700}>Tools</Text>
-                {explorerToolLink("DPS - Unit Comparison", () => null)}
+                <Divider />
+                {explorerToolLink(() => null)}
               </Stack>
             </Grid.Col>
           </Grid>

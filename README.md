@@ -50,7 +50,7 @@ Development conventions:
 
 Maps are specified in https://github.com/cohstats/coh3-stats/blob/master/src/coh3/coh3-data.ts#L284
 
-### Utilize images from the game
+#### Utilize images from the game
 
 You can use function getIconsPathOnCDN where you can pass the image name or the full path and it should automatically
 resolve it on our hosting
@@ -94,6 +94,38 @@ Example pages:
 
 ![image](https://user-images.githubusercontent.com/8086995/217599315-ff660c70-e9d6-4e99-88b9-c4ea21892433.png)
 
+## How to update the data after a new game patch
+
+1. Go to https://github.com/cohstats/coh3-data and generate the new data as per readme
+2. Create a new tag in coh3-data as per readme
+3. Update config.ts in the root 4. Add the patch into object patches 5. Update latestPatch variable with the key of the new patch
+4. Run the project and verify that all pages work as expected
+
+## How to update the sitemap after adding new pages
+
+We should also run this after the patch update.
+
+1. Run `yarn build`
+2. Run `yarn sitemap`
+3. Check changes in `public/sitemap.xml`
+4. If the pages are not there, you can add them manually in `next-sitemap.config.js`
+5. Commit the changes
+
+For more info see readme at https://www.npmjs.com/package/next-sitemap
+
+##### Generating the links to all units:
+
+We have special script for that.
+
+1. You need Node 19+
+2. Run
+
+```
+npx ts-node --compiler-options "{\"module\":\"commonjs\"}" scripts/unit-paths.ts > paths.txt
+```
+
+3. Copy the content from `paths.txt` and paste it into `next-sitemap.config.js`
+
 ### High level architecture
 
 ![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
@@ -120,19 +152,9 @@ Backend:
     not perfect for FireStore
   - Big Query - for stored matches (we need to do pricing calculations on this)
 
-## How to update the data after a new game patch
-
-1. Go to https://github.com/cohstats/coh3-data and generate the new data as per readme
-2. Create a new tag in coh3-data as per readme
-3. Update config.ts in the root 4. Add the patch into object patches 5. Update latestPatch variable with the key of the new patch
-4. Run the project and verify that all pages work as expected
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
-are welcome!

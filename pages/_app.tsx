@@ -20,7 +20,7 @@ webFirebase.init();
 NProgress.configure({ showSpinner: false });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
-  const { Component, pageProps, router } = props;
+  const { Component, pageProps } = props;
 
   // get system colorscheme
   const systemColorScheme = useColorScheme("dark");
@@ -73,10 +73,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     });
   }, []);
 
-  let layoutContent = true;
-  if ([`/landing`].includes(router.pathname)) {
-    layoutContent = false;
-  }
+  const layoutContent = true;
 
   const contentWithLayout = (
     <>
