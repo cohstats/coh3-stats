@@ -304,15 +304,19 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
   }
 };
 
+let EbpsPatchData: any;
+
 // calls the mapping for each entity and
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const getEbpsStats = async () => {
+const getEbpsStats = async (patch = "latest") => {
+  if (patch == config.latestPatch) patch = "latest";
   // ebps needs to be returned to avoid double computation
-  if (ebpsStats) return ebpsStats;
+  // if (ebpsStats) return ebpsStats;
+  if (EbpsPatchData && EbpsPatchData[patch]) return EbpsPatchData[patch];
 
-  const myReqEbps = await fetch(config.getPatchDataUrl("ebps.json"));
+  const myReqEbps = await fetch(config.getPatchDataUrl("ebps.json", patch));
 
   const root = await myReqEbps.json();
 
@@ -359,6 +363,9 @@ const getEbpsStats = async () => {
     });
   }
 
+  if (!EbpsPatchData) EbpsPatchData = {};
+  EbpsPatchData[patch] = ebpsSetAll;
+
   return ebpsSetAll;
 };
 
@@ -371,7 +378,11 @@ const isExtensionContainer = (key: string, obj: any) => {
 const setEbpsStats = (stats: EbpsType[]) => {
   //@todo to be filled
   ebpsStats = stats;
+  if (!EbpsPatchData) {
+    EbpsPatchData = {};
+    EbpsPatchData["latest"] = stats;
+  }
 };
 
-export { ebpsStats, getEbpsStats, setEbpsStats };
+export { ebpsStats, getEbpsStats, setEbpsStats, EbpsPatchData };
 export type { EbpsType };

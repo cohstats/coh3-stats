@@ -66,6 +66,8 @@ type LoadoutData = {
 // Can be accessed from everywhere
 let sbpsStats: SbpsType[];
 
+let sbpsPatchData: any;
+
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
 const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
@@ -230,11 +232,15 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const getSbpsStats = async () => {
-  // check if data already extracted
-  if (sbpsStats) return sbpsStats;
+const getSbpsStats = async (patch = "latest") => {
+  if (patch == config.latestPatch) patch = "latest";
 
-  const myReqSbps = await fetch(config.getPatchDataUrl("sbps.json"));
+  if (sbpsPatchData && sbpsPatchData[patch]) return sbpsPatchData[patch];
+
+  // check if data already extracted
+  // if (sbpsStats) return sbpsStats;
+
+  const myReqSbps = await fetch(config.getPatchDataUrl("sbps.json", patch));
 
   const root = await myReqSbps.json();
 
@@ -264,7 +270,10 @@ const getSbpsStats = async () => {
     });
   }
 
-  sbpsStats = sbpsSetAll;
+  // sbpsStats = sbpsSetAll;
+  if (!sbpsPatchData) sbpsPatchData = {};
+  sbpsPatchData[patch] = sbpsSetAll;
+  if (patch == "latest") sbpsStats = sbpsSetAll;
 
   //@todo to be filled
   return sbpsSetAll;
@@ -277,9 +286,12 @@ const isExtensionContainer = (key: string, obj: any) => {
 
 //
 const setSbpsStats = (stats: SbpsType[]) => {
-  //@todo to be filled
   sbpsStats = stats;
+  if (!sbpsPatchData) {
+    sbpsPatchData = {};
+    sbpsPatchData["latest"] = stats;
+  }
 };
 
-export { sbpsStats, setSbpsStats, getSbpsStats };
+export { sbpsStats, setSbpsStats, getSbpsStats, sbpsPatchData };
 export type { SbpsType };
