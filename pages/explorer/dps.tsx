@@ -53,6 +53,7 @@ const DpsPage: NextPage<DpsProps> = ({
   const keywords = generateKeywordsString([
     "coh3 dps",
     "dps tools",
+    "coh3 dps calculator",
     "coh3 units calculator",
     "coh3 damage calculator",
     "damage per second coh3",

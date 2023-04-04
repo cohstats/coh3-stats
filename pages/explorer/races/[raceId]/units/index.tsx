@@ -97,7 +97,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const raceToFetch = (raceId as raceType) || "american";
   const faction = raceToFetch === "dak" ? "afrika_korps" : raceToFetch;
-  const units = sbpsData.filter((squad) => squad.faction.includes(faction));
+  const units = sbpsData.filter((squad: SbpsType) => squad.faction.includes(faction));
 
   return {
     props: {

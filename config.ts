@@ -61,7 +61,6 @@ const patches: Record<string, { dataTag: string; dataTime: string }> = {
 
 const getPatchDataUrl = (dataFile = "", patch = "latest") => {
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
-
   return `https://raw.githubusercontent.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
 };
 
@@ -79,6 +78,8 @@ const config = {
   BASE_CLOUD_FUNCTIONS_URL: useFirebaseEmulators
     ? firebaseFunctions.EMULATORS_URL
     : firebaseFunctions.CLOUD_URL,
+  patches,
+  latestPatch,
 };
 
 export default config;

@@ -1,6 +1,3 @@
-import React, { useState } from "react";
-//import { LevelContext } from './LevelContext.js';
-
 import {
   // createStyles,
   Space,
@@ -52,24 +49,24 @@ const config = {
 export const DpsWeaponCard = (props: IDPSProps) => {
   // const weaponMember =
 
-  const [activeData] = useState(props.weapon_member);
+  //const [activeData] = useState(props.weapon_member);
 
   function onNumberChanged(value: number) {
-    if (value <= 0 && activeData.num == 0) {
-      activeData.num = 0;
+    if (value <= 0 && props.weapon_member.num == 0) {
+      props.weapon_member.num = 0;
       value = 0;
       return;
     }
 
     if (value <= 0) value = 0;
 
-    activeData.num = value;
-    // setActiveData({ ...activeData });
-    props.onNumberChange(activeData);
+    props.weapon_member.num = value;
+    // setActiveData({ ...props.weapon_member });
+    props.onNumberChange(props.weapon_member);
   }
 
   function onDeleteWeapon() {
-    props.onDeleteMember(activeData);
+    props.onDeleteMember(props.weapon_member);
     return;
   }
 
@@ -78,7 +75,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
     datasets: [
       {
         label: "My First Dataset",
-        data: activeData.dps_default,
+        data: props.weapon_member.dps_default,
         fill: false,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
@@ -107,17 +104,17 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                   height={30}
                   src={props.weapon_member.image}
                   fit="contain"
-                  alt={activeData.weapon_id.substring(0, 10)}
+                  alt={props.weapon_member.weapon_id.substring(0, 10)}
                 />
                 <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
               </Group>
             </HoverCard.Target>
             <HoverCard.Dropdown>
               <Card p="lg" radius="md">
-                {WeaponLoadoutCard(activeData.weapon, 1)}
+                {WeaponLoadoutCard(props.weapon_member.weapon, 1)}
               </Card>
               <Line
-                key={activeData.weapon_id}
+                key={props.weapon_member.weapon_id}
                 data={lineData}
                 options={config as any}
                 redraw
@@ -226,15 +223,20 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
         </Group> */}
 
-        <Text size="xs">{activeData.weapon_id.substring(0, 12) + "..."}</Text>
+        <Text size="xs">{props.weapon_member.weapon_id.substring(0, 12) + "..."}</Text>
         <Space h="xs"></Space>
-        {activeData.ebps.unitType == "infantry" && (
+        {props.weapon_member.ebps.unitType == "infantry" && (
           <Box
             sx={() => ({
               width: "60px",
             })}
           >
-            <NumberInput defaultValue={activeData.num} size="xs" onChange={onNumberChanged} />
+            <NumberInput
+              defaultValue={props.weapon_member.num}
+              size="xs"
+              onChange={onNumberChanged}
+              value={props.weapon_member.num}
+            />
           </Box>
         )}
       </Box>

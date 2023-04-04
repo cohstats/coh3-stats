@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
 //import { LevelContext } from './LevelContext.js';
@@ -29,15 +29,17 @@ import {
   Image,
   Text,
   Group,
-  SimpleGrid,
   Tooltip,
   ActionIcon,
+  Select,
+  LoadingOverlay,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
-import { EbpsType } from "../../src/unitStats/mappingEbps";
-import { WeaponType } from "../../src/unitStats/mappingWeapon";
-import { SbpsType } from "../../src/unitStats/mappingSbps";
+import { EbpsType, getEbpsStats } from "../../src/unitStats/mappingEbps";
+// import slash from "slash";
+import { getWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
+import { getSbpsStats, SbpsType } from "../../src/unitStats/mappingSbps";
 import { IconAdjustments } from "@tabler/icons";
 import {
   CustomizableUnit,
@@ -47,6 +49,7 @@ import {
   updateHealth,
 } from "../../src/unitStats/dpsCommon";
 import { getFactionIcon } from "../../src/unitStats";
+import config from "../../config";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList1: CustomizableUnit[] = [];
@@ -161,8 +164,7 @@ const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
 
 const mapUnitSelection = (
   sbps: SbpsType[],
-  ebps: EbpsType[],
-  weapons: WeaponType[],
+  units: CustomizableUnit[],
   unitFilter: string[] = [],
 ) => {
   const selectionFields = [];
@@ -209,7 +211,16 @@ const generateFilterButtons = (
   return filterButtons;
 };
 
-const units: CustomizableUnit[] = [];
+let units1: CustomizableUnit[] = [];
+let units2: CustomizableUnit[] = [];
+
+let ebpsData1: EbpsType[] = [];
+let sbpsData1: SbpsType[] = [];
+let weaponData1: WeaponType[] = [];
+
+let ebpsData2: EbpsType[] = [];
+let sbpsData2: SbpsType[] = [];
+let weaponData2: WeaponType[] = [];
 
 interface IDPSProps {
   weaponData: WeaponType[];
@@ -217,14 +228,31 @@ interface IDPSProps {
   ebpsData: EbpsType[];
 }
 
+export const init = (props: IDPSProps) => {
+  ebpsData1 = props.ebpsData;
+  sbpsData1 = props.sbpsData;
+  weaponData1 = props.weaponData;
+  ebpsData2 = props.ebpsData;
+  sbpsData2 = props.sbpsData;
+  weaponData2 = props.weaponData;
+
+  // Get Custmizable units
+  for (const sbps of props.sbpsData)
+    units1.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData));
+  units2 = [...units1];
+};
+
 export const DpsChart = (props: IDPSProps) => {
   const filter_def1: string[] = [];
   const filter_def2: string[] = [];
   const searchData_default: CustomizableUnit[] = [];
 
+  const [patchChangeIndex, setPatchChange] = useState(0);
   const [activeData] = useState(searchData_default);
   const [unitFilter1, setFilter1] = useState(filter_def1);
   const [unitFilter2, setFilter2] = useState(filter_def2);
+  const [patchUnit1, setPatchUnit1] = useState("");
+  const [patchUnit2, setPatchUnit2] = useState("");
 
   const [rerender, setRerender] = useState(false);
   // const [isStaircase, setStaircase] = useState(false);
@@ -234,10 +262,13 @@ export const DpsChart = (props: IDPSProps) => {
   // const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  // get all customizable units once
-  if (units.length == 0)
-    for (const sbps of props.sbpsData)
-      units.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData));
+  if (activeData.length == 0) init(props);
+
+  // if(config.isDevEnv())
+  const patchList = [];
+  for (const key in config.patches) {
+    patchList.push(key);
+  }
 
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
@@ -245,28 +276,56 @@ export const DpsChart = (props: IDPSProps) => {
 
   // create selection List
   if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
-    unitSelectionList1 = mapUnitSelection(
-      props.sbpsData,
-      props.ebpsData,
-      props.weaponData,
-      unitFilter1,
-    );
+    unitSelectionList1 = mapUnitSelection(props.sbpsData, units1, unitFilter1);
   if (unitSelectionList2.length == 0 && props.sbpsData.length > 0)
-    unitSelectionList2 = mapUnitSelection(
-      props.sbpsData,
-      props.ebpsData,
-      props.weaponData,
-      unitFilter2,
-    );
+    unitSelectionList2 = mapUnitSelection(props.sbpsData, units2, unitFilter2);
+
   const chartData = { datasets: [mapChartData([])] };
 
-  // useEffect(() => {
-  //   const chart = chartRef.current;
-  //   setScreenOptions(options, isLargeScreen);
-
-  //     //setScreenOptions(options, isLargeScreen);
-  //     chart?.update();
-  // }, [isLargeScreen]);
+  const selectionChangeCallback = onSelectionChange;
+  useEffect(() => {
+    const getPatchStats = async () => {
+      // Get Patch data from cache or fetch
+      if (patchChangeIndex == 1) {
+        sbpsData1 = await getSbpsStats(patchUnit1);
+        ebpsData1 = await getEbpsStats(patchUnit1);
+        weaponData1 = await getWeaponStats(patchUnit1);
+        units1 = [];
+        for (const unitSbps of sbpsData1)
+          units1.push(mapCustomizableUnit(unitSbps, ebpsData1, weaponData1));
+        unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
+        if (activeData[0]) {
+          const id = activeData[0].id;
+          activeData[0] = {} as any;
+          selectionChangeCallback(id, 0);
+        }
+      } else if (patchChangeIndex == 2) {
+        sbpsData2 = await getSbpsStats(patchUnit2);
+        ebpsData2 = await getEbpsStats(patchUnit2);
+        weaponData2 = await getWeaponStats(patchUnit2);
+        units2 = [];
+        for (const unitSbps of sbpsData2)
+          units2.push(mapCustomizableUnit(unitSbps, ebpsData2, weaponData2));
+        unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
+        if (activeData[1]) {
+          const id = activeData[1].id;
+          activeData[1] = {} as any;
+          selectionChangeCallback(id, 1);
+        }
+      }
+      setPatchChange(0);
+      // setRerender(!render);
+    };
+    if (patchChangeIndex > 0) getPatchStats();
+  }, [
+    patchUnit1,
+    patchUnit2,
+    unitFilter1,
+    unitFilter2,
+    activeData,
+    patchChangeIndex,
+    selectionChangeCallback,
+  ]);
 
   // setScreenOptions(options, isLargeScreen);
 
@@ -294,6 +353,12 @@ export const DpsChart = (props: IDPSProps) => {
         activeData[index].weapon_member.push({ ...loadout });
       setRerender(!rerender);
     }
+  }
+
+  function onPatchUnitChange(value: string, index: number) {
+    if (index == 1) setPatchUnit1(value);
+    else setPatchUnit2(value);
+    setPatchChange(index);
   }
 
   function toggleFilter(
@@ -329,10 +394,8 @@ export const DpsChart = (props: IDPSProps) => {
       options.scales.y.title.text = "Damage Per Second (DPS)";
     } else {
       options.scales.y.title.text = "DPS vs Health (%)";
-      if (activeData[0])
-        dpsLines[0] = getDpsVsHealth(props.ebpsData, activeData[0], activeData[1]);
-      if (activeData[1])
-        dpsLines[1] = getDpsVsHealth(props.ebpsData, activeData[1], activeData[0]);
+      if (activeData[0]) dpsLines[0] = getDpsVsHealth(ebpsData1, activeData[0], activeData[1]);
+      if (activeData[1]) dpsLines[1] = getDpsVsHealth(ebpsData2, activeData[1], activeData[0]);
     }
 
     //const selectItem = searchItems.searchData.find(item => item.value = activeData );
@@ -358,7 +421,7 @@ export const DpsChart = (props: IDPSProps) => {
     }
   }
   // some scale buffer above the highest point
-  maxY = maxY * 1.1;
+  maxY = (Math.floor(maxY / 10) + 1) * 10;
 
   options.scales.y.suggestedMax = maxY;
   options.scales.x.suggestedMax = maxX;
@@ -374,21 +437,88 @@ export const DpsChart = (props: IDPSProps) => {
       <Container>
         {/* */}
 
-        <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
+        <Grid>
+          <Grid.Col span={10}>
+            <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <Flex
+              // mih={50}
+              // gap="xs"
+              justify="flex-end"
+              //  align="center"
+              //direction="row"
+              wrap="wrap"
+            >
+              <Space h="2rem" />
+              <Group>
+                <HoverCard width={400} shadow="md">
+                  <HoverCard.Target>
+                    <div>
+                      <IconAdjustments opacity={0.6} />
+                    </div>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    <Stack mb={12}>
+                      <Space></Space>
+                      <Text size="sm">Toggle DPS mode.</Text>
+                      <Switch
+                        label={"DPS / Target Health (%)"}
+                        checked={showDpsHealth}
+                        onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
+                        //onClick={() => setCurve(isCurve)}
+                        size="xs"
+                      />
+                    </Stack>
+                  </HoverCard.Dropdown>
+                </HoverCard>
+              </Group>
+            </Flex>
+          </Grid.Col>
+        </Grid>
+
         <Space></Space>
 
         <Space h="xl" />
         <>
           <Grid>
             <Grid.Col md={6} lg={6}>
-              <SimpleGrid cols={2}>
-                <Group>
-                  {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
-                </Group>
-                <Space h="2rem" />
-              </SimpleGrid>
+              <Grid>
+                <Grid.Col span={6}>
+                  <Group noWrap>
+                    {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
+                  </Group>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <Flex
+                    // mih={50}
+                    // gap="xs"
+                    justify="flex-end"
+                    //  align="center"
+                    //direction="row"
+                    wrap="wrap"
+                  >
+                    <Tooltip label={"Patch Version"}>
+                      <Box
+                        sx={() => ({
+                          width: "90px",
+                        })}
+                      >
+                        <Select
+                          // label="Your favorite framework/library"
+                          placeholder="Patch"
+                          // onSelect={onSelectPatch}
+                          onChange={(value) => onPatchUnitChange(value as string, 1)}
+                          data={patchList}
+                          defaultValue={config.latestPatch}
+                        />
+                      </Box>
+                    </Tooltip>
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+              {/* <Space h="2rem" /> */}
               <Space h="sm" />
-
               <UnitSearch
                 key="Search1"
                 searchData={unitSelectionList1}
@@ -410,65 +540,57 @@ export const DpsChart = (props: IDPSProps) => {
                   })}
                 >
                   <DpsUnitCustomizing
-                    key={activeData[0].id + "0"}
+                    key={activeData[0].id + "0." + patchUnit1}
                     unit={activeData[0]}
                     onChange={onSquadConfigChange}
                     index={0}
-                    ebps={props.ebpsData}
+                    ebps={ebpsData1}
+                    weapons={weaponData1}
                   ></DpsUnitCustomizing>
                 </Box>
               )}
             </Grid.Col>
 
             <Grid.Col md={6} lg={6}>
-              <SimpleGrid cols={2}>
-                <Group>
-                  {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
-                </Group>
-                <Flex
-                  // mih={50}
-                  // gap="xs"
-                  justify="flex-end"
-                  //  align="center"
-                  //direction="row"
-                  wrap="wrap"
-                >
-                  <Space h="2rem" />
-                  <Group>
-                    <HoverCard width={400} shadow="md">
-                      <HoverCard.Target>
-                        <div>
-                          <IconAdjustments opacity={0.6} />
-                        </div>
-                      </HoverCard.Target>
-                      <HoverCard.Dropdown>
-                        <Stack mb={12}>
-                          {/* <Text size="sm">
-                      {isStaircase
-                        ? "Staircase: Show changes at near/mid/far only"
-                        : "Line: Applied damage changes linearly over distance"}
-                    </Text>
-                    <Switch
-                      label={isStaircase ? "Staircase" : "Line"}
-                      checked={isStaircase}
-                      onChange={(event) => setStaircase(event.currentTarget.checked)}
-                      size="xs"
-                    /> */}
-                          <Space></Space>
-                          <Text size="sm">Toggle DPS mode.</Text>
-                          <Switch
-                            label={"DPS / Target Health (%)"}
-                            checked={showDpsHealth}
-                            onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
-                            //onClick={() => setCurve(isCurve)}
-                            size="xs"
-                          />
-                        </Stack>
-                      </HoverCard.Dropdown>
-                    </HoverCard>
+              {/* <SimpleGrid cols={2}> */}
+              <Grid>
+                <Grid.Col md={6} lg={6}>
+                  <Group noWrap>
+                    {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
                   </Group>
-                </Flex>
-              </SimpleGrid>
+                </Grid.Col>
+                <Grid.Col md={6} lg={6}>
+                  <Flex
+                    // mih={50}
+                    // gap="xs"
+                    justify="flex-end"
+                    //  align="center"
+                    //direction="row"
+                    wrap="wrap"
+                  >
+                    <Space h="2rem" />
+                    <Group>
+                      <Tooltip label={"Patch Version"}>
+                        <Box
+                          sx={() => ({
+                            width: "90px",
+                          })}
+                        >
+                          <Select
+                            // label="Your favorite framework/library"
+                            placeholder="Patch"
+                            // onSelect={onSelectPatch}
+                            onChange={(value) => onPatchUnitChange(value as string, 2)}
+                            data={patchList}
+                            defaultValue={config.latestPatch}
+                          />
+                        </Box>
+                      </Tooltip>
+                    </Group>
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+              {/* </SimpleGrid> */}
               <Space h="sm" />
 
               <UnitSearch
@@ -492,11 +614,12 @@ export const DpsChart = (props: IDPSProps) => {
                   })}
                 >
                   <DpsUnitCustomizing
-                    key={activeData[1].id + "1"}
+                    key={activeData[1].id + "1." + patchUnit2}
                     unit={activeData[1]}
                     onChange={onSquadConfigChange}
                     index={0}
-                    ebps={props.ebpsData}
+                    ebps={ebpsData1}
+                    weapons={weaponData1}
                   ></DpsUnitCustomizing>
                 </Box>
               )}
@@ -507,6 +630,7 @@ export const DpsChart = (props: IDPSProps) => {
 
       <Space h="sm" />
       <Container size="md">
+        <LoadingOverlay visible={patchChangeIndex > 0} overlayBlur={1} />
         <Box
           sx={(theme) => ({
             backgroundColor:
@@ -520,6 +644,11 @@ export const DpsChart = (props: IDPSProps) => {
             borderRadius: theme.radius.md,
           })}
         >
+          {/* { patchChangeIndex > 0 &&
+            <Container size={'md'}>
+                <Loader />
+            </Container>
+          } */}
           <Line ref={chartRef as any} options={options as any} data={chartData as any} />
         </Box>
         <Space h="sm" />

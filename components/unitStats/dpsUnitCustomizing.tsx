@@ -16,7 +16,7 @@ import {
   HoverCard,
 } from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
-import { WeaponStats } from "../../src/unitStats/mappingWeapon";
+import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
 import { ebpsStats, EbpsType, getSquadTotalCost } from "../../src/unitStats";
 import {
@@ -36,17 +36,18 @@ interface IUnitProps {
   onChange: any;
   index: number;
   ebps: EbpsType[];
+  weapons: WeaponType[];
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
   const weaponListInit: WeaponMember[] = [];
-  const [activeData] = useState(props.unit);
+  //const [activeData] = useState(props.unit);
   const [weaponList, setWeaponList] = useState(weaponListInit);
 
   // create weapon list
   if (weaponList.length == 0) {
-    const weapons = getSbpsWeapons(props.unit.sbps, props.ebps, WeaponStats);
-    const weaponUpgrades = getSbpsUpgrades(props.unit.sbps, props.ebps, WeaponStats);
+    const weapons = getSbpsWeapons(props.unit.sbps, props.ebps, props.weapons);
+    const weaponUpgrades = getSbpsUpgrades(props.unit.sbps, props.ebps, props.weapons);
     for (const weaponUpgrade of weaponUpgrades) {
       // check if weapon is already available
       if (weapons.find((member) => member.weapon_id == weaponUpgrade.weapon_id)) continue;
@@ -57,7 +58,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
 
   function onAddWeapon(selectionItem: WeaponMember) {
     // check if weapon have already been added
-    if (activeData.weapon_member.find((weapon) => weapon.weapon_id == selectionItem.weapon_id))
+    if (props.unit.weapon_member.find((weapon) => weapon.weapon_id == selectionItem.weapon_id))
       return;
 
     // Clone Weapon so we can configure it localy
@@ -66,42 +67,42 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     if (!clone.num) clone.num = 1;
 
     //for (const weapon of selectionItem) {
-    activeData.weapon_member.push(clone);
-    props.onChange(activeData);
+    props.unit.weapon_member.push(clone);
+    props.onChange(props.unit);
   }
 
   // Weapon number changed
   function onWeaponNumberChange() {
-    //const weapon = activeData.weapon_member.find((mem) => mem.weapon_id == member.weapon_id);
+    //const weapon = props.unit.weapon_member.find((mem) => mem.weapon_id == member.weapon_id);
     //if (weapon) weapon.num = member.num;
-    props.onChange(activeData);
+    props.onChange(props.unit);
   }
 
   function onMovingChange() {
-    activeData.is_moving = !activeData.is_moving;
-    props.onChange(activeData);
+    props.unit.is_moving = !props.unit.is_moving;
+    props.onChange(props.unit);
   }
 
   function onCoverChange(cover: string) {
-    if (activeData.cover != cover) activeData.cover = cover;
-    else activeData.cover = "";
-    props.onChange(activeData);
+    if (props.unit.cover != cover) props.unit.cover = cover;
+    else props.unit.cover = "";
+    props.onChange(props.unit);
   }
 
   // Weapon card deleted
   function onDelete(member: WeaponMember) {
-    activeData.weapon_member.forEach((ldout) => {
+    props.unit.weapon_member.forEach((ldout) => {
       if (ldout.weapon_id == member.weapon_id) {
-        const index = activeData.weapon_member.indexOf(ldout);
-        activeData.weapon_member.splice(index, 1);
+        const index = props.unit.weapon_member.indexOf(ldout);
+        props.unit.weapon_member.splice(index, 1);
       }
     });
-    props.onChange(activeData);
+    props.onChange(props.unit);
   }
 
   const components: any[] = [];
   // create weapon member
-  for (const member of activeData.weapon_member) {
+  for (const member of props.unit.weapon_member) {
     components.push(
       <DpsWeaponCard
         weapon_member={member}
@@ -111,15 +112,14 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
       ></DpsWeaponCard>,
     );
   }
-  const totalCost = getSquadTotalCost(activeData.sbps, props.ebps);
-
+  const totalCost = getSquadTotalCost(props.unit.sbps, props.ebps);
   return (
     <>
       <Stack align="left" justify="flex-start" spacing="xs">
         <Grid gutter="xs">
           <Grid.Col span={4}>
             <Group noWrap>
-              <Tooltip label={activeData.screen_name}>
+              <Tooltip label={props.unit.screen_name}>
                 <HoverCard shadow="md" width={400} position="left" offset={50}>
                   <HoverCard.Target>
                     <Group>
@@ -133,13 +133,13 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                         }}
                         component={Link}
                         href={
-                          `/explorer/races/${resolveFactionLinkid(activeData.faction)}/units/` +
-                          activeData.id
+                          `/explorer/races/${resolveFactionLinkid(props.unit.faction)}/units/` +
+                          props.unit.id
                         }
                       >
                         <Avatar
-                          src={activeData.icon_name}
-                          alt={activeData.screen_name}
+                          src={props.unit.icon_name}
+                          alt={props.unit.screen_name}
                           placeholder="/icons/general/infantry_icn.png"
                           radius="xs"
                           size="md"
@@ -154,31 +154,31 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   <HoverCard.Dropdown>
                     <Stack>
                       <UnitSquadCard
-                        id={activeData.id}
+                        id={props.unit.id}
                         ui={{
-                          armorIcon: activeData.sbps.ui.armorIcon,
+                          armorIcon: props.unit.sbps.ui.armorIcon,
                         }}
                         health={{
-                          armor: activeData.ebps_default.health.armorLayout.armor,
-                          frontal: activeData.ebps_default.health.armorLayout.frontArmor,
-                          rear: activeData.ebps_default.health.armorLayout.rearArmor,
-                          side: activeData.ebps_default.health.armorLayout.sideArmor,
-                          targetSize: activeData.ebps_default.health.targetSize,
+                          armor: props.unit.ebps_default.health.armorLayout.armor,
+                          frontal: props.unit.ebps_default.health.armorLayout.frontArmor,
+                          rear: props.unit.ebps_default.health.armorLayout.rearArmor,
+                          side: props.unit.ebps_default.health.armorLayout.sideArmor,
+                          targetSize: props.unit.ebps_default.health.targetSize,
                         }}
-                        type={activeData.unit_type}
+                        type={props.unit.unit_type}
                         sight={{
                           coneAngle: 1,
                           outerRadius:
-                            activeData.ebps_default.sight_ext.sight_package.outer_radius,
+                            props.unit.ebps_default.sight_ext.sight_package.outer_radius,
                         }}
                         moving={{
                           defaultSpeed:
-                            activeData.ebps_default.moving_ext.speed_scaling_table.default_speed,
+                            props.unit.ebps_default.moving_ext.speed_scaling_table.default_speed,
                           maxSpeed:
-                            activeData.ebps_default.moving_ext.speed_scaling_table.max_speed,
+                            props.unit.ebps_default.moving_ext.speed_scaling_table.max_speed,
                         }}
                         range={{
-                          max: activeData.weapon_member[0].weapon.weapon_bag.range.max,
+                          max: props.unit.weapon_member[0].weapon.weapon_bag.range.max,
                         }}
                       />
                       {UnitCostCard(totalCost)}
@@ -198,12 +198,12 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
                     <Card p="lg" radius="md">
-                      {HitpointCard({ squad: activeData.sbps, entities: ebpsStats })}
+                      {HitpointCard({ squad: props.unit.sbps, entities: ebpsStats })}
                     </Card>
                   </HoverCard.Dropdown>
                 </HoverCard>
 
-                <Text size="xs">{activeData.health} HP</Text>
+                <Text size="xs">{props.unit.health} HP</Text>
               </Flex>
             </Group>
           </Grid.Col>
@@ -215,7 +215,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   size="lg"
                   onChange={onMovingChange}
                   onClick={onMovingChange}
-                  variant={activeData.is_moving ? "default" : "trannsparent"}
+                  variant={props.unit.is_moving ? "default" : "trannsparent"}
                 >
                   <Image
                     src="\icons\common\abilities\tactical_movement_riflemen_us.png"
@@ -226,7 +226,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Heavy Cover">
                 <ActionIcon
                   size="lg"
-                  variant={activeData.cover == "heavy" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "heavy" ? "default" : "trannsparent"}
                   onClick={() => onCoverChange("heavy")}
                 >
                   <Image src="/icons/common/cover/heavy.png" alt="Heavy Cover"></Image>
@@ -236,7 +236,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Light Cover">
                 <ActionIcon
                   size="lg"
-                  variant={activeData.cover == "light" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "light" ? "default" : "trannsparent"}
                   onClick={() => onCoverChange("light")}
                 >
                   <Image src="/icons/common/cover/light.png" alt="Light Cover"></Image>
@@ -246,7 +246,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Negative Cover">
                 <ActionIcon
                   size="lg"
-                  variant={activeData.cover == "negative" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "negative" ? "default" : "trannsparent"}
                   onClick={() => onCoverChange("negative")}
                 >
                   <Image src="/icons/common/cover/negative.png" alt="Negative Cover"></Image>
@@ -256,7 +256,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Garrison">
                 <ActionIcon
                   size="lg"
-                  variant={activeData.cover == "garrison" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "garrison" ? "default" : "trannsparent"}
                   onClick={() => onCoverChange("garrison")}
                 >
                   <Image src="/icons/common/units/garrisoned.png" alt="Garrision"></Image>
