@@ -55,10 +55,10 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
         <Stack mt={32}>
           <Title order={4}>Units</Title>
 
-          <Grid columns={2}>
+          <Grid>
             {units.map(({ id, ui }) => {
               return (
-                <Grid.Col key={id} span={1}>
+                <Grid.Col key={id} xs={12} md={6}>
                   <Anchor
                     color="undefined"
                     underline={false}
@@ -70,7 +70,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                     component={LinkWithOutPrefetch}
                     href={`/explorer/races/${raceToFetch}/units/${id}`}
                   >
-                    <Card p="lg" radius="md" withBorder>
+                    <Card p="md" radius="md" withBorder>
                       {UnitDescriptionCard({
                         screen_name: ui.screenName,
                         help_text: ui.helpText,
