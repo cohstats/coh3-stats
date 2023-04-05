@@ -39,6 +39,12 @@ const About: NextPage = () => {
           </Text>
           <Text pt="sm">More info on Github or Discord</Text>
           <Title order={1} size="h4" pt="md">
+            API Usage / Collaboration
+          </Title>
+          We are open for collaboration / sharing the data. Reach out to us on Discord.
+          <br />
+          Its forbidden to use API / scrape the site without previous consulting!
+          <Title order={1} size="h4" pt="md">
             Bug reports
           </Title>
           You can report the issues on{" "}
