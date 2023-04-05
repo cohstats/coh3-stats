@@ -18,7 +18,7 @@ export default new Router()
       },
     },
     ({ setResponseHeader }) => {
-      setResponseHeader("x-robots-tag", "noindex, nofollow");
+      setResponseHeader("x-robots-tag", "noindex, nofollow, noarchive, noimageindex");
     },
   )
   // Homepage caching
