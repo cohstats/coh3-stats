@@ -33,7 +33,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
-      <Container fluid>
+      <Container fluid p={0}>
         <Stack>
           <Flex direction="row" align="center" gap="md">
             <FactionIcon name={raceToFetch} width={64} />
