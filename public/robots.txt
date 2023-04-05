@@ -1,4 +1,14 @@
-# *
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /leaderboards
+Disallow: /players
+Allow: /
+
 User-agent: *
 Allow: /
 
