@@ -33,7 +33,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
         />
         <meta property="og:image" content="/desktop-app/desktop-app-main-500x281.webp" />
       </Head>
-      <Container fluid>
+      <Container size={"lg"}>
         <Image
           src="/desktop-app/desktop-app-main.webp"
           alt={"coh3 stats desktop app"}

@@ -4,11 +4,14 @@ import { useRouter } from "next/router";
 const LinkWithOutPrefetch = forwardRef<
   HTMLAnchorElement,
   AnchorHTMLAttributes<HTMLAnchorElement>
->(({ children, href, ...rest }, ref) => {
+>(({ children, href, onClick, ...rest }, ref) => {
   const { push } = useRouter();
 
   const onClickPush = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    if (onClick) {
+      onClick(e);
+    }
     if (href) {
       push(href);
     }

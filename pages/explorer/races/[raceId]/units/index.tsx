@@ -1,9 +1,8 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { IconBarrierBlock } from "@tabler/icons";
-import { Anchor, Card, Flex, Grid, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Card, Flex, Grid, Stack, Text, Title, Container } from "@mantine/core";
 
-import ContentContainer from "../../../../../components/Content-container";
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import { generateKeywordsString } from "../../../../../src/head-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
@@ -34,7 +33,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
-      <ContentContainer>
+      <Container fluid p={0}>
         <Stack>
           <Flex direction="row" align="center" gap="md">
             <FactionIcon name={raceToFetch} width={64} />
@@ -55,10 +54,10 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
         <Stack mt={32}>
           <Title order={4}>Units</Title>
 
-          <Grid columns={2}>
+          <Grid>
             {units.map(({ id, ui }) => {
               return (
-                <Grid.Col key={id} span={1}>
+                <Grid.Col key={id} xs={12} md={6}>
                   <Anchor
                     color="undefined"
                     underline={false}
@@ -70,7 +69,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                     component={LinkWithOutPrefetch}
                     href={`/explorer/races/${raceToFetch}/units/${id}`}
                   >
-                    <Card p="lg" radius="md" withBorder>
+                    <Card p="md" radius="md" withBorder>
                       {UnitDescriptionCard({
                         screen_name: ui.screenName,
                         help_text: ui.helpText,
@@ -85,7 +84,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
             })}
           </Grid>
         </Stack>
-      </ContentContainer>
+      </Container>
     </>
   );
 };

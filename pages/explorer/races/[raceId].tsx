@@ -2,7 +2,7 @@ import { GetStaticPaths, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
-import { Card, Flex, Stack, Text, Title } from "@mantine/core";
+import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
 import {
@@ -25,7 +25,6 @@ import {
   getResolvedAbilities,
   RaceBagDescription,
 } from "../../../src/unitStats";
-import ContentContainer from "../../../components/Content-container";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateKeywordsString } from "../../../src/head-utils";
 import { getMappings } from "../../../src/unitStats/mappings";
@@ -69,7 +68,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
-      <ContentContainer>
+      <Container fluid p={0}>
         <Stack>
           <Flex direction="row" align="center" gap="md">
             <FactionIcon name={raceToFetch} width={64} />
@@ -106,7 +105,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
             abilitiesData,
           })}
         </Stack>
-      </ContentContainer>
+      </Container>
     </>
   );
 };

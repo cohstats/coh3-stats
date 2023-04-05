@@ -2,8 +2,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
-import { Card, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core";
-import ContentContainer from "../../../../../components/Content-container";
+import { Card, Container, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core";
 import {
   EbpsType,
   getResolvedUpgrades,
@@ -122,7 +121,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
         />
       </Head>
-      <ContentContainer>
+      <Container fluid p={0}>
         <Space h={32}></Space>
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceId} width={96}></FactionIcon>
@@ -188,7 +187,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
         <Grid>
           <Grid.Col>{UnitWeaponSection(squadWeapons)}</Grid.Col>
         </Grid>
-      </ContentContainer>
+      </Container>
     </>
   );
 };
