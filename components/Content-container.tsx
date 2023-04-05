@@ -6,7 +6,9 @@ interface ContentContainerProps {
 
 // Do we need any media queries here for responsiveness?
 const ContentContainer: React.FC<ContentContainerProps> = ({ children }) => (
-  <Container size={1250}>{children}</Container>
+  <Container size={1250} p={{ xs: 1, sm: "xs", md: "md" }}>
+    {children}
+  </Container>
 );
 
 export default ContentContainer;
