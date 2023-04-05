@@ -499,20 +499,15 @@ export const DpsChart = (props: IDPSProps) => {
                     wrap="wrap"
                   >
                     <Tooltip label={"Patch Version"}>
-                      <Box
-                        sx={() => ({
-                          width: "90px",
-                        })}
-                      >
-                        <Select
-                          // label="Your favorite framework/library"
-                          placeholder="Patch"
-                          // onSelect={onSelectPatch}
-                          onChange={(value) => onPatchUnitChange(value as string, 1)}
-                          data={patchList}
-                          defaultValue={config.latestPatch}
-                        />
-                      </Box>
+                      <Select
+                        styles={{ wrapper: { width: 90 } }}
+                        // label="Your favorite framework/library"
+                        placeholder="Patch"
+                        // onSelect={onSelectPatch}
+                        onChange={(value) => onPatchUnitChange(value as string, 1)}
+                        data={patchList}
+                        defaultValue={config.latestPatch}
+                      />
                     </Tooltip>
                   </Flex>
                 </Grid.Col>
@@ -571,20 +566,15 @@ export const DpsChart = (props: IDPSProps) => {
                     <Space h="2rem" />
                     <Group>
                       <Tooltip label={"Patch Version"}>
-                        <Box
-                          sx={() => ({
-                            width: "90px",
-                          })}
-                        >
-                          <Select
-                            // label="Your favorite framework/library"
-                            placeholder="Patch"
-                            // onSelect={onSelectPatch}
-                            onChange={(value) => onPatchUnitChange(value as string, 2)}
-                            data={patchList}
-                            defaultValue={config.latestPatch}
-                          />
-                        </Box>
+                        <Select
+                          styles={{ wrapper: { width: 90 } }}
+                          // label="Your favorite framework/library"
+                          placeholder="Patch"
+                          // onSelect={onSelectPatch}
+                          onChange={(value) => onPatchUnitChange(value as string, 2)}
+                          data={patchList}
+                          defaultValue={config.latestPatch}
+                        />
                       </Tooltip>
                     </Group>
                   </Flex>
