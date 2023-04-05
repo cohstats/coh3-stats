@@ -1,15 +1,22 @@
+# Block all the stupid bots
 User-agent: SemrushBot
 Disallow: /
 
 User-agent: AhrefsBot
 Disallow: /
 
+User-agent: MJ12bot
+Disallow: /
+
+# Bing bot is retarded, it's crawling leaderboards and all players on the platform
 User-agent: Bingbot
 Disallow: /leaderboards
 Disallow: /players
 Allow: /
 
 User-agent: *
+Disallow: /api
+Disallow: /tests
 Allow: /
 
 # Host
