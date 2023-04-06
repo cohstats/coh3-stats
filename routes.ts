@@ -83,7 +83,7 @@ export default new Router()
     });
   })
   // Caching for players
-  .match("/players(.*)", ({ cache }) => {
+  .match("/players(.*)", ({ cache, setResponseHeader }) => {
     cache({
       edge: {
         // Cache for 30 seconds, revalidated after 5 seconds
@@ -92,6 +92,8 @@ export default new Router()
         forcePrivateCaching: true,
       },
     });
+    // Set nofollow for players, so the bots don't go on the leaderboards
+    setResponseHeader("x-robots-tag", "nofollow");
   })
   .match("/_next/data/:version/players/:id.json", ({ cache }) => {
     cache({
