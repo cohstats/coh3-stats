@@ -2,6 +2,7 @@ import { getIconsPathOnCDN } from "../utils";
 import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 import { WeaponStatsType, WeaponType } from "./mappingWeapon";
+import { getSquadTotalCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS } from "./weaponLib";
 
@@ -95,6 +96,19 @@ type CustomizableUnit = {
   sbps: SbpsType;
   ebps_default: EbpsType;
   dps_preview: any[];
+  cost_hp: number;
+  cost_fuel: number;
+  cost_reinforce: number;
+  cost_pop: number;
+  sight_range: number;
+  range: number;
+  penetration: number;
+  dps_n: number;
+  dps_m: number;
+  dps_f: number;
+  capture_rate: number;
+  capture_revert: number;
+  speed: number;
 };
 
 export const mapCustomizableUnit = (
@@ -133,6 +147,19 @@ export const mapCustomizableUnit = (
     ebps_default: {} as EbpsType,
     sbps: sbpsSelected,
     dps_preview: [],
+    cost_hp: 0,
+    cost_fuel: 0,
+    cost_reinforce: 0,
+    cost_pop: 0,
+    sight_range: 0,
+    range: 0,
+    capture_rate: sbpsSelected.capture_rate,
+    capture_revert: sbpsSelected.capture_revert,
+    penetration: 0,
+    dps_n: 0,
+    dps_m: 0,
+    dps_f: 0,
+    speed: 0,
   };
 
   if (sbpsSelected.ui.symbolIconName != "")
@@ -150,7 +177,8 @@ export const mapCustomizableUnit = (
     // Get loadouts
     custUnit.weapon_member = getSbpsWeapons(sbpsSelected, ebps, weapons);
     custUnit.def_weapon_member = [...custUnit.weapon_member];
-
+    custUnit.range = custUnit.def_weapon_member[0]?.weapon.weapon_bag.range_max || 0;
+    custUnit.penetration = custUnit.def_weapon_member[0]?.weapon.weapon_bag.penetration_near || 0;
     // default weapon type
     if (custUnit.weapon_member.length > 0)
       custUnit.def_damage_type = (custUnit.weapon_member[0] as any).parent;
@@ -168,10 +196,35 @@ export const mapCustomizableUnit = (
       custUnit.ebps_default = def_ebps;
       custUnit.hitpoints = def_ebps.health.hitpoints;
       custUnit.target_size = def_ebps.health.targetSize;
+      custUnit.cost_reinforce = def_ebps.cost.manpower;
+      if (custUnit.unit_type != "vehicles" && custUnit.unit_type != "emplacements")
+        custUnit.cost_reinforce = Math.floor(
+          def_ebps.cost.manpower * sbpsSelected.reinforce.cost_percentage,
+        );
+      custUnit.sight_range = def_ebps.sight_ext.sight_package.outer_radius;
+      custUnit.dps_n = getDpsByDistance(
+        custUnit.def_weapon_member[0]?.weapon.weapon_bag.range_distance_near || 0,
+        custUnit,
+      );
+      custUnit.dps_m = getDpsByDistance(
+        custUnit.def_weapon_member[0]?.weapon.weapon_bag.range_distance_mid || 0,
+        custUnit,
+      );
+      custUnit.dps_f = getDpsByDistance(
+        custUnit.def_weapon_member[0]?.weapon.weapon_bag.range_distance_far || 0,
+        custUnit,
+      );
+      custUnit.speed = def_ebps.moving_ext.speed_scaling_table.default_speed;
     } else custUnit.hitpoints = 80;
+
+    const totalCost = getSquadTotalCost(sbpsSelected, ebps);
+    custUnit.cost_pop = totalCost.popcap;
+    custUnit.cost_hp = totalCost.manpower;
+    custUnit.cost_fuel = totalCost.fuel;
   }
 
   custUnit.dps_preview = getCombatDps(custUnit);
+  updateHealth(custUnit);
 
   return custUnit;
 };
@@ -386,6 +439,30 @@ export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) 
   });
 
   return dpsTotal;
+};
+
+const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
+  // compute dps for first squad
+  let dpsTotal: any[] = [];
+
+  // compute total dps for complete loadout
+  unit1.weapon_member.forEach((ldout) => {
+    const weapon_member = ldout;
+    const weaponDps = [];
+
+    // const range_min = weapon_member.weapon.weapon_bag.range_min;
+    // const range_max = weapon_member.weapon.weapon_bag.range_max;
+    // opponent default values
+
+    // for (let distance = range_min; distance <= range_max; distance++) {
+    const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
+    weaponDps.push({ x: distance, y: dps });
+    // }
+
+    dpsTotal = addDpsData(dpsTotal, weaponDps);
+  });
+
+  return Math.floor(dpsTotal[0]?.y || 0);
 };
 
 // sums up two dps lines

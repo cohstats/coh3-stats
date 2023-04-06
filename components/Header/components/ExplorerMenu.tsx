@@ -18,9 +18,10 @@ import {
   getDPSCalculatorRoute,
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
+  getUnitBrowserRoute,
 } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
-import { getIconsPathOnCDN } from "../../../src/utils";
+import { getIconsPathOnCDN, internalSlash } from "../../../src/utils";
 import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
 
 const explorerFactionLink = (faction: raceType, close: () => void) => {
@@ -107,6 +108,24 @@ const explorerToolLink = (close: () => void) => {
           onClick={close}
         >
           DPS - Unit Comparison
+        </Anchor>
+      </Text>
+      <Image
+        width={20}
+        height={20}
+        fit="contain"
+        src={internalSlash("/unitStats/weaponClass/supportinfantry_icn.png")}
+        alt=""
+        withPlaceholder
+      />
+      <Text weight={500}>
+        <Anchor
+          color="orange"
+          component={LinkWithOutPrefetch}
+          href={getUnitBrowserRoute()}
+          onClick={close}
+        >
+          Unit Browser
         </Anchor>
       </Text>
     </Group>
