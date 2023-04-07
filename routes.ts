@@ -21,6 +21,18 @@ export default new Router()
       setResponseHeader("x-robots-tag", "noindex, nofollow, noarchive, noimageindex");
     },
   )
+  // Do not access dev / preview sites for robots
+  .match(
+    {
+      path: "/robots.txt",
+      headers: {
+        host: /dev.coh3stats.com|preview.coh3stats.com/,
+      },
+    },
+    ({ send }) => {
+      send("User-agent: *\nDisallow: /");
+    },
+  )
   // Homepage caching
   .match("/", ({ cache }) => {
     cache({

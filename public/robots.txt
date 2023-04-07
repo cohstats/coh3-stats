@@ -1,3 +1,5 @@
+# We might change to block all robots / and allow only search engines
+
 # Block all the stupid bots
 User-agent: SemrushBot
 Disallow: /
@@ -6,6 +8,12 @@ User-agent: AhrefsBot
 Disallow: /
 
 User-agent: MJ12bot
+Disallow: /
+
+User-agent: dotbot
+Disallow: /
+
+User-agent: PetalBot
 Disallow: /
 
 # Bing bot is retarded, it's crawling leaderboards and all players on the platform
