@@ -1,13 +1,8 @@
 import { NextPage } from "next";
-import { ebpsStats, EbpsType, setEbpsStats } from "../../src/unitStats/mappingEbps";
-import { sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
-import { setWeaponStats, WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import {
-  setUpgradesStats,
-  upgradesStats,
-  UpgradesType,
-} from "../../src/unitStats/mappingUpgrades";
-import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
+import { EbpsType } from "../../src/unitStats/mappingEbps";
+import { SbpsType } from "../../src/unitStats/mappingSbps";
+import { WeaponType } from "../../src/unitStats/mappingWeapon";
+import { UpgradesType } from "../../src/unitStats/mappingUpgrades";
 import Head from "next/head";
 import React from "react";
 import { generateKeywordsString } from "../../src/head-utils";
@@ -28,19 +23,18 @@ const squadPage: NextPage<SquadProps> = ({
   weaponData,
   sbpsData,
   ebpsData,
-  upgradesData,
-  locstring,
+  //locstring,
 }) => {
   // Save data again in global varible for clientMode
-  if (!WeaponStats) setWeaponStats(weaponData);
+  // if (!WeaponStats) setWeaponStats(weaponData);
 
-  if (!ebpsStats) setEbpsStats(ebpsData);
+  // if (!ebpsStats) setEbpsStats(ebpsData);
 
-  if (!upgradesStats) setUpgradesStats(upgradesData);
+  // if (!upgradesStats) setUpgradesStats(upgradesData);
 
-  if (!sbpsStats) setSbpsStats(sbpsData);
+  // if (!sbpsStats) setSbpsStats(sbpsData);
 
-  if (!unitStatsLocString) setLocstring(locstring);
+  //if (!unitStatsLocString) setLocstring(locstring);
 
   const keywords = generateKeywordsString([
     "coh3 units",
