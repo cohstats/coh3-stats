@@ -55,6 +55,7 @@ const RenderPlayers = ({ playerReports, profileID }: RenderPlayersProps) => {
               <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
               <> {ratingElement}</>
               <Anchor
+                rel={"noreferrer"}
                 key={playerInfo.profile_id}
                 component={Link}
                 href={`/players/${playerInfo.profile_id}`}
