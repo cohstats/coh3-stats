@@ -345,6 +345,8 @@ const getEbpsStats = async (patch = "latest") => {
         case "defensive":
         // case "flame_throwers":
         case "team_weapons": // Team weapons (squad members).
+        case "heavy_artillery":
+        case "light_artillery":
         case "heavy_machine_gun": // Crew member of MGs, which is the weapon itself (the main guy firing it).
         case "sub_machine_gun":
         case "light_machine_gun":

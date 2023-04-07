@@ -255,7 +255,13 @@ export const getSbpsWeapons = (sbps: SbpsType, ebpsList: EbpsType[], weapons: We
       const weapon = weapons.find((gun) => gun.id == weapon_ebps?.weaponId);
 
       // ignore loadout when no damage dealing weapon found
-      if (!weapon || (weapon as WeaponType).weapon_bag.damage_max == 0) continue;
+      if (
+        !weapon ||
+        (weapon as WeaponType).weapon_bag.damage_max == 0 ||
+        (weapon.weapon_bag.damage_damage_type == "explosive" &&
+          weapon.weapon_bag.aoe_outer_radius == 0)
+      )
+        continue;
 
       const weaponMember = mapWeaponMember(sbps, unit_ebps, weapon, num);
       loadoutUnit.push(weaponMember);
