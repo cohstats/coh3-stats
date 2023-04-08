@@ -14,28 +14,11 @@ interface SquadProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
-  locstring: any;
 }
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const squadPage: NextPage<SquadProps> = ({
-  weaponData,
-  sbpsData,
-  ebpsData,
-  //locstring,
-}) => {
-  // Save data again in global varible for clientMode
-  // if (!WeaponStats) setWeaponStats(weaponData);
-
-  // if (!ebpsStats) setEbpsStats(ebpsData);
-
-  // if (!upgradesStats) setUpgradesStats(upgradesData);
-
-  // if (!sbpsStats) setSbpsStats(sbpsData);
-
-  //if (!unitStatsLocString) setLocstring(locstring);
-
+const squadPage: NextPage<SquadProps> = ({ weaponData, sbpsData, ebpsData }) => {
   const keywords = generateKeywordsString([
     "coh3 units",
     "unit browser",
@@ -56,7 +39,7 @@ const squadPage: NextPage<SquadProps> = ({
     <>
       <Head>
         <title>COH3 Stats - Unit Browser</title>
-        <meta name="description" content={"CoH-3 Unit Browser."} />
+        <meta name="description" content={"CoH 3 Unit Browser."} />
         <meta name="keywords" content={keywords} />
         {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
       </Head>
@@ -69,7 +52,7 @@ const squadPage: NextPage<SquadProps> = ({
 
 export const getStaticProps = async () => {
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData, upgradesData, locstring } = await getMappings();
+  const { weaponData, ebpsData, sbpsData, upgradesData } = await getMappings();
 
   return {
     props: {
@@ -77,7 +60,6 @@ export const getStaticProps = async () => {
       sbpsData: sbpsData,
       ebpsData: ebpsData,
       upgradesData: upgradesData,
-      locstring: locstring,
     },
   };
 };

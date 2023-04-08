@@ -410,8 +410,8 @@ const getTableCustomizing = (onTableLayoutChange: any) => {
       <Checkbox
         checked={checked}
         onChange={() => onTableLayoutChange(setup)}
-        title={setup.title + " column visible:"}
-        label={setup.title + " column visible:"}
+        title={setup.title}
+        label={setup.title}
       ></Checkbox>,
 
       //   <SimpleGrid cols={2}>
@@ -587,7 +587,7 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
           >
             <Space h="2rem" />
             <Group>
-              <HoverCard shadow="xl" width={300}>
+              <HoverCard shadow="xl" width={150}>
                 <HoverCard.Target>
                   <div>
                     <IconAdjustments opacity={0.6} />
@@ -595,7 +595,6 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
                 </HoverCard.Target>
                 <HoverCard.Dropdown>
                   <Stack mb={12}>
-                    <Space></Space>
                     {/* <Text size="sm">Toggle DPS vs Soft/Hard.</Text>
                       <Switch
                         label={"DPS vs Vehicles"}
@@ -604,6 +603,7 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
                         //onClick={() => setCurve(isCurve)}
                         size="xs"
                       /> */}
+                    Table columns:
                     {getTableCustomizing(onTableLayoutChange)}
                   </Stack>
                 </HoverCard.Dropdown>
@@ -612,18 +612,15 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
           </Flex>
         </Grid.Col>
       </Grid>
-      <Space h="2rem" />
-      <Space></Space>
-      <Grid>
-        <Grid.Col span={2}>
-          <Group noWrap>{generateFactionFilterButtons(toggleFilter, factionFilter)}</Group>
-        </Grid.Col>
-        <Grid.Col span={2}>
-          <Group noWrap>{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
-        </Grid.Col>
-
-        <Grid.Col span={5}></Grid.Col>
-        <Grid.Col span={3}>
+      <Space h={"md"} />
+      <div>
+        <Group position={"apart"}>
+          <Group>
+            <Space w={"sm"} />
+            <Group noWrap>{generateFactionFilterButtons(toggleFilter, factionFilter)}</Group>
+            <Space w={"md"} />
+            <Group noWrap>{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
+          </Group>
           <TextInput
             placeholder="Search Unit"
             mb="md"
@@ -631,8 +628,8 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
             value={search}
             onChange={handleSearchChange}
           />
-        </Grid.Col>
-      </Grid>
+        </Group>
+      </div>
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: "fixed" }}>
         <thead>
           <tr> {cols} </tr>
