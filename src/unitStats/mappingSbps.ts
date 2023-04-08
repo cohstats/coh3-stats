@@ -37,6 +37,17 @@ type SbpsType = {
     two: { exp: number; screenName: string };
     three: { exp: number; screenName: string };
   };
+
+  /** Found at `squad_reinforce_ext`. This contains reinforcement
+   * information
+   */
+  reinforce: {
+    time_percentage: number;
+    cost_percentage: number;
+  };
+  // Capture rates -> squad_strategic_point_ext
+  capture_rate: number;
+  capture_revert: number;
 };
 
 type SquadUiData = {
@@ -111,6 +122,12 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
         screenName: "",
       },
     },
+    reinforce: {
+      cost_percentage: 0,
+      time_percentage: 0,
+    },
+    capture_rate: 0,
+    capture_revert: 0,
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -220,6 +237,18 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
             screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text),
           };
+        }
+        break;
+      case "squad_reinforce_ext":
+        {
+          sbps.reinforce.cost_percentage = extension.time_cost_percentage.cost_percentage;
+          sbps.reinforce.time_percentage = extension.time_cost_percentage.time_percentage;
+        }
+        break;
+      case "squad_capture_strategic_point_ext":
+        {
+          sbps.capture_rate = extension.capture_rate_multiplier;
+          sbps.capture_revert = extension.revert_rate_multiplier;
         }
         break;
       default:

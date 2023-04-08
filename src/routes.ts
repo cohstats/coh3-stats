@@ -29,6 +29,10 @@ const getDPSCalculatorRoute = () => {
   return encodeURI(`/explorer/dps`);
 };
 
+const getUnitBrowserRoute = () => {
+  return encodeURI(`/explorer/unitBrowser`);
+};
+
 const getDesktopAppRoute = () => {
   return encodeURI(`/desktop-app`);
 };
@@ -44,4 +48,5 @@ export {
   getDPSCalculatorRoute,
   getDesktopAppRoute,
   getAboutRoute,
+  getUnitBrowserRoute,
 };
