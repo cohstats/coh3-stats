@@ -30,7 +30,7 @@ const getDPSCalculatorRoute = () => {
 };
 
 const getUnitBrowserRoute = () => {
-  return encodeURI(`/explorer/unitBrowser`);
+  return encodeURI(`/explorer/unit-browser`);
 };
 
 const getDesktopAppRoute = () => {
