@@ -70,7 +70,12 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
             <List.Item>Easy to use, no configuration required - just start the app</List.Item>
             <List.Item>See detailed leaderboard stats of players in your game</List.Item>
             <List.Item>Get notified via sound when joining a game (optional)</List.Item>
-            <List.Item>OBS Overlay feature</List.Item>
+            <List.Item>
+              <Anchor href={"https://obsproject.com/"} target={"_blank"}>
+                OBS
+              </Anchor>{" "}
+              Overlay feature for streamers
+            </List.Item>
           </List>
         </Paper>
       </Container>
