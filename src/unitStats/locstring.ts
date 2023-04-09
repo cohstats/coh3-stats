@@ -4,7 +4,11 @@
 //    "5678": "Value B"
 // }
 
+import config from "../../config";
+
 let unitStatsLocString: Record<string, string>;
+
+let unitStatsLocStringPatchData: Record<string, Record<string, string>>;
 
 type LocstringSchema = {
   id: number;
@@ -16,25 +20,30 @@ type LocstringObjectSchema = {
 };
 
 // The input comes from the weapon / ebps / sbps / upgrade json.
-const resolveLocstring = (inLocstring: LocstringObjectSchema) => {
-  if (!unitStatsLocString) return "No text found.";
+const resolveLocstring = (inLocstring: LocstringObjectSchema, patch = "latest") => {
+  if (!unitStatsLocStringPatchData[patch]) return "No text found.";
   // unitStatsLocString is a object (Record<string, string>
-  return unitStatsLocString[inLocstring?.locstring?.value] ?? "No text found.";
+  return unitStatsLocStringPatchData[patch][inLocstring?.locstring?.value] ?? "No text found.";
 };
 
-const fetchLocstring = async () => {
-  if (unitStatsLocString) return unitStatsLocString;
+const fetchLocstring = async (patch = "latest") => {
+  if (patch == config.latestPatch) patch = "latest";
 
-  const myReqLocstring = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/locstring.json",
-  );
+  if (unitStatsLocStringPatchData && unitStatsLocStringPatchData[patch])
+    return unitStatsLocStringPatchData[patch];
 
-  unitStatsLocString = await myReqLocstring.json();
+  const myReqLocstring = await fetch(config.getPatchDataUrl("locstring.json", patch));
+
+  const localUnitStatsLocString = await myReqLocstring.json();
 
   // some value are undefined, we need to fix that,
   // otherwise we cannot serialize it.
-  for (const prop in unitStatsLocString)
-    if (!unitStatsLocString[prop]) unitStatsLocString[prop] = "Missing Translation";
+  for (const prop in localUnitStatsLocString)
+    if (!localUnitStatsLocString[prop]) localUnitStatsLocString[prop] = "Missing Translation";
+
+  if (!unitStatsLocStringPatchData) unitStatsLocStringPatchData = {};
+  unitStatsLocStringPatchData[patch] = localUnitStatsLocString;
+  if (patch == "latest") unitStatsLocString = localUnitStatsLocString;
 
   return unitStatsLocString;
 };
