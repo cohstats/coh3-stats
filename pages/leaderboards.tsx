@@ -15,6 +15,7 @@ import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
 import FactionIcon from "../components/faction-icon";
 import { GetServerSideProps } from "next";
 import DynamicTimeAgo from "../components/other/dynamic-timeago";
+import RankIcon from "../components/rank-icon";
 
 const RECORD_PER_PAGE = 100;
 
@@ -67,6 +68,16 @@ const Leaderboards = ({
               title: "Level",
               accessor: "ranklevel",
               textAlignment: "center",
+              render: ({ ranklevel }: any) => {
+                return (
+                  <RankIcon
+                    width={32}
+                    height={32}
+                    src={"/ranks/" + raceToFetch + "/rank_" + ranklevel + ".png"}
+                    alt={"rank_" + raceToFetch + "_" + ranklevel + ".png"}
+                  ></RankIcon>
+                );
+              },
             },
             // // {
             // //     accessor: "change",

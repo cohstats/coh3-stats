@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import DynamicTimeAgo from "../../other/dynamic-timeago";
+import RankIcon from "../../rank-icon";
 
 const PlayerStandingsTable = ({
   faction,
@@ -80,8 +81,16 @@ const PlayerStandingsTable = ({
               if (!ranklevel || ranklevel < 0) {
                 return "-";
               }
+              const icon = "/ranks/" + faction + "/rank_" + ranklevel + ".png";
 
-              return ranklevel;
+              return (
+                <RankIcon
+                  width={48}
+                  height={48}
+                  src={icon}
+                  alt={"rank_" + faction + "_" + ranklevel + ".png"}
+                ></RankIcon>
+              );
             },
           },
           {
