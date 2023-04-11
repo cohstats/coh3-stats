@@ -189,3 +189,9 @@ pages/examplePage.tsx
 tsconfig.json
 
 paths.txt
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js

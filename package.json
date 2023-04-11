@@ -41,6 +41,7 @@
     "@mantine/next": "^6.0.6",
     "@mantine/notifications": "^6.0.6",
     "@mantine/spotlight": "^6.0.6",
+    "@sentry/nextjs": "^7.47.0",
     "@tabler/icons": "^1.106.0",
     "chart.js": "^4.2.1",
     "dayjs": "^1.11.7",
