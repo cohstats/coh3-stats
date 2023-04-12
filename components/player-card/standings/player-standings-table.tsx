@@ -81,8 +81,7 @@ const PlayerStandingsTable = ({
               if (!ranklevel || ranklevel < 0) {
                 return "-";
               }
-
-              return <RankIcon width={40} height={40} race={faction} rank={ranklevel}></RankIcon>;
+              return <RankIcon size={32} race={faction} rank={ranklevel}></RankIcon>;
             },
           },
           {

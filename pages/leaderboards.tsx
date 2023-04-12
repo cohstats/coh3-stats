@@ -69,9 +69,7 @@ const Leaderboards = ({
               accessor: "ranklevel",
               textAlignment: "center",
               render: ({ ranklevel }: any) => {
-                return (
-                  <RankIcon width={32} height={32} race={raceToFetch} rank={ranklevel}></RankIcon>
-                );
+                return <RankIcon size={32} race={raceToFetch} rank={ranklevel}></RankIcon>;
               },
             },
             // // {
