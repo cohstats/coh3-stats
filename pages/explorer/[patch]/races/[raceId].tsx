@@ -1,16 +1,16 @@
-import { GetStaticPaths, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IconBarrierBlock } from "@tabler/icons";
 import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
-import { localizedNames } from "../../../src/coh3/coh3-data";
-import { raceType } from "../../../src/coh3/coh3-types";
+import { localizedNames } from "../../../../src/coh3/coh3-data";
+import { raceType } from "../../../../src/coh3/coh3-types";
 import {
   BuildingCard,
   BuildingSchema,
-} from "../../../components/unit-cards/building-description-card";
-import FactionIcon from "../../../components/faction-icon";
-import { BuildingType } from "../../../src/coh3";
+} from "../../../../components/unit-cards/building-description-card";
+import FactionIcon from "../../../../components/faction-icon";
+import { BuildingType } from "../../../../src/coh3";
 import {
   SbpsType,
   EbpsType,
@@ -24,10 +24,10 @@ import {
   HalfTrackDeploymentUnitsAfrikaKorps,
   getResolvedAbilities,
   RaceBagDescription,
-} from "../../../src/unitStats";
-import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-import { generateKeywordsString } from "../../../src/head-utils";
-import { getMappings } from "../../../src/unitStats/mappings";
+} from "../../../../src/unitStats";
+import { BattlegroupCard } from "../../../../components/unit-cards/battlegroup-card";
+import { generateKeywordsString } from "../../../../src/head-utils";
+import { getMappings } from "../../../../src/unitStats/mappings";
 
 interface RaceDetailProps {
   weaponData: WeaponType[];
@@ -232,19 +232,21 @@ function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSch
 }
 
 // Generates `/dak`.
-export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
+export const getStaticPaths: GetStaticPaths<{ patch: string; raceId: string }> = async () => {
   return {
     paths: [
-      { params: { raceId: "dak" } },
-      { params: { raceId: "american" } },
-      { params: { raceId: "british" } },
-      { params: { raceId: "german" } },
+      { params: { raceId: "dak", patch: "latest" } },
+      { params: { raceId: "american", patch: "latest" } },
+      { params: { raceId: "british", patch: "latest" } },
+      { params: { raceId: "german", patch: "latest" } },
     ],
-    fallback: false, // can also be true or 'blocking'
+    fallback: "blocking", // can also be true or 'blocking'
   };
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const patch = context.params?.patch as string;
+
   const {
     weaponData,
     sbpsData,
@@ -253,7 +255,7 @@ export const getStaticProps = async () => {
     abilitiesData,
     battlegroupData,
     locstring,
-  } = await getMappings();
+  } = await getMappings(patch);
 
   return {
     props: {

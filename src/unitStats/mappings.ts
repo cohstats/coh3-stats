@@ -6,18 +6,20 @@ import { getUpgradesStats } from "./mappingUpgrades";
 import { getAbilitiesStats } from "./mappingAbilities";
 import { getBattlegroupStats } from "./mappingBattlegroups";
 
-const getMappings = async () => {
+const getMappings = async (patch = "latest") => {
   // Locstring needs to be fetched first because it's used by the other mappings.
-  const locstring = await fetchLocstring();
+  const locstring = await fetchLocstring(patch);
+
+  console.log(locstring);
 
   const [weaponData, ebpsData, sbpsData, upgradesData, abilitiesData, battlegroupData] =
     await Promise.all([
-      getWeaponStats(),
-      getEbpsStats(),
-      getSbpsStats(),
-      getUpgradesStats(),
-      getAbilitiesStats(),
-      getBattlegroupStats(),
+      getWeaponStats(patch),
+      getEbpsStats(patch),
+      getSbpsStats(patch),
+      getUpgradesStats(patch),
+      getAbilitiesStats(patch),
+      getBattlegroupStats(patch),
     ]);
 
   return {

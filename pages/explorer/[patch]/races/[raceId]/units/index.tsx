@@ -3,14 +3,14 @@ import Head from "next/head";
 import { IconBarrierBlock } from "@tabler/icons";
 import { Anchor, Card, Flex, Grid, Stack, Text, Title, Container } from "@mantine/core";
 
-import { raceType } from "../../../../../src/coh3/coh3-types";
-import { generateKeywordsString } from "../../../../../src/head-utils";
-import { localizedNames } from "../../../../../src/coh3/coh3-data";
-import { getMappings } from "../../../../../src/unitStats/mappings";
-import { RaceBagDescription, SbpsType } from "../../../../../src/unitStats";
-import FactionIcon from "../../../../../components/faction-icon";
-import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
-import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
+import { raceType } from "../../../../../../src/coh3/coh3-types";
+import { generateKeywordsString } from "../../../../../../src/head-utils";
+import { localizedNames } from "../../../../../../src/coh3/coh3-data";
+import { getMappings } from "../../../../../../src/unitStats/mappings";
+import { RaceBagDescription, SbpsType } from "../../../../../../src/unitStats";
+import FactionIcon from "../../../../../../components/faction-icon";
+import { UnitDescriptionCard } from "../../../../../../components/unit-cards/unit-description-card";
+import LinkWithOutPrefetch from "../../../../../../components/LinkWithOutPrefetch";
 
 interface UnitDetailProps {
   units: SbpsType[];

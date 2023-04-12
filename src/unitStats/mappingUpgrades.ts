@@ -136,10 +136,11 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getUpgradesStats = async () => {
+const getUpgradesStats = async (patch = "latest") => {
+  // TODO Implement the patch logic.
   if (upgradesStats) return upgradesStats;
 
-  const myReqUpgrades = await fetch(config.getPatchDataUrl("upgrade.json"));
+  const myReqUpgrades = await fetch(config.getPatchDataUrl("upgrade.json", patch));
 
   const root = await myReqUpgrades.json();
 

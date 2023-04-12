@@ -78,10 +78,11 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getBattlegroupStats = async () => {
+const getBattlegroupStats = async (patch = "latest") => {
+  // TODO: Implement patch
   if (battlegroupStats) return battlegroupStats;
 
-  const myReqBattlegroup = await fetch(config.getPatchDataUrl("battlegroup.json"));
+  const myReqBattlegroup = await fetch(config.getPatchDataUrl("battlegroup.json", patch));
 
   const root = await myReqBattlegroup.json();
 

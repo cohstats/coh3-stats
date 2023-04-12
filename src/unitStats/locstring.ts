@@ -34,6 +34,8 @@ const fetchLocstring = async (patch = "latest") => {
 
   const myReqLocstring = await fetch(config.getPatchDataUrl("locstring.json", patch));
 
+  console.log(myReqLocstring);
+
   const localUnitStatsLocString = await myReqLocstring.json();
 
   // some value are undefined, we need to fix that,
@@ -45,7 +47,7 @@ const fetchLocstring = async (patch = "latest") => {
   unitStatsLocStringPatchData[patch] = localUnitStatsLocString;
   if (patch == "latest") unitStatsLocString = localUnitStatsLocString;
 
-  return unitStatsLocString;
+  return localUnitStatsLocString;
 };
 
 const setLocstring = (locstring: any) => {

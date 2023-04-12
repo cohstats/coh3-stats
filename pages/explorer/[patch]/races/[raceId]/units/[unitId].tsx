@@ -13,21 +13,21 @@ import {
   SbpsType,
   UpgradesType,
   WeaponType,
-} from "../../../../../src/unitStats";
-import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
-import FactionIcon from "../../../../../components/faction-icon";
-import { raceType } from "../../../../../src/coh3/coh3-types";
-import { localizedNames } from "../../../../../src/coh3/coh3-data";
-import { UnitCostCard } from "../../../../../components/unit-cards/unit-cost-card";
-import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
-import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
-import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
-import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
-import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
-import { getIconsPathOnCDN } from "../../../../../src/utils";
-import { generateKeywordsString } from "../../../../../src/head-utils";
-import { getMappings } from "../../../../../src/unitStats/mappings";
-import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
+} from "../../../../../../src/unitStats";
+import { UnitDescriptionCard } from "../../../../../../components/unit-cards/unit-description-card";
+import FactionIcon from "../../../../../../components/faction-icon";
+import { raceType } from "../../../../../../src/coh3/coh3-types";
+import { localizedNames } from "../../../../../../src/coh3/coh3-data";
+import { UnitCostCard } from "../../../../../../components/unit-cards/unit-cost-card";
+import { UnitUpgradeCard } from "../../../../../../components/unit-cards/unit-upgrade-card";
+import { VeterancyCard } from "../../../../../../components/unit-cards/veterancy-card";
+import { WeaponLoadoutCard } from "../../../../../../components/unit-cards/weapon-loadout-card";
+import { HitpointCard } from "../../../../../../components/unit-cards/hitpoints-card";
+import { UnitSquadCard } from "../../../../../../components/unit-cards/unit-squad-card";
+import { getIconsPathOnCDN } from "../../../../../../src/utils";
+import { generateKeywordsString } from "../../../../../../src/head-utils";
+import { getMappings } from "../../../../../../src/unitStats/mappings";
+import { getSbpsWeapons, WeaponMember } from "../../../../../../src/unitStats/dpsCommon";
 
 interface UnitDetailProps {
   calculatedData: {

@@ -128,10 +128,11 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getAbilitiesStats = async () => {
+const getAbilitiesStats = async (patch = "latest") => {
+  // TODO: Implement patch
   if (abilitiesStats) return abilitiesStats;
 
-  const myReqAbilities = await fetch(config.getPatchDataUrl("abilities.json"));
+  const myReqAbilities = await fetch(config.getPatchDataUrl("abilities.json", patch));
 
   const root = await myReqAbilities.json();
 
