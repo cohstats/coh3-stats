@@ -26,7 +26,7 @@ const getLeaderBoardData = async (
   const lbID = leaderboardsIDAsObject[leaderBoardType][race];
   const url = getLeaderBoardsUrl(lbID, sortBy, count, start);
 
-  const res = await fetch(url);
+  const res = await fetch(url, { keepalive: true });
   return await res.json();
 };
 
