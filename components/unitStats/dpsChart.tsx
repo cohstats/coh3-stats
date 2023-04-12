@@ -642,13 +642,11 @@ export const DpsChart = (props: IDPSProps) => {
           <Line ref={chartRef as any} options={options as any} data={chartData as any} />
         </Box>
         <Space h="sm" />
-        <Text color={theme.colors.gray[7]}>
-          {" "}
+        <Text color={"dimmed"} pl={5} fs="italic">
           * Computation results are based on approximation models using stats from the game files.
           In-Game values vary.
         </Text>
-        <Text color={theme.colors.gray[7]}>
-          {" "}
+        <Text color={"dimmed"} pl={5} fs="italic">
           ** Area DPS (Eg. Mortar or Stug) vs soft targets are highly experimental. Since squad
           formation and density are unknown, the calculation is simplified. In-Game damage should
           be higher.
