@@ -70,12 +70,7 @@ const Leaderboards = ({
               textAlignment: "center",
               render: ({ ranklevel }: any) => {
                 return (
-                  <RankIcon
-                    width={32}
-                    height={32}
-                    src={"/ranks/" + raceToFetch + "/rank_" + ranklevel + ".png"}
-                    alt={"rank_" + raceToFetch + "_" + ranklevel + ".png"}
-                  ></RankIcon>
+                  <RankIcon width={32} height={32} race={raceToFetch} rank={ranklevel}></RankIcon>
                 );
               },
             },

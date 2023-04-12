@@ -1,15 +1,25 @@
 import Image from "next/image";
+import { Tooltip, Button } from "@mantine/core";
 
 type Props = {
   width: number;
   height: number;
-  src: string;
-  alt: string;
+  race: string;
+  rank: number;
 };
-const RankIcon = ({ height, width, src, alt }: Props) => {
+const RankIcon = ({ height, width, race, rank }: Props) => {
   return (
     <>
-      <Image style={{}} src={src} width={width} height={height} alt={alt} loading="lazy" />
+      <Tooltip label={"Level " + rank}>
+        <Image
+          style={{}}
+          src={"/ranks/" + race + "/rank_" + rank + ".png"}
+          width={width}
+          height={height}
+          alt={"rank_" + race + "_" + rank}
+          loading="lazy"
+        />
+      </Tooltip>
     </>
   );
 };

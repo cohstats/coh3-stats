@@ -26,7 +26,7 @@ const PlayerStandingsTable = ({
       <DataTable
         style={{
           flexGrow: 1,
-          maxHeight: "212px",
+          maxHeight: "inherit",
         }}
         withBorder
         borderRadius="md"
@@ -81,16 +81,8 @@ const PlayerStandingsTable = ({
               if (!ranklevel || ranklevel < 0) {
                 return "-";
               }
-              const icon = "/ranks/" + faction + "/rank_" + ranklevel + ".png";
 
-              return (
-                <RankIcon
-                  width={48}
-                  height={48}
-                  src={icon}
-                  alt={"rank_" + faction + "_" + ranklevel + ".png"}
-                ></RankIcon>
-              );
+              return <RankIcon width={40} height={40} race={faction} rank={ranklevel}></RankIcon>;
             },
           },
           {
