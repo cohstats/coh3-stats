@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import DynamicTimeAgo from "../../other/dynamic-timeago";
+import RankIcon from "../../rank-icon";
 
 const PlayerStandingsTable = ({
   faction,
@@ -25,7 +26,7 @@ const PlayerStandingsTable = ({
       <DataTable
         style={{
           flexGrow: 1,
-          maxHeight: "212px",
+          maxHeight: "inherit",
         }}
         withBorder
         borderRadius="md"
@@ -81,7 +82,7 @@ const PlayerStandingsTable = ({
                 return "-";
               }
 
-              return ranklevel;
+              return <RankIcon width={40} height={40} race={faction} rank={ranklevel}></RankIcon>;
             },
           },
           {
