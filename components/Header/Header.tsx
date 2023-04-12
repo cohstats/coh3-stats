@@ -11,8 +11,6 @@ import {
   HoverCard,
   createStyles,
   Stack,
-  ActionIcon,
-  Tooltip,
   Anchor,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -25,6 +23,7 @@ import { OnlinePlayers } from "../online-players";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
 import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";
+import StatisticsMenu from "./components/StatisticsMenu";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -143,19 +142,8 @@ export const Header: React.FC<HeaderProps> = () => {
             >
               Leaderboards
             </Anchor>
-            <Tooltip label="Coming Later" color="orange">
-              <Anchor
-                component={Link}
-                href="#"
-                className={cx(classes.link, classes.disabledLink)}
-                onClick={() => close()}
-              >
-                Statistics{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Anchor>
-            </Tooltip>
+
+            <StatisticsMenu cx={cx} classes={classes} close={close} />
 
             <Anchor
               component={Link}
@@ -228,18 +216,7 @@ export const Header: React.FC<HeaderProps> = () => {
                 <LeaderboardsMenu />
               </HoverCard.Dropdown>
             </HoverCard>
-            <Tooltip label="Coming Later" color="orange">
-              <Anchor
-                component={Link}
-                href="#"
-                className={cx(classes.link, classes.disabledLink)}
-              >
-                Statistics{" "}
-                <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                  <IconBarrierBlock size={16} />
-                </ActionIcon>
-              </Anchor>
-            </Tooltip>
+            <StatisticsMenu cx={cx} classes={classes} close={close} />
 
             <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
               Desktop App

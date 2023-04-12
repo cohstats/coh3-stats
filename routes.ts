@@ -156,4 +156,28 @@ export default new Router()
       // Edge cache should be automatic for SSG pages
     });
   })
+  // Caching for leaderboard stats
+  .match("/stats/leaderboards(.*)", ({ cache }) => {
+    cache({
+      edge: {
+        maxAgeSeconds: 60 * 20,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/stats/leaderboards.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60 * 20,
+      },
+      edge: {
+        maxAgeSeconds: 60 * 20,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages

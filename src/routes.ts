@@ -17,6 +17,10 @@ const getLeaderBoardRoute = (race?: raceType, type?: leaderBoardType, start?: nu
   return encodeURI(`/leaderboards${searchParamString}`);
 };
 
+const getLeaderBoardStatsRoute = () => {
+  return encodeURI(`/stats/leaderboards`);
+};
+
 const getExplorerFactionRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}`);
 };
@@ -49,4 +53,5 @@ export {
   getDesktopAppRoute,
   getAboutRoute,
   getUnitBrowserRoute,
+  getLeaderBoardStatsRoute,
 };
