@@ -29,6 +29,9 @@ export const OnlinePlayers: React.FC = () => {
       label={`Amount of online players in Company of Heroes 3 as of ${new Date(
         onlinePlayersData?.timeStampMs || "",
       ).toLocaleString()}`}
+      multiline
+      width={200}
+      withArrow
     >
       <div>
         Players in game{" "}
