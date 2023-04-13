@@ -116,7 +116,6 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           accessor: "1v1",
           textAlignment: "center",
           title: "1 vs 1",
-          width: 100,
           render: (value) => {
             if (value["1v1-max"]) {
               return <Text color={"green"}>{value["1v1"]} </Text>;
@@ -131,7 +130,6 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           accessor: "2v2",
           textAlignment: "center",
           title: "2 vs 2",
-          width: 100,
           render: (value) => {
             if (value["2v2-max"]) {
               return <Text color={"green"}>{value["2v2"]} </Text>;
@@ -146,7 +144,6 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           accessor: "3v3",
           textAlignment: "center",
           title: "3 vs 3",
-          width: 100,
           render: (value) => {
             if (value["3v3-max"]) {
               return <Text color={"green"}>{value["3v3"]} </Text>;
@@ -161,7 +158,6 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           accessor: "4v4",
           textAlignment: "center",
           title: "4 vs 4",
-          width: 100,
           render: (value) => {
             if (value["4v4-max"]) {
               return <Text color={"green"}>{value["4v4"]} </Text>;
