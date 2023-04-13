@@ -36,6 +36,7 @@ const convertForTable = (data: Record<raceType, Record<leaderBoardType, number>>
     };
   };
 
+  // Find the min and max for each column
   const keys = ["1v1", "2v2", "3v3", "4v4"];
   const maxMinMap = keys.reduce<{
     [key: string]: {
@@ -47,6 +48,7 @@ const convertForTable = (data: Record<raceType, Record<leaderBoardType, number>>
     return acc;
   }, {});
 
+  // Apply the min and max to the rows, so we can render it properly
   rows.forEach((row) => {
     keys.forEach((key) => {
       if (["1v1", "2v2", "3v3", "4v4"].includes(key)) {
