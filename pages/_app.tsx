@@ -14,6 +14,7 @@ import { useEffect, useRef } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
 import ContentContainer from "../components/Content-container";
+import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
 
 webFirebase.init();
@@ -83,7 +84,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         {" "}
         <Component {...pageProps} />
       </ContentContainer>
-      <DevSiteNotification />
+      {config.isDevEnv() && <DevSiteNotification />}
       <Footer />
     </>
   );
