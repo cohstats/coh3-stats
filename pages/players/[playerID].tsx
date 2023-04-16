@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { PlayerCardDataType, ProcessedMatch } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
@@ -70,22 +70,8 @@ const PlayerCard = ({
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
-  //this state for store palyer data
-  const [playerDataStore, setPlayerDataStore] = useState(playerDataAPI);
 
-  const playerData: PlayerCardDataType = useMemo(() => {
-    if (playerDataAPI) {
-      return playerDataAPI;
-    } else {
-      return playerDataStore;
-    }
-  }, [playerDataAPI]);
-
-  useEffect(() => {
-    if (playerDataAPI) {
-      setPlayerDataStore(playerDataAPI);
-    }
-  }, [playerDataAPI]);
+  const playerData = playerDataAPI;
 
   if (error) {
     return <Container size="lg">{error}</Container>;
@@ -195,23 +181,19 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   const { view } = query;
 
   const viewPlayerMatches = view === "recentMatches";
-  const viewStandings = view === "standings";
+  // const viewStandings = view === "standings";
 
   let playerData = null;
   let playerMatchesData = null;
   let error = null;
 
-  const prevPage = req.headers.referer;
-  const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
-  const isSamePlayer = prevPlayerId === playerID;
-  const isFromPlayerPage = isSamePlayer && Boolean(prevPage?.includes("/players/"));
+  // const prevPage = req.headers.referer;
+  // const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
+  // const isSamePlayer = prevPlayerId === playerID;
+  // const isFromPlayerPage = isSamePlayer && Boolean(prevPage?.includes("/players/"));
 
   try {
-    const PromisePlayerCardData = viewStandings
-      ? getPlayerCardInfo(playerID)
-      : isFromPlayerPage
-      ? Promise.resolve()
-      : getPlayerCardInfo(playerID);
+    const PromisePlayerCardData = getPlayerCardInfo(playerID, true);
 
     const PromisePlayerMatchesData = viewPlayerMatches
       ? getPlayerRecentMatches(playerID)

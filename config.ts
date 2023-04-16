@@ -86,6 +86,9 @@ const config = {
   BASE_CLOUD_FUNCTIONS_URL: useFirebaseEmulators
     ? firebaseFunctions.EMULATORS_URL
     : firebaseFunctions.CLOUD_URL,
+  BASED_CLOUD_FUNCTIONS_PROXY_URL: useFirebaseEmulators
+    ? firebaseFunctions.EMULATORS_URL
+    : "https://pvecera-cache-coh3stats-fb-production.edgio.link",
   patches,
   latestPatch,
 };

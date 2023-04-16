@@ -1,10 +1,12 @@
 import config from "../config";
 import { ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
 
-const getPlayerCardInfoUrl = (playerID: string | number) => {
-  return encodeURI(
-    `${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerCardInfoHttp?relicId=${playerID}`,
-  );
+const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
+  const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
+
+  return cache_proxy
+    ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
 };
 
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
@@ -33,8 +35,8 @@ const getTwitchStreams = async (): Promise<Array<TwitchStream>> => {
   }
 };
 
-const getPlayerCardInfo = async (playerID: string | number) => {
-  const response = await fetch(getPlayerCardInfoUrl(playerID));
+const getPlayerCardInfo = async (playerID: string | number, cache_proxy = false) => {
+  const response = await fetch(getPlayerCardInfoUrl(playerID, cache_proxy));
   const data = await response.json();
 
   if (response.ok) {
