@@ -19,6 +19,7 @@ import {
   Checkbox,
   Tooltip,
   ActionIcon,
+  Anchor,
 } from "@mantine/core";
 import { keys } from "@mantine/utils";
 import {
@@ -31,6 +32,7 @@ import {
 import { EbpsType, SbpsType, WeaponType, getFactionIcon } from "../../src/unitStats";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { internalSlash } from "../../src/utils";
+import Link from "next/link";
 
 interface tableColSetup {
   key: string;
@@ -60,7 +62,6 @@ const tableSetup: tableColSetup[] = [
     customVisual: false,
     canFilter: true,
   },
-
   {
     key: "icon_name",
     sortKey: "id",
@@ -70,7 +71,6 @@ const tableSetup: tableColSetup[] = [
     customVisual: false,
     canFilter: true,
   },
-
   {
     key: "screen_name",
     sortKey: "screen_name",
@@ -81,8 +81,8 @@ const tableSetup: tableColSetup[] = [
     canFilter: true,
   },
   {
-    key: "cost_hp",
-    sortKey: "cost_hp",
+    key: "cost_mp",
+    sortKey: "cost_mp",
     title: "MP",
     visible: true,
     isIcon: false,
@@ -112,6 +112,15 @@ const tableSetup: tableColSetup[] = [
     sortKey: "cost_reinforce",
     title: "Reinforce",
     visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+  },
+  {
+    key: "upkeep_mp",
+    sortKey: "upkeep_mp",
+    title: "Upk(MP)",
+    visible: false,
     isIcon: false,
     customVisual: false,
     canFilter: false,
@@ -239,7 +248,27 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
       />
     );
 
-  if (!colSetup.customVisual) return (unit as any)[colSetup.key];
+  if (!colSetup.customVisual) {
+    if (colSetup.key === "screen_name") {
+      return (
+        <Tooltip label={(unit as any)[colSetup.key]}>
+          <Text sx={{ textOverflow: "ellipsis", overflow: "hidden" }}>
+            {(unit as any)[colSetup.key]}
+          </Text>
+        </Tooltip>
+      );
+    }
+    return (
+      <Anchor
+        color="undefined"
+        underline={false}
+        component={Link}
+        href={`/explorer/races/${unit.faction}/units/${unit.id}`}
+      >
+        <Text>{(unit as any)[colSetup.key]}</Text>
+      </Anchor>
+    );
+  }
 
   switch (colSetup.key) {
     case "dps_preview":
@@ -291,15 +320,15 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
   return (
     <th className={classes.th}>
-      <UnstyledButton onClick={onSort} className={classes.control}>
-        <Group position="apart" noWrap>
+      <UnstyledButton px={0} onClick={onSort} className={classes.control}>
+        <Flex justify="space-around" align="center">
           <Text fw={500} fz="sm">
             {children}
           </Text>
           <Center className={classes.icon}>
-            <Icon size="0.9rem" stroke={1.5} />
+            <Icon size="1rem" stroke={1.5} />
           </Center>
-        </Group>
+        </Flex>
       </UnstyledButton>
     </th>
   );
@@ -375,7 +404,7 @@ const mapRow = (unit: CustomizableUnit) => {
   const rows = [];
 
   for (const colSetup of tableSetup) {
-    if (colSetup.visible) rows.push(<td>{getCellVisual(colSetup, unit)}</td>);
+    if (colSetup.visible) rows.push(<td key={colSetup.key}>{getCellVisual(colSetup, unit)}</td>);
   }
   return <tr key={unit.id}>{rows}</tr>;
 };
@@ -428,8 +457,9 @@ const generateFactionFilterButtons = (callback: any, unitFilter: string[]) => {
 
   for (const faction of factions) {
     const source = getFactionIcon(faction);
+    const formattedFactionName = faction.split("_").join(" ");
     filterButtons.push(
-      <Tooltip key={faction + "Filter"} label="Filter">
+      <Tooltip key={faction + "Filter"} label={`Filter ${formattedFactionName}`}>
         <ActionIcon
           key={faction + "FilterAction"}
           size="sm"
@@ -452,7 +482,7 @@ const generateTypeFilterButtons = (callback: any, typeFilter: string[]) => {
   for (const type of types) {
     const source = getTypeIcon(type);
     filterButtons.push(
-      <Tooltip key={type + "Filter"} label="Filter">
+      <Tooltip key={type + "Filter"} label={`Filter by ${type}`}>
         <ActionIcon
           key={type + "FilterAction"}
           size="md"
@@ -501,7 +531,7 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
         sbps.ui.screenName != "No text found." &&
         sbps.ui.symbolIconName != "" &&
         sbps.faction != "british" &&
-        unit.cost_hp > 0
+        unit.cost_mp > 0
       ) {
         tableData.push(unit);
       }
@@ -564,9 +594,7 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
     return;
   };
 
-  const rows = sortedData.map((unit) => {
-    return mapRow(unit);
-  });
+  const rows = sortedData.map((unit) => mapRow(unit));
 
   const cols = getTableHeader(sortBy as keyof CustomizableUnit, reverseSortDirection, setSorting);
 
@@ -638,7 +666,7 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
           {rows.length > 0 ? (
             rows
           ) : (
-            <tr>
+            <tr key="no_row">
               {/* <td colSpan={Object.keys(data[0]).length}>
                 <Text weight={500} align="center">
                   Nothing found
