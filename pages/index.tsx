@@ -1,11 +1,25 @@
 import type { NextPage } from "next";
 import { getTwitchStreams } from "../src/coh3stats-api";
-import { Container, Image, Paper, Title, Text, Group } from "@mantine/core";
+import {
+  Container,
+  Image,
+  Paper,
+  Title,
+  Text,
+  Group,
+  Card,
+  Stack,
+  Anchor,
+  Grid,
+} from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
 import { TwitchStream } from "../src/coh3/coh3-types";
 import dynamic from "next/dynamic";
+import { getIconsPathOnCDN } from "../src/utils";
+import LinkWithOutPrefetch from "../components/LinkWithOutPrefetch";
+import { getDPSCalculatorRoute, getUnitBrowserRoute } from "../src/routes";
 
 //only render on client side
 const TwitchPanel = dynamic(() => import("../components/twitch-panel/twitch-panel"), {
@@ -19,12 +33,23 @@ type Props = {
 const Home: NextPage<Props> = ({ twitchStreams, error }) => {
   return (
     <Container fluid px={"xs"}>
-      <Image
-        src="/coming-soon/coh3-background.jpg"
-        alt={"coh3-background"}
-        radius="md"
-        height={400}
-      />
+      <Grid columns={3}>
+        <Grid.Col span={2}>
+          <Image
+            src="/coming-soon/coh3-background.jpg"
+            alt={"coh3-background"}
+            radius="md"
+            height={400}
+          />
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Stack>
+            {dpsToolSection()}
+            {unitBrowserToolSection()}
+          </Stack>
+        </Grid.Col>
+      </Grid>
+
       <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
         <Title order={1}>Company of Heroes 3 is out🎉</Title>
         <Title order={2} size="h4" pt="md">
@@ -47,6 +72,64 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
         <TwitchPanel twitchStreams={twitchStreams} error={error} />
       </Paper>
     </Container>
+  );
+};
+
+const dpsToolSection = () => {
+  return (
+    <Anchor color="orange" component={LinkWithOutPrefetch} href={getDPSCalculatorRoute()}>
+      <Card padding="lg" radius="md" withBorder>
+        <Stack>
+          <Group position="apart">
+            <Title order={4} color="yellow">
+              DPS Calculator
+            </Title>
+            <Image
+              width={20}
+              height={20}
+              fit="contain"
+              src={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
+              alt=""
+              withPlaceholder
+            />
+          </Group>
+
+          <Text size="sm">
+            Compare DPS of all units in the game between each other. Customize the unit load out
+            with different weapons. You can take into consideration also HP of the units.
+          </Text>
+        </Stack>
+      </Card>
+    </Anchor>
+  );
+};
+
+const unitBrowserToolSection = () => {
+  return (
+    <Anchor color="orange" component={LinkWithOutPrefetch} href={getUnitBrowserRoute()}>
+      <Card padding="lg" radius="md" withBorder>
+        <Stack>
+          <Group position="apart">
+            <Title order={4} color="yellow">
+              Unit Browser
+            </Title>
+            <Image
+              width={20}
+              height={20}
+              fit="contain"
+              src={getIconsPathOnCDN("/icons/common/squad/squad.png")}
+              alt=""
+              withPlaceholder
+            />
+          </Group>
+
+          <Text size="sm">
+            Compare every stats (cost, dps, reinforce, armor, etc) of all units in the game
+            between each other in a table.
+          </Text>
+        </Stack>
+      </Card>
+    </Anchor>
   );
 };
 
