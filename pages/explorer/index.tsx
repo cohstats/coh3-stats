@@ -6,6 +6,7 @@ import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
+import { getExplorerFactionRoute } from "../../src/routes";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
@@ -54,7 +55,7 @@ const Explorer: NextPage = () => {
                   color="undefined"
                   underline={false}
                   component={LinkWithOutPrefetch}
-                  href={`/explorer/races/${faction}`}
+                  href={getExplorerFactionRoute(faction)}
                 >
                   <Card p="sm" radius="md" withBorder>
                     {explorerFactionLink(faction)}

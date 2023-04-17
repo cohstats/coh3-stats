@@ -33,6 +33,8 @@ import { EbpsType, SbpsType, WeaponType, getFactionIcon } from "../../src/unitSt
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { internalSlash } from "../../src/utils";
 import Link from "next/link";
+import { getExplorerUnitRoute } from "../../src/routes";
+import { raceType } from "../../src/coh3/coh3-types";
 
 interface tableColSetup {
   key: string;
@@ -252,22 +254,19 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
     if (colSetup.key === "screen_name") {
       return (
         <Tooltip label={(unit as any)[colSetup.key]}>
-          <Text sx={{ textOverflow: "ellipsis", overflow: "hidden" }}>
-            {(unit as any)[colSetup.key]}
-          </Text>
+          <Anchor
+            color="orange"
+            component={Link}
+            href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
+          >
+            <Text sx={{ textOverflow: "ellipsis", overflow: "hidden" }}>
+              {(unit as any)[colSetup.key]}
+            </Text>
+          </Anchor>
         </Tooltip>
       );
     }
-    return (
-      <Anchor
-        color="undefined"
-        underline={false}
-        component={Link}
-        href={`/explorer/races/${unit.faction}/units/${unit.id}`}
-      >
-        <Text>{(unit as any)[colSetup.key]}</Text>
-      </Anchor>
-    );
+    return <Text>{(unit as any)[colSetup.key]}</Text>;
   }
 
   switch (colSetup.key) {
