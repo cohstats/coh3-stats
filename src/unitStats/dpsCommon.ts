@@ -2,7 +2,7 @@ import { getIconsPathOnCDN } from "../utils";
 import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 import { WeaponStatsType, WeaponType } from "./mappingWeapon";
-import { getSquadTotalCost } from "./squadTotalCost";
+import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS } from "./weaponLib";
 
@@ -96,10 +96,11 @@ type CustomizableUnit = {
   sbps: SbpsType;
   ebps_default: EbpsType;
   dps_preview: any[];
-  cost_hp: number;
+  cost_mp: number;
   cost_fuel: number;
   cost_reinforce: number;
   cost_pop: number;
+  upkeep_mp: number;
   sight_range: number;
   range: number;
   penetration: number;
@@ -147,10 +148,11 @@ export const mapCustomizableUnit = (
     ebps_default: {} as EbpsType,
     sbps: sbpsSelected,
     dps_preview: [],
-    cost_hp: 0,
+    cost_mp: 0,
     cost_fuel: 0,
     cost_reinforce: 0,
     cost_pop: 0,
+    upkeep_mp: 0,
     sight_range: 0,
     range: 0,
     capture_rate: sbpsSelected.capture_rate,
@@ -219,8 +221,11 @@ export const mapCustomizableUnit = (
 
     const totalCost = getSquadTotalCost(sbpsSelected, ebps);
     custUnit.cost_pop = totalCost.popcap;
-    custUnit.cost_hp = totalCost.manpower;
+    custUnit.cost_mp = totalCost.manpower;
     custUnit.cost_fuel = totalCost.fuel;
+
+    const upkeepCost = getSquadTotalUpkeepCost(sbpsSelected, ebps);
+    custUnit.upkeep_mp = upkeepCost.manpower;
   }
 
   custUnit.dps_preview = getCombatDps(custUnit);

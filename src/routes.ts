@@ -29,6 +29,10 @@ const getExplorerFactionUnitsRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}/units`);
 };
 
+const getExplorerUnitRoute = (race: raceType, unitId: string) => {
+  return encodeURI(`/explorer/races/${race}/units/${unitId}`);
+};
+
 const getDPSCalculatorRoute = () => {
   return encodeURI(`/explorer/dps`);
 };
@@ -49,6 +53,7 @@ export {
   getLeaderBoardRoute,
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
+  getExplorerUnitRoute,
   getDPSCalculatorRoute,
   getDesktopAppRoute,
   getAboutRoute,

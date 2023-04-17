@@ -11,6 +11,7 @@ import { RaceBagDescription, SbpsType } from "../../../../../src/unitStats";
 import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
+import { getExplorerUnitRoute } from "../../../../../src/routes";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -67,7 +68,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                       },
                     }}
                     component={LinkWithOutPrefetch}
-                    href={`/explorer/races/${raceToFetch}/units/${id}`}
+                    href={getExplorerUnitRoute(raceToFetch, id)}
                   >
                     <Card p="md" radius="md" withBorder>
                       {UnitDescriptionCard({

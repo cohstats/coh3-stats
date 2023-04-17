@@ -25,6 +25,7 @@ import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
 import { useToggle } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons";
+import { getExplorerUnitRoute } from "../../src/routes";
 
 const useStyles = createStyles((theme) => ({
   hiddenMobile: {
@@ -100,7 +101,7 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction
                       },
                     }}
                     component={Link}
-                    href={`/explorer/races/${faction}/units/${spawnItems[0]}`}
+                    href={getExplorerUnitRoute(faction, spawnItems[0])}
                   >
                     {bgCallInCard({ upg, ability })}
                   </Anchor>

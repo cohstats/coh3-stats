@@ -18,6 +18,7 @@ import { BuildingType } from "../../src/coh3";
 import { hasCost, ResourceValues } from "../../src/unitStats";
 import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
+import { getExplorerUnitRoute } from "../../src/routes";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -153,7 +154,7 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
                 },
               }}
               component={Link}
-              href={`/explorer/races/${faction}/units/${id}`}
+              href={getExplorerUnitRoute(faction as raceType, id)}
             >
               <Card p="lg" radius="md" withBorder>
                 {UnitDescriptionCard(desc)}
