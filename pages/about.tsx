@@ -6,13 +6,18 @@ import { PayPalDonation } from "../components/other/paypal-donations";
 import { Donate } from "../components/icon/donate";
 import Link from "next/link";
 import { IconBarrierBlock } from "@tabler/icons";
-import React from "react";
+import React, { useEffect } from "react";
+import { AnalyticsAboutAppPageView } from "../src/firebase/analytics";
 
 /**
  * This is example page you can find it by going on ur /example
  * @constructor
  */
 const About: NextPage = () => {
+  useEffect(() => {
+    AnalyticsAboutAppPageView();
+  }, []);
+
   return (
     <div>
       {/*This is custom HEAD overwrites the default one*/}

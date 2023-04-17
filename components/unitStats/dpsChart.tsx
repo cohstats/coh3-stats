@@ -50,6 +50,10 @@ import {
 } from "../../src/unitStats/dpsCommon";
 import { getFactionIcon } from "../../src/unitStats";
 import config from "../../config";
+import {
+  AnalyticsDPSExplorerPatchSelection,
+  AnalyticsDPSExplorerSquadSelection,
+} from "../../src/firebase/analytics";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList1: CustomizableUnit[] = [];
@@ -338,6 +342,8 @@ export const DpsChart = (props: IDPSProps) => {
   function onSelectionChange(selection: string, index: number) {
     // add new units
 
+    AnalyticsDPSExplorerSquadSelection(selection);
+
     // check if unit is already selected
     if (activeData[index]?.id == selection) return;
 
@@ -356,6 +362,8 @@ export const DpsChart = (props: IDPSProps) => {
   }
 
   function onPatchUnitChange(value: string, index: number) {
+    AnalyticsDPSExplorerPatchSelection(value);
+
     if (index == 1) setPatchUnit1(value);
     else setPatchUnit2(value);
     setPatchChange(index);
@@ -460,7 +468,7 @@ export const DpsChart = (props: IDPSProps) => {
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
                     <Stack mb={12}>
-                      <Space></Space>
+                      <Space />
                       <Text size="sm">Toggle DPS mode.</Text>
                       <Switch
                         label={"DPS / Target Health (%)"}
@@ -519,7 +527,7 @@ export const DpsChart = (props: IDPSProps) => {
                 searchData={unitSelectionList1}
                 onSelect={onSelectionChange}
                 position={0}
-              ></UnitSearch>
+              />
 
               <Space h="sm" />
 
@@ -541,7 +549,7 @@ export const DpsChart = (props: IDPSProps) => {
                     index={0}
                     ebps={ebpsData1}
                     weapons={weaponData1}
-                  ></DpsUnitCustomizing>
+                  />
                 </Box>
               )}
             </Grid.Col>
@@ -588,7 +596,7 @@ export const DpsChart = (props: IDPSProps) => {
                 searchData={unitSelectionList2}
                 onSelect={onSelectionChange}
                 position={1}
-              ></UnitSearch>
+              />
 
               <Space h="sm" />
 
@@ -610,7 +618,7 @@ export const DpsChart = (props: IDPSProps) => {
                     index={0}
                     ebps={ebpsData1}
                     weapons={weaponData1}
-                  ></DpsUnitCustomizing>
+                  />
                 </Box>
               )}
             </Grid.Col>

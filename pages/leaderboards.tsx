@@ -5,7 +5,7 @@ import { DataTable } from "mantine-datatable";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { calculatePageNumber, calculatePositionNumber } from "../src/utils";
 import ErrorCard from "../components/error-card";
 import CountryFlag from "../components/country-flag";
@@ -16,6 +16,7 @@ import FactionIcon from "../components/faction-icon";
 import { GetServerSideProps } from "next";
 import DynamicTimeAgo from "../components/other/dynamic-timeago";
 import RankIcon from "../components/rank-icon";
+import { AnalyticsLeaderBoardsPageView } from "../src/firebase/analytics";
 
 const RECORD_PER_PAGE = 100;
 
@@ -28,6 +29,10 @@ const Leaderboards = ({
   typeToFetch,
 }: any) => {
   const { push, query } = useRouter();
+
+  useEffect(() => {
+    AnalyticsLeaderBoardsPageView(raceToFetch, typeToFetch);
+  }, [raceToFetch, typeToFetch]);
 
   const onPageChange = (p: number) => {
     const startPositionNumber = calculatePositionNumber(p, RECORD_PER_PAGE);

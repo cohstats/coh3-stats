@@ -28,6 +28,8 @@ import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { generateKeywordsString } from "../../../../../src/head-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
+import { useEffect } from "react";
+import { AnalyticsExplorerUnitDetailsView } from "../../../../../src/firebase/analytics";
 
 interface UnitDetailProps {
   calculatedData: {
@@ -43,8 +45,12 @@ interface UnitDetailProps {
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   const { query } = useRouter();
 
-  // const unitId = query.unitId as string;
+  const unitId = query.unitId as string;
   const raceId = query.raceId as raceType;
+
+  useEffect(() => {
+    AnalyticsExplorerUnitDetailsView(unitId);
+  }, []);
 
   const { resolvedSquad, resolvedEntities } = calculatedData;
 

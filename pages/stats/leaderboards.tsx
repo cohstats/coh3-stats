@@ -1,6 +1,6 @@
 import { Container, Space, Title } from "@mantine/core";
 
-import React from "react";
+import React, { useEffect } from "react";
 import ErrorCard from "../../components/error-card";
 import Head from "next/head";
 
@@ -8,6 +8,7 @@ import { GetServerSideProps } from "next";
 import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leaderboards/stats";
 import { generateKeywordsString } from "../../src/head-utils";
 import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
+import { AnalyticsStatsLeaderboardsPageView } from "../../src/firebase/analytics";
 
 const Leaderboards = ({
   error,
@@ -23,6 +24,10 @@ const Leaderboards = ({
     "overall leaderboards",
     "coh3 ladder stats",
   ]);
+
+  useEffect(() => {
+    AnalyticsStatsLeaderboardsPageView();
+  }, []);
 
   return (
     <>

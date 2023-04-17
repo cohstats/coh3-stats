@@ -10,9 +10,10 @@ import {
 } from "../../src/unitStats/mappingUpgrades";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/head-utils";
 import { getMappings } from "../../src/unitStats/mappings";
+import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -33,6 +34,10 @@ const DpsPage: NextPage<DpsProps> = ({
   upgradesData,
   locstring,
 }) => {
+  useEffect(() => {
+    AnalyticsDPSExplorerPageView();
+  }, []);
+
   // Save data again in global varible for clientMode
   if (!WeaponStats) setWeaponStats(weaponData);
 
