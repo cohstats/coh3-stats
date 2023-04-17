@@ -44,7 +44,12 @@ const UnitBrowser: NextPage<SquadProps> = ({ weaponData, sbpsData, ebpsData }) =
     <>
       <Head>
         <title>COH3 Stats - Unit Browser</title>
-        <meta name="description" content={"CoH 3 Unit Browser."} />
+        <meta
+          name="description"
+          content={
+            "CoH 3 Unit Browser. Browser through all the units in the game and see their stats in a nice table."
+          }
+        />
         <meta name="keywords" content={keywords} />
         {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
       </Head>
