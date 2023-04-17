@@ -1,17 +1,6 @@
 import type { NextPage } from "next";
 import { getTwitchStreams } from "../src/coh3stats-api";
-import {
-  Container,
-  Image,
-  Paper,
-  Title,
-  Text,
-  Group,
-  Card,
-  Stack,
-  Anchor,
-  Grid,
-} from "@mantine/core";
+import { Container, Image, Paper, Title, Text, Group, Stack, Grid } from "@mantine/core";
 import { Github } from "../components/icon/github";
 import { Donate } from "../components/icon/donate";
 import { Discord } from "../components/icon/discord";
