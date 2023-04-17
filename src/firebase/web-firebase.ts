@@ -47,7 +47,6 @@ const logFBEvent = (
   params?: Record<string, string | boolean | number | undefined>,
 ): void => {
   if (analytics) {
-    console.log("logFBEvent", name, params);
     logEvent(analytics, name, params);
   }
 };
