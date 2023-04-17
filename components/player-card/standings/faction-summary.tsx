@@ -1,6 +1,6 @@
 import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../src/coh3/coh3-types";
 import React from "react";
-import { Group, Space, Title, Card, createStyles } from "@mantine/core";
+import { Group, Space, Title, Card, createStyles, Stack } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
 import {
@@ -14,7 +14,7 @@ const useStyles = createStyles((theme, { faction }: { faction: string }) => ({
     theme.colorScheme === "light"
       ? {
           width: "230px",
-          height: "212px",
+          height: "235px",
           backgroundImage: `url('/icons/general/${faction}.webp')`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -24,7 +24,7 @@ const useStyles = createStyles((theme, { faction }: { faction: string }) => ({
         }
       : {
           width: "230px",
-          height: "212px",
+          height: "235px",
         },
 }));
 
@@ -80,25 +80,31 @@ const PlayerStandingsFactionInfo = ({
           </Group>
         </Card.Section>
         <Text size={"sm"}>
-          <Group position="apart">
-            <span>Best Rank</span> <Text fw={600}>{bestRankElement}</Text>
-          </Group>
-          <Group position="apart">
-            <span>Best Level</span> <Text fw={600}>{bestLevelElement}</Text>
-          </Group>
-          <Group position="apart">
-            <span>Best ELO</span> <Text fw={600}>{bestEloElement}</Text>
-          </Group>
-          <Space h="xl" />
-          <Group position="apart">
-            <span>Overall win Rate</span> <Text fw={600}>{winRateElement}</Text>
-          </Group>
-          <Group position="apart">
-            <span>Total Games</span> <Text fw={600}>{totalGamesElement}</Text>
-          </Group>
-          <Group position="apart">
-            <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
-          </Group>
+          <Stack spacing="md">
+            <div>
+              <Group position="apart">
+                <span>Best Rank</span> <Text fw={600}>{bestRankElement}</Text>
+              </Group>
+              <Group position="apart">
+                <span>Best Level</span> <Text fw={600}>{bestLevelElement}</Text>
+              </Group>
+              <Group position="apart">
+                <span>Best ELO</span> <Text fw={600}>{bestEloElement}</Text>
+              </Group>
+            </div>
+            <Space h="xs" />
+            <div>
+              <Group position="apart">
+                <span>Overall win Rate</span> <Text fw={600}>{winRateElement}</Text>
+              </Group>
+              <Group position="apart">
+                <span>Total Games</span> <Text fw={600}>{totalGamesElement}</Text>
+              </Group>
+              <Group position="apart">
+                <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
+              </Group>
+            </div>
+          </Stack>
         </Text>
       </Card>
     </>
