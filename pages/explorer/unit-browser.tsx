@@ -4,10 +4,11 @@ import { SbpsType } from "../../src/unitStats/mappingSbps";
 import { WeaponType } from "../../src/unitStats/mappingWeapon";
 import { UpgradesType } from "../../src/unitStats/mappingUpgrades";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/head-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { UnitTable } from "../../components/unitStats/unitTable";
+import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 
 interface SquadProps {
   weaponData: WeaponType[];
@@ -18,7 +19,11 @@ interface SquadProps {
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const squadPage: NextPage<SquadProps> = ({ weaponData, sbpsData, ebpsData }) => {
+const UnitBrowser: NextPage<SquadProps> = ({ weaponData, sbpsData, ebpsData }) => {
+  useEffect(() => {
+    AnalyticsExplorerUnitBrowserView();
+  }, []);
+
   const keywords = generateKeywordsString([
     "coh3 units",
     "unit browser",
@@ -64,4 +69,4 @@ export const getStaticProps = async () => {
   };
 };
 
-export default squadPage;
+export default UnitBrowser;

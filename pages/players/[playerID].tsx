@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import PlayerStandings from "../../components/player-card/player-standings";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import { PlayerCardDataType, ProcessedMatch } from "../../src/coh3/coh3-types";
 import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
@@ -25,6 +25,10 @@ import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/uti
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
 import { generateKeywordsString } from "../../src/head-utils";
+import {
+  AnalyticsPlayerCardMatchView,
+  AnalyticsPlayerCardView,
+} from "../../src/firebase/analytics";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -72,6 +76,14 @@ const PlayerCard = ({
   const { view } = query;
 
   const playerData = playerDataAPI;
+
+  useEffect(() => {
+    if (view === "recentMatches") {
+      AnalyticsPlayerCardMatchView(playerID);
+    } else {
+      AnalyticsPlayerCardView(playerID);
+    }
+  }, [playerID, view]);
 
   if (error) {
     return <Container size="lg">{error}</Container>;

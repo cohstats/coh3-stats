@@ -28,6 +28,8 @@ import {
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateKeywordsString } from "../../../src/head-utils";
 import { getMappings } from "../../../src/unitStats/mappings";
+import { useEffect } from "react";
+import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
 
 interface RaceDetailProps {
   weaponData: WeaponType[];
@@ -52,6 +54,10 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
   const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
+
+  useEffect(() => {
+    AnalyticsExplorerFactionView(raceToFetch);
+  }, []);
 
   const metaKeywords = generateKeywordsString([
     `${localizedRace}`,

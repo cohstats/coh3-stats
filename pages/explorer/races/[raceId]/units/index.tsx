@@ -12,6 +12,8 @@ import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
 import { getExplorerUnitRoute } from "../../../../../src/routes";
+import { useEffect } from "react";
+import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -20,6 +22,10 @@ interface UnitDetailProps {
 
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
   const localizedRace = localizedNames[raceToFetch];
+
+  useEffect(() => {
+    AnalyticsExplorerFactionUnitsView(raceToFetch);
+  }, []);
 
   const metaKeywords = generateKeywordsString([
     `${localizedRace} coh3`,
