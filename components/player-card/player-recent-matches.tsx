@@ -311,12 +311,13 @@ const PlayerRecentMatches = ({
         ]}
       />
       <Space h={5} />
-      <Group position={"apart"} style={{ alignItems: "flex-start" }}>
-        <Text size={"sm"} style={{ paddingLeft: 5 }}>
-          Data provided by Relic
-        </Text>
+      <Group
+        position={"apart"}
+        style={{ alignItems: "flex-start", paddingRight: 5, paddingLeft: 5 }}
+      >
+        <Text size={"sm"}>Data provided by Relic</Text>
         <Stack align="flex-end" spacing="xs">
-          <Group spacing={5} position={"right"} style={{ paddingRight: 5 }}>
+          <Group spacing={5} position={"right"}>
             <IconInfoCircle size={18} />
             <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
           </Group>
