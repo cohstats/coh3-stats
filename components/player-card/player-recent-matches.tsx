@@ -1,4 +1,4 @@
-import { Badge, Text, Group, Button } from "@mantine/core";
+import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { maps, matchTypesAsObject, raceIDs } from "../../src/coh3/coh3-data";
@@ -30,6 +30,7 @@ const PlayerRecentMatches = ({
   playerMatchesData: Array<ProcessedMatch>;
   error: string;
 }) => {
+  const [debug, setDebug] = React.useState(false);
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
     columnAccessor: "Played",
     direction: "asc",
@@ -190,11 +191,26 @@ const PlayerRecentMatches = ({
                   </Badge>
                 );
               } else {
-                return (
-                  <Badge color={"red"} variant="filled">
-                    DEFEAT
-                  </Badge>
-                );
+                const playerResult = getPlayerMatchHistoryResult(record, profileID);
+                if (playerResult?.resulttype === 0) {
+                  return (
+                    <Badge color={"red"} variant="filled">
+                      DEFEAT
+                    </Badge>
+                  );
+                } else if (playerResult?.resulttype === 4) {
+                  return (
+                    <Badge color={"gray"} variant="filled">
+                      DE-SYNC
+                    </Badge>
+                  );
+                } else {
+                  return (
+                    <Badge color={"gray"} variant="filled">
+                      ERROR
+                    </Badge>
+                  );
+                }
               }
             },
           },
@@ -274,33 +290,44 @@ const PlayerRecentMatches = ({
           {
             title: "Debug",
             accessor: "debug",
-            hidden: true,
+            hidden: !debug,
             render: (record) => {
               return (
                 <>
-                  {" "}
-                  <Button
-                    onClick={() => {
-                      console.log("Debug selected match");
-                      console.log(record);
-                    }}
-                  >
-                    D
-                  </Button>
+                  <Tooltip label="Logs the match data into console">
+                    <Button
+                      onClick={() => {
+                        console.log("Debug selected match");
+                        console.log(record);
+                      }}
+                    >
+                      D
+                    </Button>
+                  </Tooltip>
                 </>
               );
             },
           },
         ]}
       />
-      <Group position={"apart"}>
-        <Text size={"sm"} style={{ paddingLeft: 5 }}>
-          Data provided by Relic
-        </Text>
-        <Group spacing={5} position={"right"} style={{ paddingRight: 5 }}>
-          <IconInfoCircle size={18} />
-          <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
-        </Group>
+      <Space h={5} />
+      <Group
+        position={"apart"}
+        style={{ alignItems: "flex-start", paddingRight: 5, paddingLeft: 5 }}
+      >
+        <Text size={"sm"}>Data provided by Relic</Text>
+        <Stack align="flex-end" spacing="xs">
+          <Group spacing={5} position={"right"}>
+            <IconInfoCircle size={18} />
+            <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
+          </Group>
+          <Switch
+            label="Enable debug mode"
+            size="sm"
+            radius="md"
+            onChange={(event) => setDebug(event.currentTarget.checked)}
+          />
+        </Stack>
       </Group>
     </>
   );
