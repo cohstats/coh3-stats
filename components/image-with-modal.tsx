@@ -1,4 +1,4 @@
-import { Modal, Text } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 
@@ -16,7 +16,7 @@ const ImageWithModal = ({ height, width, modalW, modalH, src, alt, title }: Prop
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title={title}>
+      <Modal opened={opened} onClose={close} title={title} centered>
         <Image src={src} width={modalW} height={modalH} alt={alt} loading="lazy" />
       </Modal>
       <Image
