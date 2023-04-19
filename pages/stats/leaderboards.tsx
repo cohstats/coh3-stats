@@ -1,4 +1,4 @@
-import { Container, Space, Title } from "@mantine/core";
+import { Container, Space, Title, Text } from "@mantine/core";
 
 import React from "react";
 import ErrorCard from "../../components/error-card";
@@ -39,9 +39,10 @@ const Leaderboards = ({
           <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />
         ) : (
           <>
-            <Title order={1} align={"center"}>
-              Global Leaderboards Stats
-            </Title>
+            <div style={{ textAlign: "center" }}>
+              <Title order={1}>Global Leaderboards Stats</Title>
+            </div>
+            <Text style={{ textAlign: "center" }}>Realtime statistics as of now</Text>
             <Space h={"xl"} />
             <LeaderBoardStats leaderBoardStats={leaderBoardStats} />
           </>
