@@ -1,6 +1,7 @@
 import {
   Accordion,
   Anchor,
+  Box,
   Card,
   Divider,
   Flex,
@@ -15,10 +16,19 @@ import { UnitDescription, UnitDescriptionCard } from "./unit-description-card";
 import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
 import { UnitCostCard } from "./unit-cost-card";
 import { BuildingType } from "../../src/coh3";
-import { hasCost, ResourceValues } from "../../src/unitStats";
+import {
+  getResolvedUpgrades,
+  getUpgradesStats,
+  hasCost,
+  ResourceValues,
+  SbpsType,
+  upgradesStats,
+  UpgradesType,
+} from "../../src/unitStats";
 import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../src/routes";
+import { RequirementCard } from "./requirement-card";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -40,7 +50,7 @@ export type BuildingSchema = {
   types: BuildingType[];
   desc: BuildingDescription;
   /** Extracted from `ebpextensions\\spawner_ext` within the building `ebps`. */
-  units: Array<{ id: string; desc: UnitDescription; time_cost: ResourceValues }>;
+  units: Array<SbpsType & { time_cost: ResourceValues; playerReq: UpgradesType[] }>;
   /** Extracted from `ebpextensions\\cost_ext` within the building `ebps`. */
   time_cost: ResourceValues;
   /**
@@ -142,7 +152,17 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
   if (!units.length) return <></>;
   return (
     <Grid columns={1}>
-      {units.map(({ id, desc, time_cost }) => {
+      {units.map(({ id, ui, time_cost, playerReq }) => {
+        const reqCards = playerReq.length ? (
+          <Group position="apart">
+            {playerReq.map((upg) => (
+              <div key={upg.id}>{RequirementCard(upg)}</div>
+            ))}
+          </Group>
+        ) : (
+          <></>
+        );
+
         return (
           <Grid.Col key={id} span={1}>
             <Anchor
@@ -156,10 +176,34 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
               component={Link}
               href={getExplorerUnitRoute(faction as raceType, id)}
             >
-              <Card p="lg" radius="md" withBorder>
-                {UnitDescriptionCard(desc)}
-                {UnitCostCard(time_cost)}
-              </Card>
+              <Box
+                p="lg"
+                sx={(theme) => ({
+                  border:
+                    theme.colorScheme === "dark"
+                      ? "solid 1px " + theme.colors.dark[4]
+                      : "solid 1px " + theme.colors.gray[4],
+                  // padding: theme.spacing.xs,
+                  borderRadius: theme.radius.md,
+                  borderWidth: 0.5,
+                })}
+              >
+                <Grid columns={5} align="center">
+                  <Grid.Col span={4}>
+                    {UnitDescriptionCard({
+                      screen_name: ui.screenName,
+                      help_text: ui.helpText,
+                      brief_text: ui.briefText,
+                      symbol_icon_name: ui.symbolIconName,
+                      icon_name: ui.iconName,
+                    })}
+                    {UnitCostCard(time_cost)}
+                  </Grid.Col>
+                  <Grid.Col span={1}>
+                    <Flex justify="center">{reqCards}</Flex>
+                  </Grid.Col>
+                </Grid>
+              </Box>
             </Anchor>
           </Grid.Col>
         );

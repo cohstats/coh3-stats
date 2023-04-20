@@ -37,7 +37,11 @@ type SbpsType = {
     two: { exp: number; screenName: string };
     three: { exp: number; screenName: string };
   };
-
+  /** Found at `squad_requirement_ext`. This contains unit training requirements
+   * references. */
+  requirements: string[];
+  /** Found at `squad_ability_ext`. This contains unit abilities references. */
+  abilities: string[];
   /** Found at `squad_reinforce_ext`. This contains reinforcement
    * information
    */
@@ -128,6 +132,8 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     },
     capture_rate: 0,
     capture_revert: 0,
+    requirements: [],
+    abilities: [],
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -249,6 +255,64 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
         {
           sbps.capture_rate = extension.capture_rate_multiplier;
           sbps.capture_revert = extension.revert_rate_multiplier;
+        }
+        break;
+      /* @todo Maybe convert this case to recursive function. */
+      case "squad_requirement_ext":
+        if (!extension.requirement_table?.length) break;
+        for (const reqItem of extension.requirement_table) {
+          const reqType = reqItem?.required.template_reference.value.split("\\")[1];
+          switch (reqType) {
+            // 1-Level Nesting
+            case "required_player_upgrade":
+              const upgradeRef = reqItem.required.upgrade_name?.instance_reference;
+              // Only include those that have the flag `is_present` set to true.
+              if (upgradeRef && reqItem.required.is_present) {
+                sbps.requirements.push(upgradeRef.split("/").slice(-1)[0]);
+              }
+              break;
+            // 2-Level Nesting
+            case "required_any_in_list":
+            case "required_all_in_list":
+              if (!reqItem?.required?.requirements?.length) continue;
+              for (const playerUpgradeReq of reqItem.required.requirements) {
+                const nestedValue =
+                  playerUpgradeReq?.requirement.template_reference.value.split("\\")[1];
+                switch (nestedValue) {
+                  case "required_player_upgrade":
+                    const upgradeRef =
+                      playerUpgradeReq.requirement.upgrade_name?.instance_reference;
+                    // Only include those that have the flag `is_present` set to true.
+                    if (upgradeRef && playerUpgradeReq.requirement.is_present) {
+                      sbps.requirements.push(upgradeRef.split("/").slice(-1)[0]);
+                    }
+                    break;
+                  case "required_all_in_list":
+                    for (const subReq of playerUpgradeReq.requirement.requirements) {
+                      const upgradeRef = subReq.requirement.upgrade_name?.instance_reference;
+                      // Only include those that have the flag `is_present` set to true.
+                      if (upgradeRef && subReq.requirement.is_present) {
+                        sbps.requirements.push(upgradeRef.split("/").slice(-1)[0]);
+                      }
+                    }
+                    break;
+                  default:
+                    break;
+                }
+              }
+              break;
+
+            default:
+              break;
+          }
+        }
+        break;
+      case "squad_ability_ext":
+        if (!extension.abilities?.length) break;
+        for (const abi of extension.abilities) {
+          if (abi.ability.instance_reference) {
+            sbps.upgrades.push(abi.ability.instance_reference.split("/").slice(-1)[0]);
+          }
         }
         break;
       default:
