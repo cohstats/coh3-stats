@@ -335,6 +335,8 @@ function setBattlegroupsWorkarounds() {
             upg.spawnItems = ["wirbelwind_ger", "jaeger_ger"];
             break;
           case "luftwaffe_left_2a_weapon_drop_ger":
+            // Patch 1.1.4 did not update the row for the upgrade itself.
+            upg.upg.uiPosition.row = 2;
             upg.spawnItems = ["at_gun_lg40_ger"];
             break;
           case "luftwaffe_left_3_88mm_at_gun_ger":
