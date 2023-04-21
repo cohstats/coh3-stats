@@ -256,7 +256,7 @@ function setBattlegroupsWorkarounds() {
           case "armored_right_2a_scott_us":
             upg.spawnItems = ["scott_us"];
             break;
-          case "armored_right_3_sherman_easy_8_us":
+          case "armored_right_3_easy_8_task_force_us":
             upg.spawnItems = ["sherman_easy_8_us"];
             break;
         }
