@@ -1,7 +1,8 @@
 import { BattlegroupResolvedType } from "./battlegroup";
+import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 
-type ItemType = SbpsType | BattlegroupResolvedType;
+type ItemType = EbpsType | SbpsType | BattlegroupResolvedType;
 
 interface Override {
   /** */
@@ -17,6 +18,12 @@ function bgWorkaround(description: string, override: Override) {
 }
 
 const bgWorkarounds = new Map<string, Override>();
+
+function ebpsWorkaround(description: string, override: Override) {
+  ebpsWorkarounds.set(description, override);
+}
+
+const ebpsWorkarounds = new Map<string, Override>();
 
 // --------------------- BATTLEGROUPS --------------------- //
 
@@ -249,7 +256,7 @@ function setBattlegroupsWorkarounds() {
           case "armored_right_2a_scott_us":
             upg.spawnItems = ["scott_us"];
             break;
-          case "armored_right_3_sherman_easy_8_us":
+          case "armored_right_3_easy_8_task_force_us":
             upg.spawnItems = ["sherman_easy_8_us"];
             break;
         }
@@ -277,7 +284,7 @@ function setBattlegroupsWorkarounds() {
       // Combat Operations Branch.
       item.branches.RIGHT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
-          case "special_operations_right_3a_assault_operation_us":
+          case "special_operations_right_2_devils_brigade_us":
             upg.spawnItems = ["ssf_commandos_us"];
             break;
         }
@@ -375,8 +382,23 @@ function setBattlegroupsWorkarounds() {
   });
 }
 
+function setUnitWeaponWorkarounds() {
+  ebpsWorkaround("Modify American - Weasel Default Weapon", {
+    predicate: (item) => item.faction === "american" && item.id === "m29_weasal_us",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.weaponRef.push({
+        type: "default",
+        ebp: "ebps/races/american/weapons/small_arms/machine_guns/heavy_machine_gun/w_30cal_weasal_us",
+      });
+    },
+  });
+}
+
 setBattlegroupsWorkarounds();
+setUnitWeaponWorkarounds();
 
 console.log(`Total BG workarounds: ${bgWorkarounds.size}`);
+console.log(`Total EBPS workarounds: ${ebpsWorkarounds.size}`);
 
-export { bgWorkarounds };
+export { bgWorkarounds, ebpsWorkarounds };

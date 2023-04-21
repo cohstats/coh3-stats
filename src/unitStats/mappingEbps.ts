@@ -4,6 +4,7 @@ import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
+import { ebpsWorkarounds } from "./workarounds";
 
 // need to be extended by all required fields
 type EbpsType = {
@@ -364,6 +365,19 @@ const getEbpsStats = async (patch = "latest") => {
           return;
       }
     });
+  }
+
+  for (const ebpsItem of ebpsSetAll) {
+    for (const [override, { predicate, mutator, validator }] of ebpsWorkarounds) {
+      if (predicate(ebpsItem)) {
+        mutator(ebpsItem);
+        // console.info(`Overriding ${ebpsItem.id} with ${override}`);
+        if (validator && !validator(ebpsItem)) {
+          console.error(`Invalid item ${ebpsItem.id} after override ${override}`, ebpsItem);
+          // throw new Error("Error during bg workarounds");
+        }
+      }
+    }
   }
 
   if (!EbpsPatchData) EbpsPatchData = {};
