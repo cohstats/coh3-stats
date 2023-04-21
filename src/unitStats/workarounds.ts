@@ -277,7 +277,7 @@ function setBattlegroupsWorkarounds() {
       // Combat Operations Branch.
       item.branches.RIGHT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
-          case "special_operations_right_3a_assault_operation_us":
+          case "special_operations_right_2_devils_brigade_us":
             upg.spawnItems = ["ssf_commandos_us"];
             break;
         }
