@@ -19,12 +19,6 @@ function bgWorkaround(description: string, override: Override) {
 
 const bgWorkarounds = new Map<string, Override>();
 
-function ebpsWorkaround(description: string, override: Override) {
-  ebpsWorkarounds.set(description, override);
-}
-
-const ebpsWorkarounds = new Map<string, Override>();
-
 // --------------------- BATTLEGROUPS --------------------- //
 
 function setBattlegroupsWorkarounds() {
@@ -382,23 +376,8 @@ function setBattlegroupsWorkarounds() {
   });
 }
 
-function setUnitWeaponWorkarounds() {
-  ebpsWorkaround("Modify American - Weasel Default Weapon", {
-    predicate: (item) => item.faction === "american" && item.id === "m29_weasal_us",
-    mutator: (item) => {
-      item = item as EbpsType;
-      item.weaponRef.push({
-        type: "default",
-        ebp: "ebps/races/american/weapons/small_arms/machine_guns/heavy_machine_gun/w_30cal_weasal_us",
-      });
-    },
-  });
-}
-
 setBattlegroupsWorkarounds();
-setUnitWeaponWorkarounds();
 
 console.log(`Total BG workarounds: ${bgWorkarounds.size}`);
-console.log(`Total EBPS workarounds: ${ebpsWorkarounds.size}`);
 
-export { bgWorkarounds, ebpsWorkarounds };
+export { bgWorkarounds };
