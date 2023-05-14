@@ -1,4 +1,4 @@
-import { Card, Group, Text, Badge, Container, Alert, Center, Anchor } from "@mantine/core";
+import { Container, Alert, Center, Anchor } from "@mantine/core";
 import React from "react";
 import { IconAlertCircle } from "@tabler/icons";
 import Link from "next/link";
