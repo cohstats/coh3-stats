@@ -184,7 +184,7 @@ const Leaderboards = ({
         />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
-      <Container fluid p={0}>
+      <Container size={"lg"} p={0}>
         <Container fluid>
           <Group position={"apart"}>
             <Group>
