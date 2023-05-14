@@ -1,7 +1,7 @@
 import { isUndefined } from "lodash";
 import { leaderBoardType, raceType } from "./coh3/coh3-types";
 
-const getLeaderBoardRoute = (race?: raceType, type?: leaderBoardType, start?: number) => {
+export const getLeaderBoardRoute = (race?: raceType, type?: leaderBoardType, start?: number) => {
   const searchParams = new URLSearchParams(
     Object.assign(
       {},
@@ -17,46 +17,42 @@ const getLeaderBoardRoute = (race?: raceType, type?: leaderBoardType, start?: nu
   return encodeURI(`/leaderboards${searchParamString}`);
 };
 
-const getLeaderBoardStatsRoute = () => {
+export const getLeaderBoardStatsRoute = () => {
   return encodeURI(`/stats/leaderboards`);
 };
 
-const getExplorerFactionRoute = (race: raceType) => {
+export const getExplorerFactionRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}`);
 };
 
-const getExplorerFactionUnitsRoute = (race: raceType) => {
+export const getExplorerFactionUnitsRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}/units`);
 };
 
-const getExplorerUnitRoute = (race: raceType, unitId: string) => {
+export const getExplorerUnitRoute = (race: raceType, unitId: string) => {
   return encodeURI(`/explorer/races/${race}/units/${unitId}`);
 };
 
-const getDPSCalculatorRoute = () => {
+export const getDPSCalculatorRoute = () => {
   return encodeURI(`/explorer/dps`);
 };
 
-const getUnitBrowserRoute = () => {
+export const getUnitBrowserRoute = () => {
   return encodeURI(`/explorer/unit-browser`);
 };
 
-const getDesktopAppRoute = () => {
+export const getDesktopAppRoute = () => {
   return encodeURI(`/desktop-app`);
 };
 
-const getAboutRoute = () => {
+export const getAboutRoute = () => {
   return encodeURI(`/about`);
 };
 
-export {
-  getLeaderBoardRoute,
-  getExplorerFactionRoute,
-  getExplorerFactionUnitsRoute,
-  getExplorerUnitRoute,
-  getDPSCalculatorRoute,
-  getDesktopAppRoute,
-  getAboutRoute,
-  getUnitBrowserRoute,
-  getLeaderBoardStatsRoute,
+export const getPlayerCardRoute = (playerId: string) => {
+  return encodeURI(`/players/${playerId}`);
+};
+
+export const getSearchRoute = (searchQuery: string) => {
+  return encodeURI(`/search?q=${searchQuery}`);
 };

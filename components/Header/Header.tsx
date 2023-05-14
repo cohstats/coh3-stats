@@ -16,9 +16,9 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
+import { IconChevronDown } from "@tabler/icons";
 import { ColorSchemeToggle } from "../other/color-scheme-toggle";
-import { SearchButton } from "../search-button/search-button";
+import { SearchButton } from "./components/search-button";
 import { OnlinePlayers } from "../online-players";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
@@ -132,7 +132,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <Divider my="sm" />
           <Stack px="md">
             <Group grow>
-              <SearchButton onClick={() => close()} />
+              <SearchButton />
             </Group>
             <Anchor
               component={Link}
