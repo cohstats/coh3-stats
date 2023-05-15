@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { NextPage } from "next";
 import { Anchor, Card, Container, Flex, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons";
+import { IconChevronRight } from "@tabler/icons-react";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";

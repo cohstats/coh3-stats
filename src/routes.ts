@@ -29,7 +29,23 @@ export const getExplorerFactionUnitsRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}/units`);
 };
 
-export const getExplorerUnitRoute = (race: raceType, unitId: string) => {
+/**
+ * @param race Notice the stupid afrika_korps and british_africa, they even have typos in the name. Relic :facepalm:
+ * @param unitId
+ */
+export const getExplorerUnitRoute = (
+  race: raceType | "afrika_korps" | "british_africa",
+  unitId: string,
+) => {
+  // This is protection for some data generated differently
+  if (race === "afrika_korps") {
+    race = "dak";
+  } else {
+    if (race === "british_africa") {
+      race = "british";
+    }
+  }
+
   return encodeURI(`/explorer/races/${race}/units/${unitId}`);
 };
 
@@ -55,4 +71,8 @@ export const getPlayerCardRoute = (playerId: string) => {
 
 export const getSearchRoute = (searchQuery: string) => {
   return encodeURI(`/search?q=${searchQuery}`);
+};
+
+export const getOpenDataRoute = () => {
+  return encodeURI(`/other/open-data`);
 };

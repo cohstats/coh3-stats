@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import config from "../config";
 import { Center, Container, Divider, Flex, Input, Stack, Text } from "@mantine/core";
-import { IconSearch, IconDatabaseOff } from "@tabler/icons";
+import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { generateKeywordsString } from "../src/head-utils";
@@ -11,6 +11,7 @@ import { SearchPlayerCardData } from "../src/coh3/coh3-types";
 import { SearchPlayerCard } from "../components/search/search-player-card";
 import ErrorCard from "../components/error-card";
 import { getSearchRoute } from "../src/routes";
+import { SearchPageUsed, SearchPageView } from "../src/firebase/analytics";
 
 /**
  *
@@ -31,9 +32,14 @@ const Search: NextPage<{
   const { query, push } = useRouter();
   const { q } = query;
 
+  useEffect(() => {
+    SearchPageView();
+  }, []);
+
   const [searchValue, setSearchValue] = React.useState(q || "");
   useEffect(() => {
     q ? setSearchValue(q as string) : setSearchValue("");
+    SearchPageUsed(q as string);
   }, [q]);
 
   const description = "Search for any players in Company of Heroes 3.";

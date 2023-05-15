@@ -24,7 +24,7 @@ import {
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
 import { useToggle } from "@mantine/hooks";
-import { IconAdjustments } from "@tabler/icons";
+import { IconAdjustments } from "@tabler/icons-react";
 import { getExplorerUnitRoute } from "../../src/routes";
 
 const useStyles = createStyles((theme) => ({
