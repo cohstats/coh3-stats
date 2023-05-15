@@ -1,9 +1,27 @@
-import { leaderBoardTypeArray, raceTypeArray } from "../../../src/coh3/coh3-types";
-import { Anchor, Divider, SimpleGrid, Text } from "@mantine/core";
+import {
+  leaderBoardType,
+  leaderBoardTypeArray,
+  raceTypeArray,
+} from "../../../src/coh3/coh3-types";
+import { Anchor, Divider, Group, Image, SimpleGrid, Text } from "@mantine/core";
 import Link from "next/link";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import React from "react";
+
+const addPlayerIcons = (type: leaderBoardType) => {
+  return Array.from({ length: parseInt(type[0]) }, () => (
+    <Image
+      key={Math.random()}
+      width={20}
+      height={20}
+      fit="contain"
+      src="/icons/races/common/symbols/building_barracks.png"
+      alt=""
+      withPlaceholder
+    />
+  ));
+};
 
 const LeaderboardsMenu = () => {
   return (
@@ -11,7 +29,10 @@ const LeaderboardsMenu = () => {
       {leaderBoardTypeArray.map((type) => {
         return (
           <div key={type}>
-            <Text weight={700}>{type.replace("v", " vs ")}</Text>
+            <Group>
+              <Text weight={700}>{type.replace("v", " vs ")}</Text>
+              <Group spacing={0}>{addPlayerIcons(type)}</Group>
+            </Group>
             <Divider my="sm" />
             {raceTypeArray.map((faction) => {
               return (
