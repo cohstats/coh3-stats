@@ -40,6 +40,14 @@ export const AnalyticsOpenDataPageView = (): void => {
   logFBEvent("open_data_view");
 };
 
+export const SearchPageView = (): void => {
+  logFBEvent("search_view");
+};
+
+export const SearchPageUsed = (q: string): void => {
+  logFBEvent("search_used", { q });
+};
+
 export const AnalyticsStatsLeaderboardsPageView = (): void => {
   logFBEvent("stats_leaderboards_view");
 };
