@@ -1,5 +1,5 @@
 import { Button, Checkbox, Flex, Group, List, Popover, Space, Text } from "@mantine/core";
-import { IconFilter } from "@tabler/icons";
+import { IconFilter } from "@tabler/icons-react";
 import { FilterInformation } from "./player-recent-matches";
 
 type FilterableHeaderProps = {

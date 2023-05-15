@@ -72,3 +72,7 @@ export const getPlayerCardRoute = (playerId: string) => {
 export const getSearchRoute = (searchQuery: string) => {
   return encodeURI(`/search?q=${searchQuery}`);
 };
+
+export const getOpenDataRoute = () => {
+  return encodeURI(`/other/open-data`);
+};

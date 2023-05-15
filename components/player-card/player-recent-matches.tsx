@@ -6,7 +6,7 @@ import { ProcessedMatch, raceID } from "../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import ErrorCard from "../error-card";
 import FactionIcon from "../faction-icon";
-import { IconInfoCircle } from "@tabler/icons";
+import { IconInfoCircle } from "@tabler/icons-react";
 import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
 import FilterableHeader from "./filterable-header";

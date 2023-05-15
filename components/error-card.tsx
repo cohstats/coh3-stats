@@ -1,6 +1,6 @@
 import { Container, Alert, Center, Anchor } from "@mantine/core";
 import React from "react";
-import { IconAlertCircle } from "@tabler/icons";
+import { IconAlertCircle } from "@tabler/icons-react";
 import Link from "next/link";
 import config from "../config";
 

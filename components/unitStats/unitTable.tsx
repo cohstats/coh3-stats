@@ -28,7 +28,7 @@ import {
   IconChevronUp,
   IconSearch,
   IconSelector,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import { EbpsType, SbpsType, WeaponType, getFactionIcon } from "../../src/unitStats";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { internalSlash } from "../../src/utils";

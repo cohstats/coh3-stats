@@ -40,7 +40,7 @@ import { EbpsType, getEbpsStats } from "../../src/unitStats/mappingEbps";
 // import slash from "slash";
 import { getWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../src/unitStats/mappingSbps";
-import { IconAdjustments } from "@tabler/icons";
+import { IconAdjustments } from "@tabler/icons-react";
 import {
   CustomizableUnit,
   getDpsVsHealth,

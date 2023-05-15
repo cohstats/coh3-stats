@@ -5,7 +5,7 @@ import { Container, Text, Title, Anchor, ActionIcon, Group } from "@mantine/core
 import { PayPalDonation } from "../components/other/paypal-donations";
 import { Donate } from "../components/icon/donate";
 import Link from "next/link";
-import { IconBarrierBlock } from "@tabler/icons";
+import { IconBarrierBlock } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../src/firebase/analytics";
 

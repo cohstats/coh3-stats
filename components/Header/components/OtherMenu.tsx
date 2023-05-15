@@ -9,16 +9,16 @@ import {
   Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
-import { getLeaderBoardStatsRoute } from "../../../src/routes";
+import { getOpenDataRoute } from "../../../src/routes";
 import React from "react";
 import {
   IconActivity,
   IconBarrierBlock,
   IconChevronDown,
-  IconDeviceDesktopAnalytics,
+  IconDatabaseShare,
 } from "@tabler/icons-react";
 
-const StatisticsMenu = ({
+const OtherMenu = ({
   cx,
   classes,
   close,
@@ -32,14 +32,25 @@ const StatisticsMenu = ({
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={cx(classes.link)}>
-            <Text fw="bold">Statistics</Text>
+            <Text fw="bold">Other</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
               <Group spacing={"xs"}>
-                <IconDeviceDesktopAnalytics size={16} />
-                <Anchor component={Link} href={getLeaderBoardStatsRoute()} onClick={close}>
-                  Leaderboards Stats
+                <IconDatabaseShare size={16} />
+                <Anchor component={Link} href={getOpenDataRoute()} onClick={close}>
+                  Open Data
+                </Anchor>
+              </Group>
+              <Group spacing={"xs"}>
+                <IconActivity size={16} />
+                <Anchor
+                  component={Link}
+                  href={"https://stats.uptimerobot.com/03lN1ckr5j"}
+                  target={"_blank"}
+                  onClick={close}
+                >
+                  Relic API Status
                 </Anchor>
               </Group>
             </Stack>
@@ -51,11 +62,11 @@ const StatisticsMenu = ({
 
   const desktopView = (
     <div className={classes.hiddenMobile}>
-      <HoverCard width={220} position="bottom" radius="md" shadow="md" withinPortal>
+      <HoverCard width={200} position="bottom" radius="md" shadow="md" withinPortal>
         <HoverCard.Target>
           <div>
             <Group spacing={3} className={cx(classes.link)}>
-              Statistics
+              Other
               <IconChevronDown size={16} />
             </Group>
           </div>
@@ -63,22 +74,32 @@ const StatisticsMenu = ({
         <HoverCard.Dropdown sx={{ overflow: "hidden" }} style={{ textAlign: "left" }}>
           <Group>
             <Group spacing={"xs"}>
-              <IconDeviceDesktopAnalytics size={16} />
-              <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
-                Leaderboards Stats
+              <IconDatabaseShare size={16} />
+              <Anchor component={Link} href={getOpenDataRoute()}>
+                Open Data
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
+              <IconActivity size={16} />
+              <Anchor
+                component={Link}
+                href={"https://stats.uptimerobot.com/03lN1ckr5j"}
+                target={"_blank"}
+              >
+                Relic API Status
               </Anchor>
             </Group>
             <Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>
               <Anchor
                 className={cx(classes.disabledLink)}
                 component={Link}
-                href={getLeaderBoardStatsRoute()}
+                href={getOpenDataRoute()}
               >
                 <Group spacing={"xs"}>
-                  <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
+                  <ActionIcon color="orange" radius="xl" variant="transparent">
                     <IconBarrierBlock size={16} />
                   </ActionIcon>
-                  <span> Game Statistics</span>
+                  <span> Night-bot API</span>
                 </Group>
               </Anchor>
             </Tooltip>
@@ -96,4 +117,4 @@ const StatisticsMenu = ({
   );
 };
 
-export default StatisticsMenu;
+export default OtherMenu;

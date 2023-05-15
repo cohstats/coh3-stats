@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { IconFileText, IconSearch } from "@tabler/icons";
+import { IconFileText, IconSearch } from "@tabler/icons-react";
 import { SearchPlayerEntry } from "./SearchPlayerEntry";
 import { Loader } from "@mantine/core";
 import { SpotlightAction, SpotlightProvider } from "@mantine/spotlight";

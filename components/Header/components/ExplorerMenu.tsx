@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons";
+import { IconChevronDown } from "@tabler/icons-react";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";

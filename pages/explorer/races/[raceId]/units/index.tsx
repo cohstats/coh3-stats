@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { IconBarrierBlock } from "@tabler/icons";
+import { IconBarrierBlock } from "@tabler/icons-react";
 import { Anchor, Card, Flex, Grid, Stack, Text, Title, Container } from "@mantine/core";
 
 import { raceType } from "../../../../../src/coh3/coh3-types";

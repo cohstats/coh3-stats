@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import config from "../config";
 import { Center, Container, Divider, Flex, Input, Stack, Text } from "@mantine/core";
-import { IconSearch, IconDatabaseOff } from "@tabler/icons";
+import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { generateKeywordsString } from "../src/head-utils";
