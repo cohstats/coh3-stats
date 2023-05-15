@@ -68,7 +68,10 @@ const About: NextPage = () => {
       {/*This is custom HEAD overwrites the default one*/}
       <Head>
         <title>COH3 Stats - Open Data</title>
-        <meta name="description" content="COH3 Stats are open sourcing a lot of data. " />
+        <meta
+          name="description"
+          content="COH3 Stats are open sourcing a leaderboards and match data. Find more details on the page how to download them."
+        />
       </Head>
       <>
         <Container size={"md"}>
