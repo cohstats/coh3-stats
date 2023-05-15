@@ -108,7 +108,7 @@ const About: NextPage = () => {
               <Code block>{codeTypeOfLeaderBoards}</Code>
               <Text fs="italic" fz={"small"}>
                 Optional fields are marked with &quot;?&quot;. And will be most likely not present
-                as they not deemed important. However they are on the official API in case you
+                as they are not deemed important. However they are on the Relic API in case you
                 need them. Reach out to us if you need any clarification.
               </Text>
             </Spoiler>
