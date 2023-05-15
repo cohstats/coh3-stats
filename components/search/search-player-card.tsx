@@ -12,7 +12,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
         href={getPlayerCardRoute(data.relicProfileId)}
         style={{ textDecoration: "none" }}
       >
-        <Card p={4} pl={5} w={300}>
+        <Card p={4} pl={5} w={300} withBorder>
           <Group>
             <Avatar
               src={data.avatar}
