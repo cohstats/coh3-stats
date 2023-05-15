@@ -36,6 +36,10 @@ export const AnalyticsAboutAppPageView = (): void => {
   logFBEvent("about_app_view");
 };
 
+export const AnalyticsOpenDataPageView = (): void => {
+  logFBEvent("open_data_view");
+};
+
 export const AnalyticsStatsLeaderboardsPageView = (): void => {
   logFBEvent("stats_leaderboards_view");
 };

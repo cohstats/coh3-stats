@@ -1,12 +1,11 @@
 import { NextPage } from "next";
 import Head from "next/head";
 
-import { Container, Text, Title, Anchor, ActionIcon, Group, Code, Spoiler } from "@mantine/core";
-import Link from "next/link";
-import { IconBarrierBlock } from "@tabler/icons-react";
+import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
+
 import React, { useEffect } from "react";
 import config from "../../config";
-// import { AnalyticsAboutAppPageView } from "../src/firebase/analytics";
+import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json
 
@@ -61,7 +60,7 @@ type RawPlayerProfile = {
  */
 const About: NextPage = () => {
   useEffect(() => {
-    // AnalyticsAboutAppPageView();
+    AnalyticsOpenDataPageView();
   }, []);
 
   return (
