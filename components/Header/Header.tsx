@@ -16,14 +16,15 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import { IconBarrierBlock, IconChevronDown } from "@tabler/icons";
+import { IconChevronDown } from "@tabler/icons-react";
 import { ColorSchemeToggle } from "../other/color-scheme-toggle";
-import { SearchButton } from "../search-button/search-button";
+import { SearchButton } from "./components/search-button";
 import { OnlinePlayers } from "../online-players";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
 import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";
 import StatisticsMenu from "./components/StatisticsMenu";
+import OtherMenu from "./components/OtherMenu";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -132,7 +133,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <Divider my="sm" />
           <Stack px="md">
             <Group grow>
-              <SearchButton onClick={() => close()} />
+              <SearchButton redirectOnClick={true} close={close} />
             </Group>
             <Anchor
               component={Link}
@@ -155,6 +156,7 @@ export const Header: React.FC<HeaderProps> = () => {
             </Anchor>
 
             <ExplorerMenu cx={cx} close={close} classes={classes} />
+            <OtherMenu cx={cx} close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -223,6 +225,7 @@ export const Header: React.FC<HeaderProps> = () => {
             </Anchor>
 
             <ExplorerMenu cx={cx} close={close} classes={classes} />
+            <OtherMenu cx={cx} close={close} classes={classes} />
 
             <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About

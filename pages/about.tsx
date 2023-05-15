@@ -1,13 +1,14 @@
 import { NextPage } from "next";
 import Head from "next/head";
 
-import { Container, Text, Title, Anchor, ActionIcon, Group } from "@mantine/core";
+import { Container, Text, Title, Anchor, ActionIcon, Group, Center, Stack } from "@mantine/core";
 import { PayPalDonation } from "../components/other/paypal-donations";
 import { Donate } from "../components/icon/donate";
 import Link from "next/link";
-import { IconBarrierBlock } from "@tabler/icons";
+import { IconBarrierBlock } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../src/firebase/analytics";
+import config from "../config";
 
 /**
  * This is example page you can find it by going on ur /example
@@ -37,11 +38,7 @@ const About: NextPage = () => {
             </ActionIcon>{" "}
             BETA version of the site.
           </Group>
-          <Text pt="sm">
-            Find your player card using search or leaderboards.
-            <br />
-            Search now works only with exact name match (case-sensitive)
-          </Text>
+          <Text pt="sm">Find your player card using search or leaderboards.</Text>
           <Text pt="sm">More info on Github or Discord</Text>
           <Title order={1} size="h4" pt="md">
             API Usage / Collaboration
@@ -80,17 +77,29 @@ const About: NextPage = () => {
           have been already used to pay for 2022 server costs. So all of them are appreciated.
           <br />
           <br />
-          All the donations are listed at Ko-Fi.
-          <Donate />
-          <i>
-            You can Donate via PayPal or Card at Ko-Fi,
-            <br />
-            no registration required.
-          </i>
-          <br />
-          <br />
-          <PayPalDonation />
-          <i>Direct PayPal if you have problems with Ko-Fi</i>
+          <div>
+            <div>
+              <Group>
+                <Text>
+                  All the donations are listed at{" "}
+                  <Anchor href={config.DONATION_LINK} target={"_blank"}>
+                    Ko-Fi
+                  </Anchor>
+                  :
+                </Text>
+                <Donate />
+              </Group>
+
+              <Text fz={"sm"} fs="italic">
+                You can Donate via PayPal or Card at Ko-Fi, no registration required.
+              </Text>
+            </div>
+
+            <Group pt={"xl"}>
+              <Text>Direct PayPal if you have problems with Ko-Fi:</Text>
+              <PayPalDonation />
+            </Group>
+          </div>
         </Container>
       </>
     </div>

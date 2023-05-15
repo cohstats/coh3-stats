@@ -10,7 +10,7 @@ import {
   Title,
   useMantineColorScheme,
 } from "@mantine/core";
-import { IconBrandTwitch, IconCircle } from "@tabler/icons";
+import { IconBrandTwitch, IconCircle } from "@tabler/icons-react";
 import { TwitchStream } from "../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
 import { mobileCheck } from "../../src/utils";

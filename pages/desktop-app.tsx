@@ -11,7 +11,7 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { IconCheck } from "@tabler/icons";
+import { IconCheck } from "@tabler/icons-react";
 import { GetServerSideProps, NextPage } from "next";
 import { Octokit } from "octokit";
 import Head from "next/head";

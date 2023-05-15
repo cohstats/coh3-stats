@@ -180,4 +180,28 @@ export default new Router()
       },
     });
   })
+  // Caching for search
+  .match("/search(.*)", ({ cache }) => {
+    cache({
+      edge: {
+        // Cache for 30 seconds, revalidated after 5 seconds
+        maxAgeSeconds: 5 * 60,
+        staleWhileRevalidateSeconds: 10 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/search.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60,
+      },
+      edge: {
+        // Cache for 30 seconds, revalidated after 5 seconds
+        maxAgeSeconds: 5 * 60,
+        staleWhileRevalidateSeconds: 10 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   .use(nextRoutes); // automatically adds routes for all files under /pages

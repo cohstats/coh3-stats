@@ -153,3 +153,11 @@ export interface TwitchStream {
   tags: string[];
   is_mature: boolean;
 }
+
+export interface SearchPlayerCardData {
+  avatar: string;
+  relicProfileId: string;
+  level: number;
+  country: string;
+  alias: string;
+}

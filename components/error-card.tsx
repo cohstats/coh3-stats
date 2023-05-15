@@ -1,4 +1,8 @@
-import { Card, Group, Text, Badge, Container } from "@mantine/core";
+import { Container, Alert, Center, Anchor } from "@mantine/core";
+import React from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
+import Link from "next/link";
+import config from "../config";
 
 /**
  * TODO Please improve the error component / make the border red or something
@@ -12,14 +16,18 @@ const ErrorCard = ({ title, body }: { title: string; body: string }) => {
 
   return (
     <Container size={"sm"} p={"md"}>
-      <Card p="lg" radius="md" withBorder>
-        <Group position="apart" mb="xs">
-          <Text weight={500}>{renderTitle}</Text>
-          <Badge color="pink">ERROR</Badge>
-        </Group>
-
-        <Text>{defaultBody}</Text>
-      </Card>
+      <Center>
+        <Alert icon={<IconAlertCircle size="2rem" />} title={renderTitle} color="red" miw={450}>
+          {defaultBody}
+          <br />
+          <br />
+          If this error persists, please report it on{" "}
+          <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target={"_blank"}>
+            Discord
+          </Anchor>
+          .
+        </Alert>
+      </Center>
     </Container>
   );
 };

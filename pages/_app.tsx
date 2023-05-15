@@ -9,7 +9,6 @@ import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
 import { BetaVersion } from "../components/other/beta-version";
-import CustomSpotlightProvider from "../components/customSpotlightProvider";
 import { useEffect, useRef } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
@@ -119,12 +118,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <CustomSpotlightProvider>
-            <Notifications />
-            <BetaVersion />
-            {layoutContent && contentWithLayout}
-            {!layoutContent && contentWithoutLayout}
-          </CustomSpotlightProvider>
+          <Notifications />
+          <BetaVersion />
+          {layoutContent && contentWithLayout}
+          {!layoutContent && contentWithoutLayout}
         </MantineProvider>
       </ColorSchemeProvider>
     </>

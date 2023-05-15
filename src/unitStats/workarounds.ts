@@ -1,7 +1,8 @@
 import { BattlegroupResolvedType } from "./battlegroup";
+import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
 
-type ItemType = SbpsType | BattlegroupResolvedType;
+type ItemType = EbpsType | SbpsType | BattlegroupResolvedType;
 
 interface Override {
   /** */
@@ -249,7 +250,7 @@ function setBattlegroupsWorkarounds() {
           case "armored_right_2a_scott_us":
             upg.spawnItems = ["scott_us"];
             break;
-          case "armored_right_3_sherman_easy_8_us":
+          case "armored_right_3_easy_8_task_force_us":
             upg.spawnItems = ["sherman_easy_8_us"];
             break;
         }
@@ -277,7 +278,7 @@ function setBattlegroupsWorkarounds() {
       // Combat Operations Branch.
       item.branches.RIGHT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
-          case "special_operations_right_3a_assault_operation_us":
+          case "special_operations_right_2_devils_brigade_us":
             upg.spawnItems = ["ssf_commandos_us"];
             break;
         }
