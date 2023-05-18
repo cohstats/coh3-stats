@@ -199,7 +199,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </Anchor>
 
           <Group className={classes.hiddenMobile} spacing={0}>
-            <HoverCard width={800} position="bottom" radius="md" shadow="md" withinPortal>
+            <HoverCard width={800} position="bottom" radius="md" shadow="md">
               <HoverCard.Target>
                 <div>
                   <Anchor

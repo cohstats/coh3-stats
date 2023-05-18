@@ -172,7 +172,7 @@ const ExplorerMenu = ({
 
   const desktopView = (
     <Group className={classes.hiddenMobile}>
-      <HoverCard width={840} position="bottom" radius="md" shadow="md" withinPortal>
+      <HoverCard width={840} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={cx(classes.link)}>
             <Group spacing={3}>

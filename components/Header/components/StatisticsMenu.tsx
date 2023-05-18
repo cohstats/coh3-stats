@@ -51,7 +51,7 @@ const StatisticsMenu = ({
 
   const desktopView = (
     <div className={classes.hiddenMobile}>
-      <HoverCard width={220} position="bottom" radius="md" shadow="md" withinPortal>
+      <HoverCard width={220} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <div>
             <Group spacing={3} className={cx(classes.link)}>
