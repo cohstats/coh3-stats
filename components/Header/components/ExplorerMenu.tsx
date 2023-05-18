@@ -85,11 +85,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
   );
 };
 
-/**
- * @TODO Provide the toolName type for the routes. In the meantime, provide the
- * route fragment as string.
- */
-const explorerToolLink = (close: () => void) => {
+const DPSLink = ({ close }: { close: () => void }) => {
   return (
     <Group spacing={4}>
       <Image
@@ -110,6 +106,13 @@ const explorerToolLink = (close: () => void) => {
           DPS - Unit Comparison
         </Anchor>
       </Text>
+    </Group>
+  );
+};
+
+const UnitBrowserLink = ({ close }: { close: () => void }) => {
+  return (
+    <Group spacing={4}>
       <Image
         width={20}
         height={20}
@@ -156,9 +159,10 @@ const ExplorerMenu = ({
               {explorerFactionLink("british", close)}
             </Stack>
             <Divider my="sm"></Divider>
-            <Stack>
+            <Stack spacing={4}>
               <Text weight={700}>Tools</Text>
-              {explorerToolLink(close)}
+              <DPSLink close={close} />
+              <UnitBrowserLink close={close} />
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -168,7 +172,7 @@ const ExplorerMenu = ({
 
   const desktopView = (
     <Group className={classes.hiddenMobile}>
-      <HoverCard width={840} position="bottom" radius="md" shadow="md" withinPortal>
+      <HoverCard width={840} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={cx(classes.link)}>
             <Group spacing={3}>
@@ -191,7 +195,8 @@ const ExplorerMenu = ({
               <Stack spacing={4}>
                 <Text weight={700}>Tools</Text>
                 <Divider />
-                {explorerToolLink(() => null)}
+                <DPSLink close={() => null} />
+                <UnitBrowserLink close={() => null} />
               </Stack>
             </Grid.Col>
           </Grid>
