@@ -4,6 +4,7 @@ import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
+import { extractRequirements } from "./requirement-utils";
 
 // need to be extended by all required fields
 type SbpsType = {
@@ -261,49 +262,12 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
       case "squad_requirement_ext":
         if (!extension.requirement_table?.length) break;
         for (const reqItem of extension.requirement_table) {
-          const reqType = reqItem?.required.template_reference.value.split("\\")[1];
-          switch (reqType) {
-            // 1-Level Nesting
-            case "required_player_upgrade":
-              const upgradeRef = reqItem.required.upgrade_name?.instance_reference;
-              // Only include those that have the flag `is_present` set to true.
-              if (upgradeRef && reqItem.required.is_present) {
-                sbps.requirements.push(upgradeRef.split("/").slice(-1)[0]);
-              }
-              break;
-            // 2-Level Nesting
-            case "required_any_in_list":
-            case "required_all_in_list":
-              if (!reqItem?.required?.requirements?.length) continue;
-              for (const playerUpgradeReq of reqItem.required.requirements) {
-                const nestedValue =
-                  playerUpgradeReq?.requirement.template_reference.value.split("\\")[1];
-                switch (nestedValue) {
-                  case "required_player_upgrade":
-                    const upgradeRef =
-                      playerUpgradeReq.requirement.upgrade_name?.instance_reference;
-                    // Only include those that have the flag `is_present` set to true.
-                    if (upgradeRef && playerUpgradeReq.requirement.is_present) {
-                      sbps.requirements.push(upgradeRef.split("/").slice(-1)[0]);
-                    }
-                    break;
-                  case "required_all_in_list":
-                    for (const subReq of playerUpgradeReq.requirement.requirements) {
-                      const upgradeRef = subReq.requirement.upgrade_name?.instance_reference;
-                      // Only include those that have the flag `is_present` set to true.
-                      if (upgradeRef && subReq.requirement.is_present) {
-                        sbps.requirements.push(upgradeRef.split("/").slice(-1)[0]);
-                      }
-                    }
-                    break;
-                  default:
-                    break;
-                }
-              }
-              break;
-
-            default:
-              break;
+          const reqs = extractRequirements(reqItem);
+          for (const req of reqs) {
+            // Filter out the campaign-only requirements.
+            if (!BanishedRequirements.some((v) => req.includes(v))) {
+              sbps.requirements.push(req.split("/").slice(-1)[0]);
+            }
           }
         }
         break;
@@ -311,7 +275,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
         if (!extension.abilities?.length) break;
         for (const abi of extension.abilities) {
           if (abi.ability.instance_reference) {
-            sbps.upgrades.push(abi.ability.instance_reference.split("/").slice(-1)[0]);
+            sbps.abilities.push(abi.ability.instance_reference.split("/").slice(-1)[0]);
           }
         }
         break;
@@ -320,6 +284,8 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
     }
   }
 };
+
+const BanishedRequirements = ["mass_production", "campaign"];
 
 // calls the mapping for each entity and
 // puts the result array into the exported SbpsData variable.

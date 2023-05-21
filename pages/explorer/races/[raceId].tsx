@@ -140,7 +140,6 @@ const BuildingMapping = (
           ...unit,
           playerReq: Object.values(getResolvedUpgrades(unit.requirements, data.upgradesData)),
         }));
-        // console.log(units);
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard

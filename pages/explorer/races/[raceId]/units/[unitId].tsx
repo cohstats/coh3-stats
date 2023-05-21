@@ -4,7 +4,9 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { Card, Container, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core";
 import {
+  AbilitiesType,
   EbpsType,
+  getResolvedAbilities,
   getResolvedUpgrades,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
@@ -39,6 +41,7 @@ interface UnitDetailProps {
     squadWeapons: WeaponMember[];
     resolvedEntities: EbpsType[];
     upgrades: UpgradesType[];
+    abilities: AbilitiesType[];
   };
 }
 
@@ -100,9 +103,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   const { totalUpkeepCost } = calculatedData;
 
   // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
-  const { squadWeapons } = calculatedData;
-
-  const { upgrades } = calculatedData;
+  const { squadWeapons, upgrades, abilities } = calculatedData;
 
   // Use default weapon for max range.
   const rangeValues = {
@@ -166,6 +167,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
                 })}
               </Card>
               {UnitUpgradeSection(upgrades)}
+              {UnitAbilitySection(abilities)}
             </Stack>
           </Grid.Col>
           <Grid.Col md={1} order={1} orderMd={2}>
@@ -227,6 +229,35 @@ const UnitUpgradeSection = (upgrades: UpgradesType[]) => {
   );
 };
 
+const UnitAbilitySection = (abilities: AbilitiesType[]) => {
+  // Resolve unit abilities.
+  if (!abilities || !abilities.length) return <></>;
+  return (
+    <Stack>
+      <Title order={4}>Abilities</Title>
+      <Stack>
+        {Object.values(abilities).map(({ id, ui, cost }) => {
+          return (
+            <Card key={id} p="lg" radius="md" withBorder>
+              {UnitUpgradeCard({
+                id,
+                desc: {
+                  screen_name: ui.screenName,
+                  help_text: ui.helpText,
+                  extra_text: ui.extraText,
+                  brief_text: ui.briefText,
+                  icon_name: ui.iconName,
+                },
+                time_cost: cost,
+              })}
+            </Card>
+          );
+        })}
+      </Stack>
+    </Stack>
+  );
+};
+
 const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
   return (
     <Stack>
@@ -260,6 +291,7 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
 
 const createdCalculateValuesForUnits = (
   data: {
+    abilitiesData: AbilitiesType[];
     sbpsData: SbpsType[];
     ebpsData: EbpsType[];
     weaponData: WeaponType[];
@@ -267,7 +299,7 @@ const createdCalculateValuesForUnits = (
   },
   unitId: string,
 ) => {
-  const { sbpsData, ebpsData, weaponData, upgradesData } = data;
+  const { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData } = data;
   const resolvedSquad = sbpsData.find((x) => x.id === unitId);
 
   if (!resolvedSquad) {
@@ -287,6 +319,10 @@ const createdCalculateValuesForUnits = (
 
   const upgrades = Object.values(getResolvedUpgrades(resolvedSquad.upgrades, upgradesData));
 
+  const abilities = Object.values(getResolvedAbilities(resolvedSquad.abilities, abilitiesData));
+
+  // console.log('Calculated abilities', resolvedSquad);
+
   const resolvedEntities: EbpsType[] = [];
 
   for (const loadout of resolvedSquad.loadout || []) {
@@ -304,11 +340,12 @@ const createdCalculateValuesForUnits = (
     squadWeapons,
     resolvedEntities,
     upgrades,
+    abilities,
   };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
+  const { abilitiesData, ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
 
   // const raceId = context.params?.raceId as string;
   const unitId = context.params?.unitId as string;
@@ -316,7 +353,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       calculatedData: createdCalculateValuesForUnits(
-        { sbpsData, ebpsData, weaponData, upgradesData },
+        { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
         unitId,
       ),
     },
