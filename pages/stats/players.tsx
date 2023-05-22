@@ -7,10 +7,9 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { generateKeywordsString } from "../../src/head-utils";
 
-import { doc, getDoc, getFirestore, Timestamp } from "firebase/firestore";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import dynamic from "next/dynamic";
-import { IconAlertTriangle, IconInfoCircle, IconUser } from "@tabler/icons-react";
-import { InfoIcon } from "../../components/icon/info";
+import { IconAlertTriangle, IconUser } from "@tabler/icons-react";
 import HelperIcon from "../../components/icon/helper";
 
 //only render on client side
