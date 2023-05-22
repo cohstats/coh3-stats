@@ -41,6 +41,8 @@
     "@mantine/next": "^6.0.6",
     "@mantine/notifications": "^6.0.6",
     "@mantine/spotlight": "^6.0.6",
+    "@nivo/core": "^0.83.0",
+    "@nivo/geo": "^0.83.0",
     "@sentry/nextjs": "^7.47.0",
     "@tabler/icons-react": "^2.18.0",
     "chart.js": "^4.2.1",
