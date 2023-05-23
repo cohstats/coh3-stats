@@ -134,7 +134,12 @@ const BuildingMapping = (
           race === "dak" && building.id === "halftrack_deployment_ak"
             ? generateAfrikaKorpsCallIns(data.abilitiesData)
             : getBuildingUpgrades(building, data.upgradesData);
-        const units = getBuildingTrainableUnits(building, data.sbpsData, data.ebpsData);
+        const units = Object.values(
+          getResolvedSquads(building.spawnItems, data.sbpsData, data.ebpsData),
+        ).map((unit) => ({
+          ...unit,
+          playerReq: Object.values(getResolvedUpgrades(unit.requirements, data.upgradesData)),
+        }));
         return (
           <Card key={building.id} p="sm" radius="md" withBorder>
             <BuildingCard
@@ -169,25 +174,25 @@ const BuildingMapping = (
   );
 };
 
-function getBuildingTrainableUnits(
-  building: EbpsType,
-  sbpsData: SbpsType[],
-  ebpsData: EbpsType[],
-): BuildingSchema["units"] {
-  return Object.entries(getResolvedSquads(building.spawnItems, sbpsData, ebpsData)).map(
-    ([id, { ui, time_cost }]) => ({
-      id,
-      desc: {
-        screen_name: ui.screenName,
-        help_text: ui.helpText,
-        brief_text: ui.briefText,
-        symbol_icon_name: ui.symbolIconName,
-        icon_name: ui.iconName,
-      },
-      time_cost,
-    }),
-  );
-}
+// function getBuildingTrainableUnits(
+//   building: EbpsType,
+//   sbpsData: SbpsType[],
+//   ebpsData: EbpsType[],
+// ): BuildingSchema["units"] {
+//   return Object.entries(getResolvedSquads(building.spawnItems, sbpsData, ebpsData)).map(
+//     ([id, { ui, time_cost }]) => ({
+//       id,
+//       desc: {
+//         screen_name: ui.screenName,
+//         help_text: ui.helpText,
+//         brief_text: ui.briefText,
+//         symbol_icon_name: ui.symbolIconName,
+//         icon_name: ui.iconName,
+//       },
+//       time_cost,
+//     }),
+//   );
+// }
 
 function getBuildingUpgrades(
   building: EbpsType,

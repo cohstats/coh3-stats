@@ -4,6 +4,7 @@ import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
+import { extractRequirements } from "./requirement-utils";
 
 // need to be extended by all required fields
 type SbpsType = {
@@ -37,7 +38,11 @@ type SbpsType = {
     two: { exp: number; screenName: string };
     three: { exp: number; screenName: string };
   };
-
+  /** Found at `squad_requirement_ext`. This contains unit training requirements
+   * references. */
+  requirements: string[];
+  /** Found at `squad_ability_ext`. This contains unit abilities references. */
+  abilities: string[];
   /** Found at `squad_reinforce_ext`. This contains reinforcement
    * information
    */
@@ -128,6 +133,8 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     },
     capture_rate: 0,
     capture_revert: 0,
+    requirements: [],
+    abilities: [],
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -251,11 +258,34 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.capture_revert = extension.revert_rate_multiplier;
         }
         break;
+      /* @todo Maybe convert this case to recursive function. */
+      case "squad_requirement_ext":
+        if (!extension.requirement_table?.length) break;
+        for (const reqItem of extension.requirement_table) {
+          const reqs = extractRequirements(reqItem);
+          for (const req of reqs) {
+            // Filter out the campaign-only requirements.
+            if (!BanishedRequirements.some((v) => req.includes(v))) {
+              sbps.requirements.push(req.split("/").slice(-1)[0]);
+            }
+          }
+        }
+        break;
+      case "squad_ability_ext":
+        if (!extension.abilities?.length) break;
+        for (const abi of extension.abilities) {
+          if (abi.ability.instance_reference) {
+            sbps.abilities.push(abi.ability.instance_reference.split("/").slice(-1)[0]);
+          }
+        }
+        break;
       default:
         break;
     }
   }
 };
+
+const BanishedRequirements = ["mass_production", "campaign"];
 
 // calls the mapping for each entity and
 // puts the result array into the exported SbpsData variable.
