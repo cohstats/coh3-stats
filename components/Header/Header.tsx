@@ -32,7 +32,7 @@ export interface HeaderProps {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    marginBottom: theme.spacing.xl,
+    // marginBottom: theme.spacing.xl,
   },
   container: {
     display: "flex",

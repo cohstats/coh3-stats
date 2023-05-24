@@ -93,15 +93,20 @@ const PlayerStats = ({
                       </>
                     }
                     width={600}
+                    position={"bottom"}
                   />
                 </Group>
                 <Text fz={"sm"}>
                   This doesn&apos;t show the real amount of players who played the game in a given
                   day.
                 </Text>
+                <Text fz={"sm"}>
+                  You can&apos;t compare these numbers with coh2stats numbers, they are tracked
+                  differently.
+                </Text>
               </Paper>
             </Center>
-            <Space h={"xl"} />
+
             <Text fz="md">
               <div
                 style={{
