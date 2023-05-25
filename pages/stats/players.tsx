@@ -1,4 +1,4 @@
-import { Container, Space, Title, Text, Group, Alert, Paper, Center } from "@mantine/core";
+import { Container, Title, Text, Group, Paper, Center } from "@mantine/core";
 
 import React, { useEffect } from "react";
 import ErrorCard from "../../components/error-card";
@@ -11,10 +11,18 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import dynamic from "next/dynamic";
 import { IconAlertTriangle, IconUser } from "@tabler/icons-react";
 import HelperIcon from "../../components/icon/helper";
+import dayjs from "dayjs";
 
 //only render on client side
 const DynamicGeoWorldMap = dynamic(
   () => import("../../components/charts/geo-map/geo-world-map"),
+  {
+    ssr: false,
+  },
+);
+
+const DynamicPlayersLineChart = dynamic(
+  () => import("../../components/charts/players-line/players-line-chart"),
   {
     ssr: false,
   },
@@ -32,10 +40,12 @@ const PlayerStats = ({
   error,
   playerStats,
   countries,
+  historyData,
 }: {
   error: string;
   playerStats: PlayerStatsType;
   countries: Array<{ id: string; value: number }>;
+  historyData: Array<{ y: number; x: string }>;
 }) => {
   const pageTitle = `Global Leaderboards Stats - Company of Heroes 3`;
   const keywords = generateKeywordsString([
@@ -170,6 +180,8 @@ const PlayerStats = ({
               </div>
             </Text>
             <DynamicGeoWorldMap data={countries} />
+
+            <DynamicPlayersLineChart data={historyData} />
             <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
               Data updated on {new Date(playerStats?.timeStampMs).toLocaleString()}.
             </Text>
@@ -184,10 +196,12 @@ export const getServerSideProps: GetServerSideProps = async ({}) => {
   let error = null;
   let playerStats: PlayerStatsType | null = null;
   let countries = null;
+  let historyData = null;
 
   try {
     const docRef = doc(getFirestore(), "stats", "player-stats");
-    const docSnap = await getDoc(docRef);
+    const docHistoryRef = doc(getFirestore(), "stats", "player-stats-history");
+    const [docSnap, docHistorySnap] = await Promise.all([getDoc(docRef), getDoc(docHistoryRef)]);
 
     if (docSnap.exists()) {
       const playerStatsFirebase = docSnap.data();
@@ -202,6 +216,17 @@ export const getServerSideProps: GetServerSideProps = async ({}) => {
       delete playerStatsFirebase.countries;
       playerStats = { ...playerStatsFirebase, ...{ timeStampMs } } as PlayerStatsType;
     }
+
+    if (docHistorySnap.exists()) {
+      let historyRawData = docHistorySnap.data();
+      historyRawData = historyRawData["history"];
+
+      // Already preparing the chart data
+      historyData = Object.values(historyRawData).map((value) => ({
+        y: value.count,
+        x: dayjs(value.timeStamp.toMillis()).format("YYYY-MM-DD"),
+      }));
+    }
   } catch (e) {
     console.error(e);
     error = JSON.stringify(e);
@@ -212,6 +237,7 @@ export const getServerSideProps: GetServerSideProps = async ({}) => {
       error,
       playerStats,
       countries,
+      historyData,
     },
   };
 };
