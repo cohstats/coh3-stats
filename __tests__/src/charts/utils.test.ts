@@ -21,9 +21,14 @@ describe("generateWeeklyAverages", () => {
       { x: "2023-05-28", y: 6310 },
     ];
 
+    // const expectedWeeklyAverages = [
+    //   { x: "2023-05-19 to 2023-05-25", y: 5744 },
+    //   { x: "2023-05-26 to 2023-05-28", y: 5680 },
+    // ];
+
     const expectedWeeklyAverages = [
-      { x: "2023-05-19 to 2023-05-25", y: 5744 },
-      { x: "2023-05-26 to 2023-05-28", y: 5680 },
+      { x: "2023-05-19", y: 5744 },
+      { x: "2023-05-26", y: 5680 },
     ];
 
     const result = generateWeeklyAverages(dailyData);
