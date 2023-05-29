@@ -11,9 +11,9 @@ Sentry.init({
     SENTRY_DSN ||
     "https://963a73a12146449490c37b42cfc1419f@o4504995920543744.ingest.sentry.io/4504995924344832",
   // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 0.1,
+  tracesSampleRate: 0.05,
   release: process.env.GITHUB_REF_NAME,
-  environment: process.env.NODE_ENV,
+  environment: `${process.env.NODE_ENV}-EDGE`,
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
