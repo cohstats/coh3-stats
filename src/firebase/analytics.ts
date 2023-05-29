@@ -52,6 +52,10 @@ export const AnalyticsStatsLeaderboardsPageView = (): void => {
   logFBEvent("stats_leaderboards_view");
 };
 
+export const AnalyticsStatsPlayerStatsPageView = (): void => {
+  logFBEvent("stats_players_view");
+};
+
 export const AnalyticsLeaderBoardsPageView = (faction: string, type: string): void => {
   logFBEvent("leaderboards_view");
   logFBEvent(`leaderboards_${faction}_${type}_view`);

@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import { IconAlertTriangle, IconUser } from "@tabler/icons-react";
 import HelperIcon from "../../components/icon/helper";
 import dayjs from "dayjs";
+import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
 
 //only render on client side
 const DynamicGeoWorldMap = dynamic(
@@ -47,7 +48,8 @@ const PlayerStats = ({
   countries: Array<{ id: string; value: number }>;
   historyData: Array<{ y: number; x: string }>;
 }) => {
-  const pageTitle = `Global Leaderboards Stats - Company of Heroes 3`;
+  const pageTitle = `Ranked Player Stats - Company of Heroes 3`;
+  const description = `Overall information about all ranked players in Company of Heroes 3.\nCurrently tracking ${playerStats.count.toLocaleString()} ranked players.`;
   const keywords = generateKeywordsString([
     "coh3 players stats",
     "player stats",
@@ -56,17 +58,14 @@ const PlayerStats = ({
   ]);
 
   useEffect(() => {
-    // AnalyticsStatsLeaderboardsPageView();
+    AnalyticsStatsPlayerStatsPageView();
   }, []);
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Overall information about all leaderboards in  Company of Heroes 3`}
-        />
+        <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
       </Head>
       <Container size={"md"} p={0}>
@@ -75,7 +74,7 @@ const PlayerStats = ({
         ) : (
           <>
             <div style={{ textAlign: "center" }}>
-              <Title order={1}>Players Stats</Title>
+              <Title order={1}>Ranked Players Stats</Title>
             </div>
             <Center>
               <Paper shadow="xs" p="md" m={"md"} maw={620}>
