@@ -4,7 +4,7 @@ import { Group, Select, useMantineColorScheme } from "@mantine/core";
 import { getNivoTooltipTheme } from "../chart-utils";
 import { generateWeeklyAverages, getMinMaxValues } from "../../../src/charts/utils";
 
-const multipliedData = [
+let multipliedData = [
   { x: "2023-05-19", y: 5411 },
   { x: "2023-05-20", y: 5971 },
   { x: "2023-05-21", y: 5602 },
@@ -376,6 +376,8 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
   const { colorScheme } = useMantineColorScheme();
   const [range, setRange] = useState<string>("month");
 
+  multipliedData = data;
+
   const getChartConfig = (amount = "month") => {
     switch (amount) {
       case "month":
@@ -403,13 +405,13 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
           data: generateWeeklyAverages(
             multipliedData.slice(multipliedData.length - 360, multipliedData.length),
           ),
-          tickValues: 10,
+          tickValues: 7,
           bottomAxisLegend: "Weeks",
         };
       case "all":
         return {
           data: generateWeeklyAverages(multipliedData),
-          tickValues: 10,
+          tickValues: 5,
           bottomAxisLegend: "Weeks",
         };
     }
@@ -432,7 +434,11 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
       <div style={{ maxWidth: 960, height: 350 }}>
         <ResponsiveLine
           data={chartData}
-          margin={{ top: 50, right: 35, bottom: 50, left: 50 }}
+          margin={{ top: 25, right: 20, bottom: 50, left: 50 }}
+          xFormat="time: %a - %Y-%m-%d"
+          // tooltip={(data) => {
+          //   return <>{data.point.data.xFormatted} and {data.point.data.yFormatted}</>
+          // }}
           xScale={{
             format: "%Y-%m-%d",
             precision: "day",
@@ -448,7 +454,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
           axisTop={null}
           axisRight={null}
           axisBottom={{
-            format: "%b %d",
+            format: "%a - %b %d",
             // legend: 'time scale',
             legendOffset: 36,
             legendPosition: "middle",
@@ -487,7 +493,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
             { value: "month", label: "Month" },
             { value: "3months", label: "3 Months" },
             { value: "6months", label: "6 Months" },
-            { value: "12months", label: "12 Months" },
+            { value: "12months", label: "Year" },
             { value: "all", label: "All" },
           ]}
         />

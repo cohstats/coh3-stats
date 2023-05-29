@@ -10,7 +10,7 @@ export const generateWeeklyAverages = (dailyData: Array<{ x: string; y: number }
       sum += dailyData[j].y;
     }
 
-    const average = sum / Math.min(7, dailyData.length - i);
+    const average = Math.round(sum / Math.min(7, dailyData.length - i));
     weeklyData.push({ x: startDate, y: average });
   }
 
