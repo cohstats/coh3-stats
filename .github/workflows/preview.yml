@@ -51,7 +51,7 @@ jobs:
           SENTRY_ORG: coh-stats
           SENTRY_PROJECT: coh3-stats-web
         with:
-          tagName: ${{ env.GITHUB_REF_NAME }}
+          tagName: ${{ github.ref_name }}
           environment: production
       - name: Run the build
         run: yarn build
