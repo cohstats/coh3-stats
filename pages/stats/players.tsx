@@ -139,7 +139,7 @@ const PlayerStats = ({
                   <Group spacing={4}>
                     <IconUser size={17} />
                     <Text fs={"xl"} fw={500}>
-                      {playerStats?.count.toLocaleString()}
+                      {playerStats.count.toLocaleString()}
                     </Text>
                   </Group>
                 </div>
@@ -150,7 +150,7 @@ const PlayerStats = ({
                   <Group spacing={4}>
                     <IconUser size={17} />
                     <Text fs={"xl"} fw={500}>
-                      {playerStats?.last30days.toLocaleString()}
+                      {playerStats.last30days.toLocaleString()}
                     </Text>
                   </Group>
                 </div>
@@ -161,7 +161,7 @@ const PlayerStats = ({
                   <Group spacing={4}>
                     <IconUser size={17} />
                     <Text fs={"xl"} fw={500}>
-                      {playerStats?.last7days.toLocaleString()}
+                      {playerStats.last7days.toLocaleString()}
                     </Text>
                   </Group>
                 </div>
@@ -172,7 +172,7 @@ const PlayerStats = ({
                   <Group spacing={4}>
                     <IconUser size={17} />
                     <Text fs={"xl"} fw={500}>
-                      {playerStats?.last24hours.toLocaleString()}
+                      {playerStats.last24hours.toLocaleString()}
                     </Text>
                   </Group>
                 </div>
@@ -182,7 +182,7 @@ const PlayerStats = ({
 
             <DynamicPlayersLineChart data={historyData} />
             <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
-              Data updated on {new Date(playerStats?.timeStampMs).toLocaleString()}.
+              Data updated on {new Date(playerStats.timeStampMs).toLocaleString()}.
             </Text>
           </>
         )}
