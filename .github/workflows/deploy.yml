@@ -6,6 +6,7 @@ on:
 
 env:
   EDGIO_ENV: dev
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
 
 jobs:
   build-deploy-web:
