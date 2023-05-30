@@ -45,7 +45,7 @@ jobs:
       - name: Disable Vercel telemetry
         run: yarn next telemetry disable
       - name: Create a Sentry.io release
-        uses: tclindner/sentry-releases-action@v1.2.0
+        uses: tclindner/sentry-releases-action@master
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: coh-stats
