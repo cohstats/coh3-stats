@@ -76,14 +76,76 @@ const PlayerStats = ({
             <div style={{ textAlign: "center" }}>
               <Title order={1}>Ranked Players Stats</Title>
             </div>
-            <Center>
-              <Paper shadow="xs" p="md" m={"md"} maw={620}>
+            <Group>
+              <Text fz="md">
+                <div
+                  style={{
+                    display: "grid",
+                    // gridTemplateColumns: " [col1] 57% [col2] 40%",
+                    gridColumnGap: "15px",
+                    // paddingBottom: "20px",
+                  }}
+                >
+                  <div style={{ gridColumn: 1, justifySelf: "end" }}>
+                    <Group spacing={5}>
+                      <>Total amount of tracked players</>{" "}
+                      <HelperIcon
+                        text={
+                          "We can track only players who were ranked at least once in any mode. We are tracking from May 19th 2023."
+                        }
+                      />
+                    </Group>
+                  </div>
+                  <div style={{ gridColumn: 2 }}>
+                    <Group spacing={4}>
+                      <IconUser size={17} />
+                      <Text fs={"xl"} fw={500}>
+                        {playerStats.count.toLocaleString()}
+                      </Text>
+                    </Group>
+                  </div>
+                  <div style={{ gridColumn: 1, textAlign: "right" }}>
+                    Ranked players in the last &nbsp;&nbsp;30 days
+                  </div>
+                  <div style={{ gridColumn: 2 }}>
+                    <Group spacing={4}>
+                      <IconUser size={17} />
+                      <Text fs={"xl"} fw={500}>
+                        {playerStats.last30days.toLocaleString()}
+                      </Text>
+                    </Group>
+                  </div>
+                  <div style={{ gridColumn: 1, textAlign: "right" }}>
+                    Ranked players in the last &nbsp;&nbsp;&nbsp;&nbsp;7 days
+                  </div>
+                  <div style={{ gridColumn: 2 }}>
+                    <Group spacing={4}>
+                      <IconUser size={17} />
+                      <Text fs={"xl"} fw={500}>
+                        {playerStats.last7days.toLocaleString()}
+                      </Text>
+                    </Group>
+                  </div>
+                  <div style={{ gridColumn: 1, textAlign: "right" }}>
+                    Ranked players in the last 24 hours
+                  </div>
+                  <div style={{ gridColumn: 2 }}>
+                    <Group spacing={4}>
+                      <IconUser size={17} />
+                      <Text fs={"xl"} fw={500}>
+                        {playerStats.last24hours.toLocaleString()}
+                      </Text>
+                    </Group>
+                  </div>
+                </div>
+              </Text>
+              <Paper shadow="xs" p="xs" m={"xs"} maw={575}>
                 <Group spacing={"xs"}>
                   <IconAlertTriangle size={"1.5rem"} />
-                  <Title order={5}>Disclaimer: </Title>
+                  <Title order={6}>Disclaimer: </Title>
                 </Group>
                 <Group spacing={"xs"}>
-                  <Text fz={"sm"}>
+                  <Text fz={"xs"}>
                     We are able to track only players who played &quot;ranked&quot; match in a
                     given day.
                   </Text>
@@ -105,84 +167,23 @@ const PlayerStats = ({
                     position={"bottom"}
                   />
                 </Group>
-                <Text fz={"sm"}>
+                <Text fz={"xs"}>
                   This doesn&apos;t show the real amount of players who played the game in a given
                   day.
                 </Text>
-                <Text fz={"sm"}>
+                <Text fz={"xs"}>
                   You can&apos;t compare these numbers with coh2stats numbers, they are tracked
                   differently.
                 </Text>
               </Paper>
-            </Center>
+            </Group>
+            <Center></Center>
 
-            <Text fz="md">
-              <div
-                style={{
-                  display: "grid",
-                  // gridTemplateColumns: " [col1] 57% [col2] 40%",
-                  gridColumnGap: "15px",
-                  paddingBottom: "20px",
-                }}
-              >
-                <div style={{ gridColumn: 1, justifySelf: "end" }}>
-                  <Group spacing={5}>
-                    <>Total amount of tracked players</>{" "}
-                    <HelperIcon
-                      text={
-                        "We can track only players who were ranked at least once in any mode. We are tracking from May 19th 2023."
-                      }
-                    />
-                  </Group>
-                </div>
-                <div style={{ gridColumn: 2 }}>
-                  <Group spacing={4}>
-                    <IconUser size={17} />
-                    <Text fs={"xl"} fw={500}>
-                      {playerStats.count.toLocaleString()}
-                    </Text>
-                  </Group>
-                </div>
-                <div style={{ gridColumn: 1, textAlign: "right" }}>
-                  Ranked players in the last &nbsp;&nbsp;30 days
-                </div>
-                <div style={{ gridColumn: 2 }}>
-                  <Group spacing={4}>
-                    <IconUser size={17} />
-                    <Text fs={"xl"} fw={500}>
-                      {playerStats.last30days.toLocaleString()}
-                    </Text>
-                  </Group>
-                </div>
-                <div style={{ gridColumn: 1, textAlign: "right" }}>
-                  Ranked players in the last &nbsp;&nbsp;&nbsp;&nbsp;7 days
-                </div>
-                <div style={{ gridColumn: 2 }}>
-                  <Group spacing={4}>
-                    <IconUser size={17} />
-                    <Text fs={"xl"} fw={500}>
-                      {playerStats.last7days.toLocaleString()}
-                    </Text>
-                  </Group>
-                </div>
-                <div style={{ gridColumn: 1, textAlign: "right" }}>
-                  Ranked players in the last 24 hours
-                </div>
-                <div style={{ gridColumn: 2 }}>
-                  <Group spacing={4}>
-                    <IconUser size={17} />
-                    <Text fs={"xl"} fw={500}>
-                      {playerStats.last24hours.toLocaleString()}
-                    </Text>
-                  </Group>
-                </div>
-              </div>
-            </Text>
             <DynamicGeoWorldMap data={countries} />
 
             <DynamicPlayersLineChart data={historyData} />
             <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
-              Data updated on {new Date(playerStats.timeStampMs).toLocaleString()}.
+              Data updated on {new Date(playerStats.timeStampMs).toLocaleString("en")}.
             </Text>
           </>
         )}
