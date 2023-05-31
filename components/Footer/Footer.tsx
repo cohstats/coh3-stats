@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
             <Text color="dimmed" size="sm">
               © 2023 COH3stats.com
               <br />
-              This is unofficial fan-made site for Company&nbsp;Of&nbsp;Heroes 3.
+              This is unofficial fan-made site for Company&nbsp;Of&nbsp;Heroes&nbsp;3.
             </Text>
             <Group spacing={5} className={classes.social} position="right" noWrap>
               <Discord />

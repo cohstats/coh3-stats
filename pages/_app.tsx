@@ -104,6 +104,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           content="Company of Heroes 3, COH3, COH3 Stats, COH3 Leaderboards, COH3 Player Cards, COH3 Info"
         />
         <link rel="shortcut icon" href="/logo/favicon.ico" />
+        <link type="application/opensearchdescription+xml" rel="search" href="/opensearch.xml" />
       </Head>
       <Script
         id="rum-lib"

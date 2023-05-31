@@ -49,7 +49,7 @@ const Leaderboards = ({
           borderRadius="md"
           highlightOnHover
           striped
-          verticalSpacing="sm"
+          // verticalSpacing="xs"
           minHeight={300}
           // provide data
           idAccessor={"statgroup_id"}
