@@ -54,7 +54,7 @@ jobs:
           SENTRY_ORG: coh-stats
           SENTRY_PROJECT: coh3-stats-web
         with:
-          version: "vTestRelease",
+          version: "vTestRelease"
 #          version: ${{ env.BRANCH_NAME }}
           environment: production
           ignore_empty: true
