@@ -14,7 +14,8 @@ Sentry.init({
   tracesSampleRate: 0.05,
   // release: "vTestRelease",
   // release: process.env.BRANCH_NAME || process.env.GITHUB_REF_NAME,
-  environment: process.env.EDGIO_ENV || process.env.NODE_ENV,
+  environment:
+    process.env.EDGIO_ENV || process.env.EDGIO_ENVIRONMENT_NAME || process.env.NODE_ENV,
   allowUrls: [/https?:\/\/((dev)\.)?coh3stats\.com/],
   ignoreErrors: [
     "TypeError: Failed to fetch",

@@ -14,7 +14,8 @@ Sentry.init({
   tracesSampleRate: 0.05,
   release: "vTestRelease",
   // release: process.env.BRANCH_NAME || process.env.GITHUB_REF_NAME,
-  environment: process.env.EDGIO_ENV || process.env.NODE_ENV,
+  environment:
+    process.env.EDGIO_ENV || process.env.EDGIO_ENVIRONMENT_NAME || process.env.NODE_ENV,
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
