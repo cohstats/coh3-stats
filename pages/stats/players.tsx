@@ -73,111 +73,114 @@ const PlayerStats = ({
           <ErrorCard title={"Error getting the player stats"} body={JSON.stringify(error)} />
         ) : (
           <>
-            <div style={{ textAlign: "center" }}>
+            <div style={{ textAlign: "center", paddingBottom: 5 }}>
               <Title order={1}>Ranked Players Stats</Title>
             </div>
-            <Group>
-              <Text fz="md">
-                <div
-                  style={{
-                    display: "grid",
-                    // gridTemplateColumns: " [col1] 57% [col2] 40%",
-                    gridColumnGap: "15px",
-                    // paddingBottom: "20px",
-                  }}
-                >
-                  <div style={{ gridColumn: 1, justifySelf: "end" }}>
-                    <Group spacing={5}>
-                      <>Total amount of tracked players</>{" "}
-                      <HelperIcon
-                        text={
-                          "We can track only players who were ranked at least once in any mode. We are tracking from May 19th 2023."
-                        }
-                      />
-                    </Group>
+
+            <Center>
+              {" "}
+              <Group>
+                <Text fz="md">
+                  <div
+                    style={{
+                      display: "grid",
+                      // gridTemplateColumns: " [col1] 57% [col2] 40%",
+                      gridColumnGap: "15px",
+                      // paddingBottom: "20px",
+                    }}
+                  >
+                    <div style={{ gridColumn: 1, justifySelf: "end" }}>
+                      <Group spacing={5}>
+                        <>Total amount of tracked players</>{" "}
+                        <HelperIcon
+                          text={
+                            "We can track only players who were ranked at least once in any mode. We are tracking from May 19th 2023."
+                          }
+                        />
+                      </Group>
+                    </div>
+                    <div style={{ gridColumn: 2 }}>
+                      <Group spacing={4}>
+                        <IconUser size={17} />
+                        <Text fs={"xl"} fw={500}>
+                          {playerStats.count.toLocaleString()}
+                        </Text>
+                      </Group>
+                    </div>
+                    <div style={{ gridColumn: 1, textAlign: "right" }}>
+                      Ranked players in the last &nbsp;&nbsp;30 days
+                    </div>
+                    <div style={{ gridColumn: 2 }}>
+                      <Group spacing={4}>
+                        <IconUser size={17} />
+                        <Text fs={"xl"} fw={500}>
+                          {playerStats.last30days.toLocaleString()}
+                        </Text>
+                      </Group>
+                    </div>
+                    <div style={{ gridColumn: 1, textAlign: "right" }}>
+                      Ranked players in the last &nbsp;&nbsp;&nbsp;&nbsp;7 days
+                    </div>
+                    <div style={{ gridColumn: 2 }}>
+                      <Group spacing={4}>
+                        <IconUser size={17} />
+                        <Text fs={"xl"} fw={500}>
+                          {playerStats.last7days.toLocaleString()}
+                        </Text>
+                      </Group>
+                    </div>
+                    <div style={{ gridColumn: 1, textAlign: "right" }}>
+                      Ranked players in the last 24 hours
+                    </div>
+                    <div style={{ gridColumn: 2 }}>
+                      <Group spacing={4}>
+                        <IconUser size={17} />
+                        <Text fs={"xl"} fw={500}>
+                          {playerStats.last24hours.toLocaleString()}
+                        </Text>
+                      </Group>
+                    </div>
                   </div>
-                  <div style={{ gridColumn: 2 }}>
-                    <Group spacing={4}>
-                      <IconUser size={17} />
-                      <Text fs={"xl"} fw={500}>
-                        {playerStats.count.toLocaleString()}
-                      </Text>
-                    </Group>
-                  </div>
-                  <div style={{ gridColumn: 1, textAlign: "right" }}>
-                    Ranked players in the last &nbsp;&nbsp;30 days
-                  </div>
-                  <div style={{ gridColumn: 2 }}>
-                    <Group spacing={4}>
-                      <IconUser size={17} />
-                      <Text fs={"xl"} fw={500}>
-                        {playerStats.last30days.toLocaleString()}
-                      </Text>
-                    </Group>
-                  </div>
-                  <div style={{ gridColumn: 1, textAlign: "right" }}>
-                    Ranked players in the last &nbsp;&nbsp;&nbsp;&nbsp;7 days
-                  </div>
-                  <div style={{ gridColumn: 2 }}>
-                    <Group spacing={4}>
-                      <IconUser size={17} />
-                      <Text fs={"xl"} fw={500}>
-                        {playerStats.last7days.toLocaleString()}
-                      </Text>
-                    </Group>
-                  </div>
-                  <div style={{ gridColumn: 1, textAlign: "right" }}>
-                    Ranked players in the last 24 hours
-                  </div>
-                  <div style={{ gridColumn: 2 }}>
-                    <Group spacing={4}>
-                      <IconUser size={17} />
-                      <Text fs={"xl"} fw={500}>
-                        {playerStats.last24hours.toLocaleString()}
-                      </Text>
-                    </Group>
-                  </div>
-                </div>
-              </Text>
-              <Paper shadow="xs" p="xs" m={"xs"} maw={575}>
-                <Group spacing={"xs"}>
-                  <IconAlertTriangle size={"1.5rem"} />
-                  <Title order={6}>Disclaimer: </Title>
-                </Group>
-                <Group spacing={"xs"}>
+                </Text>
+                <Paper shadow="xs" p="xs" m={"xs"} maw={575}>
+                  <Group spacing={"xs"}>
+                    <IconAlertTriangle size={"1.5rem"} />
+                    <Title order={6}>Disclaimer: </Title>
+                  </Group>
+                  <Group spacing={"xs"}>
+                    <Text fz={"xs"}>
+                      We are able to track only players who played &quot;ranked&quot; match in a
+                      given day.
+                    </Text>
+                    <HelperIcon
+                      text={
+                        <>
+                          We track only players who played match in a mode where they are ranked.
+                          <br />
+                          For example: <br />
+                          Player is ranked only in 1v1 Wehrmacht, plays 1v1 match as Wehrmacht -
+                          is counted. <br />
+                          Player is ranked only in 1v1 Wehrmacht, plays 1v1 match as USF - is not
+                          counted. <br />
+                          Player is ranked only in 1v1 Wehrmacht, plays 2v2 match as Wehrmacht -
+                          is not counted. <br />
+                        </>
+                      }
+                      width={600}
+                      position={"bottom"}
+                    />
+                  </Group>
                   <Text fz={"xs"}>
-                    We are able to track only players who played &quot;ranked&quot; match in a
+                    This doesn&apos;t show the real amount of players who played the game in a
                     given day.
                   </Text>
-                  <HelperIcon
-                    text={
-                      <>
-                        We track only players who played match in a mode where they are ranked.
-                        <br />
-                        For example: <br />
-                        Player is ranked only in 1v1 Wehrmacht, plays 1v1 match as Wehrmacht - is
-                        counted. <br />
-                        Player is ranked only in 1v1 Wehrmacht, plays 1v1 match as USF - is not
-                        counted. <br />
-                        Player is ranked only in 1v1 Wehrmacht, plays 2v2 match as Wehrmacht - is
-                        not counted. <br />
-                      </>
-                    }
-                    width={600}
-                    position={"bottom"}
-                  />
-                </Group>
-                <Text fz={"xs"}>
-                  This doesn&apos;t show the real amount of players who played the game in a given
-                  day.
-                </Text>
-                <Text fz={"xs"}>
-                  You can&apos;t compare these numbers with coh2stats numbers, they are tracked
-                  differently.
-                </Text>
-              </Paper>
-            </Group>
-            <Center></Center>
+                  <Text fz={"xs"}>
+                    You can&apos;t compare these numbers with coh2stats numbers, they are tracked
+                    differently.
+                  </Text>
+                </Paper>
+              </Group>
+            </Center>
 
             <DynamicGeoWorldMap data={countries} />
 
