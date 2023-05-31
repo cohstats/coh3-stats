@@ -56,6 +56,7 @@ jobs:
         with:
           version: ${{ env.BRANCH_NAME }}
           environment: production
+          ignore_empty: true
 
       - name: Run the build
         run: yarn build
