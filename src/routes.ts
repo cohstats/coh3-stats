@@ -21,6 +21,10 @@ export const getLeaderBoardStatsRoute = () => {
   return encodeURI(`/stats/leaderboards`);
 };
 
+export const getPlayersStatsRoute = () => {
+  return encodeURI(`/stats/players`);
+};
+
 export const getExplorerFactionRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}`);
 };

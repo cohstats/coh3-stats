@@ -9,13 +9,13 @@ import {
   Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
-import { getLeaderBoardStatsRoute } from "../../../src/routes";
+import { getLeaderBoardStatsRoute, getPlayersStatsRoute } from "../../../src/routes";
 import React from "react";
 import {
-  IconActivity,
   IconBarrierBlock,
   IconChevronDown,
   IconDeviceDesktopAnalytics,
+  IconUsersGroup,
 } from "@tabler/icons-react";
 
 const StatisticsMenu = ({
@@ -42,6 +42,12 @@ const StatisticsMenu = ({
                   Leaderboards Stats
                 </Anchor>
               </Group>
+              <Group spacing={"xs"}>
+                <IconUsersGroup size={16} />
+                <Anchor component={Link} href={getPlayersStatsRoute()} onClick={close}>
+                  Player Stats
+                </Anchor>
+              </Group>
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -66,6 +72,12 @@ const StatisticsMenu = ({
               <IconDeviceDesktopAnalytics size={16} />
               <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
                 Leaderboards Stats
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
+              <IconUsersGroup size={16} />
+              <Anchor component={Link} href={getPlayersStatsRoute()}>
+                Player Stats
               </Anchor>
             </Group>
             <Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>

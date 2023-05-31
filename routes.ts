@@ -74,7 +74,6 @@ export default new Router()
   .match("/leaderboards(.*)", ({ cache }) => {
     cache({
       edge: {
-        // Cache for 30 seconds, revalidated after 5 seconds
         maxAgeSeconds: 10,
         staleWhileRevalidateSeconds: 60,
         forcePrivateCaching: true,
@@ -174,6 +173,31 @@ export default new Router()
       },
       edge: {
         maxAgeSeconds: 60 * 20,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  // Caching for player stats
+  // TODO: Rewrite this to use header Cache-Control: s-maxage:, returned from the page itself
+  .match("/stats/players(.*)", ({ cache }) => {
+    cache({
+      edge: {
+        maxAgeSeconds: 1800,
+        // Server stale page up to 24 hours
+        staleWhileRevalidateSeconds: 24 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/stats/players.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60 * 30,
+      },
+      edge: {
+        maxAgeSeconds: 1800,
         // Server stale page up to 24 hours
         staleWhileRevalidateSeconds: 24 * 60 * 60,
         forcePrivateCaching: true,
