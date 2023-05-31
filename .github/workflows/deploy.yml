@@ -38,15 +38,18 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile install
       - name: Disable Vercel telemetry
         run: yarn next telemetry disable
-      - name: Create a Sentry.io release
-        uses: tclindner/sentry-releases-action@v1.2.0
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@master
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: coh-stats
           SENTRY_PROJECT: coh3-stats-web
         with:
-          tagName: ${{ github.ref_name }}
-          environment: production
+          environment: ${{ env.EDGIO_ENV }}
+          ignore_empty: true
+          ignore_missing: true
+
       - name: Deploy to Edgio hosting
         env:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
