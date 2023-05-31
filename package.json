@@ -45,7 +45,7 @@
     "@nivo/geo": "^0.83.0",
     "@nivo/line": "^0.83.0",
     "@sentry/nextjs": "^7.47.0",
-    "@tabler/icons-react": "^2.18.0",
+    "@tabler/icons-react": "^2.20.0",
     "chart.js": "^4.2.1",
     "dayjs": "^1.11.7",
     "firebase": "^9.17.1",
