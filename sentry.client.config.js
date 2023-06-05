@@ -21,7 +21,15 @@ Sentry.init({
     "TypeError: Failed to fetch",
     "The operation was aborted",
     "QuotaExceededError",
-    "AbortError: AbortError",
+    // Random errors from Firebase
+    "Installations: Could not process request. Application offline.",
+    "Can't find variable: Layer0",
+    "Cannot redefine property: googletag",
+    // Random NextJs loading errors
+    "Loading chunk",
+    // Random network errors
+    "AbortError:",
+    "TimeoutError:",
     "NetworkError when attempting to fetch resource.",
   ],
   // ...
