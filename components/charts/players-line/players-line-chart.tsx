@@ -12,25 +12,25 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
     switch (amount) {
       case "month":
         return {
-          data: data.slice(data.length - 30, data.length),
+          data: data.slice(Math.max(data.length - 30, 0), data.length),
           tickValues: "every 2 days",
           bottomAxisLegend: "Days",
         };
       case "3months":
         return {
-          data: data.slice(data.length - 90, data.length),
+          data: data.slice(Math.max(data.length - 90, 0), data.length),
           tickValues: "every 5 days",
           bottomAxisLegend: "Days",
         };
       case "6months":
         return {
-          data: generateWeeklyAverages(data.slice(data.length - 180, data.length)),
+          data: generateWeeklyAverages(data.slice(Math.max(data.length - 180, 0), data.length)),
           tickValues: "every 10 days",
           bottomAxisLegend: "Weeks",
         };
       case "12months":
         return {
-          data: generateWeeklyAverages(data.slice(data.length - 360, data.length)),
+          data: generateWeeklyAverages(data.slice(Math.max(data.length - 360, 0), data.length)),
           tickValues: 7,
           bottomAxisLegend: "Weeks",
         };
