@@ -29,6 +29,7 @@ import {
   AnalyticsPlayerCardMatchView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
+import { PSNIcon } from "../../components/icon/psn";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -76,6 +77,7 @@ const PlayerCard = ({
   const { view } = query;
 
   const playerData = playerDataAPI;
+  const platform = playerData.platform;
 
   useEffect(() => {
     if (view === "recentMatches") {
@@ -108,22 +110,25 @@ const PlayerCard = ({
         <title>{pageTitle}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={metaKeywords} />
-        <meta property="og:image" content={playerData.steamData.avatarmedium} />
+        {platform === "steam" && (
+          <meta property="og:image" content={playerData.steamData?.avatarmedium} />
+        )}
       </Head>
       <Container fluid>
         <Container fluid>
           <Group position={"apart"}>
             <Group>
               <Avatar
-                src={playerData.steamData.avatarmedium}
+                src={playerData.steamData?.avatarmedium}
                 imageProps={{ loading: "lazy" }}
                 alt={playerData.info.name}
                 size="xl"
+                mt={5}
               />
               <Stack spacing={"xs"}>
                 <Group>
                   <Image
-                    src={"/flags/4x3/" + playerData.info.country + ".svg"}
+                    src={"/flags/4x3/" + (playerData.info.country || "xx") + ".svg"}
                     imageProps={{ loading: "lazy" }}
                     alt={playerData.info.country}
                     width={40}
@@ -131,9 +136,16 @@ const PlayerCard = ({
                   <Title> {playerData.info.name}</Title>
                 </Group>
                 <Group spacing={"xs"}>
-                  <Anchor component={Link} href={playerData.steamData.profileurl} target="_blank">
-                    <Steam label="Steam Profile" />
-                  </Anchor>
+                  {platform === "steam" && (
+                    <Anchor
+                      component={Link}
+                      href={playerData.steamData?.profileurl || ""}
+                      target="_blank"
+                    >
+                      <Steam label="Steam Profile" />
+                    </Anchor>
+                  )}
+                  {platform === "psn" && <PSNIcon label="Play Station player" />}
                 </Group>
               </Stack>
             </Group>

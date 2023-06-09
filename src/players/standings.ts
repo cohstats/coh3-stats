@@ -64,10 +64,11 @@ const filterOnlyPlayerStatGroup = (statGroups: Array<RawStatGroup>) => {
 
 const processPlayerInfoAPIResponse = (data: COH3StatsPlayerInfoAPI): PlayerCardDataType => {
   return {
+    platform: data.platform,
     standings: preparePlayerStandings(data.RelicProfile.leaderboardStats),
     info: getPlayerInfo(filterOnlyPlayerStatGroup(data.RelicProfile.statGroups)),
-    steamData: Object.values(data.SteamProfile)[0],
-    COH3PlayTime: data.COH3PlayTime,
+    steamData: Object.values(data.SteamProfile || {})[0] || null,
+    COH3PlayTime: data.COH3PlayTime || null,
   };
 };
 
