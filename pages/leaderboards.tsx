@@ -191,6 +191,8 @@ const Leaderboards = ({
             <Group>
               <FactionIcon name={raceToFetch} width={35} />
               <Title order={2}>Leaderboards for {localizedRace}</Title>
+            </Group>
+            <Group position="right">
               <Select
                 label="Platform"
                 style={{ width: 100 }}
@@ -205,8 +207,6 @@ const Leaderboards = ({
                   push({ query: { ...query, platform: value } }, undefined);
                 }}
               />
-            </Group>
-            <Group position="right">
               <Select
                 label="Race"
                 // style={{width: 200}}

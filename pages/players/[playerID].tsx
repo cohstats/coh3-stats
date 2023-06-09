@@ -30,6 +30,7 @@ import {
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { PSNIcon } from "../../components/icon/psn";
+import { XboxIcon } from "../../components/icon/xbox";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -146,6 +147,7 @@ const PlayerCard = ({
                     </Anchor>
                   )}
                   {platform === "psn" && <PSNIcon label="Play Station player" />}
+                  {platform === "xbox" && <XboxIcon label="XBOX player" />}
                 </Group>
               </Stack>
             </Group>
@@ -166,7 +168,7 @@ const PlayerCard = ({
           </Tabs.List>
 
           <Tabs.Panel value="standings">
-            <PlayerStandings playerStandings={playerData.standings} />
+            <PlayerStandings playerStandings={playerData.standings} platform={platform} />
             {/*<SimpleGrid*/}
             {/*  cols={3}*/}
             {/*  mt="xl"*/}

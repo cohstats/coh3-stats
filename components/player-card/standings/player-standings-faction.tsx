@@ -1,4 +1,9 @@
-import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../src/coh3/coh3-types";
+import {
+  leaderBoardType,
+  platformType,
+  raceType,
+  RawLeaderboardStat,
+} from "../../../src/coh3/coh3-types";
 import PlayerStandingsTable from "./player-standings-table";
 import React from "react";
 import { Group, Space, Title } from "@mantine/core";
@@ -9,9 +14,11 @@ import PlayerStandingsFactionInfo from "./faction-summary";
 const PlayerStandingsFaction = ({
   faction,
   data,
+  platform,
 }: {
   faction: raceType;
   data: Record<leaderBoardType, RawLeaderboardStat | null>;
+  platform: platformType;
 }) => {
   return (
     <>
@@ -21,7 +28,7 @@ const PlayerStandingsFaction = ({
       </Group>
       <Space h="xs" />
       <Group>
-        <PlayerStandingsTable faction={faction} data={data} />
+        <PlayerStandingsTable faction={faction} data={data} platform={platform} />
         <PlayerStandingsFactionInfo faction={faction} data={data} />
       </Group>
     </>

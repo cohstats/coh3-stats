@@ -1,4 +1,9 @@
-import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../src/coh3/coh3-types";
+import {
+  leaderBoardType,
+  platformType,
+  raceType,
+  RawLeaderboardStat,
+} from "../../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
 import { Text, Anchor } from "@mantine/core";
 
@@ -11,9 +16,11 @@ import RankIcon from "../../rank-icon";
 const PlayerStandingsTable = ({
   faction,
   data,
+  platform,
 }: {
   faction: raceType;
   data: Record<"1v1" | "2v2" | "3v3" | "4v4", RawLeaderboardStat | null>;
+  platform: platformType;
 }) => {
   const dataForTable = [];
 
@@ -54,7 +61,12 @@ const PlayerStandingsTable = ({
               return (
                 <Anchor
                   component={Link}
-                  href={getLeaderBoardRoute(faction, type as leaderBoardType, startPosition)}
+                  href={getLeaderBoardRoute(
+                    faction,
+                    type as leaderBoardType,
+                    startPosition,
+                    platform,
+                  )}
                 >
                   {rank}
                 </Anchor>

@@ -1,13 +1,19 @@
 import { isUndefined } from "lodash";
-import { leaderBoardType, raceType } from "./coh3/coh3-types";
+import { leaderBoardType, platformType, raceType } from "./coh3/coh3-types";
 
-export const getLeaderBoardRoute = (race?: raceType, type?: leaderBoardType, start?: number) => {
+export const getLeaderBoardRoute = (
+  race?: raceType,
+  type?: leaderBoardType,
+  start?: number,
+  platform: platformType = "steam",
+) => {
   const searchParams = new URLSearchParams(
     Object.assign(
       {},
       !isUndefined(race) && { race },
       !isUndefined(type) && { type },
       !isUndefined(start) && { start },
+      !isUndefined(platform) && platform !== "steam" && { platform },
     ) as any,
   );
   let searchParamString = searchParams.toString();
