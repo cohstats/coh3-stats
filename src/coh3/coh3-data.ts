@@ -1,4 +1,4 @@
-import { leaderBoardType, raceID, raceType } from "./coh3-types";
+import { leaderBoardType, platformType, raceID, raceType } from "./coh3-types";
 
 const leaderboardsIDAsObject = {
   "1v1": {
@@ -279,6 +279,12 @@ const matchTypesAsObject: Record<number, { id: number; name: string; localizedNa
     name: "4V4_Unranked",
     localizedName: "4 VS 4",
   },
+};
+
+export const apiTitleTypes: Record<platformType, string> = {
+  steam: "coh3",
+  xbox: "coh3xbl",
+  psn: "coh3psn",
 };
 
 const maps: { [key: string]: { name: string; url: string } } = {
