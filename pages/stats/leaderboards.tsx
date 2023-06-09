@@ -47,7 +47,9 @@ const Leaderboards = ({
             <div style={{ textAlign: "center" }}>
               <Title order={1}>Global Leaderboards Stats</Title>
             </div>
-            <Text style={{ textAlign: "center" }}>Realtime statistics as of now</Text>
+            <Text style={{ textAlign: "center" }}>
+              Realtime statistics of PC only leaderboards as of now
+            </Text>
             <Space h={"xl"} />
             <LeaderBoardStats leaderBoardStats={leaderBoardStats} />
           </>

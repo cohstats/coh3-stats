@@ -74,7 +74,7 @@ const PlayerStats = ({
         ) : (
           <>
             <div style={{ textAlign: "center", paddingBottom: 5 }}>
-              <Title order={1}>Ranked Players Stats</Title>
+              <Title order={1}>PC Ranked Players Stats</Title>
             </div>
 
             <Center>
@@ -186,7 +186,8 @@ const PlayerStats = ({
 
             <DynamicPlayersLineChart data={historyData} />
             <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
-              Data updated on {new Date(playerStats.timeStampMs).toLocaleString("en")}.
+              Data updated on {new Date(playerStats.timeStampMs).toLocaleString("en")}.<br />
+              We do not track XBOX and PS players here.
             </Text>
           </>
         )}

@@ -8,6 +8,8 @@ export type leaderBoardType = (typeof leaderBoardTypeArray)[number];
 
 export type raceID = 129494 | 137123 | 197345 | 198437 | 203852;
 
+export type platformType = "steam" | "xbox" | "psn";
+
 type RelicAPIResult = {
   code: number;
   message: string;
@@ -64,12 +66,13 @@ export interface LaddersDataArrayObject extends RawLeaderboardStat {
 }
 
 export interface COH3StatsPlayerInfoAPI {
-  COH3PlayTime: null;
+  platform: platformType;
+  COH3PlayTime?: null;
   RelicProfile: {
     leaderboardStats: Array<RawLeaderboardStat>;
     statGroups: Array<RawStatGroup>;
   };
-  SteamProfile: Record<string, { steamid: string; profileurl: string; avatarmedium: string }>;
+  SteamProfile?: Record<string, { steamid: string; profileurl: string; avatarmedium: string }>;
 }
 
 export type InternalStandings = Record<
@@ -78,7 +81,8 @@ export type InternalStandings = Record<
 >;
 
 export type PlayerCardDataType = {
-  steamData: { steamid: string; profileurl: string; avatarmedium: string };
+  platform: platformType;
+  steamData: { steamid: string; profileurl: string; avatarmedium: string } | null;
   COH3PlayTime: null;
   standings: InternalStandings;
   info: { country: string; level: number; name: string; xp: number | undefined };

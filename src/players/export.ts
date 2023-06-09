@@ -23,7 +23,7 @@ const generateCSVObject = (
   const playerInfoAsObject: any = {
     alias: playerInfo.info.name,
     relic_id: profileID,
-    steam_id: playerInfo.steamData.steamid,
+    steam_id: playerInfo.steamData?.steamid,
   };
 
   for (const type of types) {

@@ -11,7 +11,7 @@ import ErrorCard from "../components/error-card";
 import CountryFlag from "../components/country-flag";
 import Head from "next/head";
 import { localizedGameTypes, localizedNames } from "../src/coh3/coh3-data";
-import { raceType, leaderBoardType } from "../src/coh3/coh3-types";
+import { raceType, leaderBoardType, platformType } from "../src/coh3/coh3-types";
 import FactionIcon from "../components/faction-icon";
 import { GetServerSideProps } from "next";
 import DynamicTimeAgo from "../components/other/dynamic-timeago";
@@ -26,6 +26,7 @@ const Leaderboards = ({
   start,
   totalRecords,
   raceToFetch,
+  platformToFetch,
   typeToFetch,
 }: any) => {
   const { push, query } = useRouter();
@@ -193,7 +194,22 @@ const Leaderboards = ({
             </Group>
             <Group position="right">
               <Select
+                label="Platform"
+                style={{ width: 100 }}
+                defaultValue={platformToFetch}
+                value={platformToFetch}
+                data={[
+                  { value: "steam", label: "PC" },
+                  { value: "xbox", label: "XBOX" },
+                  { value: "psn", label: "PSN" },
+                ]}
+                onChange={(value) => {
+                  push({ query: { ...query, platform: value } }, undefined);
+                }}
+              />
+              <Select
                 label="Race"
+                // style={{width: 200}}
                 defaultValue={raceToFetch}
                 value={raceToFetch}
                 data={[
@@ -209,6 +225,7 @@ const Leaderboards = ({
 
               <Select
                 label="Type"
+                style={{ width: 100 }}
                 defaultValue={typeToFetch}
                 value={typeToFetch}
                 data={[
@@ -237,10 +254,11 @@ const sortById = {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { race, type, sortBy, start } = query;
+  const { race, type, sortBy, start, platform } = query;
 
   const raceToFetch = (race as raceType) || "american";
   const typeToFetch = (type as leaderBoardType) || "1v1";
+  const platformToFetch = (platform as platformType) || "steam";
   const sortByToFetch = sortById[sortBy as "wins" | "elo"] || 1;
   let startNumber: number | undefined;
   if (start) {
@@ -262,6 +280,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       sortByToFetch,
       100,
       startToFetch,
+      platformToFetch,
     );
     totalRecords = leaderBoardDataRaw.rankTotal;
     leaderBoardData = findAndMergeStatGroups(leaderBoardDataRaw, null);
@@ -279,6 +298,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       totalRecords,
       raceToFetch,
       typeToFetch,
+      platformToFetch,
     }, // will be passed to the page component as props
   };
 };
