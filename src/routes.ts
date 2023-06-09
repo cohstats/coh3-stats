@@ -13,7 +13,7 @@ export const getLeaderBoardRoute = (
       !isUndefined(race) && { race },
       !isUndefined(type) && { type },
       !isUndefined(start) && { start },
-      !isUndefined(platform) && platform !== "steam" && { platform },
+      platform !== "steam" && { platform },
     ) as any,
   );
   let searchParamString = searchParams.toString();
