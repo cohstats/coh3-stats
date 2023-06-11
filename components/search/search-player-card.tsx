@@ -1,8 +1,9 @@
-import { Group, Image, Text, Avatar, Card, Anchor } from "@mantine/core";
+import { Group, Text, Avatar, Card, Anchor } from "@mantine/core";
 import { SearchPlayerCardData } from "../../src/coh3/coh3-types";
 import React from "react";
 import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
 import { getPlayerCardRoute } from "../../src/routes";
+import CountryFlag from "../country-flag";
 
 export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ data }) => {
   return (
@@ -22,12 +23,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
             />
             <div>
               <Group>
-                <Image
-                  src={"/flags/4x3/" + data.country + ".svg"}
-                  imageProps={{ loading: "lazy" }}
-                  alt={data.country}
-                  width={20}
-                />
+                <CountryFlag countryCode={data.country} />
                 <Text> {data.alias}</Text>
               </Group>
               <Text size="xs" color="dimmed">

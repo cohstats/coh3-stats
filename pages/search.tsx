@@ -121,7 +121,7 @@ const convertSearchResultsToPlayerCardData = (
 
   for (const playerSearchResult of searchResults) {
     foundProfiles.push({
-      avatar: playerSearchResult.steamProfile.avatarmedium,
+      avatar: playerSearchResult.steamProfile?.avatarmedium || "",
       country: playerSearchResult.relicProfile.members[0].country,
       relicProfileId: playerSearchResult.relicProfile.members[0].profile_id,
       alias: playerSearchResult.relicProfile.members[0].alias,

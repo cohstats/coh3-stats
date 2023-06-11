@@ -24,6 +24,7 @@ Sentry.init({
     // Random errors from Firebase
     "Installations: Could not process request. Application offline.",
     "Can't find variable: Layer0",
+    "Layer0 is not defined",
     "Cannot redefine property: googletag",
     // Random NextJs loading errors
     "Loading chunk",
