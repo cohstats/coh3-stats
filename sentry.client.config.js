@@ -29,6 +29,7 @@ Sentry.init({
     // Random NextJs loading errors
     "Loading chunk",
     // Random network errors
+    "read ECONNRESET",
     "AbortError:",
     "TimeoutError:",
     "NetworkError when attempting to fetch resource.",
