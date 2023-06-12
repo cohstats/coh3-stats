@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 import config from "../config";
-import { Center, Container, Divider, Flex, Input, Stack, Text } from "@mantine/core";
+import { Center, Container, Divider, Flex, Input, Space, Stack, Text } from "@mantine/core";
 import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import Head from "next/head";
 import React, { useEffect } from "react";
@@ -73,12 +73,18 @@ const Search: NextPage<{
                 {data.map((playerData) => {
                   return <SearchPlayerCard data={playerData} key={playerData.relicProfileId} />;
                 })}
+                <Space />
                 {data.length >= 50 && (
                   <Text c={"dimmed"} fs={"italic"}>
                     Only the first 50 results are displayed. Please refine your search.
                   </Text>
                 )}
               </Flex>
+              <Center>
+                <Text c={"dimmed"} fs={"italic"}>
+                  Console player search supports exact match only.
+                </Text>
+              </Center>
             </Container>
           )}
         </>
@@ -114,13 +120,14 @@ const Search: NextPage<{
 };
 
 const convertSearchResultsToPlayerCardData = (
-  searchResults: Array<Record<"steamProfile" | "relicProfile", any>>,
+  searchResults: Array<Record<"steamProfile" | "relicProfile" | "platform", any>>,
 ) => {
   const foundProfiles: Array<SearchPlayerCardData> = [];
   if (!searchResults) return [];
 
   for (const playerSearchResult of searchResults) {
     foundProfiles.push({
+      platform: playerSearchResult.platform || "unknown",
       avatar: playerSearchResult.steamProfile?.avatarmedium || "",
       country: playerSearchResult.relicProfile.members[0].country,
       relicProfileId: playerSearchResult.relicProfile.members[0].profile_id,
