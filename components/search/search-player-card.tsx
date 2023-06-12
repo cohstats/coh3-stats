@@ -4,6 +4,7 @@ import React from "react";
 import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
 import { getPlayerCardRoute } from "../../src/routes";
 import CountryFlag from "../country-flag";
+import { XboxIcon } from "../icon/xbox";
 
 export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ data }) => {
   return (
@@ -26,8 +27,12 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
                 <CountryFlag countryCode={data.country} />
                 <Text> {data.alias}</Text>
               </Group>
+
               <Text size="xs" color="dimmed">
-                XP: {data.level}
+                <Group spacing={"xs"}>
+                  <span>P: {data.platform.toUpperCase()}</span>
+                  <span>XP: {data.level}</span>
+                </Group>
               </Text>
             </div>
           </Group>

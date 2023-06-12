@@ -159,6 +159,7 @@ export interface TwitchStream {
 }
 
 export interface SearchPlayerCardData {
+  platform: platformType;
   avatar: string;
   relicProfileId: string;
   level: number;
