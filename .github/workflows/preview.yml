@@ -85,4 +85,4 @@ jobs:
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
         with:
-          urls: 'https://preview.coh3stats.com'
+          urls: "https://preview.coh3stats.com"
