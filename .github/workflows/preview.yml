@@ -77,12 +77,11 @@ jobs:
             🌐 Branch deployed as preview to:
             https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link
 
-    lighthouse:
-      runs-on: ubuntu-latest
-      needs: build-deploy-web
-      steps:
-        - uses: actions/checkout@master
-        - name: Lighthouse
-          uses: foo-software/lighthouse-check-action@master
-          with:
-            urls: 'https://preview.coh3stats.com'
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: build-deploy-web
+    steps:
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: 'https://preview.coh3stats.com'
