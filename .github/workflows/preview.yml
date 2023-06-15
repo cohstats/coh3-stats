@@ -78,6 +78,7 @@ jobs:
             https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link
 
   lighthouse:
+    name: Lighthouse report
     runs-on: ubuntu-latest
     needs: build-deploy-web
     steps:
