@@ -1,20 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  Group,
-  MediaQuery,
-  Text,
-  Title,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { IconBrandTwitch, IconCircle } from "@tabler/icons-react";
-import { TwitchStream } from "../../src/coh3/coh3-types";
+import { Grid, Group, MediaQuery, Stack, Text, useMantineColorScheme } from "@mantine/core";
+import { IconCircle } from "@tabler/icons-react";
+import { TwitchStream } from "../../../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
-import { mobileCheck } from "../../src/utils";
-import config from "../../config";
+import { mobileCheck } from "../../../../src/utils";
+import config from "../../../../config";
 
 declare global {
   interface Window {
@@ -84,27 +74,14 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
   }
 
   return (
-    <Container size="fluid" px={"xs"} pb={5}>
-      <Flex justify="flex-start" align="center" gap={5} pb="sm">
-        <IconBrandTwitch size={40} />
-        <Title order={2} size="h2">
-          Watch Live Streams
-        </Title>
-      </Flex>
-
-      <Grid grow>
-        <Grid.Col md={9} sm={12}>
-          <Box style={{ aspectRatio: 16 / 9 }} id="twitch-embed"></Box>
-        </Grid.Col>
-
-        <Grid.Col md={3} sm={12}>
-          {twitchStreams && (
-            <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
-          )}
-        </Grid.Col>
-      </Grid>
+    <>
+      <Grid.Col md={3} sm={12}>
+        {twitchStreams && (
+          <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
+        )}
+      </Grid.Col>
       {currentStream && (
-        <>
+        <Stack spacing={0} pl={"xs"}>
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <Group mt={10}>
               <IconCircle fill="red" color="red" size={10} />
@@ -115,9 +92,9 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <Text>{currentStream.title}</Text>
           </MediaQuery>
-        </>
+        </Stack>
       )}
-    </Container>
+    </>
   );
 };
 

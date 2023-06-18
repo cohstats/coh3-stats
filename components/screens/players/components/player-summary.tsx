@@ -1,9 +1,9 @@
 import { Group, Paper, Text, Tooltip } from "@mantine/core";
 
-import DynamicTimeAgo from "../other/dynamic-timeago";
+import DynamicTimeAgo from "../../../other/dynamic-timeago";
 import React from "react";
-import { localizedNames } from "../../src/coh3/coh3-data";
-import { PlayerSummaryType } from "../../src/players/utils";
+import { localizedNames } from "../../../../src/coh3/coh3-data";
+import { PlayerSummaryType } from "../../../../src/players/utils";
 
 const PlayerSummary = ({
   playerSummary: { bestAlliesElo, bestAxisElo, totalGames, lastMatchDate, winRate },

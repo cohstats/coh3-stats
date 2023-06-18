@@ -3,15 +3,15 @@ import {
   platformType,
   raceType,
   RawLeaderboardStat,
-} from "../../../src/coh3/coh3-types";
+} from "../../../../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
 import { Text, Anchor } from "@mantine/core";
 
 import React from "react";
 import Link from "next/link";
-import { getLeaderBoardRoute } from "../../../src/routes";
-import DynamicTimeAgo from "../../other/dynamic-timeago";
-import RankIcon from "../../rank-icon";
+import { getLeaderBoardRoute } from "../../../../../src/routes";
+import DynamicTimeAgo from "../../../../other/dynamic-timeago";
+import RankIcon from "../../../../rank-icon";
 
 const PlayerStandingsTable = ({
   faction,
