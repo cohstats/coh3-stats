@@ -3,12 +3,12 @@ import {
   platformType,
   raceType,
   RawLeaderboardStat,
-} from "../../../src/coh3/coh3-types";
+} from "../../../../../src/coh3/coh3-types";
 import PlayerStandingsTable from "./player-standings-table";
 import React from "react";
 import { Group, Space, Title } from "@mantine/core";
-import FactionIcon from "../../faction-icon";
-import { localizedNames } from "../../../src/coh3/coh3-data";
+import FactionIcon from "../../../../faction-icon";
+import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import PlayerStandingsFactionInfo from "./faction-summary";
 
 const PlayerStandingsFaction = ({

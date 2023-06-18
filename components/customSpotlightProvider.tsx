@@ -47,7 +47,7 @@ const CustomSpotlightProvider = ({ children }: { children: ReactNode[] | null })
           icon: <IconFileText size={18} />,
         });
       }
-      const filterEntries = newEntries.filter((entry) => entry.id!);
+      const filterEntries = newEntries.filter((entry) => entry.id);
       setActions(filterEntries);
     } catch (e: any) {
       console.error(`Failed getting data for player id ${query}`);

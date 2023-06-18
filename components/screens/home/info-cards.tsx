@@ -1,7 +1,7 @@
 import { Anchor, Card, createStyles, Group, Image, Stack, Text, Title } from "@mantine/core";
-import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
-import { getDPSCalculatorRoute, getUnitBrowserRoute } from "../../src/routes";
-import { getIconsPathOnCDN } from "../../src/utils";
+import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
+import { getDPSCalculatorRoute, getUnitBrowserRoute } from "../../../src/routes";
+import { getIconsPathOnCDN } from "../../../src/utils";
 
 const useStyles = createStyles((theme) => ({
   card: {

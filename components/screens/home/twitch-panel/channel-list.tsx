@@ -1,7 +1,7 @@
 import { BackgroundImage, Text, Box, Flex } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { useState } from "react";
-import { TwitchStream } from "../../src/coh3/coh3-types";
+import { TwitchStream } from "../../../../src/coh3/coh3-types";
 
 type Props = {
   twitchStreams: TwitchStream[];

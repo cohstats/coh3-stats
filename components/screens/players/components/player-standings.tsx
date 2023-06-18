@@ -1,4 +1,4 @@
-import { InternalStandings, platformType } from "../../src/coh3/coh3-types";
+import { InternalStandings, platformType } from "../../../../src/coh3/coh3-types";
 import { Container, Space } from "@mantine/core";
 import React from "react";
 import PlayerStandingsFaction from "./standings/player-standings-faction";

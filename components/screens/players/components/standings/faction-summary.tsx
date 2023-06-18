@@ -1,13 +1,17 @@
-import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../src/coh3/coh3-types";
+import {
+  leaderBoardType,
+  raceType,
+  RawLeaderboardStat,
+} from "../../../../../src/coh3/coh3-types";
 import React from "react";
 import { Group, Space, Title, Card, createStyles, Stack } from "@mantine/core";
-import { localizedNames } from "../../../src/coh3/coh3-data";
+import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
 import {
   findBestRankLeaderboardStat,
   findBestValueOnLeaderboardStat,
-} from "../../../src/players/utils";
-import DynamicTimeAgo from "../../other/dynamic-timeago";
+} from "../../../../../src/players/utils";
+import DynamicTimeAgo from "../../../../other/dynamic-timeago";
 
 const useStyles = createStyles((theme, { faction }: { faction: string }) => ({
   mainCard:

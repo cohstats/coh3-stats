@@ -25,10 +25,9 @@ import { SearchPageUsed, SearchPageView } from "../src/firebase/analytics";
  */
 
 const Search: NextPage<{
-  searchQuery: string;
   data: Array<SearchPlayerCardData> | null;
   error: string | null;
-}> = ({ searchQuery, data, error }) => {
+}> = ({ data, error }) => {
   const { query, push } = useRouter();
   const { q } = query;
 
@@ -165,7 +164,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   return {
-    props: { searchQuery: q, data: data, error }, // will be passed to the page component as props
+    props: { data: data, error }, // will be passed to the page component as props
   };
 };
 
