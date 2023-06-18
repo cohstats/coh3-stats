@@ -90,6 +90,7 @@ jobs:
           urls: https://preview.coh3stats.com
           extraHeaders: '{ "lighthouse": "report" }'
           prCommentEnabled: true
+          device: all
       - name: Upload artifacts
         uses: actions/upload-artifact@master
         with:
