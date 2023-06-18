@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 
-import { Container, Text, Title, Anchor, ActionIcon, Group, Center, Stack } from "@mantine/core";
+import { Container, Text, Title, Anchor, ActionIcon, Group } from "@mantine/core";
 import { PayPalDonation } from "../components/other/paypal-donations";
 import { Donate } from "../components/icon/donate";
 import Link from "next/link";

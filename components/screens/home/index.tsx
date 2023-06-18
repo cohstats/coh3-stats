@@ -1,5 +1,4 @@
 //only render on client side
-import dynamic from "next/dynamic";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import { NextPage } from "next";
 import { Container, Grid, Group, Image, Paper, Stack, Text, Title } from "@mantine/core";
@@ -20,7 +19,7 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
       <Grid>
         <Grid.Col sm={8}>
           <Image
-            src="/coming-soon/coh3-background.jpg"
+            src="/images/coh3-background.webp"
             alt={"coh3-background"}
             radius="md"
             height={"19rem"}
@@ -54,7 +53,6 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
       </Paper>
       <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
         <TwitchContainer twitchStreams={twitchStreams} error={error} />
-        {/*<TwitchPanel twitchStreams={twitchStreams} error={error} />*/}
       </Paper>
     </Container>
   );

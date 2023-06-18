@@ -26,11 +26,8 @@ const useStyles = createStyles((theme) => ({
 
 export const SearchPlayerEntry: React.FC<SpotlightActionProps> = ({
   action,
-  styles,
-  classNames,
   hovered,
   onTrigger,
-  highlightQuery,
   ...others
 }) => {
   const { classes, cx } = useStyles();

@@ -7,7 +7,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   params,
   query,
 }) => {
-  const { playerID } = params!;
+  const playerID = params?.playerID || "";
   const { view } = query;
 
   const viewPlayerMatches = view === "recentMatches";

@@ -25,6 +25,7 @@ const TwitchContainer = ({ twitchStreams, error }: Props) => {
 
       <Grid grow>
         <Grid.Col md={9} sm={12}>
+          {/*This is trick to have 16:9 aspect ratio but have 0 CLS*/}
           <Box style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
             <div
               id="twitch-embed"

@@ -88,7 +88,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ params, query, res }) => {
+export const getServerSideProps: GetServerSideProps<any> = async () => {
   const octokit = new Octokit();
   const response = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
     owner: "cohstats",
