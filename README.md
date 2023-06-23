@@ -153,7 +153,7 @@ Backend:
     not perfect for FireStore
   - Big Query - for stored matches (we need to do pricing calculations on this)
 
-## Learn More
+### Learn More about NextJS
 
 To learn more about Next.js, take a look at the following resources:
 
