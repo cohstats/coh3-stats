@@ -67,6 +67,8 @@ const PlayerStandingsTable = ({
                     startPosition,
                     platform,
                   )}
+                  rel="nofollow"
+                  title={"Link to Leaderboard with current player standings"}
                 >
                   {rank}
                 </Anchor>

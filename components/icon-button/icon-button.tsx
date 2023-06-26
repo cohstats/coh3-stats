@@ -25,6 +25,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
         radius="md"
         className={className}
         sx={sx}
+        aria-label={label?.toString()}
       >
         {children}
       </ActionIcon>

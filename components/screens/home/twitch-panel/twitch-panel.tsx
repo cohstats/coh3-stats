@@ -3,7 +3,7 @@ import { Grid, Group, MediaQuery, Stack, Text, useMantineColorScheme } from "@ma
 import { IconCircle } from "@tabler/icons-react";
 import { TwitchStream } from "../../../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
-import { mobileCheck } from "../../../../src/utils";
+import { isMobileCheck } from "../../../../src/utils";
 import config from "../../../../config";
 
 declare global {
@@ -55,7 +55,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
         const player = embed.getPlayer();
         // maybe unneeded because of option above but can't hurt
         player.setMuted(true);
-        if (!mobileCheck() && !config.isDevEnv()) player.play();
+        if (!isMobileCheck() && !config.isDevEnv()) player.play();
         setPlayer(player);
       });
     });
@@ -69,8 +69,8 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
   function handleChangeChannel(channelIndex: number) {
     if (!twitchStreams) return;
     setCurrentChannelIndex(channelIndex);
-    player.setChannel(twitchStreams[channelIndex].user_login);
-    player.play();
+    player?.setChannel(twitchStreams[channelIndex].user_login);
+    player?.play();
   }
 
   return (
