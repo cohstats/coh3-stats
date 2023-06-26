@@ -82,6 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-deploy-web
     steps:
+      - name: Fireup the preview enviroment with request
+        run: |
+          curl -H 'Content-Type: application/json' -H 'lighthouse: report' https://preview.coh3stats.com
       - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
