@@ -91,6 +91,7 @@ jobs:
           extraHeaders: '{ "lighthouse": "report" }'
           prCommentEnabled: true
           device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload artifacts
         uses: actions/upload-artifact@master
         with:
