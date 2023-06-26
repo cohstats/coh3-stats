@@ -18,6 +18,10 @@ const nextConfig = {
     // All the images are served from the CF CDN, so we don't need to optimize them.
     unoptimized: true,
   },
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
 };
 
 const withEdgioConfig = withEdgio(

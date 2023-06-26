@@ -2,6 +2,7 @@ import { BackgroundImage, Text, Box, Flex } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import { TwitchStream } from "../../../../src/coh3/coh3-types";
+import { isMobileCheck } from "../../../../src/utils";
 
 type Props = {
   twitchStreams: TwitchStream[];
@@ -13,6 +14,8 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
     onChangeChannel(idx);
     setSelected(idx);
   }
+  const isMobile = isMobileCheck();
+
   return (
     <Flex
       style={{
@@ -23,6 +26,10 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
       h="100%"
     >
       {twitchStreams.slice(0, 3).map((stream: TwitchStream, idx: number) => {
+        const streamThumbnail = isMobile
+          ? stream.thumbnail_url.replace("{width}", "200").replace("{height}", "109")
+          : stream.thumbnail_url.replace("{width}", "640").replace("{height}", "380");
+
         return (
           <Box
             w={{
@@ -46,9 +53,7 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
                 aspectRatio: 16 / 9,
                 width: "100%",
               }}
-              src={`${stream.thumbnail_url
-                .replace("{width}", "1280")
-                .replace("{height}", "720")}`}
+              src={`${streamThumbnail}`}
             >
               <Flex pos="absolute" bottom={5} left={0} w="100%" justify="space-between" px={10}>
                 <Flex align="center" gap={4}>

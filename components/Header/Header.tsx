@@ -185,7 +185,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <Anchor component={Link} href={"/"} className={cx(classes.link)}>
             <Group spacing="xs">
               <Image
-                src="/logo/android-icon-36x36.png"
+                src="/logo/android-icon-48x48.png"
                 width={30}
                 height={30}
                 alt={"COH3 Stats logo"}

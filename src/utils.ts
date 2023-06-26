@@ -57,7 +57,7 @@ const getIconsPathOnCDN = (
 
 // https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser/11381730#11381730
 // prettier-ignore
-const mobileCheck = () => {
+const isMobileCheck = () => {
   let check = false;
   (function (a) {
     if (
@@ -79,5 +79,5 @@ export {
   isBrowserEnv,
   getIconsPathOnCDN,
   internalSlash,
-  mobileCheck,
+  isMobileCheck,
 };
