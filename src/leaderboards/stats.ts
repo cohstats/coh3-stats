@@ -16,7 +16,7 @@ export type LeaderboardStatsType = {
 /**
  * Fetches all leaderboards data and returns it as a LeaderboardStats object.
  */
-const fetchAllLeaderboardsData = async () => {
+const _fetchAllLeaderboardsData = async () => {
   const promises = raceTypeArray.flatMap((faction) =>
     leaderBoardTypeArray.map((gameMode) =>
       getLeaderBoardData(faction, gameMode, 1, 200, 1).then((data: any) => ({
@@ -46,7 +46,7 @@ const fetchAllLeaderboardsData = async () => {
 };
 
 const calculateLeaderboardStats = async () => {
-  const allLeaderboardsData = await fetchAllLeaderboardsData();
+  const allLeaderboardsData = await _fetchAllLeaderboardsData();
 
   const result = {} as LeaderboardStatsType;
 
@@ -84,4 +84,4 @@ const calculateLeaderboardStats = async () => {
   return result;
 };
 
-export { calculateLeaderboardStats };
+export { calculateLeaderboardStats, _fetchAllLeaderboardsData };
