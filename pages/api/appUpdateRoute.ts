@@ -46,17 +46,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const fileResponse = await fetch(sigURL);
     const fileContent = await fileResponse.text();
 
-    return res.status(200).json({
-      version: "v" + response.data.tag_name,
-      notes: response.data.body,
-      pub_date: date.toISOString(),
-      platforms: {
-        "windows-x86_64": {
-          signature: fileContent,
-          url: zipURL,
+    return res
+      .setHeader("Cache-Control", "public, max-age=3600")
+      .status(200)
+      .json({
+        version: "v" + response.data.tag_name,
+        notes: response.data.body,
+        pub_date: date.toISOString(),
+        platforms: {
+          "windows-x86_64": {
+            signature: fileContent,
+            url: zipURL,
+          },
         },
-      },
-    });
+      });
   } catch (error) {
     return res.status(500).json({
       message: "Could not retrieve contends of the signature file.",

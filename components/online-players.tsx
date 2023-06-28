@@ -10,13 +10,27 @@ export const OnlinePlayers: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const fetchData = await fetch("/api/onlineSteamPlayers");
-        setOnlinePlayersData(await fetchData.json());
+        if (
+          onlinePlayersData &&
+          onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4
+        ) {
+          const fetchData = await fetch("/api/onlineSteamPlayers");
+          setOnlinePlayersData(await fetchData.json());
+        }
 
         // Update the data every 5 minutes
         const intervalId = setInterval(async () => {
-          const fetchData = await fetch("/api/onlineSteamPlayers");
-          setOnlinePlayersData(await fetchData.json());
+          try {
+            if (
+              onlinePlayersData &&
+              onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4
+            ) {
+              const fetchData = await fetch("/api/onlineSteamPlayers");
+              setOnlinePlayersData(await fetchData.json());
+            }
+          } catch (e) {
+            console.error(e);
+          }
         }, 1000 * 60 * 5);
 
         return () => {
@@ -26,6 +40,8 @@ export const OnlinePlayers: React.FC = () => {
         console.error(e);
       }
     })();
+    // We don't want to have it as a dependency, only during the first render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
