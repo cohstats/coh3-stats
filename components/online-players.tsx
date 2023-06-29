@@ -11,8 +11,9 @@ export const OnlinePlayers: React.FC = () => {
     (async () => {
       try {
         if (
-          onlinePlayersData &&
-          onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4
+          (onlinePlayersData &&
+            onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4) ||
+          !onlinePlayersData
         ) {
           const fetchData = await fetch("/api/onlineSteamPlayers");
           setOnlinePlayersData(await fetchData.json());
@@ -22,8 +23,9 @@ export const OnlinePlayers: React.FC = () => {
         const intervalId = setInterval(async () => {
           try {
             if (
-              onlinePlayersData &&
-              onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4
+              (onlinePlayersData &&
+                onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4) ||
+              !onlinePlayersData
             ) {
               const fetchData = await fetch("/api/onlineSteamPlayers");
               setOnlinePlayersData(await fetchData.json());
