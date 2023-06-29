@@ -18,10 +18,12 @@ const nextConfig = {
     // All the images are served from the CF CDN, so we don't need to optimize them.
     unoptimized: true,
   },
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
+  // Localization completely changes the url and we would need to re-write the cache routes
+  // In future we can look into it
+  // i18n: {
+  //   locales: ["en"],
+  //   defaultLocale: "en",
+  // },
 };
 
 const withEdgioConfig = withEdgio(
