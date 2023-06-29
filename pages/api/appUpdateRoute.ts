@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const fileContent = await fileResponse.text();
 
     return res
-      .setHeader("Cache-Control", "public, max-age=3600")
+      .setHeader("Cache-Control", "public, max-age=3600, stale-while-revalidate=14400")
       .status(200)
       .json({
         version: "v" + response.data.tag_name,
