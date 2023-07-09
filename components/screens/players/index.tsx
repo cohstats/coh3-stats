@@ -144,8 +144,7 @@ const PlayerCard = ({
                       component={Link}
                       href={
                         playerData.steamData?.profileurl ||
-                        `https://steamcommunity.com/profiles/${playerData.info.steamID}` ||
-                        ""
+                        `https://steamcommunity.com/profiles/${playerData.info.steamID}`
                       }
                       target="_blank"
                     >
