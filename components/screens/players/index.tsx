@@ -28,6 +28,7 @@ import { XboxIcon } from "../../icon/xbox";
 import PlayerSummary from "./components/player-summary";
 import PlayerStandings from "./components/player-standings";
 import PlayerRecentMatches from "./components/player-recent-matches";
+import ErrorCard from "../../error-card";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -75,7 +76,7 @@ const PlayerCard = ({
   const { view } = query;
 
   const playerData = playerDataAPI;
-  const platform = playerData.platform;
+  const platform = playerData?.platform;
 
   useEffect(() => {
     if (view === "recentMatches") {
@@ -86,7 +87,11 @@ const PlayerCard = ({
   }, [playerID, view]);
 
   if (error) {
-    return <Container size="lg">{error}</Container>;
+    return (
+      <Container size="lg">
+        <ErrorCard title={"Error loading the player card"} body={error} />
+      </Container>
+    );
   }
 
   const pageTitle = `Player card - ${playerData.info.name} ${
@@ -137,7 +142,11 @@ const PlayerCard = ({
                   {platform === "steam" && (
                     <Anchor
                       component={Link}
-                      href={playerData.steamData?.profileurl || ""}
+                      href={
+                        playerData.steamData?.profileurl ||
+                        `https://steamcommunity.com/profiles/${playerData.info.steamID}` ||
+                        ""
+                      }
                       target="_blank"
                     >
                       <Steam label="Steam Profile" />

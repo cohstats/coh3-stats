@@ -7,6 +7,7 @@ import {
   RawStatGroup,
 } from "../coh3/coh3-types";
 import { leaderboardsIDsToTypes } from "../coh3/coh3-data";
+import { convertSteamNameToID } from "../coh3/helpers";
 
 const preparePlayerStandings = (leaderboardStats: Array<RawLeaderboardStat>) => {
   const playerStandings: Record<raceType, Record<leaderBoardType, RawLeaderboardStat | null>> = {
@@ -48,11 +49,15 @@ const preparePlayerStandings = (leaderboardStats: Array<RawLeaderboardStat>) => 
 const getPlayerInfo = (statGroup: RawStatGroup) => {
   const playerData = statGroup.members[0];
 
+  // This will not be present for other platforms
+  const possibleSteamId = convertSteamNameToID(playerData.name);
+
   return {
     name: playerData.alias,
     country: playerData.country,
     level: playerData.level,
     xp: playerData.xp,
+    steamID: possibleSteamId !== "" ? possibleSteamId : undefined,
   };
 };
 

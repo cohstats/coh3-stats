@@ -85,7 +85,13 @@ export type PlayerCardDataType = {
   steamData: { steamid: string; profileurl: string; avatarmedium: string } | null;
   COH3PlayTime: null;
   standings: InternalStandings;
-  info: { country: string; level: number; name: string; xp: number | undefined };
+  info: {
+    country: string;
+    level: number;
+    name: string;
+    xp: number | undefined;
+    steamID: string | undefined;
+  };
 };
 
 interface ProcessedMatchHistoryMember {
