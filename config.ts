@@ -42,10 +42,15 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.1.6";
+const latestPatch = "1.2.0";
 
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.2.0": {
+      dataTag: "v1.2.0", // This is the tag of the data repo
+      dataTime: "25/July/2023", // The date when was the data tag created (the data extracted from game)
+      patchTimeSeconds: 1690304400, // The date when the patch was released (in seconds)
+    },
     "1.1.6": {
       dataTag: "v1.1.6-1", // This is the tag of the data repo
       dataTime: "12/June/2023", // The date when was the data tag created (the data extracted from game)
