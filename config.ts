@@ -47,7 +47,7 @@ const latestPatch = "1.2.0";
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
     "1.2.0": {
-      dataTag: "v1.2.0", // This is the tag of the data repo
+      dataTag: "v1.2.0-1", // This is the tag of the data repo
       dataTime: "25/July/2023", // The date when was the data tag created (the data extracted from game)
       patchTimeSeconds: 1690304400, // The date when the patch was released (in seconds)
     },
