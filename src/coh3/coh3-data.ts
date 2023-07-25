@@ -308,6 +308,11 @@ const maps: { [key: string]: { name: string; url: string } } = {
     name: "Pachino Farmlands",
     url: "/icons/maps/pachino_farmlands_mkii.png",
   },
+  monte_cavo_8p: { name: "Monte Cavo", url: "/icons/maps/monte_cavo_8p.png" },
+  benghazi: {
+    name: "Benghazi",
+    url: "/icons/maps/benghazi.png",
+  },
 };
 
 export {
