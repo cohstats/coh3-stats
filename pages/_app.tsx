@@ -105,6 +105,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         />
         <link rel="shortcut icon" href="/logo/favicon.ico" />
         <link type="application/opensearchdescription+xml" rel="search" href="/opensearch.xml" />
+        <meta property="og:image" content={`/public/logo/android-icon-192x192.png`} />
       </Head>
       <Script
         id="rum-lib"
