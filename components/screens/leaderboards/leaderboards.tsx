@@ -71,7 +71,7 @@ const Leaderboards = ({
               accessor: "rating",
               textAlignment: "center",
               render: ({ rank, rating }: any) => {
-                return <RankIcon size={32} rank={rank} rating={rating} />;
+                return <RankIcon size={28} rank={rank} rating={rating} />;
               },
             },
             // // {
