@@ -38,6 +38,12 @@ const OtherMenu = ({
           <Accordion.Panel>
             <Stack>
               <Group spacing={"xs"}>
+                <IconAward size={16} />
+                <Anchor component={Link} href={getRankingTiersRoute()}>
+                  Ranking Tiers
+                </Anchor>
+              </Group>
+              <Group spacing={"xs"}>
                 <IconDatabaseShare size={16} />
                 <Anchor component={Link} href={getOpenDataRoute()} onClick={close}>
                   Open Data
