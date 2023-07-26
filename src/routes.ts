@@ -86,3 +86,7 @@ export const getSearchRoute = (searchQuery: string) => {
 export const getOpenDataRoute = () => {
   return encodeURI(`/other/open-data`);
 };
+
+export const getRankingTiersRoute = () => {
+  return encodeURI(`/other/ranking-tiers`);
+};
