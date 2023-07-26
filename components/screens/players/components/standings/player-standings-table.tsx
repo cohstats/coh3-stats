@@ -91,11 +91,8 @@ const PlayerStandingsTable = ({
             title: "Level",
             accessor: "ranklevel",
             textAlignment: "center",
-            render: ({ ranklevel }) => {
-              if (!ranklevel || ranklevel < 0) {
-                return "-";
-              }
-              return <RankIcon size={28} race={faction} rank={ranklevel} />;
+            render: ({ rank, rating }) => {
+              return <RankIcon size={28} rank={rank} rating={rating} />;
             },
           },
           {
