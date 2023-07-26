@@ -35,6 +35,7 @@ const RankingTiers: NextPage = () => {
           content="Ranking tiers in Company of Heroes 3. All Leagues and Tier ranks exaplined."
         />
         <meta name="keywords" content={keywords} />
+        <meta property="og:image" content={PlayerRanks.CHALLENGER_1.url} />
       </Head>
       <>
         <Container size={"sm"}>
