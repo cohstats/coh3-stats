@@ -228,7 +228,8 @@ export const getServerSideProps: GetServerSideProps = async ({}) => {
       // Already preparing the chart data
       historyData = Object.values(historyRawData).map((value) => ({
         y: value.count,
-        x: dayjs(value.timeStamp.toMillis()).format("YYYY-MM-DD"),
+        // We subtract 1 day, because the analysis is run in 3 AM, but data are for the previous day
+        x: dayjs(value.timeStamp.toMillis()).subtract(1, "day").format("YYYY-MM-DD"),
       }));
     }
   } catch (e) {
