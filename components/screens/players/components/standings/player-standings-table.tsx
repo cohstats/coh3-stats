@@ -88,7 +88,7 @@ const PlayerStandingsTable = ({
             },
           },
           {
-            title: "Level",
+            title: "Tier",
             accessor: "ranklevel",
             textAlignment: "center",
             render: ({ rank, rating }: any) => {

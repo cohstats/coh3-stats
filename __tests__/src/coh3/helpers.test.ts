@@ -1,4 +1,9 @@
-import { getMatchDuration, getMatchPlayersByFaction } from "../../../src/coh3/helpers";
+import {
+  calculatePlayerTier,
+  getMatchDuration,
+  getMatchPlayersByFaction,
+} from "../../../src/coh3/helpers";
+import { PlayerRanks } from "../../../src/coh3/coh3-data";
 
 describe("getMatchDuration", () => {
   test("calculates the duration between start and end times (1 hour)", () => {
@@ -181,5 +186,92 @@ describe("getMatchPlayersByFaction", () => {
   test('should return all allies players when "allies" is passed as the faction', () => {
     const result = getMatchPlayersByFaction(reportedPlayerResults, "allies");
     expect(result).toEqual([playerReport2, playerReport4]);
+  });
+});
+
+describe("calculatePlayerTier", () => {
+  test("should return NO_RANK when rank is 0", () => {
+    expect(calculatePlayerTier(0, 0)).toBe(PlayerRanks.NO_RANK);
+  });
+
+  test("should return BRASS_3 when rating is 150", () => {
+    expect(calculatePlayerTier(12341, 150)).toBe(PlayerRanks.BRASS_3);
+  });
+
+  //Additional tests
+  test("should return BRASS_2 when rating is 350", () => {
+    expect(calculatePlayerTier(12341, 350)).toBe(PlayerRanks.BRASS_2);
+  });
+
+  test("should return BRASS_1 when rating is 650", () => {
+    expect(calculatePlayerTier(12341, 650)).toBe(PlayerRanks.BRASS_1);
+  });
+
+  test("should return BRONZE_3 when rating is 850", () => {
+    expect(calculatePlayerTier(12341, 850)).toBe(PlayerRanks.BRONZE_3);
+  });
+
+  test("should return BRONZE_2 when rating is 1000", () => {
+    expect(calculatePlayerTier(12341, 1000)).toBe(PlayerRanks.BRONZE_2);
+  });
+
+  test("should return BRONZE_1 when rating is 1050", () => {
+    expect(calculatePlayerTier(12341, 1050)).toBe(PlayerRanks.BRONZE_1);
+  });
+
+  test("should return IRON_3 when rating is 1100", () => {
+    expect(calculatePlayerTier(12341, 1100)).toBe(PlayerRanks.IRON_3);
+  });
+
+  test("should return IRON_2 when rating is 1150", () => {
+    expect(calculatePlayerTier(12341, 1150)).toBe(PlayerRanks.IRON_2);
+  });
+
+  test("should return IRON_1 when rating is 1200", () => {
+    expect(calculatePlayerTier(12341, 1200)).toBe(PlayerRanks.IRON_1);
+  });
+
+  test("should return SILVER_3 when rating is 1250", () => {
+    expect(calculatePlayerTier(12341, 1250)).toBe(PlayerRanks.SILVER_3);
+  });
+
+  test("should return SILVER_2 when rating is 1300", () => {
+    expect(calculatePlayerTier(12341, 1300)).toBe(PlayerRanks.SILVER_2);
+  });
+
+  test("should return SILVER_1 when rating is 1350", () => {
+    expect(calculatePlayerTier(12341, 1350)).toBe(PlayerRanks.SILVER_1);
+  });
+
+  test("should return GOLD_3 when rating is 1450", () => {
+    expect(calculatePlayerTier(12341, 1450)).toBe(PlayerRanks.GOLD_3);
+  });
+
+  test("should return GOLD_2 when rating is 1500", () => {
+    expect(calculatePlayerTier(12341, 1500)).toBe(PlayerRanks.GOLD_2);
+  });
+
+  test("should return GOLD_1 when rating is 1601", () => {
+    expect(calculatePlayerTier(60, 1601)).toBe(PlayerRanks.GOLD_1);
+  });
+
+  test("should return CHALLENGER_5 when rating is 1601 and rank is in top 50", () => {
+    expect(calculatePlayerTier(49, 1601)).toBe(PlayerRanks.CHALLENGER_5);
+  });
+
+  test("should return CHALLENGER_4 when rating is 1601", () => {
+    expect(calculatePlayerTier(24, 1601)).toBe(PlayerRanks.CHALLENGER_4);
+  });
+
+  test("should return CHALLENGER_3 when rating is 1601", () => {
+    expect(calculatePlayerTier(9, 1601)).toBe(PlayerRanks.CHALLENGER_3);
+  });
+
+  test("should return CHALLENGER_2 when rating is 1601", () => {
+    expect(calculatePlayerTier(4, 1601)).toBe(PlayerRanks.CHALLENGER_2);
+  });
+
+  test("should return CHALLENGER_1 when rating is 1601", () => {
+    expect(calculatePlayerTier(1, 1601)).toBe(PlayerRanks.CHALLENGER_1);
   });
 });

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Tooltip } from "@mantine/core";
-import { PlayerRanks } from "../src/coh3/coh3-data";
+import { calculatePlayerTier } from "../src/coh3/helpers";
 
 type Props = {
   size: number;
@@ -9,39 +9,12 @@ type Props = {
 };
 
 const RankIcon = ({ size, rank, rating }: Props) => {
-  let foundRank = PlayerRanks.NO_RANK;
-
-  if (!rank || rank <= 0) {
-    // Do nothing.
-  } else {
-    // If rating is higher than 1600, take into account the rank.
-    if (rating >= 1600) {
-      const playerRank = Object.values(PlayerRanks).find((x) => x.rank >= rank);
-
-      if (playerRank) {
-        foundRank = playerRank;
-      }
-    } else {
-      const playerRank = Object.values(PlayerRanks).find(
-        (x) => x.min <= rating && rating <= x.max,
-      );
-
-      if (playerRank) {
-        foundRank = playerRank;
-      }
-    }
-  }
+  const rankTier = calculatePlayerTier(rank, rating);
 
   return (
     <>
-      <Tooltip label={foundRank.name}>
-        <Image
-          src={foundRank.url}
-          width={size}
-          height={size}
-          alt={foundRank.name}
-          loading="lazy"
-        />
+      <Tooltip label={rankTier.name}>
+        <Image src={rankTier.url} width={size} height={size} alt={rankTier.name} loading="lazy" />
       </Tooltip>
     </>
   );

@@ -67,11 +67,11 @@ const Leaderboards = ({
               textAlignment: "center",
             },
             {
-              title: "Level",
+              title: "Tier",
               accessor: "rating",
               textAlignment: "center",
               render: ({ rank, rating }: any) => {
-                return <RankIcon size={32} rank={rank} rating={rating}></RankIcon>;
+                return <RankIcon size={32} rank={rank} rating={rating} />;
               },
             },
             // // {
