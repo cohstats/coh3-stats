@@ -94,6 +94,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   const movingValues = {
     defaultSpeed: defaultSquadMember.moving_ext.speed_scaling_table.default_speed,
     maxSpeed: defaultSquadMember.moving_ext.speed_scaling_table.max_speed,
+    acceleration: defaultSquadMember.moving_ext.acceleration,
+    deceleration: defaultSquadMember.moving_ext.deceleration,
   };
 
   // Obtain the total cost of the squad by looking at the loadout.

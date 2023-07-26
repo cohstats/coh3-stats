@@ -32,6 +32,8 @@ type UnitSquadInput = {
     outerRadius: number;
   };
   moving: {
+    acceleration: number;
+    deceleration: number;
     defaultSpeed: number;
     maxSpeed: number;
   };
@@ -43,6 +45,8 @@ const UnitSquadIcons = {
   target_size: "/icons/common/units/symbols/flag_null_symbol.png",
   infantry_armor: "/icons/common/units/symbols/unit_soviet_shock_symbol.png",
   range_of_fire: "/icons/common/units/symbols/ability_aef_beacon_symbol.png",
+  acceleration: "/icons/common/abilities/ability_step_on_it.png",
+  deceleration: "/icons/common/orders/reverse_move.png",
 } as const;
 
 export const UnitSquadCard = ({ id, sight, range, moving, health, ui, type }: UnitSquadInput) => {
@@ -81,13 +85,53 @@ export const UnitSquadCard = ({ id, sight, range, moving, health, ui, type }: Un
                 width={32}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["max_speed"]}
-                alt="squad speed range"
+                alt="squad default speed"
               ></ImageWithFallback>
               <Text>Speed</Text>
             </Group>
             <Text align="end">{moving?.defaultSpeed || 0.0}</Text>
           </Flex>
         </Grid.Col>
+
+        {type === "vehicles" ? (
+          <Grid.Col span={6} md={4}>
+            <Flex gap={4} align="center" justify="space-between">
+              <Group spacing={4}>
+                <ImageWithFallback
+                  height={32}
+                  width={32}
+                  fallbackSrc={symbolPlaceholder}
+                  src={UnitSquadIcons["acceleration"]}
+                  alt="squad acceleration"
+                ></ImageWithFallback>
+                <Text>Acceleration</Text>
+              </Group>
+              <Text align="end">{moving?.acceleration || 0.0}</Text>
+            </Flex>
+          </Grid.Col>
+        ) : (
+          <></>
+        )}
+
+        {type === "vehicles" ? (
+          <Grid.Col span={6} md={4}>
+            <Flex gap={4} align="center" justify="space-between">
+              <Group spacing={4}>
+                <ImageWithFallback
+                  height={32}
+                  width={32}
+                  fallbackSrc={symbolPlaceholder}
+                  src={UnitSquadIcons["deceleration"]}
+                  alt="squad deceleration"
+                ></ImageWithFallback>
+                <Text>Deceleration</Text>
+              </Group>
+              <Text align="end">{moving?.deceleration || 0.0}</Text>
+            </Flex>
+          </Grid.Col>
+        ) : (
+          <></>
+        )}
 
         <Grid.Col span={6} md={4}>
           <Flex gap={4} align="center" justify="space-between">

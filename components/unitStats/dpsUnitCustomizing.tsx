@@ -176,6 +176,8 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                             props.unit.ebps_default.moving_ext.speed_scaling_table.default_speed,
                           maxSpeed:
                             props.unit.ebps_default.moving_ext.speed_scaling_table.max_speed,
+                          acceleration: props.unit.ebps_default.moving_ext.acceleration,
+                          deceleration: props.unit.ebps_default.moving_ext.deceleration,
                         }}
                         range={{
                           max: props.unit.weapon_member[0]?.weapon.weapon_bag.range.max || 0,

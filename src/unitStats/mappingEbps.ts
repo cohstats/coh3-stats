@@ -32,6 +32,8 @@ type EbpsType = {
     };
   };
   moving_ext: {
+    acceleration: number;
+    deceleration: number;
     speed_scaling_table: {
       default_speed: number;
       max_speed: number;
@@ -161,6 +163,8 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
         default_speed: 0,
         max_speed: 0,
       },
+      acceleration: 0,
+      deceleration: 0,
     },
     sight_ext: {
       sight_package: {
@@ -259,6 +263,8 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.moving_ext.speed_scaling_table.default_speed =
             speedScalingTable?.default_speed || 0;
           ebps.moving_ext.speed_scaling_table.max_speed = speedScalingTable?.max_speed || 0;
+          ebps.moving_ext.acceleration = extension.acceleration;
+          ebps.moving_ext.deceleration = extension.deceleration;
         }
         break;
       case "sight_ext":
@@ -356,6 +362,7 @@ const getEbpsStats = async (patch = "latest") => {
         case "anti_tank_gun":
         case "infantry_anti_tank_weapon":
         case "tank_gun":
+        case "flak_gun":
         case "flame_throwers":
         case "vehicles": // General Vehicles
           ebpsSetAll.push(item);
