@@ -46,8 +46,8 @@ const RankingTiers: NextPage = () => {
           <Text fz="sm">
             Based on the player ELO, players are placed into specific League and Tier.
             <br />
-            Player needs at least 10 matches for each faction in a specific game to earn a rank
-            and be placed in a tier.
+            Player needs at least 10 matches for each faction in a specific game type to earn a
+            rank and be placed in a tier.
           </Text>
           <DataTable
             records={playerRanksAsArray}
@@ -55,10 +55,8 @@ const RankingTiers: NextPage = () => {
             // withBorder
             // borderRadius="md"
             style={{
-              // maxWidth: 600,
               marginTop: 20,
             }}
-            // horizontalSpacing={"xs"}
             verticalSpacing={4}
             idAccessor={"name"}
             columns={[
