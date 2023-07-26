@@ -53,8 +53,6 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
   ];
   const { minValue, maxValue } = getMinMaxValues(chartConfig?.data || []);
 
-  console.log(chartData);
-
   return (
     <div>
       <div style={{ maxWidth: 960, height: 350 }}>
