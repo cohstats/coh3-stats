@@ -9,13 +9,14 @@ import {
   Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
-import { getOpenDataRoute } from "../../../src/routes";
+import { getOpenDataRoute, getRankingTiersRoute } from "../../../src/routes";
 import React from "react";
 import {
   IconActivity,
   IconBarrierBlock,
   IconChevronDown,
   IconDatabaseShare,
+  IconAward,
 } from "@tabler/icons-react";
 
 const OtherMenu = ({
@@ -73,6 +74,12 @@ const OtherMenu = ({
         </HoverCard.Target>
         <HoverCard.Dropdown sx={{ overflow: "hidden" }} style={{ textAlign: "left" }}>
           <Group>
+            <Group spacing={"xs"}>
+              <IconAward size={16} />
+              <Anchor component={Link} href={getRankingTiersRoute()}>
+                Ranking Tiers
+              </Anchor>
+            </Group>
             <Group spacing={"xs"}>
               <IconDatabaseShare size={16} />
               <Anchor component={Link} href={getOpenDataRoute()}>
