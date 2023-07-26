@@ -228,6 +228,8 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
       },
     },
     moving_ext: {
+      acceleration: 0,
+      deceleration: 0,
       speed_scaling_table: {
         default_speed: 0,
         max_speed: 0,
