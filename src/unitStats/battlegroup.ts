@@ -51,6 +51,9 @@ export type BattlegroupResolvedType = {
   };
 };
 
+/** Update 1.2.0 added two incomplete battlegroups, so better hide those. */
+const SkipBattlegroups = ["defense", "coastal"];
+
 /** Resolve the battlegroup branches with the corresponding upgrades. */
 export function resolveBattlegroupBranches(
   race: raceType,
@@ -59,7 +62,9 @@ export function resolveBattlegroupBranches(
   abilities: AbilitiesType[],
 ) {
   const faction = race === "dak" ? "afrika_korps" : race;
-  const battlegroupsByFaction = battlegroups.filter((x) => x.faction === faction);
+  const battlegroupsByFaction = battlegroups.filter(
+    (x) => x.faction === faction && !SkipBattlegroups.includes(x.id),
+  );
   return battlegroupsByFaction.map<BattlegroupResolvedType>((rawBattlegroup) => {
     const leftBranchUpgrades: BattleGroupUpgradeType[] = [];
     const rightBranchUpgrades: BattleGroupUpgradeType[] = [];

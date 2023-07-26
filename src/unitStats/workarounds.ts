@@ -340,7 +340,7 @@ function setBattlegroupsWorkarounds() {
             break;
           case "luftwaffe_left_3_88mm_at_gun_ger":
             /** The ability enables building the emplacement. */
-            upg.spawnItems = ["aa_gun_20mm_emplacement_ger"];
+            upg.spawnItems = ["at_gun_88mm_emplacement_ger"];
             break;
         }
       });
