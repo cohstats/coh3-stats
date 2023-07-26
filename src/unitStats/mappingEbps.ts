@@ -356,6 +356,7 @@ const getEbpsStats = async (patch = "latest") => {
         case "anti_tank_gun":
         case "infantry_anti_tank_weapon":
         case "tank_gun":
+        case "flak_gun":
         case "flame_throwers":
         case "vehicles": // General Vehicles
           ebpsSetAll.push(item);
