@@ -91,7 +91,7 @@ const PlayerStandingsTable = ({
             title: "Level",
             accessor: "ranklevel",
             textAlignment: "center",
-            render: ({ rank, rating }) => {
+            render: ({ rank, rating }: any) => {
               return <RankIcon size={28} rank={rank} rating={rating} />;
             },
           },
