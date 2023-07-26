@@ -1,9 +1,10 @@
-import { Container, createStyles, Group, Space, Text, Anchor } from "@mantine/core";
+import { Container, createStyles, Group, Space, Text, Anchor, Tooltip } from "@mantine/core";
 import React from "react";
 import { Discord } from "../icon/discord";
 import { Donate } from "../icon/donate";
 import { Github } from "../icon/github";
 import Link from "next/link";
+import config from "../../config";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -27,11 +28,22 @@ export const Footer: React.FC = () => {
         <Container size={"lg"}>
           <Group position="apart">
             <Text color="dimmed" size="sm">
-              © 2023 COH3stats.com
+              © 2023 COH3stats.com,{" "}
+              <Tooltip
+                multiline
+                width={200}
+                withArrow
+                label={`Data displayed on the site are from game patch ${
+                  config.latestPatch
+                }, exported ${config.patches[config.latestPatch].dataTime}`}
+              >
+                <span>Game patch {config.latestPatch}</span>
+              </Tooltip>
               <br />
               This is unofficial fan-made site for Company&nbsp;Of&nbsp;Heroes&nbsp;3.
             </Text>
             <Group spacing={5} className={classes.social} position="right" noWrap>
+              <Text color="dimmed" size="sm"></Text>
               <Discord />
               <Github />
               <Donate />

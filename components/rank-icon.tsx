@@ -1,22 +1,20 @@
 import Image from "next/image";
 import { Tooltip } from "@mantine/core";
+import { calculatePlayerTier } from "../src/coh3/helpers";
 
 type Props = {
   size: number;
-  race: string;
+  rating: number;
   rank: number;
 };
-const RankIcon = ({ size, race, rank }: Props) => {
+
+const RankIcon = ({ size, rank, rating }: Props) => {
+  const rankTier = calculatePlayerTier(rank, rating);
+
   return (
     <>
-      <Tooltip label={"Level " + rank}>
-        <Image
-          src={"/icons/ranks/" + race + "/rank_" + rank + ".png"}
-          width={size}
-          height={size}
-          alt={"rank_" + race + "_" + rank}
-          loading="lazy"
-        />
+      <Tooltip label={rankTier.name}>
+        <Image src={rankTier.url} width={size} height={size} alt={rankTier.name} loading="lazy" />
       </Tooltip>
     </>
   );

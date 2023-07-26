@@ -67,11 +67,11 @@ const Leaderboards = ({
               textAlignment: "center",
             },
             {
-              title: "Level",
-              accessor: "ranklevel",
+              title: "Tier",
+              accessor: "rating",
               textAlignment: "center",
-              render: ({ ranklevel }: any) => {
-                return <RankIcon size={32} race={raceToFetch} rank={ranklevel}></RankIcon>;
+              render: ({ rank, rating }: any) => {
+                return <RankIcon size={28} rank={rank} rating={rating} />;
               },
             },
             // // {
