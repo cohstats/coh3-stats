@@ -52,7 +52,10 @@ const getIconsPathOnCDN = (
     iconPath += ".png";
   }
 
-  return internalSlash(`${config.CDN_ASSETS_HOSTING}/${folder}/${iconPath}`);
+  // Remove double // in case we have them in the path
+  const urlPath = `/${folder}/${iconPath}`.replace(/\/\//g, "/");
+
+  return internalSlash(`${config.CDN_ASSETS_HOSTING}${urlPath}`);
 };
 
 // https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser/11381730#11381730
