@@ -39,7 +39,7 @@ const OtherMenu = ({
             <Stack>
               <Group spacing={"xs"}>
                 <IconAward size={16} />
-                <Anchor component={Link} href={getRankingTiersRoute()}>
+                <Anchor component={Link} href={getRankingTiersRoute()} onClick={close}>
                   Ranking Tiers
                 </Anchor>
               </Group>
