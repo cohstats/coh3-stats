@@ -1,4 +1,51 @@
-import { calculatePageNumber, calculatePositionNumber, isBrowserEnv } from "../../src/utils";
+import config from "../../config";
+import {
+  calculatePageNumber,
+  calculatePositionNumber,
+  isBrowserEnv,
+  internalSlash,
+  getIconsPathOnCDN,
+} from "../../src/utils";
+
+describe("getIconsPathOnCDN", () => {
+  test("should return the correctly formed URL for the export folder", () => {
+    const result = getIconsPathOnCDN("/path/my_icon", "export");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/path/my_icon.png`);
+  });
+
+  test("should return the correctly formed URL for the export folder", () => {
+    const result = getIconsPathOnCDN("my_icon", "export");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.png`);
+  });
+
+  test("should append .png if the filename does not end with .png in the export folder", () => {
+    const result = getIconsPathOnCDN("my_icon.png", "export");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.png`);
+  });
+
+  test("should return the correctly formed URL for the export_flatten folder", () => {
+    const result = getIconsPathOnCDN("/path/to/my_icon", "export_flatten");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.png`);
+  });
+
+  test("should remove the path and keep only the filename in the export_flatten folder", () => {
+    const result = getIconsPathOnCDN("/path/to/my_icon.png", "export_flatten");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.png`);
+  });
+});
+
+describe("internalSlash", () => {
+  test("convert backwards-slash paths to forward slash paths", () => {
+    expect(internalSlash("c:\\aaaa\\bbbb")).toEqual("c:/aaaa/bbbb");
+    expect(internalSlash("c:\\aaaa\\bbbb\\★")).toEqual("c:/aaaa/bbbb/★");
+    expect(internalSlash("c:\\aaaa\\bbbb")).toEqual("c:/aaaa/bbbb");
+  });
+
+  test("not convert extended-length paths", () => {
+    const path = "\\\\?\\c:\\aaaa\\bbbb";
+    expect(internalSlash(path)).toEqual(path);
+  });
+});
 
 describe("calculatePositionNumber", () => {
   test("returns 0 for page 1", () => {
