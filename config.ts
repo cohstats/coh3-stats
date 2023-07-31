@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.2.0";
+const latestPatch = "1.1.6";
 
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
