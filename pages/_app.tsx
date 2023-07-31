@@ -110,7 +110,6 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           title={"Search COH3 players"}
           href="/opensearch.xml"
         />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <Script
         id="rum-lib"
