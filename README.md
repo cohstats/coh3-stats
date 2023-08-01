@@ -13,7 +13,8 @@ be open source for anyone to use! We need people to get the data from the game
 Anyone can put a hand in building this site. Please consider joining our [Discord](https://discord.gg/jRrnwqMfkr).
 
 We have open sourced our underlying data https://coh3stats.com/other/open-data
-- Leaderboards, Matches << which we scrape and get from Relic API 
+
+- Leaderboards, Matches << which we scrape and get from Relic API
 - Data (definitions / images ) which << which we get from the game files
 
 ## Getting Started with development
@@ -61,7 +62,6 @@ You can use function getIconsPathOnCDN where you can pass the image name or the 
 resolve it on our hosting
 https://github.com/cohstats/coh3-stats/blob/master/src/utils.ts#L22
 If the image is not found there, you can always add it to the /public folder.
-
 
 ### How to update the data after a new game patch
 
@@ -155,7 +155,7 @@ Backend:
 - Database:
   - Firestore - stats, players, matches
   - GCP Storage (leaderboards, matches)
-  - 
+
 ### Learn More about NextJS
 
 To learn more about Next.js, take a look at the following resources:
