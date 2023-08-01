@@ -27,9 +27,12 @@
     "sitemap": "next-sitemap --config next-sitemap.config.js"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx,yml,md}": [
+    "*.{js,ts,jsx,tsx,yml}": [
       "prettier --loglevel warn --write",
       "eslint --config .eslintrc.js"
+    ],
+    "*.md": [
+      "prettier --loglevel warn --write"
     ]
   },
   "dependencies": {
