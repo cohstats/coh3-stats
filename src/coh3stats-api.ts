@@ -1,5 +1,6 @@
 import config from "../config";
 import { ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
+import { analysisType, getAnalysisStatsHttpResponse } from "./analysis-types";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
@@ -15,6 +16,35 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
 
 const getTwitchStreamsUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getTwitchStreamsHttp`);
+};
+
+const getStatsUrl = (
+  startDate: number,
+  endDate: number | "now" = "now",
+  type: analysisType = "gameStats",
+) => {
+  return encodeURI(
+    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}`,
+  );
+};
+
+const getStatsData = async (
+  startDate: number,
+  endDate: number | "now" = "now",
+  type: analysisType = "gameStats",
+) => {
+  const response = await fetch(getStatsUrl(startDate, endDate, type));
+  const data: getAnalysisStatsHttpResponse = await response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting twitch streams: ${data.error}`);
+    }
+    throw new Error(`Error getting twitch streams`);
+  }
 };
 
 /**
@@ -75,4 +105,4 @@ const getPlayerRecentMatches = async (playerID: string | number) => {
   }
 };
 
-export { getPlayerCardInfo, getPlayerRecentMatches, getTwitchStreams };
+export { getPlayerCardInfo, getPlayerRecentMatches, getTwitchStreams, getStatsData };
