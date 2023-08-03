@@ -467,7 +467,7 @@ const maps: { [key: string]: { name: string; url: string } } = {
   monte_cavo_8p: { name: "Monte Cavo", url: "/icons/maps/monte_cavo_8p.png" },
   benghazi_6p: {
     name: "Benghazi",
-    url: "/icons/maps/benghazi.png",
+    url: "/icons/maps/benghazi_6p.png",
   },
 };
 
