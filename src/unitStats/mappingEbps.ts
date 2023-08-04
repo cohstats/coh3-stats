@@ -310,7 +310,7 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
   }
 };
 
-let EbpsPatchData: any;
+let EbpsPatchData: Record<string, EbpsType[]>;
 
 // calls the mapping for each entity and
 // puts the result array into the exported SbpsData variable.
@@ -375,6 +375,9 @@ const getEbpsStats = async (patch = "latest") => {
 
   if (!EbpsPatchData) EbpsPatchData = {};
   EbpsPatchData[patch] = ebpsSetAll;
+
+  // Set singleton
+  if (patch == "latest") ebpsStats = ebpsSetAll;
 
   return ebpsSetAll;
 };

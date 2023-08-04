@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 //import { LevelContext } from './LevelContext.js';
 
 import {
@@ -44,8 +44,9 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   //const [activeData] = useState(props.unit);
   const [weaponList, setWeaponList] = useState(weaponListInit);
 
-  // create weapon list
-  if (weaponList.length == 0) {
+  // Create weapon list, `useEffect` to listen for props changes and refresh the
+  // weapon data.
+  useEffect(() => {
     const weapons = getSbpsWeapons(props.unit.sbps, props.ebps, props.weapons);
     const weaponUpgrades = getSbpsUpgrades(props.unit.sbps, props.ebps, props.weapons);
     for (const weaponUpgrade of weaponUpgrades) {
@@ -54,7 +55,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
       weapons.push(weaponUpgrade);
     }
     setWeaponList(weapons);
-  }
+  }, [props.ebps, props.unit.sbps, props.weapons]);
 
   function onAddWeapon(selectionItem: WeaponMember) {
     // check if weapon have already been added
@@ -113,6 +114,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     );
   }
   const totalCost = getSquadTotalCost(props.unit.sbps, props.ebps);
+
   return (
     <>
       <Stack align="left" justify="flex-start" spacing="xs">
@@ -217,7 +219,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   size="lg"
                   onChange={onMovingChange}
                   onClick={onMovingChange}
-                  variant={props.unit.is_moving ? "default" : "trannsparent"}
+                  variant={props.unit.is_moving ? "default" : "transparent"}
                 >
                   <Image
                     src="\icons\common\abilities\tactical_movement_riflemen_us.png"
@@ -228,7 +230,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Heavy Cover">
                 <ActionIcon
                   size="lg"
-                  variant={props.unit.cover == "heavy" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "heavy" ? "default" : "transparent"}
                   onClick={() => onCoverChange("heavy")}
                 >
                   <Image src="/icons/common/cover/heavy.png" alt="Heavy Cover"></Image>
@@ -238,7 +240,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Light Cover">
                 <ActionIcon
                   size="lg"
-                  variant={props.unit.cover == "light" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "light" ? "default" : "transparent"}
                   onClick={() => onCoverChange("light")}
                 >
                   <Image src="/icons/common/cover/light.png" alt="Light Cover"></Image>
@@ -248,7 +250,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Negative Cover">
                 <ActionIcon
                   size="lg"
-                  variant={props.unit.cover == "negative" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "negative" ? "default" : "transparent"}
                   onClick={() => onCoverChange("negative")}
                 >
                   <Image src="/icons/common/cover/negative.png" alt="Negative Cover"></Image>
@@ -258,7 +260,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Garrison">
                 <ActionIcon
                   size="lg"
-                  variant={props.unit.cover == "garrison" ? "default" : "trannsparent"}
+                  variant={props.unit.cover == "garrison" ? "default" : "transparent"}
                   onClick={() => onCoverChange("garrison")}
                 >
                   <Image src="/icons/common/units/garrisoned.png" alt="Garrision"></Image>

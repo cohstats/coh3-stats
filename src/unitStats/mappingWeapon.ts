@@ -324,7 +324,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
   return weaponData;
 };
 
-let WeaponPatchData: any;
+let WeaponPatchData: Record<string, WeaponType[]>;
 
 // parses the attribute tree and initiates the mapping. Save
 // the mapping array in global exporting variable.
