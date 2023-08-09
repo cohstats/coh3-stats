@@ -43,11 +43,23 @@ export const getGMTTimeStamp = (date = new Date()) => {
 };
 
 export const convertToDateString = (date = new Date()) => {
-  return dayjs(date).format("YYYY-MM-DD");
+  const oldDate = dayjs(date);
+  const today = dayjs(new Date());
+
+  // They are the same, it's today
+  if (oldDate.diff(today, "day") === 0) {
+    return "now";
+  } else {
+    return dayjs(date).format("YYYY-MM-DD");
+  }
 };
 
 export const convertFromDateString = (dateString: string) => {
-  return dayjs(dateString).toDate();
+  if (dateString === "now") {
+    return dayjs(dayjs(new Date()).format("YYYY-MM-DD")).toDate();
+  } else {
+    return dayjs(dateString).toDate();
+  }
 };
 
 /**

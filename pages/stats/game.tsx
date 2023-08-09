@@ -3,7 +3,17 @@ import React, { useEffect, useState } from "react";
 // import { AnalyticsGameStatsPageView } from "../../src/firebase/analytics";
 import { generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
-import { Container, Text, Title } from "@mantine/core";
+import {
+  Container,
+  Loader,
+  Text,
+  Title,
+  Button,
+  Group,
+  Flex,
+  SegmentedControl,
+  Select,
+} from "@mantine/core";
 import { getStatsData } from "../../src/coh3stats-api";
 import { getAnalysisStatsHttpResponse } from "../../src/analysis-types";
 import { DatePickerInput } from "@mantine/dates";
@@ -15,6 +25,7 @@ import {
   getDateTimestamp,
   getGMTTimeStamp,
 } from "../../src/utils";
+import config from "../../config";
 
 const pageTitle = `Game Stats - Company of Heroes 3`;
 const description = "Game Stats for Company of Heroes 3. See winrate of each faction and more.";
@@ -47,6 +58,8 @@ const GameStats: NextPage = () => {
       valueDatePicker[1]?.getTime() === toQuery?.getTime()
     )
       return;
+
+    console.log(`setting valueDatePicker`);
     setValueDatePicker([fromQuery, toQuery]);
   }, [query]);
 
@@ -68,10 +81,12 @@ const GameStats: NextPage = () => {
     (async () => {
       try {
         setLoading(true);
+        setData(null);
+
         // @ts-ignore
         const data = await getStatsData(
-          getDateTimestamp(valueDatePicker[0]),
-          getDateTimestamp(valueDatePicker[1]),
+          getGMTTimeStamp(valueDatePicker[0] || new Date()),
+          getGMTTimeStamp(valueDatePicker[1] || new Date()),
         );
         setData(data);
       } catch (e: any) {
@@ -93,25 +108,47 @@ const GameStats: NextPage = () => {
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <>
-        <Container size={"sm"}>
+        <Container size={"md"}>
+          <Flex align={"flex-end"} wrap={"wrap"} gap="md">
+            <Select
+              label="Select Patch"
+              placeholder="Custom date range"
+              onChange={(e) => {
+                console.log(e);
+              }}
+              data={config.statsPatchSelector}
+            />
+            <DatePickerInput
+              type="range"
+              label="Pick dates range"
+              placeholder="Pick dates range"
+              value={valueDatePicker}
+              onChange={setValueDatePicker}
+              w={270}
+              // mx={10}
+              // mx="auto"
+
+              // maw={300}
+              // miw={270}
+              allowSingleDateInRange={true}
+              minDate={new Date(2023, 6, 1)}
+              maxDate={new Date()}
+            />
+            <SegmentedControl
+              size="sm"
+              data={[
+                { label: "All", value: "all" },
+                { label: "1 vs 1", value: "1v1" },
+                { label: "2 vs 2", value: "2v2" },
+                { label: "3 vs 3", value: "3v3" },
+                { label: "4 vs 4", value: "4v4" },
+              ]}
+            />
+          </Flex>
+          {loading && <Loader />}
           DatePicker Value: {valueDatePicker && JSON.stringify(valueDatePicker)}
           <br />
           Loading: {JSON.stringify(loading)}
-          <DatePickerInput
-            type="range"
-            label="Pick dates range"
-            placeholder="Pick dates range"
-            value={valueDatePicker}
-            onChange={setValueDatePicker}
-            mx="auto"
-            maw={300}
-            allowSingleDateInRange={true}
-            minDate={new Date(2023, 6, 1)}
-            maxDate={new Date()}
-          />
-          Data validation:{" "}
-          {data && new Date(data?.fromTimeStampSeconds * 1000).toLocaleDateString()} -{" "}
-          {data && new Date(data?.toTimeStampSeconds * 1000).toLocaleDateString()}
           {data && JSON.stringify(data)}
         </Container>
       </>

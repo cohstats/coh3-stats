@@ -41,6 +41,13 @@ const getEdgioEnvName = (): string | null => {
   return process.env.EDGIO_ENVIRONMENT_NAME || null;
 };
 
+const statsPatchSelector = [
+  { value: { from: "2023-07-25", to: "now" }, label: "1.2.x", group: "Emerald Bear" },
+  { value: { from: "2023-08-03", to: "now" }, label: "1.2.2", group: "Emerald Bear" },
+  // version 1.2.1 is not significant to be in the menu
+  { value: { from: "2023-07-25", to: "2023-08-03" }, label: "1.2.0", group: "Emerald Bear" },
+];
+
 // Latest patch needs to be a key to patches object
 const latestPatch = "1.2.2";
 
@@ -120,6 +127,7 @@ const config = {
     : "https://cache.coh3stats.com",
   patches,
   latestPatch,
+  statsPatchSelector,
 };
 
 export default config;
