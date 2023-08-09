@@ -240,7 +240,7 @@ export const init = (props: IDPSProps) => {
   sbpsData2 = props.sbpsData;
   weaponData2 = props.weaponData;
 
-  // Get Custmizable units
+  // Get Customizable units
   for (const sbps of props.sbpsData)
     units1.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData));
   units2 = [...units1];
@@ -266,7 +266,11 @@ export const DpsChart = (props: IDPSProps) => {
   // const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  if (activeData.length == 0) init(props);
+  // We must init ONCE, otherwise the default will override any change.
+  useEffect(() => {
+    init(props);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // if(config.isDevEnv())
   const patchList = [];
@@ -300,7 +304,7 @@ export const DpsChart = (props: IDPSProps) => {
         unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
         if (activeData[0]) {
           const id = activeData[0].id;
-          activeData[0] = {} as any;
+          activeData[0] = {} as CustomizableUnit;
           selectionChangeCallback(id, 0);
         }
       } else if (patchChangeIndex == 2) {
@@ -313,12 +317,12 @@ export const DpsChart = (props: IDPSProps) => {
         unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
         if (activeData[1]) {
           const id = activeData[1].id;
-          activeData[1] = {} as any;
+          activeData[1] = {} as CustomizableUnit;
           selectionChangeCallback(id, 1);
         }
       }
       setPatchChange(0);
-      // setRerender(!render);
+      // setRerender(!rerender);
     };
     if (patchChangeIndex > 0) getPatchStats();
   }, [
@@ -615,9 +619,9 @@ export const DpsChart = (props: IDPSProps) => {
                     key={activeData[1].id + "1." + patchUnit2}
                     unit={activeData[1]}
                     onChange={onSquadConfigChange}
-                    index={0}
-                    ebps={ebpsData1}
-                    weapons={weaponData1}
+                    index={1}
+                    ebps={ebpsData2}
+                    weapons={weaponData2}
                   />
                 </Box>
               )}

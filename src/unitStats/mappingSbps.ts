@@ -82,7 +82,7 @@ type LoadoutData = {
 // Can be accessed from everywhere
 let sbpsStats: SbpsType[];
 
-let sbpsPatchData: any;
+let sbpsPatchData: Record<string, SbpsType[]>;
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
@@ -332,6 +332,8 @@ const getSbpsStats = async (patch = "latest") => {
   // sbpsStats = sbpsSetAll;
   if (!sbpsPatchData) sbpsPatchData = {};
   sbpsPatchData[patch] = sbpsSetAll;
+
+  // Set singleton
   if (patch == "latest") sbpsStats = sbpsSetAll;
 
   //@todo to be filled
