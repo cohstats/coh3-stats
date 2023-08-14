@@ -41,12 +41,51 @@ const getEdgioEnvName = (): string | null => {
   return process.env.EDGIO_ENVIRONMENT_NAME || null;
 };
 
-const statsPatchSelector = [
-  { value: { from: "2023-07-25", to: "now" }, label: "1.2.x", group: "Emerald Bear" },
-  { value: { from: "2023-08-03", to: "now" }, label: "1.2.2", group: "Emerald Bear" },
+// This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
+const defaultStatsPatchSelector = "1.2.2";
+
+// This controls the patch selector in the stats page
+const statsPatchSelector: Record<
+  string,
+  {
+    from: string;
+    to: string;
+    value: string;
+    label: string;
+    group: string;
+  }
+> = {
+  "1.2.x": {
+    from: "2023-07-25",
+    to: "now",
+    value: "1.2.x",
+    label: "1.2.x",
+    group: "Emerald Bear",
+  },
+  "1.2.2": {
+    from: "2023-08-03",
+    to: "now",
+    value: "1.2.2",
+    label: "1.2.2",
+    group: "Emerald Bear",
+  },
   // version 1.2.1 is not significant to be in the menu
-  { value: { from: "2023-07-25", to: "2023-08-03" }, label: "1.2.0", group: "Emerald Bear" },
-];
+  "1.2.0": {
+    from: "2023-07-25",
+    to: "2023-08-03",
+    value: "1.2.0",
+    label: "1.2.0",
+    group: "Emerald Bear",
+  },
+  // versions 1.1.6 not significant to be in the menu
+  "1.1.5": {
+    from: "2023-06-06",
+    to: "2023-07-25",
+    value: "1.1.5",
+    label: "1.1.5",
+    group: "Brass Leopard",
+  },
+};
 
 // Latest patch needs to be a key to patches object
 const latestPatch = "1.2.2";
@@ -128,6 +167,7 @@ const config = {
   patches,
   latestPatch,
   statsPatchSelector,
+  defaultStatsPatchSelector,
 };
 
 export default config;

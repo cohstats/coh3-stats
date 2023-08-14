@@ -7,6 +7,7 @@ export type AnalysisObjectType = {
   british: { wins: number; losses: number };
   matchCount: number;
   gameTime: number;
+  gameTimeSpread: Record<string, number>;
   maps: Record<string, number>;
   factionMatrix: Record<string, { wins: number; losses: number }>;
 };

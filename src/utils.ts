@@ -62,6 +62,29 @@ export const convertFromDateString = (dateString: string) => {
   }
 };
 
+export const findPatchVersionByToAndFrom = (from: string, to: string) => {
+  for (const [patch, value] of Object.entries(config.statsPatchSelector)) {
+    if (value.from === from && value.to === to) {
+      return patch;
+    }
+  }
+  return null;
+};
+
+export const sortArrayOfObjectsByTheirPropertyValue = (
+  mapsData: Array<Record<string, string>>,
+): Array<Record<string, string>> => {
+  return mapsData.sort((a, b) => {
+    if (a.value < b.value) {
+      return -1;
+    }
+    if (a.value > b.value) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 /**
  * Get the path of the icon on our CDN hosting for images
  * @param iconPath The path of the icon, can be full path or just filename.

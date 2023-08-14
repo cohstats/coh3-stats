@@ -41,9 +41,9 @@ const getStatsData = async (
   } else {
     if (response.status === 500) {
       const data = await response.json();
-      throw new Error(`Error getting twitch streams: ${data.error}`);
+      throw new Error(`Error getting the stats data: ${data.error}`);
     }
-    throw new Error(`Error getting twitch streams`);
+    throw new Error(`Error getting the stats data`);
   }
 };
 
