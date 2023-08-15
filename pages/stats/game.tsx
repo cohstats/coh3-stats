@@ -140,7 +140,7 @@ const GameStats: NextPage = () => {
             <Select
               value={patchSelectValue}
               label="Select Patch"
-              placeholder="Custom date range"
+              placeholder="Custom date"
               onChange={selectPatchDate}
               data={Object.values(config.statsPatchSelector)}
               w={140}

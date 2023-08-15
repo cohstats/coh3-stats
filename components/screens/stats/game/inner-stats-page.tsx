@@ -5,6 +5,7 @@ import { Card, Center, Flex, Loader, Space, Title, Text } from "@mantine/core";
 import ErrorCard from "../../../error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
+import { FactionVsFactionCard } from "../../../charts/card-factions-heatmap";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -37,7 +38,7 @@ const ChartCard = ({
   }
 
   return (
-    <Card p="md" shadow="sm" w={width}>
+    <Card p="md" shadow="sm" w={width} withBorder>
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">
@@ -142,7 +143,7 @@ const InnerStatsPage = ({
             <DynamicFactionsPlayedPieChart data={analysisData} />
           </ChartCard>
 
-          <ChartCard title={`Games Analyzed ${mode}`} size={"md"}>
+          <ChartCard title={`Games Results ${mode}`} size={"md"}>
             <DynamicGamesBarChart data={analysisData} />
           </ChartCard>
 
@@ -151,6 +152,14 @@ const InnerStatsPage = ({
           </ChartCard>
         </Flex>
 
+        <Space h="xl" />
+        <Flex gap={"xl"} wrap="wrap" justify="center">
+          <FactionVsFactionCard
+            data={analysisData}
+            title={`Team composition matrix ${mode}`}
+            style={{}}
+          />
+        </Flex>
         <Space h="xl" />
 
         <Flex gap={"xl"} wrap="wrap" justify="center">

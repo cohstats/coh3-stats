@@ -37,7 +37,7 @@ const MapsPlayedBarChart: React.FC<IProps> = ({ data }) => {
 
   return (
     <ResponsiveBar
-      margin={{ top: 10, right: 20, bottom: 40, left: 140 }}
+      margin={{ top: 10, right: 30, bottom: 40, left: 140 }}
       // @ts-ignore
       data={sortedMapData as data[] | undefined}
       layout={"horizontal"}
