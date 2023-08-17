@@ -1,3 +1,5 @@
+import { leaderBoardType, raceType } from "./coh3/coh3-types";
+
 export type analysisType = "gameStats" | "mapStats";
 
 export type AnalysisObjectType = {
@@ -14,34 +16,11 @@ export type AnalysisObjectType = {
 
 export type MapAnalysisObjectType = Record<string, AnalysisObjectType>;
 
+export type DayAnalysisObjectType = Record<raceType, { wins: number; losses: number }>;
+
 export type DaysAnalysisObjectType = Record<
   string,
-  {
-    "1v1": {
-      german: { wins: number; losses: number };
-      american: { wins: number; losses: number };
-      dak: { wins: number; losses: number };
-      british: { wins: number; losses: number };
-    };
-    "2v2": {
-      german: { wins: number; losses: number };
-      american: { wins: number; losses: number };
-      dak: { wins: number; losses: number };
-      british: { wins: number; losses: number };
-    };
-    "3v3": {
-      german: { wins: number; losses: number };
-      american: { wins: number; losses: number };
-      dak: { wins: number; losses: number };
-      british: { wins: number; losses: number };
-    };
-    "4v4": {
-      german: { wins: number; losses: number };
-      american: { wins: number; losses: number };
-      dak: { wins: number; losses: number };
-      british: { wins: number; losses: number };
-    };
-  }
+  Record<leaderBoardType, DayAnalysisObjectType>
 >;
 
 export interface StatsDataObject {

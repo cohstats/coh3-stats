@@ -81,6 +81,7 @@ const HeatMapChart: React.FC<IProps> = ({ data, width, height, type = "winRate" 
       motionStiffness={80}
       motionDamping={9}
       hoverTarget="cell"
+      animate={false}
       inactiveOpacity={0.6}
     />
   );

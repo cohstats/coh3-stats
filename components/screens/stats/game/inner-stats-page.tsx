@@ -19,6 +19,9 @@ const DynamicPlayTimeHistogramChart = dynamic(() => import("./charts/playtime-hi
 const DynamicMapsPlayedBarChart = dynamic(() => import("./charts/maps-played-bar"), {
   ssr: false,
 });
+const DynamicWinRateLineChart = dynamic(() => import("./charts/win-rate-line-chart-card"), {
+  ssr: false,
+});
 
 // React component which accepts inner children. And accepts a title prop.
 const ChartCard = ({
@@ -68,7 +71,7 @@ const InnerStatsPage = ({
   mode,
 }: {
   timeStamps: { from: number | null; to: number | null };
-  mode: string;
+  mode: "1v1" | "2v2" | "3v3" | "4v4" | "all";
 }) => {
   const memoizedTimeStamps = useDeepCompareMemo(timeStamps);
   const [data, setData] = useState<null | getAnalysisStatsHttpResponse>(null);
@@ -126,7 +129,10 @@ const InnerStatsPage = ({
           data.analysis["4v4"].matchCount
         );
       } else {
-        return data.analysis[mode as keyof typeof data.analysis].matchCount;
+        const typeAnalysis = data.analysis[
+          mode as keyof typeof data.analysis
+        ] as AnalysisObjectType;
+        return typeAnalysis.matchCount;
       }
     })();
 
@@ -137,9 +143,20 @@ const InnerStatsPage = ({
 
     content = (
       <>
-        <Title order={2} align="center" p={"md"}>
-          Games analyzed {matchCount.toLocaleString()}
-        </Title>
+        <Flex gap={"xl"} justify="center">
+          <Group spacing={0}>
+            <Title order={2} align="center" p={"md"}>
+              Games analyzed {matchCount.toLocaleString()}
+            </Title>
+            <HelperIcon
+              width={360}
+              text={
+                "We are tracking every game which has at least 1 ranked player. We are tracking only 'automatch' games."
+              }
+              iconSize={25}
+            />
+          </Group>
+        </Flex>
 
         <Flex gap={"xl"} wrap="wrap" justify="center">
           <ChartCard title={`Factions Played ${mode}`} size={"md"}>
@@ -183,7 +200,9 @@ const InnerStatsPage = ({
         </Flex>
         <Space h="xl" />
 
-        <Flex gap={"xl"} wrap="wrap" justify="center"></Flex>
+        <Flex gap={"xl"} wrap="wrap" justify="center">
+          <DynamicWinRateLineChart data={analysis.days} mode={mode} />
+        </Flex>
 
         <Text fz="xs" align={"center"} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
