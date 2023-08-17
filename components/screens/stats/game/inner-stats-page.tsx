@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../../src/coh3stats-api";
-import { getAnalysisStatsHttpResponse } from "../../../../src/analysis-types";
+import { AnalysisObjectType, getAnalysisStatsHttpResponse } from "../../../../src/analysis-types";
 import { Card, Center, Flex, Loader, Space, Title, Text, Group } from "@mantine/core";
 import ErrorCard from "../../../error-card";
 import dynamic from "next/dynamic";
@@ -130,8 +130,10 @@ const InnerStatsPage = ({
       }
     })();
 
-    const analysisData =
-      mode === "all" ? analysis["1v1"] : analysis[mode as keyof typeof analysis];
+    const analysisData: AnalysisObjectType =
+      mode === "all"
+        ? (analysis["1v1"] as AnalysisObjectType)
+        : (analysis[mode as keyof typeof analysis] as AnalysisObjectType);
 
     content = (
       <>
