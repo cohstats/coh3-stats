@@ -220,14 +220,14 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
           </Group>
         </Group>
       </Card.Section>
-      <Card.Section w={995} h={440} p="xs">
+      <Card.Section w={995} h={420} p="xs">
         <div>
           {legend}
           <div style={{ display: "inline-block" }}>
             <DynamicHeatMapChart
               data={dataForHeatmap}
               width={600}
-              height={400}
+              height={380}
               type={SelectedType}
             />
           </div>

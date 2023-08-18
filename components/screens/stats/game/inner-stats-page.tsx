@@ -23,6 +23,10 @@ const DynamicWinRateLineChart = dynamic(() => import("./charts/win-rate-line-cha
   ssr: false,
 });
 
+const DynamicGamesLineChart = dynamic(() => import("./charts/games-line-chart-card"), {
+  ssr: false,
+});
+
 // React component which accepts inner children. And accepts a title prop.
 const ChartCard = ({
   title,
@@ -202,6 +206,11 @@ const InnerStatsPage = ({
 
         <Flex gap={"xl"} wrap="wrap" justify="center">
           <DynamicWinRateLineChart data={analysis.days} mode={mode} />
+        </Flex>
+
+        <Space h="xl" />
+        <Flex gap={"xl"} wrap="wrap" justify="center">
+          <DynamicGamesLineChart data={analysis.days} mode={mode} />
         </Flex>
 
         <Text fz="xs" align={"center"} pt={20} c="dimmed">

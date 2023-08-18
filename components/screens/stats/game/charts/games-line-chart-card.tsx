@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../../src/coh3/coh3-types";
 import HelperIcon from "../../../../icon/helper";
 
-const WinRateLineChartCard = ({
+const GamesLineChartCard = ({
   data,
   mode,
 }: {
@@ -52,8 +52,7 @@ const WinRateLineChartCard = ({
 
     for (const [faction, data] of Object.entries(dayAnalysisObject)) {
       chartDataObjects[faction as raceType].data.push({
-        // winRate
-        y: data.wins / (data.wins + data.losses), //.toFixed(2),
+        y: data.wins + data.losses,
         x: dayjs.unix(Number(key)).subtract(0, "day").format("YYYY-MM-DD"),
       });
     }
@@ -76,11 +75,11 @@ const WinRateLineChartCard = ({
       <Card.Section withBorder inheritPadding py="xs">
         <Group position={"apart"}>
           <Group>
-            <Title order={3}>Winrate over time for {mode}</Title>
+            <Title order={3}>Amount of games over time {mode}</Title>
             <HelperIcon
               width={360}
               text={
-                "Winrate for each day can fluctuate a lot because there isn't enough games. Switch to weeks to see a more accurate representation."
+                "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
               }
             />
           </Group>
@@ -114,17 +113,16 @@ const WinRateLineChartCard = ({
             useUTC: false,
           }}
           yScale={{
+            stacked: true,
             type: "linear",
-            min: 0.3,
-            max: 0.7,
           }}
-          yFormat=" >-.2f"
+          yFormat=" >-.0f"
           axisTop={null}
           axisRight={{
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Win Rate",
+            legend: "Amount of games",
             legendOffset: 45,
             legendPosition: "middle",
           }}
@@ -140,7 +138,7 @@ const WinRateLineChartCard = ({
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Win Rate",
+            legend: "Amount of games",
             legendOffset: -45,
             legendPosition: "middle",
           }}
@@ -153,6 +151,7 @@ const WinRateLineChartCard = ({
           // pointBorderWidth={2}
           pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
+          enableArea={true}
           useMesh={true}
           enableGridX={true}
           enableCrosshair={true}
@@ -191,4 +190,4 @@ const WinRateLineChartCard = ({
   );
 };
 
-export default WinRateLineChartCard;
+export default GamesLineChartCard;
