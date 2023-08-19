@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Tooltip,
-  Text,
-  Card,
-  Title,
-  Radio,
-  Group,
-  Divider,
-  Space,
-  MediaQuery,
-} from "@mantine/core";
+import { Tooltip, Text, Card, Title, Radio, Group, Divider, Space } from "@mantine/core";
 import { AnalysisObjectType } from "../../src/analysis-types";
 import FactionIcon from "../faction-icon";
 import dynamic from "next/dynamic";

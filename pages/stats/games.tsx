@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { AnalyticsGameStatsPageView } from "../../src/firebase/analytics";
 import { generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
@@ -186,8 +186,8 @@ const GameStats: NextPage = () => {
           <InnerStatsPage
             mode={mode}
             timeStamps={{
-              from: valueDatePicker[0] ? getGMTTimeStamp(valueDatePicker[0] || new Date()) : null,
-              to: valueDatePicker[1] ? getGMTTimeStamp(valueDatePicker[1] || new Date()) : null,
+              from: valueDatePicker[0] ? getGMTTimeStamp(valueDatePicker[0]) : null,
+              to: valueDatePicker[1] ? getGMTTimeStamp(valueDatePicker[1]) : null,
             }}
           />
         </Container>
