@@ -22,9 +22,10 @@ const getStatsUrl = (
   startDate: number,
   endDate: number | "now" = "now",
   type: analysisType = "gameStats",
+  ock: string,
 ) => {
   return encodeURI(
-    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v6`,
+    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v7&ock=${ock}`,
   );
 };
 
@@ -32,8 +33,9 @@ const getStatsData = async (
   startDate: number,
   endDate: number | "now" = "now",
   type: analysisType = "gameStats",
+  ock: string,
 ) => {
-  const response = await fetch(getStatsUrl(startDate, endDate, type));
+  const response = await fetch(getStatsUrl(startDate, endDate, type, ock));
   const data: getAnalysisStatsHttpResponse = await response.json();
 
   if (response.ok) {

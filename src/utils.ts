@@ -131,3 +131,19 @@ export const isMobileCheck = () => {
   })(navigator.userAgent);
   return check;
 };
+
+export const buildOriginHeaderValue = () => {
+  if (window) {
+    const scheme = window.location.protocol;
+    const hostname = window.location.hostname;
+    const port = window.location.port;
+
+    if ((scheme === "https:" && port === "443") || (scheme === "http:" && port === "80")) {
+      return `${scheme}//${hostname}`;
+    } else {
+      return `${scheme}//${hostname}:${port}`;
+    }
+  } else {
+    return "";
+  }
+};
