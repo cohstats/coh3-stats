@@ -24,7 +24,7 @@ const getStatsUrl = (
   type: analysisType = "gameStats",
 ) => {
   return encodeURI(
-    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v5`,
+    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v6`,
   );
 };
 

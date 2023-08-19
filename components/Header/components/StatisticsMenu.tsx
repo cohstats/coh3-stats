@@ -43,7 +43,7 @@ const StatisticsMenu = ({
             <Stack>
               <Group spacing={"xs"}>
                 <IconChartAreaLine size={16} />
-                <Anchor component={Link} href={getGameStatsRoute()}>
+                <Anchor component={Link} href={getGameStatsRoute()} onClick={close}>
                   Games Stats
                 </Anchor>
               </Group>

@@ -60,6 +60,17 @@ export const AnalyticsGameStatsPageView = (): void => {
   logFBEvent("stats_game_view");
 };
 
+export const AnalyticsGameStatsModeSelection = (mode: string): void => {
+  logFBEvent(`stats_game_mode_selection`);
+  logFBEvent(`stats_game_mode_${mode}_selection`);
+};
+
+// patch selection
+export const AnalyticsGameStatsPatchSelection = (patch: string): void => {
+  logFBEvent(`stats_game_patch_selection`);
+  logFBEvent(`stats_game_patch_${patch}_selection`);
+};
+
 export const AnalyticsStatsPlayerStatsPageView = (): void => {
   logFBEvent("stats_players_view");
 };
