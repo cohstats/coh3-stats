@@ -68,8 +68,6 @@ const GamesPercentageLineChartCard = ({
     }
   });
 
-  console.log("chartDataObjects", chartDataObjects);
-
   const chartData = Object.values(chartDataObjects).map((factionObject) => {
     return {
       id: factionObject.id,

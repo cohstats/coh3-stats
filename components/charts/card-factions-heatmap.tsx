@@ -1,9 +1,20 @@
 import React from "react";
-import { Tooltip, Text, Card, Title, Radio, Group, Divider, Space } from "@mantine/core";
+import {
+  Tooltip,
+  Text,
+  Card,
+  Title,
+  Radio,
+  Group,
+  Divider,
+  Space,
+  MediaQuery,
+} from "@mantine/core";
 import { AnalysisObjectType } from "../../src/analysis-types";
 import FactionIcon from "../faction-icon";
 import dynamic from "next/dynamic";
 import HelperIcon from "../icon/helper";
+import { useMediaQuery } from "@mantine/hooks";
 
 const DynamicHeatMapChart = dynamic(() => import("./factions-heatmap"), { ssr: false });
 
@@ -63,6 +74,7 @@ const legend = (
 
 const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
   const factionData = data["factionMatrix"];
+  const largeScreen = useMediaQuery("(min-width: 30em)");
 
   // Change all A (american) to U (US Forces)
   for (const key in factionData) {
@@ -190,50 +202,66 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
   });
 
   return (
-    <Card p="md" shadow="sm" w={780} withBorder>
-      {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
+    <>
+      {!largeScreen && (
+        <Card p="md" shadow="sm" withBorder>
+          <Card.Section withBorder inheritPadding py="xs">
+            <Title order={3}>{title}</Title>
+          </Card.Section>
+          <Card.Section withBorder inheritPadding py="xs">
+            <Text align={"center"}>
+              Team composition chart is not available on small screens.
+            </Text>
+          </Card.Section>
+        </Card>
+      )}
+      {largeScreen && (
+        <Card p="md" shadow="sm" w={780} withBorder>
+          {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
-      <Card.Section withBorder inheritPadding py="xs">
-        <Group position={"apart"}>
-          <Title order={3}>{title}</Title>
-          <Group>
-            <HelperIcon
-              width={360}
-              text={
-                "Check if winrate for the particular combination has enough games to provide valid results." +
-                " Preferably you need at least 1k games for the particular combination to be valid."
-              }
-            />
-            <Radio.Group onChange={changeHeatMapStyle} value={SelectedType}>
-              <Group mt={"xs"}>
-                <Radio value="winRate" label="Winrate" />
-                <Radio value="amountOfGames" label="Amount of games" />
+          <Card.Section withBorder inheritPadding py="xs">
+            <Group position={"apart"}>
+              <Title order={3}>{title}</Title>
+              <Group>
+                <HelperIcon
+                  width={360}
+                  text={
+                    "Check if winrate for the particular combination has enough games to provide valid results." +
+                    " Preferably you need at least 1k games for the particular combination to be valid."
+                  }
+                />
+                <Radio.Group onChange={changeHeatMapStyle} value={SelectedType}>
+                  <Group mt={"xs"}>
+                    <Radio value="winRate" label="Winrate" />
+                    <Radio value="amountOfGames" label="Amount of games" />
+                  </Group>
+                </Radio.Group>
+                <Divider orientation="vertical" />
+                <Radio.Group onChange={changeFactionDisplay} value={SelectedSide}>
+                  <Group mt={"xs"}>
+                    <Radio value="axis" label="Axis" />
+                    <Radio value="allies" label="Allies" />
+                  </Group>
+                </Radio.Group>
               </Group>
-            </Radio.Group>
-            <Divider orientation="vertical" />
-            <Radio.Group onChange={changeFactionDisplay} value={SelectedSide}>
-              <Group mt={"xs"}>
-                <Radio value="axis" label="Axis" />
-                <Radio value="allies" label="Allies" />
-              </Group>
-            </Radio.Group>
-          </Group>
-        </Group>
-      </Card.Section>
-      <Card.Section w={995} h={420} p="xs">
-        <div>
-          {legend}
-          <div style={{ display: "inline-block" }}>
-            <DynamicHeatMapChart
-              data={dataForHeatmap}
-              width={600}
-              height={380}
-              type={SelectedType}
-            />
-          </div>
-        </div>
-      </Card.Section>
-    </Card>
+            </Group>
+          </Card.Section>
+          <Card.Section w={995} h={420} p="xs">
+            <div>
+              {legend}
+              <div style={{ display: "inline-block" }}>
+                <DynamicHeatMapChart
+                  data={dataForHeatmap}
+                  width={600}
+                  height={380}
+                  type={SelectedType}
+                />
+              </div>
+            </div>
+          </Card.Section>
+        </Card>
+      )}
+    </>
   );
 };
 
