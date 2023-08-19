@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../../src/coh3/coh3-types";
 import HelperIcon from "../../../../icon/helper";
 
-const GamesLineChartCard = ({
+const GamesPercentageLineChartCard = ({
   data,
   mode,
 }: {
@@ -17,6 +17,8 @@ const GamesLineChartCard = ({
 }) => {
   const { colorScheme } = useMantineColorScheme();
   const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
+
+  const totalGamesForEachDay: Record<string, number> = {};
 
   const chartDataObjects: {
     [key in raceType]: {
@@ -49,14 +51,24 @@ const GamesLineChartCard = ({
 
   Object.entries(data).forEach(([key, value]) => {
     const dayAnalysisObject = value[mode as leaderBoardType];
+    // Init it to 0
+    totalGamesForEachDay[key] = 0;
+
+    // First count all games for each day
+    for (const data of Object.values(dayAnalysisObject)) {
+      totalGamesForEachDay[key] = totalGamesForEachDay[key] + data.wins + data.losses;
+    }
 
     for (const [faction, data] of Object.entries(dayAnalysisObject)) {
       chartDataObjects[faction as raceType].data.push({
-        y: data.wins + data.losses,
+        // Y should be percentage of games played that day
+        y: ((data.wins + data.losses) / totalGamesForEachDay[key]) * 100,
         x: dayjs.unix(Number(key)).subtract(0, "day").format("YYYY-MM-DD"),
       });
     }
   });
+
+  console.log("chartDataObjects", chartDataObjects);
 
   const chartData = Object.values(chartDataObjects).map((factionObject) => {
     return {
@@ -75,12 +87,10 @@ const GamesLineChartCard = ({
       <Card.Section withBorder inheritPadding py="xs">
         <Group position={"apart"}>
           <Group>
-            <Title order={3}>Faction pick rate over time {mode}</Title>
+            <Title order={3}>Faction popularity over time {mode}</Title>
             <HelperIcon
               width={360}
-              text={
-                "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
-              }
+              text={"This is stacked area chart. It's % of games played as each faction."}
             />
           </Group>
           <Group>
@@ -122,8 +132,8 @@ const GamesLineChartCard = ({
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Amount of games",
-            legendOffset: 45,
+            legend: "% of games played",
+            legendOffset: 35,
             legendPosition: "middle",
           }}
           axisBottom={{
@@ -138,20 +148,21 @@ const GamesLineChartCard = ({
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Amount of games",
-            legendOffset: -45,
+            legend: "% of games played",
+            legendOffset: -35,
             legendPosition: "middle",
           }}
-          curve="monotoneX"
+          curve="basis"
           colors={{ datum: "color" }}
           //colors={{ scheme: "category10" }}
-          enablePoints={true}
-          pointSize={8}
+          enablePoints={false}
+          // pointSize={8}
           // pointColor={{ theme: "background" }}
           // pointBorderWidth={2}
           pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
           enableArea={true}
+          areaOpacity={0.2}
           useMesh={true}
           enableGridX={true}
           enableCrosshair={true}
@@ -190,4 +201,4 @@ const GamesLineChartCard = ({
   );
 };
 
-export default GamesLineChartCard;
+export default GamesPercentageLineChartCard;
