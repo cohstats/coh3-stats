@@ -20,7 +20,7 @@ export const getNivoTooltipTheme = (colorScheme: "dark" | "light") => {
         },
         legend: {
           text: {
-            fill: "#ccd7e2",
+            fill: "#8d9cab",
             fontSize: 13,
             fontWeight: 500,
           },
@@ -63,7 +63,7 @@ export const getNivoTooltipTheme = (colorScheme: "dark" | "light") => {
       },
       labels: {
         text: {
-          fill: "#ddd",
+          fill: "#333333",
           fontSize: 12,
           fontWeight: 500,
         },

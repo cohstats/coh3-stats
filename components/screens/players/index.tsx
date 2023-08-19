@@ -79,6 +79,11 @@ const PlayerCard = ({
   const platform = playerData?.platform;
 
   useEffect(() => {
+    const cleanName = playerData.info.name.replace(/[^a-zA-Z0-9-_]/g, "");
+    push({ query: { ...query } }, `/players/${playerID}/${cleanName}`, { shallow: true });
+  }, [playerID]);
+
+  useEffect(() => {
     if (view === "recentMatches") {
       AnalyticsPlayerCardMatchView(playerID);
     } else {

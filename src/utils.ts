@@ -1,16 +1,17 @@
 import { StaticImageData } from "next/image";
+import dayjs from "dayjs";
 import config from "../config";
 
-const calculatePageNumber = (position: number, RECORD_PER_PAGE = 100) => {
+export const calculatePageNumber = (position: number, RECORD_PER_PAGE = 100) => {
   // Calculate the page number
   return Math.ceil(position / RECORD_PER_PAGE);
 };
 
-const calculatePositionNumber = (pageNumber: number, RECORD_PER_PAGE = 100) => {
+export const calculatePositionNumber = (pageNumber: number, RECORD_PER_PAGE = 100) => {
   return (pageNumber - 1) * RECORD_PER_PAGE + 1;
 };
 
-const isBrowserEnv = () => {
+export const isBrowserEnv = () => {
   return typeof window !== "undefined";
 };
 
@@ -19,7 +20,7 @@ const isBrowserEnv = () => {
  * We don't need to use 3rd party shit module for this
  * @param path
  */
-const internalSlash = (path: string) => {
+export const internalSlash = (path: string) => {
   const isExtendedLengthPath = /^\\\\\?\\/.test(path);
 
   if (isExtendedLengthPath) {
@@ -29,12 +30,67 @@ const internalSlash = (path: string) => {
   return path.replace(/\\/g, "/");
 };
 
+export const getDateTimestamp = (date = new Date()): number => {
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 1000;
+};
+
+export const getGMTTimeStamp = (date = new Date()) => {
+  return (
+    new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
+    ).getTime() / 1000
+  );
+};
+
+export const convertToDateString = (date = new Date()) => {
+  const oldDate = dayjs(date);
+  const today = dayjs(new Date());
+
+  // They are the same, it's today
+  if (oldDate.diff(today, "day") === 0) {
+    return "now";
+  } else {
+    return dayjs(date).format("YYYY-MM-DD");
+  }
+};
+
+export const convertFromDateString = (dateString: string) => {
+  if (dateString === "now") {
+    return dayjs(dayjs(new Date()).format("YYYY-MM-DD")).toDate();
+  } else {
+    return dayjs(dateString).toDate();
+  }
+};
+
+export const findPatchVersionByToAndFrom = (from: string, to: string) => {
+  for (const [patch, value] of Object.entries(config.statsPatchSelector)) {
+    if (value.from === from && value.to === to) {
+      return patch;
+    }
+  }
+  return null;
+};
+
+export const sortArrayOfObjectsByTheirPropertyValue = (
+  mapsData: Array<Record<string, string>>,
+): Array<Record<string, string>> => {
+  return mapsData.sort((a, b) => {
+    if (a.value < b.value) {
+      return -1;
+    }
+    if (a.value > b.value) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 /**
  * Get the path of the icon on our CDN hosting for images
  * @param iconPath The path of the icon, can be full path or just filename.
  * @param folder By default we look for whole path, but if you can't find the icon, you can try using "export_flatten" folder.
  */
-const getIconsPathOnCDN = (
+export const getIconsPathOnCDN = (
   // @ts-ignore
   iconPath: string | StaticRequire | StaticImageData,
   folder: "export" | "export_flatten" = "export",
@@ -60,7 +116,7 @@ const getIconsPathOnCDN = (
 
 // https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser/11381730#11381730
 // prettier-ignore
-const isMobileCheck = () => {
+export const isMobileCheck = () => {
   let check = false;
   (function (a) {
     if (
@@ -74,13 +130,4 @@ const isMobileCheck = () => {
       check = true;
   })(navigator.userAgent);
   return check;
-};
-
-export {
-  calculatePageNumber,
-  calculatePositionNumber,
-  isBrowserEnv,
-  getIconsPathOnCDN,
-  internalSlash,
-  isMobileCheck,
 };

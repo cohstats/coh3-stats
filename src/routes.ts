@@ -31,6 +31,10 @@ export const getPlayersStatsRoute = () => {
   return encodeURI(`/stats/players`);
 };
 
+export const getGameStatsRoute = () => {
+  return encodeURI(`/stats/games`);
+};
+
 export const getExplorerFactionRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}`);
 };

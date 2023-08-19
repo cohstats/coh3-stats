@@ -1,4 +1,7 @@
-export const generateWeeklyAverages = (dailyData: Array<{ x: string; y: number }>) => {
+export const generateWeeklyAverages = (
+  dailyData: Array<{ x: string; y: number }>,
+  round = true,
+) => {
   const weeklyData = [];
 
   for (let i = 0; i < dailyData.length; i += 7) {
@@ -10,7 +13,8 @@ export const generateWeeklyAverages = (dailyData: Array<{ x: string; y: number }
       sum += dailyData[j].y;
     }
 
-    const average = Math.round(sum / Math.min(7, dailyData.length - i));
+    const noRoundedAverage = sum / Math.min(7, dailyData.length - i);
+    const average = round ? Math.round(noRoundedAverage) : noRoundedAverage;
     weeklyData.push({ x: startDate, y: average });
   }
 

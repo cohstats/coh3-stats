@@ -61,7 +61,9 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   useEffect(() => {
-    Router.events.on("routeChangeStart", () => {
+    Router.events.on("routeChangeStart", (url, { shallow }) => {
+      // If it's a shallow change, don't show the progress bar
+      if (shallow) return;
       NProgress.start();
     });
 
