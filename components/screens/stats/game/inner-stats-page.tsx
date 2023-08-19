@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import { FactionVsFactionCard } from "../../../charts/card-factions-heatmap";
 import HelperIcon from "../../../icon/helper";
+import { buildOriginHeaderValue } from "../../../../src/utils";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -97,7 +98,12 @@ const InnerStatsPage = ({
         setData(null);
         setError(null);
 
-        const data = await getStatsData(timeStamps.from, timeStamps.to);
+        const data = await getStatsData(
+          timeStamps.from,
+          timeStamps.to,
+          "gameStats",
+          buildOriginHeaderValue(),
+        );
         setData(data);
       } catch (e: any) {
         console.error(`Failed getting stats data`);

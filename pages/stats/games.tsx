@@ -1,6 +1,10 @@
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
-// import { AnalyticsGameStatsPageView } from "../../src/firebase/analytics";
+import {
+  AnalyticsGameStatsModeSelection,
+  AnalyticsGameStatsPageView,
+  AnalyticsGameStatsPatchSelection,
+} from "../../src/firebase/analytics";
 import { generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
 import { Container, Flex, SegmentedControl, Select, Tooltip } from "@mantine/core";
@@ -36,7 +40,7 @@ const GameStats: NextPage = () => {
   ]);
 
   useEffect(() => {
-    // Todo add analytics
+    AnalyticsGameStatsPageView();
 
     const queryParams = new URLSearchParams(window.location.search);
     const fromQuery = queryParams.get("from")
@@ -92,6 +96,7 @@ const GameStats: NextPage = () => {
   }, [valueDatePicker]);
 
   const selectMode = (value: "all" | "1v1" | "2v2" | "3v3" | "4v4") => {
+    AnalyticsGameStatsModeSelection(value);
     setMode(value);
     push({ query: { ...query, mode: value } }, undefined, {
       shallow: true,
@@ -102,6 +107,7 @@ const GameStats: NextPage = () => {
     const selectedPatch = config.statsPatchSelector[value];
     if (!selectedPatch) return;
     setPatchSelectValue(value);
+    AnalyticsGameStatsPatchSelection(value);
 
     push({ query: { ...query, from: selectedPatch.from, to: selectedPatch.to } }, undefined, {
       shallow: true,
