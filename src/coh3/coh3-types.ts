@@ -139,6 +139,7 @@ export interface ProcessedMatch {
   maxplayers: number;
   matchtype_id: number;
   description: string;
+  platform: string;
   startgametime: number;
   completiontime: number;
   matchhistoryreportresults: Array<PlayerReport>;
