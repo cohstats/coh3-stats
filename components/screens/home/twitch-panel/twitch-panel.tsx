@@ -27,7 +27,12 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
 
   useEffect(() => {
     // this gate only be needed because of react strict mode running things twice
-    if (document.getElementById("twitch-script") !== null || twitchStreams === null) return;
+    if (
+      document.getElementById("twitch-script") !== null ||
+      twitchStreams === null ||
+      twitchStreams.length === 0
+    )
+      return;
 
     const script = document.createElement("script");
     script.src = "https://player.twitch.tv/js/embed/v1.js";

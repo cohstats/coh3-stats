@@ -17,6 +17,14 @@ const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTim
 https://storage.coh3stats.com/leaderboards/1683676800/1683676800_2v2_american.json
 `;
 
+const codeForForMatchData = `https://storage.coh3stats.com/matches/matches-{unixTimeStamp}.json
+
+// UnixTimeStamp: See explanation below how to calculate it
+
+// Example:
+https://storage.coh3stats.com/matches/matches-1688169600.json
+`;
+
 const codeForUnixTimeStamp = `const date = new Date();
 const timeStamp = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0) / 1000;
 `;
@@ -52,6 +60,65 @@ type RawPlayerProfile = {
   leaderboardregion_id?: number;
   country: string;
 };
+`;
+
+const codeTypeOfMatchData = `// Match data json object definition:
+{ "matches": Array<ProcessedMatch>; }
+
+interface ProcessedMatch {
+  id: number;
+  creator_profile_id: number;
+  mapname: string;
+  maxplayers: number;
+  matchtype_id: number;
+  description: string;
+  platform: string;
+  startgametime: number;
+  completiontime: number;
+  matchhistoryreportresults: Array<PlayerReport>;
+  matchhistoryitems: Array<ProcessedMatchHistoryItem>; // we are filtering out some items - those are cosmetic items
+  profile_ids: Array<number>;
+}
+
+interface PlayerReport {
+  profile_id: number;
+  resulttype: number;
+  teamid: number;
+  race_id: number;
+  counters: string;
+  profile: ProcessedProfile;
+  matchhistorymember: ProcessedMatchHistoryMember;
+}
+
+interface ProcessedProfile {
+  name: string;
+  alias: string;
+  personal_statgroup_id: number;
+  xp: number;
+  level: number;
+  leaderboardregion_id: number;
+  country: string;
+}
+
+interface ProcessedMatchHistoryMember {
+  statgroup_id: number;
+  wins: number;
+  losses: number;
+  streak: number;
+  arbitration: number;
+  outcome: number;
+  oldrating: number;
+  newrating: number;
+  reporttype: number;
+}
+
+interface ProcessedMatchHistoryItem {
+  profile_id: number;
+  itemdefinition_id: number;
+  itemlocation_id: number;
+}
+
+// Check https://github.com/cohstats/coh3-stats/blob/master/src/coh3/coh3-raw-data.ts for additional details
 `;
 
 /**
@@ -103,7 +170,7 @@ const About: NextPage = () => {
               <Anchor href={config.DISCORD_INVITE_LINK} target={"_blank"}>
                 Discord
               </Anchor>
-              .
+              . We would love to help you with your project.
             </Text>
 
             <Text pt={"md"}>Type definitions for the data:</Text>
@@ -115,6 +182,41 @@ const About: NextPage = () => {
                 need them. Reach out to us if you need any clarification.
               </Text>
             </Spoiler>
+          </div>
+          <div>
+            <Title order={2} pt="xl">
+              COH3 Match data
+            </Title>
+            <Text pt="md">
+              COH3 Stats is storing played matches. It should include all games where at least 1
+              player was ranked. It might also include some custom and other types of games. It
+              should not include any broken games. Aka game 3v3, which had only 2 players on one
+              side. It is recommended to filter the games based on matchtype_id. You can download
+              the .json files from our storage. Each JSON file contains all games played for a
+              given day which we were able to track.
+            </Text>
+            <Text pt="md">
+              They are created every day at 06:00 UTC. Downloading for a given day at 07:00 UTC
+              should be safe.
+              <br />
+              History starts on July 1st 2023.
+            </Text>
+            <Text pt="md">
+              You can download them our our storage: <br />
+              <Code block>{codeForForMatchData}</Code>
+            </Text>
+            <Text pt={"md"}>Type definitions for the data:</Text>
+            <Spoiler maxHeight={120} showLabel="Show full details" hideLabel="Hide">
+              <Code block>{codeTypeOfMatchData}</Code>
+            </Spoiler>
+            <Text fs="italic" fz={"small"}>
+              If you are going to use the data, please mention the source of the data. And also
+              please share your project with us on our{" "}
+              <Anchor href={config.DISCORD_INVITE_LINK} target={"_blank"}>
+                Discord
+              </Anchor>
+              . We would love to help you with your project.
+            </Text>
           </div>
           <Title order={2} pt="xl">
             COH3 Stats - Unix TimeStamp
@@ -130,16 +232,7 @@ const About: NextPage = () => {
             </Text>
             <Code block>{codeForUnixTimeStamp}</Code>
           </div>
-          <div>
-            <Title order={2} pt="xl">
-              COH3 Match data
-            </Title>
-            <Text pt={"md"}>
-              We will provide all the matches for ech day once we start collecting them. You can
-              expect similar data as with the data we provide for COH2. You can run your own
-              analysis on them.
-            </Text>
-          </div>
+
           <div>
             <Title order={2} pt="xl">
               COH3 Game data
