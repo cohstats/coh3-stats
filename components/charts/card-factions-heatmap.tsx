@@ -63,7 +63,7 @@ const legend = (
 );
 
 const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
-  const factionData = data["factionMatrix"];
+  const factionData = (data && data["factionMatrix"]) || {};
   const largeScreen = useMediaQuery("(min-width: 30em)");
 
   // Change all A (american) to U (US Forces)

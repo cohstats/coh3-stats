@@ -39,7 +39,7 @@ export interface MapStatsDataObject {
 }
 
 export interface getAnalysisStatsHttpResponse {
-  analysis: StatsDataObject;
+  analysis: StatsDataObject | MapStatsDataObject;
   fromTimeStampSeconds: number;
   toTimeStampSeconds: number;
   type: analysisType;

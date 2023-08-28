@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../../src/coh3stats-api";
-import { AnalysisObjectType, getAnalysisStatsHttpResponse } from "../../../../src/analysis-types";
+import {
+  AnalysisObjectType,
+  getAnalysisStatsHttpResponse,
+  StatsDataObject,
+} from "../../../../src/analysis-types";
 import { Card, Center, Flex, Loader, Space, Title, Text, Group } from "@mantine/core";
 import ErrorCard from "../../../error-card";
 import dynamic from "next/dynamic";
@@ -77,7 +81,7 @@ function useDeepCompareMemo(timeStamps: { from: number | null; to: number | null
   return storedValue;
 }
 
-const InnerStatsPage = ({
+const InnerGameStatsPage = ({
   timeStamps,
   mode,
 }: {
@@ -134,7 +138,7 @@ const InnerStatsPage = ({
   }
 
   if (data) {
-    const analysis = data.analysis;
+    const analysis = data.analysis as StatsDataObject;
 
     const matchCount = (() => {
       if (mode === "all") {
@@ -241,4 +245,4 @@ const InnerStatsPage = ({
   return <div style={{ minHeight: 800 }}>{content}</div>;
 };
 
-export default InnerStatsPage;
+export default InnerGameStatsPage;

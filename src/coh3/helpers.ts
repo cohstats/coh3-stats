@@ -1,5 +1,5 @@
 import { LaddersDataArrayObject, LaddersDataObject, PlayerReport } from "./coh3-types";
-import { PlayerRanks, raceIDsAsObject } from "./coh3-data";
+import { maps, PlayerRanks, raceIDsAsObject } from "./coh3-data";
 
 /**
  * Extracts just the string ID from the steam name used in the results of API.
@@ -105,10 +105,23 @@ const findAndMergeStatGroups = (
   return statGroupsArray;
 };
 
+/**
+ * Converts the server map name to the localized name
+ * @param mapName
+ */
+const getMapLocalizedName = (mapName: string) => {
+  if (!maps[mapName]) {
+    return mapName;
+  } else {
+    return maps[mapName].name;
+  }
+};
+
 export {
   findAndMergeStatGroups,
   convertSteamNameToID,
   getMatchDuration,
   getMatchPlayersByFaction,
   calculatePlayerTier,
+  getMapLocalizedName,
 };
