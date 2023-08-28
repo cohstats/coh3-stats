@@ -49,7 +49,7 @@ const MapsWinRateRMSChart: React.FC<IProps> = ({ data }) => {
     });
   }
 
-  const { min, max } = minMaxRange(mapsData);
+  const { max } = minMaxRange(mapsData);
 
   return (
     <ResponsiveBar

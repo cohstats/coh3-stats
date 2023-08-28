@@ -10,7 +10,6 @@ import React from "react";
 import {
   IconChartArea,
   IconChartAreaLine,
-  IconChartLine,
   IconChevronDown,
   IconDeviceDesktopAnalytics,
   IconUsersGroup,

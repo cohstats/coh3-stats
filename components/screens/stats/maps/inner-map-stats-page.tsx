@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  DaysMapsAnalysisObjectType,
-  getAnalysisStatsHttpResponse,
-  MapAnalysisObjectType,
-  MapStatsDataObject,
-} from "../../../../src/analysis-types";
+import { DaysMapsAnalysisObjectType, MapStatsDataObject } from "../../../../src/analysis-types";
 import { Center, Flex, Group, Select, Space, Text } from "@mantine/core";
 
 import { getMapLocalizedName } from "../../../../src/coh3/helpers";
