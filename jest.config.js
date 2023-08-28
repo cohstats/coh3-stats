@@ -23,6 +23,17 @@ const customJestConfig = {
     "@/(.*)$": "<rootDir>/src/$1",
   },
   testEnvironment: "jest-environment-jsdom",
+  collectCoverageFrom: ["**/api/**/*.{ts,tsx}", "**/src/**/*.{ts,tsx}"],
+  coveragePathIgnorePatterns: [
+    ".edgio",
+    "routes.ts",
+    "src/firebase",
+    "src/coh3/index.ts",
+    "src/coh3/coh3-building-types.ts",
+    "src/coh3/coh3-data.ts",
+    "src/coh3/coh3-raw-data.ts",
+  ],
+  collectCoverage: true,
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

@@ -3,7 +3,7 @@ import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoMapFeatures } from "./geo-map-features";
 import { stateNamesByCode } from "./states";
 import { Group, useMantineColorScheme } from "@mantine/core";
-import { getNivoTooltipTheme } from "../chart-utils";
+import { getNivoTooltipTheme } from "../charts-components-utils";
 import { DataTable } from "mantine-datatable";
 import CountryFlag from "../../country-flag";
 

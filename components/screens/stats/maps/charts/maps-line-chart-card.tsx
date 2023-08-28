@@ -5,7 +5,7 @@ import { generateWeeklyAverages } from "../../../../../src/charts/utils";
 import {
   chartDataObjectsForTimeSeries,
   getNivoTooltipTheme,
-} from "../../../../charts/chart-utils";
+} from "../../../../charts/charts-components-utils";
 import { DaysMapsAnalysisObjectType } from "../../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../../src/coh3/coh3-types";

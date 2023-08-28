@@ -2,8 +2,9 @@ import { ResponsiveBar } from "@nivo/bar";
 import { MapAnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
-import { getNivoTooltipTheme, minMaxRange } from "../../../../charts/chart-utils";
+import { getNivoTooltipTheme } from "../../../../charts/charts-components-utils";
 import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
+import { minMaxRange } from "../../../../../src/charts/utils";
 
 // https://en.wikipedia.org/wiki/Root_mean_square
 const _calculateRMS = (...args: number[]) => {

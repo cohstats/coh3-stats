@@ -2,7 +2,7 @@ import { ResponsiveBar } from "@nivo/bar";
 import { AnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
-import { getNivoTooltipTheme } from "../../../../charts/chart-utils";
+import { getNivoTooltipTheme } from "../../../../charts/charts-components-utils";
 import { sortArrayOfObjectsByTheirPropertyValue } from "../../../../../src/utils";
 import { maps } from "../../../../../src/coh3/coh3-data";
 

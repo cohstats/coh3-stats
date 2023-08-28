@@ -2,8 +2,9 @@ import { ResponsiveBar } from "@nivo/bar";
 import { AnalysisObjectType, MapAnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
-import { getNivoTooltipTheme, minMaxRange } from "../../../../charts/chart-utils";
+import { getNivoTooltipTheme } from "../../../../charts/charts-components-utils";
 import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
+import { minMaxRange } from "../../../../../src/charts/utils";
 
 /**
  * Returns 0.5 - axis winrate // which means positive numbers are

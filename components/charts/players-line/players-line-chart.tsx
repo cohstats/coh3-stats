@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Group, Select, useMantineColorScheme } from "@mantine/core";
-import { getNivoTooltipTheme } from "../chart-utils";
+import { getNivoTooltipTheme } from "../charts-components-utils";
 import { generateWeeklyAverages, getMinMaxValues } from "../../../src/charts/utils";
 
 const PlayersLineChart = ({ data }: { data: Array<any> }) => {

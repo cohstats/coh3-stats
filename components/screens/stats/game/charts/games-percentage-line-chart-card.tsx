@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
 import { generateWeeklyAverages } from "../../../../../src/charts/utils";
-import { getNivoTooltipTheme } from "../../../../charts/chart-utils";
+import { getNivoTooltipTheme } from "../../../../charts/charts-components-utils";
 import { DaysAnalysisObjectType } from "../../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../../src/coh3/coh3-types";

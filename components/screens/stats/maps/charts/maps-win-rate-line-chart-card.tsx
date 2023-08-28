@@ -3,7 +3,7 @@ import { DaysMapsAnalysisObjectType } from "../../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../../src/coh3/coh3-types";
 import InnerWinRateLineChartCard from "../../../../charts/inner-wr-line-chart";
-import { chartDataObjectsForTimeSeries } from "../../../../charts/chart-utils";
+import { chartDataObjectsForTimeSeries } from "../../../../charts/charts-components-utils";
 import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
 
 const MapsWinRateLineChartCard = ({
