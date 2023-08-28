@@ -5,7 +5,7 @@ import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantin
 import { raceType } from "../../src/coh3/coh3-types";
 import { generateWeeklyAverages } from "../../src/charts/utils";
 import HelperIcon from "../icon/helper";
-import { getNivoTooltipTheme } from "./chart-utils";
+import { getNivoTooltipTheme } from "./charts-components-utils";
 
 const InnerWinRateLineChartCard = ({
   data,

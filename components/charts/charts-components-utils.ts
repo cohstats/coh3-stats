@@ -110,32 +110,6 @@ export const getNivoTooltipTheme = (colorScheme: "dark" | "light") => {
   }
 };
 
-export const minMaxRange = (mapsData: { value: string | number }[]) => {
-  let maxValue = -Infinity;
-  let minValue = Infinity;
-
-  // Find the maximum and minimum values from the input data
-  for (const { value } of mapsData) {
-    const numericValue = parseFloat(`${value}`);
-    if (!isNaN(numericValue)) {
-      maxValue = Math.max(maxValue, numericValue);
-      minValue = Math.min(minValue, numericValue);
-    }
-  }
-
-  const rangeIncrement = 5;
-  const rangeMin = Math.floor(minValue / rangeIncrement) * rangeIncrement;
-  const rangeMax = Math.ceil(maxValue / rangeIncrement) * rangeIncrement;
-
-  // Determine the absolute value that is greater
-  const absMaxValue = Math.abs(rangeMin);
-  const absMinValue = Math.abs(rangeMax);
-  const rangeValue = absMaxValue > absMinValue ? absMaxValue : absMinValue;
-
-  // Return the range with the determined value
-  return { min: -rangeValue, max: rangeValue };
-};
-
 export const chartDataObjectsForTimeSeries: {
   [key in raceType]: {
     id: raceType;

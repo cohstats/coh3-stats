@@ -3,7 +3,7 @@ import { ResponsivePie } from "@nivo/pie";
 import { AnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
-import { getNivoTooltipTheme } from "../../../../charts/chart-utils";
+import { getNivoTooltipTheme } from "../../../../charts/charts-components-utils";
 import { raceTypeArray } from "../../../../../src/coh3/coh3-types";
 
 interface IProps {

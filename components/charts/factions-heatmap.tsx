@@ -1,6 +1,6 @@
 import { HeatMap } from "@nivo/heatmap";
 import React from "react";
-import { getNivoTooltipTheme } from "./chart-utils";
+import { getNivoTooltipTheme } from "./charts-components-utils";
 import { useMantineColorScheme } from "@mantine/core";
 
 interface IProps {
