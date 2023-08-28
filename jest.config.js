@@ -28,6 +28,7 @@ const customJestConfig = {
     ".edgio",
     "routes.ts",
     "src/firebase",
+    "src/logger.ts",
     "src/coh3/index.ts",
     "src/coh3/coh3-building-types.ts",
     "src/coh3/coh3-data.ts",
