@@ -65,8 +65,8 @@ const statsPatchSelector: Record<
   "1.2.3": {
     from: "2023-08-24",
     to: "now",
-    value: "1.2.2",
-    label: "1.2.2",
+    value: "1.2.3",
+    label: "1.2.3",
     group: "Emerald Bear",
   },
   "1.2.2": {
