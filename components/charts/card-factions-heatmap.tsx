@@ -12,6 +12,7 @@ interface IProps {
   data: AnalysisObjectType;
   style: Record<string, any>;
   title: string;
+  width?: number;
 }
 
 const extractFactionString = (factionString: string): Record<string, string> => {
@@ -62,7 +63,7 @@ const legend = (
   </div>
 );
 
-const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
+const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style, width = 780 }) => {
   const factionData = (data && data["factionMatrix"]) || {};
   const largeScreen = useMediaQuery("(min-width: 30em)");
 
@@ -206,7 +207,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style }) => {
         </Card>
       )}
       {largeScreen && (
-        <Card p="md" shadow="sm" w={780} withBorder>
+        <Card p="md" shadow="sm" w={width} withBorder>
           {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
           <Card.Section withBorder inheritPadding py="xs">

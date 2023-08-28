@@ -1,3 +1,5 @@
+import { raceType } from "../../src/coh3/coh3-types";
+
 export const getNivoTooltipTheme = (colorScheme: "dark" | "light") => {
   if (colorScheme === "dark") {
     return {
@@ -132,4 +134,33 @@ export const minMaxRange = (mapsData: { value: string | number }[]) => {
 
   // Return the range with the determined value
   return { min: -rangeValue, max: rangeValue };
+};
+
+export const chartDataObjectsForTimeSeries: {
+  [key in raceType]: {
+    id: raceType;
+    color: string;
+    data: Array<any>;
+  };
+} = {
+  german: {
+    id: "german",
+    color: "#D62728",
+    data: [],
+  },
+  dak: {
+    id: "dak",
+    color: "#f1e05b",
+    data: [],
+  },
+  american: {
+    id: "american",
+    color: "#2DA02C",
+    data: [],
+  },
+  british: {
+    id: "british",
+    color: "#1E77B4",
+    data: [],
+  },
 };

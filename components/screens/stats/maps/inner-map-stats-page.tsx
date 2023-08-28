@@ -2,10 +2,22 @@ import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../../src/coh3stats-api";
 import {
   AnalysisObjectType,
+  DaysMapsAnalysisObjectType,
   getAnalysisStatsHttpResponse,
   MapAnalysisObjectType,
 } from "../../../../src/analysis-types";
-import { Card, Center, Flex, Loader, Space, Title, Text, Group, Select } from "@mantine/core";
+import {
+  Card,
+  Center,
+  Flex,
+  Loader,
+  Space,
+  Title,
+  Text,
+  Group,
+  Select,
+  Container,
+} from "@mantine/core";
 import ErrorCard from "../../../error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
@@ -16,6 +28,9 @@ import Link from "next/link";
 import MapsPlayTimeBarChart from "./charts/maps-playtime-bar";
 import config from "../../../../config";
 import { getMapLocalizedName } from "../../../../src/coh3/helpers";
+import RenderMap from "../../../matches-table/render-map";
+import { maps } from "../../../../src/coh3/coh3-data";
+import ImageWithModal from "../../../image-with-modal";
 
 // const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 // const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -47,19 +62,12 @@ const DynamicMapsPlayTimeBarChart = dynamic(() => import("./charts/maps-playtime
   ssr: false,
 });
 
-// const DynamicWinRateLineChart = dynamic(() => import("./charts/win-rate-line-chart-card"), {
-//   ssr: false,
-// });
-//
-// const DynamicGamesLineChart = dynamic(() => import("./charts/games-line-chart-card"), {
-//   ssr: false,
-// });
-// const DynamicGamesPercentageLineChartCard = dynamic(
-//   () => import("./charts/games-percentage-line-chart-card"),
-//   {
-//     ssr: false,
-//   },
-// );
+const DynamicMapsWinRateLineChartCard = dynamic(
+  () => import("./charts/maps-win-rate-line-chart-card"),
+  {
+    ssr: false,
+  },
+);
 
 // Sort all maps by their match count.
 const _sortMapAnalysisData = (data: MapAnalysisObjectType) => {
@@ -82,29 +90,31 @@ const ChartCard = ({
   size,
   children,
   height = 280,
+  width = 380,
 }: {
   title: string | React.ReactNode;
   size: "md" | "xl";
   children: React.ReactNode;
   height?: number;
+  width?: number;
 }) => {
-  let width = 380;
+  let chartWidth = width;
   let chartHeight = height;
 
   if (size === "xl") {
-    width = 465;
+    chartWidth = 465;
     chartHeight = 390;
   }
 
   return (
-    <Card p="md" shadow="sm" w={width} withBorder>
+    <Card p="md" shadow="sm" w={chartWidth} withBorder>
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">
         <Title order={3}>{title}</Title>
       </Card.Section>
       {/* right, left margins are negative – -1 * theme.spacing.xl */}
-      <Card.Section w={width} h={chartHeight} py="xs">
+      <Card.Section w={chartWidth} h={chartHeight} py="xs">
         {children}
       </Card.Section>
     </Card>
@@ -150,6 +160,7 @@ const InnerMapStatsPage = ({
           buildOriginHeaderValue(),
         );
         setData(data);
+        setSelectedMap(Object.keys(data.analysis[mode as keyof typeof data.analysis])[0]);
       } catch (e: any) {
         console.error(`Failed getting stats data`);
         console.error(e);
@@ -159,6 +170,12 @@ const InnerMapStatsPage = ({
       }
     })();
   }, [memoizedTimeStamps]);
+
+  useEffect(() => {
+    if (data) {
+      setSelectedMap(Object.keys(data.analysis[mode as keyof typeof data.analysis])[0]);
+    }
+  }, [mode]);
 
   let content = <></>;
 
@@ -196,7 +213,7 @@ const InnerMapStatsPage = ({
     const sortedAnalysisData = _sortMapAnalysisData(analysisData);
 
     content = (
-      <>
+      <Container size={1230}>
         <Flex gap={"xl"} justify="center">
           <Group spacing={0}>
             <Title order={2} align="center" p={"md"}>
@@ -211,7 +228,7 @@ const InnerMapStatsPage = ({
             />
           </Group>
         </Flex>
-        <Flex gap={"xl"} wrap="wrap" justify="center">
+        <Group spacing={"xl"} position={"apart"}>
           <ChartCard
             title={
               <Group spacing={"xs"}>
@@ -267,9 +284,9 @@ const InnerMapStatsPage = ({
           >
             <MapsWinRateDiffChart data={sortedAnalysisData} />
           </ChartCard>
-        </Flex>
+        </Group>
         <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="center">
+        <Flex gap={"xl"} wrap="wrap" justify="space-between">
           <Card p="md" shadow="sm" w={785} withBorder>
             {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
@@ -277,7 +294,7 @@ const InnerMapStatsPage = ({
               <Title order={3}>{`Winrate diff per factions on maps ${mode}`}</Title>
             </Card.Section>
             {/* right, left margins are negative – -1 * theme.spacing.xl */}
-            <Card.Section w={785} h={370} py="xs">
+            <Card.Section w={785} h={330} py="xs">
               <DynamicMapsFactionWinRateChart data={analysisData} />
             </Card.Section>
           </Card>
@@ -288,93 +305,67 @@ const InnerMapStatsPage = ({
               </Group>
             }
             size={"md"}
-            height={360}
+            height={320}
           >
             <DynamicMapsPlayTimeBarChart data={sortedAnalysisData} />
           </ChartCard>
         </Flex>
+        <Space h="sm" />
         <Select
           value={selectedMap}
           label="Select Map"
           placeholder={"Select Map"}
-          data={Object.keys(sortedAnalysisData).map((mapName) => {
+          data={Object.keys(analysisData).map((mapName) => {
             return { value: mapName, label: getMapLocalizedName(mapName) };
           })}
           onChange={(value) => setSelectedMap(value || "")}
           w={220}
         />
-        <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="center">
+        <Space h="sm" />
+        <Flex gap={"xl"} wrap="wrap" justify="space-between">
           <FactionVsFactionCard
             data={sortedAnalysisData[selectedMap]}
             title={`${getMapLocalizedName(selectedMap)} - ${mode} Team composition`}
             style={{}}
+            width={900}
           />
+          <ChartCard
+            title={
+              <Group spacing={"xs"}>
+                <Text>
+                  {getMapLocalizedName(selectedMap)} {mode}
+                </Text>
+              </Group>
+            }
+            size={"md"}
+            width={270}
+          >
+            <Center p={65}>
+              <ImageWithModal
+                height={245}
+                width={245}
+                alt={selectedMap}
+                src={maps[selectedMap]?.url}
+                modalW={400}
+                modalH={400}
+                title={maps[selectedMap].name}
+              />
+            </Center>
+          </ChartCard>
         </Flex>
-
-        {JSON.stringify(analysisData)}
-
-        {/*<Flex gap={"xl"} wrap="wrap" justify="center">*/}
-        {/*  <ChartCard title={`Factions Played ${mode}`} size={"md"}>*/}
-        {/*    <DynamicFactionsPlayedPieChart data={analysisData} />*/}
-        {/*  </ChartCard>*/}
-
-        {/*  <ChartCard title={`Games Results ${mode}`} size={"md"}>*/}
-        {/*    <DynamicGamesBarChart data={analysisData} />*/}
-        {/*  </ChartCard>*/}
-
-        {/*  <ChartCard title={`Faction Winrate ${mode}`} size={"md"}>*/}
-        {/*    <DynamicWinRateBarChart data={analysisData} />*/}
-        {/*  </ChartCard>*/}
-
-        {/*  <ChartCard*/}
-        {/*    title={*/}
-        {/*      <Group spacing={"xs"}>*/}
-        {/*        <Text>Maps {mode}</Text>*/}
-        {/*        <HelperIcon*/}
-        {/*          width={280}*/}
-        {/*          text={"This chart has no value until we get map bans as we have in coh2."}*/}
-        {/*        />*/}
-        {/*      </Group>*/}
-        {/*    }*/}
-        {/*    size={"md"}*/}
-        {/*  >*/}
-        {/*    <DynamicMapsPlayedBarChart data={analysisData} />*/}
-        {/*  </ChartCard>*/}
-        {/*</Flex>*/}
-
-        {/*<Space h="xl" />*/}
-        {/*<Flex gap={"xl"} wrap="wrap" justify="center">*/}
-        {/*  <FactionVsFactionCard*/}
-        {/*    data={analysisData}*/}
-        {/*    title={`Team composition ${mode}`}*/}
-        {/*    style={{}}*/}
-        {/*  />*/}
-        {/*  <ChartCard title={`Game Time ${mode}`} size={"xl"}>*/}
-        {/*    <DynamicPlayTimeHistogramChart data={analysisData} />*/}
-        {/*  </ChartCard>*/}
-        {/*</Flex>*/}
-        {/*<Space h="xl" />*/}
-
-        {/*<Flex gap={"xl"} wrap="wrap" justify="center">*/}
-        {/*  <DynamicWinRateLineChart data={analysis.days} mode={mode} />*/}
-        {/*</Flex>*/}
-
-        {/*<Space h="xl" />*/}
-        {/*<Flex gap={"xl"} wrap="wrap" justify="center">*/}
-        {/*  <DynamicGamesLineChart data={analysis.days} mode={mode} />*/}
-        {/*</Flex>*/}
-        {/*<Space h="xl" />*/}
-        {/*<Flex gap={"xl"} wrap="wrap" justify="center">*/}
-        {/*  <DynamicGamesPercentageLineChartCard data={analysis.days} mode={mode} />*/}
-        {/*</Flex>*/}
+        <Space h="xl" />
+        <DynamicMapsWinRateLineChartCard
+          data={data.analysis.days as DaysMapsAnalysisObjectType}
+          mode={mode}
+          mapName={selectedMap}
+        />
 
         <Text fz="xs" align={"center"} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
-      </>
+      </Container>
     );
   }
 

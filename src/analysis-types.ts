@@ -23,6 +23,14 @@ export type DaysAnalysisObjectType = Record<
   Record<leaderBoardType, DayAnalysisObjectType>
 >;
 
+export type DaysMapsAnalysisObjectType = Record<
+  string,
+  Record<leaderBoardType, DayMapsAnalysisObjectType>
+>;
+
+export type DayMapsAnalysisObjectType = Record<string, DayMapAnalysisObjectType>;
+export type DayMapAnalysisObjectType = Record<raceType, { wins: number; losses: number }>;
+
 export interface StatsDataObject {
   "1v1": AnalysisObjectType;
   "2v2": AnalysisObjectType;
@@ -36,6 +44,7 @@ export interface MapStatsDataObject {
   "2v2": MapAnalysisObjectType;
   "3v3": MapAnalysisObjectType;
   "4v4": MapAnalysisObjectType;
+  days: DaysMapsAnalysisObjectType;
 }
 
 export interface getAnalysisStatsHttpResponse {
