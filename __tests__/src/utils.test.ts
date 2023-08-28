@@ -5,6 +5,7 @@ import {
   isBrowserEnv,
   internalSlash,
   getIconsPathOnCDN,
+  buildOriginHeaderValue,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -108,5 +109,63 @@ describe("isBrowserEnv", () => {
     windowSpy.mockImplementation(() => undefined);
 
     expect(isBrowserEnv()).toBe(false);
+  });
+});
+
+describe("buildOriginHeaderValue", () => {
+  let windowSpy: any;
+
+  beforeEach(() => {
+    windowSpy = jest.spyOn(global, "window", "get");
+  });
+
+  afterEach(() => {
+    windowSpy.mockRestore();
+  });
+
+  test("should return the correctly formed origin header value", () => {
+    windowSpy.mockImplementation(() => ({
+      location: {
+        protocol: "https:",
+        hostname: "example.com",
+        port: "443",
+      },
+    }));
+
+    const originHeaderValue = buildOriginHeaderValue();
+    expect(originHeaderValue).toBe("https://example.com");
+  });
+
+  test("should handle non-standard HTTPS port correctly", () => {
+    windowSpy.mockImplementation(() => ({
+      location: {
+        protocol: "https:",
+        hostname: "example.com",
+        port: "8443",
+      },
+    }));
+
+    const originHeaderValue = buildOriginHeaderValue();
+    expect(originHeaderValue).toBe("https://example.com:8443");
+  });
+
+  test("should handle non-standard HTTP port correctly", () => {
+    windowSpy.mockImplementation(() => ({
+      location: {
+        protocol: "http:",
+        hostname: "example.com",
+        port: "8080",
+      },
+    }));
+
+    const originHeaderValue = buildOriginHeaderValue();
+    expect(originHeaderValue).toBe("http://example.com:8080");
+  });
+
+  test("should return an empty string when window is not available", () => {
+    windowSpy.mockImplementation(() => undefined);
+
+    const originHeaderValue = buildOriginHeaderValue();
+    expect(originHeaderValue).toBe("");
   });
 });

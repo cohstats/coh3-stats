@@ -1,6 +1,6 @@
 // This is a file for helpers with <HEAD> tag on the site
 
-const defaultKeywords = [
+const _defaultKeywords = [
   "coh3",
   "coh3 stats",
   "coh3 statistics",
@@ -14,7 +14,7 @@ const defaultKeywords = [
  * @param keywords Try not to pass more than 5 tags
  */
 const generateKeywordsString = (keywords: string[] = []) => {
-  return keywords.concat(defaultKeywords).join(", ");
+  return keywords.concat(_defaultKeywords).join(", ");
 };
 
-export { generateKeywordsString };
+export { generateKeywordsString, _defaultKeywords };
