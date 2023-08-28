@@ -71,6 +71,24 @@ export const AnalyticsGameStatsPatchSelection = (patch: string): void => {
   logFBEvent(`stats_game_patch_${patch}_selection`);
 };
 
+export const AnalyticsMapStatsPageView = (): void => {
+  logFBEvent("stats_map_view");
+};
+
+export const AnalyticsMapStatsModeSelection = (mode: string): void => {
+  logFBEvent(`stats_map_mode_selection`);
+  logFBEvent(`stats_map_mode_${mode}_selection`);
+};
+
+export const AnalyticsMapStatsPatchSelection = (patch: string): void => {
+  logFBEvent("stats_map_patch_selection");
+  logFBEvent(`stats_map_patch_${patch}_selection`);
+};
+
+export const AnalyticsMapStatsMapSelection = (map: string): void => {
+  logFBEvent("stats_map_map_selection", { map });
+};
+
 export const AnalyticsStatsPlayerStatsPageView = (): void => {
   logFBEvent("stats_players_view");
 };

@@ -1,47 +1,33 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { AnalysisObjectType } from "../../../../../src/analysis-types";
+import { MapAnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme } from "../../../../charts/chart-utils";
-import { sortArrayOfObjectsByTheirPropertyValue } from "../../../../../src/utils";
-import { maps } from "../../../../../src/coh3/coh3-data";
+import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
 
 interface IProps {
-  data: AnalysisObjectType;
+  data: MapAnalysisObjectType;
 }
-
-const _getMapName = (mapName: string) => {
-  if (!maps[mapName]) {
-    return mapName;
-  } else {
-    return maps[mapName].name;
-  }
-};
 
 const MapsPlayedBarChart: React.FC<IProps> = ({ data }) => {
   const { colorScheme } = useMantineColorScheme();
-  const maps = data.maps;
 
-  const mapsDataUnsorted: { mapName: string; value: number }[] = Object.keys(maps).map(
-    (mapName) => {
-      return {
-        mapName: _getMapName(mapName),
-        value: maps[mapName],
-      };
-    },
-  );
+  const mapsData: { mapName: string; games: number }[] = [];
 
-  const sortedMapData = sortArrayOfObjectsByTheirPropertyValue(
-    mapsDataUnsorted as unknown as Array<Record<string, string>>,
-  );
+  for (const [mapName, mapData] of Object.entries(data)) {
+    mapsData.push({
+      mapName: getMapLocalizedName(mapName),
+      games: mapData.matchCount,
+    });
+  }
 
   return (
     <ResponsiveBar
-      margin={{ top: 10, right: 30, bottom: 50, left: 140 }}
+      margin={{ top: 10, right: 30, bottom: 48, left: 140 }}
       // @ts-ignore
-      data={sortedMapData as data[] | undefined}
+      data={mapsData as data[] | undefined}
       layout={"horizontal"}
-      keys={["value"]}
+      keys={["games"]}
       indexBy="mapName"
       colors={{ scheme: "nivo" }}
       colorBy={"indexValue"}
@@ -50,7 +36,7 @@ const MapsPlayedBarChart: React.FC<IProps> = ({ data }) => {
         tickSize: 5,
         tickPadding: 5,
         legend: "Number of games",
-        tickRotation: -45,
+        tickRotation: -35,
         legendPosition: "middle",
         legendOffset: 38,
       }}

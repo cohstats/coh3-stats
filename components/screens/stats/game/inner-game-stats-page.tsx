@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../../src/coh3stats-api";
-import { AnalysisObjectType, getAnalysisStatsHttpResponse } from "../../../../src/analysis-types";
+import {
+  AnalysisObjectType,
+  getAnalysisStatsHttpResponse,
+  StatsDataObject,
+} from "../../../../src/analysis-types";
 import { Card, Center, Flex, Loader, Space, Title, Text, Group } from "@mantine/core";
 import ErrorCard from "../../../error-card";
 import dynamic from "next/dynamic";
@@ -77,7 +81,7 @@ function useDeepCompareMemo(timeStamps: { from: number | null; to: number | null
   return storedValue;
 }
 
-const InnerStatsPage = ({
+const InnerGameStatsPage = ({
   timeStamps,
   mode,
 }: {
@@ -134,20 +138,18 @@ const InnerStatsPage = ({
   }
 
   if (data) {
-    const analysis = data.analysis;
+    const analysis = data.analysis as StatsDataObject;
 
     const matchCount = (() => {
       if (mode === "all") {
         return (
-          data.analysis["1v1"].matchCount +
-          data.analysis["2v2"].matchCount +
-          data.analysis["3v3"].matchCount +
-          data.analysis["4v4"].matchCount
+          analysis["1v1"].matchCount +
+          analysis["2v2"].matchCount +
+          analysis["3v3"].matchCount +
+          analysis["4v4"].matchCount
         );
       } else {
-        const typeAnalysis = data.analysis[
-          mode as keyof typeof data.analysis
-        ] as AnalysisObjectType;
+        const typeAnalysis = analysis[mode as keyof typeof analysis] as AnalysisObjectType;
         return typeAnalysis.matchCount;
       }
     })();
@@ -238,7 +240,7 @@ const InnerStatsPage = ({
     );
   }
 
-  return <div style={{ minHeight: 800 }}>{content}</div>;
+  return <div style={{ minHeight: 1600 }}>{content}</div>;
 };
 
-export default InnerStatsPage;
+export default InnerGameStatsPage;
