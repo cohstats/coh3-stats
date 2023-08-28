@@ -1,23 +1,16 @@
-import {
-  Accordion,
-  ActionIcon,
-  Anchor,
-  Group,
-  HoverCard,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
+import { Accordion, Anchor, Group, HoverCard, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 import {
   getGameStatsRoute,
   getLeaderBoardStatsRoute,
+  getMapsStatsRoute,
   getPlayersStatsRoute,
 } from "../../../src/routes";
 import React from "react";
 import {
-  IconBarrierBlock,
+  IconChartArea,
   IconChartAreaLine,
+  IconChartLine,
   IconChevronDown,
   IconDeviceDesktopAnalytics,
   IconUsersGroup,
@@ -45,6 +38,12 @@ const StatisticsMenu = ({
                 <IconChartAreaLine size={16} />
                 <Anchor component={Link} href={getGameStatsRoute()} onClick={close}>
                   Games Stats
+                </Anchor>
+              </Group>
+              <Group spacing={"xs"}>
+                <IconChartArea size={16} />
+                <Anchor component={Link} href={getMapsStatsRoute()} onClick={close}>
+                  Maps Stats
                 </Anchor>
               </Group>
               <Group spacing={"xs"}>
@@ -86,6 +85,12 @@ const StatisticsMenu = ({
               </Anchor>
             </Group>
             <Group spacing={"xs"}>
+              <IconChartArea size={16} />
+              <Anchor component={Link} href={getMapsStatsRoute()}>
+                Maps Stats
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
               <IconUsersGroup size={16} />
               <Anchor component={Link} href={getPlayersStatsRoute()}>
                 Players Stats
@@ -97,20 +102,20 @@ const StatisticsMenu = ({
                 Leaderboards Stats
               </Anchor>
             </Group>
-            <Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>
-              <Anchor
-                className={cx(classes.disabledLink)}
-                component={Link}
-                href={getLeaderBoardStatsRoute()}
-              >
-                <Group spacing={"xs"}>
-                  <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-                    <IconBarrierBlock size={16} />
-                  </ActionIcon>
-                  <span> Map Statistics</span>
-                </Group>
-              </Anchor>
-            </Tooltip>
+            {/*<Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>*/}
+            {/*  <Anchor*/}
+            {/*    className={cx(classes.disabledLink)}*/}
+            {/*    component={Link}*/}
+            {/*    href={getLeaderBoardStatsRoute()}*/}
+            {/*  >*/}
+            {/*    <Group spacing={"xs"}>*/}
+            {/*      <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">*/}
+            {/*        <IconBarrierBlock size={16} />*/}
+            {/*      </ActionIcon>*/}
+            {/*      <span> Map Statistics</span>*/}
+            {/*    </Group>*/}
+            {/*  </Anchor>*/}
+            {/*</Tooltip>*/}
           </Group>
         </HoverCard.Dropdown>
       </HoverCard>

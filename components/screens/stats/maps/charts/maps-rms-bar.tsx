@@ -1,9 +1,8 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { AnalysisObjectType, MapAnalysisObjectType } from "../../../../../src/analysis-types";
+import { MapAnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme, minMaxRange } from "../../../../charts/chart-utils";
-import { sortArrayOfObjectsByTheirPropertyValue } from "../../../../../src/utils";
 import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
 
 // https://en.wikipedia.org/wiki/Root_mean_square

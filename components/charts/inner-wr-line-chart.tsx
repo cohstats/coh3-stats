@@ -10,6 +10,7 @@ import { getNivoTooltipTheme } from "./chart-utils";
 const InnerWinRateLineChartCard = ({
   data,
   title,
+  width = 1270,
 }: {
   data: {
     [key in raceType]: {
@@ -19,6 +20,7 @@ const InnerWinRateLineChartCard = ({
     };
   };
   title: string;
+  width?: number;
 }) => {
   const { colorScheme } = useMantineColorScheme();
   const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
@@ -36,7 +38,7 @@ const InnerWinRateLineChartCard = ({
   });
 
   return (
-    <Card p="md" shadow="sm" w={1270} withBorder>
+    <Card p="md" shadow="sm" w={width} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
         <Group position={"apart"}>
           <Group>

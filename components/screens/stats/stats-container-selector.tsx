@@ -17,7 +17,7 @@ import {
 } from "../../../src/utils";
 import config from "../../../config";
 import InnerGameStatsPage from "./game/inner-game-stats-page";
-import InnerMapStatsPage from "./maps/inner-map-stats-page";
+import InnerMapsStatsPage from "./maps/inner-maps-stats-page";
 
 const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapStats" }) => {
   const { push, query } = useRouter();
@@ -193,7 +193,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
           />
         )}
         {statsType === "mapStats" && (
-          <InnerMapStatsPage
+          <InnerMapsStatsPage
             mode={mode as "1v1" | "2v2" | "3v3" | "4v4"}
             timeStamps={{
               from: valueDatePicker[0] ? getGMTTimeStamp(valueDatePicker[0]) : null,

@@ -1,5 +1,5 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { AnalysisObjectType, MapAnalysisObjectType } from "../../../../../src/analysis-types";
+import { MapAnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme, minMaxRange } from "../../../../charts/chart-utils";
@@ -32,7 +32,7 @@ const MapsFactionWinRateChart: React.FC<IProps> = ({ data }) => {
     "US Forces": string;
   }[] = [];
 
-  for (const [key, value] of Object.entries(data)) {
+  for (const [key, value] of Object.entries(data).reverse()) {
     mapsData.push({
       mapName: getMapLocalizedName(key),
       "US Forces": calculateWinrateSingleFaction(value.american),
@@ -69,6 +69,7 @@ const MapsFactionWinRateChart: React.FC<IProps> = ({ data }) => {
       theme={getNivoTooltipTheme(colorScheme)}
       minValue={min}
       maxValue={max}
+      animate={false}
       labelSkipHeight={10}
       axisLeft={{
         tickSize: 5,

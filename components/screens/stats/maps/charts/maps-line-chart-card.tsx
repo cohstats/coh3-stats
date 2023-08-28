@@ -2,18 +2,25 @@ import React, { useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
 import { generateWeeklyAverages } from "../../../../../src/charts/utils";
-import { getNivoTooltipTheme } from "../../../../charts/chart-utils";
-import { DaysAnalysisObjectType } from "../../../../../src/analysis-types";
+import {
+  chartDataObjectsForTimeSeries,
+  getNivoTooltipTheme,
+} from "../../../../charts/chart-utils";
+import { DaysMapsAnalysisObjectType } from "../../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../../src/coh3/coh3-types";
 import HelperIcon from "../../../../icon/helper";
 
-const GamesLineChartCard = ({
+const MapsLineChartCard = ({
   data,
   mode,
+  mapName,
+  title,
 }: {
-  data: DaysAnalysisObjectType;
-  mode: "all" | "1v1" | "2v2" | "3v3" | "4v4";
+  data: DaysMapsAnalysisObjectType;
+  mode: "1v1" | "2v2" | "3v3" | "4v4";
+  mapName: string;
+  title: string;
 }) => {
   const { colorScheme } = useMantineColorScheme();
   const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
@@ -24,39 +31,21 @@ const GamesLineChartCard = ({
       color: string;
       data: Array<any>;
     };
-  } = {
-    german: {
-      id: "german",
-      color: "#D62728",
-      data: [],
-    },
-    dak: {
-      id: "dak",
-      color: "#f1e05b",
-      data: [],
-    },
-    american: {
-      id: "american",
-      color: "#2DA02C",
-      data: [],
-    },
-    british: {
-      id: "british",
-      color: "#1E77B4",
-      data: [],
-    },
-  };
+  } = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
-  Object.entries(data).forEach(([key, value]) => {
+  for (const [timeStamp, value] of Object.entries(data)) {
     const dayAnalysisObject = value[mode as leaderBoardType];
+    const mapAnalysisObject = dayAnalysisObject[mapName];
 
-    for (const [faction, data] of Object.entries(dayAnalysisObject)) {
-      chartDataObjects[faction as raceType].data.push({
-        y: data.wins + data.losses,
-        x: dayjs.unix(Number(key)).subtract(0, "day").format("YYYY-MM-DD"),
-      });
+    if (mapAnalysisObject) {
+      for (const [faction, data] of Object.entries(mapAnalysisObject)) {
+        chartDataObjects[faction as raceType].data.push({
+          y: data.wins + data.losses, //.toFixed(2),
+          x: dayjs.unix(Number(timeStamp)).subtract(0, "day").format("YYYY-MM-DD"),
+        });
+      }
     }
-  });
+  }
 
   const chartData = Object.values(chartDataObjects).map((factionObject) => {
     return {
@@ -66,7 +55,6 @@ const GamesLineChartCard = ({
         displayBy === "days"
           ? factionObject.data
           : generateWeeklyAverages(factionObject.data, false),
-      // "data": factionObject.data
     };
   });
 
@@ -75,7 +63,7 @@ const GamesLineChartCard = ({
       <Card.Section withBorder inheritPadding py="xs">
         <Group position={"apart"}>
           <Group>
-            <Title order={3}>Faction pick rate over time {mode}</Title>
+            <Title order={3}>{title}</Title>
             <HelperIcon
               width={360}
               text={
@@ -190,4 +178,4 @@ const GamesLineChartCard = ({
   );
 };
 
-export default GamesLineChartCard;
+export default MapsLineChartCard;

@@ -3,7 +3,6 @@ import { MapAnalysisObjectType } from "../../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme } from "../../../../charts/chart-utils";
-import { sortArrayOfObjectsByTheirPropertyValue } from "../../../../../src/utils";
 import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
 
 interface IProps {
