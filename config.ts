@@ -95,11 +95,16 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.2.3";
+const latestPatch = "1.2.5";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.2.5": {
+      dataTag: "v1.2.5-1", // This is the tag of the data repo
+      dataTime: "31/August/2023", // The date when was the data tag created (the data extracted from game)
+      patchTimeSeconds: 1693512572, // The date when the patch was released (in seconds)
+    },
     "1.2.3": {
       dataTag: "v1.2.3-1", // This is the tag of the data repo
       dataTime: "28/August/2023", // The date when was the data tag created (the data extracted from game)
