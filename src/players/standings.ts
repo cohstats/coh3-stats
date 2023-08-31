@@ -53,11 +53,12 @@ const getPlayerInfo = (statGroup: RawStatGroup) => {
   const possibleSteamId = convertSteamNameToID(playerData.name);
 
   return {
+    relicID: playerData.profile_id,
     name: playerData.alias,
     country: playerData.country,
     level: playerData.level,
     xp: playerData.xp,
-    steamID: possibleSteamId !== "" ? possibleSteamId : undefined,
+    steamID: possibleSteamId !== "" ? possibleSteamId : null,
   };
 };
 

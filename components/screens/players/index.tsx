@@ -29,6 +29,7 @@ import PlayerSummary from "./components/player-summary";
 import PlayerStandings from "./components/player-standings";
 import PlayerRecentMatches from "./components/player-recent-matches";
 import ErrorCard from "../../error-card";
+import PlayerIdIcon from "./components/player-id-icon";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -158,6 +159,10 @@ const PlayerCard = ({
                   )}
                   {platform === "psn" && <PSNIcon label="Play Station player" />}
                   {platform === "xbox" && <XboxIcon label="XBOX player" />}
+                  <PlayerIdIcon
+                    relicID={playerData.info.relicID}
+                    steamID={playerData.info.steamID || undefined}
+                  />
                 </Group>
               </Stack>
             </Group>

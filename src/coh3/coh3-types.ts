@@ -86,11 +86,12 @@ export type PlayerCardDataType = {
   COH3PlayTime: null;
   standings: InternalStandings;
   info: {
+    relicID: number;
     country: string;
     level: number;
     name: string;
     xp: number | undefined;
-    steamID: string | undefined;
+    steamID: string | null;
   };
 };
 
