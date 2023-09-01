@@ -16,6 +16,8 @@ module.exports = {
     "@typescript-eslint/no-empty-interface": "off",
     // Disable ts ignore
     "@typescript-eslint/ban-ts-comment": "off",
+    // In many cases we don't want the variables to be part of the hook
+    "react-hooks/exhaustive-deps": "off",
   },
   overrides: [],
 };
