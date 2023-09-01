@@ -28,7 +28,7 @@ const getLeaderBoardsUrl = (
 const getLeaderBoardData = async (
   race: raceType,
   leaderBoardType: leaderBoardType,
-  sortBy: number,
+  sortBy: number, // 1 - ELO, 0 - Wins*
   count: number,
   start: number,
   platform: platformType = "steam",

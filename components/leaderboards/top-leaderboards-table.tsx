@@ -14,7 +14,7 @@ interface Props {
   error: any;
 }
 
-const LeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
+const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
   if (error) {
     return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
   } else {
@@ -22,7 +22,8 @@ const LeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
       <DataTable
         highlightOnHover
         striped
-        // verticalSpacing="xs"
+        // Make it little bit more compact for the front page
+        verticalSpacing={5}
         minHeight={300}
         // provide data
         idAccessor={"statgroup_id"}
@@ -39,18 +40,14 @@ const LeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
             accessor: "rating",
             textAlignment: "center",
           },
-          {
-            title: "Tier",
-            accessor: "rating",
-            textAlignment: "center",
-            render: ({ rank, rating }: any) => {
-              return <RankIcon size={28} rank={rank} rating={rating} />;
-            },
-          },
-          // // {
-          // //     accessor: "change",
-          // //     textAlignment: "center",
-          // // },
+          // {
+          //   title: "Tier",
+          //   accessor: "tier",
+          //   textAlignment: "center",
+          //   render: ({ rank, rating }: any) => {
+          //     return <RankIcon size={28} rank={rank} rating={rating} />;
+          //   },
+          // },
           {
             accessor: "alias",
             width: "100%",
@@ -83,18 +80,18 @@ const LeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
                 <Text color={"red"}>{streak}</Text>
               ),
           },
+          // Hide this when we need to make the table shorter
           {
             accessor: "wins",
-            // sortable: true,
             textAlignment: "center",
           },
+          // Hide this when we need to make the table shorter
           {
             accessor: "losses",
             textAlignment: "center",
           },
           {
             accessor: "ratio",
-            // sortable: true,
             textAlignment: "center",
             render: ({ wins, losses }: any) => {
               return `${Math.round((wins / (wins + losses)) * 100)}%`;
@@ -136,4 +133,4 @@ const LeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
   }
 };
 
-export default LeaderboardsTable;
+export default TopLeaderboardsTable;

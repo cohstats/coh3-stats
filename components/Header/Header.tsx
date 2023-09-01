@@ -159,6 +159,15 @@ export const Header: React.FC<HeaderProps> = () => {
             <ExplorerMenu cx={cx} close={close} classes={classes} />
             <OtherMenu cx={cx} close={close} classes={classes} />
 
+            <Anchor
+              component={Link}
+              href={getAboutRoute()}
+              className={cx(classes.link)}
+              onClick={() => close()}
+            >
+              About{" "}
+            </Anchor>
+
             <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
               <Image
                 src="/kofi_s_logo_nolabel.webp"
@@ -169,15 +178,6 @@ export const Header: React.FC<HeaderProps> = () => {
                 style={{ marginRight: "5px" }}
               />
               Support Us
-            </Anchor>
-
-            <Anchor
-              component={Link}
-              href={getAboutRoute()}
-              className={cx(classes.link)}
-              onClick={() => close()}
-            >
-              About{" "}
             </Anchor>
           </Stack>
 
@@ -239,6 +239,9 @@ export const Header: React.FC<HeaderProps> = () => {
 
             <ExplorerMenu cx={cx} close={close} classes={classes} />
             <OtherMenu cx={cx} close={close} classes={classes} />
+            <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
+              About
+            </Anchor>
             <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
               <Image
                 src="/kofi_s_logo_nolabel.webp"
@@ -249,10 +252,6 @@ export const Header: React.FC<HeaderProps> = () => {
                 style={{ marginRight: "5px" }}
               />
               Support Us
-            </Anchor>
-
-            <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
-              About
             </Anchor>
           </Group>
 

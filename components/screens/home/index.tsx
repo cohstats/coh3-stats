@@ -1,18 +1,6 @@
-//only render on client side
 import { Top1v1LeaderboardsData, TwitchStream } from "../../../src/coh3/coh3-types";
 import { NextPage } from "next";
-import {
-  Container,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Container, Grid, Image, Paper, Stack } from "@mantine/core";
 import { DPSCalculatorCard, UnitBrowserCard } from "./info-cards";
 import React from "react";
 import TwitchContainer from "./twitch-panel";
