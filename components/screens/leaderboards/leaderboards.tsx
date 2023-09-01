@@ -1,13 +1,20 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { AnalyticsLeaderBoardsPageView } from "../../../src/firebase/analytics";
-import { Container, Group, Select, Space, Title } from "@mantine/core";
+import { calculatePageNumber, calculatePositionNumber } from "../../../src/utils";
+import ErrorCard from "../../error-card";
+import { DataTable } from "mantine-datatable";
+import RankIcon from "../../rank-icon";
+import { Anchor, Container, Group, Select, Space, Text, Title } from "@mantine/core";
+import Link from "next/link";
+import CountryFlag from "../../country-flag";
+import DynamicTimeAgo from "../../other/dynamic-timeago";
 import { localizedGameTypes, localizedNames } from "../../../src/coh3/coh3-data";
 import { leaderBoardType, raceType } from "../../../src/coh3/coh3-types";
 import Head from "next/head";
 import FactionIcon from "../../faction-icon";
-import LeaderboardsTable from "../../leaderboards/leaderboards-table";
-import { calculatePositionNumber } from "../../../src/utils";
+
+const RECORD_PER_PAGE = 100;
 
 const Leaderboards = ({
   leaderBoardData,
@@ -19,7 +26,6 @@ const Leaderboards = ({
   typeToFetch,
 }: any) => {
   const { push, query } = useRouter();
-  const RECORD_PER_PAGE = 100;
 
   useEffect(() => {
     AnalyticsLeaderBoardsPageView(raceToFetch, typeToFetch);
@@ -31,17 +37,131 @@ const Leaderboards = ({
   };
 
   const content = (() => {
-    return (
-      <LeaderboardsTable
-        leaderBoardData={leaderBoardData}
-        error={error}
-        start={start}
-        totalRecords={totalRecords}
-        onPageChange={onPageChange}
-        recordsPerPage={RECORD_PER_PAGE}
-        withBorder={true}
-      />
-    );
+    if (error) {
+      return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
+    } else {
+      return (
+        <DataTable
+          withBorder
+          borderRadius="md"
+          highlightOnHover
+          striped
+          // verticalSpacing="xs"
+          minHeight={300}
+          // provide data
+          idAccessor={"statgroup_id"}
+          records={leaderBoardData || []}
+          page={calculatePageNumber(start, RECORD_PER_PAGE)}
+          totalRecords={totalRecords}
+          recordsPerPage={RECORD_PER_PAGE}
+          onPageChange={onPageChange}
+          // define columns
+          columns={[
+            {
+              accessor: "rank",
+              textAlignment: "center",
+            },
+            {
+              title: "ELO",
+              accessor: "rating",
+              textAlignment: "center",
+            },
+            {
+              title: "Tier",
+              accessor: "rating",
+              textAlignment: "center",
+              render: ({ rank, rating }: any) => {
+                return <RankIcon size={28} rank={rank} rating={rating} />;
+              },
+            },
+            // // {
+            // //     accessor: "change",
+            // //     textAlignment: "center",
+            // // },
+            {
+              accessor: "alias",
+              width: "100%",
+              // @ts-ignore
+              render: ({ members }) => {
+                return members.map((member: any) => {
+                  const { alias, profile_id, country } = member;
+                  const path = `/players/${profile_id}`;
+
+                  return (
+                    <Anchor key={profile_id} component={Link} href={path}>
+                      <Group spacing="xs">
+                        <CountryFlag countryCode={country} />
+                        {alias}
+                      </Group>
+                    </Anchor>
+                  );
+                });
+              },
+            },
+            {
+              accessor: "streak",
+              // sortable: true,
+              textAlignment: "center",
+              // @ts-ignore
+              render: ({ streak }) => {
+                return streak > 0 ? (
+                  <Text color={"green"}>+{streak}</Text>
+                ) : (
+                  <Text color={"red"}>{streak}</Text>
+                );
+              },
+            },
+            {
+              accessor: "wins",
+              // sortable: true,
+              textAlignment: "center",
+            },
+            {
+              accessor: "losses",
+              textAlignment: "center",
+            },
+            {
+              accessor: "ratio",
+              // sortable: true,
+              textAlignment: "center",
+              render: ({ wins, losses }: any) => {
+                return `${Math.round((wins / (wins + losses)) * 100)}%`;
+              },
+            },
+            {
+              accessor: "total",
+              // sortable: true,
+              textAlignment: "center",
+              render: ({ wins, losses }: any) => {
+                return `${wins + losses}`;
+              },
+            },
+            // // {
+            // //     accessor: "drops",
+            // //     sortable: true,
+            // //     textAlignment: "center",
+            // // },
+            // // {
+            // //     accessor: "disputes",
+            // //     sortable: true,
+            // //     textAlignment: "center",
+            // // },
+            {
+              accessor: "lastmatchdate",
+              title: "Last Game",
+              textAlignment: "right",
+              width: 125,
+              // @ts-ignore
+              render: ({ lastmatchdate }) => {
+                return <DynamicTimeAgo timestamp={lastmatchdate} />;
+              },
+            },
+          ]}
+          // sortStatus={sortStatus}
+          // onSortStatusChange={setSortStatus}
+        />
+      );
+    }
   })();
 
   const localizedRace = localizedNames[raceToFetch as raceType];
