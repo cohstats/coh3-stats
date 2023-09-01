@@ -1,14 +1,47 @@
-import { Flex, Paper, Tabs, Title } from "@mantine/core";
-import { IconTrophy } from "@tabler/icons-react";
+import { Flex, Grid, Paper, Tabs, Title, Text, Space, Anchor, createStyles } from "@mantine/core";
+import { IconArrowRight, IconTrophy } from "@tabler/icons-react";
 import LeaderboardsTable from "../../../leaderboards/leaderboards-table";
 import { raceType, Top1v1LeaderboardsData } from "../../../../src/coh3/coh3-types";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { getLeaderBoardRoute } from "../../../../src/routes";
+
+const useStyles = createStyles((theme) => ({
+  link: {
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingTop: theme.spacing.xs,
+    paddingBottom: theme.spacing.xs,
+    textDecoration: "none",
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    fontWeight: 500,
+    fontSize: theme.fontSizes.sm,
+    borderRadius: theme.radius.md,
+
+    [theme.fn.smallerThan("sm")]: {
+      height: 42,
+      display: "flex",
+      alignItems: "center",
+      width: "100%",
+    },
+
+    ...theme.fn.hover({
+      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+      textDecoration: "none",
+    }),
+  },
+}));
 
 const TopLeaderboardsSection = ({
   initialData,
 }: {
   initialData: Top1v1LeaderboardsData | null;
 }) => {
+  const { classes } = useStyles();
+
   const [data, setData] = useState<Top1v1LeaderboardsData | null>(initialData);
   const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race ?? "british");
   const [loading, setLoading] = useState<boolean>(false);
@@ -88,6 +121,17 @@ const TopLeaderboardsSection = ({
           />
         </Tabs.Panel>
       </Tabs>
+      <Space h="md" />
+      <Flex gap="md" justify="flex-end" align="center" direction="row" wrap="wrap">
+        <Anchor
+          component={Link}
+          href={getLeaderBoardRoute(selectedRace)}
+          className={classes.link}
+        >
+          View Full Leaderboard
+          <IconArrowRight style={{ marginLeft: "5px" }} />
+        </Anchor>
+      </Flex>
     </Paper>
   );
 };
