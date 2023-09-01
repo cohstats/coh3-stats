@@ -1,10 +1,11 @@
-import { Flex, Grid, Paper, Tabs, Title, Text, Space, Anchor, createStyles } from "@mantine/core";
+import { Flex, Paper, Tabs, Title, Space, Anchor, createStyles } from "@mantine/core";
 import { IconArrowRight, IconTrophy } from "@tabler/icons-react";
 import LeaderboardsTable from "../../../leaderboards/leaderboards-table";
 import { raceType, Top1v1LeaderboardsData } from "../../../../src/coh3/coh3-types";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getLeaderBoardRoute } from "../../../../src/routes";
+import { isMobileCheck } from "../../../../src/utils";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -25,7 +26,6 @@ const useStyles = createStyles((theme) => ({
       height: 42,
       display: "flex",
       alignItems: "center",
-      width: "100%",
     },
 
     ...theme.fn.hover({
@@ -41,7 +41,6 @@ const TopLeaderboardsSection = ({
   initialData: Top1v1LeaderboardsData | null;
 }) => {
   const { classes } = useStyles();
-
   const [data, setData] = useState<Top1v1LeaderboardsData | null>(initialData);
   const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race ?? "british");
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,6 +62,7 @@ const TopLeaderboardsSection = ({
       }
     })();
   }, [selectedRace]);
+
   return (
     <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
       <Tabs
