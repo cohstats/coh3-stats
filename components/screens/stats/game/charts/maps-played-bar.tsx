@@ -50,7 +50,7 @@ const MapsPlayedBarChart: React.FC<IProps> = ({ data }) => {
         tickSize: 5,
         tickPadding: 5,
         legend: "Number of games",
-        tickRotation: -45,
+        tickRotation: -55,
         legendPosition: "middle",
         legendOffset: 38,
       }}

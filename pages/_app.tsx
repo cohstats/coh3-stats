@@ -9,7 +9,7 @@ import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
 import { BetaVersion } from "../components/other/beta-version";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
 import ContentContainer from "../components/Content-container";
@@ -25,14 +25,14 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
   // get system colorscheme
   const systemColorScheme = useColorScheme("dark");
-  const prevSystemColorSchemeRef = useRef(systemColorScheme);
-
-  // create a cookie on browser to store if the user is visiting the site for the first time
-  const [firstVisit, setFirstVisit] = useLocalStorage<boolean>({
-    key: "first-visit",
-    defaultValue: true,
-    getInitialValueInEffect: true,
-  });
+  // const prevSystemColorSchemeRef = useRef(systemColorScheme);
+  //
+  // // create a cookie on browser to store if the user is visiting the site for the first time
+  // const [firstVisit, setFirstVisit] = useLocalStorage<boolean>({
+  //   key: "first-visit",
+  //   defaultValue: true,
+  //   getInitialValueInEffect: true,
+  // });
 
   // create a cookie on browser to store colorscheme starting out with system colorscheme as default
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -41,20 +41,20 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     getInitialValueInEffect: true,
   });
 
-  // useColorScheme returns an incorrect initial value due to serverside rendering
-  // when on the client for the first time set the colorscheme to system preferences
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      // only run on client side
-      if (prevSystemColorSchemeRef.current !== systemColorScheme) {
-        if (firstVisit) {
-          setColorScheme(systemColorScheme);
-          setFirstVisit(false);
-        }
-      }
-      prevSystemColorSchemeRef.current = systemColorScheme;
-    }
-  }, [systemColorScheme]);
+  // // useColorScheme returns an incorrect initial value due to serverside rendering
+  // // when on the client for the first time set the colorscheme to system preferences
+  // useEffect(() => {
+  //   if (typeof document !== "undefined") {
+  //     // only run on client side
+  //     if (prevSystemColorSchemeRef.current !== systemColorScheme) {
+  //       if (firstVisit) {
+  //         setColorScheme(systemColorScheme);
+  //         setFirstVisit(false);
+  //       }
+  //     }
+  //     prevSystemColorSchemeRef.current = systemColorScheme;
+  //   }
+  // }, [systemColorScheme]);
 
   // switch colorscheme
   const toggleColorScheme = (value?: ColorScheme) =>
