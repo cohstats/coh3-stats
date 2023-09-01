@@ -80,7 +80,6 @@ const PlayerRecentMatches = ({
     });
     return sortStatus.direction === "desc" ? resortedData.reverse() : resortedData;
     // eslint wants isplayervictorious in here. I think this will make this run on every render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortStatus, playerMatchesData, filters]);
 
   // populate filters with values actually found in this players recent history
