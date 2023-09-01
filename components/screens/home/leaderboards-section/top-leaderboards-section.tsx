@@ -10,7 +10,7 @@ const TopLeaderboardsSection = ({
   initialData: Top1v1LeaderboardsData | null;
 }) => {
   const [data, setData] = useState<Top1v1LeaderboardsData | null>(initialData);
-  const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race ?? "american");
+  const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race ?? "british");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,20 +30,13 @@ const TopLeaderboardsSection = ({
       }
     })();
   }, [selectedRace]);
-
-  console.log("data", data);
-  console.log("error", error);
-  console.log("loading", loading);
-  console.log("selectedRace", selectedRace);
-
-  //TODO: Implemented the rest
-
   return (
     <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
       <Tabs
         variant="pills"
-        defaultValue="american"
+        defaultValue="british"
         onTabChange={(value) => setSelectedRace(value as raceType)}
+        value={selectedRace}
       >
         <Flex gap="md" justify="space-between" align="center" direction="row" wrap="wrap">
           <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
@@ -61,18 +54,38 @@ const TopLeaderboardsSection = ({
         </Flex>
 
         <Tabs.Panel value="british" pt="xs">
-          <LeaderboardsTable leaderBoardData={[]} error={null} />
+          <LeaderboardsTable
+            key={data?.race}
+            leaderBoardData={data}
+            loading={loading}
+            error={error}
+          />
         </Tabs.Panel>
 
-        <Tabs.Panel value="us" pt="xs">
-          <LeaderboardsTable leaderBoardData={[]} error={null} />
+        <Tabs.Panel value="american" pt="xs">
+          <LeaderboardsTable
+            key={data?.race}
+            leaderBoardData={data}
+            loading={loading}
+            error={error}
+          />
         </Tabs.Panel>
 
-        <Tabs.Panel value="wehrmacht" pt="xs">
-          <LeaderboardsTable leaderBoardData={[]} error={null} />
+        <Tabs.Panel value="german" pt="xs">
+          <LeaderboardsTable
+            key={data?.race}
+            leaderBoardData={data}
+            loading={loading}
+            error={error}
+          />
         </Tabs.Panel>
-        <Tabs.Panel value="afrikakorps" pt="xs">
-          <LeaderboardsTable leaderBoardData={[]} error={null} />
+        <Tabs.Panel value="dak" pt="xs">
+          <LeaderboardsTable
+            key={data?.race}
+            leaderBoardData={data}
+            loading={loading}
+            error={error}
+          />
         </Tabs.Panel>
       </Tabs>
     </Paper>

@@ -13,7 +13,7 @@ export async function getServerSideProps() {
   try {
     const [PromisedTwitchStreams, PromisedTopLeaderBoardsData] = await Promise.all([
       getTwitchStreams(),
-      getTop1v1LeaderBoards("american"),
+      getTop1v1LeaderBoards("british"),
     ]);
 
     twitchStreams = PromisedTwitchStreams;

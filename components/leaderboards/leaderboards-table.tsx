@@ -2,18 +2,19 @@ import { DataTable } from "mantine-datatable";
 import ErrorCard from "../error-card";
 import RankIcon from "../rank-icon";
 import { Anchor, Group, Text } from "@mantine/core";
-import { calculatePageNumber } from "../../src/utils";
 import CountryFlag from "../country-flag";
 import DynamicTimeAgo from "../other/dynamic-timeago";
 import Link from "next/link";
 import React from "react";
+import { Top1v1LeaderboardsData } from "../../src/coh3/coh3-types";
 
 interface Props {
-  leaderBoardData: [];
+  leaderBoardData: Top1v1LeaderboardsData | null;
+  loading: boolean;
   error: any;
 }
 
-const LeaderboardsTable = ({ leaderBoardData, error }: Props) => {
+const LeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
   if (error) {
     return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
   } else {
@@ -25,7 +26,8 @@ const LeaderboardsTable = ({ leaderBoardData, error }: Props) => {
         minHeight={300}
         // provide data
         idAccessor={"statgroup_id"}
-        records={leaderBoardData || []}
+        records={leaderBoardData?.data || []}
+        fetching={loading}
         // define columns
         columns={[
           {
