@@ -2,41 +2,23 @@ import { DataTable } from "mantine-datatable";
 import ErrorCard from "../error-card";
 import RankIcon from "../rank-icon";
 import { Anchor, Group, Text } from "@mantine/core";
-import error from "next/error";
-import { calculatePageNumber, calculatePositionNumber } from "../../src/utils";
-import { start } from "nprogress";
+import { calculatePageNumber } from "../../src/utils";
 import CountryFlag from "../country-flag";
 import DynamicTimeAgo from "../other/dynamic-timeago";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface Props {
   leaderBoardData: [];
   error: any;
-  start: any;
-  totalRecords: number;
-  onPageChange: any;
-  recordsPerPage: number;
-  withBorder: boolean;
 }
 
-const LeaderboardsTable = ({
-  leaderBoardData,
-  error,
-  start,
-  totalRecords,
-  onPageChange,
-  recordsPerPage,
-  withBorder,
-}: Props) => {
+const LeaderboardsTable = ({ leaderBoardData, error }: Props) => {
   if (error) {
     return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
   } else {
     return (
       <DataTable
-        withBorder={withBorder}
-        borderRadius="md"
         highlightOnHover
         striped
         // verticalSpacing="xs"
@@ -44,10 +26,6 @@ const LeaderboardsTable = ({
         // provide data
         idAccessor={"statgroup_id"}
         records={leaderBoardData || []}
-        page={calculatePageNumber(start, recordsPerPage)}
-        totalRecords={totalRecords}
-        recordsPerPage={recordsPerPage}
-        onPageChange={onPageChange}
         // define columns
         columns={[
           {
