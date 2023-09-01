@@ -5,7 +5,7 @@ import RelicIcon from "../../../icon/relic-icon";
 
 const PlayerIdIcon = ({ relicID, steamID }: { relicID: number; steamID?: string }) => {
   return (
-    <HoverCard width={260} shadow="md">
+    <HoverCard width={265} shadow="md">
       <HoverCard.Target>
         <ActionIcon size="lg" variant="default" radius="md">
           <IconInfoCircle size={25} />
@@ -14,8 +14,7 @@ const PlayerIdIcon = ({ relicID, steamID }: { relicID: number; steamID?: string 
       <HoverCard.Dropdown>
         <Group spacing={"xs"}>
           <RelicIcon size={17} />
-          <Text size="sm">Relic ID &nbsp;</Text>
-
+          <Text size="sm">Relic COH3 ID</Text>
           <Code>{relicID}</Code>
         </Group>
         {steamID && (
