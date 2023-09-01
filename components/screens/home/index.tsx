@@ -1,14 +1,24 @@
 //only render on client side
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import { NextPage } from "next";
-import { Container, Grid, Group, Image, Paper, Stack, Text, Title } from "@mantine/core";
+import {
+  Container,
+  Flex,
+  Grid,
+  Group,
+  Image,
+  Paper,
+  Stack,
+  Tabs,
+  Text,
+  Title,
+} from "@mantine/core";
 import { DPSCalculatorCard, UnitBrowserCard } from "./info-cards";
-import { Discord } from "../../icon/discord";
-import { Github } from "../../icon/github";
-import { Donate } from "../../icon/donate";
+import { IconTrophy } from "@tabler/icons-react";
 import React from "react";
 import TwitchContainer from "./twitch-panel";
 import Head from "next/head";
+import LeaderboardsTable from "../../leaderboards/leaderboards-table";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
@@ -39,22 +49,37 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
         </Grid>
 
         <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
-          <Title order={1}>Company of Heroes 3 is out🎉</Title>
-          <Title order={2} size="h4" pt="md">
-            Leaderboards, Player Cards, Player Matches are done. <br />
-            But we want to do a lot more! All the help is welcome.
-          </Title>
-          <Text pt="sm">
-            Find your player card using search or leaderboards.
-            <br />
-            Search now works only with exact name match (case-sensitive)
-          </Text>
-          <Text pt="sm">More info on Github or Discord</Text>
-          <Group pt="md">
-            <Discord />
-            <Github />
-            <Donate />
-          </Group>
+          <Tabs variant="pills" defaultValue="british">
+            <Flex gap="md" justify="space-between" align="center" direction="row" wrap="wrap">
+              <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
+                <IconTrophy></IconTrophy>{" "}
+                <Title order={1} size="h2">
+                  1v1 Leaderboards
+                </Title>
+              </Flex>
+              <Tabs.List>
+                <Tabs.Tab value="british">British Forces</Tabs.Tab>
+                <Tabs.Tab value="us">US Forces</Tabs.Tab>
+                <Tabs.Tab value="wehrmacht">Wehrmacht</Tabs.Tab>
+                <Tabs.Tab value="afrikakorps">Deutsches Afrikakorps</Tabs.Tab>
+              </Tabs.List>
+            </Flex>
+
+            <Tabs.Panel value="british" pt="xs">
+              <LeaderboardsTable withBorder={false} />
+            </Tabs.Panel>
+
+            <Tabs.Panel value="us" pt="xs">
+              Messages tab content
+            </Tabs.Panel>
+
+            <Tabs.Panel value="wehrmacht" pt="xs">
+              Settings tab content
+            </Tabs.Panel>
+            <Tabs.Panel value="afrikakorps" pt="xs">
+              Settings tab content
+            </Tabs.Panel>
+          </Tabs>
         </Paper>
         <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
           <TwitchContainer twitchStreams={twitchStreams} error={error} />
