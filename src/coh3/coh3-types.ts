@@ -174,3 +174,8 @@ export interface SearchPlayerCardData {
   country: string;
   alias: string;
 }
+
+export interface Top1v1LeaderboardsData {
+  race: raceType;
+  data: Array<LaddersDataArrayObject>;
+}
