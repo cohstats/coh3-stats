@@ -41,7 +41,7 @@ jobs:
         with:
           path: |
             ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx')}}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}-${{ hashFiles('components/**/*.tsx','components/**/*.ts', 'pages/**/*.tsx','pages/**/*.ts', 'src/**/*.tsx','src/**/*.ts' )}}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
       - name: Install
