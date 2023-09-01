@@ -34,6 +34,16 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Cache NextJS Build
+        uses: actions/cache@v3
+        env:
+          cache-name: next-build-tests
+        with:
+          path: |
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}-${{ hashFiles('components/**/*.tsx','components/**/*.ts', 'pages/**/*.tsx','pages/**/*.ts', 'src/**/*.tsx','src/**/*.ts' )}}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
       - name: Install
         run: yarn --prefer-offline --frozen-lockfile install
       - name: Build

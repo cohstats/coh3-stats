@@ -46,7 +46,7 @@ const Leaderboards = ({
           borderRadius="md"
           highlightOnHover
           striped
-          // verticalSpacing="xs"
+          verticalSpacing={6}
           minHeight={300}
           // provide data
           idAccessor={"statgroup_id"}
@@ -68,7 +68,7 @@ const Leaderboards = ({
             },
             {
               title: "Tier",
-              accessor: "rating",
+              accessor: "tier",
               textAlignment: "center",
               render: ({ rank, rating }: any) => {
                 return <RankIcon size={28} rank={rank} rating={rating} />;

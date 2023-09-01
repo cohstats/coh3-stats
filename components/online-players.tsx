@@ -43,7 +43,6 @@ export const OnlinePlayers: React.FC = () => {
       }
     })();
     // We don't want to have it as a dependency, only during the first render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -141,7 +141,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style, width = 7
   if (SelectedSide === "allies") {
     const alliesKeys: Record<string, number> = {};
 
-    for (const [key, value] of Object.entries(factionDataByKey)) {
+    for (const value of Object.values(factionDataByKey)) {
       for (const [alliedKey, alliedValue] of Object.entries(value)) {
         if (!alliesKeys[alliedKey]) {
           alliesKeys[alliedKey] = 0;
@@ -153,7 +153,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style, width = 7
       }
     }
 
-    for (const [key, value] of Object.entries(alliesKeys)) {
+    for (const key of Object.keys(alliesKeys)) {
       if (SelectedType === "winRate") {
         alliesKeys[key] = +(alliesKeys[key] / Object.keys(factionDataByKey).length).toFixed(2);
       }
