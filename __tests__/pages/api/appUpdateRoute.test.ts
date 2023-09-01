@@ -2,6 +2,7 @@ import handler from "../../../pages/api/appUpdateRoute";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
 
+//https://stackoverflow.com/questions/70566676/jest-mock-doesnt-work-inside-tests-only-outside-tests
 jest.mock("octokit", () => {
   return {
     Octokit: jest.fn().mockImplementation(() => {
