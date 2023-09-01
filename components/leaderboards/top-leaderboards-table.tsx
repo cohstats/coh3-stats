@@ -1,6 +1,5 @@
 import { DataTable } from "mantine-datatable";
 import ErrorCard from "../error-card";
-import RankIcon from "../rank-icon";
 import { Anchor, Group, Text } from "@mantine/core";
 import CountryFlag from "../country-flag";
 import DynamicTimeAgo from "../other/dynamic-timeago";

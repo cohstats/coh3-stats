@@ -1,4 +1,4 @@
-import { Flex, Paper, Tabs, Title, Space, Anchor, createStyles, Card } from "@mantine/core";
+import { Flex, Paper, Tabs, Title, Space, Anchor, createStyles } from "@mantine/core";
 import { IconArrowRight, IconTrophy } from "@tabler/icons-react";
 import TopLeaderboardsTable from "../../../leaderboards/top-leaderboards-table";
 import { raceType, Top1v1LeaderboardsData } from "../../../../src/coh3/coh3-types";
