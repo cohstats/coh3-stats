@@ -21,13 +21,8 @@ jobs:
       cancel-in-progress: true
 
     runs-on: ubuntu-latest
+    if: github.repository == "cohstats/coh3-stats"
     steps:
-      - name: Check if it's a fork
-        run: |
-          if [ "${{ github.event.repository.full_name }}" != "cohstats/coh3-stats" ]; then
-            echo "This is a fork. Skipping the workflow as you don't have access to secrets."
-            exit 78  # This exits the workflow with a neutral status
-          fi
       - name: Checkout Repo
         uses: actions/checkout@v3
         with:
