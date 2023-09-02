@@ -3,7 +3,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cohstats/coh3-stats)
 [![Discord](https://img.shields.io/badge/Chat%20on-Discord-%235865f2)](https://discord.gg/jRrnwqMfkr)
 
-Website https://coh3stats.com/
+Website https://coh3stats.com/testste
 
 We are looking not only for developers but anyone who would like to contribute
 in building the best site with most info for Company of Heroes 3. All the data will
