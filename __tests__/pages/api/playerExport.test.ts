@@ -15,7 +15,7 @@ describe("playerExportAPIHandler", () => {
     jest.clearAllMocks();
   });
 
-  it("should return 400 if profileIDs param is missing", async () => {
+  test("should return 400 if profileIDs param is missing", async () => {
     const req = {
       query: {},
     };
@@ -28,7 +28,7 @@ describe("playerExportAPIHandler", () => {
     expect(res.json).toHaveBeenCalledWith({ error: "profile id param is missing" });
   });
 
-  it("should return 400 if profileIDs contains invalid params", async () => {
+  test("should return 400 if profileIDs contains invalid params", async () => {
     const req = {
       query: {
         profileIDs: [1, 2, 3],
@@ -43,7 +43,7 @@ describe("playerExportAPIHandler", () => {
     expect(res.json).toHaveBeenCalledWith({ error: "profile id contains invalid params" });
   });
 
-  it("should return 500 if too many records requested", async () => {
+  test("should return 500 if too many records requested", async () => {
     const req = {
       query: {
         profileIDs: JSON.stringify(Array(101).fill(1)),
@@ -58,7 +58,7 @@ describe("playerExportAPIHandler", () => {
     expect(res.json).toHaveBeenCalledWith({ error: "Too many records requested" });
   });
 
-  it("should return 500 if an error occurred", async () => {
+  test("should return 500 if an error occurred", async () => {
     const req = {
       query: {
         profileIDs: JSON.stringify(["1", "2"]),

@@ -36,7 +36,7 @@ describe("onlineSteamApiPlayersHandler", () => {
     jest.clearAllMocks();
   });
 
-  it("should return 200 status code and player count and timestamp in response", async () => {
+  test("should return 200 status code and player count and timestamp in response", async () => {
     await handler(req, res);
 
     expect(res.setHeader).toHaveBeenCalledWith("Cache-Control", "public");
@@ -47,7 +47,7 @@ describe("onlineSteamApiPlayersHandler", () => {
     });
   });
 
-  it("should return 500 status code when fetch throws an error", async () => {
+  test("should return 500 status code when fetch throws an error", async () => {
     jest.spyOn(global, "fetch").mockRejectedValue(new Error("Fake error"));
 
     await handler(req, res);
