@@ -6,13 +6,21 @@ import React from "react";
 import TwitchContainer from "./twitch-panel";
 import Head from "next/head";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
+import { RedditPostType } from "../../../src/reddit-api";
+import RedditPanel from "./reddit-panel";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
   error: Error | null;
   topLeaderBoardsData: Top1v1LeaderboardsData | null;
+  redditPostsData: RedditPostType[] | null;
 };
-const Home: NextPage<Props> = ({ twitchStreams, error, topLeaderBoardsData }) => {
+const Home: NextPage<Props> = ({
+  twitchStreams,
+  error,
+  topLeaderBoardsData,
+  redditPostsData,
+}) => {
   return (
     <>
       <Head>
@@ -37,6 +45,8 @@ const Home: NextPage<Props> = ({ twitchStreams, error, topLeaderBoardsData }) =>
         </Grid>
 
         <TopLeaderboardsSection initialData={topLeaderBoardsData} />
+        <RedditPanel redditPostsData={redditPostsData} />
+
         <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
           <TwitchContainer twitchStreams={twitchStreams} error={error} />
         </Paper>
