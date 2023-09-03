@@ -1,6 +1,5 @@
 import handler from "../../../pages/api/topLeaderboards";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getTop1v1LeaderBoards } from "../../../src/leaderboards/top-leaderboards";
 
 let mockImplementation: Promise<any>;
 
