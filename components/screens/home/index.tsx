@@ -1,20 +1,26 @@
-//only render on client side
-import { TwitchStream } from "../../../src/coh3/coh3-types";
+import { Top1v1LeaderboardsData, TwitchStream } from "../../../src/coh3/coh3-types";
 import { NextPage } from "next";
-import { Container, Grid, Group, Image, Paper, Stack, Text, Title } from "@mantine/core";
+import { Container, Grid, Image, Paper, Stack } from "@mantine/core";
 import { DPSCalculatorCard, UnitBrowserCard } from "./info-cards";
-import { Discord } from "../../icon/discord";
-import { Github } from "../../icon/github";
-import { Donate } from "../../icon/donate";
 import React from "react";
 import TwitchContainer from "./twitch-panel";
 import Head from "next/head";
+import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
+import { RedditPostType } from "../../../src/reddit-api";
+import RedditPanel from "./reddit-panel";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
   error: Error | null;
+  topLeaderBoardsData: Top1v1LeaderboardsData | null;
+  redditPostsData: RedditPostType[] | null;
 };
-const Home: NextPage<Props> = ({ twitchStreams, error }) => {
+const Home: NextPage<Props> = ({
+  twitchStreams,
+  error,
+  topLeaderBoardsData,
+  redditPostsData,
+}) => {
   return (
     <>
       <Head>
@@ -38,24 +44,9 @@ const Home: NextPage<Props> = ({ twitchStreams, error }) => {
           </Grid.Col>
         </Grid>
 
-        <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray">
-          <Title order={1}>Company of Heroes 3 is out🎉</Title>
-          <Title order={2} size="h4" pt="md">
-            Leaderboards, Player Cards, Player Matches are done. <br />
-            But we want to do a lot more! All the help is welcome.
-          </Title>
-          <Text pt="sm">
-            Find your player card using search or leaderboards.
-            <br />
-            Search now works only with exact name match (case-sensitive)
-          </Text>
-          <Text pt="sm">More info on Github or Discord</Text>
-          <Group pt="md">
-            <Discord />
-            <Github />
-            <Donate />
-          </Group>
-        </Paper>
+        <TopLeaderboardsSection initialData={topLeaderBoardsData} />
+        <RedditPanel redditPostsData={redditPostsData} />
+
         <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
           <TwitchContainer twitchStreams={twitchStreams} error={error} />
         </Paper>

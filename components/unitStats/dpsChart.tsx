@@ -269,7 +269,6 @@ export const DpsChart = (props: IDPSProps) => {
   // We must init ONCE, otherwise the default will override any change.
   useEffect(() => {
     init(props);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // if(config.isDevEnv())

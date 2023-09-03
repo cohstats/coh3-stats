@@ -21,6 +21,7 @@ jobs:
       cancel-in-progress: true
 
     runs-on: ubuntu-latest
+    if: github.repository == 'cohstats/coh3-stats'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3

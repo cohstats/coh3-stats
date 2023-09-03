@@ -1,20 +1,33 @@
 import { getTwitchStreams } from "../src/coh3stats-api";
-import { TwitchStream } from "../src/coh3/coh3-types";
+import { Top1v1LeaderboardsData, TwitchStream } from "../src/coh3/coh3-types";
 import Home from "../components/screens/home";
+import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
+import { getLatestCOH3RedditPosts, RedditPostType } from "../src/reddit-api";
 
 export default Home;
 
 export async function getServerSideProps() {
   let error: Error | null = null;
   let twitchStreams: TwitchStream[] | null = null;
+  let topLeaderBoardsData: Top1v1LeaderboardsData | null = null;
+  let redditPostsData: RedditPostType[] | null = null;
 
   try {
-    twitchStreams = await getTwitchStreams();
+    const [PromisedTwitchStreams, PromisedTopLeaderBoardsData, PromisedRedditPostsData] =
+      await Promise.all([
+        getTwitchStreams(),
+        getTop1v1LeaderBoards("american"),
+        getLatestCOH3RedditPosts(),
+      ]);
+
+    twitchStreams = PromisedTwitchStreams;
+    topLeaderBoardsData = PromisedTopLeaderBoardsData;
+    redditPostsData = PromisedRedditPostsData;
   } catch (e: any) {
     console.error(`Failed getting data for twitch streams`);
     console.error(e);
     error = e.message;
   }
 
-  return { props: { twitchStreams, error } };
+  return { props: { twitchStreams, error, topLeaderBoardsData, redditPostsData } };
 }

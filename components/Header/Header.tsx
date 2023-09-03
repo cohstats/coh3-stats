@@ -25,6 +25,7 @@ import LeaderboardsMenu from "./components/LeaderboardsMenu";
 import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";
 import StatisticsMenu from "./components/StatisticsMenu";
 import OtherMenu from "./components/OtherMenu";
+import config from "../../config";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -166,6 +167,18 @@ export const Header: React.FC<HeaderProps> = () => {
             >
               About{" "}
             </Anchor>
+
+            <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
+              <Image
+                src="/kofi_s_logo_nolabel.webp"
+                width={22}
+                height={22}
+                alt={"donate button"}
+                unoptimized
+                style={{ marginRight: "5px" }}
+              />
+              Support Us
+            </Anchor>
           </Stack>
 
           <Divider my="sm" />
@@ -226,9 +239,19 @@ export const Header: React.FC<HeaderProps> = () => {
 
             <ExplorerMenu cx={cx} close={close} classes={classes} />
             <OtherMenu cx={cx} close={close} classes={classes} />
-
             <Anchor component={Link} href={getAboutRoute()} className={cx(classes.link)}>
               About
+            </Anchor>
+            <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
+              <Image
+                src="/kofi_s_logo_nolabel.webp"
+                width={22}
+                height={22}
+                alt={"donate button"}
+                unoptimized
+                style={{ marginRight: "5px" }}
+              />
+              Support Us
             </Anchor>
           </Group>
 
