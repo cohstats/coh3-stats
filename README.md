@@ -156,6 +156,13 @@ Backend:
   - Firestore - stats, players, matches
   - GCP Storage (leaderboards, matches)
 
+### Additional domains
+
+- cdn.coh3stats.com - Contains all the images | hosted on Firebase hosting
+- storage.coh3stats.com - Contains matches and leaderboards | hosted on GCP Storage
+- cache.coh3stats.com - Cache for API calls
+- data.coh3stats.com - CDN for the data files hosted at Github - coh3-data repo
+
 ### Learn More about NextJS
 
 To learn more about Next.js, take a look at the following resources:
