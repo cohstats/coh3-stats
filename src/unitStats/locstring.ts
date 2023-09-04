@@ -4,6 +4,8 @@
 //    "5678": "Value B"
 // }
 
+import config from "../../config";
+
 let unitStatsLocString: Record<string, string>;
 
 type LocstringSchema = {
@@ -25,9 +27,7 @@ const resolveLocstring = (inLocstring: LocstringObjectSchema) => {
 const fetchLocstring = async () => {
   if (unitStatsLocString) return unitStatsLocString;
 
-  const myReqLocstring = await fetch(
-    "https://raw.githubusercontent.com/cohstats/coh3-data/master/data/locstring.json",
-  );
+  const myReqLocstring = await fetch(config.getPatchDataUrl("locstring.json"));
 
   unitStatsLocString = await myReqLocstring.json();
 
