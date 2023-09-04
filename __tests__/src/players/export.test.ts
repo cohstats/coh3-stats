@@ -9,6 +9,7 @@ describe("generateCSVObject", () => {
       avatarmedium:
         "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/12/123456.jpg",
     },
+    platform: "steam",
     COH3PlayTime: null,
     standings: {
       german: {
@@ -66,7 +67,14 @@ describe("generateCSVObject", () => {
         "4v4": null,
       },
     },
-    info: { country: "USA", level: 20, name: "Player One", xp: 5000 },
+    info: {
+      relicID: 123,
+      country: "USA",
+      level: 20,
+      name: "Player One",
+      xp: 5000,
+      steamID: "123456",
+    },
   };
 
   test("Generates a CSV object with correct keys and values", () => {

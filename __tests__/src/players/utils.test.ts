@@ -9,6 +9,7 @@ describe("getPlayerMatchHistoryResult", () => {
     maxplayers: 2,
     matchtype_id: 1,
     description: "Match1",
+    platform: "steam",
     startgametime: 123456,
     completiontime: 123457,
     matchhistoryreportresults: [
@@ -90,6 +91,7 @@ describe("getPlayerMatchHistoryResult", () => {
 describe("isPlayerVictorious", () => {
   const matchRecord: ProcessedMatch = {
     id: 1,
+    platform: "steam",
     creator_profile_id: 1,
     mapname: "Map1",
     maxplayers: 2,
