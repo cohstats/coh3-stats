@@ -162,7 +162,7 @@ const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeco
 
 const getPatchDataUrl = (dataFile = "", patch = "latest") => {
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
-  return `https://raw.githubusercontent.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
+  return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
 };
 
 const config = {
