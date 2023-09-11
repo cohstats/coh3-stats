@@ -205,13 +205,13 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.iconName = uiExtInfo?.icon_name || "";
           sbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
-          const screenName = uiExtInfo.screen_name;
+          const screenName = uiExtInfo?.screen_name;
           sbps.ui.screenName = resolveLocstring(screenName) || "";
-          const helpText = uiExtInfo.help_text;
+          const helpText = uiExtInfo?.help_text;
           sbps.ui.helpText = resolveLocstring(helpText) || "";
-          const extraText = uiExtInfo.extra_text;
+          const extraText = uiExtInfo?.extra_text;
           sbps.ui.extraText = resolveLocstring(extraText) || "";
-          const briefText = uiExtInfo.brief_text;
+          const briefText = uiExtInfo?.brief_text;
           sbps.ui.briefText = resolveLocstring(briefText) || "";
           sbps.ui.armorIcon = uiExtInfo.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }

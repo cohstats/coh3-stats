@@ -659,7 +659,9 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
       </div>
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: "fixed" }}>
         <thead>
-          <tr> {cols} </tr>
+          <tr>
+            <>{cols}</>
+          </tr>
         </thead>
         <tbody>
           {rows.length > 0 ? (

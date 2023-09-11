@@ -73,7 +73,7 @@ const useStyles = createStyles((theme) => ({
     }),
   },
   disabledLink: {
-    color: theme.colorScheme === "dark" ? theme.colors.gray[6] : theme.colors.gray[6],
+    color: theme.colors.gray[6],
   },
   subLink: {
     width: "100%",
