@@ -8,10 +8,9 @@ import {
 
 describe("coh3stats-api", () => {
   // Mock the fetch function
-  const setupFetchStub =
-    (data: any, ok = true, status = 200) =>
-    () =>
-      Promise.resolve({ json: () => Promise.resolve(data), ok, status });
+  const setupFetchStub = jest.fn().mockImplementation((data: any, ok = true, status = 200) => {
+    return () => Promise.resolve({ json: () => Promise.resolve(data), ok, status });
+  });
 
   beforeAll(() => {
     // @ts-ignore

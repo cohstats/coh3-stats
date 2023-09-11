@@ -183,7 +183,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
 const mapExtensions = (root: any, ebps: EbpsType) => {
   for (const entityExt in root.extensions) {
     const extension = root.extensions[entityExt].exts;
-    const extName = extension.template_reference.value.split("\\")[1];
+    const extName = extension?.template_reference.value.split("\\")[1];
     switch (extName) {
       case "recrewable_ext":
         if (extension.race_list.length > 0)
@@ -217,13 +217,13 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.ui.symbolIconName = extension?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = extension.screen_name;
-          ebps.ui.screenName = resolveLocstring(screenName);
+          ebps.ui.screenName = resolveLocstring(screenName) || "";
           const helpText = extension.help_text;
-          ebps.ui.helpText = resolveLocstring(helpText);
+          ebps.ui.helpText = resolveLocstring(helpText) || "";
           const extraText = extension.extra_text;
-          ebps.ui.extraText = resolveLocstring(extraText);
+          ebps.ui.extraText = resolveLocstring(extraText) || "";
           const briefText = extension.brief_text;
-          ebps.ui.briefText = resolveLocstring(briefText);
+          ebps.ui.briefText = resolveLocstring(briefText) || "";
         }
         break;
       case "cost_ext":
@@ -249,7 +249,7 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
         // armor
         if (extension?.armor_layout_option) {
           const refValue = extension.armor_layout_option?.template_reference?.value;
-          ebps.health.armorLayout.type = refValue.split("\\")[4] || "";
+          ebps.health.armorLayout.type = refValue?.split("\\")[4] || "";
           ebps.health.armorLayout.armor = extension.armor_layout_option?.armor || 1; // infantry
           ebps.health.armorLayout.frontArmor = extension.armor_layout_option?.front_armor || 1;
           ebps.health.armorLayout.rearArmor = extension.armor_layout_option?.rear_armor || 1;

@@ -53,7 +53,6 @@ const InnerMapStatsPage = ({
         <FactionVsFactionCard
           data={data[mode][selectedMap]}
           title={`${getMapLocalizedName(selectedMap)} - ${mode} Team composition`}
-          style={{}}
           width={900}
         />
         <MapChartCard

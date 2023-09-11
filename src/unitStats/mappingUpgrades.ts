@@ -99,14 +99,14 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   upgrade.ui.iconName = upgradeBag.ui_info?.icon_name || "";
   upgrade.ui.symbolIconName = upgradeBag.ui_info?.symbol_icon_name || "";
   // When it is empty, it has a value of "0".
-  const screenName = upgradeBag.ui_info.screen_name;
-  upgrade.ui.screenName = resolveLocstring(screenName);
-  const helpText = upgradeBag.ui_info.help_text;
-  upgrade.ui.helpText = resolveLocstring(helpText);
-  const extraText = upgradeBag.ui_info.extra_text;
-  upgrade.ui.extraText = resolveLocstring(extraText);
-  const briefText = upgradeBag.ui_info.brief_text;
-  upgrade.ui.briefText = resolveLocstring(briefText);
+  const screenName = upgradeBag.ui_info?.screen_name;
+  upgrade.ui.screenName = resolveLocstring(screenName) || "";
+  const helpText = upgradeBag.ui_info?.help_text;
+  upgrade.ui.helpText = resolveLocstring(helpText) || "";
+  const extraText = upgradeBag.ui_info?.extra_text;
+  upgrade.ui.extraText = resolveLocstring(extraText) || "";
+  const briefText = upgradeBag.ui_info?.brief_text;
+  upgrade.ui.briefText = resolveLocstring(briefText) || "";
 
   /* --------- COST SECTION --------- */
   upgrade.cost.time = upgradeBag.time_cost?.time_seconds || 0;

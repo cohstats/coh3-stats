@@ -1,1 +1,16 @@
 comment: false
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        # We are OK with not covering everything with tests
+        threshold: 10%
+    patch:
+      default:
+        target: auto
+        # We are OK with not covering everything with tests
+        threshold: 10%
+        branches:
+          - master

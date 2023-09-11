@@ -37,10 +37,10 @@ type AbilitiesUiData = {
   iconName: string; // Could be empty.
   symbolIconName: string; // Could be empty.
   /* Locstring fields. */
-  helpText: string;
-  briefText: string;
-  screenName: string;
-  extraText: string; // Could be empty (Set as $0).
+  helpText: string | null;
+  briefText: string | null;
+  screenName: string | null;
+  extraText: string | null; // Could be empty (Set as $0).
 };
 
 /**

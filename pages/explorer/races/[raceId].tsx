@@ -226,10 +226,10 @@ function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSch
   ).map(([id, { ui, cost, rechargeTime }]) => ({
     id,
     desc: {
-      screen_name: ui.screenName,
-      help_text: ui.helpText,
-      extra_text: ui.extraText,
-      brief_text: ui.briefText,
+      screen_name: ui.screenName || "",
+      help_text: ui.helpText || "",
+      extra_text: ui.extraText || "",
+      brief_text: ui.briefText || "",
       icon_name: ui.iconName,
     },
     time_cost: {

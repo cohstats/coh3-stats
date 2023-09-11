@@ -12,19 +12,11 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { UnitDescription, UnitDescriptionCard } from "./unit-description-card";
+import { UnitDescriptionCard } from "./unit-description-card";
 import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
 import { UnitCostCard } from "./unit-cost-card";
 import { BuildingType } from "../../src/coh3";
-import {
-  getResolvedUpgrades,
-  getUpgradesStats,
-  hasCost,
-  ResourceValues,
-  SbpsType,
-  upgradesStats,
-  UpgradesType,
-} from "../../src/unitStats";
+import { hasCost, ResourceValues, SbpsType, UpgradesType } from "../../src/unitStats";
 import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../src/routes";

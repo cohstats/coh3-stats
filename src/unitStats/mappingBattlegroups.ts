@@ -57,7 +57,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
   const [leftBranch, rightBranch] = techTreeBag.branches;
   bg.branchesRefs = {
     LEFT: {
-      name: resolveLocstring(leftBranch.branch.name),
+      name: resolveLocstring(leftBranch.branch.name) || "",
       upgrades: Array.isArray(leftBranch.branch.upgrades)
         ? leftBranch.branch.upgrades.map(
             (x: { upgrade: { instance_reference: string } }) => x.upgrade.instance_reference,
@@ -65,7 +65,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
         : [],
     },
     RIGHT: {
-      name: resolveLocstring(rightBranch.branch.name),
+      name: resolveLocstring(rightBranch.branch.name) || "",
       upgrades: Array.isArray(rightBranch.branch.upgrades)
         ? rightBranch.branch.upgrades.map(
             (x: { upgrade: { instance_reference: string } }) => x.upgrade.instance_reference,

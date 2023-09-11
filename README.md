@@ -1,6 +1,7 @@
 # COH3 Stats
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cohstats/coh3-stats)
+[![DeepScan grade](https://deepscan.io/api/teams/15780/projects/22550/branches/667770/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=15780&pid=22550&bid=667770)
 [![Discord](https://img.shields.io/badge/Chat%20on-Discord-%235865f2)](https://discord.gg/jRrnwqMfkr)
 
 Website https://coh3stats.com/

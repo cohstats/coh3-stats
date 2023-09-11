@@ -20,13 +20,13 @@ import { hasCost, ResourceValues } from "../../src/unitStats";
  */
 type UnitUpgradeDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
-  screen_name: string;
+  screen_name: string | null;
   /** Locstring value. Found at `help_text/locstring/value`. */
-  help_text: string;
+  help_text: string | null;
   /** Locstring value. Found at `extra_text/locstring/value`. */
-  extra_text: string;
+  extra_text: string | null;
   /** Locstring value. Found at `brief_text/locstring/value`. */
-  brief_text: string;
+  brief_text: string | null;
   /** File path. Found at `icon_name`. */
   icon_name: string;
 };
@@ -70,7 +70,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
             width={64}
             height={64}
             src={`/icons/${desc.icon_name}.png`}
-            alt={desc.screen_name}
+            alt={desc.screen_name || ""}
             fallbackSrc={iconPlaceholder}
           ></ImageWithFallback>
         </Flex>
@@ -96,7 +96,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         width={76}
         height={76}
         src={`/icons/${desc.icon_name}.png`}
-        alt={desc.screen_name}
+        alt={desc.screen_name || ""}
         fallbackSrc={iconPlaceholder}
       ></ImageWithFallback>
 

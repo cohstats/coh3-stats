@@ -205,15 +205,15 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.iconName = uiExtInfo?.icon_name || "";
           sbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
-          const screenName = uiExtInfo.screen_name;
-          sbps.ui.screenName = resolveLocstring(screenName);
-          const helpText = uiExtInfo.help_text;
-          sbps.ui.helpText = resolveLocstring(helpText);
-          const extraText = uiExtInfo.extra_text;
-          sbps.ui.extraText = resolveLocstring(extraText);
-          const briefText = uiExtInfo.brief_text;
-          sbps.ui.briefText = resolveLocstring(briefText);
-          sbps.ui.armorIcon = uiExtInfo.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
+          const screenName = uiExtInfo?.screen_name;
+          sbps.ui.screenName = resolveLocstring(screenName) || "";
+          const helpText = uiExtInfo?.help_text;
+          sbps.ui.helpText = resolveLocstring(helpText) || "";
+          const extraText = uiExtInfo?.extra_text;
+          sbps.ui.extraText = resolveLocstring(extraText) || "";
+          const briefText = uiExtInfo?.brief_text;
+          sbps.ui.briefText = resolveLocstring(briefText) || "";
+          sbps.ui.armorIcon = uiExtInfo?.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }
         break;
       case "squad_upgrade_ext":
@@ -234,15 +234,15 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           // Technically the first one is vet 1, second is vet 2 and third is vet 3.
           sbps.veterancyInfo.one = {
             exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
-            screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text),
+            screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) || "",
           };
           sbps.veterancyInfo.two = {
             exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
-            screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text),
+            screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) || "",
           };
           sbps.veterancyInfo.three = {
             exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
-            screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text),
+            screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) || "",
           };
         }
         break;

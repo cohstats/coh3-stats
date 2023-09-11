@@ -10,7 +10,6 @@ const DynamicHeatMapChart = dynamic(() => import("./factions-heatmap"), { ssr: f
 
 interface IProps {
   data: AnalysisObjectType;
-  style: Record<string, any>;
   title: string;
   width?: number;
 }
@@ -63,7 +62,7 @@ const legend = (
   </div>
 );
 
-const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, style, width = 780 }) => {
+const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, width = 780 }) => {
   const factionData = (data && data["factionMatrix"]) || {};
   const largeScreen = useMediaQuery("(min-width: 30em)");
 

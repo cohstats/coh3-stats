@@ -6,7 +6,7 @@
 
 import config from "../../config";
 
-let unitStatsLocString: Record<string, string>;
+let unitStatsLocString: Record<string, string | null>;
 
 type LocstringSchema = {
   id: number;
@@ -19,9 +19,9 @@ type LocstringObjectSchema = {
 
 // The input comes from the weapon / ebps / sbps / upgrade json.
 const resolveLocstring = (inLocstring: LocstringObjectSchema) => {
-  if (!unitStatsLocString) return "No text found.";
+  if (!unitStatsLocString) return null;
   // unitStatsLocString is a object (Record<string, string>
-  return unitStatsLocString[inLocstring?.locstring?.value] ?? "No text found.";
+  return unitStatsLocString[inLocstring?.locstring?.value] ?? null;
 };
 
 const fetchLocstring = async () => {
@@ -34,7 +34,7 @@ const fetchLocstring = async () => {
   // some value are undefined, we need to fix that,
   // otherwise we cannot serialize it.
   for (const prop in unitStatsLocString)
-    if (!unitStatsLocString[prop]) unitStatsLocString[prop] = "Missing Translation";
+    if (!unitStatsLocString[prop]) unitStatsLocString[prop] = null;
 
   return unitStatsLocString;
 };
