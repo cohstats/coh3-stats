@@ -7,4 +7,3 @@ coverage:
         target: auto
         # We are OK with not covering everything with tests
         threshold: 10%
- 
