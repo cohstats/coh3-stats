@@ -44,6 +44,10 @@ export const AnalyticsOpenDataPageView = (): void => {
   logFBEvent("open_data_view");
 };
 
+export const AnalyticsPlayerExportPageView = (): void => {
+  logFBEvent("player_export_view");
+};
+
 export const SearchPageView = (): void => {
   logFBEvent("search_view");
 };

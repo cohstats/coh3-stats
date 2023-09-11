@@ -9,7 +9,11 @@ import {
   Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
-import { getOpenDataRoute, getRankingTiersRoute } from "../../../src/routes";
+import {
+  getOpenDataRoute,
+  getPlayerExportRoute,
+  getRankingTiersRoute,
+} from "../../../src/routes";
 import React from "react";
 import {
   IconActivity,
@@ -17,6 +21,7 @@ import {
   IconChevronDown,
   IconDatabaseShare,
   IconAward,
+  IconUsers,
 } from "@tabler/icons-react";
 
 const OtherMenu = ({
@@ -90,6 +95,12 @@ const OtherMenu = ({
               <IconDatabaseShare size={16} />
               <Anchor component={Link} href={getOpenDataRoute()}>
                 Open Data
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
+              <IconUsers size={16} />
+              <Anchor component={Link} href={getPlayerExportRoute()}>
+                Player Export API
               </Anchor>
             </Group>
             <Group spacing={"xs"}>

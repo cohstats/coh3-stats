@@ -6,6 +6,7 @@ import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
 import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
+import { generateKeywordsString } from "../../src/head-utils";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json
 
@@ -121,24 +122,33 @@ interface ProcessedMatchHistoryItem {
 // Check https://github.com/cohstats/coh3-stats/blob/master/src/coh3/coh3-raw-data.ts for additional details
 `;
 
+const keywords = generateKeywordsString([
+  "coh3 data",
+  "coh3 matches",
+  "download matches",
+  "coh3 match api",
+  "coh3 leaderboards api",
+]);
+
 /**
  * This is example page you can find it by going on ur /example
  * @constructor
  */
-const About: NextPage = () => {
+const OpenData: NextPage = () => {
   useEffect(() => {
     AnalyticsOpenDataPageView();
   }, []);
 
   return (
     <div>
-      {/*This is custom HEAD overwrites the default one*/}
       <Head>
         <title>COH3 Stats - Open Data</title>
         <meta
           name="description"
           content="COH3 Stats are open sourcing a leaderboards and match data. Find more details on the page how to download them."
         />
+        <meta name="keywords" content={keywords} />
+        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <>
         <Container size={"md"}>
@@ -259,4 +269,4 @@ const About: NextPage = () => {
   );
 };
 
-export default About;
+export default OpenData;

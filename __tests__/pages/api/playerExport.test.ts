@@ -40,13 +40,13 @@ describe("playerExportAPIHandler", () => {
     };
     await handler(req as unknown as NextApiRequest, res as unknown as NextApiResponse);
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: "profile id contains invalid params" });
+    expect(res.json).toHaveBeenCalledWith({ error: "profile id contains invalid data" });
   });
 
   test("should return 500 if too many records requested", async () => {
     const req = {
       query: {
-        profileIDs: JSON.stringify(Array(101).fill(1)),
+        profileIDs: JSON.stringify(Array(51).fill(1)),
       },
     };
     const res = {
