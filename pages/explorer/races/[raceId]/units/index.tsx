@@ -63,31 +63,33 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
 
           <Grid>
             {units.map(({ id, ui }) => {
-              return (
-                <Grid.Col key={id} xs={12} md={6}>
-                  <Anchor
-                    color="undefined"
-                    underline={false}
-                    sx={{
-                      "&:hover": {
-                        textDecoration: "none",
-                      },
-                    }}
-                    component={LinkWithOutPrefetch}
-                    href={getExplorerUnitRoute(raceToFetch, id)}
-                  >
-                    <Card p="md" radius="md" withBorder>
-                      {UnitDescriptionCard({
-                        screen_name: ui.screenName,
-                        help_text: ui.helpText,
-                        brief_text: ui.briefText,
-                        symbol_icon_name: ui.symbolIconName,
-                        icon_name: ui.iconName,
-                      })}
-                    </Card>
-                  </Anchor>
-                </Grid.Col>
-              );
+              if (ui.screenName) {
+                return (
+                  <Grid.Col key={id} xs={12} md={6}>
+                    <Anchor
+                      color="undefined"
+                      underline={false}
+                      sx={{
+                        "&:hover": {
+                          textDecoration: "none",
+                        },
+                      }}
+                      component={LinkWithOutPrefetch}
+                      href={getExplorerUnitRoute(raceToFetch, id)}
+                    >
+                      <Card p="md" radius="md" withBorder>
+                        {UnitDescriptionCard({
+                          screen_name: ui.screenName,
+                          help_text: ui.helpText,
+                          brief_text: ui.briefText,
+                          symbol_icon_name: ui.symbolIconName,
+                          icon_name: ui.iconName,
+                        })}
+                      </Card>
+                    </Anchor>
+                  </Grid.Col>
+                );
+              }
             })}
           </Grid>
         </Stack>

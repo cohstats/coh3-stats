@@ -239,21 +239,24 @@ const UnitAbilitySection = (abilities: AbilitiesType[]) => {
       <Title order={4}>Abilities</Title>
       <Stack>
         {Object.values(abilities).map(({ id, ui, cost }) => {
-          return (
-            <Card key={id} p="lg" radius="md" withBorder>
-              {UnitUpgradeCard({
-                id,
-                desc: {
-                  screen_name: ui.screenName,
-                  help_text: ui.helpText,
-                  extra_text: ui.extraText,
-                  brief_text: ui.briefText,
-                  icon_name: ui.iconName,
-                },
-                time_cost: cost,
-              })}
-            </Card>
-          );
+          // If we are missing the name of the ability --> it's most likely broken
+          if (ui.screenName) {
+            return (
+              <Card key={id} p="lg" radius="md" withBorder>
+                {UnitUpgradeCard({
+                  id,
+                  desc: {
+                    screen_name: ui.screenName,
+                    help_text: ui.helpText,
+                    extra_text: ui.extraText,
+                    brief_text: ui.briefText,
+                    icon_name: ui.iconName,
+                  },
+                  time_cost: cost,
+                })}
+              </Card>
+            );
+          }
         })}
       </Stack>
     </Stack>
