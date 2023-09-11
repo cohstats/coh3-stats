@@ -207,11 +207,7 @@ const InnerGameStatsPage = ({
 
         <Space h="xl" />
         <Flex gap={"xl"} wrap="wrap" justify="center">
-          <FactionVsFactionCard
-            data={analysisData}
-            title={`Team composition ${mode}`}
-            style={{}}
-          />
+          <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
           <ChartCard title={`Game Time ${mode}`} size={"xl"}>
             <DynamicPlayTimeHistogramChart data={analysisData} />
           </ChartCard>

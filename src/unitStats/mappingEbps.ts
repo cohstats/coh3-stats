@@ -217,13 +217,13 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.ui.symbolIconName = extension?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = extension.screen_name;
-          ebps.ui.screenName = resolveLocstring(screenName);
+          ebps.ui.screenName = resolveLocstring(screenName) || "";
           const helpText = extension.help_text;
-          ebps.ui.helpText = resolveLocstring(helpText);
+          ebps.ui.helpText = resolveLocstring(helpText) || "";
           const extraText = extension.extra_text;
-          ebps.ui.extraText = resolveLocstring(extraText);
+          ebps.ui.extraText = resolveLocstring(extraText) || "";
           const briefText = extension.brief_text;
-          ebps.ui.briefText = resolveLocstring(briefText);
+          ebps.ui.briefText = resolveLocstring(briefText) || "";
         }
         break;
       case "cost_ext":

@@ -41,7 +41,7 @@ const TopLeaderboardsSection = ({
 }) => {
   const { classes } = useStyles();
   const [data, setData] = useState<Top1v1LeaderboardsData | null>(initialData);
-  const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race ?? "american");
+  const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race || "american");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

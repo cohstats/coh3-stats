@@ -256,6 +256,8 @@ const UnitAbilitySection = (abilities: AbilitiesType[]) => {
                 })}
               </Card>
             );
+          } else {
+            return null;
           }
         })}
       </Stack>

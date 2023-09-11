@@ -10,7 +10,7 @@ export const SearchButton: React.FC<{ redirectOnClick?: boolean; close?: () => v
   close,
 }) => {
   const { push } = useRouter();
-  redirectOnClick = redirectOnClick ?? false;
+  redirectOnClick = redirectOnClick || false;
 
   const debouncedSearch = debounce((value) => {
     if (value.length > 1) {

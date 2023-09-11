@@ -157,14 +157,14 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
   // todo remove redundancy
   const weaponData: WeaponType = {
     id: key,
-    ui_name: resolveLocstring(weapon_bag.ui_name),
+    ui_name: resolveLocstring(weapon_bag.ui_name) || "",
     icon_name: weapon_bag.icon_name || "",
     pbgid: node.pbgid,
     path: jsonPath,
     label: key,
     value: key,
     weapon_class: weapon_bag.weapon_class || "",
-    description: resolveLocstring(weapon_bag.ui_name),
+    description: resolveLocstring(weapon_bag.ui_name) || "",
     faction: jsonPath.split("/")[0],
     parent: parent,
     weapon_cat: jsonPath.split("/")[1] || "",

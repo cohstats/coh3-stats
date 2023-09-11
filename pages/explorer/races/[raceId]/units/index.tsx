@@ -89,6 +89,8 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                     </Anchor>
                   </Grid.Col>
                 );
+              } else {
+                return null;
               }
             })}
           </Grid>
