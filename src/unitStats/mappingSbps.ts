@@ -213,7 +213,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.extraText = resolveLocstring(extraText) || "";
           const briefText = uiExtInfo?.brief_text;
           sbps.ui.briefText = resolveLocstring(briefText) || "";
-          sbps.ui.armorIcon = uiExtInfo.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
+          sbps.ui.armorIcon = uiExtInfo?.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }
         break;
       case "squad_upgrade_ext":
