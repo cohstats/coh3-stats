@@ -9,6 +9,9 @@ import { IconBarrierBlock } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../src/firebase/analytics";
 import config from "../config";
+import { generateKeywordsString } from "../src/head-utils";
+
+const keywords = generateKeywordsString(["coh3 stats", "coh3 discord", "bug report", "github"]);
 
 /**
  * This is example page you can find it by going on ur /example
@@ -25,6 +28,8 @@ const About: NextPage = () => {
       <Head>
         <title>About COH3 Stats</title>
         <meta name="description" content="COH3 Stats - learn more about our page." />
+        <meta name="keywords" content={keywords} />
+        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <>
         <Container size={"md"}>

@@ -9,9 +9,10 @@ import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { json2csvAsync } from "json-2-csv";
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateCSVObject } from "../../src/players/export";
+import { chunk } from "lodash";
 
 const getPlayerInfo = async (profileID: string): Promise<PlayerCardDataType> => {
-  return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID));
+  return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID, true));
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -24,38 +25,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (typeof profileIDs !== "string") {
-      return res.status(400).json({ error: "profile id contains invalid params" });
+      return res.status(400).json({ error: "profile id contains invalid data" });
     }
-    let parsedTypes;
+    let parsedTypes: ["1v1", "2v2", "3v3", "4v4"];
 
     if (types !== undefined && typeof types !== "string") {
-      return res.status(400).json({ error: "profile id contains invalid params" });
-    }
-    if (types !== undefined) {
-      parsedTypes = JSON.parse(types);
+      return res.status(400).json({ error: "types contains invalid data" });
     }
 
-    const arrayOfIds = JSON.parse(profileIDs);
+    if (types !== undefined) {
+      try {
+        parsedTypes = JSON.parse(types);
+      } catch (e) {
+        logger.error(e);
+        return res.status(400).json({ error: "error parsing the types data" });
+      }
+
+      if (!parsedTypes.every((type) => ["1v1", "2v2", "3v3", "4v4"].includes(type))) {
+        return res.status(400).json({ error: "parsedTypes contains invalid data" });
+      }
+    }
+
+    const arrayOfIds: Array<string> = JSON.parse(profileIDs);
     logger.log(`Going to parse ${arrayOfIds.length} ids`);
     logger.log(`List of IDs ${arrayOfIds}`);
-    if (arrayOfIds.length > 100) {
-      return res.status(500).json({ error: "Too many records requested" });
+    if (arrayOfIds.length > 50) {
+      return res.status(400).json({ error: "Too many records requested" });
     }
 
     const finalArray = [];
 
-    for (const profileId of arrayOfIds) {
-      const playerInfo = await getPlayerInfo(profileId);
-      const playerInfoAsCSVObject = generateCSVObject(
-        playerInfo,
-        profileId,
-        parsedTypes || undefined,
+    for (const singleChunk of chunk(arrayOfIds, 2)) {
+      const playerInfoPromises = singleChunk.map((profileId) => getPlayerInfo(profileId));
+      const playerInfoArray = await Promise.all(playerInfoPromises);
+      const playerInfoAsCSVObjects = playerInfoArray.map((playerInfo, index) =>
+        generateCSVObject(playerInfo, singleChunk[index], parsedTypes || undefined),
       );
-      finalArray.push(playerInfoAsCSVObject);
+      finalArray.push(...playerInfoAsCSVObjects);
     }
 
     res
       .status(200)
+      .setHeader("Cache-Control", "public, max-age=60")
       .setHeader("content-type", "text/csv")
       .send(await json2csvAsync(finalArray, {}));
   } catch (e) {

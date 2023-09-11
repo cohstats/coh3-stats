@@ -95,6 +95,10 @@ export const getOpenDataRoute = () => {
   return encodeURI(`/other/open-data`);
 };
 
+export const getPlayerExportRoute = () => {
+  return encodeURI(`/other/player-export`);
+};
+
 export const getRankingTiersRoute = () => {
   return encodeURI(`/other/ranking-tiers`);
 };
