@@ -54,7 +54,7 @@ describe("playerExportAPIHandler", () => {
       json: jest.fn(),
     };
     await handler(req as unknown as NextApiRequest, res as unknown as NextApiResponse);
-    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({ error: "Too many records requested" });
   });
 

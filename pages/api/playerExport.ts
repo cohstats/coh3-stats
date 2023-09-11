@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     logger.log(`Going to parse ${arrayOfIds.length} ids`);
     logger.log(`List of IDs ${arrayOfIds}`);
     if (arrayOfIds.length > 50) {
-      return res.status(500).json({ error: "Too many records requested" });
+      return res.status(400).json({ error: "Too many records requested" });
     }
 
     const finalArray = [];
