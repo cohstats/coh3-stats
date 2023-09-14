@@ -40,7 +40,7 @@ export const WeaponLoadoutCard = (
               src={iconName}
               alt={id}
               fallbackSrc={symbolPlaceholder}
-            ></ImageWithFallback>
+            />
           ) : (
             <Image width={48} height={16} src={iconName} alt={id}></Image>
           )}
@@ -55,7 +55,7 @@ export const WeaponLoadoutCard = (
         </Flex>
       </Flex>
 
-      <Divider></Divider>
+      <Divider />
 
       <Stack spacing={2} fz="sm">
         {/* Section Group Header */}
@@ -193,7 +193,7 @@ export const WeaponLoadoutCard = (
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
               {isBallisticOrExplosive
-                ? Math.round(getScatterArea(weapon_bag.range.far, weapon_bag))
+                ? Math.round(getScatterArea(weapon_bag.range.max, weapon_bag))
                 : "-"}
             </Text>
           </Grid.Col>
