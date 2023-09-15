@@ -48,6 +48,9 @@ export type RawLeaderboardStat = {
   rating: number;
   regionranktotal?: number;
   lastmatchdate: number;
+  highestrank: number;
+  highestranklevel: number;
+  highestrating: number;
 };
 
 export interface RawLaddersObject extends LaddersDataObject {
