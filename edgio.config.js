@@ -10,6 +10,12 @@ module.exports = {
   //The name of the team in Edgio to which this app should be deployed.
   team: "coh-stats",
 
+  next: {
+    enforceTrailingSlash: true,
+    generateSourceMaps: true,
+    disableEdgioDevTools: false,
+  },
+
   // Overrides the default path to the routes file. The path should be relative to the root of your app.
   // routes: 'routes.js',
 

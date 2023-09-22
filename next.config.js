@@ -27,13 +27,6 @@ const nextConfig = {
 };
 
 const withEdgioConfig = withEdgio({
-  // Output sourcemaps so that stack traces have original source filenames and line numbers when tailing
-  // the logs in the Edgio developer console.
-  edgioSourceMaps: true,
-
-  // Set the following to `true` to disable the Edgio dev tools.
-  disableEdgioDevTools: false,
-
   ...nextConfig,
 });
 
