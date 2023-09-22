@@ -8,7 +8,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { withEdgio, withServiceWorker } = require("@edgio/next/config");
+const withEdgio = require("@edgio/next/withEdgio");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -26,18 +26,16 @@ const nextConfig = {
   // },
 };
 
-const withEdgioConfig = withEdgio(
-  withServiceWorker({
-    // Output sourcemaps so that stack traces have original source filenames and line numbers when tailing
-    // the logs in the Edgio developer console.
-    edgioSourceMaps: true,
+const withEdgioConfig = withEdgio({
+  // Output sourcemaps so that stack traces have original source filenames and line numbers when tailing
+  // the logs in the Edgio developer console.
+  edgioSourceMaps: true,
 
-    // Set the following to `true` to disable the Edgio dev tools.
-    disableEdgioDevTools: false,
+  // Set the following to `true` to disable the Edgio dev tools.
+  disableEdgioDevTools: false,
 
-    ...nextConfig,
-  }),
-);
+  ...nextConfig,
+});
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that

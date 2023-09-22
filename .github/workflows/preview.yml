@@ -64,9 +64,9 @@ jobs:
 
       - name: Deploy to Edgio hosting
         env:
-          DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN_PREVIEW}}
+          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
         run: |
-          npx edgio deploy --skip-build --site=coh3-stats --team=coh-stats  --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+          npx edgio deploy --skip-build --property=coh3-stats --organization=coh-stats --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
       - uses: jwalton/gh-find-current-pr@v1
         id: finder
       - name: Publish Preview Link

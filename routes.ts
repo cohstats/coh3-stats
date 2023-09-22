@@ -30,7 +30,7 @@ export default new Router()
       },
     },
     ({ send }) => {
-      send("User-agent: *\nDisallow: /");
+      send("User-agent: *\nDisallow: /", 200);
     },
   )
   // Homepage caching

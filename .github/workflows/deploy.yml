@@ -54,8 +54,8 @@ jobs:
 
       - name: Deploy to Edgio hosting
         env:
-          DEPLOY_TOKEN: ${{ secrets.EDGIO_DEPLOY_TOKEN}}
+          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
         # Deploy command automatically runs the build
         # Deploy command pulls ENV variables https://docs.edg.io/guides/basics/environments#environment-variables
         run: |
-          npx edgio deploy -e $EDGIO_ENV --token $DEPLOY_TOKEN
+          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
