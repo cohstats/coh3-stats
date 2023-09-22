@@ -3,6 +3,9 @@ import { Router } from "@edgio/core/router";
 import { nextRoutes } from "@edgio/next";
 
 export default new Router()
+  .always(({ setOrigin }) => {
+    setOrigin("edgio_serverless");
+  })
   .use(nextRoutes) // automatically adds routes for all files under /pages
   // Do not index dev sites
   .match(

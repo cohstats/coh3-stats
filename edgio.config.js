@@ -14,6 +14,7 @@ module.exports = {
     enforceTrailingSlash: true,
     generateSourceMaps: true,
     disableEdgioDevTools: false,
+    proxyToServerlessByDefault: true,
   },
 
   // Overrides the default path to the routes file. The path should be relative to the root of your app.
