@@ -115,11 +115,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       </Head>
       <Script
         id="rum-lib"
-        src="https://rum.layer0.co/latest.js"
+        src="https://rum.edgio.net/latest.js"
         onLoad={() => {
           // @ts-ignore
-          new Layer0.Metrics({
-            token: "43cf5623-832d-4e95-aae9-8c2a9368680c",
+          new Edgio.Metrics({
+            token: "63a45f52-3972-4ed0-8867-4e762860a563",
           }).collect();
         }}
       />
