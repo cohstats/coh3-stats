@@ -15,7 +15,7 @@ import "../components/other/nprogress.css";
 import ContentContainer from "../components/Content-container";
 import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
-import { useDevtools } from "@edgio/react";
+import { useServiceWorker } from "@edgio/react";
 
 webFirebase.init();
 
@@ -23,7 +23,11 @@ NProgress.configure({ showSpinner: false });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
-  useDevtools();
+
+  useServiceWorker({
+    // set to `true` to install the service worker in development mode
+    dev: false,
+  });
 
   // get system colorscheme
   const systemColorScheme = useColorScheme("dark");
