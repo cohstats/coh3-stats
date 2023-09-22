@@ -24,10 +24,7 @@ NProgress.configure({ showSpinner: false });
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
 
-  useServiceWorker({
-    // set to `true` to install the service worker in development mode
-    dev: false,
-  });
+  useServiceWorker({});
 
   // get system colorscheme
   const systemColorScheme = useColorScheme("dark");
