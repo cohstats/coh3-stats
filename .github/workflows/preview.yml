@@ -76,7 +76,7 @@ jobs:
           header: preview
           message: |
             🌐 Branch deployed as preview to:
-            https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.layer0-perma.link
+            https://coh-stats-coh3-stats-${{ env.BRANCH_NAME }}.alt.free.edgio-perma.link
 
   lighthouse:
     name: Lighthouse report
