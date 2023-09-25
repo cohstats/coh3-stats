@@ -16,8 +16,17 @@ Disallow: /
 User-agent: PetalBot
 Disallow: /
 
+User-agent: Bytespider
+Disallow: /
+
 # Bing bot is retarded, it's crawling leaderboards and all players on the platform
 User-agent: Bingbot
+Disallow: /leaderboards
+Disallow: /players
+Allow: /
+
+# GPTBot is retarded the same way the Bing bot is
+User-agent: GPTBot
 Disallow: /leaderboards
 Disallow: /players
 Allow: /
@@ -25,6 +34,8 @@ Allow: /
 User-agent: *
 Disallow: /api
 Disallow: /tests
+# Ban crawling of the leaderboards via the start parameter
+Disallow: /leaderboards?*start=
 Allow: /
 
 # Host
