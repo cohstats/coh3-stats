@@ -28,7 +28,10 @@ export const OnlinePlayers: React.FC = () => {
               !onlinePlayersData
             ) {
               const fetchData = await fetch("/api/onlineSteamPlayers");
-              setOnlinePlayersData(await fetchData.json());
+              const data = await fetchData.json();
+              if (data && data.playerCount > 0) {
+                setOnlinePlayersData(data);
+              }
             }
           } catch (e) {
             console.error(e);
