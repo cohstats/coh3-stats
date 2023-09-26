@@ -20,7 +20,7 @@ const CountryFlag = ({
 
   return (
     <Image
-      src={`/flags/4x3/${countryCode || "xx"}.svg`}
+      src={`/flags/4x3/${countryCode.toLowerCase() || "xx"}.svg`}
       alt={countryCode}
       width={width}
       height={height}

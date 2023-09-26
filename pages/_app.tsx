@@ -15,6 +15,7 @@ import "../components/other/nprogress.css";
 import ContentContainer from "../components/Content-container";
 import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
+import { useServiceWorker, useDevtools } from "@edgio/react";
 
 webFirebase.init();
 
@@ -22,6 +23,10 @@ NProgress.configure({ showSpinner: false });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
+
+  useDevtools();
+
+  useServiceWorker({});
 
   // get system colorscheme
   const systemColorScheme = useColorScheme("dark");
@@ -115,11 +120,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       </Head>
       <Script
         id="rum-lib"
-        src="https://rum.layer0.co/latest.js"
+        src="https://rum.edgio.net/latest.js"
         onLoad={() => {
           // @ts-ignore
-          new Layer0.Metrics({
-            token: "43cf5623-832d-4e95-aae9-8c2a9368680c",
+          new Edgio.Metrics({
+            token: "63a45f52-3972-4ed0-8867-4e762860a563",
           }).collect();
         }}
       />

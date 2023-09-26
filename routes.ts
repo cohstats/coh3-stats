@@ -2,14 +2,11 @@
 import { Router } from "@edgio/core/router";
 import { nextRoutes } from "@edgio/next";
 
-// Remove this line to suppress Next's default behavior of removing trailing slashes via a redirect.
-// If trailingSlash: true is set in next.config.js, removing this line will remove the redirect that adds the trailing slash.
-nextRoutes.setEnforceTrailingSlash(true);
-
 export default new Router()
-  .match("/service-worker.js", ({ serviceWorker }) => {
-    return serviceWorker(".next/static/service-worker.js");
-  })
+  // .always(({ setOrigin }) => {
+  //   setOrigin("edgio_serverless");
+  // })
+  .use(nextRoutes) // automatically adds routes for all files under /pages
   // Do not index dev sites
   .match(
     {
@@ -30,7 +27,7 @@ export default new Router()
       },
     },
     ({ send }) => {
-      send("User-agent: *\nDisallow: /");
+      send("User-agent: *\nDisallow: /", 200);
     },
   )
   // Homepage caching
@@ -227,5 +224,4 @@ export default new Router()
         forcePrivateCaching: true,
       },
     });
-  })
-  .use(nextRoutes); // automatically adds routes for all files under /pages
+  });
