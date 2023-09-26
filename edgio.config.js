@@ -16,6 +16,18 @@ module.exports = {
     disableEdgioDevTools: false,
   },
 
+  environments: {
+    prod: {
+      hostnames: [{ hostname: "coh3stats.com" }],
+    },
+    dev: {
+      hostnames: [{ hostname: "dev.coh3stats.com" }],
+    },
+    preview: {
+      hostnames: [{ hostname: "preview.coh3stats.com" }],
+    },
+  },
+
   // Overrides the default path to the routes file. The path should be relative to the root of your app.
   // routes: 'routes.js',
 
