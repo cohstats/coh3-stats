@@ -42,12 +42,12 @@ export const getGMTTimeStamp = (date = new Date()) => {
   );
 };
 
-export const convertToDateString = (date = new Date()) => {
+export const convertToDateString = (date = new Date(), allowNow = true) => {
   const oldDate = dayjs(date);
   const today = dayjs(new Date());
 
   // They are the same, it's today
-  if (oldDate.diff(today, "day") === 0) {
+  if (oldDate.diff(today, "day") === 0 && allowNow) {
     return "now";
   } else {
     return dayjs(date).format("YYYY-MM-DD");

@@ -137,7 +137,7 @@ const InnerGameStatsPage = ({
     );
   }
 
-  if (data) {
+  if (data?.analysis["1v1"]) {
     const analysis = data.analysis as StatsDataObject;
 
     const matchCount = (() => {
@@ -233,6 +233,12 @@ const InnerGameStatsPage = ({
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
       </>
+    );
+  } else {
+    content = (
+      <Center maw={400} h={250} mx="auto">
+        <h3>No data for the selected period</h3>
+      </Center>
     );
   }
 

@@ -79,7 +79,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
   useEffect(() => {
     if (!valueDatePicker?.[0] || !valueDatePicker?.[1]) return;
 
-    const fromTimeStamp = convertToDateString(valueDatePicker[0]);
+    const fromTimeStamp = convertToDateString(valueDatePicker[0], false);
     //  getDateTimestamp(valueDatePicker[0] || new Date() );
     const toTimeStamp = convertToDateString(valueDatePicker[1]); // getDateTimestamp(valueDatePicker[1] || new Date());
     push({ query: { ...query, from: fromTimeStamp, to: toTimeStamp } }, undefined, {
