@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createStyles,
   Table,
@@ -29,12 +29,14 @@ import {
   IconSearch,
   IconSelector,
 } from "@tabler/icons-react";
-import { EbpsType, SbpsType, WeaponType, getFactionIcon } from "../../src/unitStats";
-import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
+import { getFactionIcon } from "../../src/unitStats";
+import { CustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { internalSlash } from "../../src/utils";
 import Link from "next/link";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { raceType } from "../../src/coh3/coh3-types";
+import { debounce } from "lodash";
+import { useDebouncedValue } from "@mantine/hooks";
 
 interface tableColSetup {
   key: string;
@@ -76,7 +78,7 @@ const tableSetup: tableColSetup[] = [
   {
     key: "screen_name",
     sortKey: "screen_name",
-    title: "Descr.",
+    title: "Description",
     visible: true,
     isIcon: false,
     customVisual: false,
@@ -266,7 +268,11 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
         </Tooltip>
       );
     }
-    return <Text>{(unit as any)[colSetup.key]}</Text>;
+
+    let content = (unit as any)[colSetup.key];
+    content = content ? content : "-";
+
+    return <Text>{content}</Text>;
   }
 
   switch (colSetup.key) {
@@ -299,12 +305,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const tableData: CustomizableUnit[] = [];
+let tableData: CustomizableUnit[] = [];
 
 interface inputProps {
-  sbpsData: SbpsType[];
-  ebpsData: EbpsType[];
-  weaponData: WeaponType[];
+  inputData: CustomizableUnit[];
 }
 
 interface ThProps {
@@ -421,6 +425,7 @@ const getTableHeader = (
           sorted={sortBy === colSetup.sortKey}
           reversed={reverseSortDirection}
           onSort={() => setSorting(colSetup.sortKey)}
+          key={colSetup.key}
         >
           {colSetup.title}
         </Th>,
@@ -440,7 +445,8 @@ const getTableCustomizing = (onTableLayoutChange: any) => {
         onChange={() => onTableLayoutChange(setup)}
         title={setup.title}
         label={setup.title}
-      ></Checkbox>,
+        key={setup.key}
+      />,
 
       //   <SimpleGrid cols={2}>
       //  <div> {setup.title}</div>
@@ -518,29 +524,31 @@ const getTypeIcon = (type: string) => {
   return internalSlash(icon);
 };
 
-export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
+export const UnitTable = ({ inputData }: inputProps) => {
+  tableData = inputData;
+
   const [search, setSearch] = useState("");
   const [factionFilter, setFactionFilter] = useState([] as string[]);
   const [typeFilter, setTypeFilter] = useState([] as string[]);
 
-  if (tableData.length == 0)
-    for (const sbps of sbpsData) {
-      const unit = mapCustomizableUnit(sbps, ebpsData, weaponData);
-      if (
-        sbps.ui.screenName != "No text found." &&
-        sbps.ui.symbolIconName != "" &&
-        sbps.faction != "british" &&
-        unit.cost_mp > 0
-      ) {
-        tableData.push(unit);
-      }
-    }
-
-  // const [tableSetupData] = useState(tableSetup);
   const [updateFlag, updateTable] = useState(true);
   const [sortedData, setSortedData] = useState(tableData);
   const [sortBy, setSortBy] = useState<keyof CustomizableUnit | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+
+  const [debouncedSearch] = useDebouncedValue(search, 600);
+
+  useEffect(() => {
+    setSortedData(
+      sortData(tableData, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search: debouncedSearch,
+        factionFilter,
+        typeFilter,
+      }),
+    );
+  }, [debouncedSearch]);
 
   function toggleFilter(filterValue: string, filterList: string[]) {
     const filterValueIndex = filterList.indexOf(filterValue);
@@ -566,20 +574,6 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
     setSortBy(field);
     setSortedData(
       sortData(tableData, { sortBy: field, reversed, search, factionFilter, typeFilter }),
-    );
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setSearch(value);
-    setSortedData(
-      sortData(tableData, {
-        sortBy,
-        reversed: reverseSortDirection,
-        search: value,
-        factionFilter,
-        typeFilter,
-      }),
     );
   };
 
@@ -653,30 +647,39 @@ export const UnitTable = ({ sbpsData, ebpsData, weaponData }: inputProps) => {
             mb="md"
             icon={<IconSearch size="0.9rem" stroke={1.5} />}
             value={search}
-            onChange={handleSearchChange}
+            onChange={(event: { currentTarget: { value: any } }) => {
+              setSearch(event.currentTarget.value);
+            }}
           />
         </Group>
       </div>
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: "fixed" }}>
-        <thead>
-          <tr>
-            <>{cols}</>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length > 0 ? (
-            rows
-          ) : (
-            <tr key="no_row">
-              {/* <td colSpan={Object.keys(data[0]).length}>
+      <div style={{ minHeight: 7000 }}>
+        <Table
+          horizontalSpacing="md"
+          verticalSpacing="xs"
+          miw={700}
+          sx={{ tableLayout: "fixed" }}
+        >
+          <thead>
+            <tr>
+              <>{cols}</>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length > 0 ? (
+              rows
+            ) : (
+              <tr key="no_row">
+                {/* <td colSpan={Object.keys(data[0]).length}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>
               </td> */}
-            </tr>
-          )}
-        </tbody>
-      </Table>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </div>
     </ScrollArea>
   );
 };

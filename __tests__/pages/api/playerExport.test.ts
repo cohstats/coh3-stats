@@ -18,6 +18,7 @@ describe("playerExportAPIHandler", () => {
   test("should return 400 if profileIDs param is missing", async () => {
     const req = {
       query: {},
+      headers: {},
     };
     const res = {
       status: jest.fn().mockReturnThis(),
@@ -33,6 +34,7 @@ describe("playerExportAPIHandler", () => {
       query: {
         profileIDs: [1, 2, 3],
       },
+      headers: {},
     };
     const res = {
       status: jest.fn().mockReturnThis(),
@@ -48,6 +50,7 @@ describe("playerExportAPIHandler", () => {
       query: {
         profileIDs: JSON.stringify(Array(51).fill(1)),
       },
+      headers: {},
     };
     const res = {
       status: jest.fn().mockReturnThis(),
@@ -63,6 +66,7 @@ describe("playerExportAPIHandler", () => {
       query: {
         profileIDs: JSON.stringify(["1", "2"]),
       },
+      headers: {},
     };
     const res = {
       status: jest.fn().mockReturnThis(),

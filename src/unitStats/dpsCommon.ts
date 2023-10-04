@@ -183,7 +183,7 @@ export const mapCustomizableUnit = (
     custUnit.penetration = custUnit.def_weapon_member[0]?.weapon.weapon_bag.penetration_near || 0;
     // default weapon type
     if (custUnit.weapon_member.length > 0)
-      custUnit.def_damage_type = (custUnit.weapon_member[0] as any).parent;
+      custUnit.def_damage_type = (custUnit.weapon_member[0] as any).parent || null;
 
     // Armor
     const ebpsUnit = ebps.find((unit) => unit.id == custUnit.def_member);
