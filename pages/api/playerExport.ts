@@ -11,13 +11,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { generateCSVObject } from "../../src/players/export";
 import { chunk } from "lodash";
 
-const getPlayerInfo = async (profileID: string): Promise<PlayerCardDataType> => {
-  return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID, true));
+const getPlayerInfo = async (profileID: string, xff: string): Promise<PlayerCardDataType> => {
+  return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID, true, xff));
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const query = req.query;
+    const xff = `${req.headers["x-forwarded-for"]}`;
     const { profileIDs, types } = query;
 
     if (!profileIDs) {
@@ -56,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const finalArray = [];
 
     for (const singleChunk of chunk(arrayOfIds, 2)) {
-      const playerInfoPromises = singleChunk.map((profileId) => getPlayerInfo(profileId));
+      const playerInfoPromises = singleChunk.map((profileId) => getPlayerInfo(profileId, xff));
       const playerInfoArray = await Promise.all(playerInfoPromises);
       const playerInfoAsCSVObjects = playerInfoArray.map((playerInfo, index) =>
         generateCSVObject(playerInfo, singleChunk[index], parsedTypes || undefined),

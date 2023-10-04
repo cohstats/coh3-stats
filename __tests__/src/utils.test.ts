@@ -6,6 +6,7 @@ import {
   internalSlash,
   getIconsPathOnCDN,
   buildOriginHeaderValue,
+  parseFirstIPFromString,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -167,5 +168,27 @@ describe("buildOriginHeaderValue", () => {
 
     const originHeaderValue = buildOriginHeaderValue();
     expect(originHeaderValue).toBe("");
+  });
+});
+
+describe("parseFirstIPFromString", () => {
+  test("should return the first IP address from a string - ipv6", () => {
+    const result = parseFirstIPFromString("2a00:20:51:5962:618f:cd63:d7ca:af4a, 188.114.102.170");
+    expect(result).toBe("2a00:20:51:5962:618f:cd63:d7ca:af4a");
+  });
+
+  test("should return the first IP address from a string - ipv4", () => {
+    const result = parseFirstIPFromString("82.35.144.199, 188.114.102.68");
+    expect(result).toBe("82.35.144.199");
+  });
+
+  test("should return empty string", () => {
+    const result = parseFirstIPFromString("");
+    expect(result).toBe("");
+  });
+
+  test("should return empty string / undefined", () => {
+    const result = parseFirstIPFromString(undefined);
+    expect(result).toBe("");
   });
 });
