@@ -112,7 +112,7 @@ const Search: NextPage<{
             }}
           />
         </Center>
-        {content}
+        <div style={{ minHeight: "450px" }}>{content}</div>
       </Container>
     </>
   );

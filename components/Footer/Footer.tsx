@@ -8,6 +8,8 @@ import config from "../../config";
 
 const useStyles = createStyles((theme) => ({
   footer: {
+    // position: "fixed",
+    // bottom: 0,
     marginTop: theme.spacing.xl,
     paddingTop: `calc(${theme.spacing.xl} * 2)`,
     paddingBottom: `calc(${theme.spacing.xl} * 2)`,
