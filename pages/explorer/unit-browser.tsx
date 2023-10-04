@@ -58,6 +58,8 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
 // These keys should be the same as in the unitTable.tsx file
 const dataKeys = [
   "id", // it's used for key in the table
+  "faction", // is used for filtering
+  "unit_type", // is used for filtering
   "faction_icon",
   "type_icon",
   "icon_name",
