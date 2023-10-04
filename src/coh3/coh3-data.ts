@@ -455,19 +455,41 @@ const maps: { [key: string]: { name: string; url: string } } = {
     name: "Gazala Landing Ground",
     url: "/icons/maps/gazala_landing_ground.webp",
   },
-  industrial_railyard_6p_mkii: { name: "L'Aquila", url: "/icons/maps/laquila.webp" },
-  winter_line_8p_mkii: { name: "Winter Line", url: "/icons/maps/winter_line.webp" },
-  mountain_ruins_8p_mkii: { name: "Mignano Gap", url: "/icons/maps/mignano_gap.webp" },
-  mountain_ruins_6p: { name: "Mignano Summit", url: "/icons/maps/mignano_gap_6p.png" },
-  gardens_2p_mm: { name: "Gardens", url: "/icons/maps/gardens.png" },
+  industrial_railyard_6p_mkii: {
+    name: "L'Aquila",
+    url: "/icons/maps/laquila.webp",
+  },
+  winter_line_8p_mkii: {
+    name: "Winter Line",
+    url: "/icons/maps/winter_line.webp",
+  },
+  mountain_ruins_8p_mkii: {
+    name: "Mignano Gap",
+    url: "/icons/maps/mignano_gap.webp",
+  },
+  mountain_ruins_6p: {
+    name: "Mignano Summit",
+    url: "/icons/maps/mignano_gap_6p.webp",
+  },
+  gardens_2p_mm: {
+    name: "Gardens",
+    url: "/icons/maps/gardens.webp",
+  },
   rural_town_2p_mkii: {
     name: "Pachino Farmlands",
-    url: "/icons/maps/pachino_farmlands_mkii.png",
+    url: "/icons/maps/pachino_farmlands_mkii.webp",
   },
-  monte_cavo_8p: { name: "Monte Cavo", url: "/icons/maps/monte_cavo_8p.png" },
+  monte_cavo_8p: {
+    name: "Monte Cavo",
+    url: "/icons/maps/monte_cavo_8p.webp",
+  },
   benghazi_6p: {
     name: "Benghazi",
-    url: "/icons/maps/benghazi_6p.png",
+    url: "/icons/maps/benghazi_6p.webp",
+  },
+  sousse_wetlands_8p: {
+    name: "Sousse Wetlands",
+    url: "/icons/maps/sousse_wetlands_8p.webp",
   },
 };
 
