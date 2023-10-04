@@ -66,14 +66,14 @@ const statsPatchSelector: Record<
     from: "2023-08-24",
     to: "now",
     value: "1.2.3",
-    label: "1.2.3",
+    label: "1.2.3 - 1.2.5",
     group: "Emerald Bear",
   },
   "1.2.2": {
     from: "2023-08-03",
     to: "2023-08-24",
     value: "1.2.2",
-    label: "1.2.2",
+    label: "1.2.1 - 1.2.2",
     group: "Emerald Bear",
   },
   // version 1.2.1 is not significant to be in the menu

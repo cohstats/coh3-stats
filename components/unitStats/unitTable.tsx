@@ -35,7 +35,6 @@ import { internalSlash } from "../../src/utils";
 import Link from "next/link";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { raceType } from "../../src/coh3/coh3-types";
-import { debounce } from "lodash";
 import { useDebouncedValue } from "@mantine/hooks";
 
 interface tableColSetup {
