@@ -25,6 +25,8 @@ type UnitUpgradeDescription = {
   help_text: string | null;
   /** Locstring value. Found at `extra_text/locstring/value`. */
   extra_text: string | null;
+  /** Locstring with formatter variables. Found at `extra_text_formatter`, which list each parameter. */
+  extra_text_formatter: string;
   /** Locstring value. Found at `brief_text/locstring/value`. */
   brief_text: string | null;
   /** File path. Found at `icon_name`. */
@@ -116,9 +118,9 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
             {desc.brief_text}
           </Text>
         </Tooltip>
-        <Tooltip label={desc.extra_text}>
-          <Text fz="sm" lineClamp={1}>
-            {desc.extra_text}
+        <Tooltip label={desc.extra_text || desc.extra_text_formatter}>
+          <Text fz="sm" lineClamp={2}>
+            {desc.extra_text || desc.extra_text_formatter}
           </Text>
         </Tooltip>
       </Flex>
@@ -156,6 +158,7 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
           help_text: desc.help_text,
           brief_text: desc.brief_text,
           extra_text: desc.extra_text,
+          extra_text_formatter: desc.extra_text_formatter,
           icon_name: desc.icon_name,
         }}
         cfg={cfg}
