@@ -120,7 +120,13 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const MobileView = (
     <>
-      <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
+      <Burger
+        opened={opened}
+        onClick={toggle}
+        className={classes.burger}
+        size="sm"
+        aria-label="Toggle menu"
+      />
       <Drawer
         opened={opened}
         onClose={close}

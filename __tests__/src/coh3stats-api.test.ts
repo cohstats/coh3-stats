@@ -31,9 +31,10 @@ describe("coh3stats-api", () => {
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeData));
 
-    const result = await getPlayerCardInfo(12345);
+    const result = await getPlayerCardInfo(12345, false, "fake-ip");
     expect(global.fetch).toBeCalledWith(
       "https://us-east4-coh3-stats-prod.cloudfunctions.net/getPlayerCardInfoHttp?relicId=12345",
+      { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(result).toEqual(fakeData);
@@ -48,7 +49,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 500));
 
     try {
-      await getPlayerCardInfo(12345);
+      await getPlayerCardInfo(12345, false, "");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player card info: test error"));
     }
@@ -65,7 +66,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 400));
 
     try {
-      await getPlayerCardInfo(12345);
+      await getPlayerCardInfo(12345, false, "");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player card info"));
     }
@@ -210,10 +211,11 @@ describe("coh3stats-api", () => {
       .spyOn(global, "fetch")
       .mockImplementation(setupFetchStub({ playerMatches: fakeMatchesData }));
 
-    const response = await getPlayerRecentMatches(12345);
+    const response = await getPlayerRecentMatches(12345, "fake-ip");
 
     expect(global.fetch).toBeCalledWith(
       "https://us-east4-coh3-stats-prod.cloudfunctions.net/getPlayerMatchesHttp?relicId=12345",
+      { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
     );
     expect(response[0].id).toBe(2);
     expect(response[1].id).toBe(1);
@@ -228,7 +230,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 500));
 
     try {
-      await getPlayerRecentMatches(12345);
+      await getPlayerRecentMatches(12345, "");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player recent matches: test error"));
     }
@@ -245,7 +247,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 400));
 
     try {
-      await getPlayerRecentMatches(12345);
+      await getPlayerRecentMatches(12345, "fake-ip");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player recent matches"));
     }
@@ -260,11 +262,12 @@ describe("coh3stats-api", () => {
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeStreamData));
 
-    const response = await getTwitchStreams();
+    const response = await getTwitchStreams("fake-ip");
 
     expect(response).toEqual("fake stream data");
     expect(global.fetch).toBeCalledWith(
       "https://us-east4-coh3-stats-prod.cloudfunctions.net/getTwitchStreamsHttp",
+      { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
     );
   });
 
@@ -277,7 +280,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 500));
 
     try {
-      await getTwitchStreams();
+      await getTwitchStreams("fake-ip");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting Twitch streams: test error"));
     }
@@ -294,7 +297,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 400));
 
     try {
-      await getTwitchStreams();
+      await getTwitchStreams("fake-ip");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting Twitch streams"));
     }

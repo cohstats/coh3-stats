@@ -6,9 +6,11 @@ import PlayerCard from "../../components/screens/players";
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   params,
   query,
+  req,
 }) => {
   const playerID = params?.playerID[0] || "";
   const { view } = query;
+  const xff = `${req.headers["x-forwarded-for"]}`;
 
   const viewPlayerMatches = view === "recentMatches";
   // const viewStandings = view === "standings";
@@ -23,10 +25,10 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   // const isFromPlayerPage = isSamePlayer && Boolean(prevPage?.includes("/players/"));
 
   try {
-    const PromisePlayerCardData = getPlayerCardInfo(playerID, true);
+    const PromisePlayerCardData = getPlayerCardInfo(playerID, true, xff);
 
     const PromisePlayerMatchesData = viewPlayerMatches
-      ? getPlayerRecentMatches(playerID)
+      ? getPlayerRecentMatches(playerID, xff)
       : Promise.resolve();
 
     const [playerAPIData, PlayerMatchesAPIData] = await Promise.all([

@@ -1,6 +1,7 @@
 import config from "../config";
 import { ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
 import { analysisType, getAnalysisStatsHttpResponse } from "./analysis-types";
+import { parseFirstIPFromString } from "./utils";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
@@ -52,8 +53,13 @@ const getStatsData = async (
 /**
  * Returns the array of EN twitch streams sorted by viewer count
  */
-const getTwitchStreams = async (): Promise<Array<TwitchStream>> => {
-  const response = await fetch(getTwitchStreamsUrl());
+const getTwitchStreams = async (XForwardedFor: string): Promise<Array<TwitchStream>> => {
+  const response = await fetch(getTwitchStreamsUrl(), {
+    headers: {
+      "X-Forwarded-For": XForwardedFor,
+      "c-edge-ip": parseFirstIPFromString(XForwardedFor),
+    },
+  });
   const data = await response.json();
 
   if (response.ok) {
@@ -67,8 +73,17 @@ const getTwitchStreams = async (): Promise<Array<TwitchStream>> => {
   }
 };
 
-const getPlayerCardInfo = async (playerID: string | number, cache_proxy = false) => {
-  const response = await fetch(getPlayerCardInfoUrl(playerID, cache_proxy));
+const getPlayerCardInfo = async (
+  playerID: string | number,
+  cache_proxy = false,
+  XForwardedFor: string,
+) => {
+  const response = await fetch(getPlayerCardInfoUrl(playerID, cache_proxy), {
+    headers: {
+      "X-Forwarded-For": XForwardedFor,
+      "c-edge-ip": parseFirstIPFromString(XForwardedFor),
+    },
+  });
   const data = await response.json();
 
   if (response.ok) {
@@ -81,8 +96,15 @@ const getPlayerCardInfo = async (playerID: string | number, cache_proxy = false)
   }
 };
 
-const getPlayerRecentMatches = async (playerID: string | number) => {
-  const response = await fetch(getPlayerRecentMatchesUrl(playerID));
+const getPlayerRecentMatches = async (playerID: string | number, XForwardedFor: string) => {
+  // Add header to the request
+
+  const response = await fetch(getPlayerRecentMatchesUrl(playerID), {
+    headers: {
+      "X-Forwarded-For": XForwardedFor,
+      "c-edge-ip": parseFirstIPFromString(XForwardedFor),
+    },
+  });
 
   if (response.ok) {
     const data = await response.json();

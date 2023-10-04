@@ -3,10 +3,13 @@ import { Top1v1LeaderboardsData, TwitchStream } from "../src/coh3/coh3-types";
 import Home from "../components/screens/home";
 import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
 import { getLatestCOH3RedditPosts, RedditPostType } from "../src/reddit-api";
+import { GetServerSideProps } from "next";
 
 export default Home;
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
+  const xff = `${req.headers["x-forwarded-for"]}`;
+
   let error: Error | null = null;
   let twitchStreams: TwitchStream[] | null = null;
   let topLeaderBoardsData: Top1v1LeaderboardsData | null = null;
@@ -15,7 +18,7 @@ export async function getServerSideProps() {
   try {
     const [PromisedTwitchStreams, PromisedTopLeaderBoardsData, PromisedRedditPostsData] =
       await Promise.all([
-        getTwitchStreams(),
+        getTwitchStreams(xff),
         getTop1v1LeaderBoards("american"),
         getLatestCOH3RedditPosts(),
       ]);
@@ -30,4 +33,4 @@ export async function getServerSideProps() {
   }
 
   return { props: { twitchStreams, error, topLeaderBoardsData, redditPostsData } };
-}
+};

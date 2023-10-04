@@ -182,11 +182,13 @@ const PlayerStats = ({
               </Group>
             </Center>
 
-            <DynamicGeoWorldMap data={countries} />
-
-            <DynamicPlayersLineChart data={historyData} />
+            <div style={{ minHeight: "840px" }}>
+              <DynamicGeoWorldMap data={countries} />
+              <DynamicPlayersLineChart data={historyData} />
+            </div>
             <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
-              Data updated on {new Date(playerStats.timeStampMs).toLocaleString("en")}.<br />
+              Data updated on {dayjs(playerStats.timeStampMs).format("YYYY-MM-DD HH:mm")} UTC
+              <br />
               We do not track XBOX and PS players here.
             </Text>
           </>

@@ -1,25 +1,19 @@
 import { NextPage } from "next";
-import { EbpsType } from "../../src/unitStats/mappingEbps";
-import { SbpsType } from "../../src/unitStats/mappingSbps";
-import { WeaponType } from "../../src/unitStats/mappingWeapon";
-import { UpgradesType } from "../../src/unitStats/mappingUpgrades";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/head-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { UnitTable } from "../../components/unitStats/unitTable";
 import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
+import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 
 interface SquadProps {
-  weaponData: WeaponType[];
-  sbpsData: SbpsType[];
-  ebpsData: EbpsType[];
-  upgradesData: UpgradesType[];
+  tableData: CustomizableUnit[];
 }
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const UnitBrowser: NextPage<SquadProps> = ({ weaponData, sbpsData, ebpsData }) => {
+const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
   useEffect(() => {
     AnalyticsExplorerUnitBrowserView();
   }, []);
@@ -54,22 +48,74 @@ const UnitBrowser: NextPage<SquadProps> = ({ weaponData, sbpsData, ebpsData }) =
         {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
       </Head>
       <div>
-        <UnitTable sbpsData={sbpsData} ebpsData={ebpsData} weaponData={weaponData}></UnitTable>
+        <UnitTable inputData={tableData} />
       </div>
     </>
   );
 };
 
+// These are the keys of the data we want to display in the table
+// These keys should be the same as in the unitTable.tsx file
+const dataKeys = [
+  "id", // it's used for key in the table
+  "faction_icon",
+  "type_icon",
+  "icon_name",
+  "screen_name",
+  "cost_mp",
+  "cost_fuel",
+  "cost_pop",
+  "cost_reinforce",
+  "upkeep_mp",
+  "capture_rate",
+  "capture_revert",
+  "health",
+  "target_size",
+  "armor",
+  "sight_range",
+  "dps_n",
+  "dps_m",
+  "dps_f",
+  "range",
+  "penetration",
+  "speed",
+];
+const filterObject = (obj: any, allowedKeys: string[]): any => {
+  const filteredObj: any = {};
+  const keys = Object.keys(obj);
+
+  for (const key of keys) {
+    if (allowedKeys.includes(key)) {
+      filteredObj[key] = obj[key];
+    }
+  }
+
+  return filteredObj;
+};
+
 export const getStaticProps = async () => {
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData, upgradesData } = await getMappings();
+  const { weaponData, ebpsData, sbpsData } = await getMappings();
+
+  const tableData: CustomizableUnit[] = [];
+
+  for (const sbps of sbpsData) {
+    const unit = mapCustomizableUnit(sbps, ebpsData, weaponData);
+    if (
+      unit.screen_name != "No text found" &&
+      unit.screen_name != null &&
+      sbps.ui.screenName != null &&
+      sbps.ui.symbolIconName != "" &&
+      sbps.faction != "british" &&
+      unit.cost_mp > 0
+    ) {
+      tableData.push(filterObject(unit, dataKeys));
+    }
+  }
 
   return {
     props: {
-      weaponData: weaponData,
-      sbpsData: sbpsData,
-      ebpsData: ebpsData,
-      upgradesData: upgradesData,
+      tableData: tableData,
     },
   };
 };

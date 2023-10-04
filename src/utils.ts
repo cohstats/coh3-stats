@@ -147,3 +147,11 @@ export const buildOriginHeaderValue = () => {
     return "";
   }
 };
+
+export const parseFirstIPFromString = (ips: string | undefined) => {
+  if (ips) {
+    return ips.split(",")[0];
+  } else {
+    return "";
+  }
+};
