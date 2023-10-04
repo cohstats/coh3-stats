@@ -148,6 +148,18 @@ export const buildOriginHeaderValue = () => {
   }
 };
 
+/**
+ * This functions removes any undefined from the string
+ * @param ips
+ */
+export const cleanXForwardedFor = (ips: string | undefined) => {
+  if (ips) {
+    return ips.replace(/undefined,?/g, "").trim();
+  } else {
+    return "";
+  }
+};
+
 export const parseFirstIPFromString = (ips: string | undefined) => {
   if (ips) {
     return ips.split(",")[0];

@@ -7,6 +7,7 @@ import {
   getIconsPathOnCDN,
   buildOriginHeaderValue,
   parseFirstIPFromString,
+  cleanXForwardedFor,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -189,6 +190,23 @@ describe("parseFirstIPFromString", () => {
 
   test("should return empty string / undefined", () => {
     const result = parseFirstIPFromString(undefined);
+    expect(result).toBe("");
+  });
+});
+
+describe("cleanXForwardedFor", () => {
+  test("correctly removes undefined,", () => {
+    const result = cleanXForwardedFor("undefined, 82.35.144.199");
+    expect(result).toBe("82.35.144.199");
+  });
+
+  test("correctly removes undefined", () => {
+    const result = cleanXForwardedFor("undefined");
+    expect(result).toBe("");
+  });
+
+  test("correctly handle null", () => {
+    const result = cleanXForwardedFor(undefined);
     expect(result).toBe("");
   });
 });

@@ -1,7 +1,7 @@
 import config from "../config";
 import { ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
 import { analysisType, getAnalysisStatsHttpResponse } from "./analysis-types";
-import { parseFirstIPFromString } from "./utils";
+import { cleanXForwardedFor, parseFirstIPFromString } from "./utils";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
@@ -54,10 +54,12 @@ const getStatsData = async (
  * Returns the array of EN twitch streams sorted by viewer count
  */
 const getTwitchStreams = async (XForwardedFor: string): Promise<Array<TwitchStream>> => {
+  const xff = cleanXForwardedFor(XForwardedFor);
+
   const response = await fetch(getTwitchStreamsUrl(), {
     headers: {
-      "X-Forwarded-For": XForwardedFor,
-      "c-edge-ip": parseFirstIPFromString(XForwardedFor),
+      "X-Forwarded-For": xff,
+      "c-edge-ip": parseFirstIPFromString(xff),
     },
   });
   const data = await response.json();
@@ -78,10 +80,12 @@ const getPlayerCardInfo = async (
   cache_proxy = false,
   XForwardedFor: string,
 ) => {
+  const xff = cleanXForwardedFor(XForwardedFor);
+
   const response = await fetch(getPlayerCardInfoUrl(playerID, cache_proxy), {
     headers: {
-      "X-Forwarded-For": XForwardedFor,
-      "c-edge-ip": parseFirstIPFromString(XForwardedFor),
+      "X-Forwarded-For": xff,
+      "c-edge-ip": parseFirstIPFromString(xff),
     },
   });
   const data = await response.json();
@@ -97,12 +101,12 @@ const getPlayerCardInfo = async (
 };
 
 const getPlayerRecentMatches = async (playerID: string | number, XForwardedFor: string) => {
-  // Add header to the request
+  const xff = cleanXForwardedFor(XForwardedFor);
 
   const response = await fetch(getPlayerRecentMatchesUrl(playerID), {
     headers: {
-      "X-Forwarded-For": XForwardedFor,
-      "c-edge-ip": parseFirstIPFromString(XForwardedFor),
+      "X-Forwarded-For": xff,
+      "c-edge-ip": parseFirstIPFromString(xff),
     },
   });
 
