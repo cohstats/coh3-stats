@@ -2,7 +2,7 @@
 
 import config from "../../config";
 import { internalSlash } from "../utils";
-import { resolveLocstring } from "./locstring";
+import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 
 // Need to be extended by all required fields
@@ -37,10 +37,15 @@ type AbilitiesUiData = {
   iconName: string; // Could be empty.
   symbolIconName: string; // Could be empty.
   /* Locstring fields. */
-  helpText: string | null;
-  briefText: string | null;
-  screenName: string | null;
-  extraText: string | null; // Could be empty (Set as $0).
+  helpText: string;
+  briefText: string;
+  screenName: string;
+  extraText: string; // Could be empty (Set as $0).
+  extraTextFormatter: string;
+  // extraTextFormatter?: {
+  //   formatter: string; // The default string which contains the formatted variables.
+  //   args: number[]; // Formatter arguments (ordered list). Kept for reference.
+  // }
 };
 
 /**
@@ -73,6 +78,7 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
       briefText: "",
       screenName: "",
       extraText: "",
+      extraTextFormatter: "",
     },
     rechargeTime: 0,
     cost: {
@@ -98,10 +104,13 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
   ability.ui.iconName = abilityBag.ui_info?.icon_name || "";
   ability.ui.symbolIconName = abilityBag.ui_info?.symbol_icon_name || "";
   // When it is empty, it has a value of "0".
-  ability.ui.screenName = resolveLocstring(abilityBag.ui_info?.screen_name);
-  ability.ui.helpText = resolveLocstring(abilityBag.ui_info?.help_text);
-  ability.ui.extraText = resolveLocstring(abilityBag.ui_info?.extra_text);
-  ability.ui.briefText = resolveLocstring(abilityBag.ui_info?.brief_text);
+  ability.ui.screenName = resolveLocstring(abilityBag.ui_info?.screen_name) || "";
+  ability.ui.helpText = resolveLocstring(abilityBag.ui_info?.help_text) || "";
+  ability.ui.extraText = resolveLocstring(abilityBag.ui_info?.extra_text) || "";
+  ability.ui.briefText = resolveLocstring(abilityBag.ui_info?.brief_text) || "";
+
+  ability.ui.extraTextFormatter =
+    resolveTextFormatterLocstring(abilityBag.ui_info?.extra_text_formatter) || "";
 
   /* --------- COST SECTION --------- */
   ability.cost.fuel = abilityBag.cost_to_player?.fuel || 0;

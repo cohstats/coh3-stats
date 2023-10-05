@@ -1,6 +1,6 @@
 // type description of mapped data
 
-import { resolveLocstring } from "./locstring";
+import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
@@ -36,6 +36,7 @@ type UpgradeUiData = {
   briefText: string;
   screenName: string;
   extraText: string; // Could be empty (Set as $0).
+  extraTextFormatter: string;
 };
 
 /**
@@ -72,6 +73,7 @@ const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, paren
       briefText: "",
       screenName: "",
       extraText: "",
+      extraTextFormatter: "",
     },
     cost: {
       fuel: 0,
@@ -107,6 +109,9 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   upgrade.ui.extraText = resolveLocstring(extraText) || "";
   const briefText = upgradeBag.ui_info?.brief_text;
   upgrade.ui.briefText = resolveLocstring(briefText) || "";
+
+  upgrade.ui.extraTextFormatter =
+    resolveTextFormatterLocstring(upgradeBag.ui_info?.extra_text_formatter) || "";
 
   /* --------- COST SECTION --------- */
   upgrade.cost.time = upgradeBag.time_cost?.time_seconds || 0;
