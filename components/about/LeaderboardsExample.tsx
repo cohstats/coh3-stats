@@ -1,6 +1,6 @@
 const LeaderboardsExample = () => {
   return (
-    <div id="leaderboards">
+    <div>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis aliquid temporibus a delectus
       omnis nisi eveniet placeat alias nemo iste facere debitis, mollitia libero labore! Voluptate
       itaque facere aperiam voluptatum iste saepe omnis suscipit ipsa reprehenderit facilis
