@@ -1,26 +1,55 @@
 import { NextPage } from "next";
 import Head from "next/head";
 
-import { Container, Text, Title, Anchor, ActionIcon, Group } from "@mantine/core";
-import { PayPalDonation } from "../components/other/paypal-donations";
-import { Donate } from "../components/icon/donate";
-import Link from "next/link";
-import { IconBarrierBlock } from "@tabler/icons-react";
+import {
+  Container,
+  Title,
+  Tabs,
+  Center,
+  Anchor,
+  Grid,
+  Flex,
+  Divider,
+  createStyles,
+} from "@mantine/core";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../src/firebase/analytics";
-import config from "../config";
+
 import { generateKeywordsString } from "../src/head-utils";
+import AboutUs from "../components/about/AboutUs";
+import LeaderboardsExample from "../components/about/LeaderboardsExample";
 
 const keywords = generateKeywordsString(["coh3 stats", "coh3 discord", "bug report", "github"]);
 
-/**
- * This is example page you can find it by going on ur /example
- * @constructor
- */
+const useStyles = createStyles((theme) => ({
+  link: {
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+  },
+
+  anchor: {
+    display: "block",
+    height: "65px",
+    marginTop: "-65px",
+    visibility: "hidden",
+  },
+
+  menu: {
+    position: "sticky",
+    top: "100px",
+  },
+}));
+
+const sections = [
+  { name: "aboutus", displayName: "About Us", component: <AboutUs /> },
+  { name: "leaderboards", displayName: "Leaderboards", component: <LeaderboardsExample /> },
+];
+
 const About: NextPage = () => {
   useEffect(() => {
     AnalyticsAboutAppPageView();
   }, []);
+
+  const { classes } = useStyles();
 
   return (
     <div>
@@ -32,79 +61,50 @@ const About: NextPage = () => {
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <>
+        <Center>
+          <Title order={1} size="h4" pt="md" mb="md">
+            FAQs
+          </Title>
+        </Center>
         <Container size={"md"}>
           {" "}
-          <Title order={1} size="h4" pt="md">
-            About coh3stats.com
-          </Title>
-          <Group>
-            <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">
-              <IconBarrierBlock size={24} />
-            </ActionIcon>{" "}
-            BETA version of the site.
-          </Group>
-          <Text pt="sm">Find your player card using search or leaderboards.</Text>
-          <Text pt="sm">More info on Github or Discord</Text>
-          <Title order={1} size="h4" pt="md">
-            API Usage / Collaboration
-          </Title>
-          We are open for collaboration / sharing the data. Reach out to us on Discord.
-          <br />
-          Its forbidden to use API / scrape the site without previous consulting!
-          <Title order={1} size="h4" pt="md">
-            Bug reports
-          </Title>
-          You can report the issues on{" "}
-          <Anchor
-            component={Link}
-            href={"https://github.com/cohstats/coh3-stats/issues"}
-            target={"_blank"}
-          >
-            {" "}
-            GitHub
-          </Anchor>{" "}
-          or on our Discord
-          <Title order={1} size="h4" pt="md">
-            Donation
-          </Title>
-          All the donations are used for covering the server costs and expenses for running the
-          site.
-          <br />
-          If we want to expand the functionality of the site - long history of matches / match
-          analysis / history of player cards, it will significantly eat up the system resources -
-          increase the cost.
-          <br />
-          <br />
-          Actually all the donations for{" "}
-          <Anchor component={Link} href={"https://coh2stats.com"} target={"_blank"}>
-            coh2stats.com{" "}
-          </Anchor>
-          have been already used to pay for 2022 server costs. So all of them are appreciated.
-          <br />
-          <br />
-          <div>
-            <div>
-              <Group>
-                <Text>
-                  All the donations are listed at{" "}
-                  <Anchor href={config.DONATION_LINK} target={"_blank"}>
-                    Ko-Fi
-                  </Anchor>
-                  :
-                </Text>
-                <Donate />
-              </Group>
+          <Grid>
+            <Grid.Col span={4}>
+              <div className={classes.menu}>
+                {sections.map((x) => {
+                  return (
+                    <Flex
+                      key={x.name}
+                      direction={{ base: "column" }}
+                      gap={{ base: "sm", sm: "lg" }}
+                    >
+                      <div>
+                        <Anchor href={`#${x.name}`} className={classes.link}>
+                          {x.displayName}
+                        </Anchor>
+                        <Divider my="sm" />
+                      </div>
+                    </Flex>
+                  );
+                })}
+              </div>
+            </Grid.Col>
 
-              <Text fz={"sm"} fs="italic">
-                You can Donate via PayPal or Card at Ko-Fi, no registration required.
-              </Text>
-            </div>
-
-            <Group pt={"xl"}>
-              <Text>Direct PayPal if you have problems with Ko-Fi:</Text>
-              <PayPalDonation />
-            </Group>
-          </div>
+            <Grid.Col span={8}>
+              {sections.map((x, idx) => {
+                return (
+                  <>
+                    <span className={classes.anchor} id={x.name} />
+                    <Title size="h3" mb="lg">
+                      {x.displayName}
+                    </Title>
+                    {x.component}
+                    {idx !== sections.length - 1 && <Divider my="sm" />}
+                  </>
+                );
+              })}
+            </Grid.Col>
+          </Grid>
         </Container>
       </>
     </div>
