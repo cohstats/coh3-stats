@@ -90,18 +90,19 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
   const octokit = new Octokit();
-  const response = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
+  const response = await octokit.request("GET /repos/{owner}/{repo}/releases", {
     owner: "cohstats",
     repo: "coh3-stats-desktop-app",
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
   });
-  let downloadURL = "https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"; // fallback in case request fails
+  let downloadURL = "https://github.com/cohstats/coh3-stats-desktop-app/releases"; // fallback in case request fails
   let downloadCount = 0;
   let version = "";
   if (response.status === 200) {
-    downloadCount = response.data.assets
+    const assets = response.data.assets;
+    downloadCount = assets.length;
       .filter((asset) => asset.browser_download_url.split(".").at(-1) !== "sig")
       .map((asset) => asset.download_count)
       .reduce((a, b) => a + b);
