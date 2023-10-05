@@ -475,8 +475,12 @@ const maps: { [key: string]: { name: string; url: string } } = {
     name: "Gardens",
     url: "/icons/maps/gardens.webp",
   },
-  rural_town_2p_mkii: {
+  pachino_2p: {
     name: "Pachino Stalemate",
+    url: "/icons/maps/pachino_farmlands_mkii.webp",
+  },
+  rural_town_2p_mkii: {
+    name: "Pachino Farmlands",
     url: "/icons/maps/pachino_farmlands_mkii.webp",
   },
   monte_cavo_8p: {
