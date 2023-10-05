@@ -1,9 +1,9 @@
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
-import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/apis/coh3stats-api";
+import { getPlayerCardInfo, getPlayerRecentMatches, getPlayerCarStats } from "../../src/apis/coh3stats-api";
 import { GetServerSideProps } from "next";
+import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
 
 import PlayerCard from "../../screens/players";
-import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   params,
@@ -19,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   // const viewStandings = view === "standings";
 
   let playerData = null;
+  let playerStatsData = null;
   let playerMatchesData = null;
   let error = null;
   let replaysData = null;
@@ -30,6 +31,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
 
   try {
     const PromisePlayerCardData = getPlayerCardInfo(playerID, true, xff);
+    const PromisePlayerCardStatsData = getPlayerCarStats(playerID, xff);
     const PromiseReplaysData = isReplaysPage
       ? getReplaysForPlayer(playerID, start as string | undefined)
       : Promise.resolve();
@@ -38,12 +40,14 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       ? getPlayerRecentMatches(playerID, xff)
       : Promise.resolve();
 
-    const [playerAPIData, PlayerMatchesAPIData, replaysAPIDAta] = await Promise.all([
+    const [playerAPIData, playerCardStatsData, PlayerMatchesAPIData, replaysAPIDAta] = await Promise.all([
       PromisePlayerCardData,
+      PromisePlayerCardStatsData,
       PromisePlayerMatchesData,
       PromiseReplaysData,
     ]);
 
+    playerStatsData = playerCardStatsData ? playerCardStatsData : null;
     playerData = playerAPIData ? processPlayerInfoAPIResponse(playerAPIData) : null;
     playerMatchesData = viewPlayerMatches ? PlayerMatchesAPIData : null;
     replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
