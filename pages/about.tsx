@@ -43,8 +43,8 @@ const About: NextPage = () => {
               <Tabs.Tab value="about">About Us</Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="leaderboards"></Tabs.Panel>
-            <Tabs.Panel value="messages">Messages tab content</Tabs.Panel>
+            <Tabs.Panel value="leaderboards">Leaderboards Example</Tabs.Panel>
+            <Tabs.Panel value="profile">Profile Example</Tabs.Panel>
             <Tabs.Panel value="about">
               <AboutUs />
             </Tabs.Panel>
