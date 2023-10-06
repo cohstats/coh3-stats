@@ -30,7 +30,7 @@ const Home: NextPage<Props> = ({
         <Grid>
           <Grid.Col sm={8}>
             <Image
-              src="/images/coh3-background.webp"
+              src="/images/coh3-background-cropped.webp"
               alt={"coh3-background"}
               radius="md"
               height={"19rem"}
