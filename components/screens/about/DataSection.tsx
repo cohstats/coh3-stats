@@ -1,4 +1,4 @@
-import { Anchor, Text, Title } from "@mantine/core";
+import { Anchor, Space, Text, Title } from "@mantine/core";
 import { getOpenDataRoute } from "../../../src/routes";
 
 const DataSection = () => {
@@ -6,8 +6,10 @@ const DataSection = () => {
     <>
       <Title order={5}>Leaderboards</Title>
       Live data from Relic servers.
+      <Space h={"xs"} />
       <Title order={5}>Player Cards</Title>
       Live data from Relic servers mixed with data from our database.
+      <Space h={"xs"} />
       <Title order={5}>Stats Data</Title>
       Data from our database. Updated daily ~6 AM UTC unless specified otherwise.
       <div style={{ paddingLeft: 25 }}>
@@ -24,6 +26,7 @@ const DataSection = () => {
         You can download the data we are scraping. More info on{" "}
         <Anchor href={getOpenDataRoute()}> Open Data</Anchor> page.
       </div>
+      <Space h={"xs"} />
       <Title order={5}>Explorer</Title>
       All the data for units, DPS calculators, faction overviews are generated directly from the
       game files. There are often a bugs in the COH source files, please report any problems you
