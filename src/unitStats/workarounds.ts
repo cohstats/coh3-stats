@@ -103,6 +103,9 @@ function setBattlegroupsWorkarounds() {
       // Field Engineering Branch.
       item.branches.LEFT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
+          case "italian_infantry_double_l640_ak":
+            upg.spawnItems = ["l6_40_ak", "l6_40_ak"];
+            break;
           case "italian_infantry_guastatori_ak":
             upg.spawnItems = ["guastatori_ak"];
             break;
@@ -114,8 +117,8 @@ function setBattlegroupsWorkarounds() {
       // Defensive Warfare Branch.
       item.branches.RIGHT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
-          case "italian_infantry_double_l640_ak":
-            upg.spawnItems = ["l6_40_ak", "l6_40_ak"];
+          // Do nothing.
+          default:
             break;
         }
       });
