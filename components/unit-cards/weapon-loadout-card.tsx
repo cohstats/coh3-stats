@@ -18,8 +18,12 @@ export const WeaponLoadoutCard = (
   count = 1,
 ) => {
   const iconName = icon_name !== "" ? `/icons/${icon_name}.png` : getDefaultWeaponIcon(parent);
-  const isBallisticOrExplosive =
-    weapon_cat == "ballistic_weapon" || weapon_cat == "explosive_weapon";
+  /** Only take into account those weapons categories to display further info.
+   * The "special", "flame_throwers", "campaign" are ignored. */
+  const isValidWeapon =
+    weapon_cat == "ballistic_weapon" ||
+    weapon_cat == "explosive_weapon" ||
+    weapon_cat == "small_arms";
   return (
     <Stack spacing={8}>
       {/* Heading */}
@@ -156,17 +160,17 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
           <Grid.Col md={3} span={3}>
             <Text align="center" color="green.6">
-              {isBallisticOrExplosive ? weapon_bag.penetration_near : "-"}
+              {isValidWeapon ? weapon_bag.penetration_near : "-"}
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
             <Text align="center" color="yellow.6">
-              {isBallisticOrExplosive ? weapon_bag.penetration_mid : "-"}
+              {isValidWeapon ? weapon_bag.penetration_mid : "-"}
             </Text>
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
-              {isBallisticOrExplosive ? weapon_bag.penetration_far : "-"}
+              {isValidWeapon ? weapon_bag.penetration_far : "-"}
             </Text>
           </Grid.Col>
         </Grid>
@@ -178,23 +182,19 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
           <Grid.Col md={3} span={3}>
             <Text align="center" color="green.6">
-              {isBallisticOrExplosive
+              {isValidWeapon
                 ? Math.round(getScatterArea(weapon_bag.range.near, weapon_bag))
                 : "-"}
             </Text>
           </Grid.Col>
           <Grid.Col md={3} span={3}>
             <Text align="center" color="yellow.6">
-              {isBallisticOrExplosive
-                ? Math.round(getScatterArea(weapon_bag.range.mid, weapon_bag))
-                : "-"}
+              {isValidWeapon ? Math.round(getScatterArea(weapon_bag.range.mid, weapon_bag)) : "-"}
             </Text>
           </Grid.Col>
           <Grid.Col md={2} span={2}>
             <Text align="center" color="red.6">
-              {isBallisticOrExplosive
-                ? Math.round(getScatterArea(weapon_bag.range.max, weapon_bag))
-                : "-"}
+              {isValidWeapon ? Math.round(getScatterArea(weapon_bag.range.max, weapon_bag)) : "-"}
             </Text>
           </Grid.Col>
         </Grid>
