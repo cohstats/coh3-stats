@@ -26,7 +26,7 @@ const Home: NextPage<Props> = ({
       <Head>
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
-      <Container fluid px={"xs"}>
+      <Container fluid p={{ base: 0 }}>
         <Grid>
           <Grid.Col sm={8}>
             <Image

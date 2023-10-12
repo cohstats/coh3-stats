@@ -33,6 +33,7 @@ import {
   ActionIcon,
   Select,
   LoadingOverlay,
+  Center,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
@@ -533,28 +534,36 @@ export const DpsChart = (props: IDPSProps) => {
               />
 
               <Space h="sm" />
-
-              {activeData[0] && (
-                <Box
-                  sx={(theme) => ({
-                    backgroundColor:
-                      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                    border: "solid 2px " + theme.colors.blue[4],
-                    textAlign: "left",
-                    padding: theme.spacing.xs,
-                    borderRadius: theme.radius.md,
-                  })}
-                >
-                  <DpsUnitCustomizing
-                    key={activeData[0].id + "0." + patchUnit1}
-                    unit={activeData[0]}
-                    onChange={onSquadConfigChange}
-                    index={0}
-                    ebps={ebpsData1}
-                    weapons={weaponData1}
-                  />
-                </Box>
-              )}
+              <div style={{ minHeight: 242 }}>
+                {!activeData[0] && (
+                  <Center h={200}>
+                    <Text c="dimmed" size="sm">
+                      Please select a unit
+                    </Text>
+                  </Center>
+                )}
+                {activeData[0] && (
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                      border: "solid 2px " + theme.colors.blue[4],
+                      textAlign: "left",
+                      padding: theme.spacing.xs,
+                      borderRadius: theme.radius.md,
+                    })}
+                  >
+                    <DpsUnitCustomizing
+                      key={activeData[0].id + "0." + patchUnit1}
+                      unit={activeData[0]}
+                      onChange={onSquadConfigChange}
+                      index={0}
+                      ebps={ebpsData1}
+                      weapons={weaponData1}
+                    />
+                  </Box>
+                )}
+              </div>
             </Grid.Col>
 
             <Grid.Col md={6} lg={6}>
@@ -602,28 +611,36 @@ export const DpsChart = (props: IDPSProps) => {
               />
 
               <Space h="sm" />
-
-              {activeData[1] && (
-                <Box
-                  sx={(theme) => ({
-                    backgroundColor:
-                      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                    border: "solid 2px " + theme.colors.red[6],
-                    textAlign: "left",
-                    padding: theme.spacing.xs,
-                    borderRadius: theme.radius.md,
-                  })}
-                >
-                  <DpsUnitCustomizing
-                    key={activeData[1].id + "1." + patchUnit2}
-                    unit={activeData[1]}
-                    onChange={onSquadConfigChange}
-                    index={1}
-                    ebps={ebpsData2}
-                    weapons={weaponData2}
-                  />
-                </Box>
-              )}
+              <div style={{ minHeight: 242 }}>
+                {!activeData[1] && (
+                  <Center h={200}>
+                    <Text c="dimmed" size="sm">
+                      Please select a unit
+                    </Text>
+                  </Center>
+                )}
+                {activeData[1] && (
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
+                      border: "solid 2px " + theme.colors.red[6],
+                      textAlign: "left",
+                      padding: theme.spacing.xs,
+                      borderRadius: theme.radius.md,
+                    })}
+                  >
+                    <DpsUnitCustomizing
+                      key={activeData[1].id + "1." + patchUnit2}
+                      unit={activeData[1]}
+                      onChange={onSquadConfigChange}
+                      index={1}
+                      ebps={ebpsData2}
+                      weapons={weaponData2}
+                    />
+                  </Box>
+                )}
+              </div>
             </Grid.Col>
           </Grid>
         </>

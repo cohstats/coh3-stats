@@ -39,12 +39,15 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
         <meta property="og:image" content="/desktop-app/desktop-app-main-500x281.webp" />
       </Head>
       <Container size={"lg"}>
+        {/*We need to fix this on both mobile and desktop to avoid CLS*/}
         <Image
           src="/desktop-app/desktop-app-main.webp"
           alt={"coh3 stats desktop app"}
           radius="md"
           mx="auto"
           maw={900}
+          mih={190}
+          mah={500}
         />
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" spacing={5} mb={30}>

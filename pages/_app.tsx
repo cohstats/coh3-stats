@@ -6,7 +6,6 @@ import { Notifications } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
-import Script from "next/script";
 import webFirebase from "../src/firebase/web-firebase";
 import { BetaVersion } from "../components/other/beta-version";
 import { useEffect } from "react";
@@ -16,6 +15,7 @@ import ContentContainer from "../components/Content-container";
 import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
 import { useServiceWorker, useDevtools } from "@edgio/react";
+import { Metrics } from "@edgio/rum";
 
 webFirebase.init();
 
@@ -25,6 +25,12 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
 
   useDevtools();
+
+  new Metrics({
+    token: "63a45f52-3972-4ed0-8867-4e762860a563", // Get your token from the Edgio Console
+  })
+    .collect()
+    .then();
 
   useServiceWorker({});
 
@@ -118,17 +124,6 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           href="/opensearch.xml"
         />
       </Head>
-      <Script
-        id="rum-lib"
-        src="https://rum.edgio.net/latest.js"
-        onLoad={() => {
-          // @ts-ignore
-          new Edgio.Metrics({
-            token: "63a45f52-3972-4ed0-8867-4e762860a563",
-          }).collect();
-        }}
-      />
-
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <Notifications />

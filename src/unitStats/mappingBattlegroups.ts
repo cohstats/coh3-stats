@@ -25,7 +25,7 @@ let battlegroupStats: BattlegroupsType[];
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapBattlegroupData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
+const mapBattlegroupData = (filename: string, subtree: any, jsonPath: string) => {
   const bgEntity: BattlegroupsType = {
     id: filename,
     path: jsonPath,
