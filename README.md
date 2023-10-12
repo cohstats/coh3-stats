@@ -48,6 +48,7 @@ Development conventions:
 - Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
 - Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though, we can solve on MR)
 - Prettier and eslint should cover the rest (Don't forget to run it)
+- We are using [Mantine](https://mantine.dev/) component library
 
 ## Development approach
 

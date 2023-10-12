@@ -79,7 +79,7 @@ const DpsPage: NextPage<DpsProps> = ({
         {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
       </Head>
       <div>
-        <DpsChart {...dbpsData}></DpsChart>
+        <DpsChart {...dbpsData} />
       </div>
     </>
   );
