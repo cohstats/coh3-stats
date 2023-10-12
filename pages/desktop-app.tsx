@@ -4,7 +4,6 @@ import {
   Container,
   Image,
   List,
-  MediaQuery,
   Paper,
   rem,
   Stack,
