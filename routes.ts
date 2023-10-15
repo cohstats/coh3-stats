@@ -30,6 +30,11 @@ export default new Router()
       send("User-agent: *\nDisallow: /", 200);
     },
   )
+  // https://developer.chrome.com/blog/private-prefetch-proxy/
+  .match("/.well-known/traffic-advice", ({ send, setResponseHeader }) => {
+    setResponseHeader("Content-Type", "application/trafficadvice+json");
+    send('[{"user_agent": "prefetch-proxy","fraction": 1.0}]', 200);
+  })
   // Homepage caching
   .match("/", ({ cache }) => {
     cache({
