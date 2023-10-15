@@ -181,8 +181,8 @@ const LeaderBoardStats = ({ leaderBoardStats }: { leaderBoardStats: LeaderboardS
       <Title order={2}>Amount of players in leaderboards</Title>
       <StatsTable data={leaderBoardStats.totalPlayers} />
       <Text color={"dimmed"} fs="italic" pl={5} fz={"sm"}>
-        * Keep in mind that one player is usually ranked in various modes. You can&apos;t sum up all
-        numbers.{" "}
+        * Keep in mind that one player is usually ranked in various modes. You can&apos;t sum up
+        all numbers.{" "}
       </Text>
       <Space h={"xl"} />
       <Title order={2}>Players with level 16 - 20</Title>

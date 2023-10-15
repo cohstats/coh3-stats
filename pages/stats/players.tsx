@@ -175,7 +175,8 @@ const PlayerStats = ({
                     given day.
                   </Text>
                   <Text fz={"xs"}>
-                    These numbers can&apos;t be compared with coh2stats numbers, they are tracked differently.
+                    These numbers can&apos;t be compared with coh2stats numbers, they are tracked
+                    differently.
                   </Text>
                 </Paper>
               </Group>

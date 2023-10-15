@@ -88,8 +88,8 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
           <IconBarrierBlock size={50} />
           <Text color="orange.6" italic>
             Important Note: This section may contain some inacurracies regarding the unit costs.
-            We&apos;re still working on redefining the calculation for infantry, so feel free to report any
-            bug.
+            We&apos;re still working on redefining the calculation for infantry, so feel free to
+            report any bug.
           </Text>
         </Flex>
 
