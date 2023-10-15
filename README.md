@@ -38,15 +38,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
 Before making an MR please create an issue describing what you want to change / how you want to change it.
-So we can have some discussion, also it avoids multiple people working on the same thing.
+So we can have some discussion. Furthermore, it avoids multiple people working on the same thing.
 
-Feel free to create fork and make MR. Before PR you can test your code with `yarn build` to make sure it can be build.
+Feel free to create a fork and make an MR. Before PR you can test your code with `yarn build` to make sure it builds.
 Also make sure the prettier is right `yarn fix` and `yarn test`
 
 Development conventions:
 
 - Name the files with `-` instead of camelCase. Eg `color-scheme-toggle.tsx`
-- Try not to add anymore eslint warnings if possible (Don't worry if you don't know how to solve it though, we can solve on MR)
+- Try not to add any more eslint warnings (Don't worry if you don't know how to solve it though, we can solve on MR)
 - Prettier and eslint should cover the rest (Don't forget to run it)
 - We are using [Mantine](https://mantine.dev/) component library
 
@@ -60,7 +60,7 @@ Maps are specified in https://github.com/cohstats/coh3-stats/blob/master/src/coh
 
 #### Utilize images from the game
 
-You can use function getIconsPathOnCDN where you can pass the image name or the full path and it should automatically
+You can use the function getIconsPathOnCDN where you can pass the image name or the full path and it should automatically
 resolve it on our hosting
 https://github.com/cohstats/coh3-stats/blob/master/src/utils.ts#L22
 If the image is not found there, you can always add it to the /public folder.
@@ -86,7 +86,7 @@ For more info see readme at https://www.npmjs.com/package/next-sitemap
 
 ##### Generating the links to all units:
 
-We have special script for that.
+We have a special script for that.
 
 1. You need Node 19+
 2. Run
@@ -95,7 +95,7 @@ We have special script for that.
 npx ts-node --compiler-options "{\"module\":\"commonjs\"}" scripts/unit-paths.ts > paths.txt
 ```
 
-3. Copy the content from `paths.txt` and paste it into `next-sitemap.config.js`
+3. Copy the content of `paths.txt` and paste it into `next-sitemap.config.js`
 
 ### NextJS development
 
@@ -121,16 +121,13 @@ Example pages:
 
 #### Reasons:
 
-- Because it's public website, SSR pages will be much better readed by search engines and generally it will provide
-  better experience
-- All the data fetching (from DB, cloud functions and other) should happen in SSR, because GCP services are blocked in
-  some countries ( China, Russia), that way we can offer site avaliabily everywhere.
-- The SSR functions can connect to some public APIs and will fetch the data from Firestore and may call some cloud
-  functions
-- The SSR functions should be "light weight" if we need to run some big data computations we should do so Cloud
-  Functions on GCP where we can control the performance
-- The whole source code for NextJS will be in this repo and will be open source
-- The BE of the CF will be closed source because, we will most likely connect to sensitive APIs
+- Because it's a public website, SSR pages will be much better read by search engines and it will provide an overall better experience.
+- All the data fetching (from DB, cloud functions and other) should happen in SSR, so that we can offer site avaliabily everywhere, as GCP services are blocked in
+  some countries ( China, Russia).
+- The SSR functions have the capability to connect to public APIs, retrieve data from Firestore, and invoke cloud functions when necessary.
+- The SSR functions should remain lightweight. For extensive data computations, utilize Cloud Functions on GCP, enabling performance control.
+- The complete source code for our Next.js frontend will be available in this repository and will be open source.
+- The BE of the CF will be closed source because, we will most likely connect to sensitive APIs.
 
 ![image](https://user-images.githubusercontent.com/8086995/217599315-ff660c70-e9d6-4e99-88b9-c4ea21892433.png)
 
@@ -167,7 +164,7 @@ Backend:
 
 ### Learn More about NextJS
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about Next.js, have a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
