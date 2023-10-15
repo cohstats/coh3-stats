@@ -50,7 +50,7 @@ export const OnlinePlayers: React.FC = () => {
 
   return (
     <Tooltip
-      label={`Amount of online players in Company of Heroes 3 as of ${new Date(
+      label={`Number of online players in Company of Heroes 3 as of ${new Date(
         onlinePlayersData?.timeStampMs || "",
       ).toLocaleString()}`}
       multiline

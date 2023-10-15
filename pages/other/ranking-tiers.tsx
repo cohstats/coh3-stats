@@ -44,10 +44,9 @@ const RankingTiers: NextPage = () => {
             Ranking Tiers in Company of Heroes 3
           </Title>
           <Text fz="sm">
-            Based on the player ELO, players are placed into specific League and Tier.
-            <br />
-            Player needs at least 10 matches for each faction in a specific game type to earn a
-            rank and be placed in a tier.
+            Based on the player ELO, players are placed into specific Leagues and Tiers.
+            <br />A player needs at least 10 matches for each faction in a specific game type to
+            earn a rank and be placed in a tier.
           </Text>
           <DataTable
             records={playerRanksAsArray}
@@ -107,8 +106,8 @@ const RankingTiers: NextPage = () => {
             ]}
           />
           <Text fz="sm" fs="italic">
-            Note: If a player doesn&apos;t play for a long time, they loose their rank. But you
-            need to play just 1 game to get it back.
+            Note: If a player remains inactive for an extended period, they lose their rank.
+            However, they can regain it by playing just one game.
           </Text>
         </Container>
       </>

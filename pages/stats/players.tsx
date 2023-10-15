@@ -91,10 +91,10 @@ const PlayerStats = ({
                   >
                     <div style={{ gridColumn: 1, justifySelf: "end" }}>
                       <Group spacing={5}>
-                        <>Total amount of tracked players</>{" "}
+                        <>Total number of tracked players</>{" "}
                         <HelperIcon
                           text={
-                            "We can track only players who were ranked at least once in any mode. We are tracking from May 19th 2023."
+                            "We can only track players who have been ranked at least once in any game mode since May 19th, 2023."
                           }
                         />
                       </Group>
@@ -149,13 +149,13 @@ const PlayerStats = ({
                   </Group>
                   <Group spacing={"xs"}>
                     <Text fz={"xs"}>
-                      We are able to track only players who played &quot;ranked&quot; match in a
+                      We are only able to track players who played &quot;ranked&quot; match in a
                       given day.
                     </Text>
                     <HelperIcon
                       text={
                         <>
-                          We track only players who played match in a mode where they are ranked.
+                          We only track players who played match in a mode where they are ranked.
                           <br />
                           For example: <br />
                           Player is ranked only in 1v1 Wehrmacht, plays 1v1 match as Wehrmacht -
@@ -171,12 +171,11 @@ const PlayerStats = ({
                     />
                   </Group>
                   <Text fz={"xs"}>
-                    This doesn&apos;t show the real amount of players who played the game in a
+                    This doesn&apos;t show the real number of players who played the game on a
                     given day.
                   </Text>
                   <Text fz={"xs"}>
-                    You can&apos;t compare these numbers with coh2stats numbers, they are tracked
-                    differently.
+                    These numbers can&apos;t be compared with coh2stats numbers, they are tracked differently.
                   </Text>
                 </Paper>
               </Group>

@@ -40,8 +40,8 @@ const PlayerExport: NextPage = () => {
             API for tournament organizers.
           </Title>
           <Text pt="md">
-            This API gives you access to players leaderboard stats in CSV format. Which you can
-            easily import in Excel sheet.
+            This API provides access to players leaderboard stats in CSV format which you can
+            easily import in an Excel sheet.
           </Text>
           <Space />
           <Text pt="md">
@@ -58,7 +58,7 @@ const PlayerExport: NextPage = () => {
           </Text>
           <Space h={"xl"} />
           <Text>
-            Example how to import the data into Google Sheets is{" "}
+            Example of how to import the data into Google Sheets is{" "}
             <Anchor
               href={
                 "https://docs.google.com/spreadsheets/d/1K3aEixDvrnEB_Xdvwjx_NsTRqsWv2Kp4-ZSGwxbY7c8/edit?usp=sharing"
@@ -77,11 +77,11 @@ const PlayerExport: NextPage = () => {
 
           <Space h={"xl"} />
           <Text>
-            In case you need the data for your tournament in different format or you have any
-            other questions, let us know on Discord.
+            If you require the data for your tournament in a different format or have any other
+            inquiries, please feel free to reach out to us on Discord.
           </Text>
           <Text fs="italic">
-            Shout-out for coh3stats.com at your tournament would be awesome. Thank you
+            A shoutout to coh3stats.com in your tournament would be awesome. Thank you!
           </Text>
           <Space h={"xl"} />
           <Text>

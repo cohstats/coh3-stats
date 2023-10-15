@@ -160,9 +160,9 @@ const OpenData: NextPage = () => {
               COH3 Leaderboards data
             </Title>
             <Text pt="md">
-              COH3 Stats is storing all the historic leaderboards for COH3. You can download the
-              .json files from our storage. Each JSON file contains full leaderboards (all ranks)
-              for a given mode and faction.
+              COH3 Stats stores complete historical leaderboards for COH3. You can download the
+              .json files from our storage. Each JSON file includes comprehensive leaderboards
+              with all the ranks for a specific mode and faction.
             </Text>
             <Text pt="md">
               They are created every day at 04:00 UTC. Downloading for a given day at 05:00 UTC
@@ -171,12 +171,12 @@ const OpenData: NextPage = () => {
               History starts on 10h of May 2023.
             </Text>
             <Text pt="md">
-              You can download them our our storage: <br />
+              You can download them from our storage: <br />
               <Code block>{codeForLeaderboards}</Code>
             </Text>
             <Text fs="italic" fz={"small"}>
-              If you are going to use the data, please mention the source of the data. And also
-              please share your project with us on our{" "}
+              If you plan to utilize the data, kindly acknowledge the data source. Additionally,
+              consider sharing your project with us on our{" "}
               <Anchor href={config.DISCORD_INVITE_LINK} target={"_blank"}>
                 Discord
               </Anchor>
@@ -187,7 +187,7 @@ const OpenData: NextPage = () => {
             <Spoiler maxHeight={120} showLabel="Show full details" hideLabel="Hide">
               <Code block>{codeTypeOfLeaderBoards}</Code>
               <Text fs="italic" fz={"small"}>
-                Optional fields are marked with &quot;?&quot;. And will be most likely not present
+                Optional fields are marked with &quot;?&quot;. And will most likely be not present
                 as they are not deemed important. However they are on the Relic API in case you
                 need them. Reach out to us if you need any clarification.
               </Text>
@@ -198,7 +198,7 @@ const OpenData: NextPage = () => {
               COH3 Match data
             </Title>
             <Text pt="md">
-              COH3 Stats is storing played matches. It should include all games where at least 1
+              COH3 Stats stores played matches. It should include all games where at least 1
               player was ranked. It might also include some custom and other types of games. It
               should not include any broken games. Aka game 3v3, which had only 2 players on one
               side. It is recommended to filter the games based on matchtype_id. You can download
@@ -220,8 +220,8 @@ const OpenData: NextPage = () => {
               <Code block>{codeTypeOfMatchData}</Code>
             </Spoiler>
             <Text fs="italic" fz={"small"}>
-              If you are going to use the data, please mention the source of the data. And also
-              please share your project with us on our{" "}
+              If you plan to utilize the data, kindly acknowledge the data source. Additionally,
+              consider sharing your project with us on our{" "}
               <Anchor href={config.DISCORD_INVITE_LINK} target={"_blank"}>
                 Discord
               </Anchor>
@@ -238,7 +238,7 @@ const OpenData: NextPage = () => {
               For example 1683676800 which is May 10 2023 00:00:00 GMT+0000.
             </Text>
             <Text pt={"md"}>
-              In JavaScript you can get the timestamp for the current day with this code:
+              In JavaScript you can get the timestamp for the current day with the following code:
             </Text>
             <Code block>{codeForUnixTimeStamp}</Code>
           </div>
