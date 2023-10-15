@@ -37,8 +37,7 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-Before making an MR please create an issue describing what you want to change / how you want to change it.
-So we can have some discussion. Furthermore, it avoids multiple people working on the same thing.
+Before making an MR please create an issue describing what you want to change and how you want to change it so we can have some discussion. Furthermore, it avoids multiple people working on the same thing.
 
 Feel free to create a fork and make an MR. Before PR you can test your code with `yarn build` to make sure it builds.
 Also make sure the prettier is right `yarn fix` and `yarn test`
