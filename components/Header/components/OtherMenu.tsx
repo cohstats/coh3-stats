@@ -113,7 +113,7 @@ const OtherMenu = ({
                 Relic API Status
               </Anchor>
             </Group>
-            <Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>
+            <Tooltip label="Coming Soon" color="orange" withArrow position={"bottom"}>
               <Anchor
                 className={cx(classes.disabledLink)}
                 component={Link}

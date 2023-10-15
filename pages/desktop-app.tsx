@@ -75,9 +75,11 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
               </ThemeIcon>
             }
           >
-            <List.Item>Easy to use, no configuration required - just start the app</List.Item>
-            <List.Item>See detailed leaderboard stats of players in your game</List.Item>
-            <List.Item>Get notified via sound when joining a game (optional)</List.Item>
+            <List.Item>
+              Effortless usage, no setup needed - simply launch the application
+            </List.Item>
+            <List.Item>Explore intricate player leaderboard statistics</List.Item>
+            <List.Item>Receive optional sound notifications upon joining a game</List.Item>
             <List.Item>
               <Anchor href={"https://obsproject.com/"} target={"_blank"}>
                 OBS

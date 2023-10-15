@@ -53,7 +53,7 @@ const DPSCalculatorCard = () => {
       title={"DPS Calculator"}
       imageSrc={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
       content={
-        "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can take into consideration also HP of the units."
+        "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can also take into consideration the HP of the units."
       }
     />
   );
@@ -66,7 +66,7 @@ const UnitBrowserCard = () => {
       title={"Unit Browser"}
       imageSrc={getIconsPathOnCDN("/icons/common/squad/squad.png")}
       content={
-        "Browse all units in the game. See their stats, weapons, upgrades and all the other stuff. See Explorer menu for faction overview and more."
+        "Explore game units, including stats, weapons, and upgrades. Navigate the Explorer menu for faction overview and more details."
       }
     />
   );

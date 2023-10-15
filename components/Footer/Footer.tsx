@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
                 <span>Game patch {config.latestPatch}</span>
               </Tooltip>
               <br />
-              This is unofficial fan-made site for Company&nbsp;Of&nbsp;Heroes&nbsp;3.
+              This is an unofficial fan-made site for Company&nbsp;Of&nbsp;Heroes&nbsp;3.
             </Text>
             <Group spacing={5} className={classes.social} position="right" noWrap>
               <Text color="dimmed" size="sm"></Text>
@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
           <br />
         </Container>
         <Text color="dimmed" size="xs" style={{ textAlign: "center" }}>
-          The Company of Heroes is registered trademark of SEGA&nbsp;Holdings.&nbsp;Co
+          The Company of Heroes is a registered trademark of SEGA&nbsp;Holdings Co.
           <br />
           The COH Images and other assets are owned by
           Relic&nbsp;Entertainment&nbsp;and/or&nbsp;SEGA

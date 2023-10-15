@@ -672,7 +672,7 @@ export const DpsChart = (props: IDPSProps) => {
         <Space h="sm" />
         <Text color={"dimmed"} pl={5} fs="italic">
           * Computation results are based on approximation models using stats from the game files.
-          In-Game values vary.
+          In-Game values may vary.
         </Text>
         <Text color={"dimmed"} pl={5} fs="italic">
           ** Area DPS (Eg. Mortar or Stug) vs soft targets are highly experimental. Since squad
