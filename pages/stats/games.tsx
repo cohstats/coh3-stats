@@ -1,3 +1,3 @@
-import GameStats from "../../components/screens/stats/game";
+import GameStats from "../../screens/stats/game";
 
 export default GameStats;

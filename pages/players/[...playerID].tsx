@@ -1,7 +1,8 @@
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
 import { GetServerSideProps } from "next";
-import PlayerCard from "../../components/screens/players";
+
+import PlayerCard from "../../screens/players";
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   params,
