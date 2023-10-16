@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Container } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
-import Achievement from "./achivement";
+import Achievement from "./achievement";
 
 const pageTitle = `Game Stats & Charts - Company of Heroes 3`;
 const description = `Global Achievements for Company of Heroes 3.`;
