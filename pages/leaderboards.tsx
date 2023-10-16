@@ -2,7 +2,7 @@ import { getLeaderBoardData } from "../src/coh3/coh3-api";
 import { findAndMergeStatGroups } from "../src/coh3/helpers";
 import { raceType, leaderBoardType, platformType } from "../src/coh3/coh3-types";
 import { GetServerSideProps } from "next";
-import Leaderboards from "../components/screens/leaderboards/leaderboards";
+import Leaderboards from "../screens/leaderboards/leaderboards";
 
 const sortById = {
   wins: 0,

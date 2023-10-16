@@ -1,5 +1,5 @@
 import config from "../config";
-import { ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
+import { GlobalAchievementsData, ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
 import { analysisType, getAnalysisStatsHttpResponse } from "./analysis-types";
 import { cleanXForwardedFor, parseFirstIPFromString } from "./utils";
 
@@ -17,6 +17,14 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
 
 const getTwitchStreamsUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getTwitchStreamsHttp`);
+};
+
+const getGlobalAchievementsUrl = (cache_proxy = true) => {
+  const path = `/getGlobalAchievementsHttp`;
+
+  return cache_proxy
+    ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
 };
 
 const getStatsUrl = (
@@ -133,4 +141,32 @@ const getPlayerRecentMatches = async (playerID: string | number, XForwardedFor: 
   }
 };
 
-export { getPlayerCardInfo, getPlayerRecentMatches, getTwitchStreams, getStatsData };
+const getGlobalAchievements = async (XForwardedFor: string): Promise<GlobalAchievementsData> => {
+  const xff = cleanXForwardedFor(XForwardedFor);
+
+  const response = await fetch(getGlobalAchievementsUrl(), {
+    headers: {
+      "X-Forwarded-For": xff,
+      "c-edge-ip": parseFirstIPFromString(xff),
+    },
+  });
+  const data = await response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting global achievements streams: ${data.error}`);
+    }
+    throw new Error(`Error getting global achievements streams`);
+  }
+};
+
+export {
+  getPlayerCardInfo,
+  getPlayerRecentMatches,
+  getTwitchStreams,
+  getStatsData,
+  getGlobalAchievements,
+};

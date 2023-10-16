@@ -182,3 +182,19 @@ export interface Top1v1LeaderboardsData {
   race: raceType;
   data: Array<LaddersDataArrayObject>;
 }
+
+export interface GlobalAchievementsData {
+  globalAchievements: Record<
+    string,
+    {
+      defaultvalue: number;
+      displayName: string;
+      hidden: number;
+      description: string;
+      icon: string;
+      icongray: string;
+      globalPercent: number;
+    }
+  >;
+  unixTimeStamp: number;
+}

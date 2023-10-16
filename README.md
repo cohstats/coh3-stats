@@ -48,6 +48,9 @@ Development conventions:
 - Try not to add any more eslint warnings (Don't worry if you don't know how to solve it though, we can solve on MR)
 - Prettier and eslint should cover the rest (Don't forget to run it)
 - We are using [Mantine](https://mantine.dev/) component library
+- You can find the routing for pages in the folder `pages` (includes SSR code, data fetching, etc)
+- You can find the implementation of the React code for each page in the folder `screens` (includes the UI code)
+- You can find the components in the folder `components` (includes the UI code which is reused across the app)
 
 ## Development approach
 

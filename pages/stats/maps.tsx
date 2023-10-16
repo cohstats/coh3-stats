@@ -1,3 +1,3 @@
-import MapStats from "../../components/screens/stats/maps";
+import MapStats from "../../screens/stats/maps";
 
 export default MapStats;
