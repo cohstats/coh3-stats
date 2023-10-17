@@ -1,7 +1,7 @@
 import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
 import { generateKeywordsString } from "../../../src/head-utils";
 import Head from "next/head";
-import { Container } from "@mantine/core";
+import { Container, Flex, Text } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
 import Achievement from "./achievement";
@@ -22,7 +22,7 @@ const GlobalAchievements = ({
   error: string | null;
 }) => {
   // debug
-  console.log(globalAchievements);
+  // console.log(globalAchievements);
   console.log("ERROR", error);
 
   return (
@@ -33,7 +33,14 @@ const GlobalAchievements = ({
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
-      <Container size={"lg"}>
+
+      <Container>
+        <Flex justify="space-between" align={"center"}>
+          <Text size={"xl"} weight={700} color="blue">
+            Global Achievements
+          </Text>
+          <Text size={"sm"}>(% based on all players)</Text>
+        </Flex>
         {error ? (
           <ErrorCard
             title={"Error getting the global achievements"}
@@ -41,9 +48,19 @@ const GlobalAchievements = ({
           />
         ) : (
           <>
-            {/*  IMPLEMENT IT HERE*/}
-            <Achievement />
-            {JSON.stringify(globalAchievements)}
+            {globalAchievements &&
+              Object.keys(globalAchievements.globalAchievements)
+                .sort(
+                  (a, b) =>
+                    globalAchievements.globalAchievements[b].globalPercent -
+                    globalAchievements.globalAchievements[a].globalPercent,
+                )
+                .map((key) => (
+                  <Achievement
+                    key={key}
+                    achievement={globalAchievements.globalAchievements[key]}
+                  />
+                ))}
           </>
         )}
       </Container>
