@@ -1,4 +1,8 @@
-import { PlayerCardDataType, ProcessedMatch } from "../../src/coh3/coh3-types";
+import {
+  PlayerCardDataType,
+  ProcessedCOHPlayerStats,
+  ProcessedMatch,
+} from "../../src/coh3/coh3-types";
 import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
@@ -25,6 +29,7 @@ import ReplaysTab from "./components/replays-tab";
 import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
+import ActivityTab from "./components/activity/activity-tab";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -62,16 +67,20 @@ const PlayerCard = ({
   playerDataAPI,
   error,
   playerMatchesData,
+  playerStatsData,
   replaysData,
 }: {
   playerID: string;
   playerDataAPI: PlayerCardDataType | null;
   error: string;
   playerMatchesData: Array<ProcessedMatch>;
+  playerStatsData: ProcessedCOHPlayerStats;
   replaysData: ProcessedReplayData;
 }) => {
   const { push, query, asPath } = useRouter();
   const { view } = query;
+
+  console.log("FE playerStatsData", playerStatsData);
 
   const playerData = playerDataAPI;
   // Default to steam
@@ -123,6 +132,10 @@ const PlayerCard = ({
     `${playerData.info.name} matches`,
     `coh3 ${playerData.info.name} stats`,
   ]);
+
+  const DisplayError = (
+    <ErrorCard title={"Error rendering player card"} body={JSON.stringify(error)} />
+  );
 
   return (
     <>
@@ -190,24 +203,12 @@ const PlayerCard = ({
           <Tabs.List position="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
+            <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>
             <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">
             <PlayerStandingsTab playerStandings={playerData.standings} platform={platform} />
-            {/*<SimpleGrid*/}
-            {/*  cols={3}*/}
-            {/*  mt="xl"*/}
-            {/*  breakpoints={[*/}
-            {/*    { maxWidth: 1300, cols: 2 },*/}
-            {/*    { maxWidth: 650, cols: 1 },*/}
-            {/*  ]}*/}
-            {/*>*/}
-            {/*  <PlayerFactionOverview faction={localizedNames.american} {...playerData.american} />*/}
-            {/*  <PlayerFactionOverview faction={localizedNames.german} {...playerData.german} />*/}
-            {/*  <PlayerFactionOverview faction={localizedNames.dak} {...playerData.dak} />*/}
-            {/*  <PlayerFactionOverview faction={localizedNames.british} {...playerData.british} />*/}
-            {/*</SimpleGrid>*/}
           </Tabs.Panel>
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />
@@ -216,6 +217,10 @@ const PlayerCard = ({
               profileID={playerID}
               error={error}
             />
+          </Tabs.Panel>
+          <Tabs.Panel value={"activity"}>
+            {error && DisplayError}
+            {!error && <ActivityTab playerStatsData={playerStatsData} />}
           </Tabs.Panel>
           <Tabs.Panel value={"replays"}>
             <Space h="lg" />

@@ -4,6 +4,25 @@ import { GetServerSideProps } from "next";
 import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
 
 import PlayerCard from "../../screens/players";
+import { PlayerProfileCOHStats, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
+
+const ProcessPlayerCardStatsData = (
+  playerStatsData: PlayerProfileCOHStats,
+): ProcessedCOHPlayerStats => {
+  const processedActivityByDate = [];
+  for (const [date, value] of Object.entries(playerStatsData.stats?.activityByDate || {})) {
+    processedActivityByDate.push({
+      day: date,
+      value: value.w - value.l,
+      wins: value.w,
+      losses: value.l,
+    });
+  }
+
+  return {
+    activityByDate: processedActivityByDate,
+  };
+};
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   params,
@@ -47,7 +66,9 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       PromiseReplaysData,
     ]);
 
-    playerStatsData = playerCardStatsData ? playerCardStatsData : null;
+    playerStatsData = playerCardStatsData?.playerStats
+      ? ProcessPlayerCardStatsData(playerCardStatsData.playerStats)
+      : null;
     playerData = playerAPIData ? processPlayerInfoAPIResponse(playerAPIData) : null;
     playerMatchesData = viewPlayerMatches ? PlayerMatchesAPIData : null;
     replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
@@ -57,8 +78,10 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     error = e.message;
   }
 
+  console.log("BE playerStatsData", playerStatsData);
+
   return {
-    props: { playerID, playerDataAPI: playerData, error, playerMatchesData, replaysData }, // will be passed to the page component as props
+    props: { playerID, playerDataAPI: playerData, error, playerMatchesData, playerStatsData, replaysData }, // will be passed to the page component as props
   };
 };
 

@@ -1,3 +1,5 @@
+import { Timestamp } from "@firebase/firestore-types";
+
 export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
 export type raceType = (typeof raceTypeArray)[number];
@@ -9,6 +11,8 @@ export type leaderBoardType = (typeof leaderBoardTypeArray)[number];
 export type raceID = 129494 | 137123 | 197345 | 198437 | 203852;
 
 export type platformType = "steam" | "xbox" | "psn";
+
+export type WinLossPairType = { w: number; l: number };
 
 type RelicAPIResult = {
   code: number;
@@ -197,4 +201,105 @@ export interface GlobalAchievementsData {
     }
   >;
   unixTimeStamp: number;
+}
+
+export interface PlayerPersonalCOHStats {
+  // Let's store the dates in format YYYY-MM-DD
+  activityByDate: Record<string, WinLossPairType>;
+  activityByWeekDay: {
+    Mo: WinLossPairType;
+    Tu: WinLossPairType;
+    We: WinLossPairType;
+    Th: WinLossPairType;
+    Fr: WinLossPairType;
+    Sa: WinLossPairType;
+    Su: WinLossPairType;
+  };
+  activityByHour: {
+    0: WinLossPairType;
+    1: WinLossPairType;
+    2: WinLossPairType;
+    3: WinLossPairType;
+    4: WinLossPairType;
+    5: WinLossPairType;
+    6: WinLossPairType;
+    7: WinLossPairType;
+    8: WinLossPairType;
+    9: WinLossPairType;
+    10: WinLossPairType;
+    11: WinLossPairType;
+    12: WinLossPairType;
+    13: WinLossPairType;
+    14: WinLossPairType;
+    15: WinLossPairType;
+    16: WinLossPairType;
+    17: WinLossPairType;
+    18: WinLossPairType;
+    19: WinLossPairType;
+    20: WinLossPairType;
+    21: WinLossPairType;
+    22: WinLossPairType;
+    23: WinLossPairType;
+  };
+  nemesis: Record<
+    string,
+    {
+      w: number; // wins
+      l: number; // losses
+      alias: string;
+    }
+  >;
+  // startGroup id is in format `race_id-matchtype_id-statgroup_id`
+  statGroups: Record<
+    string,
+    {
+      w: number; // wins
+      l: number; // losses
+      gameTime: number; // play time in seconds
+      gameTimeSpread: Record<number, WinLossPairType>; // play time in seconds
+      factionMatrix: Record<string, { wins: number; losses: number }>;
+      maps: Record<string, WinLossPairType>;
+      counters: Record<string, number>;
+    }
+  >;
+}
+
+export interface PlayerProfileCOHStats {
+  alias: string;
+  alias_lc: string;
+  // This is Relic ID
+  profile_id: number;
+  level: number;
+  steam_id: string;
+  country: string;
+  leaderboardStats?: Record<string, HistoricLeaderBoardStat>;
+  updatedAt: Timestamp;
+  stats?: PlayerPersonalCOHStats;
+}
+
+interface HistoryOfLeaderBoardStat {
+  w: number; // wins
+  l: number; // losses
+  r: number; // ranks
+  rl: number; // rank level
+  ts: Timestamp; // timestamp
+}
+
+interface HistoricLeaderBoardStat {
+  leaderboard_id: number;
+  wins: number;
+  losses: number;
+  rank: number;
+  ranklevel: number;
+  statgroup_id: number;
+  history: Array<HistoryOfLeaderBoardStat>;
+}
+
+export interface ProcessedCOHPlayerStats {
+  activityByDate: Array<{
+    day: string;
+    value: number;
+    wins: number;
+    losses: number;
+  }>;
 }
