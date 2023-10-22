@@ -73,7 +73,7 @@ const ActivityCalendarDay = ({
           value: string;
           color: string;
           day: string;
-          data: { wins; losses };
+          data: { wins: number; losses: number };
         }) => {
           if (value === undefined) return null;
           const toolTipBackground = colorScheme === "light" ? "#eeeeee" : "#25262B";
