@@ -234,7 +234,7 @@ const InnerGameStatsPage = ({
         </Text>
       </>
     );
-  } else {
+  } else if (!loading && !error) {
     content = (
       <Center maw={400} h={250} mx="auto">
         <h3>No data for the selected period</h3>

@@ -10,6 +10,8 @@ import {
   Flex,
   Divider,
   createStyles,
+  Space,
+  Text,
 } from "@mantine/core";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../../src/firebase/analytics";
@@ -42,6 +44,18 @@ const BugReports = () => {
         {" "}
         GitHub
       </Anchor>
+      <Space h={"xs"} />
+      <Text>
+        You can see the development{" "}
+        <Anchor
+          component={Link}
+          href={"https://github.com/cohstats/coh3-stats/graphs/contributors"}
+          target={"_blank"}
+        >
+          contributions on our GitHub
+        </Anchor>
+        .
+      </Text>
     </>
   );
 };
