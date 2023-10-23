@@ -1,14 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
-  "packageRules": [
-    {
-      "matchPath": "package.json",
-      "updateType": "semver"
-    },
-    {
-      "matchPath": "yarn.lock",
-      "updateType": "semver"
-    }
-  ]
+  "npm": {
+    "minimumReleaseAge": "3 days"
+  },
+  "packageRules": [{
+    "packageNames": ["node"],
+    "enabled": false
+  }]
+
 }
