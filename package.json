@@ -36,7 +36,7 @@
     ]
   },
   "dependencies": {
-    "@edgio/rum": "^7.0.10",
+    "@edgio/rum": "^7.0.11",
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^6.0.21",
@@ -70,12 +70,12 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "^7.2.8",
-    "@edgio/core": "^7.2.8",
-    "@edgio/devtools": "^7.2.8",
-    "@edgio/next": "^7.2.8",
-    "@edgio/prefetch": "^7.2.8",
-    "@edgio/react": "^7.2.8",
+    "@edgio/cli": "^7.3.0",
+    "@edgio/core": "^7.3.0",
+    "@edgio/devtools": "^7.3.0",
+    "@edgio/next": "^7.3.0",
+    "@edgio/prefetch": "^7.3.0",
+    "@edgio/react": "^7.3.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/node": "16.11.7",
