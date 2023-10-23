@@ -7,6 +7,6 @@
   "packageRules": [{
     "packageNames": ["node"],
     "enabled": false
-  }]
-
+  }],
+  "schedule": ["0 0 * * 7"]
 }
