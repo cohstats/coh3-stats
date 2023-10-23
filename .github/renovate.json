@@ -3,11 +3,12 @@
   "extends": ["config:base"],
   "packageRules": [
     {
-      "packageFile": ["package.json", "yarn.lock"]
+      "matchPath": "package.json",
+      "updateType": "semver"
+    },
+    {
+      "matchPath": "yarn.lock",
+      "updateType": "semver"
     }
-  ],
-  "node": {
-    "lts": false,
-    "schedule": "never"
-  }
+  ]
 }
