@@ -1,12 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
-  "npm": {
-    "minimumReleaseAge": "3 days"
-  },
-  "packageRules": [{
-    "packageNames": ["node"],
-    "enabled": false
-  }],
-  "schedule": ["0 0 * * 7"]
+  "rangeStrategy": "pin",
+  "prHourlyLimit": 3,
+  "minimumReleaseAge": "5 days",
+  "packageRules": [
+    {
+      "packageNames": ["@types/node"],
+      "enabled": false
+    },
+    {
+      "packageNames": ["node"],
+      "enabled": false
+    }
+  ],
+  "schedule": ["before 4am on Monday"]
 }
