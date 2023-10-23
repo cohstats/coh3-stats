@@ -9189,9 +9189,9 @@ makeerror@1.0.12:
     tmpl "1.0.5"
 
 mantine-datatable@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-6.0.0.tgz#e402f8461b30b7f833546212297d1242481bc267"
-  integrity sha512-fj2GFpZ30B30zaQFIsFlmUzRbK3hoiLaZXGaquDqK0jbIzsxlIDbLjgTvI9KJ8f1Gk+bE0lXc4yRBsmvg6DCnA==
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-6.0.2.tgz#a2bcba092205b49712467e4486d0bbae14b3a1e5"
+  integrity sha512-EM/OXfdxEC7t37KAgXuRU5LsC8Gf8BkKED8rXpiZtkyumubXqq9H8WSlrtP5FjuHGifUkDPaJeEJMiMMYfIghQ==
 
 map-cache@^0.2.2:
   version "0.2.2"
