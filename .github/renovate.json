@@ -5,5 +5,9 @@
     {
       "packageFile": ["package.json", "yarn.lock"]
     }
-  ]
+  ],
+  "node": {
+    "lts": false,
+    "schedule": "never"
+  }
 }
