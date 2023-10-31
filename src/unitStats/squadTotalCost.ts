@@ -37,12 +37,18 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
     ...loadout,
     id: loadout.type.split("/").slice(-1)[0], // Provides id match 1:1 between ebps <-> sbps.
   }));
-  // Simply multiply the total numbers of all loadouts with a single
-  // instance cost. they should all have the same.
+  // Simply multiply the total numbers of all loadouts with a single instance
+  // cost. they should all have the same.
   const ebpsUnits = loadouts.map((loadout) => ({
     loadout,
     entity: ebpsData.find((x) => x.id === loadout.id),
   }));
+
+  // Lookup for the building that spawn each ebps item and add the
+  // `item_cost_adjustment` from that if applies.
+  const adjustedCost = ebpsData.find((x) => sbpsUnit.id in x.spawner_ext.spawn_items)?.spawner_ext
+    .spawn_items[sbpsUnit.id].item_cost_adjustment;
+
   /**
    * Important note found in the editor from designer:
    * - The population cost of this SQUAD is stored as
@@ -59,10 +65,10 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
       return tc;
     },
     {
-      fuel: 0,
-      manpower: 0,
-      munition: 0,
-      popcap: sbpsUnit.populationExt.personnel_pop,
+      fuel: adjustedCost?.fuel || 0,
+      manpower: adjustedCost?.manpower || 0,
+      munition: adjustedCost?.munition || 0,
+      popcap: sbpsUnit.populationExt.personnel_pop + (adjustedCost?.popcap || 0),
       time_seconds: 0,
       command: 0,
     },
