@@ -19,6 +19,12 @@ function bgWorkaround(description: string, override: Override) {
 
 const bgWorkarounds = new Map<string, Override>();
 
+function ebpsWorkaround(description: string, override: Override) {
+  ebpsWorkarounds.set(description, override);
+}
+
+const ebpsWorkarounds = new Map<string, Override>();
+
 // --------------------- BATTLEGROUPS --------------------- //
 
 function setBattlegroupsWorkarounds() {
@@ -222,6 +228,9 @@ function setBattlegroupsWorkarounds() {
       // Paradropped Infantry Branch.
       item.branches.RIGHT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
+          case "airborne_right_1a_pathfinders_us":
+            upg.spawnItems = ["pathfinder_us"];
+            break;
           case "airborne_right_1b_paradrop_hmg_us":
             upg.spawnItems = ["hmg_30cal_paradrop_us"];
             break;
@@ -379,8 +388,22 @@ function setBattlegroupsWorkarounds() {
   });
 }
 
+// --------------------- EBPS --------------------- //
+
+function setEbpsWorkarounds() {
+  ebpsWorkaround("Modify American - Barracks Icon", {
+    predicate: (item) => item.faction === "american" && item.id === "barracks_us",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.ui.iconName = "races/american/buildings/barracks_us";
+    },
+  });
+}
+
 setBattlegroupsWorkarounds();
+setEbpsWorkarounds();
 
-console.log(`Total BG workarounds: ${bgWorkarounds.size}`);
+// console.log(`Total BG workarounds: ${bgWorkarounds.size}`);
+// console.log(`Total Ebps workarounds: ${ebpsWorkarounds.size}`);
 
-export { bgWorkarounds };
+export { bgWorkarounds, ebpsWorkarounds };
