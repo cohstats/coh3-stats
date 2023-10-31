@@ -55,9 +55,16 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
+  "1.3.1": {
+    from: "2023-10-31",
+    to: "now",
+    value: "1.3.1",
+    label: "1.3.1",
+    group: "Umber Wasp",
+  },
   "1.3.0": {
     from: "2023-10-05",
-    to: "now",
+    to: "2023-10-30",
     value: "1.3.0",
     label: "1.3.0",
     group: "Umber Wasp",
@@ -102,11 +109,16 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.3.0";
+const latestPatch = "1.3.1";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.3.1": {
+      dataTag: "v1.3.1-1", // This is the tag of the data repo
+      dataTime: "31/October/2023", // The date when was the data tag created (the data extracted from game)
+      patchTimeSeconds: 1698771600, // The date when the patch was released (in seconds)
+    },
     "1.3.0": {
       dataTag: "v1.3.0-1", // This is the tag of the data repo
       dataTime: "04/October/2023", // The date when was the data tag created (the data extracted from game)
