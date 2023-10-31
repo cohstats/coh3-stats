@@ -129,13 +129,16 @@ const BuildingMapping = (
   return (
     <Stack>
       {buildings.map((building) => {
+        const spawnerRefs = Object.values(building.spawner_ext.spawn_items).map(
+          (x) => x.squad.instance_reference,
+        );
         // Temporary workaround while a better idea to display call-ins of DAK shows up.
         const upgrades =
           race === "dak" && building.id === "halftrack_deployment_ak"
             ? generateAfrikaKorpsCallIns(data.abilitiesData)
             : getBuildingUpgrades(building, data.upgradesData);
         const units = Object.values(
-          getResolvedSquads(building.spawnItems, data.sbpsData, data.ebpsData),
+          getResolvedSquads(spawnerRefs, data.sbpsData, data.ebpsData),
         ).map((unit) => ({
           ...unit,
           playerReq: Object.values(getResolvedUpgrades(unit.requirements, data.upgradesData)),

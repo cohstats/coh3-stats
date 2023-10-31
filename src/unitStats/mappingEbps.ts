@@ -13,9 +13,6 @@ type EbpsType = {
   unitType: string;
   /** A list of unit types. Found at `type_ext`. */
   unitTypes: string[];
-  /** A lit of unit spawnable items. Applies only for buildings (?). Found at
-   * `spawner_ext`. */
-  spawnItems: string[];
   /** Found at `ui_ext`. */
   ui: EntityUiData;
   /** To differentiate from the `cost_ext`, the entity has the popcap stored
@@ -46,6 +43,15 @@ type EbpsType = {
       /**  */
       outer_radius: number;
     };
+  };
+  /** Found at `spawner_ext`. Only applies for buildings. This is needed to
+   * extract the `item_cost_adjustment` that affects the cost of those entities
+   * trained from the building.
+   */
+  spawner_ext: {
+    /** Use the `instance_reference` last part as key (much easier to work with
+     * dictionaries for lookups). */
+    spawn_items: Record<string, EbpsSpawnItemSchema>;
   };
   /** Found at `cost_ext`. */
   cost: EntityCost;
@@ -78,6 +84,14 @@ type EntityCost = {
   popcap: number;
   /** Training / research time. Found at `time_seconds` */
   time: number;
+};
+
+type EbpsSpawnItemSchema = {
+  squad: {
+    /** The full path of the `instance_reference` field. */
+    instance_reference: string;
+  };
+  item_cost_adjustment: Omit<EntityCost, "time">;
 };
 
 type EntityUiData = {
@@ -117,7 +131,7 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     id: filename,
     path: jsonPath,
     faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
-    spawnItems: [],
+    spawner_ext: { spawn_items: {} },
     unitType: parent,
     unitTypes: [],
     ui: {
@@ -197,7 +211,18 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           for (const spawnItem of extension.spawn_items) {
             const squadInstRef = spawnItem.spawn_item.squad?.instance_reference;
             if (squadInstRef) {
-              ebps.spawnItems.push(squadInstRef);
+              const squadId = squadInstRef.split("/").slice(-1)[0];
+              ebps.spawner_ext.spawn_items[squadId] ??= {
+                squad: {
+                  instance_reference: squadInstRef,
+                },
+                item_cost_adjustment: {
+                  fuel: spawnItem.spawn_item.item_cost_adjustment.fuel,
+                  manpower: spawnItem.spawn_item.item_cost_adjustment.manpower,
+                  munition: spawnItem.spawn_item.item_cost_adjustment.munition,
+                  popcap: spawnItem.spawn_item.item_cost_adjustment.popcap,
+                },
+              };
             }
           }
         }

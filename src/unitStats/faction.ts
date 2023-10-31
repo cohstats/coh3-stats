@@ -188,7 +188,7 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
     faction: "afrika_corps",
     unitType: "production",
     unitTypes: ["halftrack_deployment"],
-    spawnItems: [],
+    spawner_ext: { spawn_items: {} },
     crew_size: 0, // Chrida: crewsize added / was missing.
     cost: {
       fuel: 0,
