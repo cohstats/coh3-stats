@@ -7,7 +7,7 @@
     "url": "https://github.com/cohstats/coh3-stats"
   },
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": "please-use-yarn"
   },
   "scripts": {
@@ -70,12 +70,12 @@
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "7.3.0",
-    "@edgio/core": "7.3.0",
-    "@edgio/devtools": "7.3.0",
-    "@edgio/next": "7.3.0",
-    "@edgio/prefetch": "7.3.0",
-    "@edgio/react": "7.3.0",
+    "@edgio/cli": "7.4.0",
+    "@edgio/core": "7.4.0",
+    "@edgio/devtools": "7.4.0",
+    "@edgio/next": "7.4.0",
+    "@edgio/prefetch": "7.4.0",
+    "@edgio/react": "7.4.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@types/node": "16.11.7",
