@@ -6,7 +6,7 @@ import { logger } from "../../src/logger";
 import { getPlayerCardInfo } from "../../src/coh3stats-api";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
-import { json2csvAsync } from "json-2-csv";
+import { json2csv } from "json-2-csv";
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateCSVObject } from "../../src/players/export";
 import { chunk } from "lodash";
@@ -69,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .status(200)
       .setHeader("Cache-Control", "public, max-age=60")
       .setHeader("content-type", "text/csv")
-      .send(await json2csvAsync(finalArray, {}));
+      .send(json2csv(finalArray, {}));
   } catch (e) {
     logger.error(e);
     res.status(500).json({ error: "error processing the request" });
