@@ -1151,7 +1151,7 @@
   resolved "https://registry.yarnpkg.com/@corex/deepmerge/-/deepmerge-4.0.37.tgz#873dcf71aee46596d7e385437b0d94770ef4c85f"
   integrity sha512-PX90bEnrLdxd5e6rSFWsghExMuSw0Uov3fWJuuaoFuUQIS/446diu/4seExK5b+43L+SOBbd2uBGwYUkG1JfCw==
 
-"@edgio/cli@^7.4.0":
+"@edgio/cli@7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@edgio/cli/-/cli-7.4.0.tgz#42f71b02b285a8f5d4c5d0b78608c5b63ea5c6a1"
   integrity sha512-X99ggjWEIVRlpSNXksLBUHxeu6g25c1RL1ZoCcCalSy1MzAnYh+Hv1erY4GffCeyMjcaeDUtf2GJMXeSKT69PA==
@@ -1199,7 +1199,7 @@
     yauzl "^2.10.0"
     yazl "^2.5.1"
 
-"@edgio/core@^7.4.0":
+"@edgio/core@7.4.0", "@edgio/core@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@edgio/core/-/core-7.4.0.tgz#a626d0e983a0a1df5f75a16ea0ffa264190e5699"
   integrity sha512-swUn2g409ScneI6M+rX5kI5gFg4ihrKMsuESfrYzFVebWrQc/j3W00fP0Tp1wXVtaW2gj7JdAVMPAzRj6qohFg==
@@ -1250,7 +1250,7 @@
     workbox-build "^6.5.4"
     yaml-validator "^4.0.0"
 
-"@edgio/devtools@^7.4.0":
+"@edgio/devtools@7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@edgio/devtools/-/devtools-7.4.0.tgz#8e67019ba61768da7a79d2f50ebd36b1992479ea"
   integrity sha512-eG8PCb3gNEw9sHDjiQtgk4locO76VtKU7QhkTkRhHDAfm8JSqIyJ9S+v4UcpuC0yJTTd7sj4Bp2mKa5Z/eDjQQ==
@@ -1259,7 +1259,7 @@
     lodash "^4.17.20"
     sirv-cli "^1.0.0"
 
-"@edgio/next@^7.4.0":
+"@edgio/next@7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@edgio/next/-/next-7.4.0.tgz#90318f3658932260e93c367e6db0063ab5fc3077"
   integrity sha512-8RPc0Hlh+bG06hgNHoMadoeYX+idut0P6FGT/HfGVrvqqHBzgtw+DBhBtuRE4iqkXXOqxXFu5RAtk5EmSBZT8g==
@@ -1280,7 +1280,7 @@
     webpack "^4.0.0"
     webpack-sources "^2.2.0"
 
-"@edgio/prefetch@^7.4.0":
+"@edgio/prefetch@7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@edgio/prefetch/-/prefetch-7.4.0.tgz#47454fa8cdebed9cbc9956959180a18cb6772f78"
   integrity sha512-OuOTtYoZ69BCYqiLgZeuBbWYAcswIiS2qt3ae3fe4E1TQmgsrVl4CfgCo91CMH9iSyFlVsUzNqlw5iCBN6EtlQ==
@@ -1295,7 +1295,7 @@
     workbox-routing "^5.1.2"
     workbox-strategies "^5.1.2"
 
-"@edgio/react@^7.4.0":
+"@edgio/react@7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@edgio/react/-/react-7.4.0.tgz#cb547adf7990c2571954a2b8c8cd0cecd49d06cc"
   integrity sha512-M2F1ZLQDzRyT33hVp1ESHlMh4e4IW8pkJq2l27IB4mKBf4hwVdMsHA4WpxaEHc0eDmSMERfnBvxzYVu7W5g01Q==
