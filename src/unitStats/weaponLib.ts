@@ -53,7 +53,8 @@ const getSingleWeaponDPS = (
   /*   Damage per Shot *
     --------------------------------------------------
   */
-  const avgDamage = (weapon_bag.damage_max + weapon_bag.damage_min * cover.damage_multiplier) / 2;
+  const avgDamage =
+    ((weapon_bag.damage_max + weapon_bag.damage_min) * cover.damage_multiplier) / 2;
 
   /*  Hitchance 
       --------------------------------------------------
@@ -96,6 +97,10 @@ const getSingleWeaponDPS = (
   let width = 0.5;
   let length = 0.5;
 
+  // Blasitc Weapons with scatter only:
+  // Estimation of the Hit-Box Size.
+  // Roughly derived from target size
+  // real values are not accessable
   if (targetSize >= 3) {
     width = 3.5;
     length = targetSize / 3;
@@ -125,28 +130,6 @@ const getSingleWeaponDPS = (
 
     // let aoe_accuracy = 0;
     let i = 0;
-
-    //   for (i = 0; i < weapon_bag.aoe_outer_radius; i++) {
-    //     aoe_accuracy += getInterpolationByDistance(
-    //       i,
-    //       {
-    //         near: weapon_bag.aoe_distance_near,
-    //         mid: weapon_bag.aoe_distance_mid,
-    //         far: weapon_bag.aoe_distance_far,
-    //         min: 0,
-    //         max: weapon_bag.aoe_outer_radius,
-    //       },
-    //       1,
-    //       1,
-    //       weapon_bag.aoe_accuracy_near,
-    //       weapon_bag.aoe_accuracy_mid,
-    //       weapon_bag.aoe_accuracy_far,
-
-    //     )
-    //   }
-
-    //   if (i > 0)
-    //     aoe_accuracy = Math.min(aoe_accuracy / i, 1);
 
     let aoe_damage = 0;
     let counter = 0;
@@ -194,38 +177,10 @@ const getSingleWeaponDPS = (
 
     const aoeAreaFar =
       Math.PI * Math.pow(Math.min(weapon_bag.aoe_distance_far, weapon_bag.aoe_outer_radius), 2);
-    // const aoeAreaMid =
-    //   Math.PI * Math.pow(Math.min(weapon_bag.aoe_distance_mid, weapon_bag.aoe_outer_radius), 2);
-    // const aoeAreaNear =
-    //   Math.PI * Math.pow(Math.min(weapon_bag.aoe_distance_near, weapon_bag.aoe_outer_radius), 2);
 
     const aoe_hitchance = Math.min(aoeAreaFar / scatter_area, 1);
-    // @todo check accuracy multiplyer
-    // let aoe_accuracy_far = 1;
-    // let aoe_accuracy_mid = 1;
-    // let aoe_accuracy_near = 1;
 
-    // if (scatter_area != 0) {
-    //   aoe_accuracy_far = Math.min((aoeAreaFar - aoeAreaMid) / scatter_area, 1);
-    //   aoe_accuracy_mid = Math.min((aoeAreaMid - aoeAreaNear) / scatter_area, 1);
-    //   aoe_accuracy_near = Math.min(aoeAreaNear / scatter_area, 1);
-    // }
-
-    // new
     const aoePenetrationChance = aoe_hitchance * Math.min(aoe_pen / armor, 1);
-
-    // const aoeHitChanceFar =
-    //   aoe_accuracy_far * Math.min(weapon_bag.aoe_penetration_far / armor, 1);
-    // const aoeHitChanceMid =
-    //   aoe_accuracy_mid * Math.min(weapon_bag.aoe_penetration_mid / armor, 1);
-    // const aoeHitChancenear =
-    //   aoe_accuracy_near * Math.min(weapon_bag.aoe_penetration_near / armor, 1);
-
-    // const aoeDamageMidFar = (1 - aoeHitChancenear) * aoeHitChanceMid;
-    // const aoeDamageFarMax = (1 - aoeDamageMidFar) * aoeHitChanceFar;
-
-    // let health = 100;
-    // if (target_unit) health = target_unit.hitpoints;
 
     let squadSize = 0;
     if (target_unit)
@@ -242,44 +197,33 @@ const getSingleWeaponDPS = (
 
     const maxDamageMember = Math.min(squadSize, maxMember);
 
-    // Squad Formation approximation
-    const memberHit = Math.min(weapon_bag.aoe_outer_radius, maxDamageMember);
+    // Explosive AOE Weapons only:
+    // Squad Formation approximation. Squad densitiy is unknown.
+    // For simplification we assume every model within the model cap to be damaged.
+    const memberHit = maxDamageMember;
 
-    // check how much units will fit into the area
+    // check how many units will fit into the area
     // const unitPerAreaApproximation = Math.min(Math.max(scatter_area / Math.pow(width,2),1),units)
 
     let type_damage_mp = 1;
-    if (target_unit && target_unit.weapon_member)
-      for (const modifier of weapon_bag.target_type_table) {
-        if (modifier.unit_type && target_unit.unit_type)
-          type_damage_mp *= modifier.damage_multiplier;
-      }
+    //if (target_unit && target_unit.weapon_member)
+    for (const modifier of weapon_bag.target_type_table) {
+      if (modifier.unit_type && target_unit && target_unit.unit_type)
+        type_damage_mp *= modifier.damage_multiplier;
+
+      // Some weapons like AT Guns or Bazookas deal no damage to infantry .
+      // At the moment it is not clear, which attribute exactly causes the zero damage effect.
+      // However, having the infantry in the target table is a good indicator to build a
+      // workaround.
+      if (
+        modifier.unit_type == "infantry" &&
+        (!target_unit || target_unit.unit_type == "infantry")
+      )
+        return 0;
+    }
 
     // new
     const aoe_damage_multi = aoe_damage * type_damage_mp * aoePenetrationChance * memberHit;
-
-    // Restrict damage multiplyer by max model health and maximum affected models.
-    // const aoeDamageFar = Math.min(
-    //   Math.min(avgDamage * weapon_bag.aoe_damage_far, health),
-    //   avgDamage * type_damage_mp * weapon_bag.aoe_damage_far,
-    // );
-    // const aoeDamageMid = Math.min(
-    //   Math.min(avgDamage * weapon_bag.aoe_damage_mid, health),
-    //   avgDamage * type_damage_mp * weapon_bag.aoe_damage_mid,
-    // );
-    // const aoeDamageNear = Math.min(
-    //   Math.min(avgDamage * weapon_bag.aoe_damage_near, health),
-    //   avgDamage * type_damage_mp * weapon_bag.aoe_damage_near,
-    // );
-
-    // const memberHit =  Math.min(units, weapon_bag.aoe_damage_max_member!=-1? weapon_bag.aoe_damage_max_member:units)
-
-    // Expected Damage via Area Effect
-    // aoeDamageCombines =
-    //   (aoeHitChancenear * aoeDamageNear +
-    //     aoeDamageMidFar * aoeDamageMid +
-    //     aoeDamageFarMax * aoeDamageFar) *
-    //   Math.min(units / 2, 1);
 
     // new
     aoeDamageCombines = aoe_damage_multi;
@@ -446,10 +390,6 @@ const getScatterHitChance = (
   width = 1,
   length = 1,
 ) => {
-  //   const area = ((distance + (1 + weapon_bag.scatter_distance_scatter_offset) * weapon_bag.scatter_distance_scatter_max)^2 -
-  //                 (distance - (1 - weapon_bag.scatter_distance_scatter_offset) * weapon_bag.scatter_distance_scatter_max)^2) *
-  //                 Math.PI * (weapon_bag.scatter_angle_scatter/360)
-
   //  return targe_size/area;
   const scatter_max = weapon.scatter_distance_scatter_max;
   const ratio = weapon.scatter_distance_scatter_ratio;
@@ -492,12 +432,6 @@ const getScatterArea = (distance = 0, weapon_bag: WeaponStatsType) => {
 
   const scatter_area =
     (Math.PI * Math.pow(range_max, 2) - Math.PI * Math.pow(range_min, 2)) * (scatter_angle / 360);
-
-  // (
-  //                           Math.pow(distance + (1 + scatter_offset) * distance_scatter_max,2)
-  //                         - Math.pow(distance - (1 - scatter_offset) * distance_scatter_max ,2)
-  //                       )
-  //                       * Math.PI * (scatter_angle/360)
 
   return scatter_area;
 };
