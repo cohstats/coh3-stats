@@ -672,12 +672,17 @@ export const DpsChart = (props: IDPSProps) => {
         <Space h="sm" />
         <Text color={"dimmed"} pl={5} fs="italic">
           * Computation results are based on approximation models using stats from the game files.
-          In-Game values may vary.
+          Values allow us to benchmark the performance in comparison to other units. Values are
+          relative to opponent selection, E.g. small arms DPS against armor will be lower than vs
+          infantry. Values do not necessarily reflect the average time to kill (ttk) in game.
         </Text>
         <Text color={"dimmed"} pl={5} fs="italic">
-          ** Area DPS (Eg. Mortar or Stug) vs soft targets are highly experimental. Since squad
-          formation and density are unknown, the calculation is simplified. In-Game damage should
-          be higher.
+          ** Area and balistic DPS (Eg. by Mortar, Tank Guns..) are experimental approximations
+          respecting scatter, penetration and target size. Some informations like box sizes of
+          units are not accessible. Also, squads formations and densities are unknown. The
+          calculation assumes every model within the model cap limit to be hit which allows a
+          rough performance comparison but do not necessarily reflect the average time to kill in
+          game.
         </Text>
       </Container>
     </>
