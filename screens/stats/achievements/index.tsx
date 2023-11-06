@@ -1,7 +1,7 @@
 import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
 import { generateKeywordsString } from "../../../src/head-utils";
 import Head from "next/head";
-import { Container, Flex, Text } from "@mantine/core";
+import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
 import Achievement from "./achievement";
@@ -36,9 +36,7 @@ const GlobalAchievements = ({
 
       <Container>
         <Flex justify="space-between" align={"center"}>
-          <Text size={"xl"} weight={700} color="blue">
-            Global Achievements
-          </Text>
+          <Title order={2}>Global Steam Achievements</Title>
           <Text size={"sm"}>(% based on all players)</Text>
         </Flex>
         {error ? (

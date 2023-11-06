@@ -19,6 +19,9 @@ const Achievement = ({ achievement }: AchievementProps) => {
   return (
     <Card my={5}>
       <Flex justify={"space-between"} align={"center"} direction={"row"} mx={10}>
+        <Card.Section>
+          <Image src={achievement.icon} alt="" height={isMobile ? 50 : 100}></Image>
+        </Card.Section>
         <Card.Section w={isMobile ? "80%" : 500}>
           <Flex gap={5} direction={"column"}>
             <Text fw={"bold"} size={isMobile ? "md" : "lg"}>
@@ -30,14 +33,10 @@ const Achievement = ({ achievement }: AchievementProps) => {
                 radius={"xs"}
                 size={isMobile ? "md" : "xl"}
                 value={achievement.globalPercent}
-                animate
                 label={`${achievement.globalPercent.toFixed(1)}%`}
               />
             </Tooltip>
           </Flex>
-        </Card.Section>
-        <Card.Section>
-          <Image src={achievement.icon} alt="" height={isMobile ? 50 : 100}></Image>
         </Card.Section>
       </Flex>
     </Card>
