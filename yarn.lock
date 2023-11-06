@@ -9326,10 +9326,10 @@ makeerror@1.0.12:
   dependencies:
     tmpl "1.0.5"
 
-mantine-datatable@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-6.0.0.tgz#e402f8461b30b7f833546212297d1242481bc267"
-  integrity sha512-fj2GFpZ30B30zaQFIsFlmUzRbK3hoiLaZXGaquDqK0jbIzsxlIDbLjgTvI9KJ8f1Gk+bE0lXc4yRBsmvg6DCnA==
+mantine-datatable@6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-6.0.3.tgz#8ef2733b38e16b0556b2122ee38a890eab87ce76"
+  integrity sha512-xPCPK7wc4j1moVM2QrQz0ss0SP6UzvcJ/l5z5N11+67hM9CBIfOEgWNYYQnKma0+l9W1OqYgQnXuntZUXH6tOQ==
 
 map-cache@^0.2.2:
   version "0.2.2"
