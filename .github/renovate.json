@@ -12,6 +12,12 @@
     {
       "packageNames": ["node"],
       "enabled": false
+    },
+    {
+      "datasources": ["github-actions"],
+      "packagePatterns": ["^actions/"],
+      "groupName": "github-actions",
+      "groupSlug": "actions-updates"
     }
   ],
   "schedule": ["before 4am on Monday"]
