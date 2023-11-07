@@ -27,6 +27,10 @@ export const getLeaderBoardStatsRoute = () => {
   return encodeURI(`/stats/leaderboards`);
 };
 
+export const getGlobalAchievementsStatsRoute = () => {
+  return encodeURI(`/stats/achievements`);
+};
+
 export const getPlayersStatsRoute = () => {
   return encodeURI(`/stats/players`);
 };

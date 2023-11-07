@@ -2,6 +2,7 @@ import { Accordion, Anchor, Group, HoverCard, Stack, Text } from "@mantine/core"
 import Link from "next/link";
 import {
   getGameStatsRoute,
+  getGlobalAchievementsStatsRoute,
   getLeaderBoardStatsRoute,
   getMapsStatsRoute,
   getPlayersStatsRoute,
@@ -12,6 +13,7 @@ import {
   IconChartAreaLine,
   IconChevronDown,
   IconDeviceDesktopAnalytics,
+  IconTrophy,
   IconUsersGroup,
 } from "@tabler/icons-react";
 
@@ -57,6 +59,12 @@ const StatisticsMenu = ({
                   Leaderboards Stats
                 </Anchor>
               </Group>
+              <Group spacing={"xs"}>
+                <IconTrophy size={16} />
+                <Anchor component={Link} href={getGlobalAchievementsStatsRoute()} onClick={close}>
+                  Achievements Stats
+                </Anchor>
+              </Group>
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -99,6 +107,12 @@ const StatisticsMenu = ({
               <IconDeviceDesktopAnalytics size={16} />
               <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
                 Leaderboards Stats
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
+              <IconTrophy size={16} />
+              <Anchor component={Link} href={getGlobalAchievementsStatsRoute()}>
+                Achievements Stats
               </Anchor>
             </Group>
             {/*<Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>*/}
