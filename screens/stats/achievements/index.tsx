@@ -5,6 +5,7 @@ import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
 import Achievement from "./achievement";
+import dayjs from "dayjs";
 
 const pageTitle = `Game Stats & Charts - Company of Heroes 3`;
 const description = `Global Achievements for Company of Heroes 3.`;
@@ -21,10 +22,6 @@ const GlobalAchievements = ({
   globalAchievements: GlobalAchievementsData | null;
   error: string | null;
 }) => {
-  // debug
-  // console.log(globalAchievements);
-  console.log("ERROR", error);
-
   return (
     <>
       <Head>
@@ -34,7 +31,7 @@ const GlobalAchievements = ({
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
 
-      <Container>
+      <Container size={"md"}>
         <Flex justify="space-between" align={"center"}>
           <Title order={2}>Global Steam Achievements</Title>
           <Text size={"sm"}>(% based on all players)</Text>
@@ -46,19 +43,21 @@ const GlobalAchievements = ({
           />
         ) : (
           <>
-            {globalAchievements &&
-              Object.keys(globalAchievements.globalAchievements)
-                .sort(
-                  (a, b) =>
-                    globalAchievements.globalAchievements[b].globalPercent -
-                    globalAchievements.globalAchievements[a].globalPercent,
-                )
-                .map((key) => (
+            {globalAchievements && (
+              <>
+                {Object.keys(globalAchievements.globalAchievements).map((key) => (
                   <Achievement
                     key={key}
                     achievement={globalAchievements.globalAchievements[key]}
                   />
                 ))}
+
+                <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
+                  Data updated on{" "}
+                  {dayjs.unix(globalAchievements.unixTimeStamp).format("YYYY-MM-DD HH:mm")} UTC
+                </Text>
+              </>
+            )}
           </>
         )}
       </Container>
