@@ -167,3 +167,25 @@ export const parseFirstIPFromString = (ips: string | undefined) => {
     return "";
   }
 };
+
+/**
+ * Generates a timestamp for when the stats should expire.
+ * @param hoursWhenToExpire
+ */
+export const generateExpireTimeStamps = (hoursWhenToExpire: number = 7): number => {
+  const currentDate = new Date();
+  const sixAMToday = Date.UTC(
+    currentDate.getUTCFullYear(),
+    currentDate.getUTCMonth(),
+    currentDate.getUTCDate(),
+    hoursWhenToExpire,
+    0,
+    0,
+  );
+
+  if (dayjs(currentDate).isBefore(dayjs(sixAMToday))) {
+    return sixAMToday;
+  } else {
+    return dayjs(sixAMToday).add(1, "day").toDate().getTime();
+  }
+};

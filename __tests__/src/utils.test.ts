@@ -8,6 +8,7 @@ import {
   buildOriginHeaderValue,
   parseFirstIPFromString,
   cleanXForwardedFor,
+  generateExpireTimeStamps,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -208,5 +209,38 @@ describe("cleanXForwardedFor", () => {
   test("correctly handle null", () => {
     const result = cleanXForwardedFor(undefined);
     expect(result).toBe("");
+  });
+});
+
+describe("generateExpireTimeStamps", () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date(2023, 6, 25, 4, 0, 0, 0));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  test("should always be UTC", () => {
+    expect(new Date().getTimezoneOffset()).toBe(0);
+  });
+
+  test("Should return the same date before 7AM UTC", () => {
+    console.log("currentDate", new Date());
+    const timeStampMs = generateExpireTimeStamps(7);
+    expect(timeStampMs).toEqual(1690268400000);
+  });
+
+  test("Should return the next day after 7AM UTC", () => {
+    jest.setSystemTime(new Date(2023, 6, 25, 8));
+    const timeStampMs = generateExpireTimeStamps(7);
+    expect(timeStampMs).toEqual(1690354800000);
+  });
+
+  test("Should return the same day at 6AM UTC", () => {
+    jest.setSystemTime(new Date(2023, 6, 25, 5));
+    const timeStampMs = generateExpireTimeStamps(6);
+    expect(timeStampMs).toEqual(1690264800000);
   });
 });
