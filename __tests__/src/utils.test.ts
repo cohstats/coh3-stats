@@ -227,7 +227,6 @@ describe("generateExpireTimeStamps", () => {
   });
 
   test("Should return the same date before 7AM UTC", () => {
-    console.log("currentDate", new Date());
     const timeStampMs = generateExpireTimeStamps(7);
     expect(timeStampMs).toEqual(1690268400000);
   });
