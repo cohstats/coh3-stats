@@ -1,4 +1,4 @@
-import { getLatestCOH3RedditPosts } from "../../src/reddit-api";
+import { getLatestCOH3RedditPosts } from "../../src/apis/reddit-api";
 import redditResponse from "../test-assets/reddit-api-reponse.json";
 
 describe("getLatestCOH3RedditPosts", () => {

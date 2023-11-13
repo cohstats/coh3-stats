@@ -1,4 +1,4 @@
-import { RedditPostType } from "../../../src/reddit-api";
+import { RedditPostType } from "../../../src/apis/reddit-api";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | null }) => {

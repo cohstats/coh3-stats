@@ -4,7 +4,7 @@ import {
   getPlayerRecentMatches,
   getTwitchStreams,
   getStatsData,
-} from "../../src/coh3stats-api";
+} from "../../src/apis/coh3stats-api";
 
 describe("coh3stats-api", () => {
   // Mock the fetch function

@@ -21,14 +21,14 @@
     "lint:eslint": "eslint **/*.{ts,tsx,js}",
     "lint:prettier": "prettier --check .",
     "fix": "prettier --loglevel warn --write .",
-    "fix:prettier": "prettier --loglevel warn --write .",
+    "fix:prettier": "prettier --log-level warn --write .",
     "clean": "rm -fr .next && rm -fr node_modules",
     "prepare": "husky install",
     "sitemap": "next-sitemap --config next-sitemap.config.js"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,yml}": [
-      "prettier --loglevel warn --write",
+      "prettier --log-level warn --write",
       "eslint --config .eslintrc.js"
     ],
     "*.md": [
@@ -92,7 +92,7 @@
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "15.0.2",
     "next-sitemap": "4.2.3",
-    "prettier": "3.0.3",
+    "prettier": "3.1.0",
     "typescript": "5.2.2"
   }
 }

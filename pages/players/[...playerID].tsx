@@ -1,5 +1,5 @@
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
-import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/coh3stats-api";
+import { getPlayerCardInfo, getPlayerRecentMatches } from "../../src/apis/coh3stats-api";
 import { GetServerSideProps } from "next";
 
 import PlayerCard from "../../screens/players";

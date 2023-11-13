@@ -3,7 +3,7 @@
  * The reason we have this here is, so we can cache it.
  */
 
-import { getNumberOfOnlinePlayersSteamUrl } from "../../src/steam-api";
+import { getNumberOfOnlinePlayersSteamUrl } from "../../src/apis/steam-api";
 import { logger } from "../../src/logger";
 import { NextApiRequest, NextApiResponse } from "next";
 
