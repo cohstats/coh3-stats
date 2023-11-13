@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "1.3.0";
+const defaultStatsPatchSelector = "1.3.1";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<

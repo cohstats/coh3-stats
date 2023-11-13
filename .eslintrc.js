@@ -7,7 +7,12 @@ module.exports = {
     sourceType: "module",
   },
   // plugins: ["sonarjs", "jest"],
-  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  extends: [
+    // Disable broken plugin
+    // TypeError: Failed to load plugin 'jsx-a11y' declared in '.eslintrc.js » eslint-config-next': `[[GeneratorState]]` is not present on `O`
+    // "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+  ],
   ignorePatterns: ["**/__tests__/**/*.ts"],
   rules: {
     // We shouldn't really use ANY but we can't have everything perfect

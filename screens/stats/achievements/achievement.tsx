@@ -26,7 +26,7 @@ const Achievement = ({ achievement }: AchievementProps) => {
         }}
       >
         <div style={{ flexShrink: 0 }}>
-          <Image src={achievement.icon} alt="Achivement icon" height={60} width={60} />
+          <Image src={achievement.icon} alt="Achivement icon" height={65} width={65} />
         </div>
         <div style={{ flexGrow: 1, flexBasis: "100%", paddingLeft: 10, paddingRight: 15 }}>
           <div>

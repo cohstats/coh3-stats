@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
 import { generateWeeklyAverages } from "../../../../src/charts/utils";
-import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
+import {
+  chartDataObjectsForTimeSeries,
+  getNivoTooltipTheme,
+} from "../../../../components/charts/charts-components-utils";
 import { DaysAnalysisObjectType } from "../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../src/coh3/coh3-types";
@@ -26,28 +29,8 @@ const GamesPercentageLineChartCard = ({
       color: string;
       data: Array<any>;
     };
-  } = {
-    german: {
-      id: "german",
-      color: "#D62728",
-      data: [],
-    },
-    dak: {
-      id: "dak",
-      color: "#f1e05b",
-      data: [],
-    },
-    american: {
-      id: "american",
-      color: "#2DA02C",
-      data: [],
-    },
-    british: {
-      id: "british",
-      color: "#1E77B4",
-      data: [],
-    },
-  };
+    // We need to copy the object
+  } = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
   Object.entries(data).forEach(([key, value]) => {
     const dayAnalysisObject = value[mode as leaderBoardType];
