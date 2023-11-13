@@ -62,6 +62,50 @@ export const WeaponLoadoutCard = (
       <Divider />
 
       <Stack spacing={2} fz="sm">
+        <Grid gutter="xs">
+          <Grid.Col md={4} span={4}>
+            <Text>Moving Accuracy Multiplier</Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="green.6">
+              {""}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="orange.6">
+              {isValidWeapon ? weapon_bag.moving_accuracy_multiplier : ""}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={2} span={2}>
+            <Text align="center" color="red.6">
+              {""}
+            </Text>
+          </Grid.Col>
+        </Grid>
+
+        <Grid gutter="xs">
+          <Grid.Col md={4} span={4}>
+            <Text>Moving Cooldown Multiplier</Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="green.6">
+              {""}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={3} span={3}>
+            <Text align="center" color="orange.6">
+              {isValidWeapon ? weapon_bag.moving_cooldown_multiplier : ""}
+            </Text>
+          </Grid.Col>
+          <Grid.Col md={2} span={2}>
+            <Text align="center" color="red.6">
+              {""}
+            </Text>
+          </Grid.Col>
+        </Grid>
+
+        <Divider my={8}></Divider>
+
         {/* Section Group Header */}
         <Grid gutter="xs">
           <Grid.Col md={4} span={4}></Grid.Col>
