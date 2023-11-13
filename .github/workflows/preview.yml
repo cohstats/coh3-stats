@@ -68,7 +68,7 @@ jobs:
         run: |
           npx edgio deploy --skip-build --property=coh3-stats --organization=coh-stats --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
       - name: Replace Slashes in Branch Name
-        run: echo "LINK_SAFE_BRANCH_NAME=$(echo $BRANCH_NAME | sed 's|/|-|g')" >> $GITHUB_ENV
+        run: echo "LINK_SAFE_BRANCH_NAME=$(echo $BRANCH_NAME | sed 's|/|-|g' | sed 's|.|-|g')" >> $GITHUB_ENV
       - uses: jwalton/gh-find-current-pr@v1
         id: finder
       - name: Publish Preview Link
