@@ -20,7 +20,10 @@ import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-d
 import FactionIcon from "../../../../../components/faction-icon";
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
-import { UnitCostCard } from "../../../../../components/unit-cards/unit-cost-card";
+import {
+  ReinforceCostCard,
+  UnitCostCard,
+} from "../../../../../components/unit-cards/unit-cost-card";
 import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
@@ -101,6 +104,15 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   // Obtain the total cost of the squad by looking at the loadout.
   const { totalCost } = calculatedData;
 
+  const reinforceCost = {
+    cost: Math.floor(
+      (defaultSquadMember.cost.manpower || 0) * resolvedSquad.reinforce.cost_percentage,
+    ),
+    time: Math.floor(
+      (defaultSquadMember.cost.time || 0) * resolvedSquad.reinforce.time_percentage,
+    ),
+  };
+
   // Obtain the total upkeep cost of the squad.
   const { totalUpkeepCost } = calculatedData;
 
@@ -177,6 +189,12 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
               <Title order={4}>Stats</Title>
               <Card p="lg" radius="md" withBorder>
                 {UnitCostCard(totalCost)}
+                {defaultSquadMember.unitType !== "vehicles" &&
+                defaultSquadMember.unitType !== "emplacements" ? (
+                  ReinforceCostCard(reinforceCost)
+                ) : (
+                  <></>
+                )}
               </Card>
               <Card p="lg" radius="md" withBorder>
                 {HitpointCard({ squad: resolvedSquad, entities: resolvedEntities })}

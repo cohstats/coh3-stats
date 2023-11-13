@@ -25,7 +25,6 @@ const getMappings = async () => {
     for (const [override, { predicate, mutator, validator }] of ebpsWorkarounds) {
       if (predicate(ebpsItem)) {
         mutator(ebpsItem);
-        console.info(`Overriding ${ebpsItem.id} with ${override}`);
         if (validator && !validator(ebpsItem)) {
           console.error(`Invalid item ${ebpsItem.id} after override ${override}`, ebpsItem);
           // throw new Error("Error during ebps workarounds");
@@ -33,10 +32,6 @@ const getMappings = async () => {
       }
     }
   }
-  console.log(
-    "🚀 ~ file: mappings.ts:15 ~ getMappings ~ ebpsData:",
-    ebpsData.find((x) => x.id === "barracks_us"),
-  );
 
   return {
     locstring,
