@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getGlobalAchievements } from "../../src/coh3stats-api";
-import GlobalAchievements from "../../screens/stats/achievements";
+import GlobalAchievementsIndex from "../../screens/stats/achievements";
 import { generateExpireTimeStamps } from "../../src/utils";
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
@@ -34,4 +34,4 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   };
 };
 
-export default GlobalAchievements;
+export default GlobalAchievementsIndex;

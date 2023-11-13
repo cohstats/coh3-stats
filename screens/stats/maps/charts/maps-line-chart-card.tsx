@@ -16,11 +16,15 @@ const MapsLineChartCard = ({
   mode,
   mapName,
   title,
+  helperText,
+  stacked,
 }: {
   data: DaysMapsAnalysisObjectType;
   mode: "1v1" | "2v2" | "3v3" | "4v4";
   mapName: string;
   title: string;
+  helperText: string;
+  stacked: boolean;
 }) => {
   const { colorScheme } = useMantineColorScheme();
   const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
@@ -31,6 +35,7 @@ const MapsLineChartCard = ({
       color: string;
       data: Array<any>;
     };
+    // We need to copy the object
   } = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
   for (const [timeStamp, value] of Object.entries(data)) {
@@ -64,12 +69,7 @@ const MapsLineChartCard = ({
         <Group position={"apart"}>
           <Group>
             <Title order={3}>{title}</Title>
-            <HelperIcon
-              width={360}
-              text={
-                "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
-              }
-            />
+            <HelperIcon width={360} text={helperText} />
           </Group>
           <Group>
             <Text fw={500}>Display as</Text>
@@ -101,7 +101,7 @@ const MapsLineChartCard = ({
             useUTC: false,
           }}
           yScale={{
-            stacked: true,
+            stacked: stacked,
             type: "linear",
           }}
           yFormat=" >-.0f"
@@ -139,7 +139,7 @@ const MapsLineChartCard = ({
           // pointBorderWidth={2}
           pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
-          enableArea={true}
+          enableArea={stacked}
           useMesh={true}
           enableGridX={true}
           enableCrosshair={true}

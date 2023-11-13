@@ -96,6 +96,21 @@ const InnerMapStatsPage = ({
           mode={mode}
           mapName={selectedMap}
           title={`${getMapLocalizedName(selectedMap)} - Factions played ${mode}`}
+          helperText={"However over the chart to see the amount of games for each faction."}
+          stacked={false}
+        />
+      </Flex>
+      <Space h="xl" />
+      <Flex gap={"xl"} wrap="wrap" justify="center">
+        <DynamicMapsLineChartCard
+          data={data.days as DaysMapsAnalysisObjectType}
+          mode={mode}
+          mapName={selectedMap}
+          title={`${getMapLocalizedName(selectedMap)} - Factions played ${mode}`}
+          helperText={
+            "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
+          }
+          stacked={true}
         />
       </Flex>
     </>

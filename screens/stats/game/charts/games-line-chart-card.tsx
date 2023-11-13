@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
 import { generateWeeklyAverages } from "../../../../src/charts/utils";
-import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
+import {
+  chartDataObjectsForTimeSeries,
+  getNivoTooltipTheme,
+} from "../../../../components/charts/charts-components-utils";
 import { DaysAnalysisObjectType } from "../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../src/coh3/coh3-types";
@@ -11,9 +14,13 @@ import HelperIcon from "../../../../components/icon/helper";
 const GamesLineChartCard = ({
   data,
   mode,
+  helperText,
+  stacked,
 }: {
   data: DaysAnalysisObjectType;
   mode: "all" | "1v1" | "2v2" | "3v3" | "4v4";
+  helperText: string;
+  stacked: boolean;
 }) => {
   const { colorScheme } = useMantineColorScheme();
   const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
@@ -24,28 +31,8 @@ const GamesLineChartCard = ({
       color: string;
       data: Array<any>;
     };
-  } = {
-    german: {
-      id: "german",
-      color: "#D62728",
-      data: [],
-    },
-    dak: {
-      id: "dak",
-      color: "#f1e05b",
-      data: [],
-    },
-    american: {
-      id: "american",
-      color: "#2DA02C",
-      data: [],
-    },
-    british: {
-      id: "british",
-      color: "#1E77B4",
-      data: [],
-    },
-  };
+    // We need to copy the object
+  } = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
   Object.entries(data).forEach(([key, value]) => {
     const dayAnalysisObject = value[mode as leaderBoardType];
@@ -76,12 +63,7 @@ const GamesLineChartCard = ({
         <Group position={"apart"}>
           <Group>
             <Title order={3}>Faction pick rate over time {mode}</Title>
-            <HelperIcon
-              width={360}
-              text={
-                "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
-              }
-            />
+            <HelperIcon width={360} text={helperText} />
           </Group>
           <Group>
             <Text fw={500}>Display as</Text>
@@ -113,7 +95,7 @@ const GamesLineChartCard = ({
             useUTC: false,
           }}
           yScale={{
-            stacked: true,
+            stacked: stacked,
             type: "linear",
           }}
           yFormat=" >-.0f"
@@ -151,7 +133,7 @@ const GamesLineChartCard = ({
           // pointBorderWidth={2}
           pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
-          enableArea={true}
+          enableArea={stacked}
           useMesh={true}
           enableGridX={true}
           enableCrosshair={true}

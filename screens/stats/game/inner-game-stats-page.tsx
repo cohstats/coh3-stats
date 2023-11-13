@@ -31,6 +31,7 @@ const DynamicWinRateLineChart = dynamic(() => import("./charts/win-rate-line-cha
 const DynamicGamesLineChart = dynamic(() => import("./charts/games-line-chart-card"), {
   ssr: false,
 });
+
 const DynamicGamesPercentageLineChartCard = dynamic(
   () => import("./charts/games-percentage-line-chart-card"),
   {
@@ -220,7 +221,23 @@ const InnerGameStatsPage = ({
 
         <Space h="xl" />
         <Flex gap={"xl"} wrap="wrap" justify="center">
-          <DynamicGamesLineChart data={analysis.days} mode={mode} />
+          <DynamicGamesLineChart
+            data={analysis.days}
+            mode={mode}
+            helperText={"However over the chart to see the amount of games for each faction."}
+            stacked={false}
+          />
+        </Flex>
+        <Space h="xl" />
+        <Flex gap={"xl"} wrap="wrap" justify="center">
+          <DynamicGamesLineChart
+            data={analysis.days}
+            mode={mode}
+            helperText={
+              "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
+            }
+            stacked={true}
+          />
         </Flex>
         <Space h="xl" />
         <Flex gap={"xl"} wrap="wrap" justify="center">
