@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { ProcessedMatch } from "../../src/coh3/coh3-types";
 import {
   getPlayerCardInfo,

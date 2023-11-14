@@ -22,6 +22,7 @@ import {
   IconDatabaseShare,
   IconAward,
   IconUsers,
+  IconVideo,
 } from "@tabler/icons-react";
 
 const OtherMenu = ({
@@ -92,6 +93,12 @@ const OtherMenu = ({
               </Anchor>
             </Group>
             <Group spacing={"xs"}>
+              <IconVideo size={16} />
+              <Anchor component={Link} href={"https://cohdb.com"} target={"_blank"}>
+                COHDB Replays
+              </Anchor>
+            </Group>
+            <Group spacing={"xs"}>
               <IconDatabaseShare size={16} />
               <Anchor component={Link} href={getOpenDataRoute()}>
                 Open Data
@@ -103,6 +110,7 @@ const OtherMenu = ({
                 Player Export API
               </Anchor>
             </Group>
+
             <Group spacing={"xs"}>
               <IconActivity size={16} />
               <Anchor

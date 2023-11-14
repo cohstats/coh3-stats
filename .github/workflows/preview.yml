@@ -67,6 +67,7 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
         run: |
           npx edgio deploy --skip-build --property=coh3-stats --organization=coh-stats --environment=$EDGIO_ENV --token $DEPLOY_TOKEN --branch=$BRANCH_NAME
+          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
       - name: Replace Slashes in Branch Name
         run: echo "LINK_SAFE_BRANCH_NAME=$(echo $BRANCH_NAME | sed 's|/|-|g' | sed 's|\.|-|g')" >> $GITHUB_ENV
       - uses: jwalton/gh-find-current-pr@v1
