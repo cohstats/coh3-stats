@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import handler from "../../../pages/api/appUpdateRoute";
 import { NextApiRequest, NextApiResponse } from "next";
 

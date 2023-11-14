@@ -18,15 +18,11 @@ const CountryFlag = ({
     height = 14;
   }
 
-  return (
-    <Image
-      src={`/flags/4x3/${countryCode.toLowerCase() || "xx"}.svg`}
-      alt={countryCode}
-      width={width}
-      height={height}
-      loading="lazy"
-    />
-  );
+  const src = countryCode
+    ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.15.0/flags/4x3/${countryCode.toLowerCase()}.svg`
+    : `/flags/4x3/xx.svg`;
+
+  return <Image src={src} alt={countryCode} width={width} height={height} loading="lazy" />;
 };
 
 export default CountryFlag;
