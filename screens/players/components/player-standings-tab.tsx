@@ -3,7 +3,7 @@ import { Container, Space } from "@mantine/core";
 import React from "react";
 import PlayerStandingsFaction from "./standings/player-standings-faction";
 
-const PlayerStandings = ({
+const PlayerStandingsTab = ({
   playerStandings,
   platform,
 }: {
@@ -36,4 +36,4 @@ const PlayerStandings = ({
   );
 };
 
-export default PlayerStandings;
+export default PlayerStandingsTab;
