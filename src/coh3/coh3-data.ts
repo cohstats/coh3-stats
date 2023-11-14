@@ -273,6 +273,14 @@ const raceIDs: Record<raceID, raceType> = {
   203852: "british",
 };
 
+// This is what we get from the cohdb.com API
+export const cohDBracesToNormalRaces: Record<string, raceType> = {
+  afrika_korps: "dak",
+  british_africa: "british",
+  americans: "american",
+  germans: "german",
+};
+
 const raceIDsAsObject: Record<
   number,
   {

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import {
   AnalyticsPlayerCardMatchView,
+  AnalyticsPlayerCardReplaysView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import {
@@ -30,6 +31,8 @@ import PlayerStandings from "./components/player-standings";
 import PlayerRecentMatches from "./components/player-recent-matches";
 import ErrorCard from "../../components/error-card";
 import PlayerIdIcon from "./components/player-id-icon";
+import ReplaysTab from "./components/replays-tab";
+import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -67,11 +70,13 @@ const PlayerCard = ({
   playerDataAPI,
   error,
   playerMatchesData,
+  replaysData,
 }: {
   playerID: string;
   playerDataAPI: PlayerCardDataType;
   error: string;
   playerMatchesData: Array<ProcessedMatch>;
+  replaysData: ProcessedReplayData;
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
@@ -87,12 +92,14 @@ const PlayerCard = ({
   useEffect(() => {
     if (view === "recentMatches") {
       AnalyticsPlayerCardMatchView(playerID);
+    } else if (view === "replays") {
+      AnalyticsPlayerCardReplaysView(playerID);
     } else {
       AnalyticsPlayerCardView(playerID);
     }
   }, [playerID, view]);
 
-  if (error) {
+  if (error || !playerData) {
     return (
       <Container size="lg">
         <ErrorCard title={"Error loading the player card"} body={error} />
@@ -101,8 +108,8 @@ const PlayerCard = ({
   }
 
   const pageTitle = `Player card - ${playerData.info.name} ${
-    view === "recentMatches" ? "recent matches" : ""
-  }`;
+    view === "recentMatches" ? "Recent Matches" : ""
+  } ${view === "replays" ? "Replays" : ""}`;
 
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
@@ -180,6 +187,7 @@ const PlayerCard = ({
           <Tabs.List position="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
+            <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">
@@ -205,6 +213,10 @@ const PlayerCard = ({
               profileID={playerID}
               error={error}
             />
+          </Tabs.Panel>
+          <Tabs.Panel value={"replays"}>
+            <Space h="lg" />
+            <ReplaysTab replaysData={replaysData} profileID={playerID} error={error} />
           </Tabs.Panel>
         </Tabs>
       </Container>

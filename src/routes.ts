@@ -87,7 +87,7 @@ export const getAboutRoute = () => {
   return encodeURI(`/about`);
 };
 
-export const getPlayerCardRoute = (playerId: string) => {
+export const getPlayerCardRoute = (playerId: string | number) => {
   return encodeURI(`/players/${playerId}`);
 };
 

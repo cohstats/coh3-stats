@@ -1,7 +1,7 @@
-import config from "../config";
-import { GlobalAchievementsData, ProcessedMatch, TwitchStream } from "./coh3/coh3-types";
-import { analysisType, getAnalysisStatsHttpResponse } from "./analysis-types";
-import { cleanXForwardedFor, parseFirstIPFromString } from "./utils";
+import config from "../../config";
+import { GlobalAchievementsData, ProcessedMatch, TwitchStream } from "../coh3/coh3-types";
+import { analysisType, getAnalysisStatsHttpResponse } from "../analysis-types";
+import { cleanXForwardedFor, parseFirstIPFromString } from "../utils";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;

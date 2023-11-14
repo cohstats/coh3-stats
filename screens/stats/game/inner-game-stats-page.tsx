@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getStatsData } from "../../../src/coh3stats-api";
+import { getStatsData } from "../../../src/apis/coh3stats-api";
 import {
   AnalysisObjectType,
   getAnalysisStatsHttpResponse,

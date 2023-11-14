@@ -1,8 +1,8 @@
-import { getTwitchStreams } from "../src/coh3stats-api";
+import { getTwitchStreams } from "../src/apis/coh3stats-api";
 import { Top1v1LeaderboardsData, TwitchStream } from "../src/coh3/coh3-types";
 import Home from "../screens/home";
 import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
-import { getLatestCOH3RedditPosts, RedditPostType } from "../src/reddit-api";
+import { getLatestCOH3RedditPosts, RedditPostType } from "../src/apis/reddit-api";
 import { GetServerSideProps } from "next";
 
 export default Home;

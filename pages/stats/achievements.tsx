@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getGlobalAchievements } from "../../src/coh3stats-api";
+import { getGlobalAchievements } from "../../src/apis/coh3stats-api";
 import GlobalAchievementsIndex from "../../screens/stats/achievements";
 import { generateExpireTimeStamps } from "../../src/utils";
 

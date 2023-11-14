@@ -6,7 +6,7 @@ import React from "react";
 import TwitchContainer from "./twitch-panel";
 import Head from "next/head";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
-import { RedditPostType } from "../../src/reddit-api";
+import { RedditPostType } from "../../src/apis/reddit-api";
 import RedditPanel from "./reddit-panel";
 
 type Props = {

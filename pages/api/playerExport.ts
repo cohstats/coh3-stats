@@ -3,7 +3,7 @@
  * the latest info for their tables.
  */
 import { logger } from "../../src/logger";
-import { getPlayerCardInfo } from "../../src/coh3stats-api";
+import { getPlayerCardInfo } from "../../src/apis/coh3stats-api";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { json2csv } from "json-2-csv";

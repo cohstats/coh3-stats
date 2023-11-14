@@ -1,9 +1,11 @@
 import { maps } from "../../src/coh3/coh3-data";
-import { Text } from "@mantine/core";
+import { Text, Tooltip } from "@mantine/core";
 import React from "react";
 import ImageWithModal from "../image-with-modal";
 
-const RenderMap = ({ mapName }: { mapName: string }) => {
+const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: boolean }) => {
+  renderTitle = renderTitle ?? true;
+
   // In case we don't track the map, eg custom maps
   if (!maps[mapName]) {
     return (
@@ -18,18 +20,24 @@ const RenderMap = ({ mapName }: { mapName: string }) => {
   return (
     <>
       <div>
-        <ImageWithModal
-          height={60}
-          width={60}
-          alt={mapName}
-          src={maps[mapName]?.url}
-          modalW={400}
-          modalH={400}
-          title={maps[mapName].name}
-        />
-        <Text align="center" style={{ whiteSpace: "nowrap" }}>
-          {maps[mapName]?.name}
-        </Text>
+        <Tooltip label={maps[mapName].name}>
+          <div>
+            <ImageWithModal
+              height={60}
+              width={60}
+              alt={mapName}
+              src={maps[mapName]?.url}
+              modalW={400}
+              modalH={400}
+              title={maps[mapName].name}
+            />
+          </div>
+        </Tooltip>
+        {renderTitle && (
+          <Text align="center" style={{ whiteSpace: "nowrap" }}>
+            {maps[mapName]?.name}
+          </Text>
+        )}
       </div>
     </>
   );
