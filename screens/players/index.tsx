@@ -30,6 +30,8 @@ import PlayerStandings from "./components/player-standings";
 import PlayerRecentMatches from "./components/player-recent-matches";
 import ErrorCard from "../../components/error-card";
 import PlayerIdIcon from "./components/player-id-icon";
+import ReplaysTab from "./components/replays-tab";
+import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -67,11 +69,13 @@ const PlayerCard = ({
   playerDataAPI,
   error,
   playerMatchesData,
+  replaysData,
 }: {
   playerID: string;
   playerDataAPI: PlayerCardDataType;
   error: string;
   playerMatchesData: Array<ProcessedMatch>;
+  replaysData: ProcessedReplayData;
 }) => {
   const { push, query } = useRouter();
   const { view } = query;
@@ -180,6 +184,7 @@ const PlayerCard = ({
           <Tabs.List position="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
+            <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">
@@ -205,6 +210,10 @@ const PlayerCard = ({
               profileID={playerID}
               error={error}
             />
+          </Tabs.Panel>
+          <Tabs.Panel value={"replays"}>
+            <Space h="lg" />
+            <ReplaysTab replaysData={replaysData} profileID={playerID} error={error} />
           </Tabs.Panel>
         </Tabs>
       </Container>
