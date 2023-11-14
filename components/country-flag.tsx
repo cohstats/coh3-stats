@@ -18,6 +18,7 @@ const CountryFlag = ({
     height = 14;
   }
 
+  // https://www.npmjs.com/package/flag-icons
   const src = countryCode
     ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.15.0/flags/4x3/${countryCode.toLowerCase()}.svg`
     : `/flags/4x3/xx.svg`;
