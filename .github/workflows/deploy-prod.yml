@@ -58,3 +58,4 @@ jobs:
         # Deploy command automatically runs the build
         run: |
           npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
+          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/

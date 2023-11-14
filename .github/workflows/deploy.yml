@@ -59,3 +59,4 @@ jobs:
         # Deploy command pulls ENV variables https://docs.edg.io/guides/basics/environments#environment-variables
         run: |
           npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
+          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
