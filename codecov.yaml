@@ -11,6 +11,6 @@ coverage:
       default:
         target: auto
         # We are OK with not covering everything with tests
-        threshold: 10%
+        threshold: 25%
         branches:
           - master

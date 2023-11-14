@@ -27,12 +27,13 @@ import { Steam } from "../../components/icon/steam";
 import { PSNIcon } from "../../components/icon/psn";
 import { XboxIcon } from "../../components/icon/xbox";
 import PlayerSummary from "./components/player-summary";
-import PlayerStandings from "./components/player-standings";
-import PlayerRecentMatches from "./components/player-recent-matches";
+import PlayerStandingsTab from "./components/player-standings-tab";
+import PlayerRecentMatchesTab from "./components/player-recent-matches-tab";
 import ErrorCard from "../../components/error-card";
 import PlayerIdIcon from "./components/player-id-icon";
 import ReplaysTab from "./components/replays-tab";
 import { ProcessedReplayData } from "../../src/apis/cohdb-api";
+import { isBrowserEnv } from "../../src/utils";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -78,15 +79,26 @@ const PlayerCard = ({
   playerMatchesData: Array<ProcessedMatch>;
   replaysData: ProcessedReplayData;
 }) => {
-  const { push, query } = useRouter();
+  const { push, query, asPath } = useRouter();
   const { view } = query;
 
   const playerData = playerDataAPI;
   const platform = playerData?.platform;
 
+  // This adds username to the url
   useEffect(() => {
     const cleanName = playerData.info.name.replace(/[^a-zA-Z0-9-_]/g, "");
-    push({ query: { ...query } }, `/players/${playerID}/${cleanName}`, { shallow: true });
+
+    if (asPath.includes(cleanName)) return;
+
+    // This is weird, I feel like there should be a better way to do this
+    if (isBrowserEnv()) {
+      const originalUrl = new URL(asPath, window.location.origin);
+      const originalQuery = originalUrl.searchParams;
+      const newURL = new URL(`/players/${playerID}/${cleanName}`, window.location.origin);
+      newURL.search = originalQuery.toString();
+      push(newURL.toString(), undefined, { shallow: true });
+    }
   }, [playerID]);
 
   useEffect(() => {
@@ -191,7 +203,7 @@ const PlayerCard = ({
           </Tabs.List>
 
           <Tabs.Panel value="standings">
-            <PlayerStandings playerStandings={playerData.standings} platform={platform} />
+            <PlayerStandingsTab playerStandings={playerData.standings} platform={platform} />
             {/*<SimpleGrid*/}
             {/*  cols={3}*/}
             {/*  mt="xl"*/}
@@ -208,7 +220,7 @@ const PlayerCard = ({
           </Tabs.Panel>
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />
-            <PlayerRecentMatches
+            <PlayerRecentMatchesTab
               playerMatchesData={playerMatchesData}
               profileID={playerID}
               error={error}

@@ -21,7 +21,7 @@ import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../src/pl
 
 export type FilterInformation = { label: string; checked: boolean; filter: string | number };
 
-const PlayerRecentMatches = ({
+const PlayerRecentMatchesTab = ({
   profileID,
   playerMatchesData,
   error,
@@ -332,4 +332,4 @@ const PlayerRecentMatches = ({
   );
 };
 
-export default PlayerRecentMatches;
+export default PlayerRecentMatchesTab;
