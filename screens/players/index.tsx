@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import {
   AnalyticsPlayerCardMatchView,
+  AnalyticsPlayerCardReplaysView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import {
@@ -91,12 +92,14 @@ const PlayerCard = ({
   useEffect(() => {
     if (view === "recentMatches") {
       AnalyticsPlayerCardMatchView(playerID);
+    } else if (view === "replays") {
+      AnalyticsPlayerCardReplaysView(playerID);
     } else {
       AnalyticsPlayerCardView(playerID);
     }
   }, [playerID, view]);
 
-  if (error) {
+  if (error || !playerData) {
     return (
       <Container size="lg">
         <ErrorCard title={"Error loading the player card"} body={error} />
@@ -105,8 +108,8 @@ const PlayerCard = ({
   }
 
   const pageTitle = `Player card - ${playerData.info.name} ${
-    view === "recentMatches" ? "recent matches" : ""
-  }`;
+    view === "recentMatches" ? "Recent Matches" : ""
+  } ${view === "replays" ? "Replays" : ""}`;
 
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
