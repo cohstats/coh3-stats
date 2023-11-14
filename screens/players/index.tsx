@@ -9,17 +9,7 @@ import {
   AnalyticsPlayerCardReplaysView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
-import {
-  Anchor,
-  Avatar,
-  Container,
-  Group,
-  Image,
-  Space,
-  Stack,
-  Tabs,
-  Title,
-} from "@mantine/core";
+import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
 import { generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
 import Link from "next/link";
@@ -34,6 +24,7 @@ import PlayerIdIcon from "./components/player-id-icon";
 import ReplaysTab from "./components/replays-tab";
 import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
+import CountryFlag from "../../components/country-flag";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -155,11 +146,10 @@ const PlayerCard = ({
               />
               <Stack spacing={"xs"}>
                 <Group>
-                  <Image
-                    src={"/flags/4x3/" + (playerData.info.country || "xx") + ".svg"}
-                    imageProps={{ loading: "lazy" }}
-                    alt={playerData.info.country}
+                  <CountryFlag
+                    countryCode={playerData.info.country || "xx"}
                     width={40}
+                    height={30}
                   />
                   <Title> {playerData.info.name}</Title>
                 </Group>

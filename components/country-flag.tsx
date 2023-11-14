@@ -3,19 +3,23 @@ import Image from "next/image";
 const CountryFlag = ({
   countryCode,
   size = "md",
+  width,
+  height,
 }: {
   countryCode: string;
   size?: "md" | "sm" | "xs";
+  width?: number;
+  height?: number;
 }) => {
-  let width = 20;
-  let height = 18;
+  let internalWidth = width || 20;
+  let internalHeight = height || 18;
   if (size === "sm") {
-    width = 18;
-    height = 16;
+    internalWidth = 18;
+    internalHeight = 16;
   }
   if (size === "xs") {
-    width = 16;
-    height = 14;
+    internalWidth = 16;
+    internalHeight = 14;
   }
 
   // https://www.npmjs.com/package/flag-icons
@@ -23,7 +27,15 @@ const CountryFlag = ({
     ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.15.0/flags/4x3/${countryCode.toLowerCase()}.svg`
     : `/flags/4x3/xx.svg`;
 
-  return <Image src={src} alt={countryCode} width={width} height={height} loading="lazy" />;
+  return (
+    <Image
+      src={src}
+      alt={countryCode}
+      width={internalWidth}
+      height={internalHeight}
+      loading="lazy"
+    />
+  );
 };
 
 export default CountryFlag;
