@@ -119,9 +119,9 @@ const PlayerCard = ({
     );
   }
 
-  const pageTitle = `Player card - ${playerData.info.name} ${
-    view === "recentMatches" ? "Recent Matches" : ""
-  } ${view === "replays" ? "Replays" : ""}`;
+  const pageTitle = `Player card - ${playerData.info.name}${
+    view === "recentMatches" ? " - Recent Matches" : ""
+  } ${view === "replays" ? " - Replays" : ""}`;
 
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
