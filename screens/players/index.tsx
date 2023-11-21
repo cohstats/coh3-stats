@@ -65,7 +65,7 @@ const PlayerCard = ({
   replaysData,
 }: {
   playerID: string;
-  playerDataAPI: PlayerCardDataType;
+  playerDataAPI: PlayerCardDataType | null;
   error: string;
   playerMatchesData: Array<ProcessedMatch>;
   replaysData: ProcessedReplayData;
@@ -74,13 +74,14 @@ const PlayerCard = ({
   const { view } = query;
 
   const playerData = playerDataAPI;
-  const platform = playerData?.platform;
+  // Default to steam
+  const platform = playerData?.platform || "steam";
 
   // This adds username to the url
   useEffect(() => {
-    const cleanName = playerData.info.name.replace(/[^a-zA-Z0-9-_]/g, "");
+    const cleanName = playerData?.info.name.replace(/[^a-zA-Z0-9-_]/g, "");
 
-    if (asPath.includes(cleanName)) return;
+    if ((cleanName && asPath.includes(cleanName)) || cleanName === undefined) return;
 
     // This is weird, I feel like there should be a better way to do this
     if (isBrowserEnv()) {

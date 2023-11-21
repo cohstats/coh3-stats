@@ -141,6 +141,11 @@ const getReplaysForPlayer = async (
   );
 
   const response = await fetch(url);
+
+  if (!response.ok) {
+    return null;
+  }
+
   const data: ReplayAPIResponse = await response.json();
 
   return data;
