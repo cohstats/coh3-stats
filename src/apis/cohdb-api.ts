@@ -74,7 +74,9 @@ export interface ProcessedReplayData {
 
 const RECORDS_PER_REPLAYS_PAGE = 25;
 
-const ProcessReplaysData = (data: ReplayAPIResponse | void): ProcessedReplayData | null => {
+const ProcessReplaysData = (
+  data: ReplayAPIResponse | void | null,
+): ProcessedReplayData | null => {
   if (!data) {
     return null;
   }
