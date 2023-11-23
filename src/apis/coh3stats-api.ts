@@ -121,7 +121,7 @@ const getPlayerCardInfo = async (
  * @param playerID
  * @param XForwardedFor
  */
-const getPlayerCarStats = async (playerID: string | number, XForwardedFor: string) => {
+const getPlayerCardStats = async (playerID: string | number, XForwardedFor: string) => {
   const xff = cleanXForwardedFor(XForwardedFor);
 
   const response = await fetch(getPlayerCardStatsUrl(playerID, true), {
@@ -203,5 +203,5 @@ export {
   getTwitchStreams,
   getStatsData,
   getGlobalAchievements,
-  getPlayerCarStats,
+  getPlayerCardStats,
 };

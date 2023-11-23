@@ -14,6 +14,12 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
     const response = await fetch(
       `https://www.reddit.com/r/CompanyOfHeroes/top.json?limit=100&t=month`,
     );
+
+    if (!response.ok) {
+      console.warn(`Error getting reddit posts: ${response.statusText}`);
+      return [];
+    }
+
     const data = await response.json();
 
     return data.data.children
