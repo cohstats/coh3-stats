@@ -132,10 +132,6 @@ const PlayerCard = ({
     `coh3 ${playerData.info.name} stats`,
   ]);
 
-  const DisplayError = (
-    <ErrorCard title={"Error rendering player card"} body={JSON.stringify(error)} />
-  );
-
   return (
     <>
       <Head>
@@ -218,8 +214,7 @@ const PlayerCard = ({
             />
           </Tabs.Panel>
           <Tabs.Panel value={"activity"}>
-            {error && DisplayError}
-            {!error && <ActivityTab playerStatsData={playerStatsData} />}
+            <ActivityTab playerStatsData={playerStatsData} />
           </Tabs.Panel>
           <Tabs.Panel value={"replays"}>
             <Space h="lg" />
