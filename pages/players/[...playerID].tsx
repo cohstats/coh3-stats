@@ -23,8 +23,32 @@ const ProcessPlayerCardStatsData = (
     });
   }
 
+  const processedActivityByHour = [];
+  for (const [hour, value] of Object.entries(playerStatsData.stats?.activityByHour || {})) {
+    processedActivityByHour.push({
+      hour,
+      value: value.w + value.l,
+      wins: value.w,
+      losses: value.l,
+    });
+  }
+
+  const processedActivityByDayOfWeek = [];
+  for (const [dayOfWeek, value] of Object.entries(
+    playerStatsData.stats?.activityByWeekDay || {},
+  )) {
+    processedActivityByDayOfWeek.push({
+      day: dayOfWeek,
+      value: value.w + value.l,
+      wins: value.w,
+      losses: value.l,
+    });
+  }
+
   return {
+    activityByWeekDay: processedActivityByDayOfWeek,
     activityByDate: processedActivityByDate,
+    activityByHour: processedActivityByHour,
   };
 };
 
@@ -82,8 +106,6 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     console.error(e);
     error = e.message;
   }
-
-  console.log("BE playerStatsData", playerStatsData);
 
   return {
     props: {

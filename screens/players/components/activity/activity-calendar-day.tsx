@@ -14,8 +14,22 @@ const ActivityCalendarDay = ({
 }) => {
   const { colorScheme } = useMantineColorScheme();
 
+  // This is most likely a bug in Nivo, the labels on Calendar Canvas our outside / other charts have it inside
+  const chartColorTheme = {
+    ...getNivoTooltipTheme(colorScheme),
+    ...{
+      labels: {
+        text: {
+          fill: colorScheme === "light" ? "#333333" : "#ccd7e2",
+          fontSize: 12,
+          fontWeight: 500,
+        },
+      },
+    },
+  };
+
   return (
-    <div style={{ height: 160 * yearDiff }}>
+    <div style={{ height: 170 * yearDiff }}>
       <ResponsiveCalendarCanvas
         data={playerStatsData.activityByDate}
         from={fromYear}
@@ -63,7 +77,7 @@ const ActivityCalendarDay = ({
         //     itemDirection: "right-to-left",
         //   },
         // ]}
-        theme={getNivoTooltipTheme(colorScheme)}
+        theme={chartColorTheme}
         // @ts-ignore
         tooltip={({
           value,
@@ -78,7 +92,14 @@ const ActivityCalendarDay = ({
           if (value === undefined) return null;
           const toolTipBackground = colorScheme === "light" ? "#eeeeee" : "#25262B";
           return (
-            <div style={{ backgroundColor: toolTipBackground, padding: "10px" }}>
+            <div
+              style={{
+                backgroundColor: toolTipBackground,
+                padding: "5px",
+                paddingLeft: "10px",
+                paddingRight: "10px",
+              }}
+            >
               <Group spacing={"xs"}>
                 {day}: <Text color={"green"}> {data.wins} W</Text> -{" "}
                 <Text color={"red"}> {data.losses} L</Text>

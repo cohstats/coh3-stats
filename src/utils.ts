@@ -189,3 +189,35 @@ export const generateExpireTimeStamps = (hoursWhenToExpire: number = 7): number 
     return dayjs(sixAMToday).add(1, "day").toDate().getTime();
   }
 };
+
+export const calculateWinRate = (wins: number, losses: number): number => {
+  if (wins > 0 && !losses) return 100;
+  if (losses > 0 && !wins) return 0;
+
+  if (wins + losses === 0) {
+    return 0;
+  } else {
+    return (wins / (wins + losses)) * 100;
+  }
+};
+
+export const convertWeekDayToFullName = (dayAbbreviation: string): string => {
+  switch (dayAbbreviation) {
+    case "Mo":
+      return "Monday";
+    case "Tu":
+      return "Tuesday";
+    case "We":
+      return "Wednesday";
+    case "Th":
+      return "Thursday";
+    case "Fr":
+      return "Friday";
+    case "Sa":
+      return "Saturday";
+    case "Su":
+      return "Sunday";
+    default:
+      return "Invalid day abbreviation";
+  }
+};

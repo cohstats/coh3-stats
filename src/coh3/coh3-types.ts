@@ -302,4 +302,16 @@ export interface ProcessedCOHPlayerStats {
     wins: number;
     losses: number;
   }>;
+  activityByHour: Array<{
+    hour: string;
+    value: number;
+    wins: number;
+    losses: number;
+  }>;
+  activityByWeekDay: Array<{
+    day: string;
+    value: number;
+    wins: number;
+    losses: number;
+  }>;
 }

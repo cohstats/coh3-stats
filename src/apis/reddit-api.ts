@@ -13,10 +13,18 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
   try {
     const response = await fetch(
       `https://www.reddit.com/r/CompanyOfHeroes/top.json?limit=100&t=month`,
+      {
+        method: "GET",
+        // We need to send custom user agent, otherwise we might get blocked by Reddit
+        // Let's try our own user agent / in case it fails let's fake browser user agent
+        headers: {
+          "User-Agent": "coh3stats.com/1.0.0",
+        },
+      },
     );
 
     if (!response.ok) {
-      console.warn(`Error getting reddit posts: ${response.statusText}`);
+      console.warn(`Error getting reddit posts: ${response.statusText}, ${response.status}`);
       return [];
     }
 

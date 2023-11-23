@@ -4,11 +4,12 @@
 
 import { NextPage } from "next";
 import React from "react";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+// import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { DataTable } from "mantine-datatable";
 import config from "../../config";
+import { getLatestCOH3RedditPosts } from "../../src/apis/reddit-api";
 
-const SSR: NextPage = ({ data, tableData }: any) => {
+const SSR: NextPage = ({ data, tableData, redditPosts }: any) => {
   return (
     <>
       ENV NAME |{config.getEdgioEnvName()}| IS DEV: |{`${config.isDevEnv()}`}|<br />
@@ -19,17 +20,21 @@ const SSR: NextPage = ({ data, tableData }: any) => {
         columns={[{ accessor: "name" }, { accessor: "age" }]}
         records={tableData}
       ></DataTable>
+      REDDIT DATA:
+      {JSON.stringify(redditPosts)}
     </>
   );
 };
 
 export async function getServerSideProps() {
-  const docRef = doc(getFirestore(), "tests", "document");
-  const docSnap = await getDoc(docRef);
+  // const docRef = doc(getFirestore(), "tests", "document");
+  // const docSnap = await getDoc(docRef);
+  //
+  // if (docSnap.exists()) {
+  //   console.log(docSnap.data());
+  // }
 
-  if (docSnap.exists()) {
-    console.log(docSnap.data());
-  }
+  const redditPosts = await getLatestCOH3RedditPosts();
 
   const tableData = [
     { name: " thomas", age: 4 },
@@ -38,7 +43,7 @@ export async function getServerSideProps() {
     { name: " thomas", age: 4 },
   ];
 
-  return { props: { data: docSnap.data(), tableData } };
+  return { props: { data: null, tableData, redditPosts } };
 }
 
 export default SSR;

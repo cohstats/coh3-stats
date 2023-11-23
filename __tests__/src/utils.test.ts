@@ -9,6 +9,8 @@ import {
   parseFirstIPFromString,
   cleanXForwardedFor,
   generateExpireTimeStamps,
+  calculateWinRate,
+  convertWeekDayToFullName,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -241,5 +243,56 @@ describe("generateExpireTimeStamps", () => {
     jest.setSystemTime(new Date(2023, 6, 25, 5));
     const timeStampMs = generateExpireTimeStamps(6);
     expect(timeStampMs).toEqual(1690264800000);
+  });
+});
+
+describe("calculateWinRate", () => {
+  test("should return 0 for 0 wins and 0 losses", () => {
+    expect(calculateWinRate(0, 0)).toBe(0);
+  });
+
+  test("should return 100 for 1 win and 0 losses", () => {
+    expect(calculateWinRate(1, 0)).toBe(100);
+  });
+
+  test("should return 100 for 2 wins and 0 losses", () => {
+    expect(calculateWinRate(2, 0)).toBe(100);
+  });
+
+  test("should return 100 for 1 win and 1 losses", () => {
+    expect(calculateWinRate(1, 1)).toBe(50);
+  });
+
+  test("should return 100 for 2 wins and 1 losses", () => {
+    expect(calculateWinRate(2, 1)).toBe(66.66666666666666);
+  });
+
+  test("should return 100 for 2 wins and 2 losses", () => {
+    expect(calculateWinRate(2, 2)).toBe(50);
+  });
+
+  test("should return 100 for 3 wins and 2 losses", () => {
+    expect(calculateWinRate(3, 2)).toBe(60);
+  });
+
+  test("should return 0", () => {
+    expect(calculateWinRate(0, 3)).toBe(0);
+  });
+});
+
+describe("convertWeekDayToFullName", () => {
+  test("Test correct conversion", () => {
+    expect(convertWeekDayToFullName("Mo")).toBe("Monday");
+    expect(convertWeekDayToFullName("Tu")).toBe("Tuesday");
+    expect(convertWeekDayToFullName("We")).toBe("Wednesday");
+    expect(convertWeekDayToFullName("Th")).toBe("Thursday");
+    expect(convertWeekDayToFullName("Fr")).toBe("Friday");
+    expect(convertWeekDayToFullName("Sa")).toBe("Saturday");
+    expect(convertWeekDayToFullName("Su")).toBe("Sunday");
+  });
+
+  test("Test incorrect conversion", () => {
+    expect(convertWeekDayToFullName("M")).toBe("Invalid day abbreviation");
+    expect(convertWeekDayToFullName("T")).toBe("Invalid day abbreviation");
   });
 });

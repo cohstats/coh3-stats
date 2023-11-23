@@ -66,7 +66,7 @@ export const getNivoTooltipTheme = (colorScheme: "dark" | "light") => {
       },
       labels: {
         text: {
-          fill: "#ccd7e2",
+          fill: "#333333",
           fontSize: 12,
           fontWeight: 500,
         },

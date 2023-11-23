@@ -30,6 +30,7 @@ import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
 import ActivityTab from "./components/activity/activity-tab";
+import config from "../../config";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -201,7 +202,7 @@ const PlayerCard = ({
           <Tabs.List position="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
-            <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>
+            {config.isDevEnv() && <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>}
             <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
