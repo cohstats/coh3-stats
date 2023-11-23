@@ -80,8 +80,6 @@ const PlayerCard = ({
   const { push, query, asPath } = useRouter();
   const { view } = query;
 
-  console.log("FE playerStatsData", playerStatsData);
-
   const playerData = playerDataAPI;
   // Default to steam
   const platform = playerData?.platform || "steam";
