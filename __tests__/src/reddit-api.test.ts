@@ -7,7 +7,7 @@ import redditResponse from "../test-assets/reddit-api-reponse.json";
 
 describe("getLatestCOH3RedditPosts", () => {
   const setupFetchStub = (data: any) => () =>
-    Promise.resolve({ json: () => Promise.resolve(data) });
+    Promise.resolve({ json: () => Promise.resolve(data), ok: true });
 
   beforeAll(() => {
     // @ts-ignore

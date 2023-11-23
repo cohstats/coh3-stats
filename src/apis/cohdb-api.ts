@@ -1,3 +1,5 @@
+import { logger } from "../logger";
+
 export interface ReplayAPIResponse {
   replays: Array<{
     id: number;
@@ -145,6 +147,7 @@ const getReplaysForPlayer = async (
   const response = await fetch(url);
 
   if (!response.ok) {
+    logger.warn(`Error getting replays for player ${playerID}: ${response.statusText}`);
     return null;
   }
 

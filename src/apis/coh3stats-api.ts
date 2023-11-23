@@ -11,6 +11,14 @@ const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) =>
     : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
 };
 
+const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) => {
+  const path = `/getPlayerCardStatsHttp?relicId=${playerID}`;
+
+  return cache_proxy
+    ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+};
+
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerMatchesHttp?relicId=${playerID}`);
 };
@@ -108,6 +116,32 @@ const getPlayerCardInfo = async (
   }
 };
 
+/**
+ * Player Card Stats are cached until 7AM , when it's refreshed.
+ * @param playerID
+ * @param XForwardedFor
+ */
+const getPlayerCardStats = async (playerID: string | number, XForwardedFor: string) => {
+  const xff = cleanXForwardedFor(XForwardedFor);
+
+  const response = await fetch(getPlayerCardStatsUrl(playerID, true), {
+    headers: {
+      "X-Forwarded-For": xff,
+      "c-edge-ip": parseFirstIPFromString(xff),
+    },
+  });
+  const data = await response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    if (response.status === 500) {
+      throw new Error(`Error getting player card info: ${data.error}`);
+    }
+    throw new Error(`Error getting player card info`);
+  }
+};
+
 const getPlayerRecentMatches = async (playerID: string | number, XForwardedFor: string) => {
   const xff = cleanXForwardedFor(XForwardedFor);
 
@@ -169,4 +203,5 @@ export {
   getTwitchStreams,
   getStatsData,
   getGlobalAchievements,
+  getPlayerCardStats,
 };
