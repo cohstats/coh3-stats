@@ -28,9 +28,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
   new Metrics({
     token: "63a45f52-3972-4ed0-8867-4e762860a563", // Get your token from the Edgio Console
-  })
-    .collect()
-    .then();
+  }).collect();
 
   useServiceWorker({});
 

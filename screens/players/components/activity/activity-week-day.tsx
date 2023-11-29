@@ -9,73 +9,71 @@ const ActivityByWeekDay = ({ playerStatsData }: { playerStatsData: ProcessedCOHP
   const { colorScheme } = useMantineColorScheme();
 
   return (
-    <div style={{ height: 220 }}>
-      <ResponsiveBar
-        margin={{ top: 10, right: 30, bottom: 40, left: 55 }}
-        // @ts-ignore
-        data={playerStatsData.activityByWeekDay as data[] | undefined}
-        layout={"vertical"}
-        keys={["value"]}
-        indexBy="day"
-        theme={getNivoTooltipTheme(colorScheme)}
-        // colors={{ scheme: 'blues' }}
-        // colorBy={"indexValue"}
-        minValue={0}
-        maxValue={"auto"}
-        innerPadding={2}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: "middle",
-          legendOffset: -50,
-          legend: "Amount of games",
-        }}
-        axisBottom={{
-          legend: "Day of the week",
-          legendPosition: "middle",
-          legendOffset: 30,
-        }}
-        label={({ data }) => {
-          if (data.value === undefined) return "";
-          return `${Math.round(calculateWinRate(data.wins, data.losses))}%`;
-        }}
-        // @ts-ignore
-        tooltip={({
-          value,
-          data,
-        }: {
-          value: string;
-          // Not sure why it's undefined, must be a bug in Nivo
-          data: { day: string; wins: number | undefined; losses: number | undefined };
-        }) => {
-          if (value === undefined) return null;
-          const toolTipBackground = colorScheme === "light" ? "#eeeeee" : "#25262B";
-          return (
-            <div
-              style={{
-                backgroundColor: toolTipBackground,
-                padding: "5px",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-              }}
-            >
-              Day: {convertWeekDayToFullName(data.day)}
-              <br />
-              Total: {(data.wins || 0) + (data.losses || 0)} games
+    <ResponsiveBar
+      margin={{ top: 10, right: 30, bottom: 40, left: 55 }}
+      // @ts-ignore
+      data={playerStatsData.activityByWeekDay as data[] | undefined}
+      layout={"vertical"}
+      keys={["value"]}
+      indexBy="day"
+      theme={getNivoTooltipTheme(colorScheme)}
+      // colors={{ scheme: 'blues' }}
+      // colorBy={"indexValue"}
+      minValue={0}
+      maxValue={"auto"}
+      innerPadding={2}
+      axisLeft={{
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        legendPosition: "middle",
+        legendOffset: -50,
+        legend: "Amount of games",
+      }}
+      axisBottom={{
+        legend: "Day of the week",
+        legendPosition: "middle",
+        legendOffset: 30,
+      }}
+      label={({ data }) => {
+        if (data.value === undefined) return "";
+        return `${Math.round(calculateWinRate(data.wins, data.losses))}%`;
+      }}
+      // @ts-ignore
+      tooltip={({
+        value,
+        data,
+      }: {
+        value: string;
+        // Not sure why it's undefined, must be a bug in Nivo
+        data: { day: string; wins: number | undefined; losses: number | undefined };
+      }) => {
+        if (value === undefined) return null;
+        const toolTipBackground = colorScheme === "light" ? "#eeeeee" : "#25262B";
+        return (
+          <div
+            style={{
+              backgroundColor: toolTipBackground,
+              padding: "5px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            Day: {convertWeekDayToFullName(data.day)}
+            <br />
+            Total: {(data.wins || 0) + (data.losses || 0)} games
+            <Group spacing={"xs"}>
+              Record:
               <Group spacing={"xs"}>
-                Record:
-                <Group spacing={"xs"}>
-                  <Text color={"green"}> {data.wins || 0} W</Text> -{" "}
-                  <Text color={"red"}> {data.losses || 0} L</Text>
-                </Group>
+                <Text color={"green"}> {data.wins || 0} W</Text> -{" "}
+                <Text color={"red"}> {data.losses || 0} L</Text>
               </Group>
-              WinRate: {calculateWinRate(data.wins || 0, data.losses || 0).toFixed(1)}%
-            </div>
-          );
-        }}
-      />
-    </div>
+            </Group>
+            WinRate: {calculateWinRate(data.wins || 0, data.losses || 0).toFixed(1)}%
+          </div>
+        );
+      }}
+    />
   );
 };
 
