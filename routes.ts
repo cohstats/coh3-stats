@@ -26,14 +26,28 @@ export default new Router()
         host: /dev.coh3stats.com|preview.coh3stats.com/,
       },
     },
-    ({ send }) => {
+    ({ send, cache }) => {
       send("User-agent: *\nDisallow: /", 200);
+      cache({
+        edge: {
+          maxAgeSeconds: 60 * 60 * 24,
+          staleWhileRevalidateSeconds: 60 * 60 * 24 * 7,
+          forcePrivateCaching: true,
+        },
+      });
     },
   )
   // https://developer.chrome.com/blog/private-prefetch-proxy/
-  .match("/.well-known/traffic-advice", ({ send, setResponseHeader }) => {
+  .match("/.well-known/traffic-advice", ({ send, setResponseHeader, cache }) => {
     setResponseHeader("Content-Type", "application/trafficadvice+json");
     send('[{"user_agent": "prefetch-proxy","fraction": 1.0}]', 200);
+    cache({
+      edge: {
+        maxAgeSeconds: 60 * 60 * 24,
+        staleWhileRevalidateSeconds: 60 * 60 * 24 * 7,
+        forcePrivateCaching: true,
+      },
+    });
   })
   // Homepage caching
   .match("/", ({ cache }) => {
