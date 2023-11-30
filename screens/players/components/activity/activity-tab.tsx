@@ -1,7 +1,11 @@
 import { ProcessedCOHPlayerStats } from "../../../../src/coh3/coh3-types";
-import { Container, Space, Title, Text } from "@mantine/core";
+import { Container, Space, Title, Text, Center, Alert, Anchor } from "@mantine/core";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
+import { IconInfoTriangle } from "@tabler/icons-react";
+import Link from "next/link";
+import config from "../../../../config";
+import React from "react";
 
 // Because of some Nivo bugs we need to render only on client side
 const DynamicActivityByCalendarDay = dynamic(() => import("./activity-calendar-day"), {
@@ -26,7 +30,27 @@ const ActivityTab = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
 }) => {
   if (!playerStatsData) {
-    return <></>;
+    return (
+      <Container size={"sm"} p={"md"}>
+        <Center>
+          <Alert
+            icon={<IconInfoTriangle size="2rem" />}
+            title={"No Activity Data"}
+            color="yellow"
+            miw={450}
+          >
+            It looks like we are not getting activity data for this player.
+            <br />
+            <br />
+            If this error persists, please report it on{" "}
+            <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target={"_blank"}>
+              Discord
+            </Anchor>
+            .
+          </Alert>
+        </Center>
+      </Container>
+    );
   }
 
   return (

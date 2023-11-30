@@ -2,6 +2,7 @@ import config from "../../config";
 import { GlobalAchievementsData, ProcessedMatch, TwitchStream } from "../coh3/coh3-types";
 import { analysisType, getAnalysisStatsHttpResponse } from "../analysis-types";
 import { cleanXForwardedFor, parseFirstIPFromString } from "../utils";
+import { logger } from "../logger";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
@@ -121,24 +122,29 @@ const getPlayerCardInfo = async (
  * @param playerID
  * @param XForwardedFor
  */
-const getPlayerCardStats = async (playerID: string | number, XForwardedFor: string) => {
+const getPlayerCardStatsOrNull = async (playerID: string | number, XForwardedFor: string) => {
   const xff = cleanXForwardedFor(XForwardedFor);
 
-  const response = await fetch(getPlayerCardStatsUrl(playerID, true), {
-    headers: {
-      "X-Forwarded-For": xff,
-      "c-edge-ip": parseFirstIPFromString(xff),
-    },
-  });
-  const data = await response.json();
+  try {
+    const response = await fetch(getPlayerCardStatsUrl(playerID, true), {
+      headers: {
+        "X-Forwarded-For": xff,
+        "c-edge-ip": parseFirstIPFromString(xff),
+      },
+    });
+    const data = await response.json();
 
-  if (response.ok) {
-    return data;
-  } else {
-    if (response.status === 500) {
-      throw new Error(`Error getting player card info: ${data.error}`);
+    if (response.ok) {
+      return data;
+    } else {
+      if (response.status === 500) {
+        logger.error(`Error getting player card stats: ${data.error}`);
+        throw new Error(`Error getting player card info: ${data.error}`);
+      }
     }
-    throw new Error(`Error getting player card info`);
+  } catch (e) {
+    logger.error(`Error getting player card stats: ${e}`);
+    return null;
   }
 };
 
@@ -203,5 +209,5 @@ export {
   getTwitchStreams,
   getStatsData,
   getGlobalAchievements,
-  getPlayerCardStats,
+  getPlayerCardStatsOrNull,
 };

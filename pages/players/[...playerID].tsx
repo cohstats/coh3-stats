@@ -2,7 +2,7 @@ import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import {
   getPlayerCardInfo,
   getPlayerRecentMatches,
-  getPlayerCardStats,
+  getPlayerCardStatsOrNull,
 } from "../../src/apis/coh3stats-api";
 import { GetServerSideProps } from "next";
 import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
@@ -11,10 +11,10 @@ import PlayerCard from "../../screens/players";
 import { PlayerProfileCOHStats, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
 
 const ProcessPlayerCardStatsData = (
-  playerStatsData: PlayerProfileCOHStats,
+  playerStatsData: PlayerProfileCOHStats | null,
 ): ProcessedCOHPlayerStats => {
   const processedActivityByDate = [];
-  for (const [date, value] of Object.entries(playerStatsData.stats?.activityByDate || {})) {
+  for (const [date, value] of Object.entries(playerStatsData?.stats?.activityByDate || {})) {
     processedActivityByDate.push({
       day: date,
       value: value.w - value.l,
@@ -24,7 +24,7 @@ const ProcessPlayerCardStatsData = (
   }
 
   const processedActivityByHour = [];
-  for (const [hour, value] of Object.entries(playerStatsData.stats?.activityByHour || {})) {
+  for (const [hour, value] of Object.entries(playerStatsData?.stats?.activityByHour || {})) {
     processedActivityByHour.push({
       hour,
       value: value.w + value.l,
@@ -35,7 +35,7 @@ const ProcessPlayerCardStatsData = (
 
   const processedActivityByDayOfWeek = [];
   for (const [dayOfWeek, value] of Object.entries(
-    playerStatsData.stats?.activityByWeekDay || {},
+    playerStatsData?.stats?.activityByWeekDay || {},
   )) {
     processedActivityByDayOfWeek.push({
       day: dayOfWeek,
@@ -78,7 +78,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
 
   try {
     const PromisePlayerCardData = getPlayerCardInfo(playerID, true, xff);
-    const PromisePlayerCardStatsData = getPlayerCardStats(playerID, xff);
+    const PromisePlayerCardStatsData = getPlayerCardStatsOrNull(playerID, xff);
     const PromiseReplaysData = isReplaysPage
       ? getReplaysForPlayer(playerID, start as string | undefined)
       : Promise.resolve();
