@@ -82,7 +82,7 @@
     "@types/jest": "29.5.10",
     "@types/node": "18.18.8",
     "@types/nprogress": "0.2.3",
-    "@types/react": "18.2.39",
+    "@types/react": "18.2.42",
     "@types/react-dom": "18.2.17",
     "@typescript-eslint/eslint-plugin": "6.13.1",
     "@typescript-eslint/parser": "6.13.1",
