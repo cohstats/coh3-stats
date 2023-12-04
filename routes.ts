@@ -49,6 +49,16 @@ export default new Router()
       },
     });
   })
+  .match("/.well-known/security.txt", ({ send, cache }) => {
+    send("Contact: https://github.com/cohstats\nPreferred-Languages: en, cz", 200);
+    cache({
+      edge: {
+        maxAgeSeconds: 60 * 60 * 24 * 14,
+        staleWhileRevalidateSeconds: 60 * 60 * 24 * 14,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   // Homepage caching
   .match("/", ({ cache }) => {
     cache({
