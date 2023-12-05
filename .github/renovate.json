@@ -18,6 +18,11 @@
       "packagePatterns": ["^actions/"],
       "groupName": "github-actions",
       "groupSlug": "actions-updates"
+    },
+    {
+      "matchPackagePatterns": ["@edgio/.*"],
+      "groupName": "Edgio Packages",
+      "groupSlug": "edgio"
     }
   ],
   "schedule": ["before 4am on Monday"]
