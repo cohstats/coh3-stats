@@ -139,7 +139,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             placeholder="Pick dates range"
             value={valueDatePicker}
             onChange={setValueDatePicker}
-            w={270}
+            w={285}
             // mx={10}
             // mx="auto"
 
