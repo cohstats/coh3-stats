@@ -124,7 +124,7 @@ const InnerMapsStatsPage = ({
     );
   }
 
-  if (data) {
+  if (data && data.analysis && data.analysis[mode]) {
     const analysis = data.analysis as MapStatsDataObject;
 
     const matchCount = (() => {
@@ -255,6 +255,12 @@ const InnerMapsStatsPage = ({
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
       </Container>
+    );
+  } else if (!loading && !error) {
+    content = (
+      <Center maw={400} h={250} mx="auto">
+        <h3>No data for the selected period</h3>
+      </Center>
     );
   }
 

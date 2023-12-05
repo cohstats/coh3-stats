@@ -52,7 +52,7 @@ export type BattlegroupResolvedType = {
 };
 
 /** Update 1.2.0 added two incomplete battlegroups, so better hide those. */
-const SkipBattlegroups = ["defense", "coastal"];
+const SkipBattlegroups = ["defense"];
 
 /** Resolve the battlegroup branches with the corresponding upgrades. */
 export function resolveBattlegroupBranches(
