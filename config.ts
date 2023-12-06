@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "1.4.0";
+const defaultStatsPatchSelector = "1.4.1";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -55,11 +55,12 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
-  "1.4.0": {
+  "1.4.1": {
     from: "2023-12-05",
     to: "now",
-    value: "1.4.0",
-    label: "1.4.0",
+    value: "1.4.1",
+    // Version 1.4.1 can be merged together with 1.4.0
+    label: "1.4.0 - 1.4.1",
     group: "Steel Shepherd",
   },
   "1.3.1": {
