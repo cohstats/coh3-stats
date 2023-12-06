@@ -8,6 +8,7 @@ import Link from "next/link";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import React from "react";
+import { getIconsPathOnCDN } from "../../../src/utils";
 
 const addPlayerIcons = (type: leaderBoardType) => {
   return Array.from({ length: parseInt(type[0]) }, () => (
@@ -16,7 +17,7 @@ const addPlayerIcons = (type: leaderBoardType) => {
       width={20}
       height={20}
       fit="contain"
-      src="/icons/races/common/symbols/building_barracks.png"
+      src={getIconsPathOnCDN("/icons/races/common/symbols/building_barracks.webp")}
       alt=""
       withPlaceholder
     />
