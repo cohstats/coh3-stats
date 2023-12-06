@@ -108,6 +108,9 @@ export const getIconsPathOnCDN = (
     iconPath += ".png";
   }
 
+  // Use .webp versions of all images
+  iconPath = iconPath.replace(".png", ".webp");
+
   // Remove double // in case we have them in the path
   const urlPath = `/${folder}/${iconPath}`.replace(/\/\//g, "/");
 
