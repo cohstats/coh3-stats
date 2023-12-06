@@ -451,57 +451,141 @@ export const apiTitleTypes: Record<platformType, string> = {
   psn: "coh3psn",
 };
 
-const maps: { [key: string]: { name: string; url: string } } = {
-  twin_beach_2p_mkii: { name: "Twin Beaches", url: "/icons/maps/twin_beaches.webp" },
-  desert_village_2p_mkiii: { name: "Road to Tunis", url: "/icons/maps/road_to_tunis.webp" },
-  cliff_crossing_2p: { name: "Taranto Coastline", url: "/icons/maps/taranto_coastline.webp" },
-  rails_and_sand_4p: { name: "Campbell's Convoy", url: "/icons/maps/campbells_convoy.webp" },
-  rural_town_4p: { name: "Pachino Farmlands", url: "/icons/maps/pachino_farmlands.webp" },
-  torrente_4p_mkiii: { name: "Torrente", url: "/icons/maps/torrente.webp" },
-  rural_castle_4p: { name: "Aere Perennius", url: "/icons/maps/aere_perennius.webp" },
+type OfficialMapKeys =
+  | "benghazi_6p"
+  | "catania_crossing_6p"
+  | "cliff_crossing_2p"
+  | "day_101_4p"
+  | "desert_airfield_6p_mkii"
+  | "desert_village_2p_mkiii"
+  | "gardens_2p_mm"
+  | "industrial_railyard_6p_mkii"
+  | "monte_cavo_8p"
+  | "mountain_ruins_6p"
+  | "mountain_ruins_8p_mkii"
+  | "pachino_2p" // Current Pachino 1v1 map. (post-1.3.0)
+  | "rural_town_2p_mkii" // Old Pachino 1v1 map (pre-1.3.0).
+  | "rails_and_sand_4p"
+  | "rural_castle_4p"
+  | "rural_town_4p"
+  | "sousse_wetlands_8p"
+  | "torrente_4p_mkiii"
+  | "twin_beach_2p_mkii"
+  | "villa_fiore_2p_mkii"
+  | "winter_line_8p_mkii";
+
+type OfficialMapValue = {
+  name: string;
+  url: string;
+  /** Flag to filter out those official maps that are excluded from "ranked". */
+  automatch: boolean;
+};
+
+const maps: Record<OfficialMapKeys, OfficialMapValue> = {
+  twin_beach_2p_mkii: {
+    name: "Twin Beaches",
+    url: "/icons/maps/twin_beach_2p_mkii_mm_handmade.png",
+    automatch: true,
+  },
+  desert_village_2p_mkiii: {
+    name: "Road to Tunis",
+    url: "/icons/maps/desert_village_2p_mkiii_mm_handmade.png",
+    automatch: true,
+  },
+  cliff_crossing_2p: {
+    name: "Taranto Coastline",
+    url: "/icons/maps/cliff_crossing_2p_mm_handmade.png",
+    automatch: true,
+  },
+  rails_and_sand_4p: {
+    name: "Campbell's Convoy",
+    url: "/icons/maps/rails_and_sand_4p_mm_handmade.png",
+    automatch: true,
+  },
+  rural_town_4p: {
+    name: "Pachino Farmlands",
+    url: "/icons/maps/rural_town_4p_mm_handmade.png",
+    automatch: true,
+  },
+  torrente_4p_mkiii: {
+    name: "Torrente",
+    url: "/icons/maps/torrente_4p_mkiii_mm_handmade.png",
+    automatch: true,
+  },
+  rural_castle_4p: {
+    name: "Aere Perennius",
+    url: "/icons/maps/rural_castle_4p_mm_handmade.png",
+    automatch: true,
+  },
   desert_airfield_6p_mkii: {
     name: "Gazala Landing Ground",
-    url: "/icons/maps/gazala_landing_ground.webp",
+    url: "/icons/maps/desert_airfield_6p_mkii_mm_handmade.png",
+    automatch: true,
   },
   industrial_railyard_6p_mkii: {
     name: "L'Aquila",
-    url: "/icons/maps/laquila.webp",
+    url: "/icons/maps/industrial_railyard_6p_mkii_mm_handmade.png",
+    automatch: true,
   },
   winter_line_8p_mkii: {
     name: "Winter Line",
-    url: "/icons/maps/winter_line.webp",
+    url: "/icons/maps/winter_line_8p_mkii_mm_handmade.png",
+    automatch: true,
   },
   mountain_ruins_8p_mkii: {
     name: "Mignano Gap",
-    url: "/icons/maps/mignano_gap.webp",
+    url: "/icons/maps/mountain_ruins_8p_mkii_mm_handmade.png",
+    automatch: true,
   },
   mountain_ruins_6p: {
     name: "Mignano Summit",
-    url: "/icons/maps/mignano_gap_6p.webp",
+    url: "/icons/maps/mountain_ruins_6p_mm_handmade.png",
+    automatch: true,
   },
   gardens_2p_mm: {
     name: "Gardens",
-    url: "/icons/maps/gardens.webp",
+    url: "/icons/maps/gardens_2p_mm_handmade.png",
+    automatch: true,
   },
   pachino_2p: {
     name: "Pachino Stalemate",
-    url: "/icons/maps/pachino_farmlands_mkii.webp",
+    url: "/icons/maps/pachino_2p_mm_handmade.png",
+    automatch: true,
   },
   rural_town_2p_mkii: {
     name: "Pachino Farmlands",
-    url: "/icons/maps/pachino_farmlands_mkii.webp",
+    url: "/icons/maps/pachino_2p_mm_handmade.png",
+    automatch: true,
   },
   monte_cavo_8p: {
     name: "Monte Cavo",
-    url: "/icons/maps/monte_cavo_8p.webp",
+    url: "/icons/maps/monte_cavo_8p_mm_handmade.png",
+    automatch: true,
   },
   benghazi_6p: {
     name: "Benghazi",
-    url: "/icons/maps/benghazi_6p.webp",
+    url: "/icons/maps/benghazi_6p_mm_handmade.png",
+    automatch: true,
   },
   sousse_wetlands_8p: {
     name: "Sousse Wetlands",
-    url: "/icons/maps/sousse_wetlands_8p.webp",
+    url: "/icons/maps/sousse_wetlands_8p_mm_handmade.png",
+    automatch: true,
+  },
+  catania_crossing_6p: {
+    name: "Catania Crossing",
+    url: "/icons/maps/catania_crossing_6p_mm_handmade.png",
+    automatch: false,
+  },
+  day_101_4p: {
+    name: "Day 101",
+    url: "/icons/maps/day_101_4p_mm_handmade.png",
+    automatch: true,
+  },
+  villa_fiore_2p_mkii: {
+    name: "Villa Fiore",
+    url: "/icons/maps/villa_fiore_2p_mkii_mm_handmade.png",
+    automatch: true,
   },
 };
 
