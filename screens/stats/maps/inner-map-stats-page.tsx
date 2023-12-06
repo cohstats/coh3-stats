@@ -5,7 +5,7 @@ import { Center, Flex, Group, Select, Space, Text } from "@mantine/core";
 import { getMapLocalizedName } from "../../../src/coh3/helpers";
 import { FactionVsFactionCard } from "../../../components/charts/card-factions-heatmap";
 import ImageWithModal from "../../../components/image-with-modal";
-import { maps } from "../../../src/coh3/coh3-data";
+import { isOfficialMap, maps } from "../../../src/coh3/coh3-data";
 import dynamic from "next/dynamic";
 import MapChartCard from "./map-chart-card";
 
@@ -72,10 +72,10 @@ const InnerMapStatsPage = ({
               height={245}
               width={245}
               alt={selectedMap}
-              src={maps[selectedMap]?.url}
+              src={isOfficialMap(selectedMap) ? maps[selectedMap]?.url : ""}
               modalW={400}
               modalH={400}
-              title={maps[selectedMap].name}
+              title={isOfficialMap(selectedMap) ? maps[selectedMap]?.url : ""}
             />
           </Center>
         </MapChartCard>

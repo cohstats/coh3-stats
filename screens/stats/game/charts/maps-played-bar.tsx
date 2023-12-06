@@ -4,14 +4,14 @@ import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
 import { sortArrayOfObjectsByTheirPropertyValue } from "../../../../src/utils";
-import { maps } from "../../../../src/coh3/coh3-data";
+import { isOfficialMap, maps } from "../../../../src/coh3/coh3-data";
 
 interface IProps {
   data: AnalysisObjectType;
 }
 
 const _getMapName = (mapName: string) => {
-  if (!maps[mapName]) {
+  if (!isOfficialMap(mapName)) {
     return mapName;
   } else {
     return maps[mapName].name;
