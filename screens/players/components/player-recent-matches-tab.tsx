@@ -1,7 +1,7 @@
 import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
-import { maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
+import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
 import { ProcessedMatch, raceID } from "../../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../../src/coh3/helpers";
 import ErrorCard from "../../../components/error-card";
@@ -88,7 +88,7 @@ const PlayerRecentMatchesTab = ({
     const matchTypeMap: { [key: number]: FilterInformation } = {};
     playerMatchesData?.forEach(({ mapname, matchtype_id }) => {
       mapNameMap[mapname] = {
-        label: maps[mapname]?.name || mapname,
+        label: isOfficialMap(mapname) ? maps[mapname]?.name : mapname,
         checked: true,
         filter: mapname,
       };
