@@ -16,27 +16,27 @@ import {
 describe("getIconsPathOnCDN", () => {
   test("should return the correctly formed URL for the export folder", () => {
     const result = getIconsPathOnCDN("/path/my_icon", "export");
-    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/path/my_icon.png`);
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/path/my_icon.webp`);
   });
 
   test("should return the correctly formed URL for the export folder", () => {
     const result = getIconsPathOnCDN("my_icon", "export");
-    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.png`);
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.webp`);
   });
 
-  test("should append .png if the filename does not end with .png in the export folder", () => {
-    const result = getIconsPathOnCDN("my_icon.png", "export");
-    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.png`);
+  test("should append .webp if the filename does not end with .webp in the export folder", () => {
+    const result = getIconsPathOnCDN("my_icon.webp", "export");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.webp`);
   });
 
   test("should return the correctly formed URL for the export_flatten folder", () => {
     const result = getIconsPathOnCDN("/path/to/my_icon", "export_flatten");
-    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.png`);
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.webp`);
   });
 
   test("should remove the path and keep only the filename in the export_flatten folder", () => {
-    const result = getIconsPathOnCDN("/path/to/my_icon.png", "export_flatten");
-    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.png`);
+    const result = getIconsPathOnCDN("/path/to/my_icon.webp", "export_flatten");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.webp`);
   });
 });
 
