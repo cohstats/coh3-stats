@@ -104,7 +104,7 @@ export const getIconsPathOnCDN = (
     iconPath = iconPath.split(/[\\/]/).pop() || "";
   }
 
-  if (!iconPath.endsWith(".png")) {
+  if (!iconPath.endsWith(".png") && !iconPath.endsWith(".webp")) {
     iconPath += ".png";
   }
 

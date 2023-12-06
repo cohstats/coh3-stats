@@ -21,6 +21,7 @@ import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { RequirementCard } from "./requirement-card";
+import { getIconsPathOnCDN } from "../../src/utils";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -72,7 +73,7 @@ const BuildingCardHeader = (
           width={96}
           height={96}
           fit="contain"
-          src={`/icons/${desc.icon_name}.png`}
+          src={getIconsPathOnCDN(`icons/${desc.icon_name}.webp`)}
           alt={desc.screen_name}
           withPlaceholder
         />
@@ -217,7 +218,7 @@ function BuildingAccordionLabel({ label, symbolIcon }: AccordionLabelProps) {
         width={24}
         height={24}
         fit="contain"
-        src={`/icons/${symbolIcon}.png`}
+        src={getIconsPathOnCDN(`icons/${symbolIcon}.webp`)}
         alt=""
         withPlaceholder
       />
