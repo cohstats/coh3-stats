@@ -49,7 +49,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
             width={20}
             height={20}
             fit="contain"
-            src={`/icons/races/common/symbols/building_hq.png`}
+            src={getIconsPathOnCDN(`/icons/races/common/symbols/building_hq.webp`)}
             alt=""
             withPlaceholder
           />
@@ -67,7 +67,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
             width={20}
             height={20}
             fit="contain"
-            src={`/icons/races/common/symbols/building_barracks.png`}
+            src={getIconsPathOnCDN(`/icons/races/common/symbols/building_barracks.webp`)}
             alt=""
             withPlaceholder
           />
