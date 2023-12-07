@@ -364,9 +364,11 @@ const getEbpsStats = async (patch = "latest") => {
       if (!isBaseFaction(item.faction)) return;
 
       /** Uncomment if you want to check for each entity type. */
-      // console.group(item.id);
-      // console.log("🚀 ~ file: mappingEbps.ts:161 ~ ebpsSet.forEach ~ unitType:", item.unitType);
-      // console.groupEnd();
+      // if (item.id === "bunker_command_ger") {
+      //   console.group(item.id);
+      //   console.log("🚀 ~ file: mappingEbps.ts:161 ~ ebpsSet.forEach ~ unitType:", item);
+      //   console.groupEnd();
+      // }
 
       // filter by relevant entity types
       switch (item.unitType) {
