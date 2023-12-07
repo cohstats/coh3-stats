@@ -45,10 +45,10 @@ const resolveTextFormatterLocstring = (inFormatter: TextFormatterSchema) => {
   const finalFormattedLoc = formattedLoc.replace(perRegex, "%");
 
   // Small formatter step to add spaces instead of the string line break characters.
-  const lineBreakRegex = /\\r?\\n|\\r|\\n/g;
-  const lineFormatterLoc = finalFormattedLoc.replace(lineBreakRegex, " ");
+  // const lineBreakRegex = /\\r?\\n|\\r|\\n/g;
+  // const lineFormatterLoc = finalFormattedLoc.replace(lineBreakRegex, " ");
 
-  return lineFormatterLoc;
+  return finalFormattedLoc;
 };
 
 const fetchLocstring = async () => {

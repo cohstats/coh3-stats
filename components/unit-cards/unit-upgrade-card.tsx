@@ -85,7 +85,9 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
           <Title order={4} transform="capitalize">
             {desc.screen_name}
           </Title>
-          <Text fz="sm">{desc.brief_text}</Text>
+          <Text fz="sm" style={{ whiteSpace: "pre-line" }}>
+            {desc.brief_text?.replace(/\\r?\\n|\\r|\\n/g, "\n")}
+          </Text>
           <Text fz="md" color="yellow.5">
             {desc.extra_text}
           </Text>
@@ -122,9 +124,13 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip multiline label={desc.brief_text}>
-            <Text fz="sm" lineClamp={5} style={{ whiteSpace: "pre-line" }}>
-              {desc.brief_text}
+          <Tooltip
+            multiline
+            style={{ whiteSpace: "pre-line" }}
+            label={desc.brief_text?.replace(/\\r?\\n|\\r|\\n/g, "\n")}
+          >
+            <Text fz="sm" lineClamp={6} style={{ whiteSpace: "pre-line" }}>
+              {desc.brief_text?.replace(/\\r?\\n|\\r|\\n/g, "\n")}
             </Text>
           </Tooltip>
         </Grid.Col>
