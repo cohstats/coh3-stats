@@ -1,4 +1,4 @@
-import { createStyles, Flex, Group, HoverCard, Text, Title, Tooltip } from "@mantine/core";
+import { createStyles, Flex, Grid, Group, HoverCard, Text, Title, Tooltip } from "@mantine/core";
 import { UnitCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
@@ -79,14 +79,16 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
       </HoverCard.Target>
       <HoverCard.Dropdown>
         <Flex direction="column">
+          <Title order={6} fz="sm" color="yellow.5" transform="capitalize">
+            {desc.help_text}
+          </Title>
           <Title order={4} transform="capitalize">
             {desc.screen_name}
           </Title>
+          <Text fz="sm">{desc.brief_text}</Text>
           <Text fz="md" color="yellow.5">
             {desc.extra_text}
           </Text>
-          <Text fz="sm">{desc.brief_text}</Text>
-          <Text fz="sm">{desc.help_text}</Text>
         </Flex>
       </HoverCard.Dropdown>
     </HoverCard>
@@ -102,28 +104,39 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         fallbackSrc={iconPlaceholder}
       ></ImageWithFallback>
 
-      <Flex direction="column">
-        <Tooltip label={desc.help_text}>
-          <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
-            {desc.help_text}
-          </Title>
-        </Tooltip>
-        <Tooltip label={desc.screen_name}>
-          <Title order={4} transform="capitalize" lineClamp={1}>
-            {desc.screen_name}
-          </Title>
-        </Tooltip>
-        <Tooltip label={desc.brief_text}>
-          <Text fz="sm" lineClamp={2}>
-            {desc.brief_text}
-          </Text>
-        </Tooltip>
-        <Tooltip label={desc.extra_text || desc.extra_text_formatter}>
-          <Text fz="sm" lineClamp={2}>
-            {desc.extra_text || desc.extra_text_formatter}
-          </Text>
-        </Tooltip>
-      </Flex>
+      <Grid gutter={1} align="stretch">
+        <Grid.Col span={12}>
+          <Tooltip label={desc.help_text}>
+            <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
+              {desc.help_text}
+            </Title>
+          </Tooltip>
+        </Grid.Col>
+
+        <Grid.Col span={12}>
+          <Tooltip label={desc.screen_name}>
+            <Title order={4} transform="capitalize" lineClamp={1}>
+              {desc.screen_name}
+            </Title>
+          </Tooltip>
+        </Grid.Col>
+
+        <Grid.Col span={12}>
+          <Tooltip multiline label={desc.brief_text}>
+            <Text fz="sm" lineClamp={5} style={{ whiteSpace: "pre-line" }}>
+              {desc.brief_text}
+            </Text>
+          </Tooltip>
+        </Grid.Col>
+
+        <Grid.Col span={12}>
+          <Tooltip multiline label={desc.extra_text || desc.extra_text_formatter}>
+            <Text fz="sm" lineClamp={3}>
+              {desc.extra_text || desc.extra_text_formatter}
+            </Text>
+          </Tooltip>
+        </Grid.Col>
+      </Grid>
     </>
   );
 

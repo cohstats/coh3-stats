@@ -1,6 +1,6 @@
 // type description of mapped data
 
-import { resolveLocstring } from "./locstring";
+import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
@@ -211,8 +211,11 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.helpText = resolveLocstring(helpText) || "";
           const extraText = uiExtInfo?.extra_text;
           sbps.ui.extraText = resolveLocstring(extraText) || "";
-          const briefText = uiExtInfo?.brief_text;
-          sbps.ui.briefText = resolveLocstring(briefText) || "";
+          const briefText = resolveLocstring(uiExtInfo?.brief_text);
+          const briefTextFormatter = resolveTextFormatterLocstring(
+            uiExtInfo?.brief_text_formatter,
+          );
+          sbps.ui.briefText = briefText || briefTextFormatter || "";
           sbps.ui.armorIcon = uiExtInfo?.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
         }
         break;

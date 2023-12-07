@@ -107,8 +107,11 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   upgrade.ui.helpText = resolveLocstring(helpText) || "";
   const extraText = upgradeBag.ui_info?.extra_text;
   upgrade.ui.extraText = resolveLocstring(extraText) || "";
-  const briefText = upgradeBag.ui_info?.brief_text;
-  upgrade.ui.briefText = resolveLocstring(briefText) || "";
+  const briefText = resolveLocstring(upgradeBag.ui_info?.brief_text);
+  const briefTextFormatter = resolveTextFormatterLocstring(
+    upgradeBag.ui_info?.brief_text_formatter,
+  );
+  upgrade.ui.briefText = briefText || briefTextFormatter || "";
 
   upgrade.ui.extraTextFormatter =
     resolveTextFormatterLocstring(upgradeBag.ui_info?.extra_text_formatter) || "";
