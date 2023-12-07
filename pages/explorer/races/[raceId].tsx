@@ -97,7 +97,12 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>Battlegroups</Title>
 
-          {BattlegroupCard(raceToFetch, { battlegroupData, upgradesData, abilitiesData })}
+          {BattlegroupCard(raceToFetch, {
+            battlegroupData,
+            upgradesData,
+            abilitiesData,
+            sbpsData,
+          })}
         </Stack>
 
         {/* Buildings Section */}
