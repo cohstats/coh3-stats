@@ -11,8 +11,11 @@ import {
   Flex,
   createStyles,
   Tooltip,
+  Select,
+  HoverCard,
 } from "@mantine/core";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { raceType } from "../../src/coh3/coh3-types";
 import {
   BattlegroupsType,
@@ -20,6 +23,7 @@ import {
   UpgradesType,
   resolveBattlegroupBranches,
   BattlegroupResolvedBranchType,
+  SbpsType,
 } from "../../src/unitStats";
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
@@ -44,7 +48,13 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
   }, {});
 }
 
-const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction: raceType) => {
+const BattlegroupBranchMapping = (
+  branch: BattlegroupResolvedBranchType,
+  faction: raceType,
+  sbpsData: SbpsType[],
+) => {
+  const router = useRouter();
+
   const groupedRows = groupBy(branch.upgrades, (item) => item.upg.uiPosition.row);
   // Create a series of grid elements per row.
 
@@ -81,6 +91,52 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction
     </Box>
   );
 
+  const anchorLinkOrSelect = ({
+    spawnItems,
+    upg,
+    ability,
+  }: {
+    spawnItems: string[];
+    upg: UpgradesType;
+    ability: AbilitiesType;
+  }) => {
+    if (spawnItems.length > 1) {
+      const mappedSpawnItems = spawnItems.map((id) => {
+        const foundSbps = sbpsData.find((x) => x.id === id);
+        return { value: id, label: foundSbps?.ui.screenName || id };
+      });
+      return (
+        <HoverCard width={280} shadow="md" position="top">
+          <HoverCard.Target>{bgCallInCard({ upg, ability })}</HoverCard.Target>
+          <HoverCard.Dropdown>
+            <Select
+              label="Select squad / emplacement"
+              placeholder="Pick one"
+              data={mappedSpawnItems}
+              onChange={(val) => (val ? router.push(getExplorerUnitRoute(faction, val)) : "")}
+            />
+          </HoverCard.Dropdown>
+        </HoverCard>
+      );
+    }
+
+    return (
+      <Anchor
+        color="undefined"
+        underline={false}
+        sx={{
+          "&:hover": {
+            textDecoration: "none",
+          },
+        }}
+        component={Link}
+        href={getExplorerUnitRoute(faction, spawnItems[0])}
+      >
+        {bgCallInCard({ upg, ability })}
+      </Anchor>
+    );
+  };
+
   return (
     <Stack align="center">
       <Title order={4} color="orange.5" transform="uppercase">
@@ -92,23 +148,9 @@ const BattlegroupBranchMapping = (branch: BattlegroupResolvedBranchType, faction
           <Grid key={`${rowIndex}_${branch.name}`} columns={branchUpgrades.length} w="100%">
             {branchUpgrades.map(({ upg, ability, spawnItems }) => (
               <Grid.Col key={upg.id} span={1}>
-                {spawnItems.length ? (
-                  <Anchor
-                    color="undefined"
-                    underline={false}
-                    sx={{
-                      "&:hover": {
-                        textDecoration: "none",
-                      },
-                    }}
-                    component={Link}
-                    href={getExplorerUnitRoute(faction, spawnItems[0])}
-                  >
-                    {bgCallInCard({ upg, ability })}
-                  </Anchor>
-                ) : (
-                  bgCallInCard({ upg, ability })
-                )}
+                {spawnItems.length
+                  ? anchorLinkOrSelect({ spawnItems, upg, ability })
+                  : bgCallInCard({ upg, ability })}
               </Grid.Col>
             ))}
           </Grid>
@@ -124,6 +166,7 @@ export const BattlegroupCard = (
     battlegroupData: BattlegroupsType[];
     abilitiesData: AbilitiesType[];
     upgradesData: UpgradesType[];
+    sbpsData: SbpsType[];
   },
 ) => {
   const { classes } = useStyles();
@@ -194,7 +237,7 @@ export const BattlegroupCard = (
                       <Title order={4}>{branches.LEFT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.LEFT, race)}
+                      {BattlegroupBranchMapping(branches.LEFT, race, data.sbpsData)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
@@ -207,7 +250,7 @@ export const BattlegroupCard = (
                       <Title order={4}>{branches.RIGHT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.RIGHT, race)}
+                      {BattlegroupBranchMapping(branches.RIGHT, race, data.sbpsData)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>

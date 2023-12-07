@@ -280,7 +280,7 @@ function setBattlegroupsWorkarounds() {
             upg.spawnItems = ["m29_weasal_us"];
             break;
           case "special_operations_left_1b_m29_weasal_with_pack_howitzer":
-            upg.spawnItems = ["m29_weasal_us", "engineer_us"];
+            upg.spawnItems = ["m29_weasal_us", "pack_howitzer_75mm_us"];
             break;
           case "special_operations_left_3_whizbang_us":
             upg.spawnItems = ["sherman_whizbang_us"];
@@ -292,6 +292,31 @@ function setBattlegroupsWorkarounds() {
         switch (upg.ability.id) {
           case "special_operations_right_2_devils_brigade_us":
             upg.spawnItems = ["ssf_commandos_us"];
+            break;
+        }
+      });
+    },
+  });
+  bgWorkaround("Modify American - Advanced Infantry BG Call-Ins", {
+    predicate: (item) => item.faction === "races/american" && item.id === "infantry",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Infantry Operations Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "infantry_left_1_rifleman_convert_to_ranger_us":
+            upg.spawnItems = ["ranger_us"];
+            break;
+        }
+      });
+      // Field Ordenance Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "infantry_right_1a_artillery_observers_us":
+            upg.spawnItems = ["artillery_observers_us"];
+            break;
+          case "infantry_right_2_105mm_howitzer_us":
+            upg.spawnItems = ["howitzer_105mm_us"];
             break;
         }
       });
@@ -381,6 +406,39 @@ function setBattlegroupsWorkarounds() {
         switch (upg.ability.id) {
           case "mechanized_left_3a_wespe_ger":
             upg.spawnItems = ["wespe_ger"];
+            break;
+        }
+      });
+    },
+  });
+  bgWorkaround("Modify German - Italian Coastal BG Call-Ins", {
+    predicate: (item) => item.faction === "races/german" && item.id === "coastal",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      item.uiParent.iconName = "races/german/battlegroups/coastal_ger_icon";
+      // Heavy Fortifications Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          // Do nothing.
+          default:
+            break;
+          /** NOTE: The bunker command is within the ebps, therefore not listed as "unit". */
+          // case "coastal_support_bunkers_ger":
+          //   upg.spawnItems = ["bunker_command_ger", "anti_tank_bunker_ger"];
+          //   break;
+        }
+      });
+      // Coastal Forces Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "coastal_left_1_coastal_reserve_ger":
+            upg.spawnItems = ["coastal_reserves_ger"];
+            break;
+          case "coastal_artillery_officer_ger":
+            upg.spawnItems = ["coastal_officer_ger"];
+            break;
+          case "coastal_obice_ger":
+            upg.spawnItems = ["howitzer_obice_210_ger"];
             break;
         }
       });
