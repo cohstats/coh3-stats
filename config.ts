@@ -197,8 +197,10 @@ const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeco
     },
   };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getPatchDataUrl = (dataFile = "", patch = "latest") => {
-  const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
+  // const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
+  const dataTag = "challenges";
   return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
 };
 

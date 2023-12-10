@@ -31,6 +31,10 @@ export const getGlobalAchievementsStatsRoute = () => {
   return encodeURI(`/stats/achievements`);
 };
 
+export const getChallengesRoute = () => {
+  return encodeURI(`/stats/challenges`);
+};
+
 export const getPlayersStatsRoute = () => {
   return encodeURI(`/stats/players`);
 };
