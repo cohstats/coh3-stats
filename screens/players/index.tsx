@@ -203,7 +203,11 @@ const PlayerCard = ({
           </Tabs.List>
 
           <Tabs.Panel value="standings">
-            <PlayerStandingsTab playerStandings={playerData.standings} platform={platform} />
+            <PlayerStandingsTab
+              playerStandings={playerData.standings}
+              platform={platform}
+              playerStatsData={playerStatsData}
+            />
           </Tabs.Panel>
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />

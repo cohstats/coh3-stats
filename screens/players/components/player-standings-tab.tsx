@@ -1,17 +1,35 @@
-import { InternalStandings, platformType } from "../../../src/coh3/coh3-types";
+import {
+  InternalStandings,
+  platformType,
+  ProcessedCOHPlayerStats,
+} from "../../../src/coh3/coh3-types";
 import { Container, Space } from "@mantine/core";
 import React from "react";
 import PlayerStandingsFaction from "./standings/player-standings-faction";
+import dynamic from "next/dynamic";
+
+const DynamicActivityCalendarDayWidget = dynamic(
+  () => import("./widgets/activity-calendar-day-widget"),
+  {
+    ssr: false,
+  },
+);
 
 const PlayerStandingsTab = ({
   playerStandings,
   platform,
+  playerStatsData,
 }: {
   playerStandings: InternalStandings;
   platform: platformType;
+  playerStatsData: ProcessedCOHPlayerStats;
 }) => {
   return (
     <Container size={"xl"}>
+      <Space h="xs" />
+      <div style={{ height: 150 }}>
+        <DynamicActivityCalendarDayWidget playerStatsData={playerStatsData} />
+      </div>
       <Space h="xs" />
       <PlayerStandingsFaction
         faction={"german"}

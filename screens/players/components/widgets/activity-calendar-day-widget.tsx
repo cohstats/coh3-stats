@@ -1,5 +1,5 @@
 import { ProcessedCOHPlayerStats } from "../../../../src/coh3/coh3-types";
-import { ResponsiveCalendarCanvas } from "@nivo/calendar";
+import { ResponsiveTimeRange } from "@nivo/calendar";
 import { useMantineColorScheme } from "@mantine/core";
 import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
 import dayjs from "dayjs";
@@ -8,12 +8,10 @@ import {
   coloursForEachDay,
 } from "../../../../components/charts/charts-calendar-utils";
 
-const ActivityCalendarDay = ({
+const ActivityCalendarDayWidget = ({
   playerStatsData,
-  fromYear,
 }: {
   playerStatsData: ProcessedCOHPlayerStats;
-  fromYear: string;
 }) => {
   const { colorScheme } = useMantineColorScheme();
 
@@ -32,16 +30,16 @@ const ActivityCalendarDay = ({
   };
 
   return (
-    <ResponsiveCalendarCanvas
+    <ResponsiveTimeRange
       data={playerStatsData.activityByDate}
-      from={fromYear}
+      from={dayjs(new Date()).subtract(3, "month").format("YYYY-MM-DD")}
       to={dayjs(new Date()).format("YYYY-MM-DD")}
       emptyColor={colorScheme === "light" ? "#eeeeee" : "#25262B"}
       colors={coloursForEachDay}
       minValue={-10}
       maxValue={10}
       margin={{ top: 40, right: 40, bottom: 10, left: 40 }}
-      yearSpacing={40}
+      weekdayTicks={[]}
       // monthBorderColor="#ffffff"
       monthBorderWidth={1}
       dayBorderWidth={2}
@@ -63,18 +61,25 @@ const ActivityCalendarDay = ({
       tooltip={({
         value,
         day,
-        data,
+        wins,
+        losses,
       }: {
         value: string;
         day: string;
-        data: { wins: number; losses: number };
+        wins: number;
+        losses: number;
       }) => {
         return (
-          <CalendarTooltipElement value={value} day={day} data={data} colorScheme={colorScheme} />
+          <CalendarTooltipElement
+            value={value}
+            day={day}
+            data={{ wins, losses }}
+            colorScheme={colorScheme}
+          />
         );
       }}
     />
   );
 };
 
-export default ActivityCalendarDay;
+export default ActivityCalendarDayWidget;
