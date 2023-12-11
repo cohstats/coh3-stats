@@ -155,6 +155,37 @@ const mapChallengeBag = (root: any, challenge: ChallengesType) => {
         const reqTempRef = rrReq.requirement.template_reference.value;
 
         switch (reqTempRef) {
+          case "challenges\\requirement":
+            if (!rrReq.requirement.values.length) {
+              continue;
+            }
+
+            const firstReqVal = rrReq.requirement.values[0].value_requirement.value;
+            const slicedSourceValues = rrReq.requirement.values.slice(1);
+
+            for (const rrVal of slicedSourceValues) {
+              // Check if contains an instance_reference.
+              if (rrVal.value_requirement.value?.instance_reference) {
+                const squadId = rrVal.value_requirement.value.instance_reference
+                  .split("/")
+                  .slice(-1)[0];
+
+                switch (firstReqVal) {
+                  case "Source":
+                    challenge.counters.sources.push(squadId);
+                    break;
+                  case "Target":
+                    challenge.counters.targets.push(squadId);
+                    break;
+                  case "Spawnee":
+                    challenge.counters.spawnee.push(squadId);
+                    break;
+                  default:
+                    break;
+                }
+              }
+            }
+            break;
           // Ignore for now.
           case "challenges\\requirement_values\\constant\\result":
             break;
@@ -165,8 +196,8 @@ const mapChallengeBag = (root: any, challenge: ChallengesType) => {
           case "challenges\\requirement_values\\dynamic\\squadtype":
           case "challenges\\requirement_values\\dynamic\\entitytype":
             {
-              const firstReqVal = ruleReqValues[0].value_requirement.value;
-              const slicedSourceValues = ruleReqValues.slice(1);
+              const firstReqVal = ruleReqReq[0].value_requirement.value;
+              const slicedSourceValues = ruleReqReq.slice(1);
 
               for (const rrVal of slicedSourceValues) {
                 // Check if contains an instance_reference.
