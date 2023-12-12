@@ -29,7 +29,7 @@ module.exports = {
   },
 
   // Specifies the node version for the cloud
-  cloudRuntime: "nodejs18.x",
+  cloudRuntime: "nodejs20.x",
 
   // Overrides the default path to the routes file. The path should be relative to the root of your app.
   // routes: 'routes.js',
