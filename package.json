@@ -78,7 +78,7 @@
     "@edgio/next": "7.4.4",
     "@edgio/prefetch": "7.4.4",
     "@edgio/react": "7.4.4",
-    "@next/bundle-analyzer": "^14.0.4",
+    "@next/bundle-analyzer": "14.0.4",
     "@testing-library/jest-dom": "6.1.5",
     "@testing-library/react": "14.1.2",
     "@types/jest": "29.5.10",
