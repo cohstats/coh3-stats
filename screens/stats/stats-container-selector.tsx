@@ -136,7 +136,6 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
           <DatePickerInput
             type="range"
             label="Pick dates range"
-            placeholder="Pick dates range"
             value={valueDatePicker}
             onChange={setValueDatePicker}
             w={285}
