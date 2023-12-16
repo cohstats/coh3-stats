@@ -142,7 +142,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                         <Avatar
                           src={props.unit.icon_name}
                           alt={props.unit.screen_name}
-                          placeholder="/icons/general/infantry_icn.png"
+                          // placeholder="/icons/general/infantry_icn.png"
                           radius="xs"
                           size="md"
                         />
