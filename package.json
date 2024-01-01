@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@edgio/rum": "7.0.13",
-    "@emotion/react": "11.11.1",
+    "@emotion/react": "11.11.3",
     "@emotion/server": "11.11.0",
     "@mantine/core": "6.0.21",
     "@mantine/dates": "6.0.21",
