@@ -26,8 +26,10 @@ const yearDiff = 1 + dayjs(new Date()).diff(fromYear, "year");
 
 const ActivityTab = ({
   playerStatsData,
+  platform,
 }: {
   playerStatsData: ProcessedCOHPlayerStats | undefined;
+  platform: string;
 }) => {
   if (!playerStatsData) {
     return (
@@ -52,6 +54,29 @@ const ActivityTab = ({
       </Container>
     );
   }
+
+  if (platform !== "steam")
+    return (
+      <Container size={"sm"} p={"md"}>
+        <Center>
+          <Alert
+            icon={<IconInfoTriangle size="2rem" />}
+            title={"No COH3 Stats Data"}
+            color="yellow"
+            miw={450}
+          >
+            These stats are available only for Steam players.
+            <br />
+            <br />
+            If you would like to have these stats on Consoles too, please vote / report it on our{" "}
+            <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target={"_blank"}>
+              Discord
+            </Anchor>
+            .
+          </Alert>
+        </Center>
+      </Container>
+    );
 
   return (
     <Container size={"lg"}>

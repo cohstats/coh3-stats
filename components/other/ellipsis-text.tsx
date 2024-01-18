@@ -3,17 +3,16 @@ import { Tooltip } from "@mantine/core";
 interface EllipsisTextProps {
   text: string;
   maxWidth?: string;
+  noWrap?: boolean;
 }
 
-const EllipsisText = ({ text, maxWidth }: EllipsisTextProps) => {
-  maxWidth = maxWidth || "17ch";
-
+const EllipsisText = ({ text, maxWidth = "17ch", noWrap = true }: EllipsisTextProps) => {
   const style = {
     float: "left",
     maxWidth: maxWidth,
-    whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    ...(noWrap && { whiteSpace: "nowrap" }),
   };
 
   return (

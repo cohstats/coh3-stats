@@ -40,7 +40,7 @@ const getStatsUrl = (
   startDate: number,
   endDate: number | "now" = "now",
   type: analysisType = "gameStats",
-  ock: string,
+  ock: string, //ock is used for correct cors caching
 ) => {
   return encodeURI(
     `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v8&ock=${ock}`,
