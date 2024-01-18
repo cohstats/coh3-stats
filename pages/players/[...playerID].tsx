@@ -45,10 +45,18 @@ const ProcessPlayerCardStatsData = (
     });
   }
 
+  const nemesisArray = Object.entries(playerStatsData?.stats?.nemesis || {})
+    .map(([id, value]) => ({
+      profile_id: id,
+      ...value,
+    }))
+    .sort((a, b) => b.w + b.l - (a.w + a.l));
+
   return {
     activityByWeekDay: processedActivityByDayOfWeek,
     activityByDate: processedActivityByDate,
     activityByHour: processedActivityByHour,
+    nemesis: nemesisArray,
     customGamesHidden: playerStatsData?.customGamesHidden?.hidden || false,
   };
 };

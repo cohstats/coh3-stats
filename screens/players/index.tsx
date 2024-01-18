@@ -31,6 +31,7 @@ import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
 import ActivityTab from "./components/activity/activity-tab";
 import config from "../../config";
+import NemesisTab from "./components/nemesis-tab";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -199,11 +200,16 @@ const PlayerCard = ({
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
             {config.isDevEnv() && <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>}
+            {config.isDevEnv() && <Tabs.Tab value={"nemesis"}>Nemesis</Tabs.Tab>}
             <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">
-            <PlayerStandingsTab playerStandings={playerData.standings} platform={platform} />
+            <PlayerStandingsTab
+              playerStandings={playerData.standings}
+              playerStatsData={playerStatsData}
+              platform={platform}
+            />
           </Tabs.Panel>
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />
@@ -215,7 +221,10 @@ const PlayerCard = ({
             />
           </Tabs.Panel>
           <Tabs.Panel value={"activity"}>
-            <ActivityTab playerStatsData={playerStatsData} />
+            <ActivityTab playerStatsData={playerStatsData} platform={platform} />
+          </Tabs.Panel>
+          <Tabs.Panel value={"nemesis"}>
+            <NemesisTab playerStatsData={playerStatsData} platform={platform} />
           </Tabs.Panel>
           <Tabs.Panel value={"replays"}>
             <Space h="lg" />

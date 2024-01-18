@@ -319,4 +319,12 @@ export interface ProcessedCOHPlayerStats {
     losses: number;
   }>;
   customGamesHidden: boolean;
+  nemesis:
+    | Array<{
+        profile_id: string;
+        alias: string;
+        w: number;
+        l: number;
+      }>
+    | [];
 }
