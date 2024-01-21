@@ -275,6 +275,10 @@ export interface PlayerProfileCOHStats {
   leaderboardStats?: Record<string, HistoricLeaderBoardStat>;
   updatedAt: Timestamp;
   stats?: PlayerPersonalCOHStats;
+  customGamesHidden?: {
+    hidden: boolean;
+    updatedAt: Timestamp;
+  };
 }
 
 interface HistoryOfLeaderBoardStat {
@@ -314,4 +318,5 @@ export interface ProcessedCOHPlayerStats {
     wins: number;
     losses: number;
   }>;
+  customGamesHidden: boolean;
 }

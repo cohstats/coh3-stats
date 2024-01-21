@@ -211,6 +211,7 @@ const PlayerCard = ({
               playerMatchesData={playerMatchesData}
               profileID={playerID}
               error={error}
+              customGamesHidden={playerStatsData.customGamesHidden}
             />
           </Tabs.Panel>
           <Tabs.Panel value={"activity"}>
