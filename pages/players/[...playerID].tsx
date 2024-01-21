@@ -49,6 +49,7 @@ const ProcessPlayerCardStatsData = (
     activityByWeekDay: processedActivityByDayOfWeek,
     activityByDate: processedActivityByDate,
     activityByHour: processedActivityByHour,
+    customGamesHidden: playerStatsData?.customGamesHidden?.hidden || false,
   };
 };
 
@@ -99,7 +100,16 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       ? ProcessPlayerCardStatsData(playerCardStatsData.playerStats)
       : null;
     playerData = playerAPIData ? processPlayerInfoAPIResponse(playerAPIData) : null;
-    playerMatchesData = viewPlayerMatches ? PlayerMatchesAPIData : null;
+    playerMatchesData = viewPlayerMatches
+      ? (() => {
+          if (PlayerMatchesAPIData && playerStatsData?.customGamesHidden) {
+            // Filter out custom games if it's set to be hidden
+            return PlayerMatchesAPIData.filter((match) => match.matchtype_id !== 0);
+          } else {
+            return PlayerMatchesAPIData;
+          }
+        })()
+      : null;
     replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);

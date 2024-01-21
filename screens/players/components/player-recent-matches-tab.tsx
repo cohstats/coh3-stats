@@ -1,4 +1,4 @@
-import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip } from "@mantine/core";
+import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip, Center } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
@@ -25,10 +25,12 @@ const PlayerRecentMatchesTab = ({
   profileID,
   playerMatchesData,
   error,
+  customGamesHidden,
 }: {
   profileID: string;
   playerMatchesData: Array<ProcessedMatch>;
   error: string;
+  customGamesHidden: boolean;
 }) => {
   const [debug, setDebug] = React.useState(false);
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
@@ -328,6 +330,13 @@ const PlayerRecentMatchesTab = ({
           />
         </Stack>
       </Group>
+      {customGamesHidden && (
+        <Center>
+          <Text size={"sm"} c="dimmed">
+            Custom games are hidden for this player. Please contact admin to enable them.
+          </Text>
+        </Center>
+      )}
     </>
   );
 };
