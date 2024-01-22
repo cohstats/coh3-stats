@@ -203,6 +203,51 @@ const getGlobalAchievements = async (XForwardedFor: string): Promise<GlobalAchie
   }
 };
 
+/**
+ *
+ * @param playerIDs
+ * @param value TRUE to HIDE custom games with action setCustomGamesHidden
+ * @param password
+ * @param action
+ */
+const setPlayerCardsConfigAdminHttp = async (
+  playerIDs: string[],
+  value: boolean,
+  password: string,
+  action = "setCustomGamesHidden",
+) => {
+  const path = encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/setPlayerCardsConfigHttp`);
+
+  // POST request to the given path
+  const response = await fetch(path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      playerIDs: JSON.stringify(playerIDs),
+      value: value.toString(),
+      action,
+      password,
+    }),
+  });
+
+  return await response.json();
+};
+
+const getPlayersCardsConfigsHttp = async (): Promise<{ profiles: Array<any> }> => {
+  const path = encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayersCardsConfigsHttp`);
+
+  const response = await fetch(path, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await response.json();
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -210,4 +255,6 @@ export {
   getStatsData,
   getGlobalAchievements,
   getPlayerCardStatsOrNull,
+  setPlayerCardsConfigAdminHttp,
+  getPlayersCardsConfigsHttp,
 };
