@@ -18,6 +18,10 @@ Sentry.init({
     process.env.EDGIO_ENV || process.env.EDGIO_ENVIRONMENT_NAME || process.env.NODE_ENV,
   allowUrls: [/https?:\/\/((dev)\.)?coh3stats\.com/],
   ignoreErrors: [
+    // This is some performance issue --> we should look into
+    "ResizeObserver loop completed with undelivered notifications.",
+    // This error is some weird bug in NextJS - I found it online
+    /Invariant: attempted to hard navigate to the same URL.+/,
     "TypeError: Failed to fetch",
     "The operation was aborted",
     "QuotaExceededError",

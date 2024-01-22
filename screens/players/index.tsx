@@ -75,7 +75,7 @@ const PlayerCard = ({
   playerDataAPI: PlayerCardDataType | null;
   error: string;
   playerMatchesData: Array<ProcessedMatch>;
-  playerStatsData: ProcessedCOHPlayerStats;
+  playerStatsData: ProcessedCOHPlayerStats | undefined;
   replaysData: ProcessedReplayData;
 }) => {
   const { push, query, asPath } = useRouter();
@@ -211,7 +211,7 @@ const PlayerCard = ({
               playerMatchesData={playerMatchesData}
               profileID={playerID}
               error={error}
-              customGamesHidden={playerStatsData.customGamesHidden}
+              customGamesHidden={playerStatsData?.customGamesHidden}
             />
           </Tabs.Panel>
           <Tabs.Panel value={"activity"}>

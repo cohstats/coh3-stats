@@ -30,7 +30,7 @@ const PlayerRecentMatchesTab = ({
   profileID: string;
   playerMatchesData: Array<ProcessedMatch>;
   error: string;
-  customGamesHidden: boolean;
+  customGamesHidden: boolean | undefined | null;
 }) => {
   const [debug, setDebug] = React.useState(false);
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
