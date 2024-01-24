@@ -316,7 +316,7 @@ const NemesisTab = ({
         </Flex>
         <Space h={"lg"} />
         <DataTable
-          minHeight={150}
+          minHeight={450}
           records={data}
           noRecordsText="No 1v1 nemesis tracked"
           withBorder={true}
