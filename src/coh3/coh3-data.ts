@@ -1,6 +1,13 @@
 import { leaderBoardType, platformType, raceID, raceType } from "./coh3-types";
 
-export type PlayerRank = { name: string; url: string; min: number; max: number; rank: number };
+export type PlayerRank = {
+  name: string;
+  url: string;
+  min: number;
+  max: number;
+  rank: number;
+  order: number;
+};
 
 export const PlayerRanks: Record<string, PlayerRank> = {
   // Requires 10 matches to get the placement rank.
@@ -10,6 +17,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: -1,
     max: -1,
     rank: 0,
+    order: 21,
   },
   // All other ranks after completing 10 matches.
   BRASS_3: {
@@ -18,6 +26,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 0,
     max: 299,
     rank: 0,
+    order: 20,
   },
   BRASS_2: {
     name: "Brass 2",
@@ -25,6 +34,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 300,
     max: 599,
     rank: 0,
+    order: 19,
   },
   BRASS_1: {
     name: "Brass 1",
@@ -32,6 +42,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 600,
     max: 799,
     rank: 0,
+    order: 18,
   },
   BRONZE_3: {
     name: "Bronze 3",
@@ -39,6 +50,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 800,
     max: 999,
     rank: 0,
+    order: 17,
   },
   BRONZE_2: {
     name: "Bronze 2",
@@ -46,6 +58,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1000,
     max: 1049,
     rank: 0,
+    order: 16,
   },
   BRONZE_1: {
     name: "Bronze 1",
@@ -53,6 +66,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1050,
     max: 1099,
     rank: 0,
+    order: 15,
   },
   IRON_3: {
     name: "Iron 3",
@@ -60,6 +74,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1100,
     max: 1149,
     rank: 0,
+    order: 14,
   },
   IRON_2: {
     name: "Iron 2",
@@ -67,6 +82,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1150,
     max: 1199,
     rank: 0,
+    order: 13,
   },
   IRON_1: {
     name: "Iron 1",
@@ -74,6 +90,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1200,
     max: 1249,
     rank: 0,
+    order: 12,
   },
   SILVER_3: {
     name: "Silver 3",
@@ -81,6 +98,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1250,
     max: 1299,
     rank: 0,
+    order: 11,
   },
   SILVER_2: {
     name: "Silver 2",
@@ -88,6 +106,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1300,
     max: 1349,
     rank: 0,
+    order: 10,
   },
   SILVER_1: {
     name: "Silver 1",
@@ -95,6 +114,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1350,
     max: 1399,
     rank: 0,
+    order: 9,
   },
   GOLD_3: {
     name: "Gold 3",
@@ -102,6 +122,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1400,
     max: 1499,
     rank: 0,
+    order: 8,
   },
   GOLD_2: {
     name: "Gold 2",
@@ -109,6 +130,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1500,
     max: 1599,
     rank: 0,
+    order: 7,
   },
   // Not in the top 50 players per leaderboard.
   GOLD_1: {
@@ -117,6 +139,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 0,
+    order: 6,
   },
   // These ranks need the special "top" field to identify those players above +1600 ELO in the leaderboard.
   CHALLENGER_5: {
@@ -125,6 +148,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 50,
+    order: 5,
   },
   CHALLENGER_4: {
     name: "Challenger 4",
@@ -132,6 +156,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 25,
+    order: 4,
   },
   CHALLENGER_3: {
     name: "Challenger 3",
@@ -139,6 +164,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 10,
+    order: 3,
   },
   CHALLENGER_2: {
     name: "Challenger 2",
@@ -146,6 +172,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 5,
+    order: 2,
   },
   CHALLENGER_1: {
     name: "Challenger 1",
@@ -153,6 +180,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 1,
+    order: 1,
   },
 };
 

@@ -1,4 +1,5 @@
 import { Timestamp } from "@firebase/firestore-types";
+import { PlayerRank } from "./coh3-data";
 
 export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
@@ -99,6 +100,13 @@ export type PlayerCardDataType = {
     name: string;
     xp: number | undefined;
     steamID: string | null;
+  };
+  highestRankTier: {
+    tier: PlayerRank;
+    info: {
+      type: "1v1" | "2v2" | "3v3" | "4v4";
+      race: "german" | "american" | "dak" | "british";
+    } | null;
   };
 };
 

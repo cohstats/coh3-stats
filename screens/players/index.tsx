@@ -164,6 +164,10 @@ const PlayerCard = ({
                   <Title> {playerData.info.name}</Title>
                 </Group>
                 <Group spacing={"xs"}>
+                  <PlayerIdIcon
+                    relicID={playerData.info.relicID}
+                    steamID={playerData.info.steamID || undefined}
+                  />
                   {platform === "steam" && (
                     <Anchor
                       component={Link}
@@ -178,14 +182,13 @@ const PlayerCard = ({
                   )}
                   {platform === "psn" && <PSNIcon label="Play Station player" />}
                   {platform === "xbox" && <XboxIcon label="XBOX player" />}
-                  <PlayerIdIcon
-                    relicID={playerData.info.relicID}
-                    steamID={playerData.info.steamID || undefined}
-                  />
                 </Group>
               </Stack>
             </Group>
-            <PlayerSummary playerSummary={playerSummary} />
+            <PlayerSummary
+              playerSummary={playerSummary}
+              highestRankTier={playerData.highestRankTier}
+            />
           </Group>
         </Container>
         <Tabs
