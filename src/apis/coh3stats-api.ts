@@ -43,7 +43,7 @@ const getStatsUrl = (
   ock: string,
 ) => {
   return encodeURI(
-    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v7&ock=${ock}`,
+    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v8&ock=${ock}`,
   );
 };
 

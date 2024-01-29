@@ -138,7 +138,7 @@ const InnerGameStatsPage = ({
     );
   }
 
-  if (data?.analysis["1v1"]) {
+  if (data?.analysis["1v1"] && data?.analysis["1v1"].matchCount) {
     const analysis = data.analysis as StatsDataObject;
 
     const matchCount = (() => {
@@ -151,7 +151,7 @@ const InnerGameStatsPage = ({
         );
       } else {
         const typeAnalysis = analysis[mode as keyof typeof analysis] as AnalysisObjectType;
-        return typeAnalysis.matchCount;
+        return typeAnalysis.matchCount || 0;
       }
     })();
 

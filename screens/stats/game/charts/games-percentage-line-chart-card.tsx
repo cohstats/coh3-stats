@@ -39,13 +39,14 @@ const GamesPercentageLineChartCard = ({
 
     // First count all games for each day
     for (const data of Object.values(dayAnalysisObject)) {
-      totalGamesForEachDay[key] = totalGamesForEachDay[key] + data.wins + data.losses;
+      totalGamesForEachDay[key] =
+        totalGamesForEachDay[key] + (data.wins || 0) + (data.losses || 0);
     }
 
     for (const [faction, data] of Object.entries(dayAnalysisObject)) {
       chartDataObjects[faction as raceType].data.push({
         // Y should be percentage of games played that day
-        y: ((data.wins + data.losses) / totalGamesForEachDay[key]) * 100,
+        y: (((data.wins || 0) + (data.losses || 0)) / totalGamesForEachDay[key]) * 100 || 0,
         x: dayjs.unix(Number(key)).subtract(0, "day").format("YYYY-MM-DD"),
       });
     }
