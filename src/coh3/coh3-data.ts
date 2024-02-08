@@ -301,6 +301,13 @@ const raceIDs: Record<raceID, raceType> = {
   203852: "british",
 };
 
+const raceIDsNameAsKey = {
+  american: 129494,
+  german: 137123,
+  dak: 198437,
+  british: 203852,
+};
+
 // This is what we get from the cohdb.com API
 export const cohDBracesToNormalRaces: Record<string, raceType> = {
   afrika_korps: "dak",
@@ -473,6 +480,13 @@ const matchTypesAsObject: Record<number, { id: number; name: string; localizedNa
   },
 };
 
+const gameTypesIDsTypeAsKey = {
+  "1v1": 20,
+  "2v2": 21,
+  "3v3": 22,
+  "4v4": 23,
+};
+
 export const apiTitleTypes: Record<platformType, string> = {
   steam: "coh3",
   xbox: "coh3xbl",
@@ -626,7 +640,9 @@ export {
   leaderboardsIDAsObject,
   localizedNames,
   localizedGameTypes,
+  gameTypesIDsTypeAsKey,
   raceIDs,
+  raceIDsNameAsKey,
   matchTypesAsObject,
   raceIDsAsObject,
   leaderboardsIDsToTypes,

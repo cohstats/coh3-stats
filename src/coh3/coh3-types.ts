@@ -335,4 +335,19 @@ export interface ProcessedCOHPlayerStats {
         l: number;
       }>
     | [];
+  statGroups: Record<
+    leaderBoardType,
+    Record<
+      raceType,
+      {
+        w: number; // wins
+        l: number; // losses
+        gameTime: number; // play time in seconds
+        gameTimeSpread: Record<number, WinLossPairType>; // play time in seconds
+        factionMatrix: Record<string, { wins: number; losses: number }>;
+        maps: Record<string, WinLossPairType>;
+        counters: Record<string, number>;
+      } | null
+    >
+  >;
 }
