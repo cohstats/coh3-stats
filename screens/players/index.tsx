@@ -217,7 +217,7 @@ const PlayerCard = ({
             />
           </Tabs.Panel>
           <Tabs.Panel value="standingsDetails">
-            <DetailedStatsTab />
+            <DetailedStatsTab playerStatsData={playerStatsData} />
           </Tabs.Panel>
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />
