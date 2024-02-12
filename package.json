@@ -57,7 +57,7 @@
     "@tabler/icons-react": "2.45.0",
     "chart.js": "4.4.1",
     "dayjs": "1.11.10",
-    "firebase": "10.7.1",
+    "firebase": "10.8.0",
     "is-glob": "4.0.3",
     "jsesc": "3.0.2",
     "json-2-csv": "5.0.1",
