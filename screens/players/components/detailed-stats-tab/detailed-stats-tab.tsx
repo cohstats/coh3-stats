@@ -9,11 +9,12 @@ import {
   Flex,
   Group,
   Select,
+  Space,
   Text,
   Title,
 } from "@mantine/core";
 import React from "react";
-import { getMapLocalizedName } from "../../../../src/coh3/helpers";
+import { getFactionSide, getMapLocalizedName } from "../../../../src/coh3/helpers";
 import { localizedGameTypes, localizedNames } from "../../../../src/coh3/coh3-data";
 import {
   leaderBoardType,
@@ -31,11 +32,13 @@ const DetailedStatsTab = ({
   const [selectedFaction, setSelectedFaction] = React.useState<raceType>("german");
   const [selectedGameMode, setSelectedGameMode] = React.useState<leaderBoardType>("1v1");
 
+  const FactionSide = getFactionSide(selectedFaction);
+
   const selectedStats = playerStatsData?.statGroups[selectedGameMode][selectedFaction];
 
   return (
     <>
-      <Container size={"lg"} p={"md"}>
+      <Container fluid p={0} pt={"md"}>
         <Flex gap="md" wrap="wrap" justify="space-between" align="center">
           <Title order={3}>Detailed Statistics for </Title>
           <Group>
@@ -69,8 +72,9 @@ const DetailedStatsTab = ({
             />
           </Group>
         </Flex>
-        <InnerDetailedStats stats={selectedStats || null} />
-
+        <Space h={"lg"} />
+        <InnerDetailedStats stats={selectedStats || null} factionSide={FactionSide} />
+        <Space h={"lg"} />
         <Text size={"sm"} c="dimmed" ta="center">
           Detailed stats are updated every 24 hours. It's possible that some games are not
           included in the stats.
