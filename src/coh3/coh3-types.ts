@@ -15,6 +15,8 @@ export type platformType = "steam" | "xbox" | "psn";
 
 export type WinLossPairType = { w: number; l: number };
 
+export type FactionSide = "axis" | "allies";
+
 type RelicAPIResult = {
   code: number;
   message: string;

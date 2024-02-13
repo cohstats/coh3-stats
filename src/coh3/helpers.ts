@@ -1,4 +1,10 @@
-import { LaddersDataArrayObject, LaddersDataObject, PlayerReport } from "./coh3-types";
+import {
+  FactionSide,
+  LaddersDataArrayObject,
+  LaddersDataObject,
+  PlayerReport,
+  raceType,
+} from "./coh3-types";
 import { isOfficialMap, maps, PlayerRanks, raceIDsAsObject } from "./coh3-data";
 
 /**
@@ -13,6 +19,14 @@ const convertSteamNameToID = (name: string): string => {
 
 const getMatchDuration = (startTime: number, endTime: number) => {
   return new Date((endTime - startTime) * 1000).toISOString().substr(11, 8); //return duration in HH:MM:SS format
+};
+
+const getFactionSide = (faction: raceType): FactionSide => {
+  if (faction === "american" || faction === "british") {
+    return "allies";
+  } else {
+    return "axis";
+  }
 };
 
 const getMatchPlayersByFaction = (
@@ -118,6 +132,7 @@ const getMapLocalizedName = (mapName: string) => {
 };
 
 export {
+  getFactionSide,
   findAndMergeStatGroups,
   convertSteamNameToID,
   getMatchDuration,
