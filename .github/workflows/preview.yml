@@ -73,7 +73,7 @@ jobs:
       - uses: jwalton/gh-find-current-pr@v1
         id: finder
       - name: Publish Preview Link
-        uses: marocchino/sticky-pull-request-comment@v2.8.0
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
         with:
           number: ${{ steps.finder.outputs.pr }}
           header: preview
