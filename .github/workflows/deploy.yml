@@ -15,6 +15,11 @@ jobs:
       name: dev
       url: https://dev.coh3stats.com/
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: deploy-master-to-dev
+      cancel-in-progress: true
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
