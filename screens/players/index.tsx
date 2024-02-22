@@ -24,7 +24,7 @@ import PlayerSummary from "./components/player-summary";
 import PlayerStandingsTab from "./components/player-standings-tab";
 import PlayerRecentMatchesTab from "./components/player-recent-matches-tab";
 import ErrorCard from "../../components/error-card";
-import PlayerIdIcon from "./components/player-id-icon";
+import PlayerIdIcon from "./components/components/player-id-icon";
 import ReplaysTab from "./components/replays-tab";
 import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";

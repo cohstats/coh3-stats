@@ -1,7 +1,7 @@
 import { ActionIcon, Code, Group, HoverCard, Text } from "@mantine/core";
 import { IconBrandSteam, IconInfoCircle } from "@tabler/icons-react";
 import React from "react";
-import RelicIcon from "../../../components/icon/relic-icon";
+import RelicIcon from "../../../../components/icon/relic-icon";
 
 const PlayerIdIcon = ({ relicID, steamID }: { relicID: number; steamID?: string }) => {
   return (
