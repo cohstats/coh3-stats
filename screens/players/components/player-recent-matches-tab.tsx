@@ -226,7 +226,13 @@ const PlayerRecentMatchesTab = ({
                 record.matchhistoryreportresults,
                 "axis",
               );
-              return <RenderPlayers playerReports={axisPlayers} profileID={profileID} />;
+              return (
+                <RenderPlayers
+                  playerReports={axisPlayers}
+                  profileID={profileID}
+                  matchType={record.matchtype_id}
+                />
+              );
             },
           },
           {
@@ -240,7 +246,13 @@ const PlayerRecentMatchesTab = ({
                 record.matchhistoryreportresults,
                 "allies",
               );
-              return <RenderPlayers playerReports={alliesPlayers} profileID={profileID} />;
+              return (
+                <RenderPlayers
+                  playerReports={alliesPlayers}
+                  profileID={profileID}
+                  matchType={record.matchtype_id}
+                />
+              );
             },
           },
           {
