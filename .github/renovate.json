@@ -4,6 +4,7 @@
   "rangeStrategy": "pin",
   "prHourlyLimit": 3,
   "minimumReleaseAge": "5 days",
+  "labels": ["renovate"],
   "packageRules": [
     {
       "packageNames": ["@types/node"],
