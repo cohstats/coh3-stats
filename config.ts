@@ -55,9 +55,16 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
+  "1.5.0": {
+    from: "2024-02-27",
+    to: "now",
+    value: "1.5.0",
+    label: "1.5.0",
+    group: "Steel Shepherd",
+  },
   "1.4.3": {
     from: "2023-12-12",
-    to: "now",
+    to: "2024-02-26",
     value: "1.4.3",
     label: "1.4.2 - 1.4.3",
     group: "Steel Shepherd",
@@ -70,7 +77,6 @@ const statsPatchSelector: Record<
     label: "1.4.0 - 1.4.1",
     group: "Steel Shepherd",
   },
-  // I forgot to add this last time :D
   "1.3.x": {
     from: "2023-10-05",
     to: "2023-12-04",
@@ -132,11 +138,16 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.4.3";
+const latestPatch = "1.5.0";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.5.0": {
+      dataTag: "v1.5.0-1", // This is the tag of the data repo
+      dataTime: "27/February/2024", // The date when was the data tag created (the data extracted from game)
+      patchTimeSeconds: 1709035200, // The date when the patch was released (in seconds)
+    },
     "1.4.3": {
       dataTag: "v1.4.2-1", // This is the tag of the data repo
       dataTime: "12/December/2023", // The date when was the data tag created (the data extracted from game)

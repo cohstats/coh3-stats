@@ -473,6 +473,14 @@ const OfficialMapKeys = [
   "twin_beach_2p_mkii",
   "villa_fiore_2p_mkii",
   "winter_line_8p_mkii",
+  /* ---------- 1.5.0 Maps ---------- */
+  "semois_2p",
+  "elst_outskirts_4p",
+  "montherme_6p",
+  "sangro_river_crossing_6p",
+  "sousse_stronghold_8p",
+  "faymonville_2p", // Community maps
+  "steppe_8p", // Community maps
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -591,6 +599,35 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
     name: "Villa Fiore",
     url: "/icons/maps/villa_fiore_2p_mkii_mm_handmade.webp",
     // automatch: true,
+  },
+  /* ------------------------- 1.5.0 Maps ---------------------------- */
+  semois_2p: {
+    name: "Semois",
+    url: "/icons/maps/semois_2p_mm_handmade.webp",
+  },
+  elst_outskirts_4p: {
+    name: "Elst Outskirts",
+    url: "/icons/maps/elst_outskirts_4p_mm_handmade.webp",
+  },
+  montherme_6p: {
+    name: "Elst Outskirts",
+    url: "/icons/maps/montherme_6p_mm_handmade.webp",
+  },
+  sangro_river_crossing_6p: {
+    name: "Sangro River Crossing",
+    url: "/icons/maps/sangro_river_crossing_6p_mm_handmade.webp",
+  },
+  sousse_stronghold_8p: {
+    name: "Sousse Stronghold",
+    url: "/icons/maps/sousse_stronghold_8p_mm_handmade.webp",
+  },
+  faymonville_2p: {
+    name: "Faymonville",
+    url: "/icons/maps/faymonville_mm_handmade.webp",
+  },
+  steppe_8p: {
+    name: "Steppes",
+    url: "/icons/maps/steppe_8p_mm_handmade.webp",
   },
 };
 
