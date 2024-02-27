@@ -60,7 +60,7 @@ const statsPatchSelector: Record<
     to: "now",
     value: "1.5.0",
     label: "1.5.0",
-    group: "Steel Shepherd",
+    group: "Year 1 Aniversary",
   },
   "1.4.3": {
     from: "2023-12-12",
