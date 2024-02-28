@@ -610,7 +610,7 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
     url: "/icons/maps/elst_outskirts_4p_mm_handmade.webp",
   },
   montherme_6p: {
-    name: "Elst Outskirts",
+    name: "Montherme",
     url: "/icons/maps/montherme_6p_mm_handmade.webp",
   },
   sangro_river_crossing_6p: {
