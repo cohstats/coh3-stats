@@ -479,7 +479,7 @@ const OfficialMapKeys = [
   "montherme_6p",
   "sangro_river_crossing_6p",
   "sousse_stronghold_8p",
-  "faymonville_2p", // Community maps
+  "faymonville", // Community maps
   "steppe_8p", // Community maps
 ] as const;
 
