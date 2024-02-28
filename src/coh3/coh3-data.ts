@@ -621,7 +621,7 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
     name: "Sousse Stronghold",
     url: "/icons/maps/sousse_stronghold_8p_mm_handmade.webp",
   },
-  faymonville_2p: {
+  faymonville: {
     name: "Faymonville",
     url: "/icons/maps/faymonville_mm_handmade.webp",
   },
