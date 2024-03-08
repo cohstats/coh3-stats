@@ -20,7 +20,7 @@ import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
 import { PSNIcon } from "../../components/icon/psn";
 import { XboxIcon } from "../../components/icon/xbox";
-import PlayerSummary from "./components/player-summary";
+import PlayerSummary from "./components/components/player-summary";
 import PlayerStandingsTab from "./components/player-standings-tab";
 import PlayerRecentMatchesTab from "./components/player-recent-matches-tab";
 import ErrorCard from "../../components/error-card";

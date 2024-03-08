@@ -3,12 +3,13 @@ import {
   platformType,
   ProcessedCOHPlayerStats,
 } from "../../../src/coh3/coh3-types";
-import { Container, Flex, Space, Stack } from "@mantine/core";
+import { Container, Flex, Space } from "@mantine/core";
 import React from "react";
 import PlayerStandingsFaction from "./standings/player-standings-faction";
 import StandingsSummaryCharts from "./standings/summary/summary";
 import NemesisWidget from "./standings/nemesis-widget";
 import MoreButton from "./components/more-button";
+import { useRouter } from "next/router";
 
 const PlayerStandingsTab = ({
   playerStandings,
@@ -19,17 +20,22 @@ const PlayerStandingsTab = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: platformType;
 }) => {
+  const { push, query } = useRouter();
+
+  const changeView = async (value: string) => {
+    await push({ query: { ...query, view: value } });
+  };
+
   return (
     <Container size={"xl"}>
       <Space h="xs" />
-      <Stack spacing={0} align={"flex-end"}>
-        <StandingsSummaryCharts
-          playerStandings={playerStandings}
-          playerStatsData={playerStatsData}
-        />
-        <MoreButton onClick={() => {}} />
-      </Stack>
-
+      <StandingsSummaryCharts
+        playerStandings={playerStandings}
+        playerStatsData={playerStatsData}
+      />
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-35px" }}>
+        <MoreButton onClick={() => changeView("activity")} />
+      </div>
       <Space h="xs" />
       <Flex gap="xs">
         <div style={{ flexGrow: 1 }}>
@@ -61,7 +67,10 @@ const PlayerStandingsTab = ({
         <div style={{ width: 300 }}>
           <Space h="xl" />
           <Space h="xl" />
-          <NemesisWidget playerStatsData={playerStatsData} />
+          <NemesisWidget
+            playerStatsData={playerStatsData}
+            moreButtonOnClick={() => changeView("nemesis")}
+          />
         </div>
       </Flex>
     </Container>

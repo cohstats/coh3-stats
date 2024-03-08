@@ -1,9 +1,9 @@
 import { Group, Paper, Text, Tooltip } from "@mantine/core";
 
-import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
+import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import React from "react";
-import { localizedNames, PlayerRank } from "../../../src/coh3/coh3-data";
-import { PlayerSummaryType } from "../../../src/players/utils";
+import { localizedNames, PlayerRank } from "../../../../src/coh3/coh3-data";
+import { PlayerSummaryType } from "../../../../src/players/utils";
 import Image from "next/image";
 
 const PlayerSummary = ({

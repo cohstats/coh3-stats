@@ -3,7 +3,7 @@ import { Button, Group, useMantineTheme } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 
 interface MyButtonProps {
-  onClick: () => void;
+  onClick: () => Promise<void>;
 }
 
 const MoreButton: React.FC<MyButtonProps> = ({ onClick }) => {

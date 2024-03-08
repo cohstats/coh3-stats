@@ -9,8 +9,10 @@ import MoreButton from "../components/more-button";
 
 const NemesisWidget = ({
   playerStatsData,
+  moreButtonOnClick,
 }: {
   playerStatsData: ProcessedCOHPlayerStats | undefined;
+  moreButtonOnClick: () => Promise<void>;
 }) => {
   return (
     <div>
@@ -72,8 +74,8 @@ const NemesisWidget = ({
               textAlignment: "center",
               title: "Ratio",
               render: ({ w, l }) => {
-                const winrate = (w / (w + l)) * 100;
-                return winrate.toFixed(0) + "%";
+                const winRate = (w / (w + l)) * 100;
+                return winRate.toFixed(0) + "%";
               },
             },
           ]}
@@ -81,7 +83,7 @@ const NemesisWidget = ({
           idAccessor={"profile_id"}
         />
         <Flex justify={"flex-end"} pt={"xs"}>
-          <MoreButton onClick={() => {}} />
+          <MoreButton onClick={moreButtonOnClick} />
         </Flex>
       </Card>
     </div>
