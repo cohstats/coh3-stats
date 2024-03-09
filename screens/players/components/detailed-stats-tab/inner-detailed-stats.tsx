@@ -82,7 +82,7 @@ const InnerDetailedStats = ({
       <Space h={"xl"} />
       <Flex gap={"xl"} wrap="wrap" justify="center">
         <FactionVsFactionCard
-          data={(stats as unknown as AnalysisObjectType) || {}}
+          data={stats as unknown as AnalysisObjectType}
           title={"Faction matrix"}
           factionSide={factionSide}
           width={760}

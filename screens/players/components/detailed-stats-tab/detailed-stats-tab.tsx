@@ -40,12 +40,10 @@ const DetailedStatsTab = ({
               label="Faction"
               placeholder={"Select faction"}
               defaultValue={"german"}
-              data={
-                Object.entries(localizedNames).map(([key, value]) => ({
-                  value: key,
-                  label: value,
-                })) || []
-              }
+              data={Object.entries(localizedNames).map(([key, value]) => ({
+                value: key,
+                label: value,
+              }))}
               onChange={(value) => setSelectedFaction((value as raceType) || "")}
               w={200}
             />
@@ -54,12 +52,10 @@ const DetailedStatsTab = ({
               label="Game Type"
               placeholder={"Select Game Type"}
               defaultValue={"1v1"}
-              data={
-                Object.entries(localizedGameTypes).map(([key, value]) => ({
-                  value: key,
-                  label: value,
-                })) || []
-              }
+              data={Object.entries(localizedGameTypes).map(([key, value]) => ({
+                value: key,
+                label: value,
+              }))}
               onChange={(value) => setSelectedGameMode((value as leaderBoardType) || "")}
               w={195}
             />

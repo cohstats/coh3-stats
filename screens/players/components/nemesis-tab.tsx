@@ -97,7 +97,7 @@ const StomperCard = ({
 
   const wins = stomper.data.player?.w || 0;
   const losses = stomper.data.player?.l || 0;
-  const winRate = ((wins / (wins + losses)) * 100).toFixed(0) + "%" || "0%";
+  const winRate = ((wins / (wins + losses)) * 100).toFixed(0) + "%";
 
   return (
     <>
