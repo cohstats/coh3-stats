@@ -12,7 +12,7 @@ version-resolver:
       - "patch"
   default: patch
 categories:
-  - title: "✨ Chores"
+  - title: "✨ Package updates"
     labels:
       - "renovate"
 template: |
