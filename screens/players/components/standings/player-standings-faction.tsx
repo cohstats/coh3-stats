@@ -15,10 +15,12 @@ const PlayerStandingsFaction = ({
   faction,
   data,
   platform,
+  moreButtonOnClick,
 }: {
   faction: raceType;
   data: Record<leaderBoardType, RawLeaderboardStat | null>;
   platform: platformType;
+  moreButtonOnClick: () => Promise<void>;
 }) => {
   return (
     <>
@@ -29,7 +31,11 @@ const PlayerStandingsFaction = ({
       <Space h="xs" />
       <Group>
         <PlayerStandingsTable faction={faction} data={data} platform={platform} />
-        <PlayerStandingsFactionInfo faction={faction} data={data} />
+        <PlayerStandingsFactionInfo
+          faction={faction}
+          data={data}
+          moreButtonOnClick={moreButtonOnClick}
+        />
       </Group>
     </>
   );

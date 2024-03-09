@@ -44,24 +44,28 @@ const PlayerStandingsTab = ({
             faction={"german"}
             data={playerStandings.german}
             platform={platform}
+            moreButtonOnClick={() => changeView("standingsDetails")}
           />
           <Space h="xs" />
           <PlayerStandingsFaction
             faction={"american"}
             data={playerStandings.american}
             platform={platform}
+            moreButtonOnClick={() => changeView("standingsDetails")}
           />
           <Space h="xs" />
           <PlayerStandingsFaction
             faction={"dak"}
             data={playerStandings.dak}
             platform={platform}
+            moreButtonOnClick={() => changeView("standingsDetails")}
           />
           <Space h="xs" />
           <PlayerStandingsFaction
             faction={"british"}
             data={playerStandings.british}
             platform={platform}
+            moreButtonOnClick={() => changeView("standingsDetails")}
           />
         </div>
 

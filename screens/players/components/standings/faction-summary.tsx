@@ -1,6 +1,6 @@
 import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../../src/coh3/coh3-types";
 import React from "react";
-import { Group, Space, Title, Card, createStyles, Stack } from "@mantine/core";
+import { Group, Space, Title, Card, createStyles, Stack, ActionIcon } from "@mantine/core";
 import { localizedNames } from "../../../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
 import {
@@ -8,6 +8,7 @@ import {
   findBestValueOnLeaderboardStat,
 } from "../../../../src/players/utils";
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
+import { IconCirclePlus } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme, { faction }: { faction: string }) => ({
   mainCard:
@@ -31,9 +32,11 @@ const useStyles = createStyles((theme, { faction }: { faction: string }) => ({
 const PlayerStandingsFactionInfo = ({
   faction,
   data,
+  moreButtonOnClick,
 }: {
   faction: raceType;
   data: Record<leaderBoardType, RawLeaderboardStat | null>;
+  moreButtonOnClick: () => Promise<void>;
 }) => {
   const { classes } = useStyles({ faction });
 
@@ -55,8 +58,15 @@ const PlayerStandingsFactionInfo = ({
     return acc > (cur?.lastmatchdate || 0) ? acc : cur?.lastmatchdate || 0;
   }, 0);
 
-  // Use only DAK for title, as it's too long
-  const cardTitle = faction != "dak" ? localizedNames[faction] : faction.toUpperCase();
+  let cardTitle = faction.toUpperCase();
+
+  if (faction === "british") {
+    cardTitle = "British";
+  } else if (faction === "german") {
+    cardTitle = "Wehr";
+  } else if (faction !== "dak") {
+    cardTitle = localizedNames[faction];
+  }
 
   const bestRankElement =
     (bestRank.bestValue || 0) != Infinity
@@ -75,8 +85,12 @@ const PlayerStandingsFactionInfo = ({
     <>
       <Card padding="lg" radius="md" withBorder className={classes.mainCard}>
         <Card.Section>
-          <Group m="xs">
+          <Group m="xs" position={"apart"}>
             <Title order={4}> Best of {cardTitle}</Title>
+
+            <ActionIcon onClick={moreButtonOnClick}>
+              <IconCirclePlus size={"20"} />
+            </ActionIcon>
           </Group>
         </Card.Section>
         <Text size={"sm"}>
