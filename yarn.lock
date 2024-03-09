@@ -5910,10 +5910,10 @@ dedent@^1.0.0:
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-1.5.1.tgz#4f3fc94c8b711e9bb2800d185cd6ad20f2a90aff"
   integrity sha512-+LxW+KLWxu3HW3M2w2ympwtqPrqYRzU8fqi6Fhd18fBALe15blJPI/I4+UHveMVG6lJqB4JNd4UG0S5cnVHwIg==
 
-deeks@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/deeks/-/deeks-3.0.2.tgz#49d908fb2b797554a139aede17176b11679eb89f"
-  integrity sha512-c6OmjIygIB/avwXwEQOiODS+nw6fEX4cvOdDMqdL7dt3dicV/xykAJ9AeVc/8/JTVQDuacjRc9KCMmXafL1Y4A==
+deeks@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/deeks/-/deeks-3.1.0.tgz#ecc47c600bcc6dbda656c6d86bbc96cbe126fd41"
+  integrity sha512-e7oWH1LzIdv/prMQ7pmlDlaVoL64glqzvNgkgQNgyec9ORPHrT2jaOqMtRyqJuwWjtfb6v+2rk9pmaHj+F137A==
 
 deep-equal@^2.0.5:
   version "2.2.0"
@@ -6080,10 +6080,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-doc-path@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-4.0.2.tgz#157ddd33b86282bdf58cf4b9979bf9483cf9a95f"
-  integrity sha512-OqZEk7EM1aP3JpO+mq0pv1msEJWrzZVXu4q3YjEYJKc+Wt3/chac4KJdaGueK5IGemOwfptrLctG9I8xkb59qQ==
+doc-path@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-4.1.0.tgz#870d71b31dbbb54200c815e3051ba6a9c48c4a93"
+  integrity sha512-i+hXn5HFwpPOwe8JcvjjQYuUVt0p46Ybi+73g9L43zQUKR6zMyaUAKFwGBMH3NWQDugRWIwxg2+FvvxCv0IG7Q==
 
 doctrine@^2.1.0:
   version "2.1.0"
@@ -9248,13 +9248,13 @@ jsesc@~0.5.0:
   resolved "https://registry.npmjs.org/jsesc/-/jsesc-0.5.0.tgz"
   integrity sha512-uZz5UnB7u4T9LvwmFqXii7pZSouaRPorGs5who1Ip7VO0wxanFvBL7GkM6dTHlgX+jhBApRetaWpnDabOeTcnA==
 
-json-2-csv@5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-5.3.0.tgz#186cabfd320a85816bf796369b428706c3c209e9"
-  integrity sha512-TxY9en2f2uCa0gNwtaynNo5G4uyBxQ4WQQRbopFlSegMa9mkj1razFiv2cRwdEdDU3u1vjNS63reRgVpPWxDCQ==
+json-2-csv@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-5.5.0.tgz#b0881aaf4b842fccc13f7972584ccea8b5a96d19"
+  integrity sha512-1Y4upYpzhoweEMkFDogMU8fKLCs+ciNKviTotrrMZ8duqlycERcB38GYXpu4xcwm6YBn86cTXd7za2yUl0GAkg==
   dependencies:
-    deeks "3.0.2"
-    doc-path "4.0.2"
+    deeks "3.1.0"
+    doc-path "4.1.0"
 
 json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
   version "2.3.1"
