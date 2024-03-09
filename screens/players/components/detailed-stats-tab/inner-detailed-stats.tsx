@@ -1,7 +1,7 @@
 import { FactionSide, WinLossPairType } from "../../../../src/coh3/coh3-types";
 import { FactionVsFactionCard } from "../../../../components/charts/card-factions-heatmap";
 import { AnalysisObjectType } from "../../../../src/analysis-types";
-import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core";
+import { Card, Center, Flex, Space, Stack, Text, Title } from "@mantine/core";
 import React from "react";
 import { IconDatabaseOff } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
@@ -12,6 +12,14 @@ const DynamicPlayersPlaytimeHistogram = dynamic(
     ssr: false,
   },
 );
+
+const DynamicPlayerMapsWinRate = dynamic(() => import("./charts/player-maps-win-rate"), {
+  ssr: false,
+});
+
+const DynamicPlayerMapsGames = dynamic(() => import("./charts/player-maps-games"), {
+  ssr: false,
+});
 
 const InnerDetailedStats = ({
   stats,
@@ -53,6 +61,26 @@ const InnerDetailedStats = ({
   return (
     <>
       <Flex gap={"xl"} wrap="wrap" justify="center">
+        <Card p="md" shadow="sm" withBorder>
+          <Card.Section withBorder inheritPadding py="xs">
+            <Title order={3}>Maps played</Title>
+          </Card.Section>
+          <Card.Section w={600} h={284} py="xs">
+            <DynamicPlayerMapsGames data={stats?.maps || {}} />
+          </Card.Section>
+        </Card>
+        <Card p="md" shadow="sm" withBorder>
+          <Card.Section withBorder inheritPadding py="xs">
+            <Title order={3}>Maps Win Rate</Title>
+          </Card.Section>
+          <Card.Section w={600} h={284} py="xs">
+            <DynamicPlayerMapsWinRate data={stats?.maps || {}} />
+          </Card.Section>
+        </Card>
+      </Flex>
+
+      <Space h={"xl"} />
+      <Flex gap={"xl"} wrap="wrap" justify="center">
         <FactionVsFactionCard
           data={(stats as unknown as AnalysisObjectType) || {}}
           title={"Faction matrix"}
@@ -60,12 +88,9 @@ const InnerDetailedStats = ({
           width={760}
         />
         <Card p="md" shadow="sm" w={455} withBorder>
-          {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
-
           <Card.Section withBorder inheritPadding py="xs">
             <Title order={3}>Games by game time</Title>
           </Card.Section>
-          {/* right, left margins are negative – -1 * theme.spacing.xl */}
           <Card.Section w={465} h={390} py="xs">
             <DynamicPlayersPlaytimeHistogram data={stats?.gameTimeSpread || {}} />
           </Card.Section>

@@ -33,7 +33,7 @@ const PlayerStandingsTab = ({
         playerStandings={playerStandings}
         playerStatsData={playerStatsData}
       />
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-35px" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-30px" }}>
         <MoreButton onClick={() => changeView("activity")} />
       </div>
       <Space h="xs" />

@@ -1,18 +1,7 @@
 // disable eslint for this file
 /* eslint-disable */
 
-import {
-  Anchor,
-  Button,
-  Center,
-  Container,
-  Flex,
-  Group,
-  Select,
-  Space,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Container, Flex, Group, Select, Space, Text, Title } from "@mantine/core";
 import React from "react";
 import { getFactionSide, getMapLocalizedName } from "../../../../src/coh3/helpers";
 import { localizedGameTypes, localizedNames } from "../../../../src/coh3/coh3-data";
@@ -23,6 +12,7 @@ import {
 } from "../../../../src/coh3/coh3-types";
 import InnerDetailedStats from "./inner-detailed-stats";
 import { AnalysisObjectType } from "../../../../src/analysis-types";
+import FactionIcon from "../../../../components/faction-icon";
 
 const DetailedStatsTab = ({
   playerStatsData,
@@ -40,7 +30,10 @@ const DetailedStatsTab = ({
     <>
       <Container fluid p={0} pt={"md"}>
         <Flex gap="md" wrap="wrap" justify="space-between" align="center">
-          <Title order={3}>Detailed Statistics for </Title>
+          <Title order={3}>
+            Detailed Statistics for {localizedGameTypes[selectedGameMode]}{" "}
+            <FactionIcon name={selectedFaction} width={30} />
+          </Title>
           <Group>
             <Select
               value={selectedFaction}
@@ -54,7 +47,7 @@ const DetailedStatsTab = ({
                 })) || []
               }
               onChange={(value) => setSelectedFaction((value as raceType) || "")}
-              w={195}
+              w={200}
             />
             <Select
               value={selectedGameMode}
@@ -74,6 +67,12 @@ const DetailedStatsTab = ({
         </Flex>
         <Space h={"lg"} />
         <InnerDetailedStats stats={selectedStats || null} factionSide={FactionSide} />
+        <Space h={"lg"} />
+        <Space h={"lg"} />
+        <Text size={"md"} ta="center">
+          More detailed stats are coming soon.
+        </Text>
+        <Space h={"lg"} />
         <Space h={"lg"} />
         <Text size={"sm"} c="dimmed" ta="center">
           Detailed stats are updated every 24 hours. It's possible that some games are not
