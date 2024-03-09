@@ -1,4 +1,4 @@
-import { InternalStandings } from "../../../../../src/coh3/coh3-types";
+import { InternalStandings, leaderBoardTypeArray } from "../../../../../src/coh3/coh3-types";
 import { ResponsivePie } from "@nivo/pie";
 import { getNivoTooltipTheme } from "../../../../../components/charts/charts-components-utils";
 import React from "react";
@@ -18,7 +18,7 @@ const GameTypesPieChart = ({ playerStandings }: { playerStandings: InternalStand
   };
 
   for (const faction of Object.values(playerStandings)) {
-    (["1v1", "2v2", "3v3", "4v4"] as GameType[]).forEach((gameType) => {
+    leaderBoardTypeArray.forEach((gameType) => {
       const gameData = faction[gameType];
       if (gameData) {
         dataValues[gameType] += gameData.wins + gameData.losses;

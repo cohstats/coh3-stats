@@ -10,6 +10,7 @@ import StandingsSummaryCharts from "./standings/summary/summary";
 import NemesisWidget from "./standings/nemesis-widget";
 import MoreButton from "./components/more-button";
 import { useRouter } from "next/router";
+import MapsWidget from "./standings/maps-widget/maps-widget";
 
 const PlayerStandingsTab = ({
   playerStandings,
@@ -37,7 +38,7 @@ const PlayerStandingsTab = ({
         <MoreButton onClick={() => changeView("activity")} />
       </div>
       <Space h="xs" />
-      <Flex gap="xs">
+      <Flex gap="xs" wrap={"wrap"}>
         <div style={{ flexGrow: 1 }}>
           <PlayerStandingsFaction
             faction={"german"}
@@ -66,6 +67,8 @@ const PlayerStandingsTab = ({
 
         <div style={{ width: 300 }}>
           <Space h="xl" />
+          <Space h="xl" />
+          <MapsWidget playerStatsData={playerStatsData} playerStandings={playerStandings} />
           <Space h="xl" />
           <NemesisWidget
             playerStatsData={playerStatsData}
