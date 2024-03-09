@@ -1,4 +1,5 @@
 import { Timestamp } from "@firebase/firestore-types";
+import { PlayerRank } from "./coh3-data";
 
 export const raceTypeArray = ["german", "american", "dak", "british"] as const;
 
@@ -13,6 +14,8 @@ export type raceID = 129494 | 137123 | 197345 | 198437 | 203852;
 export type platformType = "steam" | "xbox" | "psn";
 
 export type WinLossPairType = { w: number; l: number };
+
+export type FactionSide = "axis" | "allies";
 
 type RelicAPIResult = {
   code: number;
@@ -99,6 +102,13 @@ export type PlayerCardDataType = {
     name: string;
     xp: number | undefined;
     steamID: string | null;
+  };
+  highestRankTier: {
+    tier: PlayerRank;
+    info: {
+      type: "1v1" | "2v2" | "3v3" | "4v4";
+      race: "german" | "american" | "dak" | "british";
+    } | null;
   };
 };
 
@@ -319,4 +329,27 @@ export interface ProcessedCOHPlayerStats {
     losses: number;
   }>;
   customGamesHidden: boolean;
+  nemesis:
+    | Array<{
+        profile_id: string;
+        alias: string;
+        w: number;
+        l: number;
+      }>
+    | [];
+  statGroups: Record<
+    leaderBoardType,
+    Record<
+      raceType,
+      {
+        w: number; // wins
+        l: number; // losses
+        gameTime: number; // play time in seconds
+        gameTimeSpread: Record<number, WinLossPairType>; // play time in seconds
+        factionMatrix: Record<string, { wins: number; losses: number }>;
+        maps: Record<string, WinLossPairType>;
+        counters: Record<string, number>;
+      } | null
+    >
+  >;
 }

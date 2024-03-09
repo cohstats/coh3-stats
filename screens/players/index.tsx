@@ -20,17 +20,19 @@ import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
 import { PSNIcon } from "../../components/icon/psn";
 import { XboxIcon } from "../../components/icon/xbox";
-import PlayerSummary from "./components/player-summary";
+import PlayerSummary from "./components/components/player-summary";
 import PlayerStandingsTab from "./components/player-standings-tab";
 import PlayerRecentMatchesTab from "./components/player-recent-matches-tab";
 import ErrorCard from "../../components/error-card";
-import PlayerIdIcon from "./components/player-id-icon";
+import PlayerIdIcon from "./components/components/player-id-icon";
 import ReplaysTab from "./components/replays-tab";
 import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
 import ActivityTab from "./components/activity/activity-tab";
 import config from "../../config";
+import NemesisTab from "./components/nemesis-tab";
+import DetailedStatsTab from "./components/detailed-stats-tab/detailed-stats-tab";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -163,6 +165,10 @@ const PlayerCard = ({
                   <Title> {playerData.info.name}</Title>
                 </Group>
                 <Group spacing={"xs"}>
+                  <PlayerIdIcon
+                    relicID={playerData.info.relicID}
+                    steamID={playerData.info.steamID || undefined}
+                  />
                   {platform === "steam" && (
                     <Anchor
                       component={Link}
@@ -177,14 +183,13 @@ const PlayerCard = ({
                   )}
                   {platform === "psn" && <PSNIcon label="Play Station player" />}
                   {platform === "xbox" && <XboxIcon label="XBOX player" />}
-                  <PlayerIdIcon
-                    relicID={playerData.info.relicID}
-                    steamID={playerData.info.steamID || undefined}
-                  />
                 </Group>
               </Stack>
             </Group>
-            <PlayerSummary playerSummary={playerSummary} />
+            <PlayerSummary
+              playerSummary={playerSummary}
+              highestRankTier={playerData.highestRankTier}
+            />
           </Group>
         </Container>
         <Tabs
@@ -197,13 +202,22 @@ const PlayerCard = ({
         >
           <Tabs.List position="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
+            <Tabs.Tab value={"standingsDetails"}>Detailed Stats</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
             {config.isDevEnv() && <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>}
+            {config.isDevEnv() && <Tabs.Tab value={"nemesis"}>Nemesis</Tabs.Tab>}
             <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">
-            <PlayerStandingsTab playerStandings={playerData.standings} platform={platform} />
+            <PlayerStandingsTab
+              playerStandings={playerData.standings}
+              playerStatsData={playerStatsData}
+              platform={platform}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel value="standingsDetails">
+            <DetailedStatsTab playerStatsData={playerStatsData} />
           </Tabs.Panel>
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />
@@ -215,7 +229,10 @@ const PlayerCard = ({
             />
           </Tabs.Panel>
           <Tabs.Panel value={"activity"}>
-            <ActivityTab playerStatsData={playerStatsData} />
+            <ActivityTab playerStatsData={playerStatsData} platform={platform} />
+          </Tabs.Panel>
+          <Tabs.Panel value={"nemesis"}>
+            <NemesisTab playerStatsData={playerStatsData} platform={platform} />
           </Tabs.Panel>
           <Tabs.Panel value={"replays"}>
             <Space h="lg" />

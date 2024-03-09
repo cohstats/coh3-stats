@@ -9,6 +9,7 @@ import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-ap
 
 import PlayerCard from "../../screens/players";
 import { PlayerProfileCOHStats, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
+import { gameTypesIDsTypeAsKey, raceIDsNameAsKey } from "../../src/coh3/coh3-data";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -45,11 +46,101 @@ const ProcessPlayerCardStatsData = (
     });
   }
 
+  const nemesisArray = Object.entries(playerStatsData?.stats?.nemesis || {})
+    .map(([id, value]) => ({
+      profile_id: id,
+      ...value,
+    }))
+    .sort((a, b) => b.w + b.l - (a.w + a.l));
+
+  const statGroupKey = Object.keys(playerStatsData?.stats?.statGroups || {})[0];
+  const playerStatGroupId = statGroupKey?.match(/^\d+-\d+-(\d+)$/)?.[1];
+  if (!playerStatGroupId) {
+    console.warn("Failed to get playerStatGroupId from statGroupKey", statGroupKey);
+  }
+
+  const statGroupsStats = {
+    "1v1": {
+      german:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["german"]}-${gameTypesIDsTypeAsKey["1v1"]}-${playerStatGroupId}`
+        ] || null,
+      american:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["american"]}-${gameTypesIDsTypeAsKey["1v1"]}-${playerStatGroupId}`
+        ] || null,
+      dak:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["dak"]}-${gameTypesIDsTypeAsKey["1v1"]}-${playerStatGroupId}`
+        ] || null,
+      british:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["british"]}-${gameTypesIDsTypeAsKey["1v1"]}-${playerStatGroupId}`
+        ] || null,
+    },
+    "2v2": {
+      german:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["german"]}-${gameTypesIDsTypeAsKey["2v2"]}-${playerStatGroupId}`
+        ] || null,
+      american:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["american"]}-${gameTypesIDsTypeAsKey["2v2"]}-${playerStatGroupId}`
+        ] || null,
+      dak:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["dak"]}-${gameTypesIDsTypeAsKey["2v2"]}-${playerStatGroupId}`
+        ] || null,
+      british:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["british"]}-${gameTypesIDsTypeAsKey["2v2"]}-${playerStatGroupId}`
+        ] || null,
+    },
+    "3v3": {
+      german:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["german"]}-${gameTypesIDsTypeAsKey["3v3"]}-${playerStatGroupId}`
+        ] || null,
+      american:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["american"]}-${gameTypesIDsTypeAsKey["3v3"]}-${playerStatGroupId}`
+        ] || null,
+      dak:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["dak"]}-${gameTypesIDsTypeAsKey["3v3"]}-${playerStatGroupId}`
+        ] || null,
+      british:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["british"]}-${gameTypesIDsTypeAsKey["3v3"]}-${playerStatGroupId}`
+        ] || null,
+    },
+    "4v4": {
+      german:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["german"]}-${gameTypesIDsTypeAsKey["4v4"]}-${playerStatGroupId}`
+        ] || null,
+      american:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["american"]}-${gameTypesIDsTypeAsKey["4v4"]}-${playerStatGroupId}`
+        ] || null,
+      dak:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["dak"]}-${gameTypesIDsTypeAsKey["4v4"]}-${playerStatGroupId}`
+        ] || null,
+      british:
+        playerStatsData?.stats?.statGroups[
+          `${raceIDsNameAsKey["british"]}-${gameTypesIDsTypeAsKey["4v4"]}-${playerStatGroupId}`
+        ] || null,
+    },
+  };
+
   return {
     activityByWeekDay: processedActivityByDayOfWeek,
     activityByDate: processedActivityByDate,
     activityByHour: processedActivityByHour,
+    nemesis: nemesisArray,
     customGamesHidden: playerStatsData?.customGamesHidden?.hidden || false,
+    statGroups: statGroupsStats,
   };
 };
 
