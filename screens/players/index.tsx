@@ -30,7 +30,6 @@ import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
 import ActivityTab from "./components/activity/activity-tab";
-import config from "../../config";
 import NemesisTab from "./components/nemesis-tab";
 import DetailedStatsTab from "./components/detailed-stats-tab/detailed-stats-tab";
 
@@ -204,8 +203,8 @@ const PlayerCard = ({
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"standingsDetails"}>Detailed Stats</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
-            {config.isDevEnv() && <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>}
-            {config.isDevEnv() && <Tabs.Tab value={"nemesis"}>Nemesis</Tabs.Tab>}
+            <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>
+            <Tabs.Tab value={"nemesis"}>Nemesis</Tabs.Tab>
             <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
           </Tabs.List>
 
