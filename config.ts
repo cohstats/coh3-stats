@@ -58,7 +58,7 @@ const statsPatchSelector: Record<
   "1.5.2": {
     from: "2024-02-27",
     to: "now",
-    value: "1.5.0",
+    value: "1.5.2",
     label: "1.5.0 -  1.5.2",
     group: "Year 1 Anniversary",
   },
