@@ -185,29 +185,36 @@ const PlayerRecentMatchesTab = ({
             ),
             textAlignment: "center",
             render: (record) => {
+              const playerResult = getPlayerMatchHistoryResult(record, profileID);
+              const ratingChange =
+                playerResult?.matchhistorymember?.newrating &&
+                playerResult?.matchhistorymember?.oldrating
+                  ? playerResult.matchhistorymember.newrating -
+                    playerResult.matchhistorymember.oldrating
+                  : undefined;
+
               if (isPlayerVictorious(record, profileID)) {
                 return (
-                  <Badge color={"blue"} variant="filled">
-                    VICTORY
+                  <Badge color={"blue"} variant="filled" w={"14ch"}>
+                    VICTORY +{ratingChange}
                   </Badge>
                 );
               } else {
-                const playerResult = getPlayerMatchHistoryResult(record, profileID);
                 if (playerResult?.resulttype === 0) {
                   return (
-                    <Badge color={"red"} variant="filled">
-                      DEFEAT
+                    <Badge color={"red"} variant="filled" w={"14ch"}>
+                      DEFEAT {ratingChange}
                     </Badge>
                   );
                 } else if (playerResult?.resulttype === 4) {
                   return (
-                    <Badge color={"gray"} variant="filled">
+                    <Badge color={"gray"} variant="filled" w={"14ch"}>
                       DE-SYNC
                     </Badge>
                   );
                 } else {
                   return (
-                    <Badge color={"gray"} variant="filled">
+                    <Badge color={"gray"} variant="filled" w={"14ch"}>
                       ERROR
                     </Badge>
                   );

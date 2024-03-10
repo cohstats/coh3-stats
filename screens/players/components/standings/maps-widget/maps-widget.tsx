@@ -91,7 +91,7 @@ const MapsWidget = ({
         </Card.Section>
 
         <DataTable
-          minHeight={150}
+          minHeight={250}
           records={tableData}
           noRecordsText="No maps data tracked"
           withBorder={false}
