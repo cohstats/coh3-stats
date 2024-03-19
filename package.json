@@ -55,7 +55,7 @@
     "@nivo/pie": "0.85.1",
     "@nivo/radar": "0.85.1",
     "@nivo/sunburst": "0.85.1",
-    "@sentry/nextjs": "7.106.0",
+    "@sentry/nextjs": "7.107.0",
     "@tabler/icons-react": "3.0.1",
     "chart.js": "4.4.2",
     "dayjs": "1.11.10",
