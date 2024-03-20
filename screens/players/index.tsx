@@ -193,6 +193,7 @@ const PlayerCard = ({
         </Container>
         <Tabs
           variant={"outline"}
+          keepMounted={false}
           value={(view as string) || "standings"}
           defaultValue={(view as string) || "standings"}
           onTabChange={async (value) => {
