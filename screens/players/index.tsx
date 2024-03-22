@@ -9,7 +9,10 @@ import { format } from "timeago.js";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import {
+  AnalyticsPlayerCardActivityView,
+  AnalyticsPlayerCardDetailedStatsView,
   AnalyticsPlayerCardMatchView,
+  AnalyticsPlayerCardNemesisView,
   AnalyticsPlayerCardReplaysView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
@@ -107,6 +110,12 @@ const PlayerCard = ({
       AnalyticsPlayerCardMatchView(playerID);
     } else if (view === "replays") {
       AnalyticsPlayerCardReplaysView(playerID);
+    } else if (view === "standingsDetails") {
+      AnalyticsPlayerCardDetailedStatsView(playerID);
+    } else if (view === "activity") {
+      AnalyticsPlayerCardActivityView(playerID);
+    } else if (view === "nemesis") {
+      AnalyticsPlayerCardNemesisView(playerID);
     } else {
       AnalyticsPlayerCardView(playerID);
     }
