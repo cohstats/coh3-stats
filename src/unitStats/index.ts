@@ -4,6 +4,7 @@ export * from "./squadTotalCost";
 export * from "./locstring";
 export * from "./mappingAbilities";
 export * from "./mappingBattlegroups";
+export * from "./mappingChallenges";
 export * from "./mappingEbps";
 export * from "./mappingSbps";
 export * from "./mappingUpgrades";
