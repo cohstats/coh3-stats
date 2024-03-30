@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
         <Container size={"lg"}>
           <Group position="apart">
             <Text color="dimmed" size="sm">
-              © 2023 COH3stats.com,{" "}
+              © 2024 COH3stats.com,{" "}
               <Tooltip
                 multiline
                 width={200}

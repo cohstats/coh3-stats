@@ -195,14 +195,14 @@ const PlayerRecentMatchesTab = ({
 
               if (isPlayerVictorious(record, profileID)) {
                 return (
-                  <Badge color={"blue"} variant="filled" w={"14ch"}>
+                  <Badge color={"blue"} variant="filled" w={"16ch"}>
                     VICTORY +{ratingChange}
                   </Badge>
                 );
               } else {
                 if (playerResult?.resulttype === 0) {
                   return (
-                    <Badge color={"red"} variant="filled" w={"14ch"}>
+                    <Badge color={"red"} variant="filled" w={"16ch"}>
                       DEFEAT {ratingChange}
                     </Badge>
                   );
