@@ -80,6 +80,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
             </List.Item>
             <List.Item>Explore intricate player leaderboard statistics</List.Item>
             <List.Item>Receive optional sound notifications upon joining a game</List.Item>
+            <List.Item>Auto upload replays to the cloud for additional analysis</List.Item>
             <List.Item>
               <Anchor href={"https://obsproject.com/"} target={"_blank"}>
                 OBS
