@@ -62,7 +62,7 @@
     "firebase": "10.8.1",
     "is-glob": "4.0.3",
     "jsesc": "3.0.2",
-    "json-2-csv": "5.5.0",
+    "json-2-csv": "5.5.1",
     "lodash": "4.17.21",
     "mantine-datatable": "6.0.8",
     "next": "14.1.3",
