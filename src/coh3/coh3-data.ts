@@ -523,6 +523,10 @@ const OfficialMapKeys = [
   "sousse_stronghold_8p",
   "faymonville", // Community maps
   "steppe_8p", // Community maps
+  /* ---------- 1.6.0 Maps ---------- */
+  "eindhoven_4p", // Community maps
+  "gothic_line_8p", // Community maps
+  "oasis_depot_8p", // Community maps
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -670,6 +674,19 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
   steppe_8p: {
     name: "Steppes",
     url: "/icons/maps/steppe_8p_mm_handmade.webp",
+  },
+  /* ------------------------- 1.6.0 Maps ---------------------------- */
+  eindhoven_4p: {
+    name: "Operation Eindhoven",
+    url: "/icons/maps/eindhoven_mm_handmade.webp",
+  },
+  gothic_line_8p: {
+    name: "Gothic Line",
+    url: "/icons/maps/gothic_line_8p_mm_handmade.webp",
+  },
+  oasis_depot_8p: {
+    name: "Oasis Depot",
+    url: "/icons/maps/oasis_depot_8p_mm_handmade.webp",
   },
 };
 
