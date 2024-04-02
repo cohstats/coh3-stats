@@ -178,6 +178,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
                   sight: sightValues,
                   moving: movingValues,
                   range: rangeValues,
+                  capture: {
+                    cap: resolvedSquad.capture_rate,
+                    decap: resolvedSquad.capture_revert,
+                  },
                 })}
               </Card>
               {UnitUpgradeSection(upgrades)}

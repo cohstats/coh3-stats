@@ -184,6 +184,10 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                         range={{
                           max: props.unit.weapon_member[0]?.weapon.weapon_bag.range.max || 0,
                         }}
+                        capture={{
+                          cap: props.unit.sbps.capture_rate,
+                          decap: props.unit.sbps.capture_revert,
+                        }}
                       />
                       {UnitCostCard(totalCost)}
                     </Stack>
