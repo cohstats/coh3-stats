@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { Accordion, Card, Container, Flex, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
@@ -7,23 +7,28 @@ import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
 
-interface ChallengesProps {
-  dailyChallengesData: ChallengesType[];
-  weeklyChallengesData: ChallengesType[];
-  sbpsData: SbpsType[];
-  upgradesData: UpgradesType[];
+interface ResolvedChallenge {
+  challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
+  research: Array<{ id: string; upgrade: UpgradesType | null }>;
+  spawnee: Array<{ id: string; squad: SbpsType | null }>;
+  sources: Array<{ id: string; squad: SbpsType | null }>;
+  targets: Array<{ id: string; squad: SbpsType | null }>;
 }
 
-const Challenges: NextPage<ChallengesProps> = ({
-  dailyChallengesData,
-  weeklyChallengesData,
-  sbpsData,
-  upgradesData,
-}) => {
+interface ChallengesProps {
+  calculatedData: {
+    dailyChallenges: ResolvedChallenge[];
+    weeklyChallenges: ResolvedChallenge[];
+  };
+}
+
+const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
   const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
   // console.log("Daily Challenges fetched", dailyChallengesData);
   // console.log("Weekly Challenges fetched", weeklyChallengesData);
+
+  const { dailyChallenges, weeklyChallenges } = calculatedData;
 
   return (
     <>
@@ -43,20 +48,22 @@ const Challenges: NextPage<ChallengesProps> = ({
           <Title order={2}>Weekly Challenges</Title>
         </Flex>
         <Grid columns={1}>
-          {weeklyChallengesData.map((row) => {
+          {weeklyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
             return (
-              <Grid.Col key={row.id} span={1}>
+              <Grid.Col key={challenge.id} span={1}>
                 <Accordion p={0} chevronPosition="right" variant="separated">
-                  <Accordion.Item value={row.id} key={row.name}>
+                  <Accordion.Item value={challenge.id} key={challenge.name}>
                     <Accordion.Control>
-                      <AccordionLabel {...row} />
+                      <AccordionLabel {...challenge} />
                     </Accordion.Control>
                     <Accordion.Panel>
                       <AccordionContent
-                        key={`weekly_${row.id}`}
-                        sbpsData={sbpsData}
-                        upgradesData={upgradesData}
-                        challenge={row}
+                        key={`weekly_${challenge.id}`}
+                        challenge={challenge}
+                        research={research}
+                        spawnee={spawnee}
+                        sources={sources}
+                        targets={targets}
                       />
                     </Accordion.Panel>
                   </Accordion.Item>
@@ -70,20 +77,22 @@ const Challenges: NextPage<ChallengesProps> = ({
           <Title order={2}>Daily Challenges</Title>
         </Flex>
         <Grid columns={1}>
-          {dailyChallengesData.map((row) => {
+          {dailyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
             return (
-              <Grid.Col key={row.id} span={1}>
+              <Grid.Col key={challenge.id} span={1}>
                 <Accordion p={0} chevronPosition="right" variant="separated">
-                  <Accordion.Item value={row.id} key={row.name}>
+                  <Accordion.Item value={challenge.id} key={challenge.name}>
                     <Accordion.Control>
-                      <AccordionLabel {...row} />
+                      <AccordionLabel {...challenge} />
                     </Accordion.Control>
                     <Accordion.Panel>
                       <AccordionContent
-                        key={`daily_${row.id}`}
-                        sbpsData={sbpsData}
-                        upgradesData={upgradesData}
-                        challenge={row}
+                        key={`daily_${challenge.id}`}
+                        challenge={challenge}
+                        research={research}
+                        spawnee={spawnee}
+                        sources={sources}
+                        targets={targets}
                       />
                     </Accordion.Panel>
                   </Accordion.Item>
@@ -97,7 +106,7 @@ const Challenges: NextPage<ChallengesProps> = ({
   );
 };
 
-function AccordionLabel({ name, description, reward }: ChallengesType) {
+function AccordionLabel({ name, description, reward }: ResolvedChallenge["challenge"]) {
   return (
     <Card p="lg" radius="md" withBorder>
       <Flex direction="column" gap={4}>
@@ -116,42 +125,19 @@ function AccordionLabel({ name, description, reward }: ChallengesType) {
   );
 }
 
-interface AccordionContentProps {
-  sbpsData: SbpsType[];
-  upgradesData: UpgradesType[];
-  challenge: ChallengesType;
-}
-
-function AccordionContent({ challenge, sbpsData, upgradesData }: AccordionContentProps) {
-  const counters = challenge.counters;
-  const mappedResearch = counters.research.map((id) => ({
-    id,
-    upgrade: upgradesData.find((x) => x.id === id),
-  }));
-  const mappedSpawnee = counters.spawnee.map((id) => ({
-    id,
-    squad: sbpsData.find((x) => x.id === id),
-  }));
-  const mappedSources = counters.sources.map((id) => ({
-    id,
-    squad: sbpsData.find((x) => x.id === id),
-  }));
-  const mappedTargets = counters.targets.map((id) => ({
-    id,
-    squad: sbpsData.find((x) => x.id === id),
-  }));
+function AccordionContent({ spawnee, research, targets, sources }: ResolvedChallenge) {
   return (
     <Stack>
-      {mappedResearch.length ? (
+      {research.length ? (
         <Stack>
           <Title order={5} color="blue.5">
             Requires these upgrades
           </Title>
 
           <Group key="required_upg" spacing="sm" position="apart">
-            {...mappedResearch.map((item) => {
+            {...research.map((item, idx) => {
               return (
-                <Stack align="center" w={128}>
+                <Stack align="center" w={128} key={`${item.id}_${idx}`}>
                   <ImageWithFallback
                     height={64}
                     width={64}
@@ -170,16 +156,16 @@ function AccordionContent({ challenge, sbpsData, upgradesData }: AccordionConten
       ) : (
         <></>
       )}
-      {mappedSpawnee.length ? (
+      {spawnee.length ? (
         <Stack>
           <Title order={5} color="orange.5">
             Requires training these units
           </Title>
 
           <Group key="required_spawnee" spacing="sm" position="apart">
-            {...mappedSpawnee.map((item) => {
+            {...spawnee.map((item, idx) => {
               return (
-                <Stack align="center" w={128}>
+                <Stack align="center" w={128} key={`${item.id}_${idx}`}>
                   <ImageWithFallback
                     height={64}
                     width={64}
@@ -198,16 +184,16 @@ function AccordionContent({ challenge, sbpsData, upgradesData }: AccordionConten
       ) : (
         <></>
       )}
-      {mappedSources.length ? (
+      {sources.length ? (
         <Stack>
           <Title order={5} color="green.5">
             Requires using these units
           </Title>
 
           <Group key="required_sources" spacing="sm" position="apart">
-            {...mappedSources.map((item) => {
+            {...sources.map((item, idx) => {
               return (
-                <Stack align="center" w={128}>
+                <Stack align="center" w={128} key={`${item.id}_${idx}`}>
                   <ImageWithFallback
                     height={64}
                     width={64}
@@ -226,16 +212,16 @@ function AccordionContent({ challenge, sbpsData, upgradesData }: AccordionConten
       ) : (
         <></>
       )}
-      {mappedTargets.length ? (
+      {targets.length ? (
         <Stack>
           <Title order={5} color="red.5">
             Requires destroying these units
           </Title>
 
           <Group key="required_targets" spacing="sm" position="apart">
-            {...mappedTargets.map((item) => {
+            {...targets.map((item, idx) => {
               return (
-                <Stack align="center" w={128}>
+                <Stack align="center" w={128} key={`${item.id}_${idx}`}>
                   <ImageWithFallback
                     height={64}
                     width={64}
@@ -258,16 +244,95 @@ function AccordionContent({ challenge, sbpsData, upgradesData }: AccordionConten
   );
 }
 
-export const getStaticProps = async () => {
+const createCalculateValuesForChallenges = (data: {
+  dailyChallengesData: ChallengesType[];
+  weeklyChallengesData: ChallengesType[];
+  sbpsData: SbpsType[];
+  upgradesData: UpgradesType[];
+}): ChallengesProps["calculatedData"] => {
+  const { dailyChallengesData, weeklyChallengesData, sbpsData, upgradesData } = data;
+
+  const dailyChallenges: ResolvedChallenge[] = [];
+  const weeklyChallenges: ResolvedChallenge[] = [];
+
+  for (const daily of dailyChallengesData) {
+    const counters = daily.counters;
+    const mappedDaily: ResolvedChallenge = {
+      challenge: {
+        id: daily.id,
+        name: daily.name,
+        reward: daily.reward,
+        description: daily.description,
+      },
+      research: counters.research.map((id) => ({
+        id,
+        upgrade: upgradesData.find((x) => x.id === id) || null,
+      })),
+      spawnee: counters.spawnee.map((id) => ({
+        id,
+        squad: sbpsData.find((x) => x.id === id) || null,
+      })),
+      sources: counters.sources.map((id) => ({
+        id,
+        squad: sbpsData.find((x) => x.id === id) || null,
+      })),
+      targets: counters.targets.map((id) => ({
+        id,
+        squad: sbpsData.find((x) => x.id === id) || null,
+      })),
+    };
+
+    dailyChallenges.push(mappedDaily);
+  }
+
+  for (const weekly of weeklyChallengesData) {
+    const counters = weekly.counters;
+    const mappedWeekly: ResolvedChallenge = {
+      challenge: {
+        id: weekly.id,
+        name: weekly.name,
+        reward: weekly.reward,
+        description: weekly.description,
+      },
+      research: counters.research.map((id) => ({
+        id,
+        upgrade: upgradesData.find((x) => x.id === id) || null,
+      })),
+      spawnee: counters.spawnee.map((id) => ({
+        id,
+        squad: sbpsData.find((x) => x.id === id) || null,
+      })),
+      sources: counters.sources.map((id) => ({
+        id,
+        squad: sbpsData.find((x) => x.id === id) || null,
+      })),
+      targets: counters.targets.map((id) => ({
+        id,
+        squad: sbpsData.find((x) => x.id === id) || null,
+      })),
+    };
+
+    weeklyChallenges.push(mappedWeekly);
+  }
+
+  return {
+    dailyChallenges,
+    weeklyChallenges,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async () => {
   const { dailyChallengesData, weeklyChallengesData, sbpsData, upgradesData } =
     await getMappings();
 
   return {
     props: {
-      dailyChallengesData,
-      weeklyChallengesData,
-      sbpsData,
-      upgradesData,
+      calculatedData: createCalculateValuesForChallenges({
+        dailyChallengesData,
+        weeklyChallengesData,
+        sbpsData,
+        upgradesData,
+      }),
     },
   };
 };
