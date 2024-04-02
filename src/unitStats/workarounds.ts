@@ -130,6 +130,28 @@ function setBattlegroupsWorkarounds() {
       });
     },
   });
+  bgWorkaround("Modify Afrika Korps - Battlefield Espionage BG Call-Ins", {
+    predicate: (item) => item.faction === "races/afrika_korps" && item.id === "subterfuge",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Infiltration Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "infiltration_left_1_vampire_ht_goliath_ak":
+            upg.spawnItems = ["halftrack_250_vampire_ak", "goliath_ak"];
+            break;
+        }
+      });
+      // Disruption Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          // Do nothing.
+          default:
+            break;
+        }
+      });
+    },
+  });
 
   bgWorkaround("Modify British - Air and Sea BG Call-Ins", {
     predicate: (item) => item.faction === "races/british" && item.id === "british_air_and_sea",
@@ -207,6 +229,31 @@ function setBattlegroupsWorkarounds() {
             break;
           case "artillery_bl_5_5_heavy_artillery_uk":
             upg.spawnItems = ["howitzer_bl_5_5_africa_uk"];
+            break;
+        }
+      });
+    },
+  });
+  bgWorkaround("Modify British - Australian Defense BG Call-Ins", {
+    predicate: (item) => item.faction === "races/british" && item.id === "australian_defense",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Logistical Supremacy Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "australian_defense_archer_tank_destroyer_call_in_uk":
+            upg.spawnItems = ["archer_africa_uk"];
+            break;
+        }
+      });
+      // Frontline Defenders Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "australian_defense_australian_light_infantry_uk":
+            upg.spawnItems = ["australian_light_infantry_uk"];
+            break;
+          case "australian_defense_2pdr_at_gun_uk":
+            upg.spawnItems = ["at_gun_2pdr_africa_uk"];
             break;
         }
       });
