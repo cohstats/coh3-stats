@@ -32,6 +32,18 @@ export const AnalyticsPlayerCardReplaysView = (profile_id?: number | string): vo
   logFBEvent("player_card_replays_view", { profile_id });
 };
 
+export const AnalyticsPlayerCardNemesisView = (profile_id?: number | string): void => {
+  logFBEvent("player_card_nemesis_view", { profile_id });
+};
+
+export const AnalyticsPlayerCardActivityView = (profile_id?: number | string): void => {
+  logFBEvent("player_card_activity_view", { profile_id });
+};
+
+export const AnalyticsPlayerCardDetailedStatsView = (profile_id?: number | string): void => {
+  logFBEvent("player_card_detailed_stats_view", { profile_id });
+};
+
 export const AnalyticsDesktopAppPageView = (): void => {
   logFBEvent("desktop_app_view");
 };

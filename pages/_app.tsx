@@ -7,14 +7,13 @@ import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import webFirebase from "../src/firebase/web-firebase";
-import { BetaVersion } from "../components/other/beta-version";
 import { useEffect } from "react";
 import NProgress from "nprogress";
 import "../components/other/nprogress.css";
 import ContentContainer from "../components/Content-container";
 import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
-import { useServiceWorker, useDevtools } from "@edgio/react";
+import { useServiceWorker } from "@edgio/react";
 import { Metrics } from "@edgio/rum";
 
 webFirebase.init();
@@ -23,8 +22,6 @@ NProgress.configure({ showSpinner: false });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
-
-  useDevtools();
 
   new Metrics({
     token: "63a45f52-3972-4ed0-8867-4e762860a563", // Get your token from the Edgio Console
@@ -139,7 +136,6 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <Notifications />
-          <BetaVersion />
           {layoutContent && contentWithLayout}
           {!layoutContent && contentWithoutLayout}
         </MantineProvider>

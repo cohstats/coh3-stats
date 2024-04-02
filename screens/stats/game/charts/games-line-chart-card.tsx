@@ -39,7 +39,7 @@ const GamesLineChartCard = ({
 
     for (const [faction, data] of Object.entries(dayAnalysisObject)) {
       chartDataObjects[faction as raceType].data.push({
-        y: data.wins + data.losses,
+        y: (data.wins || 0) + (data.losses || 0),
         x: dayjs.unix(Number(key)).subtract(0, "day").format("YYYY-MM-DD"),
       });
     }

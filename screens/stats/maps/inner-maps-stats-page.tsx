@@ -124,7 +124,12 @@ const InnerMapsStatsPage = ({
     );
   }
 
-  if (data && data.analysis && data.analysis[mode]) {
+  if (
+    data &&
+    data.analysis &&
+    data.analysis[mode] &&
+    Object.keys(data.analysis[mode]).length > 0
+  ) {
     const analysis = data.analysis as MapStatsDataObject;
 
     const matchCount = (() => {

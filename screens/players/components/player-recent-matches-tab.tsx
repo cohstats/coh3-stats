@@ -1,4 +1,4 @@
-import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip } from "@mantine/core";
+import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip, Center } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
@@ -25,10 +25,12 @@ const PlayerRecentMatchesTab = ({
   profileID,
   playerMatchesData,
   error,
+  customGamesHidden,
 }: {
   profileID: string;
   playerMatchesData: Array<ProcessedMatch>;
   error: string;
+  customGamesHidden: boolean | undefined | null;
 }) => {
   const [debug, setDebug] = React.useState(false);
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
@@ -183,29 +185,36 @@ const PlayerRecentMatchesTab = ({
             ),
             textAlignment: "center",
             render: (record) => {
+              const playerResult = getPlayerMatchHistoryResult(record, profileID);
+              const ratingChange =
+                playerResult?.matchhistorymember?.newrating &&
+                playerResult?.matchhistorymember?.oldrating
+                  ? playerResult.matchhistorymember.newrating -
+                    playerResult.matchhistorymember.oldrating
+                  : undefined;
+
               if (isPlayerVictorious(record, profileID)) {
                 return (
-                  <Badge color={"blue"} variant="filled">
-                    VICTORY
+                  <Badge color={"blue"} variant="filled" w={"16ch"}>
+                    VICTORY +{ratingChange}
                   </Badge>
                 );
               } else {
-                const playerResult = getPlayerMatchHistoryResult(record, profileID);
                 if (playerResult?.resulttype === 0) {
                   return (
-                    <Badge color={"red"} variant="filled">
-                      DEFEAT
+                    <Badge color={"red"} variant="filled" w={"16ch"}>
+                      DEFEAT {ratingChange}
                     </Badge>
                   );
                 } else if (playerResult?.resulttype === 4) {
                   return (
-                    <Badge color={"gray"} variant="filled">
+                    <Badge color={"gray"} variant="filled" w={"14ch"}>
                       DE-SYNC
                     </Badge>
                   );
                 } else {
                   return (
-                    <Badge color={"gray"} variant="filled">
+                    <Badge color={"gray"} variant="filled" w={"14ch"}>
                       ERROR
                     </Badge>
                   );
@@ -224,7 +233,13 @@ const PlayerRecentMatchesTab = ({
                 record.matchhistoryreportresults,
                 "axis",
               );
-              return <RenderPlayers playerReports={axisPlayers} profileID={profileID} />;
+              return (
+                <RenderPlayers
+                  playerReports={axisPlayers}
+                  profileID={profileID}
+                  matchType={record.matchtype_id}
+                />
+              );
             },
           },
           {
@@ -238,7 +253,13 @@ const PlayerRecentMatchesTab = ({
                 record.matchhistoryreportresults,
                 "allies",
               );
-              return <RenderPlayers playerReports={alliesPlayers} profileID={profileID} />;
+              return (
+                <RenderPlayers
+                  playerReports={alliesPlayers}
+                  profileID={profileID}
+                  matchType={record.matchtype_id}
+                />
+              );
             },
           },
           {
@@ -328,6 +349,13 @@ const PlayerRecentMatchesTab = ({
           />
         </Stack>
       </Group>
+      {customGamesHidden && (
+        <Center>
+          <Text size={"sm"} c="dimmed">
+            Custom games are hidden for this player. Please contact admin to enable them.
+          </Text>
+        </Center>
+      )}
     </>
   );
 };

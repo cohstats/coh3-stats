@@ -22,10 +22,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "20.x"
           cache: "yarn"
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules-v2
         with:
@@ -35,7 +35,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
       - name: Cache NextJS Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: next-build-tests
         with:
@@ -55,6 +55,6 @@ jobs:
         run: |
           yarn test
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

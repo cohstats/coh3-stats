@@ -6,8 +6,26 @@ import {
   RawLeaderboardStat,
   RawStatGroup,
 } from "../coh3/coh3-types";
-import { leaderboardsIDsToTypes } from "../coh3/coh3-data";
-import { convertSteamNameToID } from "../coh3/helpers";
+import { leaderboardsIDsToTypes, PlayerRanks } from "../coh3/coh3-data";
+import { calculatePlayerTier, convertSteamNameToID } from "../coh3/helpers";
+
+const calculateHighestRankTier = (leaderboardStats: Array<RawLeaderboardStat>) => {
+  let bestTier = PlayerRanks.NO_RANK;
+  let bestTierInfo = null;
+
+  for (const stat of leaderboardStats) {
+    const currentTier = calculatePlayerTier(stat.rank, stat.rating);
+    if (currentTier.order < bestTier.order) {
+      bestTier = currentTier;
+      bestTierInfo = leaderboardsIDsToTypes[stat.leaderboard_id];
+    }
+  }
+
+  return {
+    tier: bestTier,
+    info: bestTierInfo,
+  };
+};
 
 const preparePlayerStandings = (leaderboardStats: Array<RawLeaderboardStat>) => {
   const playerStandings: Record<raceType, Record<leaderBoardType, RawLeaderboardStat | null>> = {
@@ -73,6 +91,7 @@ const processPlayerInfoAPIResponse = (data: COH3StatsPlayerInfoAPI): PlayerCardD
     platform: data.platform,
     standings: preparePlayerStandings(data.RelicProfile.leaderboardStats),
     info: getPlayerInfo(filterOnlyPlayerStatGroup(data.RelicProfile.statGroups)),
+    highestRankTier: calculateHighestRankTier(data.RelicProfile.leaderboardStats),
     steamData: Object.values(data.SteamProfile || {})[0] || null,
     COH3PlayTime: data.COH3PlayTime || null,
   };

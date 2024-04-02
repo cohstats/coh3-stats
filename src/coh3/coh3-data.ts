@@ -1,6 +1,13 @@
 import { leaderBoardType, platformType, raceID, raceType } from "./coh3-types";
 
-export type PlayerRank = { name: string; url: string; min: number; max: number; rank: number };
+export type PlayerRank = {
+  name: string;
+  url: string;
+  min: number;
+  max: number;
+  rank: number;
+  order: number;
+};
 
 export const PlayerRanks: Record<string, PlayerRank> = {
   // Requires 10 matches to get the placement rank.
@@ -10,6 +17,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: -1,
     max: -1,
     rank: 0,
+    order: 21,
   },
   // All other ranks after completing 10 matches.
   BRASS_3: {
@@ -18,6 +26,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 0,
     max: 299,
     rank: 0,
+    order: 20,
   },
   BRASS_2: {
     name: "Brass 2",
@@ -25,6 +34,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 300,
     max: 599,
     rank: 0,
+    order: 19,
   },
   BRASS_1: {
     name: "Brass 1",
@@ -32,6 +42,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 600,
     max: 799,
     rank: 0,
+    order: 18,
   },
   BRONZE_3: {
     name: "Bronze 3",
@@ -39,6 +50,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 800,
     max: 999,
     rank: 0,
+    order: 17,
   },
   BRONZE_2: {
     name: "Bronze 2",
@@ -46,6 +58,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1000,
     max: 1049,
     rank: 0,
+    order: 16,
   },
   BRONZE_1: {
     name: "Bronze 1",
@@ -53,6 +66,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1050,
     max: 1099,
     rank: 0,
+    order: 15,
   },
   IRON_3: {
     name: "Iron 3",
@@ -60,6 +74,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1100,
     max: 1149,
     rank: 0,
+    order: 14,
   },
   IRON_2: {
     name: "Iron 2",
@@ -67,6 +82,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1150,
     max: 1199,
     rank: 0,
+    order: 13,
   },
   IRON_1: {
     name: "Iron 1",
@@ -74,6 +90,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1200,
     max: 1249,
     rank: 0,
+    order: 12,
   },
   SILVER_3: {
     name: "Silver 3",
@@ -81,6 +98,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1250,
     max: 1299,
     rank: 0,
+    order: 11,
   },
   SILVER_2: {
     name: "Silver 2",
@@ -88,6 +106,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1300,
     max: 1349,
     rank: 0,
+    order: 10,
   },
   SILVER_1: {
     name: "Silver 1",
@@ -95,6 +114,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1350,
     max: 1399,
     rank: 0,
+    order: 9,
   },
   GOLD_3: {
     name: "Gold 3",
@@ -102,6 +122,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1400,
     max: 1499,
     rank: 0,
+    order: 8,
   },
   GOLD_2: {
     name: "Gold 2",
@@ -109,6 +130,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1500,
     max: 1599,
     rank: 0,
+    order: 7,
   },
   // Not in the top 50 players per leaderboard.
   GOLD_1: {
@@ -117,6 +139,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 0,
+    order: 6,
   },
   // These ranks need the special "top" field to identify those players above +1600 ELO in the leaderboard.
   CHALLENGER_5: {
@@ -125,6 +148,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 50,
+    order: 5,
   },
   CHALLENGER_4: {
     name: "Challenger 4",
@@ -132,6 +156,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 25,
+    order: 4,
   },
   CHALLENGER_3: {
     name: "Challenger 3",
@@ -139,6 +164,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 10,
+    order: 3,
   },
   CHALLENGER_2: {
     name: "Challenger 2",
@@ -146,6 +172,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 5,
+    order: 2,
   },
   CHALLENGER_1: {
     name: "Challenger 1",
@@ -153,6 +180,7 @@ export const PlayerRanks: Record<string, PlayerRank> = {
     min: 1600,
     max: 5000,
     rank: 1,
+    order: 1,
   },
 };
 
@@ -271,6 +299,13 @@ const raceIDs: Record<raceID, raceType> = {
   198437: "dak",
   // WTF? This is British_Africa but localized name is still British
   203852: "british",
+};
+
+const raceIDsNameAsKey = {
+  american: 129494,
+  german: 137123,
+  dak: 198437,
+  british: 203852,
 };
 
 // This is what we get from the cohdb.com API
@@ -445,6 +480,13 @@ const matchTypesAsObject: Record<number, { id: number; name: string; localizedNa
   },
 };
 
+const gameTypesIDsTypeAsKey = {
+  "1v1": 20,
+  "2v2": 21,
+  "3v3": 22,
+  "4v4": 23,
+};
+
 export const apiTitleTypes: Record<platformType, string> = {
   steam: "coh3",
   xbox: "coh3xbl",
@@ -473,6 +515,18 @@ const OfficialMapKeys = [
   "twin_beach_2p_mkii",
   "villa_fiore_2p_mkii",
   "winter_line_8p_mkii",
+  /* ---------- 1.5.0 Maps ---------- */
+  "semois_2p",
+  "elst_outskirts_4p",
+  "montherme_6p",
+  "sangro_river_crossing_6p",
+  "sousse_stronghold_8p",
+  "faymonville", // Community maps
+  "steppe_8p", // Community maps
+  /* ---------- 1.6.0 Maps ---------- */
+  "eindhoven_4p", // Community maps
+  "gothic_line_8p", // Community maps
+  "oasis_depot_8p", // Community maps
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -592,13 +646,57 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
     url: "/icons/maps/villa_fiore_2p_mkii_mm_handmade.webp",
     // automatch: true,
   },
+  /* ------------------------- 1.5.0 Maps ---------------------------- */
+  semois_2p: {
+    name: "Semois",
+    url: "/icons/maps/semois_2p_mm_handmade.webp",
+  },
+  elst_outskirts_4p: {
+    name: "Elst Outskirts",
+    url: "/icons/maps/elst_outskirts_4p_mm_handmade.webp",
+  },
+  montherme_6p: {
+    name: "Montherme",
+    url: "/icons/maps/montherme_6p_mm_handmade.webp",
+  },
+  sangro_river_crossing_6p: {
+    name: "Sangro River Crossing",
+    url: "/icons/maps/sangro_river_crossing_6p_mm_handmade.webp",
+  },
+  sousse_stronghold_8p: {
+    name: "Sousse Stronghold",
+    url: "/icons/maps/sousse_stronghold_8p_mm_handmade.webp",
+  },
+  faymonville: {
+    name: "Faymonville",
+    url: "/icons/maps/faymonville_mm_handmade.webp",
+  },
+  steppe_8p: {
+    name: "Steppes",
+    url: "/icons/maps/steppe_8p_mm_handmade.webp",
+  },
+  /* ------------------------- 1.6.0 Maps ---------------------------- */
+  eindhoven_4p: {
+    name: "Operation Eindhoven",
+    url: "/icons/maps/eindhoven_mm_handmade.webp",
+  },
+  gothic_line_8p: {
+    name: "Gothic Line",
+    url: "/icons/maps/gothic_line_8p_mm_handmade.webp",
+  },
+  oasis_depot_8p: {
+    name: "Oasis Depot",
+    url: "/icons/maps/oasis_depot_8p_mm_handmade.webp",
+  },
 };
 
 export {
   leaderboardsIDAsObject,
   localizedNames,
   localizedGameTypes,
+  gameTypesIDsTypeAsKey,
   raceIDs,
+  raceIDsNameAsKey,
   matchTypesAsObject,
   raceIDsAsObject,
   leaderboardsIDsToTypes,

@@ -131,15 +131,14 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             placeholder="Custom date"
             onChange={selectPatchDate}
             data={Object.values(config.statsPatchSelector)}
-            w={140}
+            w={145}
           />
           <DatePickerInput
             type="range"
             label="Pick dates range"
-            placeholder="Pick dates range"
             value={valueDatePicker}
             onChange={setValueDatePicker}
-            w={285}
+            w={295}
             // mx={10}
             // mx="auto"
 

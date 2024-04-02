@@ -5,13 +5,16 @@ import {
   getAnalysisStatsHttpResponse,
   StatsDataObject,
 } from "../../../src/analysis-types";
-import { Card, Center, Flex, Loader, Space, Title, Text, Group } from "@mantine/core";
+import { Card, Center, Flex, Loader, Space, Title, Text, Group, Button } from "@mantine/core";
 import ErrorCard from "../../../components/error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import { FactionVsFactionCard } from "../../../components/charts/card-factions-heatmap";
 import HelperIcon from "../../../components/icon/helper";
 import { buildOriginHeaderValue } from "../../../src/utils";
+import Link from "next/link";
+import { getMapsStatsRoute } from "../../../src/routes";
+import { IconCirclePlus } from "@tabler/icons-react";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -138,7 +141,7 @@ const InnerGameStatsPage = ({
     );
   }
 
-  if (data?.analysis["1v1"]) {
+  if (data?.analysis["1v1"] && data?.analysis["1v1"].matchCount) {
     const analysis = data.analysis as StatsDataObject;
 
     const matchCount = (() => {
@@ -151,7 +154,7 @@ const InnerGameStatsPage = ({
         );
       } else {
         const typeAnalysis = analysis[mode as keyof typeof analysis] as AnalysisObjectType;
-        return typeAnalysis.matchCount;
+        return typeAnalysis.matchCount || 0;
       }
     })();
 
@@ -192,12 +195,25 @@ const InnerGameStatsPage = ({
 
           <ChartCard
             title={
-              <Group spacing={"xs"}>
-                <Text>Maps {mode}</Text>
-                <HelperIcon
-                  width={280}
-                  text={"This chart has no value until we get map bans as we have in coh2."}
-                />
+              <Group position={"apart"}>
+                <Group spacing={"xs"}>
+                  <Text>Maps {mode}</Text>
+                  <HelperIcon
+                    width={280}
+                    text={"This chart has no value until we get map bans as we have in coh2."}
+                  />
+                </Group>
+                <Button
+                  component={Link}
+                  href={getMapsStatsRoute()}
+                  variant={"default"}
+                  size={"sm"}
+                >
+                  <Group spacing={4}>
+                    <IconCirclePlus size={"18"} />
+                    More
+                  </Group>
+                </Button>
               </Group>
             }
             size={"md"}

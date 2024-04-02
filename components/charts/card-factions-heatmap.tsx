@@ -5,6 +5,7 @@ import FactionIcon from "../faction-icon";
 import dynamic from "next/dynamic";
 import HelperIcon from "../icon/helper";
 import { useMediaQuery } from "@mantine/hooks";
+import { FactionSide } from "../../src/coh3/coh3-types";
 
 const DynamicHeatMapChart = dynamic(() => import("./factions-heatmap"), { ssr: false });
 
@@ -12,6 +13,7 @@ interface IProps {
   data: AnalysisObjectType;
   title: string;
   width?: number;
+  factionSide?: FactionSide;
 }
 
 const extractFactionString = (factionString: string): Record<string, string> => {
@@ -62,7 +64,12 @@ const legend = (
   </div>
 );
 
-const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, width = 780 }) => {
+const _FactionVsFactionCard: React.FC<IProps> = ({
+  title,
+  data,
+  width = 780,
+  factionSide = "axis",
+}) => {
   const factionData = (data && data["factionMatrix"]) || {};
   const largeScreen = useMediaQuery("(min-width: 30em)");
 
@@ -78,15 +85,19 @@ const _FactionVsFactionCard: React.FC<IProps> = ({ title, data, width = 780 }) =
   // We should use useMemo for these values, there is lot of iterations which are recalculated "unnecessary"
   const factionDataByKey: Record<string, Record<string, any>> = {};
 
-  const [SelectedSide, setSelectedSide] = React.useState("axis");
+  const [SelectedSide, setSelectedSide] = React.useState(factionSide);
   const [SelectedType, setSelectedType] = React.useState<"amountOfGames" | "winRate">("winRate");
+
+  React.useEffect(() => {
+    setSelectedSide(factionSide);
+  }, [factionSide]);
 
   const changeHeatMapStyle = (value: "amountOfGames" | "winRate") => {
     // firebaseAnalytics.teamCompositionUsed(factionWinRate, value);
     setSelectedType(value);
   };
 
-  const changeFactionDisplay = (value: "amountOfGames" | "winRate") => {
+  const changeFactionDisplay = (value: "axis" | "allies") => {
     // firebaseAnalytics.teamCompositionUsed(value, heatmapValues);
     setSelectedSide(value);
   };
