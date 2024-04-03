@@ -10,11 +10,12 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons-react";
+import { IconChevronDown, IconMedal } from "@tabler/icons-react";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";
 import {
+  getChallengesRoute,
   getDPSCalculatorRoute,
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
@@ -135,6 +136,24 @@ const UnitBrowserLink = ({ close }: { close: () => void }) => {
   );
 };
 
+const ChallengesLink = ({ close }: { close: () => void }) => {
+  return (
+    <Group spacing={4}>
+      <IconMedal size={20} />
+      <Text weight={500}>
+        <Anchor
+          color="orange"
+          component={LinkWithOutPrefetch}
+          href={getChallengesRoute()}
+          onClick={close}
+        >
+          Challenges
+        </Anchor>
+      </Text>
+    </Group>
+  );
+};
+
 const ExplorerMenu = ({
   cx,
   classes,
@@ -163,6 +182,7 @@ const ExplorerMenu = ({
               <Text weight={700}>Tools</Text>
               <DPSLink close={close} />
               <UnitBrowserLink close={close} />
+              <ChallengesLink close={close} />
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -197,6 +217,7 @@ const ExplorerMenu = ({
                 <Divider />
                 <DPSLink close={() => null} />
                 <UnitBrowserLink close={() => null} />
+                <ChallengesLink close={() => null} />
               </Stack>
             </Grid.Col>
           </Grid>

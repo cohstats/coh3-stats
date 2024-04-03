@@ -31,10 +31,6 @@ export const getGlobalAchievementsStatsRoute = () => {
   return encodeURI(`/stats/achievements`);
 };
 
-export const getChallengesRoute = () => {
-  return encodeURI(`/stats/challenges`);
-};
-
 export const getPlayersStatsRoute = () => {
   return encodeURI(`/stats/players`);
 };
@@ -53,6 +49,10 @@ export const getExplorerFactionRoute = (race: raceType) => {
 
 export const getExplorerFactionUnitsRoute = (race: raceType) => {
   return encodeURI(`/explorer/races/${race}/units`);
+};
+
+export const getChallengesRoute = () => {
+  return encodeURI(`/explorer/challenges`);
 };
 
 /**
