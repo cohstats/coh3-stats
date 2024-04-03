@@ -216,6 +216,7 @@ function getBuildingUpgrades(
         brief_text: ui.briefText,
         icon_name: ui.iconName,
         extra_text_formatter: ui.extraTextFormatter,
+        brief_text_formatter: ui.briefTextFormatter,
       },
       time_cost: {
         fuel: cost.fuel,
@@ -241,6 +242,7 @@ function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSch
       brief_text: ui.briefText || "",
       extra_text_formatter: ui.extraTextFormatter,
       icon_name: ui.iconName,
+      brief_text_formatter: ui.briefTextFormatter,
     },
     time_cost: {
       fuel: cost.fuel,

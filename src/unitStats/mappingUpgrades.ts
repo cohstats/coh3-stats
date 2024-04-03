@@ -37,6 +37,7 @@ type UpgradeUiData = {
   screenName: string;
   extraText: string; // Could be empty (Set as $0).
   extraTextFormatter: string;
+  briefTextFormatter: string;
 };
 
 /**
@@ -74,6 +75,7 @@ const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, paren
       screenName: "",
       extraText: "",
       extraTextFormatter: "",
+      briefTextFormatter: "",
     },
     cost: {
       fuel: 0,
@@ -113,6 +115,8 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   );
   upgrade.ui.briefText = briefText || briefTextFormatter || "";
 
+  upgrade.ui.briefTextFormatter =
+    resolveTextFormatterLocstring(upgradeBag.ui_info?.brief_text_formatter) || "";
   upgrade.ui.extraTextFormatter =
     resolveTextFormatterLocstring(upgradeBag.ui_info?.extra_text_formatter) || "";
 

@@ -41,6 +41,7 @@ type AbilitiesUiData = {
   briefText: string;
   screenName: string;
   extraText: string; // Could be empty (Set as $0).
+  briefTextFormatter: string;
   extraTextFormatter: string;
   // extraTextFormatter?: {
   //   formatter: string; // The default string which contains the formatted variables.
@@ -78,6 +79,7 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
       briefText: "",
       screenName: "",
       extraText: "",
+      briefTextFormatter: "",
       extraTextFormatter: "",
     },
     rechargeTime: 0,
@@ -109,6 +111,8 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
   ability.ui.extraText = resolveLocstring(abilityBag.ui_info?.extra_text) || "";
   ability.ui.briefText = resolveLocstring(abilityBag.ui_info?.brief_text) || "";
 
+  ability.ui.briefTextFormatter =
+    resolveTextFormatterLocstring(abilityBag.ui_info?.brief_text_formatter) || "";
   ability.ui.extraTextFormatter =
     resolveTextFormatterLocstring(abilityBag.ui_info?.extra_text_formatter) || "";
 

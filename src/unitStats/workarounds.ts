@@ -250,7 +250,7 @@ function setBattlegroupsWorkarounds() {
       item.branches.RIGHT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
           case "australian_defense_australian_light_infantry_uk":
-            upg.spawnItems = ["australian_light_infantry_uk"];
+            upg.spawnItems = ["australian_light_infantry_africa_uk"];
             break;
           case "australian_defense_2pdr_at_gun_uk":
             upg.spawnItems = ["at_gun_2pdr_africa_uk"];
