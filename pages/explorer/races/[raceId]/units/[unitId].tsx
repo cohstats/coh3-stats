@@ -243,6 +243,7 @@ const UnitUpgradeSection = (upgrades: UpgradesType[]) => {
                   brief_text: ui.briefText,
                   icon_name: ui.iconName,
                   extra_text_formatter: ui.extraTextFormatter,
+                  brief_text_formatter: ui.briefTextFormatter,
                 },
                 time_cost: cost,
               })}
@@ -275,6 +276,7 @@ const UnitAbilitySection = (abilities: AbilitiesType[]) => {
                     brief_text: ui.briefText,
                     icon_name: ui.iconName,
                     extra_text_formatter: ui.extraTextFormatter,
+                    brief_text_formatter: ui.briefTextFormatter,
                   },
                   time_cost: cost,
                 })}

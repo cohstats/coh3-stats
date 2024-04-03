@@ -29,6 +29,8 @@ type UnitUpgradeDescription = {
   extra_text_formatter: string;
   /** Locstring value. Found at `brief_text/locstring/value`. */
   brief_text: string | null;
+  /** Locstring with formatter variables. Found at `brief_text_formatter`, which list each parameter. */
+  brief_text_formatter: string;
   /** File path. Found at `icon_name`. */
   icon_name: string;
 };
@@ -64,6 +66,13 @@ const useStyles = createStyles((theme) => ({
 const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">) => {
   const { classes } = useStyles();
 
+  const spaceRegex = /\\r?\\n|\\r|\\n/g;
+  const specialRegex = /\*/g;
+
+  const briefText =
+    desc.brief_text?.replace(spaceRegex, "\n")?.replace(specialRegex, "") ||
+    desc.brief_text_formatter?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+
   const mobileView = (
     <HoverCard position="top" width={280} shadow="md" withArrow>
       <HoverCard.Target>
@@ -86,7 +95,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
             {desc.screen_name}
           </Title>
           <Text fz="sm" style={{ whiteSpace: "pre-line" }}>
-            {desc.brief_text?.replace(/\\r?\\n|\\r|\\n/g, "\n")}
+            {briefText}
           </Text>
           <Text fz="md" color="yellow.5">
             {desc.extra_text}
@@ -124,13 +133,9 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip
-            multiline
-            style={{ whiteSpace: "pre-line" }}
-            label={desc.brief_text?.replace(/\\r?\\n|\\r|\\n/g, "\n")}
-          >
+          <Tooltip multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
             <Text fz="sm" lineClamp={6} style={{ whiteSpace: "pre-line" }}>
-              {desc.brief_text?.replace(/\\r?\\n|\\r|\\n/g, "\n")}
+              {briefText}
             </Text>
           </Tooltip>
         </Grid.Col>
@@ -178,6 +183,7 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
           brief_text: desc.brief_text,
           extra_text: desc.extra_text,
           extra_text_formatter: desc.extra_text_formatter,
+          brief_text_formatter: desc.brief_text_formatter,
           icon_name: desc.icon_name,
         }}
         cfg={cfg}
