@@ -77,6 +77,7 @@ const BattlegroupBranchMapping = (
           brief_text: upg.ui.briefText,
           icon_name: upg.ui.iconName,
           extra_text_formatter: upg.ui.extraTextFormatter,
+          brief_text_formatter: upg.ui.briefTextFormatter,
         }}
         time_cost={{
           manpower: ability.cost.manpower,
@@ -213,6 +214,7 @@ export const BattlegroupCard = (
                   extra_text_formatter: "",
                   brief_text: uiParent.briefText,
                   icon_name: uiParent.iconName,
+                  brief_text_formatter: "",
                 },
                 time_cost: {},
               })}
