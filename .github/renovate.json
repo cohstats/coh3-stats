@@ -27,6 +27,7 @@
     },
     {
       "packageNames": ["@sentry/nextjs"],
+      "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     }
   ],
