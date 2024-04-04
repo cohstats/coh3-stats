@@ -524,7 +524,7 @@ const OfficialMapKeys = [
   "faymonville", // Community maps
   "steppe_8p", // Community maps
   /* ---------- 1.6.0 Maps ---------- */
-  "eindhoven_4p", // Community maps
+  "eindhoven", // Community maps
   "gothic_line_8p", // Community maps
   "oasis_depot_8p", // Community maps
 ] as const;
@@ -676,7 +676,7 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
     url: "/icons/maps/steppe_8p_mm_handmade.webp",
   },
   /* ------------------------- 1.6.0 Maps ---------------------------- */
-  eindhoven_4p: {
+  eindhoven: {
     name: "Operation Eindhoven",
     url: "/icons/maps/eindhoven_mm_handmade.webp",
   },

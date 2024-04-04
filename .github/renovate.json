@@ -24,6 +24,10 @@
       "matchPackagePatterns": ["@edgio/.*"],
       "groupName": "Edgio Packages",
       "groupSlug": "edgio"
+    },
+    {
+      "packageNames": ["@sentry/nextjs"],
+      "automerge": true
     }
   ],
   "schedule": ["before 4am on Monday"]
