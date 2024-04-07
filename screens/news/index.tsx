@@ -15,6 +15,7 @@ import {
   Text,
   AspectRatio,
   Flex,
+  useMantineTheme,
 } from "@mantine/core";
 import dayjs from "dayjs";
 import { IconShare3 } from "@tabler/icons-react";
@@ -118,19 +119,38 @@ class NewsComponentErrorBoundary extends React.Component {
 }
 
 const SingleNewsItem = ({ item }: { item: NewsItem }) => {
-  try {
-    // render the date as 05/April/2024 using dayjs
+  const theme = useMantineTheme();
 
+  try {
     return (
       <Card shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
+        <span
+          style={{
+            display: "block",
+            height: "300px",
+            marginTop: "-300px",
+            visibility: "hidden",
+          }}
+          id={item.gid}
+        />
         <Flex justify={"space-between"}>
-          <Title order={2}>{item.title}</Title>
+          <Anchor href={`#${item.gid}`} style={{ textDecoration: "none" }}>
+            <Title
+              order={2}
+              inherit={false}
+              color={theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.dark[7]}
+            >
+              {item.title}
+            </Title>
+          </Anchor>
           <Anchor href={item.url} target={"_blank"}>
-            <IconShare3 />
+            <IconShare3
+              color={theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.dark[7]}
+            />
           </Anchor>
         </Flex>
         <Text fz="lg">
-          Posted by {item.author} on {dayjs(item.date * 1000).format("DD/MMM/YYYY")}
+          Posted by {item.author} on {dayjs((item?.date || 0) * 1000).format("DD/MMM/YYYY")}
         </Text>
         <div>
           <NewsComponentErrorBoundary>

@@ -2575,6 +2575,13 @@
   resolved "https://registry.npmjs.org/@kwsites/promise-deferred/-/promise-deferred-1.1.1.tgz"
   integrity sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==
 
+"@mantine/carousel@6.0.21":
+  version "6.0.21"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.21.tgz#3e2a77e365014b314f90e8b474b350432c926640"
+  integrity sha512-cQAQ5RlVhSrYA8aez/euzs5nQKcGcwxVTS/gf46GEZ0gcDJXlymZPbc2OopH/WDczEaMWOF7wz8R9+uG1hYNCg==
+  dependencies:
+    "@mantine/utils" "6.0.21"
+
 "@mantine/core@6.0.21":
   version "6.0.21"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.21.tgz#6e3a1b8d0f6869518a644d5f5e3d55a5db7e1e51"
@@ -6292,6 +6299,29 @@ electron-to-chromium@^1.4.668:
   version "1.4.681"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.681.tgz#5f23fad8aa7e1f64cbb7dd9d15c7e39a1cd7e6e3"
   integrity sha512-1PpuqJUFWoXZ1E54m8bsLPVYwIVCRzvaL+n5cjigGga4z854abDnFRc+cTa2th4S79kyGqya/1xoR7h+Y5G5lg==
+
+embla-carousel-autoplay@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/embla-carousel-autoplay/-/embla-carousel-autoplay-8.0.1.tgz#2b6a99f04b7ce37472afafee3ceefda0b7b99a0a"
+  integrity sha512-4zcB6jVSGTJSXL7uroccjak9U+lyyoZTO4NISwdCHNMYVbIra8aZGEz0I/4Ql753do6jqjaRE8MsCBhJbt6u6A==
+
+embla-carousel-react@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-8.0.1.tgz#6c0420e54079a3f47fad1b4e982be782066f5b2c"
+  integrity sha512-cpFQ/HwCsjBjzpu9Z9IHmZ9DaCSf/wo4q+qUTcRW3SsNv+1Q8IY7Y8J2QIyTmz0vOWY7tliu3uE2gqRH7ZDwOQ==
+  dependencies:
+    embla-carousel "8.0.1"
+    embla-carousel-reactive-utils "8.0.1"
+
+embla-carousel-reactive-utils@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/embla-carousel-reactive-utils/-/embla-carousel-reactive-utils-8.0.1.tgz#7fe11dd07bf9f8e95debdc2e4415d608fe8723c6"
+  integrity sha512-KBSkz2h9LwVFkOrwzIJKgXbmEDlIShkreeOHnV8Cph09AdBMzb412nRkcctbeDcuG9x3CVsqLzJrSXnZeYhFPQ==
+
+embla-carousel@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-8.0.1.tgz#a9dd052d91a97b15c362723611ba7687193dba99"
+  integrity sha512-RsaMRyBCd144N95gb3XoI+H9zj3RI4y0qcfvKYEh2tIAIEenL9CW9vwzltCeoYkWYipGdkvup+HGT9ewG1YTEw==
 
 emitter-listener@^1.0.1:
   version "1.1.2"

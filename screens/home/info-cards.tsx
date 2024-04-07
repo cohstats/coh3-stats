@@ -51,7 +51,7 @@ const DPSCalculatorCard = () => {
     <InfoCard
       link={getDPSCalculatorRoute()}
       title={"DPS Calculator"}
-      imageSrc={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
+      imageSrc={getIconsPathOnCDN("/icons/races/common/symbols/hmg.webp")}
       content={
         "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can also take into consideration the HP of the units."
       }
@@ -64,7 +64,7 @@ const UnitBrowserCard = () => {
     <InfoCard
       link={getUnitBrowserRoute()}
       title={"Unit Browser"}
-      imageSrc={getIconsPathOnCDN("/icons/common/squad/squad.png")}
+      imageSrc={getIconsPathOnCDN("/icons/common/squad/squad.webp")}
       content={
         "Explore game units, including stats, weapons, and upgrades. Navigate the Explorer menu for faction overview and more details."
       }

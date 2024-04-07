@@ -1,15 +1,18 @@
+import { logger } from "../logger";
+
 const baseUrl = "https://api.steampowered.com/";
 const COH3_STEAM_APP_ID = 1677280;
 
 const steamImagesBaseUrl = "https://clan.cloudflare.steamstatic.com/images";
 
 export type NewsItem = {
+  gid: string;
   title: string;
-  url: string;
-  author: string;
-  contents: string;
+  url?: string;
+  author?: string;
+  contents?: string;
   image: string | null;
-  date: number;
+  date?: number;
 };
 
 export type COH3SteamNewsType = {
@@ -28,30 +31,34 @@ const getCOH3SteamNewsUrl = (count: number = 20) => {
 };
 
 const getCOH3SteamNews = async (count = 15): Promise<COH3SteamNewsType> => {
-  const response = await fetch(getCOH3SteamNewsUrl(count));
-  const { appnews } = await response.json();
+  try {
+    const response = await fetch(getCOH3SteamNewsUrl(count));
+    const { appnews } = await response.json();
 
-  delete appnews.appid;
+    delete appnews.appid;
 
-  appnews.newsitems = appnews.newsitems.map((news: any) => {
-    delete news.gid;
-    delete news.is_external_url;
-    delete news.feedlabel;
-    delete news.feedname;
-    -delete news.feed_type;
-    delete news.appid;
+    appnews.newsitems = appnews.newsitems.map((news: any) => {
+      delete news.is_external_url;
+      delete news.feedlabel;
+      delete news.feedname;
+      delete news.feed_type;
+      delete news.appid;
 
-    news.contents = news.contents.replaceAll("{STEAM_CLAN_IMAGE}", steamImagesBaseUrl);
-    // news.contents = news.contents.replace(/(\n\n)|\n/g, (match: any, p1: any) =>
-    //   p1 ? "[br]" : "[br]",
-    // );
-    // console.log(JSON.stringify(news.contents))
-    news.image = news.contents.match(/\[img\](.*?)\[\/img\]/)?.[1] ?? null;
+      news.contents = news.contents.replaceAll("{STEAM_CLAN_IMAGE}", steamImagesBaseUrl);
+      // news.contents = news.contents.replace(/(\n\n)|\n/g, (match: any, p1: any) =>
+      //   p1 ? "[br]" : "[br]",
+      // );
+      // console.log(JSON.stringify(news.contents))
+      news.image = news.contents.match(/\[img\](.*?)\[\/img\]/)?.[1] ?? null;
 
-    return news;
-  });
+      return news;
+    });
 
-  return appnews;
+    return appnews;
+  } catch (e) {
+    logger.error(e);
+    return { count: 0, newsitems: [] };
+  }
 };
 
 export { getNumberOfOnlinePlayersSteamUrl, getCOH3SteamNews };
