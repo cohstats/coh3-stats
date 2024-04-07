@@ -20,6 +20,8 @@ import dayjs from "dayjs";
 import { IconShare3 } from "@tabler/icons-react";
 // import {AnalyticsNewsPageView} from "../../src/firebase/analytics";
 import { NextPage } from "next";
+import Head from "next/head";
+import { generateKeywordsString } from "../../src/head-utils";
 
 const preset = reactPreset.extend((tags: any) => ({
   ...tags,
@@ -188,6 +190,8 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
   }
 };
 
+const keywords = generateKeywordsString(["coh3 news", "news", "patch", "changes"]);
+
 const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
   // useEffect(() => {
   //   AnalyticsNewsPageView();
@@ -196,22 +200,31 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
   const items = COH3SteamNews.newsitems.map((item) => {
     return <SingleNewsItem item={item} key={item.date} />;
   });
+  const image = COH3SteamNews.newsitems[0]?.image || "";
 
   try {
     return (
-      <Container size={"md"} px={0}>
-        <Title>Latest Company Of Heroes 3 News</Title>
-        <Space h={"lg"} />
-        {items}
-        <Text align={"center"} fs={"italic"} c="dimmed">
-          Source: Official Relic Steam News for COH3
-          <br />
-          You can find all the articles on{" "}
-          <Anchor href={"https://store.steampowered.com/news/app/1677280"} target={"_blank"}>
-            Steam news
-          </Anchor>
-        </Text>
-      </Container>
+      <>
+        <Head>
+          <title>{"COH3 News"}</title>
+          <meta name="description" content={`Latest official news for Company of Heroes 3`} />
+          <meta name="keywords" content={keywords} />
+          <meta property="og:image" content={image} />
+        </Head>
+        <Container size={"md"} px={0}>
+          <Title>Latest Company Of Heroes 3 News</Title>
+          <Space h={"lg"} />
+          {items}
+          <Text align={"center"} fs={"italic"} c="dimmed">
+            Source: Official Relic Steam News for COH3
+            <br />
+            You can find all the articles on{" "}
+            <Anchor href={"https://store.steampowered.com/news/app/1677280"} target={"_blank"}>
+              Steam news
+            </Anchor>
+          </Text>
+        </Container>
+      </>
     );
   } catch (e) {
     return <></>;
