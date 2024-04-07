@@ -79,12 +79,12 @@
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "7.10.5",
-    "@edgio/core": "7.10.5",
-    "@edgio/devtools": "7.10.5",
-    "@edgio/next": "7.10.5",
-    "@edgio/prefetch": "7.10.5",
-    "@edgio/react": "7.10.5",
+    "@edgio/cli": "7.10.6",
+    "@edgio/core": "7.10.6",
+    "@edgio/devtools": "7.10.6",
+    "@edgio/next": "7.10.6",
+    "@edgio/prefetch": "7.10.6",
+    "@edgio/react": "7.10.6",
     "@next/bundle-analyzer": "14.1.3",
     "@testing-library/jest-dom": "6.4.2",
     "@testing-library/react": "14.2.2",
@@ -103,6 +103,6 @@
     "lint-staged": "15.2.2",
     "next-sitemap": "4.2.3",
     "prettier": "3.2.5",
-    "typescript": "5.4.3"
+    "typescript": "5.4.4"
   }
 }
