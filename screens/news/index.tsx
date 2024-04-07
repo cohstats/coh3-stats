@@ -150,7 +150,7 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
           </Anchor>
         </Flex>
         <Text fz="lg">
-          Posted by {item.author} on {dayjs((item?.date || 0) * 1000).format("DD/MMM/YYYY")}
+          Posted by {item.author} on {dayjs((item.date || 0) * 1000).format("DD/MMM/YYYY")}
         </Text>
         <div>
           <NewsComponentErrorBoundary>
