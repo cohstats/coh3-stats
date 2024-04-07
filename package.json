@@ -37,6 +37,8 @@
     ]
   },
   "dependencies": {
+    "@bbob/preset-react": "^3.0.2",
+    "@bbob/react": "^3.0.2",
     "@edgio/rum": "7.0.13",
     "@emotion/react": "11.11.4",
     "@emotion/server": "11.11.0",

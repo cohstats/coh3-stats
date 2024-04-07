@@ -6,6 +6,8 @@ import { generateKeywordsString } from "../../src/head-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
+import { useEffect } from "react";
+import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -21,9 +23,12 @@ interface ChallengesProps {
     weeklyChallenges: ResolvedChallenge[];
   };
 }
+const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
-  const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
+  useEffect(() => {
+    AnalyticsExplorerChallengesView();
+  }, []);
 
   // console.log("Daily Challenges fetched", dailyChallengesData);
   // console.log("Weekly Challenges fetched", weeklyChallengesData);

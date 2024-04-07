@@ -13,7 +13,7 @@ module.exports = {
     // "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
   ],
-  ignorePatterns: ["**/__tests__/**/*.ts"],
+  // ignorePatterns: ["**/__tests__/**/*.ts"],
   rules: {
     // We shouldn't really use ANY but we can't have everything perfect
     "@typescript-eslint/no-explicit-any": "off",
