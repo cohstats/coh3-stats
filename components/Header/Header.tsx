@@ -22,7 +22,12 @@ import { SearchButton } from "./components/search-button";
 import { OnlinePlayers } from "../online-players";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
-import { getAboutRoute, getDesktopAppRoute, getLeaderBoardRoute } from "../../src/routes";
+import {
+  getAboutRoute,
+  getDesktopAppRoute,
+  getLeaderBoardRoute,
+  getNewsRoute,
+} from "../../src/routes";
 import StatisticsMenu from "./components/StatisticsMenu";
 import OtherMenu from "./components/OtherMenu";
 import config from "../../config";
@@ -163,6 +168,16 @@ export const Header: React.FC<HeaderProps> = () => {
             </Anchor>
 
             <ExplorerMenu cx={cx} close={close} classes={classes} />
+
+            <Anchor
+              component={Link}
+              href={getNewsRoute()}
+              className={cx(classes.link)}
+              onClick={() => close()}
+            >
+              COH3 News{" "}
+            </Anchor>
+
             <OtherMenu cx={cx} close={close} classes={classes} />
 
             <Anchor

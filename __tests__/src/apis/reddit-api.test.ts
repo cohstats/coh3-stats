@@ -2,8 +2,8 @@
  * @jest-environment node
  */
 
-import { getLatestCOH3RedditPosts } from "../../src/apis/reddit-api";
-import redditResponse from "../test-assets/reddit-api-reponse.json";
+import { getLatestCOH3RedditPosts } from "../../../src/apis/reddit-api";
+import redditResponse from "../../test-assets/reddit-api-reponse.json";
 
 describe("getLatestCOH3RedditPosts", () => {
   const setupFetchStub = (data: any) => () =>

@@ -149,3 +149,11 @@ export const AnalyticsExplorerFactionView = (faction: string): void => {
 export const AnalyticsExplorerFactionUnitsView = (faction: string): void => {
   logFBEvent(`explorer_faction_${faction}_units_view`);
 };
+
+export const AnalyticsExplorerChallengesView = (): void => {
+  logFBEvent("explorer_challenges_view");
+};
+
+export const AnalyticsNewsPageView = (): void => {
+  logFBEvent("news_view");
+};

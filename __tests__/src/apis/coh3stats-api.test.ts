@@ -2,13 +2,13 @@
  * @jest-environment node
  */
 
-import { ProcessedMatch } from "../../src/coh3/coh3-types";
+import { ProcessedMatch } from "../../../src/coh3/coh3-types";
 import {
   getPlayerCardInfo,
   getPlayerRecentMatches,
   getTwitchStreams,
   getStatsData,
-} from "../../src/apis/coh3stats-api";
+} from "../../../src/apis/coh3stats-api";
 
 describe("coh3stats-api", () => {
   // Mock the fetch function
@@ -26,12 +26,15 @@ describe("coh3stats-api", () => {
     jest.clearAllMocks();
   });
 
+  beforeEach(() => {
+    // @ts-ignore
+    global.fetch.mockClear();
+  });
+
   test("getPlayerCardInfo should return player card info", async () => {
     // Define the fake data
     const fakeData = { response: { player_count: 5 } };
 
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeData));
 
@@ -45,8 +48,6 @@ describe("coh3stats-api", () => {
   });
 
   test("getPlayerCardInfo should return error 500", async () => {
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest
       .spyOn(global, "fetch")
@@ -62,8 +63,6 @@ describe("coh3stats-api", () => {
   });
 
   test("getPlayerCardInfo should return error on other status codes", async () => {
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest
       .spyOn(global, "fetch")
@@ -209,8 +208,6 @@ describe("coh3stats-api", () => {
     ];
 
     // @ts-ignore
-    global.fetch.mockClear();
-    // @ts-ignore
     jest
       .spyOn(global, "fetch")
       .mockImplementation(setupFetchStub({ playerMatches: fakeMatchesData }));
@@ -227,8 +224,6 @@ describe("coh3stats-api", () => {
 
   test("getPlayerRecentMatches should return error 500", async () => {
     // @ts-ignore
-    global.fetch.mockClear();
-    // @ts-ignore
     jest
       .spyOn(global, "fetch")
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 500));
@@ -243,8 +238,6 @@ describe("coh3stats-api", () => {
   });
 
   test("getPlayerRecentMatches should return error on 400", async () => {
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest
       .spyOn(global, "fetch")
@@ -261,8 +254,7 @@ describe("coh3stats-api", () => {
 
   test("getTwitchStreams should return streams data", async () => {
     const fakeStreamData = { twitchStreams: "fake stream data" };
-    // @ts-ignore
-    global.fetch.mockClear();
+
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeStreamData));
 
@@ -276,8 +268,6 @@ describe("coh3stats-api", () => {
   });
 
   test("getTwitchStreams should return error 500", async () => {
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest
       .spyOn(global, "fetch")
@@ -294,8 +284,6 @@ describe("coh3stats-api", () => {
 
   test("getTwitchStreams should return error on 400", async () => {
     // @ts-ignore
-    global.fetch.mockClear();
-    // @ts-ignore
     jest
       .spyOn(global, "fetch")
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 400));
@@ -311,8 +299,7 @@ describe("coh3stats-api", () => {
 
   test("getStatsData should return stats data", async () => {
     const fakeStatsData = { stats: "fake stats data" };
-    // @ts-ignore
-    global.fetch.mockClear();
+
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeStatsData));
 
@@ -326,8 +313,6 @@ describe("coh3stats-api", () => {
   });
 
   test("getStatsData should return error 500", async () => {
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest
       .spyOn(global, "fetch")
@@ -343,8 +328,6 @@ describe("coh3stats-api", () => {
   });
 
   test("getStatsData should return error on 400", async () => {
-    // @ts-ignore
-    global.fetch.mockClear();
     // @ts-ignore
     jest
       .spyOn(global, "fetch")

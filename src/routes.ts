@@ -110,3 +110,10 @@ export const getPlayerExportRoute = () => {
 export const getRankingTiersRoute = () => {
   return encodeURI(`/other/ranking-tiers`);
 };
+
+export const getNewsRoute = (articleId?: string) => {
+  if (articleId) {
+    return encodeURI(`/news#${articleId}`);
+  }
+  return encodeURI(`/news`);
+};

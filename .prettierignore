@@ -9,3 +9,4 @@ out/
 .next
 .edgio
 codecov.yaml
+test-assets/
