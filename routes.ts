@@ -171,6 +171,35 @@ export default new Router()
       },
     });
   })
+  // Caching for desktop app
+  .match("/news(.*)", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60 * 30,
+      },
+      edge: {
+        // Add 180 minutes cache
+        maxAgeSeconds: 180 * 60,
+        // Server stale page up to 48 hours
+        staleWhileRevalidateSeconds: 48 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
+  .match("/_next/data/:version/news.json", ({ cache }) => {
+    cache({
+      browser: {
+        serviceWorkerSeconds: 60 * 30,
+      },
+      edge: {
+        // Add 180 minutes cache
+        maxAgeSeconds: 180 * 60,
+        // Server stale page up to 48 hours
+        staleWhileRevalidateSeconds: 48 * 60 * 60,
+        forcePrivateCaching: true,
+      },
+    });
+  })
   // Caching for SSG - explorer
   .match("/_next/data/:version/explorer/races/(.*)", ({ cache }) => {
     cache({
