@@ -1470,7 +1470,7 @@
     "@bbob/plugin-helper" "^3.0.2"
     "@bbob/preset" "^3.0.2"
 
-"@bbob/preset-react@^3.0.2":
+"@bbob/preset-react@3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@bbob/preset-react/-/preset-react-3.0.2.tgz#25a558ed8e1d20db4a7767bb04f4652d76f4f39e"
   integrity sha512-c6TavFW5yPmEZ9+98YRK63FC/6R9FHsAsv+sNxMe36O9hHSC9DC9VuypemwkKaa8mUv+BJtFiX4sLqcI/+cq2A==
@@ -1482,7 +1482,7 @@
   resolved "https://registry.yarnpkg.com/@bbob/preset/-/preset-3.0.2.tgz#9a468989711607f5131202c68dad7b51c0662921"
   integrity sha512-ZsHowFvvOx1tpem76SjYirsnO3bhaWnuh44Huj82YZBSftCgTaaH5WBleWk0TfNAu1gv44L1mHZyUBDLz3wgEg==
 
-"@bbob/react@^3.0.2":
+"@bbob/react@3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@bbob/react/-/react-3.0.2.tgz#0d927856cb1e81199994c90ccb6b5a3c9f50b82a"
   integrity sha512-byksVMCGgSknb1yka7UgNm5ay45D7gOjbpIwOFWGrlgoDksnXuPlEzE1sgpguSvSSR+5dNjKzua8Dqr2bZclXQ==
@@ -6301,12 +6301,12 @@ electron-to-chromium@^1.4.668:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.681.tgz#5f23fad8aa7e1f64cbb7dd9d15c7e39a1cd7e6e3"
   integrity sha512-1PpuqJUFWoXZ1E54m8bsLPVYwIVCRzvaL+n5cjigGga4z854abDnFRc+cTa2th4S79kyGqya/1xoR7h+Y5G5lg==
 
-embla-carousel-autoplay@^8.0.1:
+embla-carousel-autoplay@8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/embla-carousel-autoplay/-/embla-carousel-autoplay-8.0.1.tgz#2b6a99f04b7ce37472afafee3ceefda0b7b99a0a"
   integrity sha512-4zcB6jVSGTJSXL7uroccjak9U+lyyoZTO4NISwdCHNMYVbIra8aZGEz0I/4Ql753do6jqjaRE8MsCBhJbt6u6A==
 
-embla-carousel-react@^8.0.1:
+embla-carousel-react@8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-8.0.1.tgz#6c0420e54079a3f47fad1b4e982be782066f5b2c"
   integrity sha512-cpFQ/HwCsjBjzpu9Z9IHmZ9DaCSf/wo4q+qUTcRW3SsNv+1Q8IY7Y8J2QIyTmz0vOWY7tliu3uE2gqRH7ZDwOQ==
