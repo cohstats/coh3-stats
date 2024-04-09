@@ -37,8 +37,8 @@
     ]
   },
   "dependencies": {
-    "@bbob/preset-react": "^3.0.2",
-    "@bbob/react": "^3.0.2",
+    "@bbob/preset-react": "3.0.2",
+    "@bbob/react": "3.0.2",
     "@edgio/rum": "7.0.13",
     "@emotion/react": "11.11.4",
     "@emotion/server": "11.11.0",
@@ -62,8 +62,8 @@
     "@tabler/icons-react": "3.1.0",
     "chart.js": "4.4.2",
     "dayjs": "1.11.10",
-    "embla-carousel-autoplay": "^8.0.1",
-    "embla-carousel-react": "^8.0.1",
+    "embla-carousel-autoplay": "8.0.1",
+    "embla-carousel-react": "8.0.1",
     "firebase": "10.10.0",
     "is-glob": "4.0.3",
     "jsesc": "3.0.2",
