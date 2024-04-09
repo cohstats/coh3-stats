@@ -76,7 +76,9 @@ If the image is not found there, you can always add it to the /public folder.
 
 ### How to update the sitemap after adding new pages
 
-We should also run this after the patch update.
+You can run the [automated workflow](https://github.com/cohstats/coh3-stats/actions/workflows/sitemap.yml) in GitHub for this.
+
+Or manually you can do the following:
 
 1. Run `yarn build`
 2. Run `yarn sitemap`

@@ -2,6 +2,11 @@ name: Generate Sitemap
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "config.ts"
 
 jobs:
   generate-sitemap:
@@ -48,13 +53,10 @@ jobs:
           git commit -m "Update sitemap"
           git push origin HEAD --force
 
-      #      - name: Setup GitHub CLI
-      #        uses: actions/setup-cli@v1
-
       - name: Create or Update Pull Request
         run: |
           gh auth setup-git
           gh_pr_up() { gh pr create "$@" || gh pr edit "$@"; }
-          gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --head sitemap-update --label "bot"
+          gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --label "bot" --head sitemap-update
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
