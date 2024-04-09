@@ -178,8 +178,8 @@ export default new Router()
         serviceWorkerSeconds: 60 * 30,
       },
       edge: {
-        // Add 180 minutes cache
-        maxAgeSeconds: 180 * 60,
+        // Add 60 minutes cache
+        maxAgeSeconds: 60 * 60,
         // Server stale page up to 48 hours
         staleWhileRevalidateSeconds: 48 * 60 * 60,
         forcePrivateCaching: true,
@@ -192,8 +192,8 @@ export default new Router()
         serviceWorkerSeconds: 60 * 30,
       },
       edge: {
-        // Add 180 minutes cache
-        maxAgeSeconds: 180 * 60,
+        // Add 60 minutes cache
+        maxAgeSeconds: 60 * 60,
         // Server stale page up to 48 hours
         staleWhileRevalidateSeconds: 48 * 60 * 60,
         forcePrivateCaching: true,

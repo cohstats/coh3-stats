@@ -1,0 +1,54 @@
+name: Generate Sitemap
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-sitemap:
+    name: Generate Site Map
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "yarn"
+      - name: Cache node modules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules-v2
+        with:
+          path: |
+            node_modules
+          key: "${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}"
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Generate Sitemap
+        run: yarn sitemap
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email ""
+
+      - name: Create New Branch
+        run: |
+          git checkout -b sitemap-update
+          git add -A
+          git commit -m "Update sitemap"
+          git push origin HEAD --force
+
+      #      - name: Setup GitHub CLI
+      #        uses: actions/setup-cli@v1
+
+      - name: Create or Update Pull Request
+        run: |
+          gh auth setup-git
+          gh_pr_up() { gh pr create "$@" || gh pr edit "$@"; }
+          gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --head sitemap-update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
