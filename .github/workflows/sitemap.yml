@@ -55,6 +55,6 @@ jobs:
         run: |
           gh auth setup-git
           gh_pr_up() { gh pr create "$@" || gh pr edit "$@"; }
-          gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --head sitemap-update
+          gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --head sitemap-update --label "bot"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

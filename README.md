@@ -94,10 +94,8 @@ We have a special script for that.
 2. Run
 
 ```
-npx ts-node --compiler-options "{\"module\":\"commonjs\"}" scripts/unit-paths.ts > paths.txt
+npx --yes ts-node --compiler-options "{\"module\":\"commonjs\"}" scripts/unit-paths.ts > unit-paths.txt
 ```
-
-3. Copy the content of `paths.txt` and paste it into `next-sitemap.config.js`
 
 ### NextJS development
 

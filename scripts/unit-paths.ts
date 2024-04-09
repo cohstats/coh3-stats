@@ -22,9 +22,10 @@ const generateAllUnitPages = async () => {
   return unitPaths;
 }
 
-
 generateAllUnitPages().then((paths) => {
-  console.dir(paths, { maxArrayLength: null });
+  for(const path of paths){
+    console.log(path)
+  }
 
 })
 

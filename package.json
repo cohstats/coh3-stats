@@ -25,7 +25,7 @@
     "fix:prettier": "prettier --log-level warn --write .",
     "clean": "rm -fr .next && rm -fr node_modules",
     "prepare": "husky",
-    "sitemap": "next-sitemap --config next-sitemap.config.js"
+    "sitemap": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/unit-paths.ts > unit-paths.txt && next-sitemap --config next-sitemap.config.js"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,yml}": [
