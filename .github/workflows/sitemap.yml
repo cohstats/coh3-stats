@@ -27,6 +27,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      - name: Install
+        run: yarn --prefer-offline --frozen-lockfile install
+
+      - name: Build
+        run: yarn build
+
       - name: Generate Sitemap
         run: yarn sitemap
 
