@@ -177,13 +177,7 @@ export default new Router()
       browser: {
         serviceWorkerSeconds: 60 * 30,
       },
-      edge: {
-        // Add 60 minutes cache
-        maxAgeSeconds: 60 * 60,
-        // Server stale page up to 48 hours
-        staleWhileRevalidateSeconds: 48 * 60 * 60,
-        forcePrivateCaching: true,
-      },
+      // The cache is setup in nextjs response
     });
   })
   .match("/_next/data/:version/news.json", ({ cache }) => {
@@ -191,13 +185,7 @@ export default new Router()
       browser: {
         serviceWorkerSeconds: 60 * 30,
       },
-      edge: {
-        // Add 60 minutes cache
-        maxAgeSeconds: 60 * 60,
-        // Server stale page up to 48 hours
-        staleWhileRevalidateSeconds: 48 * 60 * 60,
-        forcePrivateCaching: true,
-      },
+      // The cache is setup in nextjs response
     });
   })
   // Caching for SSG - explorer
