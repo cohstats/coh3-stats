@@ -177,26 +177,12 @@ export default new Router()
       browser: {
         serviceWorkerSeconds: 60 * 30,
       },
-      edge: {
-        // Add 60 minutes cache
-        maxAgeSeconds: 60 * 60,
-        // Server stale page up to 48 hours
-        staleWhileRevalidateSeconds: 48 * 60 * 60,
-        forcePrivateCaching: true,
-      },
     });
   })
   .match("/_next/data/:version/news.json", ({ cache }) => {
     cache({
       browser: {
         serviceWorkerSeconds: 60 * 30,
-      },
-      edge: {
-        // Add 60 minutes cache
-        maxAgeSeconds: 60 * 60,
-        // Server stale page up to 48 hours
-        staleWhileRevalidateSeconds: 48 * 60 * 60,
-        forcePrivateCaching: true,
       },
     });
   })
