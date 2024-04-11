@@ -50,20 +50,11 @@ const preset = reactPreset.extend((tags: any) => ({
       },
     };
   },
-  // br: (node: { content: any }) => {
-  //   return {
-  //     tag: "br",
-  //     // attrs: {
-  //     //   pt: "sm",
-  //     //   pb: "sm",
-  //     //   radius: "md",
-  //     //   w: "auto",
-  //     //   fit: "contain",
-  //     //   src: node.content,
-  //     //   loading: "lazy",
-  //     // },
-  //   };
-  // },
+  br: () => {
+    return {
+      tag: "br",
+    };
+  },
   previewyoutube: (node: { attrs: NonNullable<unknown> }) => {
     try {
       const youtubeId = Object.keys(node.attrs)[0]?.split(";")[0] || null;

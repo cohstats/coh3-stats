@@ -45,9 +45,11 @@ const getCOH3SteamNews = async (count = 15): Promise<COH3SteamNewsType> => {
       delete news.appid;
 
       news.contents = news.contents.replaceAll("{STEAM_CLAN_IMAGE}", steamImagesBaseUrl);
-      // news.contents = news.contents.replace(/(\n\n)|\n/g, (match: any, p1: any) =>
-      //   p1 ? "[br]" : "[br]",
-      // );
+      // console.log(JSON.stringify(news.contents))
+      // news.contents = news.contents.replaceAll(/\n/g, "[br]");
+
+      // news.contents = news.contents.replaceAll(/(?:[^\]])\s*(\n{1,3})/g, "[br]");
+      // news.contents = news.contents.replaceAll("][br]", "");
       // console.log(JSON.stringify(news.contents))
       news.image = news.contents.match(/\[img\](.*?)\[\/img\]/)?.[1] ?? null;
 

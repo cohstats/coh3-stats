@@ -9,7 +9,10 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
     COH3SteamNews = await getCOH3SteamNews();
 
     // Cache for 30 minutes, stale while revalidate 48 hours
-    res.setHeader("Cache-Control", "public, max-age=1800, stale-while-revalidate=172800");
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=600, s-maxage=1800, stale-while-revalidate=172800",
+    );
   } catch (e) {
     console.error(`Error getting the steam news`);
     console.error(e);

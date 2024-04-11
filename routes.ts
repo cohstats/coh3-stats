@@ -177,6 +177,7 @@ export default new Router()
       browser: {
         serviceWorkerSeconds: 60 * 30,
       },
+      // The cache is setup in nextjs response
     });
   })
   .match("/_next/data/:version/news.json", ({ cache }) => {
@@ -184,6 +185,7 @@ export default new Router()
       browser: {
         serviceWorkerSeconds: 60 * 30,
       },
+      // The cache is setup in nextjs response
     });
   })
   // Caching for SSG - explorer
