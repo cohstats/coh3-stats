@@ -58,7 +58,8 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
           }
         />
         <meta name="keywords" content={keywords} />
-        {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
+        {/*we might prepare better image*/}
+        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <Container size={"lg"} p={0}>
         <Grid>
