@@ -152,7 +152,7 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.6.0";
+const latestPatch = "1.6.1";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
