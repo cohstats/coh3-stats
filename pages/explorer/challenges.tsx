@@ -71,7 +71,13 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
 
             {weeklyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
               return (
-                <Accordion p={5} chevronPosition="right" variant="separated" radius="md">
+                <Accordion
+                  key={challenge.name}
+                  p={5}
+                  chevronPosition="right"
+                  variant="separated"
+                  radius="md"
+                >
                   <Accordion.Item value={challenge.id} key={challenge.name}>
                     <Accordion.Control>
                       <AccordionLabel {...challenge} />
@@ -100,7 +106,13 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
 
             {dailyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
               return (
-                <Accordion p={5} chevronPosition="right" variant="separated" radius="md">
+                <Accordion
+                  key={challenge.name}
+                  p={5}
+                  chevronPosition="right"
+                  variant="separated"
+                  radius="md"
+                >
                   <Accordion.Item value={challenge.id} key={challenge.name}>
                     <Accordion.Control>
                       <AccordionLabel {...challenge} />
