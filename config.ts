@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "1.6.0";
+const defaultStatsPatchSelector = "1.6.1";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -55,9 +55,16 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
+  "1.6.1": {
+    from: "2024-04-11",
+    to: "now",
+    value: "1.6.1",
+    label: "1.6.1",
+    group: "Coral Viper",
+  },
   "1.6.0": {
     from: "2024-04-02",
-    to: "now",
+    to: "2024-04-10",
     value: "1.6.0",
     label: "1.6.0",
     group: "Coral Viper",
@@ -145,11 +152,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.6.0";
+const latestPatch = "1.6.1";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.6.1": {
+      dataTag: "v1.6.1-1", // This is the tag of the data repo
+      dataTime: "01/April/2024", // The date when was the data tag created (the data extracted from game)
+    },
     "1.6.0": {
       dataTag: "v1.6.0-1", // This is the tag of the data repo
       dataTime: "02/April/2024", // The date when was the data tag created (the data extracted from game)

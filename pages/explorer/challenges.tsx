@@ -1,12 +1,23 @@
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { Accordion, Card, Container, Flex, Grid, Group, Stack, Text, Title } from "@mantine/core";
+import {
+  Accordion,
+  Card,
+  Container,
+  Flex,
+  Grid,
+  Group,
+  Space,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
 import { generateKeywordsString } from "../../src/head-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 
 interface ResolvedChallenge {
@@ -23,6 +34,7 @@ interface ChallengesProps {
     weeklyChallenges: ResolvedChallenge[];
   };
 }
+
 const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
@@ -46,17 +58,26 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
           }
         />
         <meta name="keywords" content={keywords} />
-        {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
+        {/*we might prepare better image*/}
+        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
-      <Container size={"md"}>
-        <Flex justify="space-between" align={"center"} my={16}>
-          <Title order={2}>Weekly Challenges</Title>
-        </Flex>
-        <Grid columns={1}>
-          {weeklyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
-            return (
-              <Grid.Col key={challenge.id} span={1}>
-                <Accordion p={0} chevronPosition="right" variant="separated">
+      <Container size={"lg"} p={0}>
+        <Grid>
+          <Grid.Col md={12} lg={6}>
+            <Title align={"center"} order={2}>
+              Weekly Challenges
+            </Title>
+            <Space h={"md"} />
+
+            {weeklyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
+              return (
+                <Accordion
+                  key={challenge.name}
+                  p={5}
+                  chevronPosition="right"
+                  variant="separated"
+                  radius="md"
+                >
                   <Accordion.Item value={challenge.id} key={challenge.name}>
                     <Accordion.Control>
                       <AccordionLabel {...challenge} />
@@ -73,19 +94,25 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
-              </Grid.Col>
-            );
-          })}
-        </Grid>
+              );
+            })}
+          </Grid.Col>
 
-        <Flex justify="space-between" align={"center"} my={16}>
-          <Title order={2}>Daily Challenges</Title>
-        </Flex>
-        <Grid columns={1}>
-          {dailyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
-            return (
-              <Grid.Col key={challenge.id} span={1}>
-                <Accordion p={0} chevronPosition="right" variant="separated">
+          <Grid.Col md={12} lg={6}>
+            <Title align={"center"} order={2}>
+              Daily Challenges
+            </Title>
+            <Space h={"md"} />
+
+            {dailyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
+              return (
+                <Accordion
+                  key={challenge.name}
+                  p={5}
+                  chevronPosition="right"
+                  variant="separated"
+                  radius="md"
+                >
                   <Accordion.Item value={challenge.id} key={challenge.name}>
                     <Accordion.Control>
                       <AccordionLabel {...challenge} />
@@ -102,9 +129,9 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
-              </Grid.Col>
-            );
-          })}
+              );
+            })}
+          </Grid.Col>
         </Grid>
       </Container>
     </>
@@ -113,12 +140,12 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
 
 function AccordionLabel({ name, description, reward }: ResolvedChallenge["challenge"]) {
   return (
-    <Card p="lg" radius="md" withBorder>
+    <Card p="md" radius="md" withBorder>
       <Flex direction="column" gap={4}>
         <Title order={3} color="orange.5">
           {name}
         </Title>
-        <Text size="md">{description}</Text>
+        <Text style={{ minHeight: "3.2em" }}>{description}</Text>
         <Group spacing={"xs"}>
           <IconMedal size={16} />
           <Text size="sm" color="blue.4">
