@@ -79,16 +79,16 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
                 <Text color={"red"}>{streak}</Text>
               ),
           },
-          // Hide this when we need to make the table shorter
-          {
-            accessor: "wins",
-            textAlignment: "center",
-          },
-          // Hide this when we need to make the table shorter
-          {
-            accessor: "losses",
-            textAlignment: "center",
-          },
+          // // Hide this when we need to make the table shorter
+          // {
+          //   accessor: "wins",
+          //   textAlignment: "center",
+          // },
+          // // Hide this when we need to make the table shorter
+          // {
+          //   accessor: "losses",
+          //   textAlignment: "center",
+          // },
           {
             accessor: "ratio",
             textAlignment: "center",
