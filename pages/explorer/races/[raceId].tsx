@@ -182,26 +182,6 @@ const BuildingMapping = (
   );
 };
 
-// function getBuildingTrainableUnits(
-//   building: EbpsType,
-//   sbpsData: SbpsType[],
-//   ebpsData: EbpsType[],
-// ): BuildingSchema["units"] {
-//   return Object.entries(getResolvedSquads(building.spawnItems, sbpsData, ebpsData)).map(
-//     ([id, { ui, time_cost }]) => ({
-//       id,
-//       desc: {
-//         screen_name: ui.screenName,
-//         help_text: ui.helpText,
-//         brief_text: ui.briefText,
-//         symbol_icon_name: ui.symbolIconName,
-//         icon_name: ui.iconName,
-//       },
-//       time_cost,
-//     }),
-//   );
-// }
-
 function getBuildingUpgrades(
   building: EbpsType,
   upgradesData: UpgradesType[],

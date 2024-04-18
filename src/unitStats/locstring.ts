@@ -20,7 +20,11 @@ type LocstringObjectSchema = {
 type TextFormatterSchema = {
   // template_reference: { name: string; value: string };
   formatter: LocstringObjectSchema;
-  formatter_arguments: Array<{ int_value: number }>;
+  formatter_arguments: Array<{
+    int_value?: number;
+    float_value?: number;
+    locstring_value?: LocstringObjectSchema;
+  }>;
 };
 
 // The input comes from the weapon / ebps / sbps / upgrade json.
@@ -37,7 +41,11 @@ const resolveTextFormatterLocstring = (inFormatter: TextFormatterSchema) => {
   if (!foundFormatterLoc) return null;
 
   const valRegex = /(\%\d+\%)/g;
-  const replacements = inFormatter.formatter_arguments.map((x) => `${x.int_value}`);
+  const replacements = inFormatter.formatter_arguments.map((x) => {
+    if (x.int_value) return `${x.int_value}`;
+    if (x.float_value) return `${x.float_value}`;
+    if (x.locstring_value) return resolveLocstring(x.locstring_value);
+  });
   const formattedLoc = foundFormatterLoc.replace(valRegex, () => replacements.shift() ?? "0");
 
   // Now replace the double % symbol via regex to preserve a single percentage symbol.

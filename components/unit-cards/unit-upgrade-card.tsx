@@ -133,19 +133,19 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
-            <Text fz="sm" lineClamp={6} style={{ whiteSpace: "pre-line" }}>
+          <Tooltip.Floating multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
+            <Text fz="sm" lineClamp={7} style={{ whiteSpace: "pre-line" }}>
               {briefText}
             </Text>
-          </Tooltip>
+          </Tooltip.Floating>
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip multiline label={desc.extra_text || desc.extra_text_formatter}>
+          <Tooltip.Floating multiline label={desc.extra_text || desc.extra_text_formatter}>
             <Text fz="sm" lineClamp={3}>
               {desc.extra_text || desc.extra_text_formatter}
             </Text>
-          </Tooltip>
+          </Tooltip.Floating>
         </Grid.Col>
       </Grid>
     </>
