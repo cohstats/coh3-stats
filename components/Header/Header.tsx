@@ -141,7 +141,7 @@ export const Header: React.FC<HeaderProps> = () => {
         className={classes.hiddenDesktop}
         zIndex={1000000}
       >
-        <ScrollArea sx={{ height: "calc(100vh - 60px)" }} mx="-md">
+        <ScrollArea sx={{ height: "calc(100vh - 100px)" }} mx="-md">
           <Divider my="sm" />
           <Stack px="md">
             <Group grow>
@@ -214,7 +214,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-      <MantineHeader height={60} className={classes.root} style={{ position: "sticky" }}>
+      <MantineHeader height={100} className={classes.root} style={{ position: "sticky" }}>
         <Container className={classes.container} fluid>
           <Anchor component={Link} href={"/"} className={cx(classes.link)}>
             <Group spacing="xs">

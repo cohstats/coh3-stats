@@ -245,7 +245,7 @@ export const getSbpsWeapons = (sbps: SbpsType, ebpsList: EbpsType[], weapons: We
     if (!unit_ebps) continue;
 
     let num = loadout.num;
-    if (crew_demand > 0) num = num - crew_demand;
+    if (crew_demand > 0) num -= crew_demand;
 
     crew_demand = unit_ebps.crew_size;
 
@@ -262,9 +262,10 @@ export const getSbpsWeapons = (sbps: SbpsType, ebpsList: EbpsType[], weapons: We
       // ignore loadout when no damage dealing weapon found
       if (
         !weapon ||
-        (weapon as WeaponType).weapon_bag.damage_max == 0 ||
-        (weapon.weapon_bag.damage_damage_type == "explosive" &&
-          weapon.weapon_bag.aoe_outer_radius == 0)
+        ((weapon as WeaponType).weapon_bag.damage_max == 0 &&
+          weapon.weapon_bag.damage_damage_type !== "explosive") ||
+        (weapon.weapon_bag.damage_damage_type === "explosive" &&
+          weapon.weapon_bag.aoe_outer_radius === 0)
       )
         continue;
 
