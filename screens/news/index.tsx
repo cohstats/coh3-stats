@@ -117,10 +117,11 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
       <Card shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
         <span
           style={{
-            display: "block",
-            height: "300px",
-            marginTop: "-300px",
-            visibility: "hidden",
+            position: "absolute",
+            top: "-120px",
+            left: "0",
+            right: "0",
+            height: "1px",
           }}
           id={item.gid}
         />
