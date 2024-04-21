@@ -60,6 +60,7 @@ describe("getLatestCOH3RedditPosts", () => {
     const firstPost = posts[0];
     expect(firstPost.title).toBe("Assault on the Hill");
     expect(firstPost.upvotes).toBe(132);
+    expect(firstPost.comments).toBe(38);
     expect(firstPost.author).toBe("Trialshock92");
     expect(firstPost.image).toBe("https://www.reddit.com/gallery/15nuafz");
     expect(firstPost.created).toBe(1691715898);

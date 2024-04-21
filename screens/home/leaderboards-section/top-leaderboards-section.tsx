@@ -74,10 +74,7 @@ const TopLeaderboardsSection = ({
       >
         <Flex gap="md" justify="space-between" align="center" direction="row" wrap="wrap">
           <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
-            <IconTrophy />{" "}
-            <Title order={1} size="h2">
-              1v1 Leaderboards
-            </Title>
+            <IconTrophy /> <Title size="h3">1v1 Leaderboards</Title>
           </Flex>
           <Tabs.List>
             {/*TODO: We could maybe utilize icons ? Or on mobile it could be just icons*/}
