@@ -2,11 +2,23 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
-import { Card, Container, Flex, Grid, List, Space, Stack, Text, Title } from "@mantine/core";
+import {
+  Card,
+  Container,
+  Flex,
+  Grid,
+  List,
+  SimpleGrid,
+  Space,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import {
   AbilitiesType,
   EbpsType,
   getResolvedAbilities,
+  getResolvedConstruction,
   getResolvedUpgrades,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
@@ -45,6 +57,7 @@ interface UnitDetailProps {
     resolvedEntities: EbpsType[];
     upgrades: UpgradesType[];
     abilities: AbilitiesType[];
+    buildables: EbpsType[];
   };
 }
 
@@ -117,7 +130,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   const { totalUpkeepCost } = calculatedData;
 
   // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
-  const { squadWeapons, upgrades, abilities } = calculatedData;
+  const { squadWeapons, upgrades, abilities, buildables } = calculatedData;
 
   // Use default weapon for max range.
   const rangeValues = {
@@ -217,6 +230,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           </Grid.Col>
         </Grid>
         <Grid>
+          <Grid.Col>{UnitBuildingSection(buildables)}</Grid.Col>
           <Grid.Col>{UnitWeaponSection(squadWeapons)}</Grid.Col>
         </Grid>
       </Container>
@@ -251,6 +265,42 @@ const UnitUpgradeSection = (upgrades: UpgradesType[]) => {
           );
         })}
       </Stack>
+    </Stack>
+  );
+};
+
+const UnitBuildingSection = (buildings: EbpsType[]) => {
+  // Resolve unit buildables.
+  if (!buildings || !buildings.length) return <></>;
+  return (
+    <Stack>
+      <Title order={4}>Can construct</Title>
+      <SimpleGrid cols={3}>
+        {Object.values(buildings).map(({ id, ui, cost }) => {
+          // If we are missing the name of the ability --> it's most likely broken
+          if (ui.screenName) {
+            return (
+              <Card key={id} p="lg" radius="md" withBorder>
+                {UnitUpgradeCard({
+                  id,
+                  desc: {
+                    screen_name: ui.screenName,
+                    help_text: ui.helpText,
+                    extra_text: ui.extraText,
+                    brief_text: ui.briefText,
+                    icon_name: ui.iconName,
+                    extra_text_formatter: "",
+                    brief_text_formatter: "",
+                  },
+                  time_cost: cost,
+                })}
+              </Card>
+            );
+          } else {
+            return null;
+          }
+        })}
+      </SimpleGrid>
     </Stack>
   );
 };
@@ -354,6 +404,8 @@ const createdCalculateValuesForUnits = (
 
   const abilities = Object.values(getResolvedAbilities(resolvedSquad.abilities, abilitiesData));
 
+  const buildables = Object.values(getResolvedConstruction(resolvedSquad.construction, ebpsData));
+
   // console.log('Calculated abilities', resolvedSquad);
 
   const resolvedEntities: EbpsType[] = [];
@@ -374,6 +426,7 @@ const createdCalculateValuesForUnits = (
     resolvedEntities,
     upgrades,
     abilities,
+    buildables,
   };
 };
 
