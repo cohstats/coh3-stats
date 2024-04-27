@@ -36,7 +36,10 @@ import {
   ReinforceCostCard,
   UnitCostCard,
 } from "../../../../../components/unit-cards/unit-cost-card";
-import { UnitUpgradeCard } from "../../../../../components/unit-cards/unit-upgrade-card";
+import {
+  ConstructableCard,
+  UnitUpgradeCard,
+} from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
@@ -275,13 +278,19 @@ const UnitBuildingSection = (buildings: EbpsType[]) => {
   return (
     <Stack>
       <Title order={4}>Can construct</Title>
-      <SimpleGrid cols={3}>
+      <SimpleGrid
+        breakpoints={[
+          { minWidth: "xs", cols: 1 },
+          { minWidth: "sm", cols: 2 },
+          { minWidth: "lg", cols: 3 },
+        ]}
+      >
         {Object.values(buildings).map(({ id, ui, cost }) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {
             return (
               <Card key={id} p="lg" radius="md" withBorder>
-                {UnitUpgradeCard({
+                {ConstructableCard({
                   id,
                   desc: {
                     screen_name: ui.screenName,
