@@ -43,6 +43,10 @@ type SbpsType = {
   requirements: string[];
   /** Found at `squad_ability_ext`. This contains unit abilities references. */
   abilities: string[];
+  /** Found at `squad_engineer_ext/construction_groups/construction_items` list.
+   * This conatins the ebps reference to the building list this squad can
+   * construct. */
+  construction: string[];
   /** Found at `squad_reinforce_ext`. This contains reinforcement
    * information
    */
@@ -135,6 +139,7 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     capture_revert: 0,
     requirements: [],
     abilities: [],
+    construction: [],
   };
 
   mapExtensions(subtree, sbpsEntity);
@@ -279,6 +284,19 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
         for (const abi of extension.abilities) {
           if (abi.ability.instance_reference) {
             sbps.abilities.push(abi.ability.instance_reference.split("/").slice(-1)[0]);
+          }
+        }
+        break;
+      case "squad_engineer_ext":
+        if (!extension.construction_groups?.length) break;
+        for (const conGroup of extension.construction_groups) {
+          if (!conGroup.construction_group.construction_items?.length) break;
+          for (const conItem of conGroup.construction_group.construction_items) {
+            if (conItem.construction_item.ebp.instance_reference) {
+              sbps.construction.push(
+                conItem.construction_item.ebp.instance_reference.split("/").slice(-1)[0],
+              );
+            }
           }
         }
         break;

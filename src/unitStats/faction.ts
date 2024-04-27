@@ -18,6 +18,18 @@ export function getResolvedAbilities(refs: string[], abilities: AbilitiesType[])
   return foundAbilities;
 }
 
+export function getResolvedConstruction(refs: string[], ebpsData: EbpsType[]) {
+  // The key is the ebps id.
+  const foundConstructions: Record<string, EbpsType> = {};
+  for (const refId of refs) {
+    const foundItem = ebpsData.find((x) => x.id === refId);
+    if (!foundItem) continue;
+
+    foundConstructions[refId] ??= foundItem;
+  }
+  return foundConstructions;
+}
+
 export function getResolvedUpgrades(refs: string[], upgradesData: UpgradesType[]) {
   // The key is the upgrade id.
   const researchableUpgrades: Record<string, UpgradesType> = {};

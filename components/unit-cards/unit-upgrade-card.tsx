@@ -1,4 +1,14 @@
-import { createStyles, Flex, Grid, Group, HoverCard, Text, Title, Tooltip } from "@mantine/core";
+import {
+  createStyles,
+  Flex,
+  Grid,
+  Group,
+  HoverCard,
+  Stack,
+  Text,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import { UnitCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
@@ -191,4 +201,43 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
       {hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}
     </Flex>
   );
+};
+
+export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
+  return (
+    <Stack h="100%" align="stretch" justify="space-between" spacing={16}>
+      <UnitUpgradeCardHeader
+        desc={{
+          screen_name: desc.screen_name,
+          help_text: desc.help_text,
+          brief_text: desc.brief_text,
+          extra_text: desc.extra_text,
+          extra_text_formatter: desc.extra_text_formatter,
+          brief_text_formatter: desc.brief_text_formatter,
+          icon_name: desc.icon_name,
+        }}
+        cfg={cfg}
+      ></UnitUpgradeCardHeader>
+      {hasBuildableCost(time_cost) ? (
+        UnitCostCard(time_cost)
+      ) : (
+        <Stack spacing={0}>
+          <Title order={6} transform="uppercase">
+            Costs
+          </Title>
+          <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
+            <Text>Free</Text>
+          </Flex>
+        </Stack>
+      )}
+    </Stack>
+  );
+};
+
+/** Only for the buildable list. */
+const hasBuildableCost = (time_cost: ResourceValues) => {
+  const hasMan = time_cost?.manpower && time_cost.manpower > 0;
+  const hasFuel = time_cost?.fuel && time_cost.fuel > 0;
+  const hasAmmo = time_cost?.munition && time_cost.munition > 0;
+  return hasMan || hasFuel || hasAmmo;
 };
