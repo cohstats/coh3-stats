@@ -14,7 +14,7 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
   try {
     // We need a heavy cache on this, reddit is throttling like crazy
     const response = await fetch(
-      `https://cache.coh3stats.com/r/CompanyOfHeroes/top.json?limit=100&t=month`,
+      `https://cache.coh3stats.com/r/CompanyOfHeroes/top.json?limit=100&t=week`,
       {
         method: "GET",
       },

@@ -1,19 +1,19 @@
-import { Paper, Title, Image, Text, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
+import { Paper, Title, Text, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
 import { RedditPostType } from "../../../src/apis/reddit-api";
-// The next image doesn't work with reddit source
-// import Image from 'next/image'
+
 import React from "react";
-import { IconArrowUp } from "@tabler/icons-react";
+import {IconArrowUp, IconBrandReddit} from "@tabler/icons-react";
+
+import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
+import ImageWithModal from "../../../components/image-with-modal";
 
 const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | null }) => {
-  console.log("redditDAta", redditPostsData);
-
-  const redditPosts = redditPostsData?.map((post) => {
+  const redditPosts = redditPostsData?.map((post, index) => {
     return (
       <>
-        <Paper key={post.created} p={"xs"} mb={5}>
-          <Flex>
-            <Stack>
+        <Paper key={post.created} p={"xs"} pl={0} pr={0} mb={5}>
+          <Flex justify={"space-between"} columnGap={"xs"}>
+            <Stack spacing={"xs"}>
               <Flex>
                 <Title order={5}>
                   <Anchor
@@ -31,6 +31,7 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
                   <Group spacing={4}>
                     <IconArrowUp size={"1rem"} /> {post.upvotes}{" "}
                     <Text c="dimmed">
+                      <Group spacing={2}>
                       {" "}
                       -{" "}
                       <Anchor
@@ -40,18 +41,28 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
                       >
                         u/{post.author}
                       </Anchor>{" "}
-                      - {post.comments} comments - {post.created}
+                      <span>- {post.comments} comments -</span>
+                      <DynamicTimeAgo timestamp={post.created} />
+                      </Group>
                     </Text>
                   </Group>
                 </Text>
               </Flex>
             </Stack>
             {post.image && !post.image.includes("gallery") && (
-              <Image maw={120} mx="auto" radius="xs" src={post.image || null} alt={post.title} />
+              <ImageWithModal
+                height={55}
+                width={100}
+                alt={post.title}
+                src={post.image}
+                modalW={800}
+                modalH={600}
+                title={post.title}
+              />
             )}
           </Flex>
         </Paper>
-        <Divider />
+        {index !== redditPostsData.length - 1 && <Divider />}
       </>
     );
   });
@@ -59,10 +70,11 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
   // Implement reddit panel here
   return (
     <Paper withBorder shadow="xs" radius="md" mt="md" p="md" color="gray">
-      <Title size="h3">
-        Top COH3 Reddit posts
-        {redditPosts}
-      </Title>
+      <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
+        <IconBrandReddit /> <Title size="h3">Top COH3 Reddit posts
+        </Title>
+      </Flex>
+      {redditPosts}
     </Paper>
   );
 };
