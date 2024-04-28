@@ -47,9 +47,14 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
                 return post.data.thumbnail ?? null;
               }
 
+              if (post.data.post_hint === "link" && post.data.thumbnail) {
+                return post.data.thumbnail ?? null;
+              }
+
               if (post.data.is_video && post.data.is_video == true) {
                 return null;
               }
+
               return post.data.url_overridden_by_dest ?? null;
             })() || null,
         };
