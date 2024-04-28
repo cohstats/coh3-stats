@@ -29,6 +29,16 @@
       "packageNames": ["@sentry/nextjs"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
+    },
+    {
+      "matchPackagePrefixes": ["embla-carousel"],
+      "groupName": "Embla Carousel Packages",
+      "groupSlug": "embla-carousel"
+    },
+    {
+      "packageNames": ["@tabler/icons-react"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
     }
   ],
   "schedule": ["before 4am on Monday"]
