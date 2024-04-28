@@ -2,7 +2,7 @@ import { Paper, Title, Text, Flex, Anchor, Group, Stack, Divider } from "@mantin
 import { RedditPostType } from "../../../src/apis/reddit-api";
 
 import React from "react";
-import {IconArrowUp, IconBrandReddit} from "@tabler/icons-react";
+import { IconArrowUp, IconBrandReddit } from "@tabler/icons-react";
 
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 import ImageWithModal from "../../../components/image-with-modal";
@@ -32,17 +32,17 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
                     <IconArrowUp size={"1rem"} /> {post.upvotes}{" "}
                     <Text c="dimmed">
                       <Group spacing={2}>
-                      {" "}
-                      -{" "}
-                      <Anchor
-                        href={`https://www.reddit.com/user/${post.author}/`}
-                        target={"_blank"}
-                        color={"dark0"}
-                      >
-                        u/{post.author}
-                      </Anchor>{" "}
-                      <span>- {post.comments} comments -</span>
-                      <DynamicTimeAgo timestamp={post.created} />
+                        {" "}
+                        -{" "}
+                        <Anchor
+                          href={`https://www.reddit.com/user/${post.author}/`}
+                          target={"_blank"}
+                          color={"dark0"}
+                        >
+                          u/{post.author}
+                        </Anchor>{" "}
+                        <span>- {post.comments} comments -</span>
+                        <DynamicTimeAgo timestamp={post.created} />
                       </Group>
                     </Text>
                   </Group>
@@ -67,12 +67,10 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
     );
   });
 
-  // Implement reddit panel here
   return (
     <Paper withBorder shadow="xs" radius="md" mt="md" p="md" color="gray">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
-        <IconBrandReddit /> <Title size="h3">Top COH3 Reddit posts
-        </Title>
+        <IconBrandReddit /> <Title size="h3">Top COH3 Reddit posts</Title>
       </Flex>
       {redditPosts}
     </Paper>

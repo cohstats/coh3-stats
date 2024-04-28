@@ -20,7 +20,10 @@ const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: st
           shadow="md"
           p="md"
           radius="md"
-          sx={{ backgroundImage: `url('${image}')` }}
+          sx={{
+            backgroundImage: `url('${image}')`,
+            backgroundSize: "cover",
+          }}
           style={{
             height: "100%",
           }}
@@ -73,7 +76,11 @@ export const NewsSection: React.FC<{ steamNewsData: COH3SteamNewsType | null }> 
   const slides = steamNewsData.newsitems.map((news) => {
     return (
       <Carousel.Slide key={news.title}>
-        <NewsCard title={news.title} image={news.image || ""} gid={news.gid} />
+        <NewsCard
+          title={news.title}
+          image={news.image || "/images/coh3-background-cropped.webp"}
+          gid={news.gid}
+        />
       </Carousel.Slide>
     );
   });
