@@ -117,6 +117,7 @@ export const getIconsPathOnCDN = (
   return internalSlash(`${config.CDN_ASSETS_HOSTING}${urlPath}`);
 };
 
+// This is function where we don't care about VIEW but that it's mobile device
 // https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser/11381730#11381730
 // prettier-ignore
 export const isMobileCheck = () => {

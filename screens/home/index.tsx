@@ -43,8 +43,14 @@ const Home: NextPage<Props> = ({
           </Grid.Col>
         </Grid>
 
-        <TopLeaderboardsSection initialData={topLeaderBoardsData} />
-        <RedditPanel redditPostsData={redditPostsData} />
+        <Grid>
+          <Grid.Col sm={7}>
+            <TopLeaderboardsSection initialData={topLeaderBoardsData} />
+          </Grid.Col>
+          <Grid.Col sm={5}>
+            <RedditPanel redditPostsData={redditPostsData} />
+          </Grid.Col>
+        </Grid>
 
         <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
           <TwitchContainer twitchStreams={twitchStreams} error={error} />

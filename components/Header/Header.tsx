@@ -13,7 +13,7 @@ import {
   Stack,
   Anchor,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { IconChevronDown } from "@tabler/icons-react";
@@ -122,6 +122,7 @@ const useStyles = createStyles((theme) => ({
 export const Header: React.FC<HeaderProps> = () => {
   const { classes, cx } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
+  const isMediumScreen = useMediaQuery("(min-width: 64em) and (max-width: 90em)");
 
   const MobileView = (
     <>
@@ -141,7 +142,7 @@ export const Header: React.FC<HeaderProps> = () => {
         className={classes.hiddenDesktop}
         zIndex={1000000}
       >
-        <ScrollArea sx={{ height: "calc(100vh - 100px)" }} mx="-md">
+        <ScrollArea sx={{ height: "calc(100vh - 60px)" }} mx="-md">
           <Divider my="sm" />
           <Stack px="md">
             <Group grow>
@@ -214,7 +215,11 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-      <MantineHeader height={100} className={classes.root} style={{ position: "sticky" }}>
+      <MantineHeader
+        height={isMediumScreen ? 100 : 60}
+        className={classes.root}
+        style={{ position: "sticky", zIndex: 999 }}
+      >
         <Container className={classes.container} fluid>
           <Anchor component={Link} href={"/"} className={cx(classes.link)}>
             <Group spacing="xs">

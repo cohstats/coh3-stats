@@ -3,6 +3,7 @@ import { logger } from "../logger";
 interface RedditPostType {
   title: string;
   upvotes: number;
+  comments: number;
   author: string;
   image: string;
   created: number;
@@ -13,7 +14,7 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
   try {
     // We need a heavy cache on this, reddit is throttling like crazy
     const response = await fetch(
-      `https://cache.coh3stats.com/r/CompanyOfHeroes/top.json?limit=100&t=month`,
+      `https://cache.coh3stats.com/r/CompanyOfHeroes/top.json?limit=100&t=week`,
       {
         method: "GET",
       },
@@ -36,10 +37,26 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
         return {
           title: post.data.title ?? null,
           upvotes: post.data.ups ?? null,
+          comments: post.data.num_comments ?? null,
           author: post.data.author ?? null,
-          image: post.data.url_overridden_by_dest ?? null,
           created: post.data.created_utc ?? null,
           permalink: post.data.permalink ?? null,
+          image:
+            (() => {
+              if (post.data.is_gallery && post.data.is_gallery == true) {
+                return post.data.thumbnail ?? null;
+              }
+
+              if (post.data.post_hint === "link") {
+                return post.data.thumbnail ?? null;
+              }
+
+              if (post.data.is_video && post.data.is_video == true) {
+                return null;
+              }
+
+              return post.data.url_overridden_by_dest ?? null;
+            })() || null,
         };
       });
   } catch (e) {
