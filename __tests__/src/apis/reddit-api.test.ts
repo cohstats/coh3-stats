@@ -55,6 +55,14 @@ describe("getLatestCOH3RedditPosts", () => {
     }
   });
 
+  it("When type is link, should return the correct image", async () => {
+    const posts = await getLatestCOH3RedditPosts(10);
+    const linkPost = posts.find((post) => post.title === "Assault on the Hill");
+    expect(linkPost?.image).toBe(
+      "https://b.thumbs.redditmedia.com/PHoP0xgLR0G4eLWn8XzhfKqgBd49BNbMKVXp3cSBvHE.jpg",
+    );
+  });
+
   it("should test the content of the first post", async () => {
     const posts = await getLatestCOH3RedditPosts(10);
     const firstPost = posts[0];
@@ -62,7 +70,9 @@ describe("getLatestCOH3RedditPosts", () => {
     expect(firstPost.upvotes).toBe(132);
     expect(firstPost.comments).toBe(38);
     expect(firstPost.author).toBe("Trialshock92");
-    expect(firstPost.image).toBe("https://www.reddit.com/gallery/15nuafz");
+    expect(firstPost.image).toBe(
+      "https://b.thumbs.redditmedia.com/PHoP0xgLR0G4eLWn8XzhfKqgBd49BNbMKVXp3cSBvHE.jpg",
+    );
     expect(firstPost.created).toBe(1691715898);
     expect(firstPost.permalink).toBe("/r/CompanyOfHeroes/comments/15nuafz/assault_on_the_hill/");
   });
