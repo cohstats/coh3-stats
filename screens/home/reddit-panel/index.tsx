@@ -10,7 +10,7 @@ import ImageWithModal from "../../../components/image-with-modal";
 const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | null }) => {
   const redditPosts = redditPostsData?.map((post, index) => {
     return (
-      <>
+      <div key={index}>
         <Paper key={post.created} p={"xs"} pl={0} pr={0} mb={5}>
           <Flex justify={"space-between"} columnGap={"xs"}>
             <Stack spacing={"xs"}>
@@ -63,7 +63,7 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
           </Flex>
         </Paper>
         {index !== redditPostsData.length - 1 && <Divider />}
-      </>
+      </div>
     );
   });
 
