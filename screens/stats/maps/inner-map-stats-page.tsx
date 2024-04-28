@@ -73,8 +73,6 @@ const InnerMapStatsPage = ({
               width={245}
               alt={selectedMap}
               src={isOfficialMap(selectedMap) ? maps[selectedMap]?.url : ""}
-              modalW={400}
-              modalH={400}
               title={isOfficialMap(selectedMap) ? maps[selectedMap]?.url : ""}
             />
           </Center>

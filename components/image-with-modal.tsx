@@ -1,24 +1,23 @@
-import {Modal, Title} from "@mantine/core";
-import {useDisclosure, useMediaQuery} from "@mantine/hooks";
-import Image  from 'next/image';
+import { Modal, Title } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import Image from "next/image";
 
 import React from "react";
 
 type Props = {
   width: number;
   height: number;
-  modalW?: number;
-  modalH?: number;
   src: string;
   alt: string;
   title: string | undefined;
 };
-const ImageWithModal = ({height, width,  modalW, modalH, src, alt, title}: Props) => {
-  const [opened, {open, close}] = useDisclosure(false);
-  const isMobile = useMediaQuery('(max-width: 50em)');
+const ImageWithModal = ({ height, width, src, alt, title }: Props) => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const isMobile = useMediaQuery("(max-width: 50em)");
 
-  const imageSize = isMobile ? { maxWidth: `${window.innerWidth}px`, maxHeight: `${window.innerHeight}px` } : { maxWidth: "1256px", maxHeight: "800px" };
-
+  const imageSize = isMobile
+    ? { maxWidth: `${window.innerWidth}px`, maxHeight: `${window.innerHeight}px` }
+    : { maxWidth: "1256px", maxHeight: "800px" };
 
   return (
     <>
@@ -48,8 +47,8 @@ const ImageWithModal = ({height, width,  modalW, modalH, src, alt, title}: Props
           cursor: "pointer",
           objectFit: "contain", // Add this line
           maxHeight: `${width}px`, // Set the maximum height
-          maxWidth: `${height}px` // Set the maximum width
-      }}
+          maxWidth: `${height}px`, // Set the maximum width
+        }}
         onClick={open}
         src={src}
         width={width}

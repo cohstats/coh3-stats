@@ -55,8 +55,6 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
                 width={100}
                 alt={post.title}
                 src={post.image}
-                modalW={800}
-                modalH={600}
                 title={post.title}
               />
             )}

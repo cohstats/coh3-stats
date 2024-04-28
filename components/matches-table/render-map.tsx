@@ -27,8 +27,6 @@ const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: bo
               width={60}
               alt={mapName}
               src={maps[mapName]?.url}
-              modalW={400}
-              modalH={400}
               title={maps[mapName].name}
             />
           </div>
