@@ -58,7 +58,7 @@ const statsPatchSelector: Record<
   "1.6.6": {
     from: "2024-05-02",
     to: "now",
-    value: "1.6.5",
+    value: "1.6.6",
     label: "1.6.5 - 1.6.6",
     group: "Coral Viper",
   },
