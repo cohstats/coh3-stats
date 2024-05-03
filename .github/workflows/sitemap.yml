@@ -56,7 +56,14 @@ jobs:
       - name: Create or Update Pull Request
         run: |
           gh auth setup-git
-          gh_pr_up() { gh pr create "$@" || gh pr edit "$@"; }
+          gh_pr_up() {
+            PR_EXISTS=$(gh pr list --head sitemap-update | wc -l)
+            if [ "$PR_EXISTS" -eq "0" ]; then
+              gh pr create "$@"
+            else
+              gh pr edit "$@"
+            fi
+          }
           gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --label "bot" --head sitemap-update
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
