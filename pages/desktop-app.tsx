@@ -82,10 +82,15 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
             <List.Item>Receive optional sound notifications upon joining a game</List.Item>
             <List.Item>Auto upload replays to the cloud for additional analysis</List.Item>
             <List.Item>
+              Streamer overlay for{" "}
               <Anchor href={"https://obsproject.com/"} target={"_blank"}>
                 OBS
+              </Anchor>
+              ,{" "}
+              <Anchor href={"https://www.twitch.tv/broadcast/studio"} target={"_blank"}>
+                Twitch Studio
               </Anchor>{" "}
-              Overlay feature for streamers
+              and other streaming tools
             </List.Item>
           </List>
         </Paper>
