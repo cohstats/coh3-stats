@@ -64,7 +64,7 @@
     "dayjs": "1.11.10",
     "embla-carousel-autoplay": "8.0.2",
     "embla-carousel-react": "8.0.2",
-    "firebase": "10.10.0",
+    "firebase": "10.11.1",
     "is-glob": "4.0.3",
     "jsesc": "3.0.2",
     "json-2-csv": "5.5.1",
