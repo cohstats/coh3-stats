@@ -32,30 +32,39 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
         return `${post.data.link_flair_text}`.includes("CoH3");
       })
       .slice(0, numberOfPosts)
-      .map((post: any) => {
+      .map(({ data }: { data: any }) => {
         // we can't serialize undefined values
+
         return {
-          title: post.data.title ?? null,
-          upvotes: post.data.ups ?? null,
-          comments: post.data.num_comments ?? null,
-          author: post.data.author ?? null,
-          created: post.data.created_utc ?? null,
-          permalink: post.data.permalink ?? null,
+          title: data.title ?? null,
+          upvotes: data.ups ?? null,
+          comments: data.num_comments ?? null,
+          author: data.author ?? null,
+          created: data.created_utc ?? null,
+          permalink: data.permalink ?? null,
           image:
             (() => {
-              if (post.data.is_gallery && post.data.is_gallery == true) {
-                return post.data.thumbnail ?? null;
+              // This is gallery post on Reddit
+              if (data.is_gallery && data.is_gallery == true) {
+                return data.thumbnail ?? null;
               }
 
-              if (post.data.post_hint === "link") {
-                return post.data.thumbnail ?? null;
+              // This is type of post link on Reddit
+              if (data.post_hint === "link") {
+                return data.thumbnail ?? null;
               }
 
-              if (post.data.is_video && post.data.is_video == true) {
+              // This is when you link YouTube video
+              if (data.post_hint === "rich:video") {
+                return data.thumbnail ?? null;
+              }
+
+              // This is when you upload video to Reddit
+              if (data.is_video && data.is_video == true) {
                 return null;
               }
 
-              return post.data.url_overridden_by_dest ?? null;
+              return data.url_overridden_by_dest ?? null;
             })() || null,
         };
       });
