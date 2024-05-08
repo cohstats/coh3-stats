@@ -12,6 +12,8 @@ describe("getLatestCOH3RedditPosts", () => {
   beforeAll(() => {
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(redditResponse));
+    jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterAll(() => {
@@ -75,5 +77,63 @@ describe("getLatestCOH3RedditPosts", () => {
     );
     expect(firstPost.created).toBe(1691715898);
     expect(firstPost.permalink).toBe("/r/CompanyOfHeroes/comments/15nuafz/assault_on_the_hill/");
+  });
+
+  it("should handle fetch failure", async () => {
+    // @ts-ignore
+    global.fetch.mockImplementationOnce(() => Promise.reject(new Error("Fetch failed")));
+    const posts = await getLatestCOH3RedditPosts(10);
+    expect(posts).toEqual([]);
+  });
+
+  it("should handle non-ok response", async () => {
+    // @ts-ignore
+    global.fetch.mockImplementationOnce(() => Promise.resolve({ ok: false }));
+    const posts = await getLatestCOH3RedditPosts(10);
+    expect(posts).toEqual([]);
+  });
+
+  it("should handle no posts in response data", async () => {
+    // @ts-ignore
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({ json: () => Promise.resolve({ data: { children: [] } }), ok: true }),
+    );
+    const posts = await getLatestCOH3RedditPosts(10);
+    expect(posts).toEqual([]);
+  });
+
+  it("should handle no 'CoH3' posts in response data", async () => {
+    const nonCoH3Post = { data: { link_flair_text: "COH2" } };
+    // @ts-ignore
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ data: { children: [nonCoH3Post] } }),
+        ok: true,
+      }),
+    );
+    const posts = await getLatestCOH3RedditPosts(10);
+    expect(posts).toEqual([]);
+  });
+
+  it("should return only the requested number of posts when there are more posts in the response data", async () => {
+    const CoH3Post = { data: { link_flair_text: "CoH3" } };
+    const responseData = { data: { children: Array(20).fill(CoH3Post) } };
+    // @ts-ignore
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({ json: () => Promise.resolve(responseData), ok: true }),
+    );
+    const posts = await getLatestCOH3RedditPosts(10);
+    expect(posts.length).toBe(10);
+  });
+
+  it("should return all posts when there are less posts in the response data than the requested number", async () => {
+    const CoH3Post = { data: { link_flair_text: "CoH3" } };
+    const responseData = { data: { children: Array(5).fill(CoH3Post) } };
+    // @ts-ignore
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({ json: () => Promise.resolve(responseData), ok: true }),
+    );
+    const posts = await getLatestCOH3RedditPosts(10);
+    expect(posts.length).toBe(5);
   });
 });
