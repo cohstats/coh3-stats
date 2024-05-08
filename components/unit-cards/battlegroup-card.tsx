@@ -69,15 +69,15 @@ const BattlegroupBranchMapping = (
       })}
     >
       <UnitUpgradeCard
-        id={upg.id}
+        id={ability.id}
         desc={{
-          screen_name: upg.ui.screenName,
-          help_text: "Ability / Call In",
-          extra_text: upg.ui.helpText,
+          screen_name: ability.ui.screenName || upg.ui.screenName,
+          help_text: ability.ui.helpText || "Ability / Call In",
+          extra_text: upg.ui.extraText,
           brief_text: upg.ui.briefText,
           icon_name: upg.ui.iconName,
-          extra_text_formatter: upg.ui.extraTextFormatter,
-          brief_text_formatter: upg.ui.briefTextFormatter,
+          extra_text_formatter: ability.ui.extraTextFormatter || upg.ui.extraTextFormatter,
+          brief_text_formatter: ability.ui.briefTextFormatter || upg.ui.briefTextFormatter,
         }}
         time_cost={{
           manpower: ability.cost.manpower,
