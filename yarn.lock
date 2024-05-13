@@ -3741,10 +3741,10 @@
     lz-string "^1.5.0"
     pretty-format "^27.0.2"
 
-"@testing-library/jest-dom@6.4.2":
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-6.4.2.tgz#38949f6b63722900e2d75ba3c6d9bf8cffb3300e"
-  integrity sha512-CzqH0AFymEMG48CpzXFriYYkOjk6ZGPCLMhW9e9jg3KMCn5OfJecF8GtGW7yGfR/IgCe3SX8BSwjdzI6BBbZLw==
+"@testing-library/jest-dom@6.4.5":
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-6.4.5.tgz#badb40296477149136dabef32b572ddd3b56adf1"
+  integrity sha512-AguB9yvTXmCnySBP1lWjfNNUwpbElsaQ567lt2VdGqAdHtpieLgjmcVyv1q7PMIvLbgpDdkWV5Ydv3FEejyp2A==
   dependencies:
     "@adobe/css-tools" "^4.3.2"
     "@babel/runtime" "^7.9.2"
@@ -3752,13 +3752,13 @@
     chalk "^3.0.0"
     css.escape "^1.5.1"
     dom-accessibility-api "^0.6.3"
-    lodash "^4.17.15"
+    lodash "^4.17.21"
     redent "^3.0.0"
 
-"@testing-library/react@15.0.6":
-  version "15.0.6"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-15.0.6.tgz#76be2e9e6da98c044823dfbc9d62ad3f10a3a401"
-  integrity sha512-UlbazRtEpQClFOiYp+1BapMT+xyqWMnE+hh9tn5DQ6gmlE7AIZWcGpzZukmDZuFk3By01oiqOf8lRedLS4k6xQ==
+"@testing-library/react@15.0.7":
+  version "15.0.7"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-15.0.7.tgz#ff733ce0893c875cb5a47672e8e772897128f4ae"
+  integrity sha512-cg0RvEdD1TIhhkm1IeYMQxrzy0MtUNfa3minv4MjbgcYzJAZ7yD0i0lwoPOTPr+INtiXFezt2o8xMSnyHhEn2Q==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^10.0.0"
@@ -9652,7 +9652,7 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.npmjs.org/lodash.sortby/-/lodash.sortby-4.7.0.tgz"
   integrity sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==
 
-lodash@4.17.21, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21:
+lodash@4.17.21, lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
