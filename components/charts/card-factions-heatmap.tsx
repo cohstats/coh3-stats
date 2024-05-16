@@ -70,19 +70,21 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
   width = 780,
   factionSide = "axis",
 }) => {
-  const factionData = (data && data["factionMatrix"]) || {};
+  const rawFactionData = (data && data["factionMatrix"]) || {};
   const largeScreen = useMediaQuery("(min-width: 30em)");
+  const factionData: {
+    [key: string]: { wins: number; losses: number };
+  } = {};
 
   // Change all A (american) to U (US Forces)
-  for (const key in factionData) {
+  for (const key in rawFactionData) {
     if (key.includes("A")) {
-      const newKey = key.replace("A", "U");
-      factionData[newKey] = factionData[key];
-      delete factionData[key];
+      const newKey = key.replaceAll("A", "U");
+      factionData[newKey] = rawFactionData[key];
     }
   }
 
-  // We should use useMemo for these values, there is lot of iterations which are recalculated "unnecessary"
+  // We should use useMemo for these values, there is a lot of iterations which are recalculated "unnecessary"
   const factionDataByKey: Record<string, Record<string, any>> = {};
 
   const [SelectedSide, setSelectedSide] = React.useState(factionSide);
