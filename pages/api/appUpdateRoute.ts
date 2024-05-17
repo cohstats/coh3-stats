@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const date = new Date(response.data.published_at);
   let sigURL: string | undefined;
   let zipURL: string | undefined;
-  response.data.assets.forEach((asset) => {
+  response.data.assets.forEach((asset: { browser_download_url: string }) => {
     if (asset.browser_download_url.split(".").at(-1) === "zip") {
       zipURL = asset.browser_download_url;
     }

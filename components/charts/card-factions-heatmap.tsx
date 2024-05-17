@@ -81,6 +81,8 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
     if (key.includes("A")) {
       const newKey = key.replaceAll("A", "U");
       factionData[newKey] = rawFactionData[key];
+    } else {
+      factionData[key] = rawFactionData[key];
     }
   }
 
