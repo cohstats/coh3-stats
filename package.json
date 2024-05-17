@@ -72,7 +72,7 @@
     "mantine-datatable": "6.0.8",
     "next": "14.2.3",
     "nprogress": "0.2.0",
-    "octokit": "3.2.1",
+    "octokit": "4.0.2",
     "react": "18.3.1",
     "react-chartjs-2": "5.2.0",
     "react-dom": "18.3.1",

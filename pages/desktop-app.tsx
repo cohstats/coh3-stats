@@ -113,12 +113,16 @@ export const getServerSideProps: GetServerSideProps<any> = async () => {
   let version = "";
   if (response.status === 200) {
     downloadCount = response.data.assets
-      .filter((asset) => asset.browser_download_url.split(".").at(-1) !== "sig")
-      .map((asset) => asset.download_count)
-      .reduce((a, b) => a + b);
+      .filter(
+        (asset: { browser_download_url: string }) =>
+          asset.browser_download_url.split(".").at(-1) !== "sig",
+      )
+      .map((asset: { download_count: any }) => asset.download_count)
+      .reduce((a: any, b: any) => a + b);
     version = "v" + response.data.tag_name;
     const msiAsset = response.data.assets.find(
-      (asset) => asset.browser_download_url.split(".").at(-1) === "msi",
+      (asset: { browser_download_url: string }) =>
+        asset.browser_download_url.split(".").at(-1) === "msi",
     );
     if (msiAsset) {
       downloadURL = msiAsset.browser_download_url;
