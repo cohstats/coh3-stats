@@ -127,19 +127,15 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
 
       <Grid gutter={1} align="stretch">
         <Grid.Col span={12}>
-          <Tooltip label={desc.help_text}>
-            <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
-              {desc.help_text}
-            </Title>
-          </Tooltip>
+          <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
+            {desc.help_text}
+          </Title>
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip label={desc.screen_name}>
-            <Title order={4} transform="capitalize" lineClamp={1}>
-              {desc.screen_name}
-            </Title>
-          </Tooltip>
+          <Title order={4} transform="capitalize" lineClamp={1}>
+            {desc.screen_name}
+          </Title>
         </Grid.Col>
 
         <Grid.Col span={12}>
@@ -185,7 +181,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
 
 export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
   return (
-    <Flex direction="column" gap={16}>
+    <Flex direction="column" gap={16} justify="space-between" style={{ height: "100%" }}>
       <UnitUpgradeCardHeader
         desc={{
           screen_name: desc.screen_name,
@@ -197,7 +193,7 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
           icon_name: desc.icon_name,
         }}
         cfg={cfg}
-      ></UnitUpgradeCardHeader>
+      />
       {hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}
     </Flex>
   );

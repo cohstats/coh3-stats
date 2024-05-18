@@ -1,7 +1,7 @@
 .card {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 0 0 5px #808080;
+  box-shadow: 0 0 5px #808080;
 }

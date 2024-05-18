@@ -88,7 +88,7 @@ const BattlegroupBranchMapping = (
           command: upg.cost.command,
         }}
         cfg={{ compact: true }}
-      ></UnitUpgradeCard>
+      />
     </Box>
   );
 
@@ -148,7 +148,7 @@ const BattlegroupBranchMapping = (
         return (
           <Grid key={`${rowIndex}_${branch.name}`} columns={branchUpgrades.length} w="100%">
             {branchUpgrades.map(({ upg, ability, spawnItems }) => (
-              <Grid.Col key={upg.id} span={1}>
+              <Grid.Col key={upg.id} span={1} style={{ display: "flex", alignItems: "stretch" }}>
                 {spawnItems.length
                   ? anchorLinkOrSelect({ spawnItems, upg, ability })
                   : bgCallInCard({ upg, ability })}
@@ -223,7 +223,7 @@ export const BattlegroupCard = (
                 label="Toggle between comparison or default mode."
               >
                 <ActionIcon color={["yellow.6", "blue.6"][value - 1]} onClick={() => toggle()}>
-                  <IconAdjustments></IconAdjustments>
+                  <IconAdjustments />
                 </ActionIcon>
               </Tooltip>
             </Flex>
