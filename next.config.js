@@ -19,7 +19,10 @@ const nextConfig = {
     // It optimized already optimized images resulting in shit quality.
     unoptimized: true,
   },
-  largePageDataBytes: 256 * 1024,
+  experimental: {
+    // 256 kB should be OK
+    largePageDataBytes: 256 * 1024,
+  },
   // Localization completely changes the url and we would need to re-write the cache routes
   // In future we can look into it
   // i18n: {
