@@ -353,3 +353,12 @@ export interface ProcessedCOHPlayerStats {
     >
   >;
 }
+
+export interface YouTubeVideo {
+  title: string;
+  publishedAt: string;
+  channelId: string;
+  channelTitle: string;
+  viewCount: string;
+  videoId: string;
+}

@@ -50,7 +50,7 @@ const TwitchContainer = ({ twitchStreams, error }: Props) => {
   return (
     <Container size="fluid" px={"xs"} pb={5}>
       <Flex justify="flex-start" align="center" gap={5} pb="sm">
-        <IconBrandTwitch size={40} />
+        <IconBrandTwitch size={35} />
         <Title order={2} size="h2">
           Watch Live Streams
         </Title>

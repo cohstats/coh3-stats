@@ -32,8 +32,8 @@ const InfoCard = ({
       href={link}
       style={{ textDecoration: "none" }}
     >
-      <Card padding="md" radius="md" withBorder className={classes.card}>
-        <Stack>
+      <Card padding={14} radius="md" withBorder className={classes.card}>
+        <Stack spacing={"xs"}>
           <Group position="apart">
             <Title order={4}>{title}</Title>
             <Image width={25} height={25} fit="contain" src={imageSrc} alt="" withPlaceholder />

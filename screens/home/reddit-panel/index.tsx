@@ -66,7 +66,7 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
   });
 
   return (
-    <Paper withBorder shadow="xs" radius="md" mt="md" p="md" color="gray">
+    <Paper withBorder shadow="xs" radius="md" p="md" color="gray">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
         <IconBrandReddit /> <Title size="h3">Top COH3 Reddit posts</Title>
       </Flex>

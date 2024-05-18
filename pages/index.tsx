@@ -1,5 +1,5 @@
-import { getTwitchStreams } from "../src/apis/coh3stats-api";
-import { Top1v1LeaderboardsData, TwitchStream } from "../src/coh3/coh3-types";
+import { getTwitchStreams, getYouTubeVideosHttp } from "../src/apis/coh3stats-api";
+import { Top1v1LeaderboardsData, TwitchStream, YouTubeVideo } from "../src/coh3/coh3-types";
 import Home from "../screens/home";
 import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
 import { getLatestCOH3RedditPosts, RedditPostType } from "../src/apis/reddit-api";
@@ -16,6 +16,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
   let topLeaderBoardsData: Top1v1LeaderboardsData | null = null;
   let redditPostsData: RedditPostType[] | null = null;
   let steamNewsData: COH3SteamNewsType | null = null;
+  let youtubeData: YouTubeVideo[] | null = null;
 
   try {
     const [
@@ -23,11 +24,13 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
       PromisedTopLeaderBoardsData,
       PromisedRedditPostsData,
       PromisedSteamNewsData,
+      PromisedYoutubeData,
     ] = await Promise.all([
       getTwitchStreams(xff),
       getTop1v1LeaderBoards("american"),
       getLatestCOH3RedditPosts(),
       getCOH3SteamNews(3),
+      getYouTubeVideosHttp(),
     ]);
 
     twitchStreams = PromisedTwitchStreams;
@@ -41,11 +44,21 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
       };
     });
     steamNewsData = PromisedSteamNewsData;
+    youtubeData = PromisedYoutubeData;
   } catch (e: any) {
     console.error(`Failed getting data for home page`);
     console.error(e);
     error = e.message;
   }
 
-  return { props: { twitchStreams, error, topLeaderBoardsData, redditPostsData, steamNewsData } };
+  return {
+    props: {
+      twitchStreams,
+      error,
+      topLeaderBoardsData,
+      redditPostsData,
+      steamNewsData,
+      youtubeData,
+    },
+  };
 };
