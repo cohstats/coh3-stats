@@ -88,7 +88,7 @@ export const NewsSection: React.FC<{ steamNewsData: COH3SteamNewsType | null }> 
   return (
     <>
       <Carousel
-        height={"16rem"}
+        height={"15.5rem"}
         loop
         withControls={false}
         withIndicators

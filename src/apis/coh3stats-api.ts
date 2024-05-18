@@ -1,5 +1,10 @@
 import config from "../../config";
-import { GlobalAchievementsData, ProcessedMatch, TwitchStream } from "../coh3/coh3-types";
+import {
+  GlobalAchievementsData,
+  ProcessedMatch,
+  TwitchStream,
+  YouTubeVideo,
+} from "../coh3/coh3-types";
 import { analysisType, getAnalysisStatsHttpResponse } from "../analysis-types";
 import { cleanXForwardedFor, parseFirstIPFromString } from "../utils";
 import { logger } from "../logger";
@@ -248,6 +253,31 @@ const getPlayersCardsConfigsHttp = async (): Promise<{ profiles: Array<any> }> =
   return await response.json();
 };
 
+const getYouTubeVideosHttp = async (): Promise<Array<YouTubeVideo>> => {
+  const path = encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getYouTubeVideosHttp`);
+
+  try {
+    const response = await fetch(path, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status !== 200) {
+      logger.error(`Error getting youtube videos: ${response.status}`);
+      return [];
+    }
+
+    const data = await response.json();
+
+    return data.videos;
+  } catch (e) {
+    logger.error(e);
+    return [];
+  }
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -257,4 +287,5 @@ export {
   getPlayerCardStatsOrNull,
   setPlayerCardsConfigAdminHttp,
   getPlayersCardsConfigsHttp,
+  getYouTubeVideosHttp,
 };

@@ -32,7 +32,7 @@
       "prettier --log-level warn --write",
       "eslint --config .eslintrc.js"
     ],
-    "*.md": [
+    "*.{md,css}": [
       "prettier --loglevel warn --write"
     ]
   },

@@ -26,41 +26,42 @@ export type UnitDescription = {
   icon_name: string;
 };
 
-export const UnitDescriptionCard = (desc: UnitDescription) => (
-  <>
-    <Flex direction="row" align="center" gap={16}>
-      <ImageWithFallback
-        width={96}
-        height={96}
-        src={`/icons/${desc.icon_name}.png`}
-        alt={desc.screen_name}
-        fallbackSrc={iconPlaceholder}
-      />
-      <Flex direction="column" gap={4}>
-        <Title order={6} transform="capitalize" color="yellow.5">
-          {desc.help_text}
-        </Title>
-        <Tooltip label={desc.screen_name}>
+export const UnitDescriptionCard = ({ desc }: { desc: UnitDescription }) => {
+  return (
+    <>
+      <Flex direction="row" align="center" gap={16}>
+        <ImageWithFallback
+          width={96}
+          height={96}
+          src={`/icons/${desc.icon_name}.png`}
+          alt={desc.screen_name}
+          fallbackSrc={iconPlaceholder}
+        />
+        <Flex direction="column" gap={4}>
+          <Title order={6} transform="capitalize" color="yellow.5">
+            {desc.help_text}
+          </Title>
           <Title order={4} transform="capitalize" lineClamp={1}>
             {desc.screen_name}
           </Title>
-        </Tooltip>
-        {/* Symbol horizontal aligned with brief text. */}
-        <Flex direction="row" align="center" gap={4}>
-          <ImageWithFallback
-            width={32}
-            height={32}
-            src={`/icons/${desc.symbol_icon_name}.png`}
-            alt={`${desc.screen_name} symbol`}
-            fallbackSrc={symbolPlaceholder}
-          />
-          <Tooltip label={desc.brief_text}>
-            <Text fz="sm" lineClamp={2}>
-              {desc.brief_text}
-            </Text>
-          </Tooltip>
+          {/* Symbol horizontal aligned with brief text. */}
+          <Flex direction="row" align="center" gap={4}>
+            <ImageWithFallback
+              width={32}
+              height={32}
+              src={`/icons/${desc.symbol_icon_name}.png`}
+              alt={`${desc.screen_name} symbol`}
+              fallbackSrc={symbolPlaceholder}
+            />
+
+            <Tooltip.Floating label={desc.brief_text} multiline>
+              <Text fz="sm" lineClamp={2}>
+                {desc.brief_text}
+              </Text>
+            </Tooltip.Floating>
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
-  </>
-);
+    </>
+  );
+};

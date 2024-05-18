@@ -183,13 +183,15 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
               >
                 <Grid columns={5} align="center">
                   <Grid.Col span={4}>
-                    {UnitDescriptionCard({
-                      screen_name: ui.screenName,
-                      help_text: ui.helpText,
-                      brief_text: ui.briefText,
-                      symbol_icon_name: ui.symbolIconName,
-                      icon_name: ui.iconName,
-                    })}
+                    <UnitDescriptionCard
+                      desc={{
+                        screen_name: ui.screenName,
+                        help_text: ui.helpText,
+                        brief_text: ui.briefText,
+                        symbol_icon_name: ui.symbolIconName,
+                        icon_name: ui.iconName,
+                      }}
+                    />
                     {UnitCostCard(time_cost)}
                   </Grid.Col>
                   <Grid.Col span={1}>

@@ -78,13 +78,15 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                       href={getExplorerUnitRoute(raceToFetch, id)}
                     >
                       <Card p="md" radius="md" withBorder>
-                        {UnitDescriptionCard({
-                          screen_name: ui.screenName,
-                          help_text: ui.helpText,
-                          brief_text: ui.briefText,
-                          symbol_icon_name: ui.symbolIconName,
-                          icon_name: ui.iconName,
-                        })}
+                        <UnitDescriptionCard
+                          desc={{
+                            screen_name: ui.screenName,
+                            help_text: ui.helpText,
+                            brief_text: ui.briefText,
+                            symbol_icon_name: ui.symbolIconName,
+                            icon_name: ui.iconName,
+                          }}
+                        />
                       </Card>
                     </Anchor>
                   </Grid.Col>

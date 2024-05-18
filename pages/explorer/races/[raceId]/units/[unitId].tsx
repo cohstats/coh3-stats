@@ -172,12 +172,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           <Grid.Col span={3}>
             <Card p="lg" radius="md" withBorder>
               <UnitDescriptionCard
-                screen_name={resolvedSquad.ui.screenName}
-                help_text={resolvedSquad.ui.helpText}
-                brief_text={resolvedSquad.ui.briefText}
-                symbol_icon_name={resolvedSquad.ui.symbolIconName}
-                icon_name={resolvedSquad.ui.iconName}
-              ></UnitDescriptionCard>
+                desc={{
+                  screen_name: resolvedSquad.ui.screenName,
+                  help_text: resolvedSquad.ui.helpText,
+                  brief_text: resolvedSquad.ui.briefText,
+                  symbol_icon_name: resolvedSquad.ui.symbolIconName,
+                  icon_name: resolvedSquad.ui.iconName,
+                }}
+              />
             </Card>
           </Grid.Col>
           <Grid.Col md={2} order={2} orderMd={1}>

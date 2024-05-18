@@ -185,7 +185,7 @@ const LeaderBoardStats = ({ leaderBoardStats }: { leaderBoardStats: LeaderboardS
         all numbers.{" "}
       </Text>
       <Space h={"xl"} />
-      <Title order={2}>Players with level 16 - 20</Title>
+      <Title order={2}>Players with ELO 1600+</Title>
       <StatsTable data={leaderBoardStats.topLevelPlayers} />
       <Space h={"xl"} />
       <Title order={2}>Highest ELO</Title>
