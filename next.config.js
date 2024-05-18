@@ -16,8 +16,10 @@ const nextConfig = {
   swcMinify: true,
   images: {
     // All the images are served from the CF CDN, so we don't need to optimize them.
+    // It optimized already optimized images resulting in shit quality.
     unoptimized: true,
   },
+  largePageDataBytes: 256 * 1024,
   // Localization completely changes the url and we would need to re-write the cache routes
   // In future we can look into it
   // i18n: {
