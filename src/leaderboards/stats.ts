@@ -77,7 +77,7 @@ const calculateLeaderboardStats = async () => {
         allLeaderboardsData[race][leaderBoardType].leaderboardStats[0].rating;
       result.topLevelPlayers[race][leaderBoardType] = allLeaderboardsData[race][
         leaderBoardType
-      ].leaderboardStats.filter((player: { ranklevel: number }) => player.ranklevel >= 16).length;
+      ].leaderboardStats.filter((player: { rating: number }) => player.rating >= 1600).length;
     }
   }
 
