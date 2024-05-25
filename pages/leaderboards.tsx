@@ -3,6 +3,7 @@ import { findAndMergeStatGroups } from "../src/coh3/helpers";
 import { raceType, leaderBoardType, platformType } from "../src/coh3/coh3-types";
 import { GetServerSideProps } from "next";
 import Leaderboards from "../screens/leaderboards/leaderboards";
+import { LeaderboardRegionTypes } from "../src/coh3/coh3-data";
 
 const sortById = {
   wins: 0,
@@ -10,12 +11,14 @@ const sortById = {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { race, type, sortBy, start, platform } = query;
+  const { race, type, sortBy, start, platform, region } = query;
 
   const raceToFetch = (race as raceType) || "american";
   const typeToFetch = (type as leaderBoardType) || "1v1";
   const platformToFetch = (platform as platformType) || "steam";
   const sortByToFetch = sortById[sortBy as "wins" | "elo"] || 1;
+  const regionToFetch = (region as LeaderboardRegionTypes) || null;
+
   let startNumber: number | undefined;
   if (start) {
     const number = Number(start);
@@ -37,6 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       100,
       startToFetch,
       platformToFetch,
+      regionToFetch,
     );
     totalRecords = leaderBoardDataRaw.rankTotal;
     leaderBoardData = findAndMergeStatGroups(leaderBoardDataRaw, null);
@@ -55,6 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       raceToFetch,
       typeToFetch,
       platformToFetch,
+      regionToFetch,
     }, // will be passed to the page component as props
   };
 };
