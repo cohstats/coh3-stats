@@ -77,7 +77,7 @@ const Home: NextPage<Props> = ({
           p="lg"
           color="gray"
           style={{ padding: 0 }}
-          mih={500}
+          mih={600}
         >
           <div ref={ref}>
             {hasRendered && <TwitchContainer twitchStreams={twitchStreams} error={error} />}
