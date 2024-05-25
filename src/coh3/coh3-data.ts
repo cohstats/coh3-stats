@@ -184,7 +184,52 @@ export const PlayerRanks: Record<string, PlayerRank> = {
   },
 };
 
-const leaderboardsIDAsObject = {
+export type LeaderboardRegionTypes = keyof typeof leaderboardRegions;
+
+export const leaderboardRegions = {
+  europe: {
+    id: 2074389,
+    name: "Europe",
+    locstringid: 11223541,
+  },
+  na: {
+    id: 2074390,
+    name: "North America",
+    locstringid: 11223543,
+  },
+  me: {
+    id: 2074436,
+    name: "Middle East",
+    locstringid: 11223542,
+  },
+  asia: {
+    id: 2074437,
+    name: "Asia",
+    locstringid: 11223540,
+  },
+  sa: {
+    id: 2074438,
+    name: "South America",
+    locstringid: 11223545,
+  },
+  oceania: {
+    id: 2074440,
+    name: "Oceania",
+    locstringid: 11223544,
+  },
+  africa: {
+    id: 2074441,
+    name: "Africa",
+    locstringid: 11223539,
+  },
+  unkown: {
+    id: 2074442,
+    name: "Unknown",
+    locstringid: 11223546,
+  },
+};
+
+export const leaderboardsIDAsObject = {
   "1v1": {
     american: 2130255,
     british: 2130257,
@@ -211,7 +256,7 @@ const leaderboardsIDAsObject = {
   },
 };
 
-const leaderboardsIDsToTypes: Record<number, { type: leaderBoardType; race: raceType }> = {
+export const leaderboardsIDsToTypes: Record<number, { type: leaderBoardType; race: raceType }> = {
   2130255: {
     type: "1v1",
     race: "american",
@@ -278,21 +323,21 @@ const leaderboardsIDsToTypes: Record<number, { type: leaderBoardType; race: race
   },
 };
 
-const localizedNames: Record<raceType, string> = {
+export const localizedNames: Record<raceType, string> = {
   german: "Wehrmacht",
   american: "US Forces",
   dak: "Deutsches Afrikakorps",
   british: "British Forces",
 };
 
-const localizedGameTypes: Record<leaderBoardType, string> = {
+export const localizedGameTypes: Record<leaderBoardType, string> = {
   "1v1": "1 vs 1",
   "2v2": "2 vs 2",
   "3v3": "3 vs 3",
   "4v4": "4 vs 4",
 };
 
-const raceIDs: Record<raceID, raceType> = {
+export const raceIDs: Record<raceID, raceType> = {
   129494: "american",
   137123: "german",
   197345: "british",
@@ -301,7 +346,7 @@ const raceIDs: Record<raceID, raceType> = {
   203852: "british",
 };
 
-const raceIDsNameAsKey = {
+export const raceIDsNameAsKey = {
   american: 129494,
   german: 137123,
   dak: 198437,
@@ -316,7 +361,7 @@ export const cohDBracesToNormalRaces: Record<string, raceType> = {
   germans: "german",
 };
 
-const raceIDsAsObject: Record<
+export const raceIDsAsObject: Record<
   number,
   {
     id: number;
@@ -385,7 +430,10 @@ const raceIDsAsObject: Record<
   },
 };
 
-const matchTypesAsObject: Record<number, { id: number; name: string; localizedName?: string }> = {
+export const matchTypesAsObject: Record<
+  number,
+  { id: number; name: string; localizedName?: string }
+> = {
   0: {
     id: 0,
     name: "Custom",
@@ -480,7 +528,7 @@ const matchTypesAsObject: Record<number, { id: number; name: string; localizedNa
   },
 };
 
-const gameTypesIDsTypeAsKey = {
+export const gameTypesIDsTypeAsKey = {
   "1v1": 20,
   "2v2": 21,
   "3v3": 22,
@@ -540,7 +588,7 @@ type OfficialMapValue = {
   // automatch: boolean;
 };
 
-const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
+export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
   twin_beach_2p_mkii: {
     name: "Twin Beaches",
     url: "/icons/maps/twin_beach_2p_mkii_mm_handmade.webp",
@@ -688,17 +736,4 @@ const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
     name: "Oasis Depot",
     url: "/icons/maps/oasis_depot_8p_mm_handmade.webp",
   },
-};
-
-export {
-  leaderboardsIDAsObject,
-  localizedNames,
-  localizedGameTypes,
-  gameTypesIDsTypeAsKey,
-  raceIDs,
-  raceIDsNameAsKey,
-  matchTypesAsObject,
-  raceIDsAsObject,
-  leaderboardsIDsToTypes,
-  maps,
 };

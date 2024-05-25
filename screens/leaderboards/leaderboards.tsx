@@ -9,7 +9,7 @@ import { Anchor, Container, Group, Select, Space, Text, Title } from "@mantine/c
 import Link from "next/link";
 import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
-import { localizedGameTypes, localizedNames } from "../../src/coh3/coh3-data";
+import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../src/coh3/coh3-data";
 import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
 import Head from "next/head";
 import FactionIcon from "../../components/faction-icon";
@@ -24,6 +24,7 @@ const Leaderboards = ({
   raceToFetch,
   platformToFetch,
   typeToFetch,
+  regionToFetch,
 }: any) => {
   const { push, query } = useRouter();
 
@@ -60,6 +61,9 @@ const Leaderboards = ({
             {
               accessor: "rank",
               textAlignment: "center",
+              render: ({ rank, regionrank }: { rank: number; regionrank: number }) => {
+                return regionToFetch ? `${regionrank}` : `${rank}`;
+              },
             },
             {
               title: "ELO",
@@ -70,8 +74,18 @@ const Leaderboards = ({
               title: "Tier",
               accessor: "tier",
               textAlignment: "center",
-              render: ({ rank, rating }: any) => {
-                return <RankIcon size={28} rank={rank} rating={rating} />;
+              render: ({
+                rank,
+                rating,
+                regionrank,
+              }: {
+                rank: number;
+                rating: number;
+                regionrank: number;
+              }) => {
+                return (
+                  <RankIcon size={28} rank={regionToFetch ? regionrank : rank} rating={rating} />
+                );
               },
             },
             // // {
@@ -182,7 +196,7 @@ const Leaderboards = ({
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
       <Container size={"lg"} p={0}>
-        <Container fluid>
+        <Container fluid pl={0} pr={0}>
           <Group position={"apart"}>
             <Group>
               <FactionIcon name={raceToFetch} width={35} />
@@ -190,8 +204,28 @@ const Leaderboards = ({
             </Group>
             <Group position="right">
               <Select
+                label="Region"
+                style={{ width: 150 }}
+                value={regionToFetch ? regionToFetch : "global"}
+                data={[
+                  { value: "global", label: "Global" },
+                  ...Object.entries(leaderboardRegions).map(([key, region]) => {
+                    return { value: key, label: region.name };
+                  }),
+                ]}
+                onChange={(value) => {
+                  if (value === "global") {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    const { region, ...rest } = query; // remove region from query
+                    push({ query: rest }, undefined);
+                  } else {
+                    push({ query: { ...query, region: value } }, undefined);
+                  }
+                }}
+              />
+              <Select
                 label="Platform"
-                style={{ width: 100 }}
+                style={{ width: 90 }}
                 defaultValue={platformToFetch}
                 value={platformToFetch}
                 data={[
@@ -205,7 +239,7 @@ const Leaderboards = ({
               />
               <Select
                 label="Race"
-                // style={{width: 200}}
+                style={{ width: 190 }}
                 defaultValue={raceToFetch}
                 value={raceToFetch}
                 data={[
@@ -221,7 +255,7 @@ const Leaderboards = ({
 
               <Select
                 label="Type"
-                style={{ width: 100 }}
+                style={{ width: 90 }}
                 defaultValue={typeToFetch}
                 value={typeToFetch}
                 data={[
