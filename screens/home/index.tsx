@@ -2,7 +2,7 @@ import { Top1v1LeaderboardsData, TwitchStream, YouTubeVideo } from "../../src/co
 import { NextPage } from "next";
 import { Container, Grid, Paper } from "@mantine/core";
 import { DPSCalculatorCard, UnitBrowserCard } from "./info-cards";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TwitchContainer from "./twitch-panel";
 import Head from "next/head";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
@@ -11,6 +11,7 @@ import RedditPanel from "./reddit-panel";
 import { NewsSection } from "./news-section/news-section";
 import { COH3SteamNewsType } from "../../src/apis/steam-api";
 import YoutubePanel from "./youtube-panel/youtube-panel";
+import { useIntersection } from "@mantine/hooks";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
@@ -28,6 +29,21 @@ const Home: NextPage<Props> = ({
   steamNewsData,
   youtubeData,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { ref, entry } = useIntersection({
+    root: containerRef.current,
+    rootMargin: "250px",
+    threshold: 0.1,
+  });
+
+  const [hasRendered, setHasRendered] = useState(false);
+
+  useEffect(() => {
+    if (entry?.isIntersecting && !hasRendered) {
+      setHasRendered(true);
+    }
+  }, [entry, hasRendered]);
+
   return (
     <>
       <Head>
@@ -54,8 +70,18 @@ const Home: NextPage<Props> = ({
 
         <YoutubePanel youtubeData={youtubeData} />
 
-        <Paper shadow="xs" radius="md" mt="md" p="lg" color="gray" style={{ padding: 0 }}>
-          <TwitchContainer twitchStreams={twitchStreams} error={error} />
+        <Paper
+          shadow="xs"
+          radius="md"
+          mt="md"
+          p="lg"
+          color="gray"
+          style={{ padding: 0 }}
+          mih={500}
+        >
+          <div ref={ref}>
+            {hasRendered && <TwitchContainer twitchStreams={twitchStreams} error={error} />}
+          </div>
         </Paper>
       </Container>
     </>
