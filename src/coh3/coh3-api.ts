@@ -17,7 +17,7 @@ const BASE_API_URL = "https://coh3-api.reliclink.com";
  * @param platform
  * @param region
  */
-const getLeaderBoardsUrl = (
+const _getLeaderBoardsUrl = (
   leaderboard_id: number,
   sortBy = 0,
   count = 100,
@@ -42,10 +42,10 @@ const getLeaderBoardData = async (
   region: LeaderboardRegionTypes | null = null,
 ): Promise<RawLaddersObject> => {
   const lbID = leaderboardsIDAsObject[leaderBoardType][race];
-  const url = getLeaderBoardsUrl(lbID, sortBy, count, start, platform, region);
+  const url = _getLeaderBoardsUrl(lbID, sortBy, count, start, platform, region);
 
   const res = await fetch(url, { keepalive: true });
   return await res.json();
 };
 
-export { getLeaderBoardData };
+export { getLeaderBoardData, _getLeaderBoardsUrl };
