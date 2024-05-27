@@ -5,13 +5,16 @@ import { raceIDs } from "../../src/coh3/coh3-data";
 import Link from "next/link";
 import EllipsisText from "../other/ellipsis-text";
 import React from "react";
+import CountryFlag from "../country-flag";
 
 interface RenderPlayersProps {
   playerReports: Array<PlayerReport>;
   // ID of the player
   profileID: number | string;
   matchType: number;
+  renderFlag: boolean;
 }
+
 const unrankedWithTooltip = (
   <Tooltip
     withArrow
@@ -36,7 +39,12 @@ const customGameELOWithTooltip = ({ rating }: { rating: number }) => {
   );
 };
 
-const RenderPlayers = ({ playerReports, profileID, matchType }: RenderPlayersProps) => {
+const RenderPlayers = ({
+  playerReports,
+  profileID,
+  matchType,
+  renderFlag = true,
+}: RenderPlayersProps) => {
   const isCustomGame = matchType === 0;
 
   return (
@@ -85,11 +93,18 @@ const RenderPlayers = ({ playerReports, profileID, matchType }: RenderPlayersPro
               >
                 {`${playerInfo.profile_id}` === `${profileID}` ? (
                   <Text fw={700}>
-                    <EllipsisText text={playerInfo.profile["alias"]} />
+                    <Group spacing="xs">
+                      {" "}
+                      {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
+                      <EllipsisText text={playerInfo.profile["alias"]} />
+                    </Group>
                   </Text>
                 ) : (
                   <Text>
-                    <EllipsisText text={playerInfo.profile["alias"]} />
+                    <Group spacing="xs">
+                      {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
+                      <EllipsisText text={playerInfo.profile["alias"]} />
+                    </Group>
                   </Text>
                 )}
               </Anchor>

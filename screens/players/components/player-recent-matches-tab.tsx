@@ -1,4 +1,15 @@
-import { Badge, Text, Group, Button, Switch, Stack, Space, Tooltip, Center } from "@mantine/core";
+import {
+  Badge,
+  Text,
+  Group,
+  Button,
+  Switch,
+  Stack,
+  Space,
+  Tooltip,
+  Center,
+  Flex,
+} from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
@@ -14,6 +25,7 @@ import RenderPlayers from "../../../components/matches-table/render-players";
 import RenderMap from "../../../components/matches-table/render-map";
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../src/players/utils";
+import { useLocalStorage } from "@mantine/hooks";
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -33,6 +45,11 @@ const PlayerRecentMatchesTab = ({
   customGamesHidden: boolean | undefined | null;
 }) => {
   const [debug, setDebug] = React.useState(false);
+  const [showCountryFlag, setShowCountryFlag] = useLocalStorage({
+    key: "show-country-flag-matches",
+    defaultValue: "false",
+  });
+
   const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus>({
     columnAccessor: "Played",
     direction: "asc",
@@ -143,6 +160,15 @@ const PlayerRecentMatchesTab = ({
 
   return (
     <>
+      <Flex justify={"end"} pb={"xs"}>
+        <Switch
+          checked={showCountryFlag === "true"}
+          onChange={(event) => {
+            setShowCountryFlag(`${event.currentTarget.checked}`);
+          }}
+          label="Show Player Flags"
+        />
+      </Flex>
       <DataTable
         withBorder
         borderRadius="md"
@@ -238,6 +264,7 @@ const PlayerRecentMatchesTab = ({
                   playerReports={axisPlayers}
                   profileID={profileID}
                   matchType={record.matchtype_id}
+                  renderFlag={showCountryFlag === "true"}
                 />
               );
             },
@@ -258,6 +285,7 @@ const PlayerRecentMatchesTab = ({
                   playerReports={alliesPlayers}
                   profileID={profileID}
                   matchType={record.matchtype_id}
+                  renderFlag={showCountryFlag === "true"}
                 />
               );
             },
