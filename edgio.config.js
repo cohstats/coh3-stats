@@ -18,7 +18,12 @@ module.exports = {
 
   environments: {
     prod: {
-      hostnames: [{ hostname: "coh3stats.com" }],
+      hostnames: [
+        { hostname: "coh3stats.com" },
+        {
+          hostname: "www.coh3stats.com",
+        },
+      ],
     },
     dev: {
       hostnames: [{ hostname: "dev.coh3stats.com" }],
