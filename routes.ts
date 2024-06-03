@@ -18,6 +18,18 @@ export default new Router()
       setResponseHeader("x-robots-tag", "noindex, nofollow, noarchive, noimageindex");
     },
   )
+  .match(
+    {
+      headers: {
+        host: /^www.coh3stats.com$/,
+      },
+    },
+    ({ setResponseHeader, setResponseCode }) => {
+      // %{normalized_uri} => /path/to/resource?query=string
+      setResponseHeader("location", "https://coh3stats.com%{normalized_uri}");
+      setResponseCode(301);
+    },
+  )
   // Do not access dev / preview sites for robots
   .match(
     {
