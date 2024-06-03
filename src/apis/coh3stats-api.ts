@@ -278,6 +278,21 @@ const getYouTubeVideosHttp = async (): Promise<Array<YouTubeVideo>> => {
   }
 };
 
+const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
+  const path = encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerNemesisUpdatesHttp?relicId=${playerID}`,
+  );
+
+  const response = await fetch(path, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await response.json();
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -288,4 +303,5 @@ export {
   setPlayerCardsConfigAdminHttp,
   getPlayersCardsConfigsHttp,
   getYouTubeVideosHttp,
+  triggerPlayerNemesisAliasesUpdate,
 };

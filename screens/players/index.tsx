@@ -241,7 +241,11 @@ const PlayerCard = ({
             <ActivityTab playerStatsData={playerStatsData} platform={platform} />
           </Tabs.Panel>
           <Tabs.Panel value={"nemesis"}>
-            <NemesisTab playerStatsData={playerStatsData} platform={platform} />
+            <NemesisTab
+              playerStatsData={playerStatsData}
+              platform={platform}
+              profileID={playerID}
+            />
           </Tabs.Panel>
           <Tabs.Panel value={"replays"}>
             <Space h="lg" />
