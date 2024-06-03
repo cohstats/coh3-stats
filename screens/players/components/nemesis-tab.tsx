@@ -24,7 +24,10 @@ import {
 import Link from "next/link";
 import EllipsisText from "../../../components/other/ellipsis-text";
 import React, { useMemo } from "react";
-import { getPlayerCardInfo } from "../../../src/apis/coh3stats-api";
+import {
+  getPlayerCardInfo,
+  triggerPlayerNemesisAliasesUpdate,
+} from "../../../src/apis/coh3stats-api";
 import { processPlayerInfoAPIResponse } from "../../../src/players/standings";
 import CountryFlag from "../../../components/country-flag";
 
@@ -154,9 +157,11 @@ const StomperCard = ({
 const NemesisTab = ({
   playerStatsData,
   platform,
+  profileID,
 }: {
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: platformType;
+  profileID: string;
 }) => {
   const data = playerStatsData?.nemesis || [];
 
@@ -226,6 +231,12 @@ const NemesisTab = ({
     })();
   }, [stompers]);
 
+  React.useEffect(() => {
+    (async () => {
+      triggerPlayerNemesisAliasesUpdate(profileID).then();
+    })();
+  }, [profileID]);
+
   if (platform !== "steam")
     return (
       <Container size={"sm"} p={"md"}>
@@ -265,7 +276,10 @@ const NemesisTab = ({
                 After the trigger, all 1v1 games with that player are counted.
               </List.Item>
               <List.Item>Data are updated once a day 6 AM UTC.</List.Item>
-              <List.Item>Aliases are saved from the last game played with that player.</List.Item>
+              <List.Item>
+                Aliases are saved from the last game played with that player and then updated
+                every 24 hours.
+              </List.Item>
               <List.Item>Only Steam players are tracked.</List.Item>
             </List>
           </Card>
