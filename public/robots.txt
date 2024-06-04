@@ -19,6 +19,9 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
+User-agent: Timpibot/0.9
+Disallow: /
+
 # Bing bot is retarded, it's crawling leaderboards and all players on the platform
 User-agent: Bingbot
 Disallow: /leaderboards
