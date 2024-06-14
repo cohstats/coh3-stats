@@ -35,6 +35,24 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
             textAlignment: "center",
           },
           {
+            title: "RC",
+            accessor: "change",
+            textAlignment: "center",
+            render: ({ change }: { change: number | string }) => {
+              if (typeof change === "string") {
+                return change;
+              } else {
+                return change > 0 ? (
+                  <Text color={"green"}>+{change}</Text>
+                ) : change < 0 ? (
+                  <Text color={"red"}>{change}</Text>
+                ) : (
+                  <></>
+                );
+              }
+            },
+          },
+          {
             title: "ELO",
             accessor: "rating",
             textAlignment: "center",
@@ -118,7 +136,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
             accessor: "lastmatchdate",
             title: "Last Game",
             textAlignment: "right",
-            width: 125,
+            width: 110,
             // @ts-ignore
             render: ({ lastmatchdate }) => {
               return <DynamicTimeAgo timestamp={lastmatchdate} />;

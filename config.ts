@@ -301,6 +301,7 @@ const config = {
   DONATION_LINK: "https://ko-fi.com/cohstats",
   GITHUB_LINK: repository.url,
   CDN_ASSETS_HOSTING: "https://cdn.coh3stats.com",
+  STORAGE_LINK: "https://storage.coh3stats.com",
   BASE_CLOUD_FUNCTIONS_URL: useFirebaseEmulators
     ? firebaseFunctions.EMULATORS_URL
     : firebaseFunctions.CLOUD_URL,

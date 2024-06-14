@@ -1,7 +1,9 @@
 import config from "../../config";
 import {
   GlobalAchievementsData,
+  leaderBoardType,
   ProcessedMatch,
+  raceType,
   TwitchStream,
   YouTubeVideo,
 } from "../coh3/coh3-types";
@@ -293,6 +295,73 @@ const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
   return await response.json();
 };
 
+const _fetchFirst10LinesOfLeaderBoards = async (url: string) => {
+  const response = await fetch(url);
+  const reader = response.body?.getReader();
+  const decoder = new TextDecoder("utf-8");
+
+  let buffer = "";
+  let lines: string[] = [];
+
+  while (lines.length < 10 && reader) {
+    const { value, done } = await reader.read();
+    if (done) break;
+
+    // Decode and append to buffer
+    buffer += decoder.decode(value || new Uint8Array(), { stream: true });
+
+    // Split the buffer into lines
+    const splitBuffer = buffer.split("},");
+
+    // Save the last part of the current buffer for the next iteration
+    buffer = splitBuffer.pop() || "";
+
+    // Add the complete lines to our lines array
+    lines.push(...splitBuffer);
+
+    // If we have more than 10 lines, truncate the array
+    if (lines.length >= 10) {
+      lines = lines.slice(0, 10);
+      break;
+    }
+  }
+
+  // Remove the starts of the file
+  lines[0] = lines[0].replace('{"leaderboards":[', "");
+
+  return lines.reduce((acc: Record<string, any>, line) => {
+    // Add the missing closing bracket and parse the JSON
+    const obj = JSON.parse(line + "}");
+
+    // Use the statgroup_id as the key
+    acc[obj.statgroup_id] = obj;
+
+    return acc;
+  }, {});
+};
+
+/**
+ * Fetches only top 10 items for now
+ * https://storage.coh3stats.com/leaderboards/1718064000/1718064000_1v1_american.json
+ * @param timeStamp
+ * @param type
+ * @param race
+ */
+const getOldLeaderboardData = async (
+  timeStamp: string | number,
+  type: leaderBoardType,
+  race: raceType,
+) => {
+  const url = `${config.STORAGE_LINK}/leaderboards/${timeStamp}/${timeStamp}_${type}_${race}.json`;
+
+  try {
+    return _fetchFirst10LinesOfLeaderBoards(url);
+  } catch (e) {
+    console.error(e);
+    return {};
+  }
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -304,4 +373,5 @@ export {
   getPlayersCardsConfigsHttp,
   getYouTubeVideosHttp,
   triggerPlayerNemesisAliasesUpdate,
+  getOldLeaderboardData,
 };
