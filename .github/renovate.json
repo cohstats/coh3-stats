@@ -11,6 +11,11 @@
       "allowedVersions": "20.x"
     },
     {
+      "matchPackageNames": ["node", "npm"],
+      "matchPackagePaths": ["engines"],
+      "enabled": false
+    },
+    {
       "datasources": ["github-actions"],
       "packagePatterns": ["^actions/"],
       "groupName": "github-actions",
