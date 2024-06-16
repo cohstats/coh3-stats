@@ -7,12 +7,11 @@
   "labels": ["renovate"],
   "packageRules": [
     {
-      "packageNames": ["@types/node", "node"],
+      "packageNames": ["@types/node"],
       "allowedVersions": "20.x"
     },
     {
-      "matchPackageNames": ["node", "npm"],
-      "matchPackagePaths": ["engines"],
+      "matchPackageNames": ["node"],
       "enabled": false
     },
     {
