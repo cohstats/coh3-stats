@@ -295,67 +295,86 @@ const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
   return await response.json();
 };
 
-const _fetchFirst10LinesOfLeaderBoards = async (url: string) => {
+const _fetchFirstXLinesOfLeaderBoards = async (url: string, amountOfPlayers: number) => {
   const response = await fetch(url);
-  const reader = response.body?.getReader();
-  const decoder = new TextDecoder("utf-8");
 
-  let buffer = "";
-  let lines: string[] = [];
+  // There seems to be an issue in Edgio build environment
+  // Bug reported here https://forum.edg.io/t/nextjs-error-t-body-getreader-is-not-a-function/1166
+  if (typeof response.body?.getReader === "function") {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
 
-  while (lines.length < 10 && reader) {
-    const { value, done } = await reader.read();
-    if (done) break;
+    let buffer = "";
+    let lines: string[] = [];
 
-    // Decode and append to buffer
-    buffer += decoder.decode(value || new Uint8Array(), { stream: true });
+    while (lines.length < amountOfPlayers && reader) {
+      const { value, done } = await reader.read();
+      if (done) break;
 
-    // Split the buffer into lines
-    const splitBuffer = buffer.split("},");
+      // Decode and append to buffer
+      buffer += decoder.decode(value || new Uint8Array(), { stream: true });
 
-    // Save the last part of the current buffer for the next iteration
-    buffer = splitBuffer.pop() || "";
+      // Split the buffer into lines
+      const splitBuffer = buffer.split("},");
 
-    // Add the complete lines to our lines array
-    lines.push(...splitBuffer);
+      // Save the last part of the current buffer for the next iteration
+      buffer = splitBuffer.pop() || "";
 
-    // If we have more than 10 lines, truncate the array
-    if (lines.length >= 10) {
-      lines = lines.slice(0, 10);
-      break;
+      // Add the complete lines to our lines array
+      lines.push(...splitBuffer);
+
+      // If we have more than 10 lines, truncate the array
+      if (lines.length >= amountOfPlayers) {
+        lines = lines.slice(0, amountOfPlayers);
+        break;
+      }
     }
+
+    // Remove the starts of the file
+    lines[0] = lines[0].replace('{"leaderboards":[', "");
+
+    return lines.reduce((acc: Record<string, any>, line) => {
+      // Add the missing closing bracket and parse the JSON
+      const obj = JSON.parse(line + "}");
+
+      // Use the statgroup_id as the key
+      acc[obj.statgroup_id] = obj;
+
+      return acc;
+    }, {});
+  } else {
+    // Handle scenario where getReader is not supported
+    console.info(
+      "Stream API not supported, cannot read response body in chunks, fallback to full load",
+    );
+    const data = await response.json();
+    const leaderboards = data["leaderboards"].slice(0, amountOfPlayers);
+    return leaderboards.reduce((acc: Record<string, any>, obj: any) => {
+      acc[obj.statgroup_id] = obj;
+      return acc;
+    }, {});
   }
-
-  // Remove the starts of the file
-  lines[0] = lines[0].replace('{"leaderboards":[', "");
-
-  return lines.reduce((acc: Record<string, any>, line) => {
-    // Add the missing closing bracket and parse the JSON
-    const obj = JSON.parse(line + "}");
-
-    // Use the statgroup_id as the key
-    acc[obj.statgroup_id] = obj;
-
-    return acc;
-  }, {});
 };
 
 /**
- * Fetches only top 10 items for now
+ * Fetches only top x items for now
  * https://storage.coh3stats.com/leaderboards/1718064000/1718064000_1v1_american.json
  * @param timeStamp
  * @param type
  * @param race
+ * @param amountOfPlayers
  */
 const getOldLeaderboardData = async (
   timeStamp: string | number,
   type: leaderBoardType,
   race: raceType,
+  amountOfPlayers: number,
 ) => {
   const url = `${config.STORAGE_LINK}/leaderboards/${timeStamp}/${timeStamp}_${type}_${race}.json`;
 
   try {
-    return _fetchFirst10LinesOfLeaderBoards(url);
+    const data = await _fetchFirstXLinesOfLeaderBoards(url, amountOfPlayers);
+    return data;
   } catch (e) {
     console.error(e);
     return {};
