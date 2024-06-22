@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../src/apis/coh3stats-api";
 import {
+  analysisFilterType,
+  analysisMapFilterType,
   AnalysisObjectType,
   getAnalysisStatsHttpResponse,
   MapAnalysisObjectType,
@@ -57,11 +59,17 @@ const _sortMapAnalysisData = (data: MapAnalysisObjectType) => {
 
 // React component which accepts inner children. And accepts a title prop.
 
-function useDeepCompareMemo(timeStamps: { from: number | null; to: number | null }) {
-  const [storedValue, setStoredValue] = useState(timeStamps);
+function useDeepCompareMemo(
+  timeStamps: {
+    from: number | null;
+    to: number | null;
+  },
+  filters: Array<analysisFilterType | analysisMapFilterType | "all">,
+) {
+  const [storedValue, setStoredValue] = useState({ timeStamps, filters });
 
-  if (JSON.stringify(timeStamps) !== JSON.stringify(storedValue)) {
-    setStoredValue(timeStamps);
+  if (JSON.stringify({ timeStamps, filters }) !== JSON.stringify(storedValue)) {
+    setStoredValue({ timeStamps, filters });
   }
 
   return storedValue;
@@ -70,11 +78,13 @@ function useDeepCompareMemo(timeStamps: { from: number | null; to: number | null
 const InnerMapsStatsPage = ({
   timeStamps,
   mode,
+  filters,
 }: {
   timeStamps: { from: number | null; to: number | null };
   mode: "1v1" | "2v2" | "3v3" | "4v4";
+  filters: Array<analysisFilterType | analysisMapFilterType | "all">;
 }) => {
-  const memoizedTimeStamps = useDeepCompareMemo(timeStamps);
+  const memoizedTimeStampsAndFilters = useDeepCompareMemo(timeStamps, filters);
   const [data, setData] = useState<null | getAnalysisStatsHttpResponse>(null);
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -94,6 +104,7 @@ const InnerMapsStatsPage = ({
           timeStamps.to,
           "mapStats",
           buildOriginHeaderValue(),
+          filters,
         );
         setData(data);
       } catch (e: any) {
@@ -104,7 +115,7 @@ const InnerMapsStatsPage = ({
         setLoading(false);
       }
     })();
-  }, [memoizedTimeStamps]);
+  }, [memoizedTimeStampsAndFilters]);
 
   let content = <></>;
 
@@ -258,6 +269,9 @@ const InnerMapsStatsPage = ({
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
+        </Text>
+        <Text fz="xs" align={"center"} c="dimmed">
+          Applied ELO filters {data.filters ? data.filters?.join(", ") : "none"}
         </Text>
       </Container>
     );

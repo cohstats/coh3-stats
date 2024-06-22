@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getStatsData } from "../../../src/apis/coh3stats-api";
 import {
+  analysisFilterType,
+  analysisMapFilterType,
   AnalysisObjectType,
   getAnalysisStatsHttpResponse,
   StatsDataObject,
@@ -75,11 +77,17 @@ const ChartCard = ({
   );
 };
 
-function useDeepCompareMemo(timeStamps: { from: number | null; to: number | null }) {
-  const [storedValue, setStoredValue] = useState(timeStamps);
+function useDeepCompareMemo(
+  timeStamps: {
+    from: number | null;
+    to: number | null;
+  },
+  filters: Array<analysisFilterType | analysisMapFilterType | "all">,
+) {
+  const [storedValue, setStoredValue] = useState({ timeStamps, filters });
 
-  if (JSON.stringify(timeStamps) !== JSON.stringify(storedValue)) {
-    setStoredValue(timeStamps);
+  if (JSON.stringify({ timeStamps, filters }) !== JSON.stringify(storedValue)) {
+    setStoredValue({ timeStamps, filters });
   }
 
   return storedValue;
@@ -88,11 +96,13 @@ function useDeepCompareMemo(timeStamps: { from: number | null; to: number | null
 const InnerGameStatsPage = ({
   timeStamps,
   mode,
+  filters,
 }: {
   timeStamps: { from: number | null; to: number | null };
   mode: "1v1" | "2v2" | "3v3" | "4v4" | "all";
+  filters: Array<analysisFilterType | analysisMapFilterType | "all">;
 }) => {
-  const memoizedTimeStamps = useDeepCompareMemo(timeStamps);
+  const memoizedTimeStampsAndFilters = useDeepCompareMemo(timeStamps, filters);
   const [data, setData] = useState<null | getAnalysisStatsHttpResponse>(null);
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -111,6 +121,7 @@ const InnerGameStatsPage = ({
           timeStamps.to,
           "gameStats",
           buildOriginHeaderValue(),
+          filters,
         );
         setData(data);
       } catch (e: any) {
@@ -121,7 +132,7 @@ const InnerGameStatsPage = ({
         setLoading(false);
       }
     })();
-  }, [memoizedTimeStamps]);
+  }, [memoizedTimeStampsAndFilters]);
 
   let content = <></>;
 
@@ -179,91 +190,97 @@ const InnerGameStatsPage = ({
             />
           </Group>
         </Flex>
+        {matchCount > 0 && (
+          <>
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <ChartCard title={`Factions Played ${mode}`} size={"md"}>
+                <DynamicFactionsPlayedPieChart data={analysisData} />
+              </ChartCard>
 
-        <Flex gap={"xl"} wrap="wrap" justify="center">
-          <ChartCard title={`Factions Played ${mode}`} size={"md"}>
-            <DynamicFactionsPlayedPieChart data={analysisData} />
-          </ChartCard>
+              <ChartCard title={`Games Results ${mode}`} size={"md"}>
+                <DynamicGamesBarChart data={analysisData} />
+              </ChartCard>
 
-          <ChartCard title={`Games Results ${mode}`} size={"md"}>
-            <DynamicGamesBarChart data={analysisData} />
-          </ChartCard>
+              <ChartCard title={`Faction Winrate ${mode}`} size={"md"}>
+                <DynamicWinRateBarChart data={analysisData} />
+              </ChartCard>
 
-          <ChartCard title={`Faction Winrate ${mode}`} size={"md"}>
-            <DynamicWinRateBarChart data={analysisData} />
-          </ChartCard>
-
-          <ChartCard
-            title={
-              <Group position={"apart"}>
-                <Group spacing={"xs"}>
-                  <Text>Maps {mode}</Text>
-                  <HelperIcon
-                    width={280}
-                    text={"This chart has no value until we get map bans as we have in coh2."}
-                  />
-                </Group>
-                <Button
-                  component={Link}
-                  href={getMapsStatsRoute()}
-                  variant={"default"}
-                  size={"sm"}
-                >
-                  <Group spacing={4}>
-                    <IconCirclePlus size={"18"} />
-                    More
+              <ChartCard
+                title={
+                  <Group position={"apart"}>
+                    <Group spacing={"xs"}>
+                      <Text>Maps {mode}</Text>
+                      <HelperIcon
+                        width={280}
+                        text={"This chart has no value until we get map bans as we have in coh2."}
+                      />
+                    </Group>
+                    <Button
+                      component={Link}
+                      href={getMapsStatsRoute()}
+                      variant={"default"}
+                      size={"sm"}
+                    >
+                      <Group spacing={4}>
+                        <IconCirclePlus size={"18"} />
+                        More
+                      </Group>
+                    </Button>
                   </Group>
-                </Button>
-              </Group>
-            }
-            size={"md"}
-          >
-            <DynamicMapsPlayedBarChart data={analysisData} />
-          </ChartCard>
-        </Flex>
+                }
+                size={"md"}
+              >
+                <DynamicMapsPlayedBarChart data={analysisData} />
+              </ChartCard>
+            </Flex>
 
-        <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="center">
-          <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
-          <ChartCard title={`Game Time ${mode}`} size={"xl"}>
-            <DynamicPlayTimeHistogramChart data={analysisData} />
-          </ChartCard>
-        </Flex>
-        <Space h="xl" />
+            <Space h="xl" />
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
+              <ChartCard title={`Game Time ${mode}`} size={"xl"}>
+                <DynamicPlayTimeHistogramChart data={analysisData} />
+              </ChartCard>
+            </Flex>
+            <Space h="xl" />
 
-        <Flex gap={"xl"} wrap="wrap" justify="center">
-          <DynamicWinRateLineChart data={analysis.days} mode={mode} />
-        </Flex>
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <DynamicWinRateLineChart data={analysis.days} mode={mode} />
+            </Flex>
 
-        <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="center">
-          <DynamicGamesLineChart
-            data={analysis.days}
-            mode={mode}
-            helperText={"However over the chart to see the amount of games for each faction."}
-            stacked={false}
-          />
-        </Flex>
-        <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="center">
-          <DynamicGamesLineChart
-            data={analysis.days}
-            mode={mode}
-            helperText={
-              "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
-            }
-            stacked={true}
-          />
-        </Flex>
-        <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="center">
-          <DynamicGamesPercentageLineChartCard data={analysis.days} mode={mode} />
-        </Flex>
+            <Space h="xl" />
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <DynamicGamesLineChart
+                data={analysis.days}
+                mode={mode}
+                helperText={"However over the chart to see the amount of games for each faction."}
+                stacked={false}
+              />
+            </Flex>
+            <Space h="xl" />
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <DynamicGamesLineChart
+                data={analysis.days}
+                mode={mode}
+                helperText={
+                  "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
+                }
+                stacked={true}
+              />
+            </Flex>
+            <Space h="xl" />
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <DynamicGamesPercentageLineChartCard data={analysis.days} mode={mode} />
+            </Flex>
+          </>
+        )}
 
         <Text fz="xs" align={"center"} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
+        </Text>
+        <Text fz="xs" align={"center"} c="dimmed">
+          Applied ELO filters {data.filters ? data.filters?.join(", ") : "none"}
         </Text>
       </>
     );
