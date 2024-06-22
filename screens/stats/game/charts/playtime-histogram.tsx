@@ -12,27 +12,29 @@ const PlayTimeHistogramChart: React.FC<IProps> = ({ data }) => {
   const { colorScheme } = useMantineColorScheme();
   const chartData: any[] | undefined = [];
 
-  for (const [key, value] of Object.entries(data.gameTimeSpread)) {
-    if (key === "0") {
-      chartData.push({
-        time: "0 - 5",
-        games: value,
-      });
-    } else if (key === "5") {
-      chartData.push({
-        time: "5 - 10",
-        games: value,
-      });
-    } else if (key === "60") {
-      chartData.push({
-        time: "60+",
-        games: value,
-      });
-    } else {
-      chartData.push({
-        time: `${key} - ${parseInt(key) + 10}`,
-        games: value,
-      });
+  if (data.gameTimeSpread) {
+    for (const [key, value] of Object.entries(data.gameTimeSpread)) {
+      if (key === "0") {
+        chartData.push({
+          time: "0 - 5",
+          games: value,
+        });
+      } else if (key === "5") {
+        chartData.push({
+          time: "5 - 10",
+          games: value,
+        });
+      } else if (key === "60") {
+        chartData.push({
+          time: "60+",
+          games: value,
+        });
+      } else {
+        chartData.push({
+          time: `${key} - ${parseInt(key) + 10}`,
+          games: value,
+        });
+      }
     }
   }
 

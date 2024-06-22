@@ -14,6 +14,53 @@ export type AnalysisObjectType = {
   factionMatrix: Record<string, { wins: number; losses: number }>;
 };
 
+export const analysisFilterTypeArray = [
+  "stats-limit-0-799",
+  "stats-limit-800-1099",
+  "stats-limit-1100-1249",
+  "stats-limit-1250-1399",
+  "stats-limit-1400-1599",
+  "stats-limit-1600-9999",
+  "stats-average-0-799",
+  "stats-average-800-1099",
+  "stats-average-1100-1249",
+  "stats-average-1250-1399",
+  "stats-average-1400-1599",
+  "stats-average-1600-9999",
+  "stats-average-ex-0-799",
+  "stats-average-ex-800-1099",
+  "stats-average-ex-1100-1249",
+  "stats-average-ex-1250-1399",
+  "stats-average-ex-1400-1599",
+  "stats-average-ex-1600-9999",
+] as const;
+
+export type analysisFilterType = (typeof analysisFilterTypeArray)[number];
+
+// In your types.ts file
+export const analysisMapFilterTypeArray = [
+  "mapStats-limit-0-799",
+  "mapStats-limit-800-1099",
+  "mapStats-limit-1100-1249",
+  "mapStats-limit-1250-1399",
+  "mapStats-limit-1400-1599",
+  "mapStats-limit-1600-9999",
+  "mapStats-average-0-799",
+  "mapStats-average-800-1099",
+  "mapStats-average-1100-1249",
+  "mapStats-average-1250-1399",
+  "mapStats-average-1400-1599",
+  "mapStats-average-1600-9999",
+  "mapStats-average-ex-0-799",
+  "mapStats-average-ex-800-1099",
+  "mapStats-average-ex-1100-1249",
+  "mapStats-average-ex-1250-1399",
+  "mapStats-average-ex-1400-1599",
+  "mapStats-average-ex-1600-9999",
+] as const;
+
+export type analysisMapFilterType = (typeof analysisMapFilterTypeArray)[number];
+
 export type MapAnalysisObjectType = Record<string, AnalysisObjectType>;
 
 export type DayAnalysisObjectType = Record<raceType, { wins: number; losses: number }>;
@@ -53,4 +100,5 @@ export interface getAnalysisStatsHttpResponse {
   toTimeStampSeconds: number;
   type: analysisType;
   wasMissingData: boolean;
+  filters?: Array<string>;
 }

@@ -7,9 +7,16 @@ import {
   TwitchStream,
   YouTubeVideo,
 } from "../coh3/coh3-types";
-import { analysisType, getAnalysisStatsHttpResponse } from "../analysis-types";
+import {
+  analysisFilterType,
+  analysisMapFilterType,
+  analysisType,
+  getAnalysisStatsHttpResponse,
+} from "../analysis-types";
 import { cleanXForwardedFor, parseFirstIPFromString } from "../utils";
 import { logger } from "../logger";
+
+export const GET_ANALYSIS_STATS = "v10";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
@@ -48,10 +55,20 @@ const getStatsUrl = (
   endDate: number | "now" = "now",
   type: analysisType = "gameStats",
   ock: string, //ock is used for correct cors caching
+  filters?: Array<analysisFilterType | analysisMapFilterType | "all">,
 ) => {
-  return encodeURI(
-    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=v9&ock=${ock}`,
-  );
+  if (filters?.includes("all")) {
+    filters = undefined;
+  }
+
+  let url = `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=${GET_ANALYSIS_STATS}&ock=${ock}`;
+
+  if (filters && filters.length > 0) {
+    const filtersString = filters.join(",");
+    url += `&filters=${filtersString}`;
+  }
+
+  return encodeURI(url);
 };
 
 const getStatsData = async (
@@ -59,8 +76,9 @@ const getStatsData = async (
   endDate: number | "now" = "now",
   type: analysisType = "gameStats",
   ock: string,
+  filters?: Array<analysisFilterType | analysisMapFilterType | "all">,
 ) => {
-  const response = await fetch(getStatsUrl(startDate, endDate, type, ock));
+  const response = await fetch(getStatsUrl(startDate, endDate, type, ock, filters));
   const data: getAnalysisStatsHttpResponse = await response.json();
 
   if (response.ok) {

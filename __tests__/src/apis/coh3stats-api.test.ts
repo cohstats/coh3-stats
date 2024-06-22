@@ -8,6 +8,7 @@ import {
   getPlayerRecentMatches,
   getTwitchStreams,
   getStatsData,
+  GET_ANALYSIS_STATS,
 } from "../../../src/apis/coh3stats-api";
 
 describe("coh3stats-api", () => {
@@ -305,7 +306,7 @@ describe("coh3stats-api", () => {
 
     const response = await getStatsData(123, "now", "gameStats", "cache-key-4");
     expect(global.fetch).toBeCalledWith(
-      "https://cache.coh3stats.com/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=v9&ock=cache-key-4",
+      `https://cache.coh3stats.com/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=${GET_ANALYSIS_STATS}&ock=cache-key-4`,
     );
 
     expect(response).toEqual(fakeStatsData);
