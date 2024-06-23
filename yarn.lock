@@ -1645,10 +1645,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@edgio/cli@7.11.6":
-  version "7.11.6"
-  resolved "https://registry.yarnpkg.com/@edgio/cli/-/cli-7.11.6.tgz#a987786df0c5654a378c1fd2b7f2feebcefd7ffb"
-  integrity sha512-hujm5dzEjGx7rgYD29jBp7K5nJOXiCif97XnUVZSKBH2N+HlggbwyHkX9eIv/ddBVB6YaywJNK/fl+cX+R8ffw==
+"@edgio/cli@7.12.2":
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/@edgio/cli/-/cli-7.12.2.tgz#516cad7d5dca7ef6a7827d7f7033bb0f750db8aa"
+  integrity sha512-+9Uo7fSrVxbBqydUwA5mO0c7jRBpkG5VIm8zPVPJ7Y2wQNeXoaJ5H8GHtBfp/Ba0j+xTlX2V6MHM/OO5pUOXXQ==
   dependencies:
     axios "^1.6.0"
     chalk "^4.1.2"
@@ -1665,6 +1665,7 @@
     fs-extra "^8.1.0"
     git-url-parse "^13.1.0"
     globby "^11.0.0"
+    http-proxy "^1.18.1"
     https-proxy-agent "^7.0.2"
     import-local "^3.0.2"
     ipaddr.js "^2.0.1"
@@ -1689,10 +1690,10 @@
     yauzl "^2.10.0"
     yazl "^2.5.1"
 
-"@edgio/core@7.11.6", "@edgio/core@^7.11.6":
-  version "7.11.6"
-  resolved "https://registry.yarnpkg.com/@edgio/core/-/core-7.11.6.tgz#e3c04d57bc51d79edac4d247c63648860401a412"
-  integrity sha512-I8G/a8WStgpsvJSA7nGex0+mCCyUX4SUPmDyHcRCAOwDtQK5w6Y1kqA61fM6saF64Bv7chwaWq+kxnG/SgY5cg==
+"@edgio/core@7.12.2", "@edgio/core@^7.12.2":
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/@edgio/core/-/core-7.12.2.tgz#860c0f6bd2ce91b0e345b721440c036f86db7c39"
+  integrity sha512-xHQBoWfEbmkGnFFbaCI4AA6/yuDfIOhEk0h2XlVHentUlUlXW+FxSKcYEQBGt7n9BDIM5LdInpE0VgCAgleLKQ==
   dependencies:
     "@babel/parser" "^7.23.9"
     "@babel/traverse" "^7.23.9"
@@ -1714,6 +1715,7 @@
     fs-extra "^8.1.0"
     globby "^11.0.2"
     http-proxy "^1.18.1"
+    lambda-stream "^0.5.0"
     lodash.clonedeep "^4.5.0"
     lru-cache "^7.14.0"
     node-fetch "^2.7.0"
@@ -1726,23 +1728,24 @@
     shelljs "^0.8.5"
     slash "^3.0.0"
     stream-buffers "^3.0.2"
+    ts-fs-utils "1.0.13"
     uuid "^8.3.2"
     whatwg-url "^14.0.0"
     workbox-build "^6.5.4"
 
-"@edgio/devtools@7.11.6", "@edgio/devtools@^7.11.6":
-  version "7.11.6"
-  resolved "https://registry.yarnpkg.com/@edgio/devtools/-/devtools-7.11.6.tgz#463df6a5373a071a7361bbd97b657bce2fa6ad0a"
-  integrity sha512-n0Hpo7x9J9jWpHUZ5YR10q/wU9sjnNX/tQ/hqnSysqP4ndfuaLr2TKIK7j99x23tWy5+9lfmEcd4fvL0zKjJPA==
+"@edgio/devtools@7.12.2", "@edgio/devtools@^7.12.2":
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/@edgio/devtools/-/devtools-7.12.2.tgz#0df288aab140d4272d88029690e5100cb2a65206"
+  integrity sha512-NbOLSLX1VRt7dYYWCKNl9VpSPN9emtJRFqhSkN8Nm83m9L0FGhqITwtIT6SDKDA2KJ/pHhbq0GXYPOwWtjlT0g==
   dependencies:
     clsx "^1.1.1"
     lodash "^4.17.20"
     sirv-cli "^1.0.0"
 
-"@edgio/next@7.11.6":
-  version "7.11.6"
-  resolved "https://registry.yarnpkg.com/@edgio/next/-/next-7.11.6.tgz#052316a2ba6f7b3b1bac597b968840a080558d73"
-  integrity sha512-UknYsb05jntgfPWtC0OkrwpWTwZsjW2DCL3401bF6kbPcyTVUFqpLGzvrhUIN5LX36sy0uYPyV+ggFO1eGbjfg==
+"@edgio/next@7.12.2":
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/@edgio/next/-/next-7.12.2.tgz#176fbcdbbbfa89342548462244f69920b5eecb37"
+  integrity sha512-r5SWa05wsJpMH+jAe2yNn3KtQoK66kUQvI1ualZ/ThqvJ9inh3Mz8B9MOmUuZFYS5v7AjiW3V8rnwS3wykBWzg==
   dependencies:
     "@vercel/nft" "^0.20.1"
     chalk "^4.1.2"
@@ -1759,12 +1762,12 @@
     webpack "^5.90.2"
     webpack-sources "^3.2.3"
 
-"@edgio/prefetch@7.11.6", "@edgio/prefetch@^7.11.6":
-  version "7.11.6"
-  resolved "https://registry.yarnpkg.com/@edgio/prefetch/-/prefetch-7.11.6.tgz#cf0c930e900b7142f23f5472c17595d08199872b"
-  integrity sha512-hiftbXX2vLmI07CnI+eK+NaqjVjmkRBJcPFmwQBoFbuE45yhUYIEuqcHSX+9IVutKRG4xfae2G1CKms1NEvZ9A==
+"@edgio/prefetch@7.12.2", "@edgio/prefetch@^7.12.2":
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/@edgio/prefetch/-/prefetch-7.12.2.tgz#4b3dda4aef7fc2fe7cba411ed0c225cf09538f0d"
+  integrity sha512-QGStsW/8QH0gz5ME8GYswRV6jnCsLA0GscGQrbn3eSowXh+9+Lz/Toi0aqZn1E/qkWx0nJpijGAtY/SIlS27Aw==
   dependencies:
-    "@edgio/core" "^7.11.6"
+    "@edgio/core" "^7.12.2"
     cheerio "^1.0.0-rc.3"
     json-query "^2.2.2"
     workbox-cacheable-response "^5.1.2"
@@ -1774,13 +1777,13 @@
     workbox-routing "^5.1.2"
     workbox-strategies "^5.1.2"
 
-"@edgio/react@7.11.6":
-  version "7.11.6"
-  resolved "https://registry.yarnpkg.com/@edgio/react/-/react-7.11.6.tgz#7409344bff37f1414d583f15ca2b081197216159"
-  integrity sha512-XNqRL7CQByNnup813qV8t2VRX59dIoymNG9gx5e+IR+9V9q0jjDqhA7sm+Fc9E4ER4XXDk0btD+FgNHbnw8ExQ==
+"@edgio/react@7.12.2":
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/@edgio/react/-/react-7.12.2.tgz#6351fd4c9ff6889d638ac6b1a696397819b5e079"
+  integrity sha512-F6DkJMSepy7p6CuQnqKUtA9f5Cz9Q4aeyDaO+QDTSVD/CUAXwM7G5uIt6vCyLButq5U8QK0xeky67zGLndeLeQ==
   dependencies:
-    "@edgio/devtools" "^7.11.6"
-    "@edgio/prefetch" "^7.11.6"
+    "@edgio/devtools" "^7.12.2"
+    "@edgio/prefetch" "^7.12.2"
     prop-types "^15.8.1"
     react-merge-refs "^1.1.0"
 
@@ -10157,6 +10160,11 @@ kleur@^3.0.0, kleur@^3.0.3:
   resolved "https://registry.npmjs.org/kleur/-/kleur-3.0.3.tgz"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
+lambda-stream@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/lambda-stream/-/lambda-stream-0.5.0.tgz#7387359dabfa6161176fcade85eab34a4f52e5a3"
+  integrity sha512-AaMXqUM+GcJ2OpNF2LI78jzbZ84rSckH+uKfstMQFqXDn+ZBLIkJgkUk+L0fuCGzw+LP5VToUxJKDfAbtLXSGw==
+
 language-subtag-registry@^0.3.20:
   version "0.3.22"
   resolved "https://registry.npmjs.org/language-subtag-registry/-/language-subtag-registry-0.3.22.tgz"
@@ -13241,6 +13249,11 @@ ts-api-utils@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.3.0.tgz#4b490e27129f1e8e686b45cc4ab63714dc60eea1"
   integrity sha512-UQMIo7pb8WRomKR1/+MFVLTroIvDVtMX3K6OUir8ynLyzB8Jeriont2bTAtmNPa1ekAgN7YPDyf6V+ygrdU+eQ==
+
+ts-fs-utils@1.0.13:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/ts-fs-utils/-/ts-fs-utils-1.0.13.tgz#f7939fe670383aa747cd105638c0412a7d4313c5"
+  integrity sha512-fC3UVmNRgne/8fqS/P2eh/DlpfT/GI/hlcUYVWDFv8fBxjjAEM+EiXUONuzsY0jSfE7ODq5iEN5HLqW88bLf9w==
 
 tsconfig-paths@^3.14.2:
   version "3.14.2"
