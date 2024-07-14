@@ -66,8 +66,8 @@ const ChangeCustomVisibilityForm = () => {
         placeholder=""
         defaultValue=""
         withAsterisk
-        visibilityToggleIcon={({ reveal, size }) =>
-          reveal ? <IconEyeOff size={size} /> : <IconEyeCheck size={size} />
+        visibilityToggleIcon={({ reveal }) =>
+          reveal ? <IconEyeOff size={20} /> : <IconEyeCheck size={20} />
         }
         onChange={(event) => {
           setPassword(event.currentTarget.value);
@@ -126,7 +126,8 @@ const CustomGamesVisibilityData = () => {
   return (
     <Container>
       <DataTable
-        withBorder
+        withTableBorder={true}
+        border={2}
         borderRadius="md"
         highlightOnHover
         striped
@@ -137,7 +138,7 @@ const CustomGamesVisibilityData = () => {
         columns={[
           {
             accessor: "alias",
-            textAlignment: "left",
+            textAlign: "left",
             title: "Alias",
             // @ts-ignore
             render: ({ alias, profile_id }) => {
@@ -152,17 +153,17 @@ const CustomGamesVisibilityData = () => {
           },
           {
             accessor: "profile_id",
-            textAlignment: "left",
+            textAlign: "left",
             title: "Profile ID",
           },
           {
             accessor: "steam_id",
-            textAlignment: "left",
+            textAlign: "left",
             title: "Steam ID",
           },
           {
             accessor: "customGamesHidden",
-            textAlignment: "left",
+            textAlign: "left",
             title: "Custom Games",
             // @ts-ignore
             render: ({ customGamesHidden }) => {
@@ -175,7 +176,7 @@ const CustomGamesVisibilityData = () => {
           },
           {
             accessor: "customGamesHidden_updatedAt",
-            textAlignment: "left",
+            textAlign: "left",
             title: "Settings changed",
             // @ts-ignore
             render: ({ customGamesHidden }) => {

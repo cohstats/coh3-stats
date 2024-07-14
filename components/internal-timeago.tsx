@@ -3,11 +3,11 @@ import { format } from "timeago.js";
 import React from "react";
 
 const InternalTimeAgo = ({ timestamp }: { timestamp: number }) => {
-  if (!timestamp || timestamp < 0) return <Text>-</Text>;
+  if (!timestamp || timestamp < 0) return <Text inherit>-</Text>;
 
   return (
     <Tooltip withArrow label={new Date(timestamp * 1000).toLocaleString()}>
-      <Text>{format(timestamp * 1000, "en")}</Text>
+      <Text inherit>{format(timestamp * 1000, "en")}</Text>
     </Tooltip>
   );
 };

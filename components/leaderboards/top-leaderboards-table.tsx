@@ -18,9 +18,11 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
     return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
   } else {
     return (
+      <div>
       <DataTable
         highlightOnHover
-        striped
+        striped={true}
+        // striped
         // Make it little bit more compact for the front page
         verticalSpacing={5}
         minHeight={300}
@@ -32,20 +34,20 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
         columns={[
           {
             accessor: "rank",
-            textAlignment: "center",
+            textAlign: "center",
           },
           {
             title: "RC",
             accessor: "change",
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ change }: { change: number | string }) => {
               if (typeof change === "string") {
                 return change;
               } else {
                 return change > 0 ? (
-                  <Text color={"green"}>+{change}</Text>
+                  <Text c={"green"}>+{change}</Text>
                 ) : change < 0 ? (
-                  <Text color={"red"}>{change}</Text>
+                  <Text c={"red"}>{change}</Text>
                 ) : (
                   <></>
                 );
@@ -55,16 +57,8 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
           {
             title: "ELO",
             accessor: "rating",
-            textAlignment: "center",
+            textAlign: "center",
           },
-          // {
-          //   title: "Tier",
-          //   accessor: "tier",
-          //   textAlignment: "center",
-          //   render: ({ rank, rating }: any) => {
-          //     return <RankIcon size={28} rank={rank} rating={rating} />;
-          //   },
-          // },
           {
             accessor: "alias",
             width: "100%",
@@ -75,8 +69,8 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
                 const path = `/players/${profile_id}`;
 
                 return (
-                  <Anchor key={profile_id} component={Link} href={path}>
-                    <Group spacing="xs">
+                  <Anchor key={profile_id} component={Link} href={path} inherit>
+                    <Group gap="xs">
                       <CountryFlag countryCode={country} />
                       {alias}
                     </Group>
@@ -88,28 +82,28 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
           {
             accessor: "streak",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             // @ts-ignore
             render: ({ streak }) =>
               streak > 0 ? (
-                <Text color={"green"}>+{streak}</Text>
+                <Text c={"green"}>+{streak}</Text>
               ) : (
-                <Text color={"red"}>{streak}</Text>
+                <Text c={"red"}>{streak}</Text>
               ),
           },
           // // Hide this when we need to make the table shorter
           // {
           //   accessor: "wins",
-          //   textAlignment: "center",
+          //   textAlign: "center",
           // },
           // // Hide this when we need to make the table shorter
           // {
           //   accessor: "losses",
-          //   textAlignment: "center",
+          //   textAlign: "center",
           // },
           {
             accessor: "ratio",
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ wins, losses }: any) => {
               return `${Math.round((wins / (wins + losses)) * 100)}%`;
             },
@@ -117,7 +111,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
           {
             accessor: "total",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "right",
             render: ({ wins, losses }: any) => {
               return `${wins + losses}`;
             },
@@ -125,17 +119,17 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
           // // {
           // //     accessor: "drops",
           // //     sortable: true,
-          // //     textAlignment: "center",
+          // //     textAlign: "center",
           // // },
           // // {
           // //     accessor: "disputes",
           // //     sortable: true,
-          // //     textAlignment: "center",
+          // //     textAlign: "center",
           // // },
           {
             accessor: "lastmatchdate",
             title: "Last Game",
-            textAlignment: "right",
+            textAlign: "right",
             width: 120,
             // @ts-ignore
             render: ({ lastmatchdate }) => {
@@ -146,6 +140,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
         // sortStatus={sortStatus}
         // onSortStatusChange={setSortStatus}
       />
+      </div>
     );
   }
 };

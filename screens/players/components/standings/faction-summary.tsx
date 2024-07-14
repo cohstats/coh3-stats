@@ -1,8 +1,9 @@
 import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../../src/coh3/coh3-types";
 import React from "react";
-import { Group, Space, Title, Card, createStyles, Stack, ActionIcon } from "@mantine/core";
+import { Group, Space, Title, Card, Stack, ActionIcon } from "@mantine/core";
 import { localizedNames } from "../../../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
+//import { createStyles } from '@mantine/emotion';
 import {
   findBestRankLeaderboardStat,
   findBestValueOnLeaderboardStat,
@@ -85,7 +86,7 @@ const PlayerStandingsFactionInfo = ({
     <>
       <Card padding="lg" radius="md" withBorder className={classes.mainCard}>
         <Card.Section>
-          <Group m="xs" position={"apart"}>
+          <Group m="xs" justify={"apart"}>
             <Title order={4}> Best of {cardTitle}</Title>
 
             <ActionIcon onClick={moreButtonOnClick}>
@@ -94,27 +95,27 @@ const PlayerStandingsFactionInfo = ({
           </Group>
         </Card.Section>
         <Text size={"sm"}>
-          <Stack spacing="md">
+          <Stack gap="md">
             <div>
-              <Group position="apart">
+              <Group justify="apart">
                 <span>Best Rank</span> <Text fw={600}>{bestRankElement}</Text>
               </Group>
-              <Group position="apart">
+              <Group justify="apart">
                 <span>Best Level</span> <Text fw={600}>{bestLevelElement}</Text>
               </Group>
-              <Group position="apart">
+              <Group justify="apart">
                 <span>Best ELO</span> <Text fw={600}>{bestEloElement}</Text>
               </Group>
             </div>
             <Space h="xs" />
             <div>
-              <Group position="apart">
+              <Group justify="apart">
                 <span>Overall win Rate</span> <Text fw={600}>{winRateElement}</Text>
               </Group>
-              <Group position="apart">
+              <Group justify="apart">
                 <span>Total Games</span> <Text fw={600}>{totalGamesElement}</Text>
               </Group>
-              <Group position="apart">
+              <Group justify="apart">
                 <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
               </Group>
             </div>

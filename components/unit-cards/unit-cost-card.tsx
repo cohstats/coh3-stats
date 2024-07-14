@@ -18,8 +18,8 @@ const ReinforceIcons = [
 
 export const UnitCostCard = (costs: ResourceValues, title = "Costs") => (
   <>
-    <Stack spacing={0}>
-      <Title order={6} transform="uppercase">
+    <Stack gap={0}>
+      <Title order={6} style={{"textTransform": "uppercase"}}>
         {title}
       </Title>
       <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
@@ -46,8 +46,8 @@ export const ReinforceCostCard = (
   title = "Reinforce",
 ) => (
   <>
-    <Stack spacing={0}>
-      <Title order={6} transform="uppercase">
+    <Stack gap={0}>
+      <Title order={6} tt="uppercase">
         {title}
       </Title>
       <Flex key="reinforce_costs_list" align="center" gap={8} mt={4} wrap="wrap">

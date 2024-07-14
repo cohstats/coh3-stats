@@ -117,17 +117,17 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
 
   return (
     <>
-      <Stack align="left" justify="flex-start" spacing="xs">
+      <Stack align="left" justify="flex-start" gap="xs">
         <Grid gutter="xs">
           <Grid.Col span={4}>
-            <Group noWrap>
+             <Group wrap="nowrap">
               <Tooltip label={props.unit.screen_name}>
                 <HoverCard shadow="md" width={400} position="left" offset={50}>
                   <HoverCard.Target>
                     <Group>
                       <Anchor
-                        color="undefined"
-                        underline={false}
+                        c="undefined"
+                        underline={"never"}
                         sx={{
                           "&:hover": {
                             textDecoration: "none",
@@ -276,7 +276,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
 
         <WeaponSearch searchData={weaponList} onSelect={onAddWeapon}></WeaponSearch>
 
-        <Group spacing="xs">{components}</Group>
+        <Group gap="xs">{components}</Group>
       </Stack>
       {/* </Box> */}
     </>

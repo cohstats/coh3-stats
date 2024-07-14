@@ -44,10 +44,10 @@ const VehicleArmorCover = [
 export const StatsVehicleArmor = (cfg: StatsVehicleInput) => (
   <>
     <Flex direction="column">
-      <Title order={6} transform="uppercase">
+      <Title order={6} style={{textTransform: "uppercase"}}>
         Vehicle Armor
       </Title>
-      <Text fz="xs" fw={700} transform="capitalize" color={VehicleTypeColor[cfg.type]}>
+      <Text fz="xs" fw={700} style={{textTransform: "capitalize"}} c={VehicleTypeColor[cfg.type]}>
         {cfg.type.split("_").join(" ")}
       </Text>
     </Flex>
@@ -71,11 +71,11 @@ function generateArmorRow(armorValues: VehicleArmor) {
         <Grid.Col span={2}>
           <Flex key={armor} direction="row" align="center" gap={8}>
             <Image height={24} width={24} fit="contain" src={icon} alt="Frontal Armor" />
-            <Text transform="capitalize">{armor}</Text>
+            <Text style={{textTransform: "uppercase"}}>{armor}</Text>
           </Flex>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text align="end">{armorValues[armor]}</Text>
+          <Text style={{textAlign: "end"}}>{armorValues[armor]}</Text>
         </Grid.Col>
       </Grid>
     );

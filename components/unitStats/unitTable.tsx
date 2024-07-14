@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  createStyles,
   Table,
   ScrollArea,
   UnstyledButton,
@@ -21,6 +20,7 @@ import {
   ActionIcon,
   Anchor,
 } from "@mantine/core";
+//import { createStyles } from '@mantine/emotion';
 import { keys } from "@mantine/utils";
 import {
   IconAdjustments,
@@ -345,7 +345,8 @@ function filterData(
   const query = search.toLowerCase().trim();
   let result = data.filter((item) =>
     keys(data[0]).some(
-      (key) =>
+      (key: string | number) =>
+        // @ts-ignore
         typeof item[key] == "string" && (item[key] as string).toLowerCase().includes(query),
     ),
   );
@@ -634,17 +635,17 @@ export const UnitTable = ({ inputData }: inputProps) => {
       </Grid>
       <Space h={"md"} />
       <div>
-        <Group position={"apart"}>
+        <Group justify={"apart"}>
           <Group>
             <Space w={"sm"} />
-            <Group noWrap>{generateFactionFilterButtons(toggleFilter, factionFilter)}</Group>
+             <Group wrap="nowrap">{generateFactionFilterButtons(toggleFilter, factionFilter)}</Group>
             <Space w={"md"} />
-            <Group noWrap>{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
+             <Group wrap="nowrap">{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
           </Group>
           <TextInput
             placeholder="Search Unit"
             mb="md"
-            icon={<IconSearch size="0.9rem" stroke={1.5} />}
+            leftSection={<IconSearch size="0.9rem" stroke={1.5} />}
             value={search}
             onChange={(event: { currentTarget: { value: any } }) => {
               setSearch(event.currentTarget.value);

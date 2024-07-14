@@ -50,11 +50,11 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
           mah={500}
         />
         <Paper radius="md" mt="md" p="lg">
-          <Stack align="center" spacing={5} mb={30}>
+          <Stack align="center" gap={5} mb={30}>
             <Anchor href={downloadURL} target="_blank">
               <Button>Download {version}</Button>
             </Anchor>
-            <Text size="sm" color="dimmed">
+            <Text size="sm" c="dimmed">
               {downloadCount} downloads
             </Text>
             <Anchor

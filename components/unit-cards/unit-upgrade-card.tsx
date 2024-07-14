@@ -1,5 +1,4 @@
 import {
-  createStyles,
   Flex,
   Grid,
   Group,
@@ -9,6 +8,7 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
+//import { createStyles } from '@mantine/emotion';
 import { UnitCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
@@ -98,16 +98,16 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
       </HoverCard.Target>
       <HoverCard.Dropdown>
         <Flex direction="column">
-          <Title order={6} fz="sm" color="yellow.5" transform="capitalize">
+          <Title order={6} fz="sm" c="yellow.5" style={{"textTransform": "capitalize"}}>
             {desc.help_text}
           </Title>
-          <Title order={4} transform="capitalize">
+          <Title order={4} style={{"textTransform": "capitalize"}}>
             {desc.screen_name}
           </Title>
           <Text fz="sm" style={{ whiteSpace: "pre-line" }}>
             {briefText}
           </Text>
-          <Text fz="md" color="yellow.5">
+          <Text fz="md" c="yellow.5">
             {desc.extra_text}
           </Text>
         </Flex>
@@ -127,13 +127,13 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
 
       <Grid gutter={1} align="stretch">
         <Grid.Col span={12}>
-          <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
+          <Title order={6} style={{"textTransform": "capitalize"}} c="yellow.5" lineClamp={1}>
             {desc.help_text}
           </Title>
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Title order={4} transform="capitalize" lineClamp={1}>
+          <Title order={4} style={{"textTransform": "capitalize"}} lineClamp={1}>
             {desc.screen_name}
           </Title>
         </Grid.Col>
@@ -201,7 +201,7 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
 
 export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
   return (
-    <Stack h="100%" align="stretch" justify="space-between" spacing={16}>
+    <Stack h="100%" align="stretch" justify="space-between" gap={16}>
       <UnitUpgradeCardHeader
         desc={{
           screen_name: desc.screen_name,
@@ -217,8 +217,8 @@ export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
       {hasBuildableCost(time_cost) ? (
         UnitCostCard(time_cost)
       ) : (
-        <Stack spacing={0}>
-          <Title order={6} transform="uppercase">
+        <Stack gap={0}>
+          <Title order={6} style={{textTransform: "uppercase"}}>
             Costs
           </Title>
           <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">

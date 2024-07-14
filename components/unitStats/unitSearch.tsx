@@ -75,7 +75,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 
     return (
       <div ref={ref} {...others}>
-        <Group noWrap>
+         <Group wrap="nowrap">
           <Image width={60} height={40} src={image} fit="contain" alt="Faction" />
 
           <HoverCard shadow={"lg"} offset={60}>
@@ -155,7 +155,7 @@ export const UnitSearch = (props: ISearchProps) => {
       searchable
       maxDropdownHeight={600}
       nothingFound="Nobody here. War is over!"
-      onChange={onSelectionChange}
+      onChange={(value) => onSelectionChange(value as string)}
     />
   );
 };

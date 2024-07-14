@@ -19,7 +19,7 @@ const addPlayerIcons = (type: leaderBoardType) => {
       fit="contain"
       src={getIconsPathOnCDN("/icons/races/common/symbols/building_barracks.webp")}
       alt=""
-      withPlaceholder
+      fallbackSrc={"https://placehold.co/20x20?text=X"}
     />
   ));
 };
@@ -31,8 +31,8 @@ const LeaderboardsMenu = () => {
         return (
           <div key={type}>
             <Group>
-              <Text weight={700}>{type.replace("v", " vs ")}</Text>
-              <Group spacing={0}>{addPlayerIcons(type)}</Group>
+              <Text fw={700}>{type.replace("v", " vs ")}</Text>
+              <Group gap={0}>{addPlayerIcons(type)}</Group>
             </Group>
             <Divider my="sm" />
             {raceTypeArray.map((faction) => {

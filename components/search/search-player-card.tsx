@@ -28,7 +28,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
               </Group>
 
               <Text size="xs" color="dimmed">
-                <Group spacing={"xs"}>
+                <Group gap={"xs"}>
                   <span>P: {data.platform.toUpperCase()}</span>
                   <span>XP: {data.level}</span>
                 </Group>

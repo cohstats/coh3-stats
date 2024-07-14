@@ -1,7 +1,7 @@
 // https://github.com/plouc/nivo/blob/master/website/src/theming/theme.ts#L181-L284
 import { raceType } from "../../src/coh3/coh3-types";
 
-export const getNivoTooltipTheme = (colorScheme: "dark" | "light") => {
+export const getNivoTooltipTheme = (colorScheme: "dark" | "light" | "auto" ) => {
   if (colorScheme === "dark") {
     return {
       axis: {

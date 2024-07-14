@@ -177,8 +177,8 @@ const InnerGameStatsPage = ({
     content = (
       <>
         <Flex gap={"xl"} justify="center">
-          <Group spacing={0}>
-            <Title order={2} align="center" p={"md"}>
+          <Group gap={0}>
+            <Title order={2} style={{textAlign: "center"}} p={"md"}>
               Games analyzed {matchCount.toLocaleString()}
             </Title>
             <HelperIcon
@@ -207,8 +207,8 @@ const InnerGameStatsPage = ({
 
               <ChartCard
                 title={
-                  <Group position={"apart"}>
-                    <Group spacing={"xs"}>
+                  <Group justify={"apart"}>
+                    <Group gap={"xs"}>
                       <Text>Maps {mode}</Text>
                       <HelperIcon
                         width={280}
@@ -221,7 +221,7 @@ const InnerGameStatsPage = ({
                       variant={"default"}
                       size={"sm"}
                     >
-                      <Group spacing={4}>
+                      <Group gap={4}>
                         <IconCirclePlus size={"18"} />
                         More
                       </Group>
@@ -274,12 +274,12 @@ const InnerGameStatsPage = ({
           </>
         )}
 
-        <Text fz="xs" align={"center"} pt={20} c="dimmed">
+        <Text fz="xs" style={{textAlign: "center"}} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
-        <Text fz="xs" align={"center"} c="dimmed">
+        <Text fz="xs" style={{textAlign: "center"}} c="dimmed">
           Applied ELO filters {data.filters ? data.filters?.join(", ") : "none"}
         </Text>
       </>

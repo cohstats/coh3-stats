@@ -56,15 +56,15 @@ const ReplaysTab = ({
 
   return (
     <>
-      <Group position="apart">
+      <Group justify="apart">
         <Title order={3}>Replays by COHDB</Title>
         <Group>
           <Anchor href={getCOHDBUploadULR()} target="_blank">
-            <Button leftIcon={<IconUpload />}>Upload Replay</Button>
+            <Button leftSection={<IconUpload />}>Upload Replay</Button>
           </Anchor>
           <Tooltip label={"You can automatically upload all your replays with Desktop App"}>
             <Anchor href={getDesktopAppRoute()}>
-              <Button leftIcon={<IconCloudUpload />}>Auto sync Replays</Button>
+              <Button leftSection={<IconCloudUpload />}>Auto sync Replays</Button>
             </Anchor>
           </Tooltip>
         </Group>
@@ -87,7 +87,7 @@ const ReplaysTab = ({
         columns={[
           {
             accessor: "Played",
-            textAlignment: "center",
+            textAlign: "center",
             width: 80,
             render: (record) => {
               const PlayerRecord = record.players.find(
@@ -108,7 +108,7 @@ const ReplaysTab = ({
             accessor: "mapname",
             title: "Map",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: (record) => {
               return <RenderMap mapName={record.map_id} renderTitle={false} />;
             },
@@ -128,7 +128,7 @@ const ReplaysTab = ({
                     const playerRaceName = cohDBracesToNormalRaces[player.faction as string];
                     return (
                       <div key={player.profile_id}>
-                        <Group spacing={"xs"}>
+                        <Group gap={"xs"}>
                           <FactionIcon name={playerRaceName} width={20} />
                           <Anchor
                             rel={"noreferrer"}
@@ -169,7 +169,7 @@ const ReplaysTab = ({
                     const playerRaceName = cohDBracesToNormalRaces[player.faction as string];
                     return (
                       <div key={player.profile_id}>
-                        <Group spacing={"xs"}>
+                        <Group gap={"xs"}>
                           <FactionIcon name={playerRaceName} width={20} />
                           <Anchor
                             rel={"noreferrer"}
@@ -199,7 +199,7 @@ const ReplaysTab = ({
             accessor: "title",
             title: "Title",
             cellsStyle: { display: "flex" },
-            // textAlignment: "left",
+            // textAlign: "left",
             // width: "70%",
             render: ({ title, uploaded_at, uploaded_by }) => {
               return (
@@ -250,7 +250,7 @@ const ReplaysTab = ({
                     withArrow
                     position={"bottom"}
                     multiline
-                    width={280}
+                    w={280}
                   >
                     <Flex
                       gap="xs"
@@ -273,12 +273,12 @@ const ReplaysTab = ({
             width: 110,
             render: ({ downloads_count, id }) => {
               return (
-                <Stack spacing={"xs"}>
+                <Stack gap={"xs"}>
                   <Anchor href={getCOHDBReplaysURL(id)} target="_blank">
                     <Button w={90}>Details</Button>
                   </Anchor>
                   <Anchor href={getCOHDBReplaysURL(id)} target="_blank">
-                    <Button w={90} leftIcon={<IconDownload />}>
+                    <Button w={90} leftSection={<IconDownload />}>
                       {downloads_count}
                     </Button>
                   </Anchor>

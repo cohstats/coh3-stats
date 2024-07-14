@@ -50,7 +50,7 @@ const InnerDetailedStats = ({
     return (
       <Center>
         <Text size={"sm"} c="dimmed" ta="center" pt={150} pb={150}>
-          <Stack align={"center"} spacing={"xs"}>
+          <Stack align={"center"} gap={"xs"}>
             <IconDatabaseOff />
             <div> We are not tracking any data for this faction and game type.</div>
           </Stack>

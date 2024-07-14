@@ -11,7 +11,7 @@ const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: bo
   if (!isOfficialMap(mapName)) {
     return (
       <div>
-        <Text align="center" style={{ whiteSpace: "nowrap" }}>
+        <Text style={{ whiteSpace: "nowrap", textAlign: "center"  }}>
           {mapName}
         </Text>
       </div>
@@ -33,7 +33,7 @@ const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: bo
           </div>
         </Tooltip>
         {renderTitle && (
-          <Text align="center" style={{ whiteSpace: "nowrap" }}>
+          <Text style={{ whiteSpace: "nowrap", textAlign: "center" }}>
             {maps[mapName]?.name}
           </Text>
         )}

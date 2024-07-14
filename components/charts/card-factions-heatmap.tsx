@@ -28,7 +28,7 @@ const extractFactionString = (factionString: string): Record<string, string> => 
 const legend = (
   <div style={{ display: "inline-block", width: 140, verticalAlign: "top", paddingTop: 20 }}>
     <Tooltip label={"W - (Wehrmacht, German)"}>
-      <Group spacing={4}>
+      <Group gap={4}>
         {" "}
         <FactionIcon name="german" width={20} />
         <Text fw={700}>W</Text>
@@ -36,7 +36,7 @@ const legend = (
       </Group>
     </Tooltip>
     <Tooltip label={"D - (Deutsches Afrikakorps)"}>
-      <Group spacing={4}>
+      <Group gap={4}>
         {" "}
         <FactionIcon name="dak" width={20} />
         <Text fw={700}>D</Text>
@@ -45,7 +45,7 @@ const legend = (
     </Tooltip>
     <Space h={"xs"} />
     <Tooltip label={"B - (British)"}>
-      <Group spacing={4}>
+      <Group gap={4}>
         {" "}
         <FactionIcon name="british" width={20} />
         <Text fw={700}>B</Text>
@@ -54,7 +54,7 @@ const legend = (
     </Tooltip>
 
     <Tooltip label={"U - (American, US Forces)"}>
-      <Group spacing={4}>
+      <Group gap={4}>
         {" "}
         <FactionIcon name="american" width={20} />
         <Text fw={700}>U</Text>
@@ -96,14 +96,14 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
     setSelectedSide(factionSide);
   }, [factionSide]);
 
-  const changeHeatMapStyle = (value: "amountOfGames" | "winRate") => {
+  const changeHeatMapStyle = (value: "amountOfGames" | "winRate" | string) => {
     // firebaseAnalytics.teamCompositionUsed(factionWinRate, value);
-    setSelectedType(value);
+    setSelectedType(value as "amountOfGames" | "winRate");
   };
 
-  const changeFactionDisplay = (value: "axis" | "allies") => {
+  const changeFactionDisplay = (value: "axis" | "allies" | string) => {
     // firebaseAnalytics.teamCompositionUsed(value, heatmapValues);
-    setSelectedSide(value);
+    setSelectedSide(value as  "axis" | "allies");
   };
 
   // Follows the spaghetti code from coh2 stats. It would be best to completely
@@ -214,7 +214,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
             <Title order={3}>{title}</Title>
           </Card.Section>
           <Card.Section withBorder inheritPadding py="xs">
-            <Text align={"center"}>
+            <Text style={{textAlign: "center"}}>
               Team composition chart is not available on small screens.
             </Text>
           </Card.Section>
@@ -225,7 +225,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
           {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
           <Card.Section withBorder inheritPadding py="xs">
-            <Group position={"apart"}>
+            <Group justify={"apart"}>
               <Title order={3}>{title}</Title>
               <Group>
                 <HelperIcon

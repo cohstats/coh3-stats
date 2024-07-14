@@ -61,7 +61,7 @@ const RankingTiers: NextPage = () => {
             columns={[
               {
                 accessor: "icon",
-                textAlignment: "center",
+                textAlign: "center",
                 title: "",
                 render: ({ url }) => {
                   return (
@@ -71,12 +71,12 @@ const RankingTiers: NextPage = () => {
               },
               {
                 accessor: "name",
-                textAlignment: "left",
+                textAlign: "left",
                 title: "Tier Name",
               },
               {
                 accessor: "min",
-                textAlignment: "center",
+                textAlign: "center",
                 title: "ELO Rating",
                 render: ({ min, max }) => {
                   if (max === 5000) {
@@ -94,7 +94,7 @@ const RankingTiers: NextPage = () => {
               },
               {
                 accessor: "rank",
-                textAlignment: "center",
+                textAlign: "center",
                 title: "Rank",
                 render: ({ rank }) => {
                   if (rank > 0) {

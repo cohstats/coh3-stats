@@ -55,9 +55,9 @@ const RenderPlayers = ({
         const ratingChange = matchHistory.newrating - matchHistory.oldrating;
         let ratingChangeAsElement =
           ratingChange > 0 ? (
-            <Text color={"green"}>+{ratingChange}</Text>
+            <Text c={"green"}>+{ratingChange}</Text>
           ) : ratingChange < 0 ? (
-            <Text color={"red"}>{ratingChange}</Text>
+            <Text c={"red"}>{ratingChange}</Text>
           ) : (
             <Text>{ratingChange}</Text>
           );
@@ -82,7 +82,7 @@ const RenderPlayers = ({
 
         return (
           <div key={playerInfo.profile_id}>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
               <> {ratingElement}</>
               <Anchor
@@ -93,7 +93,7 @@ const RenderPlayers = ({
               >
                 {`${playerInfo.profile_id}` === `${profileID}` ? (
                   <Text fw={700}>
-                    <Group spacing="xs">
+                    <Group gap="xs">
                       {" "}
                       {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
                       <EllipsisText text={playerInfo.profile["alias"]} />
@@ -101,7 +101,7 @@ const RenderPlayers = ({
                   </Text>
                 ) : (
                   <Text>
-                    <Group spacing="xs">
+                    <Group gap="xs">
                       {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
                       <EllipsisText text={playerInfo.profile["alias"]} />
                     </Group>

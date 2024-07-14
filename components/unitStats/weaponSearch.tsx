@@ -10,7 +10,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   ({ image, label, description, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others}>
-      <Group noWrap>
+       <Group wrap="nowrap">
         <Image width={60} height={40} src={image} fit="contain" alt="Weapon Class" />
         <div>
           <Text size="sm">{label}</Text>
@@ -54,7 +54,7 @@ export const WeaponSearch = (props: ISearchProps) => {
       searchable
       maxDropdownHeight={600}
       nothingFound="Nothing here. War is over!"
-      onChange={onSelectionChange}
+      onChange={(value) => onSelectionChange(value as string)}
       value=""
       // filter={(value, selected, item) =>
       //   //@ts-ignore

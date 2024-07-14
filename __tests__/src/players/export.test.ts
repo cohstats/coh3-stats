@@ -13,6 +13,7 @@ describe("generateCSVObject", () => {
     COH3PlayTime: null,
     standings: {
       german: {
+        // @ts-ignore
         "1v1": {
           statgroup_id: 1,
           leaderboard_id: 1,
@@ -35,6 +36,7 @@ describe("generateCSVObject", () => {
       },
       american: {
         "1v1": null,
+        // @ts-ignore
         "2v2": {
           statgroup_id: 2,
           leaderboard_id: 2,

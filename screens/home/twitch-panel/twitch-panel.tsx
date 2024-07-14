@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Grid, Group, MediaQuery, Stack, Text, useMantineColorScheme } from "@mantine/core";
+import { Grid, Group, Stack, Text, useMantineColorScheme } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
 import { isMobileCheck } from "../../../src/utils";
 import config from "../../../config";
+import {useMediaQuery} from "@mantine/hooks";
 
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
   const { colorScheme } = useMantineColorScheme();
   const [player, setPlayer] = useState<any>();
   const [currentChannelIndex, setCurrentChannelIndex] = useState(0);
+  const isSmallScreen = useMediaQuery('(min-width: 56.25em)');
 
   const currentStream = useMemo(() => {
     return twitchStreams && twitchStreams[currentChannelIndex];
@@ -80,23 +82,23 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
 
   return (
     <>
-      <Grid.Col md={3} sm={12}>
+      <Grid.Col span={{md:3, sm: 12}}>
         {twitchStreams && (
           <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
         )}
       </Grid.Col>
       {currentStream && (
-        <Stack spacing={0} pl={"xs"}>
-          <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-            <Group mt={10}>
-              <IconCircle fill="red" color="red" size={10} />
-              <Text fw={600}>{currentStream.user_name}</Text>
-              <Text>{currentStream.viewer_count} viewers</Text>
-            </Group>
-          </MediaQuery>
-          <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-            <Text>{currentStream.title}</Text>
-          </MediaQuery>
+        <Stack gap={0} pl={"xs"}>
+          {!isSmallScreen && (
+            <>
+              <Group mt={10}>
+                <IconCircle fill="red" color="red" size={10} />
+                <Text fw={600}>{currentStream.user_name}</Text>
+                <Text>{currentStream.viewer_count} viewers</Text>
+              </Group>
+              <Text>{currentStream.title}</Text>
+            </>
+          )}
         </Stack>
       )}
     </>

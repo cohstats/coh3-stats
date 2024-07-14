@@ -165,7 +165,8 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
     });
   };
 
-  const selectPatchDate = (value: string) => {
+  const selectPatchDate = (value: string | null) => {
+    if(!value) return;
     const selectedPatch = config.statsPatchSelector[value];
     if (!selectedPatch) return;
     setPatchSelectValue(value);
@@ -364,7 +365,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             }
             defaultValue="all"
             value={(filters && filters[0]) || "all"}
-            onChange={selectEloSimpleFilter}
+            onChange={(value) => selectEloSimpleFilter(value as string)}
             data={ELOFilterDataStats}
             disabled={multiFilter.length > 0}
             w={200}
@@ -374,7 +375,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             size="sm"
             data={segmentedControlGameTypeData}
             value={mode}
-            onChange={selectMode}
+            onChange={(value)=> selectMode(value as "all" | "1v1" | "2v2" | "3v3" | "4v4")}
           />
         </Flex>
 

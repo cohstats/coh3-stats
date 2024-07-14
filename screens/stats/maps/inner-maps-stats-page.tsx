@@ -160,8 +160,8 @@ const InnerMapsStatsPage = ({
     content = (
       <Container size={1230}>
         <Flex gap={"xl"} justify="center">
-          <Group spacing={0}>
-            <Title order={2} align="center" p={"md"}>
+          <Group gap={0}>
+            <Title order={2} style={{textAlign: "center"}} p={"md"}>
               Games analyzed {matchCount.toLocaleString()}
             </Title>
             <HelperIcon
@@ -173,10 +173,10 @@ const InnerMapsStatsPage = ({
             />
           </Group>
         </Flex>
-        <Group spacing={"xl"} position={"apart"}>
+        <Group gap={"xl"} justify={"apart"}>
           <MapChartCard
             title={
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <Text>Maps {mode}</Text>
                 <HelperIcon
                   width={280}
@@ -190,7 +190,7 @@ const InnerMapsStatsPage = ({
           </MapChartCard>
           <MapChartCard
             title={
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <Text>Winrate deviation {mode}</Text>
                 <HelperIcon
                   width={280}
@@ -217,7 +217,7 @@ const InnerMapsStatsPage = ({
           </MapChartCard>
           <MapChartCard
             title={
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <Text>Sides Winrate - diff {mode}</Text>
                 <HelperIcon
                   width={280}
@@ -245,7 +245,7 @@ const InnerMapsStatsPage = ({
 
             {!largeScreen && (
               <Card.Section withBorder inheritPadding py="xs">
-                <Text align={"center"}>
+                <Text style={{textAlign: "center"}}>
                   Winrate diff chart is not available on small screens.
                 </Text>
               </Card.Section>
@@ -253,7 +253,7 @@ const InnerMapsStatsPage = ({
           </Card>
           <MapChartCard
             title={
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <Text>Average Playtime {mode}</Text>
               </Group>
             }
@@ -265,12 +265,12 @@ const InnerMapsStatsPage = ({
         </Flex>
         <InnerMapStatsPage mode={mode} data={analysis} />
 
-        <Text fz="xs" align={"center"} pt={20} c="dimmed">
+        <Text fz="xs" style={{textAlign: "center"}} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
-        <Text fz="xs" align={"center"} c="dimmed">
+        <Text fz="xs" style={{textAlign: "center"}} c="dimmed">
           Applied ELO filters {data.filters ? data.filters?.join(", ") : "none"}
         </Text>
       </Container>

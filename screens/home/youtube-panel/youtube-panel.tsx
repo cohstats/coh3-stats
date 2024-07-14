@@ -27,10 +27,11 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
       m={{ base: 5, sm: "xs" }}
       className={classes.card}
       radius={"md"}
+      withBorder={true}
     >
       <Card.Section pb={4}>
         <AspectRatio ratio={16 / 9}>
-          <Image src={getYoutubeThumbnailUrl(video)} h={150} alt={video.title} />
+          <Image src={getYoutubeThumbnailUrl(video)} h={"auto"} alt={video.title} />
         </AspectRatio>
       </Card.Section>
       <Tooltip.Floating label={video.title} multiline>

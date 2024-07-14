@@ -9,10 +9,10 @@ import {
   Grid,
   Flex,
   Divider,
-  createStyles,
   Space,
   Text,
 } from "@mantine/core";
+//import { createStyles } from '@mantine/emotion';
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../../src/firebase/analytics";
 import { generateKeywordsString } from "../../src/head-utils";
@@ -21,6 +21,7 @@ import DonateSection from "./DonateSection";
 import Link from "next/link";
 import config from "../../config";
 import DataSection from "./DataSection";
+import { useColorScheme } from "@mantine/hooks";
 
 const BugReports = () => {
   return (
@@ -62,24 +63,6 @@ const BugReports = () => {
 
 const keywords = generateKeywordsString(["coh3 stats", "coh3 discord", "bug report", "github"]);
 
-const useStyles = createStyles((theme) => ({
-  link: {
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-  },
-
-  anchor: {
-    display: "block",
-    height: "65px",
-    marginTop: "-65px",
-    visibility: "hidden",
-  },
-
-  menu: {
-    position: "sticky",
-    top: "100px",
-  },
-}));
-
 const sections = [
   { name: "aboutus", menuDisplayName: "About", pageDisplayName: "About", component: <AboutUs /> },
   {
@@ -103,11 +86,11 @@ const sections = [
 ];
 
 const About: NextPage = () => {
+  const colorScheme = useColorScheme();
+
   useEffect(() => {
     AnalyticsAboutAppPageView();
   }, []);
-
-  const { classes } = useStyles();
 
   return (
     <div>
@@ -128,7 +111,14 @@ const About: NextPage = () => {
           {" "}
           <Grid>
             <Grid.Col span={3}>
-              <div className={classes.menu}>
+              <div
+                style={{
+                  display: "block",
+                  height: "65px",
+                  marginTop: "-65px",
+                  visibility: "hidden",
+                }}
+              >
                 {sections.map((x) => {
                   return (
                     <Flex
@@ -137,7 +127,10 @@ const About: NextPage = () => {
                       gap={{ base: "sm", sm: "lg" }}
                     >
                       <div>
-                        <Anchor href={`#${x.name}`} className={classes.link}>
+                        <Anchor
+                          href={`#${x.name}`}
+                          className={colorScheme === "dark" ? "text-white" : "text-black"}
+                        >
                           {x.menuDisplayName}
                         </Anchor>
                         <Divider my="sm" />
@@ -152,7 +145,15 @@ const About: NextPage = () => {
               {sections.map((x, idx) => {
                 return (
                   <div key={x.name}>
-                    <span className={classes.anchor} id={x.name} />
+                    <span
+                      style={{
+                        display: "block",
+                        height: "65px",
+                        marginTop: "-65px",
+                        visibility: "hidden",
+                      }}
+                      id={x.name}
+                    />
                     <Title size="h3" mb="md">
                       {x.pageDisplayName}
                     </Title>

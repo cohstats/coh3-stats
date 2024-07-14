@@ -1,5 +1,4 @@
 import {
-  // createStyles,
   Space,
   Image,
   Text,
@@ -234,7 +233,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
             <NumberInput
               defaultValue={props.weapon_member.num}
               size="xs"
-              onChange={onNumberChanged}
+              onChange={(value)=>  onNumberChanged(value as number)}
               value={props.weapon_member.num}
             />
           </Box>

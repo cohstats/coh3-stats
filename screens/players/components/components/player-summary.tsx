@@ -44,7 +44,7 @@ const PlayerSummary = ({
             }
             position={"bottom"}
           >
-            <Group position={"right"} spacing={"xs"}>
+            <Group justify={"right"} gap={"xs"}>
               <>
                 Best AXIS ELO <Text fw={600}>{bestAxisEloText}</Text>
               </>
@@ -59,17 +59,17 @@ const PlayerSummary = ({
               </>
             }
           >
-            <Group position={"right"} spacing={"xs"}>
+            <Group justify={"right"} gap={"xs"}>
               Best ALLIES ELO <Text fw={600}>{bestAlliesEloText}</Text>
             </Group>
           </Tooltip>
           <Tooltip label={"Win Ratio in leaderboard games only."}>
-            <Group spacing={5} position={"right"}>
+            <Group gap={5} justify={"right"}>
               WR <Text fw={600}>{Math.round(winRate * 100)}%</Text> in{" "}
               <Text fw={600}>{totalGames}</Text>games
             </Group>
           </Tooltip>
-          <Group spacing={4} position="right">
+          <Group gap={4} justify="right">
             <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
           </Group>
         </Text>
