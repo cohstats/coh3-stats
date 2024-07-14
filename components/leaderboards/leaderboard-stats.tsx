@@ -120,10 +120,18 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           title: "1 vs 1",
           render: (value) => {
             if (value["1v1-max"]) {
-              return <Text c={"green"}>{value["1v1"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["1v1"]}{" "}
+                </Text>
+              );
             }
             if (value["1v1-min"]) {
-              return <Text c={"red"}>{value["1v1"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["1v1"]}{" "}
+                </Text>
+              );
             }
             return <>{value["1v1"]}</>;
           },
@@ -134,10 +142,18 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           title: "2 vs 2",
           render: (value) => {
             if (value["2v2-max"]) {
-              return <Text c={"green"}>{value["2v2"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["2v2"]}{" "}
+                </Text>
+              );
             }
             if (value["2v2-min"]) {
-              return <Text c={"red"}>{value["2v2"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["2v2"]}{" "}
+                </Text>
+              );
             }
             return <>{value["2v2"]}</>;
           },
@@ -148,10 +164,18 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           title: "3 vs 3",
           render: (value) => {
             if (value["3v3-max"]) {
-              return <Text c={"green"}>{value["3v3"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["3v3"]}{" "}
+                </Text>
+              );
             }
             if (value["3v3-min"]) {
-              return <Text c={"red"}>{value["3v3"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["3v3"]}{" "}
+                </Text>
+              );
             }
             return <>{value["3v3"]}</>;
           },
@@ -162,10 +186,18 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
           title: "4 vs 4",
           render: (value) => {
             if (value["4v4-max"]) {
-              return <Text c={"green"}>{value["4v4"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["4v4"]}{" "}
+                </Text>
+              );
             }
             if (value["4v4-min"]) {
-              return <Text c={"red"}>{value["4v4"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["4v4"]}{" "}
+                </Text>
+              );
             }
             return <>{value["4v4"]}</>;
           },
