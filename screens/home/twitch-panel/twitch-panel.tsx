@@ -5,7 +5,7 @@ import { TwitchStream } from "../../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
 import { isMobileCheck } from "../../../src/utils";
 import config from "../../../config";
-import {useMediaQuery} from "@mantine/hooks";
+import { useMediaQuery } from "@mantine/hooks";
 
 declare global {
   interface Window {
@@ -21,7 +21,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
   const { colorScheme } = useMantineColorScheme();
   const [player, setPlayer] = useState<any>();
   const [currentChannelIndex, setCurrentChannelIndex] = useState(0);
-  const isSmallScreen = useMediaQuery('(min-width: 56.25em)');
+  const isBigScreen = useMediaQuery("(min-width: 56.25em)");
 
   const currentStream = useMemo(() => {
     return twitchStreams && twitchStreams[currentChannelIndex];
@@ -82,14 +82,14 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
 
   return (
     <>
-      <Grid.Col span={{md:3, sm: 12}}>
+      <Grid.Col span={{ md: 3, sm: 12 }}>
         {twitchStreams && (
           <ChannelList onChangeChannel={handleChangeChannel} twitchStreams={twitchStreams} />
         )}
       </Grid.Col>
       {currentStream && (
         <Stack gap={0} pl={"xs"}>
-          {!isSmallScreen && (
+          {isBigScreen && (
             <>
               <Group mt={10}>
                 <IconCircle fill="red" color="red" size={10} />
