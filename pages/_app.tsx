@@ -1,10 +1,10 @@
-import '@mantine/core/styles.css';
-import 'mantine-datatable/styles.layer.css';
+import "@mantine/core/styles.layer.css";
+import "mantine-datatable/styles.layer.css";
 
 import { AppProps } from "next/app";
 import Router from "next/router";
 import Head from "next/head";
-import {localStorageColorSchemeManager, MantineProvider} from "@mantine/core";
+import { localStorageColorSchemeManager, MantineProvider } from "@mantine/core";
 // import { Notifications } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
@@ -19,6 +19,8 @@ import DevSiteNotification from "../components/dev-site-notification";
 import { useServiceWorker } from "@edgio/react";
 import { Metrics } from "@edgio/rum";
 
+import "./layout.css";
+
 webFirebase.init();
 
 NProgress.configure({ showSpinner: false });
@@ -28,7 +30,7 @@ export default function App(props: AppProps) {
 
   const colorSchemeManager = localStorageColorSchemeManager({
     key: "mantine-color-scheme",
-  })
+  });
 
   new Metrics({
     token: "63a45f52-3972-4ed0-8867-4e762860a563", // Get your token from the Edgio Console
@@ -72,9 +74,6 @@ export default function App(props: AppProps) {
   // switch colorscheme
   // const toggleColorScheme = (value?: ColorScheme) =>
   //   setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-
-
 
   useEffect(() => {
     Router.events.on("routeChangeStart", (url, { shallow }) => {
@@ -144,14 +143,11 @@ export default function App(props: AppProps) {
         />
       </Head>
 
-        <MantineProvider
-          defaultColorScheme="dark"
-          colorSchemeManager={colorSchemeManager}
-          >
-          {/*<Notifications />*/}
-          {layoutContent && contentWithLayout}
-          {!layoutContent && contentWithoutLayout}
-        </MantineProvider>
+      <MantineProvider defaultColorScheme="dark" colorSchemeManager={colorSchemeManager}>
+        {/*<Notifications />*/}
+        {layoutContent && contentWithLayout}
+        {!layoutContent && contentWithoutLayout}
+      </MantineProvider>
 
       {/*<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>*/}
       {/*  <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>*/}
