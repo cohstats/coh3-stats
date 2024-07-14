@@ -13,16 +13,15 @@ const MoreButton: React.FC<MyButtonProps> = ({ onClick }) => {
   return (
     <Button
       w={"65px"}
-      compact
       variant={"default"}
-      size={"xs"}
+      size={"compact-xs"}
       style={{
         fontWeight: "normal",
         color: darkTheme ? theme.colors.gray[3] : theme.colors.gray[8],
       }}
       onClick={onClick}
     >
-      <Group spacing={4}>
+      <Group gap={4}>
         <IconCirclePlus size={"13"} />
         More
       </Group>

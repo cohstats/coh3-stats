@@ -67,18 +67,18 @@ export const UnitSquadCard = ({
 }: UnitSquadInput) => {
   return (
     <Stack>
-      <Stack spacing={4}>
-        <Title order={6} transform="uppercase">
+      <Stack gap={4}>
+        <Title order={6} style={{"textTransform": "uppercase"}}>
           {id}
         </Title>
-        <Text color="yellow.5" transform="capitalize">
+        <Text c="yellow.5" style={{"textTransform": "capitalize"}}>
           {type}
         </Text>
       </Stack>
       <Grid fz="sm" columns={12} align="center" gutter="xs">
-        <Grid.Col span={6} md={4}>
+        <Grid.Col span={{base: 6, md: 4}}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
+            <Group gap={4}>
               <ImageWithFallback
                 height={32}
                 width={32}
@@ -88,13 +88,13 @@ export const UnitSquadCard = ({
               ></ImageWithFallback>
               <Text>Sight Range</Text>
             </Group>
-            <Text align="end">{sight?.outerRadius || 0.0}</Text>
+            <Text style={{"textAlign": "end"}}>{sight?.outerRadius || 0.0}</Text>
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={6} md={4}>
+        <Grid.Col span={{base: 6, md: 4}}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
+            <Group gap={4}>
               <ImageWithFallback
                 height={32}
                 width={32}
@@ -104,14 +104,14 @@ export const UnitSquadCard = ({
               ></ImageWithFallback>
               <Text>Speed</Text>
             </Group>
-            <Text align="end">{moving?.defaultSpeed || 0.0}</Text>
+            <Text style={{"textAlign": "end"}}>{moving?.defaultSpeed || 0.0}</Text>
           </Flex>
         </Grid.Col>
 
         {type === "vehicles" ? (
-          <Grid.Col span={6} md={4}>
+          <Grid.Col span={{base: 6, md: 4}}>
             <Flex gap={4} align="center" justify="space-between">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <ImageWithFallback
                   height={32}
                   width={32}
@@ -121,7 +121,7 @@ export const UnitSquadCard = ({
                 ></ImageWithFallback>
                 <Text>Acceleration</Text>
               </Group>
-              <Text align="end">{moving?.acceleration || 0.0}</Text>
+             <Text style={{"textAlign": "end"}}>{moving?.acceleration || 0.0}</Text>
             </Flex>
           </Grid.Col>
         ) : (
@@ -129,9 +129,9 @@ export const UnitSquadCard = ({
         )}
 
         {type === "vehicles" ? (
-          <Grid.Col span={6} md={4}>
+          <Grid.Col span={{base: 6, md: 4}}>
             <Flex gap={4} align="center" justify="space-between">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <ImageWithFallback
                   height={32}
                   width={32}
@@ -141,16 +141,16 @@ export const UnitSquadCard = ({
                 ></ImageWithFallback>
                 <Text>Deceleration</Text>
               </Group>
-              <Text align="end">{moving?.deceleration || 0.0}</Text>
+             <Text style={{"textAlign": "end"}}>{moving?.deceleration || 0.0}</Text>
             </Flex>
           </Grid.Col>
         ) : (
           <></>
         )}
 
-        <Grid.Col span={6} md={4}>
+        <Grid.Col span={{base: 6, md: 4}}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
+            <Group gap={4}>
               <ImageWithFallback
                 height={32}
                 width={32}
@@ -160,13 +160,13 @@ export const UnitSquadCard = ({
               ></ImageWithFallback>
               <Text>Max Range</Text>
             </Group>
-            <Text align="end">{range?.max || 0}</Text>
+           <Text style={{"textAlign": "end"}}>{range?.max || 0}</Text>
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={6} md={4}>
+        <Grid.Col span={{base: 6, md: 4}}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
+            <Group gap={4}>
               <ImageWithFallback
                 height={32}
                 width={32}
@@ -176,14 +176,14 @@ export const UnitSquadCard = ({
               ></ImageWithFallback>
               <Text>Target Size</Text>
             </Group>
-            <Text align="end">{health?.targetSize || 0}</Text>
+           <Text style={{"textAlign": "end"}}>{health?.targetSize || 0}</Text>
           </Flex>
         </Grid.Col>
 
         {type !== "vehicles" ? (
           <Grid.Col span={4}>
             <Flex gap={4} align="center" justify="space-between">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <ImageWithFallback
                   height={32}
                   width={32}
@@ -193,16 +193,16 @@ export const UnitSquadCard = ({
                 ></ImageWithFallback>
                 <Text>Armor</Text>
               </Group>
-              <Text align="end">{health?.armor || 0}</Text>
+             <Text style={{"textAlign": "end"}}>{health?.armor || 0}</Text>
             </Flex>
           </Grid.Col>
         ) : (
           <></>
         )}
 
-        <Grid.Col span={6} md={4}>
+        <Grid.Col span={{base: 6, md: 4}}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
+            <Group gap={4}>
               <ImageWithFallback
                 height={32}
                 width={32}
@@ -212,13 +212,13 @@ export const UnitSquadCard = ({
               ></ImageWithFallback>
               <Text>Capture Multiplier</Text>
             </Group>
-            <Text align="end">{capture?.cap || 0.0}</Text>
+           <Text style={{"textAlign": "end"}}>{capture?.cap || 0.0}</Text>
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={6} md={4}>
+        <Grid.Col span={{base: 6, md: 4}}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group spacing={4}>
+            <Group gap={4}>
               <ImageWithFallback
                 height={32}
                 width={32}
@@ -228,7 +228,7 @@ export const UnitSquadCard = ({
               ></ImageWithFallback>
               <Text>Decapture Multiplier</Text>
             </Group>
-            <Text align="end">{capture?.decap || 0.0}</Text>
+           <Text style={{"textAlign": "end"}}>{capture?.decap || 0.0}</Text>
           </Flex>
         </Grid.Col>
       </Grid>

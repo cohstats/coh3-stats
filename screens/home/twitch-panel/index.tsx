@@ -17,7 +17,7 @@ const TwitchContainer = ({ twitchStreams, error }: Props) => {
   const renderPanel = () => {
     if (!twitchStreams || twitchStreams.length === 0) {
       return (
-        <Grid.Col md={12} sm={12} style={{ height: "100%" }}>
+        <Grid.Col span={{base: 12}} style={{ height: "100%" }}>
           <Box
             style={{
               position: "relative",
@@ -34,7 +34,7 @@ const TwitchContainer = ({ twitchStreams, error }: Props) => {
       );
     } else {
       return (
-        <Grid.Col md={9} sm={12}>
+        <Grid.Col span={{md: 9, sm: 12}}>
           {/*This is trick to have 16:9 aspect ratio but have 0 CLS*/}
           <Box style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
             <div

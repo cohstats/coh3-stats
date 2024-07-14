@@ -107,7 +107,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
           theme={getNivoTooltipTheme(colorScheme)}
         />
       </div>
-      <Group position={"right"}>
+      <Group justify={"right"}>
         <Select
           style={{ width: 170, marginRight: 30 }}
           label="Display data for the last"

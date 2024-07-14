@@ -1,4 +1,4 @@
-import { ActionIcon, Sx, Tooltip } from "@mantine/core";
+import { ActionIcon, Tooltip } from "@mantine/core";
 import React, { MouseEventHandler } from "react";
 
 export interface IconButtonProps {
@@ -6,7 +6,7 @@ export interface IconButtonProps {
   className?: string;
   children?: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  sx?: Sx | (Sx | undefined)[];
+  style?: React.CSSProperties;
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -14,7 +14,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   children,
   className,
   onClick,
-  sx,
+  style,
 }) => (
   <>
     <Tooltip label={label}>
@@ -24,7 +24,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
         variant="default"
         radius="md"
         className={className}
-        sx={sx}
+        style={style}
         aria-label={label?.toString()}
       >
         {children}

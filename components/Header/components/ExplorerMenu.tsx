@@ -29,33 +29,33 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
   const name = faction !== "dak" ? localizedNames[faction] : "DAK";
 
   return (
-    <Stack spacing={4}>
+    <Stack gap={4}>
       <Flex direction="row" align="center" gap={"xs"}>
         <FactionIcon name={faction} width={22} />
         <Anchor
-          color="orange"
+          c="orange"
           component={LinkWithOutPrefetch}
           href={getExplorerFactionRoute(faction)}
           onClick={close}
         >
-          <Text lineClamp={1} weight={500}>
+          <Text lineClamp={1} fw={500}>
             {name}
           </Text>
         </Anchor>
       </Flex>
       <Divider></Divider>
-      <Stack spacing={4}>
-        <Group spacing={4}>
+      <Stack gap={4}>
+        <Group gap={4}>
           <Image
             width={20}
             height={20}
             fit="contain"
             src={getIconsPathOnCDN(`/icons/races/common/symbols/building_hq.webp`)}
             alt=""
-            withPlaceholder
+            fallbackSrc={"https://placehold.co/20x20?text=X"}
           />
           <Anchor
-            color="orange"
+            c="orange"
             component={LinkWithOutPrefetch}
             href={getExplorerFactionRoute(faction)}
             onClick={close}
@@ -63,17 +63,17 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
             Buildings
           </Anchor>
         </Group>
-        <Group spacing={4}>
+        <Group gap={4}>
           <Image
             width={20}
             height={20}
             fit="contain"
             src={getIconsPathOnCDN(`/icons/races/common/symbols/building_barracks.webp`)}
             alt=""
-            withPlaceholder
+            fallbackSrc={"https://placehold.co/20x20?text=X"}
           />
           <Anchor
-            color="orange"
+            c="orange"
             component={LinkWithOutPrefetch}
             href={getExplorerFactionUnitsRoute(faction)}
             onClick={close}
@@ -88,18 +88,18 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
 
 const DPSLink = ({ close }: { close: () => void }) => {
   return (
-    <Group spacing={4}>
+    <Group gap={4}>
       <Image
         width={20}
         height={20}
         fit="contain"
         src={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
         alt=""
-        withPlaceholder
+        fallbackSrc={"https://placehold.co/20x20?text=X"}
       />
-      <Text weight={500}>
+      <Text fw={500}>
         <Anchor
-          color="orange"
+          c="orange"
           component={LinkWithOutPrefetch}
           href={getDPSCalculatorRoute()}
           onClick={close}
@@ -113,18 +113,18 @@ const DPSLink = ({ close }: { close: () => void }) => {
 
 const UnitBrowserLink = ({ close }: { close: () => void }) => {
   return (
-    <Group spacing={4}>
+    <Group gap={4}>
       <Image
         width={20}
         height={20}
         fit="contain"
         src={internalSlash("/unitStats/weaponClass/supportinfantry_icn.png")}
         alt=""
-        withPlaceholder
+        fallbackSrc={"https://placehold.co/20x20?text=X"}
       />
-      <Text weight={500}>
+      <Text fw={500}>
         <Anchor
-          color="orange"
+          c="orange"
           component={LinkWithOutPrefetch}
           href={getUnitBrowserRoute()}
           onClick={close}
@@ -138,11 +138,11 @@ const UnitBrowserLink = ({ close }: { close: () => void }) => {
 
 const ChallengesLink = ({ close }: { close: () => void }) => {
   return (
-    <Group spacing={4}>
+    <Group gap={4}>
       <IconMedal size={20} />
-      <Text weight={500}>
+      <Text fw={500}>
         <Anchor
-          color="orange"
+          c="orange"
           component={LinkWithOutPrefetch}
           href={getChallengesRoute()}
           onClick={close}
@@ -155,11 +155,9 @@ const ChallengesLink = ({ close }: { close: () => void }) => {
 };
 
 const ExplorerMenu = ({
-  cx,
   classes,
   close,
 }: {
-  cx: (...args: any) => string;
   classes: Record<string, string>;
   close: () => void;
 }) => {
@@ -167,7 +165,7 @@ const ExplorerMenu = ({
     <Group className={classes.hiddenDesktop} grow>
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
-          <Accordion.Control className={cx(classes.link)}>
+          <Accordion.Control className={classes.link}>
             <Text fw="bold">Explorer</Text>
           </Accordion.Control>
           <Accordion.Panel>
@@ -178,8 +176,8 @@ const ExplorerMenu = ({
               {explorerFactionLink("british", close)}
             </Stack>
             <Divider my="sm"></Divider>
-            <Stack spacing={4}>
-              <Text weight={700}>Tools</Text>
+            <Stack gap={4}>
+              <Text fw={700}>Tools</Text>
               <DPSLink close={close} />
               <UnitBrowserLink close={close} />
               <ChallengesLink close={close} />
@@ -194,14 +192,14 @@ const ExplorerMenu = ({
     <Group className={classes.hiddenMobile}>
       <HoverCard width={840} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
-          <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={cx(classes.link)}>
-            <Group spacing={3}>
+          <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={classes.link}>
+            <Group gap={3}>
               <Text>Explorer</Text>
               <IconChevronDown className={classes.hiddenMobile} size={16} />
             </Group>
           </Anchor>
         </HoverCard.Target>
-        <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
+        <HoverCard.Dropdown style={{ overflow: "hidden" }}>
           <Grid gutter={8} columns={4}>
             <Grid.Col span={3}>
               <Grid columns={4} align="center">
@@ -212,8 +210,8 @@ const ExplorerMenu = ({
               </Grid>
             </Grid.Col>
             <Grid.Col span={1}>
-              <Stack spacing={4}>
-                <Text weight={700}>Tools</Text>
+              <Stack gap={4}>
+                <Text fw={700}>Tools</Text>
                 <Divider />
                 <DPSLink close={() => null} />
                 <UnitBrowserLink close={() => null} />

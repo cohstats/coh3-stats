@@ -227,7 +227,7 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
           <Title>Latest Company Of Heroes 3 News</Title>
           <Space h={"lg"} />
           {items}
-          <Text align={"center"} fs={"italic"} c="dimmed">
+          <Text style={{textAlign: "center"}} fs={"italic"} c="dimmed">
             Source: Official Relic Steam News for COH3
             <br />
             You can find all the articles on{" "}

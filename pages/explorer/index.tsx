@@ -16,7 +16,7 @@ const explorerFactionLink = (faction: raceType) => {
     <Flex direction="row" justify="space-between" align="center">
       <Flex direction="row" align="center" gap="md">
         <FactionIcon name={faction} width={64} />
-        <Text weight="bold">{localizedNames[faction]}</Text>
+        <Text fw="bold">{localizedNames[faction]}</Text>
       </Flex>
       <IconChevronRight size={16} />
     </Flex>
@@ -52,8 +52,8 @@ const Explorer: NextPage = () => {
               return (
                 <Anchor
                   key={`explorer_${faction}`}
-                  color="undefined"
-                  underline={false}
+                  c="undefined"
+                  underline={"never"}
                   component={LinkWithOutPrefetch}
                   href={getExplorerFactionRoute(faction)}
                 >

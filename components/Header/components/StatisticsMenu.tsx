@@ -18,11 +18,9 @@ import {
 } from "@tabler/icons-react";
 
 const StatisticsMenu = ({
-  cx,
   classes,
   close,
 }: {
-  cx: (...args: any) => string;
   classes: Record<string, string>;
   close: () => void;
 }) => {
@@ -30,36 +28,36 @@ const StatisticsMenu = ({
     <div className={classes.hiddenDesktop}>
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
-          <Accordion.Control className={cx(classes.link)}>
+          <Accordion.Control className={classes.link}>
             <Text fw="bold">Statistics</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconChartAreaLine size={16} />
                 <Anchor component={Link} href={getGameStatsRoute()} onClick={close}>
                   Games Stats
                 </Anchor>
               </Group>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconChartArea size={16} />
                 <Anchor component={Link} href={getMapsStatsRoute()} onClick={close}>
                   Maps Stats
                 </Anchor>
               </Group>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconUsersGroup size={16} />
                 <Anchor component={Link} href={getPlayersStatsRoute()} onClick={close}>
                   Player Stats
                 </Anchor>
               </Group>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconDeviceDesktopAnalytics size={16} />
                 <Anchor component={Link} href={getLeaderBoardStatsRoute()} onClick={close}>
                   Leaderboards Stats
                 </Anchor>
               </Group>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconTrophy size={16} />
                 <Anchor component={Link} href={getGlobalAchievementsStatsRoute()} onClick={close}>
                   Achievements Stats
@@ -77,39 +75,39 @@ const StatisticsMenu = ({
       <HoverCard width={220} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <div>
-            <Group spacing={3} className={cx(classes.link)}>
+            <Group gap={3} className={classes.link}>
               Statistics
               <IconChevronDown size={16} />
             </Group>
           </div>
         </HoverCard.Target>
-        <HoverCard.Dropdown sx={{ overflow: "hidden" }} style={{ textAlign: "left" }}>
+        <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden" }}>
           <Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconChartAreaLine size={16} />
               <Anchor component={Link} href={getGameStatsRoute()}>
                 Games Stats
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconChartArea size={16} />
               <Anchor component={Link} href={getMapsStatsRoute()}>
                 Maps Stats
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconUsersGroup size={16} />
               <Anchor component={Link} href={getPlayersStatsRoute()}>
                 Players Stats
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconDeviceDesktopAnalytics size={16} />
               <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
                 Leaderboards Stats
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconTrophy size={16} />
               <Anchor component={Link} href={getGlobalAchievementsStatsRoute()}>
                 Achievements Stats
@@ -121,7 +119,7 @@ const StatisticsMenu = ({
             {/*    component={Link}*/}
             {/*    href={getLeaderBoardStatsRoute()}*/}
             {/*  >*/}
-            {/*    <Group spacing={"xs"}>*/}
+            {/*    <Group gap={"xs"}>*/}
             {/*      <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">*/}
             {/*        <IconBarrierBlock size={16} />*/}
             {/*      </ActionIcon>*/}

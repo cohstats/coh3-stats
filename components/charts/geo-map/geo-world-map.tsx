@@ -19,7 +19,7 @@ const columns = [
     render: ({ name, key }: { name: string; key: string }) => {
       return (
         <>
-          <Group spacing="xs">
+          <Group gap="xs">
             <CountryFlag countryCode={key} size={"xs"} />
             {name}
           </Group>
@@ -30,7 +30,7 @@ const columns = [
   {
     accessor: "value",
     title: "Players",
-    textAlignment: "right",
+    textAlign: "right",
     render: ({ value }: { value: number }) => {
       return value.toLocaleString();
     },

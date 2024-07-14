@@ -13,7 +13,7 @@ import {
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
-import { ProcessedMatch, raceID } from "../../../src/coh3/coh3-types";
+import {PlayerReport, ProcessedMatch, raceID} from "../../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../../src/coh3/helpers";
 import ErrorCard from "../../../components/error-card";
 import FactionIcon from "../../../components/faction-icon";
@@ -158,6 +158,7 @@ const PlayerRecentMatchesTab = ({
     setFilters(updatedFilters);
   };
 
+
   return (
     <>
       <Flex justify={"end"} pb={"xs"}>
@@ -177,6 +178,7 @@ const PlayerRecentMatchesTab = ({
         verticalSpacing="sm"
         minHeight={300}
         // provide data
+        // @ts-ignore
         records={sortedData}
         // define columns
         sortStatus={sortStatus}
@@ -185,7 +187,7 @@ const PlayerRecentMatchesTab = ({
           {
             accessor: "Played",
             sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             width: 120,
             render: (record) => {
               const player = getPlayerMatchHistoryResult(record, profileID);
@@ -209,7 +211,7 @@ const PlayerRecentMatchesTab = ({
                 onReset={() => handleFilterReset("result")}
               />
             ),
-            textAlignment: "center",
+            textAlign: "center",
             render: (record) => {
               const playerResult = getPlayerMatchHistoryResult(record, profileID);
               const ratingChange =
@@ -252,18 +254,18 @@ const PlayerRecentMatchesTab = ({
             accessor: "axis_players",
             title: "Axis Players",
             titleStyle: { textAlign: "left" },
-            textAlignment: "center",
+            textAlign: "center",
             width: "50%",
             render: (record) => {
               const axisPlayers = getMatchPlayersByFaction(
-                record.matchhistoryreportresults,
+                record.matchhistoryreportresults as PlayerReport[],
                 "axis",
               );
               return (
                 <RenderPlayers
                   playerReports={axisPlayers}
                   profileID={profileID}
-                  matchType={record.matchtype_id}
+                  matchType={record.matchtype_id as number}
                   renderFlag={showCountryFlag === "true"}
                 />
               );
@@ -273,18 +275,18 @@ const PlayerRecentMatchesTab = ({
             accessor: "allies_players",
             title: "Allies Players",
             titleStyle: { textAlign: "left" },
-            textAlignment: "center",
+            textAlign: "center",
             width: "50%",
             render: (record) => {
               const alliesPlayers = getMatchPlayersByFaction(
-                record.matchhistoryreportresults,
+                record.matchhistoryreportresults as PlayerReport[],
                 "allies",
               );
               return (
                 <RenderPlayers
                   playerReports={alliesPlayers}
                   profileID={profileID}
-                  matchType={record.matchtype_id}
+                  matchType={record.matchtype_id as number}
                   renderFlag={showCountryFlag === "true"}
                 />
               );
@@ -301,7 +303,7 @@ const PlayerRecentMatchesTab = ({
               />
             ),
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: (record) => {
               return <RenderMap mapName={record.mapname} />;
             },
@@ -317,7 +319,7 @@ const PlayerRecentMatchesTab = ({
             ),
             accessor: "matchtype_id",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ matchtype_id }) => {
               const matchType =
                 matchTypesAsObject[matchtype_id]["localizedName"] ||
@@ -330,7 +332,7 @@ const PlayerRecentMatchesTab = ({
             title: "Match duration",
             accessor: "match_duration",
             sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ startgametime, completiontime }) => {
               return <p>{getMatchDuration(startgametime, completiontime)}</p>;
             },
@@ -360,12 +362,12 @@ const PlayerRecentMatchesTab = ({
       />
       <Space h={5} />
       <Group
-        position={"apart"}
+        justify={"apart"}
         style={{ alignItems: "flex-start", paddingRight: 5, paddingLeft: 5 }}
       >
         <Text size={"sm"}>Data provided by Relic</Text>
-        <Stack align="flex-end" spacing="xs">
-          <Group spacing={5} position={"right"}>
+        <Stack align="flex-end" gap="xs">
+          <Group gap={5} justify={"right"}>
             <IconInfoCircle size={18} />
             <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
           </Group>

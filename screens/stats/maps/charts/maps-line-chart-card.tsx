@@ -66,7 +66,7 @@ const MapsLineChartCard = ({
   return (
     <Card p="md" shadow="sm" w={1270} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
-        <Group position={"apart"}>
+        <Group justify={"apart"}>
           <Group>
             <Title order={3}>{title}</Title>
             <HelperIcon width={360} text={helperText} />
