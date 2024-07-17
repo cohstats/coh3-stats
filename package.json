@@ -59,7 +59,7 @@
     "@nivo/radar": "0.87.0",
     "@nivo/sunburst": "0.87.0",
     "@sentry/nextjs": "8.5.0",
-    "@tabler/icons-react": "3.10.0",
+    "@tabler/icons-react": "3.11.0",
     "chart.js": "4.4.3",
     "dayjs": "1.11.11",
     "embla-carousel-autoplay": "8.1.5",
