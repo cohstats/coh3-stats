@@ -72,10 +72,16 @@ const mapChallengeBag = (root: any, challenge: ChallengesType) => {
 
   /* --------- COUNTERS SECTION --------- */
   for (const cItem of challengeBag.counters) {
-    const triggerRules = cItem.counter.trigger_rules;
+    const triggerRules = Array.isArray(cItem?.counter?.trigger_rules)
+      ? cItem.counter.trigger_rules
+      : [];
     for (const trRule of triggerRules) {
-      const ruleReqValues = trRule.rule.requirement.values;
-      const ruleReqReq = trRule.rule.requirement.requirements;
+      const ruleReqValues = Array.isArray(trRule.rule.requirement.values)
+        ? trRule.rule.requirement.values
+        : [];
+      const ruleReqReq = Array.isArray(trRule.rule.requirement.requirements)
+        ? trRule.rule.requirement.requirements
+        : [];
 
       for (const rrVal of ruleReqValues) {
         // Check the template reference value.
@@ -155,7 +161,7 @@ const mapChallengeBag = (root: any, challenge: ChallengesType) => {
         const reqTempRef = rrReq.requirement.template_reference.value;
 
         switch (reqTempRef) {
-          case "challenges\\requirement":
+          case "challenges\\values_requirement":
             if (!rrReq.requirement.values.length) {
               continue;
             }
