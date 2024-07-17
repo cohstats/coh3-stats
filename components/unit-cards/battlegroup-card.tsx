@@ -318,8 +318,8 @@ const BattlegroupBranchMapping = (
         }
         const rowNumber = parseInt(rowIndex);
         return (
-          <Stack spacing={0} w="100%">
-            <Grid key={`${rowIndex}_${branch.name}`} columns={branchUpgrades.length} w="100%">
+          <Stack key={`${rowIndex}_${branch.name}`} spacing={0} w="100%">
+            <Grid columns={branchUpgrades.length} w="100%">
               {branchUpgrades.map(({ upg, ability, spawnItems }) => {
                 return (
                   <Grid.Col
