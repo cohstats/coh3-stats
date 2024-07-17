@@ -40,7 +40,7 @@ const InnerWinRateLineChartCard = ({
   return (
     <Card p="md" shadow="sm" w={width} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
-        <Group position={"apart"}>
+        <Group justify={"apart"}>
           <Group>
             <Title order={3}>{title}</Title>
             <HelperIcon

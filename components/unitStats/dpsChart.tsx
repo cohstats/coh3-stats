@@ -280,7 +280,7 @@ export const DpsChart = (props: IDPSProps) => {
 
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
-  setScreenOptions(options, isLargeScreen);
+  setScreenOptions(options, Boolean(isLargeScreen));
 
   // create selection List
   if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
@@ -494,10 +494,10 @@ export const DpsChart = (props: IDPSProps) => {
         <Space h="xl" />
         <>
           <Grid>
-            <Grid.Col md={6} lg={6}>
+            <Grid.Col span={{md: 6, lg: 6}}>
               <Grid>
                 <Grid.Col span={6}>
-                  <Group noWrap>
+                   <Group wrap="nowrap">
                     {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
                   </Group>
                 </Grid.Col>
@@ -566,15 +566,15 @@ export const DpsChart = (props: IDPSProps) => {
               </div>
             </Grid.Col>
 
-            <Grid.Col md={6} lg={6}>
+            <Grid.Col span={{md: 6, lg: 6}}>
               {/* <SimpleGrid cols={2}> */}
               <Grid>
-                <Grid.Col md={6} lg={6}>
-                  <Group noWrap>
+                <Grid.Col span={{md: 6, lg: 6}}>
+                   <Group wrap="nowrap">
                     {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
                   </Group>
                 </Grid.Col>
-                <Grid.Col md={6} lg={6}>
+                <Grid.Col span={{md: 6, lg: 6}}>
                   <Flex
                     // mih={50}
                     // gap="xs"
@@ -670,13 +670,13 @@ export const DpsChart = (props: IDPSProps) => {
           <Line ref={chartRef as any} options={options as any} data={chartData as any} />
         </Box>
         <Space h="sm" />
-        <Text color={"dimmed"} pl={5} fs="italic">
+        <Text c={"dimmed"} pl={5} fs="italic">
           * Computation results are based on approximation models using stats from the game files.
           Values allow us to benchmark the performance in comparison to other units. Values are
           relative to opponent selection, E.g. small arms DPS against armor will be lower than vs
           infantry. Values do not necessarily reflect the average time to kill (ttk) in game.
         </Text>
-        <Text color={"dimmed"} pl={5} fs="italic">
+        <Text c={"dimmed"} pl={5} fs="italic">
           ** Area and balistic DPS (Eg. by Mortar, Tank Guns..) are experimental approximations
           respecting scatter, penetration and target size. Some informations like box sizes of
           units are not accessible. Also, squads formations and densities are unknown. The

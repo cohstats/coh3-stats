@@ -98,9 +98,9 @@ const ActivityCalendarDay = ({
               paddingRight: "10px",
             }}
           >
-            <Group spacing={"xs"}>
-              {day}: <Text color={"green"}> {data.wins} W</Text> -{" "}
-              <Text color={"red"}> {data.losses} L</Text>
+            <Group gap={"xs"}>
+              {day}: <Text c={"green"}> {data.wins} W</Text> -{" "}
+              <Text c={"red"}> {data.losses} L</Text>
             </Group>
           </div>
         );

@@ -9,7 +9,6 @@ import {
   Anchor,
   ActionIcon,
   Flex,
-  createStyles,
   Tooltip,
   Select,
   HoverCard,
@@ -123,8 +122,8 @@ const BattlegroupBranchMapping = (
 
     return (
       <Anchor
-        color="undefined"
-        underline={false}
+        c="undefined"
+        underline={"never"}
         sx={{
           "&:hover": {
             textDecoration: "none",
@@ -140,7 +139,7 @@ const BattlegroupBranchMapping = (
 
   return (
     <Stack align="center">
-      <Title order={4} color="orange.5" transform="uppercase">
+      <Title order={4} c="orange.5" style={{textTransform: "uppercase"}}>
         {branch.name}
       </Title>
 
@@ -232,7 +231,7 @@ export const BattlegroupCard = (
             <Divider my={12} size="md"></Divider>
 
             <Grid columns={2} gutter={0}>
-              <Grid.Col md={value}>
+              <Grid.Col span={{md: value}}>
                 <Accordion p={0} chevronPosition="right">
                   <Accordion.Item value="left_branch">
                     <Accordion.Control>
@@ -245,7 +244,7 @@ export const BattlegroupCard = (
                 </Accordion>
               </Grid.Col>
 
-              <Grid.Col md={value}>
+              <Grid.Col span={{md: value}}>
                 <Accordion p={0} chevronPosition="right">
                   <Accordion.Item value="right_branch">
                     <Accordion.Control>

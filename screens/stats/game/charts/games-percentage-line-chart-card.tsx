@@ -67,7 +67,7 @@ const GamesPercentageLineChartCard = ({
   return (
     <Card p="md" shadow="sm" w={1270} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
-        <Group position={"apart"}>
+        <Group justify={"apart"}>
           <Group>
             <Title order={3}>Faction popularity over time {mode}</Title>
             <HelperIcon

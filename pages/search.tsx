@@ -63,7 +63,7 @@ const Search: NextPage<{
               <Flex gap="sm" wrap={"wrap"} justify="center">
                 {data.length === 0 && (
                   <Text c={"dimmed"}>
-                    <Stack align={"center"} spacing={"xs"}>
+                    <Stack align={"center"} gap={"xs"}>
                       <IconDatabaseOff />
                       <div>No players found</div>
                     </Stack>
@@ -102,7 +102,7 @@ const Search: NextPage<{
       <Container size={"lg"}>
         <Center>
           <Input
-            icon={<IconSearch />}
+            leftSection={<IconSearch />}
             w={400}
             radius={"md"}
             defaultValue={searchValue}

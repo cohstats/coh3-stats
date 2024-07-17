@@ -5,6 +5,7 @@ import { getNivoTooltipTheme } from "../charts-components-utils";
 import { generateWeeklyAverages, getMinMaxValues } from "../../../src/charts/utils";
 
 const PlayersLineChart = ({ data }: { data: Array<any> }) => {
+  // This hook works only because all charts are client side rendered
   const { colorScheme } = useMantineColorScheme();
   const [range, setRange] = useState<string>("month");
 
@@ -107,11 +108,12 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
           theme={getNivoTooltipTheme(colorScheme)}
         />
       </div>
-      <Group position={"right"}>
+      <Group justify={"right"}>
         <Select
           style={{ width: 170, marginRight: 30 }}
           label="Display data for the last"
           value={range}
+          withCheckIcon={false}
           onChange={(value) => setRange(value as string)}
           data={[
             { value: "month", label: "Month" },

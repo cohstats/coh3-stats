@@ -1,4 +1,5 @@
-import { Paper, Title, Group, Text, Avatar, Tooltip, createStyles } from "@mantine/core";
+import { Paper, Title, Group, Text, Avatar, Tooltip } from "@mantine/core";
+//import { createStyles } from '@mantine/emotion';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -23,29 +24,29 @@ const ModeOverview: React.FC<ModeOverviewProps> = ({ mode, rank, streak, wins, l
   return (
     <>
       <Paper className={classes.inner} radius="md" px="lg" py={3} mt={6}>
-        <Group position="apart">
+        <Group justify="apart">
           <Text size="sm" pr="md">
             {mode}
           </Text>
           <Tooltip label="Rank">
-            <Text size="sm" weight={700}>
+            <Text size="sm" fw={700}>
               {rank !== undefined && rank > -1 ? <>#{rank}</> : <>-</>}
             </Text>
           </Tooltip>
           <Tooltip label="Win/Lose Streak">
             {streak !== undefined ? (
-              <Text size="sm" color={streak > 0 ? "green" : "red"} weight={700}>
+              <Text size="sm" c={streak > 0 ? "green" : "red"} fw={700}>
                 {streak > 0 ? "+" : null}
                 {streak}
               </Text>
             ) : (
-              <Text size="sm" weight={700}>
+              <Text size="sm" fw={700}>
                 -
               </Text>
             )}
           </Tooltip>
           <Tooltip label="Win ratio">
-            <Text size="sm" weight={700}>
+            <Text size="sm" fw={700}>
               {wins !== undefined && losses !== undefined ? (
                 <>{((wins / (wins + losses)) * 100).toFixed(0)}%</>
               ) : (
@@ -54,12 +55,12 @@ const ModeOverview: React.FC<ModeOverviewProps> = ({ mode, rank, streak, wins, l
             </Text>
           </Tooltip>
           <Tooltip label="Wins">
-            <Text size="sm" weight={700} color="green">
+            <Text size="sm" fw={700} c="green">
               {wins !== undefined ? <>{wins}W</> : <>-</>}
             </Text>
           </Tooltip>
           <Tooltip label="Losses">
-            <Text size="sm" weight={700} color="red">
+            <Text size="sm" fw={700} c="red">
               {losses !== undefined ? <>{losses}L</> : <>-</>}
             </Text>
           </Tooltip>

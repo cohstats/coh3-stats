@@ -51,19 +51,19 @@ const Home: NextPage<Props> = ({
       </Head>
       <Container fluid p={{ base: 0 }}>
         <Grid>
-          <Grid.Col sm={7}>
+          <Grid.Col span={{sm: 7}}>
             <NewsSection steamNewsData={steamNewsData} />
             <Grid gutter="xs" pt={"md"}>
-              <Grid.Col sm={6}>
+              <Grid.Col span={{sm: 6}}>
                 <DPSCalculatorCard />
               </Grid.Col>
-              <Grid.Col sm={6}>
+              <Grid.Col span={{sm: 6}}>
                 <UnitBrowserCard />
               </Grid.Col>
             </Grid>
             <TopLeaderboardsSection initialData={topLeaderBoardsData} />
           </Grid.Col>
-          <Grid.Col sm={5}>
+          <Grid.Col span={{sm: 5}}>
             <RedditPanel redditPostsData={redditPostsData} />
           </Grid.Col>
         </Grid>

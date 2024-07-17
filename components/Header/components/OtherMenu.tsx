@@ -28,11 +28,9 @@ import {
 } from "@tabler/icons-react";
 
 const OtherMenu = ({
-  cx,
   classes,
   close,
 }: {
-  cx: (...args: any) => string;
   classes: Record<string, string>;
   close: () => void;
 }) => {
@@ -40,24 +38,24 @@ const OtherMenu = ({
     <div className={classes.hiddenDesktop}>
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
-          <Accordion.Control className={cx(classes.link)}>
+          <Accordion.Control className={classes.link}>
             <Text fw="bold">Other</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconAward size={16} />
                 <Anchor component={Link} href={getRankingTiersRoute()} onClick={close}>
                   Ranking Tiers
                 </Anchor>
               </Group>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconDatabaseShare size={16} />
                 <Anchor component={Link} href={getOpenDataRoute()} onClick={close}>
                   Open Data
                 </Anchor>
               </Group>
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <IconActivity size={16} />
                 <Anchor
                   component={Link}
@@ -80,46 +78,46 @@ const OtherMenu = ({
       <HoverCard width={200} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <div>
-            <Group spacing={3} className={cx(classes.link)}>
+            <Group gap={3} className={classes.link}>
               Other
               <IconChevronDown size={16} />
             </Group>
           </div>
         </HoverCard.Target>
-        <HoverCard.Dropdown sx={{ overflow: "hidden" }} style={{ textAlign: "left" }}>
+        <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden"}}>
           <Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconAward size={16} />
               <Anchor component={Link} href={getRankingTiersRoute()}>
                 Ranking Tiers
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconNews size={16} />
               <Anchor component={Link} href={getNewsRoute()}>
                 COH3 News
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconVideo size={16} />
               <Anchor component={Link} href={"https://cohdb.com"} target={"_blank"}>
                 COHDB Replays
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconDatabaseShare size={16} />
               <Anchor component={Link} href={getOpenDataRoute()}>
                 Open Data
               </Anchor>
             </Group>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconUsers size={16} />
               <Anchor component={Link} href={getPlayerExportRoute()}>
                 Player Export API
               </Anchor>
             </Group>
 
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <IconActivity size={16} />
               <Anchor
                 component={Link}
@@ -131,11 +129,11 @@ const OtherMenu = ({
             </Group>
             <Tooltip label="Coming Soon" color="orange" withArrow position={"bottom"}>
               <Anchor
-                className={cx(classes.disabledLink)}
+                className={classes.disabledLink}
                 component={Link}
                 href={getOpenDataRoute()}
               >
-                <Group spacing={"xs"}>
+                <Group gap={"xs"}>
                   <ActionIcon color="orange" radius="xl" variant="transparent">
                     <IconBarrierBlock size={16} />
                   </ActionIcon>

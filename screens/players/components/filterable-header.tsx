@@ -16,7 +16,7 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
   return (
     <Popover position="bottom" withArrow withinPortal shadow="md">
       <Popover.Target>
-        <Group position="center">
+        <Group justify="center">
           <Flex>
             <Text>{title}</Text>
             <IconFilter cursor="pointer" />
@@ -39,7 +39,7 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
           })}
         </List>
         <Space h={"xs"} />
-        <Group position="left">
+        <Group justify="left">
           <Button onClick={onReset} size="xs">
             Reset
           </Button>

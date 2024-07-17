@@ -57,7 +57,7 @@ const InnerMapStatsPage = ({
         />
         <MapChartCard
           title={
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <Text>
                 {getMapLocalizedName(selectedMap)} {mode}
               </Text>

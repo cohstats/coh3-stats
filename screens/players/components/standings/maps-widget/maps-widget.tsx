@@ -84,7 +84,7 @@ const MapsWidget = ({
     <div>
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
-          <Group m="xs" position="apart">
+          <Group m="xs" justify="apart">
             <Title order={4}>Maps Winrate {localizedGameTypes[selectedType]}</Title>
             <HelperIcon text={"Across all factions."} width={150} iconSize={23} />
           </Group>
@@ -94,14 +94,14 @@ const MapsWidget = ({
           minHeight={250}
           records={tableData}
           noRecordsText="No maps data tracked"
-          withBorder={false}
+          border={2}
           // borderRadius="md"
           // striped={true}
           // @ts-ignore
           columns={[
             {
               accessor: "mapName",
-              textAlignment: "left",
+              textAlign: "left",
               title: "Map",
               width: 95,
               render: ({ mapName }) => {
@@ -116,17 +116,17 @@ const MapsWidget = ({
             },
             {
               accessor: "w",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Wins",
             },
             {
               accessor: "l",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Losses",
             },
             {
               accessor: "wl",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Ratio",
               render: ({ w, l }) => {
                 const winRate = (w / (w + l)) * 100;
@@ -140,8 +140,7 @@ const MapsWidget = ({
           <Button.Group>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               style={{
                 fontWeight: "normal",
                 color: darkTheme ? theme.colors.gray[3] : theme.colors.gray[8],
@@ -152,8 +151,7 @@ const MapsWidget = ({
             </Button>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               onClick={() => setSelectedType("2v2")}
               style={{
                 fontWeight: "normal",
@@ -164,8 +162,7 @@ const MapsWidget = ({
             </Button>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               onClick={() => setSelectedType("3v3")}
               style={{
                 fontWeight: "normal",
@@ -176,8 +173,7 @@ const MapsWidget = ({
             </Button>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               onClick={() => setSelectedType("4v4")}
               style={{
                 fontWeight: "normal",
