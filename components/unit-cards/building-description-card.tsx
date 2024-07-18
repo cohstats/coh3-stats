@@ -184,6 +184,7 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
                 <Grid columns={5} align="center">
                   <Grid.Col span={4}>
                     <UnitDescriptionCard
+                      faction={faction}
                       desc={{
                         screen_name: ui.screenName,
                         help_text: ui.helpText,

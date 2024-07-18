@@ -28,6 +28,8 @@ import {
   BattlegroupResolvedBranchType,
   SbpsType,
   hasCost,
+  BattlegroupArrows,
+  BattlegroupBackgrounds,
 } from "../../src/unitStats";
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
@@ -37,6 +39,7 @@ import { getExplorerUnitRoute } from "../../src/routes";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { getIconsPathOnCDN } from "../../src/utils";
 import { UnitCostCard } from "./unit-cost-card";
+import { Fragment } from "react";
 
 const useStyles = createStyles((theme) => ({
   hiddenMobile: {
@@ -56,24 +59,6 @@ function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
     },
     {} as Record<K, T[]>,
   );
-}
-
-enum BattlegroupArrows {
-  AVAILABLE_1X1 = "icons/hud/battlegroups/1x1_available.webp",
-  AVAILABLE_1X2 = "icons/hud/battlegroups/1x2_available.webp",
-  AVAILABLE_2X1 = "icons/hud/battlegroups/2x1_available.webp",
-  //  AVAILABLE_2X1_LEFT: 'icons/hud/battlegroups/2x1_available_l',
-  //  AVAILABLE_2X1_RIGHT: 'icons/hud/battlegroups/2x1_available_r',
-  AVAILABLE_2X2 = "icons/hud/battlegroups/2x2_available.webp",
-  //  AVAILABLE_2X2_LEFT: 'icons/hud/battlegroups/2x2_available_l',
-  //  AVAILABLE_2X2_RIGHT: 'icons/hud/battlegroups/2x2_available_r',
-}
-
-enum BattlegroupBackgrounds {
-  dak = "icons/hud/battlegroups/portrait_bg_ak.webp",
-  german = "icons/hud/battlegroups/portrait_bg_ger.webp",
-  british = "icons/hud/battlegroups/portrait_bg_uk.webp",
-  american = "icons/hud/battlegroups/portrait_bg_us.webp",
 }
 
 export const BattlegroupCard = (
@@ -150,7 +135,7 @@ export const BattlegroupCard = (
                       <Title order={4}>{branches.LEFT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.LEFT, race, data.sbpsData)}
+                      {BattlegroupBranchMapping(branches.LEFT, race, data.sbpsData, value === 1)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
@@ -163,7 +148,7 @@ export const BattlegroupCard = (
                       <Title order={4}>{branches.RIGHT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.RIGHT, race, data.sbpsData)}
+                      {BattlegroupBranchMapping(branches.RIGHT, race, data.sbpsData, value === 1)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
@@ -180,6 +165,7 @@ const BattlegroupBranchMapping = (
   branch: BattlegroupResolvedBranchType,
   faction: raceType,
   sbpsData: SbpsType[],
+  compact: boolean = false,
 ) => {
   const router = useRouter();
 
@@ -210,6 +196,7 @@ const BattlegroupBranchMapping = (
       <Box
         p="sm"
         w="100%"
+        h="100%"
         sx={(theme) => ({
           borderRadius: theme.radius.md,
           borderWidth: 2,
@@ -319,14 +306,25 @@ const BattlegroupBranchMapping = (
         const rowNumber = parseInt(rowIndex);
         return (
           <Stack key={`${rowIndex}_${branch.name}`} spacing={0} w="100%">
-            <Grid columns={branchUpgrades.length} grow>
+            <Grid columns={branchUpgrades.length === 1 ? 4 : 2} grow>
               {branchUpgrades.map(({ upg, ability, spawnItems }) => {
                 return (
-                  <Grid.Col key={upg.id} span={1} style={{ display: "flex" }}>
-                    {spawnItems.length
-                      ? anchorLinkOrSelect({ spawnItems, upg, ability })
-                      : bgCallInCard({ upg, ability })}
-                  </Grid.Col>
+                  <Fragment key={upg.id}>
+                    <Grid.Col
+                      key={`${upg.id}-card`}
+                      offset={branchUpgrades.length === 1 && !compact ? 1 : 0}
+                      span={branchUpgrades.length === 1 && !compact ? 2 : 1}
+                    >
+                      {spawnItems.length
+                        ? anchorLinkOrSelect({ spawnItems, upg, ability })
+                        : bgCallInCard({ upg, ability })}
+                    </Grid.Col>
+                    {branchUpgrades.length === 1 && !compact ? (
+                      <Grid.Col key={`${upg.id}-spacing`} span={1}></Grid.Col>
+                    ) : (
+                      <></>
+                    )}
+                  </Fragment>
                 );
               })}
             </Grid>

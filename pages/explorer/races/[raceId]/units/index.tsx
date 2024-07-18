@@ -79,6 +79,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                     >
                       <Card p="md" radius="md" withBorder>
                         <UnitDescriptionCard
+                          faction={raceToFetch}
                           desc={{
                             screen_name: ui.screenName,
                             help_text: ui.helpText,

@@ -172,6 +172,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           <Grid.Col span={3}>
             <Card p="lg" radius="md" withBorder>
               <UnitDescriptionCard
+                faction={raceId}
                 desc={{
                   screen_name: resolvedSquad.ui.screenName,
                   help_text: resolvedSquad.ui.helpText,
