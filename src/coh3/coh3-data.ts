@@ -575,6 +575,8 @@ const OfficialMapKeys = [
   "eindhoven", // Community maps
   "gothic_line_8p", // Community maps
   "oasis_depot_8p", // Community maps
+  /* ---------- 1.7.0 Maps ---------- */
+  "black_gold_8p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -591,149 +593,154 @@ type OfficialMapValue = {
 export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = {
   twin_beach_2p_mkii: {
     name: "Twin Beaches",
-    url: "/icons/maps/twin_beach_2p_mkii_mm_handmade.webp",
+    url: "/twin_beach_2p_mkii/twin_beach_2p_mkii.webp",
     // automatch: true,
   },
   desert_village_2p_mkiii: {
     name: "Road to Tunis",
-    url: "/icons/maps/desert_village_2p_mkiii_mm_handmade.webp",
+    url: "/desert_village_2p_mkiii/desert_village_2p_mkiii.webp",
     // automatch: true,
   },
   cliff_crossing_2p: {
     name: "Taranto Coastline",
-    url: "/icons/maps/cliff_crossing_2p_mm_handmade.webp",
+    url: "/cliff_crossing_2p/cliff_crossing_2p.webp",
     // automatch: true,
   },
   rails_and_sand_4p: {
     name: "Campbell's Convoy",
-    url: "/icons/maps/rails_and_sand_4p_mm_handmade.webp",
+    url: "/rails_and_sand_4p/rails_and_sand_4p.webp",
     // automatch: true,
   },
   rural_town_4p: {
     name: "Pachino Farmlands",
-    url: "/icons/maps/rural_town_4p_mm_handmade.webp",
+    url: "/rural_town_4p/rural_town_4p.webp",
     // automatch: true,
   },
   torrente_4p_mkiii: {
     name: "Torrente",
-    url: "/icons/maps/torrente_4p_mkiii_mm_handmade.webp",
+    url: "/torrente_4p_mkiii/torrente_4p_mkiii.webp",
     // automatch: true,
   },
   rural_castle_4p: {
     name: "Aere Perennius",
-    url: "/icons/maps/rural_castle_4p_mm_handmade.webp",
+    url: "/rural_castle_4p/rural_castle_4p.webp",
     // automatch: true,
   },
   desert_airfield_6p_mkii: {
     name: "Gazala Landing Ground",
-    url: "/icons/maps/desert_airfield_6p_mkii_mm_handmade.webp",
+    url: "/desert_airfield_6p_mkii/desert_airfield_6p_mkii.webp",
     // automatch: true,
   },
   industrial_railyard_6p_mkii: {
     name: "L'Aquila",
-    url: "/icons/maps/industrial_railyard_6p_mkii_mm_handmade.webp",
+    url: "/industrial_railyard_6p_mkii/industrial_railyard_6p_mkii.webp",
     // automatch: true,
   },
   winter_line_8p_mkii: {
     name: "Winter Line",
-    url: "/icons/maps/winter_line_8p_mkii_mm_handmade.webp",
+    url: "/winter_line_8p_mkii/winter_line_8p_mkii.webp",
     // automatch: true,
   },
   mountain_ruins_8p_mkii: {
     name: "Mignano Gap",
-    url: "/icons/maps/mountain_ruins_8p_mkii_mm_handmade.webp",
+    url: "/mountain_ruins_8p_mkii/mountain_ruins_8p_mkii.webp",
     // automatch: true,
   },
   mountain_ruins_6p: {
     name: "Mignano Summit",
-    url: "/icons/maps/mountain_ruins_6p_mm_handmade.webp",
+    url: "/mountain_ruins_6p/mountain_ruins_6p.webp",
     // automatch: true,
   },
   gardens_2p_mm: {
     name: "Gardens",
-    url: "/icons/maps/gardens_2p_mm_handmade.webp",
+    url: "/gardens_2p_mm/gardens_2p.webp",
     // automatch: true,
   },
   pachino_2p: {
     name: "Pachino Stalemate",
-    url: "/icons/maps/pachino_2p_mm_handmade.webp",
+    url: "/pachino_2p/pachino_2p.webp",
     // automatch: true,
   },
   rural_town_2p_mkii: {
     name: "Pachino Farmlands",
-    url: "/icons/maps/pachino_2p_mm_handmade.webp",
+    url: "/rural_town_2p_mkii/pachino_2p.webp",
     // automatch: true,
   },
   monte_cavo_8p: {
     name: "Monte Cavo",
-    url: "/icons/maps/monte_cavo_8p_mm_handmade.webp",
+    url: "/monte_cavo_8p/monte_cavo_8p.webp",
     // automatch: true,
   },
   benghazi_6p: {
     name: "Benghazi",
-    url: "/icons/maps/benghazi_6p_mm_handmade.webp",
+    url: "/benghazi_6p/benghazi_6p.webp",
     // automatch: true,
   },
   sousse_wetlands_8p: {
     name: "Sousse Wetlands",
-    url: "/icons/maps/sousse_wetlands_8p_mm_handmade.webp",
+    url: "/sousse_wetlands_8p/sousse_wetlands_8p.webp",
     // automatch: true,
   },
   catania_crossing_6p: {
     name: "Catania Crossing",
-    url: "/icons/maps/catania_crossing_6p_mm_handmade.webp",
+    url: "/catania_crossing_6p/catania_crossing_6p.webp",
     // automatch: false,
   },
   day_101_4p: {
     name: "Day 101",
-    url: "/icons/maps/day_101_4p_mm_handmade.webp",
+    url: "/day_101_4p/day_101_4p.webp",
     // automatch: true,
   },
   villa_fiore_2p_mkii: {
     name: "Villa Fiore",
-    url: "/icons/maps/villa_fiore_2p_mkii_mm_handmade.webp",
+    url: "/villa_fiore_2p_mkii/villa_fiore_2p_mkii.webp",
     // automatch: true,
   },
   /* ------------------------- 1.5.0 Maps ---------------------------- */
   semois_2p: {
     name: "Semois",
-    url: "/icons/maps/semois_2p_mm_handmade.webp",
+    url: "/semois_2p/semois_2p.webp",
   },
   elst_outskirts_4p: {
     name: "Elst Outskirts",
-    url: "/icons/maps/elst_outskirts_4p_mm_handmade.webp",
+    url: "/elst_outskirts_4p/elst_outskirts_4p.webp",
   },
   montherme_6p: {
     name: "Montherme",
-    url: "/icons/maps/montherme_6p_mm_handmade.webp",
+    url: "/montherme_6p/montherme_6p.webp",
   },
   sangro_river_crossing_6p: {
     name: "Sangro River Crossing",
-    url: "/icons/maps/sangro_river_crossing_6p_mm_handmade.webp",
+    url: "/sangro_river_crossing_6p/sangro_river_crossing_6p.webp",
   },
   sousse_stronghold_8p: {
     name: "Sousse Stronghold",
-    url: "/icons/maps/sousse_stronghold_8p_mm_handmade.webp",
+    url: "/sousse_stronghold_8p/sousse_stronghold_8p.webp",
   },
   faymonville: {
     name: "Faymonville",
-    url: "/icons/maps/faymonville_mm_handmade.webp",
+    url: "/faymonville/faymonville.webp",
   },
   steppe_8p: {
     name: "Steppes",
-    url: "/icons/maps/steppe_8p_mm_handmade.webp",
+    url: "/steppe_8p/steppe_8p.webp",
   },
   /* ------------------------- 1.6.0 Maps ---------------------------- */
   eindhoven: {
     name: "Operation Eindhoven",
-    url: "/icons/maps/eindhoven_mm_handmade.webp",
+    url: "/eindhoven/eindhoven.webp",
   },
   gothic_line_8p: {
     name: "Gothic Line",
-    url: "/icons/maps/gothic_line_8p_mm_handmade.webp",
+    url: "/gothic_line_8p/gothic_line_8p.webp",
   },
   oasis_depot_8p: {
     name: "Oasis Depot",
-    url: "/icons/maps/oasis_depot_8p_mm_handmade.webp",
+    url: "/oasis_depot_8p/oasis_depot_8p.webp",
+  },
+  /* ------------------------- 1.7.0 Maps ---------------------------- */
+  black_gold_8p: {
+    name: "Black Gold",
+    url: "/black_gold_8p/black_gold_8p.webp",
   },
 };
