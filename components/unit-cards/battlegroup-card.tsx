@@ -28,6 +28,8 @@ import {
   BattlegroupResolvedBranchType,
   SbpsType,
   hasCost,
+  BattlegroupArrows,
+  BattlegroupBackgrounds,
 } from "../../src/unitStats";
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
@@ -57,24 +59,6 @@ function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
     },
     {} as Record<K, T[]>,
   );
-}
-
-enum BattlegroupArrows {
-  AVAILABLE_1X1 = "icons/hud/battlegroups/1x1_available.webp",
-  AVAILABLE_1X2 = "icons/hud/battlegroups/1x2_available.webp",
-  AVAILABLE_2X1 = "icons/hud/battlegroups/2x1_available.webp",
-  //  AVAILABLE_2X1_LEFT: 'icons/hud/battlegroups/2x1_available_l',
-  //  AVAILABLE_2X1_RIGHT: 'icons/hud/battlegroups/2x1_available_r',
-  AVAILABLE_2X2 = "icons/hud/battlegroups/2x2_available.webp",
-  //  AVAILABLE_2X2_LEFT: 'icons/hud/battlegroups/2x2_available_l',
-  //  AVAILABLE_2X2_RIGHT: 'icons/hud/battlegroups/2x2_available_r',
-}
-
-enum BattlegroupBackgrounds {
-  dak = "icons/hud/battlegroups/portrait_bg_ak.webp",
-  german = "icons/hud/battlegroups/portrait_bg_ger.webp",
-  british = "icons/hud/battlegroups/portrait_bg_uk.webp",
-  american = "icons/hud/battlegroups/portrait_bg_us.webp",
 }
 
 export const BattlegroupCard = (
