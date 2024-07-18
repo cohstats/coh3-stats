@@ -209,6 +209,7 @@ const BattlegroupBranchMapping = (
     return (
       <Box
         p="sm"
+        w="100%"
         sx={(theme) => ({
           borderRadius: theme.radius.md,
           borderWidth: 2,
@@ -216,7 +217,7 @@ const BattlegroupBranchMapping = (
           borderColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
         })}
       >
-        <Flex direction="column" gap={16} justify="space-between">
+        <Flex direction="column" h="100%" gap={16} justify="space-between">
           <Flex direction="row" gap={16}>
             <BackgroundImage w={80} src={getIconsPathOnCDN(factionBackgroundSrc)} radius="md">
               <ImageWithFallback
@@ -243,8 +244,7 @@ const BattlegroupBranchMapping = (
               {briefText}
             </Text>
           </Tooltip.Floating>
-
-          {hasCost(costs) ? UnitCostCard(costs) : <></>}
+          <Flex>{hasCost(costs) ? UnitCostCard(costs) : <></>}</Flex>
         </Flex>
       </Box>
     );
@@ -319,14 +319,10 @@ const BattlegroupBranchMapping = (
         const rowNumber = parseInt(rowIndex);
         return (
           <Stack key={`${rowIndex}_${branch.name}`} spacing={0} w="100%">
-            <Grid columns={branchUpgrades.length} w="100%">
+            <Grid columns={branchUpgrades.length} grow>
               {branchUpgrades.map(({ upg, ability, spawnItems }) => {
                 return (
-                  <Grid.Col
-                    key={upg.id}
-                    span={1}
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
+                  <Grid.Col key={upg.id} span={1} style={{ display: "flex" }}>
                     {spawnItems.length
                       ? anchorLinkOrSelect({ spawnItems, upg, ability })
                       : bgCallInCard({ upg, ability })}
