@@ -29,6 +29,11 @@ describe("getIconsPathOnCDN", () => {
     expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.webp`);
   });
 
+  test("should change to png in the export folder", () => {
+    const result = getIconsPathOnCDN("my_icon.png", "export");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export/my_icon.webp`);
+  });
+
   test("should return the correctly formed URL for the export_flatten folder", () => {
     const result = getIconsPathOnCDN("/path/to/my_icon", "export_flatten");
     expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.webp`);
@@ -37,6 +42,11 @@ describe("getIconsPathOnCDN", () => {
   test("should remove the path and keep only the filename in the export_flatten folder", () => {
     const result = getIconsPathOnCDN("/path/to/my_icon.webp", "export_flatten");
     expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/export_flatten/my_icon.webp`);
+  });
+
+  test("correctly gets path for maps", () => {
+    const result = getIconsPathOnCDN("/map_icon/map_icon", "maps");
+    expect(result).toBe(`${config.CDN_ASSETS_HOSTING}/maps/map_icon/map_icon.webp`);
   });
 });
 

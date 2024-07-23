@@ -8,6 +8,7 @@ import ImageWithModal from "../../../components/image-with-modal";
 import { isOfficialMap, maps } from "../../../src/coh3/coh3-data";
 import dynamic from "next/dynamic";
 import MapChartCard from "./map-chart-card";
+import { getIconsPathOnCDN } from "../../../src/utils";
 
 const DynamicMapsWinRateLineChartCard = dynamic(
   () => import("./charts/maps-win-rate-line-chart-card"),
@@ -72,7 +73,11 @@ const InnerMapStatsPage = ({
               height={245}
               width={245}
               alt={selectedMap}
-              src={isOfficialMap(selectedMap) ? maps[selectedMap]?.url : ""}
+              src={
+                isOfficialMap(selectedMap)
+                  ? getIconsPathOnCDN(maps[selectedMap]?.url, "maps")
+                  : ""
+              }
               title={isOfficialMap(selectedMap) ? maps[selectedMap]?.url : ""}
             />
           </Center>

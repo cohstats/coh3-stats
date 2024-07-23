@@ -77,17 +77,22 @@ const getStatsData = async (
   type: analysisType = "gameStats",
   ock: string,
   filters?: Array<analysisFilterType | analysisMapFilterType | "all">,
+  headers?: Record<string, string>,
 ) => {
-  const response = await fetch(getStatsUrl(startDate, endDate, type, ock, filters));
-  const data: getAnalysisStatsHttpResponse = await response.json();
+  const response = await fetch(getStatsUrl(startDate, endDate, type, ock, filters), {
+    headers: headers,
+  });
 
   if (response.ok) {
+    const data: getAnalysisStatsHttpResponse = await response.json();
     return data;
   } else {
     if (response.status === 500) {
       const data = await response.json();
       throw new Error(`Error getting the stats data: ${data.error}`);
     }
+    console.log(response);
+    logger.error(`Error getting the stats data - status code ${response.status}`);
     throw new Error(`Error getting the stats data`);
   }
 };

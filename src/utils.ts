@@ -93,7 +93,7 @@ export const sortArrayOfObjectsByTheirPropertyValue = (
 export const getIconsPathOnCDN = (
   // @ts-ignore
   iconPath: string | StaticRequire | StaticImageData,
-  folder: "export" | "export_flatten" = "export",
+  folder: "export" | "export_flatten" | "maps" = "export",
 ) => {
   if (typeof iconPath !== "string") {
     return iconPath;
@@ -104,40 +104,14 @@ export const getIconsPathOnCDN = (
     iconPath = iconPath.split(/[\\/]/).pop() || "";
   }
 
-  if (!iconPath.endsWith(".png") && !iconPath.endsWith(".webp")) {
-    iconPath += ".png";
+  if (iconPath.endsWith(".png")) {
+    iconPath = iconPath.replace(".png", ".webp");
+  } else if (!iconPath.endsWith(".png") && !iconPath.endsWith(".webp")) {
+    iconPath += ".webp";
   }
-
-  // Use .webp versions of all images
-  iconPath = iconPath.replace(".png", ".webp");
 
   // Remove double // in case we have them in the path
   const urlPath = `/${folder}/${iconPath}`.replace(/\/\//g, "/");
-
-  return internalSlash(`${config.CDN_ASSETS_HOSTING}${urlPath}`);
-};
-
-/**
- * Get the path of the maps on our CDN hosting for images
- * @param imagePath The path of the icon, can be full path or just filename.
- */
-export const getMapsPathOnCDN = (
-  // @ts-ignore
-  imagePath: string | StaticRequire | StaticImageData,
-) => {
-  if (typeof imagePath !== "string") {
-    return imagePath;
-  }
-
-  if (!imagePath.endsWith(".png") && !imagePath.endsWith(".webp")) {
-    imagePath += ".png";
-  }
-
-  // Use .webp versions of all images
-  imagePath = imagePath.replace(".png", ".webp");
-
-  // Remove double // in case we have them in the path
-  const urlPath = `/maps/${imagePath}`.replace(/\/\//g, "/");
 
   return internalSlash(`${config.CDN_ASSETS_HOSTING}${urlPath}`);
 };
