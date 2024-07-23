@@ -307,6 +307,7 @@ describe("coh3stats-api", () => {
     const response = await getStatsData(123, "now", "gameStats", "cache-key-4");
     expect(global.fetch).toBeCalledWith(
       `https://cache.coh3stats.com/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=${GET_ANALYSIS_STATS}&ock=cache-key-4`,
+      { headers: undefined },
     );
 
     expect(response).toEqual(fakeStatsData);

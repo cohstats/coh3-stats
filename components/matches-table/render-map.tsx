@@ -2,7 +2,7 @@ import { isOfficialMap, maps } from "../../src/coh3/coh3-data";
 import { Text, Tooltip } from "@mantine/core";
 import React from "react";
 import ImageWithModal from "../image-with-modal";
-import { getMapsPathOnCDN } from "../../src/utils";
+import { getIconsPathOnCDN } from "../../src/utils";
 
 const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: boolean }) => {
   renderTitle = renderTitle ?? true;
@@ -27,7 +27,7 @@ const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: bo
               height={60}
               width={60}
               alt={mapName}
-              src={getMapsPathOnCDN(maps[mapName]?.url)}
+              src={getIconsPathOnCDN(maps[mapName]?.url, "maps")}
               title={maps[mapName].name}
             />
           </div>

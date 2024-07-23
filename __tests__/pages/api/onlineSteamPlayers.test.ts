@@ -39,7 +39,7 @@ describe("onlineSteamApiPlayersHandler", () => {
   test("should return 200 status code and player count and timestamp in response", async () => {
     await handler(req, res);
 
-    expect(res.setHeader).toHaveBeenCalledWith("Cache-Control", "public");
+    expect(res.setHeader).toHaveBeenCalledWith("Cache-Control", "public, max-age=300");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       playerCount: 5,
