@@ -1680,10 +1680,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@edgio/cli@7.12.8":
-  version "7.12.8"
-  resolved "https://registry.yarnpkg.com/@edgio/cli/-/cli-7.12.8.tgz#b77aeeba5b79755c1fa125362a0a7beeeabecd54"
-  integrity sha512-bfBOH0pOmk1ozxeHSpm42c5lxoGFELUk/mB5CDReBqjR5XlzZBhJijq2T+5NZ7PXhL3buW1mREzuqvpzeDIrrw==
+"@edgio/cli@7.11.7":
+  version "7.11.7"
+  resolved "https://registry.yarnpkg.com/@edgio/cli/-/cli-7.11.7.tgz#a131a4f55601d58fb7bac77633aa9a820164b803"
+  integrity sha512-7f9L742++HnGss6KxZpJopRtvNEXwBwEuMJQJybX5NgPdAy/JTz+Ofc4DiuXepXC1YZ1A+Estk6rza+2mmgTjA==
   dependencies:
     axios "^1.6.0"
     chalk "^4.1.2"
@@ -1700,7 +1700,6 @@
     fs-extra "^8.1.0"
     git-url-parse "^13.1.0"
     globby "^11.0.0"
-    http-proxy "^1.18.1"
     https-proxy-agent "^7.0.2"
     import-local "^3.0.2"
     ipaddr.js "^2.0.1"
@@ -1725,10 +1724,10 @@
     yauzl "^2.10.0"
     yazl "^2.5.1"
 
-"@edgio/core@7.12.8":
-  version "7.12.8"
-  resolved "https://registry.yarnpkg.com/@edgio/core/-/core-7.12.8.tgz#243fc1266c9fabbfc26eb64fb38e57cfa6b1e575"
-  integrity sha512-qpWBTjjy6cuOoJOf/bFxmQgv6waSUxQ9rC25vQopGZpWH69APsXKUWDGXrlD5T9Z7iwKjeelfUfTNpiAhewtjA==
+"@edgio/core@7.11.7":
+  version "7.11.7"
+  resolved "https://registry.yarnpkg.com/@edgio/core/-/core-7.11.7.tgz#e2f546715377361448ae41e80df7c3d1c60a44ba"
+  integrity sha512-/M4zDp3ijWD2mHOj28CrYvga6PLjnyo6imNdjZTzMTybT7TS7ru+k5v5Vm7D4QdzXnFkfiVrBzr98kwQc1eioQ==
   dependencies:
     "@babel/parser" "^7.23.9"
     "@babel/traverse" "^7.23.9"
@@ -1750,7 +1749,6 @@
     fs-extra "^8.1.0"
     globby "^11.0.2"
     http-proxy "^1.18.1"
-    lambda-stream "^0.5.0"
     lodash.clonedeep "^4.5.0"
     lru-cache "^7.14.0"
     node-fetch "^2.7.0"
@@ -1763,12 +1761,11 @@
     shelljs "^0.8.5"
     slash "^3.0.0"
     stream-buffers "^3.0.2"
-    ts-fs-utils "^1.0.14"
     uuid "^8.3.2"
     whatwg-url "^14.0.0"
     workbox-build "^6.5.4"
 
-"@edgio/core@^7.12.11", "@edgio/core@^7.12.8":
+"@edgio/core@^7.11.7", "@edgio/core@^7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@edgio/core/-/core-7.12.11.tgz#df7ecb9c86a8fd6cd631c7778200704c3dd30b6c"
   integrity sha512-aa3k8dr6rvQcFUN6ILGn+khAVyZ+SoGByui56PZkgQtS3r3vfnaUnHHW4Y+gfujEdd73NmGzEULn/K0TVLW7Fw==
@@ -1812,16 +1809,16 @@
     workbox-build "^6.5.4"
     ws "^8.18.0"
 
-"@edgio/devtools@7.12.8":
-  version "7.12.8"
-  resolved "https://registry.yarnpkg.com/@edgio/devtools/-/devtools-7.12.8.tgz#a4068a8a3cefbdbe9682efd62629d1519ef1566e"
-  integrity sha512-Y8K+hC54GOp4GjQZYpKROAOSJZkSGKAWVvUx18mrCMec/9fWdcGS8IrZZpNE4KWtbh/ycP7O2utAGJfOdBtVWw==
+"@edgio/devtools@7.11.7":
+  version "7.11.7"
+  resolved "https://registry.yarnpkg.com/@edgio/devtools/-/devtools-7.11.7.tgz#6c1ce33dc230d06594068b4894a5dcc1b0956283"
+  integrity sha512-vTX4VJ9/mUuz4Nj8HAL/WYODKH2rIbRjhserwJr+uUziB/kaVErR8hn1GWfmOMGiCa5xpG5bbZarm6FnDvDRDQ==
   dependencies:
     clsx "^1.1.1"
     lodash "^4.17.20"
     sirv-cli "^1.0.0"
 
-"@edgio/devtools@^7.12.8":
+"@edgio/devtools@^7.11.7":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@edgio/devtools/-/devtools-7.12.11.tgz#353e76905a758243dc2635039c42032d54c00fcc"
   integrity sha512-E7Yuwji/MgUC/mtUOHRabOI02qdezkLtHTgYke6KFB+3y8wmoF3esqgzqqTO3PARn25v+5kEGM2G8U9y1AtYAQ==
@@ -1830,10 +1827,10 @@
     lodash "^4.17.20"
     sirv-cli "^1.0.0"
 
-"@edgio/next@7.12.8":
-  version "7.12.8"
-  resolved "https://registry.yarnpkg.com/@edgio/next/-/next-7.12.8.tgz#788acb1226a9ca6954853e2d0ded2ff764171216"
-  integrity sha512-QppOCi8Gi5JPyaEXsGl5O74MKzGp6ge4pKExqZgX+baDIb8HbzxYYjNUCo3dhS6OfCZTF31+IjXP8ZrdvMTkZg==
+"@edgio/next@7.11.7":
+  version "7.11.7"
+  resolved "https://registry.yarnpkg.com/@edgio/next/-/next-7.11.7.tgz#05aef7411cc69c60e5665b8b69d0063811388299"
+  integrity sha512-u3lNcWCOh/CcO56dC/MvqxHOK5xTbsELKYSAzPYd6b8aTtGtyl7TsmGs10hgjwdYCxVeU9AhUTwGDDaKIbtVsg==
   dependencies:
     "@vercel/nft" "^0.20.1"
     chalk "^4.1.2"
@@ -1850,12 +1847,12 @@
     webpack "^5.90.2"
     webpack-sources "^3.2.3"
 
-"@edgio/prefetch@7.12.8":
-  version "7.12.8"
-  resolved "https://registry.yarnpkg.com/@edgio/prefetch/-/prefetch-7.12.8.tgz#a4331691d270fc70bc44c0e45fdcb14856290374"
-  integrity sha512-H/bpkGVyOtPKm94hQyEIGCRfn7YysSCrCZqw45mXJ5WeTZh+GQ8oLKXUEjC9b0W36ltTl4Q9Cev7cut9fGKi8g==
+"@edgio/prefetch@7.11.7":
+  version "7.11.7"
+  resolved "https://registry.yarnpkg.com/@edgio/prefetch/-/prefetch-7.11.7.tgz#e348ba0a970d4ce76130d5e7ce5c86006ca553b8"
+  integrity sha512-RaFnof9piagJl/fu4N/cZZv62sYKzvR9os8S8SVx9Lo6+n8vHZJSxaM82WI66Yx4ECfdeIc7/pG+x5KYLDnP6Q==
   dependencies:
-    "@edgio/core" "^7.12.8"
+    "@edgio/core" "^7.11.7"
     cheerio "^1.0.0-rc.3"
     json-query "^2.2.2"
     workbox-cacheable-response "^5.1.2"
@@ -1865,7 +1862,7 @@
     workbox-routing "^5.1.2"
     workbox-strategies "^5.1.2"
 
-"@edgio/prefetch@^7.12.8":
+"@edgio/prefetch@^7.11.7":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@edgio/prefetch/-/prefetch-7.12.11.tgz#8d03a743e335c94efbb2a626bcaf1792af784012"
   integrity sha512-ajZDPaKYlwUmO7TmFdhrOPWsWT4KzSB4snomebNYo5oEMD21JEsGTgkbQDT3uBncT5wXfzUUAyq0FPxrUILA1Q==
@@ -1880,13 +1877,13 @@
     workbox-routing "^5.1.2"
     workbox-strategies "^5.1.2"
 
-"@edgio/react@7.12.8":
-  version "7.12.8"
-  resolved "https://registry.yarnpkg.com/@edgio/react/-/react-7.12.8.tgz#dfa0c9011aafb8121bd20da5f56e3ecd2b3553b5"
-  integrity sha512-xwEgUuWVzCiH813l4egr0CiBedbZp6337CzT/ININPGMz8oyDJXg0ONL9GN/ah4x+cgPsJIl1l4HuTDGhAie6A==
+"@edgio/react@7.11.7":
+  version "7.11.7"
+  resolved "https://registry.yarnpkg.com/@edgio/react/-/react-7.11.7.tgz#82419980952251b1a28df351d76fae76d8c37c35"
+  integrity sha512-srmM97vNQMo9SfThlXI24hH/Re20G5A1qBQcSxlikiADR/kJkzz6uZzlcHeLL78pE8rE+qNcr73dhUZsz352IQ==
   dependencies:
-    "@edgio/devtools" "^7.12.8"
-    "@edgio/prefetch" "^7.12.8"
+    "@edgio/devtools" "^7.11.7"
+    "@edgio/prefetch" "^7.11.7"
     prop-types "^15.8.1"
     react-merge-refs "^1.1.0"
 
@@ -13322,7 +13319,7 @@ ts-api-utils@^1.3.0:
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.3.0.tgz#4b490e27129f1e8e686b45cc4ab63714dc60eea1"
   integrity sha512-UQMIo7pb8WRomKR1/+MFVLTroIvDVtMX3K6OUir8ynLyzB8Jeriont2bTAtmNPa1ekAgN7YPDyf6V+ygrdU+eQ==
 
-ts-fs-utils@1.0.15, ts-fs-utils@^1.0.14:
+ts-fs-utils@1.0.15:
   version "1.0.15"
   resolved "https://registry.yarnpkg.com/ts-fs-utils/-/ts-fs-utils-1.0.15.tgz#2a02bf76ba42056a4678a7b25149ba131727ffd1"
   integrity sha512-a63GQ6GUFjdB9SOSEhblqojSDjluoQa3wk/KxBbDHbiGGd6O0kKpM83Q1wEWxpPVov+M3OarXCWgug4rCAb2Sg==
