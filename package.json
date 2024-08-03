@@ -79,12 +79,12 @@
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "7.12.10",
-    "@edgio/core": "7.12.10",
-    "@edgio/devtools": "7.12.10",
-    "@edgio/next": "7.12.10",
-    "@edgio/prefetch": "7.12.10",
-    "@edgio/react": "7.12.10",
+    "@edgio/cli": "7.11.7",
+    "@edgio/core": "7.11.7",
+    "@edgio/devtools": "7.11.7",
+    "@edgio/next": "7.11.7",
+    "@edgio/prefetch": "7.11.7",
+    "@edgio/react": "7.11.7",
     "@next/bundle-analyzer": "14.2.3",
     "@testing-library/jest-dom": "6.4.8",
     "@testing-library/react": "15.0.7",
