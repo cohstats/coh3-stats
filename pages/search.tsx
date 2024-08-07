@@ -148,7 +148,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   if (q) {
     try {
-      const res = await fetch(`${config.BASE_CLOUD_FUNCTIONS_URL}/searchPlayers2Http?alias=${q}`);
+      const res = await fetch(
+        `${config.BASE_CLOUD_FUNCTIONS_URL}/searchPlayers2Http?alias=${encodeURIComponent(q as string)}`,
+      );
 
       if (res.status !== 200) {
         data = await res.json();
