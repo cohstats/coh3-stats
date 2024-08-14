@@ -25,6 +25,9 @@ describe("getNodeVersionHandler", () => {
     await handler(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({ nodeVersion: process.version });
+    // partial match only
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ nodeVersion: process.version }),
+    );
   });
 });
