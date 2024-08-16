@@ -192,6 +192,9 @@ const BattlegroupBranchMapping = (
       upg.ui.briefText?.replace(spaceRegex, "\n")?.replace(specialRegex, "") ||
       briefTextFormatter?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
 
+    const extraTextFormatter = ability.ui.extraTextFormatter || upg.ui.extraTextFormatter;
+    const extraText = extraTextFormatter.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+
     return (
       <Box
         p="sm"
@@ -227,9 +230,20 @@ const BattlegroupBranchMapping = (
           </Flex>
 
           <Tooltip.Floating multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
-            <Text fz="sm" lineClamp={7} style={{ whiteSpace: "pre-line" }}>
-              {briefText}
-            </Text>
+            <Stack spacing={8} justify="flex-start" style={{ flexGrow: 1 }}>
+              <Text fz="sm" lineClamp={7} align="justify" style={{ whiteSpace: "pre-line" }}>
+                {briefText}
+              </Text>
+              <Text
+                fz="sm"
+                lineClamp={7}
+                align="justify"
+                style={{ whiteSpace: "pre-line" }}
+                italic
+              >
+                {extraText}
+              </Text>
+            </Stack>
           </Tooltip.Floating>
           <Flex>{hasCost(costs) ? UnitCostCard(costs) : <></>}</Flex>
         </Flex>
