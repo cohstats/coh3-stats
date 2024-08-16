@@ -78,12 +78,12 @@ const BuildingCardHeader = (
           withPlaceholder
         />
         <Flex direction="column" gap={4}>
-          <Title order={4} transform="capitalize" lineClamp={1}>
+          <Title order={3} transform="capitalize" lineClamp={1}>
             {desc.screen_name}
           </Title>
-          <Text fz="md" lineClamp={2} color="yellow.5">
+          <Title order={5} lineClamp={2} color="yellow.5">
             {desc.extra_text}
-          </Text>
+          </Title>
           <Text fz="sm" lineClamp={2}>
             {desc.brief_text}
           </Text>
@@ -99,13 +99,6 @@ const BuildingCardHeader = (
         <Divider display={{ base: "block", sm: "none" }} />
         <Flex direction="row" justify="space-between">
           <Flex direction="row" gap={4}>
-            {/* <Image
-            height={24}
-            width={24}
-            fit="contain"
-            src="/icons/common/orders/reinforce.png"
-            alt="Health"
-          /> */}
             <Text weight="bold">Hitpoints</Text>
           </Flex>
           <Text ml={24}>{health.hitpoints}</Text>
@@ -182,22 +175,28 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
                 })}
               >
                 <Grid columns={5} align="center">
-                  <Grid.Col span={4}>
-                    <UnitDescriptionCard
-                      faction={faction}
-                      desc={{
-                        screen_name: ui.screenName,
-                        help_text: ui.helpText,
-                        brief_text: ui.briefText,
-                        symbol_icon_name: ui.symbolIconName,
-                        icon_name: ui.iconName,
-                      }}
-                    />
-                    {UnitCostCard(time_cost)}
+                  <Grid.Col span={playerReq.length ? 4 : 5}>
+                    <Stack spacing={16}>
+                      <UnitDescriptionCard
+                        faction={faction}
+                        desc={{
+                          screen_name: ui.screenName,
+                          help_text: ui.helpText,
+                          brief_text: ui.briefText,
+                          symbol_icon_name: ui.symbolIconName,
+                          icon_name: ui.iconName,
+                        }}
+                      />
+                      <Flex>{hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}</Flex>
+                    </Stack>
                   </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Flex justify="center">{reqCards}</Flex>
-                  </Grid.Col>
+                  {playerReq.length ? (
+                    <Grid.Col span={1}>
+                      <Flex justify="center">{reqCards}</Flex>
+                    </Grid.Col>
+                  ) : (
+                    <></>
+                  )}
                 </Grid>
               </Box>
             </Anchor>

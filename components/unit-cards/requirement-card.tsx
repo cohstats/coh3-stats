@@ -3,6 +3,11 @@ import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { UpgradesType } from "../../src/unitStats";
 
 export const RequirementCard = ({ ui }: UpgradesType) => {
+  const spaceRegex = /\\r?\\n|\\r|\\n/g;
+  const specialRegex = /\*/g;
+
+  const briefText = ui.briefText?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+
   return (
     <HoverCard position="top" width={280} shadow="md" withArrow>
       <HoverCard.Target>
@@ -17,15 +22,17 @@ export const RequirementCard = ({ ui }: UpgradesType) => {
         </Flex>
       </HoverCard.Target>
       <HoverCard.Dropdown>
-        <Flex direction="column">
+        <Flex direction="column" gap={4}>
           <Title order={4} transform="capitalize">
             {ui.screenName}
           </Title>
-          <Text fz="md" color="yellow.5">
+          <Title order={6} color="yellow.5">
             {ui.extraText}
+          </Title>
+          <Text fz="sm" style={{ whiteSpace: "pre-line" }} italic>
+            {briefText}
           </Text>
-          <Text fz="sm">{ui.briefText}</Text>
-          <Text fz="sm">{ui.helpText}</Text>
+          {/* <Text fz="sm">{ui.helpText}</Text> */}
         </Flex>
       </HoverCard.Dropdown>
     </HoverCard>
