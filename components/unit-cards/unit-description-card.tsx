@@ -38,6 +38,11 @@ export const UnitDescriptionCard = ({
 }) => {
   const factionBackgroundSrc = BattlegroupBackgrounds[faction];
 
+  const spaceRegex = /\\r?\\n|\\r|\\n/g;
+  const specialRegex = /\*/g;
+
+  const briefText = desc.brief_text?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+
   return (
     <>
       <Flex direction="row" align="center" gap={16}>
@@ -67,9 +72,9 @@ export const UnitDescriptionCard = ({
               fallbackSrc={symbolPlaceholder}
             />
 
-            <Tooltip.Floating label={desc.brief_text} multiline>
-              <Text fz="sm" lineClamp={2}>
-                {desc.brief_text}
+            <Tooltip.Floating label={briefText} multiline>
+              <Text fz="sm" lineClamp={4} style={{ whiteSpace: "pre-line" }}>
+                {briefText}
               </Text>
             </Tooltip.Floating>
           </Flex>
