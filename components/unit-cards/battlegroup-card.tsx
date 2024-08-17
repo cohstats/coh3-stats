@@ -219,18 +219,23 @@ const BattlegroupBranchMapping = (
               ></ImageWithFallback>
             </BackgroundImage>
 
-            <Stack spacing={2} justify="center">
-              <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
+            <Stack gap={2} justify="center">
+              <Title
+                order={6}
+                style={{ textTransform: "capitalize" }}
+                color="yellow.5"
+                lineClamp={1}
+              >
                 {ability.ui.helpText || "Ability / Call In"}
               </Title>
-              <Title order={5} transform="capitalize" lineClamp={2}>
+              <Title order={5} style={{ textTransform: "capitalize" }} lineClamp={2}>
                 {ability.ui.screenName || upg.ui.screenName}
               </Title>
             </Stack>
           </Flex>
 
           <Tooltip.Floating multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
-            <Stack spacing={8} justify="flex-start" style={{ flexGrow: 1 }}>
+            <Stack gap={8} justify="flex-start" style={{ flexGrow: 1 }}>
               <Text fz="sm" lineClamp={7} align="justify" style={{ whiteSpace: "pre-line" }}>
                 {briefText}
               </Text>

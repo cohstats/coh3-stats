@@ -1,4 +1,5 @@
 import "@mantine/core/styles.layer.css";
+import "@mantine/carousel/styles.css";
 import "mantine-datatable/styles.layer.css";
 
 import { AppProps } from "next/app";

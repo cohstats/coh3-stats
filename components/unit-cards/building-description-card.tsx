@@ -78,7 +78,7 @@ const BuildingCardHeader = (
           withPlaceholder
         />
         <Flex direction="column" gap={4}>
-          <Title order={3} transform="capitalize" lineClamp={1}>
+          <Title order={3} style={{ textTransform: "capitalize" }} lineClamp={1}>
             {desc.screen_name}
           </Title>
           <Title order={5} lineClamp={2} color="yellow.5">
