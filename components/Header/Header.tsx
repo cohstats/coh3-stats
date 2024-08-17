@@ -11,7 +11,6 @@ import {
   Stack,
   Anchor,
 } from "@mantine/core";
-//import { createStyles } from '@mantine/emotion';
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,7 +31,6 @@ import OtherMenu from "./components/OtherMenu";
 import config from "../../config";
 
 import classes from "./Header.module.css";
-
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -171,7 +169,7 @@ export const Header: React.FC<HeaderProps> = () => {
               Desktop App
             </Anchor>
 
-            <ExplorerMenu  close={close} classes={classes} />
+            <ExplorerMenu close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -182,7 +180,7 @@ export const Header: React.FC<HeaderProps> = () => {
               COH3 News{" "}
             </Anchor>
 
-            <OtherMenu  close={close} classes={classes} />
+            <OtherMenu close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -220,7 +218,7 @@ export const Header: React.FC<HeaderProps> = () => {
     <>
       <header
         className={classes.root}
-        style={{ position: "sticky", zIndex: 999, height: isMediumScreen ? 100 : 60}}
+        style={{ position: "sticky", zIndex: 999, height: isMediumScreen ? 100 : 60 }}
       >
         <Container className={classes.container} fluid>
           <Anchor component={Link} href={"/"} className={classes.link}>
@@ -243,11 +241,7 @@ export const Header: React.FC<HeaderProps> = () => {
             <HoverCard width={800} position="bottom" radius="md" shadow="md">
               <HoverCard.Target>
                 <div>
-                  <Anchor
-                    component={Link}
-                    href={getLeaderBoardRoute()}
-                    className={classes.link}
-                  >
+                  <Anchor component={Link} href={getLeaderBoardRoute()} className={classes.link}>
                     <Group gap={3}>
                       Leaderboards
                       <IconChevronDown size={16} />
@@ -259,14 +253,14 @@ export const Header: React.FC<HeaderProps> = () => {
                 <LeaderboardsMenu />
               </HoverCard.Dropdown>
             </HoverCard>
-            <StatisticsMenu  classes={classes} close={close} />
+            <StatisticsMenu classes={classes} close={close} />
 
             <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
               Desktop App
             </Anchor>
 
-            <ExplorerMenu  close={close} classes={classes} />
-            <OtherMenu  close={close} classes={classes} />
+            <ExplorerMenu close={close} classes={classes} />
+            <OtherMenu close={close} classes={classes} />
             <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
               About
             </Anchor>

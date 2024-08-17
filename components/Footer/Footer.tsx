@@ -7,30 +7,16 @@ import { Github } from "../icon/github";
 import Link from "next/link";
 import config from "../../config";
 
+import classes from "./Footer.module.css";
+
 export const Footer: React.FC = () => {
   // We can't use useColorScheme in NextJS
   // https://mantine.dev/theming/color-schemes/#color-scheme-value-caveats
   // const colorScheme = useColorScheme();
 
-
   return (
     <>
-      <footer
-        style={{
-          marginTop: "var(--mantine-spacing-xl)",
-          paddingTop: "calc(var(--mantine-spacing-xl) * 2)",
-          paddingBottom: "calc(var(--mantine-spacing-xl) * 2)",
-          backgroundColor:
-            "dark" === "dark"
-              ? "var(--mantine-colors-dark-6)"
-              : "var(--mantine-colors-gray-0)",
-          borderTop: `1px solid ${
-            "dark" === "dark"
-              ? "var(--mantine-colors-dark-5)"
-              : "var(--mantine-colors-gray-2)"
-          }`,
-        }}
-      >
+      <footer className={classes.footer}>
         <Container size={"lg"}>
           <Group justify="space-between">
             <Text c="dimmed" size="sm">
