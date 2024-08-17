@@ -1,109 +1,103 @@
 /* header.module.css */
-.root {
-    /* marginBottom: theme.spacing.xl; */
+.headerRoot {
+  /* marginBottom: theme.spacing.xl; */
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  height: 60px;
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border-bottom: light-dark(
+    1px solid var(--mantine-color-gray-2),
+    1px solid var(--mantine-color-dark-5)
+  );
+}
+
+@media (min-width: 64em) and (max-width: 90em) {
+  /* Add your styles for medium screens here */
+  .headerRoot {
+    /* Example style */
+    height: 100px;
+  }
 }
 
 .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-}
-
-.burger {
-    display: none; /* Adjusted with media queries below */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
 
 .link {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding-left: var(--mantine-spacing-md);
-    padding-right: var(--mantine-spacing-md);
-    padding-top: var(--mantine-spacing-xs);
-    padding-bottom: var(--mantine-spacing-xs);
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  padding-top: var(--mantine-spacing-xs);
+  padding-bottom: var(--mantine-spacing-xs);
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+  border-radius: var(--mantine-radius-md);
+}
+
+.link {
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-red-0), var(--mantine-color-dark-6));
     text-decoration: none;
-    color: light-dark(
-            var(--mantine-color-black),
-            var(--mantine-color-white)
-    );
-    font-weight: 500;
-    font-size: var(--mantine-font-size-sm);
-    border-radius: var(--mantine-radius-md);
-}
-
-.link {
-    @mixin hover {
-        background-color: light-dark(
-                var(--mantine-color-red-0),
-                var(--mantine-color-dark-6)
-        );
-        text-decoration: none;
-    }
-
+  }
 }
 
 .disabledLink {
-    color: var(--mantine-color-gray-6);
+  color: var(--mantine-color-gray-6);
 }
 
 .subLink {
-    width: 100%;
-    text-decoration: none;
-    color: light-dark(
-            var(--mantine-color-black),
-            var(--mantine-color-white)
-    );
-    border-radius: var(--mantine-radius-md);
+  width: 100%;
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  border-radius: var(--mantine-radius-md);
 }
 
 .subLink {
-    @mixin hover {
-        background-color: light-dark(
-                var(--mantine-color-gray-0),
-                var(--mantine-color-dark-7),
-        );
-    }
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  }
 }
 
 .subLink:active {
-    /* Define active styles */
+  /* Define active styles */
 }
 
 .dropdown {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    z-index: 0;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    border-top-width: 0;
-    overflow: hidden;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top-width: 0;
+  overflow: hidden;
 }
-
-/*.hiddenDesktop {*/
-/*    display: none; !* Adjusted with media queries below *!*/
-/*}*/
-
-/*.hiddenMobile {*/
-/*    display: none; !* Adjusted with media queries below *!*/
-/*}*/
 
 /* Media Queries */
 @media (min-width: 64em) {
-    .burger, .dropdown, .hiddenDesktop {
-        display: none;
-    }
+  .burger,
+  .dropdown,
+  .hiddenDesktop {
+    display: none;
+  }
 }
 
-@media (max-width: 63.95em) {
-    .hiddenMobile {
-        display: none;
-    }
+@media (max-width: 64em) {
+  .hiddenMobile {
+    display: none;
+  }
 
-    .link {
-        height: 42px;
-        width: 100%;
-    }
+  .link {
+    height: 42px;
+    width: 100%;
+  }
 }

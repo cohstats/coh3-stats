@@ -11,7 +11,7 @@ import {
   Stack,
   Anchor,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { IconChevronDown } from "@tabler/icons-react";
@@ -36,96 +36,10 @@ export interface HeaderProps {
   // children?: React.ReactNode;
 }
 
-// const useStyles = createStyles((theme) => ({
-//   root: {
-//     // marginBottom: theme.spacing.xl,
-//   },
-//   container: {
-//     display: "flex",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     height: "100%",
-//   },
-//   burger: {
-//     [theme.fn.largerThan("md")]: {
-//       display: "none",
-//     },
-//   },
-//   link: {
-//     display: "flex",
-//     alignItems: "center",
-//     height: "100%",
-//     paddingLeft: theme.spacing.md,
-//     paddingRight: theme.spacing.md,
-//     paddingTop: theme.spacing.xs,
-//     paddingBottom: theme.spacing.xs,
-//     textDecoration: "none",
-//     color: theme.colorScheme === "dark" ? theme.white : theme.black,
-//     fontWeight: 500,
-//     fontSize: theme.fontSizes.sm,
-//     borderRadius: theme.radius.md,
-//
-//     [theme.fn.smallerThan("sm")]: {
-//       height: 42,
-//       display: "flex",
-//       alignItems: "center",
-//       width: "100%",
-//     },
-//
-//     ...theme.fn.hover({
-//       backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-//       textDecoration: "none",
-//     }),
-//   },
-//   disabledLink: {
-//     color: theme.colors.gray[6],
-//   },
-//   subLink: {
-//     width: "100%",
-//     textDecoration: "none",
-//     color: theme.colorScheme === "dark" ? theme.white : theme.black,
-//     borderRadius: theme.radius.md,
-//
-//     ...theme.fn.hover({
-//       backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-//     }),
-//
-//     "&:active": theme.activeStyles,
-//   },
-//   dropdown: {
-//     position: "absolute",
-//     top: 60,
-//     left: 0,
-//     right: 0,
-//     zIndex: 0,
-//     borderTopRightRadius: 0,
-//     borderTopLeftRadius: 0,
-//     borderTopWidth: 0,
-//     overflow: "hidden",
-//
-//     [theme.fn.largerThan("md")]: {
-//       display: "none",
-//     },
-//   },
-//   hiddenDesktop: {
-//     [theme.fn.largerThan("md")]: {
-//       display: "none",
-//     },
-//   },
-//   hiddenMobile: {
-//     [theme.fn.smallerThan("md")]: {
-//       display: "none",
-//     },
-//   },
-// }));
-
-export const Header: React.FC<HeaderProps> = () => {
-  // const { classes, cx } = useStyles();
-
+const MobileView = () => {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const isMediumScreen = useMediaQuery("(min-width: 64em) and (max-width: 90em)");
 
-  const MobileView = (
+  return (
     <>
       <Burger
         opened={opened}
@@ -213,13 +127,64 @@ export const Header: React.FC<HeaderProps> = () => {
       </Drawer>
     </>
   );
+};
 
+const DesktopView = () => {
   return (
     <>
-      <header
-        className={classes.root}
-        style={{ position: "sticky", zIndex: 999, height: isMediumScreen ? 100 : 60 }}
-      >
+      <Group className={classes.hiddenMobile} gap={0}>
+        <HoverCard width={800} position="bottom" radius="md" shadow="md">
+          <HoverCard.Target>
+            <div>
+              <Anchor component={Link} href={getLeaderBoardRoute()} className={classes.link}>
+                <Group gap={3}>
+                  Leaderboards
+                  <IconChevronDown size={16} />
+                </Group>
+              </Anchor>
+            </div>
+          </HoverCard.Target>
+          <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+            <LeaderboardsMenu />
+          </HoverCard.Dropdown>
+        </HoverCard>
+        <StatisticsMenu classes={classes} close={close} />
+
+        <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
+          Desktop App
+        </Anchor>
+
+        <ExplorerMenu close={close} classes={classes} />
+        <OtherMenu close={close} classes={classes} />
+        <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
+          About
+        </Anchor>
+        <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
+          <Image
+            src="/kofi_s_logo_nolabel.webp"
+            width={22}
+            height={22}
+            alt={"donate button"}
+            unoptimized
+            style={{ marginRight: "5px" }}
+          />
+          Support Us
+        </Anchor>
+      </Group>
+
+      <Group gap={5} className={classes.hiddenMobile}>
+        <OnlinePlayers />
+        <SearchButton />
+        <ColorSchemeToggle />
+      </Group>
+    </>
+  );
+};
+
+export const Header: React.FC<HeaderProps> = () => {
+  return (
+    <>
+      <header className={classes.headerRoot}>
         <Container className={classes.container} fluid>
           <Anchor component={Link} href={"/"} className={classes.link}>
             <Group gap="xs">
@@ -236,53 +201,8 @@ export const Header: React.FC<HeaderProps> = () => {
               </Title>
             </Group>
           </Anchor>
-
-          <Group className={classes.hiddenMobile} gap={0}>
-            <HoverCard width={800} position="bottom" radius="md" shadow="md">
-              <HoverCard.Target>
-                <div>
-                  <Anchor component={Link} href={getLeaderBoardRoute()} className={classes.link}>
-                    <Group gap={3}>
-                      Leaderboards
-                      <IconChevronDown size={16} />
-                    </Group>
-                  </Anchor>
-                </div>
-              </HoverCard.Target>
-              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <LeaderboardsMenu />
-              </HoverCard.Dropdown>
-            </HoverCard>
-            <StatisticsMenu classes={classes} close={close} />
-
-            <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
-              Desktop App
-            </Anchor>
-
-            <ExplorerMenu close={close} classes={classes} />
-            <OtherMenu close={close} classes={classes} />
-            <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
-              About
-            </Anchor>
-            <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
-              <Image
-                src="/kofi_s_logo_nolabel.webp"
-                width={22}
-                height={22}
-                alt={"donate button"}
-                unoptimized
-                style={{ marginRight: "5px" }}
-              />
-              Support Us
-            </Anchor>
-          </Group>
-
-          <Group gap={5} className={classes.hiddenMobile}>
-            <OnlinePlayers />
-            <SearchButton />
-            <ColorSchemeToggle />
-          </Group>
-          {MobileView}
+          <DesktopView />
+          <MobileView />
         </Container>
       </header>
     </>
