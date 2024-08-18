@@ -5,7 +5,6 @@ import {
   Image,
   List,
   Paper,
-  rem,
   Stack,
   Text,
   ThemeIcon,
@@ -71,7 +70,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
             mb={50}
             icon={
               <ThemeIcon size={20} radius="xl">
-                <IconCheck size={rem(12)} stroke={1.5} />
+                <IconCheck stroke={1.5} />
               </ThemeIcon>
             }
           >
