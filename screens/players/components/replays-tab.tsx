@@ -7,7 +7,6 @@ import {
 import ErrorCard from "../../../components/error-card";
 import React from "react";
 import { DataTable } from "mantine-datatable";
-import RenderMap from "../../../components/matches-table/render-map";
 import FactionIcon from "../../../components/faction-icon";
 import { cohDBracesToNormalRaces } from "../../../src/coh3/coh3-data";
 import { Anchor, Button, Flex, Group, Title, Tooltip, Text, Space, Stack } from "@mantine/core";
@@ -24,6 +23,7 @@ import { getDesktopAppRoute, getPlayerCardRoute } from "../../../src/routes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import EllipsisText from "../../../components/other/ellipsis-text";
+import RenderMap from "./components/matches-table/render-map";
 
 const ReplaysTab = ({
   profileID,
@@ -56,7 +56,7 @@ const ReplaysTab = ({
 
   return (
     <>
-      <Group justify="apart">
+      <Group justify="space-between">
         <Title order={3}>Replays by COHDB</Title>
         <Group>
           <Anchor href={getCOHDBUploadULR()} target="_blank">
@@ -72,7 +72,7 @@ const ReplaysTab = ({
       <Space h={"md"} />
       <DataTable
         minHeight={300}
-        withBorder
+        withTableBorder
         borderRadius="md"
         highlightOnHover
         striped
@@ -137,11 +137,11 @@ const ReplaysTab = ({
                             href={`/players/${player.profile_id}`}
                           >
                             {`${player.profile_id}` === `${profileID}` ? (
-                              <Text fw={700}>
+                              <Text span fw={700}>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             ) : (
-                              <Text>
+                              <Text span>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             )}
@@ -178,11 +178,11 @@ const ReplaysTab = ({
                             href={`/players/${player.profile_id}`}
                           >
                             {`${player.profile_id}` === `${profileID}` ? (
-                              <Text fw={700}>
+                              <Text span fw={700}>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             ) : (
-                              <Text>
+                              <Text span>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             )}
@@ -198,14 +198,14 @@ const ReplaysTab = ({
           {
             accessor: "title",
             title: "Title",
-            cellsStyle: { display: "flex" },
+            // cellsStyle: { display: "flex" },
             // textAlign: "left",
             // width: "70%",
             render: ({ title, uploaded_at, uploaded_by }) => {
               return (
                 <div style={{ paddingTop: 5 }}>
                   <Title order={4}>{title}</Title>
-                  <Text c="dimmed">
+                  <Text span inherit c="dimmed">
                     Uploaded by{" "}
                     <Anchor href={getPlayerCardRoute(uploaded_by.profile_id)}>
                       {uploaded_by.name}
@@ -232,7 +232,11 @@ const ReplaysTab = ({
                       .map((unit) => (unit < 10 ? `0${unit}` : `${unit}`))
                       .join(":");
 
-              return <Text>{formatTime(length)}</Text>;
+              return (
+                <Text span inherit>
+                  {formatTime(length)}
+                </Text>
+              );
             },
           },
           {

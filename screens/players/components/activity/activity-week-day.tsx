@@ -65,8 +65,15 @@ const ActivityByWeekDay = ({ playerStatsData }: { playerStatsData: ProcessedCOHP
             <Group gap={"xs"}>
               Record:
               <Group gap={"xs"}>
-                <Text c={"green"}> {data.wins || 0} W</Text> -{" "}
-                <Text c={"red"}> {data.losses || 0} L</Text>
+                <Text span c={"green"}>
+                  {" "}
+                  {data.wins || 0} W
+                </Text>{" "}
+                -{" "}
+                <Text span c={"red"}>
+                  {" "}
+                  {data.losses || 0} L
+                </Text>
               </Group>
             </Group>
             WinRate: {calculateWinRate(data.wins || 0, data.losses || 0).toFixed(1)}%

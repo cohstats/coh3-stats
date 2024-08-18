@@ -154,12 +154,13 @@ const PlayerCard = ({
       </Head>
       <Container fluid>
         <Container fluid>
-          <Group justify={"apart"}>
+          <Group justify={"space-between"}>
             <Group>
               <Avatar
                 src={playerData.steamData?.avatarmedium}
                 imageProps={{ loading: "lazy" }}
                 alt={playerData.info.name}
+                radius="sm"
                 size="xl"
                 mt={5}
               />

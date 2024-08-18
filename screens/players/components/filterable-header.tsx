@@ -18,7 +18,9 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
       <Popover.Target>
         <Group justify="center">
           <Flex>
-            <Text>{title}</Text>
+            <Text span inherit>
+              {title}
+            </Text>
             <IconFilter cursor="pointer" />
           </Flex>
         </Group>

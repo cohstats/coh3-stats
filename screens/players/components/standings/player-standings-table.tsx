@@ -39,7 +39,7 @@ const PlayerStandingsTable = ({
         borderRadius="md"
         highlightOnHover
         striped
-        verticalSpacing="xs"
+        verticalSpacing={5}
         // provide data
         idAccessor={"type"}
         records={dataForTable}
@@ -104,9 +104,13 @@ const PlayerStandingsTable = ({
               if (!streak) return "-";
 
               return streak > 0 ? (
-                <Text c={"green"}>+{streak}</Text>
+                <Text span c={"green"}>
+                  +{streak}
+                </Text>
               ) : (
-                <Text c={"red"}>{streak}</Text>
+                <Text span c={"red"}>
+                  {streak}
+                </Text>
               );
             },
           },

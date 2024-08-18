@@ -97,8 +97,16 @@ const ActivityLastMonths = ({
             }}
           >
             <Group gap={"xs"}>
-              {day}: <Text c={"green"}> {wins} W</Text> -{" "}
-              <Text c={"red"}> {losses} L</Text>
+              {day}:{" "}
+              <Text span c={"green"}>
+                {" "}
+                {wins} W
+              </Text>{" "}
+              -{" "}
+              <Text span c={"red"}>
+                {" "}
+                {losses} L
+              </Text>
             </Group>
           </div>
         );

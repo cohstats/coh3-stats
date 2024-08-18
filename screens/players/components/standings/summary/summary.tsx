@@ -37,10 +37,12 @@ const StandingsSummaryCharts = ({
   const chartHeight = 160;
 
   return (
-    <Group justify={"apart"}>
+    <Group justify={"space-between"}>
       <Paper radius="md">
         <Group m="xs" gap={"xs"}>
-          <Text fw={500}>Factions and game types</Text>
+          <Text span fw={500}>
+            Factions and game types
+          </Text>
         </Group>
         <Group>
           <div
@@ -87,8 +89,14 @@ const StandingsSummaryCharts = ({
       </Paper>
       <Paper radius="md">
         <Group m="xs" gap={"xs"}>
-          <Text fw={500}> Activity</Text>
-          <Text size={"sm"}> in the last 4 months</Text>
+          <Text span fw={500}>
+            {" "}
+            Activity
+          </Text>
+          <Text span size={"sm"}>
+            {" "}
+            in the last 4 months
+          </Text>
         </Group>
 
         <div

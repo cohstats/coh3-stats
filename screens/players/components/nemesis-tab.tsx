@@ -92,7 +92,10 @@ const StomperCard = ({
     return (
       <>
         <Center>
-          <Text c={"dimmed"}> No 1v1 Nemesis</Text>
+          <Text span c={"dimmed"}>
+            {" "}
+            No 1v1 Nemesis
+          </Text>
         </Center>
       </>
     );
@@ -117,14 +120,18 @@ const StomperCard = ({
                 imageProps={{ loading: "lazy" }}
                 alt={stomper.apiData.info.name}
                 size={50}
+                radius="xs"
               />
               <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap">
                 <Group gap={"xs"}>
                   <CountryFlag countryCode={stomper.apiData.info.country || ""} />
-                  <Text fz="xl"> {stomper.apiData.info.name}</Text>
+                  <Text span fz="xl">
+                    {" "}
+                    {stomper.apiData.info.name}
+                  </Text>
                 </Group>
 
-                <Text size="sm" color="dimmed">
+                <Text span size="sm" color="dimmed">
                   <Group gap={"xs"}>
                     <span>Wins: {wins}</span>
                     <span>Losses: {losses} </span>
@@ -133,7 +140,7 @@ const StomperCard = ({
               </Flex>
             </Group>
             <div>
-              <Text fz="xl">
+              <Text span fz="xl">
                 <Group>
                   <div>
                     {stomper.data.diff > 0 && (
@@ -233,7 +240,7 @@ const NemesisTab = ({
 
   React.useEffect(() => {
     (async () => {
-      triggerPlayerNemesisAliasesUpdate(profileID).then();
+      triggerPlayerNemesisAliasesUpdate(profileID).then().catch(console.error);
     })();
   }, [profileID]);
 
@@ -334,9 +341,9 @@ const NemesisTab = ({
           records={data}
           noRecordsText="No 1v1 nemesis tracked"
           withTableBorder={true}
-          border={2}
           borderRadius="md"
           striped={true}
+          verticalSpacing={4}
           // @ts-ignore
           columns={[
             {

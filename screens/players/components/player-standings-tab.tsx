@@ -71,7 +71,7 @@ const PlayerStandingsTab = ({
 
         <div style={{ width: 300 }}>
           <Space h="xl" />
-          <Space h="xl" />
+          <Space h="xs" />
           <MapsWidget playerStatsData={playerStatsData} playerStandings={playerStandings} />
           <Space h="xl" />
           <NemesisWidget

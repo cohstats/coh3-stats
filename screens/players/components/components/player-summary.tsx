@@ -34,7 +34,7 @@ const PlayerSummary = ({
       }}
     >
       <Group>
-        <Text fz={"sm"}>
+        <Text span fz={"sm"}>
           <Tooltip
             label={
               <>
@@ -46,7 +46,12 @@ const PlayerSummary = ({
           >
             <Group justify={"right"} gap={"xs"}>
               <>
-                Best AXIS ELO <Text fw={600}>{bestAxisEloText}</Text>
+                <Text span fz={"sm"}>
+                  Best AXIS ELO{" "}
+                  <Text inherit span fw={600}>
+                    {bestAxisEloText}
+                  </Text>
+                </Text>
               </>
             </Group>
           </Tooltip>
@@ -60,17 +65,34 @@ const PlayerSummary = ({
             }
           >
             <Group justify={"right"} gap={"xs"}>
-              Best ALLIES ELO <Text fw={600}>{bestAlliesEloText}</Text>
+              <Text span fz={"sm"}>
+                Best ALLIES ELO{" "}
+                <Text inherit span fw={600}>
+                  {bestAlliesEloText}
+                </Text>
+              </Text>
             </Group>
           </Tooltip>
           <Tooltip label={"Win Ratio in leaderboard games only."}>
             <Group gap={5} justify={"right"}>
-              WR <Text fw={600}>{Math.round(winRate * 100)}%</Text> in{" "}
-              <Text fw={600}>{totalGames}</Text>games
+              <Text span fz={"sm"}>
+                WR{" "}
+                <Text span inherit fw={600}>
+                  {Math.round(winRate * 100)}%
+                </Text>{" "}
+                in{" "}
+                <Text span inherit fw={600}>
+                  {totalGames}
+                </Text>{" "}
+                games
+              </Text>
             </Group>
           </Tooltip>
           <Group gap={4} justify="right">
-            <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
+            <Text span fz={"sm"}>
+              Last match
+            </Text>{" "}
+            <DynamicTimeAgo timestamp={lastMatchDate} />
           </Group>
         </Text>
         <Tooltip label={highestTierTooltip} position={"bottom"}>

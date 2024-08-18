@@ -1,4 +1,4 @@
-import { Badge, Tooltip } from "@mantine/core";
+import { Badge, Group, Tooltip } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 export const OnlinePlayers: React.FC = () => {
@@ -60,12 +60,12 @@ export const OnlinePlayers: React.FC = () => {
       w={200}
       withArrow
     >
-      <div>
+      <Group gap={3}>
         Players in game{" "}
         <Badge color="green" variant="filled" size="lg" style={{ minWidth: 60 }}>
           {onlinePlayersData?.playerCount}
         </Badge>
-      </div>
+      </Group>
     </Tooltip>
   );
 };
