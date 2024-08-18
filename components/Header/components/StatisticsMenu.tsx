@@ -22,7 +22,7 @@ const StatisticsMenu = ({
   close,
 }: {
   classes: Record<string, string>;
-  close: () => void;
+  close?: () => void;
 }) => {
   const mobileView = (
     <div className={classes.hiddenDesktop}>

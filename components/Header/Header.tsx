@@ -148,14 +148,14 @@ const DesktopView = () => {
             <LeaderboardsMenu />
           </HoverCard.Dropdown>
         </HoverCard>
-        <StatisticsMenu classes={classes} close={close} />
+        <StatisticsMenu classes={classes} />
 
         <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
           Desktop App
         </Anchor>
 
-        <ExplorerMenu close={close} classes={classes} />
-        <OtherMenu close={close} classes={classes} />
+        <ExplorerMenu classes={classes} />
+        <OtherMenu classes={classes} />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
           About
         </Anchor>

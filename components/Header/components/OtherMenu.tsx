@@ -32,7 +32,7 @@ const OtherMenu = ({
   close,
 }: {
   classes: Record<string, string>;
-  close: () => void;
+  close?: () => void;
 }) => {
   const mobileView = (
     <div className={classes.hiddenDesktop}>
@@ -84,7 +84,7 @@ const OtherMenu = ({
             </Group>
           </div>
         </HoverCard.Target>
-        <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden"}}>
+        <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden" }}>
           <Group>
             <Group gap={"xs"}>
               <IconAward size={16} />
@@ -128,11 +128,7 @@ const OtherMenu = ({
               </Anchor>
             </Group>
             <Tooltip label="Coming Soon" color="orange" withArrow position={"bottom"}>
-              <Anchor
-                className={classes.disabledLink}
-                component={Link}
-                href={getOpenDataRoute()}
-              >
+              <Anchor className={classes.disabledLink} component={Link} href={getOpenDataRoute()}>
                 <Group gap={"xs"}>
                   <ActionIcon color="orange" radius="xl" variant="transparent">
                     <IconBarrierBlock size={16} />

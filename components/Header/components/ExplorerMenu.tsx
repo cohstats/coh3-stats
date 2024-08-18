@@ -25,7 +25,7 @@ import { localizedNames } from "../../../src/coh3/coh3-data";
 import { getIconsPathOnCDN, internalSlash } from "../../../src/utils";
 import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
 
-const explorerFactionLink = (faction: raceType, close: () => void) => {
+const explorerFactionLink = (faction: raceType, close?: () => void) => {
   const name = faction !== "dak" ? localizedNames[faction] : "DAK";
 
   return (
@@ -86,7 +86,7 @@ const explorerFactionLink = (faction: raceType, close: () => void) => {
   );
 };
 
-const DPSLink = ({ close }: { close: () => void }) => {
+const DPSLink = ({ close }: { close?: () => void }) => {
   return (
     <Group gap={4}>
       <Image
@@ -111,7 +111,7 @@ const DPSLink = ({ close }: { close: () => void }) => {
   );
 };
 
-const UnitBrowserLink = ({ close }: { close: () => void }) => {
+const UnitBrowserLink = ({ close }: { close?: () => void }) => {
   return (
     <Group gap={4}>
       <Image
@@ -136,7 +136,7 @@ const UnitBrowserLink = ({ close }: { close: () => void }) => {
   );
 };
 
-const ChallengesLink = ({ close }: { close: () => void }) => {
+const ChallengesLink = ({ close }: { close?: () => void }) => {
   return (
     <Group gap={4}>
       <IconMedal size={20} />
@@ -159,7 +159,7 @@ const ExplorerMenu = ({
   close,
 }: {
   classes: Record<string, string>;
-  close: () => void;
+  close?: () => void;
 }) => {
   const mobileView = (
     <Group className={classes.hiddenDesktop} grow>
