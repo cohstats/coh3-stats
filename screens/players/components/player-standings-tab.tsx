@@ -38,7 +38,7 @@ const PlayerStandingsTab = ({
         <MoreButton onClick={() => changeView("activity")} />
       </div>
       <Space h="xs" />
-      <Flex gap="xs" wrap={"wrap"}>
+      <Flex gap="xs" wrap={"wrap"} justify={"space-between"}>
         <div style={{ flexGrow: 1 }}>
           <PlayerStandingsFaction
             faction={"german"}

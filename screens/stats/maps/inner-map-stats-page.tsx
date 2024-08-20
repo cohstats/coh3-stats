@@ -48,9 +48,11 @@ const InnerMapStatsPage = ({
         })}
         onChange={(value) => setSelectedMap(value || "")}
         w={220}
+        allowDeselect={false}
+        withCheckIcon={false}
       />
       <Space h="sm" />
-      <Flex gap={"xl"} wrap="wrap" justify="space-between">
+      <Flex gap={"xs"} wrap="wrap" justify="space-between">
         <FactionVsFactionCard
           data={data[mode][selectedMap]}
           title={`${getMapLocalizedName(selectedMap)} - ${mode} Team composition`}
@@ -59,7 +61,7 @@ const InnerMapStatsPage = ({
         <MapChartCard
           title={
             <Group gap={"xs"}>
-              <Text>
+              <Text inherit>
                 {getMapLocalizedName(selectedMap)} {mode}
               </Text>
             </Group>

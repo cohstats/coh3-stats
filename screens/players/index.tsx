@@ -152,7 +152,7 @@ const PlayerCard = ({
           <meta property="og:image" content={playerData.steamData?.avatarmedium} />
         )}
       </Head>
-      <Container fluid>
+      <Container fluid p={0}>
         <Container fluid>
           <Group justify={"space-between"}>
             <Group>

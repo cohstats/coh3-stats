@@ -23,12 +23,15 @@ import {
   convertToDateString,
   findPatchVersionByToAndFrom,
   getGMTTimeStamp,
+  getPatchVersionAsMantineV7Groups,
 } from "../../src/utils";
 import config from "../../config";
 import InnerGameStatsPage from "./game/inner-game-stats-page";
 import InnerMapsStatsPage from "./maps/inner-maps-stats-page";
 import { analysisFilterType, analysisMapFilterType } from "../../src/analysis-types";
 import HelperIcon from "../../components/icon/helper";
+
+const patchSelectorData = getPatchVersionAsMantineV7Groups();
 
 const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapStats" }) => {
   const { push, query } = useRouter();
@@ -166,7 +169,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
   };
 
   const selectPatchDate = (value: string | null) => {
-    if(!value) return;
+    if (!value) return;
     const selectedPatch = config.statsPatchSelector[value];
     if (!selectedPatch) return;
     setPatchSelectValue(value);
@@ -202,114 +205,120 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
   ];
 
   const ELOFilterDataStats = [
-    { value: "all", label: "All", group: "All ELO Groups" },
     {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1600-9999`,
-      label: "Average 1600+",
+      group: "All ELO Groups",
+      items: [
+        {
+          value: "all",
+          label: "All",
+          disabled: false,
+        },
+      ],
+    },
+    {
       group: "Average",
-      disabled: disabledMultiFilter.averageDisabled,
+      items: [
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1600-9999`,
+          label: "Average 1600+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1400-1599`,
+          label: "Average 1400-1599",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1250-1399`,
+          label: "Average 1250-1399",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1100-1249`,
+          label: "Average 1100-1249",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-800-1099`,
+          label: "Average 800-1099",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-0-799`,
+          label: "Average 0-799",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+      ],
     },
     {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1400-1599`,
-      label: "Average 1400-1599",
-      group: "Average",
-      disabled: disabledMultiFilter.averageDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1250-1399`,
-      label: "Average 1250-1399",
-      group: "Average",
-      disabled: disabledMultiFilter.averageDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1100-1249`,
-      label: "Average 1100-1249",
-      group: "Average",
-      disabled: disabledMultiFilter.averageDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-800-1099`,
-      label: "Average 800-1099",
-      group: "Average",
-      disabled: disabledMultiFilter.averageDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-0-799`,
-      label: "Average 0-799",
-      group: "Average",
-      disabled: disabledMultiFilter.averageDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1600-9999`,
-      label: "Average Ex 1600+",
       group: "Average Ex 400 diff",
-      disabled: disabledMultiFilter.averageExDisabled,
+      items: [
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1600-9999`,
+          label: "Average Ex 1600+",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1400-1599`,
+          label: "Average Ex 1400-1599",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1250-1399`,
+          label: "Average Ex 1250-1399",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1100-1249`,
+          label: "Average Ex 1100-1249",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-800-1099`,
+          label: "Average Ex 800-1099",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-0-799`,
+          label: "Average Ex 0-799",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+      ],
     },
     {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1400-1599`,
-      label: "Average Ex 1400-1599",
-      group: "Average Ex 400 diff",
-      disabled: disabledMultiFilter.averageExDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1250-1399`,
-      label: "Average Ex 1250-1399",
-      group: "Average Ex 400 diff",
-      disabled: disabledMultiFilter.averageExDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1100-1249`,
-      label: "Average Ex 1100-1249",
-      group: "Average Ex 400 diff",
-      disabled: disabledMultiFilter.averageExDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-800-1099`,
-      label: "Average Ex 800-1099",
-      group: "Average Ex 400 diff",
-      disabled: disabledMultiFilter.averageExDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-0-799`,
-      label: "Average Ex 0-799",
-      group: "Average Ex 400 diff",
-      disabled: disabledMultiFilter.averageExDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1600-9999`,
-      label: "Limit 1600+",
       group: "Hard limit",
-      disabled: disabledMultiFilter.limitDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1400-1599`,
-      label: "Limit 1400-1599",
-      group: "Hard limit",
-      disabled: disabledMultiFilter.limitDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1250-1399`,
-      label: "Limit 1250-1399",
-      group: "Hard limit",
-      disabled: disabledMultiFilter.limitDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1100-1249`,
-      label: "Limit 1100-1249",
-      group: "Hard limit",
-      disabled: disabledMultiFilter.limitDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-800-1099`,
-      label: "Limit 800-1099",
-      group: "Hard limit",
-      disabled: disabledMultiFilter.limitDisabled,
-    },
-    {
-      value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-0-799`,
-      label: "Limit 0-799",
-      group: "Hard limit",
-      disabled: disabledMultiFilter.limitDisabled,
+      items: [
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1600-9999`,
+          label: "Limit 1600+",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1400-1599`,
+          label: "Limit 1400-1599",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1250-1399`,
+          label: "Limit 1250-1399",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1100-1249`,
+          label: "Limit 1100-1249",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-800-1099`,
+          label: "Limit 800-1099",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-0-799`,
+          label: "Limit 0-799",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+      ],
     },
   ];
 
@@ -322,7 +331,8 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             label="Select Patch"
             placeholder="Custom date"
             onChange={selectPatchDate}
-            data={Object.values(config.statsPatchSelector)}
+            data={patchSelectorData}
+            withCheckIcon={false}
             w={145}
           />
           <DatePickerInput
@@ -342,6 +352,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
           />
 
           <Select
+            withCheckIcon={false}
             label={
               <>
                 ELO Filter{" "}
@@ -375,7 +386,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             size="sm"
             data={segmentedControlGameTypeData}
             value={mode}
-            onChange={(value)=> selectMode(value as "all" | "1v1" | "2v2" | "3v3" | "4v4")}
+            onChange={(value) => selectMode(value as "all" | "1v1" | "2v2" | "3v3" | "4v4")}
           />
         </Flex>
 

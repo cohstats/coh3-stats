@@ -114,6 +114,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
           label="Display data for the last"
           value={range}
           withCheckIcon={false}
+          allowDeselect={false}
           onChange={(value) => setRange(value as string)}
           data={[
             { value: "month", label: "Month" },

@@ -159,9 +159,9 @@ const InnerMapsStatsPage = ({
 
     content = (
       <Container size={1230}>
-        <Flex gap={"xl"} justify="center">
+        <Flex gap={"md"} justify="center">
           <Group gap={0}>
-            <Title order={2} style={{textAlign: "center"}} p={"md"}>
+            <Title order={2} style={{ textAlign: "center" }} p={"md"}>
               Games analyzed {matchCount.toLocaleString()}
             </Title>
             <HelperIcon
@@ -173,11 +173,11 @@ const InnerMapsStatsPage = ({
             />
           </Group>
         </Flex>
-        <Group gap={"xl"} justify={"apart"}>
+        <Group gap={"md"} justify={"space-between"}>
           <MapChartCard
             title={
               <Group gap={"xs"}>
-                <Text>Maps {mode}</Text>
+                <Text inherit>Maps {mode}</Text>
                 <HelperIcon
                   width={280}
                   text={"This chart has no value until we get map bans as we have in coh2."}
@@ -191,7 +191,7 @@ const InnerMapsStatsPage = ({
           <MapChartCard
             title={
               <Group gap={"xs"}>
-                <Text>Winrate deviation {mode}</Text>
+                <Text inherit>Winrate deviation {mode}</Text>
                 <HelperIcon
                   width={280}
                   text={
@@ -218,7 +218,7 @@ const InnerMapsStatsPage = ({
           <MapChartCard
             title={
               <Group gap={"xs"}>
-                <Text>Sides Winrate - diff {mode}</Text>
+                <Text inherit>Sides Winrate - diff {mode}</Text>
                 <HelperIcon
                   width={280}
                   text={"Shows the difference from 50% winrate for each side."}
@@ -231,7 +231,7 @@ const InnerMapsStatsPage = ({
           </MapChartCard>
         </Group>
         <Space h="xl" />
-        <Flex gap={"xl"} wrap="wrap" justify="space-between">
+        <Flex gap={"md"} wrap="wrap" justify={"space-between"}>
           <Card p="md" shadow="sm" w={785} withBorder>
             <Card.Section withBorder inheritPadding py="xs">
               <Title order={3}>{`Winrate diff per factions on maps ${mode}`}</Title>
@@ -245,7 +245,7 @@ const InnerMapsStatsPage = ({
 
             {!largeScreen && (
               <Card.Section withBorder inheritPadding py="xs">
-                <Text style={{textAlign: "center"}}>
+                <Text style={{ textAlign: "center" }}>
                   Winrate diff chart is not available on small screens.
                 </Text>
               </Card.Section>
@@ -254,7 +254,7 @@ const InnerMapsStatsPage = ({
           <MapChartCard
             title={
               <Group gap={"xs"}>
-                <Text>Average Playtime {mode}</Text>
+                <Text inherit>Average Playtime {mode}</Text>
               </Group>
             }
             size={"md"}
@@ -265,12 +265,12 @@ const InnerMapsStatsPage = ({
         </Flex>
         <InnerMapStatsPage mode={mode} data={analysis} />
 
-        <Text fz="xs" style={{textAlign: "center"}} pt={20} c="dimmed">
+        <Text fz="xs" style={{ textAlign: "center" }} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
-        <Text fz="xs" style={{textAlign: "center"}} c="dimmed">
+        <Text fz="xs" style={{ textAlign: "center" }} c="dimmed">
           Applied ELO filters {data.filters ? data.filters?.join(", ") : "none"}
         </Text>
       </Container>

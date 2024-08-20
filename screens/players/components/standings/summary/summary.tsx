@@ -44,7 +44,7 @@ const StandingsSummaryCharts = ({
             Factions and game types
           </Text>
         </Group>
-        <Group>
+        <Group gap={"xs"}>
           <div
             style={{
               height: chartHeight,

@@ -29,7 +29,7 @@ const PlayerStandingsFaction = ({
         <Title order={2}>{localizedNames[faction]}</Title>
       </Group>
       <Space h="xs" />
-      <Group>
+      <Group gap={"xs"}>
         <PlayerStandingsTable faction={faction} data={data} platform={platform} />
         <PlayerStandingsFactionInfo
           faction={faction}

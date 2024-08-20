@@ -66,7 +66,7 @@ const MapsLineChartCard = ({
   return (
     <Card p="md" shadow="sm" w={1270} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
-        <Group justify={"apart"}>
+        <Group justify={"space-between"}>
           <Group>
             <Title order={3}>{title}</Title>
             <HelperIcon width={360} text={helperText} />
@@ -82,6 +82,8 @@ const MapsLineChartCard = ({
                 { value: "days", label: "Days" },
                 { value: "weeks", label: "Weeks" },
               ]}
+              withCheckIcon={false}
+              allowDeselect={false}
             />
           </Group>
         </Group>

@@ -198,7 +198,7 @@ const Leaderboards = ({
       </Head>
       <Container size={"lg"} p={0}>
         <Container fluid pl={0} pr={0}>
-          <Group justify={"apart"}>
+          <Group justify={"space-between"}>
             <Group>
               <FactionIcon name={raceToFetch} width={35} />
               <Title order={2}>Leaderboards for {localizedRace}</Title>

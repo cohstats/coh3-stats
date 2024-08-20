@@ -80,7 +80,7 @@ const PlayerStats = ({
             <Center>
               {" "}
               <Group>
-                <Text fz="md">
+                <Text span fz="md">
                   <div
                     style={{
                       display: "grid",
@@ -186,7 +186,7 @@ const PlayerStats = ({
               <DynamicGeoWorldMap data={countries} />
               <DynamicPlayersLineChart data={historyData} />
             </div>
-            <Text style={{textAlign: "center"}} fs="italic" c="dimmed" fz="sm" pt={25}>
+            <Text style={{ textAlign: "center" }} fs="italic" c="dimmed" fz="sm" pt={25}>
               Data updated on {dayjs(playerStats.timeStampMs).format("YYYY-MM-DD HH:mm")} UTC
               <br />
               We do not track XBOX and PS players here.

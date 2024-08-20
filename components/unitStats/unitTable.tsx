@@ -635,12 +635,14 @@ export const UnitTable = ({ inputData }: inputProps) => {
       </Grid>
       <Space h={"md"} />
       <div>
-        <Group justify={"apart"}>
+        <Group justify={"space-between"}>
           <Group>
             <Space w={"sm"} />
-             <Group wrap="nowrap">{generateFactionFilterButtons(toggleFilter, factionFilter)}</Group>
+            <Group wrap="nowrap">
+              {generateFactionFilterButtons(toggleFilter, factionFilter)}
+            </Group>
             <Space w={"md"} />
-             <Group wrap="nowrap">{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
+            <Group wrap="nowrap">{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
           </Group>
           <TextInput
             placeholder="Search Unit"

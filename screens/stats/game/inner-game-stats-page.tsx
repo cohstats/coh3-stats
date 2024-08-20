@@ -178,7 +178,7 @@ const InnerGameStatsPage = ({
       <>
         <Flex gap={"xl"} justify="center">
           <Group gap={0}>
-            <Title order={2} style={{textAlign: "center"}} p={"md"}>
+            <Title order={2} style={{ textAlign: "center" }} p={"md"}>
               Games analyzed {matchCount.toLocaleString()}
             </Title>
             <HelperIcon
@@ -192,7 +192,7 @@ const InnerGameStatsPage = ({
         </Flex>
         {matchCount > 0 && (
           <>
-            <Flex gap={"xl"} wrap="wrap" justify="center">
+            <Flex gap={"md"} wrap="wrap" justify="space-between">
               <ChartCard title={`Factions Played ${mode}`} size={"md"}>
                 <DynamicFactionsPlayedPieChart data={analysisData} />
               </ChartCard>
@@ -207,9 +207,9 @@ const InnerGameStatsPage = ({
 
               <ChartCard
                 title={
-                  <Group justify={"apart"}>
+                  <Group justify={"space-between"}>
                     <Group gap={"xs"}>
-                      <Text>Maps {mode}</Text>
+                      <Text inherit>Maps {mode}</Text>
                       <HelperIcon
                         width={280}
                         text={"This chart has no value until we get map bans as we have in coh2."}
@@ -235,7 +235,7 @@ const InnerGameStatsPage = ({
             </Flex>
 
             <Space h="xl" />
-            <Flex gap={"xl"} wrap="wrap" justify="center">
+            <Flex gap={"md"} wrap="wrap" justify="space-between">
               <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
               <ChartCard title={`Game Time ${mode}`} size={"xl"}>
                 <DynamicPlayTimeHistogramChart data={analysisData} />
@@ -274,12 +274,12 @@ const InnerGameStatsPage = ({
           </>
         )}
 
-        <Text fz="xs" style={{textAlign: "center"}} pt={20} c="dimmed">
+        <Text fz="xs" style={{ textAlign: "center" }} pt={20} c="dimmed">
           Analysis type {data.type} from{" "}
           {dayjs.unix(data.fromTimeStampSeconds).format("YYYY-MM-DD")} to{" "}
           {dayjs.unix(data.toTimeStampSeconds).format("YYYY-MM-DD")}
         </Text>
-        <Text fz="xs" style={{textAlign: "center"}} c="dimmed">
+        <Text fz="xs" style={{ textAlign: "center" }} c="dimmed">
           Applied ELO filters {data.filters ? data.filters?.join(", ") : "none"}
         </Text>
       </>

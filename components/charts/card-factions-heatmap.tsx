@@ -103,7 +103,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
 
   const changeFactionDisplay = (value: "axis" | "allies" | string) => {
     // firebaseAnalytics.teamCompositionUsed(value, heatmapValues);
-    setSelectedSide(value as  "axis" | "allies");
+    setSelectedSide(value as "axis" | "allies");
   };
 
   // Follows the spaghetti code from coh2 stats. It would be best to completely
@@ -214,7 +214,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
             <Title order={3}>{title}</Title>
           </Card.Section>
           <Card.Section withBorder inheritPadding py="xs">
-            <Text style={{textAlign: "center"}}>
+            <Text style={{ textAlign: "center" }}>
               Team composition chart is not available on small screens.
             </Text>
           </Card.Section>
@@ -225,7 +225,7 @@ const _FactionVsFactionCard: React.FC<IProps> = ({
           {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
           <Card.Section withBorder inheritPadding py="xs">
-            <Group justify={"apart"}>
+            <Group justify={"space-between"}>
               <Title order={3}>{title}</Title>
               <Group>
                 <HelperIcon
