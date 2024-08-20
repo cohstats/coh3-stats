@@ -63,8 +63,8 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
       </Head>
       <Container size={"lg"} p={0}>
         <Grid>
-          <Grid.Col span={{md: 12, lg: 6}}>
-            <Title style={{textAlign: "center"}} order={2}>
+          <Grid.Col span={{ md: 12, lg: 6 }}>
+            <Title style={{ textAlign: "center" }} order={2}>
               Weekly Challenges
             </Title>
             <Space h={"md"} />
@@ -98,8 +98,8 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
             })}
           </Grid.Col>
 
-          <Grid.Col span={{md: 12, lg: 6}}>
-            <Title style={{textAlign: "center"}} order={2}>
+          <Grid.Col span={{ md: 12, lg: 6 }}>
+            <Title style={{ textAlign: "center" }} order={2}>
               Daily Challenges
             </Title>
             <Space h={"md"} />
@@ -166,7 +166,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
             Requires these upgrades
           </Title>
 
-          <Group key="required_upg" gap="sm" justify="apart">
+          <Group key="required_upg" gap="sm" justify="space-between">
             {...research.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -177,7 +177,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.upgrade?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text c="yellow.5" style={{textAlign: "center"}}>
+                  <Text c="yellow.5" style={{ textAlign: "center" }}>
                     {item.upgrade?.ui.screenName || item.id}
                   </Text>
                 </Stack>
@@ -194,7 +194,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
             Requires training these units
           </Title>
 
-          <Group key="required_spawnee" gap="sm" justify="apart">
+          <Group key="required_spawnee" gap="sm" justify="space-between">
             {...spawnee.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -205,7 +205,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.squad?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text c="yellow.5" style={{textAlign: "center"}}>
+                  <Text c="yellow.5" style={{ textAlign: "center" }}>
                     {item.squad?.ui.screenName || item.id}
                   </Text>
                 </Stack>
@@ -222,7 +222,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
             Requires using these units
           </Title>
 
-          <Group key="required_sources" gap="sm" justify="apart">
+          <Group key="required_sources" gap="sm" justify="space-between">
             {...sources.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -233,7 +233,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.squad?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text c="yellow.5" style={{textAlign: "center"}}>
+                  <Text c="yellow.5" style={{ textAlign: "center" }}>
                     {item.squad?.ui.screenName || item.id}
                   </Text>
                 </Stack>
@@ -250,7 +250,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
             Requires destroying these units
           </Title>
 
-          <Group key="required_targets" gap="sm" justify="apart">
+          <Group key="required_targets" gap="sm" justify="space-between">
             {...targets.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
