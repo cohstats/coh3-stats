@@ -1,0 +1,11 @@
+@media (max-width: 64em) {
+  .hiddenMobile {
+    display: none;
+  }
+}
+
+@media (min-width: 64em) {
+  .hiddenDesktop {
+    display: none;
+  }
+}

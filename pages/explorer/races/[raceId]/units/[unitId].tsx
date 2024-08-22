@@ -159,16 +159,16 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
         />
       </Head>
       <Container fluid p={0}>
-        <Space h={32}></Space>
+        <Space h={32} />
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceId} width={96}></FactionIcon>
           <Stack gap="xs">
-            <Title order={4}>{localizedRace}</Title>
-            <Text size="lg">{descriptionRace}</Text>
+            <Title order={3}>{localizedRace}</Title>
+            <Text size="md">{descriptionRace}</Text>
           </Stack>
         </Flex>
-        <Space h={32}></Space>
-        <Grid columns={3}>
+        <Space h={32} />
+        <Grid columns={3} grow>
           <Grid.Col span={3}>
             <Card p="lg" radius="md" withBorder>
               <UnitDescriptionCard
@@ -183,7 +183,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
               />
             </Card>
           </Grid.Col>
-          <Grid.Col span={{md: 2}} order={2}>
+          <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
               <Title order={4}>Stats</Title>
               <Card p="lg" radius="md" withBorder>
@@ -207,7 +207,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
               {UnitAbilitySection(abilities)}
             </Stack>
           </Grid.Col>
-          <Grid.Col span={{md: 1}} order={1}>
+          <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
             <Stack>
               <Title order={4}>Stats</Title>
               <Card p="lg" radius="md" withBorder>
@@ -281,9 +281,7 @@ const UnitBuildingSection = (buildings: EbpsType[]) => {
   return (
     <Stack>
       <Title order={4}>Can construct</Title>
-      <SimpleGrid
-        cols={{ base:3, xs: 1, sm: 2, lg: 3 }}
-      >
+      <SimpleGrid cols={{ base: 3, xs: 1, sm: 2, lg: 3 }}>
         {Object.values(buildings).map(({ id, ui, cost }) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {
@@ -357,7 +355,7 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
       <Grid columns={2} grow>
         {squadWeapons.map(({ weapon_id, weapon, num }) => {
           return (
-            <Grid.Col span={{base: 2, md: 1}} key={weapon_id}>
+            <Grid.Col span={{ base: 2, md: 1 }} key={weapon_id}>
               <Card p="lg" radius="md" withBorder>
                 {WeaponLoadoutCard(weapon, num)}
               </Card>

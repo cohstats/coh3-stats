@@ -44,21 +44,30 @@ const VehicleArmorCover = [
 export const StatsVehicleArmor = (cfg: StatsVehicleInput) => (
   <>
     <Flex direction="column">
-      <Title order={6} style={{textTransform: "uppercase"}}>
+      <Title order={6} style={{ textTransform: "uppercase" }}>
         Vehicle Armor
       </Title>
-      <Text fz="xs" fw={700} style={{textTransform: "capitalize"}} c={VehicleTypeColor[cfg.type]}>
+      <Text
+        fz="xs"
+        fw={700}
+        style={{ textTransform: "capitalize" }}
+        c={VehicleTypeColor[cfg.type]}
+      >
         {cfg.type.split("_").join(" ")}
       </Text>
     </Flex>
-    <Flex direction="column" mt={12}>
-      <Image
-        mb={12}
-        height={128}
-        fit="contain"
-        src={`/icons/hud/vehicle_criticals/${cfg.type}.png`}
-        alt="Vehicle Type"
-      />
+    <Flex direction="column" justify={"center"} mt={12}>
+      {/*There is some mantine bug with this image I can't figure out what is wrong*/}
+      <Flex justify={"center"}>
+        <Image
+          mb={12}
+          h={128}
+          w={256}
+          fit="contain"
+          src={`/icons/hud/vehicle_criticals/${cfg.type}.png`}
+          alt="Vehicle Type"
+        />
+      </Flex>
       {generateArmorRow(cfg.armorValues)}
     </Flex>
   </>
@@ -71,11 +80,11 @@ function generateArmorRow(armorValues: VehicleArmor) {
         <Grid.Col span={2}>
           <Flex key={armor} direction="row" align="center" gap={8}>
             <Image height={24} width={24} fit="contain" src={icon} alt="Frontal Armor" />
-            <Text style={{textTransform: "uppercase"}}>{armor}</Text>
+            <Text style={{ textTransform: "uppercase" }}>{armor}</Text>
           </Flex>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text style={{textAlign: "end"}}>{armorValues[armor]}</Text>
+          <Text style={{ textAlign: "end" }}>{armorValues[armor]}</Text>
         </Grid.Col>
       </Grid>
     );
