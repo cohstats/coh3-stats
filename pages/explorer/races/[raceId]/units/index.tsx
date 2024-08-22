@@ -52,7 +52,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
 
         <Flex direction="row" align="center" gap={16} mt={24}>
           <IconBarrierBlock size={50} />
-          <Text c="orange.6"  fs="italic">
+          <Text c="orange.6" fs="italic">
             Important Note: This section displays all the units available in-game, including
             campaign-only.
           </Text>
@@ -65,11 +65,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
             {units.map(({ id, ui }) => {
               if (ui.screenName) {
                 return (
-                  <Grid.Col key={id} span={{xs: 12, md: 6}}>
+                  <Grid.Col key={id} span={{ xs: 12, md: 6 }}>
                     <Anchor
                       c="undefined"
                       underline={"never"}
-                      sx={{
+                      style={{
                         "&:hover": {
                           textDecoration: "none",
                         },

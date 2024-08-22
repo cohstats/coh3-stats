@@ -23,6 +23,8 @@ import { getExplorerUnitRoute } from "../../src/routes";
 import { RequirementCard } from "./requirement-card";
 import { getIconsPathOnCDN } from "../../src/utils";
 
+import classes from "./Unit.module.css";
+
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
   screen_name: string;
@@ -67,7 +69,7 @@ const BuildingCardHeader = (
   health: BuildingSchema["health"],
 ) => (
   <Grid columns={4}>
-    <Grid.Col sm={3}>
+    <Grid.Col span={3}>
       <Flex direction="row" align="center" gap={16}>
         <Image
           width={96}
@@ -75,13 +77,12 @@ const BuildingCardHeader = (
           fit="contain"
           src={getIconsPathOnCDN(`icons/${desc.icon_name}.webp`)}
           alt={desc.screen_name}
-          withPlaceholder
         />
         <Flex direction="column" gap={4}>
           <Title order={3} style={{ textTransform: "capitalize" }} lineClamp={1}>
             {desc.screen_name}
           </Title>
-          <Title order={5} lineClamp={2} color="yellow.5">
+          <Title order={5} lineClamp={2} c="yellow.5">
             {desc.extra_text}
           </Title>
           <Text fz="sm" lineClamp={2}>
@@ -94,12 +95,12 @@ const BuildingCardHeader = (
       </Flex>
     </Grid.Col>
 
-    <Grid.Col sm={1}>
+    <Grid.Col span={1}>
       <Stack>
         <Divider display={{ base: "block", sm: "none" }} />
         <Flex direction="row" justify="space-between">
           <Flex direction="row" gap={4}>
-            <Text weight="bold">Hitpoints</Text>
+            <Text style={{ fontWeight: "bold" }}>Hitpoints</Text>
           </Flex>
           <Text ml={24}>{health.hitpoints}</Text>
         </Flex>
@@ -140,7 +141,7 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
     <Grid columns={1}>
       {units.map(({ id, ui, time_cost, playerReq }) => {
         const reqCards = playerReq.length ? (
-          <Group position="apart">
+          <Group justify="space-between">
             {playerReq.map((upg) => (
               <div key={upg.id}>{RequirementCard(upg)}</div>
             ))}
@@ -152,9 +153,10 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
         return (
           <Grid.Col key={id} span={1}>
             <Anchor
-              color="undefined"
-              underline={false}
-              sx={{
+              underline={"never"}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
                 "&:hover": {
                   textDecoration: "none",
                 },
@@ -162,21 +164,10 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
               component={Link}
               href={getExplorerUnitRoute(faction as raceType, id)}
             >
-              <Box
-                p="lg"
-                sx={(theme) => ({
-                  border:
-                    theme.colorScheme === "dark"
-                      ? "solid 1px " + theme.colors.dark[4]
-                      : "solid 1px " + theme.colors.gray[4],
-                  // padding: theme.spacing.xs,
-                  borderRadius: theme.radius.md,
-                  borderWidth: 0.5,
-                })}
-              >
+              <Box p="lg" className={classes.buildingBuildCard}>
                 <Grid columns={5} align="center">
                   <Grid.Col span={playerReq.length ? 4 : 5}>
-                    <Stack spacing={16}>
+                    <Stack gap={16}>
                       <UnitDescriptionCard
                         faction={faction}
                         desc={{
@@ -215,14 +206,13 @@ interface AccordionLabelProps {
 
 function BuildingAccordionLabel({ label, symbolIcon }: AccordionLabelProps) {
   return (
-    <Group noWrap>
+    <Group wrap="nowrap">
       <Image
         width={24}
         height={24}
         fit="contain"
         src={getIconsPathOnCDN(`icons/${symbolIcon}.webp`)}
         alt=""
-        withPlaceholder
       />
       <div>
         <Title order={4}>{label}</Title>
