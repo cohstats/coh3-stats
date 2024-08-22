@@ -43,11 +43,12 @@ const Leaderboards = ({
     } else {
       return (
         <DataTable
-          withBorder
+          withTableBorder={true}
           borderRadius="md"
           highlightOnHover
           striped
-          verticalSpacing={6}
+          verticalSpacing={4}
+          fz={"sm"}
           minHeight={300}
           // provide data
           idAccessor={"statgroup_id"}
@@ -60,7 +61,7 @@ const Leaderboards = ({
           columns={[
             {
               accessor: "rank",
-              textAlignment: "center",
+              textAlign: "center",
               render: ({ rank, regionrank }: { rank: number; regionrank: number }) => {
                 return regionToFetch ? `${regionrank}` : `${rank}`;
               },
@@ -68,12 +69,12 @@ const Leaderboards = ({
             {
               title: "ELO",
               accessor: "rating",
-              textAlignment: "center",
+              textAlign: "center",
             },
             {
               title: "Tier",
               accessor: "tier",
-              textAlignment: "center",
+              textAlign: "center",
               render: ({
                 rank,
                 rating,
@@ -90,7 +91,7 @@ const Leaderboards = ({
             },
             // // {
             // //     accessor: "change",
-            // //     textAlignment: "center",
+            // //     textAlign: "center",
             // // },
             {
               accessor: "alias",
@@ -103,7 +104,7 @@ const Leaderboards = ({
 
                   return (
                     <Anchor key={profile_id} component={Link} href={path}>
-                      <Group spacing="xs">
+                      <Group gap="xs">
                         <CountryFlag countryCode={country} />
                         {alias}
                       </Group>
@@ -115,29 +116,29 @@ const Leaderboards = ({
             {
               accessor: "streak",
               // sortable: true,
-              textAlignment: "center",
+              textAlign: "center",
               // @ts-ignore
               render: ({ streak }) => {
                 return streak > 0 ? (
-                  <Text color={"green"}>+{streak}</Text>
+                  <Text c={"green"}>+{streak}</Text>
                 ) : (
-                  <Text color={"red"}>{streak}</Text>
+                  <Text c={"red"}>{streak}</Text>
                 );
               },
             },
             {
               accessor: "wins",
               // sortable: true,
-              textAlignment: "center",
+              textAlign: "center",
             },
             {
               accessor: "losses",
-              textAlignment: "center",
+              textAlign: "center",
             },
             {
               accessor: "ratio",
               // sortable: true,
-              textAlignment: "center",
+              textAlign: "center",
               render: ({ wins, losses }: any) => {
                 return `${Math.round((wins / (wins + losses)) * 100)}%`;
               },
@@ -145,7 +146,7 @@ const Leaderboards = ({
             {
               accessor: "total",
               // sortable: true,
-              textAlignment: "center",
+              textAlign: "center",
               render: ({ wins, losses }: any) => {
                 return `${wins + losses}`;
               },
@@ -153,17 +154,17 @@ const Leaderboards = ({
             // // {
             // //     accessor: "drops",
             // //     sortable: true,
-            // //     textAlignment: "center",
+            // //     textAlign: "center",
             // // },
             // // {
             // //     accessor: "disputes",
             // //     sortable: true,
-            // //     textAlignment: "center",
+            // //     textAlign: "center",
             // // },
             {
               accessor: "lastmatchdate",
               title: "Last Game",
-              textAlignment: "right",
+              textAlign: "right",
               width: 125,
               // @ts-ignore
               render: ({ lastmatchdate }) => {
@@ -197,13 +198,14 @@ const Leaderboards = ({
       </Head>
       <Container size={"lg"} p={0}>
         <Container fluid pl={0} pr={0}>
-          <Group position={"apart"}>
+          <Group justify={"space-between"}>
             <Group>
               <FactionIcon name={raceToFetch} width={35} />
               <Title order={2}>Leaderboards for {localizedRace}</Title>
             </Group>
-            <Group position="right">
+            <Group justify="right">
               <Select
+                withCheckIcon={false}
                 label="Region"
                 style={{ width: 150 }}
                 value={regionToFetch ? regionToFetch : "global"}
@@ -224,6 +226,7 @@ const Leaderboards = ({
                 }}
               />
               <Select
+                withCheckIcon={false}
                 label="Platform"
                 style={{ width: 90 }}
                 defaultValue={platformToFetch}
@@ -238,6 +241,7 @@ const Leaderboards = ({
                 }}
               />
               <Select
+                withCheckIcon={false}
                 label="Race"
                 style={{ width: 190 }}
                 defaultValue={raceToFetch}
@@ -254,6 +258,7 @@ const Leaderboards = ({
               />
 
               <Select
+                withCheckIcon={false}
                 label="Type"
                 style={{ width: 90 }}
                 defaultValue={typeToFetch}

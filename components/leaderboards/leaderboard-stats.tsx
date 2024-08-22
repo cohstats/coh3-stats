@@ -102,12 +102,12 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
       columns={[
         {
           accessor: "race",
-          textAlignment: "center",
+          textAlign: "center",
           width: 200,
           title: "",
           render: (value) => {
             return (
-              <Group spacing={"xs"}>
+              <Group gap={"xs"}>
                 <FactionIcon width={22} name={value.race as raceType} />
                 <>{localizedNames[value.race as raceType]}</>
               </Group>
@@ -116,56 +116,88 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
         },
         {
           accessor: "1v1",
-          textAlignment: "center",
+          textAlign: "center",
           title: "1 vs 1",
           render: (value) => {
             if (value["1v1-max"]) {
-              return <Text color={"green"}>{value["1v1"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["1v1"]}{" "}
+                </Text>
+              );
             }
             if (value["1v1-min"]) {
-              return <Text color={"red"}>{value["1v1"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["1v1"]}{" "}
+                </Text>
+              );
             }
             return <>{value["1v1"]}</>;
           },
         },
         {
           accessor: "2v2",
-          textAlignment: "center",
+          textAlign: "center",
           title: "2 vs 2",
           render: (value) => {
             if (value["2v2-max"]) {
-              return <Text color={"green"}>{value["2v2"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["2v2"]}{" "}
+                </Text>
+              );
             }
             if (value["2v2-min"]) {
-              return <Text color={"red"}>{value["2v2"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["2v2"]}{" "}
+                </Text>
+              );
             }
             return <>{value["2v2"]}</>;
           },
         },
         {
           accessor: "3v3",
-          textAlignment: "center",
+          textAlign: "center",
           title: "3 vs 3",
           render: (value) => {
             if (value["3v3-max"]) {
-              return <Text color={"green"}>{value["3v3"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["3v3"]}{" "}
+                </Text>
+              );
             }
             if (value["3v3-min"]) {
-              return <Text color={"red"}>{value["3v3"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["3v3"]}{" "}
+                </Text>
+              );
             }
             return <>{value["3v3"]}</>;
           },
         },
         {
           accessor: "4v4",
-          textAlignment: "center",
+          textAlign: "center",
           title: "4 vs 4",
           render: (value) => {
             if (value["4v4-max"]) {
-              return <Text color={"green"}>{value["4v4"]} </Text>;
+              return (
+                <Text c={"green"} inherit>
+                  {value["4v4"]}{" "}
+                </Text>
+              );
             }
             if (value["4v4-min"]) {
-              return <Text color={"red"}>{value["4v4"]} </Text>;
+              return (
+                <Text c={"red"} inherit>
+                  {value["4v4"]}{" "}
+                </Text>
+              );
             }
             return <>{value["4v4"]}</>;
           },
@@ -180,7 +212,7 @@ const LeaderBoardStats = ({ leaderBoardStats }: { leaderBoardStats: LeaderboardS
     <Container size={"sm"}>
       <Title order={2}>Amount of players in leaderboards</Title>
       <StatsTable data={leaderBoardStats.totalPlayers} />
-      <Text color={"dimmed"} fs="italic" pl={5} fz={"sm"}>
+      <Text c={"dimmed"} fs="italic" pl={5} fz={"sm"}>
         * Keep in mind that one player is usually ranked in various modes. You can&apos;t sum up
         all numbers.{" "}
       </Text>

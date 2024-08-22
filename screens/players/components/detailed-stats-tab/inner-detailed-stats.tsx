@@ -36,7 +36,7 @@ const InnerDetailedStats = ({
   } | null;
   factionSide: FactionSide;
 }) => {
-  console.log(stats);
+  // console.log(stats);
 
   // let width = 300;
   // let chartHeight = 265;
@@ -49,8 +49,8 @@ const InnerDetailedStats = ({
   if (!stats)
     return (
       <Center>
-        <Text size={"sm"} c="dimmed" ta="center" pt={150} pb={150}>
-          <Stack align={"center"} spacing={"xs"}>
+        <Text span size={"sm"} c="dimmed" ta="center" pt={150} pb={150}>
+          <Stack align={"center"} gap={"xs"}>
             <IconDatabaseOff />
             <div> We are not tracking any data for this faction and game type.</div>
           </Stack>
@@ -60,7 +60,7 @@ const InnerDetailedStats = ({
 
   return (
     <>
-      <Flex gap={"xl"} wrap="wrap" justify="center">
+      <Flex gap={"md"} wrap="wrap" justify="center">
         <Card p="md" shadow="sm" withBorder>
           <Card.Section withBorder inheritPadding py="xs">
             <Title order={3}>Maps played</Title>
@@ -79,8 +79,8 @@ const InnerDetailedStats = ({
         </Card>
       </Flex>
 
-      <Space h={"xl"} />
-      <Flex gap={"xl"} wrap="wrap" justify="center">
+      <Space h={"md"} />
+      <Flex gap={"md"} wrap="wrap" justify="center">
         <FactionVsFactionCard
           data={stats as unknown as AnalysisObjectType}
           title={"Faction matrix"}

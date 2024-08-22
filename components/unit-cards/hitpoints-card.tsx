@@ -49,17 +49,19 @@ export const HitpointCard = ({ squad, entities }: HitpointsCardInput) => {
         />
       </Stack>
 
-      <Progress
-        w="100%"
-        size={24}
-        sections={twSquadHitpoints.map((hp, idx) => ({
-          value: (hp / twTotalHitpoints) * 100,
-          color: colorPalette[idx],
-          label: hp.toString(),
-        }))}
-      />
+      <Progress.Root w="100%" size={24}>
+        {twSquadHitpoints.map((hp, idx) => (
+          <Progress.Section
+            key={idx}
+            value={(hp / twTotalHitpoints) * 100}
+            color={colorPalette[idx]}
+          >
+            <Progress.Label>{hp.toString()}</Progress.Label>
+          </Progress.Section>
+        ))}
+      </Progress.Root>
 
-      <Text fw="bold" align="end">
+      <Text fw="bold" style={{ textAlign: "end" }}>
         {twTotalHitpoints}
       </Text>
     </Flex>
@@ -77,17 +79,19 @@ export const HitpointCard = ({ squad, entities }: HitpointsCardInput) => {
         />
       </Stack>
 
-      <Progress
-        w="100%"
-        size={24}
-        sections={squadHitpoints.map((hp, idx) => ({
-          value: (hp / totalHitpoints) * 100,
-          color: colorPalette[idx],
-          label: hp.toString(),
-        }))}
-      />
+      <Progress.Root w="100%" size={24}>
+        {squadHitpoints.map((hp, idx) => (
+          <Progress.Section
+            key={idx}
+            value={(hp / totalHitpoints) * 100}
+            color={colorPalette[idx]}
+          >
+            <Progress.Label>{hp.toString()}</Progress.Label>
+          </Progress.Section>
+        ))}
+      </Progress.Root>
 
-      <Text fw="bold" align="end">
+      <Text fw="bold" style={{ textAlign: "end" }}>
         {totalHitpoints}
       </Text>
     </Flex>
@@ -95,7 +99,7 @@ export const HitpointCard = ({ squad, entities }: HitpointsCardInput) => {
 
   return (
     <Stack>
-      <Title order={6} transform="uppercase">
+      <Title order={6} style={{ textTransform: "uppercase" }}>
         Hitpoints
       </Title>
       <Tooltip label={"Squad hitpoints"} withArrow>

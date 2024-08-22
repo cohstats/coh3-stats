@@ -7,7 +7,6 @@ import {
 import ErrorCard from "../../../components/error-card";
 import React from "react";
 import { DataTable } from "mantine-datatable";
-import RenderMap from "../../../components/matches-table/render-map";
 import FactionIcon from "../../../components/faction-icon";
 import { cohDBracesToNormalRaces } from "../../../src/coh3/coh3-data";
 import { Anchor, Button, Flex, Group, Title, Tooltip, Text, Space, Stack } from "@mantine/core";
@@ -24,6 +23,7 @@ import { getDesktopAppRoute, getPlayerCardRoute } from "../../../src/routes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import EllipsisText from "../../../components/other/ellipsis-text";
+import RenderMap from "./components/matches-table/render-map";
 
 const ReplaysTab = ({
   profileID,
@@ -56,15 +56,15 @@ const ReplaysTab = ({
 
   return (
     <>
-      <Group position="apart">
+      <Group justify="space-between">
         <Title order={3}>Replays by COHDB</Title>
         <Group>
           <Anchor href={getCOHDBUploadULR()} target="_blank">
-            <Button leftIcon={<IconUpload />}>Upload Replay</Button>
+            <Button leftSection={<IconUpload />}>Upload Replay</Button>
           </Anchor>
           <Tooltip label={"You can automatically upload all your replays with Desktop App"}>
             <Anchor href={getDesktopAppRoute()}>
-              <Button leftIcon={<IconCloudUpload />}>Auto sync Replays</Button>
+              <Button leftSection={<IconCloudUpload />}>Auto sync Replays</Button>
             </Anchor>
           </Tooltip>
         </Group>
@@ -72,7 +72,7 @@ const ReplaysTab = ({
       <Space h={"md"} />
       <DataTable
         minHeight={300}
-        withBorder
+        withTableBorder
         borderRadius="md"
         highlightOnHover
         striped
@@ -87,7 +87,7 @@ const ReplaysTab = ({
         columns={[
           {
             accessor: "Played",
-            textAlignment: "center",
+            textAlign: "center",
             width: 80,
             render: (record) => {
               const PlayerRecord = record.players.find(
@@ -108,7 +108,7 @@ const ReplaysTab = ({
             accessor: "mapname",
             title: "Map",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: (record) => {
               return <RenderMap mapName={record.map_id} renderTitle={false} />;
             },
@@ -128,7 +128,7 @@ const ReplaysTab = ({
                     const playerRaceName = cohDBracesToNormalRaces[player.faction as string];
                     return (
                       <div key={player.profile_id}>
-                        <Group spacing={"xs"}>
+                        <Group gap={"xs"}>
                           <FactionIcon name={playerRaceName} width={20} />
                           <Anchor
                             rel={"noreferrer"}
@@ -137,11 +137,11 @@ const ReplaysTab = ({
                             href={`/players/${player.profile_id}`}
                           >
                             {`${player.profile_id}` === `${profileID}` ? (
-                              <Text fw={700}>
+                              <Text span fw={700}>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             ) : (
-                              <Text>
+                              <Text span>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             )}
@@ -169,7 +169,7 @@ const ReplaysTab = ({
                     const playerRaceName = cohDBracesToNormalRaces[player.faction as string];
                     return (
                       <div key={player.profile_id}>
-                        <Group spacing={"xs"}>
+                        <Group gap={"xs"}>
                           <FactionIcon name={playerRaceName} width={20} />
                           <Anchor
                             rel={"noreferrer"}
@@ -178,11 +178,11 @@ const ReplaysTab = ({
                             href={`/players/${player.profile_id}`}
                           >
                             {`${player.profile_id}` === `${profileID}` ? (
-                              <Text fw={700}>
+                              <Text span fw={700}>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             ) : (
-                              <Text>
+                              <Text span>
                                 <EllipsisText text={player.name} maxWidth={"13ch"} />
                               </Text>
                             )}
@@ -198,14 +198,14 @@ const ReplaysTab = ({
           {
             accessor: "title",
             title: "Title",
-            cellsStyle: { display: "flex" },
-            // textAlignment: "left",
+            // cellsStyle: { display: "flex" },
+            // textAlign: "left",
             // width: "70%",
             render: ({ title, uploaded_at, uploaded_by }) => {
               return (
                 <div style={{ paddingTop: 5 }}>
                   <Title order={4}>{title}</Title>
-                  <Text c="dimmed">
+                  <Text span inherit c="dimmed">
                     Uploaded by{" "}
                     <Anchor href={getPlayerCardRoute(uploaded_by.profile_id)}>
                       {uploaded_by.name}
@@ -232,7 +232,11 @@ const ReplaysTab = ({
                       .map((unit) => (unit < 10 ? `0${unit}` : `${unit}`))
                       .join(":");
 
-              return <Text>{formatTime(length)}</Text>;
+              return (
+                <Text span inherit>
+                  {formatTime(length)}
+                </Text>
+              );
             },
           },
           {
@@ -250,7 +254,7 @@ const ReplaysTab = ({
                     withArrow
                     position={"bottom"}
                     multiline
-                    width={280}
+                    w={280}
                   >
                     <Flex
                       gap="xs"
@@ -273,12 +277,12 @@ const ReplaysTab = ({
             width: 110,
             render: ({ downloads_count, id }) => {
               return (
-                <Stack spacing={"xs"}>
+                <Stack gap={"xs"}>
                   <Anchor href={getCOHDBReplaysURL(id)} target="_blank">
                     <Button w={90}>Details</Button>
                   </Anchor>
                   <Anchor href={getCOHDBReplaysURL(id)} target="_blank">
-                    <Button w={90} leftIcon={<IconDownload />}>
+                    <Button w={90} leftSection={<IconDownload />}>
                       {downloads_count}
                     </Button>
                   </Anchor>

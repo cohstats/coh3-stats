@@ -52,7 +52,7 @@ const GlobalAchievements = ({
                   />
                 ))}
 
-                <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
+                <Text style={{ textAlign: "center" }} fs="italic" c="dimmed" fz="sm" pt={25}>
                   Data updated on{" "}
                   {dayjs.unix(globalAchievements.unixTimeStamp).format("YYYY-MM-DD HH:mm")} UTC
                 </Text>

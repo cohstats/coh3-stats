@@ -84,7 +84,7 @@ const ActivityTab = ({
       <div style={{ height: 200 * yearDiff, paddingBottom: 30 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Title order={2}>Activity by calendar day</Title>
-          <Text size="sm" fs="italic">
+          <Text span size="sm" fs="italic">
             (GMT+00:00) UTC
           </Text>
         </div>
@@ -94,7 +94,7 @@ const ActivityTab = ({
       <div style={{ height: 200 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Title order={2}>Activity by hour of day</Title>
-          <Text size="sm" fs="italic">
+          <Text span size="sm" fs="italic">
             (GMT+00:00) UTC
           </Text>
         </div>

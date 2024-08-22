@@ -96,9 +96,17 @@ const ActivityLastMonths = ({
               paddingRight: "10px",
             }}
           >
-            <Group spacing={"xs"}>
-              {day}: <Text color={"green"}> {wins} W</Text> -{" "}
-              <Text color={"red"}> {losses} L</Text>
+            <Group gap={"xs"}>
+              {day}:{" "}
+              <Text span c={"green"}>
+                {" "}
+                {wins} W
+              </Text>{" "}
+              -{" "}
+              <Text span c={"red"}>
+                {" "}
+                {losses} L
+              </Text>
             </Group>
           </div>
         );

@@ -1,0 +1,11 @@
+.redditLink {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+}
+
+.redditInfo {
+  font-size: var(--mantine-font-size-xs);
+}
+
+.dimmedInfo {
+  color: var(--mantine-color-dimmed);
+}

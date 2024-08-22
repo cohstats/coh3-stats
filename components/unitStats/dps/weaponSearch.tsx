@@ -1,5 +1,4 @@
-import { forwardRef } from "react";
-import { Group, Text, Image, Select } from "@mantine/core";
+import { Group, Text, Image, Select, SelectProps } from "@mantine/core";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
@@ -7,11 +6,21 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   description: string;
 }
 
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, label, description, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <Image width={60} height={40} src={image} fit="contain" alt="Weapon Class" />
+const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
+  const { image, label, description } = option as unknown as ItemProps;
+
+  return (
+    <div>
+      <Group wrap="nowrap">
+        <Image
+          style={{
+            width: "60px",
+            height: "40px",
+          }}
+          src={image}
+          fit="contain"
+          alt="Weapon Class"
+        />
         <div>
           <Text size="sm">{label}</Text>
           <Text size="xs" opacity={0.65}>
@@ -20,10 +29,8 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
         </div>
       </Group>
     </div>
-  ),
-);
-
-SelectItem.displayName = "SelectItem";
+  );
+};
 
 interface ISearchProps {
   searchData: any[];
@@ -48,13 +55,13 @@ export const WeaponSearch = (props: ISearchProps) => {
       // clearSearchOnChange={true}
       // clearSearchOnBlur={true}
       clearable
-      itemComponent={SelectItem}
+      renderOption={renderSelectOption}
       data={props.searchData}
       // valueComponent={Value}
       searchable
       maxDropdownHeight={600}
-      nothingFound="Nothing here. War is over!"
-      onChange={onSelectionChange}
+      nothingFoundMessage="Nothing here. War is over!"
+      onChange={(value) => onSelectionChange(value as string)}
       value=""
       // filter={(value, selected, item) =>
       //   //@ts-ignore

@@ -5,7 +5,6 @@ import {
   Image,
   List,
   Paper,
-  rem,
   Stack,
   Text,
   ThemeIcon,
@@ -50,11 +49,11 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
           mah={500}
         />
         <Paper radius="md" mt="md" p="lg">
-          <Stack align="center" spacing={5} mb={30}>
+          <Stack align="center" gap={5} mb={30}>
             <Anchor href={downloadURL} target="_blank">
               <Button>Download {version}</Button>
             </Anchor>
-            <Text size="sm" color="dimmed">
+            <Text size="sm" c="dimmed">
               {downloadCount} downloads
             </Text>
             <Anchor
@@ -71,7 +70,7 @@ const App: NextPage = ({ downloadURL, downloadCount, version }: any) => {
             mb={50}
             icon={
               <ThemeIcon size={20} radius="xl">
-                <IconCheck size={rem(12)} stroke={1.5} />
+                <IconCheck stroke={1.5} />
               </ThemeIcon>
             }
           >

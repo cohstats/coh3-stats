@@ -152,18 +152,19 @@ const PlayerCard = ({
           <meta property="og:image" content={playerData.steamData?.avatarmedium} />
         )}
       </Head>
-      <Container fluid>
+      <Container fluid p={0}>
         <Container fluid>
-          <Group position={"apart"}>
+          <Group justify={"space-between"}>
             <Group>
               <Avatar
                 src={playerData.steamData?.avatarmedium}
                 imageProps={{ loading: "lazy" }}
                 alt={playerData.info.name}
+                radius="sm"
                 size="xl"
                 mt={5}
               />
-              <Stack spacing={"xs"}>
+              <Stack gap={"xs"}>
                 <Group>
                   <CountryFlag
                     countryCode={playerData.info.country || "xx"}
@@ -172,7 +173,7 @@ const PlayerCard = ({
                   />
                   <Title> {playerData.info.name}</Title>
                 </Group>
-                <Group spacing={"xs"}>
+                <Group gap={"xs"}>
                   <PlayerIdIcon
                     relicID={playerData.info.relicID}
                     steamID={playerData.info.steamID || undefined}
@@ -205,11 +206,11 @@ const PlayerCard = ({
           keepMounted={false}
           value={(view as string) || "standings"}
           defaultValue={(view as string) || "standings"}
-          onTabChange={async (value) => {
+          onChange={async (value) => {
             await push({ query: { ...query, view: value } });
           }}
         >
-          <Tabs.List position="center">
+          <Tabs.List justify="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
             <Tabs.Tab value={"standingsDetails"}>Detailed Stats</Tabs.Tab>
             <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>

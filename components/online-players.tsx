@@ -1,4 +1,4 @@
-import { Badge, Tooltip } from "@mantine/core";
+import { Badge, Flex, Tooltip } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 export const OnlinePlayers: React.FC = () => {
@@ -57,15 +57,15 @@ export const OnlinePlayers: React.FC = () => {
         onlinePlayersData?.timeStampMs || "",
       ).toLocaleString()}`}
       multiline
-      width={200}
+      w={200}
       withArrow
     >
-      <div>
-        Players in game{" "}
+      <Flex gap={3} align={"center"}>
+        <div>Players in game </div>
         <Badge color="green" variant="filled" size="lg" style={{ minWidth: 60 }}>
           {onlinePlayersData?.playerCount}
         </Badge>
-      </div>
+      </Flex>
     </Tooltip>
   );
 };

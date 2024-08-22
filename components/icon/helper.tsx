@@ -1,7 +1,6 @@
 import { IconInfoCircle } from "@tabler/icons-react";
 import React from "react";
-import { Tooltip } from "@mantine/core";
-import { FloatingPosition } from "@mantine/core/lib/Floating";
+import { FloatingPosition, Tooltip } from "@mantine/core";
 
 const HelperIcon = ({
   text,
@@ -19,7 +18,7 @@ const HelperIcon = ({
       label={<div style={{ textAlign: "left" }}>{text}</div>}
       withArrow
       multiline
-      width={width}
+      w={width}
       position={position}
     >
       <IconInfoCircle size={iconSize} />

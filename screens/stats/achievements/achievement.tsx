@@ -34,12 +34,11 @@ const Achievement = ({ achievement }: AchievementProps) => {
               {achievement.displayName}
             </Text>
             <Text size={isMobile ? "xs" : "sm"}>{achievement.description}</Text>
-            <Progress
-              radius={"xs"}
-              size={"xl"}
-              value={achievement.globalPercent}
-              label={`${achievement.globalPercent.toFixed(1)}%`}
-            />
+            <Progress.Root size="xl" radius={"xs"}>
+              <Progress.Section value={achievement.globalPercent}>
+                <Progress.Label>{`${achievement.globalPercent.toFixed(1)}%`}</Progress.Label>
+              </Progress.Section>
+            </Progress.Root>
           </div>
         </div>
         <div style={{ flexShrink: 0 }}>

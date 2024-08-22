@@ -1,5 +1,5 @@
 import { ProcessedCOHPlayerStats } from "../../../../src/coh3/coh3-types";
-import { Anchor, Card, Group, Title, Tooltip, Flex } from "@mantine/core";
+import { Anchor, Card, Group, Title, Tooltip, Flex, Text } from "@mantine/core";
 import React from "react";
 import { DataTable } from "mantine-datatable";
 import Link from "next/link";
@@ -18,7 +18,7 @@ const NemesisWidget = ({
     <div>
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
-          <Group m="xs" position="apart">
+          <Group m="xs" justify="space-between">
             <Title order={4}>Top 10 - 1v1 Nemesis</Title>
             <HelperIcon
               text={
@@ -34,14 +34,13 @@ const NemesisWidget = ({
         <DataTable
           minHeight={150}
           noRecordsText="No 1v1 nemesis tracked"
-          withBorder={false}
           // borderRadius="md"
           // striped={true}
           // @ts-ignore
           columns={[
             {
               accessor: "alias",
-              textAlignment: "left",
+              textAlign: "left",
               title: "Alias",
               width: 95,
               render: ({ alias, profile_id }) => {
@@ -53,7 +52,9 @@ const NemesisWidget = ({
                     href={`/players/${profile_id}`}
                   >
                     <Tooltip label={alias}>
-                      <EllipsisText text={alias} noWrap={false} maxWidth={"12ch"} />
+                      <Text span size="sm">
+                        <EllipsisText text={alias} noWrap={false} maxWidth={"12ch"} />
+                      </Text>
                     </Tooltip>
                   </Anchor>
                 );
@@ -61,17 +62,17 @@ const NemesisWidget = ({
             },
             {
               accessor: "w",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Wins",
             },
             {
               accessor: "l",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Losses",
             },
             {
               accessor: "wl",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Ratio",
               render: ({ w, l }) => {
                 const winRate = (w / (w + l)) * 100;

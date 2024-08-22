@@ -15,7 +15,6 @@ import {
   Text,
   AspectRatio,
   Flex,
-  useMantineTheme,
 } from "@mantine/core";
 import dayjs from "dayjs";
 import { IconShare3 } from "@tabler/icons-react";
@@ -23,6 +22,8 @@ import { IconShare3 } from "@tabler/icons-react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateKeywordsString } from "../../src/head-utils";
+
+import classes from "./News.module.css";
 
 const preset = reactPreset.extend((tags: any) => ({
   ...tags,
@@ -42,11 +43,12 @@ const preset = reactPreset.extend((tags: any) => ({
       attrs: {
         pt: "sm",
         pb: "sm",
-        radius: "md",
-        w: "auto",
+        // The radius doesn't work for some reason
+        // radius: "md",
+        // w: "auto",
         fit: "contain",
         src: node.content,
-        loading: "lazy",
+        alt: "news image",
       },
     };
   },
@@ -110,8 +112,6 @@ class NewsComponentErrorBoundary extends React.Component {
 }
 
 const SingleNewsItem = ({ item }: { item: NewsItem }) => {
-  const theme = useMantineTheme();
-
   try {
     return (
       <Card shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
@@ -127,18 +127,12 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
         />
         <Flex justify={"space-between"}>
           <Anchor href={`#${item.gid}`} style={{ textDecoration: "none" }}>
-            <Title
-              order={2}
-              inherit={false}
-              color={theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.dark[7]}
-            >
+            <Title order={2} className={classes.whiteColor}>
               {item.title}
             </Title>
           </Anchor>
           <Anchor href={item.url} target={"_blank"}>
-            <IconShare3
-              color={theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.dark[7]}
-            />
+            <IconShare3 className={classes.whiteColor} />
           </Anchor>
         </Flex>
         <Text fz="lg">
@@ -227,7 +221,7 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
           <Title>Latest Company Of Heroes 3 News</Title>
           <Space h={"lg"} />
           {items}
-          <Text align={"center"} fs={"italic"} c="dimmed">
+          <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
             Source: Official Relic Steam News for COH3
             <br />
             You can find all the articles on{" "}

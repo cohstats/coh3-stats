@@ -80,7 +80,7 @@ const PlayerStats = ({
             <Center>
               {" "}
               <Group>
-                <Text fz="md">
+                <Text span fz="md">
                   <div
                     style={{
                       display: "grid",
@@ -90,7 +90,7 @@ const PlayerStats = ({
                     }}
                   >
                     <div style={{ gridColumn: 1, justifySelf: "end" }}>
-                      <Group spacing={5}>
+                      <Group gap={5}>
                         <>Total number of tracked players</>{" "}
                         <HelperIcon
                           text={
@@ -100,7 +100,7 @@ const PlayerStats = ({
                       </Group>
                     </div>
                     <div style={{ gridColumn: 2 }}>
-                      <Group spacing={4}>
+                      <Group gap={4}>
                         <IconUser size={17} />
                         <Text fs={"xl"} fw={500}>
                           {playerStats.count.toLocaleString()}
@@ -111,7 +111,7 @@ const PlayerStats = ({
                       Ranked players in the last &nbsp;&nbsp;30 days
                     </div>
                     <div style={{ gridColumn: 2 }}>
-                      <Group spacing={4}>
+                      <Group gap={4}>
                         <IconUser size={17} />
                         <Text fs={"xl"} fw={500}>
                           {playerStats.last30days.toLocaleString()}
@@ -122,7 +122,7 @@ const PlayerStats = ({
                       Ranked players in the last &nbsp;&nbsp;&nbsp;&nbsp;7 days
                     </div>
                     <div style={{ gridColumn: 2 }}>
-                      <Group spacing={4}>
+                      <Group gap={4}>
                         <IconUser size={17} />
                         <Text fs={"xl"} fw={500}>
                           {playerStats.last7days.toLocaleString()}
@@ -133,7 +133,7 @@ const PlayerStats = ({
                       Ranked players in the last 24 hours
                     </div>
                     <div style={{ gridColumn: 2 }}>
-                      <Group spacing={4}>
+                      <Group gap={4}>
                         <IconUser size={17} />
                         <Text fs={"xl"} fw={500}>
                           {playerStats.last24hours.toLocaleString()}
@@ -143,11 +143,11 @@ const PlayerStats = ({
                   </div>
                 </Text>
                 <Paper shadow="xs" p="xs" m={"xs"} maw={575}>
-                  <Group spacing={"xs"}>
+                  <Group gap={"xs"}>
                     <IconAlertTriangle size={"1.5rem"} />
                     <Title order={6}>Disclaimer: </Title>
                   </Group>
-                  <Group spacing={"xs"}>
+                  <Group gap={"xs"}>
                     <Text fz={"xs"}>
                       We are only able to track players who played &quot;ranked&quot; match in a
                       given day.
@@ -186,7 +186,7 @@ const PlayerStats = ({
               <DynamicGeoWorldMap data={countries} />
               <DynamicPlayersLineChart data={historyData} />
             </div>
-            <Text align={"center"} fs="italic" c="dimmed" fz="sm" pt={25}>
+            <Text style={{ textAlign: "center" }} fs="italic" c="dimmed" fz="sm" pt={25}>
               Data updated on {dayjs(playerStats.timeStampMs).format("YYYY-MM-DD HH:mm")} UTC
               <br />
               We do not track XBOX and PS players here.

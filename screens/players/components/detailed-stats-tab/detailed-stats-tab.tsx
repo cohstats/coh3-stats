@@ -30,7 +30,7 @@ const DetailedStatsTab = ({
     <>
       <Container fluid p={0} pt={"md"}>
         <Flex gap="md" wrap="wrap" justify="space-between" align="center">
-          <Title order={3}>
+          <Title order={3} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             Detailed Statistics for {localizedGameTypes[selectedGameMode]}{" "}
             <FactionIcon name={selectedFaction} width={30} />
           </Title>
@@ -46,6 +46,7 @@ const DetailedStatsTab = ({
               }))}
               onChange={(value) => setSelectedFaction((value as raceType) || "")}
               w={200}
+              withCheckIcon={false}
             />
             <Select
               value={selectedGameMode}
@@ -58,6 +59,7 @@ const DetailedStatsTab = ({
               }))}
               onChange={(value) => setSelectedGameMode((value as leaderBoardType) || "")}
               w={195}
+              withCheckIcon={false}
             />
           </Group>
         </Flex>
@@ -65,12 +67,12 @@ const DetailedStatsTab = ({
         <InnerDetailedStats stats={selectedStats || null} factionSide={FactionSide} />
         <Space h={"lg"} />
         <Space h={"lg"} />
-        <Text size={"md"} ta="center">
+        <Text span size={"md"} ta="center">
           More detailed stats are coming soon.
         </Text>
         <Space h={"lg"} />
         <Space h={"lg"} />
-        <Text size={"sm"} c="dimmed" ta="center">
+        <Text span size={"sm"} c="dimmed" ta="center">
           Detailed stats are updated every 24 hours. It's possible that some games are not
           included in the stats.
           <br />

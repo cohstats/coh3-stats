@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  createStyles,
   Table,
   ScrollArea,
   UnstyledButton,
@@ -8,7 +7,6 @@ import {
   Text,
   Center,
   TextInput,
-  rem,
   Image,
   Grid,
   Title,
@@ -21,6 +19,7 @@ import {
   ActionIcon,
   Anchor,
 } from "@mantine/core";
+
 import { keys } from "@mantine/utils";
 import {
   IconAdjustments,
@@ -36,6 +35,8 @@ import Link from "next/link";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { raceType } from "../../src/coh3/coh3-types";
 import { useDebouncedValue } from "@mantine/hooks";
+
+import classes from "./UnitTable.module.css";
 
 interface tableColSetup {
   key: string;
@@ -256,11 +257,11 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
       return (
         <Tooltip label={(unit as any)[colSetup.key]}>
           <Anchor
-            color="orange"
+            c="orange"
             component={Link}
             href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
           >
-            <Text sx={{ textOverflow: "ellipsis", overflow: "hidden" }}>
+            <Text style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
               {(unit as any)[colSetup.key]}
             </Text>
           </Anchor>
@@ -283,27 +284,6 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
   }
 };
 
-const useStyles = createStyles((theme) => ({
-  th: {
-    padding: "0 !important",
-  },
-
-  control: {
-    width: "100%",
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-
-    "&:hover": {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-    },
-  },
-
-  icon: {
-    width: rem(21),
-    height: rem(21),
-    borderRadius: rem(21),
-  },
-}));
-
 let tableData: CustomizableUnit[] = [];
 
 interface inputProps {
@@ -318,16 +298,15 @@ interface ThProps {
 }
 
 function Th({ children, reversed, sorted, onSort }: ThProps) {
-  const { classes } = useStyles();
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
   return (
-    <th className={classes.th}>
+    <th>
       <UnstyledButton px={0} onClick={onSort} className={classes.control}>
         <Flex justify="space-around" align="center">
           <Text fw={500} fz="sm">
             {children}
           </Text>
-          <Center className={classes.icon}>
+          <Center>
             <Icon size="1rem" stroke={1.5} />
           </Center>
         </Flex>
@@ -345,7 +324,8 @@ function filterData(
   const query = search.toLowerCase().trim();
   let result = data.filter((item) =>
     keys(data[0]).some(
-      (key) =>
+      (key: string | number) =>
+        // @ts-ignore
         typeof item[key] == "string" && (item[key] as string).toLowerCase().includes(query),
     ),
   );
@@ -408,7 +388,7 @@ const mapRow = (unit: CustomizableUnit) => {
   for (const colSetup of tableSetup) {
     if (colSetup.visible) rows.push(<td key={colSetup.key}>{getCellVisual(colSetup, unit)}</td>);
   }
-  return <tr key={unit.id}>{rows}</tr>;
+  return <Table.Tr key={unit.id}>{rows}</Table.Tr>;
 };
 
 const getTableHeader = (
@@ -467,7 +447,7 @@ const generateFactionFilterButtons = (callback: any, unitFilter: string[]) => {
         <ActionIcon
           key={faction + "FilterAction"}
           size="sm"
-          variant={unitFilter.includes(faction) ? "gradient" : "trannsparent"}
+          variant={unitFilter.includes(faction) ? "gradient" : "transparent"}
           onClick={() => callback(faction, unitFilter)}
         >
           <Image src={source} alt={"Filter"}></Image>
@@ -490,7 +470,7 @@ const generateTypeFilterButtons = (callback: any, typeFilter: string[]) => {
         <ActionIcon
           key={type + "FilterAction"}
           size="md"
-          variant={typeFilter.includes(type) ? "gradient" : "trannsparent"}
+          variant={typeFilter.includes(type) ? "gradient" : "transparent"}
           onClick={() => callback(type, typeFilter)}
         >
           <Image src={source} alt={"Filter"}></Image>
@@ -634,17 +614,19 @@ export const UnitTable = ({ inputData }: inputProps) => {
       </Grid>
       <Space h={"md"} />
       <div>
-        <Group position={"apart"}>
+        <Group justify={"space-between"}>
           <Group>
             <Space w={"sm"} />
-            <Group noWrap>{generateFactionFilterButtons(toggleFilter, factionFilter)}</Group>
+            <Group wrap="nowrap">
+              {generateFactionFilterButtons(toggleFilter, factionFilter)}
+            </Group>
             <Space w={"md"} />
-            <Group noWrap>{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
+            <Group wrap="nowrap">{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
           </Group>
           <TextInput
             placeholder="Search Unit"
             mb="md"
-            icon={<IconSearch size="0.9rem" stroke={1.5} />}
+            leftSection={<IconSearch size="0.9rem" stroke={1.5} />}
             value={search}
             onChange={(event: { currentTarget: { value: any } }) => {
               setSearch(event.currentTarget.value);
@@ -654,29 +636,33 @@ export const UnitTable = ({ inputData }: inputProps) => {
       </div>
       <div style={{ minHeight: 7000 }}>
         <Table
-          horizontalSpacing="md"
-          verticalSpacing="xs"
+          // horizontalSpacing="md"
+          // verticalSpacing="xs"
           miw={700}
-          sx={{ tableLayout: "fixed" }}
+          // style={{ tableLayout: "fixed" }}
+          // Why this doesn't work?
+          // withRowBorders={true}
+          highlightOnHover={true}
+          striped={true}
         >
-          <thead>
-            <tr>
+          <Table.Thead>
+            <Table.Tr>
               <>{cols}</>
-            </tr>
-          </thead>
-          <tbody>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
             {rows.length > 0 ? (
               rows
             ) : (
-              <tr key="no_row">
+              <Table.Tr key="no_row">
                 {/* <td colSpan={Object.keys(data[0]).length}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>
               </td> */}
-              </tr>
+              </Table.Tr>
             )}
-          </tbody>
+          </Table.Tbody>
         </Table>
       </div>
     </ScrollArea>

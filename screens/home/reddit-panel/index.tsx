@@ -1,4 +1,4 @@
-import { Paper, Title, Text, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
+import { Paper, Title, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
 import { RedditPostType } from "../../../src/apis/reddit-api";
 
 import React from "react";
@@ -6,47 +6,49 @@ import { IconArrowUp, IconBrandReddit } from "@tabler/icons-react";
 
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 import ImageWithModal from "../../../components/image-with-modal";
+import classes from "./reddit.module.css";
 
 const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | null }) => {
   const redditPosts = redditPostsData?.map((post, index) => {
     return (
       <div key={index}>
-        <Paper key={post.created} p={"xs"} pl={0} pr={0} mb={5}>
+        <div
+          key={post.created}
+          style={{ padding: 8, paddingLeft: 0, paddingRight: 0, marginBottom: 5 }}
+        >
           <Flex justify={"space-between"} columnGap={"xs"}>
-            <Stack spacing={"xs"}>
+            <Stack gap={"xs"}>
               <Flex>
                 <Title order={5}>
                   <Anchor
                     href={`https://www.reddit.com${post.permalink}`}
                     target={"_blank"}
                     inherit={true}
-                    color={"dark0"}
+                    className={classes.redditLink}
                   >
                     {post.title}
                   </Anchor>
                 </Title>
               </Flex>
-              <Flex>
-                <Text size={"xs"}>
-                  <Group spacing={4}>
-                    <IconArrowUp size={"1rem"} /> {post.upvotes}{" "}
-                    <Text c="dimmed">
-                      <Group spacing={2}>
-                        {" "}
-                        -{" "}
-                        <Anchor
-                          href={`https://www.reddit.com/user/${post.author}/`}
-                          target={"_blank"}
-                          color={"dark0"}
-                        >
-                          u/{post.author}
-                        </Anchor>{" "}
-                        <span>- {post.comments} comments -</span>
-                        <DynamicTimeAgo timestamp={post.created} />
-                      </Group>
-                    </Text>
+              <Flex className={classes.redditInfo}>
+                <Group gap={4}>
+                  <IconArrowUp size={"1rem"} /> {post.upvotes} {/*<Text c="dimmed" inherit>*/}
+                  <Group gap={2} className={classes.dimmedInfo}>
+                    {" "}
+                    -{" "}
+                    <Anchor
+                      href={`https://www.reddit.com/user/${post.author}/`}
+                      target={"_blank"}
+                      c={"dimmed"}
+                      inherit
+                    >
+                      u/{post.author}
+                    </Anchor>{" "}
+                    <span>- {post.comments} comments -</span>
+                    <DynamicTimeAgo timestamp={post.created} />
                   </Group>
-                </Text>
+                  {/*</Text>*/}
+                </Group>
               </Flex>
             </Stack>
             {post.image && !post.image.includes("gallery") && (
@@ -59,7 +61,7 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
               />
             )}
           </Flex>
-        </Paper>
+        </div>
         {index !== redditPostsData.length - 1 && <Divider />}
       </div>
     );

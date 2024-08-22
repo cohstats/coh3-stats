@@ -1,6 +1,6 @@
 import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../../src/coh3/coh3-types";
 import React from "react";
-import { Group, Space, Title, Card, createStyles, Stack, ActionIcon } from "@mantine/core";
+import { Group, Title, Card, Stack, ActionIcon } from "@mantine/core";
 import { localizedNames } from "../../../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
 import {
@@ -9,25 +9,6 @@ import {
 } from "../../../../src/players/utils";
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import { IconCirclePlus } from "@tabler/icons-react";
-
-const useStyles = createStyles((theme, { faction }: { faction: string }) => ({
-  mainCard:
-    theme.colorScheme === "light"
-      ? {
-          width: "230px",
-          height: "235px",
-          backgroundImage: `url('/icons/general/${faction}.webp')`,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundBlendMode: "overlay",
-          // This should be a color from the theme, but I can't find out right now the colors
-          backgroundColor: "rgba(255,255,255,0.85)",
-        }
-      : {
-          width: "230px",
-          height: "235px",
-        },
-}));
 
 const PlayerStandingsFactionInfo = ({
   faction,
@@ -38,8 +19,6 @@ const PlayerStandingsFactionInfo = ({
   data: Record<leaderBoardType, RawLeaderboardStat | null>;
   moreButtonOnClick: () => Promise<void>;
 }) => {
-  const { classes } = useStyles({ faction });
-
   const bestElo = findBestValueOnLeaderboardStat(data, "rating");
   const bestRank = findBestRankLeaderboardStat(data, "rank");
   const bestRankLevel = findBestValueOnLeaderboardStat(data, "ranklevel");
@@ -83,39 +62,61 @@ const PlayerStandingsFactionInfo = ({
 
   return (
     <>
-      <Card padding="lg" radius="md" withBorder className={classes.mainCard}>
+      <Card
+        padding="lg"
+        radius="md"
+        withBorder
+        style={{
+          width: "230px",
+          height: "208px",
+        }}
+      >
         <Card.Section>
-          <Group m="xs" position={"apart"}>
+          <Group m="xs" justify={"space-between"}>
             <Title order={4}> Best of {cardTitle}</Title>
 
-            <ActionIcon onClick={moreButtonOnClick}>
+            <ActionIcon onClick={moreButtonOnClick} variant="default">
               <IconCirclePlus size={"20"} />
             </ActionIcon>
           </Group>
         </Card.Section>
-        <Text size={"sm"}>
-          <Stack spacing="md">
+        <Text span size={"sm"}>
+          <Stack gap="xl">
             <div>
-              <Group position="apart">
-                <span>Best Rank</span> <Text fw={600}>{bestRankElement}</Text>
+              <Group justify="space-between">
+                <span>Best Rank</span>{" "}
+                <Text span fw={600}>
+                  {bestRankElement}
+                </Text>
               </Group>
-              <Group position="apart">
-                <span>Best Level</span> <Text fw={600}>{bestLevelElement}</Text>
+              <Group justify="space-between">
+                <span>Best Level</span>{" "}
+                <Text span fw={600}>
+                  {bestLevelElement}
+                </Text>
               </Group>
-              <Group position="apart">
-                <span>Best ELO</span> <Text fw={600}>{bestEloElement}</Text>
+              <Group justify="space-between">
+                <span>Best ELO</span>{" "}
+                <Text span fw={600}>
+                  {bestEloElement}
+                </Text>
               </Group>
             </div>
-            <Space h="xs" />
             <div>
-              <Group position="apart">
-                <span>Overall win Rate</span> <Text fw={600}>{winRateElement}</Text>
+              <Group justify="space-between">
+                <span>Overall win Rate</span>{" "}
+                <Text span fw={600}>
+                  {winRateElement}
+                </Text>
               </Group>
-              <Group position="apart">
-                <span>Total Games</span> <Text fw={600}>{totalGamesElement}</Text>
+              <Group justify="space-between">
+                <span>Total Games</span>{" "}
+                <Text span fw={600}>
+                  {totalGamesElement}
+                </Text>
               </Group>
-              <Group position="apart">
-                <Text>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
+              <Group justify="space-between">
+                <Text span>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
               </Group>
             </div>
           </Stack>

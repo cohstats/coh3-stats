@@ -1,11 +1,15 @@
+import "@mantine/core/styles.layer.css";
+import "@mantine/carousel/styles.css";
+import "mantine-datatable/styles.layer.css";
+
 import { AppProps } from "next/app";
 import Router from "next/router";
 import Head from "next/head";
-import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
+import { localStorageColorSchemeManager, MantineProvider } from "@mantine/core";
 // import { Notifications } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
-import { useColorScheme, useLocalStorage } from "@mantine/hooks";
+// import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import webFirebase from "../src/firebase/web-firebase";
 import { useEffect } from "react";
 import NProgress from "nprogress";
@@ -16,12 +20,18 @@ import DevSiteNotification from "../components/dev-site-notification";
 import { useServiceWorker } from "@edgio/react";
 import { Metrics } from "@edgio/rum";
 
+import "./layout.css";
+
 webFirebase.init();
 
 NProgress.configure({ showSpinner: false });
 
-export default function App(props: AppProps & { colorScheme: ColorScheme }) {
+export default function App(props: AppProps) {
   const { Component, pageProps } = props;
+
+  const colorSchemeManager = localStorageColorSchemeManager({
+    key: "mantine-color-scheme",
+  });
 
   new Metrics({
     token: "63a45f52-3972-4ed0-8867-4e762860a563", // Get your token from the Edgio Console
@@ -30,7 +40,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   useServiceWorker({});
 
   // get system colorscheme
-  const systemColorScheme = useColorScheme("dark");
+  // const systemColorScheme = useColorScheme("dark");
   // const prevSystemColorSchemeRef = useRef(systemColorScheme);
   //
   // // create a cookie on browser to store if the user is visiting the site for the first time
@@ -41,11 +51,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   // });
 
   // create a cookie on browser to store colorscheme starting out with system colorscheme as default
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: "mantine-color-scheme",
-    defaultValue: systemColorScheme,
-    getInitialValueInEffect: true,
-  });
+  // const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+  //   key: "mantine-color-scheme",
+  //   defaultValue: systemColorScheme,
+  //   getInitialValueInEffect: true,
+  // });
 
   // // useColorScheme returns an incorrect initial value due to serverside rendering
   // // when on the client for the first time set the colorscheme to system preferences
@@ -63,8 +73,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   // }, [systemColorScheme]);
 
   // switch colorscheme
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+  // const toggleColorScheme = (value?: ColorScheme) =>
+  //   setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   useEffect(() => {
     Router.events.on("routeChangeStart", (url, { shallow }) => {
@@ -133,13 +143,18 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           href="https://coh3stats.com/opensearch.xml"
         />
       </Head>
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          {/*<Notifications />*/}
-          {layoutContent && contentWithLayout}
-          {!layoutContent && contentWithoutLayout}
-        </MantineProvider>
-      </ColorSchemeProvider>
+
+      <MantineProvider defaultColorScheme="dark" colorSchemeManager={colorSchemeManager}>
+        {/*<Notifications />*/}
+        {layoutContent && contentWithLayout}
+        {!layoutContent && contentWithoutLayout}
+      </MantineProvider>
+
+      {/*<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>*/}
+      {/*  <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>*/}
+      {/*   */}
+      {/*  </MantineProvider>*/}
+      {/*</ColorSchemeProvider>*/}
     </>
   );
 }

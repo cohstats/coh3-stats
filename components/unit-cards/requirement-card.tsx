@@ -23,13 +23,13 @@ export const RequirementCard = ({ ui }: UpgradesType) => {
       </HoverCard.Target>
       <HoverCard.Dropdown>
         <Flex direction="column" gap={4}>
-          <Title order={4} transform="capitalize">
+          <Title order={4} style={{ textTransform: "capitalize" }}>
             {ui.screenName}
           </Title>
-          <Title order={6} color="yellow.5">
+          <Title order={6} c="yellow.5">
             {ui.extraText}
           </Title>
-          <Text fz="sm" style={{ whiteSpace: "pre-line" }} italic>
+          <Text fz="sm" style={{ whiteSpace: "pre-line", fontStyle: "italic" }}>
             {briefText}
           </Text>
           {/* <Text fz="sm">{ui.helpText}</Text> */}

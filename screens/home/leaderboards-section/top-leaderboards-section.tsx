@@ -1,45 +1,16 @@
-import { Flex, Paper, Tabs, Title, Space, Anchor, createStyles } from "@mantine/core";
+import { Flex, Paper, Tabs, Title, Space, Button } from "@mantine/core";
 import { IconArrowRight, IconTrophy } from "@tabler/icons-react";
 import TopLeaderboardsTable from "../../../components/leaderboards/top-leaderboards-table";
 import { raceType, Top1v1LeaderboardsData } from "../../../src/coh3/coh3-types";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { getLeaderBoardRoute } from "../../../src/routes";
-
-const useStyles = createStyles((theme) => ({
-  link: {
-    display: "flex",
-    alignItems: "center",
-    height: "100%",
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingTop: theme.spacing.xs,
-    paddingBottom: theme.spacing.xs,
-    textDecoration: "none",
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-    fontWeight: 500,
-    fontSize: theme.fontSizes.sm,
-    borderRadius: theme.radius.md,
-
-    [theme.fn.smallerThan("sm")]: {
-      height: 42,
-      display: "flex",
-      alignItems: "center",
-    },
-
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-      textDecoration: "none",
-    }),
-  },
-}));
+import Link from "next/link";
 
 const TopLeaderboardsSection = ({
   initialData,
 }: {
   initialData: Top1v1LeaderboardsData | null;
 }) => {
-  const { classes } = useStyles();
   const [data, setData] = useState<Top1v1LeaderboardsData | null>(initialData);
   const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race || "american");
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,7 +40,7 @@ const TopLeaderboardsSection = ({
     <Paper withBorder shadow="xs" radius="md" mt="md" p="md" color="gray">
       <Tabs
         variant="pills"
-        onTabChange={(value) => setSelectedRace(value as raceType)}
+        onChange={(value: string | null) => setSelectedRace(value as raceType)}
         value={selectedRace}
       >
         <Flex gap="md" justify="space-between" align="center" direction="row" wrap="wrap">
@@ -122,14 +93,27 @@ const TopLeaderboardsSection = ({
       </Tabs>
       <Space h="xs" />
       <Flex gap="md" justify="flex-end" align="center" direction="row" wrap="wrap">
-        <Anchor
+        {/*<Anchor*/}
+        {/*  component={Link}*/}
+        {/*  href={getLeaderBoardRoute(selectedRace)}*/}
+        {/*//  className={classes.link}*/}
+        {/*>*/}
+        {/*  View Full Leaderboard*/}
+        {/*  <IconArrowRight style={{ marginLeft: "5px" }} />*/}
+        {/*</Anchor>*/}
+
+        <Button
           component={Link}
           href={getLeaderBoardRoute(selectedRace)}
-          className={classes.link}
+          style={{
+            color: "inherit",
+          }}
+          // size="compact-md"
+          variant="subtle"
+          rightSection={<IconArrowRight style={{ marginLeft: "5px" }} />}
         >
           View Full Leaderboard
-          <IconArrowRight style={{ marginLeft: "5px" }} />
-        </Anchor>
+        </Button>
       </Flex>
     </Paper>
   );

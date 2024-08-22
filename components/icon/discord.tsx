@@ -1,21 +1,20 @@
-import { createStyles } from "@mantine/core";
+//import { createStyles } from '@mantine/emotion';
 import React from "react";
 import config from "../../config";
 import { IconButton } from "../icon-button/icon-button";
 
-const useStyles = createStyles(() => ({
-  root: {
-    color: "rgb(255, 255, 255)",
-    backgroundColor: "rgb(88, 101, 242)",
-    "&:hover": {
-      color: "rgb(255, 255, 255)",
-      backgroundColor: "rgb(105, 116, 243)",
-    },
-  },
-}));
+// const useStyles = createStyles(() => ({
+//   root: {
+//     color: "rgb(255, 255, 255)",
+//     backgroundColor: "rgb(88, 101, 242)",
+//     "&:hover": {
+//       color: "rgb(255, 255, 255)",
+//       backgroundColor: "rgb(105, 116, 243)",
+//     },
+//   },
+// }));
 
 export const Discord: React.FC = () => {
-  const { classes } = useStyles();
   return (
     <a
       href={config.DISCORD_INVITE_LINK}
@@ -23,7 +22,13 @@ export const Discord: React.FC = () => {
       rel="noopener noreferrer nofollow"
       title={"Link to our discord channel"}
     >
-      <IconButton label="Discord channel" className={classes.root}>
+      <IconButton
+        label="Discord channel"
+        style={{
+          backgroundColor: "rgb(88, 101, 242)",
+          color: "rgb(255, 255, 255)",
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

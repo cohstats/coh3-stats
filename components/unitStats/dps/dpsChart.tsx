@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
-//import { LevelContext } from './LevelContext.js';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,10 +36,10 @@ import {
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
-import { EbpsType, getEbpsStats } from "../../src/unitStats/mappingEbps";
+import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 // import slash from "slash";
-import { getWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import { getSbpsStats, SbpsType } from "../../src/unitStats/mappingSbps";
+import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
+import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
 import { IconAdjustments } from "@tabler/icons-react";
 import {
   CustomizableUnit,
@@ -48,17 +47,19 @@ import {
   getWeaponDPSData,
   mapCustomizableUnit,
   updateHealth,
-} from "../../src/unitStats/dpsCommon";
-import { getFactionIcon } from "../../src/unitStats";
-import config from "../../config";
+} from "../../../src/unitStats/dpsCommon";
+import { getFactionIcon } from "../../../src/unitStats";
+import config from "../../../config";
 import {
   AnalyticsDPSExplorerPatchSelection,
   AnalyticsDPSExplorerSquadSelection,
-} from "../../src/firebase/analytics";
+} from "../../../src/firebase/analytics";
 
 // let unitSelectionList :  CustomizableUnit[] = [];
 let unitSelectionList1: CustomizableUnit[] = [];
 let unitSelectionList2: CustomizableUnit[] = [];
+
+import classes from "../DPSChart.module.css";
 
 // function hexToRgbA(hex: string, opacity: string) {
 //   let c: any;
@@ -155,7 +156,7 @@ export const mapChartData = (data: any[], id?: string, isStaircase?: boolean) =>
   return chartLine;
 };
 
-const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
+const setScreenOptions = (_chartOptions: any, isLargeScreen: boolean) => {
   if (!isLargeScreen) {
     options.scales.x.title.display = false;
     options.scales.y.title.display = false;
@@ -204,7 +205,7 @@ const generateFilterButtons = (
         <ActionIcon
           key={faction + index}
           size="sm"
-          variant={unitFilter.includes(faction) ? "gradient" : "trannsparent"}
+          variant={unitFilter.includes(faction) ? "gradient" : "transparent"}
           onClick={() => callback(faction, index, unitFilter, unitSelectionList)}
         >
           <Image src={source} alt={"Filter"}></Image>
@@ -280,7 +281,7 @@ export const DpsChart = (props: IDPSProps) => {
 
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
-  setScreenOptions(options, isLargeScreen);
+  setScreenOptions(options, Boolean(isLargeScreen));
 
   // create selection List
   if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
@@ -494,10 +495,10 @@ export const DpsChart = (props: IDPSProps) => {
         <Space h="xl" />
         <>
           <Grid>
-            <Grid.Col md={6} lg={6}>
+            <Grid.Col span={{ md: 6, lg: 6 }}>
               <Grid>
                 <Grid.Col span={6}>
-                  <Group noWrap>
+                  <Group wrap="nowrap">
                     {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
                   </Group>
                 </Grid.Col>
@@ -519,6 +520,8 @@ export const DpsChart = (props: IDPSProps) => {
                         onChange={(value) => onPatchUnitChange(value as string, 1)}
                         data={patchList}
                         defaultValue={config.latestPatch}
+                        withCheckIcon={false}
+                        allowDeselect={false}
                       />
                     </Tooltip>
                   </Flex>
@@ -543,16 +546,7 @@ export const DpsChart = (props: IDPSProps) => {
                   </Center>
                 )}
                 {activeData[0] && (
-                  <Box
-                    sx={(theme) => ({
-                      backgroundColor:
-                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                      border: "solid 2px " + theme.colors.blue[4],
-                      textAlign: "left",
-                      padding: theme.spacing.xs,
-                      borderRadius: theme.radius.md,
-                    })}
-                  >
+                  <Box className={classes.unitBoxLeft}>
                     <DpsUnitCustomizing
                       key={activeData[0].id + "0." + patchUnit1}
                       unit={activeData[0]}
@@ -566,15 +560,14 @@ export const DpsChart = (props: IDPSProps) => {
               </div>
             </Grid.Col>
 
-            <Grid.Col md={6} lg={6}>
-              {/* <SimpleGrid cols={2}> */}
+            <Grid.Col span={{ md: 6, lg: 6 }}>
               <Grid>
-                <Grid.Col md={6} lg={6}>
-                  <Group noWrap>
+                <Grid.Col span={{ md: 6, lg: 6 }}>
+                  <Group wrap="nowrap">
                     {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
                   </Group>
                 </Grid.Col>
-                <Grid.Col md={6} lg={6}>
+                <Grid.Col span={{ md: 6, lg: 6 }}>
                   <Flex
                     // mih={50}
                     // gap="xs"
@@ -594,6 +587,8 @@ export const DpsChart = (props: IDPSProps) => {
                           onChange={(value) => onPatchUnitChange(value as string, 2)}
                           data={patchList}
                           defaultValue={config.latestPatch}
+                          withCheckIcon={false}
+                          allowDeselect={false}
                         />
                       </Tooltip>
                     </Group>
@@ -620,16 +615,7 @@ export const DpsChart = (props: IDPSProps) => {
                   </Center>
                 )}
                 {activeData[1] && (
-                  <Box
-                    sx={(theme) => ({
-                      backgroundColor:
-                        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-                      border: "solid 2px " + theme.colors.red[6],
-                      textAlign: "left",
-                      padding: theme.spacing.xs,
-                      borderRadius: theme.radius.md,
-                    })}
-                  >
+                  <Box className={classes.unitBoxRight}>
                     <DpsUnitCustomizing
                       key={activeData[1].id + "1." + patchUnit2}
                       unit={activeData[1]}
@@ -648,20 +634,8 @@ export const DpsChart = (props: IDPSProps) => {
 
       <Space h="sm" />
       <Container size="md">
-        <LoadingOverlay visible={patchChangeIndex > 0} overlayBlur={1} />
-        <Box
-          sx={(theme) => ({
-            backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.white,
-            border:
-              theme.colorScheme === "dark"
-                ? "solid 1px " + theme.colors.dark[4]
-                : "solid 1px " + theme.colors.gray[4],
-            textAlign: "left",
-            // padding: theme.spacing.xs,
-            borderRadius: theme.radius.md,
-          })}
-        >
+        <LoadingOverlay visible={patchChangeIndex > 0} />
+        <Box className={classes.chartBox}>
           {/* { patchChangeIndex > 0 &&
             <Container size={'md'}>
                 <Loader />
@@ -670,15 +644,15 @@ export const DpsChart = (props: IDPSProps) => {
           <Line ref={chartRef as any} options={options as any} data={chartData as any} />
         </Box>
         <Space h="sm" />
-        <Text color={"dimmed"} pl={5} fs="italic">
+        <Text c={"dimmed"} pl={5} fs="italic">
           * Computation results are based on approximation models using stats from the game files.
           Values allow us to benchmark the performance in comparison to other units. Values are
           relative to opponent selection, E.g. small arms DPS against armor will be lower than vs
           infantry. Values do not necessarily reflect the average time to kill (ttk) in game.
         </Text>
-        <Text color={"dimmed"} pl={5} fs="italic">
-          ** Area and balistic DPS (Eg. by Mortar, Tank Guns..) are experimental approximations
-          respecting scatter, penetration and target size. Some informations like box sizes of
+        <Text c={"dimmed"} pl={5} fs="italic">
+          ** Area and ballistic DPS (Eg. by Mortar, Tank Guns..) are experimental approximations
+          respecting scatter, penetration and target size. Some information like box sizes of
           units are not accessible. Also, squads formations and densities are unknown. The
           calculation assumes every model within the model cap limit to be hit which allows a
           rough performance comparison but do not necessarily reflect the average time to kill in

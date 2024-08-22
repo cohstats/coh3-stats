@@ -13,7 +13,7 @@ import {
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
 import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
-import { ProcessedMatch, raceID } from "../../../src/coh3/coh3-types";
+import { PlayerReport, ProcessedMatch, raceID } from "../../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../../src/coh3/helpers";
 import ErrorCard from "../../../components/error-card";
 import FactionIcon from "../../../components/faction-icon";
@@ -21,11 +21,12 @@ import { IconInfoCircle } from "@tabler/icons-react";
 import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
 import FilterableHeader from "./filterable-header";
-import RenderPlayers from "../../../components/matches-table/render-players";
-import RenderMap from "../../../components/matches-table/render-map";
+
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../src/players/utils";
 import { useLocalStorage } from "@mantine/hooks";
+import RenderPlayers from "./components/matches-table/render-players";
+import RenderMap from "./components/matches-table/render-map";
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -158,6 +159,7 @@ const PlayerRecentMatchesTab = ({
     setFilters(updatedFilters);
   };
 
+  // @ts-ignore
   return (
     <>
       <Flex justify={"end"} pb={"xs"}>
@@ -174,9 +176,11 @@ const PlayerRecentMatchesTab = ({
         borderRadius="md"
         highlightOnHover
         striped
-        verticalSpacing="sm"
+        withTableBorder
+        verticalSpacing="xs"
         minHeight={300}
         // provide data
+        // @ts-ignore
         records={sortedData}
         // define columns
         sortStatus={sortStatus}
@@ -185,16 +189,19 @@ const PlayerRecentMatchesTab = ({
           {
             accessor: "Played",
             sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             width: 120,
             render: (record) => {
-              const player = getPlayerMatchHistoryResult(record, profileID);
+              const player = getPlayerMatchHistoryResult(
+                record as unknown as ProcessedMatch,
+                profileID,
+              );
               return (
                 <>
                   <div>
                     <FactionIcon name={raceIDs[player?.race_id as raceID]} width={50} />
                   </div>
-                  <DynamicTimeAgo timestamp={record.completiontime} />
+                  <DynamicTimeAgo timestamp={record.completiontime as number} />
                 </>
               );
             },
@@ -209,9 +216,12 @@ const PlayerRecentMatchesTab = ({
                 onReset={() => handleFilterReset("result")}
               />
             ),
-            textAlignment: "center",
+            textAlign: "center",
             render: (record) => {
-              const playerResult = getPlayerMatchHistoryResult(record, profileID);
+              const playerResult = getPlayerMatchHistoryResult(
+                record as unknown as ProcessedMatch,
+                profileID,
+              );
               const ratingChange =
                 playerResult?.matchhistorymember?.newrating &&
                 playerResult?.matchhistorymember?.oldrating
@@ -219,7 +229,7 @@ const PlayerRecentMatchesTab = ({
                     playerResult.matchhistorymember.oldrating
                   : undefined;
 
-              if (isPlayerVictorious(record, profileID)) {
+              if (isPlayerVictorious(record as unknown as ProcessedMatch, profileID)) {
                 return (
                   <Badge color={"blue"} variant="filled" w={"16ch"}>
                     VICTORY +{ratingChange}
@@ -251,19 +261,18 @@ const PlayerRecentMatchesTab = ({
           {
             accessor: "axis_players",
             title: "Axis Players",
-            titleStyle: { textAlign: "left" },
-            textAlignment: "center",
+            textAlign: "left",
             width: "50%",
             render: (record) => {
               const axisPlayers = getMatchPlayersByFaction(
-                record.matchhistoryreportresults,
+                record.matchhistoryreportresults as PlayerReport[],
                 "axis",
               );
               return (
                 <RenderPlayers
                   playerReports={axisPlayers}
                   profileID={profileID}
-                  matchType={record.matchtype_id}
+                  matchType={record.matchtype_id as number}
                   renderFlag={showCountryFlag === "true"}
                 />
               );
@@ -272,19 +281,18 @@ const PlayerRecentMatchesTab = ({
           {
             accessor: "allies_players",
             title: "Allies Players",
-            titleStyle: { textAlign: "left" },
-            textAlignment: "center",
+            textAlign: "left",
             width: "50%",
             render: (record) => {
               const alliesPlayers = getMatchPlayersByFaction(
-                record.matchhistoryreportresults,
+                record.matchhistoryreportresults as PlayerReport[],
                 "allies",
               );
               return (
                 <RenderPlayers
                   playerReports={alliesPlayers}
                   profileID={profileID}
-                  matchType={record.matchtype_id}
+                  matchType={record.matchtype_id as number}
                   renderFlag={showCountryFlag === "true"}
                 />
               );
@@ -301,9 +309,9 @@ const PlayerRecentMatchesTab = ({
               />
             ),
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: (record) => {
-              return <RenderMap mapName={record.mapname} />;
+              return <RenderMap mapName={record.mapname as string} />;
             },
           },
           {
@@ -317,11 +325,11 @@ const PlayerRecentMatchesTab = ({
             ),
             accessor: "matchtype_id",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ matchtype_id }) => {
               const matchType =
-                matchTypesAsObject[matchtype_id]["localizedName"] ||
-                matchTypesAsObject[matchtype_id]["name"] ||
+                matchTypesAsObject[matchtype_id as number]["localizedName"] ||
+                matchTypesAsObject[matchtype_id as number]["name"] ||
                 "unknown";
               return <div style={{ whiteSpace: "nowrap" }}>{matchType.toLowerCase()}</div>;
             },
@@ -330,9 +338,11 @@ const PlayerRecentMatchesTab = ({
             title: "Match duration",
             accessor: "match_duration",
             sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
+            // The types in tables are broken, we need to figure out why
+            // @ts-ignore
             render: ({ startgametime, completiontime }) => {
-              return <p>{getMatchDuration(startgametime, completiontime)}</p>;
+              return <p>{getMatchDuration(startgametime as number, completiontime as number)}</p>;
             },
           },
           {
@@ -360,14 +370,18 @@ const PlayerRecentMatchesTab = ({
       />
       <Space h={5} />
       <Group
-        position={"apart"}
+        justify={"space-between"}
         style={{ alignItems: "flex-start", paddingRight: 5, paddingLeft: 5 }}
       >
-        <Text size={"sm"}>Data provided by Relic</Text>
-        <Stack align="flex-end" spacing="xs">
-          <Group spacing={5} position={"right"}>
+        <Text span size={"sm"}>
+          Data provided by Relic
+        </Text>
+        <Stack align="flex-end" gap="xs">
+          <Group gap={5} justify={"right"}>
             <IconInfoCircle size={18} />
-            <Text size={"sm"}>Relic keeps only last 10 matches for each mode</Text>
+            <Text span size={"sm"}>
+              Relic keeps only last 10 matches for each mode
+            </Text>
           </Group>
           <Switch
             label="Enable debug mode"
@@ -379,7 +393,7 @@ const PlayerRecentMatchesTab = ({
       </Group>
       {customGamesHidden && (
         <Center>
-          <Text size={"sm"} c="dimmed">
+          <Text span size={"sm"} c="dimmed">
             Custom games are hidden for this player. Please contact admin to enable them.
           </Text>
         </Center>

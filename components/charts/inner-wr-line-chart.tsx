@@ -10,7 +10,7 @@ import { getNivoTooltipTheme } from "./charts-components-utils";
 const InnerWinRateLineChartCard = ({
   data,
   title,
-  width = 1270,
+  width = 1265,
 }: {
   data: {
     [key in raceType]: {
@@ -40,7 +40,7 @@ const InnerWinRateLineChartCard = ({
   return (
     <Card p="md" shadow="sm" w={width} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
-        <Group position={"apart"}>
+        <Group justify={"space-between"}>
           <Group>
             <Title order={3}>{title}</Title>
             <HelperIcon
@@ -61,6 +61,8 @@ const InnerWinRateLineChartCard = ({
                 { value: "days", label: "Days" },
                 { value: "weeks", label: "Weeks" },
               ]}
+              withCheckIcon={false}
+              allowDeselect={false}
             />
           </Group>
         </Group>

@@ -12,15 +12,19 @@ const PlayerIdIcon = ({ relicID, steamID }: { relicID: number; steamID?: string 
         </ActionIcon>
       </HoverCard.Target>
       <HoverCard.Dropdown>
-        <Group spacing={"xs"}>
+        <Group gap={"xs"}>
           <RelicIcon size={17} />
-          <Text size="sm">Relic COH3 ID</Text>
+          <Text span size="sm">
+            Relic COH3 ID
+          </Text>
           <Code>{relicID}</Code>
         </Group>
         {steamID && (
-          <Group spacing={"xs"}>
+          <Group gap={"xs"}>
             <IconBrandSteam size={15} />
-            <Text size="sm">Steam ID</Text>
+            <Text span size="sm">
+              Steam ID
+            </Text>
             <Code>{steamID}</Code>
           </Group>
         )}

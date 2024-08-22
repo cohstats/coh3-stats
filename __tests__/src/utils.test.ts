@@ -11,6 +11,7 @@ import {
   generateExpireTimeStamps,
   calculateWinRate,
   convertWeekDayToFullName,
+  getPatchVersionAsMantineV7Groups,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -304,5 +305,19 @@ describe("convertWeekDayToFullName", () => {
   test("Test incorrect conversion", () => {
     expect(convertWeekDayToFullName("M")).toBe("Invalid day abbreviation");
     expect(convertWeekDayToFullName("T")).toBe("Invalid day abbreviation");
+  });
+});
+
+describe("getPatchVersionAsMantineV7Groups", () => {
+  test("Test correct conversion", () => {
+    expect(
+      JSON.stringify(
+        getPatchVersionAsMantineV7Groups().includes({
+          group: "Brass Leopard",
+          items: [{ value: "1.1.5", label: "1.1.5" }],
+        }),
+      ),
+    ).toBeTruthy();
+    // console.log(JSON.stringify(getPatchVersionAsMantineV7Groups()));
   });
 });

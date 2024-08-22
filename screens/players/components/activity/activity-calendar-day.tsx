@@ -11,6 +11,7 @@ const ActivityCalendarDay = ({
   playerStatsData: ProcessedCOHPlayerStats;
   fromYear: string;
 }) => {
+  // This works only in client side rendering
   const { colorScheme } = useMantineColorScheme();
 
   // This is most likely a bug in Nivo, the labels on Calendar Canvas our outside / other charts have it inside
@@ -32,7 +33,8 @@ const ActivityCalendarDay = ({
       data={playerStatsData.activityByDate}
       from={fromYear}
       to={dayjs(new Date()).format("YYYY-MM-DD")}
-      emptyColor={colorScheme === "light" ? "#eeeeee" : "#25262B"}
+      // This is dark 5 || ideally we take this from the THEME
+      emptyColor={colorScheme === "light" ? "#eeeeee" : "#3b3b3b"}
       colors={[
         "#f15854",
         "#f4665f",
@@ -62,7 +64,7 @@ const ActivityCalendarDay = ({
       // monthBorderColor="#ffffff"
       monthBorderWidth={1}
       dayBorderWidth={2}
-      dayBorderColor={colorScheme === "light" ? "#ffffff" : "#1A1B1E"}
+      dayBorderColor={colorScheme === "light" ? "#ffffff" : "#242424"}
       // legends={[
       //   {
       //     anchor: "bottom-right",
@@ -98,9 +100,17 @@ const ActivityCalendarDay = ({
               paddingRight: "10px",
             }}
           >
-            <Group spacing={"xs"}>
-              {day}: <Text color={"green"}> {data.wins} W</Text> -{" "}
-              <Text color={"red"}> {data.losses} L</Text>
+            <Group gap={"xs"}>
+              {day}:{" "}
+              <Text span c={"green"}>
+                {" "}
+                {data.wins} W
+              </Text>{" "}
+              -{" "}
+              <Text span c={"red"}>
+                {" "}
+                {data.losses} L
+              </Text>
             </Group>
           </div>
         );

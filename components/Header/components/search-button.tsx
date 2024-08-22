@@ -1,4 +1,4 @@
-import { Input } from "@mantine/core";
+import { TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import React from "react";
 import { debounce } from "lodash";
@@ -20,8 +20,8 @@ export const SearchButton: React.FC<{ redirectOnClick?: boolean; close?: () => v
 
   return (
     <>
-      <Input
-        icon={<IconSearch />}
+      <TextInput
+        leftSection={<IconSearch />}
         placeholder="Search players"
         radius={"md"}
         onChange={(event: { currentTarget: { value: any } }) => {

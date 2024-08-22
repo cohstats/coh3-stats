@@ -20,12 +20,10 @@ const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: st
           shadow="md"
           p="md"
           radius="md"
-          sx={{
-            backgroundImage: `url('${image}')`,
-            backgroundSize: "cover",
-          }}
           style={{
             height: "100%",
+            backgroundImage: `url('${image}')`,
+            backgroundSize: "cover",
           }}
         >
           <Title

@@ -1,11 +1,12 @@
 import { Anchor, Group, Text, Tooltip } from "@mantine/core";
-import { PlayerReport, raceID } from "../../src/coh3/coh3-types";
-import FactionIcon from "../faction-icon";
-import { raceIDs } from "../../src/coh3/coh3-data";
+import { PlayerReport, raceID } from "../../../../../src/coh3/coh3-types";
+import { raceIDs } from "../../../../../src/coh3/coh3-data";
 import Link from "next/link";
-import EllipsisText from "../other/ellipsis-text";
+
 import React from "react";
-import CountryFlag from "../country-flag";
+import CountryFlag from "../../../../../components/country-flag";
+import EllipsisText from "../../../../../components/other/ellipsis-text";
+import FactionIcon from "../../../../../components/faction-icon";
 
 interface RenderPlayersProps {
   playerReports: Array<PlayerReport>;
@@ -55,11 +56,17 @@ const RenderPlayers = ({
         const ratingChange = matchHistory.newrating - matchHistory.oldrating;
         let ratingChangeAsElement =
           ratingChange > 0 ? (
-            <Text color={"green"}>+{ratingChange}</Text>
+            <Text span c={"green"} fz={"sm"}>
+              +{ratingChange}
+            </Text>
           ) : ratingChange < 0 ? (
-            <Text color={"red"}>{ratingChange}</Text>
+            <Text span c={"red"} fz={"sm"}>
+              {ratingChange}
+            </Text>
           ) : (
-            <Text>{ratingChange}</Text>
+            <Text span fz={"sm"}>
+              {ratingChange}
+            </Text>
           );
 
         // Custom games rating change doesn't make sense
@@ -82,7 +89,7 @@ const RenderPlayers = ({
 
         return (
           <div key={playerInfo.profile_id}>
-            <Group spacing={"xs"}>
+            <Group gap={"xs"}>
               <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
               <> {ratingElement}</>
               <Anchor
@@ -92,16 +99,16 @@ const RenderPlayers = ({
                 href={`/players/${playerInfo.profile_id}`}
               >
                 {`${playerInfo.profile_id}` === `${profileID}` ? (
-                  <Text fw={700}>
-                    <Group spacing="xs">
+                  <Text fz={"sm"} span fw={700}>
+                    <Group gap="xs">
                       {" "}
                       {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
                       <EllipsisText text={playerInfo.profile["alias"]} />
                     </Group>
                   </Text>
                 ) : (
-                  <Text>
-                    <Group spacing="xs">
+                  <Text span fz={"sm"}>
+                    <Group gap="xs">
                       {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
                       <EllipsisText text={playerInfo.profile["alias"]} />
                     </Group>

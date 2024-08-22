@@ -35,11 +35,11 @@ const PlayerStandingsTable = ({
           flexGrow: 1,
           maxHeight: "inherit",
         }}
-        withBorder
+        withTableBorder={true}
         borderRadius="md"
         highlightOnHover
         striped
-        verticalSpacing="xs"
+        verticalSpacing={5}
         // provide data
         idAccessor={"type"}
         records={dataForTable}
@@ -47,11 +47,11 @@ const PlayerStandingsTable = ({
         columns={[
           {
             accessor: "type",
-            textAlignment: "center",
+            textAlign: "center",
           },
           {
             accessor: "rank",
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ rank, type }) => {
               if (!rank || rank < 0) {
                 return "-";
@@ -78,7 +78,7 @@ const PlayerStandingsTable = ({
           {
             title: "ELO",
             accessor: "rating",
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ rating }) => {
               if (!rating) {
                 return "-";
@@ -90,7 +90,7 @@ const PlayerStandingsTable = ({
           {
             title: "Tier",
             accessor: "ranklevel",
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ rank, rating }: any) => {
               return <RankIcon size={28} rank={rank} rating={rating} />;
             },
@@ -98,22 +98,26 @@ const PlayerStandingsTable = ({
           {
             accessor: "streak",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             // @ts-ignore
             render: ({ streak }) => {
               if (!streak) return "-";
 
               return streak > 0 ? (
-                <Text color={"green"}>+{streak}</Text>
+                <Text span c={"green"}>
+                  +{streak}
+                </Text>
               ) : (
-                <Text color={"red"}>{streak}</Text>
+                <Text span c={"red"}>
+                  {streak}
+                </Text>
               );
             },
           },
           {
             accessor: "wins",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ wins }) => {
               if (!wins) {
                 return "-";
@@ -124,7 +128,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "losses",
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ losses }) => {
               if (!losses) {
                 return "-";
@@ -136,7 +140,7 @@ const PlayerStandingsTable = ({
           {
             accessor: "ratio",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ wins, losses }: any) => {
               if (!wins && !losses) return "-";
 
@@ -146,7 +150,7 @@ const PlayerStandingsTable = ({
           {
             accessor: "total",
             // sortable: true,
-            textAlignment: "center",
+            textAlign: "center",
             render: ({ wins, losses }: any) => {
               if (!wins && !losses) return "-";
               return `${wins + losses}`;
@@ -155,7 +159,7 @@ const PlayerStandingsTable = ({
           {
             accessor: "lastmatchdate",
             title: "Last Match",
-            textAlignment: "right",
+            textAlign: "right",
             width: 125,
             // @ts-ignore
             render: ({ lastmatchdate }) => {

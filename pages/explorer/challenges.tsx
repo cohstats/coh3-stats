@@ -63,8 +63,8 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
       </Head>
       <Container size={"lg"} p={0}>
         <Grid>
-          <Grid.Col md={12} lg={6}>
-            <Title align={"center"} order={2}>
+          <Grid.Col span={{ md: 12, lg: 6 }}>
+            <Title style={{ textAlign: "center" }} order={2}>
               Weekly Challenges
             </Title>
             <Space h={"md"} />
@@ -98,8 +98,8 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
             })}
           </Grid.Col>
 
-          <Grid.Col md={12} lg={6}>
-            <Title align={"center"} order={2}>
+          <Grid.Col span={{ md: 12, lg: 6 }}>
+            <Title style={{ textAlign: "center" }} order={2}>
               Daily Challenges
             </Title>
             <Space h={"md"} />
@@ -142,13 +142,13 @@ function AccordionLabel({ name, description, reward }: ResolvedChallenge["challe
   return (
     <Card p="md" radius="md" withBorder>
       <Flex direction="column" gap={4}>
-        <Title order={3} color="orange.5">
+        <Title order={3} c="orange.5">
           {name}
         </Title>
         <Text style={{ minHeight: "3.2em" }}>{description}</Text>
-        <Group spacing={"xs"}>
+        <Group gap={"xs"}>
           <IconMedal size={16} />
-          <Text size="sm" color="blue.4">
+          <Text size="sm" c="blue.4">
             {reward} Merits
           </Text>
         </Group>
@@ -162,11 +162,11 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
     <Stack>
       {research.length ? (
         <Stack>
-          <Title order={5} color="blue.5">
+          <Title order={5} c="blue.5">
             Requires these upgrades
           </Title>
 
-          <Group key="required_upg" spacing="sm" position="apart">
+          <Group key="required_upg" gap="sm" justify="space-between">
             {...research.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -177,7 +177,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.upgrade?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text color="yellow.5" align="center">
+                  <Text c="yellow.5" style={{ textAlign: "center" }}>
                     {item.upgrade?.ui.screenName || item.id}
                   </Text>
                 </Stack>
@@ -190,11 +190,11 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
       )}
       {spawnee.length ? (
         <Stack>
-          <Title order={5} color="orange.5">
+          <Title order={5} c="orange.5">
             Requires training these units
           </Title>
 
-          <Group key="required_spawnee" spacing="sm" position="apart">
+          <Group key="required_spawnee" gap="sm" justify="space-between">
             {...spawnee.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -205,7 +205,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.squad?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text color="yellow.5" align="center">
+                  <Text c="yellow.5" style={{ textAlign: "center" }}>
                     {item.squad?.ui.screenName || item.id}
                   </Text>
                 </Stack>
@@ -218,11 +218,11 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
       )}
       {sources.length ? (
         <Stack>
-          <Title order={5} color="green.5">
+          <Title order={5} c="green.5">
             Requires using these units
           </Title>
 
-          <Group key="required_sources" spacing="sm" position="apart">
+          <Group key="required_sources" gap="sm" justify="space-between">
             {...sources.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -233,7 +233,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.squad?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text color="yellow.5" align="center">
+                  <Text c="yellow.5" style={{ textAlign: "center" }}>
                     {item.squad?.ui.screenName || item.id}
                   </Text>
                 </Stack>
@@ -246,11 +246,11 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
       )}
       {targets.length ? (
         <Stack>
-          <Title order={5} color="red.5">
+          <Title order={5} c="red.5">
             Requires destroying these units
           </Title>
 
-          <Group key="required_targets" spacing="sm" position="apart">
+          <Group key="required_targets" gap="sm" justify="space-between">
             {...targets.map((item, idx) => {
               return (
                 <Stack align="center" w={128} key={`${item.id}_${idx}`}>
@@ -261,7 +261,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
                     fallbackSrc={iconPlaceholder}
                     alt={item.squad?.ui.screenName || item.id}
                   ></ImageWithFallback>
-                  <Text color="yellow.5" align="center">
+                  <Text c="yellow.5" ta="center">
                     {item.squad?.ui.screenName || item.id}
                   </Text>
                 </Stack>

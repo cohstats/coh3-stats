@@ -1,5 +1,4 @@
 import {
-  // createStyles,
   Space,
   Image,
   Text,
@@ -10,8 +9,8 @@ import {
   HoverCard,
   Card,
 } from "@mantine/core";
-import { WeaponMember } from "../../src/unitStats/dpsCommon";
-import { WeaponLoadoutCard } from "../unit-cards/weapon-loadout-card";
+import { WeaponMember } from "../../../src/unitStats/dpsCommon";
+import { WeaponLoadoutCard } from "../../unit-cards/weapon-loadout-card";
 import { Line } from "react-chartjs-2";
 
 interface IDPSProps {
@@ -87,7 +86,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
   return (
     <>
       <Box
-        sx={(theme) => ({
+        style={(theme) => ({
           // backgroundColor:
           //   theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
           //border: theme.colorScheme === "dark" ? "solid 1px " + theme.colors.dark[4] : "solid 1px " + theme.colors.gray[4] ,
@@ -101,9 +100,9 @@ export const DpsWeaponCard = (props: IDPSProps) => {
               <Group>
                 <Image
                   width={60}
-                  height={30}
+                  height={20}
                   src={props.weapon_member.image}
-                  fit="contain"
+                  fit="cover"
                   alt={props.weapon_member.weapon_id.substring(0, 10)}
                 />
                 <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
@@ -224,17 +223,17 @@ export const DpsWeaponCard = (props: IDPSProps) => {
         </Group> */}
 
         <Text size="xs">{props.weapon_member.weapon_id.substring(0, 12) + "..."}</Text>
-        <Space h="xs"></Space>
+        <Space h="xs" />
         {props.weapon_member.ebps.unitType == "infantry" && (
           <Box
-            sx={() => ({
+            style={() => ({
               width: "60px",
             })}
           >
             <NumberInput
               defaultValue={props.weapon_member.num}
               size="xs"
-              onChange={onNumberChanged}
+              onChange={(value) => onNumberChanged(value as number)}
               value={props.weapon_member.num}
             />
           </Box>

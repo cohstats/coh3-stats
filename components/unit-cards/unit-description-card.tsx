@@ -56,10 +56,10 @@ export const UnitDescriptionCard = ({
           />
         </BackgroundImage>
         <Flex direction="column" gap={4}>
-          <Title order={6} transform="capitalize" color="yellow.5">
+          <Title order={6} style={{ textTransform: "capitalize" }} c="yellow.5">
             {desc.help_text}
           </Title>
-          <Title order={4} transform="capitalize" lineClamp={1}>
+          <Title order={4} style={{ textTransform: "capitalize" }} lineClamp={1}>
             {desc.screen_name}
           </Title>
           {/* Symbol horizontal aligned with brief text. */}

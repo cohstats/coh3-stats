@@ -21,13 +21,13 @@ type VeterancyInput = {
 export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
   return (
     <Stack>
-      <Title order={6} transform="uppercase">
+      <Title order={6} style={{ textTransform: "uppercase" }}>
         Veterancy
       </Title>
       <Grid fz="sm" justify="left" align="center" columns={6} grow gutter="sm">
-        <Grid.Col span={1} md={2}>
-          <Stack align="center" spacing="xs">
-            <Group spacing={2} grow>
+        <Grid.Col span={{ base: 1, md: 2 }}>
+          <Stack align="center" gap="xs">
+            <Group gap={2} grow>
               <Image
                 height={24}
                 width={24}
@@ -53,13 +53,13 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
             <Text>XP: {one.exp}</Text>
           </Stack>
         </Grid.Col>
-        <Grid.Col span={5} md={4}>
+        <Grid.Col span={{ base: 5, md: 4 }}>
           <Text>{one.screenName}</Text>
         </Grid.Col>
 
-        <Grid.Col span={1} md={2}>
-          <Stack align="center" spacing="xs">
-            <Group spacing={2} grow>
+        <Grid.Col span={{ base: 1, md: 2 }}>
+          <Stack align="center" gap="xs">
+            <Group gap={2} grow>
               <Image
                 height={24}
                 width={24}
@@ -85,13 +85,13 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
             <Text>XP: {two.exp}</Text>
           </Stack>
         </Grid.Col>
-        <Grid.Col span={5} md={4}>
+        <Grid.Col span={{ base: 5, md: 4 }}>
           <Text>{two.screenName}</Text>
         </Grid.Col>
 
-        <Grid.Col span={1} md={2}>
-          <Stack align="center" spacing="xs">
-            <Group spacing={2} grow>
+        <Grid.Col span={{ base: 1, md: 2 }}>
+          <Stack align="center" gap="xs">
+            <Group gap={2} grow>
               <Image
                 height={24}
                 width={24}
@@ -117,7 +117,7 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
             <Text>XP: {three.exp}</Text>
           </Stack>
         </Grid.Col>
-        <Grid.Col span={5} md={4}>
+        <Grid.Col span={{ base: 5, md: 4 }}>
           <Text>{three.screenName}</Text>
         </Grid.Col>
       </Grid>

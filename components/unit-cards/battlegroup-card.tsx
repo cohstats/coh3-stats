@@ -9,7 +9,6 @@ import {
   Anchor,
   ActionIcon,
   Flex,
-  createStyles,
   Tooltip,
   Select,
   HoverCard,
@@ -41,13 +40,7 @@ import { getIconsPathOnCDN } from "../../src/utils";
 import { UnitCostCard } from "./unit-cost-card";
 import { Fragment } from "react";
 
-const useStyles = createStyles((theme) => ({
-  hiddenMobile: {
-    [theme.fn.smallerThan("md")]: {
-      display: "none",
-    },
-  },
-}));
+import classes from "./Unit.module.css";
 
 function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
   return arr.reduce<Record<K, T[]>>(
@@ -70,7 +63,6 @@ export const BattlegroupCard = (
     sbpsData: SbpsType[];
   },
 ) => {
-  const { classes } = useStyles();
   const resolvedBattlegroups = resolveBattlegroupBranches(
     race,
     data.battlegroupData,
@@ -118,7 +110,11 @@ export const BattlegroupCard = (
                 className={classes.hiddenMobile}
                 label="Toggle between comparison or default mode."
               >
-                <ActionIcon color={["yellow.6", "blue.6"][value - 1]} onClick={() => toggle()}>
+                <ActionIcon
+                  variant="transparent"
+                  color={["yellow.6", "blue.6"][value - 1]}
+                  onClick={() => toggle()}
+                >
                   <IconAdjustments />
                 </ActionIcon>
               </Tooltip>
@@ -128,7 +124,7 @@ export const BattlegroupCard = (
             <Divider my={12} size="md"></Divider>
 
             <Grid columns={2} gutter={0}>
-              <Grid.Col sm={value}>
+              <Grid.Col span={value}>
                 <Accordion p={0} chevronPosition="right" variant="filled">
                   <Accordion.Item value="left_branch">
                     <Accordion.Control>
@@ -141,7 +137,7 @@ export const BattlegroupCard = (
                 </Accordion>
               </Grid.Col>
 
-              <Grid.Col sm={value}>
+              <Grid.Col span={value}>
                 <Accordion p={0} chevronPosition="right" variant="filled">
                   <Accordion.Item value="right_branch">
                     <Accordion.Control>
@@ -196,17 +192,7 @@ const BattlegroupBranchMapping = (
     const extraText = extraTextFormatter.replace(spaceRegex, "\n")?.replace(specialRegex, "");
 
     return (
-      <Box
-        p="sm"
-        w="100%"
-        h="100%"
-        sx={(theme) => ({
-          borderRadius: theme.radius.md,
-          borderWidth: 2,
-          borderStyle: "solid",
-          borderColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
-        })}
-      >
+      <Box p="sm" w="100%" h="100%" className={classes.bgCardBorder}>
         <Flex direction="column" h="100%" gap={16} justify="space-between">
           <Flex direction="row" gap={16}>
             <BackgroundImage w={80} src={getIconsPathOnCDN(factionBackgroundSrc)} radius="md">
@@ -219,27 +205,29 @@ const BattlegroupBranchMapping = (
               ></ImageWithFallback>
             </BackgroundImage>
 
-            <Stack spacing={2} justify="center">
-              <Title order={6} transform="capitalize" color="yellow.5" lineClamp={1}>
+            <Stack gap={2} justify="center">
+              <Title order={6} style={{ textTransform: "capitalize" }} c="yellow.5" lineClamp={1}>
                 {ability.ui.helpText || "Ability / Call In"}
               </Title>
-              <Title order={5} transform="capitalize" lineClamp={2}>
+              <Title order={5} style={{ textTransform: "capitalize" }} lineClamp={2}>
                 {ability.ui.screenName || upg.ui.screenName}
               </Title>
             </Stack>
           </Flex>
 
           <Tooltip.Floating multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
-            <Stack spacing={8} justify="flex-start" style={{ flexGrow: 1 }}>
-              <Text fz="sm" lineClamp={7} align="justify" style={{ whiteSpace: "pre-line" }}>
+            <Stack gap={8} justify="flex-start" style={{ flexGrow: 1 }}>
+              <Text
+                fz="sm"
+                lineClamp={7}
+                style={{ whiteSpace: "pre-line", textAlign: "justify" }}
+              >
                 {briefText}
               </Text>
               <Text
                 fz="sm"
                 lineClamp={7}
-                align="justify"
-                style={{ whiteSpace: "pre-line" }}
-                italic
+                style={{ whiteSpace: "pre-line", textAlign: "justify", fontStyle: "italic" }}
               >
                 {extraText}
               </Text>
@@ -282,9 +270,10 @@ const BattlegroupBranchMapping = (
 
     return (
       <Anchor
-        color="undefined"
-        underline={false}
-        sx={{
+        underline={"never"}
+        style={{
+          textDecoration: "none",
+          color: "inherit",
           "&:hover": {
             textDecoration: "none",
           },
@@ -299,7 +288,7 @@ const BattlegroupBranchMapping = (
 
   return (
     <Stack align="center">
-      <Title order={4} color="orange.5" transform="uppercase">
+      <Title order={4} c="orange.5" style={{ textTransform: "uppercase" }}>
         {branch.name}
       </Title>
 
@@ -319,7 +308,7 @@ const BattlegroupBranchMapping = (
         }
         const rowNumber = parseInt(rowIndex);
         return (
-          <Stack key={`${rowIndex}_${branch.name}`} spacing={0} w="100%">
+          <Stack key={`${rowIndex}_${branch.name}`} gap={0} w="100%">
             <Grid columns={branchUpgrades.length === 1 ? 4 : 2} grow>
               {branchUpgrades.map(({ upg, ability, spawnItems }) => {
                 return (
@@ -348,10 +337,10 @@ const BattlegroupBranchMapping = (
                 <Image
                   fit="scale-down"
                   height={128}
-                  sx={{ margin: "auto" }}
+                  style={{ margin: "auto" }}
                   src={getIconsPathOnCDN(arrowOptionSrc)}
-                  alt={"battlegroup arrow option"}
-                ></Image>
+                  alt={"Battle group arrow option"}
+                />
               </Flex>
             ) : (
               <></>

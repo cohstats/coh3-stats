@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 import dayjs from "dayjs";
 import config from "../config";
+import groupBy from "lodash/groupBy";
 
 export const calculatePageNumber = (position: number, RECORD_PER_PAGE = 100) => {
   // Calculate the page number
@@ -223,4 +224,17 @@ export const convertWeekDayToFullName = (dayAbbreviation: string): string => {
     default:
       return "Invalid day abbreviation";
   }
+};
+
+export const getPatchVersionAsMantineV7Groups = () => {
+  const data = Object.values(config.statsPatchSelector);
+  const groupedData = groupBy(data, "group");
+
+  return Object.keys(groupedData).map((group) => ({
+    group,
+    items: groupedData[group].map((item) => ({
+      value: item.value,
+      label: item.label,
+    })),
+  }));
 };

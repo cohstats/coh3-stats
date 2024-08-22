@@ -15,7 +15,7 @@ const DevSiteNotification = () => {
         radius="md"
         bg={"orange.3"}
       >
-        <Text size="md" color="black">
+        <Text size="md" c="black">
           You are using the dev version of the site. If you are not here on purpose, please use
           the main version at <Anchor href="https://coh3stats.com">coh3stats.com</Anchor>
         </Text>

@@ -5,7 +5,7 @@ import {
   ProcessedCOHPlayerStats,
   raceTypeArray,
 } from "../../../../../src/coh3/coh3-types";
-import { Card, Group, Title, Tooltip, Flex, Button, useMantineTheme } from "@mantine/core";
+import { Card, Group, Title, Tooltip, Flex, Button } from "@mantine/core";
 import React from "react";
 import { DataTable } from "mantine-datatable";
 import EllipsisText from "../../../../../components/other/ellipsis-text";
@@ -14,6 +14,8 @@ import HelperIcon from "../../../../../components/icon/helper";
 import { getMapLocalizedName } from "../../../../../src/coh3/helpers";
 import { localizedGameTypes } from "../../../../../src/coh3/coh3-data";
 
+import classes from "../../Players.module.css";
+
 const MapsWidget = ({
   playerStatsData,
   playerStandings,
@@ -21,9 +23,6 @@ const MapsWidget = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   playerStandings: InternalStandings;
 }) => {
-  const theme = useMantineTheme();
-  const darkTheme = theme.colorScheme === "dark";
-
   const typeWithMostGames = React.useMemo(() => {
     type DataValues = Record<leaderBoardType, number>;
     const dataValues: DataValues = {
@@ -84,7 +83,7 @@ const MapsWidget = ({
     <div>
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
-          <Group m="xs" position="apart">
+          <Group m="xs" justify="space-between">
             <Title order={4}>Maps Winrate {localizedGameTypes[selectedType]}</Title>
             <HelperIcon text={"Across all factions."} width={150} iconSize={23} />
           </Group>
@@ -94,14 +93,13 @@ const MapsWidget = ({
           minHeight={250}
           records={tableData}
           noRecordsText="No maps data tracked"
-          withBorder={false}
           // borderRadius="md"
           // striped={true}
           // @ts-ignore
           columns={[
             {
               accessor: "mapName",
-              textAlignment: "left",
+              textAlign: "left",
               title: "Map",
               width: 95,
               render: ({ mapName }) => {
@@ -116,17 +114,17 @@ const MapsWidget = ({
             },
             {
               accessor: "w",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Wins",
             },
             {
               accessor: "l",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Losses",
             },
             {
               accessor: "wl",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Ratio",
               render: ({ w, l }) => {
                 const winRate = (w / (w + l)) * 100;
@@ -140,49 +138,33 @@ const MapsWidget = ({
           <Button.Group>
             <Button
               variant="default"
-              compact
-              size={"sm"}
-              style={{
-                fontWeight: "normal",
-                color: darkTheme ? theme.colors.gray[3] : theme.colors.gray[8],
-              }}
+              size={"compact-sm"}
+              className={classes.mapsWidgetButton}
               onClick={() => setSelectedType("1v1")}
             >
               1 vs 1
             </Button>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               onClick={() => setSelectedType("2v2")}
-              style={{
-                fontWeight: "normal",
-                color: darkTheme ? theme.colors.gray[3] : theme.colors.gray[8],
-              }}
+              className={classes.mapsWidgetButton}
             >
               2 vs 2
             </Button>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               onClick={() => setSelectedType("3v3")}
-              style={{
-                fontWeight: "normal",
-                color: darkTheme ? theme.colors.gray[3] : theme.colors.gray[8],
-              }}
+              className={classes.mapsWidgetButton}
             >
               3 vs 3
             </Button>
             <Button
               variant="default"
-              compact
-              size={"sm"}
+              size={"compact-sm"}
               onClick={() => setSelectedType("4v4")}
-              style={{
-                fontWeight: "normal",
-                color: darkTheme ? theme.colors.gray[3] : theme.colors.gray[8],
-              }}
+              className={classes.mapsWidgetButton}
             >
               4 vs 4
             </Button>

@@ -60,7 +60,7 @@ const GamesLineChartCard = ({
   return (
     <Card p="md" shadow="sm" w={1270} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
-        <Group position={"apart"}>
+        <Group justify={"space-between"}>
           <Group>
             <Title order={3}>Faction pick rate over time {mode}</Title>
             <HelperIcon width={360} text={helperText} />
@@ -72,10 +72,12 @@ const GamesLineChartCard = ({
               // label="Display as"
               value={displayBy}
               onChange={(value) => setDisplayBy(value as "days" | "weeks")}
+              withCheckIcon={false}
               data={[
                 { value: "days", label: "Days" },
                 { value: "weeks", label: "Weeks" },
               ]}
+              allowDeselect={false}
             />
           </Group>
         </Group>

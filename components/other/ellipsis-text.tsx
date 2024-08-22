@@ -13,6 +13,7 @@ const EllipsisText = ({ text, maxWidth = "17ch", noWrap = true }: EllipsisTextPr
     overflow: "hidden",
     textOverflow: "ellipsis",
     ...(noWrap && { whiteSpace: "nowrap" }),
+    fontSize: "inherit",
   };
 
   return (

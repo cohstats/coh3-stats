@@ -92,7 +92,10 @@ const StomperCard = ({
     return (
       <>
         <Center>
-          <Text c={"dimmed"}> No 1v1 Nemesis</Text>
+          <Text span c={"dimmed"}>
+            {" "}
+            No 1v1 Nemesis
+          </Text>
         </Center>
       </>
     );
@@ -117,15 +120,19 @@ const StomperCard = ({
                 imageProps={{ loading: "lazy" }}
                 alt={stomper.apiData.info.name}
                 size={50}
+                radius="xs"
               />
               <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap">
-                <Group spacing={"xs"}>
+                <Group gap={"xs"}>
                   <CountryFlag countryCode={stomper.apiData.info.country || ""} />
-                  <Text fz="xl"> {stomper.apiData.info.name}</Text>
+                  <Text span fz="xl">
+                    {" "}
+                    {stomper.apiData.info.name}
+                  </Text>
                 </Group>
 
-                <Text size="sm" color="dimmed">
-                  <Group spacing={"xs"}>
+                <Text span size="sm" color="dimmed">
+                  <Group gap={"xs"}>
                     <span>Wins: {wins}</span>
                     <span>Losses: {losses} </span>
                   </Group>
@@ -133,7 +140,7 @@ const StomperCard = ({
               </Flex>
             </Group>
             <div>
-              <Text fz="xl">
+              <Text span fz="xl">
                 <Group>
                   <div>
                     {stomper.data.diff > 0 && (
@@ -233,7 +240,7 @@ const NemesisTab = ({
 
   React.useEffect(() => {
     (async () => {
-      triggerPlayerNemesisAliasesUpdate(profileID).then();
+      triggerPlayerNemesisAliasesUpdate(profileID).then().catch(console.error);
     })();
   }, [profileID]);
 
@@ -283,7 +290,7 @@ const NemesisTab = ({
               <List.Item>Only Steam players are tracked.</List.Item>
             </List>
           </Card>
-          <Stack spacing={0}>
+          <Stack gap={0}>
             <Card
               m={"xs"}
               padding="xs"
@@ -293,7 +300,7 @@ const NemesisTab = ({
               style={{ overflow: "visible", minWidth: 370, minHeight: 115 }}
             >
               <Card.Section>
-                <Group m={"xs"} spacing={"xs"}>
+                <Group m={"xs"} gap={"xs"}>
                   <Title order={4}>Top Nemesis -</Title>
                   {stomperData?.topStomper?.data.player?.alias}*
                 </Group>
@@ -314,7 +321,7 @@ const NemesisTab = ({
               style={{ overflow: "visible", minWidth: 370, minHeight: 115 }}
             >
               <Card.Section>
-                <Group m="xs" spacing={"xs"}>
+                <Group m="xs" gap={"xs"}>
                   <Title order={4}>Top Victim -</Title>
                   {stomperData?.topVictim?.data.player?.alias}*
                 </Group>
@@ -333,14 +340,15 @@ const NemesisTab = ({
           minHeight={450}
           records={data}
           noRecordsText="No 1v1 nemesis tracked"
-          withBorder={true}
+          withTableBorder={true}
           borderRadius="md"
           striped={true}
+          verticalSpacing={4}
           // @ts-ignore
           columns={[
             {
               accessor: "alias",
-              textAlignment: "left",
+              textAlign: "left",
               title: "Alias",
               width: "100%",
               render: ({ alias, profile_id }) => {
@@ -359,17 +367,17 @@ const NemesisTab = ({
             },
             {
               accessor: "w",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Wins",
             },
             {
               accessor: "l",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Losses",
             },
             {
               accessor: "diff",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Diff",
               render: ({ w, l }) => {
                 const diff = w - l;
@@ -380,7 +388,7 @@ const NemesisTab = ({
             },
             {
               accessor: "wl",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Ratio",
               render: ({ w, l }) => {
                 const winrate = (w / (w + l)) * 100;
@@ -389,7 +397,7 @@ const NemesisTab = ({
             },
             {
               accessor: "total",
-              textAlignment: "center",
+              textAlign: "center",
               title: "Total",
               render: ({ w, l }) => {
                 return w + l;
