@@ -1,4 +1,4 @@
-import { Paper, Title, Text, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
+import { Paper, Title, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
 import { RedditPostType } from "../../../src/apis/reddit-api";
 
 import React from "react";
@@ -12,7 +12,10 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
   const redditPosts = redditPostsData?.map((post, index) => {
     return (
       <div key={index}>
-        <div key={post.created}  style={{padding: 8, paddingLeft: 0, paddingRight: 0, marginBottom: 5}}>
+        <div
+          key={post.created}
+          style={{ padding: 8, paddingLeft: 0, paddingRight: 0, marginBottom: 5 }}
+        >
           <Flex justify={"space-between"} columnGap={"xs"}>
             <Stack gap={"xs"}>
               <Flex>
@@ -28,27 +31,24 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
                 </Title>
               </Flex>
               <Flex className={classes.redditInfo}>
-                  <Group gap={4}>
-
-                    <IconArrowUp size={"1rem"} /> {post.upvotes}{" "}
-
-                    {/*<Text c="dimmed" inherit>*/}
-                      <Group gap={2} className={classes.dimmedInfo} >
-                        {" "}
-                        -{" "}
-                        <Anchor
-                          href={`https://www.reddit.com/user/${post.author}/`}
-                          target={"_blank"}
-                          c={"dimmed"}
-                          inherit
-                        >
-                          u/{post.author}
-                        </Anchor>{" "}
-                        <span>- {post.comments} comments -</span>
-                        <DynamicTimeAgo timestamp={post.created} />
-                      </Group>
-                    {/*</Text>*/}
+                <Group gap={4}>
+                  <IconArrowUp size={"1rem"} /> {post.upvotes} {/*<Text c="dimmed" inherit>*/}
+                  <Group gap={2} className={classes.dimmedInfo}>
+                    {" "}
+                    -{" "}
+                    <Anchor
+                      href={`https://www.reddit.com/user/${post.author}/`}
+                      target={"_blank"}
+                      c={"dimmed"}
+                      inherit
+                    >
+                      u/{post.author}
+                    </Anchor>{" "}
+                    <span>- {post.comments} comments -</span>
+                    <DynamicTimeAgo timestamp={post.created} />
                   </Group>
+                  {/*</Text>*/}
+                </Group>
               </Flex>
             </Stack>
             {post.image && !post.image.includes("gallery") && (

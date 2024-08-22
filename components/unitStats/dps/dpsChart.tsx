@@ -156,7 +156,7 @@ export const mapChartData = (data: any[], id?: string, isStaircase?: boolean) =>
   return chartLine;
 };
 
-const setScreenOptions = (chartOptions: any, isLargeScreen: boolean) => {
+const setScreenOptions = (_chartOptions: any, isLargeScreen: boolean) => {
   if (!isLargeScreen) {
     options.scales.x.title.display = false;
     options.scales.y.title.display = false;
