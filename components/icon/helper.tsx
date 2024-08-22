@@ -1,7 +1,6 @@
 import { IconInfoCircle } from "@tabler/icons-react";
 import React from "react";
-import {FloatingPosition, Tooltip} from "@mantine/core";
-
+import { FloatingPosition, Tooltip } from "@mantine/core";
 
 const HelperIcon = ({
   text,

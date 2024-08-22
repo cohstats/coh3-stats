@@ -63,42 +63,42 @@ export const WeaponLoadoutCard = (
 
       <Stack gap={2} fz="sm">
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Moving Accuracy Multiplier</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {""}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="orange.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="orange.6">
               {isValidWeapon ? weapon_bag.moving_accuracy_multiplier : ""}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {""}
             </Text>
           </Grid.Col>
         </Grid>
 
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Moving Cooldown Multiplier</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {""}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="orange.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="orange.6">
               {isValidWeapon ? weapon_bag.moving_cooldown_multiplier : ""}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {""}
             </Text>
           </Grid.Col>
@@ -108,19 +108,19 @@ export const WeaponLoadoutCard = (
 
         {/* Section Group Header */}
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}></Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 4, md: 4 }}></Grid.Col>
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               Near
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="yellow.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="yellow.6">
               Mid
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               Far
             </Text>
           </Grid.Col>
@@ -128,21 +128,21 @@ export const WeaponLoadoutCard = (
 
         {/* First row: Accuracy */}
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Accuracy</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {weapon_bag.accuracy_near}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="yellow.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="yellow.6">
               {weapon_bag.accuracy_mid}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {weapon_bag.accuracy_far}
             </Text>
           </Grid.Col>
@@ -151,21 +151,21 @@ export const WeaponLoadoutCard = (
         {/* Second Row: RPM (rounds per minutes) */}
 
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Rounds per minute (RPM)</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_near))}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="yellow.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="yellow.6">
               {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_mid))}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_far))}
             </Text>
           </Grid.Col>
@@ -174,21 +174,21 @@ export const WeaponLoadoutCard = (
         {/* Third Row: Range of fire */}
 
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Range of Fire</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {weapon_bag.range.near}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="yellow.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="yellow.6">
               {weapon_bag.range.mid}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {weapon_bag.range.max}
             </Text>
           </Grid.Col>
@@ -199,21 +199,21 @@ export const WeaponLoadoutCard = (
 
         {/* Row: Penetration */}
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Penetration</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {isValidWeapon ? weapon_bag.penetration_near : "-"}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="yellow.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="yellow.6">
               {isValidWeapon ? weapon_bag.penetration_mid : "-"}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {isValidWeapon ? weapon_bag.penetration_far : "-"}
             </Text>
           </Grid.Col>
@@ -221,23 +221,23 @@ export const WeaponLoadoutCard = (
 
         {/* Row: Scatter Area */}
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Scatter Area</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {isValidWeapon
                 ? Math.round(getScatterArea(weapon_bag.range.near, weapon_bag))
                 : "-"}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="yellow.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="yellow.6">
               {isValidWeapon ? Math.round(getScatterArea(weapon_bag.range.mid, weapon_bag)) : "-"}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {isValidWeapon ? Math.round(getScatterArea(weapon_bag.range.max, weapon_bag)) : "-"}
             </Text>
           </Grid.Col>
@@ -248,18 +248,18 @@ export const WeaponLoadoutCard = (
         {/* Section Group Header */}
 
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}></Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 4, md: 4 }}></Grid.Col>
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               Min.
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
+          <Grid.Col span={{ base: 3, md: 3 }}>
             {/*<Text style={{"textAlign": "center"}} c="yellow.6">
             </Text> */}
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               Max.
             </Text>
           </Grid.Col>
@@ -267,21 +267,21 @@ export const WeaponLoadoutCard = (
 
         {/* First row: Damage */}
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>Damage</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {weapon_bag.damage_min}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
+          <Grid.Col span={{ base: 3, md: 3 }}>
             {/*<Text style={{"textAlign": "center"}} c="yellow.6">
               {"-"}
             </Text> */}
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {weapon_bag.damage_max}
             </Text>
           </Grid.Col>
@@ -290,21 +290,21 @@ export const WeaponLoadoutCard = (
         {/* Third row: Area of effect */}
 
         <Grid gutter="xs">
-          <Grid.Col span={{base: 4, md: 4}}>
+          <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>AoE Radius</Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
-           <Text style={{"textAlign": "center"}} c="green.6">
+          <Grid.Col span={{ base: 3, md: 3 }}>
+            <Text style={{ textAlign: "center" }} c="green.6">
               {"-"}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{base: 3, md: 3}}>
+          <Grid.Col span={{ base: 3, md: 3 }}>
             {/*<Text style={{"textAlign": "center"}} c="yellow.6">
               {"-"}
             </Text> */}
           </Grid.Col>
-          <Grid.Col span={{base: 2, md: 2}}>
-           <Text style={{"textAlign": "center"}} c="red.6">
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <Text style={{ textAlign: "center" }} c="red.6">
               {weapon_bag.aoe_outer_radius}
             </Text>
           </Grid.Col>

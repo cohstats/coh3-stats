@@ -15,7 +15,6 @@ import { IconButton } from "../icon-button/icon-button";
 // }));
 
 export const Discord: React.FC = () => {
-
   return (
     <a
       href={config.DISCORD_INVITE_LINK}
@@ -23,12 +22,13 @@ export const Discord: React.FC = () => {
       rel="noopener noreferrer nofollow"
       title={"Link to our discord channel"}
     >
-      <IconButton label="Discord channel" style={
-        {
+      <IconButton
+        label="Discord channel"
+        style={{
           backgroundColor: "rgb(88, 101, 242)",
           color: "rgb(255, 255, 255)",
-        }
-      }>
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
