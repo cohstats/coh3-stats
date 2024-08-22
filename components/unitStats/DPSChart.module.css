@@ -1,0 +1,25 @@
+.unitBoxLeft {
+  border-radius: var(--mantine-radius-md);
+  border: solid 2px var(--mantine-color-blue-5);
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  text-align: left;
+  padding: var(--mantine-spacing-xs);
+}
+
+.unitBoxRight {
+  border-radius: var(--mantine-radius-md);
+  border: solid 2px var(--mantine-color-red-6);
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  text-align: left;
+  padding: var(--mantine-spacing-xs);
+}
+
+.chartBox {
+  border-radius: var(--mantine-radius-md);
+  border: light-dark(
+    solid 1px var(--mantine-color-gray-4),
+    solid 1px var(--mantine-color-dark-4)
+  );
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  text-align: left;
+}

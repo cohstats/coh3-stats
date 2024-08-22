@@ -16,20 +16,20 @@ import {
   HoverCard,
 } from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
-import { WeaponType } from "../../src/unitStats/mappingWeapon";
+import { WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
-import { ebpsStats, EbpsType, getSquadTotalCost } from "../../src/unitStats";
+import { ebpsStats, EbpsType, getSquadTotalCost } from "../../../src/unitStats";
 import {
   CustomizableUnit,
   getSbpsUpgrades,
   getSbpsWeapons,
   resolveFactionLinkid,
   WeaponMember,
-} from "../../src/unitStats/dpsCommon";
+} from "../../../src/unitStats/dpsCommon";
 import Link from "next/link";
-import { UnitSquadCard } from "../unit-cards/unit-squad-card";
-import { UnitCostCard } from "../unit-cards/unit-cost-card";
-import { HitpointCard } from "../unit-cards/hitpoints-card";
+import { UnitSquadCard } from "../../unit-cards/unit-squad-card";
+import { UnitCostCard } from "../../unit-cards/unit-cost-card";
+import { HitpointCard } from "../../unit-cards/hitpoints-card";
 
 interface IUnitProps {
   unit: CustomizableUnit;
@@ -120,7 +120,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
       <Stack align="left" justify="flex-start" gap="xs">
         <Grid gutter="xs">
           <Grid.Col span={4}>
-             <Group wrap="nowrap">
+            <Group wrap="nowrap">
               <Tooltip label={props.unit.screen_name}>
                 <HoverCard shadow="md" width={400} position="left" offset={50}>
                   <HoverCard.Target>
@@ -128,7 +128,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                       <Anchor
                         c="undefined"
                         underline={"never"}
-                        sx={{
+                        style={{
                           "&:hover": {
                             textDecoration: "none",
                           },

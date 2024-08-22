@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { DpsChart } from "../../components/unitStats/dpsChart";
+import { DpsChart } from "../../components/unitStats/dps/dpsChart";
 import { ebpsStats, EbpsType, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
