@@ -21,7 +21,6 @@ import DonateSection from "./DonateSection";
 import Link from "next/link";
 import config from "../../config";
 import DataSection from "./DataSection";
-import { useColorScheme } from "@mantine/hooks";
 
 const BugReports = () => {
   return (
@@ -86,8 +85,6 @@ const sections = [
 ];
 
 const About: NextPage = () => {
-  const colorScheme = useColorScheme();
-
   useEffect(() => {
     AnalyticsAboutAppPageView();
   }, []);
@@ -115,8 +112,6 @@ const About: NextPage = () => {
                 style={{
                   display: "block",
                   height: "65px",
-                  marginTop: "-65px",
-                  visibility: "hidden",
                 }}
               >
                 {sections.map((x) => {
@@ -129,7 +124,9 @@ const About: NextPage = () => {
                       <div>
                         <Anchor
                           href={`#${x.name}`}
-                          className={colorScheme === "dark" ? "text-white" : "text-black"}
+                          style={{
+                            color: "inherit",
+                          }}
                         >
                           {x.menuDisplayName}
                         </Anchor>
