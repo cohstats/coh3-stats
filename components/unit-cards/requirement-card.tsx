@@ -29,7 +29,7 @@ export const RequirementCard = ({ ui }: UpgradesType) => {
           <Title order={6} c="yellow.5">
             {ui.extraText}
           </Title>
-          <Text fz="sm" style={{ whiteSpace: "pre-line" }} italic>
+          <Text fz="sm" style={{ whiteSpace: "pre-line", fontStyle: "italic" }}>
             {briefText}
           </Text>
           {/* <Text fz="sm">{ui.helpText}</Text> */}
