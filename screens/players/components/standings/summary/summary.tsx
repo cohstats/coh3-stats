@@ -15,7 +15,7 @@ const DynamicGameTypesPieChart = dynamic(() => import("./game-types-pie-chart"),
   ssr: false,
 });
 
-const ActivityLastMonths = dynamic(() => import("./activity-last-months"), {
+const ActivityLastMonths = dynamic(() => import("./activity-last-months-widget"), {
   ssr: false,
 });
 

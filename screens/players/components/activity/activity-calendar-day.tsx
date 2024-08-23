@@ -1,6 +1,6 @@
 import { ProcessedCOHPlayerStats } from "../../../../src/coh3/coh3-types";
 import { ResponsiveCalendarCanvas } from "@nivo/calendar";
-import { useMantineColorScheme, Text, Group } from "@mantine/core";
+import { useMantineColorScheme, Text, Group, useMantineTheme } from "@mantine/core";
 import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
 import dayjs from "dayjs";
 
@@ -11,8 +11,9 @@ const ActivityCalendarDay = ({
   playerStatsData: ProcessedCOHPlayerStats;
   fromYear: string;
 }) => {
-  // This works only in client side rendering
+  // This works only in client side rendering - which we have for all the charts
   const { colorScheme } = useMantineColorScheme();
+  const theme = useMantineTheme();
 
   // This is most likely a bug in Nivo, the labels on Calendar Canvas our outside / other charts have it inside
   const chartColorTheme = {
@@ -34,7 +35,7 @@ const ActivityCalendarDay = ({
       from={fromYear}
       to={dayjs(new Date()).format("YYYY-MM-DD")}
       // This is dark 5 || ideally we take this from the THEME
-      emptyColor={colorScheme === "light" ? "#eeeeee" : "#3b3b3b"}
+      emptyColor={colorScheme === "light" ? "#eeeeee" : theme.colors.dark[5]}
       colors={[
         "#f15854",
         "#f4665f",
@@ -64,7 +65,7 @@ const ActivityCalendarDay = ({
       // monthBorderColor="#ffffff"
       monthBorderWidth={1}
       dayBorderWidth={2}
-      dayBorderColor={colorScheme === "light" ? "#ffffff" : "#242424"}
+      dayBorderColor={colorScheme === "light" ? "#ffffff" : theme.colors.dark[7]} // dark "#242424"
       // legends={[
       //   {
       //     anchor: "bottom-right",
@@ -90,7 +91,7 @@ const ActivityCalendarDay = ({
         data: { wins: number; losses: number };
       }) => {
         if (value === undefined) return null;
-        const toolTipBackground = colorScheme === "light" ? "#eeeeee" : "#25262B";
+        const toolTipBackground = colorScheme === "light" ? "#eeeeee" : theme.colors.dark[4];
         return (
           <div
             style={{

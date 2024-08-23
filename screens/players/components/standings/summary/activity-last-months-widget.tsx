@@ -1,15 +1,18 @@
 import { ResponsiveTimeRange } from "@nivo/calendar";
 import dayjs from "dayjs";
 import { ProcessedCOHPlayerStats } from "../../../../../src/coh3/coh3-types";
-import { Group, Text, useMantineColorScheme } from "@mantine/core";
+import { Group, Text, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { getNivoTooltipTheme } from "../../../../../components/charts/charts-components-utils";
 
-const ActivityLastMonths = ({
+const ActivityLastMonthsWidget = ({
   playerStatsData,
 }: {
   playerStatsData: ProcessedCOHPlayerStats | undefined;
 }) => {
   const { colorScheme } = useMantineColorScheme();
+  const theme = useMantineTheme();
+
+  console.log(theme.colors);
 
   // This is most likely a bug in Nivo, the labels on Calendar Canvas our outside / other charts have it inside
   const chartColorTheme = {
@@ -30,7 +33,7 @@ const ActivityLastMonths = ({
       data={playerStatsData?.activityByDate || []}
       from={dayjs(new Date()).subtract(4, "month").format("YYYY-MM-DD")}
       to={dayjs(new Date()).format("YYYY-MM-DD")}
-      emptyColor={colorScheme === "light" ? "#eeeeee" : "#25262B"}
+      emptyColor={colorScheme === "light" ? "#eeeeee" : theme.colors.dark[5]}
       colors={[
         "#f15854",
         "#f4665f",
@@ -58,7 +61,7 @@ const ActivityLastMonths = ({
       weekdayTicks={[]}
       margin={{ top: 25, right: 0, bottom: 15, left: -35 }}
       dayBorderWidth={2}
-      dayBorderColor={colorScheme === "light" ? "#ffffff" : "#1A1B1E"}
+      dayBorderColor={colorScheme === "light" ? "#ffffff" : theme.colors.dark[7]} // dark "#242424"
       legends={[
         {
           anchor: "bottom-right",
@@ -86,7 +89,7 @@ const ActivityLastMonths = ({
         losses: number;
       }) => {
         if (value === undefined) return null;
-        const toolTipBackground = colorScheme === "light" ? "#eeeeee" : "#25262B";
+        const toolTipBackground = colorScheme === "light" ? "#eeeeee" : theme.colors.dark[4];
         return (
           <div
             style={{
@@ -115,4 +118,4 @@ const ActivityLastMonths = ({
   );
 };
 
-export default ActivityLastMonths;
+export default ActivityLastMonthsWidget;
