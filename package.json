@@ -51,7 +51,7 @@
     "@mantine/hooks": "7.12.1",
     "@mantine/notifications": "7.12.1",
     "@mantine/spotlight": "7.12.1",
-    "@mantine/utils": "6.0.21",
+    "@mantine/utils": "6.0.22",
     "@nivo/bar": "0.87.0",
     "@nivo/calendar": "0.87.0",
     "@nivo/core": "0.87.0",
