@@ -5,7 +5,7 @@
 import handler from "../../../pages/api/appUpdateRoute";
 import { NextApiRequest, NextApiResponse } from "next";
 
-let mockRequest = jest.fn();
+const mockRequest = jest.fn();
 
 //https://stackoverflow.com/questions/70566676/jest-mock-doesnt-work-inside-tests-only-outside-tests
 jest.mock("octokit", () => {
@@ -21,7 +21,7 @@ jest.mock("octokit", () => {
 describe("appUpdateRouteHandler", () => {
   let req: NextApiRequest;
   let res: NextApiResponse;
-  let octokit: any;
+  // let octokit: any;
 
   const setupFetchStub = (data: any) => () =>
     Promise.resolve({ text: () => Promise.resolve(data) });
@@ -53,6 +53,10 @@ describe("appUpdateRouteHandler", () => {
         tag_name: "1.0.0",
         body: "Release notes",
         assets: [
+          {
+            browser_download_url:
+              "https://github.com/cohstats/coh3-stats-desktop-app/releases/download/1.5.3/COH3.Stats.Desktop.App.fullBundle_1.5.3_x64_en-US.msi",
+          },
           {
             browser_download_url: "https://example.com/download.zip",
           },

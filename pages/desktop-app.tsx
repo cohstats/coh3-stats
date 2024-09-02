@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps<any> = async () => {
     }
 
     version = "v" + response.data.tag_name;
-    const msiAsset = response.data.assets.find(
+    const msiAsset = assets.find(
       (asset: { browser_download_url: string }) =>
         asset.browser_download_url.split(".").at(-1) === "msi",
     );
