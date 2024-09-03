@@ -60,6 +60,143 @@ const BugReports = () => {
   );
 };
 
+const Statistics = () => {
+  return (
+    <>
+      <Title order={4}>Data Scraping</Title>
+      <li>Tracking only "automatch" matches.</li>
+      <li>Tracking only matches where at least one player is ranked in the leaderboards.</li>
+      See Data source article bellow for more details.
+      <Space h={"xs"} />
+      <Title order={4}>ELO Filtering</Title>
+      <li>
+        You can filter by single ELO group like{" "}
+        <Anchor
+          target={"_blank"}
+          href={"/stats/games?from=2024-05-02&to=2024-07-15&filters=stats-average-1400-1599"}
+        >
+          this
+        </Anchor>
+      </li>
+      <li>
+        You can filter by combining multiple ELO groups like{" "}
+        <Anchor
+          target={"_blank"}
+          href={
+            "/stats/games?from=2024-05-02&to=2024-07-15&filters=stats-limit-1600-9999%2Cstats-limit-1400-1599%2Cstats-limit-1250-1399"
+          }
+        >
+          this
+        </Anchor>
+      </li>
+      It's recommended to combine multiple ELO groups to get more data for you analysis. Keep in
+      mind that you need thousands of games to get meaningful results.
+      <Space h={"xs"} />
+      <Title order={5}>Average Group Filter</Title>
+      <>
+        <Text>Average ELO of all players fit in the specified group.</Text>
+        <li>
+          <Text c={"green"} span>
+            Good
+          </Text>{" "}
+          - a lot of games can fit into the group.
+        </li>
+        <li>
+          <Text c={"red"} span>
+            {" "}
+            Bad
+          </Text>{" "}
+          - the game might not be balanced, it can be team A 1100 ELO vs Team B 1600 ELO.
+        </li>
+        Formula:
+        <Text style={{ fontStyle: "italic" }}>
+          Sum ELO of all players in match divided by number of players.
+        </Text>
+      </>
+      <Space h={"xs"} />
+      <Title order={5}>Average Fair Matchup Filter</Title>
+      <>
+        <Text>
+          Average ELO of all players fit in the specified group while the difference between the
+          teams ELO is bellow 20%
+        </Text>
+        <li>
+          <Text c={"green"} span>
+            Good
+          </Text>{" "}
+          - provides balanced games with more games to analyze. Useful for 3v3 and 4v4
+        </li>
+        <li>
+          <Text c={"red"} span>
+            {" "}
+            Bad
+          </Text>{" "}
+          - the team itself might not be balanced. Team A can have player with 1600 and 800 ELO
+          resulting in the average ELO of 1200 of team A.
+        </li>
+        Formula:
+        <Text style={{ fontStyle: "italic" }}>
+          Calculate average ELO of team A and team B. The difference between the ELO of the team A
+          and B is less than 20%.
+        </Text>
+      </>
+      <Space h={"xs"} />
+      <Title order={5}>Average Excluded Group</Title>
+      <>
+        <Text>
+          Average ELO of all players fit in the specified group while the difference between the
+          lowest ELO and highest ELO player is less then 400.
+        </Text>
+        <li>
+          <Text c={"green"} span>
+            Good
+          </Text>{" "}
+          - provides balanced games
+        </li>
+        <li>
+          <Text c={"red"} span>
+            {" "}
+            Bad
+          </Text>{" "}
+          - less games can fit into this group. Very low matches in mode 3v3 and 4v4 can fit into
+          this group.
+        </li>
+        Formula:
+        <Text style={{ fontStyle: "italic" }}>
+          Sum ELO of all players in match divided by number of players to get match ELO. The
+          difference between the lowest ELO and highest ELO player is less then 400.
+        </Text>
+      </>
+      <Space h={"xs"} />
+      <Title order={5}>Limit Group</Title>
+      <>
+        <Text>
+          Average ELO of all players fit in the specified group while the difference between the
+          lowest ELO and highest ELO player is less then 400.
+        </Text>
+        <li>
+          <Text c={"green"} span>
+            Good
+          </Text>{" "}
+          - should provide the most balanced games
+        </li>
+        <li>
+          <Text c={"red"} span>
+            {" "}
+            Bad
+          </Text>{" "}
+          - very low matches fit. Unusable for 3v3 and 4v4.
+        </li>
+        Formula:
+        <Text style={{ fontStyle: "italic" }}>
+          All players in the match has to fit into the specified group. The difference between the
+          lowest ELO and highest ELO player is less then 400.
+        </Text>
+      </>
+    </>
+  );
+};
+
 const keywords = generateKeywordsString(["coh3 stats", "coh3 discord", "bug report", "github"]);
 
 const sections = [
@@ -69,6 +206,12 @@ const sections = [
     menuDisplayName: "Bug Reports",
     pageDisplayName: "Bug Reports, Feature Request and Contributions",
     component: <BugReports />,
+  },
+  {
+    name: "stats",
+    menuDisplayName: "Statistics",
+    pageDisplayName: "Game Statistics",
+    component: <Statistics />,
   },
   {
     name: "data",
