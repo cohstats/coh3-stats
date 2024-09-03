@@ -87,7 +87,11 @@ export const getDesktopAppRoute = () => {
   return encodeURI(`/desktop-app`);
 };
 
-export const getAboutRoute = () => {
+export const getAboutRoute = (section?: string) => {
+  if (section) {
+    return encodeURI(`/about#${section}`);
+  }
+
   return encodeURI(`/about`);
 };
 

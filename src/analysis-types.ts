@@ -33,6 +33,12 @@ export const analysisFilterTypeArray = [
   "stats-average-ex-1250-1399",
   "stats-average-ex-1400-1599",
   "stats-average-ex-1600-9999",
+  "stats-fair-0-799",
+  "stats-fair-800-1099",
+  "stats-fair-1100-1249",
+  "stats-fair-1250-1399",
+  "stats-fair-1400-1599",
+  "stats-fair-1600-9999",
 ] as const;
 
 export type analysisFilterType = (typeof analysisFilterTypeArray)[number];
@@ -57,6 +63,12 @@ export const analysisMapFilterTypeArray = [
   "mapStats-average-ex-1250-1399",
   "mapStats-average-ex-1400-1599",
   "mapStats-average-ex-1600-9999",
+  "mapStats-fair-0-799",
+  "mapStats-fair-800-1099",
+  "mapStats-fair-1100-1249",
+  "mapStats-fair-1250-1399",
+  "mapStats-fair-1400-1599",
+  "mapStats-fair-1600-9999",
 ] as const;
 
 export type analysisMapFilterType = (typeof analysisMapFilterTypeArray)[number];

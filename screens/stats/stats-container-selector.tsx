@@ -7,9 +7,11 @@ import {
   AnalyticsMapStatsPageView,
 } from "../../src/firebase/analytics";
 import {
+  Anchor,
   Button,
   Container,
   Flex,
+  HoverCard,
   MultiSelect,
   SegmentedControl,
   Select,
@@ -29,7 +31,8 @@ import config from "../../config";
 import InnerGameStatsPage from "./game/inner-game-stats-page";
 import InnerMapsStatsPage from "./maps/inner-maps-stats-page";
 import { analysisFilterType, analysisMapFilterType } from "../../src/analysis-types";
-import HelperIcon from "../../components/icon/helper";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { getAboutRoute } from "../../src/routes";
 
 const patchSelectorData = getPatchVersionAsMantineV7Groups();
 
@@ -251,6 +254,41 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       ],
     },
     {
+      group: "Average Fair Matchup",
+      items: [
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1600-9999`,
+          label: "Average Fair 1600+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1400-1599`,
+          label: "Average Fair 1400-1599",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1250-1399`,
+          label: "Average Fair 1250-1399",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1100-1249`,
+          label: "Average Fair 1100-1249",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-800-1099`,
+          label: "Average Fair 800-1099",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-0-799`,
+          label: "Average Fair 0-799",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+      ],
+    },
+    {
       group: "Average Ex 400 diff",
       items: [
         {
@@ -355,11 +393,22 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             withCheckIcon={false}
             label={
               <>
-                ELO Filter{" "}
-                <HelperIcon
-                  text={
-                    <Text fw={400}>
+                <HoverCard width={350} shadow="md">
+                  <HoverCard.Target>
+                    <div>
+                      ELO Filter <IconInfoCircle size={20} />
+                    </div>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    <Text fw={450}>
+                      <Anchor href={getAboutRoute("stats")}>
+                        Learn more about Stats and ELO Filters
+                      </Anchor>
+                      <br />
                       <b>Average Group</b> - Average ELO of all players fit in the specified group
+                      <br />
+                      <b>Average Fair Matchup</b> - Average ELO of all players fit in the
+                      specified group while the difference between the teams ELO is bellow 20%
                       <br />
                       <b>Average Excluded Group</b> - Average ELO of all players fit into
                       specified group while the difference between the lowest ELO player and
@@ -368,10 +417,8 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
                       <b>Limit Group</b> - ELO of all players in the match must fit into specified
                       group
                     </Text>
-                  }
-                  iconSize={18}
-                  position={"bottom"}
-                />
+                  </HoverCard.Dropdown>
+                </HoverCard>
               </>
             }
             defaultValue="all"
