@@ -5,6 +5,36 @@ import { internalSlash } from "../utils";
 import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 
+/** Child requirements in case of parent requirement being
+ * "required_all_in_list". */
+interface AbilityRequirementChildItem {
+  requirement: {
+    template_reference: {
+      name: string;
+      value: string;
+    };
+    upgrade_name: {
+      instance_reference: string;
+    };
+  };
+}
+
+/** Parent requirements that can be a single "required_player_upgrade" or
+ * "required_all_in_list". */
+interface AbilityRequirementItem {
+  required: {
+    template_reference: {
+      name: string;
+      value: string;
+    };
+    reason: string;
+    requirements?: AbilityRequirementChildItem[];
+    upgrade_name?: {
+      instance_reference: string;
+    };
+  };
+}
+
 // Need to be extended by all required fields
 type AbilitiesType = {
   id: string; // filename  -> eg. panzergrenadier_ak
@@ -24,7 +54,7 @@ type AbilitiesType = {
   requirements: {
     /** If the template reference is `requirements\\required_player_upgrade`,
      * populate it with `upgrade_name` -> `instance_reference`. */
-    playerUpgrade: "";
+    playerUpgrade: string;
   };
 };
 
@@ -126,14 +156,28 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
   /* --------- REQUIREMENTS SECTION --------- */
   if (Array.isArray(abilityBag.requirements)) {
     // Find the required player upgrade, which points to the upgrade reference.
-    const reqPlayerUpgrade = abilityBag.requirements.find(
-      (req: any) =>
-        req.required.template_reference.value.split("\\").slice(-1)[0] ===
-        "required_player_upgrade",
+    const reqPlayerUpgrade = (abilityBag.requirements as AbilityRequirementItem[]).find(
+      (reqItem) => {
+        const reqRef = reqItem.required.template_reference.value.split("\\").slice(-1)[0];
+        return reqRef === "required_player_upgrade" || reqRef === "required_all_in_list";
+      },
     );
     if (reqPlayerUpgrade) {
-      ability.requirements.playerUpgrade =
-        reqPlayerUpgrade.required.upgrade_name?.instance_reference || "";
+      const reqRef = reqPlayerUpgrade.required.template_reference.value.split("\\").slice(-1)[0];
+      // NEW: Some abilities have a new "required_all_in_list" vaue at the
+      // parent requirement, which means we meed to lookup for the child
+      if (reqRef === "required_player_upgrade") {
+        ability.requirements.playerUpgrade =
+          reqPlayerUpgrade.required.upgrade_name?.instance_reference || "";
+      } else {
+        const childReqAllItem = reqPlayerUpgrade.required.requirements?.find(
+          (x) =>
+            x.requirement.template_reference.value.split("\\").slice(-1)[0] ===
+            "required_player_upgrade",
+        );
+        ability.requirements.playerUpgrade =
+          childReqAllItem?.requirement.upgrade_name?.instance_reference || "";
+      }
     }
   }
 };
