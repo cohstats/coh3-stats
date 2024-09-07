@@ -78,9 +78,11 @@ const PlayerStandingsTable = ({
               return (
                 <Stack gap={0}>
                   {rankElement}
-                  <Text size={"xs"} c="dimmed">
-                    Top {highestrank}
-                  </Text>
+                  {highestrank > 0 && (
+                    <Text size={"xs"} c="dimmed">
+                      Best {highestrank}
+                    </Text>
+                  )}
                 </Stack>
               );
             },
@@ -97,9 +99,11 @@ const PlayerStandingsTable = ({
               return (
                 <Stack gap={0}>
                   <span>{rating}</span>
-                  <Text size={"xs"} c="dimmed">
-                    Top {highestrating}
-                  </Text>
+                  {highestrating > 0 && (
+                    <Text size={"xs"} c="dimmed">
+                      Best {highestrating}
+                    </Text>
+                  )}
                 </Stack>
               );
             },
@@ -109,7 +113,7 @@ const PlayerStandingsTable = ({
             accessor: "ranklevel",
             textAlign: "center",
             render: ({ rank, rating }: any) => {
-              return <RankIcon size={28} rank={rank} rating={rating} />;
+              return <RankIcon size={31} rank={rank} rating={rating} />;
             },
           },
           {

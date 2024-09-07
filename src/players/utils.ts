@@ -24,7 +24,7 @@ const getPlayerMatchHistoryResult = (matchRecord: ProcessedMatch, profileID: str
 
 const findBestValueOnLeaderboardStat = (
   data: Record<leaderBoardType, RawLeaderboardStat | null>,
-  rating: "rating" | "ranklevel",
+  rating: "rating" | "ranklevel" | "streak",
 ) => {
   let bestValue: number | null = 0;
   let bestValueKey = "";
@@ -39,6 +39,29 @@ const findBestValueOnLeaderboardStat = (
   return {
     bestValue,
     bestValueKey,
+  };
+};
+
+const findBestWinRateOnLeaderboardStat = (
+  data: Record<leaderBoardType, RawLeaderboardStat | null>,
+) => {
+  let bestWinRate = 0;
+  let bestWinRateMode = "";
+
+  for (const [mode, stats] of Object.entries(data)) {
+    if (stats) {
+      const totalGames = (stats.wins || 0) + (stats.losses || 0);
+      const winRate = totalGames > 0 ? (stats.wins || 0) / totalGames : 0;
+      if (winRate > bestWinRate) {
+        bestWinRate = winRate;
+        bestWinRateMode = mode;
+      }
+    }
+  }
+
+  return {
+    bestWinRate: bestWinRate,
+    bestWinRateMode,
   };
 };
 
@@ -122,5 +145,6 @@ export {
   getPlayerMatchHistoryResult,
   findBestRankLeaderboardStat,
   findBestValueOnLeaderboardStat,
+  findBestWinRateOnLeaderboardStat,
   calculatePlayerSummary,
 };
