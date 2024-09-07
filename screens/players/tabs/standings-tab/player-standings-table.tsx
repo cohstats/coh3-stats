@@ -5,7 +5,7 @@ import {
   RawLeaderboardStat,
 } from "../../../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
-import { Text, Anchor } from "@mantine/core";
+import { Anchor, Stack, Text } from "@mantine/core";
 
 import React from "react";
 import Link from "next/link";
@@ -52,26 +52,36 @@ const PlayerStandingsTable = ({
           {
             accessor: "rank",
             textAlign: "center",
-            render: ({ rank, type }) => {
-              if (!rank || rank < 0) {
-                return "-";
-              }
-              const startPosition = Math.max(rank - 10, 0) + 1;
+            render: ({ rank, type, highestrank }) => {
+              const rankElement = (() => {
+                if (!rank || rank < 0) {
+                  return "-";
+                }
+                const startPosition = Math.max(rank - 10, 0) + 1;
+                return (
+                  <Anchor
+                    component={Link}
+                    href={getLeaderBoardRoute(
+                      faction,
+                      type as leaderBoardType,
+                      startPosition,
+                      platform,
+                    )}
+                    rel="nofollow"
+                    title={"Link to Leaderboard with current player standings"}
+                  >
+                    {rank}
+                  </Anchor>
+                );
+              })();
 
               return (
-                <Anchor
-                  component={Link}
-                  href={getLeaderBoardRoute(
-                    faction,
-                    type as leaderBoardType,
-                    startPosition,
-                    platform,
-                  )}
-                  rel="nofollow"
-                  title={"Link to Leaderboard with current player standings"}
-                >
-                  {rank}
-                </Anchor>
+                <Stack gap={0}>
+                  {rankElement}
+                  <Text size={"xs"} c="dimmed">
+                    Top {highestrank}
+                  </Text>
+                </Stack>
               );
             },
           },
@@ -79,12 +89,19 @@ const PlayerStandingsTable = ({
             title: "ELO",
             accessor: "rating",
             textAlign: "center",
-            render: ({ rating }) => {
+            render: ({ rating, highestrating }) => {
               if (!rating) {
                 return "-";
               }
 
-              return rating;
+              return (
+                <Stack gap={0}>
+                  <span>{rating}</span>
+                  <Text size={"xs"} c="dimmed">
+                    Top {highestrating}
+                  </Text>
+                </Stack>
+              );
             },
           },
           {
@@ -116,7 +133,6 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "wins",
-            // sortable: true,
             textAlign: "center",
             render: ({ wins }) => {
               if (!wins) {
@@ -125,6 +141,16 @@ const PlayerStandingsTable = ({
 
               return wins;
             },
+            footer: (
+              <>
+                {(() => {
+                  const totalWins = Object.values(data).reduce((acc, cur) => {
+                    return acc + (cur?.wins || 0);
+                  }, 0);
+                  return totalWins === 0 ? "-" : totalWins;
+                })()}
+              </>
+            ),
           },
           {
             accessor: "losses",
@@ -136,6 +162,16 @@ const PlayerStandingsTable = ({
 
               return losses;
             },
+            footer: (
+              <>
+                {(() => {
+                  const totalLosses = Object.values(data).reduce((acc, cur) => {
+                    return acc + (cur?.losses || 0);
+                  }, 0);
+                  return totalLosses === 0 ? "-" : totalLosses;
+                })()}
+              </>
+            ),
           },
           {
             accessor: "ratio",
@@ -146,6 +182,21 @@ const PlayerStandingsTable = ({
 
               return `${Math.round((wins / (wins + losses)) * 100)}%`;
             },
+            footer: (
+              <>
+                {(() => {
+                  const totalWins = Object.values(data).reduce((acc, cur) => {
+                    return acc + (cur?.wins || 0);
+                  }, 0);
+                  const totalGames = Object.values(data).reduce((acc, cur) => {
+                    return acc + ((cur?.wins || 0) + (cur?.losses || 0));
+                  }, 0);
+                  return totalGames === 0
+                    ? "-"
+                    : `${Math.round((totalWins / totalGames) * 100)}%`;
+                })()}
+              </>
+            ),
           },
           {
             accessor: "total",
@@ -155,6 +206,16 @@ const PlayerStandingsTable = ({
               if (!wins && !losses) return "-";
               return `${wins + losses}`;
             },
+            footer: (
+              <>
+                {(() => {
+                  const totalMatches = Object.values(data).reduce((acc, cur) => {
+                    return acc + ((cur?.wins || 0) + (cur?.losses || 0));
+                  }, 0);
+                  return totalMatches === 0 ? "-" : totalMatches;
+                })()}
+              </>
+            ),
           },
           {
             accessor: "lastmatchdate",
@@ -168,6 +229,15 @@ const PlayerStandingsTable = ({
               }
               return <DynamicTimeAgo timestamp={lastmatchdate} />;
             },
+            footer: (
+              <>
+                <DynamicTimeAgo
+                  timestamp={Object.values(data).reduce((acc, cur) => {
+                    return acc > (cur?.lastmatchdate || 0) ? acc : cur?.lastmatchdate || 0;
+                  }, 0)}
+                />
+              </>
+            ),
           },
         ]}
         // sortStatus={sortStatus}
