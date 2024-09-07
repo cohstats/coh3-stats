@@ -14,7 +14,7 @@ const calculateHighestRankTier = (leaderboardStats: Array<RawLeaderboardStat>) =
   let bestTierInfo = null;
 
   for (const stat of leaderboardStats) {
-    const currentTier = calculatePlayerTier(stat.rank, stat.rating);
+    const currentTier = calculatePlayerTier(stat?.rank, stat?.rating);
     if (currentTier.order < bestTier.order) {
       bestTier = currentTier;
       bestTierInfo = leaderboardsIDsToTypes[stat.leaderboard_id];
@@ -97,4 +97,9 @@ const processPlayerInfoAPIResponse = (data: COH3StatsPlayerInfoAPI): PlayerCardD
   };
 };
 
-export { getPlayerInfo, preparePlayerStandings, processPlayerInfoAPIResponse };
+export {
+  getPlayerInfo,
+  preparePlayerStandings,
+  processPlayerInfoAPIResponse,
+  calculateHighestRankTier,
+};

@@ -2,15 +2,15 @@ import {
   InternalStandings,
   platformType,
   ProcessedCOHPlayerStats,
-} from "../../../src/coh3/coh3-types";
+} from "../../../../src/coh3/coh3-types";
 import { Container, Flex, Space } from "@mantine/core";
 import React from "react";
-import PlayerStandingsFaction from "./standings/player-standings-faction";
-import StandingsSummaryCharts from "./standings/summary/summary";
-import NemesisWidget from "./standings/nemesis-widget";
-import MoreButton from "./components/more-button";
+import PlayerStandingsFaction from "./player-standings-faction";
+import StandingsSummaryCharts from "./summary-header/standing-summary-charts";
+import NemesisWidget from "./widgets/nemesis-widget";
+import MoreButton from "../components/more-button";
 import { useRouter } from "next/router";
-import MapsWidget from "./standings/maps-widget/maps-widget";
+import MapsWidget from "./widgets/maps-widget";
 
 const PlayerStandingsTab = ({
   playerStandings,

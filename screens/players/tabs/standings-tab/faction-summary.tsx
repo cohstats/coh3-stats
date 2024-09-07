@@ -1,14 +1,16 @@
 import { leaderBoardType, raceType, RawLeaderboardStat } from "../../../../src/coh3/coh3-types";
 import React from "react";
-import { Group, Title, Card, Stack, ActionIcon } from "@mantine/core";
+import { Group, Title, Card, Stack, ActionIcon, Space, Flex } from "@mantine/core";
 import { localizedNames } from "../../../../src/coh3/coh3-data";
 import { Text } from "@mantine/core";
 import {
   findBestRankLeaderboardStat,
   findBestValueOnLeaderboardStat,
+  findBestWinRateOnLeaderboardStat,
 } from "../../../../src/players/utils";
-import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import { IconCirclePlus } from "@tabler/icons-react";
+import { calculateHighestRankTier } from "../../../../src/players/standings";
+import Image from "next/image";
 
 const PlayerStandingsFactionInfo = ({
   faction,
@@ -22,30 +24,20 @@ const PlayerStandingsFactionInfo = ({
   const bestElo = findBestValueOnLeaderboardStat(data, "rating");
   const bestRank = findBestRankLeaderboardStat(data, "rank");
   const bestRankLevel = findBestValueOnLeaderboardStat(data, "ranklevel");
+  const bestStreak = findBestValueOnLeaderboardStat(data, "streak");
+  const { bestWinRate, bestWinRateMode } = findBestWinRateOnLeaderboardStat(data);
 
-  const totalGames = Object.values(data).reduce((acc, cur) => {
-    return acc + ((cur?.wins || 0) + (cur?.losses || 0));
-  }, 0);
+  const bestTier = calculateHighestRankTier(
+    (Object.values(data) as Array<RawLeaderboardStat>) || [],
+  );
 
-  const totalWins = Object.values(data).reduce((acc, cur) => {
-    return acc + (cur?.wins || 0);
-  }, 0);
-
-  const winRate = totalWins / totalGames;
-
-  const lastMatchDate: number = Object.values(data).reduce((acc, cur) => {
-    return acc > (cur?.lastmatchdate || 0) ? acc : cur?.lastmatchdate || 0;
-  }, 0);
-
-  let cardTitle = faction.toUpperCase();
-
-  if (faction === "british") {
-    cardTitle = "British";
-  } else if (faction === "german") {
-    cardTitle = "Wehr";
-  } else if (faction !== "dak") {
-    cardTitle = localizedNames[faction];
-  }
+  const averageElO = (() => {
+    const totalElo = Object.values(data).reduce((acc, cur) => {
+      return acc + (cur?.rating || 0);
+    }, 0);
+    const count = Object.values(data).filter((cur) => cur?.rating).length;
+    return count === 0 ? "-" : (totalElo / count).toFixed(0);
+  })();
 
   const bestRankElement =
     (bestRank.bestValue || 0) != Infinity
@@ -57,8 +49,26 @@ const PlayerStandingsFactionInfo = ({
       : "-";
   const bestEloElement =
     (bestElo.bestValue || 0) > 0 ? `${bestElo.bestValue} in ${bestElo.bestValueKey}` : "-";
-  const winRateElement = (winRate || 0) > 0 ? `${Math.round(winRate * 100)}%` : "-";
-  const totalGamesElement = (totalGames || 0) > 0 ? `${totalGames}` : "-";
+
+  const bestWinRateElement =
+    (bestWinRate || 0) > 0 ? `${Math.round(bestWinRate * 100)}% in ${bestWinRateMode}` : "-";
+
+  const bestStreakElement =
+    (bestStreak.bestValue || 0) > 0
+      ? `+${bestStreak.bestValue} in ${bestStreak.bestValueKey}`
+      : "-";
+
+  const avgEloElement = averageElO;
+
+  let cardTitle = faction.toUpperCase();
+
+  if (faction === "british") {
+    cardTitle = "British";
+  } else if (faction === "german") {
+    cardTitle = "Wehr";
+  } else if (faction !== "dak") {
+    cardTitle = localizedNames[faction];
+  }
 
   return (
     <>
@@ -68,7 +78,7 @@ const PlayerStandingsFactionInfo = ({
         withBorder
         style={{
           width: "230px",
-          height: "208px",
+          // height: "208px",
         }}
       >
         <Card.Section>
@@ -81,8 +91,26 @@ const PlayerStandingsFactionInfo = ({
           </Group>
         </Card.Section>
         <Text span size={"sm"}>
-          <Stack gap="xl">
+          <Stack gap="md">
             <div>
+              <Flex justify="space-between">
+                <Stack gap={0}>
+                  <Text span fw={600}>
+                    {bestTier.tier.name}
+                  </Text>
+                  <Text span size={"xs"}>
+                    {bestTier.info && `in ${bestTier.info?.type}`}
+                  </Text>
+                </Stack>
+                <Image
+                  src={bestTier.tier.url}
+                  width={38}
+                  height={38}
+                  alt={bestTier.tier.name}
+                  loading="lazy"
+                />
+              </Flex>
+              <Space h={"md"} />
               <Group justify="space-between">
                 <span>Best Rank</span>{" "}
                 <Text span fw={600}>
@@ -101,22 +129,25 @@ const PlayerStandingsFactionInfo = ({
                   {bestEloElement}
                 </Text>
               </Group>
+              <Group justify="space-between">
+                <span>Best Ratio</span>{" "}
+                <Text span fw={600}>
+                  {bestWinRateElement}
+                </Text>
+              </Group>
+              <Group justify="space-between">
+                <span>Best Streak</span>{" "}
+                <Text span fw={600}>
+                  {bestStreakElement}
+                </Text>
+              </Group>
             </div>
             <div>
               <Group justify="space-between">
-                <span>Overall win Rate</span>{" "}
+                <span>AVG ELO</span>{" "}
                 <Text span fw={600}>
-                  {winRateElement}
+                  {avgEloElement}
                 </Text>
-              </Group>
-              <Group justify="space-between">
-                <span>Total Games</span>{" "}
-                <Text span fw={600}>
-                  {totalGamesElement}
-                </Text>
-              </Group>
-              <Group justify="space-between">
-                <Text span>Last match</Text> <DynamicTimeAgo timestamp={lastMatchDate} />
               </Group>
             </div>
           </Stack>

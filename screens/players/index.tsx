@@ -23,18 +23,18 @@ import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
 import { PSNIcon } from "../../components/icon/psn";
 import { XboxIcon } from "../../components/icon/xbox";
-import PlayerSummary from "./components/components/player-summary";
-import PlayerStandingsTab from "./components/player-standings-tab";
-import PlayerRecentMatchesTab from "./components/player-recent-matches-tab";
 import ErrorCard from "../../components/error-card";
-import PlayerIdIcon from "./components/components/player-id-icon";
-import ReplaysTab from "./components/replays-tab";
 import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
-import ActivityTab from "./components/activity/activity-tab";
-import NemesisTab from "./components/nemesis-tab";
-import DetailedStatsTab from "./components/detailed-stats-tab/detailed-stats-tab";
+import PlayerIdIcon from "./tabs/components/player-id-icon";
+import PlayerSummary from "./tabs/components/player-summary";
+import DetailedStatsTab from "./tabs/detailed-stats-tab/detailed-stats-tab";
+import PlayerRecentMatchesTab from "./tabs/recent-matches-tab/player-recent-matches-tab";
+import PlayerStandingsTab from "./tabs/standings-tab/player-standings-tab";
+import ActivityTab from "./tabs/activity-tab/activity-tab";
+import NemesisTab from "./tabs/nemesis-tab";
+import ReplaysTab from "./tabs/replays-tab/replays-tab";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
