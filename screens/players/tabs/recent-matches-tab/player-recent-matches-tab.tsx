@@ -12,21 +12,21 @@ import {
 } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
-import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../src/coh3/coh3-data";
-import { PlayerReport, ProcessedMatch, raceID } from "../../../src/coh3/coh3-types";
-import { getMatchDuration, getMatchPlayersByFaction } from "../../../src/coh3/helpers";
-import ErrorCard from "../../../components/error-card";
-import FactionIcon from "../../../components/faction-icon";
+import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../../src/coh3/coh3-data";
+import { PlayerReport, ProcessedMatch, raceID } from "../../../../src/coh3/coh3-types";
+import { getMatchDuration, getMatchPlayersByFaction } from "../../../../src/coh3/helpers";
+import ErrorCard from "../../../../components/error-card";
+import FactionIcon from "../../../../components/faction-icon";
 import { IconInfoCircle } from "@tabler/icons-react";
 import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
-import FilterableHeader from "./filterable-header";
+import FilterableHeader from "../filterable-header";
 
-import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
-import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../src/players/utils";
+import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
+import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../../src/players/utils";
 import { useLocalStorage } from "@mantine/hooks";
-import RenderPlayers from "./components/matches-table/render-players";
-import RenderMap from "./components/matches-table/render-map";
+import RenderPlayers from "./matches-table/render-players";
+import RenderMap from "./matches-table/render-map";
 
 /**
  * Timeago is causing issues with SSR, move to client side

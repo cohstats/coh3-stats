@@ -3,12 +3,12 @@ import {
   getCOHDBUploadULR,
   ProcessedReplayData,
   RECORDS_PER_REPLAYS_PAGE,
-} from "../../../src/apis/cohdb-api";
-import ErrorCard from "../../../components/error-card";
+} from "../../../../src/apis/cohdb-api";
+import ErrorCard from "../../../../components/error-card";
 import React from "react";
 import { DataTable } from "mantine-datatable";
-import FactionIcon from "../../../components/faction-icon";
-import { cohDBracesToNormalRaces } from "../../../src/coh3/coh3-data";
+import FactionIcon from "../../../../components/faction-icon";
+import { cohDBracesToNormalRaces } from "../../../../src/coh3/coh3-data";
 import { Anchor, Button, Flex, Group, Title, Tooltip, Text, Space, Stack } from "@mantine/core";
 import {
   IconAlertTriangle,
@@ -16,14 +16,14 @@ import {
   IconDownload,
   IconUpload,
 } from "@tabler/icons-react";
-import config from "../../../config";
-import { calculatePageNumber, calculatePositionNumber } from "../../../src/utils";
+import config from "../../../../config";
+import { calculatePageNumber, calculatePositionNumber } from "../../../../src/utils";
 import { useRouter } from "next/router";
-import { getDesktopAppRoute, getPlayerCardRoute } from "../../../src/routes";
+import { getDesktopAppRoute, getPlayerCardRoute } from "../../../../src/routes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import EllipsisText from "../../../components/other/ellipsis-text";
-import RenderMap from "./components/matches-table/render-map";
+import EllipsisText from "../../../../components/other/ellipsis-text";
+import RenderMap from "../recent-matches-tab/matches-table/render-map";
 
 const ReplaysTab = ({
   profileID,

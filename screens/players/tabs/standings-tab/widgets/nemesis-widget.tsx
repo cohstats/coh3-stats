@@ -1,11 +1,11 @@
-import { ProcessedCOHPlayerStats } from "../../../../src/coh3/coh3-types";
+import { ProcessedCOHPlayerStats } from "../../../../../src/coh3/coh3-types";
 import { Anchor, Card, Group, Title, Tooltip, Flex, Text } from "@mantine/core";
 import React from "react";
 import { DataTable } from "mantine-datatable";
 import Link from "next/link";
-import EllipsisText from "../../../../components/other/ellipsis-text";
-import HelperIcon from "../../../../components/icon/helper";
-import MoreButton from "../components/more-button";
+import EllipsisText from "../../../../../components/other/ellipsis-text";
+import HelperIcon from "../../../../../components/icon/helper";
+import MoreButton from "../../components/more-button";
 
 const NemesisWidget = ({
   playerStatsData,
