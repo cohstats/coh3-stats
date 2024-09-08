@@ -24,7 +24,11 @@ const DetailedStatsTab = ({
 
   const FactionSide = getFactionSide(selectedFaction);
 
-  const selectedStats = playerStatsData?.statGroups[selectedGameMode][selectedFaction];
+  console.log("PSD", playerStatsData);
+
+  const selectedStats = playerStatsData?.statGroups[selectedGameMode][selectedFaction] || null;
+  const selectedLeaderboardStats =
+    playerStatsData?.leaderBoardStats[selectedGameMode][selectedFaction] || null;
 
   return (
     <>
@@ -64,7 +68,11 @@ const DetailedStatsTab = ({
           </Group>
         </Flex>
         <Space h={"lg"} />
-        <InnerDetailedStats stats={selectedStats || null} factionSide={FactionSide} />
+        <InnerDetailedStats
+          stats={selectedStats}
+          leaderboardStats={selectedLeaderboardStats}
+          factionSide={FactionSide}
+        />
         <Space h={"lg"} />
         <Space h={"lg"} />
         <Text span size={"md"} ta="center">

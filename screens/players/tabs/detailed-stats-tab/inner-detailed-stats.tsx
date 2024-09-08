@@ -1,4 +1,8 @@
-import { FactionSide, WinLossPairType } from "../../../../src/coh3/coh3-types";
+import {
+  FactionSide,
+  HistoricLeaderBoardStat,
+  WinLossPairType,
+} from "../../../../src/coh3/coh3-types";
 import { FactionVsFactionCard } from "../../../../components/charts/card-factions-heatmap";
 import { AnalysisObjectType } from "../../../../src/analysis-types";
 import { Card, Center, Flex, Space, Stack, Text, Title } from "@mantine/core";
@@ -21,9 +25,14 @@ const DynamicPlayerMapsGames = dynamic(() => import("./charts/player-maps-games"
   ssr: false,
 });
 
+const DynamicHistoryOverTimeChart = dynamic(() => import("./charts/history-over-time-chart"), {
+  ssr: false,
+});
+
 const InnerDetailedStats = ({
   stats,
   factionSide,
+  leaderboardStats,
 }: {
   stats: {
     w: number; // wins
@@ -35,8 +44,9 @@ const InnerDetailedStats = ({
     counters: Record<string, number>;
   } | null;
   factionSide: FactionSide;
+  leaderboardStats: HistoricLeaderBoardStat | null;
 }) => {
-  // console.log(stats);
+  console.log(leaderboardStats);
 
   // let width = 300;
   // let chartHeight = 265;
@@ -69,6 +79,7 @@ const InnerDetailedStats = ({
             <DynamicPlayerMapsGames data={stats?.maps || {}} />
           </Card.Section>
         </Card>
+
         <Card p="md" shadow="sm" withBorder>
           <Card.Section withBorder inheritPadding py="xs">
             <Title order={3}>Maps Win Rate</Title>
@@ -80,6 +91,7 @@ const InnerDetailedStats = ({
       </Flex>
 
       <Space h={"md"} />
+
       <Flex gap={"md"} wrap="wrap" justify="center">
         <FactionVsFactionCard
           data={stats as unknown as AnalysisObjectType}
@@ -87,6 +99,7 @@ const InnerDetailedStats = ({
           factionSide={factionSide}
           width={760}
         />
+
         <Card p="md" shadow="sm" w={455} withBorder>
           <Card.Section withBorder inheritPadding py="xs">
             <Title order={3}>Games by game time</Title>
@@ -96,6 +109,8 @@ const InnerDetailedStats = ({
           </Card.Section>
         </Card>
       </Flex>
+      <Space h={"md"} />
+      <DynamicHistoryOverTimeChart leaderboardStats={leaderboardStats} />
     </>
   );
 };

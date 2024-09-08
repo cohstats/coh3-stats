@@ -9,7 +9,11 @@ import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-ap
 
 import PlayerCard from "../../screens/players";
 import { PlayerProfileCOHStats, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
-import { gameTypesIDsTypeAsKey, raceIDsNameAsKey } from "../../src/coh3/coh3-data";
+import {
+  gameTypesIDsTypeAsKey,
+  leaderboardsIDAsObject,
+  raceIDsNameAsKey,
+} from "../../src/coh3/coh3-data";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -134,6 +138,88 @@ const ProcessPlayerCardStatsData = (
     },
   };
 
+  // This is stat group ID for the player - it's in format 2387-2130255, where the first is stat group / second is leaderboard ID
+  // So far relic stores only personal player leaderboards but in the future they might add teams
+  const statGroupID = Object.keys(playerStatsData?.leaderboardStats || {})[0]?.match(
+    /^(\d+)-\d+$/,
+  )?.[1];
+
+  // Recheck later if we need to do any modifications of the data
+  const leaderBoardStats = {
+    "1v1": {
+      german:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["1v1"].german}`
+        ] || null,
+      american:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["1v1"].american}`
+        ] || null,
+      dak:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["1v1"].dak}`
+        ] || null,
+      british:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["1v1"].british}`
+        ] || null,
+    },
+    "2v2": {
+      german:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["2v2"].german}`
+        ] || null,
+      american:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["2v2"].american}`
+        ] || null,
+      dak:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["2v2"].dak}`
+        ] || null,
+      british:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["2v2"].british}`
+        ] || null,
+    },
+    "3v3": {
+      german:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["3v3"].german}`
+        ] || null,
+      american:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["3v3"].american}`
+        ] || null,
+      dak:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["3v3"].dak}`
+        ] || null,
+      british:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["3v3"].british}`
+        ] || null,
+    },
+    "4v4": {
+      german:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["4v4"].german}`
+        ] || null,
+      american:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["4v4"].american}`
+        ] || null,
+      dak:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["4v4"].dak}`
+        ] || null,
+      british:
+        playerStatsData?.leaderboardStats?.[
+          `${statGroupID}-${leaderboardsIDAsObject["4v4"].british}`
+        ] || null,
+    },
+  };
+
   return {
     activityByWeekDay: processedActivityByDayOfWeek,
     activityByDate: processedActivityByDate,
@@ -141,6 +227,7 @@ const ProcessPlayerCardStatsData = (
     nemesis: nemesisArray,
     customGamesHidden: playerStatsData?.customGamesHidden?.hidden || false,
     statGroups: statGroupsStats,
+    leaderBoardStats: leaderBoardStats,
   };
 };
 
