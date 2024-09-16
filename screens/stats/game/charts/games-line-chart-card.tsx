@@ -146,6 +146,7 @@ const GamesLineChartCard = ({
             {
               anchor: "bottom",
               direction: "row",
+              toggleSerie: true,
               justify: false,
               translateX: -1,
               translateY: 65,

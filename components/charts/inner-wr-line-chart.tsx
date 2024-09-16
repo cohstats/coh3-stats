@@ -136,6 +136,7 @@ const InnerWinRateLineChartCard = ({
               translateY: 65,
               itemsSpacing: 0,
               itemDirection: "left-to-right",
+              toggleSerie: true,
               itemWidth: 80,
               itemHeight: 20,
               itemOpacity: 0.75,

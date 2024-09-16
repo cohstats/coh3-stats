@@ -28,7 +28,7 @@ const PlayerStandingsTab = ({
   };
 
   return (
-    <Container size={"xl"}>
+    <Container size={"xl"} pl={0} pr={0}>
       <Space h="xs" />
       <StandingsSummaryCharts
         playerStandings={playerStandings}

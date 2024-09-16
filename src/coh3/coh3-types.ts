@@ -291,7 +291,7 @@ export interface PlayerProfileCOHStats {
   };
 }
 
-interface HistoryOfLeaderBoardStat {
+export interface HistoryOfLeaderBoardStat {
   w: number; // wins
   l: number; // losses
   r: number; // ranks

@@ -1,41 +1,53 @@
 import { Card, Center, Group, Text, Title, useMantineColorScheme } from "@mantine/core";
-import HelperIcon from "../../../../../components/icon/helper";
 import { ResponsiveLine } from "@nivo/line";
 import { getNivoTooltipTheme } from "../../../../../components/charts/charts-components-utils";
 import React from "react";
 import { HistoryOfLeaderBoardStat } from "../../../../../src/coh3/coh3-types";
 
-const HistoryOverTimeChart = ({
+const WinLossTimeChart = ({
   historyOfLeaderBoardStat,
   title,
-  type,
   DisplayAsElement,
 }: {
   historyOfLeaderBoardStat?: Array<HistoryOfLeaderBoardStat>;
   title: string;
-  type: "rt" | "r";
   DisplayAsElement: React.ReactNode;
 }) => {
   const { colorScheme } = useMantineColorScheme();
 
-  let minInData = Infinity;
-  let maxInData = -Infinity;
+  const historyDataWins = [];
+  const historyDataLosses = [];
 
+  if (historyOfLeaderBoardStat?.length) {
+    for (let i = 0; i < historyOfLeaderBoardStat.length; i++) {
+      if (i == 0) continue;
+
+      const dateWins = historyOfLeaderBoardStat[i].w - historyOfLeaderBoardStat[i - 1].w;
+      const dateLosses = historyOfLeaderBoardStat[i].l - historyOfLeaderBoardStat[i - 1].l;
+
+      historyDataWins.push({
+        x: historyOfLeaderBoardStat[i].date,
+        y: dateWins,
+      });
+
+      historyDataLosses.push({
+        x: historyOfLeaderBoardStat[i].date,
+        y: -dateLosses,
+      });
+    }
+  }
+
+  //
   const chartData = [
     {
-      id: "Rating",
-      data:
-        (historyOfLeaderBoardStat || []).map((value) => {
-          const selectedValue = value[type];
-
-          minInData = Math.min(minInData, selectedValue);
-          maxInData = Math.max(maxInData, selectedValue);
-
-          return {
-            x: value.date,
-            y: selectedValue,
-          };
-        }) || [],
+      id: "Wins",
+      data: historyDataWins,
+      color: "#60BD68",
+    },
+    {
+      id: "Losses",
+      data: historyDataLosses,
+      color: "#F15854",
     },
   ];
 
@@ -43,15 +55,7 @@ const HistoryOverTimeChart = ({
     <Card p="md" shadow="sm" w={"100%"} withBorder>
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
-          <Group>
-            <Title order={3}>{title}</Title>
-            <HelperIcon
-              width={360}
-              text={
-                "Winrate for each day can fluctuate a lot because there isn't enough games. Switch to weeks to see a more accurate representation."
-              }
-            />
-          </Group>
+          <Title order={3}>{title}</Title>
           <Group>
             <Text fw={500}>Display last</Text>
             {DisplayAsElement}
@@ -62,7 +66,7 @@ const HistoryOverTimeChart = ({
         {chartData[0].data?.length ? (
           <ResponsiveLine
             data={chartData}
-            margin={{ top: 25, right: 50, bottom: 30, left: 50 }}
+            margin={{ top: 25, right: 50, bottom: 50, left: 50 }}
             xFormat="time: %a - %Y-%m-%d"
             // tooltip={(data) => {
             //   return <>{data.point.data.xFormatted} and {data.point.data.yFormatted}</>
@@ -75,17 +79,18 @@ const HistoryOverTimeChart = ({
             }}
             yScale={{
               type: "linear",
-              min: Math.max(minInData - (maxInData - minInData) * 0.2, 1),
-              max: Math.min(maxInData + (maxInData - minInData) * 0.2, 3000),
-              reverse: type === "r",
+              min: "auto",
+              max: "auto",
+              // min: Math.max(minInData - (maxInData - minInData) * 0.2, 1),
+              // max: Math.min(maxInData +  (maxInData - minInData) * 0.2, 3000),
             }}
-            // yFormat=" >-.2f"
+            enableArea={true}
             axisTop={null}
             axisRight={{
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: type === "r" ? "Rating" : "ELO",
+              legend: "Losses / Wins",
               legendOffset: 45,
               legendPosition: "middle",
               format: (e) => (Number.isInteger(e) ? e : ""),
@@ -102,13 +107,14 @@ const HistoryOverTimeChart = ({
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: type === "r" ? "Rating" : "ELO",
+              legend: "Losses / Wins",
               legendOffset: -45,
               legendPosition: "middle",
               format: (e) => (Number.isInteger(e) ? e : ""),
             }}
             curve="monotoneX"
-            colors={{ scheme: "category10" }}
+            // colors={{ scheme: "category10" }}
+            colors={{ datum: "color" }}
             // colors={{ datum: "color" }}
             //colors={{ scheme: "category10" }}
             enablePoints={true}
@@ -123,32 +129,42 @@ const HistoryOverTimeChart = ({
             // Helps site performance
             animate={false}
             theme={getNivoTooltipTheme(colorScheme)}
-            // legends={[
+            // markers={[
             //   {
-            //     anchor: "bottom",
-            //     direction: "row",
-            //     justify: false,
-            //     translateX: -1,
-            //     translateY: 65,
-            //     itemsSpacing: 0,
-            //     itemDirection: "left-to-right",
-            //     itemWidth: 80,
-            //     itemHeight: 20,
-            //     itemOpacity: 0.75,
-            //     symbolSize: 12,
-            //     symbolShape: "circle",
-            //     symbolBorderColor: "rgba(0, 0, 0, .5)",
-            //     effects: [
-            //       {
-            //         on: "hover",
-            //         style: {
-            //           itemBackground: "rgba(0, 0, 0, .03)",
-            //           itemOpacity: 1,
-            //         },
-            //       },
-            //     ],
-            //   },
+            //     axis: 'y',
+            //     lineStyle: {
+            //       stroke: '#000000',
+            //       strokeWidth: 1
+            //     },
+            //     value: 0
+            //   }
             // ]}
+            legends={[
+              {
+                anchor: "bottom",
+                direction: "row",
+                justify: false,
+                toggleSerie: true,
+                translateY: 50,
+                itemsSpacing: 0,
+                itemDirection: "left-to-right",
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: "circle",
+                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                effects: [
+                  {
+                    on: "hover",
+                    style: {
+                      itemBackground: "rgba(0, 0, 0, .03)",
+                      itemOpacity: 1,
+                    },
+                  },
+                ],
+              },
+            ]}
           />
         ) : (
           <Center maw={400} h={250} mx="auto">
@@ -160,4 +176,4 @@ const HistoryOverTimeChart = ({
   );
 };
 
-export default HistoryOverTimeChart;
+export default WinLossTimeChart;

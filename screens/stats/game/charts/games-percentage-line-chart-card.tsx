@@ -158,6 +158,7 @@ const GamesPercentageLineChartCard = ({
               anchor: "bottom",
               direction: "row",
               justify: false,
+              toggleSerie: true,
               translateX: -1,
               translateY: 65,
               itemsSpacing: 0,
