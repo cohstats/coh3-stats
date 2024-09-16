@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "1.7.2";
+const defaultStatsPatchSelector = "1.7.3";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -55,11 +55,11 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
-  "1.7.2": {
+  "1.7.3": {
     from: "2024-07-16",
     to: "now",
-    value: "1.7.2",
-    label: "1.7.0 - 1.7.2",
+    value: "1.7.3",
+    label: "1.7.0 - 1.7.3",
     group: "Onyx Shark",
   },
   "1.6.10": {
@@ -166,11 +166,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.7.2";
+const latestPatch = "1.7.3";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.7.3": {
+      dataTag: "v1.7.2-1",
+      dataTime: "20/August/2024",
+    },
     "1.7.2": {
       dataTag: "v1.7.2-1",
       dataTime: "31/July/2024",
@@ -299,7 +303,6 @@ const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeco
     },
   };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getPatchDataUrl = (dataFile = "", patch = "latest") => {
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
   return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
