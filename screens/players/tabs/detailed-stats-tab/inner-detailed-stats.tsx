@@ -43,7 +43,7 @@ const InnerDetailedStats = ({
   factionSide: FactionSide;
   leaderboardStats: HistoricLeaderBoardStat | null;
 }) => {
-  console.log(leaderboardStats);
+  // console.log(stats?.counters);
 
   // let width = 300;
   // let chartHeight = 265;

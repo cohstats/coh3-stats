@@ -45,12 +45,14 @@ const HistoryOverTimeChart = ({
         <Group justify={"space-between"}>
           <Group>
             <Title order={3}>{title}</Title>
-            <HelperIcon
-              width={360}
-              text={
-                "Winrate for each day can fluctuate a lot because there isn't enough games. Switch to weeks to see a more accurate representation."
-              }
-            />
+            {type === "r" && (
+              <HelperIcon
+                width={360}
+                text={
+                  "This chart is updated only when player plays a game. Therefore it's not accurate representation of the players rank, as rank is changing even when player is not playing."
+                }
+              />
+            )}
           </Group>
           <Group>
             <Text fw={500}>Display last</Text>
