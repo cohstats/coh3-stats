@@ -577,6 +577,10 @@ const OfficialMapKeys = [
   "oasis_depot_8p", // Community maps
   /* ---------- 1.7.0 Maps ---------- */
   "black_gold_8p",
+  /* ---------- 1.8.0 Maps ---------- */
+  "primosole_4p",
+  "longstop_hill_6p",
+  "halfa_8p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -742,5 +746,18 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   black_gold_8p: {
     name: "Black Gold",
     url: "/black_gold_8p/black_gold_8p.webp",
+  },
+  /* ------------------------- 1.8.0 Maps ---------------------------- */
+  primosole_4p: {
+    name: "Road to Primosole",
+    url: "/primosole_4p/primosole_4p.webp",
+  },
+  longstop_hill_6p: {
+    name: "Longstop Hill",
+    url: "/longstop_hill_6p/longstop_hill_6p.webp",
+  },
+  halfa_8p: {
+    name: "Alam el Halfa",
+    url: "/halfa_8p/halfa_8p.webp",
   },
 };

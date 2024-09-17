@@ -55,9 +55,16 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
+  "1.8.0": {
+    from: "2024-09-17",
+    to: "now",
+    value: "1.8.0",
+    label: "1.8.0",
+    group: "Patch 1.8.x",
+  },
   "1.7.3": {
     from: "2024-07-16",
-    to: "now",
+    to: "2024-09-16",
     value: "1.7.3",
     label: "1.7.0 - 1.7.3",
     group: "Onyx Shark",
@@ -166,11 +173,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.7.3";
+const latestPatch = "1.8.0";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.8.0": {
+      dataTag: "v1.8.0-1",
+      dataTime: "17/Sep/2024",
+    },
     "1.7.3": {
       dataTag: "v1.7.2-1",
       dataTime: "20/August/2024",
