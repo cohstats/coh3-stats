@@ -72,8 +72,11 @@ If the image is not found there, you can always add it to the /public folder.
 
 1. Go to https://github.com/cohstats/coh3-data and generate the new data as per readme
 2. Create a new tag in coh3-data as per readme
-3. Update config.ts in the root 4. Add the patch into object patches 5. Update latestPatch variable with the key of the new patch
-4. Run the project and verify that all pages work as expected
+3. Update config.ts in the root
+4. Add the patch into object patches
+5. Update latestPatch variable with the key of the new patch
+6. If new maps has been added - fix them in src/coh3/coh3-data.ts
+7. Run the project and verify that all pages work as expected
 
 ### How to update the sitemap after adding new pages
 
