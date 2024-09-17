@@ -80,7 +80,7 @@ const PlayerStandingsTable = ({
                   {rankElement}
                   {highestrank > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Best {highestrank}
+                      Top {highestrank}
                     </Text>
                   )}
                 </Stack>
@@ -101,7 +101,7 @@ const PlayerStandingsTable = ({
                   <span>{rating}</span>
                   {highestrating > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Best {highestrating}
+                      Top {highestrating}
                     </Text>
                   )}
                 </Stack>

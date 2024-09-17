@@ -3,7 +3,7 @@
 
 import { Container, Flex, Group, Select, Space, Text, Title } from "@mantine/core";
 import React from "react";
-import { getFactionSide, getMapLocalizedName } from "../../../../src/coh3/helpers";
+import { getFactionSide } from "../../../../src/coh3/helpers";
 import { localizedGameTypes, localizedNames } from "../../../../src/coh3/coh3-data";
 import {
   leaderBoardType,
@@ -11,7 +11,6 @@ import {
   raceType,
 } from "../../../../src/coh3/coh3-types";
 import InnerDetailedStats from "./inner-detailed-stats";
-import { AnalysisObjectType } from "../../../../src/analysis-types";
 import FactionIcon from "../../../../components/faction-icon";
 
 const DetailedStatsTab = ({
@@ -24,7 +23,9 @@ const DetailedStatsTab = ({
 
   const FactionSide = getFactionSide(selectedFaction);
 
-  const selectedStats = playerStatsData?.statGroups[selectedGameMode][selectedFaction];
+  const selectedStats = playerStatsData?.statGroups[selectedGameMode][selectedFaction] || null;
+  const selectedLeaderboardStats =
+    playerStatsData?.leaderBoardStats[selectedGameMode][selectedFaction] || null;
 
   return (
     <>
@@ -34,7 +35,7 @@ const DetailedStatsTab = ({
             Detailed Statistics for {localizedGameTypes[selectedGameMode]}{" "}
             <FactionIcon name={selectedFaction} width={30} />
           </Title>
-          <Group>
+          <Group justify="center">
             <Select
               value={selectedFaction}
               label="Faction"
@@ -58,26 +59,27 @@ const DetailedStatsTab = ({
                 label: value,
               }))}
               onChange={(value) => setSelectedGameMode((value as leaderBoardType) || "")}
-              w={195}
+              w={200}
               withCheckIcon={false}
             />
           </Group>
         </Flex>
         <Space h={"lg"} />
-        <InnerDetailedStats stats={selectedStats || null} factionSide={FactionSide} />
+        <InnerDetailedStats
+          stats={selectedStats}
+          leaderboardStats={selectedLeaderboardStats}
+          factionSide={FactionSide}
+        />
         <Space h={"lg"} />
         <Space h={"lg"} />
-        <Text span size={"md"} ta="center">
-          More detailed stats are coming soon.
-        </Text>
-        <Space h={"lg"} />
-        <Space h={"lg"} />
-        <Text span size={"sm"} c="dimmed" ta="center">
-          Detailed stats are updated every 24 hours. It's possible that some games are not
-          included in the stats.
-          <br />
-          Stats are being calculated from October 2023.
-        </Text>
+        <Flex justify="center">
+          <Text span size={"sm"} c="dimmed" style={{ textAlign: "center" }}>
+            Detailed stats are updated every 24 hours. It's possible that some games are not
+            included in the stats.
+            <br />
+            Stats are being calculated from October 2023.
+          </Text>
+        </Flex>
       </Container>
     </>
   );

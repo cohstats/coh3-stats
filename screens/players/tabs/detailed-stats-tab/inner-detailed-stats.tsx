@@ -1,10 +1,15 @@
-import { FactionSide, WinLossPairType } from "../../../../src/coh3/coh3-types";
+import {
+  FactionSide,
+  HistoricLeaderBoardStat,
+  WinLossPairType,
+} from "../../../../src/coh3/coh3-types";
 import { FactionVsFactionCard } from "../../../../components/charts/card-factions-heatmap";
 import { AnalysisObjectType } from "../../../../src/analysis-types";
-import { Card, Center, Flex, Space, Stack, Text, Title } from "@mantine/core";
+import { Card, Center, Container, Flex, Grid, Space, Stack, Text, Title } from "@mantine/core";
 import React from "react";
 import { IconDatabaseOff } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import HistoryCharts from "./history-charts";
 
 const DynamicPlayersPlaytimeHistogram = dynamic(
   () => import("./charts/player-playtime-histogram"),
@@ -24,6 +29,7 @@ const DynamicPlayerMapsGames = dynamic(() => import("./charts/player-maps-games"
 const InnerDetailedStats = ({
   stats,
   factionSide,
+  leaderboardStats,
 }: {
   stats: {
     w: number; // wins
@@ -35,8 +41,9 @@ const InnerDetailedStats = ({
     counters: Record<string, number>;
   } | null;
   factionSide: FactionSide;
+  leaderboardStats: HistoricLeaderBoardStat | null;
 }) => {
-  // console.log(stats);
+  // console.log(stats?.counters);
 
   // let width = 300;
   // let chartHeight = 265;
@@ -59,44 +66,57 @@ const InnerDetailedStats = ({
     );
 
   return (
-    <>
-      <Flex gap={"md"} wrap="wrap" justify="center">
-        <Card p="md" shadow="sm" withBorder>
-          <Card.Section withBorder inheritPadding py="xs">
-            <Title order={3}>Maps played</Title>
-          </Card.Section>
-          <Card.Section w={600} h={284} py="xs">
-            <DynamicPlayerMapsGames data={stats?.maps || {}} />
-          </Card.Section>
-        </Card>
-        <Card p="md" shadow="sm" withBorder>
-          <Card.Section withBorder inheritPadding py="xs">
-            <Title order={3}>Maps Win Rate</Title>
-          </Card.Section>
-          <Card.Section w={600} h={284} py="xs">
-            <DynamicPlayerMapsWinRate data={stats?.maps || {}} />
-          </Card.Section>
-        </Card>
-      </Flex>
+    <Container size={"xl"}>
+      <Grid justify="center">
+        <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>
+          <Card p="md" shadow="sm" w={"100%"} withBorder>
+            <Card.Section withBorder inheritPadding py="xs">
+              <Title order={3}>Maps played</Title>
+            </Card.Section>
+            <Card.Section h={284} py="xs">
+              <DynamicPlayerMapsGames data={stats?.maps || {}} />
+            </Card.Section>
+          </Card>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>
+          <Card p="md" shadow="sm" w={"100%"} withBorder>
+            <Card.Section withBorder inheritPadding py="xs">
+              <Title order={3}>Maps Win Rate</Title>
+            </Card.Section>
+            <Card.Section h={284} py="xs">
+              <DynamicPlayerMapsWinRate data={stats?.maps || {}} />
+            </Card.Section>
+          </Card>
+        </Grid.Col>
+      </Grid>
 
       <Space h={"md"} />
+
+      <Grid justify="center">
+        <Grid.Col span={{ base: 12, xs: 12, md: 8 }}>
+          <FactionVsFactionCard
+            data={stats as unknown as AnalysisObjectType}
+            title={"Faction matrix"}
+            factionSide={factionSide}
+            width={"100%"}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, xs: 12, md: 4 }}>
+          <Card p="md" shadow="sm" w={"100%"} withBorder>
+            <Card.Section withBorder inheritPadding py="xs">
+              <Title order={3}>Games by game time</Title>
+            </Card.Section>
+            <Card.Section h={420} py="xs">
+              <DynamicPlayersPlaytimeHistogram data={stats?.gameTimeSpread || {}} />
+            </Card.Section>
+          </Card>
+        </Grid.Col>
+      </Grid>
+      <Space h={"md"} />
       <Flex gap={"md"} wrap="wrap" justify="center">
-        <FactionVsFactionCard
-          data={stats as unknown as AnalysisObjectType}
-          title={"Faction matrix"}
-          factionSide={factionSide}
-          width={760}
-        />
-        <Card p="md" shadow="sm" w={455} withBorder>
-          <Card.Section withBorder inheritPadding py="xs">
-            <Title order={3}>Games by game time</Title>
-          </Card.Section>
-          <Card.Section w={465} h={390} py="xs">
-            <DynamicPlayersPlaytimeHistogram data={stats?.gameTimeSpread || {}} />
-          </Card.Section>
-        </Card>
+        <HistoryCharts leaderboardStats={leaderboardStats} />
       </Flex>
-    </>
+    </Container>
   );
 };
 

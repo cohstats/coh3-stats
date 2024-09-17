@@ -291,15 +291,17 @@ export interface PlayerProfileCOHStats {
   };
 }
 
-interface HistoryOfLeaderBoardStat {
+export interface HistoryOfLeaderBoardStat {
   w: number; // wins
   l: number; // losses
   r: number; // ranks
   rl: number; // rank level
+  rt: number; // rating
   ts: Timestamp; // timestamp
+  date: string; // date
 }
 
-interface HistoricLeaderBoardStat {
+export interface HistoricLeaderBoardStat {
   leaderboard_id: number;
   wins: number;
   losses: number;
@@ -352,6 +354,7 @@ export interface ProcessedCOHPlayerStats {
       } | null
     >
   >;
+  leaderBoardStats: Record<leaderBoardType, Record<raceType, HistoricLeaderBoardStat | null>>;
 }
 
 export interface YouTubeVideo {

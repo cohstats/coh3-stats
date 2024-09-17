@@ -12,7 +12,7 @@ const DynamicHeatMapChart = dynamic(() => import("./factions-heatmap"), { ssr: f
 interface IProps {
   data: AnalysisObjectType;
   title: string;
-  width?: number;
+  width?: number | string;
   factionSide?: FactionSide;
 }
 

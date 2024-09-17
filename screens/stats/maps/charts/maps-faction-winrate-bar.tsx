@@ -89,6 +89,7 @@ const MapsFactionWinRateChart: React.FC<IProps> = ({ data }) => {
           anchor: "bottom-right",
           direction: "column",
           justify: false,
+          toggleSerie: true,
           translateX: 120,
           translateY: 0,
           itemsSpacing: 2,

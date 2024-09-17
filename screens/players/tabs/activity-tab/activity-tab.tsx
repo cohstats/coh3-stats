@@ -91,7 +91,7 @@ const ActivityTab = ({
         <DynamicActivityByCalendarDay playerStatsData={playerStatsData} fromYear={fromYear} />
       </div>
       <Space h={"lg"} />
-      <div style={{ height: 200 }}>
+      <div style={{ height: 200, paddingBottom: 50 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Title order={2}>Activity by hour of day</Title>
           <Text span size="sm" fs="italic">

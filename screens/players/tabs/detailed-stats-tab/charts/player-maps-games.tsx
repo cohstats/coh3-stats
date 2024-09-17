@@ -68,6 +68,7 @@ const PlayerMapsGames: React.FC<IProps> = ({ data }) => {
         legendPosition: "middle",
         legendOffset: -50,
         legend: "Amount of games",
+        format: (e) => (Number.isInteger(e) ? e : ""),
       }}
       axisBottom={{
         legendPosition: "middle",
