@@ -2748,10 +2748,10 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@next/bundle-analyzer@14.2.10":
-  version "14.2.10"
-  resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-14.2.10.tgz#ad10b822089e9e116dd2b2e5859073573692f562"
-  integrity sha512-x9sMR1gHrX6zg5UapTJBjSEHmyG6GuSW1gWQXp4kJSNBQzKWFFhK4lQluNnyh0hP6j3p5Mxpq8uUOTYIgMgk3A==
+"@next/bundle-analyzer@14.2.7":
+  version "14.2.7"
+  resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-14.2.7.tgz#c7b9595bf57d31dc4c50b91d9afdc21380d7eae6"
+  integrity sha512-Zz55BLjoNKiUjr8PJIMTXFQnbUEpk8qkXP5nmEcXvOorbruQOIdmkRa3sahlJZPWTjsZNpxwImhZf2yFMVMWeg==
   dependencies:
     webpack-bundle-analyzer "4.10.1"
 
