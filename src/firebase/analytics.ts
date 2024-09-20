@@ -154,6 +154,10 @@ export const AnalyticsExplorerChallengesView = (): void => {
   logFBEvent("explorer_challenges_view");
 };
 
+export const AnalyticsExplorerWeaponsView = (): void => {
+  logFBEvent("explorer_weapons_view");
+};
+
 export const AnalyticsNewsPageView = (): void => {
   logFBEvent("news_view");
 };

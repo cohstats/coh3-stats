@@ -49,6 +49,7 @@ const UnitSquadIcons = {
   target_size: "/icons/unit_status/bw2/9_markedtarget.png",
   infantry_armor: "/icons/unit_status/bw2/3_defensivebonus.png",
   range_of_fire: "/icons/unit_status/bw2/artillery_radio_beacon.png",
+  sprint: "/icons/unit_status/bw2/sprint.png",
   acceleration: "/icons/unit_status/bw2/12_speedbonus.png",
   deceleration: "/icons/races/common/abilities/handbrake_on.png",
   cap_mult: "/icons/unit_status/bw2/11_capturebonus.png",
@@ -65,6 +66,7 @@ export const UnitSquadCard = ({
   ui,
   type,
 }: UnitSquadInput) => {
+  console.log("🚀 ~ type:", type);
   return (
     <Stack>
       <Stack gap={4}>
@@ -85,6 +87,7 @@ export const UnitSquadCard = ({
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["sight_range"]}
                 alt="squad sight range"
+                style={{ objectFit: "cover" }}
               ></ImageWithFallback>
               <Text>Sight Range</Text>
             </Group>
@@ -99,8 +102,9 @@ export const UnitSquadCard = ({
                 height={32}
                 width={32}
                 fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["max_speed"]}
+                src={type === "vehicles" ? UnitSquadIcons["max_speed"] : UnitSquadIcons["sprint"]}
                 alt="squad default speed"
+                style={{ objectFit: "cover" }}
               ></ImageWithFallback>
               <Text>Speed</Text>
             </Group>
@@ -118,6 +122,7 @@ export const UnitSquadCard = ({
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["acceleration"]}
                   alt="squad acceleration"
+                  style={{ objectFit: "cover" }}
                 ></ImageWithFallback>
                 <Text>Acceleration</Text>
               </Group>
@@ -138,6 +143,7 @@ export const UnitSquadCard = ({
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["deceleration"]}
                   alt="squad deceleration"
+                  style={{ objectFit: "cover" }}
                 />
                 <Text>Deceleration</Text>
               </Group>

@@ -12,6 +12,50 @@ type RangeType = {
   max: number;
 };
 
+/** Taken from the Essence Editor enums. */
+export const WeaponClass = [
+  "rifle",
+  "flame",
+  "hmg",
+  "mortar",
+  "at_gun",
+  "bazooka",
+  "cannon",
+  "sniper",
+  "lmg",
+  "smg",
+  "dummy",
+  "rifle_grenade",
+  "nebelwerfer",
+  "throwing_knife",
+  "panzerfaust",
+  "cannon_burst",
+  "mine",
+  "panzerbuschse",
+  "melee",
+  "grenade_launcher",
+  "artillery_small",
+  "artillery_medium",
+  "cannon_small",
+  "construction_tool",
+  "white_phosphorus",
+  "smoke",
+  "pistol",
+  "minesweeper",
+  "artillery_mobile",
+] as const;
+
+export const WeaponCategory = [
+  "ballistic_weapon",
+  "explosive_weapon",
+  "flame_throwers",
+  "small_arms",
+  "campaign",
+  "parent",
+  "preroll_destruction",
+  "unknown",
+] as const;
+
 export type WeaponStatsType = {
   accuracy_near: number;
   accuracy_mid: number;
@@ -139,8 +183,8 @@ type WeaponType = {
   description: string; // search selection description
   faction: string; // faction string e.g. afrika_korps
   parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
-  weapon_class: string; // Class defined in the weapon bag (cannon, at_gun)
-  weapon_cat: string; // category defined by high_level folder structure (ballistic, small arms, explosive)
+  weapon_class: (typeof WeaponClass)[number]; // Class defined in the weapon bag (cannon, at_gun)
+  weapon_cat: (typeof WeaponCategory)[number]; // category defined by high_level folder structure (ballistic, small arms, explosive)
 };
 
 type TargetType = {
@@ -167,7 +211,7 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
     description: resolveLocstring(weapon_bag.ui_name) || "",
     faction: jsonPath.split("/")[0],
     parent: parent,
-    weapon_cat: jsonPath.split("/")[1] || "",
+    weapon_cat: (jsonPath.split("/")[1] as (typeof WeaponCategory)[number]) || "unknown",
 
     weapon_bag: {
       accuracy_near: weapon_bag.accuracy?.near || 0,

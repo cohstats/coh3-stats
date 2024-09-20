@@ -20,6 +20,7 @@ import {
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
   getUnitBrowserRoute,
+  getWeaponsRoute,
 } from "../../../src/routes";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { getIconsPathOnCDN, internalSlash } from "../../../src/utils";
@@ -154,6 +155,31 @@ const ChallengesLink = ({ close }: { close?: () => void }) => {
   );
 };
 
+const WeaponsLink = ({ close }: { close?: () => void }) => {
+  return (
+    <Group gap={4}>
+      <Image
+        width={20}
+        height={20}
+        fit="contain"
+        src={getIconsPathOnCDN("/icons/unit_status/bw2/generic_infantry_boost.png")}
+        alt=""
+        fallbackSrc={"https://placehold.co/20x20?text=X"}
+      />
+      <Text fw={500}>
+        <Anchor
+          c="orange"
+          component={LinkWithOutPrefetch}
+          href={getWeaponsRoute()}
+          onClick={close}
+        >
+          Weapons
+        </Anchor>
+      </Text>
+    </Group>
+  );
+};
+
 const ExplorerMenu = ({
   classes,
   close,
@@ -166,7 +192,7 @@ const ExplorerMenu = ({
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text inherit fw={700}>
+            <Text inherit fw="bold">
               Explorer
             </Text>
           </Accordion.Control>
@@ -183,6 +209,7 @@ const ExplorerMenu = ({
               <DPSLink close={close} />
               <UnitBrowserLink close={close} />
               <ChallengesLink close={close} />
+              <WeaponsLink close={close} />
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -196,7 +223,7 @@ const ExplorerMenu = ({
         <HoverCard.Target>
           <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={classes.link}>
             <Group gap={3}>
-              <Text>Explorer</Text>
+              Explorer
               <IconChevronDown className={classes.hiddenMobile} size={16} />
             </Group>
           </Anchor>
@@ -218,6 +245,7 @@ const ExplorerMenu = ({
                 <DPSLink close={() => null} />
                 <UnitBrowserLink close={() => null} />
                 <ChallengesLink close={() => null} />
+                <WeaponsLink close={() => null} />
               </Stack>
             </Grid.Col>
           </Grid>
