@@ -43,6 +43,25 @@ export const WeaponTableColumnKeys = [
   "accuracy_near",
   "accuracy_mid",
   "accuracy_far",
+  "moving_accuracy_multiplier",
+  "moving_cooldown_multiplier",
+  "rpm_near",
+  "rpm_mid",
+  "rpm_far",
+  "range_near",
+  "range_mid",
+  "range_far",
+  "pen_near",
+  "pen_mid",
+  "pen_far",
+  "scatter_near",
+  "scatter_mid",
+  "scatter_far",
+  "damage_min",
+  "damage_max",
+  "aoe_damage_far",
+  "aoe_damage_mid",
+  "aoe_damage_near",
 ] as const;
 
 export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[number], any> {
@@ -56,6 +75,25 @@ export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[nu
   accuracy_near: number;
   accuracy_mid: number;
   accuracy_far: number;
+  moving_accuracy_multiplier: number | "-";
+  moving_cooldown_multiplier: number | "-";
+  rpm_near: number;
+  rpm_mid: number;
+  rpm_far: number;
+  range_near: number;
+  range_mid: number;
+  range_far: number;
+  pen_near: number | "-";
+  pen_mid: number | "-";
+  pen_far: number | "-";
+  scatter_near: number | "-";
+  scatter_mid: number | "-";
+  scatter_far: number | "-";
+  damage_min: number;
+  damage_max: number;
+  aoe_damage_far: number;
+  aoe_damage_mid: number;
+  aoe_damage_near: number;
 }
 
 interface tableColSetup {
@@ -121,6 +159,26 @@ const tableSetup: tableColSetup[] = [
     isSymbol: false,
   },
   {
+    key: "moving_accuracy_multiplier",
+    sortKey: "moving_accuracy_multiplier",
+    title: "Moving Accuracy Multiplier",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "moving_cooldown_multiplier",
+    sortKey: "moving_cooldown_multiplier",
+    title: "Moving Cooldown Multiplier",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
     key: "accuracy_near",
     sortKey: "accuracy_near",
     title: "Accuracy (Near)",
@@ -144,6 +202,116 @@ const tableSetup: tableColSetup[] = [
     key: "accuracy_far",
     sortKey: "accuracy_far",
     title: "Accuracy (Far)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "rpm_near",
+    sortKey: "rpm_near",
+    title: "RPM (Near)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "rpm_mid",
+    sortKey: "rpm_mid",
+    title: "RPM (Mid)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "rpm_far",
+    sortKey: "rpm_far",
+    title: "RPM (Far)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "scatter_near",
+    sortKey: "scatter_near",
+    title: "Scatter (Near)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "scatter_mid",
+    sortKey: "scatter_mid",
+    title: "Scatter (Mid)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "scatter_far",
+    sortKey: "scatter_far",
+    title: "Scatter (Far)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "pen_near",
+    sortKey: "pen_near",
+    title: "Pen (Near)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "pen_mid",
+    sortKey: "pen_mid",
+    title: "Pen (Mid)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "pen_far",
+    sortKey: "pen_far",
+    title: "Pen (Far)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "damage_min",
+    sortKey: "damage_min",
+    title: "Damage (Min)",
+    visible: true,
+    isIcon: false,
+    customVisual: false,
+    canFilter: false,
+    isSymbol: false,
+  },
+  {
+    key: "damage_max",
+    sortKey: "damage_max",
+    title: "Damage (Max)",
     visible: true,
     isIcon: false,
     customVisual: false,
