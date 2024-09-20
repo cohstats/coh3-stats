@@ -37,8 +37,8 @@
     ]
   },
   "dependencies": {
-    "@bbob/preset-react": "3.0.2",
-    "@bbob/react": "3.0.2",
+    "@bbob/preset-react": "4.1.1",
+    "@bbob/react": "4.1.1",
     "@edgio/rum": "7.0.13",
     "@mantine/carousel": "7.12.2",
     "@mantine/core": "7.12.2",
