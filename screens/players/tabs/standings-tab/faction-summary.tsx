@@ -73,7 +73,8 @@ const PlayerStandingsFactionInfo = ({
   return (
     <>
       <Card
-        padding="lg"
+        padding="md"
+        pb="xs"
         radius="md"
         withBorder
         style={{
@@ -151,6 +152,9 @@ const PlayerStandingsFactionInfo = ({
               </Group>
             </div>
           </Stack>
+        </Text>
+        <Text size={"xs"} c="dimmed" ta={"center"}>
+          Current player standings
         </Text>
       </Card>
     </>

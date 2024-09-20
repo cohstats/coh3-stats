@@ -12,6 +12,7 @@ import Link from "next/link";
 import { getLeaderBoardRoute } from "../../../../src/routes";
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import RankIcon from "../../../../components/rank-icon";
+import HelperIcon from "../../../../components/icon/helper";
 
 const PlayerStandingsTable = ({
   faction,
@@ -80,12 +81,19 @@ const PlayerStandingsTable = ({
                   {rankElement}
                   {highestrank > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Top {highestrank}
+                      Best {highestrank}
                     </Text>
                   )}
                 </Stack>
               );
             },
+            footer: (
+              <>
+                <Text size={"xs"} c="dimmed">
+                  <HelperIcon text={"Best Rank Achieved. The best Rank the player ever had."} />
+                </Text>
+              </>
+            ),
           },
           {
             title: "ELO",
@@ -101,12 +109,19 @@ const PlayerStandingsTable = ({
                   <span>{rating}</span>
                   {highestrating > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Top {highestrating}
+                      Best {highestrating}
                     </Text>
                   )}
                 </Stack>
               );
             },
+            footer: (
+              <>
+                <Text size={"xs"} c="dimmed">
+                  <HelperIcon text={"Best ELO Achieved. The best ELO the player ever had."} />
+                </Text>
+              </>
+            ),
           },
           {
             title: "Tier",
