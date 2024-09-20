@@ -1600,61 +1600,78 @@
     "@babel/helper-validator-identifier" "^7.24.7"
     to-fast-properties "^2.0.0"
 
-"@bbob/core@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/core/-/core-3.0.2.tgz#36cf1e02b0b70e5237df7752b9040c6a3a7b397a"
-  integrity sha512-ru0Jd+jPGxiwyMR3hNgYqbVx9sJ4L8Hv3VoqW0svzC+rZpgKnorkCkwxIj2nlq5+z+0C1hS4lho5pn4Vandlag==
+"@bbob/core@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/core/-/core-4.1.1.tgz#509fb073531324b21f06c64926baa2cb822e130f"
+  integrity sha512-cH2Fi+K1R0lKlEcUk+vQbOWP3Lny+A/jyYvrN1pRL71TEdamvbvlb5vTT8dwtOs5hWKFxMsDOcIVchjVaZmiFg==
   dependencies:
-    "@bbob/parser" "^3.0.2"
+    "@bbob/parser" "*"
+    "@bbob/plugin-helper" "*"
+    "@bbob/types" "*"
 
-"@bbob/html@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/html/-/html-3.0.2.tgz#dc4ef3f3346a3b7cd7994b7174bfba364fad96b3"
-  integrity sha512-ILvlTUlmaM89bW7agZOmyiE9O+qY212YeFNWH7s9MzLmwykUMEtq4O5DTzawbLlyOhf2fbP8OHV4ljgGf8Cq0A==
+"@bbob/html@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/html/-/html-4.1.1.tgz#23c4b11e93a02ec26781adac86eec87ec9926829"
+  integrity sha512-u1PsKlsM9os+TI9zqB2jh3CdGuZrNcGCAII/ZocgoW/asu49OXWQrcGHheJqBbeZLRagXMHYTWJ+W/DvDEgZ3g==
   dependencies:
-    "@bbob/core" "^3.0.2"
-    "@bbob/plugin-helper" "^3.0.2"
+    "@bbob/core" "*"
+    "@bbob/plugin-helper" "*"
+    "@bbob/types" "*"
 
-"@bbob/parser@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/parser/-/parser-3.0.2.tgz#e05db310ac498376755ebf7cc945d1a34f9fca64"
-  integrity sha512-3emLznDJWFJky+06AaTMpJ0IjY/mVpPN5+cnzwDKQgZ3wSFPbeEmdJhfh+gbiR30/UCWgwI1Ts+WUNJtUx1eaw==
+"@bbob/parser@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/parser/-/parser-4.1.1.tgz#59c74389f182b5d6a52b66b1e9053c7dde7a0053"
+  integrity sha512-pNSx4WWp9qBpUf8pgfINEAxtN0E829IPNdDioP8JNf2N3enFFrDWdkVq3TnEy2QWyTBhEA+n5ARMM+lSId1w5A==
   dependencies:
-    "@bbob/plugin-helper" "^3.0.2"
+    "@bbob/plugin-helper" "*"
+    "@bbob/types" "*"
 
-"@bbob/plugin-helper@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/plugin-helper/-/plugin-helper-3.0.2.tgz#1bdf978b0e81d9567a4e919351537eaa73863648"
-  integrity sha512-t1wFB3hbUg3pKq7TXk+mnnMcKjX6D29HxTAxU/+2mIbsWXaqgHLfH9FFxhZ8s/sGaLH4qgOSH+lgynpF3zy62Q==
-
-"@bbob/preset-html5@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/preset-html5/-/preset-html5-3.0.2.tgz#547b2b0c422f5bac661c11b5d120fd4d257921c0"
-  integrity sha512-J+c3aOQKD6n1HXGxB+o3tQuRTeqHLXBifBMFY4rT/y19tU3dZySI8TT/07pDqJVeh1PAa1KPaCww7m3O4QS0oQ==
+"@bbob/plugin-helper@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/plugin-helper/-/plugin-helper-4.1.1.tgz#dfd9aee398fa740f209a588a24afbbaf42ff4883"
+  integrity sha512-Ew7V2Yym+Os6wtiR4Se1irudFY5wLSTZGRNy8CSPq3QqBMk1LDi7phQvj8SFfqFCElG/UDciQb07lE7KQpiqbA==
   dependencies:
-    "@bbob/plugin-helper" "^3.0.2"
-    "@bbob/preset" "^3.0.2"
+    "@bbob/types" "*"
 
-"@bbob/preset-react@3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/preset-react/-/preset-react-3.0.2.tgz#25a558ed8e1d20db4a7767bb04f4652d76f4f39e"
-  integrity sha512-c6TavFW5yPmEZ9+98YRK63FC/6R9FHsAsv+sNxMe36O9hHSC9DC9VuypemwkKaa8mUv+BJtFiX4sLqcI/+cq2A==
+"@bbob/preset-html5@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/preset-html5/-/preset-html5-4.1.1.tgz#69fcf778fbce3712dbce248b85e9fe2b2ca532e6"
+  integrity sha512-9dgO0Jui2qYshObGezso9AU30dtFYGg0AfvxDONATkL+1lBpIvwUrL3Xj+gDUotAdRw6QHCaU0x+rplxa0CLnA==
   dependencies:
-    "@bbob/preset-html5" "^3.0.2"
+    "@bbob/plugin-helper" "*"
+    "@bbob/preset" "*"
+    "@bbob/types" "*"
 
-"@bbob/preset@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/preset/-/preset-3.0.2.tgz#9a468989711607f5131202c68dad7b51c0662921"
-  integrity sha512-ZsHowFvvOx1tpem76SjYirsnO3bhaWnuh44Huj82YZBSftCgTaaH5WBleWk0TfNAu1gv44L1mHZyUBDLz3wgEg==
-
-"@bbob/react@3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@bbob/react/-/react-3.0.2.tgz#0d927856cb1e81199994c90ccb6b5a3c9f50b82a"
-  integrity sha512-byksVMCGgSknb1yka7UgNm5ay45D7gOjbpIwOFWGrlgoDksnXuPlEzE1sgpguSvSSR+5dNjKzua8Dqr2bZclXQ==
+"@bbob/preset-react@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/preset-react/-/preset-react-4.1.1.tgz#28854ed6efc0bcb2c4b643361b4790394a1b0134"
+  integrity sha512-5scf+zIz+NSlz6uYYBRLzAqHPOQgWinGPzBXQbh6Mc0qH00tVcL8inhgBSQ/mIHjZ0atI3KQHTudN9bFBQ/iJg==
   dependencies:
-    "@bbob/core" "^3.0.2"
-    "@bbob/html" "^3.0.2"
-    "@bbob/plugin-helper" "^3.0.2"
+    "@bbob/preset-html5" "*"
+    "@bbob/types" "*"
+
+"@bbob/preset@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/preset/-/preset-4.1.1.tgz#de73182838eac8b4257d8c762c58951888ce616c"
+  integrity sha512-Qas/hd1jOoZiux9LyPDStxxbSM/qVyts3ZJmFFHa3uzT0d7mKrnHjnI7qahHdo7Ry8CyrvGDDD8qL2A4bIfMqA==
+  dependencies:
+    "@bbob/plugin-helper" "*"
+    "@bbob/types" "*"
+
+"@bbob/react@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/react/-/react-4.1.1.tgz#c57372a2d4b62de5071a67b62a66cecf90558038"
+  integrity sha512-3nU+sizAYQmxxJeNvVgHpn06SjiTbyNpmLtMjRqUlsvV9Ze5ukqjGfu0u0xqj+kmiD5ULd1AxHFSZixr4+LOfA==
+  dependencies:
+    "@bbob/core" "*"
+    "@bbob/html" "*"
+    "@bbob/plugin-helper" "*"
+    "@bbob/types" "*"
+
+"@bbob/types@*":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bbob/types/-/types-4.1.1.tgz#d10fb0386d3d4040b71c224ecc380ffd38d87a6a"
+  integrity sha512-QnA0S8YpnEUFBV8KbU5DnqydDJaIFyxp656sWGLtvHqkxNGOOSRWc1m1YqFqfrHM7tmphr4AQybFeHqE1a2/2w==
 
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"

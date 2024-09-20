@@ -1,9 +1,9 @@
 import { COH3SteamNewsType, NewsItem } from "../../src/apis/steam-api";
 
-// @ts-ignore
-import BBCode from "@bbob/react/lib";
-// @ts-ignore
-import reactPreset from "@bbob/preset-react/lib";
+import BBCode from "@bbob/react";
+
+import reactPreset from "@bbob/preset-react";
+
 import React from "react";
 import {
   Anchor,
