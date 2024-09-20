@@ -1,0 +1,18 @@
+.row-indicator {
+  position: absolute; /* Ensure the parent element has a positioning context */
+  width: 40px; /* We need to be big, so we can nice radius */
+  height: 65px;
+  left: -34px;
+  z-index: 1;
+  border-radius: 10%;
+  /*This is magic constant, I don't know why this makes it int he middle*/
+  margin-top: -23px;
+}
+
+.win-indicator {
+  background-color: var(--mantine-color-blue-filled); /* Background color of the rectangle */
+}
+
+.loss-indicator {
+  background-color: var(--mantine-color-red-filled); /* Background color of the rectangle */
+}

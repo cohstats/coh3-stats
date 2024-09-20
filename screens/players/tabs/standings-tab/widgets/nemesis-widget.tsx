@@ -1,5 +1,5 @@
 import { ProcessedCOHPlayerStats } from "../../../../../src/coh3/coh3-types";
-import { Anchor, Card, Group, Title, Tooltip, Flex, Text } from "@mantine/core";
+import { Anchor, Card, Group, Title, Flex, Text } from "@mantine/core";
 import React from "react";
 import { DataTable } from "mantine-datatable";
 import Link from "next/link";
@@ -51,11 +51,9 @@ const NemesisWidget = ({
                     component={Link}
                     href={`/players/${profile_id}`}
                   >
-                    <Tooltip label={alias}>
-                      <Text span size="sm">
-                        <EllipsisText text={alias} noWrap={false} maxWidth={"12ch"} />
-                      </Text>
-                    </Tooltip>
+                    <Text span size="sm">
+                      <EllipsisText text={alias} noWrap={false} maxWidth={"12ch"} />
+                    </Text>
                   </Anchor>
                 );
               },

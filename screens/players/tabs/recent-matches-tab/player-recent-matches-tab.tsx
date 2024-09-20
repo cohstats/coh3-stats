@@ -28,6 +28,8 @@ import { useLocalStorage } from "@mantine/hooks";
 import RenderPlayers from "./matches-table/render-players";
 import RenderMap from "./matches-table/render-map";
 
+import classes from "./matches-table.module.css";
+
 /**
  * Timeago is causing issues with SSR, move to client side
  */
@@ -184,6 +186,9 @@ const PlayerRecentMatchesTab = ({
         records={sortedData}
         // define columns
         sortStatus={sortStatus}
+        // rowClassName={(record)=>{
+        //   return classes["row-custom-styles"]
+        // }}
         onSortStatusChange={setSortStatus}
         columns={[
           {
@@ -231,16 +236,26 @@ const PlayerRecentMatchesTab = ({
 
               if (isPlayerVictorious(record as unknown as ProcessedMatch, profileID)) {
                 return (
-                  <Badge color={"blue"} variant="filled" w={"16ch"}>
-                    VICTORY +{ratingChange}
-                  </Badge>
+                  <div>
+                    <div
+                      className={`${classes["row-indicator"]} ${classes["win-indicator"]}`}
+                    ></div>
+                    <Badge color={"blue"} variant="filled" w={"16ch"}>
+                      VICTORY +{ratingChange}
+                    </Badge>
+                  </div>
                 );
               } else {
                 if (playerResult?.resulttype === 0) {
                   return (
-                    <Badge color={"red"} variant="filled" w={"16ch"}>
-                      DEFEAT {ratingChange}
-                    </Badge>
+                    <>
+                      <div
+                        className={`${classes["row-indicator"]} ${classes["loss-indicator"]}`}
+                      ></div>
+                      <Badge color={"red"} variant="filled" w={"16ch"}>
+                        DEFEAT {ratingChange}
+                      </Badge>
+                    </>
                   );
                 } else if (playerResult?.resulttype === 4) {
                   return (
