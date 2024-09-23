@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  Table,
-  ScrollArea,
-  UnstyledButton,
   Group,
-  Text,
-  Center,
   TextInput,
   Image,
   Grid,
@@ -13,24 +8,18 @@ import {
   Flex,
   Space,
   HoverCard,
-  Stack,
-  Checkbox,
   Tooltip,
   ActionIcon,
+  Button,
+  Stack,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import {
-  IconAdjustments,
-  IconChevronDown,
-  IconChevronUp,
-  IconSearch,
-  IconSelector,
-} from "@tabler/icons-react";
+import { IconAdjustments, IconSearch } from "@tabler/icons-react";
 
 import { getFactionIcon, WeaponClass } from "../../src/unitStats";
 import { getIconsPathOnCDN, internalSlash } from "../../src/utils";
 
-import classes from "./UnitTable.module.css";
+import { DataTable, DataTableColumn, useDataTableColumns } from "mantine-datatable";
 
 export const WeaponTableColumnKeys = [
   "id", // it's used for key in the table
@@ -77,12 +66,12 @@ export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[nu
   accuracy_far: number;
   moving_accuracy_multiplier: number | "-";
   moving_cooldown_multiplier: number | "-";
-  rpm_near: number;
-  rpm_mid: number;
-  rpm_far: number;
-  range_near: number;
-  range_mid: number;
-  range_far: number;
+  rpm_near: number | "-";
+  rpm_mid: number | "-";
+  rpm_far: number | "-";
+  range_near: number | "-";
+  range_mid: number | "-";
+  range_far: number | "-";
   pen_near: number | "-";
   pen_mid: number | "-";
   pen_far: number | "-";
@@ -96,306 +85,173 @@ export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[nu
   aoe_damage_near: number;
 }
 
-interface tableColSetup {
-  key: (typeof WeaponTableColumnKeys)[number];
-  sortKey: (typeof WeaponTableColumnKeys)[number];
-  title: string;
-  visible: boolean;
-  isIcon: boolean;
-  isSymbol: boolean; // For the weapon symbols.
-  customVisual: boolean;
-  canFilter: boolean;
-}
-
-const tableSetup: tableColSetup[] = [
+const TableColumns: DataTableColumn<WeaponTableRow>[] = [
   {
-    key: "id",
-    sortKey: "id",
+    accessor: "id",
     title: "ID",
-    visible: false,
-    isIcon: false,
-    customVisual: false,
-    canFilter: true,
-    isSymbol: false,
+    toggleable: true,
+    defaultToggle: false,
   },
   {
-    key: "faction_icon",
+    accessor: "faction_icon",
     sortKey: "faction",
     title: "Faction",
-    visible: true,
-    isIcon: true,
-    customVisual: false,
-    canFilter: true,
-    isSymbol: false,
+    toggleable: true,
+    render: (record) => {
+      return (
+        <Image
+          width={60}
+          height={40}
+          key={`${record.id}-faction`}
+          src={record.faction_icon}
+          fit="contain"
+          alt={record.type}
+        />
+      );
+    },
   },
   {
-    key: "type_icon",
+    accessor: "type_icon",
     sortKey: "type",
     title: "Type",
-    visible: true,
-    isIcon: true,
-    customVisual: false,
-    canFilter: true,
-    isSymbol: false,
+    toggleable: true,
+    render: (record) => {
+      return (
+        <Image
+          width={60}
+          height={40}
+          key={`${record.id}-type`}
+          src={record.type_icon}
+          fit="contain"
+          alt={record.type}
+        />
+      );
+    },
   },
   {
-    key: "icon_name",
+    accessor: "icon_name",
     sortKey: "id",
     title: "Symbol",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: true,
-    isSymbol: true,
+    toggleable: true,
+    render: (record) => {
+      return (
+        <Image
+          key={`${record.id}-icon`}
+          height={40}
+          src={record.icon_name}
+          fit="scale-down"
+          alt={record.icon_name || record.id}
+        />
+      );
+    },
   },
   {
-    key: "screen_name",
-    sortKey: "screen_name",
+    accessor: "screen_name",
     title: "Name",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: true,
-    isSymbol: false,
+    toggleable: true,
   },
   {
-    key: "moving_accuracy_multiplier",
-    sortKey: "moving_accuracy_multiplier",
+    accessor: "moving_accuracy_multiplier",
     title: "Moving Accuracy Multiplier",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "moving_cooldown_multiplier",
-    sortKey: "moving_cooldown_multiplier",
+    accessor: "moving_cooldown_multiplier",
     title: "Moving Cooldown Multiplier",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "accuracy_near",
-    sortKey: "accuracy_near",
+    accessor: "accuracy_near",
     title: "Accuracy (Near)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "accuracy_mid",
-    sortKey: "accuracy_mid",
+    accessor: "accuracy_mid",
     title: "Accuracy (Mid)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "accuracy_far",
-    sortKey: "accuracy_far",
+    accessor: "accuracy_far",
     title: "Accuracy (Far)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "rpm_near",
-    sortKey: "rpm_near",
+    accessor: "rpm_near",
     title: "RPM (Near)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "rpm_mid",
-    sortKey: "rpm_mid",
+    accessor: "rpm_mid",
     title: "RPM (Mid)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "rpm_far",
-    sortKey: "rpm_far",
+    accessor: "rpm_far",
     title: "RPM (Far)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "scatter_near",
-    sortKey: "scatter_near",
+    accessor: "scatter_near",
     title: "Scatter (Near)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "scatter_mid",
-    sortKey: "scatter_mid",
+    accessor: "scatter_mid",
     title: "Scatter (Mid)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "scatter_far",
-    sortKey: "scatter_far",
+    accessor: "scatter_far",
     title: "Scatter (Far)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "pen_near",
-    sortKey: "pen_near",
+    accessor: "pen_near",
     title: "Pen (Near)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "pen_mid",
-    sortKey: "pen_mid",
+    accessor: "pen_mid",
     title: "Pen (Mid)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "pen_far",
-    sortKey: "pen_far",
+    accessor: "pen_far",
     title: "Pen (Far)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "damage_min",
-    sortKey: "damage_min",
+    accessor: "damage_min",
     title: "Damage (Min)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
   {
-    key: "damage_max",
-    sortKey: "damage_max",
+    accessor: "damage_max",
     title: "Damage (Max)",
-    visible: true,
-    isIcon: false,
-    customVisual: false,
-    canFilter: false,
-    isSymbol: false,
+    toggleable: true,
+    width: 80,
   },
 ];
-
-const getCellVisual = (colSetup: tableColSetup, unit: WeaponTableRow) => {
-  if (colSetup.isIcon) {
-    return (
-      <Image width={60} height={40} src={unit[colSetup.key]} fit="contain" alt={unit.type} />
-    );
-  }
-
-  if (colSetup.isSymbol) {
-    return (
-      <Image
-        height={40}
-        src={unit[colSetup.key]}
-        fit="scale-down"
-        alt={unit.icon_name || unit.id}
-      />
-    );
-  }
-
-  if (!colSetup.customVisual) {
-    // if (colSetup.key === "screen_name") {
-    //   return (
-    //     <Tooltip label={(unit as any)[colSetup.key]}>
-    //       <Anchor c="orange" component={Link} href={getExplorerUnitRoute(unit.faction, unit.id)}>
-    //         <Text style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
-    //           {unit[colSetup.key]}
-    //         </Text>
-    //       </Anchor>
-    //     </Tooltip>
-    //   );
-    // }
-
-    let content = unit[colSetup.key];
-    content = content ? content : "-";
-
-    return <Text>{content}</Text>;
-  }
-
-  // switch (colSetup.key) {
-  //   case "dps_preview":
-  //     return unit.dps_preview.length > 0 ? Math.floor(unit.dps_preview[0].y) : 0;
-
-  //   default:
-  //     break;
-  // }
-};
 
 let tableData: WeaponTableRow[] = [];
 
 interface inputProps {
   inputData: WeaponTableRow[];
-}
-
-interface ThProps {
-  children: React.ReactNode;
-  reversed: boolean;
-  sorted: boolean;
-
-  onSort(): void;
-}
-
-function Th({ children, reversed, sorted, onSort }: ThProps) {
-  const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
-  return (
-    <th>
-      <UnstyledButton px={0} onClick={onSort} className={classes.control}>
-        <Flex justify="space-around" align="center">
-          <Text fw={500} fz="sm">
-            {children}
-          </Text>
-          <Center>
-            <Icon size="1rem" stroke={1.5} />
-          </Center>
-        </Flex>
-      </UnstyledButton>
-    </th>
-  );
 }
 
 function filterData(
@@ -462,59 +318,6 @@ const applyFilter = (
   property: keyof WeaponTableRow,
 ) => {
   return data.filter((item) => filter.includes(item[property] as string) || filter.length == 0);
-};
-
-const mapRow = (unit: WeaponTableRow) => {
-  const rows = [];
-
-  for (const colSetup of tableSetup) {
-    if (colSetup.visible) rows.push(<td key={colSetup.key}>{getCellVisual(colSetup, unit)}</td>);
-  }
-  return <Table.Tr key={unit.id}>{rows}</Table.Tr>;
-};
-
-const getTableHeader = (
-  sortBy: keyof WeaponTableRow,
-  reverseSortDirection: boolean,
-  setSorting: any,
-) => {
-  const tableHeader = [];
-  for (const colSetup of tableSetup) {
-    if (colSetup.visible)
-      tableHeader.push(
-        <Th
-          sorted={sortBy === colSetup.sortKey}
-          reversed={reverseSortDirection}
-          onSort={() => setSorting(colSetup.sortKey)}
-          key={colSetup.key}
-        >
-          {colSetup.title}
-        </Th>,
-      );
-  }
-
-  return tableHeader;
-};
-
-const getTableCustomizing = (onTableLayoutChange: any) => {
-  const cols = [];
-  for (const setup of tableSetup) {
-    const checked = setup.visible;
-    cols.push(
-      <Checkbox
-        checked={checked}
-        onChange={() => onTableLayoutChange(setup)}
-        title={setup.title}
-        label={setup.title}
-        key={setup.key}
-      />,
-
-      //   <SimpleGrid cols={2}>
-      //  <div> {setup.title}</div>
-      //   </SimpleGrid>
-    );
-  }
-  return cols;
 };
 
 const generateFactionFilterButtons = (callback: (...args: any) => void, unitFilter: string[]) => {
@@ -643,16 +446,21 @@ export const getWeaponClassIcon = (type: (typeof WeaponClass)[number]) => {
 export const WeaponTable = ({ inputData }: inputProps) => {
   tableData = inputData;
 
+  const toggleId = "weapon-toggleable-id";
+
   const [search, setSearch] = useState("");
   const [factionFilter, setFactionFilter] = useState([] as string[]);
   const [typeFilter, setTypeFilter] = useState([] as string[]);
 
-  const [updateFlag, updateTable] = useState(true);
   const [sortedData, setSortedData] = useState(tableData);
-  const [sortBy, setSortBy] = useState<keyof WeaponTableRow | null>(null);
-  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const [sortBy] = useState<keyof WeaponTableRow | null>(null);
+  const [reverseSortDirection] = useState(false);
 
   const [debouncedSearch] = useDebouncedValue(search, 600);
+  const { effectiveColumns, resetColumnsToggle } = useDataTableColumns<WeaponTableRow>({
+    key: toggleId,
+    columns: TableColumns,
+  });
 
   useEffect(() => {
     setSortedData(
@@ -684,29 +492,6 @@ export const WeaponTable = ({ inputData }: inputProps) => {
     );
   }
 
-  const setSorting = (field: keyof WeaponTableRow) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(
-      sortData(tableData, { sortBy: field, reversed, search, factionFilter, typeFilter }),
-    );
-  };
-
-  const onTableLayoutChange = (colSetup: tableColSetup) => {
-    colSetup.visible = !colSetup.visible;
-    refresh();
-  };
-
-  const refresh = () => {
-    updateTable(!updateFlag);
-    return;
-  };
-
-  const rows = sortedData.map((unit) => mapRow(unit));
-
-  const cols = getTableHeader(sortBy as keyof WeaponTableRow, reverseSortDirection, setSorting);
-
   return (
     <div>
       <Grid>
@@ -726,7 +511,7 @@ export const WeaponTable = ({ inputData }: inputProps) => {
                 <HoverCard.Dropdown>
                   <Stack mb={12}>
                     Table columns:
-                    {getTableCustomizing(onTableLayoutChange)}
+                    <Button onClick={resetColumnsToggle}>Reset</Button>
                   </Stack>
                 </HoverCard.Dropdown>
               </HoverCard>
@@ -758,30 +543,18 @@ export const WeaponTable = ({ inputData }: inputProps) => {
           />
         </Group>
       </div>
-      <ScrollArea type="always">
-        <div style={{ minHeight: 7000 }}>
-          <Table miw={700} highlightOnHover={true} striped={true}>
-            <Table.Thead>
-              <Table.Tr>
-                <>{cols}</>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {rows.length > 0 ? (
-                rows
-              ) : (
-                <Table.Tr key="no_row">
-                  {/* <td colSpan={Object.keys(data[0]).length}>
-                <Text weight={500} align="center">
-                  Nothing found
-                </Text>
-              </td> */}
-                </Table.Tr>
-              )}
-            </Table.Tbody>
-          </Table>
-        </div>
-      </ScrollArea>
+      <div>
+        <DataTable
+          idAccessor={"id"}
+          highlightOnHover
+          height={600}
+          miw={700}
+          striped={true}
+          storeColumnsKey={toggleId}
+          columns={effectiveColumns}
+          records={sortedData}
+        ></DataTable>
+      </div>
     </div>
   );
 };
