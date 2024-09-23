@@ -376,6 +376,7 @@ interface ThProps {
   children: React.ReactNode;
   reversed: boolean;
   sorted: boolean;
+
   onSort(): void;
 }
 
@@ -707,7 +708,7 @@ export const WeaponTable = ({ inputData }: inputProps) => {
   const cols = getTableHeader(sortBy as keyof WeaponTableRow, reverseSortDirection, setSorting);
 
   return (
-    <ScrollArea>
+    <div>
       <Grid>
         <Grid.Col span={10}>
           <Title order={2}>Company of Heroes 3 - Weapons Browser </Title>
@@ -757,28 +758,30 @@ export const WeaponTable = ({ inputData }: inputProps) => {
           />
         </Group>
       </div>
-      <div style={{ minHeight: 7000 }}>
-        <Table miw={700} highlightOnHover={true} striped={true}>
-          <Table.Thead>
-            <Table.Tr>
-              <>{cols}</>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {rows.length > 0 ? (
-              rows
-            ) : (
-              <Table.Tr key="no_row">
-                {/* <td colSpan={Object.keys(data[0]).length}>
+      <ScrollArea type="always">
+        <div style={{ minHeight: 7000 }}>
+          <Table miw={700} highlightOnHover={true} striped={true}>
+            <Table.Thead>
+              <Table.Tr>
+                <>{cols}</>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {rows.length > 0 ? (
+                rows
+              ) : (
+                <Table.Tr key="no_row">
+                  {/* <td colSpan={Object.keys(data[0]).length}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>
               </td> */}
-              </Table.Tr>
-            )}
-          </Table.Tbody>
-        </Table>
-      </div>
-    </ScrollArea>
+                </Table.Tr>
+              )}
+            </Table.Tbody>
+          </Table>
+        </div>
+      </ScrollArea>
+    </div>
   );
 };
