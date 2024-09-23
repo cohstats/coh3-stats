@@ -55,6 +55,10 @@ export const getChallengesRoute = () => {
   return encodeURI(`/explorer/challenges`);
 };
 
+export const getWeaponsRoute = () => {
+  return encodeURI(`/explorer/weapons`);
+};
+
 /**
  * @param race Notice the stupid afrika_korps and british_africa, they even have typos in the name. Relic :facepalm:
  * @param unitId
