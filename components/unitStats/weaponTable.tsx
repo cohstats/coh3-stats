@@ -1,25 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  Group,
-  TextInput,
-  Image,
-  Grid,
-  Title,
-  Flex,
-  Space,
-  HoverCard,
-  Tooltip,
-  ActionIcon,
-  Button,
-  Stack,
-} from "@mantine/core";
+import { Group, TextInput, Image, Title, Space, Tooltip, ActionIcon } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { IconAdjustments, IconSearch } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 
 import { getFactionIcon, WeaponClass } from "../../src/unitStats";
 import { getIconsPathOnCDN, internalSlash } from "../../src/utils";
 
-import { DataTable, DataTableColumn, useDataTableColumns } from "mantine-datatable";
+import { DataTable, DataTableColumnGroup } from "mantine-datatable";
 
 export const WeaponTableColumnKeys = [
   "id", // it's used for key in the table
@@ -61,7 +48,8 @@ export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[nu
   type_icon: string;
   icon_name: string | null;
   screen_name: string;
-  accuracy_near: number;
+  // WTF is accuracy "near" :D
+  accuracy_near: number | "near";
   accuracy_mid: number;
   accuracy_far: number;
   moving_accuracy_multiplier: number | "-";
@@ -85,166 +73,235 @@ export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[nu
   aoe_damage_near: number;
 }
 
-const TableColumns: DataTableColumn<WeaponTableRow>[] = [
+const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
   {
-    accessor: "id",
-    title: "ID",
-    toggleable: true,
-    defaultToggle: false,
+    id: "Weapon info",
+    columns: [
+      {
+        accessor: "id",
+        title: "ID",
+        // toggleable: true,
+        defaultToggle: false,
+        hidden: true,
+      },
+      {
+        accessor: "faction_icon",
+        sortKey: "faction",
+        title: "Faction",
+        // toggleable: true,
+        render: (record) => {
+          return (
+            <Image
+              width={60}
+              height={40}
+              key={`${record.id}-faction`}
+              src={record.faction_icon}
+              fit="contain"
+              alt={record.type}
+            />
+          );
+        },
+      },
+      {
+        accessor: "type_icon",
+        sortKey: "type",
+        title: "Type",
+        width: 60,
+        // toggleable: true,
+        render: (record) => {
+          return (
+            <Image
+              width={60}
+              height={40}
+              key={`${record.id}-type`}
+              src={record.type_icon}
+              fit="contain"
+              alt={record.type}
+            />
+          );
+        },
+      },
+      {
+        accessor: "icon_name",
+        sortKey: "id",
+        title: "Symbol",
+        // toggleable: true,
+        render: (record) => {
+          return (
+            <Image
+              key={`${record.id}-icon`}
+              height={40}
+              src={record.icon_name}
+              fit="scale-down"
+              alt={record.icon_name || record.id}
+            />
+          );
+        },
+      },
+      {
+        accessor: "screen_name",
+        title: "Name",
+        // toggleable: true,
+      },
+    ],
   },
   {
-    accessor: "faction_icon",
-    sortKey: "faction",
-    title: "Faction",
-    toggleable: true,
-    render: (record) => {
-      return (
-        <Image
-          width={60}
-          height={40}
-          key={`${record.id}-faction`}
-          src={record.faction_icon}
-          fit="contain"
-          alt={record.type}
-        />
-      );
-    },
+    id: "Moving Multiplayer",
+    columns: [
+      {
+        accessor: "moving_accuracy_multiplier",
+        title: (
+          <>
+            <Tooltip label={"Accuracy"}>
+              <span>Acc</span>
+            </Tooltip>
+          </>
+        ),
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "moving_cooldown_multiplier",
+        title: (
+          <>
+            <Tooltip label={"Cooldown"}>
+              <span>CD</span>
+            </Tooltip>
+          </>
+        ),
+        // toggleable: true,
+        // width: 60,
+      },
+    ],
   },
   {
-    accessor: "type_icon",
-    sortKey: "type",
-    title: "Type",
-    toggleable: true,
-    render: (record) => {
-      return (
-        <Image
-          width={60}
-          height={40}
-          key={`${record.id}-type`}
-          src={record.type_icon}
-          fit="contain"
-          alt={record.type}
-        />
-      );
-    },
+    id: "Accuracy",
+    columns: [
+      {
+        accessor: "accuracy_near",
+        title: "Near",
+        // toggleable: true,
+        // width: 80,
+        render: (record) => {
+          // limit to 3 decimal places, but don't show them when there are none
+          if (record.accuracy_near === "near") return record.accuracy_near;
+          return parseFloat(record.accuracy_near.toFixed(3)).toString();
+        },
+      },
+      {
+        accessor: "accuracy_mid",
+        title: "Mid",
+        // toggleable: true,
+        // width: 80,
+        render: (record) => {
+          // limit to 3 decimal places, but don't show them when there are none
+          return parseFloat(record.accuracy_mid?.toFixed(3)).toString();
+        },
+      },
+      {
+        accessor: "accuracy_far",
+        title: "Far",
+        // toggleable: true,
+        // width: 80,
+        render: (record) => {
+          // limit to 3 decimal places, but don't show them when there are none
+          return parseFloat(record.accuracy_far?.toFixed(3)).toString();
+        },
+      },
+    ],
   },
   {
-    accessor: "icon_name",
-    sortKey: "id",
-    title: "Symbol",
-    toggleable: true,
-    render: (record) => {
-      return (
-        <Image
-          key={`${record.id}-icon`}
-          height={40}
-          src={record.icon_name}
-          fit="scale-down"
-          alt={record.icon_name || record.id}
-        />
-      );
-    },
+    id: "RPM",
+    columns: [
+      {
+        accessor: "rpm_near",
+        title: "Near",
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "rpm_mid",
+        title: "Mid",
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "rpm_far",
+        title: "Far",
+        // toggleable: true,
+        // width: 80,
+      },
+    ],
   },
   {
-    accessor: "screen_name",
-    title: "Name",
-    toggleable: true,
+    id: "Scatter",
+    columns: [
+      {
+        accessor: "scatter_near",
+        title: "Near",
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "scatter_mid",
+        title: "Mid",
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "scatter_far",
+        title: "Far",
+        // toggleable: true,
+        // width: 80,
+      },
+    ],
   },
   {
-    accessor: "moving_accuracy_multiplier",
-    title: "Moving Accuracy Multiplier",
-    toggleable: true,
-    width: 80,
+    id: "Penetration",
+    columns: [
+      {
+        accessor: "pen_near",
+        title: "Near",
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "pen_mid",
+        title: "Mid",
+        // toggleable: true,
+        // width: 80,
+      },
+      {
+        accessor: "pen_far",
+        title: "Far",
+        // toggleable: true,
+        // width: 80,
+      },
+    ],
   },
   {
-    accessor: "moving_cooldown_multiplier",
-    title: "Moving Cooldown Multiplier",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "accuracy_near",
-    title: "Accuracy (Near)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "accuracy_mid",
-    title: "Accuracy (Mid)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "accuracy_far",
-    title: "Accuracy (Far)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "rpm_near",
-    title: "RPM (Near)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "rpm_mid",
-    title: "RPM (Mid)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "rpm_far",
-    title: "RPM (Far)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "scatter_near",
-    title: "Scatter (Near)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "scatter_mid",
-    title: "Scatter (Mid)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "scatter_far",
-    title: "Scatter (Far)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "pen_near",
-    title: "Pen (Near)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "pen_mid",
-    title: "Pen (Mid)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "pen_far",
-    title: "Pen (Far)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "damage_min",
-    title: "Damage (Min)",
-    toggleable: true,
-    width: 80,
-  },
-  {
-    accessor: "damage_max",
-    title: "Damage (Max)",
-    toggleable: true,
-    width: 80,
+    id: "Damage",
+    columns: [
+      {
+        accessor: "damage_min",
+        title: "Min / Max",
+        render: (record) => {
+          return `${record.damage_min} / ${record.damage_max}`;
+        },
+      },
+      // {
+      //   accessor: "damage_min",
+      //   title: "Min",
+      //   // toggleable: true,
+      //   // width: 80,
+      // },
+      // {
+      //   accessor: "damage_max",
+      //   title: "Max",
+      //   // toggleable: true,
+      //   // width: 80,
+      // },
+    ],
   },
 ];
 
@@ -443,24 +500,34 @@ export const getWeaponClassIcon = (type: (typeof WeaponClass)[number]) => {
   return internalSlash(icon);
 };
 
+const PAGE_SIZE = 150;
+
 export const WeaponTable = ({ inputData }: inputProps) => {
   tableData = inputData;
 
   const toggleId = "weapon-toggleable-id";
+
+  const [page, setPage] = useState(1);
 
   const [search, setSearch] = useState("");
   const [factionFilter, setFactionFilter] = useState([] as string[]);
   const [typeFilter, setTypeFilter] = useState([] as string[]);
 
   const [sortedData, setSortedData] = useState(tableData);
+  const [pagedData, setPagedData] = useState(sortedData.slice(0, PAGE_SIZE));
+
   const [sortBy] = useState<keyof WeaponTableRow | null>(null);
   const [reverseSortDirection] = useState(false);
 
   const [debouncedSearch] = useDebouncedValue(search, 600);
-  const { effectiveColumns, resetColumnsToggle } = useDataTableColumns<WeaponTableRow>({
-    key: toggleId,
-    columns: TableColumns,
-  });
+  // const { effectiveColumns, resetColumnsToggle } = useDataTableColumns<WeaponTableRow>({
+  //   key: toggleId,
+  //   columns: TableColumns,
+  // });
+
+  useEffect(() => {
+    setPagedData(sortedData.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE));
+  }, [sortedData, page]);
 
   useEffect(() => {
     setSortedData(
@@ -494,31 +561,8 @@ export const WeaponTable = ({ inputData }: inputProps) => {
 
   return (
     <div>
-      <Grid>
-        <Grid.Col span={10}>
-          <Title order={2}>Company of Heroes 3 - Weapons Browser </Title>
-        </Grid.Col>
-        <Grid.Col span={2}>
-          <Flex justify="flex-end" wrap="wrap">
-            <Space h="2rem" />
-            <Group>
-              <HoverCard shadow="xl" width={150}>
-                <HoverCard.Target>
-                  <div>
-                    <IconAdjustments opacity={0.6} />
-                  </div>
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                  <Stack mb={12}>
-                    Table columns:
-                    <Button onClick={resetColumnsToggle}>Reset</Button>
-                  </Stack>
-                </HoverCard.Dropdown>
-              </HoverCard>
-            </Group>
-          </Flex>
-        </Grid.Col>
-      </Grid>
+      <Title order={2}>Company of Heroes 3 - Weapons Browser </Title>
+
       <Space h={"md"} />
       <div>
         <Group justify={"space-between"}>
@@ -545,15 +589,24 @@ export const WeaponTable = ({ inputData }: inputProps) => {
       </div>
       <div>
         <DataTable
+          withTableBorder={true}
+          borderRadius="md"
           idAccessor={"id"}
           highlightOnHover
+          withColumnBorders
           height={600}
           miw={700}
           striped={true}
           storeColumnsKey={toggleId}
-          columns={effectiveColumns}
-          records={sortedData}
-        ></DataTable>
+          groups={TableGroups}
+          // columns={effectiveColumns}
+          records={pagedData}
+          verticalSpacing={4}
+          totalRecords={sortedData.length}
+          recordsPerPage={PAGE_SIZE}
+          page={page}
+          onPageChange={(p) => setPage(p)}
+        />
       </div>
     </div>
   );
