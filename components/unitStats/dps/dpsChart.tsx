@@ -345,8 +345,14 @@ export const DpsChart = (props: IDPSProps) => {
   }
 
   // synchronize selection field with presented units
-  function onSelectionChange(selection: string, index: number) {
-    // add new units
+  function onSelectionChange(selection: string | null, index: number) {
+    if (!selection) {
+      // @ts-ignore Because we can not pass an empty object, otherwise we would
+      // need to put `.?` safe accessor everywhere.
+      activeData[index] = undefined;
+      setRerender(!rerender);
+      return;
+    }
 
     AnalyticsDPSExplorerSquadSelection(selection);
 

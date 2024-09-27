@@ -116,15 +116,13 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
 };
 
 interface ISearchProps {
-  searchData: any[];
-
-  onSelect(selection: any, position: number): any;
-
+  searchData: CustomizableUnit[];
+  onSelect(selection: string | null, position: number): any;
   position: number;
 }
 
 export const UnitSearch = (props: ISearchProps) => {
-  function onSelectionChange(id: string) {
+  function onSelectionChange(id: string | null) {
     //const selectedItems: any[] = [];
 
     // remove last element so we have never more than 2
@@ -148,12 +146,13 @@ export const UnitSearch = (props: ISearchProps) => {
       clearable
       renderOption={renderSelectOption}
       data={props.searchData}
+      defaultValue={null}
       // data = {[]}
       // valueComponent={Value}
       searchable
       maxDropdownHeight={600}
       nothingFoundMessage="Nobody here. War is over!"
-      onChange={(value) => onSelectionChange(value as string)}
+      onChange={(value) => onSelectionChange(value)}
     />
   );
 };
