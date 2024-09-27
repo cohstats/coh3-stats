@@ -33,11 +33,11 @@ import {
   Select,
   LoadingOverlay,
   Center,
+  Button,
 } from "@mantine/core";
 import { UnitSearch } from "./unitSearch";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
-// import slash from "slash";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
 import { IconAdjustments } from "@tabler/icons-react";
@@ -264,6 +264,7 @@ export const DpsChart = (props: IDPSProps) => {
   // const [isStaircase, setStaircase] = useState(false);
   const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
+  const [allowAllWeapons, setAllowAllWeapons] = useState(false);
 
   // const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -344,8 +345,14 @@ export const DpsChart = (props: IDPSProps) => {
   }
 
   // synchronize selection field with presented units
-  function onSelectionChange(selection: string, index: number) {
-    // add new units
+  function onSelectionChange(selection: string | null, index: number) {
+    if (!selection) {
+      // @ts-ignore Because we can not pass an empty object, otherwise we would
+      // need to put `.?` safe accessor everywhere.
+      activeData[index] = undefined;
+      setRerender(!rerender);
+      return;
+    }
 
     AnalyticsDPSExplorerSquadSelection(selection);
 
@@ -448,8 +455,6 @@ export const DpsChart = (props: IDPSProps) => {
   return (
     <>
       <Container>
-        {/* */}
-
         <Grid>
           <Grid.Col span={10}>
             <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
@@ -467,20 +472,43 @@ export const DpsChart = (props: IDPSProps) => {
               <Group>
                 <HoverCard width={400} shadow="md">
                   <HoverCard.Target>
-                    <div>
-                      <IconAdjustments opacity={0.6} />
-                    </div>
+                    <Button
+                      variant="default"
+                      leftSection={<IconAdjustments opacity={0.6} />}
+                      size="xs"
+                    >
+                      Settings
+                    </Button>
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
-                    <Stack mb={12}>
-                      <Space />
-                      <Text size="sm">Toggle DPS mode.</Text>
+                    <Stack>
+                      <Text size="md">Advanced Options</Text>
                       <Switch
                         label={"DPS / Target Health (%)"}
                         checked={showDpsHealth}
                         onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
                         //onClick={() => setCurve(isCurve)}
-                        size="xs"
+                        // size="xs"
+                      />
+                      <Space />
+                      <Switch
+                        label={
+                          <Stack gap="0">
+                            <>Allow All Weapons</>
+                            <Text size="xs" c="dimmed">
+                              Deselects current units
+                            </Text>
+                          </Stack>
+                        }
+                        checked={allowAllWeapons}
+                        onChange={(event) => {
+                          setAllowAllWeapons(event.currentTarget.checked);
+                          // Reset selected units so it loads the units
+                          onSelectionChange(null, 0);
+                          onSelectionChange(null, 1);
+                        }}
+                        //onClick={() => setCurve(isCurve)}
+                        // size="xs"
                       />
                     </Stack>
                   </HoverCard.Dropdown>
@@ -554,6 +582,7 @@ export const DpsChart = (props: IDPSProps) => {
                       index={0}
                       ebps={ebpsData1}
                       weapons={weaponData1}
+                      allowAllWeapons={allowAllWeapons}
                     />
                   </Box>
                 )}
@@ -623,6 +652,7 @@ export const DpsChart = (props: IDPSProps) => {
                       index={1}
                       ebps={ebpsData2}
                       weapons={weaponData2}
+                      allowAllWeapons={allowAllWeapons}
                     />
                   </Box>
                 )}

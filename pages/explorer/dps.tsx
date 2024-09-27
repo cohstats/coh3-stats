@@ -20,7 +20,7 @@ interface DpsProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
-  locstring: any;
+  locstring: Record<string, string | null>;
   generalInfo: any;
   properties: any;
 }

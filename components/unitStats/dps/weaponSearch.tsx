@@ -1,4 +1,5 @@
 import { Group, Text, Image, Select, SelectProps } from "@mantine/core";
+import { WeaponMember } from "../../../src/unitStats/dpsCommon";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
@@ -33,8 +34,8 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
 };
 
 interface ISearchProps {
-  searchData: any[];
-  onSelect(selection: any): any;
+  searchData: WeaponMember[];
+  onSelect(selection: WeaponMember): any;
 }
 
 export const WeaponSearch = (props: ISearchProps) => {
@@ -43,7 +44,7 @@ export const WeaponSearch = (props: ISearchProps) => {
   function onSelectionChange(id: string) {
     //selectedLabels = id; // remember what is selected so we can set it as long dropdown is open
     //id.forEach((selection) => {
-    const item = props.searchData.find((item) => item.value == id);
+    const item = props.searchData.find((item) => item.weapon_id == id);
     if (item) props.onSelect(item);
     //});
   }

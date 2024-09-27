@@ -23,6 +23,7 @@ import {
   CustomizableUnit,
   getSbpsUpgrades,
   getSbpsWeapons,
+  mapWeaponMember,
   resolveFactionLinkid,
   WeaponMember,
 } from "../../../src/unitStats/dpsCommon";
@@ -33,10 +34,11 @@ import { HitpointCard } from "../../unit-cards/hitpoints-card";
 
 interface IUnitProps {
   unit: CustomizableUnit;
-  onChange: any;
+  onChange: (...args: any[]) => void;
   index: number;
   ebps: EbpsType[];
   weapons: WeaponType[];
+  allowAllWeapons: boolean;
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
@@ -47,14 +49,16 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   // Create weapon list, `useEffect` to listen for props changes and refresh the
   // weapon data.
   useEffect(() => {
-    const weapons = getSbpsWeapons(props.unit.sbps, props.ebps, props.weapons);
-    const weaponUpgrades = getSbpsUpgrades(props.unit.sbps, props.ebps, props.weapons);
+    const sbpsWeapons = getSbpsWeapons(props.unit.sbps, props.ebps, props.weapons);
+    const weaponUpgrades = props.allowAllWeapons
+      ? props.weapons.map((weapon) => mapWeaponMember(props.unit.sbps, props.ebps[0], weapon))
+      : getSbpsUpgrades(props.unit.sbps, props.ebps, props.weapons);
     for (const weaponUpgrade of weaponUpgrades) {
       // check if weapon is already available
-      if (weapons.find((member) => member.weapon_id == weaponUpgrade.weapon_id)) continue;
-      weapons.push(weaponUpgrade);
+      if (sbpsWeapons.find((member) => member.weapon_id == weaponUpgrade.weapon_id)) continue;
+      sbpsWeapons.push(weaponUpgrade);
     }
-    setWeaponList(weapons);
+    setWeaponList(sbpsWeapons);
   }, [props.ebps, props.unit.sbps, props.weapons]);
 
   function onAddWeapon(selectionItem: WeaponMember) {

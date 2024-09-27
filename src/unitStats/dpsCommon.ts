@@ -6,8 +6,11 @@ import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS } from "./weaponLib";
 
+type CoordinatesDPS = { x: number; y: number };
+
 type WeaponMember = {
-  weapon_id: string; // Weapon id
+  /** Weapon ID. */
+  weapon_id: string;
   num: number;
   unit: string;
   crew_size: number;
@@ -17,8 +20,9 @@ type WeaponMember = {
   image: string;
   label: string;
   description: string;
+  /** Value seems to be the same as weapon ID. */
   value: string;
-  dps_default: [];
+  dps_default: CoordinatesDPS[];
 };
 
 export const resolveFactionLinkid = (factionFolderName: string) => {
@@ -32,25 +36,33 @@ export const resolveFactionLinkid = (factionFolderName: string) => {
   }
 };
 
-const mapWeaponMember = (
+/**
+ *
+ * @param sbps_selected Does nothing beside storing the sbps.
+ * @param ebps_selected Does nothing beside storing the ebps.
+ * @param weapon The weapon data
+ * @param loadout_num Quantity of weapon carried by the entity.
+ * @returns
+ */
+export const mapWeaponMember = (
   sbps_selected: SbpsType,
   ebps_selected: EbpsType,
   weapon: WeaponType,
   loadout_num = 1,
 ) => {
-  const member = {
-    weapon_id: weapon.id, // Weapon id
+  const member: WeaponMember = {
+    weapon_id: weapon.id,
     num: loadout_num,
     unit: ebps_selected.id,
     crew_size: ebps_selected.crew_size,
     sbps: sbps_selected,
     ebps: ebps_selected,
     weapon: weapon,
-    image: (weapon as any).image, // intermediate solution
+    image: "",
     label: weapon.id,
     description: weapon.description,
     value: weapon.id,
-    dps_default: [] as any,
+    dps_default: [],
   };
   //   (clone as any).unit = loadout.id;
   if (weapon.icon_name != "") member.image = getIconsPathOnCDN("icons/" + weapon.icon_name);
@@ -418,7 +430,7 @@ export const getDpsVsHealth = (
   unit1: CustomizableUnit,
   unit2?: CustomizableUnit,
 ) => {
-  const dpsData: any[] = getCombatDps(unit1, unit2);
+  const dpsData: CoordinatesDPS[] = getCombatDps(unit1, unit2);
   let health = unit1.health;
 
   // compute opponents health
@@ -431,7 +443,7 @@ export const getDpsVsHealth = (
 
 export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
   // compute dps for first squad
-  let dpsTotal: any[] = [];
+  let dpsTotal: CoordinatesDPS[] = [];
 
   // compute total dps for complete loadout
   unit1.weapon_member.forEach((ldout) => {
@@ -455,7 +467,7 @@ export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) 
 
 const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
   // compute dps for first squad
-  let dpsTotal: any[] = [];
+  let dpsTotal: CoordinatesDPS[] = [];
 
   // compute total dps for complete loadout
   unit1.weapon_member.forEach((ldout) => {
@@ -478,10 +490,10 @@ const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: Customi
 };
 
 // sums up two dps lines
-export const addDpsData = (dps1: any[], dps2: any[]) => {
+export const addDpsData = (dps1: CoordinatesDPS[], dps2: CoordinatesDPS[]) => {
   if (dps1.length == 0) return dps2;
   // set with {x,y} touples
-  const newSet: any[] = [];
+  const newSet: CoordinatesDPS[] = [];
 
   let ind_2 = 0; // loop only once through second line
   for (let ind_1 = 0; ind_1 < dps1.length; ind_1++) {
@@ -518,7 +530,7 @@ export const addDpsData = (dps1: any[], dps2: any[]) => {
   return newSet;
 };
 
-export const mergePoints = (xPoint: any, yPoint: any) => {
+export const mergePoints = (xPoint: CoordinatesDPS, yPoint: CoordinatesDPS) => {
   return { x: xPoint.x, y: xPoint.y + yPoint.y };
 };
 
