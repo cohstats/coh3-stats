@@ -264,6 +264,7 @@ export const DpsChart = (props: IDPSProps) => {
   // const [isStaircase, setStaircase] = useState(false);
   const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
+  const [allowAllWeapons, setAllowAllWeapons] = useState(false);
 
   // const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -474,11 +475,19 @@ export const DpsChart = (props: IDPSProps) => {
                   <HoverCard.Dropdown>
                     <Stack mb={12}>
                       <Space />
-                      <Text size="sm">Toggle DPS mode.</Text>
+                      <Text size="sm">Advanced Options</Text>
                       <Switch
                         label={"DPS / Target Health (%)"}
                         checked={showDpsHealth}
                         onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
+                        //onClick={() => setCurve(isCurve)}
+                        size="xs"
+                      />
+                      <Space />
+                      <Switch
+                        label={"Allow all weapons"}
+                        checked={allowAllWeapons}
+                        onChange={(event) => setAllowAllWeapons(event.currentTarget.checked)}
                         //onClick={() => setCurve(isCurve)}
                         size="xs"
                       />
@@ -554,6 +563,7 @@ export const DpsChart = (props: IDPSProps) => {
                       index={0}
                       ebps={ebpsData1}
                       weapons={weaponData1}
+                      allowAllWeapons={allowAllWeapons}
                     />
                   </Box>
                 )}
@@ -623,6 +633,7 @@ export const DpsChart = (props: IDPSProps) => {
                       index={1}
                       ebps={ebpsData2}
                       weapons={weaponData2}
+                      allowAllWeapons={allowAllWeapons}
                     />
                   </Box>
                 )}
