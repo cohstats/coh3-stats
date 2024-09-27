@@ -82,7 +82,7 @@ const PlayerCard = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   replaysData: ProcessedReplayData;
 }) => {
-  const { push, query, asPath } = useRouter();
+  const { push, query, asPath, replace } = useRouter();
   const { view } = query;
 
   const playerData = playerDataAPI;
@@ -101,7 +101,8 @@ const PlayerCard = ({
       const originalQuery = originalUrl.searchParams;
       const newURL = new URL(`/players/${playerID}/${cleanName}`, window.location.origin);
       newURL.search = originalQuery.toString();
-      push(newURL.toString(), undefined, { shallow: true });
+      // Replace works the same way as push but doesn't add it into the history
+      replace(newURL.toString(), undefined, { shallow: true });
     }
   }, [playerID]);
 

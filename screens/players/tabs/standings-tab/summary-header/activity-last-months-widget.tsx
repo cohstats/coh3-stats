@@ -12,8 +12,6 @@ const ActivityLastMonthsWidget = ({
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
 
-  console.log(theme.colors);
-
   // This is most likely a bug in Nivo, the labels on Calendar Canvas our outside / other charts have it inside
   const chartColorTheme = {
     ...getNivoTooltipTheme(colorScheme),

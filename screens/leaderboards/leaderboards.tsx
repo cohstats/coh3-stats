@@ -242,7 +242,7 @@ const Leaderboards = ({
               />
               <Select
                 withCheckIcon={false}
-                label="Race"
+                label="Faction"
                 style={{ width: 190 }}
                 defaultValue={raceToFetch}
                 value={raceToFetch}
