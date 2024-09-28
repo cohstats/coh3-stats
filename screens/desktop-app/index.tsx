@@ -40,13 +40,23 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
       </Head>
       <Container size={"lg"}>
         {/*We need to fix this on both mobile and desktop to avoid CLS*/}
-        <Image
-          src="/desktop-app/desktop-app-main.webp"
-          alt={"coh3 stats desktop app"}
-          radius="md"
-          mx="auto"
-          className={classes["desktop-app-image"]}
-        />
+
+        <div className={classes["desktop-app-image-container"]}>
+          <Image
+            src="/desktop-app/desktop-app-loading-v2.webp"
+            alt={"coh3 stats desktop app loading image"}
+            radius="md"
+            mx="auto"
+            className={classes["desktop-app-loading-image"]}
+          />
+          <Image
+            src="/desktop-app/desktop-app-v2.webp"
+            alt={"coh3 stats desktop app"}
+            radius="md"
+            mx="auto"
+            className={classes["desktop-app-image"]}
+          />
+        </div>
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" gap={5} mb={30}>
             <Anchor href={downloadURL} target="_blank">
