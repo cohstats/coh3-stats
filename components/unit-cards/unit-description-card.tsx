@@ -59,10 +59,6 @@ export const UnitDescriptionCard = ({
           <Title order={6} style={{ textTransform: "capitalize" }} c="yellow.5">
             {desc.help_text}
           </Title>
-          <Title order={4} style={{ textTransform: "capitalize" }} lineClamp={1}>
-            {desc.screen_name}
-          </Title>
-          {/* Symbol horizontal aligned with brief text. */}
           <Flex direction="row" align="center" gap={4}>
             <ImageWithFallback
               width={32}
@@ -71,7 +67,13 @@ export const UnitDescriptionCard = ({
               alt={`${desc.screen_name} symbol`}
               fallbackSrc={symbolPlaceholder}
             />
+            <Title order={4} style={{ textTransform: "capitalize" }} lineClamp={1}>
+              {desc.screen_name}
+            </Title>
+          </Flex>
 
+          {/* Symbol horizontal aligned with brief text. */}
+          <Flex direction="row" align="center" gap={4}>
             <Tooltip.Floating label={briefText} multiline>
               <Text fz="sm" lineClamp={4} style={{ whiteSpace: "pre-line" }}>
                 {briefText}
