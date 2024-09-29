@@ -43,6 +43,11 @@ type UnitSquadInput = {
   };
 };
 
+const unfiformIconSize = {
+  width: 24,
+  height: 24,
+};
+
 const UnitSquadIcons = {
   sight_range: "/icons/unit_status/bw2/5_obervationmode.png",
   max_speed: "/icons/unit_status/bw2/2_offensivebonus.png",
@@ -76,13 +81,12 @@ export const UnitSquadCard = ({
           {type}
         </Text>
       </Stack>
-      <Grid fz="sm" columns={12} align="center" gutter="xs">
+      <Grid fz="sm" columns={12} align="center" gutter="lg">
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
             <Group gap={4}>
               <ImageWithFallback
-                height={32}
-                width={32}
+                {...unfiformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["sight_range"]}
                 alt="squad sight range"
@@ -97,8 +101,7 @@ export const UnitSquadCard = ({
           <Flex gap={4} align="center" justify="space-between">
             <Group gap={4}>
               <ImageWithFallback
-                height={18}
-                width={18}
+                {...unfiformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={type === "vehicles" ? UnitSquadIcons["max_speed"] : UnitSquadIcons["sprint"]}
                 alt="squad default speed"
@@ -114,8 +117,7 @@ export const UnitSquadCard = ({
             <Flex gap={4} align="center" justify="space-between">
               <Group gap={4}>
                 <ImageWithFallback
-                  height={32}
-                  width={32}
+                  {...unfiformIconSize}
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["acceleration"]}
                   alt="squad acceleration"
@@ -134,8 +136,7 @@ export const UnitSquadCard = ({
             <Flex gap={4} align="center" justify="space-between">
               <Group gap={4}>
                 <ImageWithFallback
-                  height={32}
-                  width={32}
+                  {...unfiformIconSize}
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["deceleration"]}
                   alt="squad deceleration"
@@ -153,8 +154,7 @@ export const UnitSquadCard = ({
           <Flex gap={4} align="center" justify="space-between">
             <Group gap={4}>
               <ImageWithFallback
-                height={18}
-                width={18}
+                {...unfiformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["range_of_fire"]}
                 alt="squad max range of fire"
@@ -169,8 +169,7 @@ export const UnitSquadCard = ({
           <Flex gap={4} align="center" justify="space-between">
             <Group gap={4} ml={4}>
               <ImageWithFallback
-                height={20}
-                width={20}
+                {...unfiformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["target_size"]}
                 alt="squad target size"
@@ -186,8 +185,7 @@ export const UnitSquadCard = ({
             <Flex gap={4} align="center" justify="space-between">
               <Group gap={4}>
                 <ImageWithFallback
-                  height={32}
-                  width={32}
+                  {...unfiformIconSize}
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["infantry_armor"]}
                   alt="squad armor (infantry only)"
@@ -205,8 +203,7 @@ export const UnitSquadCard = ({
           <Flex gap={4} align="center" justify="space-between">
             <Group gap={4} ml={4}>
               <ImageWithFallback
-                height={20}
-                width={20}
+                {...unfiformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["cap_mult"]}
                 alt="squad capture rate multiplier"
@@ -221,8 +218,7 @@ export const UnitSquadCard = ({
           <Flex gap={4} align="center" justify="space-between">
             <Group gap={4}>
               <ImageWithFallback
-                height={20}
-                width={20}
+                {...unfiformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["decap_mult"]}
                 alt="squad decapture rate multiplier"
