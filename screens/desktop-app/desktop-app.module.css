@@ -1,8 +1,12 @@
 .desktop-app-image-container {
   max-width: 800px;
-  height: 550px;
   position: relative;
   margin: 0 auto;
+  height: 200px;
+
+  @media (min-width: 48em) {
+    height: 500px;
+  }
 }
 
 .desktop-app-loading-image {
@@ -11,7 +15,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .desktop-app-image {
@@ -19,9 +23,8 @@
   height: auto;
   object-fit: contain;
   position: absolute;
-  top: 75%;
-  left: 60%;
-  transform: translate(0%, -50%);
+  top: 40%;
+  left: 50%;
   z-index: 1;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
