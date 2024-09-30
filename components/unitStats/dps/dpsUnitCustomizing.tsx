@@ -42,9 +42,7 @@ interface IUnitProps {
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
-  const weaponListInit: WeaponMember[] = [];
-  //const [activeData] = useState(props.unit);
-  const [weaponList, setWeaponList] = useState(weaponListInit);
+  const [weaponList, setWeaponList] = useState<WeaponMember[]>([]);
 
   // Create weapon list, `useEffect` to listen for props changes and refresh the
   // weapon data.
@@ -53,11 +51,13 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     const weaponUpgrades = props.allowAllWeapons
       ? props.weapons.map((weapon) => mapWeaponMember(props.unit.sbps, props.ebps[0], weapon))
       : getSbpsUpgrades(props.unit.sbps, props.ebps, props.weapons);
+
     for (const weaponUpgrade of weaponUpgrades) {
       // check if weapon is already available
       if (sbpsWeapons.find((member) => member.weapon_id == weaponUpgrade.weapon_id)) continue;
       sbpsWeapons.push(weaponUpgrade);
     }
+
     setWeaponList(sbpsWeapons);
   }, [props.ebps, props.unit.sbps, props.weapons]);
 
@@ -111,7 +111,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     components.push(
       <DpsWeaponCard
         weapon_member={member}
-        key={member.weapon_id + props.index}
+        key={member.weapon_id + props.index + member.num}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
       ></DpsWeaponCard>,
@@ -278,7 +278,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
           </Grid.Col>
         </Grid>
 
-        <WeaponSearch searchData={weaponList} onSelect={onAddWeapon}></WeaponSearch>
+        <WeaponSearch searchData={weaponList} onSelect={onAddWeapon} />
 
         <Group gap="xs">{components}</Group>
       </Stack>
