@@ -77,7 +77,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                       component={LinkWithOutPrefetch}
                       href={getExplorerUnitRoute(raceToFetch, id)}
                     >
-                      <Card p="md" radius="md" withBorder>
+                      <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder>
                         <UnitDescriptionCard
                           faction={raceToFetch}
                           desc={{
@@ -87,6 +87,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
                             symbol_icon_name: ui.symbolIconName,
                             icon_name: ui.iconName,
                           }}
+                          list
                         />
                       </Card>
                     </Anchor>

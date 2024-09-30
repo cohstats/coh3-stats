@@ -32,20 +32,26 @@ export type UnitDescription = {
 export const UnitDescriptionCard = ({
   desc,
   faction,
+  list,
 }: {
   desc: UnitDescription;
   faction: raceType;
+  list?: boolean; // Specifies if this is in listing
 }) => {
   const factionBackgroundSrc = BattlegroupBackgrounds[faction];
 
   const spaceRegex = /\\r?\\n|\\r|\\n/g;
   const specialRegex = /\*/g;
+  const regexDot = /•/g;
 
-  const briefText = desc.brief_text?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+  const briefText = desc.brief_text
+    ?.replace(spaceRegex, "\n")
+    ?.replace(specialRegex, "")
+    .replace(regexDot, "• ");
 
   return (
     <>
-      <Flex direction="row" align="center" gap={16}>
+      <Flex direction="row" align={list ? "center" : "start"} gap={"md"}>
         <BackgroundImage w={96} h={96} src={getIconsPathOnCDN(factionBackgroundSrc)} radius="md">
           <ImageWithFallback
             width={96}
@@ -74,8 +80,8 @@ export const UnitDescriptionCard = ({
 
           {/* Symbol horizontal aligned with brief text. */}
           <Flex direction="row" align="center" gap={4}>
-            <Tooltip.Floating label={briefText} multiline>
-              <Text fz="sm" lineClamp={4} style={{ whiteSpace: "pre-line" }}>
+            <Tooltip.Floating label={briefText} multiline w={500}>
+              <Text fz="sm" lineClamp={list ? 2 : 10} style={{ whiteSpace: "pre-line" }}>
                 {briefText}
               </Text>
             </Tooltip.Floating>

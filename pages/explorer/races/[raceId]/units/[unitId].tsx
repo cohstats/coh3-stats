@@ -159,7 +159,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
         />
       </Head>
       <Container fluid p={0}>
-        <Space h={32} />
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceId} width={96}></FactionIcon>
           <Stack gap="xs">
@@ -167,10 +166,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
             <Text size="md">{descriptionRace}</Text>
           </Stack>
         </Flex>
-        <Space h={32} />
+        <Space h={"xl"} />
         <Grid columns={3} grow>
           <Grid.Col span={3}>
-            <Card p="lg" radius="md" withBorder>
+            <Card p="md" radius="md" withBorder>
               <UnitDescriptionCard
                 faction={raceId}
                 desc={{
@@ -186,7 +185,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
               <Title order={4}>Stats</Title>
-              <Card p="lg" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder>
                 {UnitSquadCard({
                   id: resolvedSquad.id,
                   type: resolvedSquad.unitType,
@@ -210,7 +209,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
             <Stack>
               <Title order={4}>Stats</Title>
-              <Card p="lg" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder>
                 {UnitCostCard(totalCost)}
                 {defaultSquadMember.unitType !== "vehicles" &&
                 defaultSquadMember.unitType !== "emplacements" ? (
@@ -219,18 +218,18 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
                   <></>
                 )}
               </Card>
-              <Card p="lg" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder>
                 {HitpointCard({ squad: resolvedSquad, entities: resolvedEntities })}
               </Card>
-              <Card p="lg" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder>
                 {UnitCostCard(totalUpkeepCost, "Upkeep per minute")}
               </Card>
-              <Card p="lg" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder>
                 <VeterancyCard
                   one={resolvedSquad.veterancyInfo.one}
                   two={resolvedSquad.veterancyInfo.two}
                   three={resolvedSquad.veterancyInfo.three}
-                ></VeterancyCard>
+                />
               </Card>
             </Stack>
           </Grid.Col>
@@ -286,7 +285,7 @@ const UnitBuildingSection = (buildings: EbpsType[]) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {
             return (
-              <Card key={id} p="lg" radius="md" withBorder>
+              <Card key={id} p="md" radius="md" withBorder>
                 {ConstructableCard({
                   id,
                   desc: {
@@ -322,7 +321,7 @@ const UnitAbilitySection = (abilities: AbilitiesType[]) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {
             return (
-              <Card key={id} p="lg" radius="md" withBorder>
+              <Card key={id} p="md" radius="md" withBorder>
                 {UnitUpgradeCard({
                   id,
                   desc: {
