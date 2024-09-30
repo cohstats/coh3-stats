@@ -43,9 +43,9 @@ type UnitSquadInput = {
   };
 };
 
-const unfiformIconSize = {
-  width: 24,
-  height: 24,
+const uniformIconSize = {
+  width: 20,
+  height: 20,
 };
 
 const UnitSquadIcons = {
@@ -84,9 +84,9 @@ export const UnitSquadCard = ({
       <Grid fz="sm" columns={12} align="center" gutter="lg">
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4}>
+            <Group gap={4} align="center">
               <ImageWithFallback
-                {...unfiformIconSize}
+                {...uniformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["sight_range"]}
                 alt="squad sight range"
@@ -99,13 +99,13 @@ export const UnitSquadCard = ({
 
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4}>
+            <Group gap={4} align="center">
               <ImageWithFallback
-                {...unfiformIconSize}
+                {...uniformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={type === "vehicles" ? UnitSquadIcons["max_speed"] : UnitSquadIcons["sprint"]}
                 alt="squad default speed"
-              ></ImageWithFallback>
+              />
               <Text>Speed</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{moving?.defaultSpeed || 0.0}</Text>
@@ -115,13 +115,13 @@ export const UnitSquadCard = ({
         {type === "vehicles" ? (
           <Grid.Col span={{ base: 6, md: 4 }}>
             <Flex gap={4} align="center" justify="space-between">
-              <Group gap={4}>
+              <Group gap={4} align="center">
                 <ImageWithFallback
-                  {...unfiformIconSize}
+                  {...uniformIconSize}
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["acceleration"]}
                   alt="squad acceleration"
-                ></ImageWithFallback>
+                />
                 <Text>Acceleration</Text>
               </Group>
               <Text style={{ textAlign: "end" }}>{moving?.acceleration || 0.0}</Text>
@@ -134,9 +134,9 @@ export const UnitSquadCard = ({
         {type === "vehicles" ? (
           <Grid.Col span={{ base: 6, md: 4 }}>
             <Flex gap={4} align="center" justify="space-between">
-              <Group gap={4}>
+              <Group gap={4} align="center">
                 <ImageWithFallback
-                  {...unfiformIconSize}
+                  {...uniformIconSize}
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["deceleration"]}
                   alt="squad deceleration"
@@ -152,9 +152,9 @@ export const UnitSquadCard = ({
 
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4}>
+            <Group gap={4} align="center">
               <ImageWithFallback
-                {...unfiformIconSize}
+                {...uniformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["range_of_fire"]}
                 alt="squad max range of fire"
@@ -167,14 +167,14 @@ export const UnitSquadCard = ({
 
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} ml={4}>
+            <Group gap={4} align="center">
               <ImageWithFallback
-                {...unfiformIconSize}
+                {...uniformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["target_size"]}
                 alt="squad target size"
               />
-              <Text ml={8}>Target Size</Text>
+              <Text>Target Size</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{health?.targetSize || 0}</Text>
           </Flex>
@@ -183,9 +183,9 @@ export const UnitSquadCard = ({
         {type !== "vehicles" ? (
           <Grid.Col span={4}>
             <Flex gap={4} align="center" justify="space-between">
-              <Group gap={4}>
+              <Group gap={4} align="center">
                 <ImageWithFallback
-                  {...unfiformIconSize}
+                  {...uniformIconSize}
                   fallbackSrc={symbolPlaceholder}
                   src={UnitSquadIcons["infantry_armor"]}
                   alt="squad armor (infantry only)"
@@ -201,14 +201,14 @@ export const UnitSquadCard = ({
 
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} ml={4}>
+            <Group gap={4} align="center">
               <ImageWithFallback
-                {...unfiformIconSize}
+                {...uniformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["cap_mult"]}
                 alt="squad capture rate multiplier"
               />
-              <Text ml={8}>Capture Multiplier</Text>
+              <Text>Capture Multiplier</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{capture?.cap || 0.0}</Text>
           </Flex>
@@ -216,9 +216,9 @@ export const UnitSquadCard = ({
 
         <Grid.Col span={{ base: 6, md: 4 }}>
           <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4}>
+            <Group gap={4} align="center">
               <ImageWithFallback
-                {...unfiformIconSize}
+                {...uniformIconSize}
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["decap_mult"]}
                 alt="squad decapture rate multiplier"
