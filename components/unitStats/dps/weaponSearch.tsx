@@ -49,16 +49,25 @@ export const WeaponSearch = (props: ISearchProps) => {
     //});
   }
 
+  const cleanedSearchData = [];
+  const cleanedSearchDataMapWithValue: { [key: string]: boolean } = {};
+
+  // We need to avoid duplicates in the select based on value (hopefully there will not be more than 1 duplicate)
+  for (const item of props.searchData) {
+    if (cleanedSearchDataMapWithValue[item.value]) {
+      cleanedSearchData.push({ ...item, value: `${item.value}_2` });
+    } else {
+      cleanedSearchData.push(item);
+      cleanedSearchDataMapWithValue[item.value] = true;
+    }
+  }
+
   return (
     <Select
-      //label="Choose a unit"
       placeholder="Configure weapons and squad size"
-      // clearSearchOnChange={true}
-      // clearSearchOnBlur={true}
       clearable
       renderOption={renderSelectOption}
-      data={props.searchData}
-      // valueComponent={Value}
+      data={cleanedSearchData}
       searchable
       maxDropdownHeight={600}
       nothingFoundMessage="Nothing here. War is over!"
