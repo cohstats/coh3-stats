@@ -68,7 +68,7 @@
     "jsesc": "3.0.2",
     "json-2-csv": "5.5.5",
     "lodash": "4.17.21",
-    "mantine-datatable": "7.11.3",
+    "mantine-datatable": "7.12.4",
     "next": "14.2.13",
     "nprogress": "0.2.0",
     "octokit": "4.0.2",
