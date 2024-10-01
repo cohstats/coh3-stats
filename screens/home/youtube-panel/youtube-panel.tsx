@@ -23,7 +23,7 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
       // we are OK with sending the referer header to youtube
       rel=""
       key={index}
-      m={{ base: 5, sm: "md" }}
+      m={{ base: 5, sm: "md", md: "lg" }}
       className={classes.card}
       radius={"md"}
       withBorder={true}

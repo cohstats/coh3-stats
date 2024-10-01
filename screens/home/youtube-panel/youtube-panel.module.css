@@ -9,6 +9,11 @@
 
 @media (max-width: 768px) {
   .card {
+    width: 25%;
+  }
+}
+@media (max-width: 600px) {
+  .card {
     width: 45%;
   }
 }
