@@ -20,6 +20,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
               imageProps={{ loading: "lazy" }}
               alt={data.alias}
               size={40}
+              radius="sm"
             />
             <div>
               <Group>
@@ -27,7 +28,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
                 <Text> {data.alias}</Text>
               </Group>
 
-              <Text size="xs" color="dimmed">
+              <Text size="xs" c="dimmed">
                 <Group gap={"xs"}>
                   <span>P: {data.platform.toUpperCase()}</span>
                   <span>XP: {data.level}</span>

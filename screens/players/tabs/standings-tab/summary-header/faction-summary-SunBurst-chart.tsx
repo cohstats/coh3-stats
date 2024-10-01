@@ -1,12 +1,18 @@
 import { ResponsiveSunburst } from "@nivo/sunburst";
 import { InternalStandings } from "../../../../../src/coh3/coh3-types";
-import { chartDataObjectsForTimeSeries } from "../../../../../components/charts/charts-components-utils";
+import {
+  chartDataObjectsForTimeSeries,
+  getNivoTooltipTheme,
+} from "../../../../../components/charts/charts-components-utils";
+import { useMantineColorScheme } from "@mantine/core";
 
 const FactionSummarySunBurstChart = ({
   playerStandings,
 }: {
   playerStandings: InternalStandings;
 }) => {
+  const { colorScheme } = useMantineColorScheme();
+
   const chartData = {
     name: "factionsModes",
     children: [
@@ -94,6 +100,7 @@ const FactionSummarySunBurstChart = ({
       //   ]
       // }}
 
+      theme={getNivoTooltipTheme(colorScheme)}
       arcLabel={(e) => {
         if (e.depth === 1) {
           // @ts-ignore

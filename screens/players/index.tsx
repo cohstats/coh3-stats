@@ -154,7 +154,12 @@ const PlayerCard = ({
         )}
       </Head>
       <Container fluid p={0}>
-        <Container fluid>
+        <Container
+          fluid
+          pl={{ base: 1, xs: "md" }}
+          pr={{ base: 1, xs: "md" }}
+          pb={{ base: "xs", md: 0 }}
+        >
           <Group justify={"space-between"}>
             <Group>
               <Avatar

@@ -12,6 +12,14 @@ const getYoutubeThumbnailUrl = (video: YouTubeVideo) => {
   return `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`;
 };
 
+const formatViewCount = (views: string): string => {
+  const parsedViews = parseInt(views);
+  if (parsedViews >= 1000) {
+    return (parsedViews / 1000).toFixed(1) + "k";
+  }
+  return parsedViews.toString();
+};
+
 const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
   const youtubeVideos = youtubeData?.map((video, index) => (
     <Card
@@ -39,13 +47,13 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
         </Title>
       </Tooltip.Floating>
       <Text mt="xs" c="dimmed" size="sm" style={{ marginTop: 0 }}>
-        {video.channelTitle} - {parseInt(video.viewCount).toLocaleString()} views
+        {video.channelTitle} - {formatViewCount(video.viewCount)} views
       </Text>
     </Card>
   ));
 
   return (
-    <Paper mt="0" p="md" color="gray">
+    <Paper mt="0" pt="md" pb="md" color="gray">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap" pb={5}>
         <IconBrandYoutube size={35} /> <Title size="h2">Last week's videos</Title>
       </Flex>

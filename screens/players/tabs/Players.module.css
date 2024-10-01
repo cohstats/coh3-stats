@@ -7,3 +7,14 @@
   font-weight: normal;
   color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3));
 }
+
+.summary-charts {
+  height: 160px;
+  width: 180px;
+}
+
+@media (max-width: 700px) {
+  .summary-charts {
+    width: 160px;
+  }
+}

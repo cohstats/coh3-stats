@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Grid, Group, Stack, Text, useMantineColorScheme } from "@mantine/core";
+import React, { useEffect, useMemo, useState } from "react";
+import { Grid, Group, Space, Stack, Text, useMantineColorScheme } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
@@ -97,6 +97,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
                 <Text>{currentStream.viewer_count} viewers</Text>
               </Group>
               <Text>{currentStream.title}</Text>
+              <Space h={"xs"} />
             </>
           )}
         </Stack>
