@@ -1,7 +1,20 @@
 .card {
+  width: 15%;
   transition: all 0.3s ease;
 }
 
 .card:hover {
   box-shadow: 0 0 5px #808080;
+}
+
+@media (max-width: 1000px) {
+  .card {
+    width: 18%;
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    width: 40%;
+  }
 }
