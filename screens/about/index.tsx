@@ -11,6 +11,7 @@ import {
   Divider,
   Space,
   Text,
+  Affix,
 } from "@mantine/core";
 //import { createStyles } from '@mantine/emotion';
 import React, { useEffect } from "react";
@@ -21,6 +22,7 @@ import DonateSection from "./DonateSection";
 import Link from "next/link";
 import config from "../../config";
 import DataSection from "./DataSection";
+import { useMediaQuery } from "@mantine/hooks";
 
 const BugReports = () => {
   return (
@@ -234,6 +236,8 @@ const About: NextPage = () => {
     AnalyticsAboutAppPageView();
   }, []);
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <div>
       {/*This is custom HEAD overwrites the default one*/}
@@ -253,34 +257,41 @@ const About: NextPage = () => {
           {" "}
           <Grid>
             <Grid.Col span={3}>
-              <div
-                style={{
-                  display: "block",
-                  height: "65px",
+              <Affix
+                position={{
+                  top: isMobile ? 150 : 200,
+                  left: isMobile ? 15 : 80,
                 }}
               >
-                {sections.map((x) => {
-                  return (
-                    <Flex
-                      key={x.name}
-                      direction={{ base: "column" }}
-                      gap={{ base: "sm", sm: "lg" }}
-                    >
-                      <div>
-                        <Anchor
-                          href={`#${x.name}`}
-                          style={{
-                            color: "inherit",
-                          }}
-                        >
-                          {x.menuDisplayName}
-                        </Anchor>
-                        <Divider my="sm" />
-                      </div>
-                    </Flex>
-                  );
-                })}
-              </div>
+                <div
+                  style={{
+                    display: "block",
+                    height: "auto",
+                  }}
+                >
+                  {sections.map((x) => {
+                    return (
+                      <Flex
+                        key={x.name}
+                        direction={{ base: "column" }}
+                        gap={{ base: "sm", sm: "lg" }}
+                      >
+                        <div>
+                          <Anchor
+                            href={`#${x.name}`}
+                            style={{
+                              color: "inherit",
+                            }}
+                          >
+                            {x.menuDisplayName}
+                          </Anchor>
+                          <Divider my="sm" />
+                        </div>
+                      </Flex>
+                    );
+                  })}
+                </div>
+              </Affix>
             </Grid.Col>
 
             <Grid.Col span={9}>
