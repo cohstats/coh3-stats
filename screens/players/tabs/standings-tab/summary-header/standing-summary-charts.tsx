@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import { Group, Paper, Text } from "@mantine/core";
 import React from "react";
 
+import classes from "../../Players.module.css";
+
 const DynamicFactionSummaryChart = dynamic(() => import("./faction-summary-SunBurst-chart"), {
   ssr: false,
 });
@@ -44,29 +46,14 @@ const StandingsSummaryCharts = ({
             Factions and game types
           </Text>
         </Group>
-        <Group gap={"xs"}>
-          <div
-            style={{
-              height: chartHeight,
-              width: 180,
-            }}
-          >
+        <Group gap={"xs"} justify={"center"}>
+          <div className={classes["summary-charts"]}>
             <DynamicFactionsPieChart playerStandings={playerStandings} />
           </div>
-          <div
-            style={{
-              height: chartHeight,
-              width: 180,
-            }}
-          >
+          <div className={classes["summary-charts"]}>
             <DynamicFactionSummaryChart playerStandings={playerStandings} />
           </div>
-          <div
-            style={{
-              height: chartHeight,
-              width: 180,
-            }}
-          >
+          <div className={classes["summary-charts"]}>
             <DynamicGameTypesPieChart playerStandings={playerStandings} />
           </div>
           {/*<div*/}

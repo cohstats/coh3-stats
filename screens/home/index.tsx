@@ -70,15 +70,7 @@ const Home: NextPage<Props> = ({
 
         <YoutubePanel youtubeData={youtubeData} />
 
-        <Paper
-          shadow="xs"
-          radius="md"
-          mt="md"
-          p="lg"
-          color="gray"
-          style={{ padding: 0 }}
-          mih={600}
-        >
+        <Paper shadow="xs" radius="md" pt={"xs"} p={0} color="gray" mih={600}>
           <div ref={ref}>
             {hasRendered && <TwitchContainer twitchStreams={twitchStreams} error={error} />}
           </div>
