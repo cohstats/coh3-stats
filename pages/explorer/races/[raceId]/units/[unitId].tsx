@@ -313,6 +313,7 @@ const UnitBuildingSection = (buildings: EbpsType[]) => {
 const UnitAbilitySection = (abilities: AbilitiesType[]) => {
   // Resolve unit abilities.
   if (!abilities || !abilities.length) return <></>;
+
   return (
     <Stack>
       <Title order={4}>Abilities</Title>
@@ -407,11 +408,11 @@ const createdCalculateValuesForUnits = (
 
   const upgrades = Object.values(getResolvedUpgrades(resolvedSquad.upgrades, upgradesData));
 
-  const abilities = Object.values(getResolvedAbilities(resolvedSquad.abilities, abilitiesData));
+  const rawAbilities = Object.values(
+    getResolvedAbilities(resolvedSquad.abilities, abilitiesData),
+  );
 
   const buildables = Object.values(getResolvedConstruction(resolvedSquad.construction, ebpsData));
-
-  // console.log('Calculated abilities', resolvedSquad);
 
   const resolvedEntities: EbpsType[] = [];
 
@@ -420,6 +421,19 @@ const createdCalculateValuesForUnits = (
     const foundEntity = ebpsData.find((x) => x.id === id);
     if (foundEntity) {
       resolvedEntities.push(foundEntity);
+    }
+  }
+
+  // Some abilities are duplicated, they have different IDs but the name and description is the same.
+  // IF the UI is completely the same, we can remove the duplicates.
+  // This might lead to some bugs in case other parts would be different.
+  const abilities: AbilitiesType[] = [];
+  for (const ability of rawAbilities) {
+    // If we are missing the name of the ability --> it's most likely broken // remove it here so we save the data
+    if (ability.ui.screenName) {
+      if (!abilities.find((x) => JSON.stringify(x.ui) === JSON.stringify(ability.ui))) {
+        abilities.push(ability);
+      }
     }
   }
 

@@ -36,7 +36,7 @@ export const UnitDescriptionCard = ({
 }: {
   desc: UnitDescription;
   faction: raceType;
-  list?: boolean; // Specifies if this is in listing
+  list?: boolean; // Specifies if the description card is used in the list of all units or in unit details
 }) => {
   const factionBackgroundSrc = BattlegroupBackgrounds[faction];
 
