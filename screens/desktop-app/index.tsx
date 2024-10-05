@@ -36,7 +36,7 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
             "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
           }
         />
-        <meta property="og:image" content="/desktop-app/desktop-app-main-500x281.webp" />
+        <meta property="og:image" content="/desktop-app/desktop-app-v2.webp" />
       </Head>
       <Container size={"lg"}>
         {/*We need to fix this on both mobile and desktop to avoid CLS*/}

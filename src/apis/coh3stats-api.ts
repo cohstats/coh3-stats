@@ -38,6 +38,16 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerMatchesHttp?relicId=${playerID}`);
 };
 
+const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
+  let url = `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getMatchHttp?matchID=${matchID}`;
+
+  if (profileIDs && profileIDs.length > 0) {
+    url += `&profileIDs=[${profileIDs.join(",")}]`;
+  }
+
+  return encodeURI(url);
+};
+
 const getTwitchStreamsUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getTwitchStreamsHttp`);
 };
@@ -175,6 +185,27 @@ const getPlayerCardStatsOrNull = async (playerID: string | number, XForwardedFor
   } catch (e) {
     logger.error(`Error getting player card stats: ${e}`);
     return null;
+  }
+};
+
+const getMatch = async (matchID: string | number, playerIDs?: Array<string>) => {
+  const response = await fetch(getMatchUrl(matchID, playerIDs));
+
+  if (response.ok) {
+    const data = await response.json();
+    const matchData: ProcessedMatch = data.match;
+
+    return matchData;
+  } else {
+    if (response.status === 404) {
+      throw new Error(`Match not found`);
+    }
+
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting match data: ${data.error}`);
+    }
+    throw new Error(`Error getting match data`);
   }
 };
 
@@ -413,6 +444,7 @@ export {
   getPlayerCardStatsOrNull,
   setPlayerCardsConfigAdminHttp,
   getPlayersCardsConfigsHttp,
+  getMatch,
   getYouTubeVideosHttp,
   triggerPlayerNemesisAliasesUpdate,
   getOldLeaderboardData,
