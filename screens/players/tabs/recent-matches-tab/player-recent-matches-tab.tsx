@@ -180,7 +180,7 @@ const PlayerRecentMatchesTab = ({
         striped
         withTableBorder
         verticalSpacing="xs"
-        minHeight={300}
+        minHeight={30}
         // provide data
         // @ts-ignore
         records={sortedData}

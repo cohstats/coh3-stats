@@ -18,7 +18,7 @@ const RenderMap = ({ mapName, renderTitle }: { mapName: string; renderTitle?: bo
 
   return (
     <>
-      <div>
+      <div style={{ width: "100%" }}>
         <Tooltip label={maps[mapName].name}>
           <div>
             <ImageWithModal
