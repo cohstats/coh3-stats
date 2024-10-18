@@ -42,6 +42,11 @@ const sentryWebpackPluginOptions = {
   //   release, url, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
   silent: true, // Suppresses all logs
+  hideSourceMaps: true,
+
+  org: "coh-stats",
+  project: "coh3-stats-web",
+  authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
@@ -55,7 +60,5 @@ if (process.env.ANALYZE === "true") {
   module.exports = withBundleAnalyzer(withEdgioConfig);
 } else {
   // Default config
-  module.exports = withSentryConfig(withEdgioConfig, sentryWebpackPluginOptions, {
-    hideSourcemaps: true,
-  });
+  module.exports = withSentryConfig(withEdgioConfig, sentryWebpackPluginOptions);
 }
