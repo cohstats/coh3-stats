@@ -106,7 +106,15 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       setValueDatePicker([fromQuery, toQuery]);
     }
 
-    if (modeQuery && modeQuery !== mode) {
+    if (
+      modeQuery &&
+      modeQuery !== mode &&
+      (modeQuery === "all" ||
+        modeQuery === "1v1" ||
+        modeQuery === "2v2" ||
+        modeQuery === "3v3" ||
+        modeQuery === "4v4")
+    ) {
       setMode(modeQuery as any);
     }
   }, [query]);
@@ -427,6 +435,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             data={ELOFilterDataStats}
             disabled={multiFilter.length > 0}
             w={200}
+            allowDeselect={false}
           />
 
           <SegmentedControl
