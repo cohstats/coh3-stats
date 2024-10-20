@@ -17,8 +17,21 @@ const convertSteamNameToID = (name: string): string => {
   return "";
 };
 
+/**
+ * Converts the start and end time to the duration in format HH:MM:SS, max 24 hours
+ * @param startTime
+ * @param endTime
+ */
 const getMatchDuration = (startTime: number, endTime: number) => {
-  return new Date((endTime - startTime) * 1000).toISOString().substr(11, 8); //return duration in HH:MM:SS format
+  return new Date((endTime - startTime) * 1000).toISOString().slice(11, 19); //return duration in HH:MM:SS format
+};
+
+/**
+ * Converts the game time to the duration in format HH:MM:SS, max 24 hours
+ * @param gameTime
+ */
+export const getMatchDurationGameTime = (gameTime: number) => {
+  return new Date(gameTime * 1000).toISOString().slice(11, 19); //return duration in HH:MM:SS format
 };
 
 const getFactionSide = (faction: raceType): FactionSide => {

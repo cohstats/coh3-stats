@@ -1,0 +1,18 @@
+.vertical-header {
+  color: white;
+  margin-top: 60px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  border-radius: 10px;
+}
+
+.win-indicator {
+  background-color: var(--mantine-color-blue-filled); /* Background color of the rectangle */
+}
+
+.loss-indicator {
+  background-color: var(--mantine-color-red-filled); /* Background color of the rectangle */
+}

@@ -1,9 +1,27 @@
 import {
   calculatePlayerTier,
   getMatchDuration,
+  getMatchDurationGameTime,
   getMatchPlayersByFaction,
 } from "../../../src/coh3/helpers";
 import { PlayerRanks } from "../../../src/coh3/coh3-data";
+import { PlayerReport } from "../../../src/coh3/coh3-types";
+
+describe("getMatchDurationGameTime", () => {
+  test("calculates the game duration", () => {
+    const gameTime = 1062;
+
+    const duration = getMatchDurationGameTime(gameTime);
+    expect(duration).toBe("00:17:42");
+  });
+
+  test("max game duration", () => {
+    const gameTime = 86399;
+
+    const duration = getMatchDurationGameTime(gameTime);
+    expect(duration).toBe("23:59:59");
+  });
+});
 
 describe("getMatchDuration", () => {
   test("calculates the duration between start and end times (1 hour)", () => {
@@ -179,12 +197,18 @@ describe("getMatchPlayersByFaction", () => {
   const reportedPlayerResults = [playerReport1, playerReport2, playerReport3, playerReport4];
 
   test('should return all axis players when "axis" is passed as the faction', () => {
-    const result = getMatchPlayersByFaction(reportedPlayerResults, "axis");
+    const result = getMatchPlayersByFaction(
+      reportedPlayerResults as unknown as PlayerReport[],
+      "axis",
+    );
     expect(result).toEqual([playerReport1, playerReport3]);
   });
 
   test('should return all allies players when "allies" is passed as the faction', () => {
-    const result = getMatchPlayersByFaction(reportedPlayerResults, "allies");
+    const result = getMatchPlayersByFaction(
+      reportedPlayerResults as unknown as PlayerReport[],
+      "allies",
+    );
     expect(result).toEqual([playerReport2, playerReport4]);
   });
 });

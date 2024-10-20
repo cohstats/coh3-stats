@@ -40,87 +40,110 @@ const customGameELOWithTooltip = ({ rating }: { rating: number }) => {
   );
 };
 
+const RenderPlayer = ({
+  playerInfo,
+  profileID,
+  matchType,
+  renderFlag,
+}: {
+  playerInfo: PlayerReport;
+  profileID: number | string;
+  matchType: number;
+  renderFlag: boolean;
+}) => {
+  const isCustomGame = matchType === 0;
+
+  const matchHistory = playerInfo.matchhistorymember;
+  let ratingPlayedWith: string | JSX.Element = `${matchHistory.oldrating}`;
+  const ratingChange = matchHistory.newrating - matchHistory.oldrating;
+  let ratingChangeAsElement =
+    ratingChange > 0 ? (
+      <Text span c={"green"} fz={"sm"}>
+        +{ratingChange}
+      </Text>
+    ) : ratingChange < 0 ? (
+      <Text span c={"red"} fz={"sm"}>
+        {ratingChange}
+      </Text>
+    ) : (
+      <Text span fz={"sm"}>
+        {ratingChange}
+      </Text>
+    );
+
+  // Custom games rating change doesn't make sense
+  ratingChangeAsElement = isCustomGame ? <></> : ratingChangeAsElement;
+
+  // Check for unranked
+  ratingPlayedWith =
+    matchHistory.losses + matchHistory.wins >= 10 ? ratingPlayedWith : unrankedWithTooltip;
+  // Check for custom games
+  ratingPlayedWith = isCustomGame
+    ? customGameELOWithTooltip({ rating: matchHistory.oldrating })
+    : ratingPlayedWith;
+
+  const ratingElement = (
+    <>
+      <span style={{ width: "4ch", textAlign: "left" }}>{ratingPlayedWith}</span>
+      <span>{ratingChangeAsElement}</span>
+    </>
+  );
+
+  return (
+    <div key={playerInfo.profile_id}>
+      <Group gap={"xs"}>
+        <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
+        <> {ratingElement}</>
+        <Anchor
+          rel={"referrer"}
+          key={playerInfo.profile_id}
+          component={Link}
+          href={`/players/${playerInfo.profile_id}`}
+        >
+          {`${playerInfo.profile_id}` === `${profileID}` ? (
+            <Text fz={"sm"} span fw={700}>
+              <Group gap="xs">
+                {" "}
+                {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
+                <EllipsisText text={playerInfo.profile["alias"]} />
+              </Group>
+            </Text>
+          ) : (
+            <Text span fz={"sm"}>
+              <Group gap="xs">
+                {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
+                <EllipsisText text={playerInfo.profile["alias"]} />
+              </Group>
+            </Text>
+          )}
+        </Anchor>
+      </Group>
+    </div>
+  );
+};
+
 const RenderPlayers = ({
   playerReports,
   profileID,
   matchType,
   renderFlag = true,
 }: RenderPlayersProps) => {
-  const isCustomGame = matchType === 0;
-
   return (
     <>
       {playerReports.map((playerInfo: PlayerReport) => {
-        const matchHistory = playerInfo.matchhistorymember;
-        let ratingPlayedWith: string | JSX.Element = `${matchHistory.oldrating}`;
-        const ratingChange = matchHistory.newrating - matchHistory.oldrating;
-        let ratingChangeAsElement =
-          ratingChange > 0 ? (
-            <Text span c={"green"} fz={"sm"}>
-              +{ratingChange}
-            </Text>
-          ) : ratingChange < 0 ? (
-            <Text span c={"red"} fz={"sm"}>
-              {ratingChange}
-            </Text>
-          ) : (
-            <Text span fz={"sm"}>
-              {ratingChange}
-            </Text>
-          );
-
-        // Custom games rating change doesn't make sense
-        ratingChangeAsElement = isCustomGame ? <></> : ratingChangeAsElement;
-
-        // Check for unranked
-        ratingPlayedWith =
-          matchHistory.losses + matchHistory.wins >= 10 ? ratingPlayedWith : unrankedWithTooltip;
-        // Check for custom games
-        ratingPlayedWith = isCustomGame
-          ? customGameELOWithTooltip({ rating: matchHistory.oldrating })
-          : ratingPlayedWith;
-
-        const ratingElement = (
-          <>
-            <span style={{ width: "4ch", textAlign: "left" }}>{ratingPlayedWith}</span>
-            <span>{ratingChangeAsElement}</span>
-          </>
-        );
-
         return (
-          <div key={playerInfo.profile_id}>
-            <Group gap={"xs"}>
-              <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
-              <> {ratingElement}</>
-              <Anchor
-                rel={"referrer"}
-                key={playerInfo.profile_id}
-                component={Link}
-                href={`/players/${playerInfo.profile_id}`}
-              >
-                {`${playerInfo.profile_id}` === `${profileID}` ? (
-                  <Text fz={"sm"} span fw={700}>
-                    <Group gap="xs">
-                      {" "}
-                      {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
-                      <EllipsisText text={playerInfo.profile["alias"]} />
-                    </Group>
-                  </Text>
-                ) : (
-                  <Text span fz={"sm"}>
-                    <Group gap="xs">
-                      {renderFlag && <CountryFlag countryCode={playerInfo.profile.country} />}
-                      <EllipsisText text={playerInfo.profile["alias"]} />
-                    </Group>
-                  </Text>
-                )}
-              </Anchor>
-            </Group>
-          </div>
+          <RenderPlayer
+            playerInfo={playerInfo}
+            profileID={profileID}
+            matchType={matchType}
+            renderFlag={renderFlag}
+          />
         );
       })}
     </>
   );
 };
+
+export { RenderPlayers, RenderPlayer };
 
 export default RenderPlayers;

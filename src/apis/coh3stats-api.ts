@@ -2,6 +2,7 @@ import config from "../../config";
 import {
   GlobalAchievementsData,
   leaderBoardType,
+  PlayerReport,
   ProcessedMatch,
   raceType,
   TwitchStream,
@@ -193,6 +194,14 @@ const getMatch = async (matchID: string | number, playerIDs?: Array<string>) => 
 
   if (response.ok) {
     const data = await response.json();
+
+    data.match.matchhistoryreportresults = data.match.matchhistoryreportresults.map(
+      (result: PlayerReport) => {
+        result.counters = JSON.parse(result.counters as unknown as string);
+        return result;
+      },
+    );
+
     const matchData: ProcessedMatch = data.match;
 
     return matchData;
