@@ -69,16 +69,6 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           textAlign: "center",
           render: ({ counters }) => counters.dmgdone.toLocaleString(),
         },
-        {
-          accessor: "kd_ratio",
-          title: "K/D",
-          textAlign: "center",
-          render: ({ counters }) => {
-            const kills = counters.ekills;
-            const deaths = counters.edeaths;
-            return deaths !== 0 ? (kills / deaths).toFixed(2) : kills;
-          },
-        },
       ],
     },
     {
@@ -96,6 +86,16 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
       ),
       textAlign: "center",
       columns: [
+        {
+          accessor: "kd_ratio",
+          title: "K / D",
+          textAlign: "center",
+          render: ({ counters }) => {
+            const kills = counters.ekills;
+            const deaths = counters.edeaths;
+            return deaths !== 0 ? (kills / deaths).toFixed(2) : kills;
+          },
+        },
         {
           accessor: "ekills",
           title: "Killed",
