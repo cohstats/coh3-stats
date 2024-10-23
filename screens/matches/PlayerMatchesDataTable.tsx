@@ -6,6 +6,7 @@ import { Group, Image, Badge } from "@mantine/core";
 import { getMatchDurationGameTime } from "../../src/coh3/helpers";
 import { getIconsPathOnCDN } from "../../src/utils";
 import { RenderPlayer } from "../players/tabs/recent-matches-tab/matches-table/render-players";
+import HelperIcon from "../../components/icon/helper";
 
 interface PlayerMatchesDataTableProps {
   data: PlayerReport[];
@@ -68,6 +69,13 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           title: "Damage Dealt",
           textAlign: "center",
           render: ({ counters }) => counters.dmgdone.toLocaleString(),
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.dmgdone, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
       ],
     },
@@ -95,18 +103,40 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
             const deaths = counters.edeaths;
             return deaths !== 0 ? (kills / deaths).toFixed(2) : kills;
           },
+          footer: (
+            <>
+              {(
+                Object.values(data).reduce((acc, curr) => acc + curr.counters.ekills, 0) /
+                Object.values(data).reduce((acc, curr) => acc + curr.counters.edeaths, 0)
+              ).toFixed(2)}
+            </>
+          ),
         },
         {
           accessor: "ekills",
           title: "Killed",
           textAlign: "center",
           render: ({ counters }) => counters.ekills ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.ekills, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
         {
           accessor: "edeaths",
           title: "Lost",
           textAlign: "center",
           render: ({ counters }) => counters.edeaths ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.edeaths, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
       ],
     },
@@ -131,12 +161,30 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           title: "Killed",
           textAlign: "center",
           render: ({ counters }) => counters.sqkill ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.sqkill, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
         {
           accessor: "sqprod",
           title: "Made / Lost",
           textAlign: "center",
           render: ({ counters }) => `${counters.sqprod ?? "N/A"} / ${counters.sqlost ?? "N/A"}`,
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.sqprod, 0)
+                .toLocaleString() +
+                " / " +
+                Object.values(data)
+                  .reduce((acc, curr) => acc + curr.counters.sqlost, 0)
+                  .toLocaleString()}
+            </>
+          ),
         },
       ],
     },
@@ -160,12 +208,30 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           title: "Killed",
           textAlign: "center",
           render: ({ counters }) => counters.vkill ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.vkill, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
         {
           accessor: "vprod",
           title: "Made / Lost",
           textAlign: "center",
           render: ({ counters }) => `${counters.vprod ?? "N/A"} / ${counters.vlost ?? "N/A"}`,
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.vprod, 0)
+                .toLocaleString() +
+                " / " +
+                Object.values(data)
+                  .reduce((acc, curr) => acc + curr.counters.vlost, 0)
+                  .toLocaleString()}
+            </>
+          ),
         },
         {
           accessor: "vprod",
@@ -173,6 +239,17 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           title: "Abandoned / Captured",
           textAlign: "center",
           render: ({ counters }) => `${counters.vabnd ?? "N/A"} / ${counters.vcap ?? "N/A"}`,
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.vabnd, 0)
+                .toLocaleString() +
+                " / " +
+                Object.values(data)
+                  .reduce((acc, curr) => acc + curr.counters.vcap, 0)
+                  .toLocaleString()}
+            </>
+          ),
         },
       ],
     },
@@ -196,12 +273,30 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           title: "Captured / Lost",
           textAlign: "center",
           render: ({ counters }) => `${counters.pcap ?? "N/A"} / ${counters.plost ?? "N/A"}`,
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.pcap, 0)
+                .toLocaleString() +
+                " / " +
+                Object.values(data)
+                  .reduce((acc, curr) => acc + curr.counters.plost, 0)
+                  .toLocaleString()}
+            </>
+          ),
         },
         {
           accessor: "precap",
           title: "Recaptured",
           textAlign: "center",
           render: ({ counters }) => counters.precap ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.precap, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
       ],
     },
@@ -215,38 +310,90 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           title: "Unit",
           textAlign: "center",
           render: ({ counters }) => counters.abil ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.abil, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
         {
           accessor: "cabil",
           title: "BG",
           textAlign: "center",
           render: ({ counters }) => counters.cabil ?? "N/A",
+          footer: (
+            <>
+              {Object.values(data)
+                .reduce((acc, curr) => acc + curr.counters.cabil, 0)
+                .toLocaleString()}
+            </>
+          ),
         },
       ],
     },
     {
       id: "time-commands",
-      title: "",
-      textAlign: "center",
+      title: (
+        <>
+          <HelperIcon
+            text={
+              <>
+                <strong>Recaptured Strategy Points</strong> - When player neutralizes point, it's
+                counted as recapture.
+                <br />
+                <strong>Game Time</strong> - Time spent in the game. If someone has less than the
+                rest of the team, it means they left the game before end. <br />
+                <strong>APM</strong> - Actions Per Minute. <br />
+                <strong>BG</strong> - Battle Group <br />
+              </>
+            }
+          />
+        </>
+      ),
+      textAlign: "right",
       columns: [
         {
           accessor: "totalcmds",
           title: "APM",
           textAlign: "center",
           render: (record) => {
-            console.log(record);
             const gameTimeMinutes = record.counters.gt / 60;
             const commands = record.counters.totalcmds;
             const apm = (commands / gameTimeMinutes).toFixed(0);
 
             return <>{apm}</>;
           },
+          footer: (
+            <>
+              {(() => {
+                const totalCommands = Object.values(data).reduce(
+                  (acc, curr) => acc + curr.counters.totalcmds,
+                  0,
+                );
+                const GameTime = Object.values(data).reduce(
+                  (acc, curr) => acc + curr.counters.gt,
+                  0,
+                );
+                const averageAPM = (totalCommands / (GameTime / 60)).toFixed(0);
+                return `${averageAPM}`;
+              })()}
+            </>
+          ),
         },
         {
           accessor: "gt",
           title: "Game Time",
           textAlign: "center",
           render: ({ counters }) => <>{getMatchDurationGameTime(counters.gt) ?? "N/A"}</>,
+          footer: (
+            <>
+              {getMatchDurationGameTime(
+                Math.max(...Object.values(data).map((curr) => curr.counters.gt)),
+              )}
+            </>
+          ),
         },
       ],
     },
@@ -265,6 +412,8 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
         groups={tableGroups}
         withTableBorder={true}
         borderRadius="md"
+        // this is used as key for react
+        idAccessor={"profile.profile_id"}
         // xs is 10
         horizontalSpacing="6"
         // columns={columns}
