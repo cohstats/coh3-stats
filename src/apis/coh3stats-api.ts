@@ -230,6 +230,14 @@ const getPlayerRecentMatches = async (playerID: string | number, XForwardedFor: 
 
   if (response.ok) {
     const data = await response.json();
+
+    // Change the counters to JSON
+    data.playerMatches.forEach((match: ProcessedMatch) => {
+      match.matchhistoryreportresults.forEach((result: PlayerReport) => {
+        result.counters = JSON.parse(result.counters as unknown as string);
+      });
+    });
+
     const playerMatchesData: Array<ProcessedMatch> = data.playerMatches;
 
     // Sort by completion time

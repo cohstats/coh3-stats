@@ -1,7 +1,7 @@
 import React from "react";
 import { DataTable, DataTableColumnGroup } from "mantine-datatable";
 import { PlayerReport } from "../../src/coh3/coh3-types";
-import { Group, Image, Badge } from "@mantine/core";
+import { Group, Image, Badge, Tooltip } from "@mantine/core";
 
 import { getMatchDurationGameTime } from "../../src/coh3/helpers";
 import { getIconsPathOnCDN } from "../../src/utils";
@@ -14,6 +14,11 @@ interface PlayerMatchesDataTableProps {
 
 const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
   // const [expandedRecordIds, setExpandedRecordIds] = useState<string[]>([]);
+
+  // Custom games might have no player data
+  if (data.length === 0) {
+    return <></>;
+  }
 
   const tableGroups: DataTableColumnGroup<PlayerReport>[] = [
     {
@@ -356,7 +361,11 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
       columns: [
         {
           accessor: "totalcmds",
-          title: "APM",
+          title: (
+            <Tooltip label="Actions Per Minute" withArrow>
+              <span>APM</span>
+            </Tooltip>
+          ),
           textAlign: "center",
           render: (record) => {
             const gameTimeMinutes = record.counters.gt / 60;
@@ -377,7 +386,11 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
                   0,
                 );
                 const averageAPM = (totalCommands / (GameTime / 60)).toFixed(0);
-                return `${averageAPM}`;
+                return (
+                  <Tooltip label="Average Actions Per Minute" withArrow>
+                    <span>{averageAPM}*</span>
+                  </Tooltip>
+                );
               })()}
             </>
           ),

@@ -125,3 +125,14 @@ export const getNewsRoute = (articleId?: string) => {
   }
   return encodeURI(`/news`);
 };
+
+export const getMatchDetailRoute = (
+  matchId: string | number,
+  profileIDs?: Array<string | number>,
+) => {
+  if (profileIDs && profileIDs.length > 0) {
+    return encodeURI(`/matches/${matchId}?profileIDs=${JSON.stringify(profileIDs)}`);
+  }
+
+  return encodeURI(`/matches/${matchId}`);
+};

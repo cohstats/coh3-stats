@@ -6,16 +6,29 @@ import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpe
 import PlayerMatchesDataTable from "./PlayerMatchesDataTable";
 import { IconCalendar, IconStopwatch, IconSwords } from "@tabler/icons-react";
 import React from "react";
+import dynamic from "next/dynamic";
+import config from "../../config";
 
-const DynamicDmgDonePieChart = React.lazy(() => import("./match-charts/dmg-done-pie-chart"));
-const DynamicUnitsKilledPieChart = React.lazy(
+const DynamicDmgDonePieChart = dynamic(() => import("./match-charts/dmg-done-pie-chart"), {
+  ssr: false,
+});
+const DynamicUnitsKilledPieChart = dynamic(
   () => import("./match-charts/units-killed-pie-chart"),
+  {
+    ssr: false,
+  },
 );
-const DynamicVehiclesKilledPieChart = React.lazy(
+const DynamicVehiclesKilledPieChart = dynamic(
   () => import("./match-charts/vehicles-killed-pie-chart"),
+  {
+    ssr: false,
+  },
 );
-const DynamicCapturedPointsPieChart = React.lazy(
+const DynamicCapturedPointsPieChart = dynamic(
   () => import("./match-charts/captured-points-pie-chart"),
+  {
+    ssr: false,
+  },
 );
 
 const SmallInfoCard = ({ title, children }: { title: string; children: React.ReactNode }) => {
@@ -30,7 +43,11 @@ const SmallInfoCard = ({ title, children }: { title: string; children: React.Rea
   );
 };
 
-export default function Component({ matchData }: { matchData: ProcessedMatch }) {
+export default function MatchDetail({ matchData }: { matchData: ProcessedMatch | null }) {
+  if (!matchData) {
+    return <></>;
+  }
+
   const matchtype_id = matchData.matchtype_id;
   const matchType =
     matchTypesAsObject[matchtype_id as number]["localizedName"] ||
@@ -43,7 +60,7 @@ export default function Component({ matchData }: { matchData: ProcessedMatch }) 
   const alliesPlayers = getMatchPlayersByFaction(matchData.matchhistoryreportresults, "allies");
 
   return (
-    <Container size="fluid" pl={0} pr={0}>
+    <Container size={config.mainContainerSize} pl={0} pr={0}>
       <Flex justify="space-between" wrap="wrap">
         <Title order={2}>
           Match Detail - {matchType} - {mapName}
@@ -54,7 +71,7 @@ export default function Component({ matchData }: { matchData: ProcessedMatch }) 
             <IconCalendar size={20} style={{ marginBottom: -3 }} />
           </Text>
           <Text size="sm" span ta="right">
-            for {getMatchDuration(matchData.startgametime, matchData.completiontime)}{" "}
+            For {getMatchDuration(matchData.startgametime, matchData.completiontime)}{" "}
             <IconStopwatch size={20} style={{ marginBottom: -3 }} />
           </Text>
         </Stack>

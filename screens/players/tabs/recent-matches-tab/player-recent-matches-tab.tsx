@@ -9,6 +9,7 @@ import {
   Tooltip,
   Center,
   Flex,
+  ActionIcon,
 } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
@@ -17,18 +18,19 @@ import { PlayerReport, ProcessedMatch, raceID } from "../../../../src/coh3/coh3-
 import { getMatchDuration, getMatchPlayersByFaction } from "../../../../src/coh3/helpers";
 import ErrorCard from "../../../../components/error-card";
 import FactionIcon from "../../../../components/faction-icon";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { IconEyePlus, IconInfoCircle } from "@tabler/icons-react";
 import sortBy from "lodash/sortBy";
 import cloneDeep from "lodash/cloneDeep";
 import FilterableHeader from "../filterable-header";
 
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../../src/players/utils";
-import { useLocalStorage } from "@mantine/hooks";
+import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import RenderPlayers from "./matches-table/render-players";
 import RenderMap from "./matches-table/render-map";
 
 import classes from "./matches-table.module.css";
+import MatchDetailDrawer from "./match-detail-drawer";
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -47,6 +49,11 @@ const PlayerRecentMatchesTab = ({
   error: string;
   customGamesHidden: boolean | undefined | null;
 }) => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const [selectedMatchRecord, setSelectedMatchRecord] = React.useState<ProcessedMatch | null>(
+    null,
+  );
+
   const [debug, setDebug] = React.useState(false);
   const [showCountryFlag, setShowCountryFlag] = useLocalStorage({
     key: "show-country-flag-matches",
@@ -164,7 +171,18 @@ const PlayerRecentMatchesTab = ({
   // @ts-ignore
   return (
     <>
-      <Flex justify={"end"} pb={"xs"}>
+      <MatchDetailDrawer
+        selectedMatchRecord={selectedMatchRecord}
+        opened={opened}
+        onClose={close}
+      />
+      <Flex justify={"space-between"} pb={"xs"}>
+        <Group gap={5}>
+          <IconInfoCircle size={18} />
+          <Text span size={"sm"}>
+            Click on the row for more details
+          </Text>
+        </Group>
         <Switch
           checked={showCountryFlag === "true"}
           onChange={(event) => {
@@ -190,6 +208,22 @@ const PlayerRecentMatchesTab = ({
         //   return classes["row-custom-styles"]
         // }}
         onSortStatusChange={setSortStatus}
+        onRowClick={({ record, event }) => {
+          if (event.target instanceof Element) {
+            const clickedElement = event.target as Element;
+            const isClickableElement = clickedElement.closest(
+              "a, button, img, .mantine-Button-root",
+            );
+
+            if (isClickableElement) {
+              // If it's a clickable element, don't open the drawer
+              return;
+            }
+          }
+
+          setSelectedMatchRecord(record as unknown as ProcessedMatch);
+          open();
+        }}
         columns={[
           {
             accessor: "Played",
@@ -350,7 +384,7 @@ const PlayerRecentMatchesTab = ({
             },
           },
           {
-            title: "Match duration",
+            title: "Duration",
             accessor: "match_duration",
             sortable: true,
             textAlign: "center",
@@ -358,6 +392,26 @@ const PlayerRecentMatchesTab = ({
             // @ts-ignore
             render: ({ startgametime, completiontime }) => {
               return <p>{getMatchDuration(startgametime as number, completiontime as number)}</p>;
+            },
+          },
+          {
+            accessor: "actions",
+            title: "",
+            textAlign: "center",
+            render: (record) => {
+              return (
+                <ActionIcon
+                  size="lg"
+                  variant="default"
+                  radius="md"
+                  onClick={() => {
+                    setSelectedMatchRecord(record as unknown as ProcessedMatch);
+                    open();
+                  }}
+                >
+                  <IconEyePlus size={25} />
+                </ActionIcon>
+              );
             },
           },
           {

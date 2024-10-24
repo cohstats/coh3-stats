@@ -137,6 +137,7 @@ const RenderPlayers = ({
             profileID={profileID}
             matchType={matchType}
             renderFlag={renderFlag}
+            key={playerInfo.profile_id}
           />
         );
       })}
