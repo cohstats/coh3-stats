@@ -96,7 +96,7 @@ describe("coh3stats-api", () => {
             resulttype: 1,
             teamid: 1,
             race_id: 129494,
-            counters: "test",
+            counters: "{}",
             profile: {
               name: "Test Player",
               alias: "Test",
@@ -138,7 +138,7 @@ describe("coh3stats-api", () => {
             resulttype: 1,
             teamid: 1,
             race_id: 129494,
-            counters: "test",
+            counters: "{}",
             profile: {
               name: "Test Player",
               alias: "Test",
@@ -180,7 +180,7 @@ describe("coh3stats-api", () => {
             resulttype: 1,
             teamid: 1,
             race_id: 129494,
-            counters: "test",
+            counters: "{}",
             profile: {
               name: "Test Player",
               alias: "Test",
