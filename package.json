@@ -85,7 +85,7 @@
     "@edgio/prefetch": "7.13.8",
     "@edgio/react": "7.13.8",
     "@next/bundle-analyzer": "14.2.13",
-    "@testing-library/jest-dom": "6.5.0",
+    "@testing-library/jest-dom": "6.6.2",
     "@testing-library/react": "16.0.1",
     "@types/jest": "29.5.13",
     "@types/node": "20.16.13",
