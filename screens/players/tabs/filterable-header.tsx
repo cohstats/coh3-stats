@@ -16,12 +16,12 @@ const FilterableHeader = ({ options, title, onChange, onReset }: FilterableHeade
   return (
     <Popover position="bottom" withArrow withinPortal shadow="md">
       <Popover.Target>
-        <Group justify="center">
+        <Group justify="center" style={{ cursor: "pointer" }}>
           <Flex>
             <Text span inherit>
               {title}
             </Text>
-            <IconFilter cursor="pointer" />
+            <IconFilter size={20} style={{ marginLeft: 5 }} />
           </Flex>
         </Group>
       </Popover.Target>

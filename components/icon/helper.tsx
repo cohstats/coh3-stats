@@ -21,7 +21,7 @@ const HelperIcon = ({
       w={width}
       position={position}
     >
-      <IconInfoCircle size={iconSize} />
+      <IconInfoCircle size={iconSize} style={{ marginBottom: -4 }} />
     </Tooltip>
   );
 };

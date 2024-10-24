@@ -352,6 +352,7 @@ const config = {
   latestPatch,
   statsPatchSelector,
   defaultStatsPatchSelector,
+  mainContainerSize: 1310,
 };
 
 export default config;

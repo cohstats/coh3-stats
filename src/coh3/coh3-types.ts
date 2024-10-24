@@ -134,12 +134,61 @@ interface ProcessedProfile {
   country: string;
 }
 
+export interface PlayerReportCounters {
+  abil: number;
+  addonkill: number;
+  blost: number;
+  bprod: number;
+  cabil: number;
+  cflags: number;
+  cpearn: number;
+  dmgdone: number;
+  edeaths: number;
+  ekills: number;
+  elitekill: number;
+  erein: number;
+  gammaspnt: number;
+  gt: number;
+  inactperiod: number;
+  lowintperiod: number;
+  objdmh: number;
+  pcap: number;
+  plost: number;
+  popmax: number;
+  powearn: number;
+  powmax: number;
+  powspnt: number;
+  precap: number;
+  reqearn: number;
+  reqmax: number;
+  reqspnt: number;
+  sqkill: number;
+  sqlost: number;
+  sqprod: number;
+  structdmg: number;
+  svetrank: number;
+  svetxp: number;
+  totalcmds: number;
+  unitprod: number;
+  upg: number;
+  vabnd: number;
+  vcap: number;
+  vkill: number;
+  vlost: number;
+  vp0: number;
+  vp1: number;
+  vprod: number;
+  vvetrank: number;
+  vvetxp: number;
+  wpnpu: number;
+}
+
 export interface PlayerReport {
   profile_id: number;
   resulttype: number;
   teamid: number;
   race_id: number;
-  counters: string;
+  counters: PlayerReportCounters;
   profile: ProcessedProfile;
   matchhistorymember: ProcessedMatchHistoryMember;
 }

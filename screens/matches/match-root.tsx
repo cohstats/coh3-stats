@@ -85,7 +85,7 @@ const MatchDetailRoot: NextPage = () => {
         <meta name="keywords" content={keywords} />
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
-      <div style={{ minHeight: 800 }}>{content}</div>
+      <div style={{ minHeight: 900 }}>{content}</div>
     </>
   );
 };
