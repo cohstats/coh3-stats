@@ -415,7 +415,7 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
         // this is used as key for react
         idAccessor={"profile.profile_id"}
         // xs is 10
-        horizontalSpacing="6"
+        horizontalSpacing="7"
         // columns={columns}
         // rowExpansion={{
         //   content: ({ record }) => <ExpandedRowContent record={record} />,
