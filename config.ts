@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "1.8.1";
+const defaultStatsPatchSelector = "1.8.2";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -55,11 +55,11 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
-  "1.8.1": {
+  "1.8.2": {
     from: "2024-09-26",
     to: "now",
-    value: "1.8.1",
-    label: "1.8.1",
+    value: "1.8.2",
+    label: "1.8.1 - 1.8.2",
     group: "Patch 1.8.x",
   },
   "1.8.0": {
@@ -115,7 +115,6 @@ const statsPatchSelector: Record<
     from: "2023-12-05",
     to: "2023-12-11",
     value: "1.4.1",
-    // Version 1.4.1 can be merged together with 1.4.0
     label: "1.4.0 - 1.4.1",
     group: "Steel Shepherd",
   },
@@ -161,30 +160,32 @@ const statsPatchSelector: Record<
     label: "1.2.1 - 1.2.2",
     group: "Emerald Bear",
   },
-  // version 1.2.1 is not significant to be in the menu
   "1.2.0": {
     from: "2023-07-25",
     to: "2023-08-03",
     value: "1.2.0",
-    label: "1.2.0",
+    label: "1.2.0 - 1.2.1",
     group: "Emerald Bear",
   },
-  // versions 1.1.6 not significant to be in the menu
   "1.1.5": {
     from: "2023-06-06",
     to: "2023-07-25",
     value: "1.1.5",
-    label: "1.1.5",
+    label: "1.1.5 - 1.1.6",
     group: "Brass Leopard",
   },
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.8.1";
+const latestPatch = "1.8.2";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.8.2": {
+      dataTag: "v1.8.2-1",
+      dataTime: "17/Oct/2024",
+    },
     "1.8.1": {
       dataTag: "v1.8.1-1",
       dataTime: "25/Sep/2024",
