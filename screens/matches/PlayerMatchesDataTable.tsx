@@ -399,7 +399,9 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           accessor: "gt",
           title: "Game Time",
           textAlign: "center",
-          render: ({ counters }) => <>{getMatchDurationGameTime(counters.gt) ?? "N/A"}</>,
+          render: ({ counters }) => (
+            <>{counters.gt ? getMatchDurationGameTime(counters.gt) : "N/A"}</>
+          ),
           footer: (
             <>
               {getMatchDurationGameTime(
