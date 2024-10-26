@@ -11,7 +11,6 @@ import {
   List,
   Space,
   Title,
-  Tooltip,
   Text,
   Group,
   Avatar,
@@ -269,24 +268,22 @@ const NemesisTab = ({
 
   return (
     <>
-      <Container size={"lg"}>
+      <Container size={"md"}>
         <Space h={"lg"} />
         <Title order={2}>1v1 Nemesis</Title>
         <Flex wrap={"wrap"}>
           <Card m={"xs"} padding="sm" radius="md" ml={0} withBorder style={{ flexGrow: 1 }}>
             <List size="sm">
+              <List.Item>Nemesis counter has be to 'triggered'</List.Item>
               <List.Item>
-                Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day
-                (UTC timezone).
+                Trigger by playing with the same player 2 times in 1 day (UTC).
               </List.Item>
+              <List.Item>Aliases are saved from the last game played with that player</List.Item>
               <List.Item>
                 After the trigger, all 1v1 games with that player are counted.
               </List.Item>
               <List.Item>Data are updated once a day 6 AM UTC.</List.Item>
-              <List.Item>
-                Aliases are saved from the last game played with that player and then updated
-                every 24 hours.
-              </List.Item>
+
               <List.Item>Only Steam players are tracked.</List.Item>
             </List>
           </Card>
@@ -351,16 +348,17 @@ const NemesisTab = ({
               textAlign: "left",
               title: "Alias",
               width: "100%",
-              render: ({ alias, profile_id }) => {
+              render: ({ alias, profile_id, c }) => {
                 return (
                   <Anchor
                     key={profile_id}
                     component={LinkWithOutPrefetch}
                     href={getPlayerCardRoute(profile_id)}
                   >
-                    <Tooltip label={alias}>
-                      <EllipsisText text={alias} noWrap={false} maxWidth={"45ch"} />
-                    </Tooltip>
+                    <Group gap="xs">
+                      <CountryFlag countryCode={c} />
+                      <EllipsisText text={alias} />
+                    </Group>
                   </Anchor>
                 );
               },

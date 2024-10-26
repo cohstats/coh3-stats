@@ -6,7 +6,7 @@ const CountryFlag = ({
   width,
   height,
 }: {
-  countryCode: string;
+  countryCode?: string;
   size?: "md" | "sm" | "xs";
   width?: number;
   height?: number;
@@ -24,13 +24,13 @@ const CountryFlag = ({
 
   // https://www.npmjs.com/package/flag-icons
   const src = countryCode
-    ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.15.0/flags/4x3/${countryCode.toLowerCase()}.svg`
+    ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/flags/4x3/${countryCode.toLowerCase()}.svg`
     : `/flags/4x3/xx.svg`;
 
   return (
     <Image
       src={src}
-      alt={countryCode}
+      alt={countryCode || ""}
       width={internalWidth}
       height={internalHeight}
       loading="lazy"
