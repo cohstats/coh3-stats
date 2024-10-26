@@ -386,6 +386,7 @@ export interface ProcessedCOHPlayerStats {
         alias: string;
         w: number;
         l: number;
+        c?: string;
       }>
     | [];
   statGroups: Record<
