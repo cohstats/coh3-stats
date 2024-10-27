@@ -13,6 +13,7 @@ import { getLeaderBoardRoute } from "../../../../src/routes";
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import RankIcon from "../../../../components/rank-icon";
 import HelperIcon from "../../../../components/icon/helper";
+import { IconArrowBigDown, IconArrowBigUp } from "@tabler/icons-react";
 
 const PlayerStandingsTable = ({
   faction,
@@ -90,9 +91,10 @@ const PlayerStandingsTable = ({
             footer: (
               <>
                 <Text size={"xs"} c="dimmed">
+                  <IconArrowBigDown size={19} style={{ marginBottom: -4 }} />
                   <HelperIcon
                     text={
-                      "Best Rank Achieved. The best Rank the player ever had. Lower is better."
+                      "Best Rank Achieved. Lower is better. The best Rank the player ever had. "
                     }
                   />
                 </Text>
@@ -122,9 +124,10 @@ const PlayerStandingsTable = ({
             footer: (
               <>
                 <Text size={"xs"} c="dimmed">
+                  <IconArrowBigUp size={19} style={{ marginBottom: -3 }} />
                   <HelperIcon
                     text={
-                      "Best ELO Achieved. The best ELO the player ever had. Higher is better."
+                      "Best ELO Achieved. Higher is better. The best ELO the player ever had. "
                     }
                   />
                 </Text>
