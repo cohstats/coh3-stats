@@ -90,7 +90,11 @@ const PlayerStandingsTable = ({
             footer: (
               <>
                 <Text size={"xs"} c="dimmed">
-                  <HelperIcon text={"Best Rank Achieved. The best Rank the player ever had."} />
+                  <HelperIcon
+                    text={
+                      "Best Rank Achieved. The best Rank the player ever had. Lower is better."
+                    }
+                  />
                 </Text>
               </>
             ),
@@ -109,7 +113,7 @@ const PlayerStandingsTable = ({
                   <span>{rating}</span>
                   {highestrating > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Best {highestrating}
+                      Best {highestrating > rating ? highestrating : rating}
                     </Text>
                   )}
                 </Stack>
@@ -118,7 +122,11 @@ const PlayerStandingsTable = ({
             footer: (
               <>
                 <Text size={"xs"} c="dimmed">
-                  <HelperIcon text={"Best ELO Achieved. The best ELO the player ever had."} />
+                  <HelperIcon
+                    text={
+                      "Best ELO Achieved. The best ELO the player ever had. Higher is better."
+                    }
+                  />
                 </Text>
               </>
             ),
