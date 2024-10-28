@@ -16,6 +16,7 @@ import {
 } from "../analysis-types";
 import { cleanXForwardedFor, parseFirstIPFromString } from "../utils";
 import { logger } from "../logger";
+import { getMatchURlsWithoutLeavers } from "../coh3/helpers";
 
 export const GET_ANALYSIS_STATS = "v10";
 
@@ -59,6 +60,17 @@ const getGlobalAchievementsUrl = (cache_proxy = true) => {
   return cache_proxy
     ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
     : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+};
+
+const getReplayUrl = (matchID: string | number) => {
+  return encodeURI(`${config.BASE_REPLAY_STORAGE_URL}/${matchID}.rec`);
+};
+
+const setReplayFileUrl = () => {
+  return encodeURI(
+    // This will be in the browser / we don't want to touch our GCP directly without proxy
+    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/setReplayFileHttp`,
+  );
 };
 
 const getStatsUrl = (
@@ -366,6 +378,58 @@ const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
   return await response.json();
 };
 
+const generateReplayUrl = async (matchObject: ProcessedMatch) => {
+  const r2url = getReplayUrl(matchObject.id);
+
+  let response;
+
+  try {
+    response = await fetch(r2url, { method: "HEAD" });
+  } catch (e) {}
+  if (response && response.status === 200) {
+    return {
+      url: r2url,
+      status: "success",
+    };
+  } else {
+    const response = await fetch(setReplayFileUrl(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        matchID: matchObject.id,
+        replayURLs: JSON.stringify(
+          getMatchURlsWithoutLeavers(matchObject).map((data) => {
+            return {
+              profile_id: data.profile_id,
+              replay_id: data.key,
+            };
+          }),
+        ),
+      }),
+    });
+
+    const parsedResponse = await response.json();
+    if (parsedResponse.status === "success") {
+      return {
+        url: r2url,
+        status: "success",
+      };
+    } else if (parsedResponse.status === "error") {
+      return {
+        url: null,
+        status: "error",
+        message: parsedResponse.message,
+      };
+    }
+
+    console.error(parsedResponse);
+
+    throw new Error("Error generating replay url");
+  }
+};
+
 const _fetchFirstXLinesOfLeaderBoards = async (url: string, amountOfPlayers: number) => {
   const response = await fetch(url);
 
@@ -465,4 +529,5 @@ export {
   getYouTubeVideosHttp,
   triggerPlayerNemesisAliasesUpdate,
   getOldLeaderboardData,
+  generateReplayUrl,
 };

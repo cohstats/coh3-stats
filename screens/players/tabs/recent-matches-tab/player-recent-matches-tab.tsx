@@ -9,7 +9,6 @@ import {
   Tooltip,
   Center,
   Flex,
-  ActionIcon,
 } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
@@ -31,6 +30,7 @@ import RenderMap from "./matches-table/render-map";
 
 import classes from "./matches-table.module.css";
 import MatchDetailDrawer from "./match-detail-drawer";
+import DownloadReplayButton from "./matches-table/download-replay";
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -400,17 +400,20 @@ const PlayerRecentMatchesTab = ({
             textAlign: "center",
             render: (record) => {
               return (
-                <ActionIcon
-                  size="lg"
-                  variant="default"
-                  radius="md"
-                  onClick={() => {
-                    setSelectedMatchRecord(record as unknown as ProcessedMatch);
-                    open();
-                  }}
-                >
-                  <IconEyePlus size={25} />
-                </ActionIcon>
+                <Stack gap={"xs"}>
+                  <Button
+                    leftSection={<IconEyePlus size={18} />}
+                    variant="default"
+                    size="compact-md"
+                    onClick={() => {
+                      setSelectedMatchRecord(record as unknown as ProcessedMatch);
+                      open();
+                    }}
+                  >
+                    Details
+                  </Button>
+                  <DownloadReplayButton match={record as unknown as ProcessedMatch} />
+                </Stack>
               );
             },
           },
