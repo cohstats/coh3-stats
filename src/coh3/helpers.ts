@@ -3,6 +3,7 @@ import {
   LaddersDataArrayObject,
   LaddersDataObject,
   PlayerReport,
+  ProcessedMatch,
   raceType,
 } from "./coh3-types";
 import { isOfficialMap, maps, PlayerRanks, raceIDsAsObject } from "./coh3-data";
@@ -144,6 +145,22 @@ const getMapLocalizedName = (mapName: string) => {
   }
 };
 
+const getMatchURlsWithoutLeavers = (match: ProcessedMatch) => {
+  // If someone left they have lower game time
+  const gameTime = match.matchhistoryreportresults.reduce((acc, cur) => {
+    return acc > cur.counters.gt ? acc : cur.counters.gt;
+  }, 0);
+
+  // Filter out players that left the game
+  const profileIDsWithoutLeavers = match.matchhistoryreportresults.filter(
+    (player) => player.counters.gt === gameTime,
+  );
+
+  return match.matchurls.filter((url) =>
+    profileIDsWithoutLeavers.find((player) => player.profile_id === url.profile_id),
+  );
+};
+
 export {
   getFactionSide,
   findAndMergeStatGroups,
@@ -152,4 +169,5 @@ export {
   getMatchPlayersByFaction,
   calculatePlayerTier,
   getMapLocalizedName,
+  getMatchURlsWithoutLeavers,
 };

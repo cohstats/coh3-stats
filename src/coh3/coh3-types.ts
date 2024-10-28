@@ -212,6 +212,7 @@ export interface ProcessedMatch {
   matchhistoryreportresults: Array<PlayerReport>;
   matchhistoryitems: Array<ProcessedMatchHistoryItem>;
   profile_ids: Array<number>;
+  matchurls: Array<{ profile_id: number; key: string }>;
 }
 
 export interface TwitchStream {

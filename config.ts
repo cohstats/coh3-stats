@@ -354,6 +354,7 @@ const config = {
   statsPatchSelector,
   defaultStatsPatchSelector,
   mainContainerSize: 1310,
+  BASE_REPLAY_STORAGE_URL: "https://replays.coh3stats.com",
 };
 
 export default config;

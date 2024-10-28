@@ -3,9 +3,11 @@ import {
   getMatchDuration,
   getMatchDurationGameTime,
   getMatchPlayersByFaction,
+  getMatchURlsWithoutLeavers,
 } from "../../../src/coh3/helpers";
 import { PlayerRanks } from "../../../src/coh3/coh3-data";
 import { PlayerReport } from "../../../src/coh3/coh3-types";
+import pm4v4Leavers from "../../test-assets/processed-match-4v4-leavers.json";
 
 describe("getMatchDurationGameTime", () => {
   test("calculates the game duration", () => {
@@ -297,5 +299,37 @@ describe("calculatePlayerTier", () => {
 
   test("should return CHALLENGER_1 when rating is 1601", () => {
     expect(calculatePlayerTier(1, 1601)).toBe(PlayerRanks.CHALLENGER_1);
+  });
+});
+
+describe("getMatchURlsWithoutLeavers", () => {
+  test("should remove the leavers", () => {
+    const results = getMatchURlsWithoutLeavers(pm4v4Leavers);
+    expect(results).toEqual([
+      {
+        profile_id: 4566,
+        key: "7944879acfd6086891d35172e7297e51aff310bf760ac68647c8a30de852d994",
+      },
+      {
+        profile_id: 370468,
+        key: "177e19d7be3b510e02b6d8b64fc1c1ddf8ac92a91880948f570b465180da9a3e",
+      },
+      {
+        profile_id: 234442,
+        key: "b9e91a67c12b753d0e63fa7d0e8b9abe8dc2da935b3f5a2a3e10f11039a9e8ad",
+      },
+      {
+        profile_id: 53301,
+        key: "afb40c2fee136d79a50f020930242350a1a56eb2f62ea1cdad65f77f3f73c7da",
+      },
+      {
+        profile_id: 292098,
+        key: "487aff730a1bab4eedca5ffbe1480e265f4064fcfc179dcb1dd915dd4fdedb14",
+      },
+      {
+        profile_id: 45243,
+        key: "c2a0344395dcdac7820361ff5ca6a4c315701b4ddd6eb3c10267502e24ae497",
+      },
+    ]);
   });
 });
