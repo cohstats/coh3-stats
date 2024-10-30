@@ -432,99 +432,112 @@ export const raceIDsAsObject: Record<
 
 export const matchTypesAsObject: Record<
   number,
-  { id: number; name: string; localizedName?: string }
+  { id: number; name: string; localizedName: string }
 > = {
   0: {
     id: 0,
     name: "Custom",
+    localizedName: "Custom",
   },
   1: {
     id: 1,
     name: "1V1_Ranked",
-    localizedName: "1 VS 1",
+    localizedName: "1 vs 1",
   },
   2: {
     id: 2,
     name: "2V2_Ranked",
-    localizedName: "2 VS 2",
+    localizedName: "2 vs 2",
   },
   3: {
     id: 3,
     name: "3V3_Ranked",
-    localizedName: "3 VS 3",
+    localizedName: "3 vs 3",
   },
   4: {
     id: 4,
     name: "4V4_Ranked",
-    localizedName: "4 VS 4",
+    localizedName: "4 vs 4",
   },
   5: {
     id: 5,
     name: "2V2_Ai_Easy",
+    localizedName: "2v2 AI Easy",
   },
   6: {
     id: 6,
     name: "2V2_Ai_Medium",
+    localizedName: "2v2 AI Medium",
   },
   7: {
     id: 7,
     name: "2V2_Ai_Hard",
+    localizedName: "2v2 AI Hard",
   },
   8: {
     id: 8,
     name: "2V2_Ai_Expert",
+    localizedName: "2v2 AI Expert",
   },
   9: {
     id: 9,
     name: "3V3_Ai_Easy",
+    localizedName: "3v3 AI Easy",
   },
   10: {
     id: 10,
     name: "3V3_Ai_Medium",
+    localizedName: "3v3 AI Medium",
   },
   11: {
     id: 11,
     name: "3V3_Ai_Hard",
+    localizedName: "3v3 AI Hard",
   },
   12: {
     id: 12,
     name: "3V3_Ai_Expert",
+    localizedName: "3v3 AI Expert",
   },
   13: {
     id: 13,
     name: "4V4_Ai_Easy",
+    localizedName: "4v4 AI Easy",
   },
   14: {
     id: 14,
     name: "4V4_Ai_Medium",
+    localizedName: "4v4 AI Medium",
   },
   15: {
     id: 15,
     name: "4V4_Ai_Hard",
+    localizedName: "4v4 AI Hard",
   },
   16: {
     id: 16,
     name: "4V4_Ai_Expert",
+    localizedName: "4v4 AI Expert",
   },
   20: {
     id: 20,
     name: "1V1_Unranked",
-    localizedName: "1 VS 1",
+    localizedName: "1 vs 1",
   },
   21: {
     id: 21,
     name: "2V2_Unranked",
-    localizedName: "2 VS 2",
+    localizedName: "2 vs 2",
   },
   22: {
     id: 22,
     name: "3V3_Unranked",
-    localizedName: "3 VS 3",
+    localizedName: "3 vs 3",
   },
   23: {
     id: 23,
     name: "4V4_Unranked",
-    localizedName: "4 VS 4",
+    localizedName: "4 vs 4",
   },
 };
 

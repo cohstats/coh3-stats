@@ -79,7 +79,7 @@ const ActivityTab = ({
     );
 
   return (
-    <Container size={"lg"}>
+    <Container size={"lg"} pl={0} pr={0}>
       <Space h={"lg"} />
       <div style={{ height: 200 * yearDiff, paddingBottom: 30 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>

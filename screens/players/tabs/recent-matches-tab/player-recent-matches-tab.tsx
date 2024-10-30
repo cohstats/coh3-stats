@@ -9,6 +9,7 @@ import {
   Tooltip,
   Center,
   Flex,
+  useMantineTheme,
 } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import React from "react";
@@ -24,7 +25,7 @@ import FilterableHeader from "../filterable-header";
 
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import { getPlayerMatchHistoryResult, isPlayerVictorious } from "../../../../src/players/utils";
-import { useDisclosure, useLocalStorage } from "@mantine/hooks";
+import { useDisclosure, useLocalStorage, useMediaQuery } from "@mantine/hooks";
 import RenderPlayers from "./matches-table/render-players";
 import RenderMap from "./matches-table/render-map";
 
@@ -49,6 +50,9 @@ const PlayerRecentMatchesTab = ({
   error: string;
   customGamesHidden: boolean | undefined | null;
 }) => {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
+
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedMatchRecord, setSelectedMatchRecord] = React.useState<ProcessedMatch | null>(
     null,
@@ -177,7 +181,7 @@ const PlayerRecentMatchesTab = ({
         onClose={close}
       />
       <Flex justify={"space-between"} pb={"xs"}>
-        <Group gap={5}>
+        <Group gap={5} wrap={"nowrap"}>
           <IconInfoCircle size={18} />
           <Text span size={"sm"}>
             Click on the row for more details
@@ -274,9 +278,15 @@ const PlayerRecentMatchesTab = ({
                     <div
                       className={`${classes["row-indicator"]} ${classes["win-indicator"]}`}
                     ></div>
-                    <Badge color={"blue"} variant="filled" w={"16ch"}>
-                      VICTORY +{ratingChange}
-                    </Badge>
+                    {isMobile ? (
+                      <Badge color={"blue"} variant="filled">
+                        +{ratingChange}
+                      </Badge>
+                    ) : (
+                      <Badge color={"blue"} variant="filled" w={"16ch"}>
+                        VICTORY +{ratingChange}
+                      </Badge>
+                    )}
                   </div>
                 );
               } else {
@@ -286,9 +296,15 @@ const PlayerRecentMatchesTab = ({
                       <div
                         className={`${classes["row-indicator"]} ${classes["loss-indicator"]}`}
                       ></div>
-                      <Badge color={"red"} variant="filled" w={"16ch"}>
-                        DEFEAT {ratingChange}
-                      </Badge>
+                      {isMobile ? (
+                        <Badge color={"red"} variant="filled">
+                          {ratingChange}
+                        </Badge>
+                      ) : (
+                        <Badge color={"red"} variant="filled" w={"16ch"}>
+                          DEFEAT {ratingChange}
+                        </Badge>
+                      )}
                     </>
                   );
                 } else if (playerResult?.resulttype === 4) {
@@ -365,35 +381,46 @@ const PlayerRecentMatchesTab = ({
           },
           {
             title: (
-              <FilterableHeader
-                title="Mode"
-                options={filters.mode}
-                onChange={(filter) => handleFilterChange("mode", filter)}
-                onReset={() => handleFilterReset("mode")}
-              />
+              <>
+                <FilterableHeader
+                  title="Mode"
+                  options={filters.mode}
+                  onChange={(filter) => handleFilterChange("mode", filter)}
+                  onReset={() => handleFilterReset("mode")}
+                />
+                Duration
+              </>
             ),
             accessor: "matchtype_id",
             // sortable: true,
             textAlign: "center",
-            render: ({ matchtype_id }) => {
+            render: ({ matchtype_id, startgametime, completiontime }) => {
               const matchType =
                 matchTypesAsObject[matchtype_id as number]["localizedName"] ||
                 matchTypesAsObject[matchtype_id as number]["name"] ||
                 "unknown";
-              return <div style={{ whiteSpace: "nowrap" }}>{matchType.toLowerCase()}</div>;
+              return (
+                <>
+                  <div style={{ whiteSpace: "nowrap" }}>{matchType}</div>
+                  <span>
+                    {getMatchDuration(startgametime as number, completiontime as number)}
+                  </span>
+                </>
+              );
             },
           },
-          {
-            title: "Duration",
-            accessor: "match_duration",
-            sortable: true,
-            textAlign: "center",
-            // The types in tables are broken, we need to figure out why
-            // @ts-ignore
-            render: ({ startgametime, completiontime }) => {
-              return <p>{getMatchDuration(startgametime as number, completiontime as number)}</p>;
-            },
-          },
+          // {
+          //   title: "Duration",
+          //   accessor: "match_duration",
+          //   sortable: true,
+          //   hidden: true,
+          //   textAlign: "center",
+          //   // The types in tables are broken, we need to figure out why
+          //   // @ts-ignore
+          //   render: ({ startgametime, completiontime }) => {
+          //     return;
+          //   },
+          // },
           {
             accessor: "actions",
             title: "",

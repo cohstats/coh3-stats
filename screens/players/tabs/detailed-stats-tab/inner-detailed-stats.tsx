@@ -66,7 +66,7 @@ const InnerDetailedStats = ({
     );
 
   return (
-    <Container size={"xl"}>
+    <Container size={"xl"} p={0}>
       <Grid justify="center">
         <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>
           <Card p="md" shadow="sm" w={"100%"} withBorder>

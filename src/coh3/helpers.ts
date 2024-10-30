@@ -24,7 +24,18 @@ const convertSteamNameToID = (name: string): string => {
  * @param endTime
  */
 const getMatchDuration = (startTime: number, endTime: number) => {
-  return new Date((endTime - startTime) * 1000).toISOString().slice(11, 19); //return duration in HH:MM:SS format
+  const durationSeconds = endTime - startTime;
+  const hours = Math.floor(durationSeconds / 3600);
+  const minutes = Math.floor((durationSeconds % 3600) / 60);
+  const seconds = durationSeconds % 60;
+
+  const pad = (num: number) => num.toString().padStart(2, "0");
+
+  if (hours > 0) {
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  } else {
+    return `${pad(minutes)}:${pad(seconds)}`;
+  }
 };
 
 /**
