@@ -21,7 +21,9 @@ const RenderMap = ({
   if (!isOfficialMap(mapName)) {
     return (
       <div>
-        <Text style={{ whiteSpace: "nowrap", textAlign: "center" }}>{mapName}</Text>
+        <Text style={{ whiteSpace: "nowrap", textAlign: "center" }} size={"sm"}>
+          {mapName}
+        </Text>
       </div>
     );
   }
@@ -41,7 +43,9 @@ const RenderMap = ({
           </div>
         </Tooltip>
         {renderTitle && (
-          <Text style={{ whiteSpace: "nowrap", textAlign: "center" }}>{maps[mapName]?.name}</Text>
+          <Text style={{ whiteSpace: "nowrap", textAlign: "center" }} size={"sm"}>
+            {maps[mapName]?.name}
+          </Text>
         )}
       </div>
     </>

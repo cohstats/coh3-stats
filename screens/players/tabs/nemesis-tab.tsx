@@ -268,7 +268,7 @@ const NemesisTab = ({
 
   return (
     <>
-      <Container size={"md"}>
+      <Container size={"md"} pl={0} pr={0}>
         <Space h={"lg"} />
         <Title order={2}>1v1 Nemesis</Title>
         <Flex wrap={"wrap"}>

@@ -1,10 +1,11 @@
-import { Group, Paper, Text, Tooltip } from "@mantine/core";
+import { Group, Paper, Text, Tooltip, useMantineTheme } from "@mantine/core";
 
 import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import React from "react";
 import { localizedNames, PlayerRank } from "../../../../src/coh3/coh3-data";
 import { PlayerSummaryType } from "../../../../src/players/utils";
 import Image from "next/image";
+import { useMediaQuery } from "@mantine/hooks";
 
 const PlayerSummary = ({
   playerSummary: { bestAlliesElo, bestAxisElo, totalGames, lastMatchDate, winRate },
@@ -19,6 +20,9 @@ const PlayerSummary = ({
     } | null;
   };
 }) => {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
+
   const bestAxisEloText = bestAxisElo.bestElo ? bestAxisElo.bestElo : "-";
   const bestAlliesEloText = bestAlliesElo.bestElo ? bestAlliesElo.bestElo : "-";
 
@@ -27,13 +31,22 @@ const PlayerSummary = ({
       ? "No Rank Tier"
       : `${highestRankTier.tier.name} in ${highestRankTier.info?.type} as ${highestRankTier.info?.race}`;
 
+  const justifyText = isMobile ? "left" : "right";
+
   return (
-    <Paper
-      style={{
-        textAlign: "right",
-      }}
-    >
+    <Paper>
       <Group>
+        {isMobile && (
+          <Tooltip label={highestTierTooltip} position={"bottom"}>
+            <Image
+              src={highestRankTier.tier.url}
+              width={90}
+              height={90}
+              alt={highestRankTier.tier.name}
+              loading="lazy"
+            />
+          </Tooltip>
+        )}
         <Text span fz={"sm"}>
           <Tooltip
             label={
@@ -44,7 +57,7 @@ const PlayerSummary = ({
             }
             position={"bottom"}
           >
-            <Group justify={"right"} gap={"xs"}>
+            <Group justify={justifyText} gap={"xs"}>
               <>
                 <Text span fz={"sm"}>
                   Best AXIS ELO{" "}
@@ -64,7 +77,7 @@ const PlayerSummary = ({
               </>
             }
           >
-            <Group justify={"right"} gap={"xs"}>
+            <Group justify={justifyText} gap={"xs"}>
               <Text span fz={"sm"}>
                 Best ALLIES ELO{" "}
                 <Text inherit span fw={600}>
@@ -74,7 +87,7 @@ const PlayerSummary = ({
             </Group>
           </Tooltip>
           <Tooltip label={"Win Ratio in leaderboard games only."}>
-            <Group gap={5} justify={"right"}>
+            <Group gap={5} justify={justifyText}>
               <Text span fz={"sm"}>
                 WR{" "}
                 <Text span inherit fw={600}>
@@ -88,22 +101,24 @@ const PlayerSummary = ({
               </Text>
             </Group>
           </Tooltip>
-          <Group gap={4} justify="right">
+          <Group gap={4} justify={justifyText}>
             <Text span fz={"sm"}>
               Last match
             </Text>{" "}
             <DynamicTimeAgo timestamp={lastMatchDate} />
           </Group>
         </Text>
-        <Tooltip label={highestTierTooltip} position={"bottom"}>
-          <Image
-            src={highestRankTier.tier.url}
-            width={90}
-            height={90}
-            alt={highestRankTier.tier.name}
-            loading="lazy"
-          />
-        </Tooltip>
+        {!isMobile && (
+          <Tooltip label={highestTierTooltip} position={"bottom"}>
+            <Image
+              src={highestRankTier.tier.url}
+              width={90}
+              height={90}
+              alt={highestRankTier.tier.name}
+              loading="lazy"
+            />
+          </Tooltip>
+        )}
       </Group>
     </Paper>
   );

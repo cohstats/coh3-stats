@@ -35,6 +35,8 @@ const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: st
               lineHeight: 1,
               fontSize: rem(28),
               marginTop: 0,
+              textShadow:
+                "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
             }}
           >
             {title}
@@ -45,6 +47,8 @@ const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: st
               fontSize: rem(18),
               fontWeight: 700,
               marginTop: theme.spacing.xs,
+              textShadow:
+                "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
             }}
           >
             News

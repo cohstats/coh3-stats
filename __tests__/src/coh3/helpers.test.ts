@@ -35,13 +35,21 @@ describe("getMatchDuration", () => {
     expect(duration).toBe("01:00:00");
   });
 
+  test("calculates the duration for more than 24 hours", () => {
+    const startTime = 1645968000; // Feb 28, 2022 12:00:00 AM UTC
+    const endTime = 1645968000 + 90000; // Feb 29, 2022 1:00:00 AM UTC
+    const duration = getMatchDuration(startTime, endTime);
+
+    expect(duration).toBe("25:00:00");
+  });
+
   test("calculates the duration between start and end times (30 minutes)", () => {
     const startTime = 1645968000; // Feb 28, 2022 12:00:00 AM UTC
     const endTime = 1645970100; // Feb 28, 2022 12:35:00 AM UTC
 
     const duration = getMatchDuration(startTime, endTime);
 
-    expect(duration).toBe("00:35:00");
+    expect(duration).toBe("35:00");
   });
 
   test("calculates the duration between start and end times (1 minute)", () => {
@@ -50,7 +58,7 @@ describe("getMatchDuration", () => {
 
     const duration = getMatchDuration(startTime, endTime);
 
-    expect(duration).toBe("00:01:00");
+    expect(duration).toBe("01:00");
   });
 
   test("calculates the duration between start and end times (0 seconds)", () => {
@@ -59,7 +67,7 @@ describe("getMatchDuration", () => {
 
     const duration = getMatchDuration(startTime, endTime);
 
-    expect(duration).toBe("00:00:00");
+    expect(duration).toBe("00:00");
   });
 });
 
