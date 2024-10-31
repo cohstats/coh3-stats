@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import config from "../../config";
 import { generateExpireTimeStamps, getGMTTimeStamp } from "../../src/utils";
 import { getStatsData } from "../../src/apis/coh3stats-api";
+import { maps } from "../../src/coh3/coh3-data";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -20,9 +21,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     );
 
+    // Remove the days object, we don't need it, lowers the amount of data
+    // @ts-ignore
+    data.analysis.days = undefined;
+
     const response = {
       latestPatchInfo: statsPatchSelector[config.latestPatch],
       mapStats: data,
+      mapInfo: maps,
     };
 
     res
