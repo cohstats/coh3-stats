@@ -8,6 +8,7 @@ import { IconCalendar, IconStopwatch, IconSwords } from "@tabler/icons-react";
 import React from "react";
 import dynamic from "next/dynamic";
 import config from "../../config";
+import DownloadReplayButton from "../players/tabs/recent-matches-tab/matches-table/download-replay";
 
 const DynamicDmgDonePieChart = dynamic(() => import("./match-charts/dmg-done-pie-chart"), {
   ssr: false,
@@ -33,7 +34,7 @@ const DynamicCapturedPointsPieChart = dynamic(
 
 const SmallInfoCard = ({ title, children }: { title: string; children: React.ReactNode }) => {
   return (
-    <Card p={10} pt={5} m={10} shadow="sm" withBorder w={200} h={220}>
+    <Card p={10} pt={5} m={10} shadow="sm" withBorder w={190} h={220}>
       <Title order={4} ta="center">
         {title}
       </Title>
@@ -84,7 +85,7 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
       </Flex>
       <PlayerMatchesDataTable data={alliesPlayers} />
       <Space h="md" />
-      <Flex justify={"center"} wrap={"wrap"}>
+      <Flex wrap={"wrap"}>
         <SmallInfoCard title={"Map"}>
           <RenderMap mapName={matchData.mapname as string} width={200} height={140} />
         </SmallInfoCard>
@@ -105,6 +106,9 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
             alliesPlayers={alliesPlayers}
             axisPlayers={axisPlayers}
           />
+        </SmallInfoCard>
+        <SmallInfoCard title={"Replay"}>
+          <DownloadReplayButton match={matchData} />
         </SmallInfoCard>
       </Flex>
     </Container>

@@ -392,6 +392,16 @@ const generateReplayUrl = async (matchObject: ProcessedMatch) => {
       status: "success",
     };
   } else {
+    const replayURLs = getMatchURlsWithoutLeavers(matchObject);
+
+    if (replayURLs.length === 0) {
+      return {
+        url: null,
+        status: "error",
+        message: "No replays available without leavers.",
+      };
+    }
+
     const response = await fetch(setReplayFileUrl(), {
       method: "POST",
       headers: {
@@ -400,7 +410,7 @@ const generateReplayUrl = async (matchObject: ProcessedMatch) => {
       body: JSON.stringify({
         matchID: matchObject.id,
         replayURLs: JSON.stringify(
-          getMatchURlsWithoutLeavers(matchObject).map((data) => {
+          replayURLs.map((data) => {
             return {
               profile_id: data.profile_id,
               replay_id: data.key,

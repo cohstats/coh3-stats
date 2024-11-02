@@ -64,6 +64,22 @@ const DownloadReplayButton = ({ match }: { match: ProcessedMatch }) => {
     );
   }
 
+  if (match.matchurls && match.matchurls.length === 0) {
+    return (
+      <Tooltip label={"Replay is not available."} withArrow>
+        <Button
+          variant="filled"
+          color="red"
+          size="compact-md"
+          leftSection={<IconDownload size={14} />}
+          disabled
+        >
+          Replay
+        </Button>
+      </Tooltip>
+    );
+  }
+
   return (
     <Tooltip label={"Downloading replay might take a while."} withArrow>
       <Button
