@@ -398,7 +398,7 @@ const generateReplayUrl = async (matchObject: ProcessedMatch) => {
       return {
         url: null,
         status: "error",
-        message: "No replays available without leavers.",
+        message: "No replays without leavers available.",
       };
     }
 
