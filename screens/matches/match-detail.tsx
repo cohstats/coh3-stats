@@ -4,7 +4,7 @@ import { maps, matchTypesAsObject } from "../../src/coh3/coh3-data";
 import RenderMap from "../players/tabs/recent-matches-tab/matches-table/render-map";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import PlayerMatchesDataTable from "./PlayerMatchesDataTable";
-import { IconCalendar, IconStopwatch, IconSwords } from "@tabler/icons-react";
+import { IconCalendar, IconStopwatch, IconSwords, IconVideo } from "@tabler/icons-react";
 import React from "react";
 import dynamic from "next/dynamic";
 import config from "../../config";
@@ -108,7 +108,10 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
           />
         </SmallInfoCard>
         <SmallInfoCard title={"Replay"}>
-          <DownloadReplayButton match={matchData} />
+          <Stack align="center" justify="center">
+            <IconVideo size={80} />
+            <DownloadReplayButton match={matchData} />
+          </Stack>
         </SmallInfoCard>
       </Flex>
     </Container>
