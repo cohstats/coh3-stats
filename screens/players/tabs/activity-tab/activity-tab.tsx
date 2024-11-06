@@ -21,7 +21,7 @@ const DynamicActivityByDayOfWeek = dynamic(() => import("./activity-week-day"), 
 });
 
 // From year is used to calculate the height of the calendar
-const fromYear = "2023-01-01";
+const fromYear = "2023-01-02";
 const yearDiff = 1 + dayjs(new Date()).diff(fromYear, "year");
 
 const ActivityTab = ({
