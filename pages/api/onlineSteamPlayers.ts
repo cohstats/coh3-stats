@@ -13,7 +13,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { response } = await fetchResponse.json();
 
     res
-      .setHeader("Cache-Control", "public, max-age=300")
+      .setHeader(
+        "Cache-Control",
+        "public, max-age=300, s-maxage=180, stale-while-revalidate=1200",
+      )
       .status(200)
       .json({ playerCount: response.player_count, timeStampMs: new Date().valueOf() });
   } catch (e) {

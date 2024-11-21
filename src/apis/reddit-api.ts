@@ -12,13 +12,12 @@ interface RedditPostType {
 
 const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostType[]> => {
   try {
+    // https://www.redit.com/r/CompanyOfHeroes/top.json?limit=100&t=week
     // We need a heavy cache on this, reddit is throttling like crazy
-    const response = await fetch(
-      `https://cache.coh3stats.com/r/CompanyOfHeroes/top.json?limit=100&t=week`,
-      {
-        method: "GET",
-      },
-    );
+    // Cache is set for 12 hours, swr 2 days
+    const response = await fetch("https://coh3stats.com/api/redditCF", {
+      method: "GET",
+    });
 
     if (!response.ok) {
       console.warn(`Error getting reddit posts: ${response.statusText}, ${response.status}`);

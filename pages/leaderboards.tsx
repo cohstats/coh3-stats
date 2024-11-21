@@ -11,7 +11,7 @@ const sortById = {
   elo: 1,
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
   const { race, type, sortBy, start, platform, region } = query;
 
   const raceToFetch = (race as raceType) || "american";
@@ -45,6 +45,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     );
     totalRecords = leaderBoardDataRaw.rankTotal;
     leaderBoardData = findAndMergeStatGroups(leaderBoardDataRaw, null);
+
+    res.setHeader("Cache-Control", "public, max-age=30, s-maxage=60, stale-while-revalidate=120");
   } catch (e: any) {
     console.error(`Error getting the leaderboards`);
     console.error(e);

@@ -49,28 +49,6 @@ export default new Router()
       });
     },
   )
-  // https://developer.chrome.com/blog/private-prefetch-proxy/
-  .match("/.well-known/traffic-advice", ({ send, setResponseHeader, cache }) => {
-    setResponseHeader("Content-Type", "application/trafficadvice+json");
-    send('[{"user_agent": "prefetch-proxy","fraction": 1.0}]', 200);
-    cache({
-      edge: {
-        maxAgeSeconds: 60 * 60 * 24,
-        staleWhileRevalidateSeconds: 60 * 60 * 24 * 7,
-        forcePrivateCaching: true,
-      },
-    });
-  })
-  .match("/.well-known/security.txt", ({ send, cache }) => {
-    send("Contact: https://github.com/cohstats\nPreferred-Languages: en, cz", 200);
-    cache({
-      edge: {
-        maxAgeSeconds: 60 * 60 * 24 * 14,
-        staleWhileRevalidateSeconds: 60 * 60 * 24 * 14,
-        forcePrivateCaching: true,
-      },
-    });
-  })
   // Homepage caching
   .match("/", ({ cache }) => {
     cache({
@@ -91,42 +69,6 @@ export default new Router()
       edge: {
         maxAgeSeconds: 60 * 5,
         staleWhileRevalidateSeconds: 60 * 60,
-        forcePrivateCaching: true,
-      },
-    });
-  })
-  .match("/api/onlineSteamPlayers", ({ cache }) => {
-    cache({
-      browser: {
-        serviceWorkerSeconds: 5 * 60, // Cache 5 minutes
-      },
-      edge: {
-        // Cache for 3 minutes, if we are older than 3 minutes, revalidate, still serve cache
-        maxAgeSeconds: 3 * 60,
-        staleWhileRevalidateSeconds: 15 * 60,
-        forcePrivateCaching: true,
-      },
-    });
-  })
-  // Caching for leaderboards
-  .match("/leaderboards(.*)", ({ cache }) => {
-    cache({
-      edge: {
-        maxAgeSeconds: 10,
-        staleWhileRevalidateSeconds: 60,
-        forcePrivateCaching: true,
-      },
-    });
-  })
-  .match("/_next/data/:version/leaderboards.json", ({ cache }) => {
-    cache({
-      browser: {
-        serviceWorkerSeconds: 15,
-      },
-      edge: {
-        // Cache for 30 seconds, revalidated after 5 seconds
-        maxAgeSeconds: 10,
-        staleWhileRevalidateSeconds: 60,
         forcePrivateCaching: true,
       },
     });
