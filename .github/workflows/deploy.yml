@@ -63,3 +63,11 @@ jobs:
         run: |
           npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
           npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
+      - name: Deploy to Vercel hosting
+        env:
+          VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
+          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
+          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+        run: |
+          npx vercel build --token=$VERCEL_TOKEN
+          npx vercel deploy --prebuilt --token=YOUR_VERCEL_TOKEN
