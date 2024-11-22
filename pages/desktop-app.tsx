@@ -5,7 +5,7 @@ import DesktopAppPage from "../screens/desktop-app";
 
 export default DesktopAppPage;
 
-export const getServerSideProps: GetServerSideProps<any> = async () => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
   const octokit = new Octokit();
   const response = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
     owner: "cohstats",
@@ -43,6 +43,11 @@ export const getServerSideProps: GetServerSideProps<any> = async () => {
       downloadURL = msiAsset.browser_download_url;
     }
   }
+
+  res.setHeader(
+    "Cache-Control",
+    "public, max-age=600, s-maxage=1800, stale-while-revalidate=172800",
+  );
 
   return {
     props: { downloadURL, downloadCount, version },

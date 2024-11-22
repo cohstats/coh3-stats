@@ -13,6 +13,7 @@ import { IconAlertTriangle, IconUser } from "@tabler/icons-react";
 import HelperIcon from "../../components/icon/helper";
 import dayjs from "dayjs";
 import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
+import { generateExpireTimeStamps } from "../../src/utils";
 
 //only render on client side
 const DynamicGeoWorldMap = dynamic(
@@ -198,7 +199,7 @@ const PlayerStats = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({}) => {
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   let error = null;
   let playerStats: PlayerStatsType | null = null;
   let countries = null;
@@ -234,6 +235,12 @@ export const getServerSideProps: GetServerSideProps = async ({}) => {
         x: dayjs(value.timeStamp.toMillis()).subtract(1, "day").format("YYYY-MM-DD"),
       }));
     }
+
+    // Expire at 4 AM
+    const expireTimeStamp = generateExpireTimeStamps(4);
+
+    res.setHeader("Cache-Control", "public, stale-while-revalidate=604800");
+    res.setHeader("Expires", `${new Date(expireTimeStamp).toUTCString()}`);
   } catch (e) {
     console.error(e);
     error = JSON.stringify(e);

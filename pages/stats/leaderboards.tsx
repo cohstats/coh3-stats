@@ -59,12 +59,17 @@ const Leaderboards = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({}) => {
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   let error = null;
   let leaderBoardStats = null;
 
   try {
     leaderBoardStats = await calculateLeaderboardStats();
+
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=600, s-maxage=3600, stale-while-revalidate=172800",
+    );
   } catch (e: any) {
     console.error(`Error calculating all the leaderboard stats`);
     console.error(e);

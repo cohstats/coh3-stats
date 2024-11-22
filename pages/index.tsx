@@ -8,7 +8,7 @@ import { COH3SteamNewsType, getCOH3SteamNews, NewsItem } from "../src/apis/steam
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ req, res }) => {
   const xff = `${req.headers["x-forwarded-for"]}`;
 
   let error: Error | null = null;
@@ -45,6 +45,11 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
     });
     steamNewsData = PromisedSteamNewsData;
     youtubeData = PromisedYoutubeData;
+
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=60, s-maxage=600, stale-while-revalidate=1800",
+    );
   } catch (e: any) {
     console.error(`Failed getting data for home page`);
     console.error(e);

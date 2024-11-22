@@ -138,7 +138,7 @@ const convertSearchResultsToPlayerCardData = (
   return foundProfiles;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
   let { q } = query;
 
   q = q || "";
@@ -148,16 +148,21 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   if (q) {
     try {
-      const res = await fetch(
+      const searchRes = await fetch(
         `${config.BASE_CLOUD_FUNCTIONS_URL}/searchPlayers2Http?alias=${encodeURIComponent(q as string)}`,
       );
 
-      if (res.status !== 200) {
-        data = await res.json();
+      if (searchRes.status !== 200) {
+        data = await searchRes.json();
         throw new Error(`Failed getting data for player id ${q}: ${JSON.stringify(data)} `);
       } else {
-        data = convertSearchResultsToPlayerCardData(await res.json());
+        data = convertSearchResultsToPlayerCardData(await searchRes.json());
       }
+
+      res.setHeader(
+        "Cache-Control",
+        "public, max-age=600, s-maxage=1800, stale-while-revalidate=3600",
+      );
     } catch (e: any) {
       console.error(`Failed getting data for player id ${q}`);
       console.error(e);

@@ -235,6 +235,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   params,
   query,
   req,
+  res,
 }) => {
   const playerID = params?.playerID[0] || "";
   const { view, start } = query;
@@ -289,6 +290,9 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
         })()
       : null;
     replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
+
+    res.setHeader("Cache-Control", "public, max-age=15, s-maxage=30, stale-while-revalidate=60");
+    res.setHeader("x-robots-tag", "nofollow");
   } catch (e: any) {
     console.error(`Failed getting data for player id ${playerID}`);
     console.error(e);
