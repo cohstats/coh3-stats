@@ -7,8 +7,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const withEdgio = require("@edgio/next/withEdgio");
+// const withEdgio = require("@edgio/next/withEdgio");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -31,9 +30,9 @@ const nextConfig = {
   // },
 };
 
-const withEdgioConfig = withEdgio({
-  ...nextConfig,
-});
+// const withEdgioConfig = withEdgio({
+//   ...nextConfig,
+// });
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -57,8 +56,8 @@ if (process.env.ANALYZE === "true") {
   const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
   });
-  module.exports = withBundleAnalyzer(withEdgioConfig);
+  module.exports = withBundleAnalyzer(nextConfig);
 } else {
   // Default config
-  module.exports = withSentryConfig(withEdgioConfig, sentryWebpackPluginOptions);
+  module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
 }
