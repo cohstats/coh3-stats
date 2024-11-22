@@ -76,7 +76,7 @@ jobs:
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow
             deploymentUrl=`cat deployment-url.txt`
-            npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN
+            npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
           else
             # Handle the error
             errorMessage=`cat error.txt`
