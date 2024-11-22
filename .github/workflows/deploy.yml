@@ -54,15 +54,14 @@ jobs:
           environment: ${{ env.EDGIO_ENV }}
           ignore_empty: true
           ignore_missing: true
-
-      - name: Deploy to Edgio hosting
-        env:
-          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
-        # Deploy command automatically runs the build
-        # Deploy command pulls ENV variables https://docs.edg.io/guides/basics/environments#environment-variables
-        run: |
-          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
-          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
+      #      - name: Deploy to Edgio hosting
+      #        env:
+      #          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
+      #        # Deploy command automatically runs the build
+      #        # Deploy command pulls ENV variables https://docs.edg.io/guides/basics/environments#environment-variables
+      #        run: |
+      #          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
+      #          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
       - name: Deploy to Vercel hosting
         env:
           VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
@@ -77,7 +76,7 @@ jobs:
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow
             deploymentUrl=`cat deployment-url.txt`
-            npx vercel alias $deploymentUrl dev.coh3stats.com
+            npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN
           else
             # Handle the error
             errorMessage=`cat error.txt`
