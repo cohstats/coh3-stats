@@ -5,7 +5,7 @@ on:
       - v*
 
 env:
-  EDGIO_ENV: prod
+  DEPLOY_ENV: prod
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
 
 jobs:
@@ -46,14 +46,27 @@ jobs:
           SENTRY_ORG: coh-stats
           SENTRY_PROJECT: coh3-stats-web
         with:
-          environment: ${{ env.EDGIO_ENV }}
+          environment: ${{ env.DEPLOY_ENV }}
           ignore_empty: true
           ignore_missing: true
 
-      - name: Deploy to Edgio hosting
+      - name: Deploy to Vercel hosting
         env:
-          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
-        # Deploy command automatically runs the build
+          VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
+          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
+          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
         run: |
-          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
-          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
+          npx vercel telemetry disable
+          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          npx vercel build --token=$VERCEL_TOKEN
+          npx vercel deploy --prod --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+          code=$?
+          if [ $code -eq 0 ]; then
+            # Now you can use the deployment url from stdout for the next step of your workflow
+            deploymentUrl=`cat deployment-url.txt`
+            npx vercel alias $deploymentUrl coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
+          else
+            # Handle the error
+            errorMessage=`cat error.txt`
+            echo "There was an error: $errorMessage"
+          fi
