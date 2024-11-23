@@ -75,6 +75,8 @@ jobs:
           code=$?
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow
+            deploymentUrl=`cat deployment-url.txt`
+            npx vercel alias $deploymentUrl preview.coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
             echo "DEPLOYMENT_URL=$(cat deployment-url.txt)" >> $GITHUB_ENV
           else
             # Handle the error
