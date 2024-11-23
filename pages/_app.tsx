@@ -19,7 +19,6 @@ import ContentContainer from "../components/Content-container";
 import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
 // import { useServiceWorker } from "@edgio/react";
-import { Metrics } from "@edgio/rum";
 
 import "./layout.css";
 
@@ -33,10 +32,6 @@ export default function App(props: AppProps) {
   const colorSchemeManager = localStorageColorSchemeManager({
     key: "mantine-color-scheme",
   });
-
-  new Metrics({
-    token: "63a45f52-3972-4ed0-8867-4e762860a563", // Get your token from the Edgio Console
-  }).collect();
 
   // useServiceWorker({});
 

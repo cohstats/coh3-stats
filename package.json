@@ -7,7 +7,7 @@
     "url": "https://github.com/cohstats/coh3-stats"
   },
   "engines": {
-    "node": ">=18.18.0",
+    "node": ">=20",
     "npm": "please-use-yarn"
   },
   "scripts": {
@@ -39,7 +39,6 @@
   "dependencies": {
     "@bbob/preset-react": "4.1.1",
     "@bbob/react": "4.1.1",
-    "@edgio/rum": "7.0.13",
     "@mantine/carousel": "7.14.1",
     "@mantine/core": "7.14.1",
     "@mantine/dates": "7.14.1",
@@ -78,12 +77,6 @@
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
-    "@edgio/cli": "7.13.9",
-    "@edgio/core": "7.13.9",
-    "@edgio/devtools": "7.13.9",
-    "@edgio/next": "7.13.9",
-    "@edgio/prefetch": "7.13.9",
-    "@edgio/react": "7.13.9",
     "@next/bundle-analyzer": "14.2.18",
     "@testing-library/jest-dom": "6.6.2",
     "@testing-library/react": "16.0.1",
