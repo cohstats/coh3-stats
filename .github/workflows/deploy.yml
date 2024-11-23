@@ -69,7 +69,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
         run: |
           npx vercel telemetry disable
-          npx vercel pull --yes --environment=development --token=$VERCEL_TOKEN
+          npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
           npx vercel build --token=$VERCEL_TOKEN
           npx vercel deploy --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
           code=$?
