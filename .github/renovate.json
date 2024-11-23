@@ -21,18 +21,6 @@
       "groupSlug": "actions-updates"
     },
     {
-      "matchPackagePatterns": ["@edgio/.*"],
-      "groupName": "Edgio Packages",
-      "groupSlug": "edgio"
-    },
-    {
-      "matchPackagePatterns": ["@edgio/.*"],
-      "groupName": "Edgio Packages",
-      "groupSlug": "edgio",
-      "matchUpdateTypes": ["patch"],
-      "automerge": true
-    },
-    {
       "packageNames": ["@sentry/nextjs"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
