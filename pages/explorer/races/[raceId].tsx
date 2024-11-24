@@ -268,6 +268,7 @@ export const getStaticProps = async () => {
       battlegroupData,
       locstring,
     },
+    revalidate: false,
   };
 };
 

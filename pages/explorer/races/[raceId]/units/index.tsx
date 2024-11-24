@@ -118,6 +118,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       raceToFetch,
       units,
     },
+    revalidate: false,
   };
 };
 

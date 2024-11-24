@@ -462,6 +462,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         unitId,
       ),
     },
+    revalidate: false,
   };
 };
 
