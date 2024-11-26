@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "14.2.18",
-    "@testing-library/jest-dom": "6.6.2",
+    "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.0.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.13",
