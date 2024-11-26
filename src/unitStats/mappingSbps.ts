@@ -245,6 +245,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             // screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) || "",
             screenName:
               resolveTextFormatterLocstring(vetExtInfo[0].veterancy_rank.brief_text_formatter) ||
+              resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) ||
               "",
           };
           sbps.veterancyInfo.two = {
@@ -252,6 +253,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             // screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) || "",
             screenName:
               resolveTextFormatterLocstring(vetExtInfo[1].veterancy_rank.brief_text_formatter) ||
+              resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) ||
               "",
           };
           sbps.veterancyInfo.three = {
@@ -259,6 +261,7 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             // screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) || "",
             screenName:
               resolveTextFormatterLocstring(vetExtInfo[2].veterancy_rank.brief_text_formatter) ||
+              resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) ||
               "",
           };
         }
