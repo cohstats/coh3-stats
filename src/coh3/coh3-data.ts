@@ -594,6 +594,9 @@ const OfficialMapKeys = [
   "primosole_4p",
   "longstop_hill_6p",
   "halfa_8p",
+  /* ---------- 1.9.0 Maps ---------- */
+  "rapido_river_8p",
+  "santuario_4p", // Community maps
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -772,5 +775,14 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   halfa_8p: {
     name: "Alam el Halfa",
     url: "/halfa_8p/halfa_8p.webp",
+  },
+  /* ------------------------- 1.9.0 Maps ---------------------------- */
+  santuario_4p: {
+    name: "Santuario",
+    url: "/santuario_4p/santuario_4p.webp",
+  },
+  rapido_river_8p: {
+    name: "Rapido River Crossing",
+    url: "/rapido_river_8p/rapido_river_8p.webp",
   },
 };

@@ -242,15 +242,24 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           // Technically the first one is vet 1, second is vet 2 and third is vet 3.
           sbps.veterancyInfo.one = {
             exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
-            screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) || "",
+            // screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) || "",
+            screenName:
+              resolveTextFormatterLocstring(vetExtInfo[0].veterancy_rank.brief_text_formatter) ||
+              "",
           };
           sbps.veterancyInfo.two = {
             exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
-            screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) || "",
+            // screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) || "",
+            screenName:
+              resolveTextFormatterLocstring(vetExtInfo[1].veterancy_rank.brief_text_formatter) ||
+              "",
           };
           sbps.veterancyInfo.three = {
             exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
-            screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) || "",
+            // screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) || "",
+            screenName:
+              resolveTextFormatterLocstring(vetExtInfo[2].veterancy_rank.brief_text_formatter) ||
+              "",
           };
         }
         break;

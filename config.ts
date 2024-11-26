@@ -42,7 +42,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "1.8.2";
+const defaultStatsPatchSelector = "1.9.0";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -55,9 +55,16 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
+  "1.9.0": {
+    from: "2024-11-26",
+    to: "now",
+    value: "1.9.0",
+    label: "1.9.0",
+    group: "Orchid Spider",
+  },
   "1.8.2": {
     from: "2024-09-26",
-    to: "now",
+    to: "2024-11-25",
     value: "1.8.2",
     label: "1.8.1 - 1.8.2",
     group: "Patch 1.8.x",
@@ -177,11 +184,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "1.8.2";
+const latestPatch = "1.9.0";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "1.9.0": {
+      dataTag: "v1.9.0-1",
+      dataTime: "26/Nov/2024",
+    },
     "1.8.2": {
       dataTag: "v1.8.2-1",
       dataTime: "17/Oct/2024",
