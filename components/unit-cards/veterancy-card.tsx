@@ -61,8 +61,8 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
         </Grid.Col>
         <Grid.Col span={{ base: 5, md: 4 }}>
           <List size="sm">
-            {oneDesc.map((x) => (
-              <ListItem>{x}</ListItem>
+            {oneDesc.map((x, index) => (
+              <ListItem key={index}>{x}</ListItem>
             ))}
           </List>
         </Grid.Col>
@@ -97,8 +97,8 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
         </Grid.Col>
         <Grid.Col span={{ base: 5, md: 4 }}>
           <List size="sm">
-            {twoDesc.map((x) => (
-              <ListItem>{x}</ListItem>
+            {twoDesc.map((x, index) => (
+              <ListItem key={index}>{x}</ListItem>
             ))}
           </List>
         </Grid.Col>
@@ -133,8 +133,8 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
         </Grid.Col>
         <Grid.Col span={{ base: 5, md: 4 }}>
           <List size="sm">
-            {threeDesc.map((x) => (
-              <ListItem>{x}</ListItem>
+            {threeDesc.map((x, index) => (
+              <ListItem key={index}>{x}</ListItem>
             ))}
           </List>
         </Grid.Col>
