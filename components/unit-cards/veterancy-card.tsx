@@ -1,4 +1,4 @@
-import { Grid, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Grid, Group, Image, List, ListItem, Stack, Text, Title } from "@mantine/core";
 
 const vetStarIconPath = "/icons/hud/decorators/vet_star.png";
 const vetStarEmptyIconPath = "/icons/hud/decorators/vet_star_empty.png";
@@ -19,6 +19,12 @@ type VeterancyInput = {
 };
 
 export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
+  const spaceRegex = /\\r?\\n|\\r|\\n/g;
+
+  const oneDesc = one.screenName.split(spaceRegex);
+  const twoDesc = two.screenName.split(spaceRegex);
+  const threeDesc = three.screenName.split(spaceRegex);
+
   return (
     <Stack>
       <Title order={6} style={{ textTransform: "uppercase" }}>
@@ -54,7 +60,11 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 5, md: 4 }}>
-          <Text>{one.screenName}</Text>
+          <List size="sm">
+            {oneDesc.map((x) => (
+              <ListItem>{x}</ListItem>
+            ))}
+          </List>
         </Grid.Col>
 
         <Grid.Col span={{ base: 1, md: 2 }}>
@@ -86,7 +96,11 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 5, md: 4 }}>
-          <Text>{two.screenName}</Text>
+          <List size="sm">
+            {twoDesc.map((x) => (
+              <ListItem>{x}</ListItem>
+            ))}
+          </List>
         </Grid.Col>
 
         <Grid.Col span={{ base: 1, md: 2 }}>
@@ -118,7 +132,11 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 5, md: 4 }}>
-          <Text>{three.screenName}</Text>
+          <List size="sm">
+            {threeDesc.map((x) => (
+              <ListItem>{x}</ListItem>
+            ))}
+          </List>
         </Grid.Col>
       </Grid>
     </Stack>
