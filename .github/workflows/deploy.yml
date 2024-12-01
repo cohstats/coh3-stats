@@ -54,6 +54,14 @@ jobs:
           environment: ${{ env.EDGIO_ENV }}
           ignore_empty: true
           ignore_missing: true
+      - name: Deploy to Netlify hosting
+        env:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_DEV}}
+          NODE_VERSION: "20.x"
+        run: |
+          npx netlify --telemetry-disable
+          netlify deploy --build --prod
       #      - name: Deploy to Edgio hosting
       #        env:
       #          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
