@@ -150,7 +150,8 @@ App platform:
 Frontend:
 
 - NextJS (React) as main technology used
-- Edgio as a hosting platform
+- Vercel as serverless hosting platform
+- Cloudflare as CDN
 - Mantine as a component library
 
 Backend:
