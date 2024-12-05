@@ -4,3 +4,8 @@ package = "@netlify/plugin-nextjs"
 [build]
 command = "yarn next build"
 publish = ".next"
+
+[[headers]]
+  for = "/*" # Adjust the path as needed
+  [headers.values]
+    Netlify-Vary = "query"
