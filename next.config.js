@@ -28,6 +28,19 @@ const nextConfig = {
   //   locales: ["en"],
   //   defaultLocale: "en",
   // },
+  async headers() {
+    return [
+      {
+        source: "/*",
+        headers: [
+          {
+            key: "Netlify-Vary",
+            value: "query",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 // const withEdgioConfig = withEdgio({
