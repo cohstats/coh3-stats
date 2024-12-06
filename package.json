@@ -18,6 +18,7 @@
     "next:build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "test": "TZ=UTC yarn jest",
+    "test:windows": "yarn jest",
     "lint": "next lint",
     "lint:eslint": "eslint **/*.{ts,tsx,js}",
     "lint:prettier": "prettier --check .",
