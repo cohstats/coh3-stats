@@ -10,6 +10,7 @@ import {
   getStatsData,
   GET_ANALYSIS_STATS,
 } from "../../../src/apis/coh3stats-api";
+import config from "../../../config";
 
 describe("coh3stats-api", () => {
   // Mock the fetch function
@@ -306,7 +307,7 @@ describe("coh3stats-api", () => {
 
     const response = await getStatsData(123, "now", "gameStats", "cache-key-4");
     expect(global.fetch).toBeCalledWith(
-      `https://cache.coh3stats.com/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=${GET_ANALYSIS_STATS}&ock=cache-key-4`,
+      `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=${GET_ANALYSIS_STATS}&ock=cache-key-4`,
       { headers: undefined },
     );
 
