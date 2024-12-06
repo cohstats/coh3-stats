@@ -1,6 +1,15 @@
-import { GetServerSideProps, NextPage } from "next";
-import config from "../config";
-import { Center, Container, Divider, Flex, Input, Space, Stack, Text } from "@mantine/core";
+import { NextPage } from "next";
+import {
+  Center,
+  Container,
+  Divider,
+  Flex,
+  Input,
+  Loader,
+  Space,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import Head from "next/head";
 import React, { useEffect } from "react";
@@ -12,22 +21,21 @@ import { SearchPlayerCard } from "../components/search/search-player-card";
 import ErrorCard from "../components/error-card";
 import { getSearchRoute } from "../src/routes";
 import { SearchPageUsed, SearchPageView } from "../src/firebase/analytics";
+import { getSearchUrl } from "../src/apis/coh3stats-api";
 
 /**
  *
  * Example URL http://localhost:3000/search?q=Thomas
  *
  *
- * @param searchQuery
- * @param data
- * @param error
  * @constructor
  */
 
-const Search: NextPage<{
-  data: Array<SearchPlayerCardData> | null;
-  error: string | null;
-}> = ({ data, error }) => {
+const Search: NextPage = () => {
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [data, setData] = React.useState<Array<SearchPlayerCardData> | null>(null);
+
   const { query, push } = useRouter();
   const { q } = query;
 
@@ -39,6 +47,32 @@ const Search: NextPage<{
   useEffect(() => {
     q ? setSearchValue(q as string) : setSearchValue("");
     SearchPageUsed(q as string);
+
+    (async () => {
+      if (q) {
+        try {
+          setLoading(true);
+
+          const searchRes = await fetch(getSearchUrl(q as string));
+
+          if (searchRes.status !== 200) {
+            const resData = await searchRes.json();
+            throw new Error(
+              `Failed getting data for player id ${q}: ${JSON.stringify(resData)} `,
+            );
+          } else {
+            setData(convertSearchResultsToPlayerCardData(await searchRes.json()));
+            setError(null);
+          }
+        } catch (e: any) {
+          console.error(`Failed getting data for player id ${q}`);
+          console.error(e);
+          setError(e.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+    })();
   }, [q]);
 
   const description = "Search for any players in Company of Heroes 3.";
@@ -46,7 +80,7 @@ const Search: NextPage<{
 
   const debouncedSearch = debounce((value) => {
     if (value.length > 1) {
-      push(getSearchRoute(value));
+      push(getSearchRoute(value), undefined, { shallow: true });
     }
   }, 600);
 
@@ -58,7 +92,12 @@ const Search: NextPage<{
       {q && (
         <>
           <Divider my="xs" label="Players" labelPosition="center" />
-          {data && (
+          {loading && (
+            <Center maw={400} h={250} mx="auto">
+              <Loader />
+            </Center>
+          )}
+          {data && !loading && (
             <Container size={"md"}>
               <Flex gap="sm" wrap={"wrap"} justify="center">
                 {data.length === 0 && (
@@ -136,43 +175,6 @@ const convertSearchResultsToPlayerCardData = (
   }
 
   return foundProfiles;
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
-  let { q } = query;
-
-  q = q || "";
-
-  let data = null;
-  let error = null;
-
-  if (q) {
-    try {
-      const searchRes = await fetch(
-        `${config.BASE_CLOUD_FUNCTIONS_URL}/searchPlayers2Http?alias=${encodeURIComponent(q as string)}`,
-      );
-
-      if (searchRes.status !== 200) {
-        data = await searchRes.json();
-        throw new Error(`Failed getting data for player id ${q}: ${JSON.stringify(data)} `);
-      } else {
-        data = convertSearchResultsToPlayerCardData(await searchRes.json());
-      }
-
-      res.setHeader(
-        "Cache-Control",
-        "public, max-age=600, s-maxage=1800, stale-while-revalidate=3600",
-      );
-    } catch (e: any) {
-      console.error(`Failed getting data for player id ${q}`);
-      console.error(e);
-      error = e.message;
-    }
-  }
-
-  return {
-    props: { data: data, error }, // will be passed to the page component as props
-  };
 };
 
 export default Search;

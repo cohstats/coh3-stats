@@ -24,7 +24,7 @@ const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) =>
   const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
 
   return cache_proxy
-    ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
     : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
 };
 
@@ -32,7 +32,7 @@ const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) =>
   const path = `/getPlayerCardStatsHttp?relicId=${playerID}`;
 
   return cache_proxy
-    ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
     : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
 };
 
@@ -41,7 +41,7 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
 };
 
 const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
-  let url = `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getMatchHttp?matchID=${matchID}`;
+  let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getMatchHttp?matchID=${matchID}`;
 
   if (profileIDs && profileIDs.length > 0) {
     url += `&profileIDs=[${profileIDs.join(",")}]`;
@@ -54,11 +54,17 @@ const getTwitchStreamsUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getTwitchStreamsHttp`);
 };
 
+const getSearchUrl = (searchQuery: string) => {
+  return encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/searchPlayers2Http?alias=${encodeURIComponent(searchQuery)}`,
+  );
+};
+
 const getGlobalAchievementsUrl = (cache_proxy = true) => {
   const path = `/getGlobalAchievementsHttp`;
 
   return cache_proxy
-    ? encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
     : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
 };
 
@@ -69,7 +75,7 @@ const getReplayUrl = (matchID: string | number) => {
 const setReplayFileUrl = () => {
   return encodeURI(
     // This will be in the browser / we don't want to touch our GCP directly without proxy
-    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/setReplayFileHttp`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/setReplayFileHttp`,
   );
 };
 
@@ -84,7 +90,7 @@ const getStatsUrl = (
     filters = undefined;
   }
 
-  let url = `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=${GET_ANALYSIS_STATS}&ock=${ock}`;
+  let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=${startDate}&endDate=${endDate}&type=${type}&v=${GET_ANALYSIS_STATS}&ock=${ock}`;
 
   if (filters && filters.length > 0) {
     const filtersString = filters.join(",");
@@ -339,7 +345,7 @@ const getPlayersCardsConfigsHttp = async (): Promise<{ profiles: Array<any> }> =
 };
 
 const getYouTubeVideosHttp = async (): Promise<Array<YouTubeVideo>> => {
-  const path = encodeURI(`${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getYouTubeVideosHttp`);
+  const path = encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getYouTubeVideosHttp`);
 
   try {
     const response = await fetch(path, {
@@ -365,7 +371,7 @@ const getYouTubeVideosHttp = async (): Promise<Array<YouTubeVideo>> => {
 
 const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
   const path = encodeURI(
-    `${config.BASED_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerNemesisUpdatesHttp?relicId=${playerID}`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerNemesisUpdatesHttp?relicId=${playerID}`,
   );
 
   const response = await fetch(path, {
@@ -540,4 +546,5 @@ export {
   triggerPlayerNemesisAliasesUpdate,
   getOldLeaderboardData,
   generateReplayUrl,
+  getSearchUrl,
 };

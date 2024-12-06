@@ -365,7 +365,7 @@ const config = {
   BASE_CLOUD_FUNCTIONS_URL: useFirebaseEmulators
     ? firebaseFunctions.EMULATORS_URL
     : firebaseFunctions.CLOUD_URL,
-  BASED_CLOUD_FUNCTIONS_PROXY_URL: useFirebaseEmulators
+  BASE_CLOUD_FUNCTIONS_PROXY_URL: useFirebaseEmulators
     ? firebaseFunctions.EMULATORS_URL
     : "https://cache.coh3stats.com",
   patches,
