@@ -122,6 +122,18 @@ const PlayerCard = ({
     }
   }, [playerID, view]);
 
+  const tabChangeFunction = async (value: any) => {
+    let haveAllData = true;
+    // The matches and replays are SSR data, we need to request them
+    if (value === "recentMatches" || value === "replays") {
+      haveAllData = false;
+    }
+
+    await push({ query: { ...query, view: value } }, undefined, {
+      shallow: haveAllData,
+    });
+  };
+
   if (error || !playerData) {
     return (
       <Container size="lg">
@@ -212,9 +224,7 @@ const PlayerCard = ({
           keepMounted={false}
           value={(view as string) || "standings"}
           defaultValue={(view as string) || "standings"}
-          onChange={async (value) => {
-            await push({ query: { ...query, view: value } });
-          }}
+          onChange={tabChangeFunction}
         >
           <Tabs.List justify="center">
             <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
