@@ -16,7 +16,6 @@ import {
   EbpsType,
   UpgradesType,
   filterMultiplayerBuildings,
-  WeaponType,
   AbilitiesType,
   BattlegroupsType,
   getResolvedUpgrades,
@@ -32,13 +31,11 @@ import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
 
 interface RaceDetailProps {
-  weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
   abilitiesData: AbilitiesType[];
   battlegroupData: BattlegroupsType[];
-  locstring: Record<string, string>;
 }
 
 const RaceDetail: NextPage<RaceDetailProps> = ({
@@ -248,25 +245,16 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 };
 
 export const getStaticProps = async () => {
-  const {
-    weaponData,
-    sbpsData,
-    ebpsData,
-    upgradesData,
-    abilitiesData,
-    battlegroupData,
-    locstring,
-  } = await getMappings();
+  const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } =
+    await getMappings();
 
   return {
     props: {
-      weaponData,
       sbpsData,
       ebpsData,
       upgradesData,
       abilitiesData,
       battlegroupData,
-      locstring,
     },
     revalidate: false,
   };

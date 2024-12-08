@@ -11,9 +11,9 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "start": "next dev",
     "dev": "next dev",
     "build": "next build",
+    "start": "next start",
     "next:dev": "next dev",
     "next:build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
