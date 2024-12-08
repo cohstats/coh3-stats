@@ -467,8 +467,27 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths<{ unitId: string }> = async () => {
+  const { sbpsData } = await getMappings();
+
+  const unitPaths = [];
+
+  const factions = ["american", "british", "german", "dak", "afrika_korps"];
+
+  for (const faction of factions) {
+    const units = sbpsData.filter((squad: any) => squad.faction.includes(faction));
+    for (const unit of units) {
+      const factionAsRaceID = faction === "afrika_korps" ? "dak" : faction;
+
+      unitPaths.push({
+        params: {
+          raceId: factionAsRaceID,
+          unitId: unit.id,
+        },
+      });
+    }
+  }
   return {
-    paths: [], //indicates that no page needs be created at build time
+    paths: unitPaths, //indicates that no page needs be created at build time
     fallback: "blocking", //indicates the type of fallback
   };
 };
