@@ -214,11 +214,11 @@ describe("coh3stats-api", () => {
       .spyOn(global, "fetch")
       .mockImplementation(setupFetchStub({ playerMatches: fakeMatchesData }));
 
-    const response = await getPlayerRecentMatches(12345, "fake-ip");
+    const response = await getPlayerRecentMatches(12345);
 
     expect(global.fetch).toBeCalledWith(
-      "https://us-east4-coh3-stats-prod.cloudfunctions.net/getPlayerMatchesHttp?relicId=12345",
-      { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
+      "https://cache.coh3stats.com/getPlayerMatchesHttp?relicId=12345",
+      {},
     );
     expect(response[0].id).toBe(2);
     expect(response[1].id).toBe(1);
