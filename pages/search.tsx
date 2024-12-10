@@ -106,6 +106,7 @@ const Search: NextPage = () => {
                       <IconDatabaseOff />
                       <div>No players found</div>
                     </Stack>
+                    <Space h={"lg"} />
                   </Text>
                 )}
                 {data.map((playerData) => {
@@ -118,11 +119,14 @@ const Search: NextPage = () => {
                   </Text>
                 )}
               </Flex>
-              <Center>
+              <Stack align={"center"} gap={0}>
                 <Text c={"dimmed"} fs={"italic"}>
                   Console player search supports exact match only.
                 </Text>
-              </Center>
+                <Text c={"dimmed"} fs={"italic"}>
+                  You can also search using Steam ID.
+                </Text>
+              </Stack>
             </Container>
           )}
         </>
