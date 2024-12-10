@@ -58,7 +58,7 @@ const PlayerRecentMatchesTab = ({
     (async () => {
       setIsLoading(true);
       try {
-        const data = await getPlayerRecentMatches(profileID, "");
+        const data = await getPlayerRecentMatches(profileID);
 
         if (customGamesHidden && data.length > 0) {
           setMatchData(data.filter((match) => match.matchtype_id !== 0));
