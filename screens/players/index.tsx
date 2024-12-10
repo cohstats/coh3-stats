@@ -1,8 +1,4 @@
-import {
-  PlayerCardDataType,
-  ProcessedCOHPlayerStats,
-  ProcessedMatch,
-} from "../../src/coh3/coh3-types";
+import { PlayerCardDataType, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
 import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
@@ -71,14 +67,12 @@ const PlayerCard = ({
   playerID,
   playerDataAPI,
   error,
-  playerMatchesData,
   playerStatsData,
   replaysData,
 }: {
   playerID: string;
   playerDataAPI: PlayerCardDataType | null;
   error: string;
-  playerMatchesData: Array<ProcessedMatch>;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   replaysData: ProcessedReplayData;
 }) => {
@@ -124,8 +118,8 @@ const PlayerCard = ({
 
   const tabChangeFunction = async (value: any) => {
     let haveAllData = true;
-    // The matches and replays are SSR data, we need to request them
-    if (value === "recentMatches" || value === "replays") {
+    // The replays are SSR data, we need to request them
+    if (value === "replays") {
       haveAllData = false;
     }
 
@@ -248,9 +242,7 @@ const PlayerCard = ({
           <Tabs.Panel value={"recentMatches"}>
             <Space h="lg" />
             <PlayerRecentMatchesTab
-              playerMatchesData={playerMatchesData}
               profileID={playerID}
-              error={error}
               customGamesHidden={playerStatsData?.customGamesHidden}
             />
           </Tabs.Panel>

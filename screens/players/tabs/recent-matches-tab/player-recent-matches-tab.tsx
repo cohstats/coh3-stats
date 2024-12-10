@@ -10,9 +10,10 @@ import {
   Center,
   Flex,
   useMantineTheme,
+  Loader,
 } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { isOfficialMap, maps, matchTypesAsObject, raceIDs } from "../../../../src/coh3/coh3-data";
 import { PlayerReport, ProcessedMatch, raceID } from "../../../../src/coh3/coh3-types";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../../../src/coh3/helpers";
@@ -32,6 +33,7 @@ import RenderMap from "./matches-table/render-map";
 import classes from "./matches-table.module.css";
 import MatchDetailDrawer from "./match-detail-drawer";
 import DownloadReplayButton from "./matches-table/download-replay";
+import { getPlayerRecentMatches } from "../../../../src/apis/coh3stats-api";
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -41,17 +43,37 @@ export type FilterInformation = { label: string; checked: boolean; filter: strin
 
 const PlayerRecentMatchesTab = ({
   profileID,
-  playerMatchesData,
-  error,
   customGamesHidden,
 }: {
   profileID: string;
-  playerMatchesData: Array<ProcessedMatch>;
-  error: string;
   customGamesHidden: boolean | undefined | null;
 }) => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
+  const [matchData, setMatchData] = useState<Array<ProcessedMatch> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      try {
+        const data = await getPlayerRecentMatches(profileID, "");
+
+        if (customGamesHidden && data.length > 0) {
+          setMatchData(data.filter((match) => match.matchtype_id !== 0));
+        } else {
+          setMatchData(data);
+        }
+      } catch (e) {
+        console.error(e);
+        // @ts-ignore
+        setError(`Error getting the player recent matches: ${e.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [profileID]);
 
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedMatchRecord, setSelectedMatchRecord] = React.useState<ProcessedMatch | null>(
@@ -88,7 +110,7 @@ const PlayerRecentMatchesTab = ({
     });
 
     const resortedData = sortBy(
-      playerMatchesData,
+      matchData,
       sortStatus.columnAccessor === "match_duration"
         ? (matchData) => {
             return matchData.startgametime - matchData.completiontime;
@@ -113,13 +135,13 @@ const PlayerRecentMatchesTab = ({
     });
     return sortStatus.direction === "desc" ? resortedData.reverse() : resortedData;
     // eslint wants isplayervictorious in here. I think this will make this run on every render
-  }, [sortStatus, playerMatchesData, filters]);
+  }, [sortStatus, matchData, filters]);
 
   // populate filters with values actually found in this players recent history
   React.useEffect(() => {
     const mapNameMap: { [key: string]: FilterInformation } = {};
     const matchTypeMap: { [key: number]: FilterInformation } = {};
-    playerMatchesData?.forEach(({ mapname, matchtype_id }) => {
+    matchData?.forEach(({ mapname, matchtype_id }) => {
       mapNameMap[mapname] = {
         label: isOfficialMap(mapname) ? maps[mapname]?.name : mapname,
         checked: true,
@@ -145,17 +167,28 @@ const PlayerRecentMatchesTab = ({
       mode: matchTypeMap,
     };
     setFilters(updatedFilters);
-  }, [playerMatchesData]);
+  }, [matchData]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <Center maw={400} h={250} mx="auto">
+          <Loader />
+        </Center>
+        <div style={{ height: 1000 }}></div>
+      </div>
+    );
+  }
 
   if (error) {
     return <ErrorCard title={"Error rendering recent matches"} body={JSON.stringify(error)} />;
   }
 
-  if (!playerMatchesData || !profileID) {
+  if ((!matchData || !profileID) && !isLoading) {
     return (
       <ErrorCard
         title={"Error rendering recent matches"}
-        body={"Missing playerMatchesData or profileID"}
+        body={"Missing matchData or profileID"}
       />
     );
   }
@@ -196,7 +229,6 @@ const PlayerRecentMatchesTab = ({
         />
       </Flex>
       <DataTable
-        withBorder
         borderRadius="md"
         highlightOnHover
         striped

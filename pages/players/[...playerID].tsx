@@ -1,9 +1,5 @@
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
-import {
-  getPlayerCardInfo,
-  getPlayerRecentMatches,
-  getPlayerCardStatsOrNull,
-} from "../../src/apis/coh3stats-api";
+import { getPlayerCardInfo, getPlayerCardStatsOrNull } from "../../src/apis/coh3stats-api";
 import { GetServerSideProps } from "next";
 import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
 
@@ -241,13 +237,11 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   const { view, start } = query;
   const xff = `${req.headers["x-forwarded-for"]}`;
 
-  const viewPlayerMatches = view === "recentMatches";
   const isReplaysPage = view === "replays";
   // const viewStandings = view === "standings";
 
   let playerData = null;
   let playerStatsData = null;
-  let playerMatchesData = null;
   let error = null;
   let replaysData = null;
 
@@ -263,32 +257,16 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       ? getReplaysForPlayer(playerID, start as string | undefined)
       : Promise.resolve();
 
-    const PromisePlayerMatchesData = viewPlayerMatches
-      ? getPlayerRecentMatches(playerID, xff)
-      : Promise.resolve();
-
-    const [playerAPIData, playerCardStatsData, PlayerMatchesAPIData, replaysAPIDAta] =
-      await Promise.all([
-        PromisePlayerCardData,
-        PromisePlayerCardStatsData,
-        PromisePlayerMatchesData,
-        PromiseReplaysData,
-      ]);
+    const [playerAPIData, playerCardStatsData, replaysAPIDAta] = await Promise.all([
+      PromisePlayerCardData,
+      PromisePlayerCardStatsData,
+      PromiseReplaysData,
+    ]);
 
     playerStatsData = playerCardStatsData?.playerStats
       ? ProcessPlayerCardStatsData(playerCardStatsData.playerStats)
       : null;
     playerData = playerAPIData ? processPlayerInfoAPIResponse(playerAPIData) : null;
-    playerMatchesData = viewPlayerMatches
-      ? (() => {
-          if (PlayerMatchesAPIData && playerStatsData?.customGamesHidden) {
-            // Filter out custom games if it's set to be hidden
-            return PlayerMatchesAPIData.filter((match) => match.matchtype_id !== 0);
-          } else {
-            return PlayerMatchesAPIData;
-          }
-        })()
-      : null;
     replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
 
     res.setHeader("Cache-Control", "public, max-age=15, s-maxage=30, stale-while-revalidate=60");
@@ -304,7 +282,6 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       playerID,
       playerDataAPI: playerData,
       error,
-      playerMatchesData,
       playerStatsData,
       replaysData,
     }, // will be passed to the page component as props

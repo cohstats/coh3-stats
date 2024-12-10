@@ -37,7 +37,9 @@ const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) =>
 };
 
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
-  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayerMatchesHttp?relicId=${playerID}`);
+  return encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerMatchesHttp?relicId=${playerID}`,
+  );
 };
 
 const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
@@ -236,14 +238,14 @@ const getMatch = async (matchID: string | number, playerIDs?: Array<string>) => 
   }
 };
 
-const getPlayerRecentMatches = async (playerID: string | number, XForwardedFor: string) => {
-  const xff = cleanXForwardedFor(XForwardedFor);
+const getPlayerRecentMatches = async (playerID: string | number) => {
+  // const xff = cleanXForwardedFor(XForwardedFor);
 
   const response = await fetch(getPlayerRecentMatchesUrl(playerID), {
-    headers: {
-      "X-Forwarded-For": xff,
-      "c-edge-ip": parseFirstIPFromString(xff),
-    },
+    // headers: {
+    //   // "X-Forwarded-For": xff,
+    //   // "c-edge-ip": parseFirstIPFromString(xff),
+    // },
   });
 
   if (response.ok) {
