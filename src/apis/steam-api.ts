@@ -1,6 +1,8 @@
 import { logger } from "../logger";
 
 const baseUrl = "https://api.steampowered.com/";
+const baseUrlProxied = "https://steam.coh3stats.com/";
+
 const COH3_STEAM_APP_ID = 1677280;
 
 const steamImagesBaseUrl = "https://clan.cloudflare.steamstatic.com/images";
@@ -21,7 +23,9 @@ export type COH3SteamNewsType = {
 };
 
 const getNumberOfOnlinePlayersSteamUrl = (appId: number | string = COH3_STEAM_APP_ID) => {
-  return encodeURI(`${baseUrl}ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}`);
+  return encodeURI(
+    `${baseUrlProxied}ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}`,
+  );
 };
 
 const getCOH3SteamNewsUrl = (count: number = 20) => {

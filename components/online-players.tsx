@@ -1,5 +1,6 @@
 import { Badge, Flex, Tooltip } from "@mantine/core";
 import React, { useEffect, useState } from "react";
+import { getNumberOfOnlinePlayersSteamUrl } from "../src/apis/steam-api";
 
 export const OnlinePlayers: React.FC = () => {
   const [onlinePlayersData, setOnlinePlayersData] = useState<null | {
@@ -15,8 +16,13 @@ export const OnlinePlayers: React.FC = () => {
             onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4) ||
           !onlinePlayersData
         ) {
-          const fetchData = await fetch("/api/onlineSteamPlayers");
-          setOnlinePlayersData(await fetchData.json());
+          const fetchData = await fetch(getNumberOfOnlinePlayersSteamUrl());
+          // reader header last-modified:
+          const data = await fetchData.json();
+          setOnlinePlayersData({
+            playerCount: data.response.player_count,
+            timeStampMs: new Date(fetchData.headers.get("last-modified") || "").getTime(),
+          });
         }
 
         // Update the data every 5 minutes
@@ -28,10 +34,13 @@ export const OnlinePlayers: React.FC = () => {
                   onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4) ||
                 !onlinePlayersData
               ) {
-                const fetchData = await fetch("/api/onlineSteamPlayers");
+                const fetchData = await fetch(getNumberOfOnlinePlayersSteamUrl());
                 const data = await fetchData.json();
-                if (data && data.playerCount > 0) {
-                  setOnlinePlayersData(data);
+                if (data && data.player_count > 0) {
+                  setOnlinePlayersData({
+                    playerCount: data.response.player_count,
+                    timeStampMs: new Date(fetchData.headers.get("last-modified") || "").getTime(),
+                  });
                 }
               }
             } catch (e) {
