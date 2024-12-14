@@ -15,6 +15,8 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
     },
   });
 
+  console.log(`SSR - /desktop-app`);
+
   let downloadURL = "https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"; // fallback in case request fails
   let downloadCount = 0;
   let version = "";

@@ -16,6 +16,8 @@ const systemInfo = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(`SSR - /api/getNodeVersion`);
+
   try {
     res.setHeader("Cache-Control", "public").status(200).json({
       nodeVersion: process.version,

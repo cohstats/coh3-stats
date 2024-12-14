@@ -63,6 +63,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   let error = null;
   let leaderBoardStats = null;
 
+  console.log(`SSR - /stats/leaderboards`);
+
   try {
     leaderBoardStats = await calculateLeaderboardStats();
 

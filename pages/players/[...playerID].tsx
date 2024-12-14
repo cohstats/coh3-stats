@@ -240,6 +240,8 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   const isReplaysPage = view === "replays";
   // const viewStandings = view === "standings";
 
+  console.log(`SSR - /players/${playerID}, view: ${view}`);
+
   let playerData = null;
   let playerStatsData = null;
   let error = null;

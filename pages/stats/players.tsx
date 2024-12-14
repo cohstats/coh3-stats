@@ -205,6 +205,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   let countries = null;
   let historyData = null;
 
+  console.log(`SSR - /stats/players`);
+
   try {
     const docRef = doc(getFirestore(), "stats", "player-stats");
     const docHistoryRef = doc(getFirestore(), "stats", "player-stats-history");

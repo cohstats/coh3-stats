@@ -7,6 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const query = req.query;
     const { race } = query;
+
+    console.log(`SSR - /api/topLeaderboards, race: ${race}`);
+
     const data = await getTop1v1LeaderBoards(race as raceType);
 
     res.setHeader("Cache-Control", "public, max-age=60").status(200).json(data);

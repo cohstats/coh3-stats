@@ -20,6 +20,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
   const sortByToFetch = sortById[sortBy as "wins" | "elo"] || 1;
   const regionToFetch = (region as LeaderboardRegionTypes) || null;
 
+  console.log(
+    `SSR - /leaderboards, race: ${raceToFetch}, type: ${typeToFetch}, platform: ${platformToFetch}, region: ${regionToFetch}`,
+  );
+
   let startNumber: number | undefined;
   if (start) {
     const number = Number(start);

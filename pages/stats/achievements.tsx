@@ -9,6 +9,8 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
 }) => {
   const xff = `${req.headers["x-forwarded-for"]}`;
 
+  console.log(`SSR - /stats/achievements`);
+
   let error = null;
   let globalAchievements = null;
 

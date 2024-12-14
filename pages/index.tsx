@@ -18,6 +18,8 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, res }) 
   let steamNewsData: COH3SteamNewsType | null = null;
   let youtubeData: YouTubeVideo[] | null = null;
 
+  console.log(`SSR - /`);
+
   try {
     const [
       PromisedTwitchStreams,

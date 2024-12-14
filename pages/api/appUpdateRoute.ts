@@ -6,6 +6,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(`SSR - /api/appUpdateRoute`);
+
   const octokit = new Octokit();
   const response = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
     owner: "cohstats",

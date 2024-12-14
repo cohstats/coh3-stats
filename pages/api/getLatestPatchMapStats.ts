@@ -6,6 +6,8 @@ import { getStatsData } from "../../src/apis/coh3stats-api";
 import { maps } from "../../src/coh3/coh3-data";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(`SSR - /api/getLatestPatchMapStats`);
+
   try {
     const statsPatchSelector = config.statsPatchSelector;
     const fromTimeStamp = getGMTTimeStamp(new Date(statsPatchSelector[config.latestPatch].from));

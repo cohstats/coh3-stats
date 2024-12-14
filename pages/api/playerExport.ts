@@ -21,6 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const xff = `${req.headers["x-forwarded-for"]}`;
     const { profileIDs, types } = query;
 
+    logger.log(`SSR - /api/playerExport, profileIDs: ${profileIDs}, types: ${types}`);
+
     if (!profileIDs) {
       return res.status(400).json({ error: "profile id param is missing" });
     }

@@ -5,6 +5,8 @@ import SteamNewsPage from "../screens/news";
 export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
   let COH3SteamNews = null;
 
+  console.log(`SSR - /news`);
+
   try {
     COH3SteamNews = await getCOH3SteamNews();
 
