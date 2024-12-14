@@ -69,7 +69,7 @@
     "json-2-csv": "5.5.7",
     "lodash": "4.17.21",
     "mantine-datatable": "7.12.4",
-    "next": "14.2.20",
+    "next": "14.2.18",
     "nprogress": "0.2.0",
     "octokit": "4.0.2",
     "react": "18.3.1",
@@ -78,7 +78,7 @@
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "5.9.0",
+    "@netlify/plugin-nextjs": "5.8.1",
     "@next/bundle-analyzer": "14.2.19",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.0.1",
