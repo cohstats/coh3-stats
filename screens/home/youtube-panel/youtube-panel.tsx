@@ -9,7 +9,7 @@ type YoutubePanelProps = {
 };
 
 const getYoutubeThumbnailUrl = (video: YouTubeVideo) => {
-  return `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`;
+  return `https://i.ytimg.com/vi_webp/${video.videoId}/hqdefault.webp`;
 };
 
 const formatViewCount = (views: string): string => {
