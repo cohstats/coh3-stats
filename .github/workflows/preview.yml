@@ -71,7 +71,7 @@ jobs:
           # On vercel, development env is what we used to call preview
           npx vercel pull --yes --environment=development --token=$VERCEL_TOKEN
           npx vercel build --token=$VERCEL_TOKEN
-          npx vercel deploy --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+          npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
           code=$?
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow

@@ -117,9 +117,9 @@ jobs:
           VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID_PV}}
         run: |
           npx vercel telemetry disable
-          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-          npx vercel build --prod --token=$VERCEL_TOKEN
-          npx vercel deploy --prod --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+          npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+          npx vercel build --token=$VERCEL_TOKEN
+          npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
           code=$?
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow

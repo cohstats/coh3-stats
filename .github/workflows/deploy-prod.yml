@@ -50,30 +50,50 @@ jobs:
           ignore_empty: true
           ignore_missing: true
 
-      - name: Deploy to Netlify hosting
+      #      - name: Deploy to Netlify hosting
+      #        env:
+      #          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+      #          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_PROD}}
+      #          NODE_VERSION: "20.x"
+      #        run: |
+      #          npx netlify --telemetry-disable
+      #          netlify deploy --build --prod
+      #
+      #      - name: Deploy to Vercel hosting
+      #        env:
+      #          VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
+      #          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
+      #          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+      #        run: |
+      #          npx vercel telemetry disable
+      #          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+      #          npx vercel build --prod --token=$VERCEL_TOKEN
+      #          npx vercel deploy --prod --prebuilt --archive=tgz --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+      #          code=$?
+      #          if [ $code -eq 0 ]; then
+      #            # Now you can use the deployment url from stdout for the next step of your workflow
+      #            deploymentUrl=`cat deployment-url.txt`
+      #            npx vercel alias $deploymentUrl coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
+      #          else
+      #            # Handle the error
+      #            errorMessage=`cat error.txt`
+      #            echo "There was an error: $errorMessage"
+      #          fi
+      - name: Deploy to Vercel hosting - PV org
         env:
-          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_PROD}}
-          NODE_VERSION: "20.x"
-        run: |
-          npx netlify --telemetry-disable
-          netlify deploy --build --prod
-
-      - name: Deploy to Vercel hosting
-        env:
-          VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
-          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
-          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+          VERCEL_TOKEN: ${{secrets.VERCEL_DEPLOY_TOKEN_PV}}
+          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID_PV}}
+          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID_PV}}
         run: |
           npx vercel telemetry disable
           npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
           npx vercel build --prod --token=$VERCEL_TOKEN
-          npx vercel deploy --prod --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+          npx vercel deploy --prod --prebuilt --archive=tgz --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
           code=$?
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow
             deploymentUrl=`cat deployment-url.txt`
-            npx vercel alias $deploymentUrl coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
+            npx vercel alias $deploymentUrl coh3stats.com --token=$VERCEL_TOKEN --scope petrveceras-projects
           else
             # Handle the error
             errorMessage=`cat error.txt`
