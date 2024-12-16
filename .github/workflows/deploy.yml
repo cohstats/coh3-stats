@@ -54,14 +54,14 @@ jobs:
           environment: ${{ env.EDGIO_ENV }}
           ignore_empty: true
           ignore_missing: true
-      - name: Deploy to Netlify hosting
-        env:
-          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_DEV}}
-          NODE_VERSION: "20.x"
-        run: |
-          npx netlify --telemetry-disable
-          netlify deploy --build --prod
+      #      - name: Deploy to Netlify hosting
+      #        env:
+      #          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+      #          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_DEV}}
+      #          NODE_VERSION: "20.x"
+      #        run: |
+      #          npx netlify --telemetry-disable
+      #          netlify deploy --build --prod
       #      - name: Deploy to Edgio hosting
       #        env:
       #          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
@@ -119,7 +119,7 @@ jobs:
           npx vercel telemetry disable
           npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
           npx vercel build --prod --token=$VERCEL_TOKEN
-          npx vercel deploy -prod --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+          npx vercel deploy --prod --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
           code=$?
           if [ $code -eq 0 ]; then
             # Now you can use the deployment url from stdout for the next step of your workflow
