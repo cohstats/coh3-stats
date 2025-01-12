@@ -61,7 +61,7 @@ jobs:
           NODE_VERSION: "20.x"
         run: |
           npx netlify --telemetry-disable
-          netlify deploy --build --prod
+          npx netlify deploy --build --prod
       #      - name: Deploy to Edgio hosting
       #        env:
       #          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
