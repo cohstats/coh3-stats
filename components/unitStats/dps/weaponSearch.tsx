@@ -70,7 +70,7 @@ export const WeaponSearch = (props: ISearchProps) => {
       data={cleanedSearchData}
       searchable
       maxDropdownHeight={600}
-      nothingFoundMessage="Nothing here. War is over!"
+      nothingFoundMessage="No weapons found. You can allow all weapons in settings."
       onChange={(value) => onSelectionChange(value as string)}
       value=""
       // filter={(value, selected, item) =>
