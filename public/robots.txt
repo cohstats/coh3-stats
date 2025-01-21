@@ -35,6 +35,10 @@ Disallow: /players
 Allow: /
 
 User-agent: *
+# This is hallucinated by Google
+Disallow: /steam
+Disallow: /xboxlive
+Disallow: /r
 Disallow: /api
 Disallow: /tests
 # Ban crawling of the leaderboards via the start parameter
