@@ -657,10 +657,10 @@
     "@bbob/preset" "*"
     "@bbob/types" "*"
 
-"@bbob/preset-react@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@bbob/preset-react/-/preset-react-4.1.1.tgz#28854ed6efc0bcb2c4b643361b4790394a1b0134"
-  integrity sha512-5scf+zIz+NSlz6uYYBRLzAqHPOQgWinGPzBXQbh6Mc0qH00tVcL8inhgBSQ/mIHjZ0atI3KQHTudN9bFBQ/iJg==
+"@bbob/preset-react@4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@bbob/preset-react/-/preset-react-4.2.0.tgz#cfcbcf6e8187ed5510a51f01b69ecc84fd4b42e8"
+  integrity sha512-f6VoTaFVxtx4dVWCYjbSkeK2roYgjj/mMc7TJtPOReSjLZqxk0sV0LUcNfbEeNdCcygASjKZAX5FOhDZ4qADng==
   dependencies:
     "@bbob/preset-html5" "*"
     "@bbob/types" "*"
