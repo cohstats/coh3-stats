@@ -14,6 +14,7 @@ import DynamicTimeAgo from "../../../../components/other/dynamic-timeago";
 import RankIcon from "../../../../components/rank-icon";
 import HelperIcon from "../../../../components/icon/helper";
 import { IconArrowBigDown, IconArrowBigUp } from "@tabler/icons-react";
+import { getCorrectLeaderStartPositions } from "../../../../src/utils";
 
 const PlayerStandingsTable = ({
   faction,
@@ -59,7 +60,7 @@ const PlayerStandingsTable = ({
                 if (!rank || rank < 0) {
                   return "-";
                 }
-                const startPosition = Math.max(rank - 10, 0) + 1;
+                const startPosition = getCorrectLeaderStartPositions(rank);
                 return (
                   <Anchor
                     component={Link}

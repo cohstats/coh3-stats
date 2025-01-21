@@ -24,6 +24,7 @@ import {
   getAboutRoute,
   getDesktopAppRoute,
   getLeaderBoardRoute,
+  getLiveGamesRoute,
   getNewsRoute,
 } from "../../src/routes";
 import StatisticsMenu from "./components/StatisticsMenu";
@@ -74,16 +75,16 @@ const MobileView = () => {
 
             <StatisticsMenu classes={classes} close={close} />
 
+            <ExplorerMenu close={close} classes={classes} />
+
             <Anchor
               component={Link}
-              href={getDesktopAppRoute()}
+              href={getLiveGamesRoute()}
               className={classes.link}
               onClick={() => close()}
             >
-              Desktop App
+              Live Games
             </Anchor>
-
-            <ExplorerMenu close={close} classes={classes} />
 
             <Anchor
               component={Link}
@@ -92,6 +93,15 @@ const MobileView = () => {
               onClick={() => close()}
             >
               COH3 News{" "}
+            </Anchor>
+
+            <Anchor
+              component={Link}
+              href={getDesktopAppRoute()}
+              className={classes.link}
+              onClick={() => close()}
+            >
+              Desktop App
             </Anchor>
 
             <OtherMenu close={close} classes={classes} />
@@ -149,12 +159,13 @@ const DesktopView = () => {
           </HoverCard.Dropdown>
         </HoverCard>
         <StatisticsMenu classes={classes} />
-
+        <ExplorerMenu classes={classes} />
+        <Anchor component={Link} href={getLiveGamesRoute()} className={classes.link}>
+          Live Games
+        </Anchor>
         <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
           Desktop App
         </Anchor>
-
-        <ExplorerMenu classes={classes} />
         <OtherMenu classes={classes} />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
           About

@@ -29,7 +29,7 @@ const StatisticsMenu = ({
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text fw="bold">Statistics</Text>
+            <Text fw="500">Statistics</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>

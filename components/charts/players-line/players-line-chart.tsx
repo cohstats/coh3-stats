@@ -14,19 +14,19 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
       case "month":
         return {
           data: data.slice(Math.max(data.length - 30, 0), data.length),
-          tickValues: "every 2 days",
+          tickValues: "every 3 days",
           bottomAxisLegend: "Days",
         };
       case "3months":
         return {
           data: data.slice(Math.max(data.length - 90, 0), data.length),
-          tickValues: "every 5 days",
+          tickValues: "every 7 days",
           bottomAxisLegend: "Days",
         };
       case "6months":
         return {
           data: generateWeeklyAverages(data.slice(Math.max(data.length - 180, 0), data.length)),
-          tickValues: "every 10 days",
+          tickValues: "every 2 weeks",
           bottomAxisLegend: "Weeks",
         };
       case "12months":
@@ -38,7 +38,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
       case "all":
         return {
           data: generateWeeklyAverages(data),
-          tickValues: 5,
+          tickValues: 7,
           bottomAxisLegend: "Weeks",
         };
     }
@@ -59,7 +59,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
       <div style={{ maxWidth: 960, height: 350 }}>
         <ResponsiveLine
           data={chartData}
-          margin={{ top: 25, right: 20, bottom: 50, left: 50 }}
+          margin={{ top: 25, right: 20, bottom: 50, left: 55 }}
           xFormat="time: %a - %Y-%m-%d"
           // tooltip={(data) => {
           //   return <>{data.point.data.xFormatted} and {data.point.data.yFormatted}</>
@@ -91,7 +91,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
             tickPadding: 5,
             tickRotation: 0,
             legend: "Ranked players active",
-            legendOffset: -45,
+            legendOffset: -50,
             legendPosition: "middle",
           }}
           curve="monotoneX"

@@ -12,6 +12,7 @@ import {
   calculateWinRate,
   convertWeekDayToFullName,
   getPatchVersionAsMantineV7Groups,
+  getCorrectLeaderStartPositions,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -319,5 +320,21 @@ describe("getPatchVersionAsMantineV7Groups", () => {
       ),
     ).toBeTruthy();
     // console.log(JSON.stringify(getPatchVersionAsMantineV7Groups()));
+  });
+});
+
+describe("getCorrectLeaderStartPositions", () => {
+  test("Correctly counts the positions", () => {
+    expect(getCorrectLeaderStartPositions(52)).toBe(1);
+    expect(getCorrectLeaderStartPositions(125)).toBe(101);
+    expect(getCorrectLeaderStartPositions(1563)).toBe(1501);
+  });
+
+  test("Correctly counts the positions edge cases", () => {
+    expect(getCorrectLeaderStartPositions(100)).toBe(1);
+    expect(getCorrectLeaderStartPositions(101)).toBe(101);
+    expect(getCorrectLeaderStartPositions(102)).toBe(101);
+    expect(getCorrectLeaderStartPositions(200)).toBe(101);
+    expect(getCorrectLeaderStartPositions(201)).toBe(201);
   });
 });

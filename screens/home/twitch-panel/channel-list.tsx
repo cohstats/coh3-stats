@@ -2,7 +2,7 @@ import { BackgroundImage, Text, Box, Flex } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
-import { isMobileCheck } from "../../../src/utils";
+import { isMobileDeviceCheck } from "../../../src/utils";
 
 type Props = {
   twitchStreams: TwitchStream[];
@@ -14,7 +14,7 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
     onChangeChannel(idx);
     setSelected(idx);
   }
-  const isMobile = isMobileCheck();
+  const isMobile = isMobileDeviceCheck();
 
   return (
     <Flex

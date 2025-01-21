@@ -158,6 +158,22 @@ export const AnalyticsExplorerWeaponsView = (): void => {
   logFBEvent("explorer_weapons_view");
 };
 
+export const AnalyticsLiveGamesView = (): void => {
+  logFBEvent("live_games_view");
+};
+
+export const AnalyticsLiveGamesTypeSelection = (type: string): void => {
+  logFBEvent("live_games_type_selection", { type });
+};
+
+export const AnalyticsLiveGamesOrderSelection = (order: string): void => {
+  logFBEvent("live_games_order_selection", { order });
+};
+
+export const AnalyticsLiveGamesPage = (page: number): void => {
+  logFBEvent("live_games_start_selection", { page });
+};
+
 export const AnalyticsNewsPageView = (): void => {
   logFBEvent("news_view");
 };
