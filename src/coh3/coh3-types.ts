@@ -416,3 +416,94 @@ export interface YouTubeVideo {
   viewCount: string;
   videoId: string;
 }
+
+export interface LiveGameSummary {
+  liveGameSummary: {
+    "1v1": {
+      games: number;
+      players: number;
+    };
+    "2v2": {
+      games: number;
+      players: number;
+    };
+    "3v3": {
+      games: number;
+      players: number;
+    };
+    "4v4": {
+      games: number;
+      players: number;
+    };
+    ai: {
+      games: number;
+      players: number;
+    };
+    custom: {
+      games: number;
+      players: number;
+    };
+    totalAutomatch: {
+      games: number;
+      players: number;
+    };
+    total: {
+      games: number;
+      players: number;
+    };
+    unixTimeStamp: number;
+  };
+  liveGamesChart: {
+    timeLine: Array<{
+      ut: number;
+      "1v1": number;
+      "2v2": number;
+      "3v3": number;
+      "4v4": number;
+      ai: number;
+      custom: number;
+    }>;
+  };
+}
+
+export interface LivePlayerProfile {
+  profile_id: number;
+  alias: string;
+  country: string;
+  steamid: string;
+  statgroup_id: number;
+}
+
+export interface ProcessedLiveGame {
+  id: number;
+  creator_profile_id: number;
+  description: string;
+  description2: string;
+  mapname: string;
+  maxplayers: number;
+  matchtype_id: number;
+  players: Array<Record<string, number | string>>;
+  current_observers: number;
+  startgametime: number;
+  server: string;
+}
+
+export interface PlayersOnLiveGames {
+  profile_id: number;
+  race_id: number;
+  rank: number;
+  teamid: number;
+  player_profile: LivePlayerProfile;
+}
+
+export interface LiveGame extends Omit<ProcessedLiveGame, "players"> {
+  players: Array<PlayersOnLiveGames>;
+}
+
+export interface ResponseLiveGames {
+  liveGames: Array<LiveGame>;
+  totalGames: number;
+  unixTimeStamp: number;
+}
+
+export type TypeOfLiveGame = "1v1" | "2v2" | "3v3" | "4v4" | "ai" | "custom";

@@ -2,10 +2,13 @@ import config from "../../config";
 import {
   GlobalAchievementsData,
   leaderBoardType,
+  LiveGameSummary,
   PlayerReport,
   ProcessedMatch,
   raceType,
+  ResponseLiveGames,
   TwitchStream,
+  TypeOfLiveGame,
   YouTubeVideo,
 } from "../coh3/coh3-types";
 import {
@@ -81,6 +84,10 @@ const setReplayFileUrl = () => {
   );
 };
 
+const getLiveGamesSummaryUrl = () => {
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getLiveGamesSummaryHttp`);
+};
+
 const getStatsUrl = (
   startDate: number,
   endDate: number | "now" = "now",
@@ -100,6 +107,40 @@ const getStatsUrl = (
   }
 
   return encodeURI(url);
+};
+
+export const getLiveGamesSummary = async (): Promise<LiveGameSummary> => {
+  const response = await fetch(getLiveGamesSummaryUrl());
+  if (response.ok) {
+    return await response.json();
+  } else {
+    logger.error(`Error getting live games summary - status code: ${response.status}`);
+    throw new Error(`Error getting live games summary - status code: ${response.status}`);
+  }
+};
+
+/**
+ *
+ * @param type
+ * @param orderBy
+ * @param start STARTS FROM 1
+ * @param count
+ */
+export const getLiveGames = async (
+  type: TypeOfLiveGame,
+  orderBy: string,
+  start = 1,
+  count = 50,
+): Promise<ResponseLiveGames> => {
+  const response = await fetch(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getLiveGamesHttp?type=${type}&orderBy=${orderBy}&start=${start}&count=${count}`,
+  );
+  if (response.ok) {
+    return await response.json();
+  } else {
+    logger.error(`Error getting live games: ${response.status}`);
+    throw new Error(`Error getting live games: ${response.status}`);
+  }
 };
 
 const getStatsData = async (

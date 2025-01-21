@@ -192,9 +192,7 @@ const ExplorerMenu = ({
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text inherit fw="bold">
-              Explorer
-            </Text>
+            <Text fw="500">Explorer</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>

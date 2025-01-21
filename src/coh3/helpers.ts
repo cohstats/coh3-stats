@@ -3,6 +3,7 @@ import {
   LaddersDataArrayObject,
   LaddersDataObject,
   PlayerReport,
+  PlayersOnLiveGames,
   ProcessedMatch,
   raceType,
 } from "./coh3-types";
@@ -23,7 +24,7 @@ const convertSteamNameToID = (name: string): string => {
  * @param startTime
  * @param endTime
  */
-const getMatchDuration = (startTime: number, endTime: number) => {
+export const getMatchDuration = (startTime: number, endTime: number) => {
   const durationSeconds = endTime - startTime;
   const hours = Math.floor(durationSeconds / 3600);
   const minutes = Math.floor((durationSeconds % 3600) / 60);
@@ -54,10 +55,10 @@ const getFactionSide = (faction: raceType): FactionSide => {
   }
 };
 
-const getMatchPlayersByFaction = (
-  reportedPlayerResults: Array<PlayerReport>,
+const getMatchPlayersByFaction = <T extends PlayerReport | PlayersOnLiveGames>(
+  reportedPlayerResults: Array<T>,
   faction: "axis" | "allies",
-): Array<PlayerReport> => {
+): Array<T> => {
   const factionId = faction === "axis" ? 1 : 2;
   return reportedPlayerResults.filter(
     (playerResult) => raceIDsAsObject[playerResult.race_id]?.faction_id === factionId,
@@ -176,7 +177,6 @@ export {
   getFactionSide,
   findAndMergeStatGroups,
   convertSteamNameToID,
-  getMatchDuration,
   getMatchPlayersByFaction,
   calculatePlayerTier,
   getMapLocalizedName,

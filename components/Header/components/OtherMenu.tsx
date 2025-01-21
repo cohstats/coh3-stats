@@ -39,7 +39,7 @@ const OtherMenu = ({
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text fw="bold">Other</Text>
+            <Text fw="500">Other</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>

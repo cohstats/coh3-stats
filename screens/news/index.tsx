@@ -4,7 +4,7 @@ import BBCode from "@bbob/react";
 
 import reactPreset from "@bbob/preset-react";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Anchor,
   Card,
@@ -24,6 +24,7 @@ import Head from "next/head";
 import { generateKeywordsString } from "../../src/head-utils";
 
 import classes from "./News.module.css";
+import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
 
 const preset = reactPreset.extend((tags: any) => ({
   ...tags,
@@ -199,9 +200,9 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
 const keywords = generateKeywordsString(["coh3 news", "news", "patch", "changes"]);
 
 const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
-  // useEffect(() => {
-  //   AnalyticsNewsPageView();
-  // }, []);
+  useEffect(() => {
+    AnalyticsNewsPageView();
+  }, []);
 
   const items = COH3SteamNews.newsitems.map((item) => {
     return <SingleNewsItem item={item} key={item.date} />;

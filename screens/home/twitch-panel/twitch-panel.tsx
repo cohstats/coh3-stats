@@ -3,7 +3,7 @@ import { Grid, Group, Space, Stack, Text, useMantineColorScheme } from "@mantine
 import { IconCircle } from "@tabler/icons-react";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import ChannelList from "./channel-list";
-import { isMobileCheck } from "../../../src/utils";
+import { isMobileDeviceCheck } from "../../../src/utils";
 import config from "../../../config";
 import { useMediaQuery } from "@mantine/hooks";
 
@@ -62,7 +62,7 @@ const TwitchPanel = ({ twitchStreams }: Props) => {
         const player = embed.getPlayer();
         // maybe unneeded because of option above but can't hurt
         player.setMuted(true);
-        if (!isMobileCheck() && !config.isDevEnv()) player.play();
+        if (!isMobileDeviceCheck() && !config.isDevEnv()) player.play();
         setPlayer(player);
       });
     });

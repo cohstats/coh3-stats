@@ -126,6 +126,10 @@ export const getNewsRoute = (articleId?: string) => {
   return encodeURI(`/news`);
 };
 
+export const getLiveGamesRoute = () => {
+  return encodeURI(`/live-games?type=4v4`);
+};
+
 export const getMatchDetailRoute = (
   matchId: string | number,
   profileIDs?: Array<string | number>,
