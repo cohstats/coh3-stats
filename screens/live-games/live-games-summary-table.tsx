@@ -35,7 +35,7 @@ const LiveGamesSummaryTable = ({
               {loading && <Skeleton height={15} width="150" radius="xl" />}
               <HelperIcon
                 text={
-                  "Current multiplayer games in progress.  Total Players are unique filtered. Keep in mind that there are probably a lot of players in lobby / searching / loading and doing other things. Games are updated every 5 minutes."
+                  "Current multiplayer games in progress.  Total Players are unique filtered. Keep in mind that there are probably a lot of players in lobby / searching / loading and doing other things. Custom games are not observable by default. Most likely there is much more custom games being played. Games are updated every 5 minutes."
                 }
               />
             </Group>
