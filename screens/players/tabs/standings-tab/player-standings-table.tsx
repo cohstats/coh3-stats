@@ -249,6 +249,20 @@ const PlayerStandingsTable = ({
             ),
           },
           {
+            accessor: "drops",
+            textAlign: "center",
+            footer: (
+              <>
+                {(() => {
+                  const totalDrops = Object.values(data).reduce((acc, cur) => {
+                    return acc + (cur?.drops || 0);
+                  }, 0);
+                  return totalDrops === 0 ? "-" : totalDrops;
+                })()}
+              </>
+            ),
+          },
+          {
             accessor: "lastmatchdate",
             title: "Last Match",
             textAlign: "right",
