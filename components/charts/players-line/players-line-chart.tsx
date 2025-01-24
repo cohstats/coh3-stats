@@ -90,7 +90,7 @@ const PlayersLineChart = ({ data }: { data: Array<any> }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Ranked players active",
+            legend: "Multiplayer players active",
             legendOffset: -50,
             legendPosition: "middle",
           }}
