@@ -2343,10 +2343,10 @@
   resolved "https://registry.yarnpkg.com/@netlify/opentelemetry-utils/-/opentelemetry-utils-1.2.1.tgz#03862fd2073ee01de75335666c729d910bff0abe"
   integrity sha512-A6nQBvUn/avHQopLOOjX8rY2eua//jufbx4NZZODACEHtfXAEmOjCoDe2m+cQPRq+jNa98nvCy/sJh2RwuCQog==
 
-"@netlify/plugin-nextjs@5.8.1":
-  version "5.8.1"
-  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-5.8.1.tgz#9da15bb4a13c5644e9b58b968c7da51939206ee4"
-  integrity sha512-WB1N0FslhWZ1yAVYTcB6CcFrFOUSQ0O2LfavYZrbAypeNxu2I+oO+cgmhfDgZ8Eoq1g4EMeoIGMkNoZ4ogZTsg==
+"@netlify/plugin-nextjs@5.9.4":
+  version "5.9.4"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-5.9.4.tgz#ed6a6846eb1ee60927ae4c07ecc6a1c9832007a5"
+  integrity sha512-Q9qyhGUxFuM3kuWmoaj4yHPUfHhOsZmwdsQv4kIXkBWVu8FOe0RFHRP0A0EXciSVFGwq+XAo3H5jEtVSANAOWw==
 
 "@netlify/plugins-list@^6.80.0":
   version "6.80.0"
