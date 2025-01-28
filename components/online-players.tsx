@@ -2,6 +2,34 @@ import { Badge, Flex, Tooltip } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { getNumberOfOnlinePlayersSteamUrl } from "../src/apis/steam-api";
 
+const fetchOnlinePlayers = async () => {
+  try {
+    const fetchData = await fetch(getNumberOfOnlinePlayersSteamUrl());
+    const data = await fetchData.json();
+    if (data?.response?.player_count > 0) {
+      return {
+        playerCount: data.response.player_count,
+        timeStampMs: new Date(fetchData.headers.get("last-modified") || "").getTime(),
+      };
+    }
+    return null;
+  } catch (e) {
+    console.error("Error fetching online players:", e);
+    return null;
+  }
+};
+
+const shouldFetchData = (
+  currentData: {
+    playerCount: number;
+    timeStampMs: number;
+  } | null,
+) => {
+  if (!currentData) return true;
+  const fourMinutesAgo = new Date().getTime() - 1000 * 60 * 4;
+  return currentData.timeStampMs < fourMinutesAgo;
+};
+
 export const OnlinePlayers: React.FC = () => {
   const [onlinePlayersData, setOnlinePlayersData] = useState<null | {
     playerCount: number;
@@ -9,56 +37,23 @@ export const OnlinePlayers: React.FC = () => {
   }>(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        if (
-          (onlinePlayersData &&
-            onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4) ||
-          !onlinePlayersData
-        ) {
-          const fetchData = await fetch(getNumberOfOnlinePlayersSteamUrl());
-          // reader header last-modified:
-          const data = await fetchData.json();
-          setOnlinePlayersData({
-            playerCount: data.response.player_count,
-            timeStampMs: new Date(fetchData.headers.get("last-modified") || "").getTime(),
-          });
+    const updateData = async () => {
+      if (shouldFetchData(onlinePlayersData)) {
+        const newData = await fetchOnlinePlayers();
+        if (newData) {
+          setOnlinePlayersData(newData);
         }
-
-        // Update the data every 5 minutes
-        const intervalId = setInterval(
-          async () => {
-            try {
-              if (
-                (onlinePlayersData &&
-                  onlinePlayersData.timeStampMs < new Date().getTime() - 1000 * 60 * 4) ||
-                !onlinePlayersData
-              ) {
-                const fetchData = await fetch(getNumberOfOnlinePlayersSteamUrl());
-                const data = await fetchData.json();
-                if (data && data.player_count > 0) {
-                  setOnlinePlayersData({
-                    playerCount: data.response.player_count,
-                    timeStampMs: new Date(fetchData.headers.get("last-modified") || "").getTime(),
-                  });
-                }
-              }
-            } catch (e) {
-              console.error(e);
-            }
-          },
-          1000 * 60 * 5,
-        );
-
-        return () => {
-          clearInterval(intervalId);
-        };
-      } catch (e) {
-        console.error(e);
       }
-    })();
-    // We don't want to have it as a dependency, only during the first render
-  }, []);
+    };
+
+    // Initial fetch if needed
+    updateData();
+
+    // Set up interval for subsequent fetches
+    const intervalId = setInterval(updateData, 1000 * 60 * 5); // Every 5 minutes
+
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array for mounting only
 
   return (
     <Tooltip
