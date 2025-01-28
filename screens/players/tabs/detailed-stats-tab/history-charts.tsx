@@ -53,7 +53,7 @@ const HistoryCharts = ({
       />
       <DynamicHistoryOverTimeChart
         historyOfLeaderBoardStat={filteredLeaderboardStats}
-        title={"Rating History"}
+        title={"Rank History"}
         type={"r"}
         key={"r"}
         DisplayAsElement={DisplayAsSelector}

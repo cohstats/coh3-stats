@@ -87,7 +87,7 @@ const HistoryOverTimeChart = ({
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: type === "r" ? "Rating" : "ELO",
+              legend: type === "r" ? "Rank" : "ELO",
               legendOffset: 45,
               legendPosition: "middle",
               format: (e) => (Number.isInteger(e) ? e : ""),
