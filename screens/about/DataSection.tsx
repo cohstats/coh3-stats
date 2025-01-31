@@ -14,13 +14,12 @@ const DataSection = () => {
       Data from our database. Updated daily ~6 AM UTC unless specified otherwise.
       <div style={{ paddingLeft: 25 }}>
         <Title order={5}>Data Scraping</Title>
-        COH3 does not provide Live Games API as in COH2. We are unable to track live games, and
-        therefore all the games played on the platform as we do on coh2stats.com.
+        COH3 Stats monitors live games every 5 minutes. Ever game which we observe is downloaded
+        into our database.
         <br />
-        We are able to track only matches, where there is at least one player who has changed his
-        rank.
+        This should include all automatch games, all AI games and some custom games.
         <br />
-        Such matches are ingested into the system and counted in the stats.
+        Unfortunately custom games are not "observable" by default.
         <br />
         <br />
         You can download the data we are scraping. More info on{" "}

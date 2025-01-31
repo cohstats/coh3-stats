@@ -198,16 +198,16 @@ const OpenData: NextPage = () => {
               COH3 Match data
             </Title>
             <Text pt="md">
-              COH3 Stats stores played matches. It should include all games where at least 1
-              player was ranked. It might also include some custom and other types of games. It
-              should not include any broken games. Aka game 3v3, which had only 2 players on one
-              side. It is recommended to filter the games based on matchtype_id. You can download
-              the .json files from our storage. Each JSON file contains all games played for a
-              given day which we were able to track.
+              COH3 Stats stores played matches. The dump should include all ranked automatch games
+              and all games against AI. It might also include some custom and other types of games
+              which were observable in live games. It should not include any broken games. Aka
+              game 3v3, which had only 2 players on one side. It is recommended to filter the
+              games based on matchtype_id. You can download the .json files from our storage. Each
+              JSON file contains all games played in a given day which we were able to track.
             </Text>
             <Text pt="md">
-              They are created every day at 06:00 UTC. Downloading for a given day at 07:00 UTC
-              should be safe.
+              They are created every day at 06:00 UTC. Downloading for a previous day at 07:00 UTC
+              is recommended.
               <br />
               History starts on July 1st 2023.
             </Text>
