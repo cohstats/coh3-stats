@@ -205,3 +205,9 @@ next.config.original.js
 
 # Local Netlify folder
 .netlify
+
+# sst
+.sst
+
+# open-next
+.open-next
