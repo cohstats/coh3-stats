@@ -9,7 +9,7 @@ interface AchievementProps {
     description: string;
     icon: string;
     icongray: string;
-    globalPercent: number;
+    globalPercent: string;
   };
 }
 
@@ -35,15 +35,15 @@ const Achievement = ({ achievement }: AchievementProps) => {
             </Text>
             <Text size={isMobile ? "xs" : "sm"}>{achievement.description}</Text>
             <Progress.Root size="xl" radius={"xs"}>
-              <Progress.Section value={achievement.globalPercent}>
-                <Progress.Label>{`${achievement.globalPercent.toFixed(1)}%`}</Progress.Label>
+              <Progress.Section value={parseFloat(achievement.globalPercent)}>
+                <Progress.Label>{`${parseFloat(achievement.globalPercent).toFixed(1)}%`}</Progress.Label>
               </Progress.Section>
             </Progress.Root>
           </div>
         </div>
         <div style={{ flexShrink: 0 }}>
           <Text fw={"bold"} size={"lg"}>
-            {achievement.globalPercent.toFixed(1)}%
+            {parseFloat(achievement.globalPercent).toFixed(1)}%
           </Text>
         </div>
       </div>

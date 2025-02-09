@@ -21,6 +21,7 @@ export const SearchButton: React.FC<{ redirectOnClick?: boolean; close?: () => v
   return (
     <>
       <TextInput
+        style={{ width: 150 }}
         leftSection={<IconSearch />}
         placeholder="Search players"
         radius={"md"}

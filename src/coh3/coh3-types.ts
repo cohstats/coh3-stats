@@ -257,7 +257,7 @@ export interface GlobalAchievementsData {
       description: string;
       icon: string;
       icongray: string;
-      globalPercent: number;
+      globalPercent: string;
     }
   >;
   unixTimeStamp: number;
