@@ -11,22 +11,22 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "next:dev": "next dev",
-    "next:build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
-    "test": "TZ=UTC yarn jest",
-    "test:windows": "yarn jest",
+    "clean": "rm -fr .next && rm -fr node_modules",
+    "dev": "next dev",
+    "fix": "prettier --loglevel warn --write .",
+    "fix:prettier": "prettier --log-level warn --write .",
     "lint": "next lint",
     "lint:eslint": "eslint **/*.{ts,tsx,js}",
     "lint:prettier": "prettier --check .",
-    "fix": "prettier --loglevel warn --write .",
-    "fix:prettier": "prettier --log-level warn --write .",
-    "clean": "rm -fr .next && rm -fr node_modules",
+    "next:build": "next build",
+    "next:dev": "next dev",
     "prepare": "husky",
-    "sitemap": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/unit-paths.ts > unit-paths.txt && next-sitemap --config next-sitemap.config.js"
+    "sitemap": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/unit-paths.ts > unit-paths.txt && next-sitemap --config next-sitemap.config.js",
+    "start": "next start",
+    "test": "TZ=UTC yarn jest",
+    "test:windows": "yarn jest"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,yml}": [
@@ -75,6 +75,7 @@
     "react": "18.3.1",
     "react-chartjs-2": "5.2.0",
     "react-dom": "18.3.1",
+    "sst": "3.8.2",
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
