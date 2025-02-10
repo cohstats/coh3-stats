@@ -24,7 +24,7 @@ import { getMatchURlsWithoutLeavers } from "../coh3/helpers";
 export const GET_ANALYSIS_STATS = "v10";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
-  const path = `/getPlayerCardInfoHttp?relicId=${playerID}`;
+  const path = `/getPlayerCardInfoGen2Http?relicId=${playerID}`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
