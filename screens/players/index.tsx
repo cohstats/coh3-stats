@@ -234,6 +234,7 @@ const PlayerCard = ({
               playerStandings={playerData.standings}
               playerStatsData={playerStatsData}
               platform={platform}
+              COH3PlayTime={playerData.COH3PlayTime}
             />
           </Tabs.Panel>
           <Tabs.Panel value="standingsDetails">
