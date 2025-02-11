@@ -41,7 +41,7 @@ const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) =>
 
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
   return encodeURI(
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerMatchesHttp?relicId=${playerID}`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerMatchesGen2Http?relicId=${playerID}`,
   );
 };
 

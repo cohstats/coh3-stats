@@ -217,7 +217,7 @@ describe("coh3stats-api", () => {
     const response = await getPlayerRecentMatches(12345);
 
     expect(global.fetch).toBeCalledWith(
-      "https://cache-aws.coh3stats.com/getPlayerMatchesHttp?relicId=12345",
+      "https://cache-aws.coh3stats.com/getPlayerMatchesGen2Http?relicId=12345",
       {},
     );
     expect(response[0].id).toBe(2);
