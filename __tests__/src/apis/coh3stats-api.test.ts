@@ -42,7 +42,7 @@ describe("coh3stats-api", () => {
 
     const result = await getPlayerCardInfo(12345, false, "fake-ip");
     expect(global.fetch).toBeCalledWith(
-      "https://us-east4-coh3-stats-prod.cloudfunctions.net/getPlayerCardInfoHttp?relicId=12345",
+      "https://us-east4-coh3-stats-prod.cloudfunctions.net/getPlayerCardInfoGen2Http?relicId=12345",
       { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
