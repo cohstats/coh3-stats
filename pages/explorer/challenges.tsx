@@ -70,6 +70,10 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
             <Space h={"md"} />
 
             {weeklyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
+              const shouldHaveContent = Boolean(
+                research.length || spawnee.length || sources.length || targets.length,
+              );
+
               return (
                 <Accordion
                   key={challenge.name}
@@ -78,21 +82,36 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
                   variant="separated"
                   radius="md"
                 >
-                  <Accordion.Item value={challenge.id} key={challenge.name}>
-                    <Accordion.Control>
-                      <AccordionLabel {...challenge} />
-                    </Accordion.Control>
-                    <Accordion.Panel>
-                      <AccordionContent
-                        key={`weekly_${challenge.id}`}
-                        challenge={challenge}
-                        research={research}
-                        spawnee={spawnee}
-                        sources={sources}
-                        targets={targets}
+                  {shouldHaveContent && (
+                    <Accordion.Item value={challenge.id} key={challenge.name}>
+                      <Accordion.Control>
+                        <AccordionLabel {...challenge} />
+                      </Accordion.Control>
+                      <Accordion.Panel>
+                        <AccordionContent
+                          key={`weekly_${challenge.id}`}
+                          challenge={challenge}
+                          research={research}
+                          spawnee={spawnee}
+                          sources={sources}
+                          targets={targets}
+                        />
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  )}
+                  {!shouldHaveContent && (
+                    <Accordion.Item value={challenge.id} key={challenge.name}>
+                      <AccordionLabel
+                        {...challenge}
+                        style={{
+                          marginLeft: "16px",
+                          marginTop: "12px",
+                          marginBottom: "12px",
+                          marginRight: "45px",
+                        }}
                       />
-                    </Accordion.Panel>
-                  </Accordion.Item>
+                    </Accordion.Item>
+                  )}
                 </Accordion>
               );
             })}
@@ -105,6 +124,15 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
             <Space h={"md"} />
 
             {dailyChallenges.map(({ challenge, research, spawnee, sources, targets }) => {
+              const shouldHaveContent = Boolean(
+                research.length || spawnee.length || sources.length || targets.length,
+              );
+
+              // Filter broken challenges
+              if (!challenge.name) {
+                return null;
+              }
+
               return (
                 <Accordion
                   key={challenge.name}
@@ -113,21 +141,36 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
                   variant="separated"
                   radius="md"
                 >
-                  <Accordion.Item value={challenge.id} key={challenge.name}>
-                    <Accordion.Control>
-                      <AccordionLabel {...challenge} />
-                    </Accordion.Control>
-                    <Accordion.Panel>
-                      <AccordionContent
-                        key={`daily_${challenge.id}`}
-                        challenge={challenge}
-                        research={research}
-                        spawnee={spawnee}
-                        sources={sources}
-                        targets={targets}
+                  {shouldHaveContent && (
+                    <Accordion.Item value={challenge.id} key={challenge.name}>
+                      <Accordion.Control>
+                        <AccordionLabel {...challenge} />
+                      </Accordion.Control>
+                      <Accordion.Panel>
+                        <AccordionContent
+                          key={`daily_${challenge.id}`}
+                          challenge={challenge}
+                          research={research}
+                          spawnee={spawnee}
+                          sources={sources}
+                          targets={targets}
+                        />
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  )}
+                  {!shouldHaveContent && (
+                    <Accordion.Item value={challenge.id} key={challenge.name}>
+                      <AccordionLabel
+                        {...challenge}
+                        style={{
+                          marginLeft: "16px",
+                          marginTop: "12px",
+                          marginBottom: "12px",
+                          marginRight: "45px",
+                        }}
                       />
-                    </Accordion.Panel>
-                  </Accordion.Item>
+                    </Accordion.Item>
+                  )}
                 </Accordion>
               );
             })}
@@ -138,20 +181,27 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
   );
 };
 
-function AccordionLabel({ name, description, reward }: ResolvedChallenge["challenge"]) {
+function AccordionLabel({
+  name,
+  description,
+  reward,
+  style,
+}: ResolvedChallenge["challenge"] & { style?: React.CSSProperties }) {
   return (
-    <Card p="md" radius="md" withBorder>
+    <Card p="sm" style={{ marginRight: "15px", ...style }} radius="md" withBorder>
       <Flex direction="column" gap={4}>
-        <Title order={3} c="orange.5">
-          {name}
-        </Title>
-        <Text style={{ minHeight: "3.2em" }}>{description}</Text>
-        <Group gap={"xs"}>
-          <IconMedal size={16} />
-          <Text size="sm" c="blue.4">
-            {reward} Merits
-          </Text>
+        <Group gap={"xs"} justify="space-between">
+          <Title order={3} c="orange.5">
+            {name}
+          </Title>
+          <Group gap={"xs"}>
+            <IconMedal size={16} />
+            <Text size="md" c="blue.4">
+              {reward} Merits
+            </Text>
+          </Group>
         </Group>
+        <Text size="sm">{description}</Text>
       </Flex>
     </Card>
   );
