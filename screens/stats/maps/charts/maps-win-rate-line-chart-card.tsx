@@ -27,7 +27,7 @@ const MapsWinRateLineChartCard = ({
       for (const [faction, data] of Object.entries(mapAnalysisObject)) {
         chartDataObjects[faction as raceType].data.push({
           // winRate
-          y: data.wins / (data.wins + data.losses), //.toFixed(2),
+          y: data.wins / ((data.wins || 0) + (data.losses || 0)), //.toFixed(2),
           x: dayjs.unix(Number(timeStamp)).subtract(0, "day").format("YYYY-MM-DD"),
         });
       }

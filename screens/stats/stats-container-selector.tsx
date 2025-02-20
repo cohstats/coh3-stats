@@ -230,8 +230,28 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       group: "Average",
       items: [
         {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1800-9999`,
+          label: "Average 1800+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1700-9999`,
+          label: "Average 1700+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
           value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1600-9999`,
           label: "Average 1600+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1700-1999`,
+          label: "Average 1700-1999",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-1600-1799`,
+          label: "Average 1600-1799",
           disabled: disabledMultiFilter.averageDisabled,
         },
         {
@@ -265,8 +285,28 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       group: "Average Fair Matchup",
       items: [
         {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1800-9999`,
+          label: "Average Fair 1800+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1700-9999`,
+          label: "Average Fair 1700+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
           value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1600-9999`,
           label: "Average Fair 1600+",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1700-1999`,
+          label: "Average Fair 1700-1999",
+          disabled: disabledMultiFilter.averageDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-fair-1600-1799`,
+          label: "Average Fair 1600-1799",
           disabled: disabledMultiFilter.averageDisabled,
         },
         {
@@ -300,8 +340,28 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       group: "Average Ex 400 diff",
       items: [
         {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1800-9999`,
+          label: "Average Ex 1800+",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1700-9999`,
+          label: "Average Ex 1700+",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
           value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1600-9999`,
           label: "Average Ex 1600+",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1700-1999`,
+          label: "Average Ex 1700-1999",
+          disabled: disabledMultiFilter.averageExDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-average-ex-1600-1799`,
+          label: "Average Ex 1600-1799",
           disabled: disabledMultiFilter.averageExDisabled,
         },
         {
@@ -335,8 +395,28 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       group: "Hard limit",
       items: [
         {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1800-9999`,
+          label: "Limit 1800+",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1700-9999`,
+          label: "Limit 1700+",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
           value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1600-9999`,
           label: "Limit 1600+",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1700-1999`,
+          label: "Limit 1700-1999",
+          disabled: disabledMultiFilter.limitDisabled,
+        },
+        {
+          value: `${statsType === "gameStats" ? "stats" : "mapStats"}-limit-1600-1799`,
+          label: "Limit 1600-1799",
           disabled: disabledMultiFilter.limitDisabled,
         },
         {

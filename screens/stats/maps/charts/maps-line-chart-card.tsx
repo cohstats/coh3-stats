@@ -45,7 +45,7 @@ const MapsLineChartCard = ({
     if (mapAnalysisObject) {
       for (const [faction, data] of Object.entries(mapAnalysisObject)) {
         chartDataObjects[faction as raceType].data.push({
-          y: data.wins + data.losses, //.toFixed(2),
+          y: (data.wins || 0) + (data.losses || 0), //.toFixed(2),
           x: dayjs.unix(Number(timeStamp)).subtract(0, "day").format("YYYY-MM-DD"),
         });
       }
@@ -62,6 +62,8 @@ const MapsLineChartCard = ({
           : generateWeeklyAverages(factionObject.data, false),
     };
   });
+
+  console.log(chartData);
 
   return (
     <Card p="md" shadow="sm" w={1270} withBorder>

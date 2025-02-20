@@ -8,7 +8,18 @@ import {
   MapAnalysisObjectType,
   MapStatsDataObject,
 } from "../../../src/analysis-types";
-import { Card, Center, Flex, Loader, Space, Title, Text, Group, Container } from "@mantine/core";
+import {
+  Card,
+  Center,
+  Flex,
+  Loader,
+  Space,
+  Title,
+  Text,
+  Group,
+  Container,
+  Tooltip,
+} from "@mantine/core";
 import ErrorCard from "../../../components/error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
@@ -19,6 +30,7 @@ import Link from "next/link";
 import MapChartCard from "./map-chart-card";
 import InnerMapStatsPage from "./inner-map-stats-page";
 import { useMediaQuery } from "@mantine/hooks";
+import { IconAlertTriangle } from "@tabler/icons-react";
 
 const DynamicMapsPlayedBarChart = dynamic(() => import("./charts/maps-played-bar"), {
   ssr: false,
@@ -164,11 +176,21 @@ const InnerMapsStatsPage = ({
             <Title order={2} style={{ textAlign: "center" }} p={"md"}>
               Games analyzed {matchCount.toLocaleString()}
             </Title>
+            {matchCount < 1000 && (
+              <Tooltip
+                w={400}
+                label={
+                  "Low amount of games. Please consider using Advanced Filters to increase the amount of games to get more accurate results."
+                }
+                withArrow
+                multiline
+              >
+                <IconAlertTriangle size={25} style={{ marginBottom: -4 }} />
+              </Tooltip>
+            )}
             <HelperIcon
-              width={360}
-              text={
-                "We are tracking every game which has at least 1 ranked player. We are tracking only 'automatch' games."
-              }
+              width={300}
+              text={"We are tracking only 'automatch' games."}
               iconSize={25}
             />
           </Group>
@@ -178,10 +200,6 @@ const InnerMapsStatsPage = ({
             title={
               <Group gap={"xs"}>
                 <Text inherit>Maps {mode}</Text>
-                <HelperIcon
-                  width={280}
-                  text={"This chart has no value until we get map bans as we have in coh2."}
-                />
               </Group>
             }
             size={"md"}

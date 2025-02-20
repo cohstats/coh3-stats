@@ -7,7 +7,18 @@ import {
   getAnalysisStatsHttpResponse,
   StatsDataObject,
 } from "../../../src/analysis-types";
-import { Card, Center, Flex, Loader, Space, Title, Text, Group, Button } from "@mantine/core";
+import {
+  Card,
+  Center,
+  Flex,
+  Loader,
+  Space,
+  Title,
+  Text,
+  Group,
+  Button,
+  Tooltip,
+} from "@mantine/core";
 import ErrorCard from "../../../components/error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
@@ -16,7 +27,7 @@ import HelperIcon from "../../../components/icon/helper";
 import { buildOriginHeaderValue } from "../../../src/utils";
 import Link from "next/link";
 import { getMapsStatsRoute } from "../../../src/routes";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { IconAlertTriangle, IconCirclePlus } from "@tabler/icons-react";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -181,11 +192,21 @@ const InnerGameStatsPage = ({
             <Title order={2} style={{ textAlign: "center" }} p={"md"}>
               Games analyzed {matchCount.toLocaleString()}
             </Title>
+            {matchCount < 1000 && (
+              <Tooltip
+                w={400}
+                label={
+                  "Low amount of games. Please consider using Advanced Filters to increase the amount of games to get more accurate results."
+                }
+                withArrow
+                multiline
+              >
+                <IconAlertTriangle size={25} style={{ marginBottom: -4 }} />
+              </Tooltip>
+            )}
             <HelperIcon
-              width={360}
-              text={
-                "We are tracking every game which has at least 1 ranked player. We are tracking only 'automatch' games."
-              }
+              width={300}
+              text={"We are tracking only 'automatch' games."}
               iconSize={25}
             />
           </Group>
@@ -210,10 +231,6 @@ const InnerGameStatsPage = ({
                   <Group justify={"space-between"}>
                     <Group gap={"xs"}>
                       <Text inherit>Maps {mode}</Text>
-                      <HelperIcon
-                        width={280}
-                        text={"This chart has no value until we get map bans as we have in coh2."}
-                      />
                     </Group>
                     <Button
                       component={Link}
