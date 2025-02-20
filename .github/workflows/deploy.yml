@@ -79,46 +79,47 @@ jobs:
       #        run: |
       #          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
       #          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
-      - name: Deploy to Vercel hosting - cohstats
-        env:
-          VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
-          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
-          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
-        run: |
-          npx vercel telemetry disable
-          npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
-          npx vercel build --token=$VERCEL_TOKEN
-          npx vercel deploy --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
-          code=$?
-          if [ $code -eq 0 ]; then
-            # Now you can use the deployment url from stdout for the next step of your workflow
-            deploymentUrl=`cat deployment-url.txt`
-            npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
-          else
-            # Handle the error
-            errorMessage=`cat error.txt`
-            echo "There was an error: $errorMessage"
-          fi
-      #      - name: Deploy to Vercel hosting - PV org
-      #        env:
-      #          VERCEL_TOKEN: ${{secrets.VERCEL_DEPLOY_TOKEN_PV}}
-      #          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID_PV}}
-      #          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID_PV}}
-      #        run: |
-      #          npx vercel telemetry disable
-      #          npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
-      #          npx vercel build --token=$VERCEL_TOKEN
-      #          npx vercel deploy --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
-      #          code=$?
-      #          if [ $code -eq 0 ]; then
-      #            # Now you can use the deployment url from stdout for the next step of your workflow
-      #            deploymentUrl=`cat deployment-url.txt`
-      #            npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN --scope petrveceras-projects
-      #          else
-      #            # Handle the error
-      #            errorMessage=`cat error.txt`
-      #            echo "There was an error: $errorMessage"
-      #          fi
+
+#      - name: Deploy to Vercel hosting - cohstats
+#        env:
+#          VERCEL_TOKEN: ${{secrets.VERCEL_TOKEN}}
+#          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
+#          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+#        run: |
+#          npx vercel telemetry disable
+#          npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+#          npx vercel build --token=$VERCEL_TOKEN
+#          npx vercel deploy --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+#          code=$?
+#          if [ $code -eq 0 ]; then
+#            # Now you can use the deployment url from stdout for the next step of your workflow
+#            deploymentUrl=`cat deployment-url.txt`
+#      #     npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN --scope cohstats
+#          else
+#            # Handle the error
+#            errorMessage=`cat error.txt`
+#            echo "There was an error: $errorMessage"
+#          fi
+#      - name: Deploy to Vercel hosting - PV org
+#        env:
+#          VERCEL_TOKEN: ${{secrets.VERCEL_DEPLOY_TOKEN_PV}}
+#          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID_PV}}
+#          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID_PV}}
+#        run: |
+#          npx vercel telemetry disable
+#          npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+#          npx vercel build --token=$VERCEL_TOKEN
+#          npx vercel deploy --prebuilt --token=$VERCEL_TOKEN >deployment-url.txt 2>error.txt
+#          code=$?
+#          if [ $code -eq 0 ]; then
+#            # Now you can use the deployment url from stdout for the next step of your workflow
+#            deploymentUrl=`cat deployment-url.txt`
+#            npx vercel alias $deploymentUrl dev.coh3stats.com --token=$VERCEL_TOKEN --scope petrveceras-projects
+#          else
+#            # Handle the error
+#            errorMessage=`cat error.txt`
+#            echo "There was an error: $errorMessage"
+#          fi
 
 #      - name: Deploy to Vercel hosting - PV org
 #        env:
