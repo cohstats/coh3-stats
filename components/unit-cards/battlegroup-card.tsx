@@ -215,7 +215,12 @@ const BattlegroupBranchMapping = (
             </Stack>
           </Flex>
 
-          <Tooltip.Floating multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
+          <Tooltip.Floating
+            multiline
+            style={{ whiteSpace: "pre-line" }}
+            label={briefText}
+            w={600}
+          >
             <Stack gap={8} justify="flex-start" style={{ flexGrow: 1 }}>
               <Text
                 fz="sm"
@@ -248,14 +253,13 @@ const BattlegroupBranchMapping = (
     upg: UpgradesType;
     ability: AbilitiesType;
   }) => {
-    if (spawnItems.length > 1) {
-      const mappedSpawnItems = spawnItems
-        .map((id) => {
-          const foundSbps = sbpsData.find((x) => x.id === id);
-          return { value: id, label: foundSbps?.ui.screenName || id };
-        })
-        .filter((item, index, self) => index === self.findIndex((t) => t.label === item.label));
+    const uniqueSpawnItems = [...new Set(spawnItems)];
+    const mappedSpawnItems = uniqueSpawnItems.map((id) => {
+      const foundSbps = sbpsData.find((x) => x.id === id);
+      return { value: id, label: foundSbps?.ui.screenName || id };
+    });
 
+    if (mappedSpawnItems.length > 1) {
       return (
         <HoverCard width={280} shadow="md" position="top">
           <HoverCard.Target>{bgCallInCard({ upg, ability })}</HoverCard.Target>
@@ -269,24 +273,24 @@ const BattlegroupBranchMapping = (
           </HoverCard.Dropdown>
         </HoverCard>
       );
-    }
-
-    return (
-      <Anchor
-        underline={"never"}
-        style={{
-          textDecoration: "none",
-          color: "inherit",
-          "&:hover": {
+    } else {
+      return (
+        <Anchor
+          underline={"never"}
+          style={{
             textDecoration: "none",
-          },
-        }}
-        component={Link}
-        href={getExplorerUnitRoute(faction, spawnItems[0])}
-      >
-        {bgCallInCard({ upg, ability })}
-      </Anchor>
-    );
+            color: "inherit",
+            "&:hover": {
+              textDecoration: "none",
+            },
+          }}
+          component={Link}
+          href={getExplorerUnitRoute(faction, spawnItems[0])}
+        >
+          {bgCallInCard({ upg, ability })}
+        </Anchor>
+      );
+    }
   };
 
   return (
