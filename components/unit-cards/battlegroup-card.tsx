@@ -249,10 +249,13 @@ const BattlegroupBranchMapping = (
     ability: AbilitiesType;
   }) => {
     if (spawnItems.length > 1) {
-      const mappedSpawnItems = spawnItems.map((id) => {
-        const foundSbps = sbpsData.find((x) => x.id === id);
-        return { value: id, label: foundSbps?.ui.screenName || id };
-      });
+      const mappedSpawnItems = spawnItems
+        .map((id) => {
+          const foundSbps = sbpsData.find((x) => x.id === id);
+          return { value: id, label: foundSbps?.ui.screenName || id };
+        })
+        .filter((item, index, self) => index === self.findIndex((t) => t.label === item.label));
+
       return (
         <HoverCard width={280} shadow="md" position="top">
           <HoverCard.Target>{bgCallInCard({ upg, ability })}</HoverCard.Target>
