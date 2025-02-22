@@ -82,7 +82,7 @@
     "@netlify/plugin-nextjs": "5.8.1",
     "@next/bundle-analyzer": "14.2.19",
     "@testing-library/jest-dom": "6.6.3",
-    "@testing-library/react": "16.0.1",
+    "@testing-library/react": "16.2.0",
     "@types/jest": "29.5.14",
     "@types/lodash": "4.17.14",
     "@types/node": "20.17.19",
