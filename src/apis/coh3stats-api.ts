@@ -32,7 +32,7 @@ const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) =>
 };
 
 const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) => {
-  const path = `/getPlayerCardStatsHttp?relicId=${playerID}`;
+  const path = `/getPlayerCardStatsGen2Http?relicId=${playerID}`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)

@@ -34,7 +34,7 @@ const getCOH3SteamNewsUrl = (count: number = 20) => {
   );
 };
 
-const getCOH3SteamNews = async (count = 15): Promise<COH3SteamNewsType> => {
+const getCOH3SteamNews = async (count = 20): Promise<COH3SteamNewsType> => {
   try {
     const response = await fetch(getCOH3SteamNewsUrl(count));
     const { appnews } = await response.json();
