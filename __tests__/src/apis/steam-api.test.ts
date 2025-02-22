@@ -29,7 +29,7 @@ describe("getCOH3SteamNews", () => {
     expect(result.count).toBe(94);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=15",
+      "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=20",
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
