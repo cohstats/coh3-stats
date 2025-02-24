@@ -100,7 +100,7 @@
     "netlify-cli": "17.38.1",
     "next-sitemap": "4.2.3",
     "postcss-preset-mantine": "1.17.0",
-    "prettier": "3.5.1",
+    "prettier": "3.5.2",
     "typescript": "5.7.3",
     "vercel": "39.3.0"
   }
