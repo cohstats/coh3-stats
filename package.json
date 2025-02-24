@@ -65,7 +65,7 @@
     "embla-carousel-react": "8.5.2",
     "firebase": "11.3.1",
     "is-glob": "4.0.3",
-    "jsesc": "3.0.2",
+    "jsesc": "3.1.0",
     "json-2-csv": "5.5.7",
     "lodash": "4.17.21",
     "mantine-datatable": "7.15.1",
