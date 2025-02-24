@@ -20,7 +20,7 @@ export const Footer: React.FC = () => {
         <Container size={"lg"}>
           <Group justify="space-between">
             <Text c="dimmed" size="sm">
-              © 2025 COH3stats.com,{" "}
+              © 2023 - 2025 COH3stats.com,{" "}
               <Tooltip
                 multiline
                 w={200}

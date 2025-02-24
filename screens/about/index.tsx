@@ -62,9 +62,8 @@ const BugReports = () => {
 const Statistics = () => {
   return (
     <>
-      <Title order={4}>Data Scraping</Title>
-      <li>Tracking only "automatch" matches.</li>
-      <li>Tracking only matches where at least one player is ranked in the leaderboards.</li>
+      <Title order={4}>Data</Title>
+      <li>Tracking only "automatch" matches. Not custom games or AI games.</li>
       See Data source article bellow for more details.
       <Space h={"xs"} />
       <Title order={4}>ELO Filtering</Title>
