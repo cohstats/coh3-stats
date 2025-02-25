@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: 'Stage to unlock (staging/production)'
+        description: "Stage to unlock (staging/production)"
         required: true
-        default: 'staging'
+        default: "staging"
         type: choice
         options:
           - staging
