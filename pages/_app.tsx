@@ -110,12 +110,12 @@ export default function App(props: AppProps) {
         <title>COH3 Stats</title>
         <meta
           name="description"
-          content="Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats and much more"
+          content="Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats, DPS Calculator, Battlegroup Explorer, Weapons explorer, Current Live Games, Latest COH3 News, latest YouTube and Twitch Streams. And much more."
         />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <meta
           name="keywords"
-          content="Company of Heroes 3, COH3, COH3 Stats, COH3 Leaderboards, COH3 Player Cards, COH3 Info"
+          content="Company of Heroes 3, COH3, COH3 Stats, COH3 Leaderboards, COH3 Player Cards, COH3 Info, News, Live Games, Battelgroups, DPS Calculator"
         />
         <link rel="shortcut icon" href="/logo/favicon.ico" />
         <link rel="apple-touch-icon" sizes="57x57" href="/logo/apple-icon-57x57.png" />
