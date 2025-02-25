@@ -1,7 +1,6 @@
 import { Group, Anchor, Text } from "@mantine/core";
 import config from "../../config";
 import { Donate } from "../../components/icon/donate";
-import { PayPalDonation } from "../../components/other/paypal-donations";
 
 const DonateSection = () => {
   return (
@@ -42,11 +41,6 @@ const DonateSection = () => {
             You can Donate via PayPal or Card at Ko-Fi, no registration required.
           </Text>
         </div>
-
-        <Group pt={"xl"}>
-          <Text>Direct PayPal if you have problems with Ko-Fi:</Text>
-          <PayPalDonation />
-        </Group>
       </div>
     </>
   );
