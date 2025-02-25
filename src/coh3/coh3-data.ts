@@ -597,6 +597,12 @@ const OfficialMapKeys = [
   /* ---------- 1.9.0 Maps ---------- */
   "rapido_river_8p",
   "santuario_4p", // Community maps
+  /* ---------- 2.0.0 Maps ---------- */
+  "angoville_farms_2p",
+  "langres_2p",
+  "crossing_in_the_woods_2p",
+  "crossing_in_the_woods_4p",
+  "djebel_2p", // Community maps
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -784,5 +790,25 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   rapido_river_8p: {
     name: "Rapido River Crossing",
     url: "/rapido_river_8p/rapido_river_8p.webp",
+  },
+  angoville_farms_2p: {
+    name: "Angoville",
+    url: "",
+  },
+  langres_2p: {
+    name: "Langres",
+    url: "",
+  },
+  crossing_in_the_woods_2p: {
+    name: "Crossing in the Woods",
+    url: "",
+  },
+  crossing_in_the_woods_4p: {
+    name: "Crossing in the Woods",
+    url: "",
+  },
+  djebel_2p: {
+    name: "Djebel Pass",
+    url: "",
   },
 };
