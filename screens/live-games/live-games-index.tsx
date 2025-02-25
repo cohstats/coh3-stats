@@ -192,7 +192,10 @@ const LiveGamesIndex = () => {
           {!isMobile && !liveGamesSummaryError && (
             <div style={{ width: 620, height: 250 }}>
               <DynamicLiveGamesLineChart
-                data={liveGamesSummary?.liveGamesChart.timeLine || []}
+                data={[
+                  ...(liveGamesSummary?.liveGamesChart.timeLine || []),
+                  ...(liveGamesSummary?.liveGamesChart.buffer || []),
+                ]}
                 type={type}
                 loading={liveGamesSummaryLoading}
               />

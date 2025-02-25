@@ -463,6 +463,15 @@ export interface LiveGameSummary {
       ai: number;
       custom: number;
     }>;
+    buffer: Array<{
+      ut: number;
+      "1v1": number;
+      "2v2": number;
+      "3v3": number;
+      "4v4": number;
+      ai: number;
+      custom: number;
+    }>;
   };
 }
 
