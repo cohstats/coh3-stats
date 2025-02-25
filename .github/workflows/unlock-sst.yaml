@@ -16,6 +16,8 @@ jobs:
   unlock-sst:
     name: Unlock SST Stage
     runs-on: ubuntu-latest
+    environment:
+      name: dev
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -29,6 +31,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Unlock SST
+
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
