@@ -195,7 +195,12 @@ const BattlegroupBranchMapping = (
       <Box p="sm" w="100%" h="100%" className={classes.bgCardBorder}>
         <Flex direction="column" h="100%" gap={16} justify="space-between">
           <Flex direction="row" gap={16}>
-            <BackgroundImage w={80} src={getIconsPathOnCDN(factionBackgroundSrc)} radius="md">
+            <BackgroundImage
+              w={80}
+              h={80}
+              src={getIconsPathOnCDN(factionBackgroundSrc)}
+              radius="md"
+            >
               <ImageWithFallback
                 width={80}
                 height={80}
