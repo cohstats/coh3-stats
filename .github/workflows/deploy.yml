@@ -18,7 +18,6 @@ jobs:
 
     concurrency:
       group: deploy-master-to-dev
-      cancel-in-progress: true
 
     steps:
       - name: Checkout Repo
@@ -63,22 +62,22 @@ jobs:
         run: |
           npx sst deploy --stage staging
 
-      - name: Deploy to Netlify hosting
-        env:
-          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_DEV}}
-          NODE_VERSION: "20.x"
-        run: |
-          npx netlify --telemetry-disable
-          npx netlify deploy --build --prod
-      #      - name: Deploy to Edgio hosting
-      #        env:
-      #          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
-      #        # Deploy command automatically runs the build
-      #        # Deploy command pulls ENV variables https://docs.edg.io/guides/basics/environments#environment-variables
-      #        run: |
-      #          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
-      #          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
+#      - name: Deploy to Netlify hosting
+#        env:
+#          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+#          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_DEV}}
+#          NODE_VERSION: "20.x"
+#        run: |
+#          npx netlify --telemetry-disable
+#          npx netlify deploy --build --prod
+#      - name: Deploy to Edgio hosting
+#        env:
+#          DEPLOY_TOKEN: ${{ secrets.EDGIO_V7_DEPLOY_TOKEN}}
+#        # Deploy command automatically runs the build
+#        # Deploy command pulls ENV variables https://docs.edg.io/guides/basics/environments#environment-variables
+#        run: |
+#          npx edgio deploy --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN
+#          npx edgio cache-clear --property=coh3-stats --organization=coh-stats -e $EDGIO_ENV --token $DEPLOY_TOKEN --path=/
 
 #      - name: Deploy to Vercel hosting - cohstats
 #        env:
