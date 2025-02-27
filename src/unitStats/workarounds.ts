@@ -110,7 +110,7 @@ function setBattlegroupsWorkarounds() {
       item.branches.LEFT.upgrades.forEach((upg) => {
         switch (upg.ability.id) {
           case "italian_infantry_double_l640_ak":
-            upg.spawnItems = ["l6_40_ak", "l6_40_ak"];
+            upg.spawnItems = ["l6_40_ak"];
             break;
           case "italian_infantry_guastatori_ak":
             upg.spawnItems = ["guastatori_ak"];
@@ -147,6 +147,29 @@ function setBattlegroupsWorkarounds() {
         switch (upg.ability.id) {
           // Do nothing.
           default:
+            break;
+        }
+      });
+    },
+  });
+  bgWorkaround("Modify Afrika Korps - Panzerjäger Kommand BG Call-Ins", {
+    predicate: (item) =>
+      item.faction === "races/afrika_korps" && item.id === "panzerjager_kommand",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Stalling Tactics Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          // Do nothing.
+          default:
+            break;
+        }
+      });
+      // Tank Hunting Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "panzerjager_kommand_elefant_ak":
+            upg.spawnItems = ["elefant_tank_destroyer_ak"];
             break;
         }
       });
@@ -260,6 +283,28 @@ function setBattlegroupsWorkarounds() {
       });
     },
   });
+  bgWorkaround("Modify British - Canadian Shock BG Call-Ins", {
+    predicate: (item) => item.faction === "races/british" && item.id === "canadian_shock",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Shock Assault Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "canadian_shock_canadian_shock_troops_uk":
+            upg.spawnItems = ["canadian_heavy_infantry_africa_uk"];
+            break;
+        }
+      });
+      // Incendiary Weapons Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "canadian_shock_churchill_croc_uk":
+            upg.spawnItems = ["churchill_crocodile_africa_uk"];
+            break;
+        }
+      });
+    },
+  });
 
   bgWorkaround("Modify American - Airborne BG Call-Ins", {
     predicate: (item) => item.faction === "races/american" && item.id === "airborne",
@@ -365,6 +410,34 @@ function setBattlegroupsWorkarounds() {
             break;
           case "infantry_right_2_105mm_howitzer_us":
             upg.spawnItems = ["howitzer_105mm_us"];
+            break;
+        }
+      });
+    },
+  });
+  bgWorkaround("Modify American - Heavy Weapons BG Call-Ins", {
+    predicate: (item) => item.faction === "races/american" && item.id === "special_weapons",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Weapons Teams Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "special_weapons_50cal_hmg_passive_us":
+            upg.spawnItems = ["hmg_50cal_us"];
+            break;
+        }
+      });
+      // Cavalry Support Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "special_weapons_assault_halftrack_m3_callin_us":
+            upg.spawnItems = ["halftrack_assault_us"];
+            break;
+          case "special_weapons_pershing_us":
+            upg.spawnItems = ["pershing_us"];
+            break;
+          case "special_weapons_at_gun_3in_m5_us":
+            upg.spawnItems = ["at_gun_3in_m5_us"];
             break;
         }
       });
@@ -487,6 +560,28 @@ function setBattlegroupsWorkarounds() {
             break;
           case "coastal_obice_ger":
             upg.spawnItems = ["howitzer_obice_210_ger"];
+            break;
+        }
+      });
+    },
+  });
+  bgWorkaround("Modify German - Terror BG Call-Ins", {
+    predicate: (item) => item.faction === "races/german" && item.id === "terror",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Terror Tactics Branch.
+      item.branches.LEFT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          // Do nothing.
+          default:
+            break;
+        }
+      });
+      // Weapon Superiority Branch.
+      item.branches.RIGHT.upgrades.forEach((upg) => {
+        switch (upg.ability.id) {
+          case "terror_king_tiger_ger":
+            upg.spawnItems = ["king_tiger_sdkfz_182_ger"];
             break;
         }
       });
