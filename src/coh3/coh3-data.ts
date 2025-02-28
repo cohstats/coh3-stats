@@ -793,22 +793,22 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   },
   angoville_farms_2p: {
     name: "Angoville",
-    url: "",
+    url: "/angoville_farms_2p/angoville_farms_2p.webp",
   },
   langres_2p: {
     name: "Langres",
-    url: "",
+    url: "/langres_2p/langres_2p.webp",
   },
   crossing_in_the_woods_2p: {
     name: "Crossing in the Woods",
-    url: "",
+    url: "/crossing_in_the_woods_2p/crossing_in_the_woods_2p.webp",
   },
   crossing_in_the_woods_4p: {
     name: "Crossing in the Woods",
-    url: "",
+    url: "/crossing_in_the_woods_4p/crossing_in_the_woods_4p.webp",
   },
   djebel_2p: {
     name: "Djebel Pass",
-    url: "",
+    url: "/djebel_2p/djebel_2p.webp",
   },
 };

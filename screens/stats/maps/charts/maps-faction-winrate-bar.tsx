@@ -13,7 +13,7 @@ const calculateWinrateSingleFaction = ({
   wins: number;
   losses: number;
 }): string => {
-  const result = ((0.5 - wins / (wins + losses)) * -100).toFixed(2);
+  const result = ((0.5 - wins / (wins + losses)) * -100).toFixed(1);
 
   return !isNaN(parseFloat(result)) ? result : "0";
 };
@@ -58,7 +58,7 @@ const MapsFactionWinRateChart: React.FC<IProps> = ({ data }) => {
 
   return (
     <ResponsiveBar
-      margin={{ top: 5, right: 120, bottom: 80, left: 35 }}
+      margin={{ top: 40, right: 10, bottom: 80, left: 35 }}
       // @ts-ignore
       data={mapsData as data[] | undefined}
       layout={"vertical"}
@@ -86,18 +86,18 @@ const MapsFactionWinRateChart: React.FC<IProps> = ({ data }) => {
       legends={[
         {
           dataFrom: "keys",
-          anchor: "bottom-right",
-          direction: "column",
+          anchor: "top",
+          direction: "row",
           justify: false,
           toggleSerie: true,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
+          translateX: 0,
+          translateY: -35,
           itemWidth: 100,
           itemHeight: 20,
           itemDirection: "left-to-right",
           itemOpacity: 0.85,
-          symbolSize: 20,
+          symbolSize: 15,
+          symbolShape: "circle",
           effects: [
             {
               on: "hover",

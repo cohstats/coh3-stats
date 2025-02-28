@@ -13,12 +13,12 @@ interface IProps {
 const MapsPlayTimeBarChart: React.FC<IProps> = ({ data, average = true }) => {
   const { colorScheme } = useMantineColorScheme();
 
-  const mapsData: { mapName: string; minutes: number | string }[] = [];
+  const mapsData: { mapName: string; minutes: number }[] = [];
 
   for (const [mapCode, mapData] of Object.entries(data)) {
     const averageTime = average
-      ? (mapData.gameTime / mapData.matchCount / 60).toFixed(2)
-      : mapData.gameTime;
+      ? Math.round(mapData.gameTime / mapData.matchCount / 60)
+      : Math.round(mapData.gameTime);
 
     mapsData.push({
       mapName: getMapLocalizedName(mapCode),
@@ -37,6 +37,7 @@ const MapsPlayTimeBarChart: React.FC<IProps> = ({ data, average = true }) => {
       colors={{ scheme: "nivo" }}
       colorBy={"indexValue"}
       theme={getNivoTooltipTheme(colorScheme)}
+      valueFormat=" >-"
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
