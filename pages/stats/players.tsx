@@ -199,8 +199,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       }));
     }
 
-    // Expire at 4 AM
-    const expireTimeStamp = generateExpireTimeStamps(4);
+    // Expire at 8 AM
+    const expireTimeStamp = generateExpireTimeStamps(8);
 
     res.setHeader("Cache-Control", "public, stale-while-revalidate=604800");
     res.setHeader("Expires", `${new Date(expireTimeStamp).toUTCString()}`);
