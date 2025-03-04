@@ -236,10 +236,10 @@ export interface TwitchStream {
 export interface SearchPlayerCardData {
   platform: platformType;
   avatar: string;
-  relicProfileId: string;
-  level: number;
+  relicProfileId: number;
   country: string;
   alias: string;
+  lastActiveUnixTs: number;
 }
 
 export interface Top1v1LeaderboardsData {

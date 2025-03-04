@@ -21,9 +21,9 @@ export const SearchButton: React.FC<{ redirectOnClick?: boolean; close?: () => v
   return (
     <>
       <TextInput
-        style={{ width: 150 }}
+        style={{ width: 160 }}
         leftSection={<IconSearch />}
-        placeholder="Search players"
+        placeholder="Players and Units"
         radius={"md"}
         onChange={(event: { currentTarget: { value: any } }) => {
           debouncedSearch(event.currentTarget.value);
