@@ -8,6 +8,7 @@ import FactionIcon from "../../../components/faction-icon";
 import { raceType } from "../../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../../src/routes";
 import Link from "next/link";
+import styles from "./unit-card.module.css";
 
 export interface UnitData {
   id: string;
@@ -26,14 +27,7 @@ export const UnitCard = ({ unit }: UnitCardProps) => (
     href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
     style={{ textDecoration: "none" }}
   >
-    <Card
-      shadow="sm"
-      padding="xs"
-      radius="md"
-      withBorder
-      style={{ cursor: "pointer", position: "relative" }}
-      w={300}
-    >
+    <Card shadow="sm" padding="xs" radius="md" withBorder w={300} className={styles.unitCard}>
       <ImageWithFallback
         src={`/icons/${unit.symbol}`}
         fallbackSrc={symbolPlaceholder}

@@ -9,6 +9,7 @@ import EllipsisText from "../../../components/other/ellipsis-text";
 import { Steam } from "../../../components/icon/steam";
 import { PSNIcon } from "../../../components/icon/psn";
 import { XboxIcon } from "../../../components/icon/xbox";
+import styles from "./search-player-card.module.css";
 
 export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ data }) => {
   return (
@@ -18,7 +19,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
         href={getPlayerCardRoute(data.relicProfileId)}
         style={{ textDecoration: "none" }}
       >
-        <Card p={4} pl={5} w={300} withBorder>
+        <Card p={4} pl={5} w={300} withBorder className={styles.playerCard}>
           <Group gap={"xs"}>
             <Avatar
               src={data.avatar}
