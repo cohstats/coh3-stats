@@ -44,6 +44,9 @@ jobs:
       - name: Generate Search Data
         run: yarn search-data
 
+      - name: Prettier the stuff
+        run: yarn fix
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
