@@ -23,6 +23,7 @@
     "next:build": "next build",
     "next:dev": "next dev",
     "prepare": "husky",
+    "search-data": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\"  scripts/generate-search-data.ts",
     "sitemap": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/unit-paths.ts > unit-paths.txt && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "test": "TZ=UTC yarn jest",

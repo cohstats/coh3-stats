@@ -10,7 +10,7 @@ on:
 
 jobs:
   generate-sitemap:
-    name: Generate Site Map
+    name: Generate Site Map and Search Data
     runs-on: ubuntu-latest
 
     steps:
@@ -41,6 +41,9 @@ jobs:
       - name: Generate Sitemap
         run: yarn sitemap
 
+      - name: Generate Search Data
+        run: yarn search-data
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
@@ -48,22 +51,22 @@ jobs:
 
       - name: Create New Branch
         run: |
-          git checkout -b sitemap-update
+          git checkout -b automated-content-update
           git add -A
-          git commit -m "Update sitemap"
+          git commit -m "Update sitemap and search data"
           git push origin HEAD --force
 
       - name: Create or Update Pull Request
         run: |
           gh auth setup-git
           gh_pr_up() {
-            PR_EXISTS=$(gh pr list --head sitemap-update | wc -l)
+            PR_EXISTS=$(gh pr list --head automated-content-update | wc -l)
             if [ "$PR_EXISTS" -eq "0" ]; then
               gh pr create "$@"
             else
               gh pr edit "$@"
             fi
           }
-          gh_pr_up --title "Update Sitemap" --body "Automatically generated sitemap update" --base master --label "bot" --head sitemap-update
+          gh_pr_up --title "Update Sitemap and Search Data" --body "Automatically generated sitemap and search data update" --base master --label "bot" --head automated-content-update
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
