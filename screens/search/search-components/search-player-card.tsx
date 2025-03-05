@@ -32,7 +32,7 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
               <Group justify="space-between" w="100%">
                 <Group gap={"xs"}>
                   <CountryFlag countryCode={data.country} />
-                  <EllipsisText text={data.alias} maxWidth="20ch" />
+                  <EllipsisText text={data.alias} maxWidth="17ch" />
                 </Group>
                 <Group>
                   {data.platform === "steam" && (
