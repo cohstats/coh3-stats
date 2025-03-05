@@ -12,8 +12,13 @@ import { SearchScreen } from "../screens/search";
  */
 
 const Search: NextPage = () => {
-  const description = "Search for any players in Company of Heroes 3.";
-  const metaKeywords = generateKeywordsString([`search players`, `search data`, `coh3 search`]);
+  const description = "Search for units and steam, xbox and psn players in Company of Heroes 3.";
+  const metaKeywords = generateKeywordsString([
+    `search players`,
+    `search data`,
+    `coh3 search`,
+    "units search",
+  ]);
 
   return (
     <>
