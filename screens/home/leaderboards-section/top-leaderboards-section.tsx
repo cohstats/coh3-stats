@@ -37,7 +37,7 @@ const TopLeaderboardsSection = ({
   }, [selectedRace]);
 
   return (
-    <Paper withBorder shadow="xs" radius="md" mt="md" p="md" color="gray">
+    <Paper withBorder shadow="xs" radius="md" mt="md" p={{ base: "xs", sm: "md" }} color="gray">
       <Tabs
         variant="pills"
         onChange={(value: string | null) => setSelectedRace(value as raceType)}

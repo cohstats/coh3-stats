@@ -239,7 +239,9 @@ const NemesisTab = ({
 
   React.useEffect(() => {
     (async () => {
-      triggerPlayerNemesisAliasesUpdate(profileID).then().catch(console.error);
+      if (data.length > 0) {
+        triggerPlayerNemesisAliasesUpdate(profileID).then().catch(console.error);
+      }
     })();
   }, [profileID]);
 

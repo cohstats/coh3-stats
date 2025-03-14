@@ -17,7 +17,7 @@ const InfoCard = ({
 }) => {
   return (
     <Anchor component={LinkWithOutPrefetch} href={link} style={{ textDecoration: "none" }}>
-      <Card padding={14} radius="md" withBorder className={classes.infoCard}>
+      <Card p={{ base: "xs", sm: "sm" }} radius="md" withBorder className={classes.infoCard}>
         <Stack gap={"xs"}>
           <Group justify="space-between">
             <Title order={4}>{title}</Title>
