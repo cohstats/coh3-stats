@@ -76,11 +76,10 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
   return (
     <div>
       <Group wrap="nowrap">
-        <Image width={60} height={40} src={image} fit="contain" alt="Faction" />
-
+        <Image w={60} h={40} src={image} fit="contain" alt="Faction" />
         <HoverCard shadow={"lg"} offset={60}>
           <HoverCard.Target>
-            <Image width={60} height={40} src={type_icon} fit="contain" alt="type" />
+            <Image w={60} h={40} src={type_icon} fit="contain" alt="type" />
           </HoverCard.Target>
           <HoverCard.Dropdown>
             <Stack>
