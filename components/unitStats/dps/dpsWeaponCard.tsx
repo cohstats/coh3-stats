@@ -1,6 +1,5 @@
 import {
   Space,
-  Image,
   Text,
   NumberInput,
   Box,
@@ -95,14 +94,14 @@ export const DpsWeaponCard = (props: IDPSProps) => {
         })}
       >
         <Group>
-          <HoverCard shadow="md" width={400} position="left" offset={50}>
+          <HoverCard shadow="md" width={420} position="left" offset={50}>
             <HoverCard.Target>
-              <Group>
-                <Image
+              <Group gap={"xs"}>
+                <img
                   width={60}
                   height={20}
                   src={props.weapon_member.image}
-                  fit="cover"
+                  // fit="cover"
                   alt={props.weapon_member.weapon_id.substring(0, 10)}
                 />
                 <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
@@ -117,7 +116,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                 data={lineData}
                 options={config as any}
                 redraw
-              ></Line>
+              />
               {/* <Stack mb={12}>
                 <Space></Space>
 
@@ -211,32 +210,17 @@ export const DpsWeaponCard = (props: IDPSProps) => {
             </HoverCard.Dropdown>
           </HoverCard>
         </Group>
-        {/* <Group>
-          <Image
-            width={60}
-            height={30}
-            src={props.weapon_member.image}
-            fit="contain"
-            alt={activeData.weapon_id}
-          />
-          <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
-        </Group> */}
 
         <Text size="xs">{props.weapon_member.weapon_id.substring(0, 12) + "..."}</Text>
         <Space h="xs" />
         {props.weapon_member.ebps.unitType == "infantry" && (
-          <Box
-            style={() => ({
-              width: "60px",
-            })}
-          >
-            <NumberInput
-              defaultValue={props.weapon_member.num}
-              size="xs"
-              onChange={(value) => onNumberChanged(value as number)}
-              value={props.weapon_member.num}
-            />
-          </Box>
+          <NumberInput
+            w={"60px"}
+            defaultValue={props.weapon_member.num}
+            size="xs"
+            onChange={(value) => onNumberChanged(value as number)}
+            value={props.weapon_member.num}
+          />
         )}
       </Box>
     </>

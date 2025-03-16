@@ -79,7 +79,7 @@ function generateArmorRow(armorValues: VehicleArmor) {
       <Grid key={`vehicle_armor_${armor}`} fz="xs" align="center" columns={3} grow>
         <Grid.Col span={2}>
           <Flex key={armor} direction="row" align="center" gap={8}>
-            <Image height={24} width={24} fit="contain" src={icon} alt="Frontal Armor" />
+            <Image h={24} w={24} fit="contain" src={icon} alt="Frontal Armor" />
             <Text style={{ textTransform: "uppercase" }}>{armor}</Text>
           </Flex>
         </Grid.Col>

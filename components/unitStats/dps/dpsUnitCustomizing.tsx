@@ -14,6 +14,7 @@ import {
   Anchor,
   Card,
   HoverCard,
+  Space,
 } from "@mantine/core";
 import { WeaponSearch } from "./weaponSearch";
 import { WeaponType } from "../../../src/unitStats/mappingWeapon";
@@ -114,7 +115,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
         key={member.weapon_id + props.index + member.num}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
-      ></DpsWeaponCard>,
+      />,
     );
   }
   const totalCost = getSquadTotalCost(props.unit.sbps, props.ebps);
@@ -123,10 +124,10 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     <>
       <Stack align="left" justify="flex-start" gap="xs">
         <Grid gutter="xs">
-          <Grid.Col span={4}>
+          <Grid.Col span={5}>
             <Group wrap="nowrap">
               <Tooltip label={props.unit.screen_name}>
-                <HoverCard shadow="md" width={400} position="left" offset={50}>
+                <HoverCard shadow="md" width={450} position="left" offset={50}>
                   <HoverCard.Target>
                     <Group>
                       <Anchor
@@ -201,25 +202,20 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Flex align="center">
                 <HoverCard width={400} position="left" offset={80}>
                   <HoverCard.Target>
-                    <Image
-                      src="\icons\general\health.png"
-                      alt="Health"
-                      width={32}
-                      height={32}
-                    ></Image>
+                    <Image src="\icons\general\health.png" alt="Health" w={32} h={32} />
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
-                    <Card p="lg" radius="md">
+                    <Card p="sm" radius="md">
                       {HitpointCard({ squad: props.unit.sbps, entities: ebpsStats })}
                     </Card>
                   </HoverCard.Dropdown>
                 </HoverCard>
-
-                <Text size="xs">{props.unit.health} HP</Text>
+                <Space w="xs" />
+                <Text size="sm">{props.unit.health} HP</Text>
               </Flex>
             </Group>
           </Grid.Col>
-          <Grid.Col span={8}>
+          <Grid.Col span={7}>
             <Flex gap="xs" justify="flex-end" align="center" direction="row" wrap="wrap">
               {/* <Rating defaultValue={0} size="sm" count={3} /> */}
               <Tooltip label="Moving">
@@ -232,7 +228,9 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   <Image
                     src="\icons\common\abilities\tactical_movement_riflemen_us.png"
                     alt="Moving"
-                  ></Image>
+                    h={29}
+                    w={29}
+                  />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Heavy Cover">
@@ -241,7 +239,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   variant={props.unit.cover == "heavy" ? "default" : "transparent"}
                   onClick={() => onCoverChange("heavy")}
                 >
-                  <Image src="/icons/common/cover/heavy.png" alt="Heavy Cover"></Image>
+                  <Image src="/icons/common/cover/heavy.png" alt="Heavy Cover" h={32} w={32} />
                 </ActionIcon>
               </Tooltip>
 
@@ -251,7 +249,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   variant={props.unit.cover == "light" ? "default" : "transparent"}
                   onClick={() => onCoverChange("light")}
                 >
-                  <Image src="/icons/common/cover/light.png" alt="Light Cover"></Image>
+                  <Image src="/icons/common/cover/light.png" alt="Light Cover" h={32} w={32} />
                 </ActionIcon>
               </Tooltip>
 
@@ -261,7 +259,12 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   variant={props.unit.cover == "negative" ? "default" : "transparent"}
                   onClick={() => onCoverChange("negative")}
                 >
-                  <Image src="/icons/common/cover/negative.png" alt="Negative Cover"></Image>
+                  <Image
+                    src="/icons/common/cover/negative.png"
+                    alt="Negative Cover"
+                    w={32}
+                    h={32}
+                  />
                 </ActionIcon>
               </Tooltip>
 
@@ -271,7 +274,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   variant={props.unit.cover == "garrison" ? "default" : "transparent"}
                   onClick={() => onCoverChange("garrison")}
                 >
-                  <Image src="/icons/common/units/garrisoned.png" alt="Garrision"></Image>
+                  <Image src="/icons/common/units/garrisoned.png" alt="Garrision" h={36} w={32} />
                 </ActionIcon>
               </Tooltip>
             </Flex>

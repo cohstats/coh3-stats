@@ -204,11 +204,11 @@ const generateFilterButtons = (
       <Tooltip key={faction + index} label="Filter">
         <ActionIcon
           key={faction + index}
-          size="sm"
+          size="md"
           variant={unitFilter.includes(faction) ? "gradient" : "transparent"}
           onClick={() => callback(faction, index, unitFilter, unitSelectionList)}
         >
-          <Image src={source} alt={"Filter"}></Image>
+          <Image src={source} alt={"Filter"} w={22} h={22} />
         </ActionIcon>
       </Tooltip>,
     );
@@ -526,7 +526,7 @@ export const DpsChart = (props: IDPSProps) => {
             <Grid.Col span={{ md: 6, lg: 6 }}>
               <Grid>
                 <Grid.Col span={6}>
-                  <Group wrap="nowrap">
+                  <Group wrap="nowrap" gap={"sm"}>
                     {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
                   </Group>
                 </Grid.Col>
@@ -592,7 +592,7 @@ export const DpsChart = (props: IDPSProps) => {
             <Grid.Col span={{ md: 6, lg: 6 }}>
               <Grid>
                 <Grid.Col span={{ md: 6, lg: 6 }}>
-                  <Group wrap="nowrap">
+                  <Group wrap="nowrap" gap={"sm"}>
                     {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
                   </Group>
                 </Grid.Col>

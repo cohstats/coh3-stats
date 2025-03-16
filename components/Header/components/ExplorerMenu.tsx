@@ -48,8 +48,8 @@ const explorerFactionLink = (faction: raceType, close?: () => void) => {
       <Stack gap={4}>
         <Group gap={4}>
           <Image
-            width={20}
-            height={20}
+            w={20}
+            h={20}
             fit="contain"
             src={getIconsPathOnCDN(`/icons/races/common/symbols/building_hq.webp`)}
             alt=""
@@ -66,8 +66,8 @@ const explorerFactionLink = (faction: raceType, close?: () => void) => {
         </Group>
         <Group gap={4}>
           <Image
-            width={20}
-            height={20}
+            w={20}
+            h={20}
             fit="contain"
             src={getIconsPathOnCDN(`/icons/races/common/symbols/building_barracks.webp`)}
             alt=""
@@ -91,8 +91,8 @@ const DPSLink = ({ close }: { close?: () => void }) => {
   return (
     <Group gap={4}>
       <Image
-        width={20}
-        height={20}
+        w={20}
+        h={20}
         fit="contain"
         src={getIconsPathOnCDN("/icons/races/common/symbols/hmg.png")}
         alt=""
@@ -116,8 +116,8 @@ const UnitBrowserLink = ({ close }: { close?: () => void }) => {
   return (
     <Group gap={4}>
       <Image
-        width={20}
-        height={20}
+        w={20}
+        h={20}
         fit="contain"
         src={internalSlash("/unitStats/weaponClass/supportinfantry_icn.png")}
         alt=""
@@ -159,8 +159,8 @@ const WeaponsLink = ({ close }: { close?: () => void }) => {
   return (
     <Group gap={4}>
       <Image
-        width={20}
-        height={20}
+        w={20}
+        h={20}
         fit="contain"
         src={getIconsPathOnCDN("/icons/unit_status/bw2/generic_infantry_boost.png")}
         alt=""

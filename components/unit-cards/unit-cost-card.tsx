@@ -26,7 +26,7 @@ export const UnitCostCard = (costs: ResourceValues, title = "Costs") => (
         {ResourceIcons.map(({ icon, type }) => {
           return costs[type] ? (
             <Flex key={type} direction="row" align="center" gap={4}>
-              <Image height={20} width={20} fit="contain" src={icon} alt={type} />
+              <Image h={20} w={20} fit="contain" src={icon} alt={type} />
               <Text>{costs[type]}</Text>
             </Flex>
           ) : (
@@ -54,7 +54,7 @@ export const ReinforceCostCard = (
         {ReinforceIcons.map(({ icon, type }) => {
           return reinforce[type] ? (
             <Flex key={type} direction="row" align="center" gap={4}>
-              <Image height={20} width={20} fit="contain" src={icon} alt={type} />
+              <Image h={20} w={20} fit="contain" src={icon} alt={type} />
               <Text>{reinforce[type]}</Text>
             </Flex>
           ) : (
