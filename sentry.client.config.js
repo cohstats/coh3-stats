@@ -14,8 +14,7 @@ Sentry.init({
   tracesSampleRate: 0.01,
   // release: "vTestRelease",
   // release: process.env.BRANCH_NAME || process.env.GITHUB_REF_NAME,
-  environment:
-    process.env.EDGIO_ENV || process.env.EDGIO_ENVIRONMENT_NAME || process.env.NODE_ENV,
+  environment: process.env.NODE_ENV,
   allowUrls: [/https?:\/\/((dev)\.)?coh3stats\.com/],
   ignoreErrors: [
     // This is some performance issue --> we should look into
@@ -27,8 +26,6 @@ Sentry.init({
     "QuotaExceededError",
     // Random errors from Firebase
     "Installations: Could not process request. Application offline.",
-    "Can't find variable: Layer0",
-    "Layer0 is not defined",
     "Cannot redefine property: googletag",
     // Random NextJs loading errors
     "Loading chunk",
@@ -38,6 +35,8 @@ Sentry.init({
     "TimeoutError:",
     "NetworkError when attempting to fetch resource.",
     "UnknownError: Connection is closing.",
+    // Some firebase bullshit
+    "FirebaseError: Installations: Firebase Installation is not registered.",
   ],
   // ...
   // Note: if you want to override the automatic release value, do not set a
