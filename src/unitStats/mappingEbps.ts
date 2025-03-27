@@ -126,7 +126,13 @@ let ebpsStats: EbpsType[];
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
+const mapEbpsData = (
+  filename: string,
+  subtree: any,
+  jsonPath: string,
+  parent: string,
+  locale: string = "en",
+) => {
   const ebpsEntity: EbpsType = {
     id: filename,
     path: jsonPath,
@@ -189,12 +195,12 @@ const mapEbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
   };
 
   // clearUndefined(ebpsEntity);
-  mapExtensions(subtree, ebpsEntity);
+  mapExtensions(subtree, ebpsEntity, locale);
 
   return ebpsEntity;
 };
 
-const mapExtensions = (root: any, ebps: EbpsType) => {
+const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
   for (const entityExt in root.extensions) {
     const extension = root.extensions[entityExt].exts;
     const extName = extension?.template_reference.value.split("\\")[1];
@@ -242,13 +248,13 @@ const mapExtensions = (root: any, ebps: EbpsType) => {
           ebps.ui.symbolIconName = extension?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = extension.screen_name;
-          ebps.ui.screenName = resolveLocstring(screenName) || "";
+          ebps.ui.screenName = resolveLocstring(screenName, locale) || "";
           const helpText = extension.help_text;
-          ebps.ui.helpText = resolveLocstring(helpText) || "";
+          ebps.ui.helpText = resolveLocstring(helpText, locale) || "";
           const extraText = extension.extra_text;
-          ebps.ui.extraText = resolveLocstring(extraText) || "";
+          ebps.ui.extraText = resolveLocstring(extraText, locale) || "";
           const briefText = extension.brief_text;
-          ebps.ui.briefText = resolveLocstring(briefText) || "";
+          ebps.ui.briefText = resolveLocstring(briefText, locale) || "";
         }
         break;
       case "cost_ext":
@@ -341,11 +347,12 @@ let EbpsPatchData: Record<string, EbpsType[]>;
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const getEbpsStats = async (patch = "latest") => {
+const getEbpsStats = async (patch = "latest", locale = "en") => {
   if (patch == config.latestPatch) patch = "latest";
   // ebps needs to be returned to avoid double computation
   // if (ebpsStats) return ebpsStats;
-  if (EbpsPatchData && EbpsPatchData[patch]) return EbpsPatchData[patch];
+  const cacheKey = `${patch}-${locale}`;
+  if (EbpsPatchData && EbpsPatchData[cacheKey]) return EbpsPatchData[cacheKey];
 
   const myReqEbps = await fetch(config.getPatchDataUrl("ebps.json", patch));
 
@@ -356,7 +363,14 @@ const getEbpsStats = async (patch = "latest") => {
 
   // Extract from JSON
   for (const obj in root) {
-    const ebpsSet = traverseTree(root[obj], isExtensionContainer, mapEbpsData, obj, obj);
+    const ebpsSet = traverseTree(
+      root[obj],
+      isExtensionContainer,
+      (filename: string, subtree: any, jsonPath: string, parent: string) =>
+        mapEbpsData(filename, subtree, jsonPath, parent, locale),
+      obj,
+      obj,
+    );
 
     // Filter relevant objects
     ebpsSet.forEach((item: EbpsType) => {
@@ -401,7 +415,7 @@ const getEbpsStats = async (patch = "latest") => {
   }
 
   if (!EbpsPatchData) EbpsPatchData = {};
-  EbpsPatchData[patch] = ebpsSetAll;
+  EbpsPatchData[cacheKey] = ebpsSetAll;
 
   // Set singleton
   if (patch == "latest") ebpsStats = ebpsSetAll;

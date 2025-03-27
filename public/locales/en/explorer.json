@@ -1,0 +1,20 @@
+{
+  "common": {
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups"
+  },
+  "unitPage": {
+    "costs": "Costs",
+    "stats": "Stats",
+    "upgrades": "Upgrades",
+    "abilities": "Abilities",
+    "loadout": "Loadout",
+    "veterancy": "Veterancy",
+    "upkeep": "Upkeep per minute",
+    "hitpoints": "Hitpoints",
+    "reinforce": "Reinforce",
+    "construct": "Can Construct",
+    "free": "Free"
+  }
+}

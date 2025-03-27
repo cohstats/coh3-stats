@@ -403,9 +403,11 @@ const createCalculateValuesForChallenges = (data: {
   };
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale = "en" }) => {
+  console.log(`Locale: ${locale}`);
+
   const { dailyChallengesData, weeklyChallengesData, sbpsData, upgradesData } =
-    await getMappings();
+    await getMappings(locale);
 
   return {
     props: {

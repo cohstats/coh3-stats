@@ -94,9 +94,18 @@ type AbilitiesCost = {
 // `setAbilitiesStats`. Can be accessed from everywhere.
 let abilitiesStats: AbilitiesType[];
 
+// Add a cache object at the top of the file, after abilitiesStats declaration
+let abilitiesPatchData: Record<string, AbilitiesType[]> = {};
+
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
+const mapAbilitiesData = (
+  filename: string,
+  subtree: any,
+  jsonPath: string,
+  parent: string,
+  locale: string = "en",
+) => {
   const abilityEntity: AbilitiesType = {
     id: filename,
     path: jsonPath,
@@ -124,27 +133,27 @@ const mapAbilitiesData = (filename: string, subtree: any, jsonPath: string, pare
     },
   };
 
-  mapAbilityBag(subtree, abilityEntity);
+  mapAbilityBag(subtree, abilityEntity, locale);
 
   return abilityEntity;
 };
 
-const mapAbilityBag = (root: any, ability: AbilitiesType) => {
+const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en") => {
   const abilityBag = root.ability_bag;
 
   /* --------- UI SECTION --------- */
   ability.ui.iconName = abilityBag.ui_info?.icon_name || "";
   ability.ui.symbolIconName = abilityBag.ui_info?.symbol_icon_name || "";
   // When it is empty, it has a value of "0".
-  ability.ui.screenName = resolveLocstring(abilityBag.ui_info?.screen_name) || "";
-  ability.ui.helpText = resolveLocstring(abilityBag.ui_info?.help_text) || "";
-  ability.ui.extraText = resolveLocstring(abilityBag.ui_info?.extra_text) || "";
-  ability.ui.briefText = resolveLocstring(abilityBag.ui_info?.brief_text) || "";
+  ability.ui.screenName = resolveLocstring(abilityBag.ui_info?.screen_name, locale) || "";
+  ability.ui.helpText = resolveLocstring(abilityBag.ui_info?.help_text, locale) || "";
+  ability.ui.extraText = resolveLocstring(abilityBag.ui_info?.extra_text, locale) || "";
+  ability.ui.briefText = resolveLocstring(abilityBag.ui_info?.brief_text, locale) || "";
 
   ability.ui.briefTextFormatter =
-    resolveTextFormatterLocstring(abilityBag.ui_info?.brief_text_formatter) || "";
+    resolveTextFormatterLocstring(abilityBag.ui_info?.brief_text_formatter, locale) || "";
   ability.ui.extraTextFormatter =
-    resolveTextFormatterLocstring(abilityBag.ui_info?.extra_text_formatter) || "";
+    resolveTextFormatterLocstring(abilityBag.ui_info?.extra_text_formatter, locale) || "";
 
   /* --------- COST SECTION --------- */
   ability.cost.fuel = abilityBag.cost_to_player?.fuel || 0;
@@ -185,11 +194,13 @@ const mapAbilityBag = (root: any, ability: AbilitiesType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getAbilitiesStats = async () => {
-  if (abilitiesStats) return abilitiesStats;
+const getAbilitiesStats = async (patch = "latest", locale: string = "en") => {
+  if (patch == config.latestPatch) patch = "latest";
 
-  const myReqAbilities = await fetch(config.getPatchDataUrl("abilities.json"));
+  const cacheKey = `${patch}-${locale}`;
+  if (abilitiesPatchData && abilitiesPatchData[cacheKey]) return abilitiesPatchData[cacheKey];
 
+  const myReqAbilities = await fetch(config.getPatchDataUrl("abilities.json", patch));
   const root = await myReqAbilities.json();
 
   const abilitiesSetAll: AbilitiesType[] = [];
@@ -199,7 +210,8 @@ const getAbilitiesStats = async () => {
     const abilitiesSet = traverseTree(
       root[obj],
       isAbilityBagContainer,
-      mapAbilitiesData,
+      (filename: string, subtree: any, jsonPath: string, parent: string) =>
+        mapAbilitiesData(filename, subtree, jsonPath, parent, locale),
       obj,
       obj,
     );
@@ -210,7 +222,14 @@ const getAbilitiesStats = async () => {
     });
   }
 
-  setAbilitiesStats(abilitiesSetAll);
+  // Store in cache
+  if (!abilitiesPatchData) abilitiesPatchData = {};
+  abilitiesPatchData[cacheKey] = abilitiesSetAll;
+
+  // Set singleton for latest patch
+  if (patch === "latest") {
+    setAbilitiesStats(abilitiesSetAll);
+  }
 
   return abilitiesSetAll;
 };

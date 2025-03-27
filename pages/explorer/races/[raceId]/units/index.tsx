@@ -7,20 +7,22 @@ import { raceType } from "../../../../../src/coh3/coh3-types";
 import { generateKeywordsString } from "../../../../../src/head-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
-import { RaceBagDescription, SbpsType } from "../../../../../src/unitStats";
+import { SbpsType } from "../../../../../src/unitStats";
 import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
 import { getExplorerUnitRoute } from "../../../../../src/routes";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
+import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 
 interface UnitDetailProps {
   units: SbpsType[];
   raceToFetch: raceType;
+  descriptions: Record<string, Record<string, string>>;
 }
 
-const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
+const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
   const localizedRace = localizedNames[raceToFetch];
 
   useEffect(() => {
@@ -41,14 +43,13 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
       <Container fluid p={0}>
-        <Stack>
-          <Flex direction="row" align="center" gap="md">
-            <FactionIcon name={raceToFetch} width={64} />
-            <Title order={2}>{localizedRace}</Title>
-          </Flex>
-
-          <Text size="lg">{RaceBagDescription[raceToFetch]}</Text>
-        </Stack>
+        <Flex direction="row" align="center" gap="md">
+          <FactionIcon name={raceToFetch} width={80}></FactionIcon>
+          <Stack gap="xs">
+            <Title order={3}>{localizedRace}</Title>
+            <Text size="md">{descriptions[raceToFetch].description}</Text>
+          </Stack>
+        </Flex>
 
         <Flex direction="row" align="center" gap={16} mt={24}>
           <IconBarrierBlock size={50} />
@@ -59,7 +60,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
         </Flex>
 
         <Stack mt={32}>
-          <Title order={4}>Units</Title>
+          <Title order={4}>{descriptions.common.units}</Title>
 
           <Grid>
             {units.map(({ id, ui }) => {
@@ -105,7 +106,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { sbpsData } = await getMappings();
+  const { sbpsData } = await getMappings(context.locale);
 
   const raceId = context.params?.raceId as string;
 
@@ -117,6 +118,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       raceToFetch,
       units,
+      descriptions: getUnitStatsCOH3Descriptions(context.locale),
     },
     revalidate: false,
   };
