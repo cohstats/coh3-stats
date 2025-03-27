@@ -98,20 +98,6 @@ function transformToMultiplayerBuildingFaction(race: raceType): buildingFactionM
   }
 }
 
-export const RaceBagDescription = {
-  // Locstring value: $11234530
-  german:
-    "A steadfast and elite force that can hold against even the most stubborn foe. Unlock unique arsenals to specialize your forces.",
-  // Locstring value: $11234529
-  american:
-    "Versatile infantry and weaponry that can displace any opponent. Experience is key to improving your forces for the fight ahead.",
-  // Locstring value: $11220490
-  dak: "A combined-arms force of aggressive vehicles, plentiful reinforcements and stubborn tanks that can break down any enemy line.",
-  // Locstring value: $11234532
-  british:
-    "Infantry and team weapons form a backbone that is tough to break. Myriad vehicles will create the opening you need to seize the day.",
-} as const;
-
 /** Filter invisible or unused buildings in multiplayer. */
 export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType) {
   const faction = transformToMultiplayerBuildingFaction(race);

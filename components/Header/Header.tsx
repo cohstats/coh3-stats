@@ -32,6 +32,7 @@ import OtherMenu from "./components/OtherMenu";
 import config from "../../config";
 
 import classes from "./Header.module.css";
+import LanguageSwitcher from "./components/language-switcher";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -56,7 +57,7 @@ const MobileView = () => {
         padding="md"
         title="Navigation"
         className={classes.hiddenDesktop}
-        zIndex={1000000}
+        zIndex={100}
       >
         <ScrollArea style={{ height: "calc(100vh - 60px)" }} mx="-md">
           <Divider my="sm" />
@@ -132,6 +133,7 @@ const MobileView = () => {
 
           <Group px="md">
             <ColorSchemeToggle onClick={() => close()} />
+            <LanguageSwitcher />
           </Group>
         </ScrollArea>
       </Drawer>
@@ -183,10 +185,11 @@ const DesktopView = () => {
         </Anchor>
       </Group>
 
-      <Group gap={5} className={classes.hiddenMobile}>
+      <Group gap={5} className={classes.hiddenMobile} justify="flex-end">
         <OnlinePlayers />
         <SearchButton />
         <ColorSchemeToggle />
+        <LanguageSwitcher />
       </Group>
     </>
   );

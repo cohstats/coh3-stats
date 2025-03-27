@@ -2,7 +2,7 @@ import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
 
-let WeaponStats: WeaponType[];
+const WeaponPatchData: Record<string, Record<string, WeaponType[]>> = {}; // Modified to store by locale and patch
 
 type RangeType = {
   near: number;
@@ -195,24 +195,29 @@ type TargetType = {
   damage_multiplier: number;
 };
 
-const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string) => {
+const mapWeaponData = (
+  key: string,
+  node: any,
+  jsonPath: string,
+  parent: string,
+  locale = "en",
+) => {
   const weapon_bag: any = node.weapon_bag;
 
   // todo remove redundancy
   const weaponData: WeaponType = {
     id: key,
-    ui_name: resolveLocstring(weapon_bag.ui_name) || "",
+    ui_name: resolveLocstring(weapon_bag.ui_name, locale) || "",
     icon_name: weapon_bag.icon_name || "",
     pbgid: node.pbgid,
     path: jsonPath,
     label: key,
     value: key,
     weapon_class: weapon_bag.weapon_class || "",
-    description: resolveLocstring(weapon_bag.ui_name) || "",
+    description: resolveLocstring(weapon_bag.ui_name, locale) || "",
     faction: jsonPath.split("/")[0],
     parent: parent,
     weapon_cat: (jsonPath.split("/")[1] as (typeof WeaponCategory)[number]) || "unknown",
-
     weapon_bag: {
       accuracy_near: weapon_bag.accuracy?.near || 0,
       accuracy_mid: weapon_bag.accuracy?.mid || 0,
@@ -368,48 +373,44 @@ const mapWeaponData = (key: string, node: any, jsonPath: string, parent: string)
   return weaponData;
 };
 
-let WeaponPatchData: Record<string, WeaponType[]>;
-
-// parses the attribute tree and initiates the mapping. Save
-// the mapping array in global exporting variable.
-const getWeaponStats = async (patch = "latest") => {
+const getWeaponStats = async (patch = "latest", locale = "en") => {
   if (patch == config.latestPatch) patch = "latest";
-  // make sure that this method is called only once among all pages
-  // if (WeaponStats) return WeaponStats;
-  if (WeaponPatchData && WeaponPatchData[patch]) return WeaponPatchData[patch];
+
+  // Check if we already have the data for this patch and locale
+  if (WeaponPatchData[patch]?.[locale]) return WeaponPatchData[patch][locale];
 
   const myReqWeapon = await fetch(config.getPatchDataUrl("weapon.json", patch));
-
   const root = await myReqWeapon.json();
 
   const weaponSetAll: WeaponType[] = [];
 
   // Extract from JSON
   for (const obj in root) {
-    // find all weapon_bags
-    const weaponSet = traverseTree(root[obj], isWeaponBagContainer, mapWeaponData, obj, obj);
-    // weaponSet.forEach(weaponSetAll.add, weaponSetAll);
+    const weaponSet = traverseTree(
+      root[obj],
+      isWeaponBagContainer,
+      (filename: string, subtree: any, jsonPath: string, parent: string) =>
+        mapWeaponData(filename, subtree, jsonPath, parent, locale),
+      obj,
+      obj,
+    );
 
     // Filter relevant objects
     weaponSet.forEach((item: any) => {
       weaponSetAll.push(item);
     });
   }
-  if (!WeaponPatchData) WeaponPatchData = {};
-  WeaponPatchData[patch] = weaponSetAll;
 
-  // Set singleton
-  if (patch == "latest") WeaponStats = weaponSetAll;
+  // Initialize nested structure if needed
+  if (!WeaponPatchData[patch]) WeaponPatchData[patch] = {};
+  WeaponPatchData[patch][locale] = weaponSetAll;
 
   return weaponSetAll;
 };
 
-const setWeaponStats = (weaponStats: WeaponType[]) => {
-  WeaponStats = weaponStats;
-  if (!WeaponStats) {
-    WeaponPatchData = {};
-    WeaponPatchData["latest"] = weaponStats;
-  }
+const setWeaponStats = (weaponStats: WeaponType[], patch = "latest", locale = "en") => {
+  if (!WeaponPatchData[patch]) WeaponPatchData[patch] = {};
+  WeaponPatchData[patch][locale] = weaponStats;
 };
 
 const isWeaponBagContainer = (key: string, obj: any) => {
@@ -417,5 +418,5 @@ const isWeaponBagContainer = (key: string, obj: any) => {
   return Object.keys(obj)[0] === "weapon_bag";
 };
 
-export { WeaponStats, setWeaponStats, getWeaponStats, WeaponPatchData };
+export { setWeaponStats, getWeaponStats, WeaponPatchData };
 export type { WeaponType, RangeType };

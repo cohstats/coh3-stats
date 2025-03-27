@@ -297,7 +297,7 @@ const CountryFlag = ({
 
   // https://www.npmjs.com/package/flag-icons
   const src = countryCode
-    ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/flags/4x3/${countryCode.toLowerCase()}.svg`
+    ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.3.2/flags/4x3/${countryCode.toLowerCase()}.svg`
     : `/flags/4x3/xx.svg`;
 
   return (
