@@ -135,10 +135,11 @@ export const SearchScreen = () => {
           <Container size={"md"}>
             <Flex gap="sm" wrap={"wrap"} justify="center">
               {unitResults.length === 0 ? (
-                <Text c={"dimmed"}>
+                <Text c={"dimmed"} size={"sm"}>
                   <Stack align={"center"} gap={"xs"}>
                     <IconDatabaseOff />
                     <div>No Units Found</div>
+                    <div>Unit search supports English Language only</div>
                   </Stack>
                   <Space h={"lg"} />
                 </Text>

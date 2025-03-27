@@ -59,9 +59,18 @@ type UpgradeCost = {
 // `setUpgradesStats`. Can be accessed from everywhere.
 let upgradesStats: UpgradesType[];
 
+// Add this at the top with other declarations
+let upgradesPatchData: Record<string, UpgradesType[]>;
+
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
+const mapUpgradesData = (
+  filename: string,
+  subtree: any,
+  jsonPath: string,
+  parent: string,
+  locale: string = "en",
+) => {
   const upgradesEntity: UpgradesType = {
     id: filename,
     path: jsonPath,
@@ -91,12 +100,12 @@ const mapUpgradesData = (filename: string, subtree: any, jsonPath: string, paren
     },
   };
 
-  mapUpgradeBag(subtree, upgradesEntity);
+  mapUpgradeBag(subtree, upgradesEntity, locale);
 
   return upgradesEntity;
 };
 
-const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
+const mapUpgradeBag = (root: any, upgrade: UpgradesType, locale: string = "en") => {
   const upgradeBag = root.upgrade_bag;
 
   /* --------- UI SECTION --------- */
@@ -104,21 +113,22 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
   upgrade.ui.symbolIconName = upgradeBag.ui_info?.symbol_icon_name || "";
   // When it is empty, it has a value of "0".
   const screenName = upgradeBag.ui_info?.screen_name;
-  upgrade.ui.screenName = resolveLocstring(screenName) || "";
+  upgrade.ui.screenName = resolveLocstring(screenName, locale) || "";
   const helpText = upgradeBag.ui_info?.help_text;
-  upgrade.ui.helpText = resolveLocstring(helpText) || "";
+  upgrade.ui.helpText = resolveLocstring(helpText, locale) || "";
   const extraText = upgradeBag.ui_info?.extra_text;
-  upgrade.ui.extraText = resolveLocstring(extraText) || "";
-  const briefText = resolveLocstring(upgradeBag.ui_info?.brief_text);
+  upgrade.ui.extraText = resolveLocstring(extraText, locale) || "";
+  const briefText = resolveLocstring(upgradeBag.ui_info?.brief_text, locale);
   const briefTextFormatter = resolveTextFormatterLocstring(
     upgradeBag.ui_info?.brief_text_formatter,
+    locale,
   );
   upgrade.ui.briefText = briefText || briefTextFormatter || "";
 
   upgrade.ui.briefTextFormatter =
-    resolveTextFormatterLocstring(upgradeBag.ui_info?.brief_text_formatter) || "";
+    resolveTextFormatterLocstring(upgradeBag.ui_info?.brief_text_formatter, locale) || "";
   upgrade.ui.extraTextFormatter =
-    resolveTextFormatterLocstring(upgradeBag.ui_info?.extra_text_formatter) || "";
+    resolveTextFormatterLocstring(upgradeBag.ui_info?.extra_text_formatter, locale) || "";
 
   /* --------- COST SECTION --------- */
   upgrade.cost.time = upgradeBag.time_cost?.time_seconds || 0;
@@ -148,24 +158,38 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getUpgradesStats = async () => {
-  if (upgradesStats) return upgradesStats;
+const getUpgradesStats = async (locale: string = "en") => {
+  const cacheKey = `latest-${locale}`;
+  if (upgradesPatchData && upgradesPatchData[cacheKey]) return upgradesPatchData[cacheKey];
 
   const myReqUpgrades = await fetch(config.getPatchDataUrl("upgrade.json"));
-
   const root = await myReqUpgrades.json();
 
   const upgradesSetAll: UpgradesType[] = [];
 
   // Extract from JSON
   for (const obj in root) {
-    const upgradesSet = traverseTree(root[obj], isUpgradeBagContainer, mapUpgradesData, obj, obj);
+    const upgradesSet = traverseTree(
+      root[obj],
+      isUpgradeBagContainer,
+      (filename: string, subtree: any, jsonPath: string, parent: string) =>
+        mapUpgradesData(filename, subtree, jsonPath, parent, locale),
+      obj,
+      obj,
+    );
 
     // Filter relevant objects
     upgradesSet.forEach((item: UpgradesType) => {
       upgradesSetAll.push(item);
     });
   }
+
+  // Store in cache
+  if (!upgradesPatchData) upgradesPatchData = {};
+  upgradesPatchData[cacheKey] = upgradesSetAll;
+
+  // Set singleton for latest
+  setUpgradesStats(upgradesSetAll);
 
   return upgradesSetAll;
 };

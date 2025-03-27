@@ -43,8 +43,8 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const { weaponData } = await getMappings();
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { weaponData } = await getMappings(context.locale);
 
   const tableData: WeaponTableRow[] = [];
   // const categoryList: Record<string, number> = {};

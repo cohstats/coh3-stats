@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { DpsChart } from "../../components/unitStats/dps/dpsChart";
 import { ebpsStats, EbpsType, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
-import { setWeaponStats, WeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
+import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import {
   setUpgradesStats,
   upgradesStats,
@@ -38,8 +38,8 @@ const DpsPage: NextPage<DpsProps> = ({
     AnalyticsDPSExplorerPageView();
   }, []);
 
-  // Save data again in global varible for clientMode
-  if (!WeaponStats) setWeaponStats(weaponData);
+  // Save data again in global variable for clientMode
+  setWeaponStats(weaponData);
 
   if (!ebpsStats) setEbpsStats(ebpsData);
 

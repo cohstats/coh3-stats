@@ -8,9 +8,10 @@ import { getBattlegroupStats } from "./mappingBattlegroups";
 import { ebpsWorkarounds } from "./workarounds";
 import { getDailyChallengeStats, getWeeklyChallengeStats } from "./mappingChallenges";
 
-const getMappings = async () => {
+const getMappings = async (locale = "en") => {
   // Locstring needs to be fetched first because it's used by the other mappings.
-  const locstring = await fetchLocstring();
+
+  const locstring = await fetchLocstring(locale);
 
   const [
     weaponData,
@@ -22,14 +23,14 @@ const getMappings = async () => {
     dailyChallengesData,
     weeklyChallengesData,
   ] = await Promise.all([
-    getWeaponStats(),
-    getEbpsStats(),
-    getSbpsStats(),
-    getUpgradesStats(),
-    getAbilitiesStats(),
-    getBattlegroupStats(),
-    getDailyChallengeStats(),
-    getWeeklyChallengeStats(),
+    getWeaponStats("latest", locale),
+    getEbpsStats("latest", locale),
+    getSbpsStats("latest", locale),
+    getUpgradesStats(locale),
+    getAbilitiesStats("latest", locale),
+    getBattlegroupStats(locale),
+    getDailyChallengeStats(locale),
+    getWeeklyChallengeStats(locale),
   ]);
 
   for (const ebpsItem of ebpsData) {

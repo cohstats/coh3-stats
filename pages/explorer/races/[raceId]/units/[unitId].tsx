@@ -22,7 +22,6 @@ import {
   getResolvedUpgrades,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
-  RaceBagDescription,
   ResourceValues,
   SbpsType,
   UpgradesType,
@@ -50,6 +49,7 @@ import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";
 import { AnalyticsExplorerUnitDetailsView } from "../../../../../src/firebase/analytics";
+import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 
 interface UnitDetailProps {
   calculatedData: {
@@ -62,9 +62,11 @@ interface UnitDetailProps {
     abilities: AbilitiesType[];
     buildables: EbpsType[];
   };
+  locale: string;
+  descriptions: Record<string, Record<string, string>>;
 }
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
   const { query } = useRouter();
 
   const unitId = query.unitId as string;
@@ -86,7 +88,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   }
 
   const localizedRace = localizedNames[raceId];
-  const descriptionRace = RaceBagDescription[raceId];
+  const descriptionRace = descriptions[raceId as raceType]?.description || null;
 
   // For team_weapons, get default members.
   let defaultSquadMember: EbpsType;
@@ -160,7 +162,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
       </Head>
       <Container fluid p={0}>
         <Flex direction="row" align="center" gap="md">
-          <FactionIcon name={raceId} width={96}></FactionIcon>
+          <FactionIcon name={raceId} width={80}></FactionIcon>
           <Stack gap="xs">
             <Title order={3}>{localizedRace}</Title>
             <Text size="md">{descriptionRace}</Text>
@@ -450,7 +452,10 @@ const createdCalculateValuesForUnits = (
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { abilitiesData, ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
+  const locale = context.locale;
+
+  const { abilitiesData, ebpsData, sbpsData, upgradesData, weaponData } =
+    await getMappings(locale);
 
   // const raceId = context.params?.raceId as string;
   const unitId = context.params?.unitId as string;
@@ -461,6 +466,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
         unitId,
       ),
+      locale,
+      descriptions: getUnitStatsCOH3Descriptions(locale),
     },
     revalidate: false,
   };
@@ -487,7 +494,7 @@ export const getStaticPaths: GetStaticPaths<{ unitId: string }> = async () => {
     }
   }
   return {
-    paths: unitPaths, //indicates that no page needs be created at build time
+    paths: unitPaths,
     fallback: "blocking", //indicates the type of fallback
   };
 };

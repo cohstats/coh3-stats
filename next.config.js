@@ -18,16 +18,30 @@ const nextConfig = {
     // It optimized already optimized images resulting in shit quality.
     unoptimized: true,
   },
+  i18n: {
+    locales: [
+      "en",
+      "fr",
+      "de",
+      "it",
+      "ja",
+      "ko",
+      "pl",
+      "pt-BR",
+      "zh-Hans",
+      "es",
+      "zh-Hant",
+      "tr",
+      "cs",
+    ],
+    defaultLocale: "en",
+    localeDetection: false,
+  },
+
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
   },
-  // Localization completely changes the url and we would need to re-write the cache routes
-  // In future we can look into it
-  // i18n: {
-  //   locales: ["en"],
-  //   defaultLocale: "en",
-  // },
   async headers() {
     return [
       {

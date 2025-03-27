@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/head-utils";
@@ -95,9 +95,9 @@ const filterObject = (obj: any, allowedKeys: string[]): any => {
   return filteredObj;
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData } = await getMappings();
+  const { weaponData, ebpsData, sbpsData } = await getMappings(context.locale);
 
   const tableData: CustomizableUnit[] = [];
 
