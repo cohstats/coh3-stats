@@ -1,0 +1,20 @@
+{
+  "common": {
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups"
+  },
+  "unitPage": {
+    "costs": "Cena",
+    "stats": "Stats",
+    "upgrades": "Vylepšení",
+    "abilities": "Schopnosti",
+    "loadout": "Vybavení",
+    "veterancy": "Veteránství",
+    "upkeep": "Cena údržby za minutu",
+    "hitpoints": "Životy",
+    "reinforce": "Doplnění",
+    "construct": "Může Postavit",
+    "free": "Zdarma"
+  }
+}
