@@ -339,6 +339,13 @@ export interface PlayerProfileCOHStats {
     hidden: boolean;
     updatedAt: Timestamp;
   };
+  alias_history?: Array<{
+    alias: string;
+    updatedAt: {
+      _seconds: number;
+      _nanoseconds: number;
+    };
+  }>;
 }
 
 export interface HistoryOfLeaderBoardStat {
@@ -406,6 +413,10 @@ export interface ProcessedCOHPlayerStats {
     >
   >;
   leaderBoardStats: Record<leaderBoardType, Record<raceType, HistoricLeaderBoardStat | null>>;
+  aliasHistory: Array<{
+    alias: string;
+    updatedAt: number;
+  }>;
 }
 
 export interface YouTubeVideo {
