@@ -9,6 +9,7 @@ import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leade
 import { generateKeywordsString } from "../../src/head-utils";
 import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
 import { AnalyticsStatsLeaderboardsPageView } from "../../src/firebase/analytics";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Leaderboards = ({
   error,
@@ -59,7 +60,7 @@ const Leaderboards = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en" }) => {
   let error = null;
   let leaderBoardStats = null;
 
@@ -82,6 +83,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     props: {
       error,
       leaderBoardStats,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

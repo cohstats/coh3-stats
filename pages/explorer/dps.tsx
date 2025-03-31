@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/head-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -85,7 +86,7 @@ const DpsPage: NextPage<DpsProps> = ({
   );
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps = async ({ locale = "en" }) => {
   // map Data at built time
   const { weaponData, ebpsData, sbpsData, upgradesData, locstring } = await getMappings();
 
@@ -96,6 +97,7 @@ export const getStaticProps = async () => {
       ebpsData: ebpsData,
       upgradesData: upgradesData,
       locstring: locstring,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

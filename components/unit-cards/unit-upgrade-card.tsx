@@ -71,7 +71,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
             src={`/icons/${desc.icon_name}.png`}
             alt={desc.screen_name || ""}
             fallbackSrc={iconPlaceholder}
-          ></ImageWithFallback>
+          />
         </Flex>
       </HoverCard.Target>
       <HoverCard.Dropdown>
@@ -195,11 +195,11 @@ export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
         cfg={cfg}
       ></UnitUpgradeCardHeader>
       {hasBuildableCost(time_cost) ? (
-        UnitCostCard(time_cost, t("unitPage.costs"))
+        UnitCostCard(time_cost, t("common.costs"))
       ) : (
         <Stack gap={0}>
           <Title order={6} style={{ textTransform: "uppercase" }}>
-            {t("unitPage.costs")}
+            {t("common.costs")}
           </Title>
           <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
             <Text>{t("unitPage.free")}</Text>

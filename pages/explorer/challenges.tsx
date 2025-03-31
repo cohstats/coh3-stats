@@ -19,6 +19,7 @@ import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
 import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -404,13 +405,12 @@ const createCalculateValuesForChallenges = (data: {
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale = "en" }) => {
-  console.log(`Locale: ${locale}`);
-
   const { dailyChallengesData, weeklyChallengesData, sbpsData, upgradesData } =
     await getMappings(locale);
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ["common"])),
       calculatedData: createCalculateValuesForChallenges({
         dailyChallengesData,
         weeklyChallengesData,

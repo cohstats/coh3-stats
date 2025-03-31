@@ -15,6 +15,7 @@ import { getExplorerUnitRoute } from "../../../../../src/routes";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -106,7 +107,9 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { sbpsData } = await getMappings(context.locale);
+  const locale = context.locale || "en";
+
+  const { sbpsData } = await getMappings(locale);
 
   const raceId = context.params?.raceId as string;
 
@@ -119,6 +122,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       raceToFetch,
       units,
       descriptions: getUnitStatsCOH3Descriptions(context.locale),
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
     revalidate: false,
   };

@@ -10,6 +10,7 @@ import {
   leaderboardsIDAsObject,
   raceIDsNameAsKey,
 } from "../../src/coh3/coh3-data";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -239,6 +240,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   query,
   req,
   res,
+  locale = "en",
 }) => {
   const playerID = params?.playerID[0] || "";
   const { view, start } = query;
@@ -293,6 +295,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       error,
       playerStatsData,
       replaysData,
+      ...(await serverSideTranslations(locale, ["common"])),
     }, // will be passed to the page component as props
   };
 };

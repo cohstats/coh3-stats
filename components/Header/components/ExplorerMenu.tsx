@@ -26,7 +26,17 @@ import { localizedNames } from "../../../src/coh3/coh3-data";
 import { getIconsPathOnCDN, internalSlash } from "../../../src/utils";
 import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
 
-const explorerFactionLink = (faction: raceType, close?: () => void) => {
+interface ExplorerMenuProps {
+  classes: Record<string, string>;
+  close: () => void;
+  t: (key: string) => string;
+}
+
+const explorerFactionLink = (
+  faction: raceType,
+  close: () => void,
+  t: (key: string) => string,
+) => {
   const name = faction !== "dak" ? localizedNames[faction] : "DAK";
 
   return (
@@ -61,7 +71,7 @@ const explorerFactionLink = (faction: raceType, close?: () => void) => {
             href={getExplorerFactionRoute(faction)}
             onClick={close}
           >
-            Buildings
+            {t("mainMenu.explMenu.buildings")}
           </Anchor>
         </Group>
         <Group gap={4}>
@@ -79,7 +89,7 @@ const explorerFactionLink = (faction: raceType, close?: () => void) => {
             href={getExplorerFactionUnitsRoute(faction)}
             onClick={close}
           >
-            Units
+            {t("mainMenu.explMenu.units")}
           </Anchor>
         </Group>
       </Stack>
@@ -87,7 +97,7 @@ const explorerFactionLink = (faction: raceType, close?: () => void) => {
   );
 };
 
-const DPSLink = ({ close }: { close?: () => void }) => {
+const DPSLink = ({ close, t }: { close?: () => void; t: (key: string) => string }) => {
   return (
     <Group gap={4}>
       <Image
@@ -105,14 +115,14 @@ const DPSLink = ({ close }: { close?: () => void }) => {
           href={getDPSCalculatorRoute()}
           onClick={close}
         >
-          DPS - Unit Comparison
+          {t("mainMenu.explMenu.dpsCalculator")}
         </Anchor>
       </Text>
     </Group>
   );
 };
 
-const UnitBrowserLink = ({ close }: { close?: () => void }) => {
+const UnitBrowserLink = ({ close, t }: { close?: () => void; t: (key: string) => string }) => {
   return (
     <Group gap={4}>
       <Image
@@ -130,14 +140,14 @@ const UnitBrowserLink = ({ close }: { close?: () => void }) => {
           href={getUnitBrowserRoute()}
           onClick={close}
         >
-          Unit Browser
+          {t("mainMenu.explMenu.unitBrowser")}
         </Anchor>
       </Text>
     </Group>
   );
 };
 
-const ChallengesLink = ({ close }: { close?: () => void }) => {
+const ChallengesLink = ({ close, t }: { close?: () => void; t: (key: string) => string }) => {
   return (
     <Group gap={4}>
       <IconMedal size={20} />
@@ -148,14 +158,14 @@ const ChallengesLink = ({ close }: { close?: () => void }) => {
           href={getChallengesRoute()}
           onClick={close}
         >
-          Challenges
+          {t("mainMenu.explMenu.challenges")}
         </Anchor>
       </Text>
     </Group>
   );
 };
 
-const WeaponsLink = ({ close }: { close?: () => void }) => {
+const WeaponsLink = ({ close, t }: { close?: () => void; t: (key: string) => string }) => {
   return (
     <Group gap={4}>
       <Image
@@ -173,41 +183,35 @@ const WeaponsLink = ({ close }: { close?: () => void }) => {
           href={getWeaponsRoute()}
           onClick={close}
         >
-          Weapons
+          {t("mainMenu.explMenu.weapons")}
         </Anchor>
       </Text>
     </Group>
   );
 };
 
-const ExplorerMenu = ({
-  classes,
-  close,
-}: {
-  classes: Record<string, string>;
-  close?: () => void;
-}) => {
+const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
   const mobileView = (
     <Group className={classes.hiddenDesktop} grow>
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text fw="500">Explorer</Text>
+            <Text fw="500">{t("mainMenu.explorer")}</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
-              {explorerFactionLink("german", close)}
-              {explorerFactionLink("american", close)}
-              {explorerFactionLink("dak", close)}
-              {explorerFactionLink("british", close)}
+              {explorerFactionLink("german", close, t)}
+              {explorerFactionLink("american", close, t)}
+              {explorerFactionLink("dak", close, t)}
+              {explorerFactionLink("british", close, t)}
             </Stack>
             <Divider my="sm"></Divider>
             <Stack gap={4}>
               <Text fw={700}>Tools</Text>
-              <DPSLink close={close} />
-              <UnitBrowserLink close={close} />
-              <ChallengesLink close={close} />
-              <WeaponsLink close={close} />
+              <DPSLink close={close} t={t} />
+              <UnitBrowserLink close={close} t={t} />
+              <ChallengesLink close={close} t={t} />
+              <WeaponsLink close={close} t={t} />
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -221,7 +225,7 @@ const ExplorerMenu = ({
         <HoverCard.Target>
           <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={classes.link}>
             <Group gap={3}>
-              Explorer
+              {t("mainMenu.explorer")}
               <IconChevronDown className={classes.hiddenMobile} size={16} />
             </Group>
           </Anchor>
@@ -230,20 +234,20 @@ const ExplorerMenu = ({
           <Grid gutter={8} columns={4}>
             <Grid.Col span={3}>
               <Grid columns={4} align="center">
-                <Grid.Col span={1}>{explorerFactionLink("german", () => null)}</Grid.Col>
-                <Grid.Col span={1}>{explorerFactionLink("american", () => null)}</Grid.Col>
-                <Grid.Col span={1}>{explorerFactionLink("dak", () => null)}</Grid.Col>
-                <Grid.Col span={1}>{explorerFactionLink("british", () => null)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("german", () => null, t)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("american", () => null, t)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("dak", () => null, t)}</Grid.Col>
+                <Grid.Col span={1}>{explorerFactionLink("british", () => null, t)}</Grid.Col>
               </Grid>
             </Grid.Col>
             <Grid.Col span={1}>
               <Stack gap={4}>
                 <Text fw={700}>Tools</Text>
                 <Divider />
-                <DPSLink close={() => null} />
-                <UnitBrowserLink close={() => null} />
-                <ChallengesLink close={() => null} />
-                <WeaponsLink close={() => null} />
+                <DPSLink close={() => null} t={t} />
+                <UnitBrowserLink close={() => null} t={t} />
+                <ChallengesLink close={() => null} t={t} />
+                <WeaponsLink close={() => null} t={t} />
               </Stack>
             </Grid.Col>
           </Grid>

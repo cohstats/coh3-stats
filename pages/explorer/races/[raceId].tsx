@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { IconBarrierBlock } from "@tabler/icons-react";
 import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
@@ -29,6 +28,8 @@ import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../src/unitStats/descriptions";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 interface RaceDetailProps {
   sbpsData: SbpsType[];
@@ -53,6 +54,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
+  const { t } = useTranslation(["explorer"]);
 
   const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
@@ -87,7 +89,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
         {/* Battlegroups Section */}
         <Stack mt={32}>
-          <Title order={4}>Battlegroups</Title>
+          <Title order={4}>{t("common.battleGroups")}</Title>
 
           {BattlegroupCard(raceToFetch, {
             battlegroupData,
@@ -101,22 +103,26 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>{descriptions.buildings}</Title>
 
-          {BuildingMapping(raceToFetch, {
-            ebpsData,
-            sbpsData,
-            upgradesData,
-            abilitiesData,
-          })}
+          {BuildingMapping(
+            raceToFetch,
+            {
+              ebpsData,
+              sbpsData,
+              upgradesData,
+              abilitiesData,
+            },
+            t,
+          )}
         </Stack>
 
-        <Flex direction="row" gap={16} mt={24}>
-          <IconBarrierBlock size={35} />
-          <Text c="orange.6" fs="italic">
-            Important Note: This section may contain some inacurracies regarding the unit costs.
-            We&apos;re still working on redefining the calculation for infantry, so feel free to
-            report any bug.
-          </Text>
-        </Flex>
+        {/*<Flex direction="row" gap={16} mt={24}>*/}
+        {/*  <IconBarrierBlock size={35} />*/}
+        {/*  <Text c="orange.6" fs="italic">*/}
+        {/*    Important Note: This section may contain some inacurracies regarding the unit costs.*/}
+        {/*    We&apos;re still working on redefining the calculation for infantry, so feel free to*/}
+        {/*    report any bug.*/}
+        {/*  </Text>*/}
+        {/*</Flex>*/}
       </Container>
     </>
   );
@@ -130,6 +136,7 @@ const BuildingMapping = (
     upgradesData: UpgradesType[];
     abilitiesData: AbilitiesType[];
   },
+  t: (key: string) => string,
 ) => {
   const buildings = filterMultiplayerBuildings(data.ebpsData, race);
   return (
@@ -175,6 +182,7 @@ const BuildingMapping = (
               health={{
                 hitpoints: building.health.hitpoints,
               }}
+              t={t}
             />
           </Card>
         );
@@ -269,13 +277,13 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } = await getMappings(
-    context.locale,
-  );
+  const locale = context.locale || "en";
+  const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } =
+    await getMappings(locale);
 
   const raceId = context.params?.raceId as string;
 
-  const descriptions = getUnitStatsCOH3Descriptions(context.locale);
+  const descriptions = getUnitStatsCOH3Descriptions(locale);
 
   // get raceID from context
 
@@ -290,6 +298,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         raceDescription: descriptions[raceId as raceType]?.description || null,
         buildings: descriptions.common.buildings || null,
       },
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
     revalidate: false,
   };

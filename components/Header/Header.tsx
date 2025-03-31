@@ -33,12 +33,17 @@ import config from "../../config";
 
 import classes from "./Header.module.css";
 import LanguageSwitcher from "./components/language-switcher";
+import { useTranslation } from "next-i18next";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
 }
 
-const MobileView = () => {
+interface MobileViewProps {
+  t: (key: string) => string;
+}
+
+const MobileView: React.FC<MobileViewProps> = ({ t }) => {
   const [opened, { toggle, close }] = useDisclosure(false);
 
   return (
@@ -71,12 +76,12 @@ const MobileView = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              Leaderboards
+              {t("mainMenu.leaderboards")}
             </Anchor>
 
-            <StatisticsMenu classes={classes} close={close} />
+            <StatisticsMenu classes={classes} close={close} t={t} />
 
-            <ExplorerMenu close={close} classes={classes} />
+            <ExplorerMenu close={close} classes={classes} t={t} />
 
             <Anchor
               component={Link}
@@ -84,7 +89,7 @@ const MobileView = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              Live Games
+              {t("mainMenu.liveGames")}
             </Anchor>
 
             <Anchor
@@ -93,7 +98,7 @@ const MobileView = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              COH3 News{" "}
+              {t("mainMenu.otherMenu.coh3News")}{" "}
             </Anchor>
 
             <Anchor
@@ -102,10 +107,10 @@ const MobileView = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              Desktop App
+              {t("mainMenu.desktopApp")}
             </Anchor>
 
-            <OtherMenu close={close} classes={classes} />
+            <OtherMenu close={close} classes={classes} t={t} />
 
             <Anchor
               component={Link}
@@ -113,7 +118,7 @@ const MobileView = () => {
               className={classes.link}
               onClick={() => close()}
             >
-              About{" "}
+              {t("mainMenu.about")}{" "}
             </Anchor>
 
             <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
@@ -125,7 +130,7 @@ const MobileView = () => {
                 unoptimized
                 style={{ marginRight: "5px" }}
               />
-              Support Us
+              {t("mainMenu.supportUs")}
             </Anchor>
           </Stack>
 
@@ -141,7 +146,11 @@ const MobileView = () => {
   );
 };
 
-const DesktopView = () => {
+interface DesktopViewProps {
+  t: (key: string) => string;
+}
+
+const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
   return (
     <>
       <Group className={classes.hiddenMobile} gap={0}>
@@ -150,7 +159,7 @@ const DesktopView = () => {
             <div>
               <Anchor component={Link} href={getLeaderBoardRoute()} className={classes.link}>
                 <Group gap={3}>
-                  Leaderboards
+                  {t("mainMenu.leaderboards")}
                   <IconChevronDown size={16} />
                 </Group>
               </Anchor>
@@ -160,17 +169,17 @@ const DesktopView = () => {
             <LeaderboardsMenu />
           </HoverCard.Dropdown>
         </HoverCard>
-        <StatisticsMenu classes={classes} />
-        <ExplorerMenu classes={classes} />
+        <StatisticsMenu classes={classes} t={t} />
+        <ExplorerMenu classes={classes} close={() => null} t={t} />
         <Anchor component={Link} href={getLiveGamesRoute()} className={classes.link}>
-          Live Games
+          {t("mainMenu.liveGames")}
         </Anchor>
         <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
-          Desktop App
+          {t("mainMenu.desktopApp")}
         </Anchor>
-        <OtherMenu classes={classes} />
+        <OtherMenu classes={classes} close={() => null} t={t} />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
-          About
+          {t("mainMenu.about")}
         </Anchor>
         <Anchor component={Link} href={config.DONATION_LINK} className={classes.link}>
           <Image
@@ -181,7 +190,7 @@ const DesktopView = () => {
             unoptimized
             style={{ marginRight: "5px" }}
           />
-          Support Us
+          {t("mainMenu.supportUs")}
         </Anchor>
       </Group>
 
@@ -196,6 +205,8 @@ const DesktopView = () => {
 };
 
 export const Header: React.FC<HeaderProps> = () => {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <header className={classes.headerRoot}>
@@ -215,8 +226,8 @@ export const Header: React.FC<HeaderProps> = () => {
               </Title>
             </Group>
           </Anchor>
-          <DesktopView />
-          <MobileView />
+          <DesktopView t={t} />
+          <MobileView t={t} />
         </Container>
       </header>
     </>

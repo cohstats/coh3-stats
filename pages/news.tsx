@@ -1,8 +1,9 @@
 import { GetServerSideProps } from "next";
 import { getCOH3SteamNews } from "../src/apis/steam-api";
 import SteamNewsPage from "../screens/news";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ res, locale = "en" }) => {
   let COH3SteamNews = null;
 
   console.log(`SSR - /news`);
@@ -23,6 +24,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
   return {
     props: {
       COH3SteamNews,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

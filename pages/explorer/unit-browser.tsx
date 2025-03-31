@@ -6,6 +6,7 @@ import { getMappings } from "../../src/unitStats/mappings";
 import { UnitTable } from "../../components/unitStats/unitTable";
 import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface SquadProps {
   tableData: CustomizableUnit[];
@@ -96,8 +97,10 @@ const filterObject = (obj: any, allowedKeys: string[]): any => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData } = await getMappings(context.locale);
+  const { weaponData, ebpsData, sbpsData } = await getMappings(locale);
 
   const tableData: CustomizableUnit[] = [];
 
@@ -118,6 +121,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       tableData: tableData,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

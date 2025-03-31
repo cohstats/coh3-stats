@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
 import { generateKeywordsString } from "../../src/head-utils";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json
 
@@ -159,22 +160,22 @@ const OpenData: NextPage = () => {
             <Title order={2} pt="md">
               COH3 Leaderboards data
             </Title>
-            <Text pt="md">
+            <Text span pt="md">
               COH3 Stats stores complete historical leaderboards for COH3. You can download the
               .json files from our storage. Each JSON file includes comprehensive leaderboards
               with all the ranks for a specific mode and faction.
             </Text>
-            <Text pt="md">
+            <Text span pt="md">
               They are created every day at 04:00 UTC. Downloading for a given day at 05:00 UTC
               should be safe.
               <br />
               History starts on 10h of May 2023.
             </Text>
-            <Text pt="md">
+            <Text span pt="md">
               You can download them from our storage: <br />
               <Code block>{codeForLeaderboards}</Code>
             </Text>
-            <Text fs="italic" fz={"small"}>
+            <Text span fs="italic" fz={"small"}>
               If you plan to utilize the data, kindly acknowledge the data source. Additionally,
               consider sharing your project with us on our{" "}
               <Anchor href={config.DISCORD_INVITE_LINK} target={"_blank"}>
@@ -183,10 +184,12 @@ const OpenData: NextPage = () => {
               . We would love to help you with your project.
             </Text>
 
-            <Text pt={"md"}>Type definitions for the data:</Text>
+            <Text span pt={"md"}>
+              Type definitions for the data:
+            </Text>
             <Spoiler maxHeight={120} showLabel="Show full details" hideLabel="Hide">
               <Code block>{codeTypeOfLeaderBoards}</Code>
-              <Text fs="italic" fz={"small"}>
+              <Text span fs="italic" fz={"small"}>
                 Optional fields are marked with &quot;?&quot;. And will most likely be not present
                 as they are not deemed important. However they are on the Relic API in case you
                 need them. Reach out to us if you need any clarification.
@@ -197,7 +200,7 @@ const OpenData: NextPage = () => {
             <Title order={2} pt="xl">
               COH3 Match data
             </Title>
-            <Text pt="md">
+            <Text span pt="md">
               COH3 Stats stores played matches. The dump should include all ranked automatch games
               and all games against AI. It might also include some custom and other types of games
               which were observable in live games. It should not include any broken games. Aka
@@ -205,21 +208,23 @@ const OpenData: NextPage = () => {
               games based on matchtype_id. You can download the .json files from our storage. Each
               JSON file contains all games played in a given day which we were able to track.
             </Text>
-            <Text pt="md">
+            <Text span pt="md">
               They are created every day at 06:00 UTC. Downloading for a previous day at 07:00 UTC
               is recommended.
               <br />
               History starts on July 1st 2023.
             </Text>
-            <Text pt="md">
+            <Text span pt="md">
               You can download them our our storage: <br />
               <Code block>{codeForForMatchData}</Code>
             </Text>
-            <Text pt={"md"}>Type definitions for the data:</Text>
+            <Text span pt={"md"}>
+              Type definitions for the data:
+            </Text>
             <Spoiler maxHeight={120} showLabel="Show full details" hideLabel="Hide">
               <Code block>{codeTypeOfMatchData}</Code>
             </Spoiler>
-            <Text fs="italic" fz={"small"}>
+            <Text span fs="italic" fz={"small"}>
               If you plan to utilize the data, kindly acknowledge the data source. Additionally,
               consider sharing your project with us on our{" "}
               <Anchor href={config.DISCORD_INVITE_LINK} target={"_blank"}>
@@ -232,12 +237,12 @@ const OpenData: NextPage = () => {
             COH3 Stats - Unix TimeStamp
           </Title>
           <div>
-            <Text pt={"md"}>
+            <Text span pt={"md"}>
               COH3 Stats is using Unix TimeStamp to mark each day date with the time 00:00:00 UTC.
               <br />
               For example 1683676800 which is May 10 2023 00:00:00 GMT+0000.
             </Text>
-            <Text pt={"md"}>
+            <Text span pt={"md"}>
               In JavaScript you can get the timestamp for the current day with the following code:
             </Text>
             <Code block>{codeForUnixTimeStamp}</Code>
@@ -247,7 +252,7 @@ const OpenData: NextPage = () => {
             <Title order={2} pt="xl">
               COH3 Game data
             </Title>
-            <Text pt={"md"}>
+            <Text span pt={"md"}>
               You can find the game data (units, descriptions, etc.) in our Data repository on
               Github.
               <br />
@@ -255,7 +260,7 @@ const OpenData: NextPage = () => {
                 https://github.com/cohstats/coh3-data
               </Anchor>
             </Text>
-            <Text pt={"sm"}>
+            <Text span pt={"sm"}>
               You can find all our other open source projects on our Github organization page:
               <br />
               <Anchor href={"https://github.com/cohstats"} target={"_blank"}>
@@ -267,6 +272,14 @@ const OpenData: NextPage = () => {
       </>
     </div>
   );
+};
+
+export const getStaticProps = async ({ locale = "en" }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default OpenData;

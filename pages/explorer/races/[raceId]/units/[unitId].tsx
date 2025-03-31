@@ -207,7 +207,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
                   },
                 })}
               </Card>
-              <UnitUpgradeSection upgrades={upgrades} title={t("unitPage.upgrades")} />
+              <UnitUpgradeSection upgrades={upgrades} title={t("common.upgrades")} />
               <UnitAbilitySection abilities={abilities} title={t("unitPage.abilities")} />
             </Stack>
           </Grid.Col>
@@ -215,7 +215,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
             <Stack>
               <Title order={4}>{t("unitPage.stats")}</Title>
               <Card p="md" radius="md" withBorder>
-                {UnitCostCard(totalCost, t("unitPage.costs"))}
+                {UnitCostCard(totalCost, t("common.costs"))}
                 {defaultSquadMember.unitType !== "vehicles" &&
                 defaultSquadMember.unitType !== "emplacements" ? (
                   ReinforceCostCard(reinforceCost, t("unitPage.reinforce"))
@@ -227,7 +227,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
                 {HitpointCard({
                   squad: resolvedSquad,
                   entities: resolvedEntities,
-                  title: t("unitPage.hitpoints"),
+                  title: t("common.hitpoints"),
                 })}
               </Card>
               <Card p="md" radius="md" withBorder>
@@ -246,7 +246,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
         </Grid>
         <Grid>
           <Grid.Col>{UnitBuildingSection(buildables, t("unitPage.construct"))}</Grid.Col>
-          <Grid.Col>{UnitWeaponSection(squadWeapons, t("unitPage.loadout"))}</Grid.Col>
+          <Grid.Col>
+            {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
+          </Grid.Col>
         </Grid>
       </Container>
     </>
@@ -353,7 +355,7 @@ const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }
   );
 };
 
-const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout") => {
+const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weaponNote = "") => {
   return (
     <Stack>
       <Title order={4}>{title}</Title>
@@ -374,10 +376,7 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout") => {
 
       <List size="xs" pl="md">
         <List.Item>
-          <Text fs="italic">
-            The effective accuracy is impacted by several factors like target size or armor of the
-            receiving unit as well as accuracy or penetration of the attacking one.
-          </Text>
+          <Text fs="italic">{weaponNote}</Text>
         </List.Item>
       </List>
     </Stack>
@@ -466,7 +465,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["explorer"])),
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
       calculatedData: createdCalculateValuesForUnits(
         { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
         unitId,

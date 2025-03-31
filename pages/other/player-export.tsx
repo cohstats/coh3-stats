@@ -4,6 +4,7 @@ import { AnalyticsPlayerExportPageView } from "../../src/firebase/analytics";
 import Head from "next/head";
 import { Anchor, Code, Container, Space, Text, Title } from "@mantine/core";
 import { generateKeywordsString } from "../../src/head-utils";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const exampleOutput = `alias,relic_id,steam_id,1v1_axis_elo,1v1_allies_elo,german_1v1_rank,german_1v1_elo,german_1v1_total,american_1v1_rank,american_1v1_elo,american_1v1_total,dak_1v1_rank,dak_1v1_elo,dak_1v1_total,british_1v1_rank,british_1v1_elo,british_1v1_total
 Isildur,3705,76561198018614046,1432,1475,-1,1432,23,-1,1307,14,-1,1417,13,-1,1475,34
@@ -39,25 +40,25 @@ const PlayerExport: NextPage = () => {
           <Title order={4} pt="md">
             API for tournament organizers.
           </Title>
-          <Text pt="md">
+          <Text span pt="md">
             This API provides access to players leaderboard stats in CSV format which you can
             easily import in an Excel sheet.
           </Text>
           <Space />
-          <Text pt="md">
+          <Text span pt="md">
             Export the data via this link:
             <Code
               block
             >{`https://coh3stats.com/api/playerExport?types=["1v1"]&profileIDs=[3705,871,6219,108833,61495,1287]`}</Code>
           </Text>
-          <Text pt="md">
+          <Text span pt="md">
             Parameter <Code>types</Code> can be <Code>{`["1v1", "2v2", "3v3", "4v4"]`}</Code>.
             <br />
             Parameter <Code>profileIDs</Code> is an array of Relic profile IDs. You can find them
             on COH3 Stats player cards.
           </Text>
           <Space h={"xl"} />
-          <Text>
+          <Text span>
             Example of how to import the data into Google Sheets is{" "}
             <Anchor
               href={
@@ -76,15 +77,15 @@ const PlayerExport: NextPage = () => {
           <Code block>{exampleOutput}</Code>
 
           <Space h={"xl"} />
-          <Text>
+          <Text span>
             If you require the data for your tournament in a different format or have any other
             inquiries, please feel free to reach out to us on Discord.
           </Text>
-          <Text fs="italic">
+          <Text span fs="italic">
             A shoutout to coh3stats.com in your tournament would be awesome. Thank you!
           </Text>
           <Space h={"xl"} />
-          <Text>
+          <Text span>
             Please note that this API is designed for use in tournaments or with a limited number
             of players.
             <Text span fw={500}>
@@ -97,6 +98,14 @@ const PlayerExport: NextPage = () => {
       </>
     </>
   );
+};
+
+export const getStaticProps = async ({ locale = "en" }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default PlayerExport;

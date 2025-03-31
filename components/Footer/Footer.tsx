@@ -8,8 +8,10 @@ import Link from "next/link";
 import config from "../../config";
 
 import classes from "./Footer.module.css";
+import { useTranslation } from "next-i18next";
 
 export const Footer: React.FC = () => {
+  const { t } = useTranslation("common");
   // We can't use useColorScheme in NextJS
   // https://mantine.dev/theming/color-schemes/#color-scheme-value-caveats
   // const colorScheme = useColorScheme();
@@ -25,14 +27,16 @@ export const Footer: React.FC = () => {
                 multiline
                 w={200}
                 withArrow
-                label={`Data displayed on the site are from game patch ${
+                label={`${t("footer.gamePatchInfo")} ${
                   config.latestPatch
                 }, exported ${config.patches[config.latestPatch].dataTime}`}
               >
-                <span>Game patch {config.latestPatch}</span>
+                <span>
+                  {t("footer.gamePatch")} {config.latestPatch}
+                </span>
               </Tooltip>
               <br />
-              This is an unofficial fan-made site for Company&nbsp;Of&nbsp;Heroes&nbsp;3.
+              {t("footer.unofficialSite")}
             </Text>
             <Group gap={5} justify="right" wrap="nowrap">
               <Text c="dimmed" size="sm"></Text>

@@ -2,6 +2,7 @@ import { Divider, Flex, Grid, Image, Indicator, Stack, Text, Title } from "@mant
 import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
+import { useTranslation } from "next-i18next";
 
 type WeaponCardInput = {
   id: string;
@@ -17,6 +18,8 @@ export const WeaponLoadoutCard = (
   { id, parent, icon_name, weapon_class, weapon_cat, weapon_bag }: WeaponCardInput,
   count = 1,
 ) => {
+  const { t } = useTranslation(["explorer"]);
+
   const iconName = icon_name !== "" ? `/icons/${icon_name}.png` : getDefaultWeaponIcon(parent);
   /** Only take into account those weapons categories to display further info.
    * The "special", "flame_throwers", "campaign" are ignored. */
@@ -64,7 +67,7 @@ export const WeaponLoadoutCard = (
       <Stack gap={2} fz="sm">
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Moving Accuracy Multiplier</Text>
+            <Text>{t("weaponCard.movingAccuracy")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -85,7 +88,7 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Moving Cooldown Multiplier</Text>
+            <Text>{t("weaponCard.movingCooldown")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -111,17 +114,17 @@ export const WeaponLoadoutCard = (
           <Grid.Col span={{ base: 4, md: 4 }}></Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
-              Near
+              {t("common.near")}
             </Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="yellow.6">
-              Mid
+              {t("common.medium")}
             </Text>
           </Grid.Col>
           <Grid.Col span={{ base: 2, md: 2 }}>
             <Text style={{ textAlign: "center" }} c="red.6">
-              Far
+              {t("common.far")}
             </Text>
           </Grid.Col>
         </Grid>
@@ -129,7 +132,7 @@ export const WeaponLoadoutCard = (
         {/* First row: Accuracy */}
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Accuracy</Text>
+            <Text>{t("weaponCard.accuracy")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -152,7 +155,7 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Rounds per minute (RPM)</Text>
+            <Text>{t("weaponCard.rpm")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -175,7 +178,7 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Range of Fire</Text>
+            <Text>{t("weaponCard.rangeOfFire")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -200,7 +203,7 @@ export const WeaponLoadoutCard = (
         {/* Row: Penetration */}
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Penetration</Text>
+            <Text>{t("weaponCard.penetration")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -222,7 +225,7 @@ export const WeaponLoadoutCard = (
         {/* Row: Scatter Area */}
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Scatter Area</Text>
+            <Text>{t("weaponCard.scatter")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -243,7 +246,7 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
         </Grid>
 
-        <Divider my={8}></Divider>
+        <Divider my={8} />
 
         {/* Section Group Header */}
 
@@ -251,16 +254,13 @@ export const WeaponLoadoutCard = (
           <Grid.Col span={{ base: 4, md: 4 }}></Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
-              Min.
+              {t("common.min")}
             </Text>
           </Grid.Col>
-          <Grid.Col span={{ base: 3, md: 3 }}>
-            {/*<Text style={{"textAlign": "center"}} c="yellow.6">
-            </Text> */}
-          </Grid.Col>
+          <Grid.Col span={{ base: 3, md: 3 }}></Grid.Col>
           <Grid.Col span={{ base: 2, md: 2 }}>
             <Text style={{ textAlign: "center" }} c="red.6">
-              Max.
+              {t("common.max")}
             </Text>
           </Grid.Col>
         </Grid>
@@ -268,7 +268,7 @@ export const WeaponLoadoutCard = (
         {/* First row: Damage */}
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>Damage</Text>
+            <Text>{t("weaponCard.damage")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -291,7 +291,7 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text>AoE Radius</Text>
+            <Text>{t("weaponCard.aoeRadius")}</Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
@@ -309,8 +309,6 @@ export const WeaponLoadoutCard = (
             </Text>
           </Grid.Col>
         </Grid>
-
-        {/* <Divider></Divider> */}
       </Stack>
     </Stack>
   );
