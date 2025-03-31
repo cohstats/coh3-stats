@@ -216,6 +216,12 @@ const ProcessPlayerCardStatsData = (
     },
   };
 
+  const processedAliasHistory =
+    playerStatsData?.alias_history?.map((data) => ({
+      alias: data.alias,
+      updatedAt: data.updatedAt._seconds,
+    })) || [];
+
   return {
     activityByWeekDay: processedActivityByDayOfWeek,
     activityByDate: processedActivityByDate,
@@ -224,6 +230,7 @@ const ProcessPlayerCardStatsData = (
     customGamesHidden: playerStatsData?.customGamesHidden?.hidden || false,
     statGroups: statGroupsStats,
     leaderBoardStats: leaderBoardStats,
+    aliasHistory: processedAliasHistory,
   };
 };
 

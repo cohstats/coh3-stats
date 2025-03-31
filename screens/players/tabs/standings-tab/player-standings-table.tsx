@@ -37,12 +37,14 @@ const PlayerStandingsTable = ({
         style={{
           flexGrow: 1,
           maxHeight: "inherit",
+          maxWidth: "750px",
         }}
         withTableBorder={true}
         borderRadius="md"
         highlightOnHover
         striped
         verticalSpacing={5}
+        horizontalSpacing={5}
         // provide data
         idAccessor={"type"}
         records={dataForTable}

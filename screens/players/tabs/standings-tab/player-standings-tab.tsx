@@ -11,6 +11,7 @@ import NemesisWidget from "./widgets/nemesis-widget";
 import MoreButton from "../components/more-button";
 import { useRouter } from "next/router";
 import MapsWidget from "./widgets/maps-widget";
+import AliasHistoryWidget from "./widgets/alias-history-widget";
 
 const PlayerStandingsTab = ({
   playerStandings,
@@ -82,11 +83,13 @@ const PlayerStandingsTab = ({
           <Space h="xl" />
           <Space h="xs" />
           <MapsWidget playerStatsData={playerStatsData} playerStandings={playerStandings} />
-          <Space h="xl" />
+          <Space h="md" />
           <NemesisWidget
             playerStatsData={playerStatsData}
             moreButtonOnClick={() => changeView("nemesis")}
           />
+          <Space h="md" />
+          <AliasHistoryWidget playerStatsData={playerStatsData} />
         </div>
       </Flex>
     </Container>
