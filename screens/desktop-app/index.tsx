@@ -14,12 +14,13 @@ import { IconCheck } from "@tabler/icons-react";
 import { NextPage } from "next";
 import Head from "next/head";
 import React, { useEffect } from "react";
+import { useTranslation } from "next-i18next";
 import { AnalyticsDesktopAppPageView } from "../../src/firebase/analytics";
 
 import classes from "./desktop-app.module.css";
 
 const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) => {
-  const desktopAppDescription = `Download COH3 Stats Desktop app ${version}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.`;
+  const { t } = useTranslation("desktopapp");
 
   useEffect(() => {
     AnalyticsDesktopAppPageView();
@@ -28,14 +29,9 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
   return (
     <>
       <Head>
-        <title>Desktop App from COH3 Stats</title>
-        <meta name="description" content={desktopAppDescription} />
-        <meta
-          name="keywords"
-          content={
-            "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
-          }
-        />
+        <title>{t("meta.title")}</title>
+        <meta name="description" content={t("meta.description", { version })} />
+        <meta name="keywords" content={t("meta.keywords")} />
         <meta property="og:image" content="/desktop-app/desktop-app-v2.webp" />
       </Head>
       <Container size={"lg"}>
@@ -60,19 +56,19 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" gap={5} mb={30}>
             <Anchor href={downloadURL} target="_blank">
-              <Button>Download {version}</Button>
+              <Button>{t("download.button", { version })}</Button>
             </Anchor>
             <Text size="sm" c="dimmed">
-              {downloadCount} downloads
+              {t("download.downloads", { count: downloadCount })}
             </Text>
             <Anchor
               href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
               target="_blank"
             >
-              Release Notes
+              {t("download.releaseNotes")}
             </Anchor>
           </Stack>
-          <Title>Gain additional intel on your games with the desktop app!</Title>
+          <Title>{t("features.title")}</Title>
           <List
             spacing="sm"
             mt={30}
@@ -83,22 +79,20 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
               </ThemeIcon>
             }
           >
+            <List.Item>{t("features.list.noSetup")}</List.Item>
+            <List.Item>{t("features.list.leaderboard")}</List.Item>
+            <List.Item>{t("features.list.notifications")}</List.Item>
+            <List.Item>{t("features.list.replays")}</List.Item>
             <List.Item>
-              Effortless usage, no setup needed - simply launch the application
-            </List.Item>
-            <List.Item>Explore intricate player leaderboard statistics</List.Item>
-            <List.Item>Receive optional sound notifications upon joining a game</List.Item>
-            <List.Item>Auto upload replays to the cloud for additional analysis</List.Item>
-            <List.Item>
-              Streamer overlay for{" "}
-              <Anchor href={"https://obsproject.com/"} target={"_blank"}>
+              {t("features.list.streaming.before")}{" "}
+              <Anchor href="https://obsproject.com/" target="_blank">
                 OBS
-              </Anchor>
-              ,{" "}
-              <Anchor href={"https://www.twitch.tv/broadcast/studio"} target={"_blank"}>
+              </Anchor>{" "}
+              {t("features.list.streaming.and")}{" "}
+              <Anchor href="https://www.twitch.tv/broadcast/studio" target="_blank">
                 Twitch Studio
               </Anchor>{" "}
-              and other streaming tools
+              {t("features.list.streaming.after")}
             </List.Item>
           </List>
         </Paper>

@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res, locale 
       downloadURL,
       downloadCount,
       version,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "desktopapp"])),
     },
   };
 };
