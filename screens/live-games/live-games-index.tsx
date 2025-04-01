@@ -16,8 +16,7 @@ import {
   AnalyticsLiveGamesTypeSelection,
   AnalyticsLiveGamesView,
 } from "../../src/firebase/analytics";
-
-const pageTitle = `Live Games - Company of Heroes 3`;
+import { useTranslation } from "next-i18next";
 
 // the chart needs to be dynamically imported
 const DynamicLiveGamesLineChart = dynamic(() => import("./live-games-line-chart"), {
@@ -27,6 +26,7 @@ const DynamicLiveGamesLineChart = dynamic(() => import("./live-games-line-chart"
 const RECORDS_PER_PAGE = 25;
 
 const LiveGamesIndex = () => {
+  const { t } = useTranslation("live-games");
   const { push, query } = useRouter();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -125,8 +125,8 @@ const LiveGamesIndex = () => {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={`Current live games in Company of Heroes 3`} />
+        <title>{t("meta.title")}</title>
+        <meta name="description" content={t("meta.description")} />
         <meta
           name="keywords"
           content={generateKeywordsString([
@@ -140,7 +140,7 @@ const LiveGamesIndex = () => {
       </Head>
       <Container size={"lg"} p={0}>
         <div style={{ textAlign: "center", paddingBottom: 5 }}>
-          <Title order={1}>Live PC Games</Title>
+          <Title order={1}>{t("pageTitle")}</Title>
         </div>
 
         <div
@@ -160,30 +160,30 @@ const LiveGamesIndex = () => {
             <Group>
               <Select
                 withCheckIcon={false}
-                label="Live Games"
+                label={t("filters.liveGames.label")}
                 style={{ width: 170 }}
                 allowDeselect={false}
                 value={type}
                 data={[
-                  { value: "1v1", label: "1 vs 1 Automatch" },
-                  { value: "2v2", label: "2 vs 2 Automatch" },
-                  { value: "3v3", label: "3 vs 3 Automatch" },
-                  { value: "4v4", label: "4 vs 4 Automatch" },
-                  { value: "ai", label: "Automatch VS AI " },
-                  { value: "custom", label: "Custom Games" },
+                  { value: "1v1", label: t("filters.liveGames.options.1v1") },
+                  { value: "2v2", label: t("filters.liveGames.options.2v2") },
+                  { value: "3v3", label: t("filters.liveGames.options.3v3") },
+                  { value: "4v4", label: t("filters.liveGames.options.4v4") },
+                  { value: "ai", label: t("filters.liveGames.options.ai") },
+                  { value: "custom", label: t("filters.liveGames.options.custom") },
                 ]}
                 onChange={selectType}
               />
               <Select
                 withCheckIcon={false}
-                label="Sort By"
+                label={t("filters.sortBy.label")}
                 style={{ width: 150 }}
                 allowDeselect={false}
                 value={order}
                 data={[
-                  { value: "rank", label: "Rank" },
-                  { value: "observers", label: "Observers" },
-                  { value: "startgametime", label: "Start Time" },
+                  { value: "rank", label: t("filters.sortBy.options.rank") },
+                  { value: "observers", label: t("filters.sortBy.options.observers") },
+                  { value: "startgametime", label: t("filters.sortBy.options.startgametime") },
                 ]}
                 onChange={selectOrder}
               />
