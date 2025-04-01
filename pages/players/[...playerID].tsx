@@ -295,7 +295,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       error,
       playerStatsData,
       replaysData,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "players"])),
     }, // will be passed to the page component as props
   };
 };

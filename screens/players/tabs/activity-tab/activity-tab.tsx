@@ -6,6 +6,7 @@ import { IconInfoTriangle } from "@tabler/icons-react";
 import Link from "next/link";
 import config from "../../../../config";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 // Because of some Nivo bugs we need to render only on client side
 const DynamicActivityByCalendarDay = dynamic(() => import("./activity-calendar-day"), {
@@ -31,20 +32,22 @@ const ActivityTab = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: string;
 }) => {
+  const { t } = useTranslation("players");
+
   if (!playerStatsData) {
     return (
       <Container size={"sm"} p={"md"}>
         <Center>
           <Alert
             icon={<IconInfoTriangle size="2rem" />}
-            title={"No Activity Data"}
+            title={t("activity.alerts.noData.title")}
             color="yellow"
             miw={450}
           >
-            It looks like we are not getting activity data for this player.
+            {t("activity.alerts.noData.message")}
             <br />
             <br />
-            If this error persists, please report it on{" "}
+            {t("activity.alerts.noData.reportMessage")}{" "}
             <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target={"_blank"}>
               Discord
             </Anchor>
@@ -61,14 +64,14 @@ const ActivityTab = ({
         <Center>
           <Alert
             icon={<IconInfoTriangle size="2rem" />}
-            title={"No COH3 Stats Data"}
+            title={t("activity.alerts.steamOnly.title")}
             color="yellow"
             miw={450}
           >
-            These stats are available only for Steam players.
+            {t("activity.alerts.steamOnly.message")}
             <br />
             <br />
-            If you would like to have these stats on Consoles too, please vote / report it on our{" "}
+            {t("activity.alerts.steamOnly.voteMessage")}{" "}
             <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target={"_blank"}>
               Discord
             </Anchor>
@@ -83,7 +86,7 @@ const ActivityTab = ({
       <Space h={"lg"} />
       <div style={{ height: 200 * yearDiff, paddingBottom: 30 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <Title order={2}>Activity by calendar day</Title>
+          <Title order={2}>{t("activity.charts.calendarDay.title")}</Title>
           <Text span size="sm" fs="italic">
             (GMT+00:00) UTC
           </Text>
@@ -93,7 +96,7 @@ const ActivityTab = ({
       <Space h={"lg"} />
       <div style={{ height: 200, paddingBottom: 50 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <Title order={2}>Activity by hour of day</Title>
+          <Title order={2}>{t("activity.charts.hourOfDay.title")}</Title>
           <Text span size="sm" fs="italic">
             (GMT+00:00) UTC
           </Text>
@@ -103,7 +106,7 @@ const ActivityTab = ({
       <Space h={"lg"} />
       <div style={{ height: 200 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <Title order={2}>Activity by week day</Title>
+          <Title order={2}>{t("activity.charts.weekDay.title")}</Title>
         </div>
         <DynamicActivityByDayOfWeek playerStatsData={playerStatsData} />
       </div>

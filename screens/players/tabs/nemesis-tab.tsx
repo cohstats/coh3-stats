@@ -34,6 +34,7 @@ import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { getPlayerCardRoute } from "../../../src/routes";
 import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
+import { useTranslation } from "next-i18next";
 
 interface IndividualNemesis {
   diff: number;
@@ -87,16 +88,15 @@ const StomperCard = ({
     | null
     | undefined;
 }) => {
+  const { t } = useTranslation("players");
+
   if (!stomper) {
     return (
-      <>
-        <Center>
-          <Text span c={"dimmed"}>
-            {" "}
-            No 1v1 Nemesis
-          </Text>
-        </Center>
-      </>
+      <Center>
+        <Text span c="dimmed">
+          {t("nemesis.noNemesis")}
+        </Text>
+      </Center>
     );
   }
 
@@ -105,58 +105,58 @@ const StomperCard = ({
   const winRate = ((wins / (wins + losses)) * 100).toFixed(0) + "%";
 
   return (
-    <>
-      <Anchor
-        component={LinkWithOutPrefetch}
-        href={getPlayerCardRoute(stomper.apiData.info.relicID || "")}
-        style={{ textDecoration: "none" }}
-      >
-        <Card p="0">
-          <Flex justify={"space-between"}>
-            <Group>
-              <Avatar
-                src={stomper.apiData.steamData?.avatarmedium}
-                imageProps={{ loading: "lazy" }}
-                alt={stomper.apiData.info.name}
-                size={50}
-                radius="xs"
-              />
-              <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap">
-                <Group gap={"xs"}>
-                  <CountryFlag countryCode={stomper.apiData.info.country || ""} />
-                  <Text span fz="xl">
-                    {" "}
-                    {stomper.apiData.info.name}
-                  </Text>
-                </Group>
-
-                <Text span size="sm" color="dimmed">
-                  <Group gap={"xs"}>
-                    <span>Wins: {wins}</span>
-                    <span>Losses: {losses} </span>
-                  </Group>
+    <Anchor
+      component={LinkWithOutPrefetch}
+      href={getPlayerCardRoute(stomper.apiData.info.relicID || "")}
+      style={{ textDecoration: "none" }}
+    >
+      <Card p="0">
+        <Flex justify="space-between">
+          <Group>
+            <Avatar
+              src={stomper.apiData.steamData?.avatarmedium}
+              imageProps={{ loading: "lazy" }}
+              alt={stomper.apiData.info.name}
+              size={50}
+              radius="xs"
+            />
+            <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap">
+              <Group gap="xs">
+                <CountryFlag countryCode={stomper.apiData.info.country || ""} />
+                <Text span fz="xl">
+                  {stomper.apiData.info.name}
                 </Text>
-              </Flex>
-            </Group>
-            <div>
-              <Text span fz="xl">
-                <Group>
-                  <div>
-                    {stomper.data.diff > 0 && (
-                      <span style={{ color: "green" }}> +{stomper.data.diff}</span>
-                    )}
-                    {stomper.data.diff < 0 && (
-                      <span style={{ color: "red" }}> {stomper.data.diff}</span>
-                    )}
-                  </div>
-                  <div>{winRate}</div>
+              </Group>
+              <Text span size="sm" color="dimmed">
+                <Group gap="xs">
+                  <span>
+                    {t("nemesis.wins")}: {wins}
+                  </span>
+                  <span>
+                    {t("nemesis.losses")}: {losses}
+                  </span>
                 </Group>
               </Text>
-            </div>
-          </Flex>
-        </Card>
-      </Anchor>
-    </>
+            </Flex>
+          </Group>
+          <div>
+            <Text span fz="xl">
+              <Group>
+                <div>
+                  {stomper.data.diff > 0 && (
+                    <span style={{ color: "green" }}> +{stomper.data.diff}</span>
+                  )}
+                  {stomper.data.diff < 0 && (
+                    <span style={{ color: "red" }}> {stomper.data.diff}</span>
+                  )}
+                </div>
+                <div>{winRate}</div>
+              </Group>
+            </Text>
+          </div>
+        </Flex>
+      </Card>
+    </Anchor>
   );
 };
 
@@ -169,6 +169,7 @@ const NemesisTab = ({
   platform: platformType;
   profileID: string;
 }) => {
+  const { t } = useTranslation("players");
   const data = playerStatsData?.nemesis || [];
 
   const [stomperData, setStomperData] = React.useState<{
@@ -251,15 +252,15 @@ const NemesisTab = ({
         <Center>
           <Alert
             icon={<IconInfoTriangle size="2rem" />}
-            title={"No COH3 Stats Data"}
+            title={t("nemesis.alerts.steamOnly.title")}
             color="yellow"
             miw={450}
           >
-            These stats are available only for Steam players.
+            {t("nemesis.alerts.steamOnly.message")}
             <br />
             <br />
-            If you would like to have these stats on Consoles too, please vote / report it on our{" "}
-            <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target={"_blank"}>
+            {t("nemesis.alerts.steamOnly.voteMessage")}{" "}
+            <Anchor component={Link} href={config.DISCORD_INVITE_LINK} target="_blank">
               Discord
             </Anchor>
             .
@@ -272,21 +273,16 @@ const NemesisTab = ({
     <>
       <Container size={"md"} pl={0} pr={0}>
         <Space h={"lg"} />
-        <Title order={2}>1v1 Nemesis</Title>
+        <Title order={2}>{t("nemesis.title")}</Title>
         <Flex wrap={"wrap"}>
           <Card m={"xs"} padding="sm" radius="md" ml={0} withBorder style={{ flexGrow: 1 }}>
             <List size="sm">
-              <List.Item>Nemesis counter has be to 'triggered'</List.Item>
-              <List.Item>
-                Trigger by playing with the same player 2 times in 1 day (UTC).
-              </List.Item>
-              <List.Item>Aliases are saved from the last game played with that player</List.Item>
-              <List.Item>
-                After the trigger, all 1v1 games with that player are counted.
-              </List.Item>
-              <List.Item>Data are updated once a day 6 AM UTC.</List.Item>
-
-              <List.Item>Only Steam players are tracked.</List.Item>
+              <List.Item>{t("nemesis.rules.trigger")}</List.Item>
+              <List.Item>{t("nemesis.rules.triggerCondition")}</List.Item>
+              <List.Item>{t("nemesis.rules.aliases")}</List.Item>
+              <List.Item>{t("nemesis.rules.counting")}</List.Item>
+              <List.Item>{t("nemesis.rules.updateTime")}</List.Item>
+              <List.Item>{t("nemesis.rules.steamOnly")}</List.Item>
             </List>
           </Card>
           <Stack gap={0}>
