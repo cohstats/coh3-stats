@@ -197,6 +197,67 @@ const Statistics = () => {
   );
 };
 
+const Localization = () => {
+  return (
+    <>
+      <Text>
+        We welcome contributions to translate the website into different languages. We are
+        planning to support all languages which you can find in the language selector. You can
+        find our localization files on{" "}
+        <Anchor
+          href="https://github.com/cohstats/coh3-stats/tree/master/public/locales"
+          target="_blank"
+        >
+          GitHub
+        </Anchor>
+        .
+      </Text>
+      <Space h={"xs"} />
+      <Text fs="italic">
+        Note that not all website pages are currently set up for translation. You can still
+        contribute translations for specific pages by providing the list of texts - we'll
+        implement them when the pages are ready.
+      </Text>
+      <Space h={"xs"} />
+      <Text>You can submit translations (partial translations are welcome) through:</Text>
+      <li>
+        Creating a post in the feature request section on our{" "}
+        <Anchor
+          href={config.DISCORD_INVITE_LINK}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          Discord
+        </Anchor>
+      </li>
+      <li>
+        Creating an{" "}
+        <Anchor href="https://github.com/cohstats/coh3-stats/issues" target="_blank">
+          Issue on GitHub
+        </Anchor>
+      </li>
+      <li>
+        Submitting a{" "}
+        <Anchor href="https://github.com/cohstats/coh3-stats/pulls" target="_blank">
+          Pull Request on GitHub
+        </Anchor>
+      </li>
+      <Space h={"xs"} />
+      <Text>
+        If you have any questions about the translation process, feel free to ask on our{" "}
+        <Anchor
+          href={config.DISCORD_INVITE_LINK}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          Discord
+        </Anchor>
+        .
+      </Text>
+    </>
+  );
+};
+
 const keywords = generateKeywordsString(["coh3 stats", "coh3 discord", "bug report", "github"]);
 
 const sections = [
@@ -206,6 +267,12 @@ const sections = [
     menuDisplayName: "Bug Reports",
     pageDisplayName: "Bug Reports, Feature Request and Contributions",
     component: <BugReports />,
+  },
+  {
+    name: "localization",
+    menuDisplayName: "Localization",
+    pageDisplayName: "Website Localization",
+    component: <Localization />,
   },
   {
     name: "stats",
