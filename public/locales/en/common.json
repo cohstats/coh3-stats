@@ -3,11 +3,11 @@
     "leaderboards": "Leaderboards",
     "statistics": "Statistics",
     "statsMenu": {
-        "games": "Games Stats",
-        "maps": "Maps Stats",
-        "players": "Players Stats",
-        "leaderboards": "Leaderboards Stats",
-        "achievements": "Achievements Stats"
+      "games": "Games Stats",
+      "maps": "Maps Stats",
+      "players": "Players Stats",
+      "leaderboards": "Leaderboards Stats",
+      "achievements": "Achievements Stats"
     },
     "explorer": "Explorer",
     "explMenu": {
