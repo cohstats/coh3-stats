@@ -21,6 +21,7 @@ const nextConfig = {
     unoptimized: true,
   },
   i18n,
+  localePath: path.resolve("./public/locales"),
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
