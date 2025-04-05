@@ -5,13 +5,16 @@ import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 type HitpointsCardInput = {
   squad: SbpsType;
   entities: EbpsType[];
+  title?: string;
 };
 
 const squadIcon = "/icons/common/squad/squad.png";
 const weaponIcon = "/icons/races/common/symbols/hmg.png";
 const colorPalette = ["cyan.6", "blue.6", "indigo.6", "violet.6", "grape.6", "pink.6", "red.6"];
 
-export const HitpointCard = ({ squad, entities }: HitpointsCardInput) => {
+export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => {
+  title = title || "Hitpoints";
+
   // Put the "team_weapon" type in this array.
   const twEntities: EbpsType[] = [];
   // Only take into account the entities that are not a "team_weapon" type.
@@ -100,7 +103,7 @@ export const HitpointCard = ({ squad, entities }: HitpointsCardInput) => {
   return (
     <Stack>
       <Title order={6} style={{ textTransform: "uppercase" }}>
-        Hitpoints
+        {title}
       </Title>
       <Tooltip label={"Squad hitpoints"} withArrow>
         {squadHitpointsSection}

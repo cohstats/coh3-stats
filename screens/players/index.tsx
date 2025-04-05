@@ -4,6 +4,7 @@ import { localizedNames } from "../../src/coh3/coh3-data";
 import { format } from "timeago.js";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { useTranslation } from "next-i18next";
 import {
   AnalyticsPlayerCardActivityView,
   AnalyticsPlayerCardDetailedStatsView,
@@ -78,6 +79,7 @@ const PlayerCard = ({
 }) => {
   const { push, query, asPath, replace } = useRouter();
   const { view } = query;
+  const { t } = useTranslation("players");
 
   const playerData = playerDataAPI;
   // Default to steam
@@ -131,22 +133,25 @@ const PlayerCard = ({
   if (error || !playerData) {
     return (
       <Container size="lg">
-        <ErrorCard title={"Error loading the player card"} body={error} />
+        <ErrorCard title={t("card.error.title")} body={error} />
       </Container>
     );
   }
 
-  const pageTitle = `Player card - ${playerData.info.name}${
-    view === "recentMatches" ? " - Recent Matches" : ""
-  } ${view === "replays" ? " - Replays" : ""}`;
+  const pageTitle =
+    view === "recentMatches"
+      ? t("card.titleWithView.recentMatches", { name: playerData.info.name })
+      : view === "replays"
+        ? t("card.titleWithView.replays", { name: playerData.info.name })
+        : t("card.title", { name: playerData.info.name });
 
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
   const description = createPlayerHeadDescription(playerData, playerSummary);
   const metaKeywords = generateKeywordsString([
-    `${playerData.info.name} stats`,
-    `${playerData.info.name} matches`,
-    `coh3 ${playerData.info.name} stats`,
+    t("meta.keywords.stats", { name: playerData.info.name }),
+    t("meta.keywords.matches", { name: playerData.info.name }),
+    t("meta.keywords.cohStats", { name: playerData.info.name }),
   ]);
 
   return (
@@ -221,12 +226,12 @@ const PlayerCard = ({
           onChange={tabChangeFunction}
         >
           <Tabs.List justify="center">
-            <Tabs.Tab value={"standings"}>Player Standings</Tabs.Tab>
-            <Tabs.Tab value={"standingsDetails"}>Detailed Stats</Tabs.Tab>
-            <Tabs.Tab value={"recentMatches"}>Recent Matches</Tabs.Tab>
-            <Tabs.Tab value={"activity"}>Activity</Tabs.Tab>
-            <Tabs.Tab value={"nemesis"}>Nemesis</Tabs.Tab>
-            <Tabs.Tab value={"replays"}>Replays</Tabs.Tab>
+            <Tabs.Tab value={"standings"}>{t("tabs.standings")}</Tabs.Tab>
+            <Tabs.Tab value={"standingsDetails"}>{t("tabs.standingsDetails")}</Tabs.Tab>
+            <Tabs.Tab value={"recentMatches"}>{t("tabs.recentMatches")}</Tabs.Tab>
+            <Tabs.Tab value={"activity"}>{t("tabs.activity")}</Tabs.Tab>
+            <Tabs.Tab value={"nemesis"}>{t("tabs.nemesis")}</Tabs.Tab>
+            <Tabs.Tab value={"replays"}>{t("tabs.replays")}</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">

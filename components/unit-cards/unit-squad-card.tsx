@@ -1,6 +1,7 @@
 import { Flex, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 import { StatsVehicleArmor, VehicleArmorType } from "./vehicle-armor-card";
+import { useTranslation } from "next-i18next";
 
 // So have to split and make another card for the squad info like Sight Range,
 // Speed (walking, driving), Range of Fire, Reload Time (for tanks), Armor
@@ -71,6 +72,8 @@ export const UnitSquadCard = ({
   ui,
   type,
 }: UnitSquadInput) => {
+  const { t } = useTranslation(["explorer"]);
+
   return (
     <Stack>
       <Stack gap={4}>
@@ -90,8 +93,8 @@ export const UnitSquadCard = ({
                 fallbackSrc={symbolPlaceholder}
                 src={UnitSquadIcons["sight_range"]}
                 alt="squad sight range"
-              ></ImageWithFallback>
-              <Text>Sight Range</Text>
+              />
+              <Text>{t("statsCard.sightRange")}</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{sight?.outerRadius || 0.0}</Text>
           </Flex>
@@ -106,7 +109,7 @@ export const UnitSquadCard = ({
                 src={type === "vehicles" ? UnitSquadIcons["max_speed"] : UnitSquadIcons["sprint"]}
                 alt="squad default speed"
               />
-              <Text>Speed</Text>
+              <Text>{t("statsCard.speed")}</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{moving?.defaultSpeed || 0.0}</Text>
           </Flex>
@@ -122,7 +125,7 @@ export const UnitSquadCard = ({
                   src={UnitSquadIcons["acceleration"]}
                   alt="squad acceleration"
                 />
-                <Text>Acceleration</Text>
+                <Text>{t("statsCard.acceleration")}</Text>
               </Group>
               <Text style={{ textAlign: "end" }}>{moving?.acceleration || 0.0}</Text>
             </Flex>
@@ -141,7 +144,7 @@ export const UnitSquadCard = ({
                   src={UnitSquadIcons["deceleration"]}
                   alt="squad deceleration"
                 />
-                <Text>Deceleration</Text>
+                <Text>{t("statsCard.deceleration")}</Text>
               </Group>
               <Text style={{ textAlign: "end" }}>{moving?.deceleration || 0.0}</Text>
             </Flex>
@@ -159,7 +162,7 @@ export const UnitSquadCard = ({
                 src={UnitSquadIcons["range_of_fire"]}
                 alt="squad max range of fire"
               />
-              <Text>Max Range</Text>
+              <Text>{t("statsCard.maxRange")}</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{range?.max || 0}</Text>
           </Flex>
@@ -174,7 +177,7 @@ export const UnitSquadCard = ({
                 src={UnitSquadIcons["target_size"]}
                 alt="squad target size"
               />
-              <Text>Target Size</Text>
+              <Text>{t("statsCard.targetSize")}</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{health?.targetSize || 0}</Text>
           </Flex>
@@ -190,7 +193,7 @@ export const UnitSquadCard = ({
                   src={UnitSquadIcons["infantry_armor"]}
                   alt="squad armor (infantry only)"
                 />
-                <Text>Armor</Text>
+                <Text>{t("statsCard.armor")}</Text>
               </Group>
               <Text style={{ textAlign: "end" }}>{health?.armor || 0}</Text>
             </Flex>
@@ -208,7 +211,7 @@ export const UnitSquadCard = ({
                 src={UnitSquadIcons["cap_mult"]}
                 alt="squad capture rate multiplier"
               />
-              <Text>Capture Multiplier</Text>
+              <Text>{t("statsCard.captureMultiplier")}</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{capture?.cap || 0.0}</Text>
           </Flex>
@@ -223,7 +226,7 @@ export const UnitSquadCard = ({
                 src={UnitSquadIcons["decap_mult"]}
                 alt="squad decapture rate multiplier"
               />
-              <Text>Decapture Multiplier</Text>
+              <Text>{t("statsCard.decaptureMultiplier")}</Text>
             </Group>
             <Text style={{ textAlign: "end" }}>{capture?.decap || 0.0}</Text>
           </Flex>
@@ -231,10 +234,13 @@ export const UnitSquadCard = ({
       </Grid>
 
       {type === "vehicles" ? (
-        StatsVehicleArmor({
-          type: ui.armorIcon as VehicleArmorType,
-          armorValues: health,
-        })
+        StatsVehicleArmor(
+          {
+            type: ui.armorIcon as VehicleArmorType,
+            armorValues: health,
+          },
+          t("statsCard.vehicleArmor"),
+        )
       ) : (
         <></>
       )}

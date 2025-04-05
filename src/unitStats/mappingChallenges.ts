@@ -22,12 +22,12 @@ type ChallengesType = {
 
 // type RequirementOperator = 'and' | 'or' | 'not' | 'none' | 'equal' | 'greaterthan' | 'greaterthanequal' | 'inrange' | 'in'
 
-let challengesDaily: ChallengesType[];
-let challengesWeekly: ChallengesType[];
+const challengesDaily: Record<string, ChallengesType[]> = {};
+const challengesWeekly: Record<string, ChallengesType[]> = {};
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapChallengesData = (filename: string, subtree: any) => {
+const mapChallengesData = (filename: string, subtree: any, locale: string = "en") => {
   const challenge: ChallengesType = {
     id: filename,
     name: "",
@@ -42,17 +42,17 @@ const mapChallengesData = (filename: string, subtree: any) => {
     reward: 0,
   };
 
-  mapChallengeBag(subtree, challenge);
+  mapChallengeBag(subtree, challenge, locale);
 
   return challenge;
 };
 
-const mapChallengeBag = (root: any, challenge: ChallengesType) => {
+const mapChallengeBag = (root: any, challenge: ChallengesType, locale: string = "en") => {
   const challengeBag = root.challenge_bag;
 
-  challenge.name = resolveLocstring(challengeBag.name) || "";
-  challenge.description = resolveLocstring(challengeBag.description) || "";
-  challenge.tip = resolveLocstring(challengeBag.tip) || "";
+  challenge.name = resolveLocstring(challengeBag.name, locale) || "";
+  challenge.description = resolveLocstring(challengeBag.description, locale) || "";
+  challenge.tip = resolveLocstring(challengeBag.tip, locale) || "";
 
   /* --------- REWARD SECTION --------- */
   challenge.reward = parseInt(
@@ -265,8 +265,8 @@ const mapChallengeBag = (root: any, challenge: ChallengesType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getDailyChallengeStats = async () => {
-  if (challengesDaily) return challengesDaily;
+const getDailyChallengeStats = async (locale: string = "en") => {
+  if (challengesDaily[locale]) return challengesDaily[locale];
 
   const myDailyChallenges = await fetch(
     config.getPatchDataUrl("daily_challenges_store_release.json"),
@@ -280,7 +280,7 @@ const getDailyChallengeStats = async () => {
   const dailyChallengesSet = traverseTree(
     root,
     isChallengeBagContainer,
-    mapChallengesData,
+    (filename: string, subtree: any) => mapChallengesData(filename, subtree, locale),
     "",
     "",
   );
@@ -290,7 +290,7 @@ const getDailyChallengeStats = async () => {
     dailyChallengesAll.push(item);
   });
 
-  setDailyChallengeStats(dailyChallengesAll);
+  setDailyChallengeStats(dailyChallengesAll, locale);
 
   return dailyChallengesAll;
 };
@@ -300,14 +300,14 @@ const isChallengeBagContainer = (key: string, obj: any) => {
 };
 
 //
-const setDailyChallengeStats = (stats: ChallengesType[]) => {
-  challengesDaily = stats;
+const setDailyChallengeStats = (stats: ChallengesType[], locale: string) => {
+  challengesDaily[locale] = stats;
 };
 
 /* ----------- Weekly challenges section ----------- */
 
-const getWeeklyChallengeStats = async () => {
-  if (challengesWeekly) return challengesWeekly;
+const getWeeklyChallengeStats = async (locale: string = "en") => {
+  if (challengesWeekly[locale]) return challengesWeekly[locale];
 
   const myWeeklyChallenges = await fetch(
     config.getPatchDataUrl("weekly_challenges_store_release.json"),
@@ -321,7 +321,7 @@ const getWeeklyChallengeStats = async () => {
   const weeklyChallengesSet = traverseTree(
     root,
     isChallengeBagContainer,
-    mapChallengesData,
+    (filename: string, subtree: any) => mapChallengesData(filename, subtree, locale),
     "",
     "",
   );
@@ -331,21 +331,14 @@ const getWeeklyChallengeStats = async () => {
     weeklyChallengesAll.push(item);
   });
 
-  setWeeklyChallengeStats(weeklyChallengesAll);
+  setWeeklyChallengeStats(weeklyChallengesAll, locale);
 
   return weeklyChallengesAll;
 };
 
-const setWeeklyChallengeStats = (stats: ChallengesType[]) => {
-  challengesWeekly = stats;
+const setWeeklyChallengeStats = (stats: ChallengesType[], locale: string) => {
+  challengesWeekly[locale] = stats;
 };
 
-export {
-  challengesDaily,
-  challengesWeekly,
-  setDailyChallengeStats,
-  setWeeklyChallengeStats,
-  getWeeklyChallengeStats,
-  getDailyChallengeStats,
-};
+export { getWeeklyChallengeStats, getDailyChallengeStats };
 export type { ChallengesType };

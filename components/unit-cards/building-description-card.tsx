@@ -56,6 +56,7 @@ export type BuildingSchema = {
   /** Extracted from `ebpextensions\\upgrade_ext` within the building `ebps`. */
   upgrades: UnitUpgrade[];
   health: { hitpoints: number };
+  t: (key: string) => string;
 };
 
 /**
@@ -67,6 +68,7 @@ const BuildingCardHeader = (
   desc: BuildingDescription,
   cost: ResourceValues,
   health: BuildingSchema["health"],
+  t: (key: string) => string,
 ) => (
   <Grid columns={4}>
     <Grid.Col span={3}>
@@ -100,7 +102,7 @@ const BuildingCardHeader = (
         <Divider display={{ base: "block", sm: "none" }} />
         <Flex direction="row" justify="space-between">
           <Flex direction="row" gap={4}>
-            <Text style={{ fontWeight: "bold" }}>Hitpoints</Text>
+            <Text style={{ fontWeight: "bold" }}>{t("common.hitpoints")}</Text>
           </Flex>
           <Text ml={24}>{health.hitpoints}</Text>
         </Flex>
@@ -108,7 +110,7 @@ const BuildingCardHeader = (
         {hasCost(cost) ? (
           <>
             <Divider />
-            {UnitCostCard(cost)}
+            {UnitCostCard(cost, t("common.costs"))}
           </>
         ) : (
           <></>
@@ -231,6 +233,7 @@ export const BuildingCard = ({
   time_cost,
   health,
   upgrades,
+  t,
 }: BuildingSchema) => {
   let productionSection, upgradeSection;
 
@@ -238,7 +241,10 @@ export const BuildingCard = ({
     productionSection = (
       <Accordion.Item value="unit_production">
         <Accordion.Control>
-          <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Produces"} />
+          <BuildingAccordionLabel
+            symbolIcon={desc.symbol_icon_name}
+            label={t("common.produces")}
+          />
         </Accordion.Control>
         <Accordion.Panel>{BuildingUnitMapper(units, faction)}</Accordion.Panel>
       </Accordion.Item>
@@ -249,7 +255,10 @@ export const BuildingCard = ({
     upgradeSection = (
       <Accordion.Item value="upgrades">
         <Accordion.Control>
-          <BuildingAccordionLabel symbolIcon={desc.symbol_icon_name} label={"Upgrades"} />
+          <BuildingAccordionLabel
+            symbolIcon={desc.symbol_icon_name}
+            label={t("common.upgrades")}
+          />
         </Accordion.Control>
         <Accordion.Panel>{BuildingUpgradeMapper(upgrades)}</Accordion.Panel>
       </Accordion.Item>
@@ -258,7 +267,7 @@ export const BuildingCard = ({
 
   return (
     <Flex direction="column" gap={8}>
-      {BuildingCardHeader(desc, time_cost, health)}
+      {BuildingCardHeader(desc, time_cost, health, t)}
 
       <Divider mt={8}></Divider>
 

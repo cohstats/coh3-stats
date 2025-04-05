@@ -30,29 +30,31 @@ import {
 const OtherMenu = ({
   classes,
   close,
+  t,
 }: {
   classes: Record<string, string>;
   close?: () => void;
+  t: (key: string) => string;
 }) => {
   const mobileView = (
     <div className={classes.hiddenDesktop}>
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text fw="500">Other</Text>
+            <Text fw="500">{t("mainMenu.other")}</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
               <Group gap={"xs"}>
                 <IconAward size={16} />
                 <Anchor component={Link} href={getRankingTiersRoute()} onClick={close}>
-                  Ranking Tiers
+                  {t("mainMenu.otherMenu.tiers")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
                 <IconDatabaseShare size={16} />
                 <Anchor component={Link} href={getOpenDataRoute()} onClick={close}>
-                  Open Data
+                  {t("mainMenu.otherMenu.openData")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
@@ -79,7 +81,7 @@ const OtherMenu = ({
         <HoverCard.Target>
           <div>
             <Group gap={3} className={classes.link}>
-              Other
+              {t("mainMenu.other")}
               <IconChevronDown size={16} />
             </Group>
           </div>
@@ -89,13 +91,13 @@ const OtherMenu = ({
             <Group gap={"xs"}>
               <IconAward size={16} />
               <Anchor component={Link} href={getRankingTiersRoute()}>
-                Ranking Tiers
+                {t("mainMenu.otherMenu.tiers")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
               <IconNews size={16} />
               <Anchor component={Link} href={getNewsRoute()}>
-                COH3 News
+                {t("mainMenu.otherMenu.coh3News")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
@@ -107,13 +109,13 @@ const OtherMenu = ({
             <Group gap={"xs"}>
               <IconDatabaseShare size={16} />
               <Anchor component={Link} href={getOpenDataRoute()}>
-                Open Data
+                {t("mainMenu.otherMenu.openData")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
               <IconUsers size={16} />
               <Anchor component={Link} href={getPlayerExportRoute()}>
-                Player Export API
+                {t("mainMenu.otherMenu.playerExport")}
               </Anchor>
             </Group>
 

@@ -4,6 +4,8 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withSentryConfig } = require("@sentry/nextjs");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { i18n } = require("./next-i18next.config");
 
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
@@ -18,16 +20,11 @@ const nextConfig = {
     // It optimized already optimized images resulting in shit quality.
     unoptimized: true,
   },
+  i18n,
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
   },
-  // Localization completely changes the url and we would need to re-write the cache routes
-  // In future we can look into it
-  // i18n: {
-  //   locales: ["en"],
-  //   defaultLocale: "en",
-  // },
   async headers() {
     return [
       {

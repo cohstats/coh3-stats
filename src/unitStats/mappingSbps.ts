@@ -86,11 +86,18 @@ type LoadoutData = {
 // Can be accessed from everywhere
 let sbpsStats: SbpsType[];
 
+// It's in format PATCH : DATA
 let sbpsPatchData: Record<string, SbpsType[]>;
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: string) => {
+const mapSbpsData = (
+  filename: string,
+  subtree: any,
+  jsonPath: string,
+  parent: string,
+  locale: string,
+) => {
   const sbpsEntity: SbpsType = {
     // default values
     id: filename,
@@ -142,14 +149,14 @@ const mapSbpsData = (filename: string, subtree: any, jsonPath: string, parent: s
     construction: [],
   };
 
-  mapExtensions(subtree, sbpsEntity);
+  mapExtensions(subtree, sbpsEntity, locale);
 
   // compute load out
 
   return sbpsEntity;
 };
 
-const mapExtensions = (root: any, sbps: SbpsType) => {
+const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
     const extName = extension.template_reference.value.split("\\")[1];
@@ -211,14 +218,15 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
           sbps.ui.symbolIconName = uiExtInfo?.symbol_icon_name || "";
           // When it is empty, it has a value of "0".
           const screenName = uiExtInfo?.screen_name;
-          sbps.ui.screenName = resolveLocstring(screenName) || "";
+          sbps.ui.screenName = resolveLocstring(screenName, locale) || "";
           const helpText = uiExtInfo?.help_text;
-          sbps.ui.helpText = resolveLocstring(helpText) || "";
+          sbps.ui.helpText = resolveLocstring(helpText, locale) || "";
           const extraText = uiExtInfo?.extra_text;
-          sbps.ui.extraText = resolveLocstring(extraText) || "";
-          const briefText = resolveLocstring(uiExtInfo?.brief_text);
+          sbps.ui.extraText = resolveLocstring(extraText, locale) || "";
+          const briefText = resolveLocstring(uiExtInfo?.brief_text, locale);
           const briefTextFormatter = resolveTextFormatterLocstring(
             uiExtInfo?.brief_text_formatter,
+            locale,
           );
           sbps.ui.briefText = briefText || briefTextFormatter || "";
           sbps.ui.armorIcon = uiExtInfo?.ui_armor_info?.armor_icon.split("/").slice(-1)[0] || "";
@@ -244,24 +252,33 @@ const mapExtensions = (root: any, sbps: SbpsType) => {
             exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
             // screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) || "",
             screenName:
-              resolveTextFormatterLocstring(vetExtInfo[0].veterancy_rank.brief_text_formatter) ||
-              resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) ||
+              resolveTextFormatterLocstring(
+                vetExtInfo[0].veterancy_rank.brief_text_formatter,
+                locale,
+              ) ||
+              resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text, locale) ||
               "",
           };
           sbps.veterancyInfo.two = {
             exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
             // screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) || "",
             screenName:
-              resolveTextFormatterLocstring(vetExtInfo[1].veterancy_rank.brief_text_formatter) ||
-              resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) ||
+              resolveTextFormatterLocstring(
+                vetExtInfo[1].veterancy_rank.brief_text_formatter,
+                locale,
+              ) ||
+              resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text, locale) ||
               "",
           };
           sbps.veterancyInfo.three = {
             exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
             // screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) || "",
             screenName:
-              resolveTextFormatterLocstring(vetExtInfo[2].veterancy_rank.brief_text_formatter) ||
-              resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) ||
+              resolveTextFormatterLocstring(
+                vetExtInfo[2].veterancy_rank.brief_text_formatter,
+                locale,
+              ) ||
+              resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text, locale) ||
               "",
           };
         }
@@ -324,16 +341,13 @@ const BanishedRequirements = ["mass_production", "campaign"];
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
-const getSbpsStats = async (patch = "latest") => {
+const getSbpsStats = async (patch = "latest", locale = "en") => {
   if (patch == config.latestPatch) patch = "latest";
 
-  if (sbpsPatchData && sbpsPatchData[patch]) return sbpsPatchData[patch];
-
-  // check if data already extracted
-  // if (sbpsStats) return sbpsStats;
+  const cacheKey = `${patch}-${locale}`;
+  if (sbpsPatchData && sbpsPatchData[cacheKey]) return sbpsPatchData[cacheKey];
 
   const myReqSbps = await fetch(config.getPatchDataUrl("sbps.json", patch));
-
   const root = await myReqSbps.json();
 
   const sbpsSetAll: SbpsType[] = [];
@@ -341,7 +355,14 @@ const getSbpsStats = async (patch = "latest") => {
   // Extract from JSON
   for (const obj in root) {
     // find all extensions
-    const sbpsSet = traverseTree(root[obj], isExtensionContainer, mapSbpsData, obj, obj);
+    const sbpsSet = traverseTree(
+      root[obj],
+      isExtensionContainer,
+      (filename: string, subtree: any, jsonPath: string, parent: string) =>
+        mapSbpsData(filename, subtree, jsonPath, parent, locale),
+      obj,
+      obj,
+    );
 
     // Filter relevant objects
     sbpsSet.forEach((item: SbpsType) => {
@@ -364,7 +385,7 @@ const getSbpsStats = async (patch = "latest") => {
 
   // sbpsStats = sbpsSetAll;
   if (!sbpsPatchData) sbpsPatchData = {};
-  sbpsPatchData[patch] = sbpsSetAll;
+  sbpsPatchData[cacheKey] = sbpsSetAll;
 
   // Set singleton
   if (patch == "latest") sbpsStats = sbpsSetAll;

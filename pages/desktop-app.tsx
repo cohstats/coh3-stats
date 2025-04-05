@@ -2,10 +2,11 @@ import { GetServerSideProps } from "next";
 import { Octokit } from "octokit";
 
 import DesktopAppPage from "../screens/desktop-app";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default DesktopAppPage;
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ res, locale = "en" }) => {
   const octokit = new Octokit();
   const response = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
     owner: "cohstats",
@@ -52,6 +53,11 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res }) => {
   );
 
   return {
-    props: { downloadURL, downloadCount, version },
+    props: {
+      downloadURL,
+      downloadCount,
+      version,
+      ...(await serverSideTranslations(locale, ["common", "desktopapp"])),
+    },
   };
 };

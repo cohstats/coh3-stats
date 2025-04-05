@@ -19,6 +19,7 @@ import {
 import { DataTable } from "mantine-datatable";
 import Link from "next/link";
 import { getPlayerCardRoute } from "../../src/routes";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ChangeCustomVisibilityForm = () => {
   // state for hideCustomGames
@@ -205,6 +206,14 @@ const CustomGames = () => {
       </Grid>
     </Container>
   );
+};
+
+export const getStaticProps = async ({ locale = "en" }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default CustomGames;

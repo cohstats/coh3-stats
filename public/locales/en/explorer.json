@@ -1,0 +1,55 @@
+{
+  "common": {
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups",
+    "near": "Near",
+    "medium": "Medium",
+    "far": "Far",
+    "min": "Min",
+    "max": "Max",
+    "produces": "Produces",
+    "hitpoints": "Hitpoints",
+    "upgrades": "Upgrades",
+    "costs": "Costs",
+    "explorer": "Explorer"
+  },
+  "explorer": {
+    "title": "Company of Heroes 3 Factions Explorer",
+    "subtitle": "Explore all the units, buildings and battlegroups in the game."
+  },
+  "unitPage": {
+    "stats": "Stats",
+    "abilities": "Abilities",
+    "loadout": "Loadout",
+    "veterancy": "Veterancy",
+    "upkeep": "Upkeep per minute",
+    "reinforce": "Reinforce",
+    "construct": "Can Construct",
+    "free": "Free",
+    "weaponNote": "The effective accuracy is impacted by several factors like target size or armor of the receiving unit as well as accuracy or penetration of the attacking one."
+  },
+  "statsCard": {
+    "sightRange": "Sight Range",
+    "speed": "Speed",
+    "acceleration": "Acceleration",
+    "deceleration": "Deceleration",
+    "maxRange": "Max Range",
+    "targetSize": "Target Size",
+    "armor": "Armor",
+    "captureMultiplier": "Capture Multiplier",
+    "decaptureMultiplier": "Decapture Multiplier",
+    "vehicleArmor": "Vehicle Armor"
+  },
+  "weaponCard": {
+    "accuracy": "Accuracy",
+    "rpm": "Rounds per Minute (RPM)",
+    "rangeOfFire": "Range of Fire",
+    "penetration": "Penetration",
+    "scatter": "Scatter Area",
+    "damage": "Damage",
+    "aoeRadius": "AoE Radius",
+    "movingAccuracy": "Moving Accuracy Multiplier",
+    "movingCooldown": "Moving Cooldown Multiplier"
+  }
+}

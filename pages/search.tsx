@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { generateKeywordsString } from "../src/head-utils";
 import { SearchScreen } from "../screens/search";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 /**
  *
@@ -31,6 +32,14 @@ const Search: NextPage = () => {
       <SearchScreen />
     </>
   );
+};
+
+export const getStaticProps = async ({ locale = "en" }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default Search;

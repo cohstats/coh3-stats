@@ -4,6 +4,7 @@ import { IconUser, IconAlertTriangle } from "@tabler/icons-react";
 import React from "react";
 import HelperIcon from "../../components/icon/helper";
 import ErrorCard from "../../components/error-card";
+import { useTranslation } from "next-i18next";
 
 const LiveGamesSummaryTable = ({
   data,
@@ -16,8 +17,10 @@ const LiveGamesSummaryTable = ({
   error: any;
   isMobile: boolean;
 }) => {
+  const { t } = useTranslation("live-games");
+
   if (error) {
-    return <ErrorCard title={"Error getting the live games summary"} body={`${error}`} />;
+    return <ErrorCard title={t("gamesTable.errors.summaryTitle")} body={`${error}`} />;
   }
 
   return (
@@ -25,7 +28,7 @@ const LiveGamesSummaryTable = ({
       <Card p="md" shadow="sm" withBorder style={{ maxWidth: 520, minHeight: 170 }}>
         <Card.Section pl={"xs"} pr={"xs"}>
           <Group m="xs" justify={isMobile ? "center" : "space-between"}>
-            <Title order={4}>Live Games Summary</Title>
+            <Title order={4}>{t("summaryTable.title")}</Title>
             <Group gap={4}>
               {!loading && data && (
                 <Title order={5}>
@@ -33,20 +36,16 @@ const LiveGamesSummaryTable = ({
                 </Title>
               )}
               {loading && <Skeleton height={15} width="150" radius="xl" />}
-              <HelperIcon
-                text={
-                  "Current multiplayer games in progress.  Total Players are unique filtered. Keep in mind that there are probably a lot of players in lobby / searching / loading and doing other things. Custom games are not observable by default. Most likely there is much more custom games being played. Games are updated every 5 minutes."
-                }
-              />
+              <HelperIcon text={t("summaryTable.tooltip")} />
             </Group>
           </Group>
         </Card.Section>
         {!loading && data?.liveGameSummary.totalAutomatch.players === 0 ? (
           <div style={{ textAlign: "center", paddingTop: 10 }}>
             <IconAlertTriangle size={20} />
-            <Title order={5}>No Live Games Detected</Title>
+            <Title order={5}>{t("summaryTable.noGames.title")}</Title>
             <Text size="sm" c="dimmed">
-              COH3 Stats may need to update after a recent game patch.
+              {t("summaryTable.noGames.message")}
             </Text>
           </div>
         ) : (
@@ -60,7 +59,9 @@ const LiveGamesSummaryTable = ({
                 width: "220px",
               }}
             >
-              <div style={{ gridColumn: 1, justifySelf: "start" }}>1 vs 1</div>
+              <div style={{ gridColumn: 1, justifySelf: "start" }}>
+                {t("summaryTable.modes.1v1")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: "2/4", justifySelf: "end" }}>
                   <Skeleton height={13} width="130px" radius="xl" />
@@ -69,7 +70,7 @@ const LiveGamesSummaryTable = ({
               {!loading && data && (
                 <>
                   <div style={{ gridColumn: 2, justifySelf: "end" }}>
-                    {data.liveGameSummary["1v1"].games} games
+                    {data.liveGameSummary["1v1"].games} {t("summaryTable.games")}
                   </div>
                   <div style={{ gridColumn: 3, justifySelf: "end" }}>
                     <Group gap={4}>
@@ -80,7 +81,9 @@ const LiveGamesSummaryTable = ({
                 </>
               )}
 
-              <div style={{ gridColumn: 1, justifySelf: "start" }}>2 vs 2</div>
+              <div style={{ gridColumn: 1, justifySelf: "start" }}>
+                {t("summaryTable.modes.2v2")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: "2/4", justifySelf: "end" }}>
                   <Skeleton height={13} width="130px" radius="xl" />
@@ -89,7 +92,7 @@ const LiveGamesSummaryTable = ({
               {!loading && data && (
                 <>
                   <div style={{ gridColumn: 2, justifySelf: "end" }}>
-                    {data.liveGameSummary["2v2"].games} games
+                    {data.liveGameSummary["2v2"].games} {t("summaryTable.games")}
                   </div>
                   <div style={{ gridColumn: 3, justifySelf: "end" }}>
                     <Group gap={4}>
@@ -100,7 +103,9 @@ const LiveGamesSummaryTable = ({
                 </>
               )}
 
-              <div style={{ gridColumn: 1, justifySelf: "start" }}>3 vs 3</div>
+              <div style={{ gridColumn: 1, justifySelf: "start" }}>
+                {t("summaryTable.modes.3v3")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: "2/4", justifySelf: "end" }}>
                   <Skeleton height={13} width="130px" radius="xl" />
@@ -109,7 +114,7 @@ const LiveGamesSummaryTable = ({
               {!loading && data && (
                 <>
                   <div style={{ gridColumn: 2, justifySelf: "end" }}>
-                    {data.liveGameSummary["3v3"].games} games
+                    {data.liveGameSummary["3v3"].games} {t("summaryTable.games")}
                   </div>
                   <div style={{ gridColumn: 3, justifySelf: "end" }}>
                     <Group gap={4}>
@@ -120,7 +125,9 @@ const LiveGamesSummaryTable = ({
                 </>
               )}
 
-              <div style={{ gridColumn: 1, justifySelf: "start" }}>4 vs 4</div>
+              <div style={{ gridColumn: 1, justifySelf: "start" }}>
+                {t("summaryTable.modes.4v4")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: "2/4", justifySelf: "end" }}>
                   <Skeleton height={13} width="130px" radius="xl" />
@@ -129,7 +136,7 @@ const LiveGamesSummaryTable = ({
               {!loading && data && (
                 <>
                   <div style={{ gridColumn: 2, justifySelf: "end" }}>
-                    {data.liveGameSummary["4v4"].games} games
+                    {data.liveGameSummary["4v4"].games} {t("summaryTable.games")}
                   </div>
                   <div style={{ gridColumn: 3, justifySelf: "end" }}>
                     <Group gap={4}>
@@ -150,7 +157,9 @@ const LiveGamesSummaryTable = ({
                 width: "220px",
               }}
             >
-              <div style={{ gridColumn: 1, justifySelf: "start" }}>vs AI</div>
+              <div style={{ gridColumn: 1, justifySelf: "start" }}>
+                {t("summaryTable.modes.vsAI")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: "2/4", justifySelf: "end" }}>
                   <Skeleton height={13} width="130px" radius="xl" />
@@ -159,7 +168,7 @@ const LiveGamesSummaryTable = ({
               {!loading && data && (
                 <>
                   <div style={{ gridColumn: 2, justifySelf: "end" }}>
-                    {data.liveGameSummary["ai"].games} games
+                    {data.liveGameSummary["ai"].games} {t("summaryTable.games")}
                   </div>
                   <div style={{ gridColumn: 3, justifySelf: "end" }}>
                     <Group gap={4}>
@@ -170,7 +179,9 @@ const LiveGamesSummaryTable = ({
                 </>
               )}
 
-              <div style={{ gridColumn: 1, justifySelf: "start" }}>Custom</div>
+              <div style={{ gridColumn: 1, justifySelf: "start" }}>
+                {t("summaryTable.modes.custom")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: "2/4", justifySelf: "end" }}>
                   <Skeleton height={13} width="130px" radius="xl" />
@@ -179,7 +190,7 @@ const LiveGamesSummaryTable = ({
               {!loading && data && (
                 <>
                   <div style={{ gridColumn: 2, justifySelf: "end" }}>
-                    {data.liveGameSummary["custom"].games} games
+                    {data.liveGameSummary["custom"].games} {t("summaryTable.games")}
                   </div>
                   <div style={{ gridColumn: 3, justifySelf: "end" }}>
                     <Group gap={4}>
@@ -189,7 +200,9 @@ const LiveGamesSummaryTable = ({
                   </div>
                 </>
               )}
-              <div style={{ gridColumn: "1 / 3", justifySelf: "start" }}>Total in Automatch</div>
+              <div style={{ gridColumn: "1 / 3", justifySelf: "start" }}>
+                {t("summaryTable.totals.automatch")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: 3, justifySelf: "end" }}>
                   <Skeleton height={13} width="60px" radius="xl" />
@@ -204,7 +217,9 @@ const LiveGamesSummaryTable = ({
                 </div>
               )}
 
-              <div style={{ gridColumn: "1 / 3", justifySelf: "start" }}>Total in any game</div>
+              <div style={{ gridColumn: "1 / 3", justifySelf: "start" }}>
+                {t("summaryTable.totals.anyGame")}
+              </div>
               {loading && (
                 <div style={{ gridColumn: 3, justifySelf: "end" }}>
                   <Skeleton height={13} width="60px" radius="xl" />

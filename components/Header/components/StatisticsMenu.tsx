@@ -17,50 +17,50 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react";
 
-const StatisticsMenu = ({
-  classes,
-  close,
-}: {
+interface StatisticsMenuProps {
   classes: Record<string, string>;
   close?: () => void;
-}) => {
+  t: (key: string) => string;
+}
+
+const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) => {
   const mobileView = (
     <div className={classes.hiddenDesktop}>
       <Accordion chevronPosition="right">
         <Accordion.Item value="explorer_menu">
           <Accordion.Control className={classes.link}>
-            <Text fw="500">Statistics</Text>
+            <Text fw="500">{t("mainMenu.statistics")}</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
               <Group gap={"xs"}>
                 <IconChartAreaLine size={16} />
                 <Anchor component={Link} href={getGameStatsRoute()} onClick={close}>
-                  Games Stats
+                  {t("mainMenu.statsMenu.games")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
                 <IconChartArea size={16} />
                 <Anchor component={Link} href={getMapsStatsRoute()} onClick={close}>
-                  Maps Stats
+                  {t("mainMenu.statsMenu.maps")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
                 <IconUsersGroup size={16} />
                 <Anchor component={Link} href={getPlayersStatsRoute()} onClick={close}>
-                  Player Stats
+                  {t("mainMenu.statsMenu.players")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
                 <IconDeviceDesktopAnalytics size={16} />
                 <Anchor component={Link} href={getLeaderBoardStatsRoute()} onClick={close}>
-                  Leaderboards Stats
+                  {t("mainMenu.statsMenu.leaderboards")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
                 <IconTrophy size={16} />
                 <Anchor component={Link} href={getGlobalAchievementsStatsRoute()} onClick={close}>
-                  Achievements Stats
+                  {t("mainMenu.statsMenu.achievements")}
                 </Anchor>
               </Group>
             </Stack>
@@ -76,7 +76,7 @@ const StatisticsMenu = ({
         <HoverCard.Target>
           <div>
             <Group gap={3} className={classes.link}>
-              Statistics
+              {t("mainMenu.statistics")}
               <IconChevronDown size={16} />
             </Group>
           </div>
@@ -86,47 +86,33 @@ const StatisticsMenu = ({
             <Group gap={"xs"}>
               <IconChartAreaLine size={16} />
               <Anchor component={Link} href={getGameStatsRoute()}>
-                Games Stats
+                {t("mainMenu.statsMenu.games")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
               <IconChartArea size={16} />
               <Anchor component={Link} href={getMapsStatsRoute()}>
-                Maps Stats
+                {t("mainMenu.statsMenu.maps")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
               <IconUsersGroup size={16} />
               <Anchor component={Link} href={getPlayersStatsRoute()}>
-                Players Stats
+                {t("mainMenu.statsMenu.players")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
               <IconDeviceDesktopAnalytics size={16} />
               <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
-                Leaderboards Stats
+                {t("mainMenu.statsMenu.leaderboards")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>
               <IconTrophy size={16} />
               <Anchor component={Link} href={getGlobalAchievementsStatsRoute()}>
-                Achievements Stats
+                {t("mainMenu.statsMenu.achievements")}
               </Anchor>
             </Group>
-            {/*<Tooltip label="Coming Later" color="orange" withArrow position={"bottom"}>*/}
-            {/*  <Anchor*/}
-            {/*    className={cx(classes.disabledLink)}*/}
-            {/*    component={Link}*/}
-            {/*    href={getLeaderBoardStatsRoute()}*/}
-            {/*  >*/}
-            {/*    <Group gap={"xs"}>*/}
-            {/*      <ActionIcon color="orange" size="sm" radius="xl" variant="transparent">*/}
-            {/*        <IconBarrierBlock size={16} />*/}
-            {/*      </ActionIcon>*/}
-            {/*      <span> Map Statistics</span>*/}
-            {/*    </Group>*/}
-            {/*  </Anchor>*/}
-            {/*</Tooltip>*/}
           </Group>
         </HoverCard.Dropdown>
       </HoverCard>

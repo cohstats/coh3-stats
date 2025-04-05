@@ -16,9 +16,11 @@ type VeterancyInput = {
     exp: number;
     screenName: string;
   };
+  title?: string;
 };
 
-export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
+export const VeterancyCard = ({ one, two, three, title }: VeterancyInput) => {
+  title = title || "Veterancy";
   const spaceRegex = /\\r?\\n|\\r|\\n/g;
 
   const oneDesc = one.screenName.split(spaceRegex);
@@ -28,7 +30,7 @@ export const VeterancyCard = ({ one, two, three }: VeterancyInput) => {
   return (
     <Stack>
       <Title order={6} style={{ textTransform: "uppercase" }}>
-        Veterancy
+        {title}
       </Title>
       <Grid fz="sm" justify="left" align="center" columns={6} grow gutter="sm">
         <Grid.Col span={{ base: 1, md: 2 }}>

@@ -22,7 +22,6 @@ import {
   getResolvedUpgrades,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
-  RaceBagDescription,
   ResourceValues,
   SbpsType,
   UpgradesType,
@@ -50,6 +49,9 @@ import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";
 import { AnalyticsExplorerUnitDetailsView } from "../../../../../src/firebase/analytics";
+import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 interface UnitDetailProps {
   calculatedData: {
@@ -62,10 +64,13 @@ interface UnitDetailProps {
     abilities: AbilitiesType[];
     buildables: EbpsType[];
   };
+  locale: string;
+  descriptions: Record<string, Record<string, string>>;
 }
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
   const { query } = useRouter();
+  const { t } = useTranslation(["explorer"]);
 
   const unitId = query.unitId as string;
   const raceId = query.raceId as raceType;
@@ -86,7 +91,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
   }
 
   const localizedRace = localizedNames[raceId];
-  const descriptionRace = RaceBagDescription[raceId];
+  const descriptionRace = descriptions[raceId as raceType]?.description || null;
 
   // For team_weapons, get default members.
   let defaultSquadMember: EbpsType;
@@ -160,7 +165,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
       </Head>
       <Container fluid p={0}>
         <Flex direction="row" align="center" gap="md">
-          <FactionIcon name={raceId} width={96}></FactionIcon>
+          <FactionIcon name={raceId} width={80} />
           <Stack gap="xs">
             <Title order={3}>{localizedRace}</Title>
             <Text size="md">{descriptionRace}</Text>
@@ -184,7 +189,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
           </Grid.Col>
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
-              <Title order={4}>Stats</Title>
+              <Title order={4}>{t("unitPage.stats")}</Title>
               <Card p="md" radius="md" withBorder>
                 {UnitSquadCard({
                   id: resolvedSquad.id,
@@ -202,84 +207,92 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData }) => {
                   },
                 })}
               </Card>
-              {UnitUpgradeSection(upgrades)}
-              {UnitAbilitySection(abilities)}
+              <UnitUpgradeSection upgrades={upgrades} title={t("common.upgrades")} />
+              <UnitAbilitySection abilities={abilities} title={t("unitPage.abilities")} />
             </Stack>
           </Grid.Col>
           <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
             <Stack>
-              <Title order={4}>Stats</Title>
+              <Title order={4}>{t("unitPage.stats")}</Title>
               <Card p="md" radius="md" withBorder>
-                {UnitCostCard(totalCost)}
+                {UnitCostCard(totalCost, t("common.costs"))}
                 {defaultSquadMember.unitType !== "vehicles" &&
                 defaultSquadMember.unitType !== "emplacements" ? (
-                  ReinforceCostCard(reinforceCost)
+                  ReinforceCostCard(reinforceCost, t("unitPage.reinforce"))
                 ) : (
                   <></>
                 )}
               </Card>
               <Card p="md" radius="md" withBorder>
-                {HitpointCard({ squad: resolvedSquad, entities: resolvedEntities })}
+                {HitpointCard({
+                  squad: resolvedSquad,
+                  entities: resolvedEntities,
+                  title: t("common.hitpoints"),
+                })}
               </Card>
               <Card p="md" radius="md" withBorder>
-                {UnitCostCard(totalUpkeepCost, "Upkeep per minute")}
+                {UnitCostCard(totalUpkeepCost, t("unitPage.upkeep"))}
               </Card>
               <Card p="md" radius="md" withBorder>
                 <VeterancyCard
                   one={resolvedSquad.veterancyInfo.one}
                   two={resolvedSquad.veterancyInfo.two}
                   three={resolvedSquad.veterancyInfo.three}
+                  title={t("unitPage.veterancy")}
                 />
               </Card>
             </Stack>
           </Grid.Col>
         </Grid>
         <Grid>
-          <Grid.Col>{UnitBuildingSection(buildables)}</Grid.Col>
-          <Grid.Col>{UnitWeaponSection(squadWeapons)}</Grid.Col>
+          <Grid.Col>{UnitBuildingSection(buildables, t("unitPage.construct"))}</Grid.Col>
+          <Grid.Col>
+            {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
+          </Grid.Col>
         </Grid>
       </Container>
     </>
   );
 };
 
-const UnitUpgradeSection = (upgrades: UpgradesType[]) => {
-  // Resolve unit upgrades.
-  if (!upgrades || !upgrades.length) return <></>;
+const UnitUpgradeSection: React.FC<{ upgrades: UpgradesType[]; title: string }> = ({
+  upgrades,
+  title,
+}) => {
+  if (!upgrades?.length) return null;
+
   return (
     <Stack>
-      <Title order={4}>Upgrades</Title>
+      <Title order={4}>{title}</Title>
       <Stack>
-        {Object.values(upgrades).map(({ id, ui, cost }) => {
-          return (
-            <Card key={id} p="lg" radius="md" withBorder>
-              {UnitUpgradeCard({
-                id,
-                desc: {
-                  screen_name: ui.screenName,
-                  help_text: ui.helpText,
-                  extra_text: ui.extraText,
-                  brief_text: ui.briefText,
-                  icon_name: ui.iconName,
-                  extra_text_formatter: ui.extraTextFormatter,
-                  brief_text_formatter: ui.briefTextFormatter,
-                },
-                time_cost: cost,
-              })}
-            </Card>
-          );
-        })}
+        {Object.values(upgrades).map(({ id, ui, cost }) => (
+          <Card key={id} p="lg" radius="md" withBorder>
+            <UnitUpgradeCard
+              id={id}
+              desc={{
+                screen_name: ui.screenName,
+                help_text: ui.helpText,
+                extra_text: ui.extraText,
+                brief_text: ui.briefText,
+                icon_name: ui.iconName,
+                extra_text_formatter: ui.extraTextFormatter,
+                brief_text_formatter: ui.briefTextFormatter,
+              }}
+              time_cost={cost}
+            />
+          </Card>
+        ))}
       </Stack>
     </Stack>
   );
 };
 
-const UnitBuildingSection = (buildings: EbpsType[]) => {
+const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => {
   // Resolve unit buildables.
   if (!buildings || !buildings.length) return <></>;
   return (
     <Stack>
-      <Title order={4}>Can construct</Title>
+      <Title order={4}>{title}</Title>
       <SimpleGrid cols={{ base: 3, xs: 1, sm: 2, lg: 3 }}>
         {Object.values(buildings).map(({ id, ui, cost }) => {
           // If we are missing the name of the ability --> it's most likely broken
@@ -310,47 +323,42 @@ const UnitBuildingSection = (buildings: EbpsType[]) => {
   );
 };
 
-const UnitAbilitySection = (abilities: AbilitiesType[]) => {
-  // Resolve unit abilities.
-  if (!abilities || !abilities.length) return <></>;
+const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }> = ({
+  abilities,
+  title,
+}) => {
+  if (!abilities?.length) return null;
 
   return (
     <Stack>
-      <Title order={4}>Abilities</Title>
+      <Title order={4}>{title}</Title>
       <Stack>
-        {Object.values(abilities).map(({ id, ui, cost }) => {
-          // If we are missing the name of the ability --> it's most likely broken
-          if (ui.screenName) {
-            return (
-              <Card key={id} p="md" radius="md" withBorder>
-                {UnitUpgradeCard({
-                  id,
-                  desc: {
-                    screen_name: ui.screenName,
-                    help_text: ui.helpText,
-                    extra_text: ui.extraText,
-                    brief_text: ui.briefText,
-                    icon_name: ui.iconName,
-                    extra_text_formatter: ui.extraTextFormatter,
-                    brief_text_formatter: ui.briefTextFormatter,
-                  },
-                  time_cost: cost,
-                })}
-              </Card>
-            );
-          } else {
-            return null;
-          }
-        })}
+        {Object.values(abilities).map(({ id, ui, cost }) => (
+          <Card key={id} p="md" radius="md" withBorder>
+            <UnitUpgradeCard
+              id={id}
+              desc={{
+                screen_name: ui.screenName,
+                help_text: ui.helpText,
+                extra_text: ui.extraText,
+                brief_text: ui.briefText,
+                icon_name: ui.iconName,
+                extra_text_formatter: ui.extraTextFormatter,
+                brief_text_formatter: ui.briefTextFormatter,
+              }}
+              time_cost={cost}
+            />
+          </Card>
+        ))}
       </Stack>
     </Stack>
   );
 };
 
-const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
+const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weaponNote = "") => {
   return (
     <Stack>
-      <Title order={4}>Loadout</Title>
+      <Title order={4}>{title}</Title>
 
       <Grid columns={2} grow>
         {squadWeapons.map(({ weapon_id, weapon, num }) => {
@@ -366,12 +374,9 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[]) => {
 
       {/* Section: Small notes for players */}
 
-      <List size="xs">
+      <List size="xs" pl="md">
         <List.Item>
-          <Text c="orange.5">
-            The effective accuracy is impacted by several factors like target size or armor of the
-            receiving unit as well as accuracy or penetration of the attacking one.
-          </Text>
+          <Text fs="italic">{weaponNote}</Text>
         </List.Item>
       </List>
     </Stack>
@@ -450,17 +455,23 @@ const createdCalculateValuesForUnits = (
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { abilitiesData, ebpsData, sbpsData, upgradesData, weaponData } = await getMappings();
+  const locale = context.locale || "en";
+
+  const { abilitiesData, ebpsData, sbpsData, upgradesData, weaponData } =
+    await getMappings(locale);
 
   // const raceId = context.params?.raceId as string;
   const unitId = context.params?.unitId as string;
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
       calculatedData: createdCalculateValuesForUnits(
         { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
         unitId,
       ),
+      locale,
+      descriptions: getUnitStatsCOH3Descriptions(locale),
     },
     revalidate: false,
   };
@@ -487,7 +498,7 @@ export const getStaticPaths: GetStaticPaths<{ unitId: string }> = async () => {
     }
   }
   return {
-    paths: unitPaths, //indicates that no page needs be created at build time
+    paths: unitPaths,
     fallback: "blocking", //indicates the type of fallback
   };
 };

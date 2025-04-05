@@ -7,6 +7,8 @@ import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { getExplorerFactionRoute } from "../../src/routes";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
@@ -24,10 +26,12 @@ const explorerFactionLink = (faction: raceType) => {
 };
 
 const Explorer: NextPage = () => {
+  const { t } = useTranslation(["explorer"]);
+
   return (
     <>
       <Head>
-        <title>COH3 Explorer</title>
+        <title>COH3 {t("common.explorer")}</title>
         <meta name="description" content="COH3 Factions Explorer." />
         <meta
           name="keywords"
@@ -36,12 +40,9 @@ const Explorer: NextPage = () => {
       </Head>
       <Container size="md">
         <Stack mb={24}>
-          <Title order={2}>Company of Heroes 3 Factions Explorer</Title>
+          <Title order={2}>{t("explorer.title")}</Title>
           <Text size="lg" mt={4}>
-            Discover all units, buildings and more in the game.
-          </Text>
-          <Text size="md" mt={16}>
-            Please provide feedback on the Discord for this section. Thank you.
+            {t("explorer.subtitle")}
           </Text>
         </Stack>
 
@@ -68,6 +69,14 @@ const Explorer: NextPage = () => {
       </Container>
     </>
   );
+};
+
+export const getStaticProps = async ({ locale = "en" }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
+    },
+  };
 };
 
 export default Explorer;

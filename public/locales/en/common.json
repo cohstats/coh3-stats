@@ -1,0 +1,42 @@
+{
+  "mainMenu": {
+    "leaderboards": "Leaderboards",
+    "statistics": "Statistics",
+    "statsMenu": {
+        "games": "Games Stats",
+        "maps": "Maps Stats",
+        "players": "Players Stats",
+        "leaderboards": "Leaderboards Stats",
+        "achievements": "Achievements Stats"
+    },
+    "explorer": "Explorer",
+    "explMenu": {
+      "buildings": "Buildings",
+      "units": "Units",
+      "dpsCalculator": "DPS - Unit Comparison",
+      "unitBrowser": "Unit Browser",
+      "challenges": "Challenges",
+      "weapons": "Weapons"
+    },
+    "liveGames": "Live Games",
+    "desktopApp": "Desktop App",
+    "other": "Other",
+    "otherMenu": {
+      "tiers": "Ranking Tiers",
+      "openData": "Open Data",
+      "coh3News": "COH3 News",
+      "playerExport": "Player Export API"
+    },
+    "about": "About",
+    "supportUs": "Support Us"
+  },
+  "header": {
+    "playerInGames": "Players in game"
+  },
+  "footer": {
+    "gamePatch": "Game Patch",
+    "gamePatchInfo": "Data displayed on the site are from game patch",
+    "unofficialSite": "This is an unofficial fan-made site for Company Of Heroes 3.",
+    "visit": "Visit coh2stats.com for Company of Heroes 2 stats and analytics"
+  }
+}

@@ -21,11 +21,16 @@ type BattlegroupsType = {
 
 // Exported variable holding mapped data for each json file. Will be set via
 // `setBattlegroupStats`. Can be accessed from everywhere.
-let battlegroupStats: BattlegroupsType[];
+const battlegroupStats: Record<string, BattlegroupsType[]> = {};
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
-const mapBattlegroupData = (filename: string, subtree: any, jsonPath: string) => {
+const mapBattlegroupData = (
+  filename: string,
+  subtree: any,
+  jsonPath: string,
+  locale: string = "en",
+) => {
   const bgEntity: BattlegroupsType = {
     id: filename,
     path: jsonPath,
@@ -43,12 +48,12 @@ const mapBattlegroupData = (filename: string, subtree: any, jsonPath: string) =>
     },
   };
 
-  mapTechTreeBag(subtree, bgEntity);
+  mapTechTreeBag(subtree, bgEntity, locale);
 
   return bgEntity;
 };
 
-const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
+const mapTechTreeBag = (root: any, bg: BattlegroupsType, locale: string = "en") => {
   const techTreeBag = root.techtree_bag;
 
   /* --------- UI SECTION --------- */
@@ -57,7 +62,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
   const [leftBranch, rightBranch] = techTreeBag.branches;
   bg.branchesRefs = {
     LEFT: {
-      name: resolveLocstring(leftBranch.branch.name) || "",
+      name: resolveLocstring(leftBranch.branch.name, locale) || "",
       upgrades: Array.isArray(leftBranch.branch.upgrades)
         ? leftBranch.branch.upgrades.map(
             (x: { upgrade: { instance_reference: string } }) => x.upgrade.instance_reference,
@@ -65,7 +70,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
         : [],
     },
     RIGHT: {
-      name: resolveLocstring(rightBranch.branch.name) || "",
+      name: resolveLocstring(rightBranch.branch.name, locale) || "",
       upgrades: Array.isArray(rightBranch.branch.upgrades)
         ? rightBranch.branch.upgrades.map(
             (x: { upgrade: { instance_reference: string } }) => x.upgrade.instance_reference,
@@ -78,8 +83,8 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType) => {
 // Calls the mapping for each entity and puts the result array into the exported
 // SbpsData variable. This variable can be imported everywhere. this method is
 // called after loading the JSON at build time.
-const getBattlegroupStats = async () => {
-  if (battlegroupStats) return battlegroupStats;
+const getBattlegroupStats = async (locale: string = "en") => {
+  if (battlegroupStats[locale]) return battlegroupStats[locale];
 
   const myReqBattlegroup = await fetch(config.getPatchDataUrl("battlegroup.json"));
 
@@ -89,7 +94,14 @@ const getBattlegroupStats = async () => {
 
   // Extract from JSON
   for (const obj in root) {
-    const bgSet = traverseTree(root[obj], isTechTreeBagContainer, mapBattlegroupData, obj, obj);
+    const bgSet = traverseTree(
+      root[obj],
+      isTechTreeBagContainer,
+      (filename: string, subtree: any, jsonPath: string) =>
+        mapBattlegroupData(filename, subtree, jsonPath, locale),
+      obj,
+      obj,
+    );
 
     // Filter relevant objects
     bgSet.forEach((item: BattlegroupsType) => {
@@ -97,7 +109,7 @@ const getBattlegroupStats = async () => {
     });
   }
 
-  setBattlegroupStats(bgSetAll);
+  setBattlegroupStats(bgSetAll, locale);
 
   return bgSetAll;
 };
@@ -110,9 +122,10 @@ const isTechTreeBagContainer = (key: string, obj: any) => {
 /**
  * Assign the stats to the global variable.
  * @param stats
+ * @param locale
  */
-const setBattlegroupStats = (stats: BattlegroupsType[]) => {
-  battlegroupStats = stats;
+const setBattlegroupStats = (stats: BattlegroupsType[], locale: string = "en") => {
+  battlegroupStats[locale] = stats;
 };
 
 export { battlegroupStats, setBattlegroupStats, getBattlegroupStats };

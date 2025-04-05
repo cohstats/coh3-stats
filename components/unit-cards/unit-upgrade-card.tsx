@@ -4,6 +4,7 @@ import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
 
 import classes from "./Unit.module.css";
+import { useTranslation } from "next-i18next";
 
 /**
  * These fields can be found at `sbps` inside each unit object.
@@ -70,7 +71,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
             src={`/icons/${desc.icon_name}.png`}
             alt={desc.screen_name || ""}
             fallbackSrc={iconPlaceholder}
-          ></ImageWithFallback>
+          />
         </Flex>
       </HoverCard.Target>
       <HoverCard.Dropdown>
@@ -177,6 +178,8 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
 };
 
 export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
+  const { t } = useTranslation(["explorer"]);
+
   return (
     <Stack h="100%" align="stretch" justify="space-between" gap={16}>
       <UnitUpgradeCardHeader
@@ -192,14 +195,14 @@ export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
         cfg={cfg}
       ></UnitUpgradeCardHeader>
       {hasBuildableCost(time_cost) ? (
-        UnitCostCard(time_cost)
+        UnitCostCard(time_cost, t("common.costs"))
       ) : (
         <Stack gap={0}>
           <Title order={6} style={{ textTransform: "uppercase" }}>
-            Costs
+            {t("common.costs")}
           </Title>
           <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
-            <Text>Free</Text>
+            <Text>{t("unitPage.free")}</Text>
           </Flex>
         </Stack>
       )}

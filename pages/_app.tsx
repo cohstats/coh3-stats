@@ -19,6 +19,16 @@ import ContentContainer from "../components/Content-container";
 import config from "../config";
 import DevSiteNotification from "../components/dev-site-notification";
 // import { useServiceWorker } from "@edgio/react";
+import { appWithTranslation } from "next-i18next";
+import { UserConfig } from "next-i18next";
+import nextI18NextConfig from "../next-i18next.config";
+
+const emptyInitialI18NextConfig: UserConfig = {
+  i18n: {
+    defaultLocale: nextI18NextConfig.i18n.defaultLocale,
+    locales: nextI18NextConfig.i18n.locales,
+  },
+};
 
 import "./layout.css";
 
@@ -26,7 +36,7 @@ webFirebase.init();
 
 NProgress.configure({ showSpinner: false });
 
-export default function App(props: AppProps) {
+function App(props: AppProps) {
   const { Component, pageProps } = props;
 
   const colorSchemeManager = localStorageColorSchemeManager({
@@ -154,3 +164,5 @@ export default function App(props: AppProps) {
     </>
   );
 }
+
+export default appWithTranslation(App, emptyInitialI18NextConfig);

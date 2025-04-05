@@ -14,6 +14,7 @@ import HelperIcon from "../../components/icon/helper";
 import dayjs from "dayjs";
 import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
 import { generateExpireTimeStamps } from "../../src/utils";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 //only render on client side
 const DynamicGeoWorldMap = dynamic(
@@ -160,7 +161,7 @@ const PlayerStats = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en" }) => {
   let error = null;
   let playerStats: PlayerStatsType | null = null;
   let countries = null;
@@ -215,6 +216,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       playerStats,
       countries,
       historyData,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

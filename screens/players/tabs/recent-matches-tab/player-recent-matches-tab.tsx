@@ -34,6 +34,7 @@ import classes from "./matches-table.module.css";
 import MatchDetailDrawer from "./match-detail-drawer";
 import DownloadReplayButton from "./matches-table/download-replay";
 import { getPlayerRecentMatches } from "../../../../src/apis/coh3stats-api";
+// import { useTranslation } from 'next-i18next';
 
 /**
  * Timeago is causing issues with SSR, move to client side
@@ -48,6 +49,7 @@ const PlayerRecentMatchesTab = ({
   profileID: string;
   customGamesHidden: boolean | undefined | null;
 }) => {
+  // const { t } = useTranslation('players');
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
   const [matchData, setMatchData] = useState<Array<ProcessedMatch> | null>(null);

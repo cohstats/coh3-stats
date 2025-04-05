@@ -41,11 +41,11 @@ const VehicleArmorCover = [
   { icon: "/icons/common/cover/negative.png", armor: "rear" },
 ] as const;
 
-export const StatsVehicleArmor = (cfg: StatsVehicleInput) => (
+export const StatsVehicleArmor = (cfg: StatsVehicleInput, title = "Vehicle Armor") => (
   <>
     <Flex direction="column">
       <Title order={6} style={{ textTransform: "uppercase" }}>
-        Vehicle Armor
+        {title}
       </Title>
       <Text
         fz="xs"

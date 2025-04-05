@@ -12,6 +12,7 @@ import {
 } from "../../components/unitStats/weaponTable";
 import { getFactionIcon, getScatterArea, getWeaponRpm } from "../../src/unitStats";
 import { getIconsPathOnCDN } from "../../src/utils";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface WeaponsProps {
   tableData: WeaponTableRow[];
@@ -43,8 +44,10 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const { weaponData } = await getMappings();
+export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const { weaponData } = await getMappings(context.locale);
 
   const tableData: WeaponTableRow[] = [];
   // const categoryList: Record<string, number> = {};
@@ -117,6 +120,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       tableData: tableData,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

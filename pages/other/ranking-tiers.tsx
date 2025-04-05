@@ -9,6 +9,7 @@ import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
 import { generateKeywordsString } from "../../src/head-utils";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const RankingTiers: NextPage = () => {
   useEffect(() => {
@@ -113,6 +114,14 @@ const RankingTiers: NextPage = () => {
       </>
     </div>
   );
+};
+
+export const getStaticProps = async ({ locale = "en" }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default RankingTiers;

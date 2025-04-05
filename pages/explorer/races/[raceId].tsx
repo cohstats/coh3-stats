@@ -1,7 +1,6 @@
-import { GetStaticPaths, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { IconBarrierBlock } from "@tabler/icons-react";
 import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import { raceType } from "../../../src/coh3/coh3-types";
@@ -22,13 +21,15 @@ import {
   getResolvedSquads,
   HalfTrackDeploymentUnitsAfrikaKorps,
   getResolvedAbilities,
-  RaceBagDescription,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateKeywordsString } from "../../../src/head-utils";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
+import { getUnitStatsCOH3Descriptions } from "../../../src/unitStats/descriptions";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 interface RaceDetailProps {
   sbpsData: SbpsType[];
@@ -36,6 +37,10 @@ interface RaceDetailProps {
   upgradesData: UpgradesType[];
   abilitiesData: AbilitiesType[];
   battlegroupData: BattlegroupsType[];
+  descriptions: {
+    raceDescription: string;
+    buildings: string;
+  };
 }
 
 const RaceDetail: NextPage<RaceDetailProps> = ({
@@ -44,10 +49,12 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   upgradesData,
   battlegroupData,
   abilitiesData,
+  descriptions,
 }) => {
   // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
   const { query } = useRouter();
+  const { t } = useTranslation(["explorer"]);
 
   const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
@@ -72,27 +79,17 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
       </Head>
       <Container fluid p={0}>
-        <Stack>
-          <Flex direction="row" align="center" gap="md">
-            <FactionIcon name={raceToFetch} width={64} />
-            <Title order={2}>{localizedRace}</Title>
-          </Flex>
-
-          <Text size="lg">{RaceBagDescription[raceToFetch]}</Text>
-        </Stack>
-
-        <Flex direction="row" gap={16} mt={24}>
-          <IconBarrierBlock size={50} />
-          <Text c="orange.6" fs="italic">
-            Important Note: This section may contain some inacurracies regarding the unit costs.
-            We&apos;re still working on redefining the calculation for infantry, so feel free to
-            report any bug.
-          </Text>
+        <Flex direction="row" align="center" gap="md">
+          <FactionIcon name={raceToFetch} width={80} />
+          <Stack gap="xs">
+            <Title order={3}>{localizedRace}</Title>
+            <Text size="md">{descriptions.raceDescription}</Text>
+          </Stack>
         </Flex>
 
         {/* Battlegroups Section */}
         <Stack mt={32}>
-          <Title order={4}>Battlegroups</Title>
+          <Title order={4}>{t("common.battleGroups")}</Title>
 
           {BattlegroupCard(raceToFetch, {
             battlegroupData,
@@ -104,15 +101,28 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
         {/* Buildings Section */}
         <Stack mt={32}>
-          <Title order={4}>Buildings</Title>
+          <Title order={4}>{descriptions.buildings}</Title>
 
-          {BuildingMapping(raceToFetch, {
-            ebpsData,
-            sbpsData,
-            upgradesData,
-            abilitiesData,
-          })}
+          {BuildingMapping(
+            raceToFetch,
+            {
+              ebpsData,
+              sbpsData,
+              upgradesData,
+              abilitiesData,
+            },
+            t,
+          )}
         </Stack>
+
+        {/*<Flex direction="row" gap={16} mt={24}>*/}
+        {/*  <IconBarrierBlock size={35} />*/}
+        {/*  <Text c="orange.6" fs="italic">*/}
+        {/*    Important Note: This section may contain some inacurracies regarding the unit costs.*/}
+        {/*    We&apos;re still working on redefining the calculation for infantry, so feel free to*/}
+        {/*    report any bug.*/}
+        {/*  </Text>*/}
+        {/*</Flex>*/}
       </Container>
     </>
   );
@@ -126,6 +136,7 @@ const BuildingMapping = (
     upgradesData: UpgradesType[];
     abilitiesData: AbilitiesType[];
   },
+  t: (key: string) => string,
 ) => {
   const buildings = filterMultiplayerBuildings(data.ebpsData, race);
   return (
@@ -171,7 +182,8 @@ const BuildingMapping = (
               health={{
                 hitpoints: building.health.hitpoints,
               }}
-            ></BuildingCard>
+              t={t}
+            />
           </Card>
         );
       })}
@@ -233,20 +245,47 @@ function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSch
 
 // Generates `/dak`.
 export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
+  // Some locale paths are pre-generated, other will be generated on demand.
   return {
     paths: [
-      { params: { raceId: "dak" } },
-      { params: { raceId: "american" } },
-      { params: { raceId: "british" } },
-      { params: { raceId: "german" } },
+      { params: { raceId: "dak" }, locale: "en" },
+      { params: { raceId: "dak" }, locale: "de" },
+      { params: { raceId: "dak" }, locale: "ko" },
+      { params: { raceId: "dak" }, locale: "zh-Hans" },
+      { params: { raceId: "dak" }, locale: "zh-Hant" },
+
+      { params: { raceId: "american" }, locale: "en" },
+      { params: { raceId: "american" }, locale: "de" },
+      { params: { raceId: "american" }, locale: "ko" },
+      { params: { raceId: "american" }, locale: "zh-Hans" },
+      { params: { raceId: "american" }, locale: "zh-Hant" },
+
+      { params: { raceId: "british" }, locale: "en" },
+      { params: { raceId: "british" }, locale: "de" },
+      { params: { raceId: "british" }, locale: "ko" },
+      { params: { raceId: "british" }, locale: "zh-Hans" },
+      { params: { raceId: "british" }, locale: "zh-Hant" },
+
+      { params: { raceId: "german" }, locale: "en" },
+      { params: { raceId: "german" }, locale: "de" },
+      { params: { raceId: "german" }, locale: "ko" },
+      { params: { raceId: "german" }, locale: "zh-Hans" },
+      { params: { raceId: "german" }, locale: "zh-Hant" },
     ],
-    fallback: false, // can also be true or 'blocking'
+    fallback: "blocking", // can also be true or 'blocking'
   };
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
   const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } =
-    await getMappings();
+    await getMappings(locale);
+
+  const raceId = context.params?.raceId as string;
+
+  const descriptions = getUnitStatsCOH3Descriptions(locale);
+
+  // get raceID from context
 
   return {
     props: {
@@ -255,6 +294,11 @@ export const getStaticProps = async () => {
       upgradesData,
       abilitiesData,
       battlegroupData,
+      descriptions: {
+        raceDescription: descriptions[raceId as raceType]?.description || null,
+        buildings: descriptions.common.buildings || null,
+      },
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
     revalidate: false,
   };

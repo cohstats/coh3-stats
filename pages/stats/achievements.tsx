@@ -2,10 +2,12 @@ import { GetServerSideProps } from "next";
 import { getGlobalAchievements } from "../../src/apis/coh3stats-api";
 import GlobalAchievementsIndex from "../../screens/stats/achievements";
 import { generateExpireTimeStamps } from "../../src/utils";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   req,
   res,
+  locale = "en",
 }) => {
   const xff = `${req.headers["x-forwarded-for"]}`;
 
@@ -32,6 +34,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     props: {
       error,
       globalAchievements,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

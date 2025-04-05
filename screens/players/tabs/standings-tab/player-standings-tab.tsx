@@ -11,6 +11,7 @@ import NemesisWidget from "./widgets/nemesis-widget";
 import MoreButton from "../components/more-button";
 import { useRouter } from "next/router";
 import MapsWidget from "./widgets/maps-widget";
+// import { useTranslation } from 'next-i18next';
 import AliasHistoryWidget from "./widgets/alias-history-widget";
 
 const PlayerStandingsTab = ({
@@ -25,6 +26,7 @@ const PlayerStandingsTab = ({
   COH3PlayTime: number | null;
 }) => {
   const { push, query } = useRouter();
+  // const { t } = useTranslation('players');
 
   const changeView = async (value: string) => {
     await push({ query: { ...query, view: value } });

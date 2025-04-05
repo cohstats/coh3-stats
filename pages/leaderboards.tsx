@@ -5,13 +5,14 @@ import { GetServerSideProps } from "next";
 import { LeaderboardRegionTypes } from "../src/coh3/coh3-data";
 
 import Leaderboards from "../screens/leaderboards/leaderboards";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const sortById = {
   wins: 0,
   elo: 1,
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, res, locale = "en" }) => {
   const { race, type, sortBy, start, platform, region } = query;
 
   const raceToFetch = (race as raceType) || "american";
@@ -67,6 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
       typeToFetch,
       platformToFetch,
       regionToFetch,
+      ...(await serverSideTranslations(locale, ["common"])),
     }, // will be passed to the page component as props
   };
 };

@@ -5,10 +5,15 @@ import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
 import { getLatestCOH3RedditPosts, RedditPostType } from "../src/apis/reddit-api";
 import { GetServerSideProps } from "next";
 import { COH3SteamNewsType, getCOH3SteamNews, NewsItem } from "../src/apis/steam-api";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({
+  req,
+  res,
+  locale = "en",
+}) => {
   const xff = `${req.headers["x-forwarded-for"]}`;
 
   let error: Error | null = null;
@@ -66,6 +71,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, res }) 
       redditPostsData,
       steamNewsData,
       youtubeData,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

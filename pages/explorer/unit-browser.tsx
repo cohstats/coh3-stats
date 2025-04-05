@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/head-utils";
@@ -6,6 +6,7 @@ import { getMappings } from "../../src/unitStats/mappings";
 import { UnitTable } from "../../components/unitStats/unitTable";
 import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface SquadProps {
   tableData: CustomizableUnit[];
@@ -95,9 +96,11 @@ const filterObject = (obj: any, allowedKeys: string[]): any => {
   return filteredObj;
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData } = await getMappings();
+  const { weaponData, ebpsData, sbpsData } = await getMappings(locale);
 
   const tableData: CustomizableUnit[] = [];
 
@@ -118,6 +121,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       tableData: tableData,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 };

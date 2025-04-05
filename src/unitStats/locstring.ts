@@ -6,7 +6,8 @@
 
 import config from "../../config";
 
-let unitStatsLocString: Record<string, string | null>;
+// Map of locale -> locstring
+const unitStatsLocStringCache: Record<string, Record<string, string | null>> = {};
 
 type LocstringSchema = {
   name: string;
@@ -28,23 +29,30 @@ type TextFormatterSchema = {
 };
 
 // The input comes from the weapon / ebps / sbps / upgrade json.
-const resolveLocstring = (inLocstring: LocstringObjectSchema) => {
-  if (!unitStatsLocString) return null;
+const resolveLocstring = (inLocstring: LocstringObjectSchema, locale: string = "en") => {
+  if (!unitStatsLocStringCache[locale]) return null;
   // unitStatsLocString is a object (Record<string, string>
-  return unitStatsLocString[inLocstring?.locstring?.value] ?? null;
+
+  // console.log(`Resolving locstring: ${inLocstring?.locstring?.value}, locale: ${locale}`);
+
+  return unitStatsLocStringCache[locale][inLocstring?.locstring?.value] ?? null;
 };
 
-const resolveTextFormatterLocstring = (inFormatter: TextFormatterSchema) => {
+const resolveTextFormatterLocstring = (
+  inFormatter: TextFormatterSchema,
+  locale: string = "en",
+) => {
   if (!inFormatter || !inFormatter?.formatter?.locstring?.value) return null;
   // We lookup for the formatter locstring and replace the values with the argument list.
-  const foundFormatterLoc = unitStatsLocString[inFormatter.formatter.locstring.value] ?? null;
+  const foundFormatterLoc =
+    unitStatsLocStringCache[locale]?.[inFormatter.formatter.locstring.value] ?? null;
   if (!foundFormatterLoc) return null;
 
   const valRegex = /(\%\d+\%)/g;
   const replacements = inFormatter.formatter_arguments.map((x) => {
     if (x.int_value) return `${x.int_value}`;
     if (x.float_value) return `${x.float_value}`;
-    if (x.locstring_value) return resolveLocstring(x.locstring_value);
+    if (x.locstring_value) return resolveLocstring(x.locstring_value, locale);
   });
   const formattedLoc = foundFormatterLoc.replace(valRegex, () => replacements.shift() ?? "0");
 
@@ -59,24 +67,28 @@ const resolveTextFormatterLocstring = (inFormatter: TextFormatterSchema) => {
   return finalFormattedLoc;
 };
 
-const fetchLocstring = async () => {
-  if (unitStatsLocString) return unitStatsLocString;
+const fetchLocstring = async (locale: string = "en") => {
+  if (unitStatsLocStringCache[locale]) return unitStatsLocStringCache[locale];
 
-  const myReqLocstring = await fetch(config.getPatchDataUrl("locstring.json"));
+  const path = config.getPatchDataLocaleUrl(locale);
+  const myReqLocString = await fetch(path);
 
-  unitStatsLocString = await myReqLocstring.json();
+  const locstring = await myReqLocString.json();
 
   // some value are undefined, we need to fix that,
   // otherwise we cannot serialize it.
-  for (const prop in unitStatsLocString)
-    if (!unitStatsLocString[prop]) unitStatsLocString[prop] = null;
+  for (const prop in locstring) if (!locstring[prop]) locstring[prop] = null;
 
-  return unitStatsLocString;
+  unitStatsLocStringCache[locale] = locstring;
+  return locstring;
 };
 
-const setLocstring = (locstring: any) => {
-  unitStatsLocString = locstring;
+const setLocstring = (locstring: any, locale: string = "en") => {
+  unitStatsLocStringCache[locale] = locstring;
 };
+
+// For backward compatibility, expose the English locstring
+const unitStatsLocString = () => unitStatsLocStringCache["en"] ?? null;
 
 export {
   resolveLocstring,

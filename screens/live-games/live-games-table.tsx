@@ -1,18 +1,16 @@
 import { LiveGame, ResponseLiveGames, TypeOfLiveGame } from "../../src/coh3/coh3-types";
 import { DataTable, DataTableColumn } from "mantine-datatable";
-
 import { matchTypesAsObject } from "../../src/coh3/coh3-data";
-
 import { Flex, Switch, Text } from "@mantine/core";
 import { getMatchDuration, getMatchPlayersByFaction } from "../../src/coh3/helpers";
 import RenderMap from "../players/tabs/recent-matches-tab/matches-table/render-map";
-
 import React from "react";
 import dayjs from "dayjs";
 import RenderPlayersLiveGames from "./render-players-live-games";
 import { calculatePageNumber } from "../../src/utils";
 import { useLocalStorage } from "@mantine/hooks";
 import ErrorCard from "../../components/error-card";
+import { useTranslation } from "next-i18next";
 
 const LiveGamesTable = ({
   data,
@@ -31,6 +29,7 @@ const LiveGamesTable = ({
   onPageChange: (p: number) => void;
   type: TypeOfLiveGame | null;
 }) => {
+  const { t } = useTranslation("live-games");
   const [showCountryFlag, setShowCountryFlag] = useLocalStorage({
     key: "show-country-flag-matches",
     defaultValue: "false",
@@ -42,13 +41,13 @@ const LiveGamesTable = ({
   });
 
   if (error) {
-    return <ErrorCard title={"Error getting the live games"} body={`${error}`} />;
+    return <ErrorCard title={t("gamesTable.errors.title")} body={`${error}`} />;
   }
 
   const columns: DataTableColumn<LiveGame>[] = [
     {
       accessor: "matchtype_id",
-      title: "Mode",
+      title: t("gamesTable.columns.mode"),
       textAlign: "center",
       render: ({ matchtype_id }) => {
         return (
@@ -60,7 +59,7 @@ const LiveGamesTable = ({
     },
     {
       accessor: "axis_players",
-      title: "Axis Players",
+      title: t("gamesTable.columns.axisPlayers"),
       textAlign: "left",
       width: "50%",
       render: ({ players }) => {
@@ -77,7 +76,7 @@ const LiveGamesTable = ({
     },
     {
       accessor: "allied_players",
-      title: "Allies Players",
+      title: t("gamesTable.columns.alliesPlayers"),
       textAlign: "left",
       width: "50%",
       render: ({ players }) => {
@@ -94,7 +93,7 @@ const LiveGamesTable = ({
     },
     {
       accessor: "mapname",
-      title: "Map",
+      title: t("gamesTable.columns.map"),
       textAlign: "center",
       render: ({ mapname }) => {
         return <RenderMap mapName={mapname as string} />;
@@ -102,12 +101,12 @@ const LiveGamesTable = ({
     },
     {
       accessor: "current_observers",
-      title: "Observers",
+      title: t("gamesTable.columns.observers"),
       textAlign: "center",
     },
     {
       accessor: "startgametime",
-      title: "Game Time",
+      title: t("gamesTable.columns.gameTime"),
       textAlign: "center",
       render: ({ startgametime }) => {
         return <>{getMatchDuration(startgametime as number, dayjs().unix())}</>;
@@ -115,7 +114,7 @@ const LiveGamesTable = ({
     },
     {
       accessor: "server",
-      title: "Server",
+      title: t("gamesTable.columns.server"),
       textAlign: "center",
       hidden: showServer !== "true",
     },
@@ -129,7 +128,7 @@ const LiveGamesTable = ({
           onChange={(event) => {
             setShowCountryFlag(`${event.currentTarget.checked}`);
           }}
-          label="Show Player Flags"
+          label={t("gamesTable.switches.showFlags")}
         />
       </Flex>
       <DataTable
@@ -152,7 +151,11 @@ const LiveGamesTable = ({
         <div style={{ width: 130 }}></div>
         <Text fs="italic" c="dimmed" fz="sm">
           {data?.unixTimeStamp && (
-            <>Data updated on {new Date(data?.unixTimeStamp * 1000 || "").toLocaleString()}</>
+            <>
+              {t("gamesTable.dataUpdated", {
+                time: new Date(data?.unixTimeStamp * 1000 || "").toLocaleString(),
+              })}
+            </>
           )}
         </Text>
         <Switch
@@ -160,7 +163,7 @@ const LiveGamesTable = ({
           onChange={(event) => {
             setShowServer(`${event.currentTarget.checked}`);
           }}
-          label="Show Match Server"
+          label={t("gamesTable.switches.showServer")}
         />
       </Flex>
     </>
