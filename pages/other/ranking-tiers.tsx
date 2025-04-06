@@ -3,20 +3,20 @@ import React, { useEffect } from "react";
 import { AnalyticsRankingTiersPageView } from "../../src/firebase/analytics";
 import Head from "next/head";
 import { Container, Text, Title } from "@mantine/core";
-
 import { DataTable } from "mantine-datatable";
-
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
 import { generateKeywordsString } from "../../src/head-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const RankingTiers: NextPage = () => {
+  const { t } = useTranslation("ranking-tiers");
+
   useEffect(() => {
     AnalyticsRankingTiersPageView();
   }, []);
 
-  // PlayerRanks
   const playerRanksAsArray = Object.values(PlayerRanks).reverse();
 
   const pageTitle = `Ranking Tiers - Company of Heroes 3`;
@@ -40,20 +40,17 @@ const RankingTiers: NextPage = () => {
       </Head>
       <>
         <Container size={"sm"}>
-          {" "}
           <Title order={2} pt="md">
-            Ranking Tiers in Company of Heroes 3
+            {t("title")}
           </Title>
           <Text fz="sm">
-            Based on the player ELO, players are placed into specific Leagues and Tiers.
-            <br />A player needs at least 10 matches for each faction in a specific game type to
-            earn a rank and be placed in a tier.
+            {t("description")}
+            <br />
+            {t("matchRequirement")}
           </Text>
           <DataTable
             records={playerRanksAsArray}
             highlightOnHover
-            // withBorder
-            // borderRadius="md"
             style={{
               marginTop: 20,
             }}
@@ -73,19 +70,18 @@ const RankingTiers: NextPage = () => {
               {
                 accessor: "name",
                 textAlign: "left",
-                title: "Tier Name",
+                title: t("table.columns.tierName"),
               },
               {
                 accessor: "min",
                 textAlign: "center",
-                title: "ELO Rating",
+                title: t("table.columns.eloRating"),
                 render: ({ min, max }) => {
                   if (max === 5000) {
                     return <>{min}+</>;
                   } else if (min === -1) {
                     return <>Unranked</>;
                   }
-
                   return (
                     <>
                       {min} - {max}
@@ -96,10 +92,10 @@ const RankingTiers: NextPage = () => {
               {
                 accessor: "rank",
                 textAlign: "center",
-                title: "Rank",
+                title: t("table.columns.rank"),
                 render: ({ rank }) => {
                   if (rank > 0) {
-                    return <>Top {rank} players</>;
+                    return <>{t("table.topPlayers", { count: rank })}</>;
                   }
                   return <></>;
                 },
@@ -107,8 +103,7 @@ const RankingTiers: NextPage = () => {
             ]}
           />
           <Text fz="sm" fs="italic">
-            Note: If a player remains inactive for an extended period, they lose their rank.
-            However, they can regain it by playing just one game.
+            {t("inactivityNote")}
           </Text>
         </Container>
       </>
@@ -119,7 +114,7 @@ const RankingTiers: NextPage = () => {
 export const getStaticProps = async ({ locale = "en" }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "ranking-tiers"])),
     },
   };
 };

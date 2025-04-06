@@ -22,9 +22,9 @@ import { IconShare3 } from "@tabler/icons-react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateKeywordsString } from "../../src/head-utils";
-
 import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
+import { useTranslation } from "next-i18next";
 
 const preset = reactPreset.extend((tags: any) => ({
   ...tags,
@@ -112,7 +112,7 @@ class NewsComponentErrorBoundary extends React.Component {
   }
 }
 
-const SingleNewsItem = ({ item }: { item: NewsItem }) => {
+const SingleNewsItem = ({ item, t }: { item: NewsItem; t: (key: string) => string }) => {
   try {
     return (
       <Card shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
@@ -137,7 +137,8 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
           </Anchor>
         </Flex>
         <Text fz="lg">
-          Posted by {item.author} on {dayjs((item.date || 0) * 1000).format("DD/MMM/YYYY")}
+          {t("postedBy")} {item.author} {t("on")}{" "}
+          {dayjs((item.date || 0) * 1000).format("DD/MMM/YYYY")}
         </Text>
         <div>
           <NewsComponentErrorBoundary>
@@ -200,12 +201,14 @@ const SingleNewsItem = ({ item }: { item: NewsItem }) => {
 const keywords = generateKeywordsString(["coh3 news", "news", "patch", "changes"]);
 
 const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
+  const { t } = useTranslation("news");
+
   useEffect(() => {
     AnalyticsNewsPageView();
   }, []);
 
   const items = COH3SteamNews.newsitems.map((item) => {
-    return <SingleNewsItem item={item} key={item.date} />;
+    return <SingleNewsItem item={item} key={item.date} t={t} />;
   });
   const image = COH3SteamNews.newsitems[0]?.image || "";
 
@@ -213,21 +216,21 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
     return (
       <>
         <Head>
-          <title>{"COH3 News"}</title>
-          <meta name="description" content={`Latest official news for Company of Heroes 3`} />
+          <title>{t("meta.title")}</title>
+          <meta name="description" content={t("meta.description")} />
           <meta name="keywords" content={keywords} />
           <meta property="og:image" content={image} />
         </Head>
         <Container size={"md"} px={0}>
-          <Title>Latest Company Of Heroes 3 News</Title>
+          <Title>{t("pageTitle")}</Title>
           <Space h={"lg"} />
           {items}
           <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
-            Source: Official Relic Steam News for COH3
+            {t("sourceText")}
             <br />
-            You can find all the articles on{" "}
+            {`You can find all the articles on `}
             <Anchor href={"https://store.steampowered.com/news/app/1677280"} target={"_blank"}>
-              Steam news
+              {t("steamNewsLink")}
             </Anchor>
           </Text>
         </Container>
