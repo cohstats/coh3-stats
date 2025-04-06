@@ -5,6 +5,9 @@ package = "@netlify/plugin-nextjs"
 command = "yarn next build"
 publish = ".next"
 
+[functions]
+  included_files = ["next-i18next.config.js", "public/locales/**"]
+
 [[headers]]
   for = "/*" # Adjust the path as needed
   [headers.values]

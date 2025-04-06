@@ -19,4 +19,9 @@ module.exports = {
     defaultLocale: "en",
     localeDetection: false,
   },
+  localePath:
+    typeof window === "undefined"
+      ? // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require("path").resolve("./public/locales")
+      : "/public/locales",
 };
