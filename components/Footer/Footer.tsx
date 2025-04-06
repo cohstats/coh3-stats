@@ -55,11 +55,11 @@ export const Footer: React.FC = () => {
         {/*Looks like we can't have Space inside Text element?! Hydration failure*/}
         <Space h="md" />
         <Text c="dimmed" size="xs" style={{ textAlign: "center" }}>
-          Visit{" "}
+          {t("footer.visitText1")}{" "}
           <Anchor component={Link} href={"https://coh2stats.com"} target={"_blank"}>
             coh2stats.com{" "}
           </Anchor>{" "}
-          for Company of Heroes 2 stats and analytics
+          {t("footer.visitText2")}
         </Text>
       </footer>
     </>

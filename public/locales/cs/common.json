@@ -34,9 +34,10 @@
     "playerInGames": "Hráči ve hře"
   },
   "footer": {
+    "visitText1": "Navštivte",
+    "visitText2": "pro statistiky a analýzy Company of Heroes 2",
     "gamePatch": "Herní patch",
     "gamePatchInfo": "Data zobrazená na webu jsou z herního patche",
-    "unofficialSite": "Toto je neoficiální fanouškovský web pro Company Of Heroes 3.",
-    "visit": "Navštivte coh2stats.com pro statistiky a analýzy Company of Heroes 2"
+    "unofficialSite": "Toto je neoficiální fanouškovský web pro Company Of Heroes 3."
   }
 }
