@@ -78,7 +78,7 @@
     "react-chartjs-2": "5.3.0",
     "react-dom": "18.3.1",
     "react-i18next": "^15.4.1",
-    "sst": "3.9.36",
+    "sst": "3.11.21",
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
