@@ -3,11 +3,11 @@
     "leaderboards": "Žebříčky",
     "statistics": "Statistiky",
     "statsMenu": {
-        "games": "Stats Herní",
-        "maps": "Stats Map",
-        "players": "Stats Hráčů",
-        "leaderboards": "Stats Žebříčků",
-        "achievements": "Achievements Stats"
+      "games": "Stats Herní",
+      "maps": "Stats Map",
+      "players": "Stats Hráčů",
+      "leaderboards": "Stats Žebříčků",
+      "achievements": "Achievements Stats"
     },
     "explorer": "Průzkumník",
     "explMenu": {
