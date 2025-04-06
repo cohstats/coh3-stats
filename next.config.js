@@ -6,8 +6,6 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { i18n } = require("./next-i18next.config");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { resolve } = require("node:path");
 
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
@@ -23,7 +21,6 @@ const nextConfig = {
     unoptimized: true,
   },
   i18n,
-  localePath: resolve("./public/locales"),
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
