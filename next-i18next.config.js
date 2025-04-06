@@ -17,7 +17,7 @@ module.exports = {
       "cs",
     ],
     defaultLocale: "en",
-    localeDetection: false,
+    localeDetection: true,
   },
   localePath:
     typeof window === "undefined"

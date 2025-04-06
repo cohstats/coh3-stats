@@ -52,6 +52,9 @@ export const LanguageSwitcher: React.FC = () => {
 
   const handleLanguageChange = (newLocale: string | null) => {
     if (newLocale) {
+      // Set the NEXT_LOCALE cookie
+      document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000`; // 1 year expiry
+
       router.push({ pathname, query }, asPath, { locale: newLocale });
     }
   };
