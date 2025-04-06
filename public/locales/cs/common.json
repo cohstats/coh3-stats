@@ -1,0 +1,42 @@
+{
+  "mainMenu": {
+    "leaderboards": "Žebříčky",
+    "statistics": "Statistiky",
+    "statsMenu": {
+        "games": "Stats Herní",
+        "maps": "Stats Map",
+        "players": "Stats Hráčů",
+        "leaderboards": "Stats Žebříčků",
+        "achievements": "Achievements Stats"
+    },
+    "explorer": "Průzkumník",
+    "explMenu": {
+      "buildings": "Budovy",
+      "units": "Jednotky",
+      "dpsCalculator": "DPS - Porovnání jednotek",
+      "unitBrowser": "Prohlížeč jednotek",
+      "challenges": "Výzvy",
+      "weapons": "Zbraně"
+    },
+    "liveGames": "Aktuální Hry",
+    "desktopApp": "Desktop App",
+    "other": "Ostatní",
+    "otherMenu": {
+      "tiers": "Ranking Tiers",
+      "openData": "Open Data",
+      "coh3News": "COH3 Novinky",
+      "playerExport": "API pro export hráčů"
+    },
+    "about": "O nás",
+    "supportUs": "Podpořte nás"
+  },
+  "header": {
+    "playerInGames": "Hráči ve hře"
+  },
+  "footer": {
+    "gamePatch": "Herní patch",
+    "gamePatchInfo": "Data zobrazená na webu jsou z herního patche",
+    "unofficialSite": "Toto je neoficiální fanouškovský web pro Company Of Heroes 3.",
+    "visit": "Navštivte coh2stats.com pro statistiky a analýzy Company of Heroes 2"
+  }
+}

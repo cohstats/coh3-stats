@@ -19,6 +19,7 @@ module.exports = {
     defaultLocale: "en",
     localeDetection: true,
   },
+  defaultNS: "common",
   localePath:
     typeof window === "undefined"
       ? // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -28,6 +28,8 @@ const emptyInitialI18NextConfig: UserConfig = {
     defaultLocale: nextI18NextConfig.i18n.defaultLocale,
     locales: nextI18NextConfig.i18n.locales,
   },
+  defaultNS: "common",
+  localePath: nextI18NextConfig.localePath,
 };
 
 import "./layout.css";
