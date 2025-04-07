@@ -31,12 +31,12 @@ import {
 import { getFactionIcon } from "../../src/unitStats";
 import { CustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { internalSlash } from "../../src/utils";
-import Link from "next/link";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { raceType } from "../../src/coh3/coh3-types";
 import { useDebouncedValue } from "@mantine/hooks";
 
 import classes from "./UnitTable.module.css";
+import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
 
 interface tableColSetup {
   key: string;
@@ -258,7 +258,7 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
         <Tooltip label={(unit as any)[colSetup.key]}>
           <Anchor
             c="orange"
-            component={Link}
+            component={LinkWithOutPrefetch}
             href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
           >
             <Text style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
