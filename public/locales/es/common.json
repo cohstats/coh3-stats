@@ -1,0 +1,43 @@
+{
+  "mainMenu": {
+    "leaderboards": "Tablero",
+    "statistics": "Estadísticas",
+    "statsMenu": {
+      "games": "Estadísticas del juego",
+      "maps": "Estadísticas del mapa",
+      "players": "Estadísticas del jugador",
+      "leaderboards": "Estadísticas del tablero",
+      "achievements": "Estadísticas de logros"
+    },
+    "explorer": "Explorador",
+    "explMenu": {
+      "buildings": "Edificios",
+      "units": "Unidades",
+      "dpsCalculator": "DPS - Comparacion de unidades",
+      "unitBrowser": "Buscador de unidades",
+      "challenges": "Retos",
+      "weapons": "Armas"
+    },
+    "liveGames": "Juegos en vivo",
+    "desktopApp": "App de Escritorio",
+    "other": "Otros",
+    "otherMenu": {
+      "tiers": "Ranking Tiers",
+      "openData": "Open Data",
+      "coh3News": "Noticias de COH3",
+      "playerExport": "Player Export API"
+    },
+    "about": "Acerca de",
+    "supportUs": "Apóyanos"
+  },
+  "header": {
+    "playerInGames": "Jugadores en partida"
+  },
+  "footer": {
+    "gamePatch": "Parche del juego",
+    "gamePatchInfo": "Informacion mostrada en este sitio son del parche del juego",
+    "unofficialSite": "Este es un sitio No-Oficial hecho por fans para Company Of Heroes 3.",
+    "visitText1": "Visita",
+    "visitText2": "para estadísticas y analítica de Company of Heroes 2"
+  }
+}

@@ -25,7 +25,7 @@ const LiveGamesSummaryTable = ({
 
   return (
     <>
-      <Card p="md" shadow="sm" withBorder style={{ maxWidth: 520, minHeight: 170 }}>
+      <Card p="md" shadow="sm" withBorder style={{ maxWidth: 620, minHeight: 170 }}>
         <Card.Section pl={"xs"} pr={"xs"}>
           <Group m="xs" justify={isMobile ? "center" : "space-between"}>
             <Title order={4}>{t("summaryTable.title")}</Title>
@@ -154,7 +154,7 @@ const LiveGamesSummaryTable = ({
                 // gridTemplateColumns: " [col1] 57% [col2] 40%",
                 // gridColumnGap: "15px",
                 // paddingBottom: "20px",
-                width: "220px",
+                width: "250px",
               }}
             >
               <div style={{ gridColumn: 1, justifySelf: "start" }}>

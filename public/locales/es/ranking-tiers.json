@@ -1,0 +1,14 @@
+{
+  "title": "Listado de Rangos en Company of Heroes 3",
+  "description": "Basado en el ELO del jugador, los jugadores estan posicionados en Ligas y Rangos especificos.",
+  "matchRequirement": "Un jugador necesita jugar 10 partidas por cada faccion en un modo de juego especifico para obtener un rango y ser posicionado en el tablero",
+  "inactivityNote": "Nota: Si un jugador permanece inactivo por un periodo extendido de tiempo (1 mes), perderan su rango. Sin embargo, lo pueden recuperar con solo jugar un juego",
+  "table": {
+    "columns": {
+      "tierName": "Nombre del Rango",
+      "eloRating": "Puntuación ELO",
+      "rank": "Rango"
+    },
+    "topPlayers": "Top {{count}} jugadores"
+  }
+}

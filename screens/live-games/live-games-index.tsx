@@ -138,7 +138,7 @@ const LiveGamesIndex = () => {
         />
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
-      <Container size={"lg"} p={0}>
+      <Container size={"fluid"} p={0}>
         <div style={{ textAlign: "center", paddingBottom: 5 }}>
           <Title order={1}>{t("pageTitle")}</Title>
         </div>
@@ -161,7 +161,7 @@ const LiveGamesIndex = () => {
               <Select
                 withCheckIcon={false}
                 label={t("filters.liveGames.label")}
-                style={{ width: 170 }}
+                style={{ width: 180 }}
                 allowDeselect={false}
                 value={type}
                 data={[
@@ -190,7 +190,7 @@ const LiveGamesIndex = () => {
             </Group>
           </Stack>
           {!isMobile && !liveGamesSummaryError && (
-            <div style={{ width: 620, height: 250 }}>
+            <div style={{ width: 660, height: 250 }}>
               <DynamicLiveGamesLineChart
                 data={[
                   ...(liveGamesSummary?.liveGamesChart.timeLine || []),

@@ -1,0 +1,55 @@
+{
+  "common": {
+    "units": "Unidades",
+    "buildings": "Edificios",
+    "battleGroups": "Grupos de Batalla",
+    "near": "Corto",
+    "medium": "Medio",
+    "far": "Largo",
+    "min": "Min",
+    "max": "Max",
+    "produces": "Produce",
+    "hitpoints": "Puntos de Salud",
+    "upgrades": "Mejoras",
+    "costs": "Costo",
+    "explorer": "Explorador"
+  },
+  "explorer": {
+    "title": "Explorador de Faccion para Company of Heroes 3",
+    "subtitle": "Explora todas las unidades, edificios y grupos de batalla en el juego."
+  },
+  "unitPage": {
+    "stats": "Estadísticas",
+    "abilities": "Abilidades",
+    "loadout": "Equipamiento",
+    "veterancy": "Veterania",
+    "upkeep": "Mantenimiento por minuto",
+    "reinforce": "Refuerzo",
+    "construct": "Puede construir",
+    "free": "Gratis",
+    "weaponNote": "La precisión efectiva es impactado por distintos factores como el tamaño del objetivo o la armadura de la unidad que recibe fuego, tambien como la precisión y penetración del atacante."
+  },
+  "statsCard": {
+    "sightRange": "Rango de visión",
+    "speed": "Velocidad",
+    "acceleration": "Aceleración",
+    "deceleration": "Desaceleración",
+    "maxRange": "Rango Max",
+    "targetSize": "Tamaño del objetivo",
+    "armor": "Armadura",
+    "captureMultiplier": "Multiplicador de captura",
+    "decaptureMultiplier": "Multiplicador de decaptura",
+    "vehicleArmor": "Blindaje del vehiculo"
+  },
+  "weaponCard": {
+    "accuracy": "Precisión",
+    "rpm": "Disparos por Minuto",
+    "rangeOfFire": "Rango de fuego",
+    "penetration": "Penetración",
+    "scatter": "Area de Dispersión",
+    "damage": "Daño",
+    "aoeRadius": "Area de Efecto",
+    "movingAccuracy": "Multiplicador de precisión en movimiento",
+    "movingCooldown": "Multiplicador de enfriamiento en movimiento"
+  }
+}

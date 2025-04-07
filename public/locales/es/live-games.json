@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Juegos en vivo - Company of Heroes 3",
+    "description": "Juegos en vivo en curso en Company of Heroes 3",
+    "keywords": [
+      "coh3 live games",
+      "coh3 realtime matches",
+      "coh3 games",
+      "coh3 current matches in progress"
+    ]
+  },
+  "pageTitle": "Juegos en curso en PC",
+  "filters": {
+    "liveGames": {
+      "label": "Juegos en curso",
+      "options": {
+        "1v1": "1 vs 1 Automatch",
+        "2v2": "2 vs 2 Automatch",
+        "3v3": "3 vs 3 Automatch",
+        "4v4": "4 vs 4 Automatch",
+        "ai": "Automatch contra la AI",
+        "custom": "Juegos personalizados"
+      }
+    },
+    "sortBy": {
+      "label": "Organizar por",
+      "options": {
+        "rank": "Rango",
+        "observers": "Observadores",
+        "startgametime": "Tiempo de inicio"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "Resumen de juegos en vivo",
+    "tooltip": "Juegos multijugador en progreso. El total de jugadores esta filtrado de manera unica. Toma en cuenta que pueden haber jugadores en menu / buscando / cargando o haciendo otras cosas. Juegos personalizados no se pueden ver por default. Lo mas probable es que haya mas juegos personalizados. Los juegos se actualizan cada 5 minutos.",
+    "noGames": {
+      "title": "No se detectaron juegos en curso",
+      "message": "COH3 Stats va a necesitar actualizar despues de un nuevo parche."
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs AI",
+      "custom": "Personalizado"
+    },
+    "totals": {
+      "automatch": "Total en Automatch",
+      "anyGame": "Total en cualquier juego"
+    },
+    "games": "juegos"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "Modo",
+      "axisPlayers": "Jugadores Eje",
+      "alliesPlayers": "Jugadores Aliados",
+      "map": "Mapa",
+      "observers": "Observadores",
+      "gameTime": "Tiempo del juego",
+      "server": "Servidor"
+    },
+    "switches": {
+      "showFlags": "Mostrar nacionalidad",
+      "showServer": "Mostrar servidor del juego"
+    },
+    "errors": {
+      "title": "Error obteniendo los juegos en curso",
+      "summaryTitle": "Error obteniendo el resumen de los juegos en curso"
+    },
+    "dataUpdated": "Información actualizada en {{time}}"
+  }
+}
