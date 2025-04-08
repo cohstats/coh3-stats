@@ -3,11 +3,6 @@ import { DpsChart } from "../../components/unitStats/dps/dpsChart";
 import { ebpsStats, EbpsType, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import {
-  setUpgradesStats,
-  upgradesStats,
-  UpgradesType,
-} from "../../src/unitStats/mappingUpgrades";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import Head from "next/head";
 import React, { useEffect } from "react";
@@ -20,21 +15,12 @@ interface DpsProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
-  upgradesData: UpgradesType[];
   locstring: Record<string, string | null>;
-  generalInfo: any;
-  properties: any;
 }
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const DpsPage: NextPage<DpsProps> = ({
-  weaponData,
-  sbpsData,
-  ebpsData,
-  upgradesData,
-  locstring,
-}) => {
+const DpsPage: NextPage<DpsProps> = ({ weaponData, sbpsData, ebpsData, locstring }) => {
   useEffect(() => {
     AnalyticsDPSExplorerPageView();
   }, []);
@@ -43,8 +29,6 @@ const DpsPage: NextPage<DpsProps> = ({
   setWeaponStats(weaponData);
 
   if (!ebpsStats) setEbpsStats(ebpsData);
-
-  if (!upgradesStats) setUpgradesStats(upgradesData);
 
   if (!sbpsStats) setSbpsStats(sbpsData);
 
@@ -72,7 +56,7 @@ const DpsPage: NextPage<DpsProps> = ({
         <meta
           name="description"
           content={
-            "DPS Calculator for all units. Calculate with types of covers. " +
+            "DPS Calculator for all units. Calculate with types of covers." +
             "Setup different squad combinations, weapons and much more."
           }
         />
@@ -88,14 +72,13 @@ const DpsPage: NextPage<DpsProps> = ({
 
 export const getStaticProps = async ({ locale = "en" }) => {
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData, upgradesData, locstring } = await getMappings();
+  const { weaponData, ebpsData, sbpsData, locstring } = await getMappings();
 
   return {
     props: {
       weaponData: weaponData,
       sbpsData: sbpsData,
       ebpsData: ebpsData,
-      upgradesData: upgradesData,
       locstring: locstring,
       ...(await serverSideTranslations(locale, ["common"])),
     },
