@@ -228,7 +228,7 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
           <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
             {t("sourceText")}
             <br />
-            {`You can find all the articles on `}
+            {t("findGamesOn")}
             <Anchor href={"https://store.steampowered.com/news/app/1677280"} target={"_blank"}>
               {t("steamNewsLink")}
             </Anchor>

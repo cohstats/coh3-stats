@@ -68,7 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res, local
       typeToFetch,
       platformToFetch,
       regionToFetch,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "leaderboards"])),
     }, // will be passed to the page component as props
   };
 };

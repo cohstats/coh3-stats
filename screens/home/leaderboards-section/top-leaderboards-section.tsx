@@ -5,12 +5,14 @@ import { raceType, Top1v1LeaderboardsData } from "../../../src/coh3/coh3-types";
 import React, { useEffect, useState } from "react";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import Link from "next/link";
+import { TFunction } from "next-i18next";
 
-const TopLeaderboardsSection = ({
-  initialData,
-}: {
+interface TopLeaderboardsSectionProps {
   initialData: Top1v1LeaderboardsData | null;
-}) => {
+  t: TFunction;
+}
+
+const TopLeaderboardsSection = ({ initialData, t }: TopLeaderboardsSectionProps) => {
   const [data, setData] = useState<Top1v1LeaderboardsData | null>(initialData);
   const [selectedRace, setSelectedRace] = useState<raceType>(initialData?.race || "american");
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,7 +47,7 @@ const TopLeaderboardsSection = ({
       >
         <Flex gap="md" justify="space-between" align="center" direction="row" wrap="wrap">
           <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
-            <IconTrophy /> <Title size="h3">1v1 Leaderboards</Title>
+            <IconTrophy /> <Title size="h3">{t("sections.leaderboards.title")}</Title>
           </Flex>
           <Tabs.List>
             {/*TODO: We could maybe utilize icons ? Or on mobile it could be just icons*/}
@@ -62,6 +64,7 @@ const TopLeaderboardsSection = ({
             leaderBoardData={data}
             loading={loading}
             error={error}
+            t={t}
           />
         </Tabs.Panel>
 
@@ -71,6 +74,7 @@ const TopLeaderboardsSection = ({
             leaderBoardData={data}
             loading={loading}
             error={error}
+            t={t}
           />
         </Tabs.Panel>
 
@@ -80,6 +84,7 @@ const TopLeaderboardsSection = ({
             leaderBoardData={data}
             loading={loading}
             error={error}
+            t={t}
           />
         </Tabs.Panel>
         <Tabs.Panel value="dak" pt="xs">
@@ -88,6 +93,7 @@ const TopLeaderboardsSection = ({
             leaderBoardData={data}
             loading={loading}
             error={error}
+            t={t}
           />
         </Tabs.Panel>
       </Tabs>
@@ -112,7 +118,7 @@ const TopLeaderboardsSection = ({
           variant="subtle"
           rightSection={<IconArrowRight style={{ marginLeft: "5px" }} />}
         >
-          View Full Leaderboard
+          {t("sections.leaderboards.viewFullLeaderboard")}
         </Button>
       </Flex>
     </Paper>

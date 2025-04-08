@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({
       redditPostsData,
       steamNewsData,
       youtubeData,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "home"])),
     },
   };
 };

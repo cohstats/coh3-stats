@@ -5,8 +5,16 @@ import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { getNewsRoute } from "../../../src/routes";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
+import { TFunction } from "next-i18next";
 
-const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: string }) => {
+interface NewsCardProps {
+  title: string;
+  image: string;
+  gid: string;
+  t: TFunction;
+}
+
+const NewsCard = ({ title, image, gid, t }: NewsCardProps) => {
   const theme = useMantineTheme();
 
   return (
@@ -51,7 +59,7 @@ const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: st
                 "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
             }}
           >
-            News
+            {t("sections.news.newsLabel")}
           </Text>
         </Paper>
       </Anchor>
@@ -59,9 +67,12 @@ const NewsCard = ({ title, image, gid }: { title: string; image: string; gid: st
   );
 };
 
-export const NewsSection: React.FC<{ steamNewsData: COH3SteamNewsType | null }> = ({
-  steamNewsData,
-}) => {
+interface NewsSectionProps {
+  steamNewsData: COH3SteamNewsType | null;
+  t: TFunction;
+}
+
+export const NewsSection: React.FC<NewsSectionProps> = ({ steamNewsData, t }) => {
   if (!steamNewsData) {
     return (
       <Image
@@ -82,6 +93,7 @@ export const NewsSection: React.FC<{ steamNewsData: COH3SteamNewsType | null }> 
           title={news.title}
           image={news.image || "/images/coh3-background-cropped.webp"}
           gid={news.gid}
+          t={t}
         />
       </Carousel.Slide>
     );

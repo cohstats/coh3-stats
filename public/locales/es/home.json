@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Estadísticas de Company of Heroes 3",
+    "description": "Estadísticas, Clasificaciones y Análisis de Company of Heroes 3"
+  },
+  "sections": {
+    "news": {
+      "title": "Últimas Noticias"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "Calculadora de DPS",
+        "description": "Compara el DPS de todas las unidades del juego. Personaliza el equipo de la unidad con diferentes armas. También puedes tener en cuenta los puntos de vida de las unidades."
+      },
+      "unitBrowser": {
+        "title": "Explorador de Unidades",
+        "description": "Explora las unidades del juego, incluyendo estadísticas, armas y mejoras. Navega por el menú del Explorador para obtener una vista general de las facciones y más detalles."
+      }
+    },
+    "leaderboards": {
+      "title": "Mejores Jugadores"
+    },
+    "reddit": {
+      "title": "Mejores publicaciones de COH3 en Reddit",
+      "noData": "No hay publicaciones disponibles en Reddit"
+    },
+    "youtube": {
+      "title": "Videos de la semana pasada",
+      "noData": "No hay videos disponibles en YouTube",
+      "views": "vistas"
+    },
+    "twitch": {
+      "title": "Ver transmisiones en vivo",
+      "noStreams": "No hay transmisiones en inglés en vivo en Twitch actualmente."
+    }
+  }
+}

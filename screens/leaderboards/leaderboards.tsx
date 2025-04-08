@@ -13,6 +13,7 @@ import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../sr
 import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
 import Head from "next/head";
 import FactionIcon from "../../components/faction-icon";
+import { useTranslation } from "next-i18next";
 
 const RECORD_PER_PAGE = 100;
 
@@ -27,6 +28,7 @@ const Leaderboards = ({
   regionToFetch,
 }: any) => {
   const { push, query } = useRouter();
+  const { t } = useTranslation(["common", "leaderboards"]);
 
   useEffect(() => {
     AnalyticsLeaderBoardsPageView(raceToFetch, typeToFetch);
@@ -39,7 +41,7 @@ const Leaderboards = ({
 
   const content = (() => {
     if (error) {
-      return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
+      return <ErrorCard title={t("leaderboards:errorTitle")} body={JSON.stringify(error)} />;
     } else {
       return (
         <DataTable
@@ -60,6 +62,7 @@ const Leaderboards = ({
           // define columns
           columns={[
             {
+              title: t("common:columns.rank"),
               accessor: "rank",
               textAlign: "center",
               render: ({ rank, regionrank }: { rank: number; regionrank: number }) => {
@@ -67,12 +70,12 @@ const Leaderboards = ({
               },
             },
             {
-              title: "ELO",
+              title: t("common:columns.elo"),
               accessor: "rating",
               textAlign: "center",
             },
             {
-              title: "Tier",
+              title: t("common:columns.tier"),
               accessor: "tier",
               textAlign: "center",
               render: ({
@@ -94,6 +97,7 @@ const Leaderboards = ({
             // //     textAlign: "center",
             // // },
             {
+              title: t("common:columns.alias"),
               accessor: "alias",
               width: "100%",
               // @ts-ignore
@@ -114,6 +118,7 @@ const Leaderboards = ({
               },
             },
             {
+              title: t("common:columns.streak"),
               accessor: "streak",
               // sortable: true,
               textAlign: "center",
@@ -127,15 +132,18 @@ const Leaderboards = ({
               },
             },
             {
+              title: t("common:columns.wins"),
               accessor: "wins",
               // sortable: true,
               textAlign: "center",
             },
             {
+              title: t("common:columns.losses"),
               accessor: "losses",
               textAlign: "center",
             },
             {
+              title: t("common:columns.ratio"),
               accessor: "ratio",
               // sortable: true,
               textAlign: "center",
@@ -144,6 +152,7 @@ const Leaderboards = ({
               },
             },
             {
+              title: t("common:columns.total"),
               accessor: "total",
               // sortable: true,
               textAlign: "center",
@@ -163,7 +172,7 @@ const Leaderboards = ({
             // // },
             {
               accessor: "lastmatchdate",
-              title: "Last Game",
+              title: t("common:columns.lastGame"),
               textAlign: "right",
               width: 125,
               // @ts-ignore
@@ -181,14 +190,17 @@ const Leaderboards = ({
 
   const localizedRace = localizedNames[raceToFetch as raceType];
   const localizedType = localizedGameTypes[typeToFetch as leaderBoardType];
-  const pageTitle = `Leaderboards for ${localizedRace} ${localizedType}`;
+  const pageTitle = t("leaderboards:pageTitle", { race: localizedRace, type: localizedType });
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
         <meta
           name="description"
-          content={`Ranked leaderboards for faction ${localizedRace} and game type ${localizedType}. Company of Heroes 3`}
+          content={t("leaderboards:metaDescription", {
+            race: localizedRace,
+            type: localizedType,
+          })}
         />
         <meta
           name="keywords"
@@ -201,12 +213,12 @@ const Leaderboards = ({
           <Group justify={"space-between"}>
             <Group>
               <FactionIcon name={raceToFetch} width={35} />
-              <Title order={2}>Leaderboards for {localizedRace}</Title>
+              <Title order={2}>{t("leaderboards:title", { race: localizedRace })}</Title>
             </Group>
             <Group justify="right">
               <Select
                 withCheckIcon={false}
-                label="Region"
+                label={t("leaderboards:filters.region")}
                 style={{ width: 150 }}
                 value={regionToFetch ? regionToFetch : "global"}
                 data={[
@@ -227,7 +239,7 @@ const Leaderboards = ({
               />
               <Select
                 withCheckIcon={false}
-                label="Platform"
+                label={t("leaderboards:filters.platform")}
                 style={{ width: 90 }}
                 defaultValue={platformToFetch}
                 value={platformToFetch}
@@ -242,7 +254,7 @@ const Leaderboards = ({
               />
               <Select
                 withCheckIcon={false}
-                label="Faction"
+                label={t("leaderboards:filters.faction")}
                 style={{ width: 190 }}
                 defaultValue={raceToFetch}
                 value={raceToFetch}
@@ -259,7 +271,7 @@ const Leaderboards = ({
 
               <Select
                 withCheckIcon={false}
-                label="Type"
+                label={t("leaderboards:filters.type")}
                 style={{ width: 90 }}
                 defaultValue={typeToFetch}
                 value={typeToFetch}

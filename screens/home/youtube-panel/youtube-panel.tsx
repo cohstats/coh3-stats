@@ -3,9 +3,11 @@ import React from "react";
 import { AspectRatio, Card, Flex, Image, Paper, Text, Title, Tooltip } from "@mantine/core";
 import { IconBrandYoutube } from "@tabler/icons-react";
 import classes from "./youtube-panel.module.css";
+import { TFunction } from "next-i18next";
 
 type YoutubePanelProps = {
   youtubeData: YouTubeVideo[] | null;
+  t: TFunction;
 };
 
 const getYoutubeThumbnailUrl = (video: YouTubeVideo) => {
@@ -20,7 +22,7 @@ const formatViewCount = (views: string): string => {
   return parsedViews.toString();
 };
 
-const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
+const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData, t }) => {
   const youtubeVideos = youtubeData?.map((video, index) => (
     <Card
       shadow="sm"
@@ -47,7 +49,7 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
         </Title>
       </Tooltip.Floating>
       <Text mt="xs" c="dimmed" size="sm" style={{ marginTop: 0 }}>
-        {video.channelTitle} - {formatViewCount(video.viewCount)} views
+        {video.channelTitle} - {formatViewCount(video.viewCount)} {t("sections.youtube.views")}
       </Text>
     </Card>
   ));
@@ -55,7 +57,7 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData }) => {
   return (
     <Paper mt="0" pt="md" pb="md" color="gray">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap" pb={5}>
-        <IconBrandYoutube size={35} /> <Title size="h2">Last week's videos</Title>
+        <IconBrandYoutube size={35} /> <Title size="h2">{t("sections.youtube.title")}</Title>
       </Flex>
       <Flex wrap="wrap" justify="center">
         {youtubeVideos}

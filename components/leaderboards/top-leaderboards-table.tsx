@@ -6,16 +6,18 @@ import DynamicTimeAgo from "../other/dynamic-timeago";
 import Link from "next/link";
 import React from "react";
 import { Top1v1LeaderboardsData } from "../../src/coh3/coh3-types";
+import { TFunction } from "next-i18next";
 
 interface Props {
   leaderBoardData: Top1v1LeaderboardsData | null;
   loading: boolean;
   error: any;
+  t: TFunction;
 }
 
-const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
+const TopLeaderboardsTable = ({ leaderBoardData, loading, error, t }: Props) => {
   if (error) {
-    return <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />;
+    return <ErrorCard title={t("leaderboardTable.errorTitle")} body={JSON.stringify(error)} />;
   } else {
     return (
       <div>
@@ -34,11 +36,12 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
           // define columns
           columns={[
             {
+              title: t("common:columns.rank"),
               accessor: "rank",
               textAlign: "center",
             },
             {
-              title: "RC",
+              title: t("common:columns.rc"),
               accessor: "change",
               textAlign: "center",
               render: ({ change }: { change: number | string }) => {
@@ -60,11 +63,12 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
               },
             },
             {
-              title: "ELO",
+              title: t("common:columns.elo"),
               accessor: "rating",
               textAlign: "center",
             },
             {
+              title: t("common:columns.alias"),
               accessor: "alias",
               width: "100%",
               // @ts-ignore
@@ -85,6 +89,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
               },
             },
             {
+              title: t("common:columns.streak"),
               accessor: "streak",
               // sortable: true,
               textAlign: "center",
@@ -111,6 +116,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
             //   textAlign: "center",
             // },
             {
+              title: t("common:columns.ratio"),
               accessor: "ratio",
               textAlign: "center",
               render: ({ wins, losses }: any) => {
@@ -118,6 +124,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
               },
             },
             {
+              title: t("common:columns.total"),
               accessor: "total",
               // sortable: true,
               textAlign: "right",
@@ -137,7 +144,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error }: Props) => {
             // // },
             {
               accessor: "lastmatchdate",
-              title: "Last Game",
+              title: t("common:columns.lastGame"),
               textAlign: "right",
               width: 120,
               // @ts-ignore
