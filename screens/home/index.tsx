@@ -12,6 +12,7 @@ import { NewsSection } from "./news-section/news-section";
 import { COH3SteamNewsType } from "../../src/apis/steam-api";
 import YoutubePanel from "./youtube-panel/youtube-panel";
 import { useIntersection } from "@mantine/hooks";
+import { useTranslation } from "next-i18next";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
@@ -29,6 +30,7 @@ const Home: NextPage<Props> = ({
   steamNewsData,
   youtubeData,
 }) => {
+  const { t } = useTranslation(["home", "common"]);
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, entry } = useIntersection({
     root: containerRef.current,
@@ -47,32 +49,34 @@ const Home: NextPage<Props> = ({
   return (
     <>
       <Head>
+        <title>{t("meta.title")}</title>
+        <meta name="description" content={t("meta.description")} />
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
       </Head>
       <Container fluid p={{ base: 0 }}>
         <Grid>
           <Grid.Col span={{ sm: 7 }}>
-            <NewsSection steamNewsData={steamNewsData} />
+            <NewsSection steamNewsData={steamNewsData} t={t} />
             <Grid gutter="xs" pt={"md"}>
               <Grid.Col span={{ sm: 6 }}>
-                <DPSCalculatorCard />
+                <DPSCalculatorCard t={t} />
               </Grid.Col>
               <Grid.Col span={{ sm: 6 }}>
-                <UnitBrowserCard />
+                <UnitBrowserCard t={t} />
               </Grid.Col>
             </Grid>
-            <TopLeaderboardsSection initialData={topLeaderBoardsData} />
+            <TopLeaderboardsSection initialData={topLeaderBoardsData} t={t} />
           </Grid.Col>
           <Grid.Col span={{ sm: 5 }}>
-            <RedditPanel redditPostsData={redditPostsData} />
+            <RedditPanel redditPostsData={redditPostsData} t={t} />
           </Grid.Col>
         </Grid>
 
-        <YoutubePanel youtubeData={youtubeData} />
+        <YoutubePanel youtubeData={youtubeData} t={t} />
 
         <Paper shadow="xs" radius="md" pt={"xs"} p={0} color="gray" mih={600}>
           <div ref={ref}>
-            {hasRendered && <TwitchContainer twitchStreams={twitchStreams} error={error} />}
+            {hasRendered && <TwitchContainer twitchStreams={twitchStreams} error={error} t={t} />}
           </div>
         </Paper>
       </Container>

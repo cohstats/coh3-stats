@@ -39,5 +39,18 @@
     "unofficialSite": "This is an unofficial fan-made site for Company Of Heroes 3.",
     "visitText1": "Visit",
     "visitText2": "for Company of Heroes 2 stats and analytics"
+  },
+  "columns": {
+    "rank": "Rank",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "Alias",
+    "streak": "Streak",
+    "ratio": "Ratio",
+    "total": "Total",
+    "lastGame": "Last Game",
+    "tier": "Tier",
+    "wins": "Wins",
+    "losses": "Losses"
   }
 }

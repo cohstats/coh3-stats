@@ -1,14 +1,18 @@
 import { Paper, Title, Flex, Anchor, Group, Stack, Divider } from "@mantine/core";
 import { RedditPostType } from "../../../src/apis/reddit-api";
-
 import React from "react";
 import { IconArrowUp, IconBrandReddit } from "@tabler/icons-react";
-
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 import ImageWithModal from "../../../components/image-with-modal";
 import classes from "./reddit.module.css";
+import { TFunction } from "next-i18next";
 
-const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | null }) => {
+interface RedditPanelProps {
+  redditPostsData: RedditPostType[] | null;
+  t: TFunction;
+}
+
+const RedditPanel = ({ redditPostsData, t }: RedditPanelProps) => {
   const redditPosts = redditPostsData?.map((post, index) => {
     return (
       <div key={index}>
@@ -70,7 +74,7 @@ const RedditPanel = ({ redditPostsData }: { redditPostsData: RedditPostType[] | 
   return (
     <Paper withBorder shadow="xs" radius="md" p={{ base: "xs", sm: "md" }} color="gray">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
-        <IconBrandReddit /> <Title size="h3">Top COH3 Reddit posts</Title>
+        <IconBrandReddit /> <Title size="h3">{t("sections.reddit.title")}</Title>
       </Flex>
       {redditPosts}
     </Paper>

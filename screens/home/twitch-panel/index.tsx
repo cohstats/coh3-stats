@@ -2,6 +2,7 @@ import { Box, Center, Container, Flex, Grid, Title, Text } from "@mantine/core";
 import { IconBrandTwitch } from "@tabler/icons-react";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import dynamic from "next/dynamic";
+import { TFunction } from "next-i18next";
 
 // This needs to be client side only due to some weird errors during SSR
 const TwitchPanel = dynamic(() => import("./twitch-panel"), {
@@ -11,9 +12,10 @@ const TwitchPanel = dynamic(() => import("./twitch-panel"), {
 type Props = {
   twitchStreams: TwitchStream[] | null;
   error: Error | null;
+  t: TFunction;
 };
 
-const TwitchContainer = ({ twitchStreams, error }: Props) => {
+const TwitchContainer = ({ twitchStreams, error, t }: Props) => {
   const renderPanel = () => {
     if (!twitchStreams || twitchStreams.length === 0) {
       return (
@@ -27,7 +29,7 @@ const TwitchContainer = ({ twitchStreams, error }: Props) => {
             }}
           >
             <Center>
-              <Text>No English speaking streams are currently broadcasting on Twitch.</Text>
+              <Text>{t("sections.twitch.noStreams")}</Text>
             </Center>
           </Box>
         </Grid.Col>
@@ -52,7 +54,7 @@ const TwitchContainer = ({ twitchStreams, error }: Props) => {
       <Flex justify="flex-start" align="center" gap={5} pb="sm">
         <IconBrandTwitch size={35} />
         <Title order={2} size="h2">
-          Watch Live Streams
+          {t("sections.twitch.title")}
         </Title>
       </Flex>
 

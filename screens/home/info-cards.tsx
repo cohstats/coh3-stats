@@ -3,6 +3,7 @@ import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { getDPSCalculatorRoute, getUnitBrowserRoute } from "../../src/routes";
 import { getIconsPathOnCDN } from "../../src/utils";
 import classes from "./info-cards.module.css";
+import { TFunction } from "next-i18next";
 
 const InfoCard = ({
   link,
@@ -38,28 +39,28 @@ const InfoCard = ({
   );
 };
 
-const DPSCalculatorCard = () => {
+interface CardProps {
+  t: TFunction;
+}
+
+const DPSCalculatorCard = ({ t }: CardProps) => {
   return (
     <InfoCard
       link={getDPSCalculatorRoute()}
-      title={"DPS Calculator"}
+      title={t("sections.tools.dpsCalculator.title")}
       imageSrc={getIconsPathOnCDN("/icons/races/common/symbols/hmg.webp")}
-      content={
-        "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can also take into consideration the HP of the units."
-      }
+      content={t("sections.tools.dpsCalculator.description")}
     />
   );
 };
 
-const UnitBrowserCard = () => {
+const UnitBrowserCard = ({ t }: CardProps) => {
   return (
     <InfoCard
       link={getUnitBrowserRoute()}
-      title={"Unit Browser"}
+      title={t("sections.tools.unitBrowser.title")}
       imageSrc={getIconsPathOnCDN("/icons/common/squad/squad.webp")}
-      content={
-        "Explore game units, including stats, weapons, and upgrades. Navigate the Explorer menu for faction overview and more details."
-      }
+      content={t("sections.tools.unitBrowser.description")}
     />
   );
 };
