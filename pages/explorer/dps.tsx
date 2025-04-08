@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { DpsChart } from "../../components/unitStats/dps/dpsChart";
-import { ebpsStats, EbpsType, setEbpsStats } from "../../src/unitStats/mappingEbps";
-import { sbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
+import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
+import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import Head from "next/head";
@@ -10,29 +10,52 @@ import { generateKeywordsString } from "../../src/head-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { Center, Loader } from "@mantine/core";
 
 interface DpsProps {
   weaponData: WeaponType[];
-  sbpsData: SbpsType[];
-  ebpsData: EbpsType[];
+  // sbpsData: SbpsType[];
+  // ebpsData: EbpsType[];
   locstring: Record<string, string | null>;
 }
 
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
-const DpsPage: NextPage<DpsProps> = ({ weaponData, sbpsData, ebpsData, locstring }) => {
+const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   useEffect(() => {
     AnalyticsDPSExplorerPageView();
   }, []);
 
-  // Save data again in global variable for clientMode
-  setWeaponStats(weaponData);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
+  const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
 
-  if (!ebpsStats) setEbpsStats(ebpsData);
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        if (!unitStatsLocString) setLocstring(locstring);
+        setWeaponStats(weaponData);
 
-  if (!sbpsStats) setSbpsStats(sbpsData);
+        const [ebpsData, sbpsData] = await Promise.all([
+          getEbpsStats("latest"),
+          getSbpsStats("latest"),
+        ]);
 
-  if (!unitStatsLocString) setLocstring(locstring);
+        setEbpsStats(ebpsData);
+        setSbpsStats(sbpsData);
+        setSbpsDataState(sbpsData);
+        setEbpsDataState(ebpsData);
+        // Save data again in global variable for clientMode
+      } catch (error) {
+        console.error("Failed to load data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const dbpsData = {
     weaponData: weaponData,
@@ -64,7 +87,12 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, sbpsData, ebpsData, locstring
         {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
       </Head>
       <div>
-        <DpsChart {...dbpsData} />
+        {isLoading && (
+          <Center maw={400} h={250} mx="auto">
+            <Loader />
+          </Center>
+        )}
+        {!isLoading && <DpsChart {...dbpsData} />}
       </div>
     </>
   );
@@ -72,15 +100,13 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, sbpsData, ebpsData, locstring
 
 export const getStaticProps = async ({ locale = "en" }) => {
   // map Data at built time
-  const { weaponData, ebpsData, sbpsData, locstring } = await getMappings();
+  const { weaponData, locstring } = await getMappings();
 
   return {
     props: {
       weaponData: weaponData,
-      sbpsData: sbpsData,
-      ebpsData: ebpsData,
       locstring: locstring,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
   };
 };
