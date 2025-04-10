@@ -1,0 +1,93 @@
+name: Verify Locales
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  verify-locales:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify locales and create issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get all locales from next-i18next.config.js
+          LOCALES=$(node -p "require('./next-i18next.config.js').i18n.locales.join(' ')")
+
+          # Get all English JSON files as reference
+          EN_FILES=$(find public/locales/en -name "*.json" -type f -exec basename {} \;)
+
+          for LOCALE in $LOCALES; do
+            if [ "$LOCALE" = "en" ]; then
+              continue
+            fi
+            
+            LOCALE_DIR="public/locales/$LOCALE"
+            ISSUE_TITLE="Locale Verification: $LOCALE"
+            ISSUE_BODY=""
+            HAS_ERRORS=false
+            
+            # Check if locale directory exists
+            if [ ! -d "$LOCALE_DIR" ]; then
+              ISSUE_BODY="❌ Locale directory for $LOCALE does not exist.\n\n"
+              HAS_ERRORS=true
+            else
+              ISSUE_BODY="✅ Locale directory exists.\n\n"
+              
+              # Check each English file exists in the locale
+              for FILE in $EN_FILES; do
+                if [ ! -f "$LOCALE_DIR/$FILE" ]; then
+                  ISSUE_BODY+="❌ Missing file: $FILE\n"
+                  HAS_ERRORS=true
+                else
+                  # Compare keys between English and locale file
+                  EN_KEYS=$(node -e "console.log(Object.keys(require('./$LOCALE_DIR/$FILE')).join('\n'))")
+                  LOCALE_KEYS=$(node -e "console.log(Object.keys(require('./public/locales/en/$FILE')).join('\n'))")
+                  
+                  MISSING_KEYS=$(comm -23 <(echo "$EN_KEYS" | sort) <(echo "$LOCALE_KEYS" | sort))
+                  if [ ! -z "$MISSING_KEYS" ]; then
+                    ISSUE_BODY+="❌ Missing keys in $FILE:\n\`\`\`\n$MISSING_KEYS\n\`\`\`\n"
+                    HAS_ERRORS=true
+                  fi
+                fi
+              done
+            fi
+            
+            if [ "$HAS_ERRORS" = false ]; then
+              ISSUE_BODY+="\n✅ All files and keys are present for $LOCALE locale."
+            fi
+            
+            # Create or update issue
+            ISSUE_NUMBER=$(gh issue list --repo ${{ github.repository }} --search "title:$ISSUE_TITLE" --json number -q '.[0].number' || echo "")
+            
+            if [ -z "$ISSUE_NUMBER" ]; then
+              gh issue create \
+                --title "$ISSUE_TITLE" \
+                --body "$ISSUE_BODY" \
+                --label "localization" \
+                --repo ${{ github.repository }}
+            else
+              gh issue edit $ISSUE_NUMBER \
+                --title "$ISSUE_TITLE" \
+                --body "$ISSUE_BODY" \
+                --repo ${{ github.repository }}
+            fi
+          done
