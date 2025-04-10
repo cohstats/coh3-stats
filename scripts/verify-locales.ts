@@ -37,9 +37,21 @@ const createOrUpdateIssue = async (
   owner: string,
   repo: string,
   locale: string,
-  issueBody: string
+  issueBody: string,
+  hasMissingFiles: boolean,
+  hasMissingKeys: boolean
 ) => {
-  const issueTitle = `Locale Verification: ${locale}`;
+  let statusEmoji = '✅';
+
+  if (hasMissingFiles && hasMissingKeys) {
+    statusEmoji = '❌ ⚠️';
+  } else if (hasMissingFiles) {
+    statusEmoji = '❌';
+  } else if (hasMissingKeys) {
+    statusEmoji = '⚠️';
+  }
+
+  const issueTitle = `${statusEmoji} Locale Verification: ${locale}`;
 
   // Search for existing issue
   const { data: issues } = await octokit.issues.listForRepo({
@@ -49,7 +61,8 @@ const createOrUpdateIssue = async (
     labels: 'localization',
   });
 
-  const existingIssue = issues.find(issue => issue.title === issueTitle);
+  // Find issue by locale name rather than exact title match since emojis might change
+  const existingIssue = issues.find(issue => issue.title.includes(`Locale Verification: ${locale}`));
 
   if (existingIssue) {
     // Update existing issue
@@ -95,12 +108,13 @@ const main = async () => {
 
     const localeDir = path.join('public/locales', locale);
     let issueBody = '';
-    let hasErrors = false;
+    let hasMissingFiles = false;
+    let hasMissingKeys = false;
 
     // Check if locale directory exists
     if (!fs.existsSync(localeDir)) {
       issueBody = `❌ Locale directory for ${locale} does not exist.\n\n`;
-      hasErrors = true;
+      hasMissingFiles = true;
     } else {
       issueBody = `✅ Locale directory exists.\n\n`;
 
@@ -109,25 +123,25 @@ const main = async () => {
         const localeFilePath = path.join(localeDir, file);
         if (!fs.existsSync(localeFilePath)) {
           issueBody += `❌ Missing file: ${path.join('public/locales', locale, file)}\n`;
-          hasErrors = true;
+          hasMissingFiles = true;
         } else {
           const missingKeys = compareLocaleFiles(
             path.join('public/locales/en', file),
             localeFilePath
           );
           if (missingKeys.length > 0) {
-            issueBody += `❌ Missing keys in ${path.join('public/locales', locale, file)}:\n\`\`\`\n${missingKeys.join('\n')}\n\`\`\`\n`;
-            hasErrors = true;
+            issueBody += `⚠️ Missing keys in ${path.join('public/locales', locale, file)}:\n\`\`\`\n${missingKeys.join('\n')}\n\`\`\`\n`;
+            hasMissingKeys = true;
           }
         }
       }
     }
 
-    if (!hasErrors) {
+    if (!hasMissingFiles && !hasMissingKeys) {
       issueBody += `\n✅ All files and keys are present for ${locale} locale.`;
     }
 
-    await createOrUpdateIssue(octokit, owner, repo, locale, issueBody);
+    await createOrUpdateIssue(octokit, owner, repo, locale, issueBody, hasMissingFiles, hasMissingKeys);
   }
 };
 
