@@ -15,6 +15,7 @@ module.exports = {
       "zh-Hant",
       "tr",
       "cs",
+      "ru",
     ],
     defaultLocale: "en",
     localeDetection: true,

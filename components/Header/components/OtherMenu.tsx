@@ -77,7 +77,7 @@ const OtherMenu = ({
 
   const desktopView = (
     <div className={classes.hiddenMobile}>
-      <HoverCard width={200} position="bottom" radius="md" shadow="md">
+      <HoverCard width={240} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <div>
             <Group gap={3} className={classes.link}>

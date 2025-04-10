@@ -72,7 +72,7 @@ const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) =>
 
   const desktopView = (
     <div className={classes.hiddenMobile}>
-      <HoverCard width={220} position="bottom" radius="md" shadow="md">
+      <HoverCard width={280} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <div>
             <Group gap={3} className={classes.link}>

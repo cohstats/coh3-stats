@@ -1,0 +1,12 @@
+{
+  "title": "Таблица лидеров - {{race}}",
+  "pageTitle": "Таблица лидеров - {{race}} {{type}}",
+  "metaDescription": "Рейтинговая таблица лидеров для фракции {{race}} и режима игры: {{type}}. Company of Heroes 3",
+  "errorTitle": "Ошибка при выводе таблицы лидеров",
+  "filters": {
+    "region": "Регион",
+    "platform": "Платформа",
+    "faction": "Фракция",
+    "type": "Режим"
+  }
+}

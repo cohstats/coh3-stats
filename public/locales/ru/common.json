@@ -1,0 +1,56 @@
+{
+  "mainMenu": {
+    "leaderboards": "Таблица лидеров",
+    "statistics": "Статистика",
+    "statsMenu": {
+      "games": "Игровая статистика",
+      "maps": "Статистика карт",
+      "players": "Статистика игроков",
+      "leaderboards": "Статистика таблиц лидеров",
+      "achievements": "Статистика достижений"
+    },
+    "explorer": "Исследовать",
+    "explMenu": {
+      "buildings": "Строения",
+      "units": "Подразделения",
+      "dpsCalculator": "DPS - Сравнение",
+      "unitBrowser": "Список подразделений",
+      "challenges": "Задания",
+      "weapons": "Вооружение"
+    },
+    "liveGames": "Активные игры",
+    "desktopApp": "Приложение",
+    "other": "Другое",
+    "otherMenu": {
+      "tiers": "Система рангов",
+      "openData": "Открытые данные",
+      "coh3News": "Новости COH3",
+      "playerExport": "Экспорт API игрока"
+    },
+    "about": "О нас",
+    "supportUs": "Поддержите нас"
+  },
+  "header": {
+    "playerInGames": "Игроков в игре"
+  },
+  "footer": {
+    "gamePatch": "Версия игры",
+    "gamePatchInfo": "Данные, отображаемые на сайте, взяты из патча",
+    "unofficialSite": "Это неофициальный фанатский сайт по Company Of Heroes 3.",
+    "visitText1": "Посетите сайт",
+    "visitText2": "для получения статистики и аналитики по Company of Heroes 2"
+  },
+  "columns": {
+    "rank": "Место",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "Позывной",
+    "streak": "Серия",
+    "ratio": "Эффект.",
+    "total": "Всего",
+    "lastGame": "Недавняя игра",
+    "tier": "Ранг",
+    "wins": "Победы",
+    "losses": "Поражения"
+  }
+}

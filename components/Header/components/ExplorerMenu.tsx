@@ -221,7 +221,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
 
   const desktopView = (
     <Group className={classes.hiddenMobile}>
-      <HoverCard width={840} position="bottom" radius="md" shadow="md">
+      <HoverCard width={860} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={classes.link}>
             <Group gap={3}>
