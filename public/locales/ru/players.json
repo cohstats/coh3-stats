@@ -33,7 +33,7 @@
     "stats": {
       "totalGames": "Всего игр {{count}}",
       "winRate": "% Побед {{rate}}%",
-      "lastMatch": "Последняя игра {{time}}"
+      "lastMatch": "Играл {{time}}"
     }
   },
   "recentMatches": {
@@ -71,7 +71,7 @@
         "leaderboard": "Табллица лидеров",
         "rank": "Место",
         "rating": "Ранг",
-        "lastMatch": "Последняя игра",
+        "lastMatch": "Играл",
         "streak": "Серия",
         "wins": "Побед",
         "losses": "Поражений",

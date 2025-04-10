@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Octokit } from '@octokit/rest';
+import nextI18NextConfig from '../next-i18next.config';
 
 interface LocaleConfig {
   i18n: {
@@ -82,12 +83,8 @@ const main = async () => {
     throw new Error('GITHUB_REPOSITORY environment variable is not set');
   }
 
-  // Load next-i18next config
-  const config: LocaleConfig = JSON.parse(
-    fs.readFileSync('next-i18next.config.js', 'utf8')
-      .replace('module.exports = ', '')
-      .replace(/;$/, '')
-  );
+  // Use the imported nextI18NextConfig
+  const config: LocaleConfig = nextI18NextConfig;
 
   const locales = config.i18n.locales;
   const enFiles = fs.readdirSync('public/locales/en')
