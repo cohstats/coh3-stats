@@ -40,4 +40,4 @@ jobs:
       - name: Run locale verification
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn ts-node scripts/verify-locales.ts
+        run: npx --yes ts-node --compiler-options "{\"module\":\"commonjs\"}" scripts/verify-locales.ts
