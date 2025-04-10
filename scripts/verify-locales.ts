@@ -108,7 +108,7 @@ const main = async () => {
       for (const file of enFiles) {
         const localeFilePath = path.join(localeDir, file);
         if (!fs.existsSync(localeFilePath)) {
-          issueBody += `❌ Missing file: ${file}\n`;
+          issueBody += `❌ Missing file: ${path.join('public/locales', locale, file)}\n`;
           hasErrors = true;
         } else {
           const missingKeys = compareLocaleFiles(
@@ -116,7 +116,7 @@ const main = async () => {
             localeFilePath
           );
           if (missingKeys.length > 0) {
-            issueBody += `❌ Missing keys in ${file}:\n\`\`\`\n${missingKeys.join('\n')}\n\`\`\`\n`;
+            issueBody += `❌ Missing keys in ${path.join('public/locales', locale, file)}:\n\`\`\`\n${missingKeys.join('\n')}\n\`\`\`\n`;
             hasErrors = true;
           }
         }
