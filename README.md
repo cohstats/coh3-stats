@@ -19,6 +19,17 @@ We have open sourced our underlying data https://coh3stats.com/other/open-data
 - Leaderboards, Matches << which we scrape and get from Relic API
 - Data (definitions / images ) which << which we get from the game files
 
+## Localization
+
+The website supports multiple languages through locale files located in `public/locales`. English (EN) is the source of truth for all translations.
+
+To contribute translations:
+
+1. Check the current status of translations in our [localization issues](https://github.com/cohstats/coh3-stats/issues?q=label%3Alocalization%20)
+2. Find the locale files in `public/locales` directory
+3. Compare your target language files with the English versions in `public/locales/en`
+4. Submit translations through a pull request or Discord
+
 ## Getting Started with development
 
 Master branch is deployed to https://dev.coh3stats.com/
