@@ -197,7 +197,7 @@ const latestPatch = "2.0.3";
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
     "2.0.3": {
-      dataTag: "v2.0.3-2",
+      dataTag: "v2.0.3-3",
       dataTime: "13/March/2025",
     },
     "2.0.2": {
@@ -378,9 +378,6 @@ const getPatchDataUrl = (dataFile = "", patch = "latest") => {
 };
 
 const getPatchDataLocaleUrl = (locale = "en", patch = "latest") => {
-  // RU locale doesn't have game files in RU
-  if (locale === "ru") locale = "en";
-
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
   return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/locales/${locale.toLowerCase()}-locstring.json`;
 };
