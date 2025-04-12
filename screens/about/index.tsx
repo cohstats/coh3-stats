@@ -210,7 +210,13 @@ const Localization = () => {
         >
           GitHub
         </Anchor>
-        .
+        . The status of all locales can be found on our{" "}
+        <Anchor
+          href="https://github.com/cohstats/coh3-stats/issues?q=is%3Aissue+is%3Aopen+label%3Alocalization"
+          target="_blank"
+        >
+          Localization Status Board
+        </Anchor>
       </Text>
       <Space h={"xs"} />
       <Text fs="italic">

@@ -87,7 +87,7 @@ const OtherMenu = ({
           </div>
         </HoverCard.Target>
         <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden" }}>
-          <Group>
+          <Stack gap={"xs"}>
             <Group gap={"xs"}>
               <IconAward size={16} />
               <Anchor component={Link} href={getRankingTiersRoute()}>
@@ -139,7 +139,7 @@ const OtherMenu = ({
                 </Group>
               </Anchor>
             </Tooltip>
-          </Group>
+          </Stack>
         </HoverCard.Dropdown>
       </HoverCard>
     </div>

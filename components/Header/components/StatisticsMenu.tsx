@@ -82,7 +82,7 @@ const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) =>
           </div>
         </HoverCard.Target>
         <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden" }}>
-          <Group>
+          <Stack gap={"xs"}>
             <Group gap={"xs"}>
               <IconChartAreaLine size={16} />
               <Anchor component={Link} href={getGameStatsRoute()}>
@@ -113,7 +113,7 @@ const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) =>
                 {t("mainMenu.statsMenu.achievements")}
               </Anchor>
             </Group>
-          </Group>
+          </Stack>
         </HoverCard.Dropdown>
       </HoverCard>
     </div>
