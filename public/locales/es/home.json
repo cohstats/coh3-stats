@@ -5,7 +5,8 @@
   },
   "sections": {
     "news": {
-      "title": "Últimas Noticias"
+      "title": "Últimas Noticias",
+      "newsLabel": "Noticias"
     },
     "tools": {
       "dpsCalculator": {
@@ -18,7 +19,14 @@
       }
     },
     "leaderboards": {
-      "title": "Mejores Jugadores"
+      "title": "Mejores Jugadores 1vs1",
+      "viewFullLeaderboard": "Ver todas las clasificaciones",
+      "factions": {
+        "american": "USF",
+        "british": "British",
+        "german": "Wehrmacht",
+        "dak": "DAK"
+      }
     },
     "reddit": {
       "title": "Mejores publicaciones de COH3 en Reddit",
@@ -31,7 +39,10 @@
     },
     "twitch": {
       "title": "Ver transmisiones en vivo",
-      "noStreams": "No hay transmisiones en inglés en vivo en Twitch actualmente."
+      "noStreams": "No hay transmisiones en vivo en inglés de Twitch actualmente."
     }
+  },
+  "leaderboardTable": {
+    "errorTitle": "Hubo un error inesperado al obtener las clasificaciones globales"
   }
 }

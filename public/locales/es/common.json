@@ -1,19 +1,19 @@
 {
   "mainMenu": {
-    "leaderboards": "Tablero",
+    "leaderboards": "Clasificación",
     "statistics": "Estadísticas",
     "statsMenu": {
       "games": "Estadísticas del juego",
       "maps": "Estadísticas del mapa",
       "players": "Estadísticas del jugador",
-      "leaderboards": "Estadísticas del tablero",
+      "leaderboards": "Estadísticas de clasificación",
       "achievements": "Estadísticas de logros"
     },
     "explorer": "Explorador",
     "explMenu": {
       "buildings": "Edificios",
       "units": "Unidades",
-      "dpsCalculator": "DPS - Comparacion de unidades",
+      "dpsCalculator": "DPS - Comparador de unidades",
       "unitBrowser": "Buscador de unidades",
       "challenges": "Retos",
       "weapons": "Armas"
@@ -22,10 +22,10 @@
     "desktopApp": "App de Escritorio",
     "other": "Otros",
     "otherMenu": {
-      "tiers": "Ranking Tiers",
-      "openData": "Open Data",
-      "coh3News": "Noticias de COH3",
-      "playerExport": "Player Export API"
+      "tiers": "Rangos en clasificadas",
+      "openData": "Datos Abiertos",
+      "coh3News": "Noticias del COH3",
+      "playerExport": "API para exportar"
     },
     "about": "Acerca de",
     "supportUs": "Apóyanos"
@@ -39,5 +39,18 @@
     "unofficialSite": "Este es un sitio No-Oficial hecho por fans para Company Of Heroes 3.",
     "visitText1": "Visita",
     "visitText2": "para estadísticas y analítica de Company of Heroes 2"
+  },
+  "columns": {
+    "rank": "Posición",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "Alias",
+    "streak": "Racha",
+    "ratio": "Proporción",
+    "total": "Total",
+    "lastGame": "Última partida",
+    "tier": "Rango",
+    "wins": "Victorias",
+    "losses": "Derrotas"
   }
 }
