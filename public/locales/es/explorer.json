@@ -27,19 +27,19 @@
     "reinforce": "Refuerzo",
     "construct": "Puede construir",
     "free": "Gratis",
-    "weaponNote": "La precisión efectiva es impactado por distintos factores como el tamaño del objetivo o la armadura de la unidad que recibe fuego, tambien como la precisión y penetración del atacante."
+    "weaponNote": "La precisión efectiva es impactada por distintos factores como el tamaño del objetivo o la armadura de la unidad que recibe fuego, tambien como la precisión y penetración del atacante."
   },
   "statsCard": {
     "sightRange": "Alcance de visión",
     "speed": "Velocidad",
     "acceleration": "Aceleración",
     "deceleration": "Desaceleración",
-    "maxRange": "Alcance Maximo",
+    "maxRange": "Alcance Máximo",
     "targetSize": "Tamaño del objetivo",
     "armor": "Armadura",
     "captureMultiplier": "Multiplicador de captura",
     "decaptureMultiplier": "Multiplicador de liberación",
-    "vehicleArmor": "Blindaje del vehiculo"
+    "vehicleArmor": "Blindaje del vehículo"
   },
   "weaponCard": {
     "accuracy": "Precisión",

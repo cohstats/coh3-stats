@@ -22,7 +22,7 @@
     "desktopApp": "App de Escritorio",
     "other": "Otros",
     "otherMenu": {
-      "tiers": "Rangos en clasificadas",
+      "tiers": "Rangos de clasificación",
       "openData": "Datos Abiertos",
       "coh3News": "Noticias del COH3",
       "playerExport": "API para exportar"
@@ -35,7 +35,7 @@
   },
   "footer": {
     "gamePatch": "Parche del juego",
-    "gamePatchInfo": "Informacion mostrada en este sitio son del parche del juego",
+    "gamePatchInfo": "Información mostrada en este sitio son del parche del juego",
     "unofficialSite": "Este es un sitio No-Oficial hecho por fans para Company Of Heroes 3.",
     "visitText1": "Visita",
     "visitText2": "para estadísticas y analítica de Company of Heroes 2"
