@@ -1,0 +1,12 @@
+{
+  "title": "Clasificación global para {{race}}",
+  "pageTitle": "Clasificación global para {{race}} {{type}}",
+  "metaDescription": "Clasificación global por facción {{race}} y tipo de juego {{type}}. Company of Heroes 3",
+  "errorTitle": "Hubo un error al obtener las clasificaciones globales.",
+  "filters": {
+    "region": "Región",
+    "platform": "Plataforma",
+    "faction": "Facción",
+    "type": "Tipo"
+  }
+}
