@@ -14,7 +14,7 @@ import {
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
 import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
@@ -32,6 +32,8 @@ import PlayerStandingsTab from "./tabs/standings-tab/player-standings-tab";
 import ActivityTab from "./tabs/activity-tab/activity-tab";
 import NemesisTab from "./tabs/nemesis-tab";
 import ReplaysTab from "./tabs/replays-tab/replays-tab";
+import config from "../../config";
+import { getPlayerCardRoute } from "../../src/routes";
 
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
@@ -138,12 +140,17 @@ const PlayerCard = ({
     );
   }
 
-  const pageTitle =
-    view === "recentMatches"
-      ? t("card.titleWithView.recentMatches", { name: playerData.info.name })
-      : view === "replays"
-        ? t("card.titleWithView.replays", { name: playerData.info.name })
-        : t("card.title", { name: playerData.info.name });
+  const viewTitleKeys = {
+    recentMatches: "card.titleWithView.recentMatches",
+    replays: "card.titleWithView.replays",
+    standingsDetails: "card.titleWithView.standingsDetails",
+    activity: "card.titleWithView.activity",
+    nemesis: "card.titleWithView.nemesis",
+  };
+
+  const pageTitle = t(viewTitleKeys[view as keyof typeof viewTitleKeys] || "card.title", {
+    name: playerData.info.name,
+  });
 
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
@@ -163,6 +170,8 @@ const PlayerCard = ({
         {platform === "steam" && (
           <meta property="og:image" content={playerData.steamData?.avatarmedium} />
         )}
+        <link rel="canonical" href={`${config.SITE_URL}${getPlayerCardRoute(playerID)}`} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container fluid p={0}>
         <Container

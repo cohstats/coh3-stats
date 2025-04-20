@@ -14,7 +14,10 @@
     "title": "Player card - {{name}}",
     "titleWithView": {
       "recentMatches": "Player card - {{name}} - Recent Matches",
-      "replays": "Player card - {{name}} - Replays"
+      "replays": "Player card - {{name}} - Replays",
+      "standingsDetails": "Player card - {{name}} - Detailed Stats",
+      "activity": "Player card - {{name}} - Activity",
+      "nemesis": "Player card - {{name}} - Nemesis"
     }
   },
   "tabs": {

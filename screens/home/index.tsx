@@ -13,6 +13,7 @@ import { COH3SteamNewsType } from "../../src/apis/steam-api";
 import YoutubePanel from "./youtube-panel/youtube-panel";
 import { useIntersection } from "@mantine/hooks";
 import { useTranslation } from "next-i18next";
+import { generateAlternateLanguageLinks } from "../../src/head-utils";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
@@ -52,6 +53,7 @@ const Home: NextPage<Props> = ({
         <title>{t("meta.title")}</title>
         <meta name="description" content={t("meta.description")} />
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
+        {generateAlternateLanguageLinks("")}
       </Head>
       <Container fluid p={{ base: 0 }}>
         <Grid>

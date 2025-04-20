@@ -6,8 +6,9 @@ import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
 import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json
 
@@ -136,6 +137,8 @@ const keywords = generateKeywordsString([
  * @constructor
  */
 const OpenData: NextPage = () => {
+  const { asPath } = useRouter();
+
   useEffect(() => {
     AnalyticsOpenDataPageView();
   }, []);
@@ -150,6 +153,7 @@ const OpenData: NextPage = () => {
         />
         <meta name="keywords" content={keywords} />
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <>
         <Container size={"md"}>

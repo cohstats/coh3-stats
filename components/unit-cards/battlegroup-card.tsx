@@ -20,15 +20,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { raceType } from "../../src/coh3/coh3-types";
 import {
-  BattlegroupsType,
   AbilitiesType,
   UpgradesType,
-  resolveBattlegroupBranches,
   BattlegroupResolvedBranchType,
   SbpsType,
   hasCost,
   BattlegroupArrows,
   BattlegroupBackgrounds,
+  BattlegroupResolvedType,
 } from "../../src/unitStats";
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
@@ -54,22 +53,17 @@ function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
   );
 }
 
-export const BattlegroupCard = (
-  race: raceType,
-  data: {
-    battlegroupData: BattlegroupsType[];
-    abilitiesData: AbilitiesType[];
-    upgradesData: UpgradesType[];
-    sbpsData: SbpsType[];
-  },
-) => {
-  const resolvedBattlegroups = resolveBattlegroupBranches(
-    race,
-    data.battlegroupData,
-    data.upgradesData,
-    data.abilitiesData,
-  );
+interface BattlegroupCardProps {
+  race: raceType;
+  sbpsData: SbpsType[];
+  resolvedBattlegroups: BattlegroupResolvedType[];
+}
 
+export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
+  race,
+  sbpsData,
+  resolvedBattlegroups,
+}) => {
   for (const resBg of resolvedBattlegroups) {
     for (const [override, { predicate, mutator, validator }] of bgWorkarounds) {
       if (predicate(resBg)) {
@@ -131,7 +125,7 @@ export const BattlegroupCard = (
                       <Title order={4}>{branches.LEFT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.LEFT, race, data.sbpsData, value === 1)}
+                      {BattlegroupBranchMapping(branches.LEFT, race, sbpsData, value === 1)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
@@ -144,7 +138,7 @@ export const BattlegroupCard = (
                       <Title order={4}>{branches.RIGHT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.RIGHT, race, data.sbpsData, value === 1)}
+                      {BattlegroupBranchMapping(branches.RIGHT, race, sbpsData, value === 1)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>

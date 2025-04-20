@@ -3,7 +3,7 @@ import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
 import {
   getWeaponClassIcon,
@@ -13,6 +13,7 @@ import {
 import { getFactionIcon, getScatterArea, getWeaponRpm } from "../../src/unitStats";
 import { getIconsPathOnCDN } from "../../src/utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
 
 interface WeaponsProps {
   tableData: WeaponTableRow[];
@@ -21,6 +22,8 @@ interface WeaponsProps {
 const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
 const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
+  const { asPath } = useRouter();
+
   useEffect(() => {
     AnalyticsExplorerWeaponsView();
   }, []);
@@ -36,6 +39,7 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
         <meta name="keywords" content={keywords} />
         {/*we might prepare better image*/}
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <div>
         <WeaponTable inputData={tableData} />
