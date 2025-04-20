@@ -121,13 +121,11 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>{t("common.battleGroups")}</Title>
 
-          {BattlegroupCard(
-            raceToFetch,
-            {
-              sbpsData,
-            },
-            resolvedBattlegroups,
-          )}
+          <BattlegroupCard
+            race={raceToFetch}
+            sbpsData={sbpsData}
+            resolvedBattlegroups={resolvedBattlegroups}
+          />
         </Stack>
 
         {/* Buildings Section */}
