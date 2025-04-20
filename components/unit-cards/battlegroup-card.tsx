@@ -20,15 +20,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { raceType } from "../../src/coh3/coh3-types";
 import {
-  BattlegroupsType,
   AbilitiesType,
   UpgradesType,
-  resolveBattlegroupBranches,
   BattlegroupResolvedBranchType,
   SbpsType,
   hasCost,
   BattlegroupArrows,
   BattlegroupBackgrounds,
+  BattlegroupResolvedType,
 } from "../../src/unitStats";
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
@@ -57,19 +56,10 @@ function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
 export const BattlegroupCard = (
   race: raceType,
   data: {
-    battlegroupData: BattlegroupsType[];
-    abilitiesData: AbilitiesType[];
-    upgradesData: UpgradesType[];
     sbpsData: SbpsType[];
   },
+  resolvedBattlegroups: BattlegroupResolvedType[],
 ) => {
-  const resolvedBattlegroups = resolveBattlegroupBranches(
-    race,
-    data.battlegroupData,
-    data.upgradesData,
-    data.abilitiesData,
-  );
-
   for (const resBg of resolvedBattlegroups) {
     for (const [override, { predicate, mutator, validator }] of bgWorkarounds) {
       if (predicate(resBg)) {

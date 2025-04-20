@@ -16,11 +16,12 @@ import {
   UpgradesType,
   filterMultiplayerBuildings,
   AbilitiesType,
-  BattlegroupsType,
   getResolvedUpgrades,
   getResolvedSquads,
   HalfTrackDeploymentUnitsAfrikaKorps,
   getResolvedAbilities,
+  resolveBattlegroupBranches,
+  BattlegroupResolvedType,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateAlternateLanguageLinks, generateKeywordsString } from "../../../src/head-utils";
@@ -36,20 +37,20 @@ interface RaceDetailProps {
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
   abilitiesData: AbilitiesType[];
-  battlegroupData: BattlegroupsType[];
   descriptions: {
     raceDescription: string;
     buildings: string;
   };
+  resolvedBattlegroups: BattlegroupResolvedType[];
 }
 
 const RaceDetail: NextPage<RaceDetailProps> = ({
   ebpsData,
   sbpsData,
   upgradesData,
-  battlegroupData,
   abilitiesData,
   descriptions,
+  resolvedBattlegroups,
 }) => {
   // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
@@ -93,12 +94,13 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>{t("common.battleGroups")}</Title>
 
-          {BattlegroupCard(raceToFetch, {
-            battlegroupData,
-            upgradesData,
-            abilitiesData,
-            sbpsData,
-          })}
+          {BattlegroupCard(
+            raceToFetch,
+            {
+              sbpsData,
+            },
+            resolvedBattlegroups,
+          )}
         </Stack>
 
         {/* Buildings Section */}
@@ -130,6 +132,13 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   );
 };
 
+/**
+ * TODO: We need to move the calculation to getStaticProps from this function
+ * @param race
+ * @param data
+ * @param t
+ * @constructor
+ */
 const BuildingMapping = (
   race: raceType,
   data: {
@@ -283,9 +292,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } =
     await getMappings(locale);
 
-  const raceId = context.params?.raceId as string;
+  const raceId = context.params?.raceId as raceType;
 
   const descriptions = getUnitStatsCOH3Descriptions(locale);
+
+  const resolvedBattlegroups = resolveBattlegroupBranches(
+    raceId,
+    battlegroupData,
+    upgradesData,
+    abilitiesData,
+  );
 
   // get raceID from context
 
@@ -295,7 +311,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       ebpsData,
       upgradesData,
       abilitiesData,
-      battlegroupData,
+      resolvedBattlegroups,
       descriptions: {
         raceDescription: descriptions[raceId as raceType]?.description || null,
         buildings: descriptions.common.buildings || null,
