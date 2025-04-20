@@ -6,12 +6,14 @@ import { Container, Text, Title } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const RankingTiers: NextPage = () => {
   const { t } = useTranslation("ranking-tiers");
+  const { asPath } = useRouter();
 
   useEffect(() => {
     AnalyticsRankingTiersPageView();
@@ -37,6 +39,7 @@ const RankingTiers: NextPage = () => {
         />
         <meta name="keywords" content={keywords} />
         <meta property="og:image" content={PlayerRanks.CHALLENGER_1.url} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <>
         <Container size={"sm"}>

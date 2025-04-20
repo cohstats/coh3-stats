@@ -6,11 +6,12 @@ import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import Head from "next/head";
 import React, { useEffect } from "react";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
+import { useRouter } from "next/router";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -22,6 +23,8 @@ interface DpsProps {
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
 const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
+  const { asPath } = useRouter();
+
   useEffect(() => {
     AnalyticsDPSExplorerPageView();
   }, []);
@@ -84,6 +87,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
           }
         />
         <meta name="keywords" content={keywords} />
+        {generateAlternateLanguageLinks(asPath)}
         {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
       </Head>
       <div>

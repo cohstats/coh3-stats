@@ -13,13 +13,14 @@ import {
   Title,
 } from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
 import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -39,6 +40,8 @@ interface ChallengesProps {
 const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
+  const { asPath } = useRouter();
+
   useEffect(() => {
     AnalyticsExplorerChallengesView();
   }, []);
@@ -61,6 +64,7 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
         <meta name="keywords" content={keywords} />
         {/*we might prepare better image*/}
         <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container size={"lg"} p={0}>
         <Grid>

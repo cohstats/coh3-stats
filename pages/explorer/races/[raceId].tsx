@@ -23,7 +23,7 @@ import {
   getResolvedAbilities,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-import { generateKeywordsString } from "../../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../../src/head-utils";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
@@ -53,7 +53,8 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 }) => {
   // console.log("🚀 ~ file: [raceId].tsx:55 ~ abilitiesData:", abilitiesData);
   // The `query` contains the `raceId`, which is the filename as route slug.
-  const { query } = useRouter();
+  const { query, asPath } = useRouter();
+
   const { t } = useTranslation(["explorer"]);
 
   const raceToFetch = (query.raceId as raceType) || "american";
@@ -77,6 +78,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <meta name="description" content={`${localizedRace} - COH3 Explorer`} />
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container fluid p={0}>
         <Flex direction="row" align="center" gap="md">

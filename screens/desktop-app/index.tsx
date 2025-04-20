@@ -18,9 +18,12 @@ import { useTranslation } from "next-i18next";
 import { AnalyticsDesktopAppPageView } from "../../src/firebase/analytics";
 
 import classes from "./desktop-app.module.css";
+import { generateAlternateLanguageLinks } from "../../src/head-utils";
+import { useRouter } from "next/router";
 
 const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) => {
   const { t } = useTranslation("desktopapp");
+  const { asPath } = useRouter();
 
   useEffect(() => {
     AnalyticsDesktopAppPageView();
@@ -33,6 +36,7 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
         <meta name="description" content={t("meta.description", { version })} />
         <meta name="keywords" content={t("meta.keywords")} />
         <meta property="og:image" content="/desktop-app/desktop-app-v2.webp" />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container size={"lg"}>
         {/*We need to fix this on both mobile and desktop to avoid CLS*/}

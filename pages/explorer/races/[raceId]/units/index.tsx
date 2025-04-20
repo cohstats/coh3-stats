@@ -4,7 +4,10 @@ import { IconBarrierBlock } from "@tabler/icons-react";
 import { Anchor, Card, Flex, Grid, Stack, Text, Title, Container } from "@mantine/core";
 
 import { raceType } from "../../../../../src/coh3/coh3-types";
-import { generateKeywordsString } from "../../../../../src/head-utils";
+import {
+  generateAlternateLanguageLinks,
+  generateKeywordsString,
+} from "../../../../../src/head-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { SbpsType } from "../../../../../src/unitStats";
@@ -16,6 +19,7 @@ import { useEffect } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -24,6 +28,7 @@ interface UnitDetailProps {
 }
 
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
+  const { asPath } = useRouter();
   const localizedRace = localizedNames[raceToFetch];
 
   useEffect(() => {
@@ -42,6 +47,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         <meta name="description" content={`${localizedRace} Units - COH3 Explorer`} />
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container fluid p={0}>
         <Flex direction="row" align="center" gap="md">

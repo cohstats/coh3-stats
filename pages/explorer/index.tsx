@@ -9,6 +9,8 @@ import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { getExplorerFactionRoute } from "../../src/routes";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { generateAlternateLanguageLinks } from "../../src/head-utils";
+import { useRouter } from "next/router";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
@@ -26,6 +28,7 @@ const explorerFactionLink = (faction: raceType) => {
 };
 
 const Explorer: NextPage = () => {
+  const { asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
   return (
@@ -37,6 +40,7 @@ const Explorer: NextPage = () => {
           name="keywords"
           content="COh3, Wehrmacht, US Forces, DAK, Deutsches Afrikakorps, British Forces, units, damage, buildings, costs, man power, fuel, munition"
         />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container size="md">
         <Stack mb={24}>

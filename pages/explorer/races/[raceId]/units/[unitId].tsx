@@ -44,7 +44,10 @@ import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-l
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
-import { generateKeywordsString } from "../../../../../src/head-utils";
+import {
+  generateAlternateLanguageLinks,
+  generateKeywordsString,
+} from "../../../../../src/head-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";
@@ -69,7 +72,7 @@ interface UnitDetailProps {
 }
 
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
-  const { query } = useRouter();
+  const { query, asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
   const unitId = query.unitId as string;
@@ -162,6 +165,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
           property="og:image"
           content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
         />
+        {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container fluid p={0}>
         <Flex direction="row" align="center" gap="md">
