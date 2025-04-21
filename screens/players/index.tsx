@@ -14,7 +14,7 @@ import {
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
+import { generateKeywordsString } from "../../src/head-utils";
 import Head from "next/head";
 import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
@@ -171,7 +171,12 @@ const PlayerCard = ({
           <meta property="og:image" content={playerData.steamData?.avatarmedium} />
         )}
         <link rel="canonical" href={`${config.SITE_URL}${getPlayerCardRoute(playerID)}`} />
-        {generateAlternateLanguageLinks(asPath)}
+        <link
+          key="x-default"
+          rel="alternate"
+          hrefLang="x-default"
+          href={`${config.SITE_URL}${asPath}`}
+        />
       </Head>
       <Container fluid p={0}>
         <Container

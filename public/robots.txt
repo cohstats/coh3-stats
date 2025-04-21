@@ -22,25 +22,44 @@ Disallow: /
 User-agent: Timpibot/0.9
 Disallow: /
 
+
+# Disallow all player variants with languages
+User-agent: *
+Disallow: /en/players/
+Disallow: /fr/players/
+Disallow: /de/players/
+Disallow: /it/players/
+Disallow: /ja/players/
+Disallow: /ko/players/
+Disallow: /pl/players/
+Disallow: /pt-BR/players/
+Disallow: /zh-Hans/players/
+Disallow: /es/players/
+Disallow: /zh-Hant/players/
+Disallow: /tr/players/
+Disallow: /cs/players/
+Disallow: /ru/players/
+
+
 # Bing bot is retarded, it's crawling leaderboards and all players on the platform
 User-agent: Bingbot
-Disallow: /leaderboards
-Disallow: /players
+Disallow: /leaderboards/
+Disallow: /players/
 Allow: /
 
 # GPTBot is retarded the same way the Bing bot is
 User-agent: GPTBot
-Disallow: /leaderboards
-Disallow: /players
+Disallow: /leaderboards/
+Disallow: /players/
 Allow: /
 
 User-agent: *
 # This is hallucinated by Google
-Disallow: /steam
-Disallow: /xboxlive
-Disallow: /r
-Disallow: /api
-Disallow: /tests
+Disallow: /steam/
+Disallow: /xboxlive/
+Disallow: /r/
+Disallow: /api/
+Disallow: /tests/
 # Ban crawling of the leaderboards via the start parameter
 Disallow: /leaderboards?*start=
 Allow: /
