@@ -390,7 +390,7 @@ const config = {
   getPatchDataLocaleUrl,
   firebaseFunctions,
   useFirebaseEmulators,
-  DISCORD_INVITE_LINK: "https://discord.gg/4Bj2y84WAR",
+  DISCORD_INVITE_LINK: "https://discord.com/invite/4Bj2y84WAR",
   DONATION_LINK: "https://ko-fi.com/cohstats",
   GITHUB_LINK: repository.url,
   CDN_ASSETS_HOSTING: "https://cdn.coh3stats.com",
