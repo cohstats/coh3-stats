@@ -82,7 +82,7 @@
     "timeago.js": "4.0.2"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "5.9.4",
+    "@netlify/plugin-nextjs": "5.10.7",
     "@next/bundle-analyzer": "14.2.28",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.2.0",
