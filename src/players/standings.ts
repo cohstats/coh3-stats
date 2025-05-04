@@ -94,6 +94,7 @@ const processPlayerInfoAPIResponse = (data: COH3StatsPlayerInfoAPI): PlayerCardD
     highestRankTier: calculateHighestRankTier(data.RelicProfile.leaderboardStats),
     steamData: Object.values(data.SteamProfile || {})[0] || null,
     COH3PlayTime: data.COH3PlayTime || null,
+    topTeamsSummary: data.topTeamsSummary || null,
   };
 };
 

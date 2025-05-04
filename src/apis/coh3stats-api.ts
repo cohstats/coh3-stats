@@ -7,9 +7,11 @@ import {
   ProcessedMatch,
   raceType,
   ResponseLiveGames,
+  TeamsFullSummary,
   TwitchStream,
   TypeOfLiveGame,
   YouTubeVideo,
+  TeamDetails,
 } from "../coh3/coh3-types";
 import {
   analysisFilterType,
@@ -575,6 +577,97 @@ const getOldLeaderboardData = async (
   }
 };
 
+const getTeamsFullSummaryUrl = (profileID: string | number, cache_proxy = true) => {
+  const path = `/sharedAPIGen2Http/teams/fullSummary?profileID=${profileID}`;
+
+  return cache_proxy
+    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+};
+
+const getTeamDetailsUrl = (teamID: string | number, cache_proxy = true) => {
+  const path = `/sharedAPIGen2Http/teams/details/${teamID}`;
+
+  return cache_proxy
+    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+};
+
+const getTeamMatchesUrl = (matchIDs: Array<string | number>, cache_proxy = true) => {
+  const path = `/sharedAPIGen2Http/teams/matches?matchIDs=[${matchIDs.join(",")}]`;
+
+  return cache_proxy
+    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
+    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+};
+
+const getTeamsFullSummary = async (
+  profileID: string | number,
+  cache_proxy = true,
+): Promise<TeamsFullSummary> => {
+  const response = await fetch(getTeamsFullSummaryUrl(profileID, cache_proxy));
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting teams full summary: ${data.error}`);
+    }
+    throw new Error(`Error getting teams full summary`);
+  }
+};
+
+const getTeamDetails = async (
+  teamID: string | number,
+  cache_proxy = true,
+): Promise<TeamDetails> => {
+  const response = await fetch(getTeamDetailsUrl(teamID, cache_proxy));
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    if (response.status === 404) {
+      throw new Error("Team not found");
+    }
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting team details: ${data.error}`);
+    }
+    throw new Error(`Error getting team details`);
+  }
+};
+
+const getTeamMatches = async (
+  matchIDs: Array<string | number>,
+  cache_proxy = true,
+): Promise<Record<number, ProcessedMatch>> => {
+  if (matchIDs.length < 1 || matchIDs.length > 10) {
+    throw new Error("Must provide between 1 and 10 match IDs");
+  }
+
+  const response = await fetch(getTeamMatchesUrl(matchIDs, cache_proxy));
+
+  if (response.ok) {
+    const data = await response.json();
+
+    // Parse the counters field in each match
+    Object.values(data as Record<number, ProcessedMatch>).forEach((match) => {
+      match.matchhistoryreportresults.forEach((result: PlayerReport) => {
+        result.counters = JSON.parse(result.counters as unknown as string);
+      });
+    });
+
+    return data;
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting team matches: ${data.error}`);
+    }
+    throw new Error(`Error getting team matches`);
+  }
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -590,4 +683,7 @@ export {
   getOldLeaderboardData,
   generateReplayUrl,
   getSearchUrl,
+  getTeamsFullSummary,
+  getTeamDetails,
+  getTeamMatches,
 };

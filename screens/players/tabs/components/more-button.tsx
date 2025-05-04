@@ -5,7 +5,7 @@ import { IconCirclePlus } from "@tabler/icons-react";
 import classes from "../Players.module.css";
 
 interface MyButtonProps {
-  onClick: () => Promise<void>;
+  onClick: () => Promise<void> | void;
 }
 
 const MoreButton: React.FC<MyButtonProps> = ({ onClick }) => {
@@ -18,7 +18,7 @@ const MoreButton: React.FC<MyButtonProps> = ({ onClick }) => {
       onClick={onClick}
     >
       <Group gap={4}>
-        <IconCirclePlus size={"13"} />
+        <IconCirclePlus size={"15"} style={{ marginBottom: -1 }} />
         More
       </Group>
     </Button>

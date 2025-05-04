@@ -32,6 +32,8 @@ import PlayerStandingsTab from "./tabs/standings-tab/player-standings-tab";
 import ActivityTab from "./tabs/activity-tab/activity-tab";
 import NemesisTab from "./tabs/nemesis-tab";
 import ReplaysTab from "./tabs/replays-tab/replays-tab";
+import TeamsStandingsTab from "./tabs/teams-standings-tab/teams-standings-tab";
+import TeamDetailsTab from "./tabs/team-details-tab/team-details-tab";
 import config from "../../config";
 import { getPlayerCardRoute } from "../../src/routes";
 
@@ -115,6 +117,12 @@ const PlayerCard = ({
       AnalyticsPlayerCardActivityView(playerID);
     } else if (view === "nemesis") {
       AnalyticsPlayerCardNemesisView(playerID);
+    } else if (view === "teamsStandings") {
+      // You can add analytics tracking for the new tab if needed
+      AnalyticsPlayerCardView(playerID);
+    } else if (view === "teamDetails") {
+      // Analytics tracking for team details tab
+      AnalyticsPlayerCardView(playerID);
     } else {
       AnalyticsPlayerCardView(playerID);
     }
@@ -146,6 +154,8 @@ const PlayerCard = ({
     standingsDetails: "card.titleWithView.standingsDetails",
     activity: "card.titleWithView.activity",
     nemesis: "card.titleWithView.nemesis",
+    teamsStandings: "card.titleWithView.teamsStandings",
+    teamDetails: "card.titleWithView.teamDetails",
   };
 
   const pageTitle = t(viewTitleKeys[view as keyof typeof viewTitleKeys] || "card.title", {
@@ -242,6 +252,9 @@ const PlayerCard = ({
           <Tabs.List justify="center">
             <Tabs.Tab value={"standings"}>{t("tabs.standings")}</Tabs.Tab>
             <Tabs.Tab value={"standingsDetails"}>{t("tabs.standingsDetails")}</Tabs.Tab>
+            <Tabs.Tab value={"teamsStandings"}>{t("tabs.teamsStandings")}</Tabs.Tab>
+            {/*Team Details tab is hidden on purpose, you can get there only with details*/}
+            {/*<Tabs.Tab value={"teamDetails"}>{t("tabs.teamDetails", "Team Details")}</Tabs.Tab>*/}
             <Tabs.Tab value={"recentMatches"}>{t("tabs.recentMatches")}</Tabs.Tab>
             <Tabs.Tab value={"activity"}>{t("tabs.activity")}</Tabs.Tab>
             <Tabs.Tab value={"nemesis"}>{t("tabs.nemesis")}</Tabs.Tab>
@@ -254,6 +267,7 @@ const PlayerCard = ({
               playerStatsData={playerStatsData}
               platform={platform}
               COH3PlayTime={playerData.COH3PlayTime}
+              topTeamsSummary={playerData.topTeamsSummary}
             />
           </Tabs.Panel>
           <Tabs.Panel value="standingsDetails">
@@ -279,6 +293,12 @@ const PlayerCard = ({
           <Tabs.Panel value={"replays"}>
             <Space h="lg" />
             <ReplaysTab replaysData={replaysData} profileID={playerID} error={error} />
+          </Tabs.Panel>
+          <Tabs.Panel value={"teamsStandings"}>
+            <TeamsStandingsTab profileID={playerID} t={t} />
+          </Tabs.Panel>
+          <Tabs.Panel value={"teamDetails"}>
+            <TeamDetailsTab profileID={playerID} />
           </Tabs.Panel>
         </Tabs>
       </Container>

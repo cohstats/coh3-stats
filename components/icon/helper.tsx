@@ -7,11 +7,13 @@ const HelperIcon = ({
   width = 400,
   iconSize = 20,
   position = "top",
+  iconStyle = {},
 }: {
   text: string | React.ReactNode;
   width?: number;
   iconSize?: number;
   position?: FloatingPosition;
+  iconStyle?: React.CSSProperties;
 }) => {
   return (
     <Tooltip
@@ -21,7 +23,7 @@ const HelperIcon = ({
       w={width}
       position={position}
     >
-      <IconInfoCircle size={iconSize} style={{ marginBottom: -4 }} />
+      <IconInfoCircle size={iconSize} style={{ marginBottom: -4, ...iconStyle }} />
     </Tooltip>
   );
 };

@@ -177,3 +177,14 @@ export const AnalyticsLiveGamesPage = (page: number): void => {
 export const AnalyticsNewsPageView = (): void => {
   logFBEvent("news_view");
 };
+
+export const AnalyticsTeamDetailsTabView = (
+  profile_id?: number | string,
+  team_id?: string,
+): void => {
+  logFBEvent("player_card_team_details_view", { profile_id, team_id });
+};
+
+export const AnalyticsTeamsStandingsTabView = (profile_id?: number | string): void => {
+  logFBEvent("player_card_teams_standings_view", { profile_id });
+};

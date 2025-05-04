@@ -59,6 +59,43 @@ const BugReports = () => {
   );
 };
 
+const ArrangedTeams = () => {
+  return (
+    <>
+      <Text>
+        COH3 Stats can track arranged teams, however these teams need to be first created to be
+        tracked. The teams are for Axis and Allies. The faction you play in the team doesn't
+        matter. The team games are counted only if it has the same game type (2v2, 3v3, 4v4).
+        Match where you play 3v3 as 2v2 team doesn't count. Only Auto Match games are tracked in
+        the team games (not custom games).
+      </Text>
+      <Space h={"xs"} />
+      <Title order={4}>Arrange Team Creation</Title>
+      <Text>
+        To create arrange team, you need to play with your friends 3 games in a single day (UTC
+        time). After 3 games, team is created however no stats are counted yet. From the next day,
+        any game you play with your team is counted towards your team stats. You need to do this
+        for all types and sides aka (2v2 - Axis, 2v2 - Allies, and so on).
+      </Text>
+      <Space h={"xs"} />
+      <Text fw={700}>TLDR:</Text>
+      <li>
+        Day 1 Play at least 3 games with your team - same side (axis/allies) - same game type
+        (2v2/3v3/4v4)
+      </li>
+      <li>Day 2 Any game you play with your team is counted towards your team statistics.</li>
+      <Space h={"xs"} />
+      <Title order={4}>ELO Tracking</Title>
+      <Text>
+        We are tracking ELO for the teams. This is COH3 Stats ELO and it's different then game
+        ELO. Each team starts with 1200 ELO. The enemy ELO is taken either from their team stats
+        (if they exists) or as average from the team (if it's not arranged team). We will have
+        team leaderboards.
+      </Text>
+    </>
+  );
+};
+
 const Statistics = () => {
   return (
     <>
@@ -279,6 +316,12 @@ const sections = [
     menuDisplayName: "Localization",
     pageDisplayName: "Website Localization",
     component: <Localization />,
+  },
+  {
+    name: "arrangedteams",
+    menuDisplayName: "Arranged Teams",
+    pageDisplayName: "Arranged Teams",
+    component: <ArrangedTeams />,
   },
   {
     name: "stats",

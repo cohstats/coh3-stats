@@ -2,6 +2,7 @@ import {
   InternalStandings,
   platformType,
   ProcessedCOHPlayerStats,
+  TopTeamsSummary,
 } from "../../../../src/coh3/coh3-types";
 import { Container, Flex, Space, Text } from "@mantine/core";
 import React from "react";
@@ -11,22 +12,25 @@ import NemesisWidget from "./widgets/nemesis-widget";
 import MoreButton from "../components/more-button";
 import { useRouter } from "next/router";
 import MapsWidget from "./widgets/maps-widget";
-// import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 import AliasHistoryWidget from "./widgets/alias-history-widget";
+import TopTeamsInfo from "./top-teams-info";
 
 const PlayerStandingsTab = ({
   playerStandings,
   playerStatsData,
   platform,
   COH3PlayTime,
+  topTeamsSummary,
 }: {
   playerStandings: InternalStandings;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: platformType;
   COH3PlayTime: number | null;
+  topTeamsSummary: TopTeamsSummary | null;
 }) => {
   const { push, query } = useRouter();
-  // const { t } = useTranslation('players');
+  const { t } = useTranslation("players");
 
   const changeView = async (value: string) => {
     await push({ query: { ...query, view: value } });
@@ -79,6 +83,8 @@ const PlayerStandingsTab = ({
             platform={platform}
             moreButtonOnClick={() => changeView("standingsDetails")}
           />
+          <Space h="xl" />
+          <TopTeamsInfo topTeamsSummary={topTeamsSummary} t={t} />
         </div>
 
         <div style={{ width: 300 }}>

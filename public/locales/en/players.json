@@ -17,7 +17,8 @@
       "replays": "Player card - {{name}} - Replays",
       "standingsDetails": "Player card - {{name}} - Detailed Stats",
       "activity": "Player card - {{name}} - Activity",
-      "nemesis": "Player card - {{name}} - Nemesis"
+      "nemesis": "Player card - {{name}} - Nemesis",
+      "teamsStandings": "Player card - {{name}} - Teams Standings"
     }
   },
   "tabs": {
@@ -26,7 +27,8 @@
     "recentMatches": "Recent Matches",
     "activity": "Activity",
     "nemesis": "Nemesis",
-    "replays": "Replays"
+    "replays": "Replays",
+    "teamsStandings": "Teams Standings"
   },
   "playerInfo": {
     "bestElo": {
@@ -129,6 +131,14 @@
         "title": "Activity by week day"
       }
     }
+  },
+  "teamsStandings": {
+    "title": "Arranged Teams Standings",
+    "noData": "No teams data available for this player",
+    "axisTeams": "Axis",
+    "alliesTeams": "Allies",
+    "mostPlayed": "Most Played Teams",
+    "mostRecent": "Recent Teams"
   },
   "nemesis": {
     "widget": {

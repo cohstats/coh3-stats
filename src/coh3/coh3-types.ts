@@ -83,6 +83,44 @@ export interface COH3StatsPlayerInfoAPI {
     statGroups: Array<RawStatGroup>;
   };
   SteamProfile?: Record<string, { steamid: string; profileurl: string; avatarmedium: string }>;
+  topTeamsSummary: TopTeamsSummary;
+}
+
+export interface TeamSummary {
+  id: string;
+  players: Array<{
+    profile_id: number;
+    alias: string;
+    country: string;
+  }>;
+  type: string;
+  side: "axis" | "allies";
+  elo: number;
+  w: number;
+  l: number;
+  s: number;
+  t?: number;
+  bestElo?: number;
+  lmTS: number | null;
+}
+
+export interface TeamsFullSummary {
+  profileId: number;
+  totalTeams: number;
+  axisTeams: TeamSummary[];
+  alliesTeams: TeamSummary[];
+}
+
+export interface TopTeamsSummary {
+  profileId: number;
+  axisTeams: {
+    mostTotal: TeamSummary[];
+    mostRecent: TeamSummary[];
+  };
+  alliesTeams: {
+    mostTotal: TeamSummary[];
+    mostRecent: TeamSummary[];
+  };
 }
 
 export type InternalStandings = Record<
@@ -110,7 +148,37 @@ export type PlayerCardDataType = {
       race: "german" | "american" | "dak" | "british";
     } | null;
   };
+  topTeamsSummary: TopTeamsSummary | null;
 };
+
+export interface CHSTeamCore {
+  player_ids: Array<number>;
+  players: Array<{
+    profile_id: number;
+    alias: string;
+    country: string;
+  }>;
+  type: leaderBoardType | "other";
+  side: "axis" | "allies";
+  elo: number;
+  bestElo: number;
+  w: number; // Wins
+  l: number; // Losses
+  s: number; // Streak
+  t: number; // Total
+  lmTS: number | null; // Last Match Linux Timestamp
+  mh: Array<{
+    m_id: number;
+    w: boolean;
+    eloChange: number;
+    enemyElo: number;
+    ts: number;
+  }>; // Match history
+}
+
+export interface TeamDetails extends CHSTeamCore {
+  id: string;
+}
 
 interface ProcessedMatchHistoryMember {
   statgroup_id: number;
