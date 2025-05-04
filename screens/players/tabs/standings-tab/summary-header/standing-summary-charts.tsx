@@ -89,7 +89,7 @@ const StandingsSummaryCharts = ({
         <div
           style={{
             height: chartHeight,
-            width: 350,
+            width: 380,
           }}
         >
           <ActivityLastMonths playerStatsData={playerStatsData} />

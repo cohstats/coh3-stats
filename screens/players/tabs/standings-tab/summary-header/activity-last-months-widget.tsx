@@ -57,7 +57,7 @@ const ActivityLastMonthsWidget = ({
       minValue={-10}
       maxValue={10}
       weekdayTicks={[]}
-      margin={{ top: 25, right: 0, bottom: 15, left: -35 }}
+      margin={{ top: 25, right: 25, bottom: 15, left: -35 }}
       dayBorderWidth={2}
       dayBorderColor={colorScheme === "light" ? "#ffffff" : theme.colors.dark[7]} // dark "#242424"
       legends={[
