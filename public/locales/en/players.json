@@ -18,7 +18,8 @@
       "standingsDetails": "Player card - {{name}} - Detailed Stats",
       "activity": "Player card - {{name}} - Activity",
       "nemesis": "Player card - {{name}} - Nemesis",
-      "teamsStandings": "Player card - {{name}} - Teams Standings"
+      "teamsStandings": "Player card - {{name}} - Teams Standings",
+      "teamDetails": "Player card - {{name}} - Team Details"
     }
   },
   "tabs": {
