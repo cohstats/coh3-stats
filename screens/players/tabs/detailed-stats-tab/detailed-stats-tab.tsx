@@ -48,6 +48,7 @@ const DetailedStatsTab = ({
               onChange={(value) => setSelectedFaction((value as raceType) || "")}
               w={200}
               withCheckIcon={false}
+              allowDeselect={false}
             />
             <Select
               value={selectedGameMode}
@@ -61,6 +62,7 @@ const DetailedStatsTab = ({
               onChange={(value) => setSelectedGameMode((value as leaderBoardType) || "")}
               w={200}
               withCheckIcon={false}
+              allowDeselect={false}
             />
           </Group>
         </Flex>
