@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "keywords": {
+      "stats": "{{name}} stats",
+      "matches": "{{name}} matches",
+      "cohStats": "coh3 {{name}} stats"
+    }
+  },
+  "card": {
+    "error": {
+      "title": "Error loading the player card",
+      "loadingError": "Error loading the player card"
+    },
+    "title": "Player card - {{name}}",
+    "titleWithView": {
+      "recentMatches": "Player card - {{name}} - Recent Matches",
+      "replays": "Player card - {{name}} - Replays",
+      "standingsDetails": "Player card - {{name}} - Detailed Stats",
+      "activity": "Player card - {{name}} - Activity",
+      "nemesis": "Player card - {{name}} - Nemesis",
+      "teamsStandings": "Player card - {{name}} - Teams Standings",
+      "teamDetails": "Player card - {{name}} - Team Details"
+    }
+  },
+  "tabs": {
+    "standings": "Player Standings",
+    "standingsDetails": "Detailed Stats",
+    "recentMatches": "Recent Matches",
+    "activity": "Activity",
+    "nemesis": "Nemesis",
+    "replays": "Replays",
+    "teamsStandings": "Teams Standings"
+  },
+  "playerInfo": {
+    "bestElo": {
+      "allies": "Best ALLIES ELO {{elo}} in {{mode}} as {{faction}}",
+      "axis": "Best AXIS ELO {{elo}} in {{mode}} as {{faction}}"
+    },
+    "stats": {
+      "totalGames": "Total games {{count}}",
+      "winRate": "Win Rate {{rate}}%",
+      "lastMatch": "Last match {{time}}"
+    }
+  },
+  "recentMatches": {
+    "filters": {
+      "hideCustomGames": "Hide Custom Games",
+      "showAllGames": "Show All Games"
+    },
+    "table": {
+      "columns": {
+        "date": "Date",
+        "map": "Map",
+        "duration": "Duration",
+        "type": "Type",
+        "players": "Players",
+        "actions": "Actions"
+      },
+      "noData": "No matches found"
+    },
+    "downloadReplay": {
+      "button": "Download Replay",
+      "generating": "Generating...",
+      "error": "Error generating replay"
+    }
+  },
+  "standings": {
+    "summary": {
+      "charts": {
+        "factionDistribution": "Faction Distribution",
+        "gameTypes": "Game Types",
+        "activityLastMonths": "Activity Last Months"
+      }
+    },
+    "table": {
+      "columns": {
+        "leaderboard": "Leaderboard",
+        "rank": "Rank",
+        "rating": "Rating",
+        "lastMatch": "Last Match",
+        "streak": "Streak",
+        "wins": "Wins",
+        "losses": "Losses",
+        "total": "Total",
+        "winRate": "Win Rate"
+      }
+    },
+    "faction": {
+      "bestRank": "Best Rank",
+      "bestRating": "Best Rating",
+      "bestWinRate": "Best Win Rate"
+    }
+  },
+  "detailedStats": {
+    "filters": {
+      "selectFaction": "Select Faction",
+      "selectGameType": "Select Game Type"
+    },
+    "charts": {
+      "playTime": "Play Time Distribution",
+      "mapsWinRate": "Maps Win Rate",
+      "factionVsFaction": "Faction vs Faction"
+    },
+    "noData": "No detailed statistics available"
+  },
+  "activity": {
+    "title": "Player Activity",
+    "noData": "No activity data available",
+    "filters": {
+      "timeRange": "Time Range"
+    },
+    "alerts": {
+      "noData": {
+        "title": "No Activity Data",
+        "message": "It looks like we are not getting activity data for this player.",
+        "reportMessage": "If this error persists, please report it on"
+      },
+      "steamOnly": {
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
+      }
+    },
+    "charts": {
+      "calendarDay": {
+        "title": "Activity by calendar day"
+      },
+      "hourOfDay": {
+        "title": "Activity by hour of day"
+      },
+      "weekDay": {
+        "title": "Activity by week day"
+      }
+    }
+  },
+  "teamsStandings": {
+    "title": "Arranged Teams Standings",
+    "noData": "No teams data available for this player",
+    "axisTeams": "Axis",
+    "alliesTeams": "Allies",
+    "mostPlayed": "Most Played Teams",
+    "mostRecent": "Recent Teams"
+  },
+  "nemesis": {
+    "widget": {
+      "title": "Top 10 - 1v1 Nemesis",
+      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
+      "noRecords": "No 1v1 nemesis tracked"
+    },
+    "columns": {
+      "alias": "Alias",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
+      "diff": "Diff",
+      "total": "Total"
+    },
+    "title": "1v1 Nemesis",
+    "noNemesis": "No 1v1 Nemesis",
+    "wins": "Wins",
+    "losses": "Losses",
+    "rules": {
+      "trigger": "Nemesis counter has be to 'triggered'",
+      "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
+      "aliases": "Aliases are saved from the last game played with that player",
+      "counting": "After the trigger, all 1v1 games with that player are counted.",
+      "updateTime": "Data are updated once a day 6 AM UTC.",
+      "steamOnly": "Only Steam players are tracked."
+    },
+    "alerts": {
+      "steamOnly": {
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
+      }
+    }
+  }
+}
