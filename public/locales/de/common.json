@@ -1,56 +1,56 @@
 {
   "mainMenu": {
-    "leaderboards": "Leaderboards",
-    "statistics": "Statistics",
+    "leaderboards": "Bestenlisten",
+    "statistics": "Statistiken",
     "statsMenu": {
-      "games": "Games Stats",
-      "maps": "Maps Stats",
-      "players": "Players Stats",
-      "leaderboards": "Leaderboards Stats",
-      "achievements": "Achievements Stats"
+      "games": "Spielstatistiken",
+      "maps": "Kartenstatistiken",
+      "players": "Spielerstatistiken",
+      "leaderboards": "Bestenlisten-Statistiken",
+      "achievements": "Erfolgsstatistiken"
     },
     "explorer": "Explorer",
     "explMenu": {
-      "buildings": "Buildings",
-      "units": "Units",
-      "dpsCalculator": "DPS - Unit Comparison",
-      "unitBrowser": "Unit Browser",
-      "challenges": "Challenges",
-      "weapons": "Weapons"
+      "buildings": "Gebäude",
+      "units": "Einheiten",
+      "dpsCalculator": "DPS - Einheitenvergleich",
+      "unitBrowser": "Einheiten-Browser",
+      "challenges": "Herausforderungen",
+      "weapons": "Waffen"
     },
-    "liveGames": "Live Games",
-    "desktopApp": "Desktop App",
-    "other": "Other",
+    "liveGames": "Laufende Spiele",
+    "desktopApp": "Desktop-App",
+    "other": "Anderes",
     "otherMenu": {
-      "tiers": "Ranking Tiers",
-      "openData": "Open Data",
+      "tiers": "Ranglisten-Tiers",
+      "openData": "Offene Daten",
       "coh3News": "COH3 News",
-      "playerExport": "Player Export API"
+      "playerExport": "Spieler Export API"
     },
-    "about": "About",
-    "supportUs": "Support Us"
+    "about": "Über uns",
+    "supportUs": "Unterstütze uns"
   },
   "header": {
-    "playerInGames": "Players in game"
+    "playerInGames": "Spieler im Spiel"
   },
   "footer": {
-    "gamePatch": "Game Patch",
-    "gamePatchInfo": "Data displayed on the site are from game patch",
-    "unofficialSite": "This is an unofficial fan-made site for Company Of Heroes 3.",
-    "visitText1": "Visit",
-    "visitText2": "for Company of Heroes 2 stats and analytics"
+    "gamePatch": "Spielpatch",
+    "gamePatchInfo": "Die auf der Seite angezeigten Daten stammen aus dem Spielpatch",
+    "unofficialSite": "Dies ist eine inoffizielle Fan-Seite für Company Of Heroes 3.",
+    "visitText1": "Besuche",
+    "visitText2": "für Company of Heroes 2 Statistiken und Analysen"
   },
   "columns": {
-    "rank": "Rank",
+    "rank": "Rang",
     "rc": "RC",
     "elo": "ELO",
-    "alias": "Alias",
-    "streak": "Streak",
-    "ratio": "Ratio",
-    "total": "Total",
-    "lastGame": "Last Game",
+    "alias": "Spielername",
+    "streak": "Serie",
+    "ratio": "Verhältnis",
+    "total": "Gesamt",
+    "lastGame": "Letztes Spiel",
     "tier": "Tier",
-    "wins": "Wins",
-    "losses": "Losses"
+    "wins": "Siege",
+    "losses": "Niederlagen"
   }
 }

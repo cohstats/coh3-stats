@@ -1,177 +1,177 @@
 {
   "meta": {
     "keywords": {
-      "stats": "{{name}} stats",
-      "matches": "{{name}} matches",
+      "stats": "{{name}} Statistiken",
+      "matches": "{{name}} Spiele",
       "cohStats": "coh3 {{name}} stats"
     }
   },
   "card": {
     "error": {
-      "title": "Error loading the player card",
-      "loadingError": "Error loading the player card"
+      "title": "Fehler beim Laden der Spielerkarte",
+      "loadingError": "Fehler beim Laden der Spielerkarte"
     },
-    "title": "Player card - {{name}}",
+    "title": "Spielerkarte - {{name}}",
     "titleWithView": {
-      "recentMatches": "Player card - {{name}} - Recent Matches",
-      "replays": "Player card - {{name}} - Replays",
-      "standingsDetails": "Player card - {{name}} - Detailed Stats",
-      "activity": "Player card - {{name}} - Activity",
-      "nemesis": "Player card - {{name}} - Nemesis",
-      "teamsStandings": "Player card - {{name}} - Teams Standings",
-      "teamDetails": "Player card - {{name}} - Team Details"
+      "recentMatches": "Spielerkarte - {{name}} - Letzte Spiele",
+      "replays": "Spielerkarte - {{name}} - Replays",
+      "standingsDetails": "Spielerkarte - {{name}} - Detaillierte Statistiken",
+      "activity": "Spielerkarte - {{name}} - Aktivität",
+      "nemesis": "Spielerkarte - {{name}} - Nemesis",
+      "teamsStandings": "Spielerkarte - {{name}} - Team-Ranglisten",
+      "teamDetails": "Spielerkarte - {{name}} - Team-Details"
     }
   },
   "tabs": {
-    "standings": "Player Standings",
-    "standingsDetails": "Detailed Stats",
-    "recentMatches": "Recent Matches",
-    "activity": "Activity",
+    "standings": "Spieler-Ranglisten",
+    "standingsDetails": "Detaillierte Statistiken",
+    "recentMatches": "Letzte Spiele",
+    "activity": "Aktivität",
     "nemesis": "Nemesis",
     "replays": "Replays",
-    "teamsStandings": "Teams Standings"
+    "teamsStandings": "Team-Ranglisten"
   },
   "playerInfo": {
     "bestElo": {
-      "allies": "Best ALLIES ELO {{elo}} in {{mode}} as {{faction}}",
-      "axis": "Best AXIS ELO {{elo}} in {{mode}} as {{faction}}"
+      "allies": "Beste ALLIIERTEN ELO {{elo}} in {{mode}} als {{faction}}",
+      "axis": "Beste ACHSEN ELO {{elo}} in {{mode}} als {{faction}}"
     },
     "stats": {
-      "totalGames": "Total games {{count}}",
-      "winRate": "Win Rate {{rate}}%",
-      "lastMatch": "Last match {{time}}"
+      "totalGames": "Gesamtspiele {{count}}",
+      "winRate": "Gewinnrate {{rate}}%",
+      "lastMatch": "Letztes Spiel {{time}}"
     }
   },
   "recentMatches": {
     "filters": {
-      "hideCustomGames": "Hide Custom Games",
-      "showAllGames": "Show All Games"
+      "hideCustomGames": "Benutzerdefinierte Spiele ausblenden",
+      "showAllGames": "Alle Spiele anzeigen"
     },
     "table": {
       "columns": {
-        "date": "Date",
-        "map": "Map",
-        "duration": "Duration",
-        "type": "Type",
-        "players": "Players",
-        "actions": "Actions"
+        "date": "Datum",
+        "map": "Karte",
+        "duration": "Dauer",
+        "type": "Typ",
+        "players": "Spieler",
+        "actions": "Aktionen"
       },
-      "noData": "No matches found"
+      "noData": "Keine Spiele gefunden"
     },
     "downloadReplay": {
-      "button": "Download Replay",
-      "generating": "Generating...",
-      "error": "Error generating replay"
+      "button": "Replay herunterladen",
+      "generating": "Wird generiert...",
+      "error": "Fehler beim Generieren des Replays"
     }
   },
   "standings": {
     "summary": {
       "charts": {
-        "factionDistribution": "Faction Distribution",
-        "gameTypes": "Game Types",
-        "activityLastMonths": "Activity Last Months"
+        "factionDistribution": "Fraktionenverteilung",
+        "gameTypes": "Spieltypen",
+        "activityLastMonths": "Aktivität der letzten Monate"
       }
     },
     "table": {
       "columns": {
-        "leaderboard": "Leaderboard",
-        "rank": "Rank",
-        "rating": "Rating",
-        "lastMatch": "Last Match",
-        "streak": "Streak",
-        "wins": "Wins",
-        "losses": "Losses",
-        "total": "Total",
-        "winRate": "Win Rate"
+        "leaderboard": "Bestenliste",
+        "rank": "Rang",
+        "rating": "Bewertung",
+        "lastMatch": "Letztes Spiel",
+        "streak": "Serie",
+        "wins": "Siege",
+        "losses": "Niederlagen",
+        "total": "Gesamt",
+        "winRate": "Gewinnrate"
       }
     },
     "faction": {
-      "bestRank": "Best Rank",
-      "bestRating": "Best Rating",
-      "bestWinRate": "Best Win Rate"
+      "bestRank": "Bester Rang",
+      "bestRating": "Beste Bewertung",
+      "bestWinRate": "Beste Gewinnrate"
     }
   },
   "detailedStats": {
     "filters": {
-      "selectFaction": "Select Faction",
-      "selectGameType": "Select Game Type"
+      "selectFaction": "Fraktion auswählen",
+      "selectGameType": "Spieltyp auswählen"
     },
     "charts": {
-      "playTime": "Play Time Distribution",
-      "mapsWinRate": "Maps Win Rate",
-      "factionVsFaction": "Faction vs Faction"
+      "playTime": "Spielzeitverteilung",
+      "mapsWinRate": "Karten-Gewinnrate",
+      "factionVsFaction": "Fraktion vs Fraktion"
     },
-    "noData": "No detailed statistics available"
+    "noData": "Keine detaillierten Statistiken verfügbar"
   },
   "activity": {
-    "title": "Player Activity",
-    "noData": "No activity data available",
+    "title": "Spieleraktivität",
+    "noData": "Keine Aktivitätsdaten verfügbar",
     "filters": {
-      "timeRange": "Time Range"
+      "timeRange": "Zeitraum"
     },
     "alerts": {
       "noData": {
-        "title": "No Activity Data",
-        "message": "It looks like we are not getting activity data for this player.",
-        "reportMessage": "If this error persists, please report it on"
+        "title": "Keine Aktivitätsdaten",
+        "message": "Es scheint, als ob wir keine Aktivitätsdaten für diesen Spieler erhalten.",
+        "reportMessage": "Wenn dieser Fehler bestehen bleibt, melde ihn bitte auf"
       },
       "steamOnly": {
-        "title": "No COH3 Stats Data",
-        "message": "These stats are available only for Steam players.",
-        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
+        "title": "Keine COH3 Stats-Daten",
+        "message": "Diese Statistiken sind nur für Steam-Spieler verfügbar.",
+        "voteMessage": "Wenn du diese Statistiken auch für Konsolen möchtest, stimme dafür / melde es auf unserem"
       }
     },
     "charts": {
       "calendarDay": {
-        "title": "Activity by calendar day"
+        "title": "Aktivität nach Kalendertag"
       },
       "hourOfDay": {
-        "title": "Activity by hour of day"
+        "title": "Aktivität nach Tageszeit"
       },
       "weekDay": {
-        "title": "Activity by week day"
+        "title": "Aktivität nach Wochentag"
       }
     }
   },
   "teamsStandings": {
-    "title": "Arranged Teams Standings",
-    "noData": "No teams data available for this player",
-    "axisTeams": "Axis",
-    "alliesTeams": "Allies",
-    "mostPlayed": "Most Played Teams",
-    "mostRecent": "Recent Teams"
+    "title": "Arrangierte Team-Ranglisten",
+    "noData": "Keine Team-Daten für diesen Spieler verfügbar",
+    "axisTeams": "Achse",
+    "alliesTeams": "Alliierte",
+    "mostPlayed": "Meistgespielte Teams",
+    "mostRecent": "Aktuelle Teams"
   },
   "nemesis": {
     "widget": {
       "title": "Top 10 - 1v1 Nemesis",
-      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
-      "noRecords": "No 1v1 nemesis tracked"
+      "helperText": "Der Nemesis-Zähler muss 'ausgelöst' werden, indem du denselben Spieler 2 Mal an einem Tag (UTC) spielst. Nach dem Auslösen werden alle 1v1-Spiele mit diesem Spieler gezählt. Spielernamen werden vom letzten Spiel mit diesem Spieler gespeichert. Nur Steam-Spieler werden verfolgt.",
+      "noRecords": "Keine 1v1 Nemesis aufgezeichnet"
     },
     "columns": {
-      "alias": "Alias",
-      "wins": "Wins",
-      "losses": "Losses",
-      "ratio": "Ratio",
+      "alias": "Spielername",
+      "wins": "Siege",
+      "losses": "Niederlagen",
+      "ratio": "Verhältnis",
       "diff": "Diff",
-      "total": "Total"
+      "total": "Gesamt"
     },
     "title": "1v1 Nemesis",
-    "noNemesis": "No 1v1 Nemesis",
-    "wins": "Wins",
-    "losses": "Losses",
+    "noNemesis": "Keine 1v1 Nemesis",
+    "wins": "Siege",
+    "losses": "Niederlagen",
     "rules": {
-      "trigger": "Nemesis counter has be to 'triggered'",
-      "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
-      "aliases": "Aliases are saved from the last game played with that player",
-      "counting": "After the trigger, all 1v1 games with that player are counted.",
-      "updateTime": "Data are updated once a day 6 AM UTC.",
-      "steamOnly": "Only Steam players are tracked."
+      "trigger": "Der Nemesis-Zähler muss 'ausgelöst' werden",
+      "triggerCondition": "Auslösen durch Spielen mit demselben Spieler 2 Mal an einem Tag (UTC).",
+      "aliases": "Spielernamen werden vom letzten Spiel mit diesem Spieler gespeichert",
+      "counting": "Nach dem Auslösen werden alle 1v1-Spiele mit diesem Spieler gezählt.",
+      "updateTime": "Daten werden einmal täglich um 6 Uhr UTC aktualisiert.",
+      "steamOnly": "Nur Steam-Spieler werden verfolgt."
     },
     "alerts": {
       "steamOnly": {
-        "title": "No COH3 Stats Data",
-        "message": "These stats are available only for Steam players.",
-        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
+        "title": "Keine COH3 Stats-Daten",
+        "message": "Diese Statistiken sind nur für Steam-Spieler verfügbar.",
+        "voteMessage": "Wenn du diese Statistiken auch für Konsolen möchtest, stimme dafür / melde es auf unserem"
       }
     }
   }

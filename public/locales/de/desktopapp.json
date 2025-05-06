@@ -1,25 +1,25 @@
 {
   "meta": {
-    "title": "Desktop App from COH3 Stats",
-    "description": "Download COH3 Stats Desktop app {{version}}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.",
-    "keywords": "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
+    "title": "Desktop-App von COH3 Stats",
+    "description": "Lade die COH3 Stats Desktop-App {{version}} herunter. Keine Konfiguration erforderlich. OBS Overlay-Funktion. Detaillierte Infos zu deinen aktuellen Gegnern. Soundbenachrichtigungen bei neuen Spielen und mehr.",
+    "keywords": "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes Echtzeit-Infos"
   },
   "download": {
     "button": "Download {{version}}",
-    "downloads": "{{count}} downloads",
-    "releaseNotes": "Release Notes"
+    "downloads": "{{count}} Downloads",
+    "releaseNotes": "Versionshinweise"
   },
   "features": {
-    "title": "Gain additional intel on your games with the desktop app!",
+    "title": "Erhalte zusätzliche Infos zu deinen Spielen mit der Desktop-App!",
     "list": {
-      "noSetup": "Effortless usage, no setup needed - simply launch the application",
-      "leaderboard": "Explore intricate player leaderboard statistics",
-      "notifications": "Receive optional sound notifications upon joining a game",
-      "replays": "Auto upload replays to the cloud for additional analysis",
+      "noSetup": "Einfache Nutzung, keine Einrichtung nötig - einfach die App starten",
+      "leaderboard": "Erforsche detaillierte Bestenlisten-Statistiken",
+      "notifications": "Erhalte optionale Soundbenachrichtigungen beim Beitritt zu einem Spiel",
+      "replays": "Automatischer Upload von Replays in die Cloud für zusätzliche Analysen",
       "streaming": {
-        "before": "Streamer overlay for",
-        "and": "and",
-        "after": "and other streaming tools"
+        "before": "Streamer-Overlay für",
+        "and": "und",
+        "after": "und andere Streaming-Tools"
       }
     }
   }

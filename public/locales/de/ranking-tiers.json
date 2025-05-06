@@ -1,14 +1,14 @@
 {
-  "title": "Ranking Tiers in Company of Heroes 3",
-  "description": "Based on the player ELO, players are placed into specific Leagues and Tiers.",
-  "matchRequirement": "A player needs at least 10 matches for each faction in a specific game type to earn a rank and be placed in a tier.",
-  "inactivityNote": "Note: If a player remains inactive for an extended period, they lose their rank. However, they can regain it by playing just one game.",
+  "title": "Ranglisten-Tiers in Company of Heroes 3",
+  "description": "Basierend auf der ELO eines Spielers werden Spieler in bestimmte Ligen und Tiers eingeteilt.",
+  "matchRequirement": "Ein Spieler benötigt mindestens 10 Spiele pro Fraktion in einem bestimmten Spieltyp, um einen Rang zu erhalten und in einem Tier platziert zu werden.",
+  "inactivityNote": "Hinweis: Wenn ein Spieler längere Zeit inaktiv bleibt, verliert er seinen Rang. Er kann ihn jedoch durch ein einziges Spiel zurückerhalten.",
   "table": {
     "columns": {
-      "tierName": "Tier Name",
-      "eloRating": "ELO Rating",
-      "rank": "Rank"
+      "tierName": "Tier-Name",
+      "eloRating": "ELO-Wertung",
+      "rank": "Rang"
     },
-    "topPlayers": "Top {{count}} players"
+    "topPlayers": "Top {{count}} Spieler"
   }
 }

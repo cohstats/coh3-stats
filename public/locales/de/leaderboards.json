@@ -1,12 +1,12 @@
 {
-  "title": "Leaderboards for {{race}}",
-  "pageTitle": "Leaderboards for {{race}} {{type}}",
-  "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",
-  "errorTitle": "Error getting the leaderboards",
+  "title": "Bestenlisten für {{race}}",
+  "pageTitle": "Bestenlisten für {{race}} {{type}}",
+  "metaDescription": "Ranglisten für Fraktion {{race}} und Spieltyp {{type}}. Company of Heroes 3",
+  "errorTitle": "Fehler beim Abrufen der Bestenlisten",
   "filters": {
     "region": "Region",
-    "platform": "Platform",
-    "faction": "Faction",
-    "type": "Type"
+    "platform": "Plattform",
+    "faction": "Fraktion",
+    "type": "Typ"
   }
 }
