@@ -37,7 +37,7 @@
       "axis": "Beste ACHSEN ELO {{elo}} in {{mode}} als {{faction}}"
     },
     "stats": {
-      "totalGames": "Gesamtspiele {{count}}",
+      "totalGames": "Gesamtanzahl Spiele {{count}}",
       "winRate": "Gewinnrate {{rate}}%",
       "lastMatch": "Letztes Spiel {{time}}"
     }
@@ -67,7 +67,7 @@
   "standings": {
     "summary": {
       "charts": {
-        "factionDistribution": "Fraktionenverteilung",
+        "factionDistribution": "Fraktionsverteilung",
         "gameTypes": "Spieltypen",
         "activityLastMonths": "Aktivität der letzten Monate"
       }

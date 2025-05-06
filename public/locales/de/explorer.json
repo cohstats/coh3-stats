@@ -33,7 +33,7 @@
     "sightRange": "Sichtweite",
     "speed": "Geschwindigkeit",
     "acceleration": "Beschleunigung",
-    "deceleration": "Verzögerung",
+    "deceleration": "Verlangsamung",
     "maxRange": "Maximale Reichweite",
     "targetSize": "Zielgröße",
     "armor": "Panzerung",
@@ -46,9 +46,9 @@
     "rpm": "Schüsse pro Minute (RPM)",
     "rangeOfFire": "Schussreichweite",
     "penetration": "Durchschlagskraft",
-    "scatter": "Streubereich",
+    "scatter": "Streuung",
     "damage": "Schaden",
-    "aoeRadius": "AoE-Radius",
+    "aoeRadius": "Wirkungsbereich (AoE)-Radius",
     "movingAccuracy": "Bewegungsgenauigkeitsmultiplikator",
     "movingCooldown": "Bewegungsabkühlungsmultiplikator"
   }

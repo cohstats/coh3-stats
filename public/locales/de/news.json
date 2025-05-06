@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "COH3 News",
+    "title": "COH3 Nachrichten",
     "description": "Aktuelle offizielle Nachrichten für Company of Heroes 3",
-    "keywords": ["coh3 news", "coh3 updates", "coh3 patch notes", "company of heroes 3 news"]
+    "keywords": ["coh3 nachrichten", "coh3 updates", "coh3 änderungsnotizen", "company of heroes 3 nachrichten"]
   },
-  "pageTitle": "Neueste Company Of Heroes 3 News",
-  "sourceText": "Quelle: Offizielle Relic Steam News für COH3",
+  "pageTitle": "Neueste Company Of Heroes 3 Nachrichten",
+  "sourceText": "Quelle: Offizielle Relic Steam Nachrichten für COH3",
   "steamNewsLink": "Steam News",
   "postedBy": "Gepostet von",
   "on": "am",

@@ -4,9 +4,9 @@
     "description": "Aktuelle laufende Spiele in Company of Heroes 3",
     "keywords": [
       "coh3 live games",
-      "coh3 Echtzeit-Spiele",
-      "coh3 Spiele",
-      "coh3 aktuelle laufende Spiele"
+      "coh3 echtzeit-spiele",
+      "coh3 spiele",
+      "coh3 aktuelle laufende spiele"
     ]
   },
   "pageTitle": "Laufende PC-Spiele",
@@ -33,7 +33,7 @@
   },
   "summaryTable": {
     "title": "Zusammenfassung laufender Spiele",
-    "tooltip": "Aktuelle Multiplayer-Spiele im Gange. Die Gesamtanzahl der Spieler ist einzigartig gefiltert. Beachte, dass es wahrscheinlich viele Spieler in der Lobby / auf der Suche / beim Laden und bei anderen Aktivitäten gibt. Benutzerdefinierte Spiele sind standardmäßig nicht beobachtbar. Höchstwahrscheinlich gibt es viel mehr benutzerdefinierte Spiele. Die Spiele werden alle 5 Minuten aktualisiert.",
+    "tooltip": "Aktuelle Multiplayer-Spiele im Gange. Die Gesamtanzahl der Spieler ist gefiltert. Beachte, dass es wahrscheinlich viele Spieler in der Lobby / auf der Suche / beim Laden und bei anderen Aktivitäten gibt. Benutzerdefinierte Spiele sind standardmäßig nicht beobachtbar. Wahrscheinlich gibt es mehr benutzerdefinierte Spiele. Die Spiele werden alle 5 Minuten aktualisiert.",
     "noGames": {
       "title": "Keine laufenden Spiele erkannt",
       "message": "COH3 Stats muss möglicherweise nach einem kürzlichen Spielpatch aktualisiert werden."
@@ -64,7 +64,7 @@
     },
     "switches": {
       "showFlags": "Spielerflaggen anzeigen",
-      "showServer": "Match-Server anzeigen"
+      "showServer": "Spiel-Server anzeigen"
     },
     "errors": {
       "title": "Fehler beim Abrufen der laufenden Spiele",
