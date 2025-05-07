@@ -60,5 +60,8 @@
       "title": "404 - Stránka nenalezena",
       "message": "Pokud si myslíte, že se jedná o chybu, nahlaste ji prosím na našem Discordu"
     }
+  },
+  "search": {
+    "playersAndUnits": "Hráči a jednotky"
   }
 }

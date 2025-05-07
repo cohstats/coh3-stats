@@ -60,5 +60,8 @@
       "title": "404 - Page Not Found",
       "message": "Please report on our Discord if you think this is a bug"
     }
+  },
+  "search": {
+    "playersAndUnits": "Players and Units"
   }
 }

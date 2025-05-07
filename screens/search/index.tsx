@@ -13,6 +13,7 @@ import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { debounce } from "lodash";
+import { useTranslation } from "next-i18next";
 import { platformType, SearchPlayerCardData } from "../../src/coh3/coh3-types";
 import { SearchPlayerCard } from "./search-components/search-player-card";
 import ErrorCard from "../../components/error-card";
@@ -30,6 +31,7 @@ export const SearchScreen = () => {
 
   const { query, push } = useRouter();
   const { q } = query;
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     SearchPageView();
@@ -161,7 +163,7 @@ export const SearchScreen = () => {
           w={400}
           radius={"md"}
           defaultValue={searchValue}
-          placeholder="Search players and units"
+          placeholder={t("search.playersAndUnits")}
           onChange={(event: { currentTarget: { value: any } }) => {
             debouncedSearch(event.currentTarget.value);
           }}

@@ -53,5 +53,14 @@
     "tier": "Rango",
     "wins": "Victorias",
     "losses": "Derrotas"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Página no encontrada",
+      "message": "Por favor, infórmanos en nuestro Discord si crees que esto es un error"
+    }
+  },
+  "search": {
+    "playersAndUnits": "Jugadores y Unidades"
   }
 }

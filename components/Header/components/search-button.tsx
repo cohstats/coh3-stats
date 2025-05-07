@@ -4,11 +4,15 @@ import React from "react";
 import { debounce } from "lodash";
 import { getSearchRoute } from "../../../src/routes";
 import { useRouter } from "next/router";
+import { TFunction } from "next-i18next";
 
-export const SearchButton: React.FC<{ redirectOnClick?: boolean; close?: () => void }> = ({
-  redirectOnClick,
-  close,
-}) => {
+interface SearchButtonProps {
+  redirectOnClick?: boolean;
+  close?: () => void;
+  t: TFunction;
+}
+
+export const SearchButton: React.FC<SearchButtonProps> = ({ redirectOnClick, close, t }) => {
   const { push } = useRouter();
   redirectOnClick = redirectOnClick || false;
 
@@ -23,7 +27,7 @@ export const SearchButton: React.FC<{ redirectOnClick?: boolean; close?: () => v
       <TextInput
         style={{ width: 160 }}
         leftSection={<IconSearch />}
-        placeholder="Players and Units"
+        placeholder={t("search.playersAndUnits")}
         radius={"md"}
         onChange={(event: { currentTarget: { value: any } }) => {
           debouncedSearch(event.currentTarget.value);

@@ -53,5 +53,14 @@
     "tier": "Stufe",
     "wins": "Siege",
     "losses": "Niederlagen"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Seite nicht gefunden",
+      "message": "Bitte melde dich in unserem Discord, wenn du glaubst, dass dies ein Fehler ist"
+    }
+  },
+  "search": {
+    "playersAndUnits": "Spieler und Einheiten"
   }
 }
