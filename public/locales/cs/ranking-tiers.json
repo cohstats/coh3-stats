@@ -1,0 +1,14 @@
+{
+  "title": "Úrovně hodnocení v Company of Heroes 3",
+  "description": "Na základě hráčského ELO jsou hráči zařazeni do konkrétních lig a úrovní.",
+  "matchRequirement": "Hráč potřebuje alespoň 10 zápasů pro každou frakci v konkrétním typu hry, aby získal hodnocení a byl zařazen do úrovně.",
+  "inactivityNote": "Poznámka: Pokud hráč zůstane neaktivní po delší dobu, ztratí své hodnocení. Může ho však znovu získat hraním jediné hry.",
+  "table": {
+    "columns": {
+      "tierName": "Název úrovně",
+      "eloRating": "ELO hodnocení",
+      "rank": "Pořadí"
+    },
+    "topPlayers": "Nejlepších {{count}} hráčů"
+  }
+}

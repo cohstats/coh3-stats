@@ -3,11 +3,11 @@
     "leaderboards": "Žebříčky",
     "statistics": "Statistiky",
     "statsMenu": {
-      "games": "Stats Herní",
-      "maps": "Stats Map",
-      "players": "Stats Hráčů",
-      "leaderboards": "Stats Žebříčků",
-      "achievements": "Achievements Stats"
+      "games": "Statistiky her",
+      "maps": "Statistiky map",
+      "players": "Statistiky hráčů",
+      "leaderboards": "Statistiky žebříčků",
+      "achievements": "Statistiky úspěchů"
     },
     "explorer": "Průzkumník",
     "explMenu": {
@@ -18,12 +18,12 @@
       "challenges": "Výzvy",
       "weapons": "Zbraně"
     },
-    "liveGames": "Aktuální Hry",
-    "desktopApp": "Desktop App",
+    "liveGames": "Živé hry",
+    "desktopApp": "Desktopová aplikace",
     "other": "Ostatní",
     "otherMenu": {
-      "tiers": "Ranking Tiers",
-      "openData": "Open Data",
+      "tiers": "Úrovně hodnocení",
+      "openData": "Otevřená data",
       "coh3News": "COH3 Novinky",
       "playerExport": "API pro export hráčů"
     },
@@ -34,10 +34,23 @@
     "playerInGames": "Hráči ve hře"
   },
   "footer": {
-    "visitText1": "Navštivte",
-    "visitText2": "pro statistiky a analýzy Company of Heroes 2",
     "gamePatch": "Herní patch",
-    "gamePatchInfo": "Data zobrazená na webu jsou z herního patche",
-    "unofficialSite": "Toto je neoficiální fanouškovský web pro Company Of Heroes 3."
+    "gamePatchInfo": "Data zobrazená na stránce jsou z herního patche",
+    "unofficialSite": "Toto je neoficiální fanouškovská stránka pro Company Of Heroes 3.",
+    "visitText1": "Navštivte",
+    "visitText2": "pro statistiky a analýzy Company of Heroes 2"
+  },
+  "columns": {
+    "rank": "Pořadí",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "Přezdívka",
+    "streak": "Série",
+    "ratio": "Poměr",
+    "total": "Celkem",
+    "lastGame": "Poslední hra",
+    "tier": "Úroveň",
+    "wins": "Výhry",
+    "losses": "Prohry"
   }
 }

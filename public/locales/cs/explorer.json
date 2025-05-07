@@ -1,20 +1,55 @@
 {
   "common": {
-    "units": "Units",
-    "buildings": "Buildings",
-    "battleGroups": "Battlegroups"
+    "units": "Jednotky",
+    "buildings": "Budovy",
+    "battleGroups": "Bojové skupiny",
+    "near": "Blízko",
+    "medium": "Střední",
+    "far": "Daleko",
+    "min": "Min",
+    "max": "Max",
+    "produces": "Produkuje",
+    "hitpoints": "Životy",
+    "upgrades": "Vylepšení",
+    "costs": "Náklady",
+    "explorer": "Průzkumník"
+  },
+  "explorer": {
+    "title": "Průzkumník frakcí Company of Heroes 3",
+    "subtitle": "Prozkoumejte všechny jednotky, budovy a bojové skupiny ve hře."
   },
   "unitPage": {
-    "costs": "Cena",
-    "stats": "Stats",
-    "upgrades": "Vylepšení",
+    "stats": "Statistiky",
     "abilities": "Schopnosti",
-    "loadout": "Vybavení",
+    "loadout": "Výbava",
     "veterancy": "Veteránství",
-    "upkeep": "Cena údržby za minutu",
-    "hitpoints": "Životy",
-    "reinforce": "Doplnění",
-    "construct": "Může Postavit",
-    "free": "Zdarma"
+    "upkeep": "Údržba za minutu",
+    "reinforce": "Posílit",
+    "construct": "Může stavět",
+    "free": "Zdarma",
+    "weaponNote": "Efektivní přesnost je ovlivněna několika faktory, jako je velikost cíle nebo brnění přijímající jednotky, stejně jako přesnost nebo průraznost útočící jednotky."
+  },
+  "statsCard": {
+    "sightRange": "Dohled",
+    "speed": "Rychlost",
+    "acceleration": "Zrychlení",
+    "deceleration": "Zpomalení",
+    "maxRange": "Maximální dosah",
+    "targetSize": "Velikost cíle",
+    "armor": "Brnění",
+    "captureMultiplier": "Násobitel zachycení",
+    "decaptureMultiplier": "Násobitel uvolnění",
+    "vehicleArmor": "Brnění vozidla"
+  },
+  "weaponCard": {
+    "accuracy": "Přesnost",
+    "rpm": "Střel za minutu (RPM)",
+    "rangeOfFire": "Dosah střelby",
+    "penetration": "Průraznost",
+    "scatter": "Oblast rozptylu",
+    "damage": "Poškození",
+    "aoeRadius": "Poloměr AoE",
+    "movingAccuracy": "Násobitel přesnosti za pohybu",
+    "movingCooldown": "Násobitel prodlevy za pohybu"
   }
 }

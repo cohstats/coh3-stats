@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Aktuální hry - Company of Heroes 3",
+    "description": "Aktuální hry v Company of Heroes 3",
+    "keywords": [
+      "coh3 živé hry",
+      "coh3 zápasy v reálném čase",
+      "coh3 hry",
+      "coh3 aktuální probíhající zápasy"
+    ]
+  },
+  "pageTitle": "Aktuální PC hry",
+  "filters": {
+    "liveGames": {
+      "label": "Aktuální hry",
+      "options": {
+        "1v1": "1 proti 1 Automatch",
+        "2v2": "2 proti 2 Automatch",
+        "3v3": "3 proti 3 Automatch",
+        "4v4": "4 proti 4 Automatch",
+        "ai": "Automatch proti AI",
+        "custom": "Vlastní hry"
+      }
+    },
+    "sortBy": {
+      "label": "Seřadit podle",
+      "options": {
+        "rank": "Hodnocení",
+        "observers": "Pozorovatelé",
+        "startgametime": "Čas zahájení"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "Souhrn živých her",
+    "tooltip": "Aktuální probíhající hry pro více hráčů. Celkový počet hráčů je unikátně filtrován. Mějte na paměti, že pravděpodobně existuje mnoho hráčů v lobby / vyhledávání / načítání a provádění dalších činností. Vlastní hry nejsou ve výchozím nastavení pozorovatelné. Pravděpodobně se hraje mnohem více vlastních her. Hry jsou aktualizovány každých 5 minut.",
+    "noGames": {
+      "title": "Nebyly zjištěny žádné živé hry",
+      "message": "COH3 Stats může potřebovat aktualizaci po nedávném patchi hry."
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs AI",
+      "custom": "Vlastní"
+    },
+    "totals": {
+      "automatch": "Celkem v Automatch",
+      "anyGame": "Celkem v jakékoli hře"
+    },
+    "games": "her"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "Režim",
+      "axisPlayers": "Hráči Axis",
+      "alliesPlayers": "Hráči Allies",
+      "map": "Mapa",
+      "observers": "Pozorovatelé",
+      "gameTime": "Herní čas",
+      "server": "Server"
+    },
+    "switches": {
+      "showFlags": "Zobrazit vlajky hráčů",
+      "showServer": "Zobrazit server zápasu"
+    },
+    "errors": {
+      "title": "Chyba při získávání živých her",
+      "summaryTitle": "Chyba při získávání souhrnu živých her"
+    },
+    "dataUpdated": "Data aktualizována v {{time}}"
+  }
+}
