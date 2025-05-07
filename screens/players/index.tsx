@@ -50,7 +50,7 @@ const createPlayerHeadDescription = (
   Total games ${playerSummary.totalGames} with Win Rate ${Math.round(
     playerSummary.winRate * 100,
   )}%.
-  Last match ${new Date(playerSummary.lastMatchDate * 1000).toLocaleString()}}`;
+  Last match ${new Date(playerSummary.lastMatchDate * 1000).toLocaleString()}`;
 };
 
 /**
