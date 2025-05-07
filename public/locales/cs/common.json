@@ -31,7 +31,8 @@
     "supportUs": "Podpořte nás"
   },
   "header": {
-    "playerInGames": "Hráči ve hře"
+    "playerInGames": "Hráči ve hře",
+    "onlinePlayersTooltip": "Počet online hráčů v Company of Heroes 3 k {{date}}"
   },
   "footer": {
     "gamePatch": "Herní patch",

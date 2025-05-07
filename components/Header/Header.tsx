@@ -33,14 +33,14 @@ import config from "../../config";
 
 import classes from "./Header.module.css";
 import LanguageSwitcher from "./components/language-switcher";
-import { useTranslation } from "next-i18next";
+import { TFunction, useTranslation } from "next-i18next";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
 }
 
 interface MobileViewProps {
-  t: (key: string) => string;
+  t: TFunction;
 }
 
 const MobileView: React.FC<MobileViewProps> = ({ t }) => {
@@ -147,7 +147,7 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
 };
 
 interface DesktopViewProps {
-  t: (key: string) => string;
+  t: TFunction;
 }
 
 const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
@@ -195,7 +195,7 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
       </Group>
 
       <Group gap={5} className={classes.hiddenMobile} justify="flex-end">
-        <OnlinePlayers />
+        <OnlinePlayers t={t} />
         <SearchButton />
         <ColorSchemeToggle />
         <LanguageSwitcher />
