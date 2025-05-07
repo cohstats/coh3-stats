@@ -61,14 +61,14 @@ jobs:
         run: |
           npx sst deploy --stage production
 
-      - name: Deploy to Netlify hosting
-        env:
-          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_PROD}}
-          NODE_VERSION: "20.x"
-        run: |
-          npx netlify --telemetry-disable
-          npx netlify deploy --build --prod
+#      - name: Deploy to Netlify hosting
+#        env:
+#          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+#          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID_PROD}}
+#          NODE_VERSION: "20.x"
+#        run: |
+#          npx netlify --telemetry-disable
+#          npx netlify deploy --build --prod
 
 #      - name: Deploy to Vercel hosting
 #        env:
