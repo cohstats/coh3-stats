@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "keywords": {
+      "stats": "{{name}} Statistiken",
+      "matches": "{{name}} Spiele",
+      "cohStats": "coh3 {{name}} stats"
+    }
+  },
+  "card": {
+    "error": {
+      "title": "Fehler beim Laden der Spielerkarte",
+      "loadingError": "Fehler beim Laden der Spielerkarte"
+    },
+    "title": "Spielerkarte - {{name}}",
+    "titleWithView": {
+      "recentMatches": "Spielerkarte - {{name}} - Letzte Spiele",
+      "replays": "Spielerkarte - {{name}} - Replays",
+      "standingsDetails": "Spielerkarte - {{name}} - Detaillierte Statistiken",
+      "activity": "Spielerkarte - {{name}} - Aktivität",
+      "nemesis": "Spielerkarte - {{name}} - Nemesis",
+      "teamsStandings": "Spielerkarte - {{name}} - Team-Ranglisten",
+      "teamDetails": "Spielerkarte - {{name}} - Team-Details"
+    }
+  },
+  "tabs": {
+    "standings": "Spieler-Ranglisten",
+    "standingsDetails": "Detaillierte Statistiken",
+    "recentMatches": "Letzte Spiele",
+    "activity": "Aktivität",
+    "nemesis": "Nemesis",
+    "replays": "Replays",
+    "teamsStandings": "Team-Ranglisten"
+  },
+  "playerInfo": {
+    "bestElo": {
+      "allies": "Beste ALLIIERTEN ELO {{elo}} in {{mode}} als {{faction}}",
+      "axis": "Beste ACHSEN ELO {{elo}} in {{mode}} als {{faction}}"
+    },
+    "stats": {
+      "totalGames": "Gesamtanzahl Spiele {{count}}",
+      "winRate": "Gewinnrate {{rate}}%",
+      "lastMatch": "Letztes Spiel {{time}}"
+    }
+  },
+  "recentMatches": {
+    "filters": {
+      "hideCustomGames": "Benutzerdefinierte Spiele ausblenden",
+      "showAllGames": "Alle Spiele anzeigen"
+    },
+    "table": {
+      "columns": {
+        "date": "Datum",
+        "map": "Karte",
+        "duration": "Dauer",
+        "type": "Typ",
+        "players": "Spieler",
+        "actions": "Aktionen"
+      },
+      "noData": "Keine Spiele gefunden"
+    },
+    "downloadReplay": {
+      "button": "Replay herunterladen",
+      "generating": "Wird generiert...",
+      "error": "Fehler beim Generieren des Replays"
+    }
+  },
+  "standings": {
+    "summary": {
+      "charts": {
+        "factionDistribution": "Fraktionsverteilung",
+        "gameTypes": "Spieltypen",
+        "activityLastMonths": "Aktivität der letzten Monate"
+      }
+    },
+    "table": {
+      "columns": {
+        "leaderboard": "Bestenliste",
+        "rank": "Rang",
+        "rating": "Bewertung",
+        "lastMatch": "Letztes Spiel",
+        "streak": "Serie",
+        "wins": "Siege",
+        "losses": "Niederlagen",
+        "total": "Gesamt",
+        "winRate": "Gewinnrate"
+      }
+    },
+    "faction": {
+      "bestRank": "Bester Rang",
+      "bestRating": "Beste Bewertung",
+      "bestWinRate": "Beste Gewinnrate"
+    }
+  },
+  "detailedStats": {
+    "filters": {
+      "selectFaction": "Fraktion auswählen",
+      "selectGameType": "Spieltyp auswählen"
+    },
+    "charts": {
+      "playTime": "Spielzeitverteilung",
+      "mapsWinRate": "Karten-Gewinnrate",
+      "factionVsFaction": "Fraktion vs Fraktion"
+    },
+    "noData": "Keine detaillierten Statistiken verfügbar"
+  },
+  "activity": {
+    "title": "Spieleraktivität",
+    "noData": "Keine Aktivitätsdaten verfügbar",
+    "filters": {
+      "timeRange": "Zeitraum"
+    },
+    "alerts": {
+      "noData": {
+        "title": "Keine Aktivitätsdaten",
+        "message": "Es scheint, als ob wir keine Aktivitätsdaten für diesen Spieler erhalten.",
+        "reportMessage": "Wenn dieser Fehler bestehen bleibt, melde ihn bitte auf"
+      },
+      "steamOnly": {
+        "title": "Keine COH3 Stats-Daten",
+        "message": "Diese Statistiken sind nur für Steam-Spieler verfügbar.",
+        "voteMessage": "Wenn du diese Statistiken auch für Konsolen möchtest, stimme dafür / melde es auf unserem"
+      }
+    },
+    "charts": {
+      "calendarDay": {
+        "title": "Aktivität nach Kalendertag"
+      },
+      "hourOfDay": {
+        "title": "Aktivität nach Tageszeit"
+      },
+      "weekDay": {
+        "title": "Aktivität nach Wochentag"
+      }
+    }
+  },
+  "teamsStandings": {
+    "title": "Arrangierte Team-Ranglisten",
+    "noData": "Keine Team-Daten für diesen Spieler verfügbar",
+    "axisTeams": "Achse",
+    "alliesTeams": "Alliierte",
+    "mostPlayed": "Meistgespielte Teams",
+    "mostRecent": "Aktuelle Teams"
+  },
+  "nemesis": {
+    "widget": {
+      "title": "Top 10 - 1v1 Nemesis",
+      "helperText": "Der Nemesis-Zähler muss 'ausgelöst' werden, indem du denselben Spieler 2 Mal an einem Tag (UTC) spielst. Nach dem Auslösen werden alle 1v1-Spiele mit diesem Spieler gezählt. Spielernamen werden vom letzten Spiel mit diesem Spieler gespeichert. Nur Steam-Spieler werden verfolgt.",
+      "noRecords": "Keine 1v1 Nemesis aufgezeichnet"
+    },
+    "columns": {
+      "alias": "Spielername",
+      "wins": "Siege",
+      "losses": "Niederlagen",
+      "ratio": "Verhältnis",
+      "diff": "Diff",
+      "total": "Gesamt"
+    },
+    "title": "1v1 Nemesis",
+    "noNemesis": "Keine 1v1 Nemesis",
+    "wins": "Siege",
+    "losses": "Niederlagen",
+    "rules": {
+      "trigger": "Der Nemesis-Zähler muss 'ausgelöst' werden",
+      "triggerCondition": "Auslösen durch Spielen mit demselben Spieler 2 Mal an einem Tag (UTC).",
+      "aliases": "Spielernamen werden vom letzten Spiel mit diesem Spieler gespeichert",
+      "counting": "Nach dem Auslösen werden alle 1v1-Spiele mit diesem Spieler gezählt.",
+      "updateTime": "Daten werden einmal täglich um 6 Uhr UTC aktualisiert.",
+      "steamOnly": "Nur Steam-Spieler werden verfolgt."
+    },
+    "alerts": {
+      "steamOnly": {
+        "title": "Keine COH3 Stats-Daten",
+        "message": "Diese Statistiken sind nur für Steam-Spieler verfügbar.",
+        "voteMessage": "Wenn du diese Statistiken auch für Konsolen möchtest, stimme dafür / melde es auf unserem"
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "common": {
+    "units": "Einheiten",
+    "buildings": "Gebäude",
+    "battleGroups": "Kampfgruppen",
+    "near": "Nah",
+    "medium": "Mittel",
+    "far": "Fern",
+    "min": "Min",
+    "max": "Max",
+    "produces": "Produziert",
+    "hitpoints": "Trefferpunkte",
+    "upgrades": "Upgrades",
+    "costs": "Kosten",
+    "explorer": "Explorer"
+  },
+  "explorer": {
+    "title": "Company of Heroes 3 Fraktionen Explorer",
+    "subtitle": "Erkunde alle Einheiten, Gebäude und Kampfgruppen im Spiel."
+  },
+  "unitPage": {
+    "stats": "Werte",
+    "abilities": "Fähigkeiten",
+    "loadout": "Ausrüstung",
+    "veterancy": "Veteranenstatus",
+    "upkeep": "Unterhalt pro Minute",
+    "reinforce": "Verstärkung",
+    "construct": "Kann bauen",
+    "free": "Kostenlos",
+    "weaponNote": "Die effektive Genauigkeit wird durch mehrere Faktoren beeinflusst, wie die Zielgröße oder die Panzerung der angegriffenen Einheit sowie die Genauigkeit oder Durchschlagskraft der angreifenden Einheit."
+  },
+  "statsCard": {
+    "sightRange": "Sichtweite",
+    "speed": "Geschwindigkeit",
+    "acceleration": "Beschleunigung",
+    "deceleration": "Verlangsamung",
+    "maxRange": "Maximale Reichweite",
+    "targetSize": "Zielgröße",
+    "armor": "Panzerung",
+    "captureMultiplier": "Eroberungsmultiplikator",
+    "decaptureMultiplier": "Verlustmultiplikator",
+    "vehicleArmor": "Fahrzeugpanzerung"
+  },
+  "weaponCard": {
+    "accuracy": "Genauigkeit",
+    "rpm": "Schüsse pro Minute (RPM)",
+    "rangeOfFire": "Schussreichweite",
+    "penetration": "Durchschlagskraft",
+    "scatter": "Streuung",
+    "damage": "Schaden",
+    "aoeRadius": "Wirkungsbereich (AoE)-Radius",
+    "movingAccuracy": "Bewegungsgenauigkeitsmultiplikator",
+    "movingCooldown": "Bewegungsabkühlungsmultiplikator"
+  }
+}

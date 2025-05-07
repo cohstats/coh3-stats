@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Company of Heroes 3 Statistiken",
+    "description": "Company of Heroes 3 Statistiken. Bestenlisten, Spielerkarten, vergangene Spiele, Einheitenstatistiken, DPS-Rechner, Kampfgruppen-Explorer, Waffen-Explorer, aktuelle laufende Spiele, neueste COH3 News, aktuelle YouTube- und Twitch-Streams. Und vieles mehr."
+  },
+  "sections": {
+    "news": {
+      "title": "Neueste Nachrichten",
+      "newsLabel": "Nachrichten"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "DPS-Rechner",
+        "description": "Vergleiche den DPS (Damage per Second / Schaden pro Sekunde) aller Einheiten im Spiel. Passe die Ausrüstung der Einheiten mit verschiedenen Waffen an. Du kannst auch die HP (Health Points / Lebenspunkte) der Einheiten berücksichtigen."
+      },
+      "unitBrowser": {
+        "title": "Einheiten-Browser",
+        "description": "Erkunde Spieleinheiten, inklusive Werte, Waffen und Upgrades. Navigiere durch das Explorer-Menü für eine Fraktionsübersicht und mehr Details."
+      }
+    },
+    "leaderboards": {
+      "title": "1v1 Bestenlisten",
+      "viewFullLeaderboard": "Komplette Bestenliste anzeigen",
+      "factions": {
+        "american": "USF",
+        "british": "Briten",
+        "german": "Wehrmacht",
+        "dak": "DAK"
+      }
+    },
+    "reddit": {
+      "title": "Top COH3 Reddit-Beiträge",
+      "noData": "Keine Reddit-Beiträge verfügbar"
+    },
+    "youtube": {
+      "title": "Videos der letzten Woche",
+      "noData": "Keine YouTube-Videos verfügbar",
+      "views": "Aufrufe"
+    },
+    "twitch": {
+      "title": "Live Streams ansehen",
+      "noStreams": "Derzeit werden keine englischsprachigen Streams auf Twitch übertragen."
+    }
+  },
+  "leaderboardTable": {
+    "errorTitle": "Fehler beim Abrufen der Bestenlisten"
+  }
+}

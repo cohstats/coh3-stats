@@ -1,0 +1,12 @@
+{
+  "title": "Bestenlisten für {{race}}",
+  "pageTitle": "Bestenlisten für {{race}} {{type}}",
+  "metaDescription": "Ranglisten für Fraktion {{race}} und Spieltyp {{type}}. Company of Heroes 3",
+  "errorTitle": "Fehler beim Abrufen der Bestenlisten",
+  "filters": {
+    "region": "Region",
+    "platform": "Plattform",
+    "faction": "Fraktion",
+    "type": "Typ"
+  }
+}
