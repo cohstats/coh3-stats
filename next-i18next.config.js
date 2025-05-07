@@ -18,7 +18,9 @@ module.exports = {
       "ru",
     ],
     defaultLocale: "en",
-    localeDetection: true,
+    // Next is complaining when this is on true? which should be
+    // the default value
+    // localeDetection: true,
   },
   defaultNS: "common",
   reloadOnPrerender: process.env.NODE_ENV === "development",
