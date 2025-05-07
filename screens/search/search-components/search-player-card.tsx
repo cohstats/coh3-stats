@@ -4,12 +4,12 @@ import React from "react";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { getPlayerCardRoute } from "../../../src/routes";
 import CountryFlag from "../../../components/country-flag";
-import { format } from "timeago.js";
 import EllipsisText from "../../../components/other/ellipsis-text";
 import { Steam } from "../../../components/icon/steam";
 import { PSNIcon } from "../../../components/icon/psn";
 import { XboxIcon } from "../../../components/icon/xbox";
 import styles from "./search-player-card.module.css";
+import InternalTimeAgo from "../../../components/internal-timeago";
 
 export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ data }) => {
   return (
@@ -46,13 +46,16 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
                   )}
                 </Group>
               </Group>
-              <Group justify="flex-start" w="100%">
-                {data.lastActiveUnixTs && (
+              {data.lastActiveUnixTs && (
+                <Group justify="flex-start" w="100%" gap={4}>
                   <Text size="xs" c="dimmed">
-                    Last active {format(data.lastActiveUnixTs * 1000)}
+                    Last active
                   </Text>
-                )}
-              </Group>
+                  <Text size="xs" c="dimmed">
+                    <InternalTimeAgo timestamp={data.lastActiveUnixTs} />
+                  </Text>
+                </Group>
+              )}
             </Stack>
           </Group>
         </Card>
