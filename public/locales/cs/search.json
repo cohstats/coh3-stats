@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Vyhledávání",
+    "description": "Vyhledávání jednotek a hráčů na platformách Steam, Xbox a PSN v Company of Heroes 3."
+  },
+  "sections": {
+    "players": "Hráči",
+    "units": "Jednotky"
+  },
+  "errors": {
+    "searchError": "Chyba při vyhledávání"
+  },
+  "noResults": {
+    "players": "Žádní hráči nenalezeni",
+    "units": "Žádné jednotky nenalezeny",
+    "unitsEnglishOnly": "Vyhledávání jednotek podporuje pouze anglický jazyk"
+  },
+  "info": {
+    "firstResults": "Zobrazeno je pouze prvních 50 výsledků. Upřesněte prosím své vyhledávání.",
+    "consoleSearch": "Vyhledávání hráčů na konzolích podporuje pouze přesnou shodu.",
+    "steamSearch": "Můžete také vyhledávat pomocí Steam ID."
+  },
+  "playerCard": {
+    "lastActive": "Naposledy aktivní",
+    "steamProfile": "Steam profil",
+    "psnPlayer": "Hráč PlayStation",
+    "xboxPlayer": "Hráč XBOX"
+  }
+}

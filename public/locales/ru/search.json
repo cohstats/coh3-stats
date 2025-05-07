@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Поиск",
+    "description": "Поиск подразделений и игроков Steam, Xbox и PSN в Company of Heroes 3."
+  },
+  "sections": {
+    "players": "Игроки",
+    "units": "Подразделения"
+  },
+  "errors": {
+    "searchError": "Ошибка при поиске"
+  },
+  "noResults": {
+    "players": "Игроки не найдены",
+    "units": "Подразделения не найдены",
+    "unitsEnglishOnly": "Поиск подразделений поддерживает только английский язык"
+  },
+  "info": {
+    "firstResults": "Отображаются только первые 50 результатов. Пожалуйста, уточните поиск.",
+    "consoleSearch": "Поиск игроков на консолях поддерживает только точное совпадение.",
+    "steamSearch": "Вы также можете искать по Steam ID."
+  },
+  "playerCard": {
+    "lastActive": "Последняя активность",
+    "steamProfile": "Профиль Steam",
+    "psnPlayer": "Игрок PlayStation",
+    "xboxPlayer": "Игрок XBOX"
+  }
+}

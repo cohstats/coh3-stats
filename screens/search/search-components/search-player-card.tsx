@@ -10,8 +10,14 @@ import { PSNIcon } from "../../../components/icon/psn";
 import { XboxIcon } from "../../../components/icon/xbox";
 import styles from "./search-player-card.module.css";
 import InternalTimeAgo from "../../../components/internal-timeago";
+import { TFunction } from "next-i18next";
 
-export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ data }) => {
+interface SearchPlayerCardProps {
+  data: SearchPlayerCardData;
+  t: TFunction;
+}
+
+export const SearchPlayerCard: React.FC<SearchPlayerCardProps> = ({ data, t }) => {
   return (
     <>
       <Anchor
@@ -36,20 +42,20 @@ export const SearchPlayerCard: React.FC<{ data: SearchPlayerCardData }> = ({ dat
                 </Group>
                 <Group>
                   {data.platform === "steam" && (
-                    <Steam label="Steam Profile" mode="svg" size={20} />
+                    <Steam label={t("search:playerCard.steamProfile")} mode="svg" size={20} />
                   )}
                   {data.platform === "psn" && (
-                    <PSNIcon mode="svg" size={20} label="Play Station player" />
+                    <PSNIcon mode="svg" size={20} label={t("search:playerCard.psnPlayer")} />
                   )}
                   {data.platform === "xbox" && (
-                    <XboxIcon mode="svg" size={20} label="XBOX player" />
+                    <XboxIcon mode="svg" size={20} label={t("search:playerCard.xboxPlayer")} />
                   )}
                 </Group>
               </Group>
               {data.lastActiveUnixTs && (
                 <Group justify="flex-start" w="100%" gap={4}>
                   <Text size="xs" c="dimmed">
-                    Last active
+                    {t("search:playerCard.lastActive")}
                   </Text>
                   <Text size="xs" c="dimmed">
                     <InternalTimeAgo timestamp={data.lastActiveUnixTs} />
