@@ -41,7 +41,7 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
 
   if (isLoading) {
     return (
-      <Container size="md" p="md">
+      <Container size="lg" p="md">
         <Space h="lg" />
         <Title order={2}>{t("teamsStandings.title")}</Title>
         <Space h="md" />
@@ -55,7 +55,7 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
 
   if (error) {
     return (
-      <Container size="md" p="md">
+      <Container size="lg" p="md">
         <Space h="lg" />
         <Title order={2}>{t("teamsStandings.title")}</Title>
         <Space h="md" />
@@ -73,7 +73,7 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
   // If we don't have data, show no data message
   if (!teamsData) {
     return (
-      <Container size="md" p="md">
+      <Container size="lg" p="md">
         <Space h="lg" />
         <Title order={2}>{t("teamsStandings.title")}</Title>
         <Space h="md" />
