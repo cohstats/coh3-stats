@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Statistiky Company of Heroes 3",
+    "description": "Statistiky Company of Heroes 3. Žebříčky, Karty hráčů, Minulé zápasy, Statistiky jednotek, Kalkulačka DPS, Průzkumník bojových skupin, Průzkumník zbraní, Aktuální živé hry, Nejnovější zprávy COH3, nejnovější YouTube a Twitch streamy. A mnohem více."
+  },
+  "sections": {
+    "news": {
+      "title": "Nejnovější zprávy",
+      "newsLabel": "Novinky"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "Kalkulačka DPS",
+        "description": "Porovnejte DPS všech jednotek ve hře. Přizpůsobte výbavu jednotky různými zbraněmi. Můžete také vzít v úvahu HP jednotek."
+      },
+      "unitBrowser": {
+        "title": "Prohlížeč jednotek",
+        "description": "Prozkoumejte herní jednotky, včetně statistik, zbraní a vylepšení. Procházejte menu Průzkumníka pro přehled frakcí a další podrobnosti."
+      }
+    },
+    "leaderboards": {
+      "title": "1v1 Žebříčky",
+      "viewFullLeaderboard": "Zobrazit celý žebříček",
+      "factions": {
+        "american": "USF",
+        "british": "Britové",
+        "german": "Wehrmacht",
+        "dak": "DAK"
+      }
+    },
+    "reddit": {
+      "title": "Nejlepší příspěvky COH3 na Redditu",
+      "noData": "Žádné příspěvky z Redditu nejsou k dispozici"
+    },
+    "youtube": {
+      "title": "Videa z minulého týdne",
+      "noData": "Žádná YouTube videa nejsou k dispozici",
+      "views": "zhlédnutí"
+    },
+    "twitch": {
+      "title": "Sledujte živé přenosy",
+      "noStreams": "Momentálně nevysílají žádné EN mluvící streamy na Twitchi."
+    }
+  },
+  "leaderboardTable": {
+    "errorTitle": "Chyba při získávání žebříčků"
+  }
+}

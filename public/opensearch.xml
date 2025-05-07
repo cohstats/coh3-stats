@@ -2,6 +2,7 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
     <ShortName>COH3 Players</ShortName>
     <Description>Search for player cards and matches</Description>
-    <InputEncoding>[UTF-8]</InputEncoding>
+    <InputEncoding>UTF-8</InputEncoding>
     <Url type="text/html" template="https://coh3stats.com/search?q={searchTerms}"/>
+    <Image height="16" width="16" type="image/x-icon">https://coh3stats.com/logo/favicon.ico</Image>
 </OpenSearchDescription>

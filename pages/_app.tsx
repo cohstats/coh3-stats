@@ -148,7 +148,7 @@ function App(props: AppProps) {
           type="application/opensearchdescription+xml"
           rel="search"
           title={"Search COH3 players"}
-          href="https://coh3stats.com/opensearch.xml"
+          href={`${config.SITE_URL}/opensearch.xml`}
         />
       </Head>
 

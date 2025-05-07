@@ -1,0 +1,117 @@
+/* Fallback styles for when JavaScript is disabled */
+
+:root {
+  /* Dark theme variables as default */
+  --mantine-color-white: #fff;
+  --mantine-color-black: #000;
+  --mantine-color-dark-0: #c1c2c5;
+  --mantine-color-dark-5: #2c2e33;
+  --mantine-color-dark-6: #25262b;
+  --mantine-color-dark-7: #1a1b1e;
+  --mantine-color-gray-0: #f8f9fa;
+  --mantine-color-gray-2: #e9ecef;
+  --mantine-color-gray-4: #ced4da;
+  --mantine-color-gray-6: #868e96;
+  --mantine-color-dimmed: rgba(255, 255, 255, 0.65);
+  --mantine-color-blue-5: #339af0;
+  --mantine-color-red-0: #fff5f5;
+  --mantine-color-red-6: #fa5252;
+  --mantine-radius-md: 8px;
+  --mantine-spacing-xs: 10px;
+  --mantine-spacing-sm: 12px;
+  --mantine-spacing-md: 16px;
+  --mantine-spacing-xl: 32px;
+  --mantine-font-size-xs: 12px;
+  --mantine-font-size-sm: 14px;
+}
+
+body {
+  background-color: var(--mantine-color-dark-7);
+  color: var(--mantine-color-white);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--mantine-color-blue-5);
+  text-decoration: none;
+}
+
+/* Basic header styles */
+.headerRoot {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  height: 60px;
+  background-color: var(--mantine-color-dark-7);
+  border-bottom: 1px solid var(--mantine-color-dark-5);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+}
+
+/* Basic footer styles */
+.footer {
+  margin-top: var(--mantine-spacing-xl);
+  padding-top: var(--mantine-spacing-xl);
+  padding-bottom: var(--mantine-spacing-xl);
+  background-color: var(--mantine-color-dark-6);
+  border-top: 1px solid var(--mantine-color-dark-5);
+  text-align: center;
+}
+
+/* Basic card styles */
+[class*="Card-root"] {
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* Basic text styles */
+[class*="Text-root"] {
+  color: var(--mantine-color-white);
+}
+
+[class*="Title-root"] {
+  color: var(--mantine-color-white);
+}
+
+/* Basic button styles */
+[class*="Button-root"] {
+  background-color: var(--mantine-color-blue-5);
+  color: var(--mantine-color-white);
+  border-radius: var(--mantine-radius-md);
+  padding: 8px 16px;
+  cursor: pointer;
+  border: none;
+}
+
+/* Basic link styles */
+.link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  text-decoration: none;
+  color: var(--mantine-color-white);
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+}
+
+/* Hide elements that require JavaScript */
+.js-only {
+  display: none !important;
+}
+
+/* Show elements that are for no-JS only */
+.no-js-only {
+  display: block !important;
+}

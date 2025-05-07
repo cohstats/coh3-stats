@@ -1,0 +1,12 @@
+{
+  "title": "Žebříčky pro {{race}}",
+  "pageTitle": "Žebříčky pro {{race}} {{type}}",
+  "metaDescription": "Hodnocené žebříčky pro frakci {{race}} a typ hry {{type}}. Company of Heroes 3",
+  "errorTitle": "Chyba při získávání žebříčků",
+  "filters": {
+    "region": "Region",
+    "platform": "Platforma",
+    "faction": "Frakce",
+    "type": "Typ"
+  }
+}

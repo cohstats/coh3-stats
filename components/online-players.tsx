@@ -1,6 +1,7 @@
 import { Badge, Flex, Tooltip } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { getNumberOfOnlinePlayersSteamUrl } from "../src/apis/steam-api";
+import { TFunction } from "next-i18next";
 
 const fetchOnlinePlayers = async () => {
   try {
@@ -30,7 +31,11 @@ const shouldFetchData = (
   return currentData.timeStampMs < fourMinutesAgo;
 };
 
-export const OnlinePlayers: React.FC = () => {
+interface OnlinePlayersProps {
+  t: TFunction;
+}
+
+export const OnlinePlayers: React.FC<OnlinePlayersProps> = ({ t }) => {
   const [onlinePlayersData, setOnlinePlayersData] = useState<null | {
     playerCount: number;
     timeStampMs: number;
@@ -57,15 +62,15 @@ export const OnlinePlayers: React.FC = () => {
 
   return (
     <Tooltip
-      label={`Number of online players in Company of Heroes 3 as of ${new Date(
-        onlinePlayersData?.timeStampMs || "",
-      ).toLocaleString()}`}
+      label={t("header.onlinePlayersTooltip", {
+        date: new Date(onlinePlayersData?.timeStampMs || "").toLocaleString(),
+      })}
       multiline
       w={200}
       withArrow
     >
       <Flex gap={3} align={"center"}>
-        <div>Players in game </div>
+        <div>{t("header.playerInGames")} </div>
         <Badge color="green" variant="filled" size="lg" style={{ minWidth: 60 }}>
           {onlinePlayersData?.playerCount}
         </Badge>
