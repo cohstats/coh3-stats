@@ -39,7 +39,9 @@
     "gamePatchInfo": "Información mostrada en este sitio son del parche del juego",
     "unofficialSite": "Este es un sitio No-Oficial hecho por fans para Company Of Heroes 3.",
     "visitText1": "Visita",
-    "visitText2": "para estadísticas y analítica de Company of Heroes 2"
+    "visitText2": "para estadísticas y analítica de Company of Heroes 2",
+    "trademark": "Company of Heroes es una marca registrada de Relic Entertainment.",
+    "assets": "Las imágenes y otros recursos de COH son propiedad de Relic Entertainment."
   },
   "columns": {
     "rank": "Posición",

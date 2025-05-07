@@ -48,9 +48,9 @@ export const Footer: React.FC = () => {
           <br />
         </Container>
         <Text c="dimmed" size="xs" style={{ textAlign: "center" }}>
-          The Company of Heroes is a registered trademark of Relic&nbsp;Entertainment.
+          {t("footer.trademark")}
           <br />
-          The COH Images and other assets are owned by Relic&nbsp;Entertainment.
+          {t("footer.assets")}
         </Text>
         {/*Looks like we can't have Space inside Text element?! Hydration failure*/}
         <Space h="md" />

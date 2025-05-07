@@ -39,7 +39,9 @@
     "gamePatchInfo": "Данные, отображаемые на сайте, взяты из патча",
     "unofficialSite": "Это неофициальный фанатский сайт по Company Of Heroes 3.",
     "visitText1": "Посетите сайт",
-    "visitText2": "для получения статистики и аналитики по Company of Heroes 2"
+    "visitText2": "для получения статистики и аналитики по Company of Heroes 2",
+    "trademark": "Company of Heroes является зарегистрированным товарным знаком Relic Entertainment.",
+    "assets": "Изображения и другие материалы COH принадлежат Relic Entertainment."
   },
   "columns": {
     "rank": "Место",
