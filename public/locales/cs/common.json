@@ -53,5 +53,11 @@
     "tier": "Úroveň",
     "wins": "Výhry",
     "losses": "Prohry"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Stránka nenalezena",
+      "message": "Pokud si myslíte, že se jedná o chybu, nahlaste ji prosím na našem Discordu"
+    }
   }
 }

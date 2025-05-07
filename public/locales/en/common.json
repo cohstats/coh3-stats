@@ -53,5 +53,11 @@
     "tier": "Tier",
     "wins": "Wins",
     "losses": "Losses"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Page Not Found",
+      "message": "Please report on our Discord if you think this is a bug"
+    }
   }
 }
