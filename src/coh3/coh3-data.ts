@@ -603,6 +603,8 @@ const OfficialMapKeys = [
   "crossing_in_the_woods_2p",
   "crossing_in_the_woods_4p",
   "djebel_2p", // Community maps
+  /* ---------- 2.0.5 Maps ---------- */
+  "mignano_6p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -810,5 +812,10 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   djebel_2p: {
     name: "Djebel Pass",
     url: "/djebel_2p/djebel_2p.webp",
+  },
+  /* ------------------------- 2.0.5 Maps ---------------------------- */
+  mignano_6p: {
+    name: "Mignano Summit",
+    url: "/mignano_6p/mignano_6p.webp",
   },
 };
