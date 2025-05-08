@@ -1,0 +1,9 @@
+## React component development
+- When developing new component which has low amount of props, try to do inline types instead of creating new interface.
+
+## Localization
+- When developing localization, always try to pass `TFunction` as component prop instead of utilize useTranslation hook.
+  - useTranslation hook should be utilized only in the top level components (pages, modals, etc.) if possible
+- The folder with locales the en folder is the source of through. When adding adding keys always add keys there first.
+- The locale folder is in public/locales/en with .json file in it
+- When translating other languages, do not translate locales which don't have locale folder created yet.
