@@ -68,7 +68,7 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
           <Divider my="sm" />
           <Stack px="md">
             <Group grow>
-              <SearchButton redirectOnClick={true} close={close} />
+              <SearchButton redirectOnClick={true} close={close} t={t} />
             </Group>
             <Anchor
               component={Link}
@@ -196,7 +196,7 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
 
       <Group gap={5} className={classes.hiddenMobile} justify="flex-end">
         <OnlinePlayers t={t} />
-        <SearchButton />
+        <SearchButton t={t} />
         <ColorSchemeToggle />
         <LanguageSwitcher />
       </Group>

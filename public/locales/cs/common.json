@@ -16,7 +16,8 @@
       "dpsCalculator": "DPS - Porovnání jednotek",
       "unitBrowser": "Prohlížeč jednotek",
       "challenges": "Výzvy",
-      "weapons": "Zbraně"
+      "weapons": "Zbraně",
+      "tools": "Nástroje"
     },
     "liveGames": "Živé hry",
     "desktopApp": "Desktopová aplikace",
@@ -39,7 +40,9 @@
     "gamePatchInfo": "Data zobrazená na stránce jsou z herního patche",
     "unofficialSite": "Toto je neoficiální fanouškovská stránka pro Company Of Heroes 3.",
     "visitText1": "Navštivte",
-    "visitText2": "pro statistiky a analýzy Company of Heroes 2"
+    "visitText2": "pro statistiky a analýzy Company of Heroes 2",
+    "trademark": "Company of Heroes je registrovaná ochranná známka společnosti Relic Entertainment.",
+    "assets": "Obrázky a další materiály COH jsou vlastněny společností Relic Entertainment."
   },
   "columns": {
     "rank": "Pořadí",
@@ -59,5 +62,8 @@
       "title": "404 - Stránka nenalezena",
       "message": "Pokud si myslíte, že se jedná o chybu, nahlaste ji prosím na našem Discordu"
     }
+  },
+  "search": {
+    "playersAndUnits": "Hráči a jednotky"
   }
 }

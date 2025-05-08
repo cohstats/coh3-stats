@@ -205,9 +205,9 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
               {explorerFactionLink("dak", close, t)}
               {explorerFactionLink("british", close, t)}
             </Stack>
-            <Divider my="sm"></Divider>
+            <Divider my="sm" />
             <Stack gap={4}>
-              <Text fw={700}>Tools</Text>
+              <Text fw={700}>{t("mainMenu.explMenu.tools")}</Text>
               <DPSLink close={close} t={t} />
               <UnitBrowserLink close={close} t={t} />
               <ChallengesLink close={close} t={t} />
@@ -221,7 +221,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
 
   const desktopView = (
     <Group className={classes.hiddenMobile}>
-      <HoverCard width={860} position="bottom" radius="md" shadow="md">
+      <HoverCard width={910} position="bottom" radius="md" shadow="md">
         <HoverCard.Target>
           <Anchor href={"/explorer"} component={LinkWithOutPrefetch} className={classes.link}>
             <Group gap={3}>
@@ -242,7 +242,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
             </Grid.Col>
             <Grid.Col span={1}>
               <Stack gap={4}>
-                <Text fw={700}>Tools</Text>
+                <Text fw={700}>{t("mainMenu.explMenu.tools")}</Text>
                 <Divider />
                 <DPSLink close={() => null} t={t} />
                 <UnitBrowserLink close={() => null} t={t} />

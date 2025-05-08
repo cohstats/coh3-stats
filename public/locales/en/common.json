@@ -16,7 +16,8 @@
       "dpsCalculator": "DPS - Unit Comparison",
       "unitBrowser": "Unit Browser",
       "challenges": "Challenges",
-      "weapons": "Weapons"
+      "weapons": "Weapons",
+      "tools": "Tools"
     },
     "liveGames": "Live Games",
     "desktopApp": "Desktop App",
@@ -39,7 +40,9 @@
     "gamePatchInfo": "Data displayed on the site are from game patch",
     "unofficialSite": "This is an unofficial fan-made site for Company Of Heroes 3.",
     "visitText1": "Visit",
-    "visitText2": "for Company of Heroes 2 stats and analytics"
+    "visitText2": "for Company of Heroes 2 stats and analytics",
+    "trademark": "The Company of Heroes is a registered trademark of Relic Entertainment.",
+    "assets": "The COH Images and other assets are owned by Relic Entertainment."
   },
   "columns": {
     "rank": "Rank",
@@ -59,5 +62,8 @@
       "title": "404 - Page Not Found",
       "message": "Please report on our Discord if you think this is a bug"
     }
+  },
+  "search": {
+    "playersAndUnits": "Players and Units"
   }
 }

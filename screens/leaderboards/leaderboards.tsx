@@ -174,7 +174,7 @@ const Leaderboards = ({
               accessor: "lastmatchdate",
               title: t("common:columns.lastGame"),
               textAlign: "right",
-              width: 125,
+              width: 135,
               // @ts-ignore
               render: ({ lastmatchdate }) => {
                 return <DynamicTimeAgo timestamp={lastmatchdate} />;

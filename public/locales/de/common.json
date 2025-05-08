@@ -16,7 +16,8 @@
       "dpsCalculator": "DPS - Einheitenvergleich",
       "unitBrowser": "Einheiten-Browser",
       "challenges": "Herausforderungen",
-      "weapons": "Waffen"
+      "weapons": "Waffen",
+      "tools": "Werkzeuge"
     },
     "liveGames": "Laufende Spiele",
     "desktopApp": "Desktop-App",
@@ -38,7 +39,9 @@
     "gamePatchInfo": "Die auf der Seite angezeigten Daten stammen aus dem Spielpatch",
     "unofficialSite": "Dies ist eine inoffizielle Fan-Seite für Company Of Heroes 3.",
     "visitText1": "Besuche",
-    "visitText2": "für Company of Heroes 2 Statistiken und Analysen"
+    "visitText2": "für Company of Heroes 2 Statistiken und Analysen",
+    "trademark": "Company of Heroes ist eine eingetragene Marke von Relic Entertainment.",
+    "assets": "Die COH-Bilder und andere Assets sind Eigentum von Relic Entertainment."
   },
   "columns": {
     "rank": "Rang",
@@ -52,5 +55,14 @@
     "tier": "Stufe",
     "wins": "Siege",
     "losses": "Niederlagen"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Seite nicht gefunden",
+      "message": "Bitte melde dich in unserem Discord, wenn du glaubst, dass dies ein Fehler ist"
+    }
+  },
+  "search": {
+    "playersAndUnits": "Spieler und Einheiten"
   }
 }

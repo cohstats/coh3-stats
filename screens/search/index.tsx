@@ -13,6 +13,7 @@ import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { debounce } from "lodash";
+import { useTranslation } from "next-i18next";
 import { platformType, SearchPlayerCardData } from "../../src/coh3/coh3-types";
 import { SearchPlayerCard } from "./search-components/search-player-card";
 import ErrorCard from "../../components/error-card";
@@ -30,6 +31,7 @@ export const SearchScreen = () => {
 
   const { query, push } = useRouter();
   const { q } = query;
+  const { t } = useTranslation(["common", "search"]);
 
   useEffect(() => {
     SearchPageView();
@@ -86,13 +88,13 @@ export const SearchScreen = () => {
   }, 600);
 
   const content = error ? (
-    <ErrorCard title={"Error while searching "} body={JSON.stringify(error)} />
+    <ErrorCard title={t("search:errors.searchError")} body={JSON.stringify(error)} />
   ) : (
     <>
       {" "}
       {q && (
         <>
-          <Divider my="xs" label="Players" labelPosition="center" />
+          <Divider my="xs" label={t("search:sections.players")} labelPosition="center" />
           {loading && (
             <Center maw={400} h={250} mx="auto">
               <Loader />
@@ -105,41 +107,43 @@ export const SearchScreen = () => {
                   <Text c={"dimmed"}>
                     <Stack align={"center"} gap={"xs"}>
                       <IconDatabaseOff />
-                      <div>No players found</div>
+                      <div>{t("search:noResults.players")}</div>
                     </Stack>
                     <Space h={"lg"} />
                   </Text>
                 )}
                 {data.map((playerData) => {
-                  return <SearchPlayerCard data={playerData} key={playerData.relicProfileId} />;
+                  return (
+                    <SearchPlayerCard data={playerData} key={playerData.relicProfileId} t={t} />
+                  );
                 })}
               </Flex>
               <Space />
               <Stack align={"center"} gap={0}>
                 {data.length >= 50 && (
                   <Text c={"dimmed"} fs={"italic"}>
-                    Only the first 50 results are displayed. Please refine your search.
+                    {t("search:info.firstResults")}
                   </Text>
                 )}
                 <Text c={"dimmed"} fs={"italic"}>
-                  Console player search supports exact match only.
+                  {t("search:info.consoleSearch")}
                 </Text>
                 <Text c={"dimmed"} fs={"italic"}>
-                  You can also search using Steam ID.
+                  {t("search:info.steamSearch")}
                 </Text>
               </Stack>
             </Container>
           )}
 
-          <Divider my="xs" label="Units" labelPosition="center" />
+          <Divider my="xs" label={t("search:sections.units")} labelPosition="center" />
           <Container size={"md"}>
             <Flex gap="sm" wrap={"wrap"} justify="center">
               {unitResults.length === 0 ? (
                 <Text c={"dimmed"} size={"sm"}>
                   <Stack align={"center"} gap={"xs"}>
                     <IconDatabaseOff />
-                    <div>No Units Found</div>
-                    <div>Unit search supports English Language only</div>
+                    <div>{t("search:noResults.units")}</div>
+                    <div>{t("search:noResults.unitsEnglishOnly")}</div>
                   </Stack>
                   <Space h={"lg"} />
                 </Text>
@@ -161,7 +165,7 @@ export const SearchScreen = () => {
           w={400}
           radius={"md"}
           defaultValue={searchValue}
-          placeholder="Search players and units"
+          placeholder={t("common:search.playersAndUnits")}
           onChange={(event: { currentTarget: { value: any } }) => {
             debouncedSearch(event.currentTarget.value);
           }}

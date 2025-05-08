@@ -146,7 +146,7 @@ const TopLeaderboardsTable = ({ leaderBoardData, loading, error, t }: Props) => 
               accessor: "lastmatchdate",
               title: t("common:columns.lastGame"),
               textAlign: "right",
-              width: 120,
+              width: 130,
               // @ts-ignore
               render: ({ lastmatchdate }) => {
                 return <DynamicTimeAgo timestamp={lastmatchdate} />;

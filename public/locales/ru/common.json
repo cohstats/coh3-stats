@@ -16,7 +16,8 @@
       "dpsCalculator": "DPS - Сравнение",
       "unitBrowser": "Список подразделений",
       "challenges": "Задания",
-      "weapons": "Вооружение"
+      "weapons": "Вооружение",
+      "tools": "Инструменты"
     },
     "liveGames": "Активные игры",
     "desktopApp": "Приложение",
@@ -38,7 +39,9 @@
     "gamePatchInfo": "Данные, отображаемые на сайте, взяты из патча",
     "unofficialSite": "Это неофициальный фанатский сайт по Company Of Heroes 3.",
     "visitText1": "Посетите сайт",
-    "visitText2": "для получения статистики и аналитики по Company of Heroes 2"
+    "visitText2": "для получения статистики и аналитики по Company of Heroes 2",
+    "trademark": "Company of Heroes является зарегистрированным товарным знаком Relic Entertainment.",
+    "assets": "Изображения и другие материалы COH принадлежат Relic Entertainment."
   },
   "columns": {
     "rank": "Место",
@@ -52,5 +55,14 @@
     "tier": "Ранг",
     "wins": "Победы",
     "losses": "Поражения"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Страница не найдена",
+      "message": "Если вы считаете, что это ошибка, сообщите об этом в наш Discord"
+    }
+  },
+  "search": {
+    "playersAndUnits": "Игроки и подразделения"
   }
 }

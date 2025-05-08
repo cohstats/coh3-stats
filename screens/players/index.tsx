@@ -1,7 +1,6 @@
 import { PlayerCardDataType, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
 import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
 import { localizedNames } from "../../src/coh3/coh3-data";
-import { format } from "timeago.js";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useTranslation } from "next-i18next";
@@ -51,7 +50,7 @@ const createPlayerHeadDescription = (
   Total games ${playerSummary.totalGames} with Win Rate ${Math.round(
     playerSummary.winRate * 100,
   )}%.
-  Last match ${format(playerSummary.lastMatchDate * 1000, "en")}`;
+  Last match ${new Date(playerSummary.lastMatchDate * 1000).toLocaleString()}`;
 };
 
 /**
