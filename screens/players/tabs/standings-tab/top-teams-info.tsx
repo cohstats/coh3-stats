@@ -10,9 +10,10 @@ import { useRouter } from "next/router";
 interface TopTeamsInfoProps {
   topTeamsSummary: TopTeamsSummary | null;
   t: TFunction;
+  profileID: string;
 }
 
-const TopTeamsInfo = ({ topTeamsSummary, t }: TopTeamsInfoProps) => {
+const TopTeamsInfo = ({ topTeamsSummary, t, profileID }: TopTeamsInfoProps) => {
   const router = useRouter();
   if (!topTeamsSummary) return null;
 
@@ -40,12 +41,14 @@ const TopTeamsInfo = ({ topTeamsSummary, t }: TopTeamsInfoProps) => {
           title={`${t("teamsStandings.axisTeams")} - ${t("teamsStandings.mostPlayed")}`}
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
+          profileID={profileID}
         />
         <TeamsTable
           teams={topTeamsSummary.axisTeams.mostRecent}
           title={`${t("teamsStandings.axisTeams")} - ${t("teamsStandings.mostRecent")}`}
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
+          profileID={profileID}
         />
       </Stack>
       <Group gap="xs" align="center">
@@ -65,12 +68,14 @@ const TopTeamsInfo = ({ topTeamsSummary, t }: TopTeamsInfoProps) => {
           title={`${t("teamsStandings.alliesTeams")} - ${t("teamsStandings.mostPlayed")}`}
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
+          profileID={profileID}
         />
         <TeamsTable
           teams={topTeamsSummary.alliesTeams.mostRecent}
           title={`${t("teamsStandings.alliesTeams")} - ${t("teamsStandings.mostRecent")}`}
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
+          profileID={profileID}
         />
       </Stack>
     </Stack>

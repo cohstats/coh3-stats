@@ -103,7 +103,7 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
           </Title>
 
           {/* Pass an empty string as title to hide it */}
-          <TeamsTable teams={displayData.axisTeams} title="" />
+          <TeamsTable teams={displayData.axisTeams} title="" profileID={profileID} />
         </Stack>
 
         <Stack>
@@ -114,7 +114,7 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
           </Title>
 
           {/* Pass an empty string as title to hide it */}
-          <TeamsTable teams={displayData.alliesTeams} title="" />
+          <TeamsTable teams={displayData.alliesTeams} title="" profileID={profileID} />
         </Stack>
       </Stack>
     </Container>

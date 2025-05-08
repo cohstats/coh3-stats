@@ -22,12 +22,14 @@ const PlayerStandingsTab = ({
   platform,
   COH3PlayTime,
   topTeamsSummary,
+  profileID,
 }: {
   playerStandings: InternalStandings;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: platformType;
   COH3PlayTime: number | null;
   topTeamsSummary: TopTeamsSummary | null;
+  profileID?: string;
 }) => {
   const { push, query } = useRouter();
   const { t } = useTranslation("players");
@@ -84,7 +86,7 @@ const PlayerStandingsTab = ({
             moreButtonOnClick={() => changeView("standingsDetails")}
           />
           <Space h="xl" />
-          <TopTeamsInfo topTeamsSummary={topTeamsSummary} t={t} />
+          <TopTeamsInfo topTeamsSummary={topTeamsSummary} t={t} profileID={profileID || ""} />
         </div>
 
         <div style={{ width: 300 }}>

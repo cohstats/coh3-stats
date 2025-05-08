@@ -295,7 +295,7 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
             </Title>
 
             {/* Display the specific team */}
-            <TeamsTable teams={[teamData]} title="" teamDetails={false} />
+            <TeamsTable teams={[teamData]} title="" teamDetails={false} profileID={profileID} />
           </Stack>
 
           {/* Match history table */}

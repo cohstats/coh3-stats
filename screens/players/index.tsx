@@ -267,6 +267,7 @@ const PlayerCard = ({
               platform={platform}
               COH3PlayTime={playerData.COH3PlayTime}
               topTeamsSummary={playerData.topTeamsSummary}
+              profileID={playerID}
             />
           </Tabs.Panel>
           <Tabs.Panel value="standingsDetails">

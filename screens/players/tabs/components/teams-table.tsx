@@ -17,6 +17,7 @@ interface TeamsTableProps {
   showMoreButton?: boolean;
   onMoreClick?: () => void;
   teamDetails?: boolean;
+  profileID?: string;
 }
 
 const TeamsTable = ({
@@ -25,6 +26,7 @@ const TeamsTable = ({
   showMoreButton = false,
   onMoreClick,
   teamDetails = true,
+  profileID,
 }: TeamsTableProps) => {
   const router = useRouter();
   const teamsWithLastMatch = teams.filter((team) => team.lmTS);
@@ -70,7 +72,16 @@ const TeamsTable = ({
                   >
                     <Group gap="xs">
                       <CountryFlag countryCode={player.country} />
-                      {player.alias}
+                      <Text
+                        size={"sm"}
+                        fw={
+                          profileID && player.profile_id.toString() === profileID
+                            ? "bold"
+                            : "normal"
+                        }
+                      >
+                        {player.alias}
+                      </Text>
                     </Group>
                   </Anchor>
                 ))}
