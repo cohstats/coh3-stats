@@ -63,7 +63,7 @@ const getTwitchStreamsUrl = () => {
 
 const getSearchUrl = (searchQuery: string) => {
   return encodeURI(
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/searchPlayersGen2Http?alias=${searchQuery}`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/search/players?alias=${searchQuery}`,
   );
 };
 
