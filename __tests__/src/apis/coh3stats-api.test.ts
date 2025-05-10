@@ -264,7 +264,7 @@ describe("coh3stats-api", () => {
 
     expect(response).toEqual("fake stream data");
     expect(global.fetch).toBeCalledWith(
-      "https://us-east4-coh3-stats-prod.cloudfunctions.net/getTwitchStreamsHttp",
+      "https://us-east4-coh3-stats-prod.cloudfunctions.net/sharedAPIGen2Http/utils/twitch",
       { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
     );
   });
