@@ -2,7 +2,7 @@
   "meta": {
     "title": "Приложение на ПК от COH3 Stats",
     "description": "Скачайте приложение COH3 Stats для ПК {{version}}. Не требует отдельной настройки. Функция оверлея для OBS. Подробная информация о ваших текущих противников по игре. Звуковые уведомления о нахождении игры и многое другое.",
-    "keywords": "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
+    "keywords": "coh3, coh3 stats, coh3 приложение, coh3 оверлей OBS, информация о company of heroes в реальном времени"
   },
   "download": {
     "button": "Скачать {{version}}",
