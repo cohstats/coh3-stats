@@ -48,7 +48,7 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
 };
 
 const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
-  let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getMatchHttp?matchID=${matchID}`;
+  let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/matches/match?matchID=${matchID}`;
 
   if (profileIDs && profileIDs.length > 0) {
     url += `&profileIDs=[${profileIDs.join(",")}]`;
@@ -58,7 +58,7 @@ const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
 };
 
 const getTwitchStreamsUrl = () => {
-  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getTwitchStreamsHttp`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/sharedAPIGen2Http/utils/twitch`);
 };
 
 const getSearchUrl = (searchQuery: string) => {
@@ -87,7 +87,7 @@ const setReplayFileUrl = () => {
 };
 
 const getLiveGamesSummaryUrl = () => {
-  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getLiveGamesSummaryHttp`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/live/summary`);
 };
 
 const getStatsUrl = (
@@ -135,7 +135,7 @@ export const getLiveGames = async (
   count = 50,
 ): Promise<ResponseLiveGames> => {
   const response = await fetch(
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getLiveGamesHttp?type=${type}&orderBy=${orderBy}&start=${start}&count=${count}`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/live/games?type=${type}&orderBy=${orderBy}&start=${start}&count=${count}`,
   );
   if (response.ok) {
     return await response.json();
@@ -390,7 +390,9 @@ const getPlayersCardsConfigsHttp = async (): Promise<{ profiles: Array<any> }> =
 };
 
 const getYouTubeVideosHttp = async (): Promise<Array<YouTubeVideo>> => {
-  const path = encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getYouTubeVideosHttp`);
+  const path = encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/utils/youtube`,
+  );
 
   try {
     const response = await fetch(path, {
