@@ -48,7 +48,7 @@ const MatchDetailRoot: NextPage = () => {
         }
       }
     })();
-  }, [matchId]);
+  }, [matchId, profileIDs]);
 
   if (isLoading)
     content = (
