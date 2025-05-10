@@ -15,6 +15,23 @@
       "enabled": false
     },
     {
+      "matchDepTypes": ["action"],
+      "matchPackageNames": ["actions/setup-node"],
+      "pinDigests": false,
+      "ignoreUnstable": true
+    },
+    {
+      "matchFiles": [".github/workflows/**"],
+      "matchStrings": ["node-version: \"(?<currentValue>.*)\"\s"],
+      "depNameTemplate": "node",
+      "enabled": false
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchDepTypes": ["node"],
+      "enabled": false
+    },
+    {
       "datasources": ["github-actions"],
       "packagePatterns": ["^actions/"],
       "groupName": "github-actions",
