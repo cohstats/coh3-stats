@@ -12,6 +12,7 @@ import {
   TypeOfLiveGame,
   YouTubeVideo,
   TeamDetails,
+  TeamLeaderboardResponse,
 } from "../coh3/coh3-types";
 import {
   analysisFilterType,
@@ -670,6 +671,50 @@ const getTeamMatches = async (
   }
 };
 
+const getTeamLeaderboardsUrl = (
+  side: "axis" | "allies",
+  type: leaderBoardType,
+  orderBy: "elo" | "total",
+  limit: number,
+  cursor?: string,
+  direction?: "next" | "previous",
+) => {
+  let path = `/sharedAPIGen2Http/teams/leaderboards?side=${side}&type=${type}&orderBy=${orderBy}&limit=${limit}`;
+
+  if (cursor) {
+    path += `&cursor=${cursor}`;
+  }
+
+  if (direction) {
+    path += `&direction=${direction}`;
+  }
+
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
+};
+
+const getTeamLeaderboards = async (
+  side: "axis" | "allies",
+  type: leaderBoardType,
+  orderBy: "elo" | "total",
+  limit: number,
+  cursor?: string,
+  direction?: "next" | "previous",
+): Promise<TeamLeaderboardResponse> => {
+  const response = await fetch(
+    getTeamLeaderboardsUrl(side, type, orderBy, limit, cursor, direction),
+  );
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting team leaderboards: ${data.error}`);
+    }
+    throw new Error(`Error getting team leaderboards`);
+  }
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -688,4 +733,5 @@ export {
   getTeamsFullSummary,
   getTeamDetails,
   getTeamMatches,
+  getTeamLeaderboards,
 };
