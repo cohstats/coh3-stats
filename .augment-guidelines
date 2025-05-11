@@ -1,3 +1,6 @@
+## Project
+- We are using `yarn` as our package manager.
+
 ## React component development
 - When developing new component which has low amount of props, try to do inline types instead of creating new interface.
 
