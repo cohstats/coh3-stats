@@ -20,6 +20,7 @@ import { SearchButton } from "./components/search-button";
 import { OnlinePlayers } from "../online-players";
 import ExplorerMenu from "./components/ExplorerMenu";
 import LeaderboardsMenu from "./components/LeaderboardsMenu";
+import LeaderboardsMenuMobile from "./components/LeaderboardsMenuMobile";
 import {
   getAboutRoute,
   getDesktopAppRoute,
@@ -70,14 +71,7 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
             <Group grow>
               <SearchButton redirectOnClick={true} close={close} t={t} />
             </Group>
-            <Anchor
-              component={Link}
-              href={getLeaderBoardRoute()}
-              className={classes.link}
-              onClick={() => close()}
-            >
-              {t("mainMenu.leaderboards")}
-            </Anchor>
+            <LeaderboardsMenuMobile classes={classes} close={close} t={t} />
 
             <StatisticsMenu classes={classes} close={close} t={t} />
 
@@ -154,7 +148,7 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
   return (
     <>
       <Group className={classes.hiddenMobile} gap={0}>
-        <HoverCard width={800} position="bottom" radius="md" shadow="md">
+        <HoverCard width={400} position="bottom" radius="md" shadow="md">
           <HoverCard.Target>
             <div>
               <Anchor component={Link} href={getLeaderBoardRoute()} className={classes.link}>

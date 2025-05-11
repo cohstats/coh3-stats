@@ -140,3 +140,23 @@ export const getMatchDetailRoute = (
 
   return encodeURI(`/matches/${matchId}`);
 };
+
+export const getTeamLeaderboardsRoute = (
+  side?: "axis" | "allies",
+  type?: leaderBoardType,
+  orderBy?: "elo" | "total",
+) => {
+  const searchParams = new URLSearchParams(
+    Object.assign(
+      {},
+      !isUndefined(side) && { side },
+      !isUndefined(type) && { type },
+      !isUndefined(orderBy) && { orderBy },
+    ) as any,
+  );
+  let searchParamString = searchParams.toString();
+  if (searchParamString.length > 0) {
+    searchParamString = "?" + searchParamString;
+  }
+  return encodeURI(`/leaderboards-teams${searchParamString}`);
+};

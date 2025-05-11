@@ -14,7 +14,12 @@
     "title": "Tarjeta del Jugador - {{name}}",
     "titleWithView": {
       "recentMatches": "Tarjeta del jugador - {{name}} - Partidas recientes",
-      "replays": "Tarjeta del jugador - {{name}} - Repeticiones"
+      "replays": "Tarjeta del jugador - {{name}} - Repeticiones",
+      "standingsDetails": "Tarjeta del jugador - {{name}} - Stats detallados",
+      "activity": "Tarjeta del jugador - {{name}} - Actividad",
+      "nemesis": "Tarjeta del jugador - {{name}} - Nemesis",
+      "teamsStandings": "Tarjeta del jugador - {{name}} - Clasificación de equipos",
+      "teamDetails": "Tarjeta del jugador - {{name}} - Detalles del equipo"
     }
   },
   "tabs": {
@@ -23,7 +28,8 @@
     "recentMatches": "Partidas recientes",
     "activity": "Actividad",
     "nemesis": "Nemesis",
-    "replays": "Repeticiones"
+    "replays": "Repeticiones",
+    "teamsStandings": "Clasificación de equipos"
   },
   "playerInfo": {
     "bestElo": {
@@ -126,6 +132,17 @@
         "title": "Actividad por día de la semana"
       }
     }
+  },
+  "teamsStandings": {
+    "title": "Clasificación de equipos organizados",
+    "noData": "No hay datos de equipos disponibles para este jugador",
+    "axisTeams": "Eje",
+    "alliesTeams": "Aliados",
+    "mostPlayed": "Equipos más jugados",
+    "mostRecent": "Equipos recientes",
+    "checkTeamDetails": "Para el historial de partidas y cambios de ELO, consulta los detalles del equipo",
+    "checkTeamLeaderboardsPrefix": "Consulta la",
+    "checkTeamLeaderboardsSuffix": "para encontrar tu clasificación"
   },
   "nemesis": {
     "widget": {

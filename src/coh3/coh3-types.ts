@@ -595,3 +595,28 @@ export interface ResponseLiveGames {
 }
 
 export type TypeOfLiveGame = "1v1" | "2v2" | "3v3" | "4v4" | "ai" | "custom";
+
+export interface TeamLeaderboardEntry {
+  id: string;
+  players: Array<{
+    profile_id: number;
+    alias: string;
+    country: string;
+  }>;
+  type: string;
+  side: "axis" | "allies";
+  elo: number;
+  w: number;
+  l: number;
+  s: number;
+  t: number;
+  bestElo: number;
+  lmTS: number | null;
+}
+
+export interface TeamLeaderboardResponse {
+  teams: TeamLeaderboardEntry[];
+  totalTeams: number;
+  nextCursor: string | null;
+  previousCursor: string | null;
+}
