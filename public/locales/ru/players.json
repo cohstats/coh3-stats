@@ -14,7 +14,12 @@
     "title": "Карточка игрока - {{name}}",
     "titleWithView": {
       "recentMatches": "Карточка игрока - {{name}} - Недавние игры",
-      "replays": "Карточка игрока -  {{name}} - Повторы"
+      "replays": "Карточка игрока -  {{name}} - Повторы",
+      "standingsDetails": "Карточка игрока - {{name}} - Подробная статистика",
+      "activity": "Карточка игрока - {{name}} - Активность",
+      "nemesis": "Карточка игрока - {{name}} - Закляты враг",
+      "teamsStandings": "Карточка игрока - {{name}} - Рейтинг команд",
+      "teamDetails": "Карточка игрока - {{name}} - Детали команды"
     }
   },
   "tabs": {
@@ -23,7 +28,8 @@
     "recentMatches": "Недавние игры",
     "activity": "Активность",
     "nemesis": "Закляты враг",
-    "replays": "Повторы"
+    "replays": "Повторы",
+    "teamsStandings": "Рейтинг команд"
   },
   "playerInfo": {
     "bestElo": {
@@ -126,6 +132,17 @@
         "title": "Активность по дню недели"
       }
     }
+  },
+  "teamsStandings": {
+    "title": "Рейтинг организованных команд",
+    "noData": "Для этого игрока нет данных о командах",
+    "axisTeams": "Страны Оси",
+    "alliesTeams": "Союзники",
+    "mostPlayed": "Чаще всего играли",
+    "mostRecent": "Недавние команды",
+    "checkTeamDetails": "Для просмотра истории матчей и изменений ELO проверьте детали команды",
+    "checkTeamLeaderboardsPrefix": "Проверьте",
+    "checkTeamLeaderboardsSuffix": "чтобы найти свой рейтинг"
   },
   "nemesis": {
     "widget": {

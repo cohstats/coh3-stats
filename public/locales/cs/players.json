@@ -139,7 +139,10 @@
     "axisTeams": "Axis",
     "alliesTeams": "Allies",
     "mostPlayed": "Nejhranější týmy",
-    "mostRecent": "Nedávné týmy"
+    "mostRecent": "Nedávné týmy",
+    "checkTeamDetails": "Pro historii zápasů a změn ELO zkontrolujte detaily týmu",
+    "checkTeamLeaderboardsPrefix": "Podívejte se na",
+    "checkTeamLeaderboardsSuffix": "pro zjištění vašeho umístění"
   },
   "nemesis": {
     "widget": {

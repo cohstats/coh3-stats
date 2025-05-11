@@ -139,7 +139,10 @@
     "axisTeams": "Axis",
     "alliesTeams": "Allies",
     "mostPlayed": "Most Played Teams",
-    "mostRecent": "Recent Teams"
+    "mostRecent": "Recent Teams",
+    "checkTeamDetails": "For match and ELO change history check the team details",
+    "checkTeamLeaderboardsPrefix": "Check the",
+    "checkTeamLeaderboardsSuffix": "to find your ranking"
   },
   "nemesis": {
     "widget": {

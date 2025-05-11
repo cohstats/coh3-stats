@@ -139,7 +139,10 @@
     "axisTeams": "Achse",
     "alliesTeams": "Alliierte",
     "mostPlayed": "Meistgespielte Teams",
-    "mostRecent": "Aktuelle Teams"
+    "mostRecent": "Aktuelle Teams",
+    "checkTeamDetails": "Für Spiel- und ELO-Änderungsverlauf siehe die Team-Details",
+    "checkTeamLeaderboardsPrefix": "Schaue in die",
+    "checkTeamLeaderboardsSuffix": "um deine Platzierung zu finden"
   },
   "nemesis": {
     "widget": {
