@@ -80,7 +80,7 @@ const PlayerCard = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   replaysData: ProcessedReplayData;
 }) => {
-  const { push, query, asPath, replace } = useRouter();
+  const { push, query, asPath } = useRouter();
   const { view } = query;
   const { t } = useTranslation("players");
 
@@ -94,14 +94,19 @@ const PlayerCard = ({
 
     if ((cleanName && asPath.includes(cleanName)) || cleanName === undefined) return;
 
-    // This is weird, I feel like there should be a better way to do this
+    // Use History API to update URL without affecting browser history
     if (isBrowserEnv()) {
       const originalUrl = new URL(asPath, window.location.origin);
       const originalQuery = originalUrl.searchParams;
       const newURL = new URL(`/players/${playerID}/${cleanName}`, window.location.origin);
       newURL.search = originalQuery.toString();
-      // Replace works the same way as push but doesn't add it into the history
-      replace(newURL.toString(), undefined, { shallow: true });
+
+      // Use history.replaceState to update URL without affecting navigation
+      window.history.replaceState(
+        { ...window.history.state, as: newURL.toString(), url: newURL.pathname + newURL.search },
+        "",
+        newURL.toString(),
+      );
     }
   }, [playerID]);
 
