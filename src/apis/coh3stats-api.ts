@@ -59,7 +59,7 @@ const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
 };
 
 const getTwitchStreamsUrl = () => {
-  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/sharedAPIGen2Http/utils/twitch`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/utils/twitch`);
 };
 
 const getSearchUrl = (searchQuery: string) => {
