@@ -293,7 +293,7 @@ const TeamLeaderboards: React.FC = () => {
                     ),
                     accessor: "elo",
                     textAlign: "center",
-                    width: 70,
+                    width: 80,
                     render: ({ elo }) => Math.round(elo),
                   },
                   {
