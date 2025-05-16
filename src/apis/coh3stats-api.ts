@@ -677,16 +677,11 @@ const getTeamLeaderboardsUrl = (
   orderBy: "elo" | "total",
   limit: number,
   cursor?: string,
-  direction?: "next" | "previous",
 ) => {
   let path = `/sharedAPIGen2Http/teams/leaderboards?side=${side}&type=${type}&orderBy=${orderBy}&limit=${limit}`;
 
   if (cursor) {
     path += `&cursor=${cursor}`;
-  }
-
-  if (direction) {
-    path += `&direction=${direction}`;
   }
 
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
@@ -698,11 +693,8 @@ const getTeamLeaderboards = async (
   orderBy: "elo" | "total",
   limit: number,
   cursor?: string,
-  direction?: "next" | "previous",
 ): Promise<TeamLeaderboardResponse> => {
-  const response = await fetch(
-    getTeamLeaderboardsUrl(side, type, orderBy, limit, cursor, direction),
-  );
+  const response = await fetch(getTeamLeaderboardsUrl(side, type, orderBy, limit, cursor));
 
   if (response.ok) {
     return await response.json();

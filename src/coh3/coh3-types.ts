@@ -610,7 +610,6 @@ export interface TeamLeaderboardEntry {
   l: number;
   s: number;
   t: number;
-  bestElo: number;
   lmTS: number | null;
 }
 
@@ -618,5 +617,4 @@ export interface TeamLeaderboardResponse {
   teams: TeamLeaderboardEntry[];
   totalTeams: number;
   nextCursor: string | null;
-  previousCursor: string | null;
 }

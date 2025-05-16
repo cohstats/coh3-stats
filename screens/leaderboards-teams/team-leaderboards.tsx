@@ -16,7 +16,11 @@ import {
 import { DataTable } from "mantine-datatable";
 import { AnalyticsLeaderBoardsPageView } from "../../src/firebase/analytics";
 import { getTeamLeaderboards } from "../../src/apis/coh3stats-api";
-import { TeamLeaderboardResponse, leaderBoardType } from "../../src/coh3/coh3-types";
+import {
+  TeamLeaderboardEntry,
+  TeamLeaderboardResponse,
+  leaderBoardType,
+} from "../../src/coh3/coh3-types";
 import { localizedGameTypes } from "../../src/coh3/coh3-data";
 import ErrorCard from "../../components/error-card";
 import CountryFlag from "../../components/country-flag";
@@ -40,11 +44,13 @@ const TeamLeaderboards: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<TeamLeaderboardResponse | null>(null);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [previousCursor, setPreviousCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [recordsPerPage, setRecordsPerPage] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
+
+  // Store all fetched teams in memory for pagination
+  const [allTeams, setAllTeams] = useState<TeamLeaderboardEntry[]>([]);
 
   // Load initial data
   useEffect(() => {
@@ -53,13 +59,16 @@ const TeamLeaderboards: React.FC = () => {
       setError(null);
       setCurrentPage(1);
       setStartIndex(0);
+      setAllTeams([]);
 
       try {
-        // Initial load - no cursor or direction needed
+        // Initial load - no cursor needed
         const data = await getTeamLeaderboards(side, type, orderBy, recordsPerPage);
         setLeaderboardData(data);
         setNextCursor(data.nextCursor);
-        setPreviousCursor(data.previousCursor);
+
+        // Store the teams in our all teams array
+        setAllTeams(data.teams);
       } catch (err) {
         console.error("Error fetching team leaderboards:", err);
         setError(err instanceof Error ? err.message : String(err));
@@ -111,26 +120,50 @@ const TeamLeaderboards: React.FC = () => {
 
   // Handle next page
   const handleNextPage = async () => {
-    if (!nextCursor || loadingMore) return;
+    if (loadingMore) return;
+
+    const nextPage = currentPage + 1;
+    const nextPageStartIndex = startIndex + recordsPerPage;
+
+    // Check if we already have data for the next page in memory
+    if (allTeams.length > nextPageStartIndex) {
+      // We already have this page in memory, just update the current page
+      setCurrentPage(nextPage);
+      setStartIndex(nextPageStartIndex);
+
+      // Update the displayed data
+      const teamsForPage = allTeams.slice(
+        nextPageStartIndex,
+        nextPageStartIndex + recordsPerPage,
+      );
+      if (leaderboardData) {
+        setLeaderboardData({
+          ...leaderboardData,
+          teams: teamsForPage,
+        });
+      }
+      return;
+    }
+
+    // We need to fetch more data
+    if (!nextCursor) return;
 
     setLoadingMore(true);
 
     try {
-      // For next page, we use the nextCursor with "next" direction
-      const data = await getTeamLeaderboards(
-        side,
-        type,
-        orderBy,
-        recordsPerPage,
-        nextCursor,
-        "next",
-      );
+      // Fetch the next page using the nextCursor
+      const data = await getTeamLeaderboards(side, type, orderBy, recordsPerPage, nextCursor);
 
+      // Update the displayed data
       setLeaderboardData(data);
       setNextCursor(data.nextCursor);
-      setPreviousCursor(data.previousCursor);
-      setCurrentPage(currentPage + 1);
-      setStartIndex(startIndex + recordsPerPage);
+
+      // Add the new teams to our all teams array
+      setAllTeams((prev) => [...prev, ...data.teams]);
+
+      // Update the current page and start index
+      setCurrentPage(nextPage);
+      setStartIndex(nextPageStartIndex);
     } catch (err) {
       console.error("Error loading next page of team leaderboards:", err);
     } finally {
@@ -139,31 +172,23 @@ const TeamLeaderboards: React.FC = () => {
   };
 
   // Handle previous page
-  const handlePreviousPage = async () => {
-    if (!previousCursor || loadingMore) return;
+  const handlePreviousPage = () => {
+    if (currentPage <= 1 || loadingMore) return;
 
-    setLoadingMore(true);
+    const prevPage = currentPage - 1;
+    const prevPageStartIndex = Math.max(0, startIndex - recordsPerPage);
 
-    try {
-      // For previous page, we use the previousCursor with "previous" direction
-      const data = await getTeamLeaderboards(
-        side,
-        type,
-        orderBy,
-        recordsPerPage,
-        previousCursor,
-        "previous",
-      );
+    // We always have previous pages in memory
+    setCurrentPage(prevPage);
+    setStartIndex(prevPageStartIndex);
 
-      setLeaderboardData(data);
-      setNextCursor(data.nextCursor);
-      setPreviousCursor(data.previousCursor);
-      setCurrentPage(currentPage - 1);
-      setStartIndex(Math.max(0, startIndex - recordsPerPage));
-    } catch (err) {
-      console.error("Error loading previous page of team leaderboards:", err);
-    } finally {
-      setLoadingMore(false);
+    // Update the displayed data from memory
+    const teamsForPage = allTeams.slice(prevPageStartIndex, prevPageStartIndex + recordsPerPage);
+    if (leaderboardData) {
+      setLeaderboardData({
+        ...leaderboardData,
+        teams: teamsForPage,
+      });
     }
   };
 
@@ -388,7 +413,7 @@ const TeamLeaderboards: React.FC = () => {
                   <Group gap="xs">
                     <Button
                       variant="outline"
-                      disabled={!previousCursor || loadingMore || currentPage === 1}
+                      disabled={loadingMore || currentPage === 1}
                       onClick={handlePreviousPage}
                     >
                       {t("leaderboards:teams.pagination.previous")}
