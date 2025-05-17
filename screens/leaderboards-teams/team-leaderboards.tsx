@@ -14,7 +14,7 @@ import {
   Button,
 } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
-import { AnalyticsLeaderBoardsPageView } from "../../src/firebase/analytics";
+import { AnalyticsTeamLeaderBoardsPageView } from "../../src/firebase/analytics";
 import { getTeamLeaderboards } from "../../src/apis/coh3stats-api";
 import {
   TeamLeaderboardEntry,
@@ -80,7 +80,7 @@ const TeamLeaderboards: React.FC = () => {
     fetchData();
 
     // Track page view
-    AnalyticsLeaderBoardsPageView("team", type);
+    AnalyticsTeamLeaderBoardsPageView(side, type);
   }, [side, type, orderBy, recordsPerPage]);
 
   // Handle filter changes

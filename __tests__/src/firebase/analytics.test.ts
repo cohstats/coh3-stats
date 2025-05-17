@@ -7,6 +7,7 @@ import {
   AnalyticsPlayerCardNemesisView,
   AnalyticsPlayerCardActivityView,
   AnalyticsPlayerCardDetailedStatsView,
+  AnalyticsTeamLeaderBoardsPageView,
 } from "../../../src/firebase/analytics";
 import webFirebase from "../../../src/firebase/web-firebase";
 
@@ -92,5 +93,14 @@ describe("Firebase Analytics", () => {
     expect(webFirebase.logFBEvent).toHaveBeenCalledWith("player_card_detailed_stats_view", {
       profile_id: profileId,
     });
+  });
+
+  test("AnalyticsTeamLeaderBoardsPageView should log correct events", () => {
+    const side = "axis";
+    const type = "2v2";
+    AnalyticsTeamLeaderBoardsPageView(side, type);
+
+    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("team_leaderboards_view");
+    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("team_leaderboards_axis_2v2_view");
   });
 });

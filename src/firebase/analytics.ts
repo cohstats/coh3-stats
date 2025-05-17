@@ -188,3 +188,8 @@ export const AnalyticsTeamDetailsTabView = (
 export const AnalyticsTeamsStandingsTabView = (profile_id?: number | string): void => {
   logFBEvent("player_card_teams_standings_view", { profile_id });
 };
+
+export const AnalyticsTeamLeaderBoardsPageView = (side: string, type: string): void => {
+  logFBEvent("team_leaderboards_view");
+  logFBEvent(`team_leaderboards_${side}_${type}_view`);
+};
