@@ -20,6 +20,7 @@ import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/a
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import nextI18NextConfig from "../../../../../next-i18next.config";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -134,10 +135,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export const getStaticPaths: GetStaticPaths<{ unitId: string }> = async () => {
+export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
+  // Get all supported locales from the config
+  const { locales } = nextI18NextConfig.i18n;
+
+  // Define the race IDs
+  const raceIds = ["dak", "american", "british", "german"];
+
+  // Generate paths for all combinations of race IDs and locales
+  const paths = raceIds.flatMap((raceId) =>
+    locales.map((locale) => ({
+      params: { raceId },
+      locale,
+    })),
+  );
+
   return {
-    paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths,
+    fallback: "blocking", // can also be true or 'blocking'
   };
 };
 

@@ -32,6 +32,7 @@ import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import nextI18NextConfig from "../../../next-i18next.config";
 
 // New interface for pre-calculated building data
 interface PreCalculatedBuilding {
@@ -288,35 +289,24 @@ function preCalculateBuildings(
   });
 }
 
-// Generates `/dak`.
+// Generates paths for all race types and supported locales
 export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
-  // Some locale paths are pre-generated, other will be generated on demand.
+  // Get all supported locales from the config
+  const { locales } = nextI18NextConfig.i18n;
+
+  // Define the race IDs
+  const raceIds = ["dak", "american", "british", "german"];
+
+  // Generate paths for all combinations of race IDs and locales
+  const paths = raceIds.flatMap((raceId) =>
+    locales.map((locale) => ({
+      params: { raceId },
+      locale,
+    })),
+  );
+
   return {
-    paths: [
-      { params: { raceId: "dak" }, locale: "en" },
-      { params: { raceId: "dak" }, locale: "de" },
-      { params: { raceId: "dak" }, locale: "ko" },
-      { params: { raceId: "dak" }, locale: "zh-Hans" },
-      { params: { raceId: "dak" }, locale: "zh-Hant" },
-
-      { params: { raceId: "american" }, locale: "en" },
-      { params: { raceId: "american" }, locale: "de" },
-      { params: { raceId: "american" }, locale: "ko" },
-      { params: { raceId: "american" }, locale: "zh-Hans" },
-      { params: { raceId: "american" }, locale: "zh-Hant" },
-
-      { params: { raceId: "british" }, locale: "en" },
-      { params: { raceId: "british" }, locale: "de" },
-      { params: { raceId: "british" }, locale: "ko" },
-      { params: { raceId: "british" }, locale: "zh-Hans" },
-      { params: { raceId: "british" }, locale: "zh-Hant" },
-
-      { params: { raceId: "german" }, locale: "en" },
-      { params: { raceId: "german" }, locale: "de" },
-      { params: { raceId: "german" }, locale: "ko" },
-      { params: { raceId: "german" }, locale: "zh-Hans" },
-      { params: { raceId: "german" }, locale: "zh-Hant" },
-    ],
+    paths,
     fallback: "blocking", // can also be true or 'blocking'
   };
 };
