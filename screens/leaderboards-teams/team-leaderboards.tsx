@@ -27,7 +27,7 @@ import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
 import Link from "next/link";
 import { Anchor } from "@mantine/core";
-import { getPlayerCardRoute } from "../../src/routes";
+import { getPlayerCardRoute, getTeamDetailsRoute } from "../../src/routes";
 import HelperIcon from "../../components/icon/helper";
 import FactionIcon from "../../components/faction-icon";
 
@@ -297,6 +297,7 @@ const TeamLeaderboards: React.FC = () => {
                 verticalSpacing={4}
                 fz="sm"
                 minHeight={300}
+                fetching={loadingMore}
                 records={leaderboardData.teams}
                 columns={[
                   {
@@ -379,6 +380,26 @@ const TeamLeaderboards: React.FC = () => {
                     textAlign: "right",
                     width: 130,
                     render: ({ lmTS }) => (lmTS ? <DynamicTimeAgo timestamp={lmTS} /> : "N/A"),
+                  },
+                  {
+                    title: "",
+                    accessor: "actions",
+                    textAlign: "right",
+                    width: 100,
+                    render: (team) => (
+                      <Button
+                        component={Link}
+                        href={
+                          team.players.length > 0
+                            ? getTeamDetailsRoute(team.players[0].profile_id, team.id)
+                            : "#"
+                        }
+                        variant="default"
+                        size="compact-md"
+                      >
+                        Details
+                      </Button>
+                    ),
                   },
                 ]}
               />

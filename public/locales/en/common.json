@@ -1,6 +1,8 @@
 {
   "mainMenu": {
     "leaderboards": "Leaderboards",
+    "regularLeaderboards": "Regular Leaderboards",
+    "teamLeaderboards": "Team Leaderboards",
     "statistics": "Statistics",
     "statsMenu": {
       "games": "Games Stats",

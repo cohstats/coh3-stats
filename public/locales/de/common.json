@@ -1,6 +1,8 @@
 {
   "mainMenu": {
     "leaderboards": "Bestenlisten",
+    "regularLeaderboards": "Reguläre Bestenlisten",
+    "teamLeaderboards": "Team-Bestenlisten",
     "statistics": "Statistiken",
     "statsMenu": {
       "games": "Spielstatistiken",

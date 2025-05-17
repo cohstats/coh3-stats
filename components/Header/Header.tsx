@@ -160,7 +160,7 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
             </div>
           </HoverCard.Target>
           <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-            <LeaderboardsMenu />
+            <LeaderboardsMenu t={t} />
           </HoverCard.Dropdown>
         </HoverCard>
         <StatisticsMenu classes={classes} t={t} />

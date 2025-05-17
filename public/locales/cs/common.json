@@ -1,6 +1,8 @@
 {
   "mainMenu": {
     "leaderboards": "Žebříčky",
+    "regularLeaderboards": "Běžné žebříčky",
+    "teamLeaderboards": "Týmové žebříčky",
     "statistics": "Statistiky",
     "statsMenu": {
       "games": "Statistiky her",

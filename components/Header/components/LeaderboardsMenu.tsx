@@ -9,6 +9,7 @@ import Link from "next/link";
 import { getLeaderBoardRoute, getTeamLeaderboardsRoute } from "../../../src/routes";
 import React from "react";
 import FactionIcon from "../../../components/faction-icon";
+import { TFunction } from "next-i18next";
 
 // Shorter faction names for the menu
 const shortFactionNames: Record<raceType, string> = {
@@ -18,7 +19,11 @@ const shortFactionNames: Record<raceType, string> = {
   british: "British",
 };
 
-const LeaderboardsMenu = () => {
+interface LeaderboardsMenuProps {
+  t: TFunction;
+}
+
+const LeaderboardsMenu: React.FC<LeaderboardsMenuProps> = ({ t }) => {
   return (
     <Stack>
       <SimpleGrid cols={4} spacing={0}>
@@ -29,7 +34,7 @@ const LeaderboardsMenu = () => {
                 <FactionIcon name={faction} width={24} />
                 <Text fw={700}>{shortFactionNames[faction]}</Text>
               </Group>
-              <Divider my="sm" />
+              <Divider my="xs" />
               {leaderBoardTypeArray.map((type) => {
                 return (
                   <Text key={`${faction}_${type}`} ta="center">
@@ -47,17 +52,17 @@ const LeaderboardsMenu = () => {
         })}
       </SimpleGrid>
 
-      <Divider my="sm" />
+      <Divider m={0} />
 
       <Text fw={700} size="lg" ta="center">
-        Team Leaderboards
+        {t("mainMenu.teamLeaderboards", "Team Leaderboards")}
       </Text>
       <SimpleGrid cols={2} spacing={0}>
         <div>
           <Group justify="center">
-            <Text fw={700}>Axis</Text>
+            <Text fw={700}>{t("leaderboards:teams.filters.axis", "Axis")}</Text>
           </Group>
-          <Divider my="sm" />
+          <Divider my="xs" />
           {["2v2", "3v3", "4v4"].map((type) => (
             <Text key={`axis_${type}`} ta="center">
               <Anchor
@@ -74,9 +79,9 @@ const LeaderboardsMenu = () => {
         </div>
         <div>
           <Group justify="center">
-            <Text fw={700}>Allies</Text>
+            <Text fw={700}>{t("leaderboards:teams.filters.allies", "Allies")}</Text>
           </Group>
-          <Divider my="sm" />
+          <Divider my="xs" />
           {["2v2", "3v3", "4v4"].map((type) => (
             <Text key={`allies_${type}`} ta="center">
               <Anchor

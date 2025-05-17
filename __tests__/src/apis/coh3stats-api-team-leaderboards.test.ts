@@ -49,7 +49,6 @@ describe("Team Leaderboards API functions", () => {
           l: 5,
           s: 3,
           t: 15,
-          bestElo: 1600,
           lmTS: 1625097600,
         },
         {
@@ -65,13 +64,11 @@ describe("Team Leaderboards API functions", () => {
           l: 7,
           s: -2,
           t: 15,
-          bestElo: 1500,
           lmTS: 1625184000,
         },
       ],
       totalTeams: 2,
       nextCursor: "next-cursor-token",
-      previousCursor: null,
     };
 
     test("should fetch team leaderboards successfully", async () => {

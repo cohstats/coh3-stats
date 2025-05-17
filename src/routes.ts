@@ -160,3 +160,7 @@ export const getTeamLeaderboardsRoute = (
   }
   return encodeURI(`/leaderboards-teams${searchParamString}`);
 };
+
+export const getTeamDetailsRoute = (profileId: string | number, teamId: string | number) => {
+  return encodeURI(`/players/${profileId}?view=teamDetails&team=${teamId}`);
+};

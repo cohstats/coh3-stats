@@ -1,6 +1,8 @@
 {
   "mainMenu": {
     "leaderboards": "Clasificación",
+    "regularLeaderboards": "Clasificación Regular",
+    "teamLeaderboards": "Clasificación de Equipos",
     "statistics": "Estadísticas",
     "statsMenu": {
       "games": "Estadísticas del juego",

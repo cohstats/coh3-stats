@@ -1,6 +1,8 @@
 {
   "mainMenu": {
     "leaderboards": "Таблица лидеров",
+    "regularLeaderboards": "Обычная таблица лидеров",
+    "teamLeaderboards": "Командная таблица лидеров",
     "statistics": "Статистика",
     "statsMenu": {
       "games": "Игровая статистика",

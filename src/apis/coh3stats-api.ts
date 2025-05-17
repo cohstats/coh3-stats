@@ -27,7 +27,7 @@ import { getMatchURlsWithoutLeavers } from "../coh3/helpers";
 export const GET_ANALYSIS_STATS = "v10";
 
 const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
-  const path = `/getPlayerCardInfoGen2Http?relicId=${playerID}`;
+  const path = `/sharedAPIGen2Http/players/${playerID}`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
@@ -35,7 +35,7 @@ const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) =>
 };
 
 const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) => {
-  const path = `/getPlayerCardStatsGen2Http?relicId=${playerID}`;
+  const path = `/sharedAPIGen2Http/players/${playerID}/stats`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
@@ -44,7 +44,7 @@ const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) =>
 
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
   return encodeURI(
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerMatchesGen2Http?relicId=${playerID}`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/players/${playerID}/matches`,
   );
 };
 
@@ -581,7 +581,7 @@ const getOldLeaderboardData = async (
 };
 
 const getTeamsFullSummaryUrl = (profileID: string | number, cache_proxy = true) => {
-  const path = `/sharedAPIGen2Http/teams/fullSummary?profileID=${profileID}`;
+  const path = `/sharedAPIGen2Http/players/${profileID}/teams`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
@@ -589,7 +589,7 @@ const getTeamsFullSummaryUrl = (profileID: string | number, cache_proxy = true) 
 };
 
 const getTeamDetailsUrl = (teamID: string | number, cache_proxy = true) => {
-  const path = `/sharedAPIGen2Http/teams/details/${teamID}`;
+  const path = `/sharedAPIGen2Http/teams/${teamID}`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
