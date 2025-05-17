@@ -93,12 +93,12 @@ describe("Team Leaderboards API functions", () => {
       // @ts-ignore
       global.fetch.mockImplementation(setupFetchStub(mockLeaderboardResponse));
 
-      await getTeamLeaderboards(mockSide, mockType, "total", 10, "cursor-token", "next");
+      await getTeamLeaderboards(mockSide, mockType, "total", 10, "cursor-token");
 
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining(
-          `/sharedAPIGen2Http/teams/leaderboards?side=${mockSide}&type=${mockType}&orderBy=total&limit=10&cursor=cursor-token&direction=next`,
+          `/sharedAPIGen2Http/teams/leaderboards?side=${mockSide}&type=${mockType}&orderBy=total&limit=10&cursor=cursor-token`,
         ),
       );
     });
