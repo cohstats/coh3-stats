@@ -83,9 +83,7 @@ describe("Teams API functions", () => {
       expect(result).toEqual(mockTeamsData);
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining(
-          `/sharedAPIGen2Http/teams/fullSummary?profileID=${mockProfileId}`,
-        ),
+        expect.stringContaining(`/sharedAPIGen2Http/players/${mockProfileId}/teams`),
       );
     });
 
@@ -147,7 +145,7 @@ describe("Teams API functions", () => {
       expect(result).toEqual(mockTeamDetails);
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining(`/sharedAPIGen2Http/teams/details/${mockTeamId}`),
+        expect.stringContaining(`/sharedAPIGen2Http/teams/${mockTeamId}`),
       );
     });
 
