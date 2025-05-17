@@ -8,5 +8,21 @@
     "platform": "Платформа",
     "faction": "Фракция",
     "type": "Режим"
+  },
+  "teams": {
+    "title": "Командная таблица лидеров",
+    "pageTitle": "Командная таблица лидеров - {{side}} {{type}}",
+    "metaDescription": "Командная таблица лидеров для команд {{side}} и режима игры {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Сторона",
+      "type": "Режим",
+      "orderBy": "Сортировать по"
+    },
+    "pagination": {
+      "itemsPerPage": "Элементов на странице",
+      "previous": "Назад",
+      "next": "Далее",
+      "showingRange": "Показано {{start}} - {{end}} из {{total}} команд"
+    }
   }
 }

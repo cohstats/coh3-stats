@@ -8,5 +8,21 @@
     "platform": "Platforma",
     "faction": "Frakce",
     "type": "Typ"
+  },
+  "teams": {
+    "title": "Týmové žebříčky",
+    "pageTitle": "Týmové žebříčky pro {{side}} {{type}}",
+    "metaDescription": "Týmové žebříčky pro {{side}} týmy a typ hry {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Strana",
+      "type": "Typ",
+      "orderBy": "Seřadit podle"
+    },
+    "pagination": {
+      "itemsPerPage": "Položek na stránku",
+      "previous": "Předchozí",
+      "next": "Další",
+      "showingRange": "Zobrazeno {{start}} - {{end}} z {{total}} týmů"
+    }
   }
 }

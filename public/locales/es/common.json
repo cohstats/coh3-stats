@@ -34,7 +34,8 @@
     "supportUs": "Apóyanos"
   },
   "header": {
-    "playerInGames": "Jugadores en partida"
+    "playerInGames": "Jugadores en partida",
+    "onlinePlayersTooltip": "Número de jugadores en línea en Company of Heroes 3 a fecha de {{date}}"
   },
   "footer": {
     "gamePatch": "Parche del juego",

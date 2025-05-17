@@ -8,5 +8,21 @@
     "platform": "Plataforma",
     "faction": "Facción",
     "type": "Tipo"
+  },
+  "teams": {
+    "title": "Clasificación de Equipos",
+    "pageTitle": "Clasificación de Equipos para {{side}} {{type}}",
+    "metaDescription": "Clasificación de equipos para {{side}} y tipo de juego {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Bando",
+      "type": "Tipo",
+      "orderBy": "Ordenar por"
+    },
+    "pagination": {
+      "itemsPerPage": "Elementos por página",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "showingRange": "Mostrando {{start}} - {{end}} de {{total}} equipos"
+    }
   }
 }

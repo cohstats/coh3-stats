@@ -8,5 +8,21 @@
     "platform": "Plattform",
     "faction": "Fraktion",
     "type": "Typ"
+  },
+  "teams": {
+    "title": "Team-Bestenlisten",
+    "pageTitle": "Team-Bestenlisten für {{side}} {{type}}",
+    "metaDescription": "Team-Bestenlisten für {{side}}-Teams und Spieltyp {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Seite",
+      "type": "Typ",
+      "orderBy": "Sortieren nach"
+    },
+    "pagination": {
+      "itemsPerPage": "Einträge pro Seite",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "showingRange": "Zeige {{start}} - {{end}} von {{total}} Teams"
+    }
   }
 }
