@@ -59,8 +59,13 @@ const LeaderboardsMenu: React.FC<LeaderboardsMenuProps> = ({ t }) => {
       </Text>
       <SimpleGrid cols={2} spacing={0}>
         <div>
-          <Group justify="center">
-            <Text fw={700}>{t("leaderboards:teams.filters.axis", "Axis")}</Text>
+          <Group justify="center" gap={4}>
+            <FactionIcon name={"german"} width={22} />
+            <FactionIcon name={"dak"} width={22} />
+            <Text fw={700} size={"lg"}>
+              {" "}
+              {t("leaderboards:teams.filters.axis", "Axis")}
+            </Text>
           </Group>
           <Divider my="xs" />
           {["2v2", "3v3", "4v4"].map((type) => (
@@ -78,8 +83,12 @@ const LeaderboardsMenu: React.FC<LeaderboardsMenuProps> = ({ t }) => {
           ))}
         </div>
         <div>
-          <Group justify="center">
-            <Text fw={700}>{t("leaderboards:teams.filters.allies", "Allies")}</Text>
+          <Group justify="center" gap={4}>
+            <FactionIcon name={"american"} width={22} />
+            <FactionIcon name={"british"} width={22} />
+            <Text fw={700} size={"lg"}>
+              {t("leaderboards:teams.filters.allies", "Allies")}
+            </Text>
           </Group>
           <Divider my="xs" />
           {["2v2", "3v3", "4v4"].map((type) => (
