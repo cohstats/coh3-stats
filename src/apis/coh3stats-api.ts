@@ -69,7 +69,7 @@ const getSearchUrl = (searchQuery: string) => {
 };
 
 const getGlobalAchievementsUrl = (cache_proxy = true) => {
-  const path = `/getGlobalAchievementsHttp`;
+  const path = `/sharedAPIGen2Http/utils/globalAchievements`;
 
   return cache_proxy
     ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
