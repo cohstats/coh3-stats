@@ -159,7 +159,7 @@ const TeamsTable = ({
             render: (team: TeamSummary) => (
               <Button
                 variant="default"
-                size="compact-md"
+                size="compact-sm"
                 onClick={() => navigateToTeamDetails(team.id)}
               >
                 Details

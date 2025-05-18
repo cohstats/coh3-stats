@@ -1,4 +1,4 @@
-import { Card, Center, Group, Text, Title, useMantineColorScheme, Select } from "@mantine/core";
+import { Center, Group, Text, Title, useMantineColorScheme, Select } from "@mantine/core";
 import { ResponsiveLine } from "@nivo/line";
 import { getNivoTooltipTheme } from "../../../../../components/charts/charts-components-utils";
 import React, { useState } from "react";
@@ -113,16 +113,16 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
   // If no data, show a message
   if (filteredDateData.length === 0) {
     return (
-      <Card p="md" shadow="sm" w={"100%"} withBorder>
-        <Card.Section withBorder inheritPadding py="xs">
+      <div style={{ padding: "8px", width: "100%" }}>
+        <div style={{ borderBottom: "1px solid #dee2e6", padding: "4px 8px" }}>
           <Title order={4}>{title}</Title>
-        </Card.Section>
-        <Card.Section h={300} p="xs">
+        </div>
+        <div style={{ height: 300, padding: "4px" }}>
           <Center maw={400} h={250} mx="auto">
             <h3>No match history data available</h3>
           </Center>
-        </Card.Section>
-      </Card>
+        </div>
+      </div>
     );
   }
 
@@ -141,8 +141,8 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
   }
 
   return (
-    <Card p="md" shadow="sm" w={"100%"} withBorder>
-      <Card.Section withBorder inheritPadding py="6">
+    <div style={{ padding: "8px", width: "100%" }}>
+      <div style={{ padding: "3px 8px" }}>
         <Group justify={"space-between"}>
           <Group>
             <Title order={4}>{title}</Title>
@@ -154,7 +154,7 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
             />
           </Group>
           <Group gap={"xs"}>
-            <Text fw={500}>Display last</Text>
+            <Text>Display last</Text>
             <Select
               style={{ width: 120, marginRight: 30 }}
               value={days}
@@ -168,14 +168,15 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
               ]}
               withCheckIcon={false}
               allowDeselect={false}
+              size={"xs"}
             />
           </Group>
         </Group>
-      </Card.Section>
-      <Card.Section h={250} p="xs">
+      </div>
+      <div style={{ height: 250 }}>
         <ResponsiveLine
           data={chartData}
-          margin={{ top: 25, right: 50, bottom: 30, left: 50 }}
+          margin={{ top: 15, right: 50, bottom: 30, left: 50 }}
           xFormat="time: %a - %Y-%m-%d"
           tooltip={({ point }) => (
             <div
@@ -253,8 +254,8 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
           animate={false}
           theme={getNivoTooltipTheme(colorScheme)}
         />
-      </Card.Section>
-    </Card>
+      </div>
+    </div>
   );
 };
 
