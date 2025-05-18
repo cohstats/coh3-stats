@@ -107,7 +107,8 @@
     "title": "Player Activity",
     "noData": "No activity data available",
     "filters": {
-      "timeRange": "Time Range"
+      "timeRange": "Time Range",
+      "timezone": "Timezone"
     },
     "alerts": {
       "noData": {
@@ -131,7 +132,8 @@
       "weekDay": {
         "title": "Activity by week day"
       }
-    }
+    },
+    "timezoneHelper": "The activity hour data is collected in UTC timezone. You can adjust the display to your local timezone using this selector."
   },
   "teamsStandings": {
     "title": "Arranged Teams Standings",
