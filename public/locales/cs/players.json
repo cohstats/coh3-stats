@@ -47,6 +47,7 @@
       "hideCustomGames": "Skrýt vlastní hry",
       "showAllGames": "Zobrazit všechny hry"
     },
+    "loadMore": "Načíst další zápasy",
     "table": {
       "columns": {
         "date": "Datum",
@@ -136,13 +137,60 @@
   "teamsStandings": {
     "title": "Žebříčky uspořádaných týmů",
     "noData": "Pro tohoto hráče nejsou k dispozici žádné týmové údaje",
-    "axisTeams": "Axis",
-    "alliesTeams": "Allies",
+    "axisTeams": "Osa",
+    "alliesTeams": "Spojenci",
+    "axisTeam": "Tým Osy",
+    "alliesTeam": "Tým Spojenců",
     "mostPlayed": "Nejhranější týmy",
     "mostRecent": "Nedávné týmy",
     "checkTeamDetails": "Pro historii zápasů a změn ELO zkontrolujte detaily týmu",
     "checkTeamLeaderboardsPrefix": "Podívejte se na",
-    "checkTeamLeaderboardsSuffix": "pro zjištění vašeho umístění"
+    "checkTeamLeaderboardsSuffix": "pro zjištění vašeho umístění",
+    "limitedTeams": "Omezeno pouze na 2 týmy",
+    "helperText": "Uspořádané týmy jsou sledovány pouze COH3 Stats, více informací najdete na stránce o nás"
+  },
+  "teamDetails": {
+    "title": "Detaily týmu",
+    "specificTeamTitle": "Detaily týmu",
+    "matchHistory": "Historie zápasů",
+    "eloHistory": "Historie ELO týmu",
+    "winLossHistory": "Historie výher/proher",
+    "teamNotFound": "Tým nenalezen. Zkontrolujte ID týmu a zkuste to znovu.",
+    "detailsButton": "Detaily",
+    "showingMatches": "Zobrazeno {{loaded}} z {{total}} zápasů",
+    "errorLoadingMatches": "Chyba při načítání zápasů: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "Typ",
+      "players": "Hráči",
+      "elo": "ELO",
+      "streak": "Série",
+      "wins": "Výhry",
+      "losses": "Prohry",
+      "ratio": "Poměr",
+      "total": "Celkem",
+      "lastMatch": "Poslední zápas"
+    },
+    "noData": "Nejsou k dispozici žádné údaje o týmech",
+    "eloHelper": "Neoficiální ELO sledované pouze COH3 Stats, více informací najdete na stránce o nás",
+    "bestElo": "Nejlepší {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "Hrané",
+      "result": "Výsledek",
+      "enemyElo": "ELO nepřítele",
+      "axisPlayers": "Hráči Osy",
+      "alliesPlayers": "Hráči Spojenců",
+      "map": "Mapa"
+    },
+    "noData": "Není k dispozici žádná historie zápasů",
+    "showFlags": "Zobrazit vlajky hráčů",
+    "clickForDetails": "Klikněte na řádek pro více detailů",
+    "detailsButton": "Detaily",
+    "teamEloHelper": "Toto ukazuje změnu TÝMOVÉHO ELO sledovaného COH3 Stats, toto je jiné ELO než ELO žebříčku hráče. ELO COH3 Stats se nepoužívá pro matchmaking.",
+    "playerEloHelper": "ELO zobrazené zde je individuální ELO hráče v konkrétním režimu a frakci."
   },
   "nemesis": {
     "widget": {

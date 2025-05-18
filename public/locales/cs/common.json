@@ -67,5 +67,8 @@
   },
   "search": {
     "playersAndUnits": "Hráči a jednotky"
-  }
+  },
+  "loading": "Načítání...",
+  "error": "Chyba",
+  "notFound": "Nenalezeno"
 }

@@ -47,6 +47,7 @@
       "hideCustomGames": "Ocultar partidas personalizadas",
       "showAllGames": "Mostrar todos los juegos"
     },
+    "loadMore": "Cargar más partidas",
     "table": {
       "columns": {
         "date": "Fecha",
@@ -138,11 +139,58 @@
     "noData": "No hay datos de equipos disponibles para este jugador",
     "axisTeams": "Eje",
     "alliesTeams": "Aliados",
+    "axisTeam": "Equipo del Eje",
+    "alliesTeam": "Equipo de Aliados",
     "mostPlayed": "Equipos más jugados",
     "mostRecent": "Equipos recientes",
     "checkTeamDetails": "Para el historial de partidas y cambios de ELO, consulta los detalles del equipo",
     "checkTeamLeaderboardsPrefix": "Consulta la",
-    "checkTeamLeaderboardsSuffix": "para encontrar tu clasificación"
+    "checkTeamLeaderboardsSuffix": "para encontrar tu clasificación",
+    "limitedTeams": "Limitado a 2 equipos solamente",
+    "helperText": "Los equipos organizados son rastreados solo por COH3 Stats, consulta más información en la página de acerca de"
+  },
+  "teamDetails": {
+    "title": "Detalles del equipo",
+    "specificTeamTitle": "Detalles del equipo",
+    "matchHistory": "Historial de partidas",
+    "eloHistory": "Historial de ELO del equipo",
+    "winLossHistory": "Historial de victorias/derrotas",
+    "teamNotFound": "Equipo no encontrado. Por favor, verifica el ID del equipo e inténtalo de nuevo.",
+    "detailsButton": "Detalles",
+    "showingMatches": "Mostrando {{loaded}} de {{total}} partidas",
+    "errorLoadingMatches": "Error al cargar partidas: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "Tipo",
+      "players": "Jugadores",
+      "elo": "ELO",
+      "streak": "Racha",
+      "wins": "Victorias",
+      "losses": "Derrotas",
+      "ratio": "Ratio",
+      "total": "Total",
+      "lastMatch": "Última partida"
+    },
+    "noData": "No hay datos de equipos disponibles",
+    "eloHelper": "ELO no oficial rastreado solo por COH3 Stats, consulta más información en la página de acerca de",
+    "bestElo": "Mejor {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "Jugado",
+      "result": "Resultado",
+      "enemyElo": "ELO enemigo",
+      "axisPlayers": "Jugadores del Eje",
+      "alliesPlayers": "Jugadores Aliados",
+      "map": "Mapa"
+    },
+    "noData": "No hay historial de partidas disponible",
+    "showFlags": "Mostrar banderas de jugadores",
+    "clickForDetails": "Haz clic en la fila para más detalles",
+    "detailsButton": "Detalles",
+    "teamEloHelper": "Esto muestra el cambio de ELO del EQUIPO rastreado por COH3 Stats, este es un ELO diferente al ELO de clasificación del jugador. El ELO de COH3 Stats no se utiliza para emparejamiento.",
+    "playerEloHelper": "El ELO mostrado aquí es el ELO individual del jugador en el modo y facción particular."
   },
   "nemesis": {
     "widget": {

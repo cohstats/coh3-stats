@@ -47,6 +47,7 @@
       "hideCustomGames": "Скрыть пользовательские игры",
       "showAllGames": "Показать все игры"
     },
+    "loadMore": "Загрузить больше игр",
     "table": {
       "columns": {
         "date": "Дата",
@@ -138,11 +139,58 @@
     "noData": "Для этого игрока нет данных о командах",
     "axisTeams": "Страны Оси",
     "alliesTeams": "Союзники",
+    "axisTeam": "Команда Стран Оси",
+    "alliesTeam": "Команда Союзников",
     "mostPlayed": "Чаще всего играли",
     "mostRecent": "Недавние команды",
     "checkTeamDetails": "Для просмотра истории матчей и изменений ELO проверьте детали команды",
     "checkTeamLeaderboardsPrefix": "Проверьте",
-    "checkTeamLeaderboardsSuffix": "чтобы найти свой рейтинг"
+    "checkTeamLeaderboardsSuffix": "чтобы найти свой рейтинг",
+    "limitedTeams": "Ограничено только 2 командами",
+    "helperText": "Организованные команды отслеживаются только COH3 Stats, дополнительную информацию смотрите на странице о нас"
+  },
+  "teamDetails": {
+    "title": "Детали команды",
+    "specificTeamTitle": "Детали команды",
+    "matchHistory": "История матчей",
+    "eloHistory": "История ELO команды",
+    "winLossHistory": "История побед/поражений",
+    "teamNotFound": "Команда не найдена. Пожалуйста, проверьте ID команды и попробуйте снова.",
+    "detailsButton": "Детали",
+    "showingMatches": "Показано {{loaded}} из {{total}} матчей",
+    "errorLoadingMatches": "Ошибка при загрузке матчей: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "Режим",
+      "players": "Игроки",
+      "elo": "ELO",
+      "streak": "Серия",
+      "wins": "Побед",
+      "losses": "Поражений",
+      "ratio": "Эффект.",
+      "total": "Всего",
+      "lastMatch": "Последний матч"
+    },
+    "noData": "Нет доступных данных о командах",
+    "eloHelper": "Неофициальный ELO, отслеживаемый только COH3 Stats, дополнительную информацию смотрите на странице о нас",
+    "bestElo": "Лучший {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "Сыграно",
+      "result": "Результат",
+      "enemyElo": "ELO противника",
+      "axisPlayers": "Игроки Стран Оси",
+      "alliesPlayers": "Игроки Союзников",
+      "map": "Карта"
+    },
+    "noData": "Нет доступной истории матчей",
+    "showFlags": "Показать флаги игроков",
+    "clickForDetails": "Нажмите на строку для подробностей",
+    "detailsButton": "Детали",
+    "teamEloHelper": "Это показывает изменение КОМАНДНОГО ELO, отслеживаемого COH3 Stats, это отличается от ELO рейтинга игрока. ELO COH3 Stats не используется для подбора игр.",
+    "playerEloHelper": "ELO, показанный здесь, это индивидуальный ELO игрока в конкретном режиме и фракции."
   },
   "nemesis": {
     "widget": {

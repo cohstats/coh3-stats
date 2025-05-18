@@ -67,5 +67,8 @@
   },
   "search": {
     "playersAndUnits": "Spieler und Einheiten"
-  }
+  },
+  "loading": "Wird geladen...",
+  "error": "Fehler",
+  "notFound": "Nicht gefunden"
 }
