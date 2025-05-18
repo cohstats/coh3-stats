@@ -147,13 +147,13 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
       <Stack gap="xl">
         <Stack gap={"xs"}>
           <Title order={3} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            Axis
+            {t("teamsStandings.axisTeams", "Axis")}
             <FactionIcon name="german" width={24} />
             <FactionIcon name="dak" width={24} />
           </Title>
 
           {/* Pass an empty string as title to hide it */}
-          <TeamsTable teams={displayData.axisTeams} title="" profileID={profileID} />
+          <TeamsTable teams={displayData.axisTeams} title="" profileID={profileID} t={t} />
           <Group gap={"4"} justify={"center"}>
             <Text size="sm" c="dimmed">
               {t("teamsStandings.checkTeamLeaderboardsPrefix")}
@@ -169,13 +169,13 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
 
         <Stack gap={"xs"}>
           <Title order={3} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            Allies
+            {t("teamsStandings.alliesTeams", "Allies")}
             <FactionIcon name="american" width={24} />
             <FactionIcon name="british" width={24} />
           </Title>
 
           {/* Pass an empty string as title to hide it */}
-          <TeamsTable teams={displayData.alliesTeams} title="" profileID={profileID} />
+          <TeamsTable teams={displayData.alliesTeams} title="" profileID={profileID} t={t} />
           <Group gap={"4"} justify={"center"}>
             <Text size="sm" c="dimmed">
               {t("teamsStandings.checkTeamLeaderboardsPrefix")}

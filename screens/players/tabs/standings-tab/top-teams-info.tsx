@@ -26,7 +26,10 @@ const TopTeamsInfo = ({ topTeamsSummary, t, profileID }: TopTeamsInfoProps) => {
       <Group gap="7" align="center">
         <Title order={3}>{t("teamsStandings.title")}</Title>
         <HelperIcon
-          text="Arranged teams are tracked only by COH3 Stats, see more info in the about page"
+          text={t(
+            "teamsStandings.helperText",
+            "Arranged teams are tracked only by COH3 Stats, see more info in the about page",
+          )}
           iconSize={24}
           iconStyle={{ marginBottom: 0 }}
         />
@@ -42,6 +45,7 @@ const TopTeamsInfo = ({ topTeamsSummary, t, profileID }: TopTeamsInfoProps) => {
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
           profileID={profileID}
+          t={t}
         />
         <TeamsTable
           teams={topTeamsSummary.axisTeams.mostRecent}
@@ -49,12 +53,16 @@ const TopTeamsInfo = ({ topTeamsSummary, t, profileID }: TopTeamsInfoProps) => {
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
           profileID={profileID}
+          t={t}
         />
       </Stack>
       <Group gap="xs" align="center">
         <Title order={3}>{t("teamsStandings.title")}</Title>
         <HelperIcon
-          text="Arranged teams are tracked only by COH3 Stats, see more info in the about page"
+          text={t(
+            "teamsStandings.helperText",
+            "Arranged teams are tracked only by COH3 Stats, see more info in the about page",
+          )}
           iconSize={24}
           iconStyle={{ marginBottom: 0 }}
         />
@@ -69,6 +77,7 @@ const TopTeamsInfo = ({ topTeamsSummary, t, profileID }: TopTeamsInfoProps) => {
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
           profileID={profileID}
+          t={t}
         />
         <TeamsTable
           teams={topTeamsSummary.alliesTeams.mostRecent}
@@ -76,6 +85,7 @@ const TopTeamsInfo = ({ topTeamsSummary, t, profileID }: TopTeamsInfoProps) => {
           showMoreButton={true}
           onMoreClick={navigateToTeamsStandings}
           profileID={profileID}
+          t={t}
         />
       </Stack>
     </Stack>

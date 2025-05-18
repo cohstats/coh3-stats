@@ -10,6 +10,7 @@ import HelperIcon from "../../../../components/icon/helper";
 import { Group } from "@mantine/core";
 import MoreButton from "./more-button";
 import { useRouter } from "next/router";
+import { TFunction } from "next-i18next";
 
 interface TeamsTableProps {
   teams: TeamSummary[];
@@ -18,6 +19,7 @@ interface TeamsTableProps {
   onMoreClick?: () => void;
   teamDetails?: boolean;
   profileID?: string;
+  t: TFunction;
 }
 
 const TeamsTable = ({
@@ -27,6 +29,7 @@ const TeamsTable = ({
   onMoreClick,
   teamDetails = true,
   profileID,
+  t,
 }: TeamsTableProps) => {
   const router = useRouter();
   const teamsWithLastMatch = teams.filter((team) => team.lmTS);
@@ -49,16 +52,16 @@ const TeamsTable = ({
         idAccessor={"id"}
         records={teamsWithLastMatch}
         minHeight={teamsWithLastMatch.length === 0 ? 125 : 50}
-        noRecordsText={"No teams data available"}
+        noRecordsText={t("teamsTable.noData", "No teams data available")}
         columns={[
           {
-            title: "Type",
+            title: t("teamsTable.columns.type", "Type"),
             accessor: "type",
             textAlign: "center",
             width: 70,
           },
           {
-            title: "Players",
+            title: t("teamsTable.columns.players", "Players"),
             accessor: "players",
             width: "50%",
             render: ({ players }: TeamSummary) => (
@@ -91,9 +94,12 @@ const TeamsTable = ({
           {
             title: (
               <Group gap="7" justify={"center"}>
-                <span>ELO</span>
+                <span>{t("teamsTable.columns.elo", "ELO")}</span>
                 <HelperIcon
-                  text="Unofficial ELO tracked by COH3 Stats only, see more info in the about page"
+                  text={t(
+                    "teamsTable.eloHelper",
+                    "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
+                  )}
                   iconSize={16}
                   iconStyle={{ marginBottom: 0 }}
                 />
@@ -107,14 +113,14 @@ const TeamsTable = ({
                 <span>{elo}</span>
                 {bestElo && bestElo > elo && (
                   <Text size="xs" c="dimmed">
-                    Best {bestElo}
+                    {t("teamsTable.bestElo", "Best {{elo}}", { elo: bestElo })}
                   </Text>
                 )}
               </Stack>
             ),
           },
           {
-            title: "Streak",
+            title: t("teamsTable.columns.streak", "Streak"),
             accessor: "s",
             textAlign: "center",
             render: ({ s }: TeamSummary) => (
@@ -122,29 +128,29 @@ const TeamsTable = ({
             ),
           },
           {
-            title: "Wins",
+            title: t("teamsTable.columns.wins", "Wins"),
             accessor: "w",
             textAlign: "center",
           },
           {
-            title: "Losses",
+            title: t("teamsTable.columns.losses", "Losses"),
             accessor: "l",
             textAlign: "center",
           },
           {
-            title: "Ratio",
+            title: t("teamsTable.columns.ratio", "Ratio"),
             accessor: "ratio",
             textAlign: "center",
             render: ({ w, l }: TeamSummary) => `${Math.round((w / (w + l)) * 100)}%`,
           },
           {
-            title: "Total",
+            title: t("teamsTable.columns.total", "Total"),
             accessor: "totalGames",
             textAlign: "center",
             render: ({ w, l }: TeamSummary) => w + l,
           },
           {
-            title: "Last Match",
+            title: t("teamsTable.columns.lastMatch", "Last Match"),
             accessor: "lmTS",
             textAlign: "right",
             width: 120,
@@ -162,7 +168,7 @@ const TeamsTable = ({
                 size="compact-sm"
                 onClick={() => navigateToTeamDetails(team.id)}
               >
-                Details
+                {t("teamDetails.detailsButton", "Details")}
               </Button>
             ),
           },
@@ -171,7 +177,7 @@ const TeamsTable = ({
       {showMoreButton && onMoreClick && teamsWithLastMatch.length > 0 && (
         <Group justify="flex-end" mt="0" gap={"xs"}>
           <Text size="xs" c="dimmed">
-            Limited to 2 teams only
+            {t("teamsStandings.limitedTeams", "Limited to 2 teams only")}
           </Text>
           <MoreButton onClick={onMoreClick} />
         </Group>

@@ -47,6 +47,7 @@
       "hideCustomGames": "Hide Custom Games",
       "showAllGames": "Show All Games"
     },
+    "loadMore": "Load More Matches",
     "table": {
       "columns": {
         "date": "Date",
@@ -140,11 +141,15 @@
     "noData": "No teams data available for this player",
     "axisTeams": "Axis",
     "alliesTeams": "Allies",
+    "axisTeam": "Axis Team",
+    "alliesTeam": "Allies Team",
     "mostPlayed": "Most Played Teams",
     "mostRecent": "Recent Teams",
     "checkTeamDetails": "For match and ELO change history check the team details",
     "checkTeamLeaderboardsPrefix": "Check the",
-    "checkTeamLeaderboardsSuffix": "to find your ranking"
+    "checkTeamLeaderboardsSuffix": "to find your ranking",
+    "limitedTeams": "Limited to 2 teams only",
+    "helperText": "Arranged teams are tracked only by COH3 Stats, see more info in the about page"
   },
   "teamDetails": {
     "title": "Team Details",
@@ -152,7 +157,42 @@
     "matchHistory": "Match History",
     "eloHistory": "Team ELO History",
     "winLossHistory": "Win/Loss History",
-    "teamNotFound": "Team not found. Please check the team ID and try again."
+    "teamNotFound": "Team not found. Please check the team ID and try again.",
+    "detailsButton": "Details",
+    "showingMatches": "Showing {{loaded}} of {{total}} matches",
+    "errorLoadingMatches": "Error loading matches: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "Type",
+      "players": "Players",
+      "elo": "ELO",
+      "streak": "Streak",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
+      "total": "Total",
+      "lastMatch": "Last Match"
+    },
+    "noData": "No teams data available",
+    "eloHelper": "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
+    "bestElo": "Best {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "Played",
+      "result": "Result",
+      "enemyElo": "Enemy ELO",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map"
+    },
+    "noData": "No match history available",
+    "showFlags": "Show Player Flags",
+    "clickForDetails": "Click on the row for more details",
+    "detailsButton": "Details",
+    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+    "playerEloHelper": "The ELO showned here is the individual player standing ELO in the particular mode and faction."
   },
   "nemesis": {
     "widget": {

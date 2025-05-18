@@ -15,6 +15,7 @@ import HelperIcon from "../../../../components/icon/helper";
 import DownloadReplayButton from "../recent-matches-tab/matches-table/download-replay";
 import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import MatchDetailDrawer from "../recent-matches-tab/match-detail-drawer";
+import { TFunction } from "next-i18next";
 
 interface TeamMatchesTableProps {
   matches: Array<
@@ -28,6 +29,7 @@ interface TeamMatchesTableProps {
   title: string;
   isLoadingMore: boolean;
   profileID: string;
+  t: TFunction;
 }
 
 const TeamMatchesTable = ({
@@ -35,6 +37,7 @@ const TeamMatchesTable = ({
   title,
   isLoadingMore,
   profileID,
+  t,
 }: TeamMatchesTableProps) => {
   const [showCountryFlag, setShowCountryFlag] = useLocalStorage({
     key: "show-country-flag-matches",
@@ -58,7 +61,7 @@ const TeamMatchesTable = ({
             onChange={(event) => {
               setShowCountryFlag(`${event.currentTarget.checked}`);
             }}
-            label="Show Player Flags"
+            label={t("teamMatchesTable.showFlags", "Show Player Flags")}
             size="sm"
           />
         </Group>
@@ -66,7 +69,7 @@ const TeamMatchesTable = ({
           <Group gap={5} wrap={"nowrap"}>
             <IconInfoCircle size={18} />
             <Text span size={"sm"}>
-              Click on the row for more details
+              {t("teamMatchesTable.clickForDetails", "Click on the row for more details")}
             </Text>
           </Group>
         </Flex>
@@ -81,7 +84,7 @@ const TeamMatchesTable = ({
           minHeight={400}
           fetching={isLoadingMore}
           striped
-          noRecordsText={"No match history available"}
+          noRecordsText={t("teamMatchesTable.noData", "No match history available")}
           onRowClick={({ record, event }) => {
             if (event.target instanceof Element) {
               const clickedElement = event.target as Element;
@@ -100,7 +103,7 @@ const TeamMatchesTable = ({
           }}
           columns={[
             {
-              title: "Played",
+              title: t("teamMatchesTable.columns.played", "Played"),
               accessor: "played",
               textAlign: "center",
               width: 120,
@@ -122,8 +125,13 @@ const TeamMatchesTable = ({
             {
               title: (
                 <Group gap="xs" justify="center">
-                  <Text fw="bold">Result</Text>
-                  <HelperIcon text="This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking." />
+                  <Text fw="bold">{t("teamMatchesTable.columns.result", "Result")}</Text>
+                  <HelperIcon
+                    text={t(
+                      "teamMatchesTable.teamEloHelper",
+                      "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+                    )}
+                  />
                 </Group>
               ),
               accessor: "result",
@@ -145,7 +153,7 @@ const TeamMatchesTable = ({
               },
             },
             {
-              title: "Enemy ELO",
+              title: t("teamMatchesTable.columns.enemyElo", "Enemy ELO"),
               accessor: "enemyElo",
               textAlign: "center",
               width: 100,
@@ -158,8 +166,15 @@ const TeamMatchesTable = ({
             {
               title: (
                 <Group gap="xs" justify="left">
-                  <Text fw="bold">Axis Players</Text>
-                  <HelperIcon text="The ELO showned here is the individual player standing ELO in the particular mode and faction." />
+                  <Text fw="bold">
+                    {t("teamMatchesTable.columns.axisPlayers", "Axis Players")}
+                  </Text>
+                  <HelperIcon
+                    text={t(
+                      "teamMatchesTable.playerEloHelper",
+                      "The ELO showned here is the individual player standing ELO in the particular mode and faction.",
+                    )}
+                  />
                 </Group>
               ),
               accessor: "axis_players",
@@ -186,8 +201,15 @@ const TeamMatchesTable = ({
             {
               title: (
                 <Group gap="xs" justify="left">
-                  <Text fw="bold">Allies Players</Text>
-                  <HelperIcon text="The ELO showned here is the individual player standing ELO in the particular mode and faction." />
+                  <Text fw="bold">
+                    {t("teamMatchesTable.columns.alliesPlayers", "Allies Players")}
+                  </Text>
+                  <HelperIcon
+                    text={t(
+                      "teamMatchesTable.playerEloHelper",
+                      "The ELO showned here is the individual player standing ELO in the particular mode and faction.",
+                    )}
+                  />
                 </Group>
               ),
               accessor: "allies_players",
@@ -212,7 +234,7 @@ const TeamMatchesTable = ({
               },
             },
             {
-              title: "Map",
+              title: t("teamMatchesTable.columns.map", "Map"),
               accessor: "mapname",
               textAlign: "center",
               width: 150,
@@ -238,7 +260,7 @@ const TeamMatchesTable = ({
                       open();
                     }}
                   >
-                    Details
+                    {t("teamMatchesTable.detailsButton", "Details")}
                   </Button>
                   <DownloadReplayButton match={match as unknown as ProcessedMatch} />
                 </Stack>

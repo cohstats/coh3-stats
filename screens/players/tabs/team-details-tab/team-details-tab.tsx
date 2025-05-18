@@ -301,7 +301,13 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
             </Title>
 
             {/* Display the specific team */}
-            <TeamsTable teams={[teamData]} title="" teamDetails={false} profileID={profileID} />
+            <TeamsTable
+              teams={[teamData]}
+              title=""
+              teamDetails={false}
+              profileID={profileID}
+              t={t}
+            />
           </Stack>
 
           {/* Team ELO History Chart */}
@@ -324,12 +330,16 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
               title={t("teamDetails.matchHistory", "Match History")}
               isLoadingMore={isLoadingMatches}
               profileID={profileID}
+              t={t}
             />
 
             {/* Match count information */}
             <Group justify="center" mt="xs">
               <Text size="xs" c="dimmed">
-                Showing {combinedMatches.length} of {teamData.mh?.length || 0} matches
+                {t("teamDetails.showingMatches", "Showing {{loaded}} of {{total}} matches", {
+                  loaded: combinedMatches.length,
+                  total: teamData.mh?.length || 0,
+                })}
               </Text>
             </Group>
 
@@ -337,7 +347,9 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
             {matchLoadError && (
               <Group justify="center" mt="xs">
                 <Text size="sm" c="red">
-                  Error loading matches: {matchLoadError}
+                  {t("teamDetails.errorLoadingMatches", "Error loading matches: {{error}}", {
+                    error: matchLoadError,
+                  })}
                 </Text>
               </Group>
             )}
@@ -354,7 +366,7 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
                 >
                   <Group gap={4}>
                     <IconCirclePlus size={"15"} style={{ marginBottom: -1 }} />
-                    Load More Matches
+                    {t("recentMatches.loadMore", "Load More Matches")}
                   </Group>
                 </Button>
               </Group>
