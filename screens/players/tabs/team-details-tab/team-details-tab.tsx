@@ -20,6 +20,12 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import classes from "../Players.module.css";
 import { AnalyticsTeamDetailsTabView } from "../../../../src/firebase/analytics";
+import dynamic from "next/dynamic";
+
+// Dynamically import chart components to avoid SSR issues with Nivo
+const DynamicTeamEloHistoryChart = dynamic(() => import("./charts/team-elo-history-chart"), {
+  ssr: false,
+});
 
 interface TeamDetailsTabProps {
   profileID: string;
@@ -297,6 +303,19 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
             {/* Display the specific team */}
             <TeamsTable teams={[teamData]} title="" teamDetails={false} profileID={profileID} />
           </Stack>
+
+          {/* Team ELO History Chart */}
+          {teamData.mh && teamData.mh.length > 0 && (
+            <DynamicTeamEloHistoryChart
+              matchHistory={teamData.mh}
+              title={t("teamDetails.eloHistory", "Team ELO History")}
+              startingElo={
+                teamData.elo - teamData.mh.reduce((sum, match) => sum + match.eloChange, 0)
+              }
+            />
+          )}
+
+          {/* Team Win/Loss Chart */}
 
           {/* Match history table */}
           <Stack>

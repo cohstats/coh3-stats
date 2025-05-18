@@ -144,6 +144,14 @@
     "checkTeamLeaderboardsPrefix": "Check the",
     "checkTeamLeaderboardsSuffix": "to find your ranking"
   },
+  "teamDetails": {
+    "title": "Team Details",
+    "specificTeamTitle": "Team Details",
+    "matchHistory": "Match History",
+    "eloHistory": "Team ELO History",
+    "winLossHistory": "Win/Loss History",
+    "teamNotFound": "Team not found. Please check the team ID and try again."
+  },
   "nemesis": {
     "widget": {
       "title": "Top 10 - 1v1 Nemesis",

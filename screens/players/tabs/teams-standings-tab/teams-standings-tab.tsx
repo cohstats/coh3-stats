@@ -60,17 +60,6 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
         <Text size="sm" c="dimmed">
           {t("teamsStandings.checkTeamDetails")}
         </Text>
-        <Group>
-          <Text size="sm" c="dimmed">
-            {t("teamsStandings.checkTeamLeaderboardsPrefix")}
-          </Text>
-          <Anchor component={Link} href={getTeamLeaderboardsRoute()} size="sm">
-            {t("leaderboards.teams.title", "Team Leaderboards")}
-          </Anchor>
-          <Text size="sm" c="dimmed">
-            {t("teamsStandings.checkTeamLeaderboardsSuffix")}
-          </Text>
-        </Group>
         <Space h="md" />
         <Stack align="center" gap="md">
           <Loader size="lg" />
