@@ -26,25 +26,29 @@ const RenderPlayer = ({
   return (
     <div key={playerInfo.profile_id}>
       <Group gap={"xs"}>
-        <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
-        {type !== "ai" && type !== "custom" && (
+        {playerInfo && (
           <>
-            R<span style={{ width: "4ch", textAlign: "left" }}>{playerInfo.rank}</span>{" "}
+            <FactionIcon name={raceIDs[playerInfo.race_id as raceID]} width={20} />
+            {type !== "ai" && type !== "custom" && (
+              <>
+                R<span style={{ width: "4ch", textAlign: "left" }}>{playerInfo.rank}</span>{" "}
+              </>
+            )}
+            <Anchor
+              rel={"referrer"}
+              key={playerInfo.profile_id}
+              component={Link}
+              href={`/players/${playerInfo.profile_id}`}
+            >
+              <Text span fz={"sm"}>
+                <Group gap="xs">
+                  {renderFlag && <CountryFlag countryCode={playerInfo.player_profile?.country} />}
+                  <EllipsisText text={playerInfo.player_profile?.alias} />
+                </Group>
+              </Text>
+            </Anchor>
           </>
         )}
-        <Anchor
-          rel={"referrer"}
-          key={playerInfo.profile_id}
-          component={Link}
-          href={`/players/${playerInfo.profile_id}`}
-        >
-          <Text span fz={"sm"}>
-            <Group gap="xs">
-              {renderFlag && <CountryFlag countryCode={playerInfo.player_profile.country} />}
-              <EllipsisText text={playerInfo.player_profile["alias"]} />
-            </Group>
-          </Text>
-        </Anchor>
       </Group>
     </div>
   );
