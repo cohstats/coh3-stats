@@ -1,6 +1,6 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAnalytics, Analytics, setUserProperties, logEvent } from "firebase/analytics";
-import { getPerformance } from "firebase/performance";
+// import { getPerformance } from "firebase/performance";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { getFirestore, Firestore, connectFirestoreEmulator } from "firebase/firestore";
 
@@ -19,8 +19,8 @@ const init = (): void => {
   app = initializeApp(config.getFirebaseConfig());
   if (app.name && typeof window !== "undefined") {
     analytics = getAnalytics(app);
-    // This is OK we just need to "getPerf" to initialize it
-    performance = getPerformance(app);
+    // Disable firebase performance, it's reporting shit values
+    // performance = getPerformance(app);
     setUserProperties(analytics, { custom_platform: "web_app" });
   }
 
