@@ -12,15 +12,13 @@ export const WeaponTableColumnKeys = [
   "id", // it's used for key in the table
   "faction", // is used for filtering
   "type", // is used for filtering
-  "faction_icon",
-  "type_icon",
   "icon_name",
   "screen_name",
-  "accuracy_near",
-  "accuracy_mid",
-  "accuracy_far",
-  "moving_accuracy_multiplier",
-  "moving_cooldown_multiplier",
+  "accu_near",
+  "accu_mid",
+  "accu_far",
+  "mv_accu_mul",
+  "mv_cd_mul",
   "rpm_near",
   "rpm_mid",
   "rpm_far",
@@ -30,30 +28,28 @@ export const WeaponTableColumnKeys = [
   "pen_near",
   "pen_mid",
   "pen_far",
-  "scatter_near",
-  "scatter_mid",
-  "scatter_far",
-  "damage_min",
-  "damage_max",
-  "aoe_damage_far",
-  "aoe_damage_mid",
-  "aoe_damage_near",
+  "sct_near",
+  "sct_mid",
+  "sct_far",
+  "dmg_min",
+  "dmg_max",
+  "aoe_damage_far", // aoe_damage_far
+  "aoe_damage_mid", // aoe_damage_mid
+  "aoe_damage_near", // aoe_damage_near
 ] as const;
 
 export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[number], any> {
   id: string; // it's used for key in the table
   faction: string; // is used for filtering
   type: (typeof WeaponClass)[number]; // is used for filtering
-  faction_icon: string;
-  type_icon: string;
   icon_name: string | null;
   screen_name: string;
   // WTF is accuracy "near" :D
-  accuracy_near: number | "near";
-  accuracy_mid: number;
-  accuracy_far: number;
-  moving_accuracy_multiplier: number | "-";
-  moving_cooldown_multiplier: number | "-";
+  accu_near: number | "near"; // accuracy_near
+  accu_mid: number; // accuracy_mid
+  accu_far: number; // accuracy_far
+  mv_accu_mul: number | "-"; // moving_accuracy_multiplier
+  mv_cd_mul: number | "-"; // moving_cooldown_multiplier
   rpm_near: number | "-";
   rpm_mid: number | "-";
   rpm_far: number | "-";
@@ -63,14 +59,14 @@ export interface WeaponTableRow extends Record<(typeof WeaponTableColumnKeys)[nu
   pen_near: number | "-";
   pen_mid: number | "-";
   pen_far: number | "-";
-  scatter_near: number | "-";
-  scatter_mid: number | "-";
-  scatter_far: number | "-";
-  damage_min: number;
-  damage_max: number;
-  aoe_damage_far: number;
-  aoe_damage_mid: number;
-  aoe_damage_near: number;
+  sct_near: number | "-"; // scatter_near
+  sct_mid: number | "-"; // scatter_mid
+  sct_far: number | "-"; // scatter_far
+  dmg_min: number; // damage_min
+  dmg_max: number; // damage_max
+  aoe_damage_far: number; // aoe_damage_far
+  aoe_damage_mid: number; // aoe_damage_mid
+  aoe_damage_near: number; // aoe_damage_near
 }
 
 const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
@@ -85,7 +81,7 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         hidden: true,
       },
       {
-        accessor: "faction_icon",
+        accessor: "faction",
         sortKey: "faction",
         title: "Faction",
         // toggleable: true,
@@ -95,9 +91,9 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
               width={60}
               height={40}
               key={`${record.id}-faction`}
-              src={record.faction_icon}
+              src={getFactionIcon(record.faction)}
               fit="contain"
-              alt={record.type}
+              alt={record.faction}
             />
           );
         },
@@ -114,7 +110,7 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
               width={60}
               height={40}
               key={`${record.id}-type`}
-              src={record.type_icon}
+              src={getIconsPathOnCDN(getWeaponClassIcon(record.type))}
               fit="contain"
               alt={record.type}
             />
@@ -125,13 +121,16 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         accessor: "icon_name",
         sortKey: "id",
         title: "Symbol",
+        textAlign: "center",
         // toggleable: true,
         render: (record) => {
+          if (record.icon_name === null) return "-";
+
           return (
             <Image
               key={`${record.id}-icon`}
               height={40}
-              src={record.icon_name}
+              src={getIconsPathOnCDN("icons/" + record.icon_name)}
               fit="scale-down"
               alt={record.icon_name || record.id}
             />
@@ -149,7 +148,7 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
     id: "Moving Multiplayer",
     columns: [
       {
-        accessor: "moving_accuracy_multiplier",
+        accessor: "mv_accu_mul",
         title: (
           <>
             <Tooltip label={"Accuracy"}>
@@ -161,7 +160,7 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         // width: 80,
       },
       {
-        accessor: "moving_cooldown_multiplier",
+        accessor: "mv_cd_mul",
         title: (
           <>
             <Tooltip label={"Cooldown"}>
@@ -178,34 +177,34 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
     id: "Accuracy",
     columns: [
       {
-        accessor: "accuracy_near",
+        accessor: "accu_near",
         title: "Near",
         // toggleable: true,
         // width: 80,
         render: (record) => {
           // limit to 3 decimal places, but don't show them when there are none
-          if (record.accuracy_near === "near") return record.accuracy_near;
-          return parseFloat(record.accuracy_near.toFixed(3)).toString();
+          if (record.accu_near === "near") return record.accu_near;
+          return parseFloat(record.accu_near.toFixed(3)).toString();
         },
       },
       {
-        accessor: "accuracy_mid",
+        accessor: "accu_mid",
         title: "Mid",
         // toggleable: true,
         // width: 80,
         render: (record) => {
           // limit to 3 decimal places, but don't show them when there are none
-          return parseFloat(record.accuracy_mid?.toFixed(3)).toString();
+          return parseFloat(record.accu_mid?.toFixed(3)).toString();
         },
       },
       {
-        accessor: "accuracy_far",
+        accessor: "accu_far",
         title: "Far",
         // toggleable: true,
         // width: 80,
         render: (record) => {
           // limit to 3 decimal places, but don't show them when there are none
-          return parseFloat(record.accuracy_far?.toFixed(3)).toString();
+          return parseFloat(record.accu_far?.toFixed(3)).toString();
         },
       },
     ],
@@ -237,19 +236,19 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
     id: "Scatter",
     columns: [
       {
-        accessor: "scatter_near",
+        accessor: "sct_near",
         title: "Near",
         // toggleable: true,
         // width: 80,
       },
       {
-        accessor: "scatter_mid",
+        accessor: "sct_mid",
         title: "Mid",
         // toggleable: true,
         // width: 80,
       },
       {
-        accessor: "scatter_far",
+        accessor: "sct_far",
         title: "Far",
         // toggleable: true,
         // width: 80,
@@ -286,7 +285,7 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         accessor: "damage_min",
         title: "Min / Max",
         render: (record) => {
-          return `${record.damage_min} / ${record.damage_max}`;
+          return `${record.dmg_min} / ${record.dmg_max}`;
         },
       },
       // {

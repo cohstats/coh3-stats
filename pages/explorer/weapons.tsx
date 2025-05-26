@@ -5,13 +5,8 @@ import Head from "next/head";
 import { getMappings } from "../../src/unitStats/mappings";
 import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
 import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
-import {
-  getWeaponClassIcon,
-  WeaponTable,
-  WeaponTableRow,
-} from "../../components/unitStats/weaponTable";
-import { getFactionIcon, getScatterArea, getWeaponRpm } from "../../src/unitStats";
-import { getIconsPathOnCDN } from "../../src/utils";
+import { WeaponTable, WeaponTableRow } from "../../components/unitStats/weaponTable";
+import { getScatterArea, getWeaponRpm } from "../../src/unitStats";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
@@ -80,17 +75,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
       id: row.id,
       faction: row.faction,
       type: row.weapon_class,
-      type_icon: getIconsPathOnCDN(getWeaponClassIcon(row.weapon_class)),
-      faction_icon: getFactionIcon(row.faction),
-      icon_name: row.icon_name
-        ? getIconsPathOnCDN("icons/" + row.icon_name)
-        : getIconsPathOnCDN("icons/common/weapons/placeholder_weapon.png"),
+      icon_name: row.icon_name || null,
       screen_name: row.ui_name || `(*) ${row.id}`,
-      moving_accuracy_multiplier: isValidWeapon ? row.weapon_bag.moving_accuracy_multiplier : "-",
-      moving_cooldown_multiplier: isValidWeapon ? row.weapon_bag.moving_cooldown_multiplier : "-",
-      accuracy_near: row.weapon_bag.accuracy_near,
-      accuracy_mid: row.weapon_bag.accuracy_mid,
-      accuracy_far: row.weapon_bag.accuracy_far,
+      mv_accu_mul: isValidWeapon ? row.weapon_bag.moving_accuracy_multiplier : "-",
+      mv_cd_mul: isValidWeapon ? row.weapon_bag.moving_cooldown_multiplier : "-",
+      accu_near: row.weapon_bag.accuracy_near,
+      accu_mid: row.weapon_bag.accuracy_mid,
+      accu_far: row.weapon_bag.accuracy_far,
       rpm_near:
         Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_near)) || "-",
       rpm_mid: Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_mid)) || "-",
@@ -101,17 +92,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
       pen_near: isValidWeapon ? row.weapon_bag.penetration_near : "-",
       pen_mid: isValidWeapon ? row.weapon_bag.penetration_mid : "-",
       pen_far: isValidWeapon ? row.weapon_bag.penetration_far : "-",
-      scatter_near: isValidWeapon
+      sct_near: isValidWeapon
         ? Math.round(getScatterArea(row.weapon_bag.range.near, row.weapon_bag))
         : "-",
-      scatter_mid: isValidWeapon
+      sct_mid: isValidWeapon
         ? Math.round(getScatterArea(row.weapon_bag.range.mid, row.weapon_bag))
         : "-",
-      scatter_far: isValidWeapon
+      sct_far: isValidWeapon
         ? Math.round(getScatterArea(row.weapon_bag.range.far, row.weapon_bag))
         : "-",
-      damage_min: row.weapon_bag.damage_min,
-      damage_max: row.weapon_bag.damage_max,
+      dmg_min: row.weapon_bag.damage_min,
+      dmg_max: row.weapon_bag.damage_max,
       aoe_damage_near: row.weapon_bag.aoe_damage_near,
       aoe_damage_mid: row.weapon_bag.aoe_damage_mid,
       aoe_damage_far: row.weapon_bag.aoe_damage_far,
