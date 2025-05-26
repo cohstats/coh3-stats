@@ -29,8 +29,8 @@ const ActivityLastMonthsWidget = ({
   return (
     <ResponsiveTimeRange
       data={playerStatsData?.activityByDate || []}
-      from={dayjs(new Date()).subtract(4, "month").format("YYYY-MM-DD")}
-      to={dayjs(new Date()).format("YYYY-MM-DD")}
+      from={dayjs(new Date()).subtract(4, "month").locale("en").format("YYYY-MM-DD")}
+      to={dayjs(new Date()).locale("en").format("YYYY-MM-DD")}
       emptyColor={colorScheme === "light" ? "#eeeeee" : theme.colors.dark[5]}
       colors={[
         "#f15854",

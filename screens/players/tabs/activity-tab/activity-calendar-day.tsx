@@ -33,7 +33,7 @@ const ActivityCalendarDay = ({
     <ResponsiveCalendarCanvas
       data={playerStatsData.activityByDate}
       from={fromYear}
-      to={dayjs(new Date()).format("YYYY-MM-DD")}
+      to={dayjs(new Date()).locale("en").format("YYYY-MM-DD")}
       // This is dark 5 || ideally we take this from the THEME
       emptyColor={colorScheme === "light" ? "#eeeeee" : theme.colors.dark[5]}
       colors={[

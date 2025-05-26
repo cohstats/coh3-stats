@@ -6,6 +6,7 @@ import React from "react";
 import ErrorCard from "../../../components/error-card";
 import Achievement from "./achievement";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 
 const pageTitle = `Game Stats & Charts - Company of Heroes 3`;
 const description = `Global Achievements for Company of Heroes 3.`;
@@ -22,6 +23,8 @@ const GlobalAchievements = ({
   globalAchievements: GlobalAchievementsData | null;
   error: string | null;
 }) => {
+  const { locale } = useRouter();
+
   return (
     <>
       <Head>
@@ -54,7 +57,11 @@ const GlobalAchievements = ({
 
                 <Text style={{ textAlign: "center" }} fs="italic" c="dimmed" fz="sm" pt={25}>
                   Data updated on{" "}
-                  {dayjs.unix(globalAchievements.unixTimeStamp).format("YYYY-MM-DD HH:mm")} UTC
+                  {dayjs
+                    .unix(globalAchievements.unixTimeStamp)
+                    .locale(locale || "en")
+                    .format("YYYY-MM-DD HH:mm")}{" "}
+                  UTC
                 </Text>
               </>
             )}

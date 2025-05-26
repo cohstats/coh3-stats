@@ -33,14 +33,14 @@ const LiveGamesLineChart = ({
         {
           id: type,
           data: data.map((item) => ({
-            x: dayjs.unix(item.ut).format("YYYY-MM-DD HH:mm"),
+            x: dayjs.unix(item.ut).locale("en").format("YYYY-MM-DD HH:mm"),
             y: item[type],
           })),
         },
         {
           id: "All games",
           data: data.map((item) => ({
-            x: dayjs.unix(item.ut).format("YYYY-MM-DD HH:mm"),
+            x: dayjs.unix(item.ut).locale("en").format("YYYY-MM-DD HH:mm"),
             y:
               item["1v1"] + item["2v2"] + item["3v3"] + item["4v4"] + item["ai"] + item["custom"],
           })),

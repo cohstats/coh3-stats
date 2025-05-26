@@ -17,13 +17,13 @@ import { UnitUpgrade, UnitUpgradeCard } from "./unit-upgrade-card";
 import { UnitCostCard } from "./unit-cost-card";
 import { BuildingType } from "../../src/coh3";
 import { hasCost, ResourceValues, SbpsType, UpgradesType } from "../../src/unitStats";
-import Link from "next/link";
 import { raceType } from "../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { RequirementCard } from "./requirement-card";
 import { getIconsPathOnCDN } from "../../src/utils";
 
 import classes from "./Unit.module.css";
+import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
 
 type BuildingDescription = {
   /** Locstring value. Found at `screen_name/locstring/value`. */
@@ -163,7 +163,7 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
                   textDecoration: "none",
                 },
               }}
-              component={Link}
+              component={LinkWithOutPrefetch}
               href={getExplorerUnitRoute(faction as raceType, id)}
             >
               <Box p="lg" className={classes.buildingBuildCard}>
@@ -269,7 +269,7 @@ export const BuildingCard = ({
     <Flex direction="column" gap={8}>
       {BuildingCardHeader(desc, time_cost, health, t)}
 
-      <Divider mt={8}></Divider>
+      <Divider mt={8} />
 
       <Accordion multiple chevronPosition="right">
         {productionSection}

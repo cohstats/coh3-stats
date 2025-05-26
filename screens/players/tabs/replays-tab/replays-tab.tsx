@@ -34,7 +34,7 @@ const ReplaysTab = ({
   replaysData: ProcessedReplayData;
   error: string;
 }) => {
-  const { push, query } = useRouter();
+  const { push, query, locale } = useRouter();
   const { start } = query;
 
   const queryStart = parseInt(start as string) || 0;
@@ -210,7 +210,11 @@ const ReplaysTab = ({
                     <Anchor href={getPlayerCardRoute(uploaded_by.profile_id)}>
                       {uploaded_by.name}
                     </Anchor>{" "}
-                    on {dayjs(uploaded_at).format("YYYY-MM-DD HH:mm")} UTC
+                    on{" "}
+                    {dayjs(uploaded_at)
+                      .locale(locale || "en")
+                      .format("YYYY-MM-DD HH:mm")}{" "}
+                    UTC
                   </Text>
                 </div>
               );

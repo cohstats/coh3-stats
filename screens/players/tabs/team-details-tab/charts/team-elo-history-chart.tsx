@@ -69,7 +69,7 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
   const dateData = Object.values(matchesByDate).sort((a, b) => a.timestamp - b.timestamp);
 
   // Filter data based on selected time period
-  const pastDate = dayjs().subtract(parseInt(days), "day").format("YYYY-MM-DD");
+  const pastDate = dayjs().subtract(parseInt(days), "day").locale("en").format("YYYY-MM-DD");
   const filteredDateData = dateData.filter((day) => !dayjs(day.date).isBefore(pastDate));
 
   // Calculate cumulative ELO

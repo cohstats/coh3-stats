@@ -25,6 +25,7 @@ import { generateKeywordsString } from "../../src/head-utils";
 import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const preset = reactPreset.extend((tags: any) => ({
   ...tags,
@@ -112,7 +113,15 @@ class NewsComponentErrorBoundary extends React.Component {
   }
 }
 
-const SingleNewsItem = ({ item, t }: { item: NewsItem; t: (key: string) => string }) => {
+const SingleNewsItem = ({
+  item,
+  t,
+  locale,
+}: {
+  item: NewsItem;
+  t: (key: string) => string;
+  locale: string;
+}) => {
   try {
     return (
       <Card shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
@@ -138,7 +147,9 @@ const SingleNewsItem = ({ item, t }: { item: NewsItem; t: (key: string) => strin
         </Flex>
         <Text fz="lg">
           {t("postedBy")} {item.author} {t("on")}{" "}
-          {dayjs((item.date || 0) * 1000).format("DD/MMM/YYYY")}
+          {dayjs((item.date || 0) * 1000)
+            .locale(locale)
+            .format("DD/MMM/YYYY")}
         </Text>
         <div>
           <NewsComponentErrorBoundary>
@@ -202,13 +213,14 @@ const keywords = generateKeywordsString(["coh3 news", "news", "patch", "changes"
 
 const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
   const { t } = useTranslation("news");
+  const { locale } = useRouter();
 
   useEffect(() => {
     AnalyticsNewsPageView();
   }, []);
 
   const items = COH3SteamNews.newsitems.map((item) => {
-    return <SingleNewsItem item={item} key={item.date} t={t} />;
+    return <SingleNewsItem item={item} key={item.date} t={t} locale={locale || "en"} />;
   });
   const image = COH3SteamNews.newsitems[0]?.image || "";
 

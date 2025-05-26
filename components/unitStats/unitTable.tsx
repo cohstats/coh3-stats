@@ -272,7 +272,7 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
     let content = (unit as any)[colSetup.key];
     content = content ? content : "-";
 
-    return <Text>{content}</Text>;
+    return <Text size={"sm"}>{content}</Text>;
   }
 
   switch (colSetup.key) {

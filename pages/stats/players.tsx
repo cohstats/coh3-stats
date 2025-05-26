@@ -44,11 +44,13 @@ const PlayerStats = ({
   playerStats,
   countries,
   historyData,
+  locale,
 }: {
   error: string;
   playerStats: PlayerStatsType;
   countries: Array<{ id: string; value: number }>;
   historyData: Array<{ y: number; x: string }>;
+  locale: string;
 }) => {
   const pageTitle = `Multiplayer Player Stats - Company of Heroes 3`;
   const description = `Overall information about all Multiplayer players in Company of Heroes 3.\nCurrently tracking ${playerStats.count.toLocaleString()} Multiplayer players.`;
@@ -104,7 +106,7 @@ const PlayerStats = ({
                     <Group gap={4}>
                       <IconUser size={17} />
                       <Text fs={"xl"} fw={500}>
-                        {playerStats.count.toLocaleString()}
+                        {playerStats.count.toLocaleString(locale)}
                       </Text>
                     </Group>
                   </div>
@@ -115,7 +117,7 @@ const PlayerStats = ({
                     <Group gap={4}>
                       <IconUser size={17} />
                       <Text fs={"xl"} fw={500}>
-                        {playerStats.last30days.toLocaleString()}
+                        {playerStats.last30days.toLocaleString(locale)}
                       </Text>
                     </Group>
                   </div>
@@ -126,7 +128,7 @@ const PlayerStats = ({
                     <Group gap={4}>
                       <IconUser size={17} />
                       <Text fs={"xl"} fw={500}>
-                        {playerStats.last7days.toLocaleString()}
+                        {playerStats.last7days.toLocaleString(locale)}
                       </Text>
                     </Group>
                   </div>
@@ -137,7 +139,7 @@ const PlayerStats = ({
                     <Group gap={4}>
                       <IconUser size={17} />
                       <Text fs={"xl"} fw={500}>
-                        {playerStats.last24hours.toLocaleString()}
+                        {playerStats.last24hours.toLocaleString(locale)}
                       </Text>
                     </Group>
                   </div>
@@ -150,7 +152,8 @@ const PlayerStats = ({
               <DynamicPlayersLineChart data={historyData} />
             </div>
             <Text style={{ textAlign: "center" }} fs="italic" c="dimmed" fz="sm" pt={25}>
-              Data updated on {dayjs(playerStats.timeStampMs).format("YYYY-MM-DD HH:mm")} UTC
+              Data updated on{" "}
+              {dayjs(playerStats.timeStampMs).locale(locale).format("YYYY-MM-DD HH:mm")} UTC
               <br />
               We do not track XBOX and PS players here.
             </Text>
@@ -196,7 +199,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en
       historyData = Object.values(historyRawData).map((value) => ({
         y: value.count,
         // We subtract 1 day, because the analysis is run in 3 AM, but data are for the previous day
-        x: dayjs(value.timeStamp.toMillis()).subtract(1, "day").format("YYYY-MM-DD"),
+        x: dayjs(value.timeStamp.toMillis()).subtract(1, "day").locale("en").format("YYYY-MM-DD"),
       }));
     }
 
@@ -217,6 +220,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en
       countries,
       historyData,
       ...(await serverSideTranslations(locale, ["common"])),
+      locale,
     },
   };
 };

@@ -35,6 +35,7 @@ import config from "../../config";
 import classes from "./Header.module.css";
 import LanguageSwitcher from "./components/language-switcher";
 import { TFunction, useTranslation } from "next-i18next";
+import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
 
 export interface HeaderProps {
   // children?: React.ReactNode;
@@ -165,7 +166,11 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
         </HoverCard>
         <StatisticsMenu classes={classes} t={t} />
         <ExplorerMenu classes={classes} close={() => null} t={t} />
-        <Anchor component={Link} href={getLiveGamesRoute()} className={classes.link}>
+        <Anchor
+          component={LinkWithOutPrefetch}
+          href={getLiveGamesRoute()}
+          className={classes.link}
+        >
           {t("mainMenu.liveGames")}
         </Anchor>
         <Anchor component={Link} href={getDesktopAppRoute()} className={classes.link}>
