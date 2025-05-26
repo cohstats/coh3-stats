@@ -211,3 +211,6 @@ next.config.original.js
 
 # open-next
 .open-next
+
+# Sentry Config File
+.env.sentry-build-plugin
