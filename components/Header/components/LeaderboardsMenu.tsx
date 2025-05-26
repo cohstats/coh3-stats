@@ -37,14 +37,17 @@ const LeaderboardsMenu: React.FC<LeaderboardsMenuProps> = ({ t }) => {
               <Divider my="xs" />
               {leaderBoardTypeArray.map((type) => {
                 return (
-                  <Text key={`${faction}_${type}`} ta="center">
-                    <Anchor component={Link} href={getLeaderBoardRoute(faction, type)}>
-                      <Group gap="xs" justify="center">
-                        <Text>{type.replace("v", " vs ")}</Text>
-                        {/* <Group gap={0} ml={-5}>{addPlayerIcons(type)}</Group> */}
-                      </Group>
-                    </Anchor>
-                  </Text>
+                  <Anchor
+                    key={`${faction}_${type}`}
+                    component={Link}
+                    href={getLeaderBoardRoute(faction, type)}
+                    style={{ display: "block", textAlign: "center" }}
+                  >
+                    <Group gap="xs" justify="center">
+                      <Text>{type.replace("v", " vs ")}</Text>
+                      {/* <Group gap={0} ml={-5}>{addPlayerIcons(type)}</Group> */}
+                    </Group>
+                  </Anchor>
                 );
               })}
             </div>
@@ -69,17 +72,17 @@ const LeaderboardsMenu: React.FC<LeaderboardsMenuProps> = ({ t }) => {
           </Group>
           <Divider my="xs" />
           {["2v2", "3v3", "4v4"].map((type) => (
-            <Text key={`axis_${type}`} ta="center">
-              <Anchor
-                component={Link}
-                href={getTeamLeaderboardsRoute("axis", type as leaderBoardType)}
-              >
-                <Group gap="xs" justify="center">
-                  <Text>{type.replace("v", " vs ")}</Text>
-                  {/* <Group gap={0} ml={-5}>{addPlayerIcons(type as leaderBoardType)}</Group> */}
-                </Group>
-              </Anchor>
-            </Text>
+            <Anchor
+              key={`axis_${type}`}
+              component={Link}
+              href={getTeamLeaderboardsRoute("axis", type as leaderBoardType)}
+              style={{ display: "block", textAlign: "center" }}
+            >
+              <Group gap="xs" justify="center">
+                <Text>{type.replace("v", " vs ")}</Text>
+                {/* <Group gap={0} ml={-5}>{addPlayerIcons(type as leaderBoardType)}</Group> */}
+              </Group>
+            </Anchor>
           ))}
         </div>
         <div>
@@ -92,17 +95,17 @@ const LeaderboardsMenu: React.FC<LeaderboardsMenuProps> = ({ t }) => {
           </Group>
           <Divider my="xs" />
           {["2v2", "3v3", "4v4"].map((type) => (
-            <Text key={`allies_${type}`} ta="center">
-              <Anchor
-                component={Link}
-                href={getTeamLeaderboardsRoute("allies", type as leaderBoardType)}
-              >
-                <Group gap="xs" justify="center">
-                  <Text>{type.replace("v", " vs ")}</Text>
-                  {/* <Group gap={0} ml={-5}>{addPlayerIcons(type as leaderBoardType)}</Group> */}
-                </Group>
-              </Anchor>
-            </Text>
+            <Anchor
+              key={`allies_${type}`}
+              component={Link}
+              href={getTeamLeaderboardsRoute("allies", type as leaderBoardType)}
+              style={{ display: "block", textAlign: "center" }}
+            >
+              <Group gap="xs" justify="center">
+                <Text>{type.replace("v", " vs ")}</Text>
+                {/* <Group gap={0} ml={-5}>{addPlayerIcons(type as leaderBoardType)}</Group> */}
+              </Group>
+            </Anchor>
           ))}
         </div>
       </SimpleGrid>

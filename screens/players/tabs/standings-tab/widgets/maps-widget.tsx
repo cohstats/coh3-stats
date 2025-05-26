@@ -5,7 +5,7 @@ import {
   ProcessedCOHPlayerStats,
   raceTypeArray,
 } from "../../../../../src/coh3/coh3-types";
-import { Card, Group, Title, Tooltip, Flex, Button } from "@mantine/core";
+import { Card, Group, Title, Flex, Button } from "@mantine/core";
 import React from "react";
 import { DataTable } from "mantine-datatable";
 import EllipsisText from "../../../../../components/other/ellipsis-text";
@@ -105,11 +105,7 @@ const MapsWidget = ({
               render: ({ mapName }) => {
                 const localizedMapName = getMapLocalizedName(mapName);
 
-                return (
-                  <Tooltip label={localizedMapName}>
-                    <EllipsisText text={localizedMapName} noWrap={false} maxWidth={"12ch"} />
-                  </Tooltip>
-                );
+                return <EllipsisText text={localizedMapName} noWrap={false} maxWidth={"12ch"} />;
               },
             },
             {
