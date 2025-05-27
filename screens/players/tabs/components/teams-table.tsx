@@ -52,6 +52,22 @@ const TeamsTable = ({
         idAccessor={"id"}
         records={teamsWithLastMatch}
         minHeight={teamsWithLastMatch.length === 0 ? 125 : 50}
+        onRowClick={({ record, event }) => {
+          if (event.target instanceof Element) {
+            const clickedElement = event.target as Element;
+            const isClickableElement = clickedElement.closest(
+              "a, button, img, .mantine-Button-root",
+            );
+
+            if (isClickableElement) {
+              // If it's a clickable element, don't open the drawer
+              return;
+            }
+          }
+          if (teamDetails) {
+            navigateToTeamDetails(record.id);
+          }
+        }}
         noRecordsText={t("teamsTable.noData", "No teams data available")}
         columns={[
           {
