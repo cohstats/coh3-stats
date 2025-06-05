@@ -66,7 +66,7 @@ const MapsLineChartCard = ({
   console.log(chartData);
 
   return (
-    <Card p="md" shadow="sm" w={1270} withBorder>
+    <Card p="md" shadow="sm" w={1270} withBorder style={{ overflow: "visible" }}>
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Group>
