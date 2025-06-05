@@ -52,7 +52,7 @@ const WinLossTimeChart = ({
   ];
 
   return (
-    <Card p="md" shadow="sm" w={"100%"} withBorder>
+    <Card p="md" shadow="sm" w={"100%"} withBorder style={{ overflow: "visible" }}>
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Title order={3}>{title}</Title>

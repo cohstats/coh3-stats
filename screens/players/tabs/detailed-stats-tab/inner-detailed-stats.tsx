@@ -69,7 +69,7 @@ const InnerDetailedStats = ({
     <Container size={"xl"} p={0}>
       <Grid justify="center">
         <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>
-          <Card p="md" shadow="sm" w={"100%"} withBorder>
+          <Card p="md" shadow="sm" w={"100%"} withBorder style={{ overflow: "visible" }}>
             <Card.Section withBorder inheritPadding py="xs">
               <Title order={3}>Maps played</Title>
             </Card.Section>
@@ -79,7 +79,7 @@ const InnerDetailedStats = ({
           </Card>
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>
-          <Card p="md" shadow="sm" w={"100%"} withBorder>
+          <Card p="md" shadow="sm" w={"100%"} withBorder style={{ overflow: "visible" }}>
             <Card.Section withBorder inheritPadding py="xs">
               <Title order={3}>Maps Win Rate</Title>
             </Card.Section>
@@ -102,7 +102,7 @@ const InnerDetailedStats = ({
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 12, md: 4 }}>
-          <Card p="md" shadow="sm" w={"100%"} withBorder>
+          <Card p="md" shadow="sm" w={"100%"} withBorder style={{ overflow: "visible" }}>
             <Card.Section withBorder inheritPadding py="xs">
               <Title order={3}>Games by game time</Title>
             </Card.Section>

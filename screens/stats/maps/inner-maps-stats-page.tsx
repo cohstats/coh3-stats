@@ -250,7 +250,7 @@ const InnerMapsStatsPage = ({
         </Group>
         <Space h="xl" />
         <Flex gap={"md"} wrap="wrap" justify={"space-between"}>
-          <Card p="md" shadow="sm" w={785} withBorder>
+          <Card p="md" shadow="sm" w={785} withBorder style={{ overflow: "visible" }}>
             <Card.Section withBorder inheritPadding py="xs">
               <Title order={3}>{`Winrate diff per factions on maps ${mode}`}</Title>
             </Card.Section>

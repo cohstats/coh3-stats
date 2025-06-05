@@ -23,7 +23,7 @@ const MapChartCard = ({
   }
 
   return (
-    <Card p="md" shadow="sm" w={chartWidth} withBorder>
+    <Card p="md" shadow="sm" w={chartWidth} withBorder style={{ overflow: "visible" }}>
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">

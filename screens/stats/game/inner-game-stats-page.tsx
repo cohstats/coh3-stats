@@ -74,7 +74,7 @@ const ChartCard = ({
   }
 
   return (
-    <Card p="md" shadow="sm" w={width} withBorder>
+    <Card p="md" shadow="sm" w={width} withBorder style={{ overflow: "visible" }}>
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">
