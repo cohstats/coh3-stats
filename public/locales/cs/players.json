@@ -108,7 +108,8 @@
     "title": "Aktivita hráče",
     "noData": "Nejsou k dispozici žádné údaje o aktivitě",
     "filters": {
-      "timeRange": "Časový rozsah"
+      "timeRange": "Časový rozsah",
+      "timezone": "Časové pásmo"
     },
     "alerts": {
       "noData": {
@@ -132,7 +133,8 @@
       "weekDay": {
         "title": "Aktivita podle dne v týdnu"
       }
-    }
+    },
+    "timezoneHelper": "Údaje o aktivitě podle hodin jsou shromažďovány v časovém pásmu UTC. Zobrazení můžete upravit na své místní časové pásmo pomocí tohoto selektoru."
   },
   "teamsStandings": {
     "title": "Žebříčky uspořádaných týmů",

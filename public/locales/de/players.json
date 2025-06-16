@@ -108,7 +108,8 @@
     "title": "Spieleraktivität",
     "noData": "Keine Aktivitätsdaten verfügbar",
     "filters": {
-      "timeRange": "Zeitraum"
+      "timeRange": "Zeitraum",
+      "timezone": "Zeitzone"
     },
     "alerts": {
       "noData": {
@@ -132,7 +133,8 @@
       "weekDay": {
         "title": "Aktivität nach Wochentag"
       }
-    }
+    },
+    "timezoneHelper": "Die Aktivitätsdaten nach Stunden werden in UTC-Zeitzone gesammelt. Du kannst die Anzeige mit diesem Selektor auf deine lokale Zeitzone anpassen."
   },
   "teamsStandings": {
     "title": "Arrangierte Team-Ranglisten",
