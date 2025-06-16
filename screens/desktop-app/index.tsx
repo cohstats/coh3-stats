@@ -39,8 +39,8 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
         {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container size={"lg"}>
-        {/*We need to fix this on both mobile and desktop to avoid CLS*/}
-
+        <Title>{t("title")}</Title>
+        <Title order={2}>{t("subtitle")}</Title>
         <div className={classes["desktop-app-image-container"]}>
           <Image
             src="/desktop-app/desktop-app-loading-v2.webp"
@@ -59,8 +59,15 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
         </div>
         <Paper radius="md" mt="md" p="lg">
           <Stack align="center" gap={5} mb={30}>
-            <Anchor href={downloadURL} target="_blank">
-              <Button>{t("download.button", { version })}</Button>
+            <Anchor
+              href={downloadURL}
+              target="_blank"
+              rel="noopener"
+              download
+              type="application/x-msi"
+              aria-label={t("download.buttonAriaLabel", { version })}
+            >
+              <Button size={"lg"}>{t("download.button", { version })}</Button>
             </Anchor>
             <Text size="sm" c="dimmed">
               {t("download.downloads", { count: downloadCount })}
@@ -68,32 +75,38 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
             <Anchor
               href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
               target="_blank"
+              rel="noopener"
             >
               {t("download.releaseNotes")}
             </Anchor>
           </Stack>
-          <Title>{t("features.title")}</Title>
+          <Title order={3}>{t("features.title")}</Title>
           <List
             spacing="sm"
-            mt={30}
-            mb={50}
+            mt={"md"}
             icon={
-              <ThemeIcon size={20} radius="xl">
+              <ThemeIcon size={20} radius="xl" className={classes["list-icon"]}>
                 <IconCheck stroke={1.5} />
               </ThemeIcon>
             }
           >
             <List.Item>{t("features.list.noSetup")}</List.Item>
             <List.Item>{t("features.list.leaderboard")}</List.Item>
+            <List.Item>{t("features.list.teams")}</List.Item>
+            <List.Item>{t("features.list.recentGames")}</List.Item>
             <List.Item>{t("features.list.notifications")}</List.Item>
             <List.Item>{t("features.list.replays")}</List.Item>
             <List.Item>
               {t("features.list.streaming.before")}{" "}
-              <Anchor href="https://obsproject.com/" target="_blank">
+              <Anchor href="https://obsproject.com/" target="_blank" rel="noopener">
                 OBS
               </Anchor>{" "}
               {t("features.list.streaming.and")}{" "}
-              <Anchor href="https://www.twitch.tv/broadcast/studio" target="_blank">
+              <Anchor
+                href="https://www.twitch.tv/broadcast/studio"
+                target="_blank"
+                rel="noopener"
+              >
                 Twitch Studio
               </Anchor>{" "}
               {t("features.list.streaming.after")}
