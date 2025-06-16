@@ -2,7 +2,14 @@
   "title": "Ranglisten-Stufen in Company of Heroes 3",
   "description": "Basierend auf der ELO eines Spielers werden Spieler in bestimmte Ligen und Stufen eingeteilt.",
   "matchRequirement": "Ein Spieler benötigt mindestens 10 Spiele pro Fraktion in einem bestimmten Spieltyp, um einen Rang zu erhalten und in einer Stufe platziert zu werden.",
-  "inactivityNote": "Hinweis: Wenn ein Spieler längere Zeit inaktiv bleibt, verliert er seinen Rang. Er kann ihn jedoch durch ein einziges Spiel zurückerhalten.",
+  "rankDecay": {
+    "title": "Rang-Verfall",
+    "text": "Wenn ein Spieler längere Zeit inaktiv bleibt, verliert er seinen Rang. Er kann ihn jedoch durch ein einziges Spiel zurückerhalten."
+  },
+  "eloDecay": {
+    "title": "ELO-Verfall",
+    "text": "ELO unterliegt ebenfalls dem Verfall. Wenn ein Spieler längere Zeit nicht spielt, kann sein ELO ohne ein Spiel gesenkt werden."
+  },
   "table": {
     "columns": {
       "tierName": "Stufen-Name",
