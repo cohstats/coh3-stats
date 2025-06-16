@@ -51,5 +51,46 @@
     "aoeRadius": "AoE Radius",
     "movingAccuracy": "Moving Accuracy Multiplier",
     "movingCooldown": "Moving Cooldown Multiplier"
+  },
+  "meta": {
+    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
+    "costs": "Costs {{costs}}.",
+    "population": "{{popCap}} population.",
+    "abbreviations": {
+      "hitpoints": "HP",
+      "manpower": "MP",
+      "fuel": "FU",
+      "munition": "MU",
+      "armor": "armor"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 tank",
+        "vehicle": "coh3 vehicle",
+        "armorStats": "armor stats",
+        "vehicleGuide": "vehicle guide"
+      },
+      "infantry": {
+        "infantry": "coh3 infantry",
+        "squadStats": "squad stats",
+        "unitGuide": "unit guide",
+        "infantryTactics": "infantry tactics"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 team weapon",
+        "supportWeapon": "support weapon",
+        "crewWeapon": "crew weapon",
+        "artillery": "artillery"
+      },
+      "emplacements": {
+        "emplacement": "coh3 emplacement",
+        "defensiveStructure": "defensive structure",
+        "fortification": "fortification"
+      },
+      "common": {
+        "units": "{{raceId}} units",
+        "army": "{{raceId}} army"
+      }
+    }
   }
 }

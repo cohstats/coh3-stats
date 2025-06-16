@@ -108,7 +108,8 @@
     "title": "Actividad del jugador",
     "noData": "No hay información de actividad disponible",
     "filters": {
-      "timeRange": "Rango de Tiempo"
+      "timeRange": "Rango de Tiempo",
+      "timezone": "Zona Horaria"
     },
     "alerts": {
       "noData": {
@@ -132,7 +133,8 @@
       "weekDay": {
         "title": "Actividad por día de la semana"
       }
-    }
+    },
+    "timezoneHelper": "Los datos de actividad por hora se recopilan en zona horaria UTC. Puedes ajustar la visualización a tu zona horaria local usando este selector."
   },
   "teamsStandings": {
     "title": "Clasificación de equipos organizados",

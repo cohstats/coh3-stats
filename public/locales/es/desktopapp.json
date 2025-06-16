@@ -6,14 +6,19 @@
   },
   "download": {
     "button": "Descarga {{version}}",
+    "buttonAriaLabel": "Descargar instalador de COH3 Stats Desktop App {{version}} para Windows",
     "downloads": "{{count}} Descargas",
     "releaseNotes": "Notas de la versión"
   },
+  "title": "App de Escritorio COH3 Stats",
+  "subtitle": "¡Obtén información adicional de tu juego actual!",
   "features": {
-    "title": "Obten información adicional de tus juegos con la App de Escritorio!",
+    "title": "Características:",
     "list": {
       "noSetup": "Usalo sin ningun esfuerzo, no necesita configurarse - simplemente inicia la aplicacion!",
-      "leaderboard": "Explora estadisticas complejas del tablero",
+      "leaderboard": "Ve las clasificaciones actuales de jugadores incluyendo ELO, Rango, Tasa de Victoria",
+      "teams": "Detecta equipos organizados en tus juegos",
+      "recentGames": "Ve tus juegos recientes directamente en la app",
       "notifications": "Recibe notificaciones de sonido opcionales al entrar a un juego",
       "replays": "Sube repeticiones automaticamente a la nube para análisis adicional",
       "streaming": {

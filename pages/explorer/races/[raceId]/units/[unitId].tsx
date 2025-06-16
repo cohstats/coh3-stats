@@ -55,6 +55,7 @@ import { AnalyticsExplorerUnitDetailsView } from "../../../../../src/firebase/an
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import config from "../../../../../config";
 
 interface UnitDetailProps {
   calculatedData: {
@@ -71,7 +72,7 @@ interface UnitDetailProps {
   descriptions: Record<string, Record<string, string>>;
 }
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, locale }) => {
   const { query, asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
@@ -148,23 +149,164 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
     max: squadWeapons.length ? squadWeapons[0].weapon.weapon_bag.range.max : 0,
   };
 
-  const metaKeywords = generateKeywordsString([
-    `${resolvedSquad.ui.screenName} coh3`,
-    `${resolvedSquad.ui.screenName} ${localizedRace}`,
-    `${resolvedSquad.ui.screenName}`,
-    `${resolvedSquad.ui.screenName} ${raceId}`,
-  ]);
+  // Enhanced meta description with unit details
+  const createMetaDescription = () => {
+    const unitType = resolvedSquad.unitType.replace(/_/g, " ");
+    const hitpoints = defaultSquadMember.health.hitpoints || 0;
+    const armor = armorValues.armor || armorValues.frontal || 0;
+    const manpowerCost = totalCost.manpower || 0;
+    const fuelCost = totalCost.fuel || 0;
+    const munitionCost = totalCost.munition || 0;
+    const popCap = totalCost.popcap || 0;
+
+    let description = t("meta.unitDescription", {
+      unitName: resolvedSquad.ui.screenName,
+      raceName: localizedRace,
+      unitType: unitType,
+    });
+
+    // Add key stats
+    const stats = [];
+    if (hitpoints > 0) {
+      stats.push(`${hitpoints} ${t("meta.abbreviations.hitpoints")}`);
+    }
+    if (armor > 0) {
+      stats.push(`${armor} ${t("meta.abbreviations.armor")}`);
+    }
+    if (stats.length > 0) {
+      description += ` ${stats.join(", ")}.`;
+    }
+
+    // Add cost information
+    const costs = [];
+    if (manpowerCost > 0) {
+      costs.push(`${manpowerCost} ${t("meta.abbreviations.manpower")}`);
+    }
+    if (fuelCost > 0) {
+      costs.push(`${fuelCost} ${t("meta.abbreviations.fuel")}`);
+    }
+    if (munitionCost > 0) {
+      costs.push(`${munitionCost} ${t("meta.abbreviations.munition")}`);
+    }
+    if (costs.length > 0) {
+      description += ` ${t("meta.costs", { costs: costs.join("/") })}`;
+    }
+
+    // Add population cap
+    if (popCap > 0) {
+      description += ` ${t("meta.population", { popCap })}`;
+    }
+
+    // Add tactical role based on unit type and brief text
+    if (resolvedSquad.ui.briefText) {
+      const briefText = resolvedSquad.ui.briefText
+        .replace(/\\r?\\n|\\r|\\n/g, " ")
+        .replace(/\*/g, "")
+        .trim();
+      if (briefText && briefText.length > 0 && briefText !== "No text found") {
+        // Truncate brief text to keep description under 160 characters
+        const remainingLength = 160 - description.length - 1;
+        if (remainingLength > 20) {
+          const truncatedBrief =
+            briefText.length > remainingLength
+              ? briefText.substring(0, remainingLength - 3) + "..."
+              : briefText;
+          description += ` ${truncatedBrief}`;
+        }
+      }
+    }
+
+    return description.length > 160 ? description.substring(0, 157) + "..." : description;
+  };
+
+  // Enhanced keywords with unit-specific terms
+  const createEnhancedKeywords = () => {
+    const baseKeywords = [
+      `${resolvedSquad.ui.screenName}`,
+      `${resolvedSquad.ui.screenName} coh3`,
+      `${resolvedSquad.ui.screenName} ${localizedRace}`,
+      `${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")}`,
+      `coh3 ${resolvedSquad.unitType.replace(/_/g, " ")}`,
+    ];
+
+    // Add unit type specific keywords
+    if (resolvedSquad.unitType === "vehicles") {
+      baseKeywords.push(
+        t("meta.keywords.vehicles.tank"),
+        t("meta.keywords.vehicles.vehicle"),
+        t("meta.keywords.vehicles.armorStats"),
+        t("meta.keywords.vehicles.vehicleGuide"),
+      );
+    } else if (resolvedSquad.unitType === "infantry") {
+      baseKeywords.push(
+        t("meta.keywords.infantry.infantry"),
+        t("meta.keywords.infantry.squadStats"),
+        t("meta.keywords.infantry.unitGuide"),
+        t("meta.keywords.infantry.infantryTactics"),
+      );
+    } else if (resolvedSquad.unitType === "team_weapons") {
+      baseKeywords.push(
+        t("meta.keywords.teamWeapons.teamWeapon"),
+        t("meta.keywords.teamWeapons.supportWeapon"),
+        t("meta.keywords.teamWeapons.crewWeapon"),
+        t("meta.keywords.teamWeapons.artillery"),
+      );
+    } else if (resolvedSquad.unitType === "emplacements") {
+      baseKeywords.push(
+        t("meta.keywords.emplacements.emplacement"),
+        t("meta.keywords.emplacements.defensiveStructure"),
+        t("meta.keywords.emplacements.fortification"),
+      );
+    }
+
+    // Add faction-specific keywords
+    baseKeywords.push(
+      t("meta.keywords.common.units", { raceId }),
+      t("meta.keywords.common.army", { raceId }),
+    );
+
+    return generateKeywordsString(baseKeywords);
+  };
+
+  const metaDescription = createMetaDescription();
+  const metaKeywords = createEnhancedKeywords();
+  const pageTitle = `${resolvedSquad.ui.screenName} - ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")} | COH3 Stats`;
 
   return (
     <>
       <Head>
-        <title>{`${resolvedSquad.ui.screenName} - COH3 Explorer`}</title>
-        <meta name="description" content={`${resolvedSquad.ui.screenName} - COH3 Explorer`} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={metaDescription} />
         <meta name="keywords" content={metaKeywords} />
+
+        {/* Open Graph tags */}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:site_name" content="COH3 Stats" />
+        <meta property="og:locale" content={locale} />
         <meta
           property="og:image"
           content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
         />
+        <meta property="og:image:alt" content={`${resolvedSquad.ui.screenName} unit icon`} />
+        <meta property="og:image:width" content="256" />
+        <meta property="og:image:height" content="256" />
+
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta
+          name="twitter:image"
+          content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
+        />
+        <meta name="twitter:image:alt" content={`${resolvedSquad.ui.screenName} unit icon`} />
+
+        {/* Additional meta tags */}
+        <meta name="author" content="COH3 Stats" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={`${config.SITE_URL}${asPath}`} />
+
         {generateAlternateLanguageLinks(asPath)}
       </Head>
       <Container fluid p={0}>

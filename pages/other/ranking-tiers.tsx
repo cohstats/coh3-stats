@@ -43,7 +43,7 @@ const RankingTiers: NextPage = () => {
       </Head>
       <>
         <Container size={"sm"}>
-          <Title order={2} pt="md">
+          <Title order={1} pb="md">
             {t("title")}
           </Title>
           <Text fz="sm">
@@ -105,9 +105,17 @@ const RankingTiers: NextPage = () => {
               },
             ]}
           />
-          <Text fz="sm" fs="italic">
-            {t("inactivityNote")}
-          </Text>
+          <div style={{ marginTop: 20 }}>
+            <Title order={4}>{t("rankDecay.title")}</Title>
+            <Text fz="sm" fs="italic" mb={16}>
+              {t("rankDecay.text")}
+            </Text>
+
+            <Title order={4}>{t("eloDecay.title")}</Title>
+            <Text fz="sm" fs="italic">
+              {t("eloDecay.text")}
+            </Text>
+          </div>
         </Container>
       </>
     </div>

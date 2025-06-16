@@ -6,14 +6,19 @@
   },
   "download": {
     "button": "Stáhnout {{version}}",
+    "buttonAriaLabel": "Stáhnout instalátor COH3 Stats Desktop App {{version}} pro Windows",
     "downloads": "{{count}} stažení",
     "releaseNotes": "Poznámky k vydání"
   },
+  "title": "COH3 Stats Desktopová Aplikace",
+  "subtitle": "Získejte další informace o vaší aktuální hře!",
   "features": {
-    "title": "Získejte další informace o vašich hrách s desktopovou aplikací!",
+    "title": "Funkce:",
     "list": {
       "noSetup": "Snadné použití, není potřeba žádné nastavení - stačí spustit aplikaci",
-      "leaderboard": "Prozkoumejte podrobné statistiky hráčů v žebříčku",
+      "leaderboard": "Zobrazit aktuální postavení hráčů včetně ELO, Pořadí, Míry výher",
+      "teams": "Detekce organizovaných týmů ve vašich hrách",
+      "recentGames": "Zobrazit vaše nedávné hry přímo v aplikaci",
       "notifications": "Získejte volitelná zvuková upozornění při připojení ke hře",
       "replays": "Automatické nahrávání záznamů do cloudu pro další analýzu",
       "streaming": {

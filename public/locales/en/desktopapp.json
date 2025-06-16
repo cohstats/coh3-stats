@@ -6,14 +6,19 @@
   },
   "download": {
     "button": "Download {{version}}",
+    "buttonAriaLabel": "Download COH3 Stats Desktop App {{version}} installer for Windows",
     "downloads": "{{count}} downloads",
     "releaseNotes": "Release Notes"
   },
+  "title": "COH3 Stats Desktop App",
+  "subtitle": "Gain additional intel on your current game!",
   "features": {
-    "title": "Gain additional intel on your games with the desktop app!",
+    "title": "Features",
     "list": {
       "noSetup": "Effortless usage, no setup needed - simply launch the application",
-      "leaderboard": "Explore intricate player leaderboard statistics",
+      "leaderboard": "See current player standings including ELO, Rank, WinRate",
+      "teams": "Detect arranged teams in your games",
+      "recentGames": "See your recent games directly in the app",
       "notifications": "Receive optional sound notifications upon joining a game",
       "replays": "Auto upload replays to the cloud for additional analysis",
       "streaming": {

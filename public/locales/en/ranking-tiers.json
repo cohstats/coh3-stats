@@ -2,7 +2,14 @@
   "title": "Ranking Tiers in Company of Heroes 3",
   "description": "Based on the player ELO, players are placed into specific Leagues and Tiers.",
   "matchRequirement": "A player needs at least 10 matches for each faction in a specific game type to earn a rank and be placed in a tier.",
-  "inactivityNote": "Note: If a player remains inactive for an extended period, they lose their rank. However, they can regain it by playing just one game.",
+  "rankDecay": {
+    "title": "Rank Decay",
+    "text": "If a player remains inactive for an extended period, they lose their rank. However, they can regain it by playing just one game."
+  },
+  "eloDecay": {
+    "title": "ELO Decay",
+    "text": "ELO is also subject to decay, if a player doesn't play for extended period their ELO might be lowered without playing any game."
+  },
   "table": {
     "columns": {
       "tierName": "Tier Name",

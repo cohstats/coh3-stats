@@ -51,5 +51,46 @@
     "aoeRadius": "Poloměr AoE",
     "movingAccuracy": "Násobitel přesnosti za pohybu",
     "movingCooldown": "Násobitel prodlevy za pohybu"
+  },
+  "meta": {
+    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} v Company of Heroes 3.",
+    "costs": "Náklady {{costs}}.",
+    "population": "{{popCap}} populace.",
+    "abbreviations": {
+      "hitpoints": "ŽB",
+      "manpower": "LS",
+      "fuel": "PH",
+      "munition": "MU",
+      "armor": "brnění"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 tank",
+        "vehicle": "coh3 vozidlo",
+        "armorStats": "statistiky brnění",
+        "vehicleGuide": "průvodce vozidly"
+      },
+      "infantry": {
+        "infantry": "coh3 pěchota",
+        "squadStats": "statistiky družstva",
+        "unitGuide": "průvodce jednotkami",
+        "infantryTactics": "taktiky pěchoty"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 týmová zbraň",
+        "supportWeapon": "podpůrná zbraň",
+        "crewWeapon": "zbraň obsluhy",
+        "artillery": "dělostřelectvo"
+      },
+      "emplacements": {
+        "emplacement": "coh3 opevnění",
+        "defensiveStructure": "obranná struktura",
+        "fortification": "fortifikace"
+      },
+      "common": {
+        "units": "{{raceId}} jednotky",
+        "army": "{{raceId}} armáda"
+      }
+    }
   }
 }

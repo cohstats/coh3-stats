@@ -29,3 +29,8 @@
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
 }
+
+.list-icon {
+  vertical-align: bottom;
+  margin-bottom: 2px;
+}
