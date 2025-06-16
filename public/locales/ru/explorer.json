@@ -51,5 +51,46 @@
     "aoeRadius": "Радиус области действия (АОЕ)",
     "movingAccuracy": "Мультипликатор точности на ходу",
     "movingCooldown": "Мультипликатор перезарядки на ходу"
+  },
+  "meta": {
+    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} в Company of Heroes 3.",
+    "costs": "Стоимость {{costs}}.",
+    "population": "{{popCap}} население.",
+    "abbreviations": {
+      "hitpoints": "ОЗ",
+      "manpower": "ЖС",
+      "fuel": "ТП",
+      "munition": "БП",
+      "armor": "броня"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 танк",
+        "vehicle": "coh3 техника",
+        "armorStats": "характеристики брони",
+        "vehicleGuide": "гайд по технике"
+      },
+      "infantry": {
+        "infantry": "coh3 пехота",
+        "squadStats": "характеристики отряда",
+        "unitGuide": "гайд по юниту",
+        "infantryTactics": "тактика пехоты"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 командное оружие",
+        "supportWeapon": "поддерживающее оружие",
+        "crewWeapon": "орудие расчета",
+        "artillery": "артиллерия"
+      },
+      "emplacements": {
+        "emplacement": "coh3 укрепление",
+        "defensiveStructure": "оборонительное сооружение",
+        "fortification": "фортификация"
+      },
+      "common": {
+        "units": "{{raceId}} юниты",
+        "army": "{{raceId}} армия"
+      }
+    }
   }
 }
