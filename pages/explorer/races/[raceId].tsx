@@ -133,7 +133,11 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Stack mt={32}>
           <Title order={4}>{descriptions.buildings}</Title>
 
-          <BuildingMapping preCalculatedBuildings={preCalculatedBuildings} t={t} />
+          <BuildingMapping
+            preCalculatedBuildings={preCalculatedBuildings}
+            t={t}
+            faction={raceToFetch}
+          />
         </Stack>
 
         {/*<Flex direction="row" gap={16} mt={24}>*/}
@@ -152,14 +156,17 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 /**
  * Updated BuildingMapping function that uses pre-calculated data
  * @param preCalculatedBuildings
+ * @param faction
  * @param t
  * @constructor
  */
 const BuildingMapping = ({
   preCalculatedBuildings,
+  faction,
   t,
 }: {
   preCalculatedBuildings: PreCalculatedBuilding[];
+  faction: raceType;
   t: (key: string) => string;
 }) => {
   return (
@@ -167,7 +174,7 @@ const BuildingMapping = ({
       {preCalculatedBuildings.map((building) => (
         <Card key={building.id} p="sm" radius="md" withBorder>
           <BuildingCard
-            faction={building.unitTypes[0]?.split("_")[0] as raceType}
+            faction={faction}
             types={building.unitTypes as BuildingType[]}
             desc={building.desc}
             units={building.units}
