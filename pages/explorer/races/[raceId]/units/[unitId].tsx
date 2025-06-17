@@ -5,11 +5,10 @@ import { useRouter } from "next/router";
 import {
   Card,
   Container,
-  Flex,
   Grid,
+  Group,
   List,
   SimpleGrid,
-  Space,
   Stack,
   Text,
   Title,
@@ -56,6 +55,8 @@ import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descr
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import config from "../../../../../config";
+import { getExplorerFactionRoute } from "../../../../../src/routes";
+import Link from "next/link";
 
 interface UnitDetailProps {
   calculatedData: {
@@ -95,6 +96,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   }
 
   const localizedRace = localizedNames[raceId];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const descriptionRace = descriptions[raceId as raceType]?.description || null;
 
   // For team_weapons, get default members.
@@ -309,29 +312,32 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
         {generateAlternateLanguageLinks(asPath)}
       </Head>
-      <Container fluid p={0}>
-        <Flex direction="row" align="center" gap="md">
-          <FactionIcon name={raceId} width={80} />
-          <Stack gap="xs">
-            <Title order={3}>{localizedRace}</Title>
-            <Text size="md">{descriptionRace}</Text>
-          </Stack>
-        </Flex>
-        <Space h={"xl"} />
+      <Container fluid pl={0} pr={0} pt={"md"}>
         <Grid columns={3} grow>
           <Grid.Col span={3}>
-            <Card p="md" radius="md" withBorder>
-              <UnitDescriptionCard
-                faction={raceId}
-                desc={{
-                  screen_name: resolvedSquad.ui.screenName,
-                  help_text: resolvedSquad.ui.helpText,
-                  brief_text: resolvedSquad.ui.briefText,
-                  symbol_icon_name: resolvedSquad.ui.symbolIconName,
-                  icon_name: resolvedSquad.ui.iconName,
-                }}
-              />
-            </Card>
+            <Group align="stretch" gap="xl">
+              <Card p="md" radius="md" withBorder style={{ flex: 1 }}>
+                <UnitDescriptionCard
+                  faction={raceId}
+                  desc={{
+                    screen_name: resolvedSquad.ui.screenName,
+                    help_text: resolvedSquad.ui.helpText,
+                    brief_text: resolvedSquad.ui.briefText,
+                    symbol_icon_name: resolvedSquad.ui.symbolIconName,
+                    icon_name: resolvedSquad.ui.iconName,
+                  }}
+                />
+              </Card>
+              <div style={{ display: "flex", alignItems: "stretch" }}>
+                <Link href={getExplorerFactionRoute(raceId)}>
+                  <FactionIcon
+                    name={raceId}
+                    width={150}
+                    style={{ height: "100%", objectFit: "contain" }}
+                  />
+                </Link>
+              </div>
+            </Group>
           </Grid.Col>
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
