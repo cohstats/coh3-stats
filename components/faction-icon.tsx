@@ -7,8 +7,17 @@ import americanIcon from "../public/icons/general/american.webp";
 import germanIcon from "../public/icons/general/german.webp";
 import britishIcon from "../public/icons/general/british.webp";
 import dakIcon from "../public/icons/general/dak.webp";
+import React from "react";
 
-const FactionIcon = ({ name, width }: { name: raceType; width: number }) => {
+const FactionIcon = ({
+  name,
+  width,
+  style,
+}: {
+  name: raceType;
+  width: number;
+  style?: React.CSSProperties;
+}) => {
   let icon = americanIcon;
 
   switch (name) {
@@ -26,7 +35,14 @@ const FactionIcon = ({ name, width }: { name: raceType; width: number }) => {
   }
 
   return (
-    <Image src={icon} alt={`${name} faction icon`} width={width} height={width} unoptimized />
+    <Image
+      src={icon}
+      alt={`${name} faction icon`}
+      width={width}
+      height={width}
+      style={style}
+      unoptimized
+    />
   );
 };
 

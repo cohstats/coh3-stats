@@ -73,7 +73,7 @@ export const UnitDescriptionCard = ({
               alt={`${desc.screen_name} symbol`}
               fallbackSrc={symbolPlaceholder}
             />
-            <Title order={4} style={{ textTransform: "capitalize" }} lineClamp={1}>
+            <Title order={list ? 4 : 2} style={{ textTransform: "capitalize" }} lineClamp={1}>
               {desc.screen_name}
             </Title>
           </Flex>
