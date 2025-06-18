@@ -26,6 +26,7 @@ import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { imageUrlTransform } from "../../src/utils";
 
 const preset = reactPreset.extend((tags: any) => ({
   ...tags,
@@ -49,7 +50,7 @@ const preset = reactPreset.extend((tags: any) => ({
         // radius: "md",
         // w: "auto",
         fit: "contain",
-        src: node.content,
+        src: imageUrlTransform(node.content),
         alt: "news image",
       },
     };

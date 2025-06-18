@@ -251,3 +251,13 @@ export const getCorrectLeaderStartPositions = (position: number) => {
     return Math.ceil(position / 100) * 100 - 100 + 1;
   }
 };
+
+/**
+ * Transforms the image URL to the specified format using Cloudflare's image transformation.
+ * @param imageUrl
+ * @param format
+ */
+export const imageUrlTransform = (imageUrl: string | null, format: "webp" = "webp") => {
+  if (!imageUrl) return null;
+  return `${config.SITE_URL}/cdn-cgi/image/format=${format}/${imageUrl}`;
+};

@@ -6,6 +6,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { getNewsRoute } from "../../../src/routes";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { TFunction } from "next-i18next";
+import { imageUrlTransform } from "../../../src/utils";
 
 interface NewsCardProps {
   title: string;
@@ -91,7 +92,7 @@ export const NewsSection: React.FC<NewsSectionProps> = ({ steamNewsData, t }) =>
       <Carousel.Slide key={news.title}>
         <NewsCard
           title={news.title}
-          image={news.image || "/images/coh3-background-cropped.webp"}
+          image={imageUrlTransform(news.image) || "/images/coh3-background-cropped.webp"}
           gid={news.gid}
           t={t}
         />
