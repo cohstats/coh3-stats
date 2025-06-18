@@ -21,6 +21,7 @@ import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descr
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../next-i18next.config";
+import { useTranslation } from "next-i18next";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -30,6 +31,7 @@ interface UnitDetailProps {
 
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
   const { asPath } = useRouter();
+  const { t } = useTranslation("explorer");
   const localizedRace = localizedNames[raceToFetch];
 
   useEffect(() => {
@@ -54,7 +56,9 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceToFetch} width={80}></FactionIcon>
           <Stack gap="xs">
-            <Title order={3}>{localizedRace}</Title>
+            <Title order={1} size={"h2"}>
+              {localizedRace} - {descriptions.common.units}
+            </Title>
             <Text size="md">{descriptions[raceToFetch].description}</Text>
           </Stack>
         </Flex>
@@ -62,13 +66,12 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         <Flex direction="row" align="center" gap={16} mt={24}>
           <IconBarrierBlock size={50} />
           <Text c="orange.6" fs="italic">
-            Important Note: This section displays all the units available in-game, including
-            campaign-only.
+            {t("unitPage.importantNote")}
           </Text>
         </Flex>
 
         <Stack mt={32}>
-          <Title order={4}>{descriptions.common.units}</Title>
+          <Title order={2}>{descriptions.common.units}</Title>
 
           <Grid>
             {units.map(({ id, ui }) => {
@@ -96,7 +99,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
                             symbol_icon_name: ui.symbolIconName,
                             icon_name: ui.iconName,
                           }}
-                          list
+                          placement="list"
                         />
                       </Card>
                     </Anchor>

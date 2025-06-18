@@ -18,6 +18,9 @@
     "title": "Company of Heroes 3 Fraktionen Explorer",
     "subtitle": "Erkunde alle Einheiten, Gebäude und Kampfgruppen im Spiel."
   },
+  "factionPage": {
+    "factionOverview": "Fraktionsübersicht"
+  },
   "unitPage": {
     "stats": "Werte",
     "abilities": "Fähigkeiten",
@@ -27,7 +30,8 @@
     "reinforce": "Verstärkung",
     "construct": "Kann bauen",
     "free": "Kostenlos",
-    "weaponNote": "Die effektive Genauigkeit wird durch mehrere Faktoren beeinflusst, wie die Zielgröße oder die Panzerung der angegriffenen Einheit sowie die Genauigkeit oder Durchschlagskraft der angreifenden Einheit."
+    "weaponNote": "Die effektive Genauigkeit wird durch mehrere Faktoren beeinflusst, wie die Zielgröße oder die Panzerung der angegriffenen Einheit sowie die Genauigkeit oder Durchschlagskraft der angreifenden Einheit.",
+    "importantNote": "Wichtiger Hinweis: Dieser Bereich zeigt alle im Spiel verfügbaren Einheiten, einschließlich der nur in der Kampagne verfügbaren."
   },
   "statsCard": {
     "sightRange": "Sichtweite",

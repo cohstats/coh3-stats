@@ -18,6 +18,9 @@
     "title": "Explorador de Facción para Company of Heroes 3",
     "subtitle": "Explora todas las unidades, edificios y grupos de batalla en el juego."
   },
+  "factionPage": {
+    "factionOverview": "Resumen de Facción"
+  },
   "unitPage": {
     "stats": "Estadísticas",
     "abilities": "Habilidades",
@@ -27,7 +30,8 @@
     "reinforce": "Refuerzo",
     "construct": "Puede construir",
     "free": "Gratis",
-    "weaponNote": "La precisión efectiva es impactada por distintos factores como el tamaño del objetivo o la armadura de la unidad que recibe fuego, tambien como la precisión y penetración del atacante."
+    "weaponNote": "La precisión efectiva es impactada por distintos factores como el tamaño del objetivo o la armadura de la unidad que recibe fuego, tambien como la precisión y penetración del atacante.",
+    "importantNote": "Nota importante: Esta sección muestra todas las unidades disponibles en el juego, incluyendo las exclusivas de la campaña."
   },
   "statsCard": {
     "sightRange": "Alcance de visión",

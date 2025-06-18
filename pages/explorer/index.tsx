@@ -14,19 +14,6 @@ import { useRouter } from "next/router";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
-/** @TODO Got lazy to replace dak for afrika_korps :D */
-const explorerFactionLink = (faction: raceType) => {
-  return (
-    <Flex direction="row" justify="space-between" align="center">
-      <Flex direction="row" align="center" gap="md">
-        <FactionIcon name={faction} width={64} />
-        <Text fw="bold">{localizedNames[faction]}</Text>
-      </Flex>
-      <IconChevronRight size={16} />
-    </Flex>
-  );
-};
-
 const Explorer: NextPage = () => {
   const { asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
@@ -34,7 +21,7 @@ const Explorer: NextPage = () => {
   return (
     <>
       <Head>
-        <title>COH3 {t("common.explorer")}</title>
+        <title>{`COH3 ${t("common.explorer")}`}</title>
         <meta name="description" content="COH3 Factions Explorer." />
         <meta
           name="keywords"
@@ -44,14 +31,14 @@ const Explorer: NextPage = () => {
       </Head>
       <Container size="md">
         <Stack mb={24}>
-          <Title order={2}>{t("explorer.title")}</Title>
+          <Title order={1}>{t("explorer.title")}</Title>
           <Text size="lg" mt={4}>
             {t("explorer.subtitle")}
           </Text>
         </Stack>
 
         <Stack>
-          <Title order={4}>Factions</Title>
+          <Title order={2}>Factions</Title>
           <SimpleGrid cols={2}>
             {Races.map((faction: raceType) => {
               return (
@@ -63,7 +50,15 @@ const Explorer: NextPage = () => {
                   href={getExplorerFactionRoute(faction)}
                 >
                   <Card p="sm" radius="md" withBorder>
-                    {explorerFactionLink(faction)}
+                    <Flex direction="row" justify="space-between" align="center">
+                      <Flex direction="row" align="center" gap="md">
+                        <FactionIcon name={faction} width={64} />
+                        <Title order={3} size="h4" fw="bold">
+                          {localizedNames[faction]}
+                        </Title>
+                      </Flex>
+                      <IconChevronRight size={16} />
+                    </Flex>
                   </Card>
                 </Anchor>
               );

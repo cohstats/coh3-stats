@@ -18,6 +18,9 @@
     "title": "Průzkumník frakcí Company of Heroes 3",
     "subtitle": "Prozkoumejte všechny jednotky, budovy a bojové skupiny ve hře."
   },
+  "factionPage": {
+    "factionOverview": "Přehled frakce"
+  },
   "unitPage": {
     "stats": "Statistiky",
     "abilities": "Schopnosti",
@@ -27,7 +30,8 @@
     "reinforce": "Posílit",
     "construct": "Může stavět",
     "free": "Zdarma",
-    "weaponNote": "Efektivní přesnost je ovlivněna několika faktory, jako je velikost cíle nebo brnění přijímající jednotky, stejně jako přesnost nebo průraznost útočící jednotky."
+    "weaponNote": "Efektivní přesnost je ovlivněna několika faktory, jako je velikost cíle nebo brnění přijímající jednotky, stejně jako přesnost nebo průraznost útočící jednotky.",
+    "importantNote": "Důležitá poznámka: Tato sekce zobrazuje všechny jednotky dostupné ve hře, včetně těch pouze v kampani."
   },
   "statsCard": {
     "sightRange": "Dohled",

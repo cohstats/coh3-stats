@@ -127,7 +127,7 @@ const StomperCard = ({
                   {stomper.apiData.info.name}
                 </Text>
               </Group>
-              <Text span size="sm" color="dimmed">
+              <Text span size="sm" c="dimmed">
                 <Group gap="xs">
                   <span>
                     {t("nemesis.wins")}: {wins}
@@ -273,7 +273,9 @@ const NemesisTab = ({
     <>
       <Container size={"md"} pl={0} pr={0}>
         <Space h={"lg"} />
-        <Title order={2}>{t("nemesis.title")}</Title>
+        <Title order={1} size={"h2"}>
+          {t("nemesis.title")}
+        </Title>
         <Flex wrap={"wrap"}>
           <Card m={"xs"} padding="sm" radius="md" ml={0} withBorder style={{ flexGrow: 1 }}>
             <List size="sm">

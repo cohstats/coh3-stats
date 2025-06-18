@@ -326,6 +326,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                     symbol_icon_name: resolvedSquad.ui.symbolIconName,
                     icon_name: resolvedSquad.ui.iconName,
                   }}
+                  placement="singleUnit"
                 />
               </Card>
               <div style={{ display: "flex", alignItems: "stretch" }}>

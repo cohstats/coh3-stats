@@ -32,11 +32,11 @@ export type UnitDescription = {
 export const UnitDescriptionCard = ({
   desc,
   faction,
-  list,
+  placement,
 }: {
   desc: UnitDescription;
   faction: raceType;
-  list?: boolean; // Specifies if the description card is used in the list of all units or in unit details
+  placement?: "list" | "singleUnit" | "building";
 }) => {
   const factionBackgroundSrc = BattlegroupBackgrounds[faction];
 
@@ -51,7 +51,7 @@ export const UnitDescriptionCard = ({
 
   return (
     <>
-      <Flex direction="row" align={list ? "center" : "start"} gap={"md"}>
+      <Flex direction="row" align={placement === "list" ? "center" : "start"} gap={"md"}>
         <BackgroundImage w={96} h={96} src={getIconsPathOnCDN(factionBackgroundSrc)} radius="md">
           <ImageWithFallback
             width={96}
@@ -73,7 +73,12 @@ export const UnitDescriptionCard = ({
               alt={`${desc.screen_name} symbol`}
               fallbackSrc={symbolPlaceholder}
             />
-            <Title order={list ? 4 : 2} style={{ textTransform: "capitalize" }} lineClamp={1}>
+            <Title
+              order={placement === "singleUnit" ? 1 : 4}
+              size={placement === "singleUnit" ? "h2" : "h3"}
+              style={{ textTransform: "capitalize" }}
+              lineClamp={1}
+            >
               {desc.screen_name}
             </Title>
           </Flex>
@@ -81,7 +86,11 @@ export const UnitDescriptionCard = ({
           {/* Symbol horizontal aligned with brief text. */}
           <Flex direction="row" align="center" gap={4}>
             <Tooltip.Floating label={briefText} multiline w={500}>
-              <Text fz="sm" lineClamp={list ? 2 : 10} style={{ whiteSpace: "pre-line" }}>
+              <Text
+                fz="sm"
+                lineClamp={placement === "list" ? 2 : 10}
+                style={{ whiteSpace: "pre-line" }}
+              >
                 {briefText}
               </Text>
             </Tooltip.Floating>

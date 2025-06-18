@@ -137,7 +137,9 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
   return (
     <Container size="lg" p="md">
       <Space h="lg" />
-      <Title order={2}>{t("teamsStandings.title")}</Title>
+      <Title order={1} size={"h2"}>
+        {t("teamsStandings.title")}
+      </Title>
       <Space h="xs" />
       <Text size="sm" c="dimmed">
         {t("teamsStandings.checkTeamDetails")}
@@ -146,10 +148,16 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
 
       <Stack gap="xl">
         <Stack gap={"xs"}>
-          <Title order={3} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            {t("teamsStandings.axisTeams", "Axis")}
-            <FactionIcon name="german" width={24} />
-            <FactionIcon name="dak" width={24} />
+          <Title
+            order={2}
+            size={"h3"}
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+          >
+            <>
+              {t("teamsStandings.axisTeams", "Axis")}
+              <FactionIcon name="german" width={24} />
+              <FactionIcon name="dak" width={24} />
+            </>
           </Title>
 
           {/* Pass an empty string as title to hide it */}
@@ -168,10 +176,16 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
         </Stack>
 
         <Stack gap={"xs"}>
-          <Title order={3} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            {t("teamsStandings.alliesTeams", "Allies")}
-            <FactionIcon name="american" width={24} />
-            <FactionIcon name="british" width={24} />
+          <Title
+            order={2}
+            size={"h3"}
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+          >
+            <>
+              {t("teamsStandings.alliesTeams", "Allies")}
+              <FactionIcon name="american" width={24} />
+              <FactionIcon name="british" width={24} />
+            </>
           </Title>
 
           {/* Pass an empty string as title to hide it */}

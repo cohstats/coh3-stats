@@ -81,7 +81,7 @@ const BuildingCardHeader = (
           alt={desc.screen_name}
         />
         <Flex direction="column" gap={4}>
-          <Title order={3} style={{ textTransform: "capitalize" }} lineClamp={1}>
+          <Title order={3} size="h3" style={{ textTransform: "capitalize" }} lineClamp={1}>
             {desc.screen_name}
           </Title>
           <Title order={5} lineClamp={2} c="yellow.5">
@@ -179,6 +179,7 @@ const BuildingUnitMapper = (units: BuildingSchema["units"], faction: raceType) =
                           symbol_icon_name: ui.symbolIconName,
                           icon_name: ui.iconName,
                         }}
+                        placement="building"
                       />
                       <Flex>{hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}</Flex>
                     </Stack>

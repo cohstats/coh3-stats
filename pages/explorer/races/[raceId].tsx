@@ -113,14 +113,18 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceToFetch} width={80} />
           <Stack gap="xs">
-            <Title order={3}>{localizedRace}</Title>
+            <Title order={1} size="h2">
+              {localizedRace} - {t("factionPage.factionOverview")}
+            </Title>
             <Text size="md">{descriptions.raceDescription}</Text>
           </Stack>
         </Flex>
 
         {/* Battlegroups Section */}
         <Stack mt={32}>
-          <Title order={4}>{t("common.battleGroups")}</Title>
+          <Title order={2} size="h2">
+            {t("common.battleGroups")}
+          </Title>
 
           <BattlegroupCard
             race={raceToFetch}
@@ -131,7 +135,9 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
         {/* Buildings Section */}
         <Stack mt={32}>
-          <Title order={4}>{descriptions.buildings}</Title>
+          <Title order={2} size="h2">
+            {descriptions.buildings}
+          </Title>
 
           <BuildingMapping
             preCalculatedBuildings={preCalculatedBuildings}
