@@ -17,9 +17,13 @@ const InfoCard = ({
   imageSrc: string;
 }) => {
   return (
-    <Anchor component={LinkWithOutPrefetch} href={link} style={{ textDecoration: "none" }}>
+    <Anchor
+      component={LinkWithOutPrefetch}
+      href={link}
+      style={{ textDecoration: "none", width: "100%", height: "100%" }}
+    >
       <Card p={{ base: "xs", sm: "sm" }} radius="md" withBorder className={classes.infoCard}>
-        <Stack gap={"xs"}>
+        <Stack gap={"xs"} style={{ height: "100%" }}>
           <Group justify="space-between">
             <Title order={4}>{title}</Title>
             <Image
@@ -32,7 +36,9 @@ const InfoCard = ({
             />
           </Group>
 
-          <Text size="sm">{content}</Text>
+          <Text size="sm" style={{ flex: 1 }}>
+            {content}
+          </Text>
         </Stack>
       </Card>
     </Anchor>

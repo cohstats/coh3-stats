@@ -1,5 +1,7 @@
 .infoCard {
-  max-height: 170px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   @mixin hover {
     background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   }
