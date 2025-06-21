@@ -17,6 +17,23 @@ export const isBrowserEnv = () => {
 };
 
 /**
+ * Parse a specific cookie value from document.cookie
+ * @param name - The name of the cookie to retrieve
+ * @returns The cookie value or null if not found
+ */
+export const getCookie = (name: string): string | null => {
+  if (!isBrowserEnv()) return null;
+
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    const cookieValue = parts.pop()?.split(";").shift();
+    return cookieValue || null;
+  }
+  return null;
+};
+
+/**
  * Converts the slashes to the correct ones
  * We don't need to use 3rd party shit module for this
  * @param path

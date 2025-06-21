@@ -22,6 +22,8 @@ import DevSiteNotification from "../components/dev-site-notification";
 import { appWithTranslation } from "next-i18next";
 import { UserConfig } from "next-i18next";
 import nextI18NextConfig from "../next-i18next.config";
+import { useRouter } from "next/router";
+import { getCookie } from "../src/utils";
 
 const emptyInitialI18NextConfig: UserConfig = {
   i18n: {
@@ -40,6 +42,7 @@ NProgress.configure({ showSpinner: false });
 
 function App(props: AppProps) {
   const { Component, pageProps } = props;
+  const router = useRouter();
 
   const colorSchemeManager = localStorageColorSchemeManager({
     key: "mantine-color-scheme",
@@ -85,6 +88,24 @@ function App(props: AppProps) {
   //   setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   useEffect(() => {
+    // Cookie language change - detect NEXT_LOCALE cookie and redirect if needed
+    const cookieLocale = getCookie("NEXT_LOCALE");
+    const currentLocale = router.locale;
+    const supportedLocales = nextI18NextConfig.i18n.locales;
+
+    if (
+      cookieLocale &&
+      currentLocale &&
+      cookieLocale !== currentLocale &&
+      supportedLocales.includes(cookieLocale)
+    ) {
+      // Redirect to the locale specified in the cookie
+      const { pathname, asPath, query } = router;
+      router.push({ pathname, query }, asPath, { locale: cookieLocale });
+      return; // Exit early to avoid setting up other event listeners during redirect
+    }
+
+    // Show progress bar on route change
     Router.events.on("routeChangeStart", (url, { shallow }) => {
       // If it's a shallow change, don't show the progress bar
       if (shallow) return;
@@ -98,7 +119,7 @@ function App(props: AppProps) {
     Router.events.on("routeChangeError", () => {
       NProgress.done(false);
     });
-  }, []);
+  }, [router]);
 
   const layoutContent = true;
 

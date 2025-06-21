@@ -13,6 +13,7 @@ import {
   convertWeekDayToFullName,
   getPatchVersionAsMantineV7Groups,
   getCorrectLeaderStartPositions,
+  getCookie,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -336,5 +337,61 @@ describe("getCorrectLeaderStartPositions", () => {
     expect(getCorrectLeaderStartPositions(102)).toBe(101);
     expect(getCorrectLeaderStartPositions(200)).toBe(101);
     expect(getCorrectLeaderStartPositions(201)).toBe(201);
+  });
+});
+
+describe("getCookie", () => {
+  let windowSpy: any;
+  let documentSpy: any;
+
+  beforeEach(() => {
+    windowSpy = jest.spyOn(global, "window", "get");
+    documentSpy = jest.spyOn(global, "document", "get");
+  });
+
+  afterEach(() => {
+    windowSpy.mockRestore();
+    documentSpy.mockRestore();
+  });
+
+  test("should return null in non-browser environment", () => {
+    windowSpy.mockImplementation(() => undefined);
+    expect(getCookie("NEXT_LOCALE")).toBe(null);
+  });
+
+  test("should return cookie value when cookie exists", () => {
+    windowSpy.mockImplementation(() => ({}));
+    documentSpy.mockImplementation(() => ({
+      cookie: "NEXT_LOCALE=fr; other=value; another=test",
+    }));
+
+    expect(getCookie("NEXT_LOCALE")).toBe("fr");
+  });
+
+  test("should return null when cookie does not exist", () => {
+    windowSpy.mockImplementation(() => ({}));
+    documentSpy.mockImplementation(() => ({
+      cookie: "other=value; another=test",
+    }));
+
+    expect(getCookie("NEXT_LOCALE")).toBe(null);
+  });
+
+  test("should handle empty cookie string", () => {
+    windowSpy.mockImplementation(() => ({}));
+    documentSpy.mockImplementation(() => ({
+      cookie: "",
+    }));
+
+    expect(getCookie("NEXT_LOCALE")).toBe(null);
+  });
+
+  test("should handle cookie with empty value", () => {
+    windowSpy.mockImplementation(() => ({}));
+    documentSpy.mockImplementation(() => ({
+      cookie: "NEXT_LOCALE=; other=value",
+    }));
+
+    expect(getCookie("NEXT_LOCALE")).toBe(null);
   });
 });
