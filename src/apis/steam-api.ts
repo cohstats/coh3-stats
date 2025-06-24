@@ -56,6 +56,10 @@ const getCOH3SteamNews = async (count = 20): Promise<COH3SteamNewsType> => {
       // news.contents = news.contents.replaceAll("][br]", "");
       // console.log(JSON.stringify(news.contents))
       news.image = news.contents.match(/\[img\](.*?)\[\/img\]/)?.[1] ?? null;
+      // There is possible new syntax for the image tag
+      if (!news.image) {
+        news.image = news.contents.match(/\[img src="(.*?)"\]/)?.[1] ?? null;
+      }
 
       return news;
     });

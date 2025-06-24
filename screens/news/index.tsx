@@ -40,7 +40,10 @@ const preset = reactPreset.extend((tags: any) => ({
       content: node.content,
     };
   },
-  img: (node: { content: any }) => {
+  img: (node: { attrs: Record<string, string>; content: any }) => {
+    // Get image URL from content or src attribute if content is empty
+    const imageUrl = node.content.length > 0 ? node.content : node.attrs?.src;
+
     return {
       tag: Image,
       attrs: {
@@ -50,7 +53,7 @@ const preset = reactPreset.extend((tags: any) => ({
         // radius: "md",
         // w: "auto",
         fit: "contain",
-        src: imageUrlTransform(node.content),
+        src: imageUrlTransform(imageUrl),
         alt: "news image",
       },
     };
@@ -169,6 +172,7 @@ const SingleNewsItem = ({
                   "strike",
                   "u",
                   "b",
+                  "p",
                   "hr",
                   "code",
                   "table",
@@ -241,7 +245,7 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
           <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
             {t("sourceText")}
             <br />
-            {t("findGamesOn")}
+            {t("findGamesOn")}{" "}
             <Anchor href={"https://store.steampowered.com/news/app/1677280"} target={"_blank"}>
               {t("steamNewsLink")}
             </Anchor>
