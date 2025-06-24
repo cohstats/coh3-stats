@@ -14,6 +14,28 @@ import {
   TeamDetails,
   TeamLeaderboardResponse,
 } from "../coh3/coh3-types";
+
+interface SteamOpenIDResponse {
+  "openid.ns": string;
+  "openid.mode": string;
+  "openid.op_endpoint": string;
+  "openid.claimed_id": string;
+  "openid.identity": string;
+  "openid.return_to": string;
+  "openid.response_nonce": string;
+  "openid.assoc_handle": string;
+  "openid.signed": string;
+  "openid.sig": string;
+  [key: string]: string;
+}
+
+interface SteamAuthResponse {
+  success: boolean;
+  steamID?: string;
+  error?: string;
+  message?: string;
+}
+
 import {
   analysisFilterType,
   analysisMapFilterType,
@@ -687,6 +709,11 @@ const getTeamLeaderboardsUrl = (
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
+const getSteamAuthUrl = () => {
+  const path = `/sharedAPIGen2Http/auth/login`;
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
+};
+
 const getTeamLeaderboards = async (
   side: "axis" | "allies",
   type: leaderBoardType,
@@ -704,6 +731,42 @@ const getTeamLeaderboards = async (
       throw new Error(`Error getting team leaderboards: ${data.error}`);
     }
     throw new Error(`Error getting team leaderboards`);
+  }
+};
+
+/**
+ * Authenticates a user with Steam OpenID response data
+ * @param steamOpenIDResponse - The Steam OpenID response data from the authentication callback
+ * @returns Promise<SteamAuthResponse> - Authentication result with success status and Steam ID
+ */
+const authenticateSteamUser = async (
+  steamOpenIDResponse: SteamOpenIDResponse,
+): Promise<SteamAuthResponse> => {
+  const response = await fetch(getSteamAuthUrl(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(steamOpenIDResponse),
+  });
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    if (response.status === 400) {
+      const data = await response.json();
+      throw new Error(`Invalid Steam OpenID response: ${data.error || data.message}`);
+    }
+    if (response.status === 401) {
+      const data = await response.json();
+      throw new Error(`Steam authentication failed: ${data.error || data.message}`);
+    }
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error authenticating Steam user: ${data.error}`);
+    }
+    logger.error(`Error authenticating Steam user - status code: ${response.status}`);
+    throw new Error(`Error authenticating Steam user - status code: ${response.status}`);
   }
 };
 
@@ -726,4 +789,7 @@ export {
   getTeamDetails,
   getTeamMatches,
   getTeamLeaderboards,
+  authenticateSteamUser,
 };
+
+export type { SteamOpenIDResponse, SteamAuthResponse };

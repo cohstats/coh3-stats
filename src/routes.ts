@@ -164,3 +164,16 @@ export const getTeamLeaderboardsRoute = (
 export const getTeamDetailsRoute = (profileId: string | number, teamId: string | number) => {
   return encodeURI(`/players/${profileId}?view=teamDetails&team=${teamId}`);
 };
+
+export const getSteamLoginRoute = (returnUrl: string, realm: string) => {
+  const params = new URLSearchParams({
+    "openid.ns": "http://specs.openid.net/auth/2.0",
+    "openid.claimed_id": "http://specs.openid.net/auth/2.0/identifier_select",
+    "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
+    "openid.return_to": returnUrl,
+    "openid.realm": realm,
+    "openid.mode": "checkid_setup",
+  });
+
+  return `https://steamcommunity.com/openid/login?${params.toString()}`;
+};

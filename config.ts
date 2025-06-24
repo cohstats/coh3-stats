@@ -16,7 +16,9 @@ export interface FirebaseConfig {
 const getFirebaseConfig = (): FirebaseConfig =>
   JSON.parse(process.env.NEXT_PUBLIC_APP_FIREBASE_CONFIG || "{}");
 
-const useFirebaseEmulators = false;
+const useFirebaseEmulators = process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true" || false;
+
+console.log("USE_FIREBASE_EMULATORS", useFirebaseEmulators);
 
 const firebaseFunctions = {
   LOCATION: "us-east4",
