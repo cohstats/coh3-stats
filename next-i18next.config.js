@@ -16,6 +16,7 @@ module.exports = {
       "tr",
       "cs",
       "ru",
+      "uk-UA",
     ],
     defaultLocale: "en",
     // Next is complaining when this is on true? which should be
