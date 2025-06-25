@@ -605,6 +605,12 @@ const OfficialMapKeys = [
   "djebel_2p", // Community maps
   /* ---------- 2.0.5 Maps ---------- */
   "mignano_6p",
+  /* ---------- 2.1.0 Maps ---------- */
+  "red_ball_express_8p",
+  "gabes_gap_6p",
+  "alamein_4p",
+  "lorraine_4p",
+  "tuscan_vineyard_2p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -817,5 +823,26 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   mignano_6p: {
     name: "Mignano Summit",
     url: "/mignano_6p/mignano_6p.webp",
+  },
+  /* ------------------------- 2.1.0 Maps ---------------------------- */
+  red_ball_express_8p: {
+    name: "Red Ball Express",
+    url: "/red_ball_express_8p/red_ball_express_8p.webp",
+  },
+  gabes_gap_6p: {
+    name: "Gabès Gap",
+    url: "/gabes_gap_6p/gabes_gap_6p.webp",
+  },
+  alamein_4p: {
+    name: "Alamein",
+    url: "/alamein_4p/alamein_4p.webp",
+  },
+  lorraine_4p: {
+    name: "Lorraine",
+    url: "/lorraine_4p/lorraine_4p.webp",
+  },
+  tuscan_vineyard_2p: {
+    name: "Tuscan Vineyard",
+    url: "/tuscan_vineyard_2p/tuscan_vineyard_2p.webp",
   },
 };
