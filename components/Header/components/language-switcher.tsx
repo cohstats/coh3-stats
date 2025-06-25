@@ -16,6 +16,7 @@ const languages: Record<string, string> = {
   es: "Español",
   tr: "Türkçe",
   cs: "Čeština",
+  "uk-UA": "Українська",
   ru: "Русский",
 };
 
@@ -37,6 +38,8 @@ const getCountryCode = (languageCode: string): string => {
       return "kr";
     case "ru":
       return "ru";
+    case "uk-UA":
+      return "ua";
     default:
       return languageCode.split("-")[0];
   }
