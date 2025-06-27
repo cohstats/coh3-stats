@@ -86,6 +86,41 @@ const preset = reactPreset.extend((tags: any) => ({
       return null;
     }
   },
+  // Custom list handler to properly handle nested content in list items
+  list: (node: { attrs: Record<string, string>; content: any }) => {
+    const processListContent = (content: any[]): any[] => {
+      if (!Array.isArray(content)) return content;
+
+      return content.reduce((acc: any[], item: any) => {
+        // Handle [*] tags with nested content
+        if (item && typeof item === "object" && item.tag === "*") {
+          acc.push({
+            tag: "li",
+            attrs: {},
+            content: item.content || [],
+          });
+        } else {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+    };
+
+    const type = node.attrs && Object.keys(node.attrs)[0];
+    return {
+      tag: type ? "ol" : "ul",
+      attrs: type ? { type } : {},
+      content: processListContent(node.content || []),
+    };
+  },
+  // Custom asterisk handler for list items
+  "*": (node: { content: any }) => {
+    return {
+      tag: "li",
+      attrs: {},
+      content: node.content || [],
+    };
+  },
 }));
 
 class NewsComponentErrorBoundary extends React.Component {
