@@ -224,13 +224,6 @@
     "symbol": "races/american/symbols/chaffee"
   },
   {
-    "id": "command_halftrack_us",
-    "icon": "common/units/icons/halftrack_m3_us",
-    "name": "",
-    "faction": "american",
-    "symbol": "common/units/symbols/halftrack_m3_us"
-  },
-  {
     "id": "greyhound_recrewable_us",
     "icon": "races/american/vehicles/greyhound_us",
     "name": "M8 Greyhound Armored Car",
@@ -257,6 +250,13 @@
     "name": "M3 Assault Carrier",
     "faction": "american",
     "symbol": "races/american/symbols/halftrack_assault_us"
+  },
+  {
+    "id": "halftrack_command_us",
+    "icon": "common/units/icons/halftrack_m3_us",
+    "name": "",
+    "faction": "american",
+    "symbol": "common/units/symbols/halftrack_m3_us"
   },
   {
     "id": "halftrack_medical_us",
