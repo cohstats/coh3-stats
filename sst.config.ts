@@ -8,7 +8,7 @@ export default $config({
       protect: ["production"].includes(input?.stage),
       home: "aws",
       providers: {
-        cloudflare: "5.49.0",
+        cloudflare: "6.3.1",
         aws: {
           region: "us-east-2",
         },
