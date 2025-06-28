@@ -68,7 +68,7 @@
     "i18next": "24.2.3",
     "is-glob": "4.0.3",
     "javascript-time-ago": "2.5.11",
-    "json-2-csv": "5.5.7",
+    "json-2-csv": "5.5.9",
     "lodash": "4.17.21",
     "mantine-datatable": "7.17.1",
     "next": "14.2.30",
