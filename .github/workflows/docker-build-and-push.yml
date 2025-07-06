@@ -43,7 +43,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{is_default_branch || github.ref_name == 'docker'}}
           labels: |
             org.opencontainers.image.title=COH3 Stats Frontend
             org.opencontainers.image.description=Company of Heroes 3 Statistics and Leaderboards
