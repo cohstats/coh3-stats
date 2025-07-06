@@ -1,13 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": ["config:recommended"],
   "rangeStrategy": "pin",
   "prHourlyLimit": 5,
   "minimumReleaseAge": "5 days",
   "labels": ["renovate"],
   "packageRules": [
     {
-      "packageNames": ["@types/node"],
+      "matchPackageNames": ["@types/node"],
       "allowedVersions": "20.x"
     },
     {
@@ -21,8 +21,8 @@
       "ignoreUnstable": true
     },
     {
-      "matchFiles": [".github/workflows/**"],
-      "matchStrings": ["node-version: \"(?<currentValue>.*)\"\s"],
+      "matchFileNames": [".github/workflows/**"],
+      "matchStrings": ["node-version: \"(?<currentValue>.*)\"s"],
       "depNameTemplate": "node",
       "enabled": false
     },
@@ -32,23 +32,23 @@
       "enabled": false
     },
     {
-      "datasources": ["github-actions"],
-      "packagePatterns": ["^actions/"],
+      "matchDatasources": ["github-actions"],
       "groupName": "github-actions",
-      "groupSlug": "actions-updates"
+      "groupSlug": "actions-updates",
+      "matchPackageNames": ["/^actions//"]
     },
     {
-      "packageNames": ["@sentry/nextjs"],
+      "matchPackageNames": ["@sentry/nextjs"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
     {
-      "matchPackagePrefixes": ["embla-carousel"],
       "groupName": "Embla Carousel Packages",
-      "groupSlug": "embla-carousel"
+      "groupSlug": "embla-carousel",
+      "matchPackageNames": ["embla-carousel{/,}**"]
     },
     {
-      "packageNames": ["@tabler/icons-react"],
+      "matchPackageNames": ["@tabler/icons-react"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     }
