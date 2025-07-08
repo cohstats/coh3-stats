@@ -148,10 +148,6 @@ Example pages:
 
 ![image](https://user-images.githubusercontent.com/8086995/217599315-ff660c70-e9d6-4e99-88b9-c4ea21892433.png)
 
-### High level architecture
-
-![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
-
 ## COH3 Stats technology stack
 
 App platform:
@@ -179,9 +175,19 @@ Backend:
 - cache.coh3stats.com - Cache for API calls
 - data.coh3stats.com - CDN for the data files hosted at Github - coh3-data repo
 
-### Learn More about NextJS
+### History of deployments
 
-To learn more about Next.js, have a look at the following resources:
+#### NextJS App
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Edgio - for many years - ended because edgio ended their sites services
+- Vercel - briefly - ended, because they are counting ISR as SSR, we have a LOT of ISR content, it was becoming really expensive,
+  also we have quite high traffic over the world and vercel was not caching from single resource.
+- Netlify - briefly - it was better than Vercel, but it ended, because they are become quite expensive
+- AWS - SST deployment - this work quite well, we were able to nicely integrate with other services at AWS, however we
+  added localization support for many languages. This moved the amount of unique pages to millions and google / bing and LLM bots are keen
+  on visiting them all - one day we got quite big Lambda bill from AWS.
+- Self Hosted Docker with Coolify - currently setup, flat rate
+
+### High level architecture - outdated
+
+![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
