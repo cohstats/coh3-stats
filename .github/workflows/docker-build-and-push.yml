@@ -13,6 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: cohstats/coh3-stats
+  COOLIFY_UUID_DEV: eoccooco4kokk40gg8coow4k
 
 jobs:
   build-and-push:
@@ -69,3 +70,11 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
+
+      - name: Deploy to Coolify
+        if: success() && (github.ref_name == 'docker' || startsWith(github.ref, 'refs/tags/v'))
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_DEPLOY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            "https://coolify.ovh.coh3stats.com/api/v1/deploy?uuid=${{ env.COOLIFY_UUID_DEV }}&force=false"
