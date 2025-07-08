@@ -21,23 +21,26 @@ const nextConfig = {
     unoptimized: true,
   },
   i18n,
+  // Standalone output for docker file hosting
+  output: "standalone",
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
   },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Netlify-Vary",
-            value: "query",
-          },
-        ],
-      },
-    ];
-  },
+  // Required for hosting on Netlify
+  // async headers() {
+  //   return [
+  //     {
+  //       source: "/:path*",
+  //       headers: [
+  //         {
+  //           key: "Netlify-Vary",
+  //           value: "query",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // },
 };
 
 const sentryWebpackPluginOptions = {
