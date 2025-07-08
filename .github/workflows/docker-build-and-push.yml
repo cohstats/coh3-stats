@@ -1,14 +1,16 @@
 name: Build and Push Docker Image
 
 on:
-  push:
-    branches:
-      - docker
-    tags:
-      - "v*"
-  pull_request:
-    branches:
-      - docker
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - development
+          - production
 
 env:
   REGISTRY: ghcr.io
