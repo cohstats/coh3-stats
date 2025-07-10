@@ -98,7 +98,7 @@ jobs:
             BUILDKIT_INLINE_CACHE=1
 
       - name: Deploy to Coolify
-        if: success() && github.ref_name == 'master'
+        if: success()
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_DEPLOY_TOKEN }}" \
