@@ -57,7 +57,7 @@ jobs:
           SENTRY_ORG: coh-stats
           SENTRY_PROJECT: coh3-stats-web
         with:
-          environment: ${{ env.EDGIO_ENV }}
+          environment: ${{ env.DEPLOY_ENV }}
           ignore_empty: true
           ignore_missing: true
 
