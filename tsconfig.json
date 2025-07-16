@@ -17,5 +17,7 @@
     "downlevelIteration": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules","sst.config.ts"]
+  "exclude": ["node_modules",
+    ".deprecated/sst.config.ts"
+  ]
 }
