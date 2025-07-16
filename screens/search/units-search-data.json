@@ -1689,7 +1689,7 @@
   {
     "id": "recovery_vehicle_ger",
     "icon": "common/units/icons/recovery_vehicle_us",
-    "name": "18-tonne Recovery Vehicle",
+    "name": "18-tonne Recovery Half-track",
     "faction": "german",
     "symbol": "races/german/symbols/recovery_vehicle_ger"
   },
@@ -2158,7 +2158,7 @@
   {
     "id": "panzer_iv_ak",
     "icon": "races/afrika_corps/vehicles/panzer_iv_ak",
-    "name": "Panzer IV Sd.Kfz. 161/1",
+    "name": "Panzer IV Medium Tank",
     "faction": "dak",
     "symbol": "common/units/symbols/panzer_iv_sdkfz_161_1_ger"
   },
