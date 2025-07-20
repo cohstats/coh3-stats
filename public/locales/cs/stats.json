@@ -1,0 +1,20 @@
+{
+  "players": {
+    "meta": {
+      "title": "Statistiky multiplayer hráčů - Company of Heroes 3",
+      "description": "Celkové informace o všech multiplayer hráčích v Company of Heroes 3.\nAktuálně sledujeme {{count, number}} multiplayer hráčů.",
+      "keywords": "coh3 statistiky hráčů, statistiky hráčů, země hráčů, coh3 historie hráčů"
+    },
+    "title": "Statistiky PC hráčů",
+    "totalTrackedPlayers": "Celkový počet sledovaných hráčů",
+    "totalTrackedPlayersTooltip": "Můžeme sledovat pouze hráče, kteří hráli alespoň jednou v multiplayeru v jakémkoli herním režimu od 19. května 2023.",
+    "multiplayerPlayersLast30Days": "Multiplayer hráči za posledních 30 dní",
+    "multiplayerPlayersLast7Days": "Multiplayer hráči za posledních 7 dní",
+    "multiplayerPlayersLast24Hours": "Multiplayer hráči za posledních 24 hodin",
+    "dataUpdatedOn": "Data aktualizována dne",
+    "xboxPsNote": "Nesledujeme zde XBOX a PS hráče."
+  },
+  "errors": {
+    "gettingPlayerStats": "Chyba při získávání statistik hráčů"
+  }
+}

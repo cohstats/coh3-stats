@@ -1,0 +1,20 @@
+{
+  "players": {
+    "meta": {
+      "title": "多人游戏玩家统计 - 英雄连3",
+      "description": "英雄连3中所有多人游戏玩家的总体信息。\n目前追踪{{count, number}}名多人游戏玩家。",
+      "keywords": "coh3玩家统计, 玩家统计, 玩家国家, coh3玩家历史"
+    },
+    "title": "PC玩家统计",
+    "totalTrackedPlayers": "追踪玩家总数",
+    "totalTrackedPlayersTooltip": "我们只能追踪自2023年5月19日以来在任何游戏模式中至少进行过一次多人游戏的玩家。",
+    "multiplayerPlayersLast30Days": "过去30天的多人游戏玩家",
+    "multiplayerPlayersLast7Days": "过去7天的多人游戏玩家",
+    "multiplayerPlayersLast24Hours": "过去24小时的多人游戏玩家",
+    "dataUpdatedOn": "数据更新于",
+    "xboxPsNote": "我们这里不追踪XBOX和PS玩家。"
+  },
+  "errors": {
+    "gettingPlayerStats": "获取玩家统计数据时出错"
+  }
+}

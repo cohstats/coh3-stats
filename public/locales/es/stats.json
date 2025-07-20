@@ -1,0 +1,20 @@
+{
+  "players": {
+    "meta": {
+      "title": "Estadísticas de Jugadores Multijugador - Company of Heroes 3",
+      "description": "Información general sobre todos los jugadores multijugador en Company of Heroes 3.\nActualmente rastreando {{count, number}} jugadores multijugador.",
+      "keywords": "estadísticas jugadores coh3, estadísticas jugadores, países jugadores, historial jugadores coh3"
+    },
+    "title": "Estadísticas de Jugadores PC",
+    "totalTrackedPlayers": "Número total de jugadores rastreados",
+    "totalTrackedPlayersTooltip": "Solo podemos rastrear jugadores que hayan jugado multijugador al menos una vez en cualquier modo de juego desde el 19 de mayo de 2023.",
+    "multiplayerPlayersLast30Days": "Jugadores multijugador en los últimos 30 días",
+    "multiplayerPlayersLast7Days": "Jugadores multijugador en los últimos 7 días",
+    "multiplayerPlayersLast24Hours": "Jugadores multijugador en las últimas 24 horas",
+    "dataUpdatedOn": "Datos actualizados el",
+    "xboxPsNote": "No rastreamos jugadores de XBOX y PS aquí."
+  },
+  "errors": {
+    "gettingPlayerStats": "Error al obtener las estadísticas de jugadores"
+  }
+}

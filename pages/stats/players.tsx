@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
 import { generateExpireTimeStamps } from "../../src/utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 //only render on client side
 const DynamicGeoWorldMap = dynamic(
@@ -52,14 +53,12 @@ const PlayerStats = ({
   historyData: Array<{ y: number; x: string }>;
   locale: string;
 }) => {
-  const pageTitle = `Multiplayer Player Stats - Company of Heroes 3`;
-  const description = `Overall information about all Multiplayer players in Company of Heroes 3.\nCurrently tracking ${playerStats.count.toLocaleString()} Multiplayer players.`;
-  const keywords = generateKeywordsString([
-    "coh3 players stats",
-    "player stats",
-    "player countries",
-    "coh3 players history",
-  ]);
+  const { t } = useTranslation(["stats", "common"]);
+  const pageTitle = t("stats:players.meta.title");
+  const description = t("stats:players.meta.description", {
+    count: playerStats?.count || 0,
+  });
+  const keywords = generateKeywordsString(t("stats:players.meta.keywords").split(", "));
 
   useEffect(() => {
     AnalyticsStatsPlayerStatsPageView();
@@ -74,11 +73,11 @@ const PlayerStats = ({
       </Head>
       <Container size={"md"} p={0}>
         {error ? (
-          <ErrorCard title={"Error getting the player stats"} body={JSON.stringify(error)} />
+          <ErrorCard title={t("stats:errors.gettingPlayerStats")} body={JSON.stringify(error)} />
         ) : (
           <>
             <div style={{ textAlign: "center", paddingBottom: 5 }}>
-              <Title order={1}>PC Players Stats</Title>
+              <Title order={1}>{t("stats:players.title")}</Title>
             </div>
 
             <Center>
@@ -94,12 +93,8 @@ const PlayerStats = ({
                 >
                   <div style={{ gridColumn: 1, justifySelf: "end" }}>
                     <Group gap={5}>
-                      <>Total number of tracked players</>{" "}
-                      <HelperIcon
-                        text={
-                          "We can only track players who have been Multiplayer at least once in any game mode since May 19th, 2023."
-                        }
-                      />
+                      <>{t("stats:players.totalTrackedPlayers")}</>{" "}
+                      <HelperIcon text={t("stats:players.totalTrackedPlayersTooltip")} />
                     </Group>
                   </div>
                   <div style={{ gridColumn: 2 }}>
@@ -111,7 +106,7 @@ const PlayerStats = ({
                     </Group>
                   </div>
                   <div style={{ gridColumn: 1, textAlign: "right" }}>
-                    Multiplayer players in the last &nbsp;&nbsp;30 days
+                    {t("stats:players.multiplayerPlayersLast30Days")}
                   </div>
                   <div style={{ gridColumn: 2 }}>
                     <Group gap={4}>
@@ -122,7 +117,7 @@ const PlayerStats = ({
                     </Group>
                   </div>
                   <div style={{ gridColumn: 1, textAlign: "right" }}>
-                    Multiplayer players in the last &nbsp;&nbsp;&nbsp;&nbsp;7 days
+                    {t("stats:players.multiplayerPlayersLast7Days")}
                   </div>
                   <div style={{ gridColumn: 2 }}>
                     <Group gap={4}>
@@ -133,7 +128,7 @@ const PlayerStats = ({
                     </Group>
                   </div>
                   <div style={{ gridColumn: 1, textAlign: "right" }}>
-                    Multiplayer players in the last 24 hours
+                    {t("stats:players.multiplayerPlayersLast24Hours")}
                   </div>
                   <div style={{ gridColumn: 2 }}>
                     <Group gap={4}>
@@ -152,10 +147,10 @@ const PlayerStats = ({
               <DynamicPlayersLineChart data={historyData} />
             </div>
             <Text style={{ textAlign: "center" }} fs="italic" c="dimmed" fz="sm" pt={25}>
-              Data updated on{" "}
+              {t("stats:players.dataUpdatedOn")}{" "}
               {dayjs(playerStats.timeStampMs).locale(locale).format("YYYY-MM-DD HH:mm")} UTC
               <br />
-              We do not track XBOX and PS players here.
+              {t("stats:players.xboxPsNote")}
             </Text>
           </>
         )}
@@ -219,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en
       playerStats,
       countries,
       historyData,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "stats"])),
       locale,
     },
   };

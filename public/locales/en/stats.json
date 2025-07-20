@@ -1,0 +1,20 @@
+{
+  "players": {
+    "meta": {
+      "title": "Multiplayer Player Stats - Company of Heroes 3",
+      "description": "Overall information about all Multiplayer players in Company of Heroes 3.\nCurrently tracking {{count, number}} Multiplayer players.",
+      "keywords": "coh3 players stats, player stats, player countries, coh3 players history"
+    },
+    "title": "PC Players Stats",
+    "totalTrackedPlayers": "Total number of tracked players",
+    "totalTrackedPlayersTooltip": "We can only track players who have been Multiplayer at least once in any game mode since May 19th, 2023.",
+    "multiplayerPlayersLast30Days": "Multiplayer players in the last 30 days",
+    "multiplayerPlayersLast7Days": "Multiplayer players in the last 7 days",
+    "multiplayerPlayersLast24Hours": "Multiplayer players in the last 24 hours",
+    "dataUpdatedOn": "Data updated on",
+    "xboxPsNote": "We do not track XBOX and PS players here."
+  },
+  "errors": {
+    "gettingPlayerStats": "Error getting the player stats"
+  }
+}
