@@ -1,0 +1,74 @@
+{
+  "mainMenu": {
+    "leaderboards": "排行榜",
+    "regularLeaderboards": "常规排行榜",
+    "teamLeaderboards": "团队排行榜",
+    "statistics": "统计数据",
+    "statsMenu": {
+      "games": "游戏统计数据",
+      "maps": "地图统计数据",
+      "players": "玩家统计数据",
+      "leaderboards": "排行榜统计数据",
+      "achievements": "成就统计数据"
+    },
+    "explorer": "探索者",
+    "explMenu": {
+      "buildings": "建筑",
+      "units": "单位",
+      "dpsCalculator": "DPS - 单位对比",
+      "unitBrowser": "单位浏览器",
+      "challenges": "挑战",
+      "weapons": "武器",
+      "tools": "工具"
+    },
+    "liveGames": "实时游戏",
+    "desktopApp": "桌面应用",
+    "other": "其他",
+    "otherMenu": {
+      "tiers": "排名等级",
+      "openData": "开放数据",
+      "coh3News": "COH3 新闻",
+      "playerExport": "玩家导出 API"
+    },
+    "about": "关于我们",
+    "supportUs": "支持我们"
+  },
+  "header": {
+    "playerInGames": "游戏中玩家",
+    "onlinePlayersTooltip": "截至 {{date}} 的《英雄连 3》在线玩家数量"
+  },
+  "footer": {
+    "gamePatch": "游戏补丁",
+    "gamePatchInfo": "网站上显示的数据来自游戏补丁",
+    "unofficialSite": "这是《英雄连 3》的非官方粉丝自制网站。",
+    "visitText1": "访问",
+    "visitText2": "获取《英雄连 2》的统计数据和分析",
+    "trademark": "英雄连是 Relic Entertainment 的注册商标。",
+    "assets": "英雄连图片和其他资产归 Relic Entertainment 所有。"
+  },
+  "columns": {
+    "rank": "排名",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "别名",
+    "streak": "连胜",
+    "ratio": "胜率",
+    "total": "总计",
+    "lastGame": "上一局",
+    "tier": "等级",
+    "wins": "胜利",
+    "losses": "失败"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - 页面未找到",
+      "message": "如果您认为这是一个 bug，请在我们的 Discord 上报告"
+    }
+  },
+  "search": {
+    "playersAndUnits": "玩家和单位"
+  },
+  "loading": "正在加载...",
+  "error": "错误",
+  "notFound": "未找到"
+}
