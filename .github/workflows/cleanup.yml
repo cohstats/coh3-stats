@@ -1,0 +1,75 @@
+name: Cleanup Old Docker Images
+
+on:
+  # Run weekly on Sundays at 2 AM UTC
+  schedule:
+    - cron: "0 2 * * 0"
+
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      keep_days:
+        description: "Keep images newer than X days"
+        required: false
+        default: "30"
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: cohstats/coh3-stats
+
+jobs:
+  cleanup:
+    name: Cleanup Old Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete old images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: "coh3-stats"
+          package-type: "container"
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: false
+          ignore-versions: "^(latest|production|development)$"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete untagged images older than 7 days
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: "coh3-stats"
+          package-type: "container"
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: true
+          older-than: 7
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete old development images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: "coh3-stats"
+          package-type: "container"
+          min-versions-to-keep: 5
+          delete-only-untagged-versions: false
+          ignore-versions: '^(latest|production|v\d+\.\d+\.\d+)$'
+          older-than: ${{ github.event.inputs.keep_days || '30' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Cleaned up old Docker images" >> $GITHUB_STEP_SUMMARY
+          echo "- Kept minimum 10 versions overall" >> $GITHUB_STEP_SUMMARY
+          echo "- Removed untagged images older than 7 days" >> $GITHUB_STEP_SUMMARY
+          echo "- Removed development images older than ${{ github.event.inputs.keep_days || '30' }} days" >> $GITHUB_STEP_SUMMARY
+          echo "- Protected: latest, production, and version tags (v*)" >> $GITHUB_STEP_SUMMARY
