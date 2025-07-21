@@ -54,6 +54,8 @@ jobs:
 
       - name: Create New Branch
         run: |
+          git checkout master
+          git branch -D automated-content-update || true
           git checkout -b automated-content-update
           git add -A
           git commit -m "Update sitemap and search data"
