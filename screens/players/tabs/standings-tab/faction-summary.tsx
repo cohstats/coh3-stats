@@ -78,7 +78,7 @@ const PlayerStandingsFactionInfo = ({
         radius="md"
         withBorder
         style={{
-          width: "230px",
+          width: "200px",
           // height: "208px",
         }}
       >

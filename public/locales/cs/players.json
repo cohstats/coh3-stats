@@ -83,7 +83,17 @@
         "wins": "Výhry",
         "losses": "Prohry",
         "total": "Celkem",
-        "winRate": "Úspěšnost"
+        "winRate": "Úspěšnost",
+        "type": "Typ",
+        "elo": "ELO",
+        "tier": "Úroveň",
+        "ratio": "Poměr",
+        "drops": "Odpojení"
+      },
+      "helpers": {
+        "bestRankAchieved": "Nejlepší dosažené pořadí. Nižší je lepší. Nejlepší pořadí, které hráč kdy měl.",
+        "bestEloAchieved": "Nejlepší dosažené ELO. Vyšší je lepší. Nejlepší ELO, které hráč kdy měl.",
+        "best": "Nejlepší"
       }
     },
     "faction": {

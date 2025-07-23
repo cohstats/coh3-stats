@@ -81,9 +81,19 @@
         "lastMatch": "Letztes Spiel",
         "streak": "Serie",
         "wins": "Siege",
-        "losses": "Niederlagen",
+        "losses": "Besiegt",
         "total": "Gesamt",
-        "winRate": "Gewinnrate"
+        "winRate": "Gewinnrate",
+        "type": "Typ",
+        "elo": "ELO",
+        "tier": "Stufe",
+        "ratio": "Verhältnis",
+        "drops": "Abbrüche"
+      },
+      "helpers": {
+        "bestRankAchieved": "Bester erreichter Rang. Niedriger ist besser. Der beste Rang, den der Spieler je hatte.",
+        "bestEloAchieved": "Beste erreichte ELO. Höher ist besser. Die beste ELO, die der Spieler je hatte.",
+        "best": "Beste"
       }
     },
     "faction": {

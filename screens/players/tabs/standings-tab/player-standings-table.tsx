@@ -15,15 +15,18 @@ import RankIcon from "../../../../components/rank-icon";
 import HelperIcon from "../../../../components/icon/helper";
 import { IconArrowBigDown, IconArrowBigUp } from "@tabler/icons-react";
 import { getCorrectLeaderStartPositions } from "../../../../src/utils";
+import { TFunction } from "next-i18next";
 
 const PlayerStandingsTable = ({
   faction,
   data,
   platform,
+  t,
 }: {
   faction: raceType;
   data: Record<"1v1" | "2v2" | "3v3" | "4v4", RawLeaderboardStat | null>;
   platform: platformType;
+  t: TFunction;
 }) => {
   const dataForTable = [];
 
@@ -37,7 +40,7 @@ const PlayerStandingsTable = ({
         style={{
           flexGrow: 1,
           maxHeight: "inherit",
-          maxWidth: "750px",
+          maxWidth: "770px",
         }}
         withTableBorder={true}
         borderRadius="md"
@@ -52,10 +55,12 @@ const PlayerStandingsTable = ({
         columns={[
           {
             accessor: "type",
+            title: t("standings.table.columns.type"),
             textAlign: "center",
           },
           {
             accessor: "rank",
+            title: t("standings.table.columns.rank"),
             textAlign: "center",
             render: ({ rank, type, highestrank }) => {
               const rankElement = (() => {
@@ -85,7 +90,7 @@ const PlayerStandingsTable = ({
                   {rankElement}
                   {highestrank > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Best {highestrank}
+                      {t("standings.table.helpers.best")} {highestrank}
                     </Text>
                   )}
                 </Stack>
@@ -95,17 +100,13 @@ const PlayerStandingsTable = ({
               <>
                 <Text size={"xs"} c="dimmed">
                   <IconArrowBigDown size={19} style={{ marginBottom: -4 }} />
-                  <HelperIcon
-                    text={
-                      "Best Rank Achieved. Lower is better. The best Rank the player ever had. "
-                    }
-                  />
+                  <HelperIcon text={t("standings.table.helpers.bestRankAchieved")} />
                 </Text>
               </>
             ),
           },
           {
-            title: "ELO",
+            title: t("standings.table.columns.elo"),
             accessor: "rating",
             textAlign: "center",
             render: ({ rating, highestrating }) => {
@@ -118,7 +119,8 @@ const PlayerStandingsTable = ({
                   <span>{rating}</span>
                   {highestrating > 0 && (
                     <Text size={"xs"} c="dimmed">
-                      Best {highestrating > rating ? highestrating : rating}
+                      {t("standings.table.helpers.best")}{" "}
+                      {highestrating > rating ? highestrating : rating}
                     </Text>
                   )}
                 </Stack>
@@ -128,17 +130,13 @@ const PlayerStandingsTable = ({
               <>
                 <Text size={"xs"} c="dimmed">
                   <IconArrowBigUp size={19} style={{ marginBottom: -3 }} />
-                  <HelperIcon
-                    text={
-                      "Best ELO Achieved. Higher is better. The best ELO the player ever had. "
-                    }
-                  />
+                  <HelperIcon text={t("standings.table.helpers.bestEloAchieved")} />
                 </Text>
               </>
             ),
           },
           {
-            title: "Tier",
+            title: t("standings.table.columns.tier"),
             accessor: "ranklevel",
             textAlign: "center",
             render: ({ rank, rating }: any) => {
@@ -147,6 +145,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "streak",
+            title: t("standings.table.columns.streak"),
             // sortable: true,
             textAlign: "center",
             // @ts-ignore
@@ -166,6 +165,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "wins",
+            title: t("standings.table.columns.wins"),
             textAlign: "center",
             render: ({ wins }) => {
               if (!wins) {
@@ -187,6 +187,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "losses",
+            title: t("standings.table.columns.losses"),
             textAlign: "center",
             render: ({ losses }) => {
               if (!losses) {
@@ -208,6 +209,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "ratio",
+            title: t("standings.table.columns.ratio"),
             // sortable: true,
             textAlign: "center",
             render: ({ wins, losses }: any) => {
@@ -233,6 +235,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "total",
+            title: t("standings.table.columns.total"),
             // sortable: true,
             textAlign: "center",
             render: ({ wins, losses }: any) => {
@@ -252,6 +255,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "drops",
+            title: t("standings.table.columns.drops"),
             textAlign: "center",
             footer: (
               <>
@@ -266,7 +270,7 @@ const PlayerStandingsTable = ({
           },
           {
             accessor: "lastmatchdate",
-            title: "Last Match",
+            title: t("standings.table.columns.lastMatch"),
             textAlign: "right",
             width: 125,
             // @ts-ignore

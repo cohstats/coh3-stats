@@ -83,7 +83,17 @@
         "wins": "Wins",
         "losses": "Losses",
         "total": "Total",
-        "winRate": "Win Rate"
+        "winRate": "Win Rate",
+        "type": "Type",
+        "elo": "ELO",
+        "tier": "Tier",
+        "ratio": "Ratio",
+        "drops": "Drops"
+      },
+      "helpers": {
+        "bestRankAchieved": "Best Rank Achieved. Lower is better. The best Rank the player ever had.",
+        "bestEloAchieved": "Best ELO Achieved. Higher is better. The best ELO the player ever had.",
+        "best": "Best"
       }
     },
     "faction": {

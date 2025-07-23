@@ -83,7 +83,17 @@
         "wins": "Victorias",
         "losses": "Derrotas",
         "total": "Total",
-        "winRate": "Tasa de Victorias"
+        "winRate": "Tasa de Victorias",
+        "type": "Tipo",
+        "elo": "ELO",
+        "tier": "Nivel",
+        "ratio": "Proporción",
+        "drops": "Abandonos"
+      },
+      "helpers": {
+        "bestRankAchieved": "Mejor rango alcanzado. Menor es mejor. El mejor rango que el jugador ha tenido.",
+        "bestEloAchieved": "Mejor ELO alcanzado. Mayor es mejor. El mejor ELO que el jugador ha tenido.",
+        "best": "Mejor"
       }
     },
     "faction": {

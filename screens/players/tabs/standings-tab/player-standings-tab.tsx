@@ -63,6 +63,7 @@ const PlayerStandingsTab = ({
             data={playerStandings.german}
             platform={platform}
             moreButtonOnClick={() => changeView("standingsDetails")}
+            t={t}
           />
           <Space h="xs" />
           <PlayerStandingsFaction
@@ -70,6 +71,7 @@ const PlayerStandingsTab = ({
             data={playerStandings.american}
             platform={platform}
             moreButtonOnClick={() => changeView("standingsDetails")}
+            t={t}
           />
           <Space h="xs" />
           <PlayerStandingsFaction
@@ -77,6 +79,7 @@ const PlayerStandingsTab = ({
             data={playerStandings.dak}
             platform={platform}
             moreButtonOnClick={() => changeView("standingsDetails")}
+            t={t}
           />
           <Space h="xs" />
           <PlayerStandingsFaction
@@ -84,6 +87,7 @@ const PlayerStandingsTab = ({
             data={playerStandings.british}
             platform={platform}
             moreButtonOnClick={() => changeView("standingsDetails")}
+            t={t}
           />
           <Space h="xl" />
           <TopTeamsInfo topTeamsSummary={topTeamsSummary} t={t} profileID={profileID || ""} />

@@ -10,17 +10,20 @@ import { Group, Space, Title } from "@mantine/core";
 import FactionIcon from "../../../../components/faction-icon";
 import { localizedNames } from "../../../../src/coh3/coh3-data";
 import PlayerStandingsFactionInfo from "./faction-summary";
+import { TFunction } from "next-i18next";
 
 const PlayerStandingsFaction = ({
   faction,
   data,
   platform,
   moreButtonOnClick,
+  t,
 }: {
   faction: raceType;
   data: Record<leaderBoardType, RawLeaderboardStat | null>;
   platform: platformType;
   moreButtonOnClick: () => Promise<void>;
+  t: TFunction;
 }) => {
   return (
     <>
@@ -30,7 +33,7 @@ const PlayerStandingsFaction = ({
       </Group>
       <Space h="xs" />
       <Group gap={"xs"}>
-        <PlayerStandingsTable faction={faction} data={data} platform={platform} />
+        <PlayerStandingsTable faction={faction} data={data} platform={platform} t={t} />
         <PlayerStandingsFactionInfo
           faction={faction}
           data={data}
