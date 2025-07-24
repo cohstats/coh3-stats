@@ -104,7 +104,7 @@ export const NewsSection: React.FC<NewsSectionProps> = ({ steamNewsData, t }) =>
     <>
       <Carousel
         height={"15.5rem"}
-        loop
+        emblaOptions={{ loop: true }}
         withControls={false}
         withIndicators
         plugins={[autoplay.current]}

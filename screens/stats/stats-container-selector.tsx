@@ -465,7 +465,14 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             type="range"
             label="Pick dates range"
             value={valueDatePicker}
-            onChange={setValueDatePicker}
+            onChange={(val) => {
+              // Convert string values to Date objects to preserve existing behavior
+              const dates: [Date | null, Date | null] = [
+                val?.[0] ? new Date(val[0]) : null,
+                val?.[1] ? new Date(val[1]) : null,
+              ];
+              setValueDatePicker(dates);
+            }}
             w={305}
             // mx={10}
             // mx="auto"
