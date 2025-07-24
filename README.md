@@ -52,6 +52,8 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 Before making an MR please create an issue describing what you want to change and how you want to change it so we can have some discussion. Furthermore, it avoids multiple people working on the same thing.
 
 Feel free to create a fork and make an MR. Before PR you can test your code with `yarn build` to make sure it builds.
+You can also run `yarn build:slim` to build the app without prerendering all the pages. This is useful for faster development.
+
 Also make sure the prettier is right `yarn fix` and `yarn test`
 
 Development conventions:

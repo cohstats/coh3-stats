@@ -449,6 +449,7 @@ const config = {
   mainContainerSize: 1310,
   BASE_REPLAY_STORAGE_URL: "https://replays.coh3stats.com",
   SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || "https://coh3stats.com",
+  FULL_BUILD: process.env.FULL_BUILD === "true" || false,
 };
 
 export default config;

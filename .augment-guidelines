@@ -1,8 +1,20 @@
 ## Project
 - We are using `yarn` as our package manager.
+- If you want to test the build you can run `yarn build:slim` for faster build.
+- When adding new packages, we add them with fixed version for example `yarn add -E @mantine/hooks@5.0.0`
 
 ## React component development
 - When developing new component which has low amount of props, try to do inline types instead of creating new interface.
+
+## File Organization
+- Screen-level components go in `/screens` directory, organized by page/feature
+- API-related code should be placed in `/src/apis` directory
+- Utility functions and shared logic go in `/src` directory
+- Test files should mirror the source structure in `/__tests__` directory
+- Use kebab-case for file and folder names (e.g., `search-player-card.tsx`)
+- Create index files for easier imports when you have multiple related components in a folder
+- Keep related CSS modules next to their components (e.g., `component.module.css`)
+- Components should be organized in logical folders under `/components` directory
 
 ## Localization
 - When developing localization, always try to pass `TFunction` as component prop instead of utilize useTranslation hook.

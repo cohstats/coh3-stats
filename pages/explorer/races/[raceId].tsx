@@ -33,6 +33,7 @@ import { getUnitStatsCOH3Descriptions } from "../../../src/unitStats/description
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import nextI18NextConfig from "../../../next-i18next.config";
+import config from "../../../config";
 
 // New interface for pre-calculated building data
 interface PreCalculatedBuilding {
@@ -304,6 +305,14 @@ function preCalculateBuildings(
 
 // Generates paths for all race types and supported locales
 export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
+  // If FULL_BUILD is not enabled, only generate English locale paths to minimize build time
+  if (!config.FULL_BUILD) {
+    return {
+      paths: [],
+      fallback: "blocking", // All pages will be generated on-demand
+    };
+  }
+
   // Get all supported locales from the config
   const { locales } = nextI18NextConfig.i18n;
 

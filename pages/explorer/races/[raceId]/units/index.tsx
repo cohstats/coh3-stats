@@ -21,6 +21,7 @@ import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descr
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../next-i18next.config";
+import config from "../../../../../config";
 import { useTranslation } from "next-i18next";
 
 interface UnitDetailProps {
@@ -139,6 +140,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
+  if (!config.FULL_BUILD) {
+    return {
+      paths: [],
+      fallback: "blocking", // All pages will be generated on-demand
+    };
+  }
+
   // Get all supported locales from the config
   const { locales } = nextI18NextConfig.i18n;
 

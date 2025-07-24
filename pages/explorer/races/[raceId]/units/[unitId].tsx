@@ -631,6 +631,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths<{ unitId: string }> = async () => {
+  // If FULL_BUILD is not enabled, return empty paths to minimize build time
+  if (!config.FULL_BUILD) {
+    return {
+      paths: [],
+      fallback: "blocking", // All pages will be generated on-demand
+    };
+  }
+
   const { sbpsData } = await getMappings();
 
   const unitPaths = [];
