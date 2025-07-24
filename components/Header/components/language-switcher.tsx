@@ -78,7 +78,16 @@ export const LanguageSwitcher: React.FC = () => {
       }))}
       renderOption={renderSelectOption}
       style={{ width: 110 }}
-      comboboxProps={{ width: 180, position: "bottom-start" }}
+      comboboxProps={{
+        width: 180,
+        position: "bottom-end",
+        withinPortal: true,
+        offset: 5,
+        middlewares: {
+          flip: true,
+          shift: true,
+        },
+      }}
     />
   );
 };
