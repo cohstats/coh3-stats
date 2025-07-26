@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { NextPage } from "next";
 import { Anchor, Card, Container, Flex, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
@@ -9,26 +9,19 @@ import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { getExplorerFactionRoute } from "../../src/routes";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { generateAlternateLanguageLinks } from "../../src/head-utils";
-import { useRouter } from "next/router";
+import { createPageSEO } from "../../src/seo-utils";
 
 const Races: raceType[] = ["german", "american", "dak", "british"];
 
 const Explorer: NextPage = () => {
-  const { asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
+
+  // Create SEO props for explorer page
+  const seoProps = createPageSEO(t, "explorer", "/explorer");
 
   return (
     <>
-      <Head>
-        <title>{`COH3 ${t("common.explorer")}`}</title>
-        <meta name="description" content="COH3 Factions Explorer." />
-        <meta
-          name="keywords"
-          content="COh3, Wehrmacht, US Forces, DAK, Deutsches Afrikakorps, British Forces, units, damage, buildings, costs, man power, fuel, munition"
-        />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo {...seoProps} />
       <Container size="md">
         <Stack mb={24}>
           <Title order={1}>{t("explorer.title")}</Title>

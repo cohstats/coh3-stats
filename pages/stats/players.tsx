@@ -2,7 +2,7 @@ import { Container, Title, Text, Group, Center } from "@mantine/core";
 
 import React, { useEffect } from "react";
 import ErrorCard from "../../components/error-card";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 import { GetServerSideProps } from "next";
 import { generateKeywordsString } from "../../src/head-utils";
@@ -66,11 +66,30 @@ const PlayerStats = ({
 
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical="https://coh3stats.com/stats/players"
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: keywords,
+          },
+        ]}
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: "https://coh3stats.com/stats/players",
+          images: [
+            {
+              url: "https://coh3stats.com/logo/android-icon-192x192.png",
+              width: 192,
+              height: 192,
+              alt: "COH3 Stats logo",
+            },
+          ],
+        }}
+      />
       <Container size={"md"} p={0}>
         {error ? (
           <ErrorCard title={t("stats:errors.gettingPlayerStats")} body={JSON.stringify(error)} />

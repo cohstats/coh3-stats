@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "COH3 Stats - 搜索",
+    "description": "在英雄连3中搜索单位和Steam、Xbox、PSN玩家。",
+    "keywords": [
+      "搜索玩家",
+      "搜索数据",
+      "coh3搜索",
+      "单位搜索",
+      "玩家搜索",
+      "steam玩家",
+      "xbox玩家",
+      "psn玩家"
+    ]
+  },
+  "sections": {
+    "players": "玩家",
+    "units": "单位"
+  },
+  "errors": {
+    "noResults": "未找到结果",
+    "searchTooShort": "搜索词太短"
+  },
+  "placeholders": {
+    "searchPlayers": "搜索玩家...",
+    "searchUnits": "搜索单位..."
+  }
+}

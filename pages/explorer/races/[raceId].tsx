@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
@@ -25,7 +25,7 @@ import {
   ResourceValues,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../../src/head-utils";
+import { generateKeywordsString, generateLanguageAlternates } from "../../../src/head-utils";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
@@ -103,13 +103,31 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
   return (
     <>
-      <Head>
-        <title>{`${localizedRace} - COH3 Explorer`}</title>
-        <meta name="description" content={`${localizedRace} - COH3 Explorer`} />
-        <meta name="keywords" content={metaKeywords} />
-        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={`${localizedRace} - COH3 Explorer`}
+        description={`Explore ${localizedRace} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for ${localizedRace} army.`}
+        canonical={`${config.SITE_URL}${asPath}`}
+        openGraph={{
+          title: `${localizedRace} - COH3 Explorer`,
+          description: `Explore ${localizedRace} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for ${localizedRace} army.`,
+          url: `${config.SITE_URL}${asPath}`,
+          images: [
+            {
+              url: `https://coh3stats.com/icons/general/${raceToFetch}.webp`,
+              width: 64,
+              height: 64,
+              alt: `${localizedRace} faction icon`,
+            },
+          ],
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: metaKeywords,
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <Container fluid p={0}>
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceToFetch} width={80} />

@@ -1,7 +1,17 @@
 {
   "meta": {
     "title": "COH3 Stats - Поиск",
-    "description": "Поиск подразделений и игроков Steam, Xbox и PSN в Company of Heroes 3."
+    "description": "Поиск подразделений и игроков Steam, Xbox и PSN в Company of Heroes 3.",
+    "keywords": [
+      "поиск игроков",
+      "поиск данных",
+      "coh3 поиск",
+      "поиск юнитов",
+      "поиск игроков",
+      "steam игроки",
+      "xbox игроки",
+      "psn игроки"
+    ]
   },
   "sections": {
     "players": "Игроки",

@@ -13,8 +13,8 @@ import {
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
-import { generateKeywordsString } from "../../src/head-utils";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
+import { createPlayerSEO } from "../../src/seo-utils";
 import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
 import { PSNIcon } from "../../components/icon/psn";
@@ -33,9 +33,12 @@ import NemesisTab from "./tabs/nemesis-tab";
 import ReplaysTab from "./tabs/replays-tab/replays-tab";
 import TeamsStandingsTab from "./tabs/teams-standings-tab/teams-standings-tab";
 import TeamDetailsTab from "./tabs/team-details-tab/team-details-tab";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import config from "../../config";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getPlayerCardRoute } from "../../src/routes";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createPlayerHeadDescription = (
   playerData: PlayerCardDataType,
   playerSummary: PlayerSummaryType,
@@ -162,36 +165,19 @@ const PlayerCard = ({
     teamDetails: "card.titleWithView.teamDetails",
   };
 
+  const playerSummary = calculatePlayerSummary(playerData.standings);
+
+  // Create SEO props for player page
+  const seoProps = createPlayerSEO(t, playerData, playerSummary, platform);
+
+  // Override title based on current view
   const pageTitle = t(viewTitleKeys[view as keyof typeof viewTitleKeys] || "card.title", {
     name: playerData.info.name,
   });
 
-  const playerSummary = calculatePlayerSummary(playerData.standings);
-
-  const description = createPlayerHeadDescription(playerData, playerSummary);
-  const metaKeywords = generateKeywordsString([
-    t("meta.keywords.stats", { name: playerData.info.name }),
-    t("meta.keywords.matches", { name: playerData.info.name }),
-    t("meta.keywords.cohStats", { name: playerData.info.name }),
-  ]);
-
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={metaKeywords} />
-        {platform === "steam" && (
-          <meta property="og:image" content={playerData.steamData?.avatarmedium} />
-        )}
-        <link rel="canonical" href={`${config.SITE_URL}${getPlayerCardRoute(playerID)}`} />
-        <link
-          key="x-default"
-          rel="alternate"
-          hrefLang="x-default"
-          href={`${config.SITE_URL}${asPath}`}
-        />
-      </Head>
+      <NextSeo {...seoProps} title={pageTitle} />
       <Container fluid p={0}>
         <Container
           fluid

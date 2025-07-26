@@ -1,4 +1,12 @@
 {
+  "meta": {
+    "title": "{{faction}} {{mode}} Таблицы Лидеров",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} таблицы лидеров с рейтингами игроков, ELO оценками и соревновательной статистикой.",
+    "keywords": {
+      "faction": "{{faction}} таблицы лидеров",
+      "mode": "{{mode}} рейтинги"
+    }
+  },
   "title": "Таблица лидеров - {{race}}",
   "pageTitle": "Таблица лидеров - {{race}} {{type}}",
   "metaDescription": "Рейтинговая таблица лидеров для фракции {{race}} и режима игры: {{type}}. Company of Heroes 3",

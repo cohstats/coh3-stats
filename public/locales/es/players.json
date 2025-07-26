@@ -1,5 +1,7 @@
 {
   "meta": {
+    "title": "{{name}} - Perfil de Jugador COH3",
+    "description": "Estadísticas de {{name}} en Company of Heroes 3, historial de partidas, rendimiento por facción y rankings competitivos.",
     "keywords": {
       "stats": "Estadisticas de {{name}}",
       "matches": "{{name}} partidas",

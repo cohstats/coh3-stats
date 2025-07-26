@@ -1,4 +1,22 @@
 {
+  "meta": {
+    "title": "COH3 Explorer - Fraktionen, Einheiten & Gebäude",
+    "description": "Erkunden Sie Company of Heroes 3 Fraktionen, Einheiten, Gebäude und Kampfgruppen. Detaillierte Statistiken, Kosten und Schadensinformationen für alle Spielinhalte.",
+    "keywords": [
+      "coh3 explorer",
+      "fraktionen",
+      "einheiten",
+      "gebäude",
+      "kampfgruppen",
+      "wehrmacht",
+      "us streitkräfte",
+      "dak",
+      "britische streitkräfte",
+      "einheitenstatistiken",
+      "schaden",
+      "kosten"
+    ]
+  },
   "common": {
     "units": "Einheiten",
     "buildings": "Gebäude",

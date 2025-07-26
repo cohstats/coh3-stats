@@ -11,9 +11,10 @@ import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
 import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../src/coh3/coh3-data";
 import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import FactionIcon from "../../components/faction-icon";
 import { useTranslation } from "next-i18next";
+import { createLeaderboardSEO } from "../../src/seo-utils";
 
 const RECORD_PER_PAGE = 100;
 
@@ -190,24 +191,19 @@ const Leaderboards = ({
 
   const localizedRace = localizedNames[raceToFetch as raceType];
   const localizedType = localizedGameTypes[typeToFetch as leaderBoardType];
-  const pageTitle = t("leaderboards:pageTitle", { race: localizedRace, type: localizedType });
+
+  // Create SEO props for leaderboard page
+  const seoProps = createLeaderboardSEO(
+    t,
+    localizedRace,
+    localizedType,
+    platformToFetch,
+    regionToFetch,
+  );
+
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={t("leaderboards:metaDescription", {
-            race: localizedRace,
-            type: localizedType,
-          })}
-        />
-        <meta
-          name="keywords"
-          content={`coh3, coh3 leaderboards, coh3 ${raceToFetch} leaderboards, coh3 live leaderboards, coh3 stats`}
-        />
-        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
-      </Head>
+      <NextSeo {...seoProps} />
       <Container size={"lg"} p={0}>
         <Container fluid pl={0} pr={0}>
           <Group justify={"space-between"}>

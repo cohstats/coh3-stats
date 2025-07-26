@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "title": "{{name}} - COH3 玩家档案",
+    "description": "{{name}} 的英雄连3统计数据、比赛历史、阵营表现和竞技排名。",
+    "keywords": {
+      "stats": "{{name}} 统计",
+      "matches": "{{name}} 比赛",
+      "cohStats": "coh3 {{name}} 统计"
+    }
+  },
+  "card": {
+    "error": {
+      "title": "加载玩家卡片时出错",
+      "loadingError": "加载玩家卡片时出错"
+    },
+    "title": "玩家卡片"
+  }
+}

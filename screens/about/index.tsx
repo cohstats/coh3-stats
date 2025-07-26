@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 import {
   Container,
@@ -301,6 +301,7 @@ const Localization = () => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const keywords = generateKeywordsString(["coh3 stats", "coh3 discord", "bug report", "github"]);
 
 const sections = [
@@ -350,13 +351,24 @@ const About: NextPage = () => {
 
   return (
     <div>
-      {/*This is custom HEAD overwrites the default one*/}
-      <Head>
-        <title>About COH3 Stats</title>
-        <meta name="description" content="COH3 Stats - learn more about our page." />
-        <meta name="keywords" content={keywords} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo
+        title="About COH3 Stats"
+        description="COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions."
+        canonical="https://coh3stats.com/about"
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: generateKeywordsString([
+              "about coh3stats",
+              "faq",
+              "data sources",
+              "team statistics",
+              "elo tracking",
+              "arranged teams",
+            ]),
+          },
+        ]}
+      />
       <>
         <Center>
           <Title order={1} size="h1" pt="md" mb="md">

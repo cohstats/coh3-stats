@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import {
@@ -44,8 +44,8 @@ import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-car
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import {
-  generateAlternateLanguageLinks,
   generateKeywordsString,
+  generateLanguageAlternates,
 } from "../../../../../src/head-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
@@ -277,41 +277,44 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={metaDescription} />
-        <meta name="keywords" content={metaKeywords} />
-
-        {/* Open Graph tags */}
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={metaDescription} />
-        <meta property="og:site_name" content="COH3 Stats" />
-        <meta property="og:locale" content={locale} />
-        <meta
-          property="og:image"
-          content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
-        />
-        <meta property="og:image:alt" content={`${resolvedSquad.ui.screenName} unit icon`} />
-        <meta property="og:image:width" content="256" />
-        <meta property="og:image:height" content="256" />
-
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={metaDescription} />
-        <meta
-          name="twitter:image"
-          content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
-        />
-        <meta name="twitter:image:alt" content={`${resolvedSquad.ui.screenName} unit icon`} />
-
-        {/* Additional meta tags */}
-        <meta name="author" content="COH3 Stats" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={`${config.SITE_URL}${asPath}`} />
-
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={metaDescription}
+        canonical={`${config.SITE_URL}${asPath}`}
+        openGraph={{
+          title: pageTitle,
+          description: metaDescription,
+          url: `${config.SITE_URL}${asPath}`,
+          siteName: "COH3 Stats",
+          locale: locale,
+          images: [
+            {
+              url: getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`),
+              width: 256,
+              height: 256,
+              alt: `${resolvedSquad.ui.screenName} unit icon`,
+            },
+          ],
+        }}
+        twitter={{
+          cardType: "summary",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: metaKeywords,
+          },
+          {
+            name: "author",
+            content: "COH3 Stats",
+          },
+          {
+            name: "robots",
+            content: "index, follow",
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <Container fluid pl={0} pr={0} pt={"md"}>
         <Grid columns={3} grow>
           <Grid.Col span={3}>

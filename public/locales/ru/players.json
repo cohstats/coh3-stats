@@ -1,8 +1,10 @@
 {
   "meta": {
+    "title": "{{name}} - Профиль Игрока COH3",
+    "description": "Статистика {{name}} в Company of Heroes 3, история матчей, производительность фракций и соревновательные рейтинги.",
     "keywords": {
       "stats": "Статистика {{name}}",
-      "matches": "{{name}} соответсвует",
+      "matches": "{{name}} матчи",
       "cohStats": "coh3 {{name}} stats"
     }
   },

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "title": "{{faction}} {{mode}} 排行榜",
+    "description": "英雄连3 {{faction}} {{mode}} 排行榜，包含玩家排名、ELO评分和竞技统计。",
+    "keywords": {
+      "faction": "{{faction}} 排行榜",
+      "mode": "{{mode}} 排名"
+    }
+  },
+  "title": "{{race}} 排行榜",
+  "pageTitle": "{{race}} {{type}} 排行榜",
+  "metaDescription": "{{race}} 阵营和 {{type}} 游戏类型的排名排行榜。英雄连3",
+  "errorTitle": "获取排行榜时出错",
+  "filters": {
+    "region": "地区",
+    "platform": "平台",
+    "faction": "阵营",
+    "type": "类型"
+  }
+}

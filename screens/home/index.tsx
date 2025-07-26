@@ -4,7 +4,7 @@ import { Container, Grid, Paper } from "@mantine/core";
 import { DPSCalculatorCard, UnitBrowserCard } from "./info-cards";
 import React, { useEffect, useRef, useState } from "react";
 import TwitchContainer from "./twitch-panel";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
 import { RedditPostType } from "../../src/apis/reddit-api";
 import RedditPanel from "./reddit-panel";
@@ -13,7 +13,7 @@ import { COH3SteamNewsType } from "../../src/apis/steam-api";
 import YoutubePanel from "./youtube-panel/youtube-panel";
 import { useIntersection } from "@mantine/hooks";
 import { useTranslation } from "next-i18next";
-import { generateAlternateLanguageLinks } from "../../src/head-utils";
+import { createPageSEO } from "../../src/seo-utils";
 
 type Props = {
   twitchStreams: TwitchStream[] | null;
@@ -47,14 +47,12 @@ const Home: NextPage<Props> = ({
     }
   }, [entry, hasRendered]);
 
+  // Create SEO props for home page
+  const seoProps = createPageSEO(t, "home", "");
+
   return (
     <>
-      <Head>
-        <title>{t("meta.title")}</title>
-        <meta name="description" content={t("meta.description")} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-        {generateAlternateLanguageLinks("")}
-      </Head>
+      <NextSeo {...seoProps} />
       <Container fluid p={{ base: 0 }}>
         <Grid>
           <Grid.Col span={{ sm: 7 }}>

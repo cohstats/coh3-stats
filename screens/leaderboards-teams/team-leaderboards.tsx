@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import {
   Container,
   Title,
@@ -198,24 +198,45 @@ const TeamLeaderboards: React.FC = () => {
     return `${Math.round((wins / (wins + losses)) * 100)}%`;
   };
 
-  const pageTitle = `${t("leaderboards:teams.title")} for ${side === "axis" ? "Axis" : "Allies"} ${localizedGameTypes[type as leaderBoardType]}`;
+  const sideDisplayName = side === "axis" ? "Axis" : "Allies";
+  const typeDisplayName = localizedGameTypes[type as leaderBoardType];
+  const pageTitle = `${t("leaderboards:teams.title")} for ${sideDisplayName} ${typeDisplayName}`;
 
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={t("leaderboards:teams.metaDescription", {
-            side: side === "axis" ? "Axis" : "Allies",
-            type: localizedGameTypes[type as leaderBoardType],
-          })}
-        />
-        <meta
-          name="keywords"
-          content={`coh3, coh3 team leaderboards, coh3 ${side} teams, coh3 ${type} teams, coh3 stats`}
-        />
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={t("leaderboards:teams.metaDescription", {
+          side: sideDisplayName,
+          type: typeDisplayName,
+        })}
+        canonical={`https://coh3stats.com/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: `coh3, coh3 team leaderboards, coh3 ${side} teams, coh3 ${type} teams, coh3 stats, arranged teams`,
+          },
+        ]}
+        openGraph={{
+          title: pageTitle,
+          description: t("leaderboards:teams.metaDescription", {
+            side: sideDisplayName,
+            type: typeDisplayName,
+          }),
+          url: `https://coh3stats.com/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`,
+          images: [
+            {
+              url:
+                side === "axis"
+                  ? "https://coh3stats.com/icons/general/german.webp"
+                  : "https://coh3stats.com/icons/general/american.webp",
+              width: 64,
+              height: 64,
+              alt: `${sideDisplayName} faction icon`,
+            },
+          ],
+        }}
+      />
 
       <Container size="lg" p={0}>
         <Container fluid pl={0} pr={0}>

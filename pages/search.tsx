@@ -1,9 +1,9 @@
 import { NextPage } from "next";
-import Head from "next/head";
-import { generateKeywordsString } from "../src/head-utils";
+import { NextSeo } from "next-seo";
 import { SearchScreen } from "../screens/search";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { createPageSEO } from "../src/seo-utils";
 
 /**
  *
@@ -15,22 +15,22 @@ import { useTranslation } from "next-i18next";
 
 const Search: NextPage = () => {
   const { t } = useTranslation(["search"]);
-  const description = t("search:meta.description");
-  const metaKeywords = generateKeywordsString([
-    `search players`,
-    `search data`,
-    `coh3 search`,
-    "units search",
-  ]);
+
+  // Create SEO props for search page
+  const seoProps = createPageSEO(t, "search", "/search");
 
   return (
     <>
-      <Head>
-        <title>{t("search:meta.title")}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={metaKeywords} />
-        <meta name="robots" content="nofollow" />
-      </Head>
+      <NextSeo
+        {...seoProps}
+        additionalMetaTags={[
+          ...(seoProps.additionalMetaTags || []),
+          {
+            name: "robots",
+            content: "nofollow",
+          },
+        ]}
+      />
       <SearchScreen />
     </>
   );

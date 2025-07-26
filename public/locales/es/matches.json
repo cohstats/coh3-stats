@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "COH3 Partida {{matchId}} - {{map}} {{mode}}",
+    "description": "Company of Heroes 3 partida {{matchId}} detalles en {{map}} en modo {{mode}}. Ver rendimiento de jugadores, enfrentamientos de facciones y estadísticas del juego.",
+    "keywords": [
+      "detalles de partida",
+      "replay del juego",
+      "análisis de partida",
+      "rendimiento de jugadores",
+      "enfrentamiento de facciones",
+      "estadísticas del juego"
+    ]
+  }
+}

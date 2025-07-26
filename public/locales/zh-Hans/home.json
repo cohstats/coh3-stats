@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "title": "COH3 Stats - 英雄连3统计数据",
+    "description": "英雄连3统计数据。排行榜、玩家卡片、历史比赛、单位统计、DPS计算器、战斗群探索器、武器探索器、当前实时游戏、最新COH3新闻、最新YouTube和Twitch直播。还有更多。",
+    "keywords": [
+      "排行榜",
+      "玩家卡片",
+      "单位统计",
+      "实时游戏",
+      "dps计算器",
+      "战斗群",
+      "武器探索器",
+      "比赛历史",
+      "twitch直播",
+      "youtube视频"
+    ]
+  },
+  "sections": {
+    "news": {
+      "title": "最新新闻",
+      "newsLabel": "新闻"
+    },
+    "leaderboards": {
+      "title": "排行榜",
+      "description": "查看当前的排行榜和顶级玩家。"
+    },
+    "liveGames": {
+      "title": "实时游戏",
+      "description": "观看当前正在进行的游戏。"
+    },
+    "tools": {
+      "title": "工具",
+      "description": "探索游戏数据和工具。"
+    },
+    "twitch": {
+      "title": "Twitch直播",
+      "description": "观看最新的英雄连3直播。"
+    },
+    "youtube": {
+      "title": "YouTube视频",
+      "description": "观看最新的英雄连3视频。"
+    },
+    "reddit": {
+      "title": "Reddit讨论",
+      "description": "查看最新的社区讨论。"
+    }
+  }
+}

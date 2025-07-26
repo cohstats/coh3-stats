@@ -12,32 +12,40 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import React, { useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import { AnalyticsDesktopAppPageView } from "../../src/firebase/analytics";
 
 import classes from "./desktop-app.module.css";
-import { generateAlternateLanguageLinks } from "../../src/head-utils";
-import { useRouter } from "next/router";
+import { createPageSEO } from "../../src/seo-utils";
 
 const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) => {
   const { t } = useTranslation("desktopapp");
-  const { asPath } = useRouter();
 
   useEffect(() => {
     AnalyticsDesktopAppPageView();
   }, []);
 
+  // Create SEO props for desktop app page
+  const seoProps = createPageSEO(t, "desktopapp", "/desktop-app", { version });
+
   return (
     <>
-      <Head>
-        <title>{t("meta.title")}</title>
-        <meta name="description" content={t("meta.description", { version })} />
-        <meta name="keywords" content={t("meta.keywords")} />
-        <meta property="og:image" content="/desktop-app/desktop-app-v2.webp" />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        {...seoProps}
+        openGraph={{
+          ...seoProps.openGraph,
+          images: [
+            {
+              url: "https://coh3stats.com/desktop-app/desktop-app-v2.webp",
+              width: 800,
+              height: 600,
+              alt: "COH3 Stats Desktop App",
+            },
+          ],
+        }}
+      />
       <Container size={"lg"}>
         <Title>{t("title")}</Title>
         <Title order={2}>{t("subtitle")}</Title>

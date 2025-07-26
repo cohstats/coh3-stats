@@ -1,7 +1,19 @@
 {
   "meta": {
     "title": "COH3 Stats - Company of Heroes 3 Statistiken",
-    "description": "Company of Heroes 3 Statistiken. Bestenlisten, Spielerkarten, vergangene Spiele, Einheitenstatistiken, DPS-Rechner, Kampfgruppen-Explorer, Waffen-Explorer, aktuelle laufende Spiele, neueste COH3 News, aktuelle YouTube- und Twitch-Streams. Und vieles mehr."
+    "description": "Company of Heroes 3 Statistiken. Bestenlisten, Spielerkarten, vergangene Spiele, Einheitenstatistiken, DPS-Rechner, Kampfgruppen-Explorer, Waffen-Explorer, aktuelle laufende Spiele, neueste COH3 News, aktuelle YouTube- und Twitch-Streams. Und vieles mehr.",
+    "keywords": [
+      "bestenlisten",
+      "spielerkarten",
+      "einheitenstatistiken",
+      "live spiele",
+      "dps rechner",
+      "kampfgruppen",
+      "waffen explorer",
+      "spielhistorie",
+      "twitch streams",
+      "youtube videos"
+    ]
   },
   "sections": {
     "news": {
