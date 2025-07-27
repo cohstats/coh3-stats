@@ -1,12 +1,12 @@
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AnalyticsRankingTiersPageView } from "../../src/firebase/analytics";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { Container, Text, Title } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
+import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
@@ -22,6 +22,8 @@ const RankingTiers: NextPage = () => {
   const playerRanksAsArray = Object.values(PlayerRanks).reverse();
 
   const pageTitle = `Ranking Tiers - Company of Heroes 3`;
+  const description =
+    "Ranking tiers in Company of Heroes 3. All Leagues and Tier ranks explained.";
   const keywords = generateKeywordsString([
     "coh3 ranks",
     "tiers",
@@ -31,16 +33,32 @@ const RankingTiers: NextPage = () => {
 
   return (
     <div>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content="Ranking tiers in Company of Heroes 3. All Leagues and Tier ranks exaplined."
-        />
-        <meta name="keywords" content={keywords} />
-        <meta property="og:image" content={PlayerRanks.CHALLENGER_1.url} />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical={`https://coh3stats.com${asPath}`}
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: `https://coh3stats.com${asPath}`,
+          type: "website",
+          images: [
+            {
+              url: PlayerRanks.CHALLENGER_1.url,
+              width: 64,
+              height: 64,
+              alt: "Challenger rank icon",
+            },
+          ],
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: keywords,
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <>
         <Container size={"sm"}>
           <Title order={1} pb="md">

@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AnalyticsPlayerExportPageView } from "../../src/firebase/analytics";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { Anchor, Code, Container, Space, Text, Title } from "@mantine/core";
 import { generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -14,24 +14,34 @@ Luvnest,108833,76561197982704567,1543,1634,45,1543,146,37,1593,101,67,1400,85,18
 elpern,61495,76561198019498694,1681,1717,-1,1681,139,-1,1699,178,-1,1611,100,-1,1717,156
 IncaUna,1287,76561198152399446,1557,1691,-1,1557,24,-1,1218,5,-1,1510,46,-1,1691,157`;
 
-const keywords = generateKeywordsString(["coh3 players", "export", "csv"]);
-
 const PlayerExport: NextPage = () => {
+  const pageTitle = "COH3 Stats - Player Export in CSV";
+  const description = "COH3 Stats player export - export player leaderboards in CSV format.";
+  const keywords = generateKeywordsString(["coh3 players", "export", "csv"]);
+
   useEffect(() => {
     AnalyticsPlayerExportPageView();
   }, []);
 
   return (
     <>
-      <Head>
-        <title>COH3 Stats - Player Export in CSV</title>
-        <meta
-          name="description"
-          content="COH3 Stats player export - export player leaderboards in CSV format."
-        />
-        <meta name="keywords" content={keywords} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical="https://coh3stats.com/other/player-export"
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: "https://coh3stats.com/other/player-export",
+          type: "website",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: keywords,
+          },
+        ]}
+      />
       <>
         <Container size={"md"}>
           <Title order={1} pt="md">

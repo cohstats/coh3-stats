@@ -1,28 +1,46 @@
 import { NextPage } from "next";
 import React from "react";
+import { NextSeo } from "next-seo";
 import { generateKeywordsString } from "../../../src/seo-utils";
-import Head from "next/head";
+import { useTranslation } from "next-i18next";
 import StatsContainerSelector from "../stats-container-selector";
 
-const pageTitle = `Game Stats & Charts - Company of Heroes 3`;
-const description =
-  "Game Stats for Company of Heroes 3. See winrate of each faction / mode and much more.";
-const keywords = generateKeywordsString([
-  "coh3 winrate",
-  "factions winrate",
-  "analysis",
-  "best faction",
-]);
-
 const GameStats: NextPage = () => {
+  const { t } = useTranslation(["common", "stats"]);
+
+  const pageTitle = t("stats:games.meta.title");
+  const description = t("stats:games.meta.description");
+
+  // Get keywords from translation
+  let keywords: string[] = [];
+  try {
+    const translatedKeywords = t("stats:games.meta.keywords", { returnObjects: true });
+    if (Array.isArray(translatedKeywords)) {
+      keywords = translatedKeywords as string[];
+    }
+  } catch (error) {
+    keywords = ["coh3 winrate", "factions winrate", "analysis"];
+  }
+
   return (
     <div>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical="https://coh3stats.com/stats/games"
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: "https://coh3stats.com/stats/games",
+          type: "website",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: generateKeywordsString(keywords),
+          },
+        ]}
+      />
       <>
         <StatsContainerSelector statsType={"gameStats"} />
       </>

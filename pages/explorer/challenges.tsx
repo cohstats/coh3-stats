@@ -1,5 +1,5 @@
 import { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import {
   Accordion,
   Card,
@@ -13,7 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
+import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
@@ -37,10 +37,13 @@ interface ChallengesProps {
   };
 }
 
-const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
-
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
   const { asPath } = useRouter();
+
+  const pageTitle = "COH3 Stats - Challenges";
+  const description =
+    "CoH 3 Challenges. Browser through all the challenges and checkout requirements for completion.";
+  const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
   useEffect(() => {
     AnalyticsExplorerChallengesView();
@@ -53,19 +56,24 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
 
   return (
     <>
-      <Head>
-        <title>COH3 Stats - Challenges</title>
-        <meta
-          name="description"
-          content={
-            "CoH 3 Challenges. Browser through all the challenges and checkout requirements for completion."
-          }
-        />
-        <meta name="keywords" content={keywords} />
-        {/*we might prepare better image*/}
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical={`https://coh3stats.com${asPath}`}
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: `https://coh3stats.com${asPath}`,
+          type: "website",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: keywords,
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <Container size={"lg"} p={0}>
         <Grid>
           <Grid.Col span={{ md: 12, lg: 6 }}>
