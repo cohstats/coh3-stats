@@ -3,6 +3,8 @@ import { TFunction } from "next-i18next";
 import React from "react";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
+import { localizedNames } from "./coh3/coh3-data";
+import { raceType } from "./coh3/coh3-types";
 
 // Default keywords for SEO
 const _defaultKeywords = [
@@ -206,7 +208,7 @@ export const createPlayerSEO = (
 /**
  * Creates SEO props for leaderboard pages with dynamic faction/mode data
  * @param t - Translation function
- * @param faction - Faction name
+ * @param faction - Raw faction name (german, american, dak, british)
  * @param mode - Game mode
  * @param platform - Platform
  * @param region - Region (optional)
@@ -218,8 +220,11 @@ export const createLeaderboardSEO = (
   platform: string = "steam",
   region?: string,
 ): NextSeoProps => {
-  const title = t("leaderboards:meta.title", { faction, mode });
-  const description = t("leaderboards:meta.description", { faction, mode });
+  // Get localized faction name for display
+  const localizedFaction = localizedNames[faction as raceType] || faction;
+
+  const title = t("leaderboards:meta.title", { faction: localizedFaction, mode });
+  const description = t("leaderboards:meta.description", { faction: localizedFaction, mode });
 
   // Get keywords from translation
   let keywords: string[] = [];
@@ -255,7 +260,7 @@ export const createLeaderboardSEO = (
           url: `${config.SITE_URL}/icons/general/${faction}.webp`,
           width: 64,
           height: 64,
-          alt: `${faction} faction icon`,
+          alt: `${localizedFaction} faction icon`,
         },
       ],
     },

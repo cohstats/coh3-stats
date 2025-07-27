@@ -195,7 +195,7 @@ const Leaderboards = ({
   // Create SEO props for leaderboard page
   const seoProps = createLeaderboardSEO(
     t,
-    localizedRace,
+    raceToFetch,
     localizedType,
     platformToFetch,
     regionToFetch,
