@@ -1,4 +1,4 @@
-/** @type {import('next-seo').DefaultSeoProps} */
+/** @type {import("next-seo").DefaultSeoProps} */
 const defaultSEO = {
   titleTemplate: "%s | COH3 Stats",
   defaultTitle: "COH3 Stats - Company of Heroes 3 Statistics",
@@ -106,12 +106,11 @@ const defaultSEO = {
       href: "/logo/favicon-16x16.png",
     },
     {
-  {
-    rel: "icon",
-    type: "image/x-icon",
-    sizes: "16x16",
-    href: "/logo/favicon.ico",
-  },
+      rel: "icon",
+      type: "image/x-icon",
+      sizes: "16x16",
+      href: "/logo/favicon.ico",
+    },
   ],
 };
 

@@ -1,4 +1,4 @@
-import { generateKeywordsString, _defaultKeywords } from "../../src/head-utils";
+import { generateKeywordsString, _defaultKeywords } from "../../src/seo-utils";
 
 describe("generateKeywordsString", () => {
   test("should return the default keywords if no keywords are passed", () => {

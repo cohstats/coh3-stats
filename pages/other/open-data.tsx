@@ -6,7 +6,7 @@ import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
 import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 

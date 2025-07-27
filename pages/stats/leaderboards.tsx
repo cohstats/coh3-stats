@@ -6,7 +6,7 @@ import Head from "next/head";
 
 import { GetServerSideProps } from "next";
 import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leaderboards/stats";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateKeywordsString } from "../../src/seo-utils";
 import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
 import { AnalyticsStatsLeaderboardsPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";

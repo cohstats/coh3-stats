@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { AnalyticsPlayerExportPageView } from "../../src/firebase/analytics";
 import Head from "next/head";
 import { Anchor, Code, Container, Space, Text, Title } from "@mantine/core";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const exampleOutput = `alias,relic_id,steam_id,1v1_axis_elo,1v1_allies_elo,german_1v1_rank,german_1v1_elo,german_1v1_total,american_1v1_rank,american_1v1_elo,american_1v1_total,dak_1v1_rank,dak_1v1_elo,dak_1v1_total,british_1v1_rank,british_1v1_elo,british_1v1_total

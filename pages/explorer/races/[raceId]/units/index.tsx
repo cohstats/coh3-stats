@@ -7,7 +7,7 @@ import { raceType } from "../../../../../src/coh3/coh3-types";
 import {
   generateAlternateLanguageLinks,
   generateKeywordsString,
-} from "../../../../../src/head-utils";
+} from "../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { SbpsType } from "../../../../../src/unitStats";

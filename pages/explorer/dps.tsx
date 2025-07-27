@@ -6,7 +6,7 @@ import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import Head from "next/head";
 import React, { useEffect } from "react";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";

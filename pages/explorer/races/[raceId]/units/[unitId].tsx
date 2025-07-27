@@ -43,10 +43,7 @@ import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-l
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
-import {
-  generateKeywordsString,
-  generateLanguageAlternates,
-} from "../../../../../src/head-utils";
+import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";

@@ -25,7 +25,7 @@ import {
   ResourceValues,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-import { generateKeywordsString, generateLanguageAlternates } from "../../../src/head-utils";
+import { generateKeywordsString, generateLanguageAlternates } from "../../../src/seo-utils";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";

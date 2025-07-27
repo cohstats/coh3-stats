@@ -5,7 +5,7 @@ import ErrorCard from "../../components/error-card";
 import { NextSeo } from "next-seo";
 
 import { GetServerSideProps } from "next";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateKeywordsString } from "../../src/seo-utils";
 
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import dynamic from "next/dynamic";

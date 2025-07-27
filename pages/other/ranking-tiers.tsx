@@ -6,7 +6,7 @@ import { Container, Text, Title } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";

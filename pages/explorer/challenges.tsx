@@ -13,7 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";

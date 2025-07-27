@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../../src/firebase/analytics";
-import { generateKeywordsString } from "../../src/head-utils";
+import { generateKeywordsString } from "../../src/seo-utils";
 import AboutUs from "./AboutUs";
 import DonateSection from "./DonateSection";
 import Link from "next/link";

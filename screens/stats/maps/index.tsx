@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React from "react";
-import { generateKeywordsString } from "../../../src/head-utils";
+import { generateKeywordsString } from "../../../src/seo-utils";
 import Head from "next/head";
 import StatsContainerSelector from "../stats-container-selector";
 

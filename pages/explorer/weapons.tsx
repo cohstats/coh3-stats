@@ -3,7 +3,7 @@ import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/head-utils";
+import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
 import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
 import { WeaponTable, WeaponTableRow } from "../../components/unitStats/weaponTable";
 import { getScatterArea, getWeaponRpm } from "../../src/unitStats";

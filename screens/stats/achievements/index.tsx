@@ -1,5 +1,5 @@
 import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
-import { generateKeywordsString } from "../../../src/head-utils";
+import { generateKeywordsString } from "../../../src/seo-utils";
 import Head from "next/head";
 import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
