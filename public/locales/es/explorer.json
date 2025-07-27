@@ -74,7 +74,7 @@
     "movingAccuracy": "Multiplicador de precisión en movimiento",
     "movingCooldown": "Multiplicador de enfriamiento en movimiento"
   },
-  "meta": {
+  "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} en Company of Heroes 3.",
     "costs": "Cuesta {{costs}}.",
     "population": "{{popCap}} población.",

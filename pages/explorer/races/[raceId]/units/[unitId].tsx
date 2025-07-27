@@ -159,7 +159,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     const munitionCost = totalCost.munition || 0;
     const popCap = totalCost.popcap || 0;
 
-    let description = t("meta.unitDescription", {
+    let description = t("unitMeta.unitDescription", {
       unitName: resolvedSquad.ui.screenName,
       raceName: localizedRace,
       unitType: unitType,
@@ -168,10 +168,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // Add key stats
     const stats = [];
     if (hitpoints > 0) {
-      stats.push(`${hitpoints} ${t("meta.abbreviations.hitpoints")}`);
+      stats.push(`${hitpoints} ${t("unitMeta.abbreviations.hitpoints")}`);
     }
     if (armor > 0) {
-      stats.push(`${armor} ${t("meta.abbreviations.armor")}`);
+      stats.push(`${armor} ${t("unitMeta.abbreviations.armor")}`);
     }
     if (stats.length > 0) {
       description += ` ${stats.join(", ")}.`;
@@ -180,21 +180,21 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // Add cost information
     const costs = [];
     if (manpowerCost > 0) {
-      costs.push(`${manpowerCost} ${t("meta.abbreviations.manpower")}`);
+      costs.push(`${manpowerCost} ${t("unitMeta.abbreviations.manpower")}`);
     }
     if (fuelCost > 0) {
-      costs.push(`${fuelCost} ${t("meta.abbreviations.fuel")}`);
+      costs.push(`${fuelCost} ${t("unitMeta.abbreviations.fuel")}`);
     }
     if (munitionCost > 0) {
-      costs.push(`${munitionCost} ${t("meta.abbreviations.munition")}`);
+      costs.push(`${munitionCost} ${t("unitMeta.abbreviations.munition")}`);
     }
     if (costs.length > 0) {
-      description += ` ${t("meta.costs", { costs: costs.join("/") })}`;
+      description += ` ${t("unitMeta.costs", { costs: costs.join("/") })}`;
     }
 
     // Add population cap
     if (popCap > 0) {
-      description += ` ${t("meta.population", { popCap })}`;
+      description += ` ${t("unitMeta.population", { popCap })}`;
     }
 
     // Add tactical role based on unit type and brief text
@@ -232,37 +232,37 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // Add unit type specific keywords
     if (resolvedSquad.unitType === "vehicles") {
       baseKeywords.push(
-        t("meta.keywords.vehicles.tank"),
-        t("meta.keywords.vehicles.vehicle"),
-        t("meta.keywords.vehicles.armorStats"),
-        t("meta.keywords.vehicles.vehicleGuide"),
+        t("unitMeta.keywords.vehicles.tank"),
+        t("unitMeta.keywords.vehicles.vehicle"),
+        t("unitMeta.keywords.vehicles.armorStats"),
+        t("unitMeta.keywords.vehicles.vehicleGuide"),
       );
     } else if (resolvedSquad.unitType === "infantry") {
       baseKeywords.push(
-        t("meta.keywords.infantry.infantry"),
-        t("meta.keywords.infantry.squadStats"),
-        t("meta.keywords.infantry.unitGuide"),
-        t("meta.keywords.infantry.infantryTactics"),
+        t("unitMeta.keywords.infantry.infantry"),
+        t("unitMeta.keywords.infantry.squadStats"),
+        t("unitMeta.keywords.infantry.unitGuide"),
+        t("unitMeta.keywords.infantry.infantryTactics"),
       );
     } else if (resolvedSquad.unitType === "team_weapons") {
       baseKeywords.push(
-        t("meta.keywords.teamWeapons.teamWeapon"),
-        t("meta.keywords.teamWeapons.supportWeapon"),
-        t("meta.keywords.teamWeapons.crewWeapon"),
-        t("meta.keywords.teamWeapons.artillery"),
+        t("unitMeta.keywords.teamWeapons.teamWeapon"),
+        t("unitMeta.keywords.teamWeapons.supportWeapon"),
+        t("unitMeta.keywords.teamWeapons.crewWeapon"),
+        t("unitMeta.keywords.teamWeapons.artillery"),
       );
     } else if (resolvedSquad.unitType === "emplacements") {
       baseKeywords.push(
-        t("meta.keywords.emplacements.emplacement"),
-        t("meta.keywords.emplacements.defensiveStructure"),
-        t("meta.keywords.emplacements.fortification"),
+        t("unitMeta.keywords.emplacements.emplacement"),
+        t("unitMeta.keywords.emplacements.defensiveStructure"),
+        t("unitMeta.keywords.emplacements.fortification"),
       );
     }
 
     // Add faction-specific keywords
     baseKeywords.push(
-      t("meta.keywords.common.units", { raceId }),
-      t("meta.keywords.common.army", { raceId }),
+      t("unitMeta.keywords.common.units", { raceId }),
+      t("unitMeta.keywords.common.army", { raceId }),
     );
 
     return generateKeywordsString(baseKeywords);

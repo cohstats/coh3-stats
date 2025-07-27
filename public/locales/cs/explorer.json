@@ -74,7 +74,7 @@
     "movingAccuracy": "Násobitel přesnosti za pohybu",
     "movingCooldown": "Násobitel prodlevy za pohybu"
   },
-  "meta": {
+  "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} v Company of Heroes 3.",
     "costs": "Náklady {{costs}}.",
     "population": "{{popCap}} populace.",

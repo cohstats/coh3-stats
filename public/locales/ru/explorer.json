@@ -74,7 +74,7 @@
     "movingAccuracy": "Мультипликатор точности на ходу",
     "movingCooldown": "Мультипликатор перезарядки на ходу"
   },
-  "meta": {
+  "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} в Company of Heroes 3.",
     "costs": "Стоимость {{costs}}.",
     "population": "{{popCap}} население.",
