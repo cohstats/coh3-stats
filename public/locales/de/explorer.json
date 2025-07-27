@@ -37,7 +37,17 @@
     "subtitle": "Erkunde alle Einheiten, Gebäude und Kampfgruppen im Spiel."
   },
   "factionPage": {
-    "factionOverview": "Fraktionsübersicht"
+    "factionOverview": "Fraktionsübersicht",
+    "meta": {
+      "title": "{{faction}} - COH3 Explorer",
+      "description": "Erkunden Sie die {{faction}}-Fraktion in Company of Heroes 3. Sehen Sie Einheiten, Gebäude, Kampfgruppen und detaillierte Statistiken für die {{faction}}-Armee.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} explorer",
+        "{{faction}} kampfgruppen",
+        "{{faction}} einheiten"
+      ]
+    }
   },
   "unitPage": {
     "stats": "Werte",

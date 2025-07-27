@@ -94,26 +94,27 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
     AnalyticsExplorerFactionView(raceToFetch);
   }, []);
 
-  const metaKeywords = generateKeywordsString([
-    `${localizedRace}`,
-    `${localizedRace} explorer`,
-    `${localizedRace} battle groups`,
-    `${localizedRace} units`,
-  ]);
+  // Get localized SEO content
+  const seoTitle = t("factionPage.meta.title", { faction: localizedRace });
+  const seoDescription = t("factionPage.meta.description", { faction: localizedRace });
+  const seoKeywords = t("factionPage.meta.keywords", {
+    faction: localizedRace,
+    returnObjects: true,
+  }) as string[];
 
   return (
     <>
       <NextSeo
-        title={`${localizedRace} - COH3 Explorer`}
-        description={`Explore ${localizedRace} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for ${localizedRace} army.`}
+        title={seoTitle}
+        description={seoDescription}
         canonical={`${config.SITE_URL}${asPath}`}
         openGraph={{
-          title: `${localizedRace} - COH3 Explorer`,
-          description: `Explore ${localizedRace} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for ${localizedRace} army.`,
+          title: seoTitle,
+          description: seoDescription,
           url: `${config.SITE_URL}${asPath}`,
           images: [
             {
-              url: `https://coh3stats.com/icons/general/${raceToFetch}.webp`,
+              url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
               width: 64,
               height: 64,
               alt: `${localizedRace} faction icon`,
@@ -123,7 +124,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         additionalMetaTags={[
           {
             name: "keywords",
-            content: metaKeywords,
+            content: generateKeywordsString(seoKeywords),
           },
         ]}
         languageAlternates={generateLanguageAlternates(asPath)}

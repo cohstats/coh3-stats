@@ -37,7 +37,17 @@
     "subtitle": "Explora todas las unidades, edificios y grupos de batalla en el juego."
   },
   "factionPage": {
-    "factionOverview": "Resumen de Facción"
+    "factionOverview": "Resumen de Facción",
+    "meta": {
+      "title": "{{faction}} - COH3 Explorer",
+      "description": "Explora la facción {{faction}} en Company of Heroes 3. Ve unidades, edificios, grupos de batalla y estadísticas detalladas para el ejército {{faction}}.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} explorer",
+        "{{faction}} grupos de batalla",
+        "{{faction}} unidades"
+      ]
+    }
   },
   "unitPage": {
     "stats": "Estadísticas",

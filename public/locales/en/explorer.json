@@ -37,7 +37,17 @@
     "subtitle": "Explore all the units, buildings and battlegroups in the game."
   },
   "factionPage": {
-    "factionOverview": "Faction Overview"
+    "factionOverview": "Faction Overview",
+    "meta": {
+      "title": "{{faction}} - COH3 Explorer",
+      "description": "Explore {{faction}} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for {{faction}} army.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} explorer",
+        "{{faction}} battle groups",
+        "{{faction}} units"
+      ]
+    }
   },
   "unitPage": {
     "stats": "Stats",

@@ -37,7 +37,17 @@
     "subtitle": "Изучите все подразделения, строения и боевые группы, доступные в игре"
   },
   "factionPage": {
-    "factionOverview": "Обзор фракции"
+    "factionOverview": "Обзор фракции",
+    "meta": {
+      "title": "{{faction}} - COH3 Explorer",
+      "description": "Изучите фракцию {{faction}} в Company of Heroes 3. Просмотрите подразделения, строения, боевые группы и подробную статистику армии {{faction}}.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} explorer",
+        "{{faction}} боевые группы",
+        "{{faction}} подразделения"
+      ]
+    }
   },
   "unitPage": {
     "stats": "Характеристики",

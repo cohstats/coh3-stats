@@ -37,7 +37,17 @@
     "subtitle": "Prozkoumejte všechny jednotky, budovy a bojové skupiny ve hře."
   },
   "factionPage": {
-    "factionOverview": "Přehled frakce"
+    "factionOverview": "Přehled frakce",
+    "meta": {
+      "title": "{{faction}} - COH3 Explorer",
+      "description": "Prozkoumejte frakci {{faction}} v Company of Heroes 3. Zobrazte jednotky, budovy, bojové skupiny a podrobné statistiky pro armádu {{faction}}.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} explorer",
+        "{{faction}} bojové skupiny",
+        "{{faction}} jednotky"
+      ]
+    }
   },
   "unitPage": {
     "stats": "Statistiky",
