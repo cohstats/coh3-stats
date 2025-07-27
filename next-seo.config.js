@@ -106,11 +106,12 @@ const defaultSEO = {
       href: "/logo/favicon-16x16.png",
     },
     {
-      rel: "icon",
-      type: "image/ico",
-      sizes: "16x16",
-      href: "/logo/favicon.ico",
-    },
+  {
+    rel: "icon",
+    type: "image/x-icon",
+    sizes: "16x16",
+    href: "/logo/favicon.ico",
+  },
   ],
 };
 
