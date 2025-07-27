@@ -3,7 +3,16 @@
     "meta": {
       "title": "Mehrspieler-Spielerstatistiken - Company of Heroes 3",
       "description": "Allgemeine Informationen über alle Mehrspieler-Spieler in Company of Heroes 3.\nDerzeit werden {{count, number}} Mehrspieler-Spieler verfolgt.",
-      "keywords": "coh3 spielerstatistiken, spielerstatistiken, spielerländer, coh3 spielerverlauf"
+      "keywords": [
+        "coh3 spielerstatistiken",
+        "spielerstatistiken",
+        "spielerländer",
+        "coh3 spielerverlauf",
+        "multiplayer statistiken",
+        "spieler tracking",
+        "spielstatistiken",
+        "spielerdaten"
+      ]
     },
     "title": "PC-Spielerstatistiken",
     "totalTrackedPlayers": "Gesamtzahl der verfolgten Spieler",

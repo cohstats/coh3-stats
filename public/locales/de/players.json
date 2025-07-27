@@ -2,11 +2,16 @@
   "meta": {
     "title": "{{name}} - COH3 Spielerprofil",
     "description": "{{name}}'s Company of Heroes 3 Statistiken, Spielhistorie, Fraktionsleistung und Wettkampf-Rankings.",
-    "keywords": {
-      "stats": "{{name}} Statistiken",
-      "matches": "{{name}} Spiele",
-      "cohStats": "coh3 {{name}} stats"
-    }
+    "keywords": [
+      "spielerprofil",
+      "spielerstatistiken",
+      "spielhistorie",
+      "fraktionsleistung",
+      "wettkampf rankings",
+      "spieler stats",
+      "spielstatistiken",
+      "spielerdaten"
+    ]
   },
   "card": {
     "error": {

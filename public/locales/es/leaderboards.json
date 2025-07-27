@@ -2,10 +2,16 @@
   "meta": {
     "title": "{{faction}} {{mode}} Clasificaciones",
     "description": "Company of Heroes 3 {{faction}} {{mode}} clasificaciones con rankings de jugadores, puntuaciones ELO y estadísticas competitivas.",
-    "keywords": {
-      "faction": "{{faction}} clasificaciones",
-      "mode": "{{mode}} rankings"
-    }
+    "keywords": [
+      "clasificaciones",
+      "rankings",
+      "escalera competitiva",
+      "puntuaciones elo",
+      "rankings de jugadores",
+      "estadísticas competitivas",
+      "rankings de facciones",
+      "rankings de modo de juego"
+    ]
   },
   "title": "Clasificación global para {{race}}",
   "pageTitle": "Clasificación global para {{race}} {{type}}",

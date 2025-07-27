@@ -2,10 +2,16 @@
   "meta": {
     "title": "{{faction}} {{mode}} Bestenlisten",
     "description": "Company of Heroes 3 {{faction}} {{mode}} Bestenlisten mit Spieler-Rankings, ELO-Bewertungen und Wettkampfstatistiken.",
-    "keywords": {
-      "faction": "{{faction}} bestenlisten",
-      "mode": "{{mode}} ranglisten"
-    }
+    "keywords": [
+      "bestenlisten",
+      "ranglisten",
+      "wettkampf rangliste",
+      "elo bewertungen",
+      "spieler rankings",
+      "wettkampfstatistiken",
+      "fraktions rankings",
+      "spielmodus rankings"
+    ]
   },
   "title": "Bestenlisten für {{race}}",
   "pageTitle": "Bestenlisten für {{race}} {{type}}",

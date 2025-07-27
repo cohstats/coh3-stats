@@ -3,7 +3,16 @@
     "meta": {
       "title": "Multiplayer Player Stats - Company of Heroes 3",
       "description": "Overall information about all Multiplayer players in Company of Heroes 3.\nCurrently tracking {{count, number}} Multiplayer players.",
-      "keywords": "coh3 players stats, player stats, player countries, coh3 players history"
+      "keywords": [
+        "coh3 players stats",
+        "player stats",
+        "player countries",
+        "coh3 players history",
+        "multiplayer statistics",
+        "player tracking",
+        "game statistics",
+        "player data"
+      ]
     },
     "title": "PC Players Stats",
     "totalTrackedPlayers": "Total number of tracked players",

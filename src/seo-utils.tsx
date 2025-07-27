@@ -154,12 +154,16 @@ export const createPlayerSEO = (
   const description = createPlayerDescription(playerData, playerSummary, t);
   const canonical = `${config.SITE_URL}/players/${profileId}`;
 
-  // Generate player-specific keywords
-  const keywords = [
-    t("players:meta.keywords.stats", { name: playerName }),
-    t("players:meta.keywords.matches", { name: playerName }),
-    t("players:meta.keywords.cohStats", { name: playerName }),
-  ];
+  // Get keywords from translation
+  let keywords: string[] = [];
+  try {
+    const translatedKeywords = t("players:meta.keywords", { returnObjects: true });
+    if (Array.isArray(translatedKeywords)) {
+      keywords = translatedKeywords as string[];
+    }
+  } catch (error) {
+    keywords = ["player profile", "player statistics"];
+  }
 
   const seoProps: NextSeoProps = {
     title,
@@ -217,12 +221,16 @@ export const createLeaderboardSEO = (
   const title = t("leaderboards:meta.title", { faction, mode });
   const description = t("leaderboards:meta.description", { faction, mode });
 
-  const keywords = [
-    t("leaderboards:meta.keywords.faction", { faction }),
-    t("leaderboards:meta.keywords.mode", { mode }),
-    "competitive ladder",
-    "rankings",
-  ];
+  // Get keywords from translation
+  let keywords: string[] = [];
+  try {
+    const translatedKeywords = t("leaderboards:meta.keywords", { returnObjects: true });
+    if (Array.isArray(translatedKeywords)) {
+      keywords = translatedKeywords as string[];
+    }
+  } catch (error) {
+    keywords = ["leaderboards", "rankings"];
+  }
 
   // Build canonical URL with query parameters
   const queryParams = new URLSearchParams({

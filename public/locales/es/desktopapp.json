@@ -2,7 +2,16 @@
   "meta": {
     "title": "App de Escritorio de COH3 Stats",
     "description": "Descarga la App de Escritorio de COH3 Stats {{version}}. No requiere configurarse. Con un Overlay para OBS. Info detallada de tus oponentes al momento. Notificaciones de sonido para tu juego y mucho mas!.",
-    "keywords": "coh3, coh3 stats, coh3 desktop app, coh3 OBS overlay, company of heroes realtime info"
+    "keywords": [
+      "coh3 app de escritorio",
+      "obs overlay",
+      "información de partida en tiempo real",
+      "aplicación de escritorio",
+      "overlay de juego",
+      "análisis de partida",
+      "estadísticas de jugador",
+      "datos de juego en vivo"
+    ]
   },
   "download": {
     "button": "Descarga {{version}}",

@@ -2,10 +2,16 @@
   "meta": {
     "title": "{{faction}} {{mode}} 排行榜",
     "description": "英雄连3 {{faction}} {{mode}} 排行榜，包含玩家排名、ELO评分和竞技统计。",
-    "keywords": {
-      "faction": "{{faction}} 排行榜",
-      "mode": "{{mode}} 排名"
-    }
+    "keywords": [
+      "排行榜",
+      "排名",
+      "竞技天梯",
+      "elo评分",
+      "玩家排名",
+      "竞技统计",
+      "阵营排名",
+      "游戏模式排名"
+    ]
   },
   "title": "{{race}} 排行榜",
   "pageTitle": "{{race}} {{type}} 排行榜",

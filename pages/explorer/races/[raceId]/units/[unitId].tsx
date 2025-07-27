@@ -261,8 +261,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
     // Add faction-specific keywords
     baseKeywords.push(
-      t("unitMeta.keywords.common.units", { raceId }),
-      t("unitMeta.keywords.common.army", { raceId }),
+      t("meta.keywords.common.units", { raceId }),
+      t("meta.keywords.common.army", { raceId }),
     );
 
     return generateKeywordsString(baseKeywords);

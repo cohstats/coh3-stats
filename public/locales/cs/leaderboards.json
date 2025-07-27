@@ -2,10 +2,16 @@
   "meta": {
     "title": "{{faction}} {{mode}} Žebříčky",
     "description": "Company of Heroes 3 {{faction}} {{mode}} žebříčky s hodnocením hráčů, ELO ratingy a soutěžními statistikami.",
-    "keywords": {
-      "faction": "{{faction}} žebříčky",
-      "mode": "{{mode}} hodnocení"
-    }
+    "keywords": [
+      "žebříčky",
+      "hodnocení",
+      "soutěžní žebříček",
+      "elo hodnocení",
+      "hodnocení hráčů",
+      "soutěžní statistiky",
+      "hodnocení frakcí",
+      "hodnocení herních módů"
+    ]
   },
   "title": "Žebříčky pro {{race}}",
   "pageTitle": "Žebříčky pro {{race}} {{type}}",
