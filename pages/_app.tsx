@@ -1,7 +1,7 @@
-import "@mantine/core/styles.layer.css";
+import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/carousel/styles.css";
-import "mantine-datatable/styles.layer.css";
+import "mantine-datatable/styles.css";
 
 import { AppProps } from "next/app";
 import Router from "next/router";

@@ -24,15 +24,18 @@ const InfoCard = ({
     >
       <Card p={{ base: "xs", sm: "sm" }} radius="md" withBorder className={classes.infoCard}>
         <Stack gap={"xs"} style={{ height: "100%" }}>
-          <Group justify="space-between">
-            <Title order={4}>{title}</Title>
+          <Group justify="space-between" align="center" wrap="nowrap">
+            <Title order={4} style={{ flex: 1 }}>
+              {title}
+            </Title>
             <Image
-              width={25}
-              height={25}
+              w={25}
+              h={25}
               fit="contain"
               src={imageSrc}
               alt=""
               fallbackSrc={"https://placehold.co/25x25?text=X"}
+              style={{ flexShrink: 0 }}
             />
           </Group>
 
