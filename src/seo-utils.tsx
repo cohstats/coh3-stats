@@ -306,7 +306,7 @@ export const createMatchSEO = (t: TFunction, matchData: any): NextSeoProps => {
 /**
  * Helper function to create player description from player data
  */
-function createPlayerDescription(playerData: any, playerSummary: any, t: TFunction): string {
+const createPlayerDescription = (playerData: any, playerSummary: any, t: TFunction): string => {
   // Use the existing createPlayerHeadDescription logic or fallback to translation
   try {
     return createPlayerHeadDescription(playerData, playerSummary);
@@ -315,17 +315,17 @@ function createPlayerDescription(playerData: any, playerSummary: any, t: TFuncti
       name: playerData.info.name,
     });
   }
-}
+};
 
 /**
  * Helper function to create player description from player data
  * This should be implemented based on the existing logic from screens/players/index.tsx
  */
-function createPlayerHeadDescription(playerData: any, playerSummary: any): string {
+const createPlayerHeadDescription = (playerData: any, playerSummary: any): string => {
   // Basic implementation - this should be enhanced with actual player stats
   const name = playerData.info.name;
   const totalGames = playerSummary?.totalGames || 0;
   const winRate = playerSummary?.winRate || 0;
 
   return `${name}'s Company of Heroes 3 player profile with ${totalGames} games played and ${winRate}% win rate. View detailed statistics, match history, and faction performance.`;
-}
+};
