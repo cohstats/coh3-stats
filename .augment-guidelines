@@ -6,6 +6,9 @@
 ## React component development
 - When developing new component which has low amount of props, try to do inline types instead of creating new interface.
 
+# Code Style
+- Prefer arrow functions over function declarations.
+
 # AI Agent
 When you need to create AI reports which are .md files, create them in `ai` folder.
 
