@@ -1,4 +1,22 @@
 {
+  "meta": {
+    "title": "COH3 Průzkumník - Frakce, Jednotky a Budovy",
+    "description": "Prozkoumejte frakce, jednotky, budovy a bojové skupiny v Company of Heroes 3. Detailní statistiky, náklady a informace o poškození pro veškerý herní obsah.",
+    "keywords": [
+      "coh3 průzkumník",
+      "frakce",
+      "jednotky",
+      "budovy",
+      "bojové skupiny",
+      "wehrmacht",
+      "americké síly",
+      "dak",
+      "britské síly",
+      "statistiky jednotek",
+      "poškození",
+      "náklady"
+    ]
+  },
   "common": {
     "units": "Jednotky",
     "buildings": "Budovy",
@@ -56,7 +74,7 @@
     "movingAccuracy": "Násobitel přesnosti za pohybu",
     "movingCooldown": "Násobitel prodlevy za pohybu"
   },
-  "meta": {
+  "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} v Company of Heroes 3.",
     "costs": "Náklady {{costs}}.",
     "population": "{{popCap}} populace.",

@@ -75,6 +75,7 @@
     "mantine-datatable": "7.17.1",
     "next": "14.2.30",
     "next-i18next": "15.4.2",
+    "next-seo": "6.8.0",
     "nprogress": "0.2.0",
     "octokit": "4.1.4",
     "react": "18.3.1",

@@ -20,8 +20,8 @@ import dayjs from "dayjs";
 import { IconShare3 } from "@tabler/icons-react";
 // import {AnalyticsNewsPageView} from "../../src/firebase/analytics";
 import { NextPage } from "next";
-import Head from "next/head";
-import { generateKeywordsString } from "../../src/head-utils";
+import { NextSeo } from "next-seo";
+import { createPageSEO } from "../../src/seo-utils";
 import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
 import { useTranslation } from "next-i18next";
@@ -249,8 +249,6 @@ const SingleNewsItem = ({
   }
 };
 
-const keywords = generateKeywordsString(["coh3 news", "news", "patch", "changes"]);
-
 const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
   const { t } = useTranslation("news");
   const { locale } = useRouter();
@@ -264,15 +262,28 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
   });
   const image = COH3SteamNews.newsitems[0]?.image || "";
 
+  // Create SEO props for news page
+  const seoProps = createPageSEO(t, "news", "/news");
+
   try {
     return (
       <>
-        <Head>
-          <title>{t("meta.title")}</title>
-          <meta name="description" content={t("meta.description")} />
-          <meta name="keywords" content={keywords} />
-          <meta property="og:image" content={image} />
-        </Head>
+        <NextSeo
+          {...seoProps}
+          openGraph={{
+            ...seoProps.openGraph,
+            images: image
+              ? [
+                  {
+                    url: image,
+                    width: 800,
+                    height: 600,
+                    alt: "COH3 News Image",
+                  },
+                ]
+              : seoProps.openGraph?.images,
+          }}
+        />
         <Container size={"md"} px={0}>
           <Title>{t("pageTitle")}</Title>
           <Space h={"lg"} />

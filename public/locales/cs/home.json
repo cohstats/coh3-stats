@@ -1,7 +1,19 @@
 {
   "meta": {
     "title": "COH3 Stats - Statistiky Company of Heroes 3",
-    "description": "Statistiky Company of Heroes 3. Žebříčky, Karty hráčů, Minulé zápasy, Statistiky jednotek, Kalkulačka DPS, Průzkumník bojových skupin, Průzkumník zbraní, Aktuální živé hry, Nejnovější zprávy COH3, nejnovější YouTube a Twitch streamy. A mnohem více."
+    "description": "Statistiky Company of Heroes 3. Žebříčky, Karty hráčů, Minulé zápasy, Statistiky jednotek, Kalkulačka DPS, Průzkumník bojových skupin, Průzkumník zbraní, Aktuální živé hry, Nejnovější zprávy COH3, nejnovější YouTube a Twitch streamy. A mnohem více.",
+    "keywords": [
+      "žebříčky",
+      "karty hráčů",
+      "statistiky jednotek",
+      "živé hry",
+      "dps kalkulačka",
+      "bojové skupiny",
+      "průzkumník zbraní",
+      "historie zápasů",
+      "twitch streamy",
+      "youtube videa"
+    ]
   },
   "sections": {
     "news": {

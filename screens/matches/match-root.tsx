@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 import { getMatch } from "../../src/apis/coh3stats-api";
 import { ProcessedMatch } from "../../src/coh3/coh3-types";
 import ErrorCard from "../../components/error-card";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { Center, Loader } from "@mantine/core";
-import { generateKeywordsString } from "../../src/head-utils";
+import { createMatchSEO } from "../../src/seo-utils";
 import MatchDetail from "./match-detail";
-
-const keywords = generateKeywordsString(["match details"]);
+import { useTranslation } from "next-i18next";
 
 const MatchDetailRoot: NextPage = () => {
+  const { t } = useTranslation(["common"]);
   const router = useRouter();
   const { matchId, profileIDs } = router.query;
   const [matchData, setMatchData] = useState<ProcessedMatch | null>(null);
@@ -77,14 +77,28 @@ const MatchDetailRoot: NextPage = () => {
     content = <MatchDetail matchData={matchData} />;
   }
 
+  // Create SEO props based on match data availability
+  let seoProps;
+  if (matchData) {
+    seoProps = createMatchSEO(t, matchData);
+  } else {
+    // Default SEO for loading/error states
+    seoProps = {
+      title: "COH3 Match Details",
+      description: "Company of Heroes 3 match details and replay information.",
+      canonical: `https://coh3stats.com/matches/${matchId}`,
+      additionalMetaTags: [
+        {
+          name: "keywords",
+          content: "coh3 match details, match replay, game analysis",
+        },
+      ],
+    };
+  }
+
   return (
     <>
-      <Head>
-        <title>COH3 Stats - Match Details</title>
-        <meta name="description" content="COH3 Stats - match details" />
-        <meta name="keywords" content={keywords} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo {...seoProps} />
       <div style={{ minHeight: 900 }}>{content}</div>
     </>
   );

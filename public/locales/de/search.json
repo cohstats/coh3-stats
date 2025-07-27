@@ -1,7 +1,17 @@
 {
   "meta": {
     "title": "COH3 Stats - Suche",
-    "description": "Suche nach Einheiten und Steam-, Xbox- und PSN-Spielern in Company of Heroes 3."
+    "description": "Suche nach Einheiten und Steam-, Xbox- und PSN-Spielern in Company of Heroes 3.",
+    "keywords": [
+      "spieler suchen",
+      "daten suchen",
+      "coh3 suche",
+      "einheiten suchen",
+      "spielersuche",
+      "steam spieler",
+      "xbox spieler",
+      "psn spieler"
+    ]
   },
   "sections": {
     "players": "Spieler",

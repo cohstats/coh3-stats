@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import {
@@ -43,10 +43,7 @@ import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-l
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
-import {
-  generateAlternateLanguageLinks,
-  generateKeywordsString,
-} from "../../../../../src/head-utils";
+import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";
@@ -162,7 +159,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     const munitionCost = totalCost.munition || 0;
     const popCap = totalCost.popcap || 0;
 
-    let description = t("meta.unitDescription", {
+    let description = t("unitMeta.unitDescription", {
       unitName: resolvedSquad.ui.screenName,
       raceName: localizedRace,
       unitType: unitType,
@@ -171,10 +168,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // Add key stats
     const stats = [];
     if (hitpoints > 0) {
-      stats.push(`${hitpoints} ${t("meta.abbreviations.hitpoints")}`);
+      stats.push(`${hitpoints} ${t("unitMeta.abbreviations.hitpoints")}`);
     }
     if (armor > 0) {
-      stats.push(`${armor} ${t("meta.abbreviations.armor")}`);
+      stats.push(`${armor} ${t("unitMeta.abbreviations.armor")}`);
     }
     if (stats.length > 0) {
       description += ` ${stats.join(", ")}.`;
@@ -183,21 +180,21 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // Add cost information
     const costs = [];
     if (manpowerCost > 0) {
-      costs.push(`${manpowerCost} ${t("meta.abbreviations.manpower")}`);
+      costs.push(`${manpowerCost} ${t("unitMeta.abbreviations.manpower")}`);
     }
     if (fuelCost > 0) {
-      costs.push(`${fuelCost} ${t("meta.abbreviations.fuel")}`);
+      costs.push(`${fuelCost} ${t("unitMeta.abbreviations.fuel")}`);
     }
     if (munitionCost > 0) {
-      costs.push(`${munitionCost} ${t("meta.abbreviations.munition")}`);
+      costs.push(`${munitionCost} ${t("unitMeta.abbreviations.munition")}`);
     }
     if (costs.length > 0) {
-      description += ` ${t("meta.costs", { costs: costs.join("/") })}`;
+      description += ` ${t("unitMeta.costs", { costs: costs.join("/") })}`;
     }
 
     // Add population cap
     if (popCap > 0) {
-      description += ` ${t("meta.population", { popCap })}`;
+      description += ` ${t("unitMeta.population", { popCap })}`;
     }
 
     // Add tactical role based on unit type and brief text
@@ -235,30 +232,30 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // Add unit type specific keywords
     if (resolvedSquad.unitType === "vehicles") {
       baseKeywords.push(
-        t("meta.keywords.vehicles.tank"),
-        t("meta.keywords.vehicles.vehicle"),
-        t("meta.keywords.vehicles.armorStats"),
-        t("meta.keywords.vehicles.vehicleGuide"),
+        t("unitMeta.keywords.vehicles.tank"),
+        t("unitMeta.keywords.vehicles.vehicle"),
+        t("unitMeta.keywords.vehicles.armorStats"),
+        t("unitMeta.keywords.vehicles.vehicleGuide"),
       );
     } else if (resolvedSquad.unitType === "infantry") {
       baseKeywords.push(
-        t("meta.keywords.infantry.infantry"),
-        t("meta.keywords.infantry.squadStats"),
-        t("meta.keywords.infantry.unitGuide"),
-        t("meta.keywords.infantry.infantryTactics"),
+        t("unitMeta.keywords.infantry.infantry"),
+        t("unitMeta.keywords.infantry.squadStats"),
+        t("unitMeta.keywords.infantry.unitGuide"),
+        t("unitMeta.keywords.infantry.infantryTactics"),
       );
     } else if (resolvedSquad.unitType === "team_weapons") {
       baseKeywords.push(
-        t("meta.keywords.teamWeapons.teamWeapon"),
-        t("meta.keywords.teamWeapons.supportWeapon"),
-        t("meta.keywords.teamWeapons.crewWeapon"),
-        t("meta.keywords.teamWeapons.artillery"),
+        t("unitMeta.keywords.teamWeapons.teamWeapon"),
+        t("unitMeta.keywords.teamWeapons.supportWeapon"),
+        t("unitMeta.keywords.teamWeapons.crewWeapon"),
+        t("unitMeta.keywords.teamWeapons.artillery"),
       );
     } else if (resolvedSquad.unitType === "emplacements") {
       baseKeywords.push(
-        t("meta.keywords.emplacements.emplacement"),
-        t("meta.keywords.emplacements.defensiveStructure"),
-        t("meta.keywords.emplacements.fortification"),
+        t("unitMeta.keywords.emplacements.emplacement"),
+        t("unitMeta.keywords.emplacements.defensiveStructure"),
+        t("unitMeta.keywords.emplacements.fortification"),
       );
     }
 
@@ -277,41 +274,44 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={metaDescription} />
-        <meta name="keywords" content={metaKeywords} />
-
-        {/* Open Graph tags */}
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={metaDescription} />
-        <meta property="og:site_name" content="COH3 Stats" />
-        <meta property="og:locale" content={locale} />
-        <meta
-          property="og:image"
-          content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
-        />
-        <meta property="og:image:alt" content={`${resolvedSquad.ui.screenName} unit icon`} />
-        <meta property="og:image:width" content="256" />
-        <meta property="og:image:height" content="256" />
-
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={metaDescription} />
-        <meta
-          name="twitter:image"
-          content={getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`)}
-        />
-        <meta name="twitter:image:alt" content={`${resolvedSquad.ui.screenName} unit icon`} />
-
-        {/* Additional meta tags */}
-        <meta name="author" content="COH3 Stats" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={`${config.SITE_URL}${asPath}`} />
-
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={metaDescription}
+        canonical={`${config.SITE_URL}${asPath}`}
+        openGraph={{
+          title: pageTitle,
+          description: metaDescription,
+          url: `${config.SITE_URL}${asPath}`,
+          siteName: "COH3 Stats",
+          locale: locale,
+          images: [
+            {
+              url: getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`),
+              width: 256,
+              height: 256,
+              alt: `${resolvedSquad.ui.screenName} unit icon`,
+            },
+          ],
+        }}
+        twitter={{
+          cardType: "summary",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: metaKeywords,
+          },
+          {
+            name: "author",
+            content: "COH3 Stats",
+          },
+          {
+            name: "robots",
+            content: "index, follow",
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <Container fluid pl={0} pr={0} pt={"md"}>
         <Grid columns={3} grow>
           <Grid.Col span={3}>

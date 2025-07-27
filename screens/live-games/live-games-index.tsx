@@ -1,7 +1,7 @@
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import { Container, Group, Select, Stack, Title } from "@mantine/core";
-import { generateKeywordsString } from "../../src/head-utils";
+import { createPageSEO } from "../../src/seo-utils";
 import { getLiveGames, getLiveGamesSummary } from "../../src/apis/coh3stats-api";
 import { LiveGameSummary, ResponseLiveGames, TypeOfLiveGame } from "../../src/coh3/coh3-types";
 import LiveGamesSummaryTable from "./live-games-summary-table";
@@ -29,6 +29,9 @@ const LiveGamesIndex = () => {
   const { t } = useTranslation("live-games");
   const { push, query } = useRouter();
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  // Create SEO props for live games page
+  const seoProps = createPageSEO(t, "live-games", "/live-games");
 
   const [type, setType] = useState<TypeOfLiveGame | null>(null);
   const [order, setOrder] = useState<"rank" | "observers" | "startgametime">("rank");
@@ -124,20 +127,7 @@ const LiveGamesIndex = () => {
 
   return (
     <>
-      <Head>
-        <title>{t("meta.title")}</title>
-        <meta name="description" content={t("meta.description")} />
-        <meta
-          name="keywords"
-          content={generateKeywordsString([
-            "coh3 live games",
-            "coh3 realtime matches",
-            "coh3 games",
-            "coh3 current matches in progress",
-          ])}
-        />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo {...seoProps} />
       <Container size={"fluid"} p={0}>
         <div style={{ textAlign: "center", paddingBottom: 5 }}>
           <Title order={1}>{t("pageTitle")}</Title>

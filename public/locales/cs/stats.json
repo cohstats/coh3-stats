@@ -3,7 +3,16 @@
     "meta": {
       "title": "Statistiky multiplayer hráčů - Company of Heroes 3",
       "description": "Celkové informace o všech multiplayer hráčích v Company of Heroes 3.\nAktuálně sledujeme {{count, number}} multiplayer hráčů.",
-      "keywords": "coh3 statistiky hráčů, statistiky hráčů, země hráčů, coh3 historie hráčů"
+      "keywords": [
+        "coh3 statistiky hráčů",
+        "statistiky hráčů",
+        "země hráčů",
+        "coh3 historie hráčů",
+        "multiplayer statistiky",
+        "sledování hráčů",
+        "herní statistiky",
+        "data hráčů"
+      ]
     },
     "title": "Statistiky PC hráčů",
     "totalTrackedPlayers": "Celkový počet sledovaných hráčů",

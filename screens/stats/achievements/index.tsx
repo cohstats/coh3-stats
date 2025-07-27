@@ -1,20 +1,13 @@
 import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
-import { generateKeywordsString } from "../../../src/head-utils";
-import Head from "next/head";
+import { generateKeywordsString } from "../../../src/seo-utils";
+import { NextSeo } from "next-seo";
 import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
 import Achievement from "./achievement";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-
-const pageTitle = `Game Stats & Charts - Company of Heroes 3`;
-const description = `Global Achievements for Company of Heroes 3.`;
-const metaKeywords = generateKeywordsString([
-  `Achievements`,
-  `Steam Achievements`,
-  `coh3 achievements`,
-]);
+import { useTranslation } from "next-i18next";
 
 const GlobalAchievements = ({
   globalAchievements,
@@ -24,15 +17,41 @@ const GlobalAchievements = ({
   error: string | null;
 }) => {
   const { locale } = useRouter();
+  const { t } = useTranslation(["common", "stats"]);
+
+  const pageTitle = t("stats:achievements.meta.title");
+  const description = t("stats:achievements.meta.description");
+
+  // Get keywords from translation
+  let keywords: string[] = [];
+  try {
+    const translatedKeywords = t("stats:achievements.meta.keywords", { returnObjects: true });
+    if (Array.isArray(translatedKeywords)) {
+      keywords = translatedKeywords as string[];
+    }
+  } catch (error) {
+    keywords = ["achievements", "steam achievements", "coh3 achievements"];
+  }
 
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={metaKeywords} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical="https://coh3stats.com/stats/achievements"
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: "https://coh3stats.com/stats/achievements",
+          type: "website",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: generateKeywordsString(keywords),
+          },
+        ]}
+      />
 
       <Container size={"md"}>
         <Flex justify="space-between" align={"center"}>

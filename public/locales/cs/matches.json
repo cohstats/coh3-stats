@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "COH3 Zápas {{matchId}} - {{map}} {{mode}}",
+    "description": "Company of Heroes 3 zápas {{matchId}} detaily na {{map}} v {{mode}} módu. Zobrazit výkon hráčů, souboje frakcí a herní statistiky.",
+    "keywords": [
+      "detaily zápasu",
+      "herní replay",
+      "analýza zápasu",
+      "výkon hráčů",
+      "souboj frakcí",
+      "herní statistiky"
+    ]
+  }
+}

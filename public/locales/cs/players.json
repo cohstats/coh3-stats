@@ -1,10 +1,17 @@
 {
   "meta": {
-    "keywords": {
-      "stats": "{{name}} statistiky",
-      "matches": "{{name}} zápasy",
-      "cohStats": "coh3 {{name}} statistiky"
-    }
+    "title": "{{name}} - COH3 Profil Hráče",
+    "description": "{{name}} statistiky Company of Heroes 3, historie zápasů, výkon frakcí a soutěžní hodnocení.",
+    "keywords": [
+      "profil hráče",
+      "statistiky hráče",
+      "historie zápasů",
+      "výkon frakcí",
+      "soutěžní hodnocení",
+      "statistiky hráče",
+      "herní statistiky",
+      "data hráče"
+    ]
   },
   "card": {
     "error": {

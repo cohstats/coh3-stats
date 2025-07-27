@@ -1,10 +1,17 @@
 {
   "meta": {
-    "keywords": {
-      "stats": "{{name}} stats",
-      "matches": "{{name}} matches",
-      "cohStats": "coh3 {{name}} stats"
-    }
+    "title": "{{name}} - COH3 Player Profile",
+    "description": "{{name}}'s Company of Heroes 3 statistics, match history, faction performance, and competitive rankings.",
+    "keywords": [
+      "player profile",
+      "player statistics",
+      "match history",
+      "faction performance",
+      "competitive rankings",
+      "player stats",
+      "game statistics",
+      "player data"
+    ]
   },
   "card": {
     "error": {

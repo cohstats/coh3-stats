@@ -1,29 +1,46 @@
 import { NextPage } from "next";
 import React from "react";
-import { generateKeywordsString } from "../../../src/head-utils";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
+import { generateKeywordsString } from "../../../src/seo-utils";
+import { useTranslation } from "next-i18next";
 import StatsContainerSelector from "../stats-container-selector";
 
-const pageTitle = `Game Maps Stats & Charts - Company of Heroes 3`;
-const description =
-  "Game Maps Stats for Company of Heroes 3. See winrate of each faction, mode, team compositions and much more for each map in the game.";
-const keywords = generateKeywordsString([
-  "coh3 winrate",
-  "coh3 maps",
-  "factions winrate",
-  "analysis",
-  "best map",
-]);
-
 const MapStats: NextPage = () => {
+  const { t } = useTranslation(["common", "stats"]);
+
+  const pageTitle = t("stats:maps.meta.title");
+  const description = t("stats:maps.meta.description");
+
+  // Get keywords from translation
+  let keywords: string[] = [];
+  try {
+    const translatedKeywords = t("stats:maps.meta.keywords", { returnObjects: true });
+    if (Array.isArray(translatedKeywords)) {
+      keywords = translatedKeywords as string[];
+    }
+  } catch (error) {
+    keywords = ["coh3 maps", "map statistics", "map winrates"];
+  }
+
   return (
     <div>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={description}
+        canonical="https://coh3stats.com/stats/maps"
+        openGraph={{
+          title: pageTitle,
+          description: description,
+          url: "https://coh3stats.com/stats/maps",
+          type: "website",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: generateKeywordsString(keywords),
+          },
+        ]}
+      />
       <>
         <StatsContainerSelector statsType={"mapStats"} />
       </>

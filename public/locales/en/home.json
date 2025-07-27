@@ -1,7 +1,19 @@
 {
   "meta": {
     "title": "COH3 Stats - Company of Heroes 3 Statistics",
-    "description": "Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats, DPS Calculator, Battlegroup Explorer, Weapons explorer, Current Live Games, Latest COH3 News, latest YouTube and Twitch Streams. And much more."
+    "description": "Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats, DPS Calculator, Battlegroup Explorer, Weapons explorer, Current Live Games, Latest COH3 News, latest YouTube and Twitch Streams. And much more.",
+    "keywords": [
+      "leaderboards",
+      "player cards",
+      "unit stats",
+      "live games",
+      "dps calculator",
+      "battlegroups",
+      "weapons explorer",
+      "match history",
+      "twitch streams",
+      "youtube videos"
+    ]
   },
   "sections": {
     "news": {

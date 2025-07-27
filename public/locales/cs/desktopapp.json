@@ -2,7 +2,16 @@
   "meta": {
     "title": "Desktopová aplikace od COH3 Stats",
     "description": "Stáhněte si desktopovou aplikaci COH3 Stats {{version}}. Není potřeba žádná konfigurace. Funkce OBS překrytí. Podrobné informace o soupeřích v aktuálním zápase. Zvuková upozornění na novou hru a další.",
-    "keywords": "coh3, coh3 stats, coh3 desktopová aplikace, coh3 OBS překrytí, company of heroes informace v reálném čase"
+    "keywords": [
+      "coh3 desktopová aplikace",
+      "obs překrytí",
+      "informace o zápase v reálném čase",
+      "desktopová aplikace",
+      "herní překrytí",
+      "analýza zápasu",
+      "statistiky hráčů",
+      "živá herní data"
+    ]
   },
   "download": {
     "button": "Stáhnout {{version}}",

@@ -1,10 +1,17 @@
 {
   "meta": {
-    "keywords": {
-      "stats": "Estadisticas de {{name}}",
-      "matches": "{{name}} partidas",
-      "cohStats": "coh3 {{name}} stats"
-    }
+    "title": "{{name}} - Perfil de Jugador COH3",
+    "description": "Estadísticas de {{name}} en Company of Heroes 3, historial de partidas, rendimiento por facción y rankings competitivos.",
+    "keywords": [
+      "perfil de jugador",
+      "estadísticas de jugador",
+      "historial de partidas",
+      "rendimiento por facción",
+      "rankings competitivos",
+      "estadísticas de jugador",
+      "estadísticas del juego",
+      "datos del jugador"
+    ]
   },
   "card": {
     "error": {

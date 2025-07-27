@@ -1,7 +1,17 @@
 {
   "meta": {
     "title": "COH3 Stats - Vyhledávání",
-    "description": "Vyhledávání jednotek a hráčů na platformách Steam, Xbox a PSN v Company of Heroes 3."
+    "description": "Vyhledávání jednotek a hráčů na platformách Steam, Xbox a PSN v Company of Heroes 3.",
+    "keywords": [
+      "vyhledávání hráčů",
+      "vyhledávání dat",
+      "coh3 vyhledávání",
+      "vyhledávání jednotek",
+      "hledání hráčů",
+      "steam hráči",
+      "xbox hráči",
+      "psn hráči"
+    ]
   },
   "sections": {
     "players": "Hráči",

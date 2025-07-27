@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "COH3 Spiel {{matchId}} - {{map}} {{mode}}",
+    "description": "Company of Heroes 3 Spiel {{matchId}} Details auf {{map}} im {{mode}} Modus. Spielerleistung, Fraktionskämpfe und Spielstatistiken anzeigen.",
+    "keywords": [
+      "spieldetails",
+      "spiel replay",
+      "spielanalyse",
+      "spielerleistung",
+      "fraktionskampf",
+      "spielstatistiken"
+    ]
+  }
+}

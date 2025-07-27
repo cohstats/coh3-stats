@@ -1,4 +1,18 @@
 {
+  "meta": {
+    "title": "{{faction}} {{mode}} Leaderboards",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} leaderboards with player rankings, ELO ratings, and competitive statistics.",
+    "keywords": [
+      "leaderboards",
+      "rankings",
+      "competitive ladder",
+      "elo ratings",
+      "player rankings",
+      "competitive statistics",
+      "faction rankings",
+      "game mode rankings"
+    ]
+  },
   "title": "Leaderboards for {{race}}",
   "pageTitle": "Leaderboards for {{race}} {{type}}",
   "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",

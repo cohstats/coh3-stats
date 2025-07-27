@@ -1,4 +1,22 @@
 {
+  "meta": {
+    "title": "COH3 Explorador - Facciones, Unidades y Edificios",
+    "description": "Explora las facciones, unidades, edificios y grupos de batalla de Company of Heroes 3. Estadísticas detalladas, costos e información de daño para todo el contenido del juego.",
+    "keywords": [
+      "coh3 explorador",
+      "facciones",
+      "unidades",
+      "edificios",
+      "grupos de batalla",
+      "wehrmacht",
+      "fuerzas estadounidenses",
+      "dak",
+      "fuerzas británicas",
+      "estadísticas de unidades",
+      "daño",
+      "costos"
+    ]
+  },
   "common": {
     "units": "Unidades",
     "buildings": "Edificios",
@@ -56,7 +74,7 @@
     "movingAccuracy": "Multiplicador de precisión en movimiento",
     "movingCooldown": "Multiplicador de enfriamiento en movimiento"
   },
-  "meta": {
+  "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} en Company of Heroes 3.",
     "costs": "Cuesta {{costs}}.",
     "population": "{{popCap}} población.",

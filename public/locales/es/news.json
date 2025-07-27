@@ -2,7 +2,16 @@
   "meta": {
     "title": "Noticias COH3",
     "description": "Las últimas noticias oficiales de Company of Heroes 3",
-    "keywords": ["coh3 news", "coh3 updates", "coh3 patch notes", "company of heroes 3 news"]
+    "keywords": [
+      "coh3 noticias",
+      "coh3 actualizaciones",
+      "coh3 notas de parche",
+      "company of heroes 3 noticias",
+      "actualizaciones del juego",
+      "información de parches",
+      "noticias oficiales",
+      "noticias de relic"
+    ]
   },
   "pageTitle": "Las últimas noticias de Company of Heroes 3",
   "sourceText": "Fuente: Noticias Oficiales de Relic en Steam para COH3",

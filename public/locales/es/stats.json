@@ -3,7 +3,16 @@
     "meta": {
       "title": "Estadísticas de Jugadores Multijugador - Company of Heroes 3",
       "description": "Información general sobre todos los jugadores multijugador en Company of Heroes 3.\nActualmente rastreando {{count, number}} jugadores multijugador.",
-      "keywords": "estadísticas jugadores coh3, estadísticas jugadores, países jugadores, historial jugadores coh3"
+      "keywords": [
+        "estadísticas jugadores coh3",
+        "estadísticas jugadores",
+        "países jugadores",
+        "historial jugadores coh3",
+        "estadísticas multijugador",
+        "seguimiento de jugadores",
+        "estadísticas del juego",
+        "datos de jugadores"
+      ]
     },
     "title": "Estadísticas de Jugadores PC",
     "totalTrackedPlayers": "Número total de jugadores rastreados",
