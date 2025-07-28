@@ -88,8 +88,8 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         render: (record) => {
           return (
             <Image
-              width={60}
-              height={40}
+              w={45}
+              h={40}
               key={`${record.id}-faction`}
               src={getFactionIcon(record.faction)}
               fit="contain"
@@ -107,8 +107,8 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         render: (record) => {
           return (
             <Image
-              width={60}
-              height={40}
+              w={60}
+              h={40}
               key={`${record.id}-type`}
               src={getIconsPathOnCDN(getWeaponClassIcon(record.type))}
               fit="contain"
@@ -129,7 +129,7 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
           return (
             <Image
               key={`${record.id}-icon`}
-              height={40}
+              h={40}
               src={getIconsPathOnCDN("icons/" + record.icon_name)}
               fit="scale-down"
               alt={record.icon_name || record.id}

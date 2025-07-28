@@ -49,7 +49,7 @@ export const WeaponLoadoutCard = (
               fallbackSrc={symbolPlaceholder}
             />
           ) : (
-            <Image width={48} height={16} src={iconName} alt={id}></Image>
+            <Image w={48} h={16} src={iconName} alt={id}></Image>
           )}
         </Indicator>
         <Flex direction="column">

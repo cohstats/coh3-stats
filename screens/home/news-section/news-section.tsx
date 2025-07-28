@@ -80,7 +80,7 @@ export const NewsSection: React.FC<NewsSectionProps> = ({ steamNewsData, t }) =>
         src="/images/coh3-background-cropped.webp"
         alt={"coh3-background"}
         radius="md"
-        height={"19rem"}
+        h={"19rem"}
       />
     );
   }
