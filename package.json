@@ -13,6 +13,7 @@
   "scripts": {
     "build": "next build",
     "build:slim": "FULL_BUILD=false next build",
+    "build:slim:windows": "set FULL_BUILD=false && next build",
     "build:analyze": "ANALYZE=true yarn build",
     "clean": "rm -fr .next && rm -fr node_modules",
     "dev": "next dev",
