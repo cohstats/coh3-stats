@@ -74,8 +74,8 @@ const BuildingCardHeader = (
     <Grid.Col span={3}>
       <Flex direction="row" align="center" gap={16}>
         <Image
-          width={96}
-          height={96}
+          w={96}
+          h={96}
           fit="contain"
           src={getIconsPathOnCDN(`icons/${desc.icon_name}.webp`)}
           alt={desc.screen_name}
@@ -207,25 +207,22 @@ interface AccordionLabelProps {
   label: string;
 }
 
-function BuildingAccordionLabel({ label, symbolIcon }: AccordionLabelProps) {
+const BuildingAccordionLabel = ({ label, symbolIcon }: AccordionLabelProps) => {
   return (
     <Group wrap="nowrap">
       <Image
-        width={24}
-        height={24}
+        w={24}
+        h={24}
         fit="contain"
         src={getIconsPathOnCDN(`icons/${symbolIcon}.webp`)}
         alt=""
       />
       <div>
         <Title order={4}>{label}</Title>
-        {/* <Text size="sm" color="dimmed" weight={400}>
-          {description}
-        </Text> */}
       </div>
     </Group>
   );
-}
+};
 
 export const BuildingCard = ({
   faction,
