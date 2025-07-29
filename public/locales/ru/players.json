@@ -1,247 +1,247 @@
 {
   "meta": {
-    "title": "{{name}} - Профиль Игрока COH3",
-    "description": "Профиль игрока {{name}} в Company of Heroes 3 с {{totalGames}} сыгранными играми и {{winRate}}% процентом побед. Просмотр детальной статистики, истории матчей и производительности фракций.",
+    "title": "{{name}} - COH3 Player Profile",
+    "description": "{{name}}'s Company of Heroes 3 player profile with {{totalGames}} games played and {{winRate}}% win rate. View detailed statistics, match history, and faction performance.",
     "keywords": [
-      "профиль игрока",
-      "статистика игрока",
-      "история матчей",
-      "производительность фракций",
-      "соревновательные рейтинги",
-      "статистика игрока",
-      "игровая статистика",
-      "данные игрока"
+      "player profile",
+      "player statistics",
+      "match history",
+      "faction performance",
+      "competitive rankings",
+      "player stats",
+      "game statistics",
+      "player data"
     ]
   },
   "card": {
     "error": {
-      "title": "Ошибка при загрузке карточки игрока",
-      "loadingError": "Ошибка при загрузке карточки игрока"
+      "title": "Error loading the player card",
+      "loadingError": "Error loading the player card"
     },
-    "title": "Карточка игрока - {{name}}",
+    "title": "Player card - {{name}}",
     "titleWithView": {
-      "recentMatches": "Карточка игрока - {{name}} - Недавние игры",
-      "replays": "Карточка игрока -  {{name}} - Повторы",
-      "standingsDetails": "Карточка игрока - {{name}} - Подробная статистика",
-      "activity": "Карточка игрока - {{name}} - Активность",
-      "nemesis": "Карточка игрока - {{name}} - Закляты враг",
-      "teamsStandings": "Карточка игрока - {{name}} - Рейтинг команд",
-      "teamDetails": "Карточка игрока - {{name}} - Детали команды"
+      "recentMatches": "Player card - {{name}} - Recent Matches",
+      "replays": "Player card - {{name}} - Replays",
+      "standingsDetails": "Player card - {{name}} - Detailed Stats",
+      "activity": "Player card - {{name}} - Activity",
+      "nemesis": "Player card - {{name}} - Nemesis",
+      "teamsStandings": "Player card - {{name}} - Teams Standings",
+      "teamDetails": "Player card - {{name}} - Team Details"
     }
   },
   "tabs": {
-    "standings": "Рейтинг игрока",
-    "standingsDetails": "Подробная Статистика",
-    "recentMatches": "Недавние игры",
-    "activity": "Активность",
-    "nemesis": "Закляты враг",
-    "replays": "Повторы",
-    "teamsStandings": "Рейтинг команд"
+    "standings": "Player Standings",
+    "standingsDetails": "Detailed Stats",
+    "recentMatches": "Recent Matches",
+    "activity": "Activity",
+    "nemesis": "Nemesis",
+    "replays": "Replays",
+    "teamsStandings": "Teams Standings"
   },
   "playerInfo": {
     "bestElo": {
-      "allies": "Лучшее ELO (Союзники): {{elo}} в {{mode}}. Фракция: {{faction}}",
-      "axis": "Лучшее ELO (Страны Оси): {{elo}} в {{mode}}. Фракция: {{faction}}"
+      "allies": "Best ALLIES ELO {{elo}} in {{mode}} as {{faction}}",
+      "axis": "Best AXIS ELO {{elo}} in {{mode}} as {{faction}}"
     },
     "stats": {
-      "totalGames": "Всего игр {{count}}",
-      "winRate": "% Побед {{rate}}%",
-      "lastMatch": "Играл {{time}}"
+      "totalGames": "Total games {{count}}",
+      "winRate": "Win Rate {{rate}}%",
+      "lastMatch": "Last match {{time}}"
     }
   },
   "recentMatches": {
     "filters": {
-      "hideCustomGames": "Скрыть пользовательские игры",
-      "showAllGames": "Показать все игры"
+      "hideCustomGames": "Hide Custom Games",
+      "showAllGames": "Show All Games"
     },
-    "loadMore": "Загрузить больше игр",
+    "loadMore": "Load More Matches",
     "table": {
       "columns": {
-        "date": "Дата",
-        "map": "Карта",
-        "duration": "Продолжительнсоть",
-        "type": "Режим",
-        "players": "Игроки",
-        "actions": "Действия"
+        "date": "Date",
+        "map": "Map",
+        "duration": "Duration",
+        "type": "Type",
+        "players": "Players",
+        "actions": "Actions"
       },
-      "noData": "Игр не найдено"
+      "noData": "No matches found"
     },
     "downloadReplay": {
-      "button": "Скачать повтор",
-      "generating": "Создание...",
-      "error": "Ошибка при создании повтора"
+      "button": "Download Replay",
+      "generating": "Generating...",
+      "error": "Error generating replay"
     }
   },
   "standings": {
     "summary": {
       "charts": {
-        "factionDistribution": "Распределение по фракциям",
-        "gameTypes": "Режим игры",
-        "activityLastMonths": "Активность за последний месяц"
+        "factionDistribution": "Faction Distribution",
+        "gameTypes": "Game Types",
+        "activityLastMonths": "Activity Last Months"
       }
     },
     "table": {
       "columns": {
-        "leaderboard": "Табллица лидеров",
-        "rank": "Место",
-        "rating": "Ранг",
-        "lastMatch": "Играл",
-        "streak": "Серия",
-        "wins": "Побед",
-        "losses": "Поражений",
-        "total": "Всего",
-        "winRate": "% Побед",
-        "type": "Тип",
+        "leaderboard": "Leaderboard",
+        "rank": "Rank",
+        "rating": "Rating",
+        "lastMatch": "Last Match",
+        "streak": "Streak",
+        "wins": "Wins",
+        "losses": "Losses",
+        "total": "Total",
+        "winRate": "Win Rate",
+        "type": "Type",
         "elo": "ELO",
-        "tier": "Уровень",
-        "ratio": "Соотношение",
-        "drops": "Выходы"
+        "tier": "Tier",
+        "ratio": "Ratio",
+        "drops": "Drops"
       },
       "helpers": {
-        "bestRankAchieved": "Лучшее достигнутое место. Меньше - лучше. Лучшее место, которое когда-либо было у игрока.",
-        "bestEloAchieved": "Лучший достигнутый ELO. Больше - лучше. Лучший ELO, который когда-либо был у игрока.",
-        "best": "Лучший"
+        "bestRankAchieved": "Best Rank Achieved. Lower is better. The best Rank the player ever had.",
+        "bestEloAchieved": "Best ELO Achieved. Higher is better. The best ELO the player ever had.",
+        "best": "Best"
       }
     },
     "faction": {
-      "bestRank": "Лучшее место",
-      "bestRating": "Лучший ранг",
-      "bestWinRate": "Лучший % побед"
+      "bestRank": "Best Rank",
+      "bestRating": "Best Rating",
+      "bestWinRate": "Best Win Rate"
     }
   },
   "detailedStats": {
     "filters": {
-      "selectFaction": "Выберите фракцию",
-      "selectGameType": "Выберите режим игры"
+      "selectFaction": "Select Faction",
+      "selectGameType": "Select Game Type"
     },
     "charts": {
-      "playTime": "Распределение игрового времени",
-      "mapsWinRate": "% побед на картах",
-      "factionVsFaction": "Фракция пр. Фракции"
+      "playTime": "Play Time Distribution",
+      "mapsWinRate": "Maps Win Rate",
+      "factionVsFaction": "Faction vs Faction"
     },
-    "noData": "Подробная статистика отсутствует"
+    "noData": "No detailed statistics available"
   },
   "activity": {
-    "title": "Активность игрока",
-    "noData": "Данные об активности отсутствуют",
+    "title": "Player Activity",
+    "noData": "No activity data available",
     "filters": {
-      "timeRange": "Временной диапазон",
-      "timezone": "Часовой пояс"
+      "timeRange": "Time Range",
+      "timezone": "Timezone"
     },
     "alerts": {
       "noData": {
-        "title": "Нет данных о активности",
-        "message": "Похоже, мы не получаем данных об активности этого игрока.",
-        "reportMessage": "Если эта ошибка повторится, пожалуйста, сообщите о ней на"
+        "title": "No Activity Data",
+        "message": "It looks like we are not getting activity data for this player.",
+        "reportMessage": "If this error persists, please report it on"
       },
       "steamOnly": {
-        "title": "Нет данных на COH3 Stats",
-        "message": "Эта статистика доступна только для игроков Steam.",
-        "voteMessage": "Если вы хотите, чтобы эта статистика была и на консолях, пожалуйста, проголосуйте / сообщите об этом на нашем сайте."
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     },
     "charts": {
       "calendarDay": {
-        "title": "Активность по календарным дням"
+        "title": "Activity by calendar day"
       },
       "hourOfDay": {
-        "title": "Активность по времени суток"
+        "title": "Activity by hour of day"
       },
       "weekDay": {
-        "title": "Активность по дню недели"
+        "title": "Activity by week day"
       }
     },
-    "timezoneHelper": "Данные об активности по часам собираются в часовом поясе UTC. Вы можете настроить отображение на ваш местный часовой пояс с помощью этого селектора."
+    "timezoneHelper": "The activity hour data is collected in UTC timezone. You can adjust the display to your local timezone using this selector."
   },
   "teamsStandings": {
-    "title": "Рейтинг организованных команд",
-    "noData": "Для этого игрока нет данных о командах",
-    "axisTeams": "Страны Оси",
-    "alliesTeams": "Союзники",
-    "axisTeam": "Команда Стран Оси",
-    "alliesTeam": "Команда Союзников",
-    "mostPlayed": "Чаще всего играли",
-    "mostRecent": "Недавние команды",
-    "checkTeamDetails": "Для просмотра истории матчей и изменений ELO проверьте детали команды",
-    "checkTeamLeaderboardsPrefix": "Проверьте",
-    "checkTeamLeaderboardsSuffix": "чтобы найти свой рейтинг",
-    "limitedTeams": "Ограничено только 2 командами",
-    "helperText": "Организованные команды отслеживаются только COH3 Stats, дополнительную информацию смотрите на странице о нас"
+    "title": "Arranged Teams Standings",
+    "noData": "No teams data available for this player",
+    "axisTeams": "Axis",
+    "alliesTeams": "Allies",
+    "axisTeam": "Axis Team",
+    "alliesTeam": "Allies Team",
+    "mostPlayed": "Most Played Teams",
+    "mostRecent": "Recent Teams",
+    "checkTeamDetails": "For match and ELO change history check the team details",
+    "checkTeamLeaderboardsPrefix": "Check the",
+    "checkTeamLeaderboardsSuffix": "to find your ranking",
+    "limitedTeams": "Limited to 2 teams only",
+    "helperText": "Arranged teams are tracked only by COH3 Stats, see more info in the about page"
   },
   "teamDetails": {
-    "title": "Детали команды",
-    "specificTeamTitle": "Детали команды",
-    "matchHistory": "История матчей",
-    "eloHistory": "История ELO команды",
-    "winLossHistory": "История побед/поражений",
-    "teamNotFound": "Команда не найдена. Пожалуйста, проверьте ID команды и попробуйте снова.",
-    "detailsButton": "Детали",
-    "showingMatches": "Показано {{loaded}} из {{total}} матчей",
-    "errorLoadingMatches": "Ошибка при загрузке матчей: {{error}}"
+    "title": "Team Details",
+    "specificTeamTitle": "Team Details",
+    "matchHistory": "Match History",
+    "eloHistory": "Team ELO History",
+    "winLossHistory": "Win/Loss History",
+    "teamNotFound": "Team not found. Please check the team ID and try again.",
+    "detailsButton": "Details",
+    "showingMatches": "Showing {{loaded}} of {{total}} matches",
+    "errorLoadingMatches": "Error loading matches: {{error}}"
   },
   "teamsTable": {
     "columns": {
-      "type": "Режим",
-      "players": "Игроки",
+      "type": "Type",
+      "players": "Players",
       "elo": "ELO",
-      "streak": "Серия",
-      "wins": "Побед",
-      "losses": "Поражений",
-      "ratio": "Эффект.",
-      "total": "Всего",
-      "lastMatch": "Последний матч"
+      "streak": "Streak",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
+      "total": "Total",
+      "lastMatch": "Last Match"
     },
-    "noData": "Нет доступных данных о командах",
-    "eloHelper": "Неофициальный ELO, отслеживаемый только COH3 Stats, дополнительную информацию смотрите на странице о нас",
-    "bestElo": "Лучший {{elo}}"
+    "noData": "No teams data available",
+    "eloHelper": "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
+    "bestElo": "Best {{elo}}"
   },
   "teamMatchesTable": {
     "columns": {
-      "played": "Сыграно",
-      "result": "Результат",
-      "enemyElo": "ELO противника",
-      "axisPlayers": "Игроки Стран Оси",
-      "alliesPlayers": "Игроки Союзников",
-      "map": "Карта"
+      "played": "Played",
+      "result": "Result",
+      "enemyElo": "Enemy ELO",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map"
     },
-    "noData": "Нет доступной истории матчей",
-    "showFlags": "Показать флаги игроков",
-    "clickForDetails": "Нажмите на строку для подробностей",
-    "detailsButton": "Детали",
-    "teamEloHelper": "Это показывает изменение КОМАНДНОГО ELO, отслеживаемого COH3 Stats, это отличается от ELO рейтинга игрока. ELO COH3 Stats не используется для подбора игр.",
-    "playerEloHelper": "ELO, показанный здесь, это индивидуальный ELO игрока в конкретном режиме и фракции."
+    "noData": "No match history available",
+    "showFlags": "Show Player Flags",
+    "clickForDetails": "Click on the row for more details",
+    "detailsButton": "Details",
+    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+    "playerEloHelper": "The ELO showned here is the individual player standing ELO in the particular mode and faction."
   },
   "nemesis": {
     "widget": {
-      "title": "Топ 10 - Заклятые враги в 1 на 1",
-      "helperText": "Счетчик 'Заклятый враг' активируется, если одни и те же игроки сыграет друг с другом 2 раза за 1 день (часовой пояс UTC). После активации подсчитываются все игры 1 на 1 с этим игроком. Сохраняются никнеймы из последней игры, сыгранной с этим игроком. Отслеживаются только игроки Steam.",
-      "noRecords": "Не обнаружено заклятых врагов в 1 на 1"
+      "title": "Top 10 - 1v1 Nemesis",
+      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
+      "noRecords": "No 1v1 nemesis tracked"
     },
     "columns": {
-      "alias": "Игрок",
-      "wins": "Побед",
-      "losses": "Поражений",
-      "ratio": "Эффект.",
-      "diff": "Серия",
-      "total": "Всего"
+      "alias": "Alias",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
+      "diff": "Diff",
+      "total": "Total"
     },
-    "title": "Заклятые враги в 1 на 1",
-    "noNemesis": "Не обнаружено заклятых врагов в 1 на 1",
-    "wins": "Побед",
-    "losses": "Поражений",
+    "title": "1v1 Nemesis",
+    "noNemesis": "No 1v1 Nemesis",
+    "wins": "Wins",
+    "losses": "Losses",
     "rules": {
-      "trigger": "Счетчик 'Заклятый враг' должен быть 'активирован'",
-      "triggerCondition": "Активируется после игры с одним и тем же игроком 2 раза за 1 день (UTC).",
-      "aliases": "Никнейм сохраняются с момента последней игры, сыгранной с этим игрокомr",
-      "counting": "После активации подсчитываются все игры 1 на 1 с этим игроком.",
-      "updateTime": "Данные обновляются один раз в день в 6 утра по UTC.",
-      "steamOnly": "Отслеживаются только игроки Steam."
+      "trigger": "Nemesis counter has be to 'triggered'",
+      "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
+      "aliases": "Aliases are saved from the last game played with that player",
+      "counting": "After the trigger, all 1v1 games with that player are counted.",
+      "updateTime": "Data are updated once a day 6 AM UTC.",
+      "steamOnly": "Only Steam players are tracked."
     },
     "alerts": {
       "steamOnly": {
-        "title": " Нет данных на COH3 Stats",
-        "message": "Эта статистика доступна только для игроков Steam.",
-        "voteMessage": "Если вы хотите, чтобы эта статистика была и на консолях, пожалуйста, проголосуйте / сообщите об этом на нашем сайте."
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     }
   }
