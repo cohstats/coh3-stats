@@ -1,127 +1,127 @@
 {
   "meta": {
-    "title": "COH3 Обозреватель - Фракции, Юниты и Здания",
-    "description": "Исследуйте фракции, юниты, здания и боевые группы Company of Heroes 3. Подробная статистика, стоимость и информация о повреждениях для всего игрового контента.",
+    "title": "COH3 Explorer - Factions, Units & Buildings",
+    "description": "Explore Company of Heroes 3 factions, units, buildings, and battlegroups. Detailed stats, costs, and damage information for all game content.",
     "keywords": [
-      "coh3 обозреватель",
-      "фракции",
-      "юниты",
-      "здания",
-      "боевые группы",
-      "вермахт",
-      "американские силы",
+      "coh3 explorer",
+      "factions",
+      "units",
+      "buildings",
+      "battlegroups",
+      "wehrmacht",
+      "us forces",
       "dak",
-      "британские силы",
-      "статистика юнитов",
-      "урон",
-      "стоимость"
+      "british forces",
+      "unit stats",
+      "damage",
+      "costs"
     ]
   },
   "common": {
-    "units": "Подразделений",
-    "buildings": "Строения",
-    "battleGroups": "Боевые группы",
-    "near": "Близкая",
-    "medium": "Средняя",
-    "far": "Дальняя",
-    "min": "Мин",
-    "max": "Макс",
-    "produces": "Производит",
-    "hitpoints": "Здоровье",
-    "upgrades": "Улучшения",
-    "costs": "Стоимость",
-    "explorer": "Исследовать"
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups",
+    "near": "Near",
+    "medium": "Medium",
+    "far": "Far",
+    "min": "Min",
+    "max": "Max",
+    "produces": "Produces",
+    "hitpoints": "Hitpoints",
+    "upgrades": "Upgrades",
+    "costs": "Costs",
+    "explorer": "Explorer"
   },
   "explorer": {
-    "title": "Исследование фракций Company of Heroes 3",
-    "subtitle": "Изучите все подразделения, строения и боевые группы, доступные в игре"
+    "title": "Company of Heroes 3 Factions Explorer",
+    "subtitle": "Explore all the units, buildings and battlegroups in the game."
   },
   "factionPage": {
-    "factionOverview": "Обзор фракции",
+    "factionOverview": "Faction Overview",
     "meta": {
       "title": "{{faction}} - COH3 Explorer",
-      "description": "Изучите фракцию {{faction}} в Company of Heroes 3. Просмотрите подразделения, строения, боевые группы и подробную статистику армии {{faction}}.",
+      "description": "Explore {{faction}} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for {{faction}} army.",
       "keywords": [
         "{{faction}}",
         "{{faction}} explorer",
-        "{{faction}} боевые группы",
-        "{{faction}} подразделения"
+        "{{faction}} battle groups",
+        "{{faction}} units"
       ]
     }
   },
   "unitPage": {
-    "stats": "Характеристики",
-    "abilities": "Способности",
-    "loadout": "Вооружение",
-    "veterancy": "Ветеранство",
-    "upkeep": "Содержание в минуту",
-    "reinforce": "Пополнение",
-    "construct": "Возводит",
-    "free": "Бесплатно",
-    "weaponNote": "На эффективную точность стрельбы влияют несколько факторов, таких как размер цели или броня у атакуемого подразделения, а также параметры точности или бронепробитие у атакующего подразделения.",
-    "importantNote": "Важное примечание: В этом разделе отображаются все подразделения, доступные в игре, включая эксклюзивные для кампании."
+    "stats": "Stats",
+    "abilities": "Abilities",
+    "loadout": "Loadout",
+    "veterancy": "Veterancy",
+    "upkeep": "Upkeep per minute",
+    "reinforce": "Reinforce",
+    "construct": "Can Construct",
+    "free": "Free",
+    "weaponNote": "The effective accuracy is impacted by several factors like target size or armor of the receiving unit as well as accuracy or penetration of the attacking one.",
+    "importantNote": "Important Note: This section displays all the units available in-game, including campaign-only."
   },
   "statsCard": {
-    "sightRange": "Дальность обзора",
-    "speed": "Скорость",
-    "acceleration": "Ускорение",
-    "deceleration": "Торможение",
-    "maxRange": "Макс. дальность стрельбы",
-    "targetSize": "Размер цели",
-    "armor": "Броня",
-    "captureMultiplier": "Мультипликатор захвата",
-    "decaptureMultiplier": "Мультипликатор перехвата",
-    "vehicleArmor": "Броня техники"
+    "sightRange": "Sight Range",
+    "speed": "Speed",
+    "acceleration": "Acceleration",
+    "deceleration": "Deceleration",
+    "maxRange": "Max Range",
+    "targetSize": "Target Size",
+    "armor": "Armor",
+    "captureMultiplier": "Capture Multiplier",
+    "decaptureMultiplier": "Decapture Multiplier",
+    "vehicleArmor": "Vehicle Armor"
   },
   "weaponCard": {
-    "accuracy": "Точность",
-    "rpm": "Выстрелов в минуту (RPM)",
-    "rangeOfFire": "Дальность стрельбы",
-    "penetration": "Бронепробитие",
-    "scatter": "Область разброса",
-    "damage": "Урона",
-    "aoeRadius": "Радиус области действия (АОЕ)",
-    "movingAccuracy": "Мультипликатор точности на ходу",
-    "movingCooldown": "Мультипликатор перезарядки на ходу"
+    "accuracy": "Accuracy",
+    "rpm": "Rounds per Minute (RPM)",
+    "rangeOfFire": "Range of Fire",
+    "penetration": "Penetration",
+    "scatter": "Scatter Area",
+    "damage": "Damage",
+    "aoeRadius": "AoE Radius",
+    "movingAccuracy": "Moving Accuracy Multiplier",
+    "movingCooldown": "Moving Cooldown Multiplier"
   },
   "unitMeta": {
-    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} в Company of Heroes 3.",
-    "costs": "Стоимость {{costs}}.",
-    "population": "{{popCap}} население.",
+    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
+    "costs": "Costs {{costs}}.",
+    "population": "{{popCap}} population.",
     "abbreviations": {
-      "hitpoints": "ОЗ",
-      "manpower": "ЖС",
-      "fuel": "ТП",
-      "munition": "БП",
-      "armor": "броня"
+      "hitpoints": "HP",
+      "manpower": "MP",
+      "fuel": "FU",
+      "munition": "MU",
+      "armor": "armor"
     },
     "keywords": {
       "vehicles": {
-        "tank": "coh3 танк",
-        "vehicle": "coh3 техника",
-        "armorStats": "характеристики брони",
-        "vehicleGuide": "гайд по технике"
+        "tank": "coh3 tank",
+        "vehicle": "coh3 vehicle",
+        "armorStats": "armor stats",
+        "vehicleGuide": "vehicle guide"
       },
       "infantry": {
-        "infantry": "coh3 пехота",
-        "squadStats": "характеристики отряда",
-        "unitGuide": "гайд по юниту",
-        "infantryTactics": "тактика пехоты"
+        "infantry": "coh3 infantry",
+        "squadStats": "squad stats",
+        "unitGuide": "unit guide",
+        "infantryTactics": "infantry tactics"
       },
       "teamWeapons": {
-        "teamWeapon": "coh3 командное оружие",
-        "supportWeapon": "поддерживающее оружие",
-        "crewWeapon": "орудие расчета",
-        "artillery": "артиллерия"
+        "teamWeapon": "coh3 team weapon",
+        "supportWeapon": "support weapon",
+        "crewWeapon": "crew weapon",
+        "artillery": "artillery"
       },
       "emplacements": {
-        "emplacement": "coh3 укрепление",
-        "defensiveStructure": "оборонительное сооружение",
-        "fortification": "фортификация"
+        "emplacement": "coh3 emplacement",
+        "defensiveStructure": "defensive structure",
+        "fortification": "fortification"
       },
       "common": {
-        "units": "{{raceId}} юниты",
-        "army": "{{raceId}} армия"
+        "units": "{{raceId}} units",
+        "army": "{{raceId}} army"
       }
     }
   }
