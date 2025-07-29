@@ -1,42 +1,42 @@
 {
   "meta": {
-    "title": "{{faction}} {{mode}} Таблицы Лидеров",
-    "description": "Company of Heroes 3 {{faction}} {{mode}} таблицы лидеров с рейтингами игроков, ELO оценками и соревновательной статистикой.",
+    "title": "{{faction}} {{mode}} Leaderboards",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} leaderboards with player rankings, ELO ratings, and competitive statistics.",
     "keywords": [
-      "таблицы лидеров",
-      "рейтинги",
-      "соревновательная лестница",
-      "elo оценки",
-      "рейтинги игроков",
-      "соревновательная статистика",
-      "рейтинги фракций",
-      "рейтинги игровых режимов"
+      "leaderboards",
+      "rankings",
+      "competitive ladder",
+      "elo ratings",
+      "player rankings",
+      "competitive statistics",
+      "faction rankings",
+      "game mode rankings"
     ]
   },
-  "title": "Таблица лидеров - {{race}}",
-  "pageTitle": "Таблица лидеров - {{race}} {{type}}",
-  "metaDescription": "Рейтинговая таблица лидеров для фракции {{race}} и режима игры: {{type}}. Company of Heroes 3",
-  "errorTitle": "Ошибка при выводе таблицы лидеров",
+  "title": "Leaderboards for {{race}}",
+  "pageTitle": "Leaderboards for {{race}} {{type}}",
+  "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",
+  "errorTitle": "Error getting the leaderboards",
   "filters": {
-    "region": "Регион",
-    "platform": "Платформа",
-    "faction": "Фракция",
-    "type": "Режим"
+    "region": "Region",
+    "platform": "Platform",
+    "faction": "Faction",
+    "type": "Type"
   },
   "teams": {
-    "title": "Командная таблица лидеров",
-    "pageTitle": "Командная таблица лидеров - {{side}} {{type}}",
-    "metaDescription": "Командная таблица лидеров для команд {{side}} и режима игры {{type}}. Company of Heroes 3",
+    "title": "Team Leaderboards",
+    "pageTitle": "Team Leaderboards for {{side}} {{type}}",
+    "metaDescription": "Team leaderboards for {{side}} teams and game type {{type}}. Company of Heroes 3",
     "filters": {
-      "side": "Сторона",
-      "type": "Режим",
-      "orderBy": "Сортировать по"
+      "side": "Side",
+      "type": "Type",
+      "orderBy": "Order By"
     },
     "pagination": {
-      "itemsPerPage": "Элементов на странице",
-      "previous": "Назад",
-      "next": "Далее",
-      "showingRange": "Показано {{start}} - {{end}} из {{total}} команд"
+      "itemsPerPage": "Items per page",
+      "previous": "Previous",
+      "next": "Next",
+      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams"
     }
   }
 }
