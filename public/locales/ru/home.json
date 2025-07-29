@@ -1,60 +1,60 @@
 {
   "meta": {
-    "title": "COH3 Stats - Статистика по Company of Heroes 3",
-    "description": "Статистика Company of Heroes 3. Таблицы лидеров, Карточки игроков, Прошлые матчи, Статистика юнитов, Калькулятор DPS, Обозреватель боевых групп, Обозреватель оружия, Текущие живые игры, Последние новости COH3, последние стримы YouTube и Twitch. И многое другое.",
+    "title": "COH3 Stats - Company of Heroes 3 Statistics",
+    "description": "Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats, DPS Calculator, Battlegroup Explorer, Weapons explorer, Current Live Games, Latest COH3 News, latest YouTube and Twitch Streams. And much more.",
     "keywords": [
-      "таблицы лидеров",
-      "карточки игроков",
-      "статистика юнитов",
-      "живые игры",
-      "калькулятор dps",
-      "боевые группы",
-      "обозреватель оружия",
-      "история матчей",
-      "twitch стримы",
-      "youtube видео"
+      "leaderboards",
+      "player cards",
+      "unit stats",
+      "live games",
+      "dps calculator",
+      "battlegroups",
+      "weapons explorer",
+      "match history",
+      "twitch streams",
+      "youtube videos"
     ]
   },
   "sections": {
     "news": {
-      "title": "Последние новости",
-      "newsLabel": "Новости"
+      "title": "Latest News",
+      "newsLabel": "News"
     },
     "tools": {
       "dpsCalculator": {
-        "title": "Калькулятор DPS",
-        "description": "Сравните DPS всех подразделений в игре. Настройте оснащение боевых единиц различным оружием. Вы также можете учитывать их живучесть."
+        "title": "DPS Calculator",
+        "description": "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can also take into consideration the HP of the units."
       },
       "unitBrowser": {
-        "title": "Список подразделений",
-        "description": "Исследуйте игровые юниты, включая их характеристики, вооружение и улучшения. Перейдите в меню 'Исследовать' для получения более подробной информации, включая о фракциях."
+        "title": "Unit Browser",
+        "description": "Explore game units, including stats, weapons, and upgrades. Navigate the Explorer menu for faction overview and more details."
       }
     },
     "leaderboards": {
-      "title": "Таблица лидеров 1на1",
-      "viewFullLeaderboard": "Посмотреть всю таблицу лидеров",
+      "title": "1v1 Leaderboards",
+      "viewFullLeaderboard": "View Full Leaderboard",
       "factions": {
-        "american": "США",
-        "british": "Британия",
-        "german": "Вермахт",
-        "dak": "ДАК"
+        "american": "USF",
+        "british": "British",
+        "german": "Wehrmacht",
+        "dak": "DAK"
       }
     },
     "reddit": {
-      "title": "Лучшие посты по COH3 на Reddit",
-      "noData": "Нет доступных постов на Reddit"
+      "title": "Top COH3 Reddit posts",
+      "noData": "No Reddit posts available"
     },
     "youtube": {
-      "title": "Видео последней недели",
-      "noData": "Нет доступных роликов на YouTube",
-      "views": "просмотров"
+      "title": "Last week's videos",
+      "noData": "No YouTube videos available",
+      "views": "views"
     },
     "twitch": {
-      "title": "Прямые транслянции",
-      "noStreams": "В настоящее время на Twitch не ведется трансляция англоязычных трансляций."
+      "title": "Watch Live Streams",
+      "noStreams": "No English speaking streams are currently broadcasting on Twitch."
     }
   },
   "leaderboardTable": {
-    "errorTitle": "Ошибка при выводе таблицы лидеров"
+    "errorTitle": "Error getting the leaderboards"
   }
 }
