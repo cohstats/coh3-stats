@@ -1,39 +1,39 @@
 {
   "meta": {
-    "title": "COH3 Stats - Поиск",
-    "description": "Поиск подразделений и игроков Steam, Xbox и PSN в Company of Heroes 3.",
+    "title": "COH3 Stats - Search",
+    "description": "Search for units and steam, xbox and psn players in Company of Heroes 3.",
     "keywords": [
-      "поиск игроков",
-      "поиск данных",
-      "coh3 поиск",
-      "поиск юнитов",
-      "поиск игроков",
-      "steam игроки",
-      "xbox игроки",
-      "psn игроки"
+      "search players",
+      "search data",
+      "coh3 search",
+      "units search",
+      "player search",
+      "steam players",
+      "xbox players",
+      "psn players"
     ]
   },
   "sections": {
-    "players": "Игроки",
-    "units": "Подразделения"
+    "players": "Players",
+    "units": "Units"
   },
   "errors": {
-    "searchError": "Ошибка при поиске"
+    "searchError": "Error while searching"
   },
   "noResults": {
-    "players": "Игроки не найдены",
-    "units": "Подразделения не найдены",
-    "unitsEnglishOnly": "Поиск подразделений поддерживает только английский язык"
+    "players": "No players found",
+    "units": "No Units Found",
+    "unitsEnglishOnly": "Unit search supports English Language only"
   },
   "info": {
-    "firstResults": "Отображаются только первые 50 результатов. Пожалуйста, уточните поиск.",
-    "consoleSearch": "Поиск игроков на консолях поддерживает только точное совпадение.",
-    "steamSearch": "Вы также можете искать по Steam ID."
+    "firstResults": "Only the first 50 results are displayed. Please refine your search.",
+    "consoleSearch": "Console player search supports exact match only.",
+    "steamSearch": "You can also search using Steam ID."
   },
   "playerCard": {
-    "lastActive": "Последняя активность",
-    "steamProfile": "Профиль Steam",
-    "psnPlayer": "Игрок PlayStation",
-    "xboxPlayer": "Игрок XBOX"
+    "lastActive": "Last active",
+    "steamProfile": "Steam Profile",
+    "psnPlayer": "Play Station player",
+    "xboxPlayer": "XBOX player"
   }
 }
