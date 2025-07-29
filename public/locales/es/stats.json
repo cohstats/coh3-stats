@@ -1,29 +1,82 @@
 {
+  "leaderboards": {
+    "meta": {
+      "title": "Global Leaderboards Stats",
+      "description": "Overall information about all leaderboards in Company of Heroes 3",
+      "keywords": [
+        "coh3 leaderboards",
+        "live ladder",
+        "overall leaderboards",
+        "coh3 ladder stats",
+        "leaderboard statistics",
+        "ranking data"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "Game Stats & Charts",
+      "description": "Game Stats for Company of Heroes 3. See winrate of each faction / mode and much more.",
+      "keywords": [
+        "coh3 winrate",
+        "factions winrate",
+        "analysis",
+        "best faction",
+        "game statistics"
+      ]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "Map Statistics",
+      "description": "Comprehensive map statistics for Company of Heroes 3 including winrates, popularity, and performance data.",
+      "keywords": [
+        "coh3 maps",
+        "map statistics",
+        "map winrates",
+        "map data",
+        "battlefield analysis"
+      ]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "Achievement Statistics",
+      "description": "Company of Heroes 3 achievement statistics and completion rates across all players.",
+      "keywords": [
+        "coh3 achievements",
+        "achievement stats",
+        "completion rates",
+        "player achievements",
+        "game progress"
+      ]
+    }
+  },
   "players": {
     "meta": {
-      "title": "Estadísticas de Jugadores Multijugador - Company of Heroes 3",
-      "description": "Información general sobre todos los jugadores multijugador en Company of Heroes 3.\nActualmente rastreando {{count, number}} jugadores multijugador.",
+      "title": "Multiplayer Player Stats - Company of Heroes 3",
+      "description": "Overall information about all Multiplayer players in Company of Heroes 3.\nCurrently tracking {{count, number}} Multiplayer players.",
       "keywords": [
-        "estadísticas jugadores coh3",
-        "estadísticas jugadores",
-        "países jugadores",
-        "historial jugadores coh3",
-        "estadísticas multijugador",
-        "seguimiento de jugadores",
-        "estadísticas del juego",
-        "datos de jugadores"
+        "coh3 players stats",
+        "player stats",
+        "player countries",
+        "coh3 players history",
+        "multiplayer statistics",
+        "player tracking",
+        "game statistics",
+        "player data"
       ]
     },
-    "title": "Estadísticas de Jugadores PC",
-    "totalTrackedPlayers": "Número total de jugadores rastreados",
-    "totalTrackedPlayersTooltip": "Solo podemos rastrear jugadores que hayan jugado multijugador al menos una vez en cualquier modo de juego desde el 19 de mayo de 2023.",
-    "multiplayerPlayersLast30Days": "Jugadores multijugador en los últimos 30 días",
-    "multiplayerPlayersLast7Days": "Jugadores multijugador en los últimos 7 días",
-    "multiplayerPlayersLast24Hours": "Jugadores multijugador en las últimas 24 horas",
-    "dataUpdatedOn": "Datos actualizados el",
-    "xboxPsNote": "No rastreamos jugadores de XBOX y PS aquí."
+    "title": "PC Players Stats",
+    "totalTrackedPlayers": "Total number of tracked players",
+    "totalTrackedPlayersTooltip": "We can only track players who have been Multiplayer at least once in any game mode since May 19th, 2023.",
+    "multiplayerPlayersLast30Days": "Multiplayer players in the last 30 days",
+    "multiplayerPlayersLast7Days": "Multiplayer players in the last 7 days",
+    "multiplayerPlayersLast24Hours": "Multiplayer players in the last 24 hours",
+    "dataUpdatedOn": "Data updated on",
+    "xboxPsNote": "We do not track XBOX and PS players here."
   },
   "errors": {
-    "gettingPlayerStats": "Error al obtener las estadísticas de jugadores"
+    "gettingPlayerStats": "Error getting the player stats"
   }
 }
