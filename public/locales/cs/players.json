@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "{{name}} - COH3 Profil Hráče",
-    "description": "{{name}} statistiky Company of Heroes 3, historie zápasů, výkon frakcí a soutěžní hodnocení.",
+    "description": "Profil hráče {{name}} v Company of Heroes 3 s {{totalGames}} odehranými hrami a {{winRate}}% úspěšností výher. Zobrazit detailní statistiky, historii zápasů a výkon frakcí.",
     "keywords": [
       "profil hráče",
       "statistiky hráče",

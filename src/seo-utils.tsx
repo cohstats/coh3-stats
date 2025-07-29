@@ -317,28 +317,14 @@ const createPlayerDescription = (
   playerSummary: PlayerSummaryType,
   t: TFunction,
 ): string => {
-  // Use the existing createPlayerHeadDescription logic or fallback to translation
-  try {
-    return createPlayerHeadDescription(playerData, playerSummary);
-  } catch (error) {
-    return t("players:meta.description", {
-      name: playerData.info.name,
-    });
-  }
-};
-
-/**
- * Helper function to create player description from player data
- * This should be implemented based on the existing logic from screens/players/index.tsx
- */
-const createPlayerHeadDescription = (
-  playerData: PlayerCardDataType,
-  playerSummary: PlayerSummaryType,
-): string => {
-  // Basic implementation - this should be enhanced with actual player stats
   const name = playerData.info.name;
   const totalGames = playerSummary?.totalGames || 0;
-  const winRate = playerSummary?.winRate || 0;
+  const winRate = Math.round((playerSummary?.winRate || 0) * 100);
 
-  return `${name}'s Company of Heroes 3 player profile with ${totalGames} games played and ${winRate}% win rate. View detailed statistics, match history, and faction performance.`;
+  // Always use the translated description with dynamic data
+  return t("players:meta.description", {
+    name,
+    totalGames,
+    winRate,
+  });
 };

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "{{name}} - COH3 玩家档案",
-    "description": "{{name}} 的英雄连3统计数据、比赛历史、阵营表现和竞技排名。",
+    "description": "{{name}} 的英雄连3玩家档案，已进行 {{totalGames}} 场游戏，胜率为 {{winRate}}%。查看详细统计数据、比赛历史和阵营表现。",
     "keywords": [
       "玩家档案",
       "玩家统计",

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "{{name}} - COH3 Player Profile",
-    "description": "{{name}}'s Company of Heroes 3 statistics, match history, faction performance, and competitive rankings.",
+    "description": "{{name}}'s Company of Heroes 3 player profile with {{totalGames}} games played and {{winRate}}% win rate. View detailed statistics, match history, and faction performance.",
     "keywords": [
       "player profile",
       "player statistics",
