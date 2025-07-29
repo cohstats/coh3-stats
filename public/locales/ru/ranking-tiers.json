@@ -1,21 +1,21 @@
 {
-  "title": "Система Рангов в Company of Heroes 3",
-  "description": "На основе ELO игроков распределяют по определенным лигам и рангам.",
-  "matchRequirement": "Игроку необходимо провести не менее 10 игр за каждую фракцию в определенном игровом режиме, чтобы получить звание и перейти на следующий ранг.",
+  "title": "Ranking Tiers in Company of Heroes 3",
+  "description": "Based on the player ELO, players are placed into specific Leagues and Tiers.",
+  "matchRequirement": "A player needs at least 10 matches for each faction in a specific game type to earn a rank and be placed in a tier.",
   "rankDecay": {
-    "title": "Снижение ранга",
-    "text": "Если игрок остается неактивным в течение длительного времени, он теряет свой ранг. Однако он может вернуть его, сыграв всего одну игру."
+    "title": "Rank Decay",
+    "text": "If a player remains inactive for an extended period, they lose their rank. However, they can regain it by playing just one game."
   },
   "eloDecay": {
-    "title": "Снижение ELO",
-    "text": "ELO также подвержено снижению, если игрок не играет в течение длительного времени, его ELO может быть понижено без игры."
+    "title": "ELO Decay",
+    "text": "ELO is also subject to decay, if a player doesn't play for extended period their ELO might be lowered without playing any game."
   },
   "table": {
     "columns": {
-      "tierName": "Название ранга",
-      "eloRating": "Рейтинг ELO",
-      "rank": "Место"
+      "tierName": "Tier Name",
+      "eloRating": "ELO Rating",
+      "rank": "Rank"
     },
-    "topPlayers": "Топ {{count}} игрок(-в)"
+    "topPlayers": "Top {{count}} players"
   }
 }
