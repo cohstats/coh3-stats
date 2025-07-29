@@ -1,127 +1,127 @@
 {
   "meta": {
-    "title": "COH3 Explorer - Fraktionen, Einheiten & Gebäude",
-    "description": "Erkunden Sie Company of Heroes 3 Fraktionen, Einheiten, Gebäude und Kampfgruppen. Detaillierte Statistiken, Kosten und Schadensinformationen für alle Spielinhalte.",
+    "title": "COH3 Explorer - Factions, Units & Buildings",
+    "description": "Explore Company of Heroes 3 factions, units, buildings, and battlegroups. Detailed stats, costs, and damage information for all game content.",
     "keywords": [
       "coh3 explorer",
-      "fraktionen",
-      "einheiten",
-      "gebäude",
-      "kampfgruppen",
+      "factions",
+      "units",
+      "buildings",
+      "battlegroups",
       "wehrmacht",
-      "us streitkräfte",
+      "us forces",
       "dak",
-      "britische streitkräfte",
-      "einheitenstatistiken",
-      "schaden",
-      "kosten"
+      "british forces",
+      "unit stats",
+      "damage",
+      "costs"
     ]
   },
   "common": {
-    "units": "Einheiten",
-    "buildings": "Gebäude",
-    "battleGroups": "Kampfgruppen",
-    "near": "Nah",
-    "medium": "Mittel",
-    "far": "Fern",
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups",
+    "near": "Near",
+    "medium": "Medium",
+    "far": "Far",
     "min": "Min",
     "max": "Max",
-    "produces": "Produziert",
-    "hitpoints": "Trefferpunkte",
+    "produces": "Produces",
+    "hitpoints": "Hitpoints",
     "upgrades": "Upgrades",
-    "costs": "Kosten",
+    "costs": "Costs",
     "explorer": "Explorer"
   },
   "explorer": {
-    "title": "Company of Heroes 3 Fraktionen Explorer",
-    "subtitle": "Erkunde alle Einheiten, Gebäude und Kampfgruppen im Spiel."
+    "title": "Company of Heroes 3 Factions Explorer",
+    "subtitle": "Explore all the units, buildings and battlegroups in the game."
   },
   "factionPage": {
-    "factionOverview": "Fraktionsübersicht",
+    "factionOverview": "Faction Overview",
     "meta": {
       "title": "{{faction}} - COH3 Explorer",
-      "description": "Erkunden Sie die {{faction}}-Fraktion in Company of Heroes 3. Sehen Sie Einheiten, Gebäude, Kampfgruppen und detaillierte Statistiken für die {{faction}}-Armee.",
+      "description": "Explore {{faction}} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for {{faction}} army.",
       "keywords": [
         "{{faction}}",
         "{{faction}} explorer",
-        "{{faction}} kampfgruppen",
-        "{{faction}} einheiten"
+        "{{faction}} battle groups",
+        "{{faction}} units"
       ]
     }
   },
   "unitPage": {
-    "stats": "Werte",
-    "abilities": "Fähigkeiten",
-    "loadout": "Ausrüstung",
-    "veterancy": "Veteranenstatus",
-    "upkeep": "Unterhalt pro Minute",
-    "reinforce": "Verstärkung",
-    "construct": "Kann bauen",
-    "free": "Kostenlos",
-    "weaponNote": "Die effektive Genauigkeit wird durch mehrere Faktoren beeinflusst, wie die Zielgröße oder die Panzerung der angegriffenen Einheit sowie die Genauigkeit oder Durchschlagskraft der angreifenden Einheit.",
-    "importantNote": "Wichtiger Hinweis: Dieser Bereich zeigt alle im Spiel verfügbaren Einheiten, einschließlich der nur in der Kampagne verfügbaren."
+    "stats": "Stats",
+    "abilities": "Abilities",
+    "loadout": "Loadout",
+    "veterancy": "Veterancy",
+    "upkeep": "Upkeep per minute",
+    "reinforce": "Reinforce",
+    "construct": "Can Construct",
+    "free": "Free",
+    "weaponNote": "The effective accuracy is impacted by several factors like target size or armor of the receiving unit as well as accuracy or penetration of the attacking one.",
+    "importantNote": "Important Note: This section displays all the units available in-game, including campaign-only."
   },
   "statsCard": {
-    "sightRange": "Sichtweite",
-    "speed": "Geschwindigkeit",
-    "acceleration": "Beschleunigung",
-    "deceleration": "Verlangsamung",
-    "maxRange": "Maximale Reichweite",
-    "targetSize": "Zielgröße",
-    "armor": "Panzerung",
-    "captureMultiplier": "Eroberungsmultiplikator",
-    "decaptureMultiplier": "Verlustmultiplikator",
-    "vehicleArmor": "Fahrzeugpanzerung"
+    "sightRange": "Sight Range",
+    "speed": "Speed",
+    "acceleration": "Acceleration",
+    "deceleration": "Deceleration",
+    "maxRange": "Max Range",
+    "targetSize": "Target Size",
+    "armor": "Armor",
+    "captureMultiplier": "Capture Multiplier",
+    "decaptureMultiplier": "Decapture Multiplier",
+    "vehicleArmor": "Vehicle Armor"
   },
   "weaponCard": {
-    "accuracy": "Genauigkeit",
-    "rpm": "Schüsse pro Minute (RPM)",
-    "rangeOfFire": "Schussreichweite",
-    "penetration": "Durchschlagskraft",
-    "scatter": "Streuung",
-    "damage": "Schaden",
-    "aoeRadius": "Wirkungsbereich (AoE)-Radius",
-    "movingAccuracy": "Bewegungsgenauigkeitsmultiplikator",
-    "movingCooldown": "Bewegungsabkühlungsmultiplikator"
+    "accuracy": "Accuracy",
+    "rpm": "Rounds per Minute (RPM)",
+    "rangeOfFire": "Range of Fire",
+    "penetration": "Penetration",
+    "scatter": "Scatter Area",
+    "damage": "Damage",
+    "aoeRadius": "AoE Radius",
+    "movingAccuracy": "Moving Accuracy Multiplier",
+    "movingCooldown": "Moving Cooldown Multiplier"
   },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
-    "costs": "Kostet {{costs}}.",
-    "population": "{{popCap}} Bevölkerung.",
+    "costs": "Costs {{costs}}.",
+    "population": "{{popCap}} population.",
     "abbreviations": {
-      "hitpoints": "TP",
+      "hitpoints": "HP",
       "manpower": "MP",
-      "fuel": "TR",
+      "fuel": "FU",
       "munition": "MU",
-      "armor": "panzerung"
+      "armor": "armor"
     },
     "keywords": {
       "vehicles": {
-        "tank": "coh3 panzer",
-        "vehicle": "coh3 fahrzeug",
-        "armorStats": "rüstungsstatistiken",
-        "vehicleGuide": "fahrzeugführer"
+        "tank": "coh3 tank",
+        "vehicle": "coh3 vehicle",
+        "armorStats": "armor stats",
+        "vehicleGuide": "vehicle guide"
       },
       "infantry": {
-        "infantry": "coh3 infanterie",
-        "squadStats": "truppstatistiken",
-        "unitGuide": "einheitenführer",
-        "infantryTactics": "infanterietaktiken"
+        "infantry": "coh3 infantry",
+        "squadStats": "squad stats",
+        "unitGuide": "unit guide",
+        "infantryTactics": "infantry tactics"
       },
       "teamWeapons": {
-        "teamWeapon": "coh3 teamwaffe",
-        "supportWeapon": "unterstützungswaffe",
-        "crewWeapon": "besatzungswaffe",
-        "artillery": "artillerie"
+        "teamWeapon": "coh3 team weapon",
+        "supportWeapon": "support weapon",
+        "crewWeapon": "crew weapon",
+        "artillery": "artillery"
       },
       "emplacements": {
-        "emplacement": "coh3 stellung",
-        "defensiveStructure": "verteidigungsstruktur",
-        "fortification": "befestigung"
+        "emplacement": "coh3 emplacement",
+        "defensiveStructure": "defensive structure",
+        "fortification": "fortification"
       },
       "common": {
-        "units": "{{raceId}} einheiten",
-        "army": "{{raceId}} armee"
+        "units": "{{raceId}} units",
+        "army": "{{raceId}} army"
       }
     }
   }
