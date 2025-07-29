@@ -121,8 +121,8 @@ export const createPageSEO = (
       images: [
         {
           url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-          width: 192,
-          height: 192,
+          width: 92,
+          height: 92,
           alt: "COH3 Stats logo",
         },
       ],
