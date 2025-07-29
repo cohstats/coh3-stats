@@ -1,75 +1,75 @@
 {
   "meta": {
-    "title": "Laufende Spiele - Company of Heroes 3",
-    "description": "Aktuelle laufende Spiele in Company of Heroes 3",
+    "title": "Live Games - Company of Heroes 3",
+    "description": "Current live games in Company of Heroes 3",
     "keywords": [
       "coh3 live games",
-      "coh3 echtzeit-spiele",
-      "coh3 spiele",
-      "coh3 aktuelle laufende spiele"
+      "coh3 realtime matches",
+      "coh3 games",
+      "coh3 current matches in progress"
     ]
   },
-  "pageTitle": "Laufende PC-Spiele",
+  "pageTitle": "Live PC Games",
   "filters": {
     "liveGames": {
-      "label": "Laufende Spiele",
+      "label": "Live Games",
       "options": {
         "1v1": "1 vs 1 Automatch",
         "2v2": "2 vs 2 Automatch",
         "3v3": "3 vs 3 Automatch",
         "4v4": "4 vs 4 Automatch",
-        "ai": "Automatch VS KI",
-        "custom": "Benutzerdefinierte Spiele"
+        "ai": "Automatch VS AI",
+        "custom": "Custom Games"
       }
     },
     "sortBy": {
-      "label": "Sortieren nach",
+      "label": "Sort By",
       "options": {
-        "rank": "Rang",
-        "observers": "Zuschauer",
-        "startgametime": "Startzeit"
+        "rank": "Rank",
+        "observers": "Observers",
+        "startgametime": "Start Time"
       }
     }
   },
   "summaryTable": {
-    "title": "Zusammenfassung laufender Spiele",
-    "tooltip": "Aktuelle Multiplayer-Spiele im Gange. Die Gesamtanzahl der Spieler ist gefiltert. Beachte, dass es wahrscheinlich viele Spieler in der Lobby / auf der Suche / beim Laden und bei anderen Aktivitäten gibt. Benutzerdefinierte Spiele sind standardmäßig nicht beobachtbar. Wahrscheinlich gibt es mehr benutzerdefinierte Spiele. Die Spiele werden alle 5 Minuten aktualisiert.",
+    "title": "Live Games Summary",
+    "tooltip": "Current multiplayer games in progress. Total Players are unique filtered. Keep in mind that there are probably a lot of players in lobby / searching / loading and doing other things. Custom games are not observable by default. Most likely there is much more custom games being played. Games are updated every 5 minutes.",
     "noGames": {
-      "title": "Keine laufenden Spiele erkannt",
-      "message": "COH3 Stats muss möglicherweise nach einem kürzlichen Spielpatch aktualisiert werden."
+      "title": "No Live Games Detected",
+      "message": "COH3 Stats may need to update after a recent game patch."
     },
     "modes": {
       "1v1": "1 vs 1",
       "2v2": "2 vs 2",
       "3v3": "3 vs 3",
       "4v4": "4 vs 4",
-      "vsAI": "vs KI",
-      "custom": "Benutzerdefiniert"
+      "vsAI": "vs AI",
+      "custom": "Custom"
     },
     "totals": {
-      "automatch": "Gesamt im Automatch",
-      "anyGame": "Gesamt in allen Spielen"
+      "automatch": "Total in Automatch",
+      "anyGame": "Total in any game"
     },
-    "games": "Spiele"
+    "games": "games"
   },
   "gamesTable": {
     "columns": {
-      "mode": "Modus",
-      "axisPlayers": "Achsen-Spieler",
-      "alliesPlayers": "Alliierte Spieler",
-      "map": "Karte",
-      "observers": "Zuschauer",
-      "gameTime": "Spielzeit",
+      "mode": "Mode",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map",
+      "observers": "Observers",
+      "gameTime": "Game Time",
       "server": "Server"
     },
     "switches": {
-      "showFlags": "Spielerflaggen anzeigen",
-      "showServer": "Spiel-Server anzeigen"
+      "showFlags": "Show Player Flags",
+      "showServer": "Show Match Server"
     },
     "errors": {
-      "title": "Fehler beim Abrufen der laufenden Spiele",
-      "summaryTitle": "Fehler beim Abrufen der Spielzusammenfassung"
+      "title": "Error getting the live games",
+      "summaryTitle": "Error getting the live games summary"
     },
-    "dataUpdated": "Daten aktualisiert am {{time}}"
+    "dataUpdated": "Data updated on {{time}}"
   }
 }
