@@ -10,6 +10,7 @@ import { generateLanguageAlternates, generateKeywordsString } from "../../src/se
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import config from "../../config";
 
 const RankingTiers: NextPage = () => {
   const { t } = useTranslation("ranking-tiers");
@@ -36,11 +37,11 @@ const RankingTiers: NextPage = () => {
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical={`https://coh3stats.com${asPath}`}
+        canonical={`${config.SITE_URL}${asPath}`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: `https://coh3stats.com${asPath}`,
+          url: `${config.SITE_URL}${asPath}`,
           type: "website",
           images: [
             {

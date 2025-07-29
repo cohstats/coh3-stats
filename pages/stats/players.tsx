@@ -13,6 +13,7 @@ import { IconUser } from "@tabler/icons-react";
 import HelperIcon from "../../components/icon/helper";
 import dayjs from "dayjs";
 import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
+import config from "../../config";
 import { generateExpireTimeStamps } from "../../src/utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
@@ -69,7 +70,7 @@ const PlayerStats = ({
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical="https://coh3stats.com/stats/players"
+        canonical={`${config.SITE_URL}/stats/players`}
         additionalMetaTags={[
           {
             name: "keywords",
@@ -79,10 +80,10 @@ const PlayerStats = ({
         openGraph={{
           title: pageTitle,
           description: description,
-          url: "https://coh3stats.com/stats/players",
+          url: `${config.SITE_URL}/stats/players`,
           images: [
             {
-              url: "https://coh3stats.com/logo/android-icon-192x192.png",
+              url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
               width: 192,
               height: 192,
               alt: "COH3 Stats logo",

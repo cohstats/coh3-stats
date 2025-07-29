@@ -13,6 +13,7 @@ import {
 import { IconCheck } from "@tabler/icons-react";
 import { NextPage } from "next";
 import { NextSeo } from "next-seo";
+import config from "../../config";
 import React, { useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import { AnalyticsDesktopAppPageView } from "../../src/firebase/analytics";
@@ -38,7 +39,7 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
           ...seoProps.openGraph,
           images: [
             {
-              url: "https://coh3stats.com/desktop-app/desktop-app-v2.webp",
+              url: `${config.SITE_URL}/desktop-app/desktop-app-v2.webp`,
               width: 600,
               height: 336,
               alt: "COH3 Stats Desktop App",

@@ -8,6 +8,7 @@ import Achievement from "./achievement";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import config from "../../../config";
 
 const GlobalAchievements = ({
   globalAchievements,
@@ -38,11 +39,11 @@ const GlobalAchievements = ({
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical="https://coh3stats.com/stats/achievements"
+        canonical={`${config.SITE_URL}/stats/achievements`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: "https://coh3stats.com/stats/achievements",
+          url: `${config.SITE_URL}/stats/achievements`,
           type: "website",
         }}
         additionalMetaTags={[

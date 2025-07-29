@@ -11,6 +11,7 @@ import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
 import { AnalyticsStatsLeaderboardsPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import config from "../../config";
 
 const Leaderboards = ({
   error,
@@ -44,11 +45,11 @@ const Leaderboards = ({
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical="https://coh3stats.com/stats/leaderboards"
+        canonical={`${config.SITE_URL}/stats/leaderboards`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: "https://coh3stats.com/stats/leaderboards",
+          url: `${config.SITE_URL}/stats/leaderboards`,
           type: "website",
         }}
         additionalMetaTags={[

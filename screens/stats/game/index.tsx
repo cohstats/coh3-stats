@@ -4,6 +4,7 @@ import { NextSeo } from "next-seo";
 import { generateKeywordsString } from "../../../src/seo-utils";
 import { useTranslation } from "next-i18next";
 import StatsContainerSelector from "../stats-container-selector";
+import config from "../../../config";
 
 const GameStats: NextPage = () => {
   const { t } = useTranslation(["common", "stats"]);
@@ -27,11 +28,11 @@ const GameStats: NextPage = () => {
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical="https://coh3stats.com/stats/games"
+        canonical={`${config.SITE_URL}/stats/games`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: "https://coh3stats.com/stats/games",
+          url: `${config.SITE_URL}/stats/games`,
           type: "website",
         }}
         additionalMetaTags={[

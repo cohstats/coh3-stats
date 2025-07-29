@@ -21,6 +21,7 @@ import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import config from "../../config";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -59,11 +60,11 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical={`https://coh3stats.com${asPath}`}
+        canonical={`${config.SITE_URL}${asPath}`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: `https://coh3stats.com${asPath}`,
+          url: `${config.SITE_URL}${asPath}`,
           type: "website",
         }}
         additionalMetaTags={[

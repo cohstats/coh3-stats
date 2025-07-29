@@ -151,11 +151,11 @@ const OpenData: NextPage = () => {
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical={`https://coh3stats.com${asPath}`}
+        canonical={`${config.SITE_URL}${asPath}`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: `https://coh3stats.com${asPath}`,
+          url: `${config.SITE_URL}${asPath}`,
           type: "website",
         }}
         additionalMetaTags={[

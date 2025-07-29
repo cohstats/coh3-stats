@@ -5,6 +5,7 @@ import { NextSeo } from "next-seo";
 import { Anchor, Code, Container, Space, Text, Title } from "@mantine/core";
 import { generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import config from "../../config";
 
 const exampleOutput = `alias,relic_id,steam_id,1v1_axis_elo,1v1_allies_elo,german_1v1_rank,german_1v1_elo,german_1v1_total,american_1v1_rank,american_1v1_elo,american_1v1_total,dak_1v1_rank,dak_1v1_elo,dak_1v1_total,british_1v1_rank,british_1v1_elo,british_1v1_total
 Isildur,3705,76561198018614046,1432,1475,-1,1432,23,-1,1307,14,-1,1417,13,-1,1475,34
@@ -28,11 +29,11 @@ const PlayerExport: NextPage = () => {
       <NextSeo
         title={pageTitle}
         description={description}
-        canonical="https://coh3stats.com/other/player-export"
+        canonical={`${config.SITE_URL}/other/player-export`}
         openGraph={{
           title: pageTitle,
           description: description,
-          url: "https://coh3stats.com/other/player-export",
+          url: `${config.SITE_URL}/other/player-export`,
           type: "website",
         }}
         additionalMetaTags={[
@@ -59,7 +60,7 @@ const PlayerExport: NextPage = () => {
             Export the data via this link:
             <Code
               block
-            >{`https://coh3stats.com/api/playerExport?types=["1v1"]&profileIDs=[3705,871,6219,108833,61495,1287]`}</Code>
+            >{`${config.SITE_URL}/api/playerExport?types=["1v1"]&profileIDs=[3705,871,6219,108833,61495,1287]`}</Code>
           </Text>
           <Text span pt="md">
             Parameter <Code>types</Code> can be <Code>{`["1v1", "2v2", "3v3", "4v4"]`}</Code>.

@@ -9,6 +9,7 @@ import { Center, Loader } from "@mantine/core";
 import { createMatchSEO } from "../../src/seo-utils";
 import MatchDetail from "./match-detail";
 import { useTranslation } from "next-i18next";
+import config from "../../config";
 
 const MatchDetailRoot: NextPage = () => {
   const { t } = useTranslation(["common"]);
@@ -86,7 +87,7 @@ const MatchDetailRoot: NextPage = () => {
     seoProps = {
       title: "COH3 Match Details",
       description: "Company of Heroes 3 match details and replay information.",
-      canonical: `https://coh3stats.com/matches/${matchId}`,
+      canonical: `${config.SITE_URL}/matches/${matchId}`,
       additionalMetaTags: [
         {
           name: "keywords",
