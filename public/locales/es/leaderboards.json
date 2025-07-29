@@ -1,42 +1,42 @@
 {
   "meta": {
-    "title": "{{faction}} {{mode}} Clasificaciones",
-    "description": "Company of Heroes 3 {{faction}} {{mode}} clasificaciones con rankings de jugadores, puntuaciones ELO y estadísticas competitivas.",
+    "title": "{{faction}} {{mode}} Leaderboards",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} leaderboards with player rankings, ELO ratings, and competitive statistics.",
     "keywords": [
-      "clasificaciones",
+      "leaderboards",
       "rankings",
-      "escalera competitiva",
-      "puntuaciones elo",
-      "rankings de jugadores",
-      "estadísticas competitivas",
-      "rankings de facciones",
-      "rankings de modo de juego"
+      "competitive ladder",
+      "elo ratings",
+      "player rankings",
+      "competitive statistics",
+      "faction rankings",
+      "game mode rankings"
     ]
   },
-  "title": "Clasificación global para {{race}}",
-  "pageTitle": "Clasificación global para {{race}} {{type}}",
-  "metaDescription": "Clasificación global por facción {{race}} y tipo de juego {{type}}. Company of Heroes 3",
-  "errorTitle": "Hubo un error al obtener las clasificaciones globales.",
+  "title": "Leaderboards for {{race}}",
+  "pageTitle": "Leaderboards for {{race}} {{type}}",
+  "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",
+  "errorTitle": "Error getting the leaderboards",
   "filters": {
-    "region": "Región",
-    "platform": "Plataforma",
-    "faction": "Facción",
-    "type": "Tipo"
+    "region": "Region",
+    "platform": "Platform",
+    "faction": "Faction",
+    "type": "Type"
   },
   "teams": {
-    "title": "Clasificación de Equipos",
-    "pageTitle": "Clasificación de Equipos para {{side}} {{type}}",
-    "metaDescription": "Clasificación de equipos para {{side}} y tipo de juego {{type}}. Company of Heroes 3",
+    "title": "Team Leaderboards",
+    "pageTitle": "Team Leaderboards for {{side}} {{type}}",
+    "metaDescription": "Team leaderboards for {{side}} teams and game type {{type}}. Company of Heroes 3",
     "filters": {
-      "side": "Bando",
-      "type": "Tipo",
-      "orderBy": "Ordenar por"
+      "side": "Side",
+      "type": "Type",
+      "orderBy": "Order By"
     },
     "pagination": {
-      "itemsPerPage": "Elementos por página",
-      "previous": "Anterior",
-      "next": "Siguiente",
-      "showingRange": "Mostrando {{start}} - {{end}} de {{total}} equipos"
+      "itemsPerPage": "Items per page",
+      "previous": "Previous",
+      "next": "Next",
+      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams"
     }
   }
 }
