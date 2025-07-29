@@ -4,7 +4,8 @@ import React from "react";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
 import { localizedNames } from "./coh3/coh3-data";
-import { raceType } from "./coh3/coh3-types";
+import { raceType, PlayerCardDataType, platformType } from "./coh3/coh3-types";
+import { PlayerSummaryType } from "./players/utils";
 
 // Default keywords for SEO
 const _defaultKeywords = [
@@ -145,12 +146,12 @@ export const createPageSEO = (
  */
 export const createPlayerSEO = (
   t: TFunction,
-  playerData: any,
-  playerSummary: any,
-  platform: string,
+  playerData: PlayerCardDataType,
+  playerSummary: PlayerSummaryType,
+  platform: platformType,
 ): NextSeoProps => {
   const playerName = playerData.info.name;
-  const profileId = playerData.info.profile_id;
+  const profileId = playerData.info.relicID;
 
   const title = t("players:meta.title", { name: playerName });
   const description = createPlayerDescription(playerData, playerSummary, t);
@@ -311,7 +312,11 @@ export const createMatchSEO = (t: TFunction, matchData: any): NextSeoProps => {
 /**
  * Helper function to create player description from player data
  */
-const createPlayerDescription = (playerData: any, playerSummary: any, t: TFunction): string => {
+const createPlayerDescription = (
+  playerData: PlayerCardDataType,
+  playerSummary: PlayerSummaryType,
+  t: TFunction,
+): string => {
   // Use the existing createPlayerHeadDescription logic or fallback to translation
   try {
     return createPlayerHeadDescription(playerData, playerSummary);
@@ -326,7 +331,10 @@ const createPlayerDescription = (playerData: any, playerSummary: any, t: TFuncti
  * Helper function to create player description from player data
  * This should be implemented based on the existing logic from screens/players/index.tsx
  */
-const createPlayerHeadDescription = (playerData: any, playerSummary: any): string => {
+const createPlayerHeadDescription = (
+  playerData: PlayerCardDataType,
+  playerSummary: PlayerSummaryType,
+): string => {
   // Basic implementation - this should be enhanced with actual player stats
   const name = playerData.info.name;
   const totalGames = playerSummary?.totalGames || 0;
