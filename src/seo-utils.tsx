@@ -196,8 +196,8 @@ export const createPlayerSEO = (
     seoProps.openGraph!.images = [
       {
         url: playerData.steamData.avatarmedium,
-        width: 184,
-        height: 184,
+        width: 92,
+        height: 92,
         alt: `${playerName} Steam avatar`,
       },
     ];

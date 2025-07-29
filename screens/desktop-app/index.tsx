@@ -39,8 +39,8 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
           images: [
             {
               url: "https://coh3stats.com/desktop-app/desktop-app-v2.webp",
-              width: 800,
-              height: 600,
+              width: 600,
+              height: 336,
               alt: "COH3 Stats Desktop App",
             },
           ],
