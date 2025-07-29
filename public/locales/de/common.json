@@ -1,74 +1,74 @@
 {
   "mainMenu": {
-    "leaderboards": "Bestenlisten",
-    "regularLeaderboards": "Reguläre Bestenlisten",
-    "teamLeaderboards": "Team-Bestenlisten",
-    "statistics": "Statistiken",
+    "leaderboards": "Leaderboards",
+    "regularLeaderboards": "Regular Leaderboards",
+    "teamLeaderboards": "Team Leaderboards",
+    "statistics": "Statistics",
     "statsMenu": {
-      "games": "Spielstatistiken",
-      "maps": "Kartenstatistiken",
-      "players": "Spielerstatistiken",
-      "leaderboards": "Bestenlistenstatistiken",
-      "achievements": "Erfolgsstatistiken"
+      "games": "Games Stats",
+      "maps": "Maps Stats",
+      "players": "Players Stats",
+      "leaderboards": "Leaderboards Stats",
+      "achievements": "Achievements Stats"
     },
     "explorer": "Explorer",
     "explMenu": {
-      "buildings": "Gebäude",
-      "units": "Einheiten",
-      "dpsCalculator": "DPS - Einheitenvergleich",
-      "unitBrowser": "Einheiten-Browser",
-      "challenges": "Herausforderungen",
-      "weapons": "Waffen",
-      "tools": "Werkzeuge"
+      "buildings": "Buildings",
+      "units": "Units",
+      "dpsCalculator": "DPS - Unit Comparison",
+      "unitBrowser": "Unit Browser",
+      "challenges": "Challenges",
+      "weapons": "Weapons",
+      "tools": "Tools"
     },
-    "liveGames": "Laufende Spiele",
-    "desktopApp": "Desktop-App",
-    "other": "Anderes",
+    "liveGames": "Live Games",
+    "desktopApp": "Desktop App",
+    "other": "Other",
     "otherMenu": {
-      "tiers": "Ranglisten-Stufen",
+      "tiers": "Ranking Tiers",
       "openData": "Open Data",
-      "coh3News": "COH3 Nachrichten",
-      "playerExport": "Spieler Export API"
+      "coh3News": "COH3 News",
+      "playerExport": "Player Export API"
     },
-    "about": "Über uns",
-    "supportUs": "Unterstütze uns"
+    "about": "About",
+    "supportUs": "Support Us"
   },
   "header": {
-    "playerInGames": "Spieler im Spiel",
-    "onlinePlayersTooltip": "Anzahl der Online-Spieler in Company of Heroes 3 vom {{date}}"
+    "playerInGames": "Players in game",
+    "onlinePlayersTooltip": "Number of online players in Company of Heroes 3 as of {{date}}"
   },
   "footer": {
-    "gamePatch": "Spielpatch",
-    "gamePatchInfo": "Die auf der Seite angezeigten Daten stammen aus dem Spielpatch",
-    "unofficialSite": "Dies ist eine inoffizielle Fan-Seite für Company Of Heroes 3.",
-    "visitText1": "Besuche",
-    "visitText2": "für Company of Heroes 2 Statistiken und Analysen",
-    "trademark": "Company of Heroes ist eine eingetragene Marke von Relic Entertainment.",
-    "assets": "Die COH-Bilder und andere Assets sind Eigentum von Relic Entertainment."
+    "gamePatch": "Game Patch",
+    "gamePatchInfo": "Data displayed on the site are from game patch",
+    "unofficialSite": "This is an unofficial fan-made site for Company Of Heroes 3.",
+    "visitText1": "Visit",
+    "visitText2": "for Company of Heroes 2 stats and analytics",
+    "trademark": "The Company of Heroes is a registered trademark of Relic Entertainment.",
+    "assets": "The COH Images and other assets are owned by Relic Entertainment."
   },
   "columns": {
-    "rank": "Rang",
-    "rc": "RÄ",
+    "rank": "Rank",
+    "rc": "RC",
     "elo": "ELO",
-    "alias": "Spielername",
-    "streak": "Serie",
-    "ratio": "Verhältnis",
-    "total": "Gesamt",
-    "lastGame": "Letztes Spiel",
-    "tier": "Stufe",
-    "wins": "Siege",
-    "losses": "Niederlagen"
+    "alias": "Alias",
+    "streak": "Streak",
+    "ratio": "Ratio",
+    "total": "Total",
+    "lastGame": "Last Game",
+    "tier": "Tier",
+    "wins": "Wins",
+    "losses": "Losses"
   },
   "errors": {
     "404": {
-      "title": "404 - Seite nicht gefunden",
-      "message": "Bitte melde dich in unserem Discord, wenn du glaubst, dass dies ein Fehler ist"
+      "title": "404 - Page Not Found",
+      "message": "Please report on our Discord if you think this is a bug"
     }
   },
   "search": {
-    "playersAndUnits": "Spieler und Einheiten"
+    "playersAndUnits": "Players and Units"
   },
-  "loading": "Wird geladen...",
-  "error": "Fehler",
-  "notFound": "Nicht gefunden"
+  "loading": "Loading...",
+  "error": "Error",
+  "notFound": "Not Found"
 }
