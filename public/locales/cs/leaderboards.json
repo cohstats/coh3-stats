@@ -1,42 +1,42 @@
 {
   "meta": {
-    "title": "{{faction}} {{mode}} Žebříčky",
-    "description": "Company of Heroes 3 {{faction}} {{mode}} žebříčky s hodnocením hráčů, ELO ratingy a soutěžními statistikami.",
+    "title": "{{faction}} {{mode}} Leaderboards",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} leaderboards with player rankings, ELO ratings, and competitive statistics.",
     "keywords": [
-      "žebříčky",
-      "hodnocení",
-      "soutěžní žebříček",
-      "elo hodnocení",
-      "hodnocení hráčů",
-      "soutěžní statistiky",
-      "hodnocení frakcí",
-      "hodnocení herních módů"
+      "leaderboards",
+      "rankings",
+      "competitive ladder",
+      "elo ratings",
+      "player rankings",
+      "competitive statistics",
+      "faction rankings",
+      "game mode rankings"
     ]
   },
-  "title": "Žebříčky pro {{race}}",
-  "pageTitle": "Žebříčky pro {{race}} {{type}}",
-  "metaDescription": "Hodnocené žebříčky pro frakci {{race}} a typ hry {{type}}. Company of Heroes 3",
-  "errorTitle": "Chyba při získávání žebříčků",
+  "title": "Leaderboards for {{race}}",
+  "pageTitle": "Leaderboards for {{race}} {{type}}",
+  "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",
+  "errorTitle": "Error getting the leaderboards",
   "filters": {
     "region": "Region",
-    "platform": "Platforma",
-    "faction": "Frakce",
-    "type": "Typ"
+    "platform": "Platform",
+    "faction": "Faction",
+    "type": "Type"
   },
   "teams": {
-    "title": "Týmové žebříčky",
-    "pageTitle": "Týmové žebříčky pro {{side}} {{type}}",
-    "metaDescription": "Týmové žebříčky pro {{side}} týmy a typ hry {{type}}. Company of Heroes 3",
+    "title": "Team Leaderboards",
+    "pageTitle": "Team Leaderboards for {{side}} {{type}}",
+    "metaDescription": "Team leaderboards for {{side}} teams and game type {{type}}. Company of Heroes 3",
     "filters": {
-      "side": "Strana",
-      "type": "Typ",
-      "orderBy": "Seřadit podle"
+      "side": "Side",
+      "type": "Type",
+      "orderBy": "Order By"
     },
     "pagination": {
-      "itemsPerPage": "Položek na stránku",
-      "previous": "Předchozí",
-      "next": "Další",
-      "showingRange": "Zobrazeno {{start}} - {{end}} z {{total}} týmů"
+      "itemsPerPage": "Items per page",
+      "previous": "Previous",
+      "next": "Next",
+      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams"
     }
   }
 }
