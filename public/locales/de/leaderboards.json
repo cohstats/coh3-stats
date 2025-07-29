@@ -1,42 +1,42 @@
 {
   "meta": {
-    "title": "{{faction}} {{mode}} Bestenlisten",
-    "description": "Company of Heroes 3 {{faction}} {{mode}} Bestenlisten mit Spieler-Rankings, ELO-Bewertungen und Wettkampfstatistiken.",
+    "title": "{{faction}} {{mode}} Leaderboards",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} leaderboards with player rankings, ELO ratings, and competitive statistics.",
     "keywords": [
-      "bestenlisten",
-      "ranglisten",
-      "wettkampf rangliste",
-      "elo bewertungen",
-      "spieler rankings",
-      "wettkampfstatistiken",
-      "fraktions rankings",
-      "spielmodus rankings"
+      "leaderboards",
+      "rankings",
+      "competitive ladder",
+      "elo ratings",
+      "player rankings",
+      "competitive statistics",
+      "faction rankings",
+      "game mode rankings"
     ]
   },
-  "title": "Bestenlisten für {{race}}",
-  "pageTitle": "Bestenlisten für {{race}} {{type}}",
-  "metaDescription": "Ranglisten für Fraktion {{race}} und Spieltyp {{type}}. Company of Heroes 3",
-  "errorTitle": "Fehler beim Abrufen der Bestenlisten",
+  "title": "Leaderboards for {{race}}",
+  "pageTitle": "Leaderboards for {{race}} {{type}}",
+  "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",
+  "errorTitle": "Error getting the leaderboards",
   "filters": {
     "region": "Region",
-    "platform": "Plattform",
-    "faction": "Fraktion",
-    "type": "Typ"
+    "platform": "Platform",
+    "faction": "Faction",
+    "type": "Type"
   },
   "teams": {
-    "title": "Team-Bestenlisten",
-    "pageTitle": "Team-Bestenlisten für {{side}} {{type}}",
-    "metaDescription": "Team-Bestenlisten für {{side}}-Teams und Spieltyp {{type}}. Company of Heroes 3",
+    "title": "Team Leaderboards",
+    "pageTitle": "Team Leaderboards for {{side}} {{type}}",
+    "metaDescription": "Team leaderboards for {{side}} teams and game type {{type}}. Company of Heroes 3",
     "filters": {
-      "side": "Seite",
-      "type": "Typ",
-      "orderBy": "Sortieren nach"
+      "side": "Side",
+      "type": "Type",
+      "orderBy": "Order By"
     },
     "pagination": {
-      "itemsPerPage": "Einträge pro Seite",
-      "previous": "Zurück",
-      "next": "Weiter",
-      "showingRange": "Zeige {{start}} - {{end}} von {{total}} Teams"
+      "itemsPerPage": "Items per page",
+      "previous": "Previous",
+      "next": "Next",
+      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams"
     }
   }
 }
