@@ -1,38 +1,38 @@
 {
   "meta": {
-    "title": "COH3 Stats - Estadísticas de Company of Heroes 3",
-    "description": "Estadísticas de Company of Heroes 3. Clasificaciones, Tarjetas de Jugador, Partidas Pasadas, Estadísticas de Unidades, Calculadora DPS, Explorador de Grupos de Batalla, Explorador de Armas, Juegos en Vivo Actuales, Últimas Noticias COH3, últimos streams de YouTube y Twitch. Y mucho más.",
+    "title": "COH3 Stats - Company of Heroes 3 Statistics",
+    "description": "Company of Heroes 3 Stats. Leaderboards, Player Card, Past Matches, Unit stats, DPS Calculator, Battlegroup Explorer, Weapons explorer, Current Live Games, Latest COH3 News, latest YouTube and Twitch Streams. And much more.",
     "keywords": [
-      "clasificaciones",
-      "tarjetas de jugador",
-      "estadísticas de unidades",
-      "juegos en vivo",
-      "calculadora dps",
-      "grupos de batalla",
-      "explorador de armas",
-      "historial de partidas",
-      "streams de twitch",
-      "videos de youtube"
+      "leaderboards",
+      "player cards",
+      "unit stats",
+      "live games",
+      "dps calculator",
+      "battlegroups",
+      "weapons explorer",
+      "match history",
+      "twitch streams",
+      "youtube videos"
     ]
   },
   "sections": {
     "news": {
-      "title": "Últimas Noticias",
-      "newsLabel": "Noticias"
+      "title": "Latest News",
+      "newsLabel": "News"
     },
     "tools": {
       "dpsCalculator": {
-        "title": "Calculadora de DPS",
-        "description": "Compara el DPS de todas las unidades del juego. Personaliza el equipo de la unidad con diferentes armas. También puedes tener en cuenta los puntos de vida de las unidades."
+        "title": "DPS Calculator",
+        "description": "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can also take into consideration the HP of the units."
       },
       "unitBrowser": {
-        "title": "Explorador de Unidades",
-        "description": "Explora las unidades del juego, incluyendo estadísticas, armas y mejoras. Navega por el menú del Explorador para obtener una vista general de las facciones y más detalles."
+        "title": "Unit Browser",
+        "description": "Explore game units, including stats, weapons, and upgrades. Navigate the Explorer menu for faction overview and more details."
       }
     },
     "leaderboards": {
-      "title": "Mejores Jugadores 1vs1",
-      "viewFullLeaderboard": "Ver todas las clasificaciones",
+      "title": "1v1 Leaderboards",
+      "viewFullLeaderboard": "View Full Leaderboard",
       "factions": {
         "american": "USF",
         "british": "British",
@@ -41,20 +41,20 @@
       }
     },
     "reddit": {
-      "title": "Mejores publicaciones de COH3 en Reddit",
-      "noData": "No hay publicaciones disponibles en Reddit"
+      "title": "Top COH3 Reddit posts",
+      "noData": "No Reddit posts available"
     },
     "youtube": {
-      "title": "Videos de la semana pasada",
-      "noData": "No hay videos disponibles en YouTube",
-      "views": "vistas"
+      "title": "Last week's videos",
+      "noData": "No YouTube videos available",
+      "views": "views"
     },
     "twitch": {
-      "title": "Ver transmisiones en vivo",
-      "noStreams": "No hay transmisiones en vivo en inglés de Twitch actualmente."
+      "title": "Watch Live Streams",
+      "noStreams": "No English speaking streams are currently broadcasting on Twitch."
     }
   },
   "leaderboardTable": {
-    "errorTitle": "Hubo un error inesperado al obtener las clasificaciones globales"
+    "errorTitle": "Error getting the leaderboards"
   }
 }
