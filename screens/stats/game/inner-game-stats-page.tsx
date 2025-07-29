@@ -88,13 +88,13 @@ const ChartCard = ({
   );
 };
 
-function useDeepCompareMemo(
+const useDeepCompareMemo = (
   timeStamps: {
     from: number | null;
     to: number | null;
   },
   filters: Array<analysisFilterType | analysisMapFilterType | "all">,
-) {
+) => {
   const [storedValue, setStoredValue] = useState({ timeStamps, filters });
 
   if (JSON.stringify({ timeStamps, filters }) !== JSON.stringify(storedValue)) {
@@ -102,7 +102,7 @@ function useDeepCompareMemo(
   }
 
   return storedValue;
-}
+};
 
 const InnerGameStatsPage = ({
   timeStamps,

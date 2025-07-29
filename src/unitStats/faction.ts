@@ -87,7 +87,7 @@ const buildingFactionMultiplayer = [
 
 type buildingFactionMultiplayer = (typeof buildingFactionMultiplayer)[number];
 
-function transformToMultiplayerBuildingFaction(race: raceType): buildingFactionMultiplayer {
+const transformToMultiplayerBuildingFaction = (race: raceType): buildingFactionMultiplayer => {
   switch (race) {
     case "british":
       return "british_africa";
@@ -96,7 +96,7 @@ function transformToMultiplayerBuildingFaction(race: raceType): buildingFactionM
     default:
       return race;
   }
-}
+};
 
 /** Filter invisible or unused buildings in multiplayer. */
 export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType) {
@@ -179,7 +179,7 @@ export const HalfTrackDeploymentUnitsAfrikaKorps = {
   halftrack_deployment_tiger_ak: ["tiger_ak"],
 } as const;
 
-function generateAfrikaKorpsCallInsBuilding(): EbpsType {
+const generateAfrikaKorpsCallInsBuilding = (): EbpsType => {
   return {
     id: "halftrack_deployment_ak",
     path: "afrika_corps",
@@ -240,4 +240,4 @@ function generateAfrikaKorpsCallInsBuilding(): EbpsType {
       },
     },
   };
-}
+};

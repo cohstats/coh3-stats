@@ -297,7 +297,7 @@ interface ThProps {
   onSort(): void;
 }
 
-function Th({ children, reversed, sorted, onSort }: ThProps) {
+const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
   return (
     <th>
@@ -313,14 +313,14 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
       </UnstyledButton>
     </th>
   );
-}
+};
 
-function filterData(
+const filterData = (
   data: CustomizableUnit[],
   search: string,
   factionFilter: string[],
   typeFilter: string[],
-) {
+) => {
   const query = search.toLowerCase().trim();
   let result = data.filter((item) =>
     keys(data[0]).some(
@@ -332,9 +332,9 @@ function filterData(
   result = applyFilter(result, factionFilter, "faction");
   result = applyFilter(result, typeFilter, "unit_type");
   return result;
-}
+};
 
-function sortData(
+const sortData = (
   data: CustomizableUnit[],
   payload: {
     sortBy: keyof CustomizableUnit | null;
@@ -343,7 +343,7 @@ function sortData(
     factionFilter: string[];
     typeFilter: string[];
   },
-) {
+) => {
   const { sortBy } = payload;
 
   if (!sortBy) {
@@ -372,7 +372,7 @@ function sortData(
     payload.factionFilter,
     payload.typeFilter,
   );
-}
+};
 
 const applyFilter = (
   data: CustomizableUnit[],

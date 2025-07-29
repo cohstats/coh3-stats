@@ -71,13 +71,13 @@ const _sortMapAnalysisData = (data: MapAnalysisObjectType) => {
 
 // React component which accepts inner children. And accepts a title prop.
 
-function useDeepCompareMemo(
+const useDeepCompareMemo = (
   timeStamps: {
     from: number | null;
     to: number | null;
   },
   filters: Array<analysisFilterType | analysisMapFilterType | "all">,
-) {
+) => {
   const [storedValue, setStoredValue] = useState({ timeStamps, filters });
 
   if (JSON.stringify({ timeStamps, filters }) !== JSON.stringify(storedValue)) {
@@ -85,7 +85,7 @@ function useDeepCompareMemo(
   }
 
   return storedValue;
-}
+};
 
 const InnerMapsStatsPage = ({
   timeStamps,

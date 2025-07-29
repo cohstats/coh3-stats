@@ -310,12 +310,12 @@ interface inputProps {
   inputData: WeaponTableRow[];
 }
 
-function filterData(
+const filterData = (
   data: WeaponTableRow[],
   search: string,
   factionFilter: string[],
   typeFilter: string[],
-) {
+) => {
   const query = search.toLowerCase().trim();
   let result = data.filter((item) =>
     WeaponTableColumnKeys.some(
@@ -326,9 +326,9 @@ function filterData(
   result = applyFilter(result, factionFilter, "faction");
   result = applyFilter(result, typeFilter, "type");
   return result;
-}
+};
 
-function sortData(
+const sortData = (
   data: WeaponTableRow[],
   payload: {
     sortBy: keyof WeaponTableRow | null;
@@ -337,7 +337,7 @@ function sortData(
     factionFilter: string[];
     typeFilter: string[];
   },
-) {
+) => {
   const { sortBy } = payload;
 
   if (!sortBy) {
@@ -366,7 +366,7 @@ function sortData(
     payload.factionFilter,
     payload.typeFilter,
   );
-}
+};
 
 const applyFilter = (
   data: WeaponTableRow[],

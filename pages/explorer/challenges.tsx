@@ -194,12 +194,12 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
   );
 };
 
-function AccordionLabel({
+const AccordionLabel = ({
   name,
   description,
   reward,
   style,
-}: ResolvedChallenge["challenge"] & { style?: React.CSSProperties }) {
+}: ResolvedChallenge["challenge"] & { style?: React.CSSProperties }) => {
   return (
     <Card p="sm" style={{ marginRight: "15px", ...style }} radius="md" withBorder>
       <Flex direction="column" gap={4}>
@@ -218,9 +218,9 @@ function AccordionLabel({
       </Flex>
     </Card>
   );
-}
+};
 
-function AccordionContent({ spawnee, research, targets, sources }: ResolvedChallenge) {
+const AccordionContent = ({ spawnee, research, targets, sources }: ResolvedChallenge) => {
   return (
     <Stack>
       {research.length ? (
@@ -337,7 +337,7 @@ function AccordionContent({ spawnee, research, targets, sources }: ResolvedChall
       )}
     </Stack>
   );
-}
+};
 
 const createCalculateValuesForChallenges = (data: {
   dailyChallengesData: ChallengesType[];

@@ -215,10 +215,10 @@ const BuildingMapping = ({
   );
 };
 
-function getBuildingUpgrades(
+const getBuildingUpgrades = (
   building: EbpsType,
   upgradesData: UpgradesType[],
-): BuildingSchema["upgrades"] {
+): BuildingSchema["upgrades"] => {
   return Object.entries(getResolvedUpgrades(building.upgradeRefs, upgradesData)).map(
     ([id, { ui, cost }]) => ({
       id,
@@ -240,10 +240,12 @@ function getBuildingUpgrades(
       },
     }),
   );
-}
+};
 
 /** Generate the call-ins as upgrades although those are abilities under the hood. */
-function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSchema["upgrades"] {
+const generateAfrikaKorpsCallIns = (
+  abilitiesData: AbilitiesType[],
+): BuildingSchema["upgrades"] => {
   return Object.entries(
     getResolvedAbilities(Object.keys(HalfTrackDeploymentUnitsAfrikaKorps), abilitiesData),
   ).map(([id, { ui, cost, rechargeTime }]) => ({
@@ -265,16 +267,16 @@ function generateAfrikaKorpsCallIns(abilitiesData: AbilitiesType[]): BuildingSch
       time_seconds: rechargeTime,
     },
   }));
-}
+};
 
 // Helper function to pre-calculate building data
-function preCalculateBuildings(
+const preCalculateBuildings = (
   race: raceType,
   ebpsData: EbpsType[],
   sbpsData: SbpsType[],
   upgradesData: UpgradesType[],
   abilitiesData: AbilitiesType[],
-): PreCalculatedBuilding[] {
+): PreCalculatedBuilding[] => {
   const buildings = filterMultiplayerBuildings(ebpsData, race);
 
   return buildings.map((building) => {
@@ -320,7 +322,7 @@ function preCalculateBuildings(
       },
     };
   });
-}
+};
 
 // Generates paths for all race types and supported locales
 export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {

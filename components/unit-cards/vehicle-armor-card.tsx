@@ -73,7 +73,7 @@ export const StatsVehicleArmor = (cfg: StatsVehicleInput, title = "Vehicle Armor
   </>
 );
 
-function generateArmorRow(armorValues: VehicleArmor) {
+const generateArmorRow = (armorValues: VehicleArmor) => {
   return VehicleArmorCover.map(({ icon, armor }) => {
     return (
       <Grid key={`vehicle_armor_${armor}`} fz="xs" align="center" columns={3} grow>
@@ -89,4 +89,4 @@ function generateArmorRow(armorValues: VehicleArmor) {
       </Grid>
     );
   });
-}
+};

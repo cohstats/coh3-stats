@@ -13,21 +13,21 @@ interface Override {
   validator?: (item: ItemType) => boolean;
 }
 
-function bgWorkaround(description: string, override: Override) {
+const bgWorkaround = (description: string, override: Override) => {
   bgWorkarounds.set(description, override);
-}
+};
 
 const bgWorkarounds = new Map<string, Override>();
 
-function ebpsWorkaround(description: string, override: Override) {
+const ebpsWorkaround = (description: string, override: Override) => {
   ebpsWorkarounds.set(description, override);
-}
+};
 
 const ebpsWorkarounds = new Map<string, Override>();
 
 // --------------------- BATTLEGROUPS --------------------- //
 
-function setBattlegroupsWorkarounds() {
+const setBattlegroupsWorkarounds = () => {
   /** Template */
   // bgWorkaround("Modify Faction - xxxxxx BG Call-Ins", {
   //   predicate: (item) =>
@@ -587,11 +587,11 @@ function setBattlegroupsWorkarounds() {
       });
     },
   });
-}
+};
 
 // --------------------- EBPS --------------------- //
 
-function setEbpsWorkarounds() {
+const setEbpsWorkarounds = () => {
   ebpsWorkaround("Modify American - Barracks Icon", {
     predicate: (item) => item.faction === "american" && item.id === "barracks_us",
     mutator: (item) => {
@@ -599,7 +599,7 @@ function setEbpsWorkarounds() {
       item.ui.iconName = "races/american/buildings/barracks_us";
     },
   });
-}
+};
 
 setBattlegroupsWorkarounds();
 setEbpsWorkarounds();

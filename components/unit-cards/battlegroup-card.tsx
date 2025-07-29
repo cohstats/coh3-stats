@@ -41,7 +41,7 @@ import { Fragment } from "react";
 
 import classes from "./Unit.module.css";
 
-function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
+const groupBy = <T, K extends string | number>(arr: T[], fn: (item: T) => K) => {
   return arr.reduce<Record<K, T[]>>(
     (prev, curr) => {
       const groupKey = fn(curr);
@@ -51,7 +51,7 @@ function groupBy<T, K extends string | number>(arr: T[], fn: (item: T) => K) {
     },
     {} as Record<K, T[]>,
   );
-}
+};
 
 interface BattlegroupCardProps {
   race: raceType;
