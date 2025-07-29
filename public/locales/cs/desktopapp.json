@@ -1,39 +1,39 @@
 {
   "meta": {
-    "title": "Desktopová aplikace od COH3 Stats",
-    "description": "Stáhněte si desktopovou aplikaci COH3 Stats {{version}}. Není potřeba žádná konfigurace. Funkce OBS překrytí. Podrobné informace o soupeřích v aktuálním zápase. Zvuková upozornění na novou hru a další.",
+    "title": "Desktop App from COH3 Stats",
+    "description": "Download COH3 Stats Desktop app {{version}}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.",
     "keywords": [
-      "coh3 desktopová aplikace",
-      "obs překrytí",
-      "informace o zápase v reálném čase",
-      "desktopová aplikace",
-      "herní překrytí",
-      "analýza zápasu",
-      "statistiky hráčů",
-      "živá herní data"
+      "coh3 desktop app",
+      "obs overlay",
+      "realtime match info",
+      "desktop application",
+      "game overlay",
+      "match analysis",
+      "player statistics",
+      "live game data"
     ]
   },
   "download": {
-    "button": "Stáhnout {{version}}",
-    "buttonAriaLabel": "Stáhnout instalátor COH3 Stats Desktop App {{version}} pro Windows",
-    "downloads": "{{count}} stažení",
-    "releaseNotes": "Poznámky k vydání"
+    "button": "Download {{version}}",
+    "buttonAriaLabel": "Download COH3 Stats Desktop App {{version}} installer for Windows",
+    "downloads": "{{count}} downloads",
+    "releaseNotes": "Release Notes"
   },
-  "title": "COH3 Stats Desktopová Aplikace",
-  "subtitle": "Získejte další informace o vaší aktuální hře!",
+  "title": "COH3 Stats Desktop App",
+  "subtitle": "Gain additional intel on your current game!",
   "features": {
-    "title": "Funkce:",
+    "title": "Features",
     "list": {
-      "noSetup": "Snadné použití, není potřeba žádné nastavení - stačí spustit aplikaci",
-      "leaderboard": "Zobrazit aktuální postavení hráčů včetně ELO, Pořadí, Míry výher",
-      "teams": "Detekce organizovaných týmů ve vašich hrách",
-      "recentGames": "Zobrazit vaše nedávné hry přímo v aplikaci",
-      "notifications": "Získejte volitelná zvuková upozornění při připojení ke hře",
-      "replays": "Automatické nahrávání záznamů do cloudu pro další analýzu",
+      "noSetup": "Effortless usage, no setup needed - simply launch the application",
+      "leaderboard": "See current player standings including ELO, Rank, WinRate",
+      "teams": "Detect arranged teams in your games",
+      "recentGames": "See your recent games directly in the app",
+      "notifications": "Receive optional sound notifications upon joining a game",
+      "replays": "Auto upload replays to the cloud for additional analysis",
       "streaming": {
-        "before": "Překrytí pro streamery pro",
-        "and": "a",
-        "after": "a další streamovací nástroje"
+        "before": "Streamer overlay for",
+        "and": "and",
+        "after": "and other streaming tools"
       }
     }
   }
