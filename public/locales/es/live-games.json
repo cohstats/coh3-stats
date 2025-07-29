@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Partidas en vivo - Company of Heroes 3",
-    "description": "Partidas en vivo en curso en Company of Heroes 3",
+    "title": "Live Games - Company of Heroes 3",
+    "description": "Current live games in Company of Heroes 3",
     "keywords": [
       "coh3 live games",
       "coh3 realtime matches",
@@ -9,67 +9,67 @@
       "coh3 current matches in progress"
     ]
   },
-  "pageTitle": "Partidas en curso en PC",
+  "pageTitle": "Live PC Games",
   "filters": {
     "liveGames": {
-      "label": "Partidas en curso",
+      "label": "Live Games",
       "options": {
         "1v1": "1 vs 1 Automatch",
         "2v2": "2 vs 2 Automatch",
         "3v3": "3 vs 3 Automatch",
         "4v4": "4 vs 4 Automatch",
-        "ai": "Automatch contra la IA",
-        "custom": "Partidas personalizados"
+        "ai": "Automatch VS AI",
+        "custom": "Custom Games"
       }
     },
     "sortBy": {
-      "label": "Organizar por",
+      "label": "Sort By",
       "options": {
-        "rank": "Rango",
-        "observers": "Observadores",
-        "startgametime": "Tiempo de inicio"
+        "rank": "Rank",
+        "observers": "Observers",
+        "startgametime": "Start Time"
       }
     }
   },
   "summaryTable": {
-    "title": "Resumen de partidas en vivo",
-    "tooltip": "Partidas multijugador en progreso. El total de jugadores esta filtrado de manera única. Toma en cuenta que pueden haber jugadores en menu / buscando / cargando o haciendo otras cosas. Partidas personalizadas no se pueden ver por default. Lo mas probable es que haya mas partidas personalizadas. Las partidas se actualizan cada 5 minutos.",
+    "title": "Live Games Summary",
+    "tooltip": "Current multiplayer games in progress. Total Players are unique filtered. Keep in mind that there are probably a lot of players in lobby / searching / loading and doing other things. Custom games are not observable by default. Most likely there is much more custom games being played. Games are updated every 5 minutes.",
     "noGames": {
-      "title": "No se detectaron partidas en curso",
-      "message": "COH3 Stats necesitará actualizarse despues de un nuevo parche."
+      "title": "No Live Games Detected",
+      "message": "COH3 Stats may need to update after a recent game patch."
     },
     "modes": {
       "1v1": "1 vs 1",
       "2v2": "2 vs 2",
       "3v3": "3 vs 3",
       "4v4": "4 vs 4",
-      "vsAI": "vs IA",
-      "custom": "Personalizado"
+      "vsAI": "vs AI",
+      "custom": "Custom"
     },
     "totals": {
-      "automatch": "Total en Automatch",
-      "anyGame": "Total en cualquier partida"
+      "automatch": "Total in Automatch",
+      "anyGame": "Total in any game"
     },
-    "games": "partidas"
+    "games": "games"
   },
   "gamesTable": {
     "columns": {
-      "mode": "Modo",
-      "axisPlayers": "Jugadores Eje",
-      "alliesPlayers": "Jugadores Aliados",
-      "map": "Mapa",
-      "observers": "Observadores",
-      "gameTime": "Tiempo de la partida",
-      "server": "Servidor"
+      "mode": "Mode",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map",
+      "observers": "Observers",
+      "gameTime": "Game Time",
+      "server": "Server"
     },
     "switches": {
-      "showFlags": "Mostrar nacionalidad",
-      "showServer": "Mostrar servidor de la partida"
+      "showFlags": "Show Player Flags",
+      "showServer": "Show Match Server"
     },
     "errors": {
-      "title": "Error obteniendo los juegos en curso",
-      "summaryTitle": "Error obteniendo el resumen de las partidas en curso"
+      "title": "Error getting the live games",
+      "summaryTitle": "Error getting the live games summary"
     },
-    "dataUpdated": "Información actualizada en {{time}}"
+    "dataUpdated": "Data updated on {{time}}"
   }
 }
