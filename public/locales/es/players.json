@@ -1,247 +1,247 @@
 {
   "meta": {
-    "title": "{{name}} - Perfil de Jugador COH3",
-    "description": "Perfil de jugador de {{name}} en Company of Heroes 3 con {{totalGames}} partidas jugadas y {{winRate}}% de tasa de victoria. Ver estadísticas detalladas, historial de partidas y rendimiento por facción.",
+    "title": "{{name}} - COH3 Player Profile",
+    "description": "{{name}}'s Company of Heroes 3 player profile with {{totalGames}} games played and {{winRate}}% win rate. View detailed statistics, match history, and faction performance.",
     "keywords": [
-      "perfil de jugador",
-      "estadísticas de jugador",
-      "historial de partidas",
-      "rendimiento por facción",
-      "rankings competitivos",
-      "estadísticas de jugador",
-      "estadísticas del juego",
-      "datos del jugador"
+      "player profile",
+      "player statistics",
+      "match history",
+      "faction performance",
+      "competitive rankings",
+      "player stats",
+      "game statistics",
+      "player data"
     ]
   },
   "card": {
     "error": {
-      "title": "Error cargando la tarjeta del jugador",
-      "loadingError": "Error cargando la tarjeta del jugador"
+      "title": "Error loading the player card",
+      "loadingError": "Error loading the player card"
     },
-    "title": "Tarjeta del Jugador - {{name}}",
+    "title": "Player card - {{name}}",
     "titleWithView": {
-      "recentMatches": "Tarjeta del jugador - {{name}} - Partidas recientes",
-      "replays": "Tarjeta del jugador - {{name}} - Repeticiones",
-      "standingsDetails": "Tarjeta del jugador - {{name}} - Stats detallados",
-      "activity": "Tarjeta del jugador - {{name}} - Actividad",
-      "nemesis": "Tarjeta del jugador - {{name}} - Nemesis",
-      "teamsStandings": "Tarjeta del jugador - {{name}} - Clasificación de equipos",
-      "teamDetails": "Tarjeta del jugador - {{name}} - Detalles del equipo"
+      "recentMatches": "Player card - {{name}} - Recent Matches",
+      "replays": "Player card - {{name}} - Replays",
+      "standingsDetails": "Player card - {{name}} - Detailed Stats",
+      "activity": "Player card - {{name}} - Activity",
+      "nemesis": "Player card - {{name}} - Nemesis",
+      "teamsStandings": "Player card - {{name}} - Teams Standings",
+      "teamDetails": "Player card - {{name}} - Team Details"
     }
   },
   "tabs": {
-    "standings": "Posición del jugador",
-    "standingsDetails": "Stats detallados",
-    "recentMatches": "Partidas recientes",
-    "activity": "Actividad",
+    "standings": "Player Standings",
+    "standingsDetails": "Detailed Stats",
+    "recentMatches": "Recent Matches",
+    "activity": "Activity",
     "nemesis": "Nemesis",
-    "replays": "Repeticiones",
-    "teamsStandings": "Clasificación de equipos"
+    "replays": "Replays",
+    "teamsStandings": "Teams Standings"
   },
   "playerInfo": {
     "bestElo": {
-      "allies": "Mejor ELO ALIADOS {{elo}} en {{mode}} como {{faction}}",
-      "axis": "Mejor ELO EJE {{elo}} en {{mode}} como {{faction}}"
+      "allies": "Best ALLIES ELO {{elo}} in {{mode}} as {{faction}}",
+      "axis": "Best AXIS ELO {{elo}} in {{mode}} as {{faction}}"
     },
     "stats": {
-      "totalGames": "Total de partidas {{count}}",
-      "winRate": "Tasa de victorias {{rate}}%",
-      "lastMatch": "Ultima partida {{time}}"
+      "totalGames": "Total games {{count}}",
+      "winRate": "Win Rate {{rate}}%",
+      "lastMatch": "Last match {{time}}"
     }
   },
   "recentMatches": {
     "filters": {
-      "hideCustomGames": "Ocultar partidas personalizadas",
-      "showAllGames": "Mostrar todos los juegos"
+      "hideCustomGames": "Hide Custom Games",
+      "showAllGames": "Show All Games"
     },
-    "loadMore": "Cargar más partidas",
+    "loadMore": "Load More Matches",
     "table": {
       "columns": {
-        "date": "Fecha",
-        "map": "Mapa",
-        "duration": "Duración",
+        "date": "Date",
+        "map": "Map",
+        "duration": "Duration",
         "type": "Type",
-        "players": "Jugadores",
-        "actions": "Acciones"
+        "players": "Players",
+        "actions": "Actions"
       },
-      "noData": "No se encontraron partidas"
+      "noData": "No matches found"
     },
     "downloadReplay": {
-      "button": "Descargar repeticion",
-      "generating": "Generando...",
-      "error": "Error generando repeticion"
+      "button": "Download Replay",
+      "generating": "Generating...",
+      "error": "Error generating replay"
     }
   },
   "standings": {
     "summary": {
       "charts": {
-        "factionDistribution": "Distribución de Facciones",
-        "gameTypes": "Tipo de Partida",
-        "activityLastMonths": "Actividad de estos ultimos meses"
+        "factionDistribution": "Faction Distribution",
+        "gameTypes": "Game Types",
+        "activityLastMonths": "Activity Last Months"
       }
     },
     "table": {
       "columns": {
-        "leaderboard": "Tablero",
-        "rank": "Rango",
-        "rating": "Puntuación",
-        "lastMatch": "Ultima Partida",
-        "streak": "Racha",
-        "wins": "Victorias",
-        "losses": "Derrotas",
+        "leaderboard": "Leaderboard",
+        "rank": "Rank",
+        "rating": "Rating",
+        "lastMatch": "Last Match",
+        "streak": "Streak",
+        "wins": "Wins",
+        "losses": "Losses",
         "total": "Total",
-        "winRate": "Tasa de Victorias",
-        "type": "Tipo",
+        "winRate": "Win Rate",
+        "type": "Type",
         "elo": "ELO",
-        "tier": "Nivel",
-        "ratio": "Proporción",
-        "drops": "Abandonos"
+        "tier": "Tier",
+        "ratio": "Ratio",
+        "drops": "Drops"
       },
       "helpers": {
-        "bestRankAchieved": "Mejor rango alcanzado. Menor es mejor. El mejor rango que el jugador ha tenido.",
-        "bestEloAchieved": "Mejor ELO alcanzado. Mayor es mejor. El mejor ELO que el jugador ha tenido.",
-        "best": "Mejor"
+        "bestRankAchieved": "Best Rank Achieved. Lower is better. The best Rank the player ever had.",
+        "bestEloAchieved": "Best ELO Achieved. Higher is better. The best ELO the player ever had.",
+        "best": "Best"
       }
     },
     "faction": {
-      "bestRank": "Mejor Rango",
-      "bestRating": "Mejor Puntuación",
-      "bestWinRate": "Mejor Racha de Victorias"
+      "bestRank": "Best Rank",
+      "bestRating": "Best Rating",
+      "bestWinRate": "Best Win Rate"
     }
   },
   "detailedStats": {
     "filters": {
-      "selectFaction": "Selecciona Facción",
-      "selectGameType": "Selecciona Tipo de Partida"
+      "selectFaction": "Select Faction",
+      "selectGameType": "Select Game Type"
     },
     "charts": {
-      "playTime": "Distribución de horas jugadas",
-      "mapsWinRate": "Tasa de Victorias en Mapa",
-      "factionVsFaction": "Facción vs Facción"
+      "playTime": "Play Time Distribution",
+      "mapsWinRate": "Maps Win Rate",
+      "factionVsFaction": "Faction vs Faction"
     },
-    "noData": "No hay estadisticas detalladas disponibles"
+    "noData": "No detailed statistics available"
   },
   "activity": {
-    "title": "Actividad del jugador",
-    "noData": "No hay información de actividad disponible",
+    "title": "Player Activity",
+    "noData": "No activity data available",
     "filters": {
-      "timeRange": "Rango de Tiempo",
-      "timezone": "Zona Horaria"
+      "timeRange": "Time Range",
+      "timezone": "Timezone"
     },
     "alerts": {
       "noData": {
-        "title": "No hay actividad",
-        "message": "Parece que no estamos recibiendo información de actividad para este jugador.",
-        "reportMessage": "Si este error persiste, por favor reportarlo en"
+        "title": "No Activity Data",
+        "message": "It looks like we are not getting activity data for this player.",
+        "reportMessage": "If this error persists, please report it on"
       },
       "steamOnly": {
-        "title": "No hay DATA en COH3 Stats",
-        "message": "Estas estadisticas solo estan disponibles para jugadores en Steam.",
-        "voteMessage": "Si te gustaria tener estas estadisticas en consolas tambien, por favor vota / reportalo en nuestro"
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     },
     "charts": {
       "calendarDay": {
-        "title": "Actividad por día del calendario"
+        "title": "Activity by calendar day"
       },
       "hourOfDay": {
-        "title": "Actividad por hora del día"
+        "title": "Activity by hour of day"
       },
       "weekDay": {
-        "title": "Actividad por día de la semana"
+        "title": "Activity by week day"
       }
     },
-    "timezoneHelper": "Los datos de actividad por hora se recopilan en zona horaria UTC. Puedes ajustar la visualización a tu zona horaria local usando este selector."
+    "timezoneHelper": "The activity hour data is collected in UTC timezone. You can adjust the display to your local timezone using this selector."
   },
   "teamsStandings": {
-    "title": "Clasificación de equipos organizados",
-    "noData": "No hay datos de equipos disponibles para este jugador",
-    "axisTeams": "Eje",
-    "alliesTeams": "Aliados",
-    "axisTeam": "Equipo del Eje",
-    "alliesTeam": "Equipo de Aliados",
-    "mostPlayed": "Equipos más jugados",
-    "mostRecent": "Equipos recientes",
-    "checkTeamDetails": "Para el historial de partidas y cambios de ELO, consulta los detalles del equipo",
-    "checkTeamLeaderboardsPrefix": "Consulta la",
-    "checkTeamLeaderboardsSuffix": "para encontrar tu clasificación",
-    "limitedTeams": "Limitado a 2 equipos solamente",
-    "helperText": "Los equipos organizados son rastreados solo por COH3 Stats, consulta más información en la página de acerca de"
+    "title": "Arranged Teams Standings",
+    "noData": "No teams data available for this player",
+    "axisTeams": "Axis",
+    "alliesTeams": "Allies",
+    "axisTeam": "Axis Team",
+    "alliesTeam": "Allies Team",
+    "mostPlayed": "Most Played Teams",
+    "mostRecent": "Recent Teams",
+    "checkTeamDetails": "For match and ELO change history check the team details",
+    "checkTeamLeaderboardsPrefix": "Check the",
+    "checkTeamLeaderboardsSuffix": "to find your ranking",
+    "limitedTeams": "Limited to 2 teams only",
+    "helperText": "Arranged teams are tracked only by COH3 Stats, see more info in the about page"
   },
   "teamDetails": {
-    "title": "Detalles del equipo",
-    "specificTeamTitle": "Detalles del equipo",
-    "matchHistory": "Historial de partidas",
-    "eloHistory": "Historial de ELO del equipo",
-    "winLossHistory": "Historial de victorias/derrotas",
-    "teamNotFound": "Equipo no encontrado. Por favor, verifica el ID del equipo e inténtalo de nuevo.",
-    "detailsButton": "Detalles",
-    "showingMatches": "Mostrando {{loaded}} de {{total}} partidas",
-    "errorLoadingMatches": "Error al cargar partidas: {{error}}"
+    "title": "Team Details",
+    "specificTeamTitle": "Team Details",
+    "matchHistory": "Match History",
+    "eloHistory": "Team ELO History",
+    "winLossHistory": "Win/Loss History",
+    "teamNotFound": "Team not found. Please check the team ID and try again.",
+    "detailsButton": "Details",
+    "showingMatches": "Showing {{loaded}} of {{total}} matches",
+    "errorLoadingMatches": "Error loading matches: {{error}}"
   },
   "teamsTable": {
     "columns": {
-      "type": "Tipo",
-      "players": "Jugadores",
+      "type": "Type",
+      "players": "Players",
       "elo": "ELO",
-      "streak": "Racha",
-      "wins": "Victorias",
-      "losses": "Derrotas",
+      "streak": "Streak",
+      "wins": "Wins",
+      "losses": "Losses",
       "ratio": "Ratio",
       "total": "Total",
-      "lastMatch": "Última partida"
+      "lastMatch": "Last Match"
     },
-    "noData": "No hay datos de equipos disponibles",
-    "eloHelper": "ELO no oficial rastreado solo por COH3 Stats, consulta más información en la página de acerca de",
-    "bestElo": "Mejor {{elo}}"
+    "noData": "No teams data available",
+    "eloHelper": "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
+    "bestElo": "Best {{elo}}"
   },
   "teamMatchesTable": {
     "columns": {
-      "played": "Jugado",
-      "result": "Resultado",
-      "enemyElo": "ELO enemigo",
-      "axisPlayers": "Jugadores del Eje",
-      "alliesPlayers": "Jugadores Aliados",
-      "map": "Mapa"
+      "played": "Played",
+      "result": "Result",
+      "enemyElo": "Enemy ELO",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map"
     },
-    "noData": "No hay historial de partidas disponible",
-    "showFlags": "Mostrar banderas de jugadores",
-    "clickForDetails": "Haz clic en la fila para más detalles",
-    "detailsButton": "Detalles",
-    "teamEloHelper": "Esto muestra el cambio de ELO del EQUIPO rastreado por COH3 Stats, este es un ELO diferente al ELO de clasificación del jugador. El ELO de COH3 Stats no se utiliza para emparejamiento.",
-    "playerEloHelper": "El ELO mostrado aquí es el ELO individual del jugador en el modo y facción particular."
+    "noData": "No match history available",
+    "showFlags": "Show Player Flags",
+    "clickForDetails": "Click on the row for more details",
+    "detailsButton": "Details",
+    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+    "playerEloHelper": "The ELO showned here is the individual player standing ELO in the particular mode and faction."
   },
   "nemesis": {
     "widget": {
       "title": "Top 10 - 1v1 Nemesis",
-      "helperText": "El contador de Nemesis tiene que ser 'iniciado' por jugar contra el mismo jugador 2 veces en 1 día (Zona Horaria UTC). Despues de iniciarlo, todos los juegos 1v1 con ese jugador se tomaran en cuenta. Aliases se guardan de la ultima partida con ese jugador. Solo jugadores de Steam son rastreados.",
-      "noRecords": "No hay un nemesis de 1v1 rastreado"
+      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
+      "noRecords": "No 1v1 nemesis tracked"
     },
     "columns": {
       "alias": "Alias",
-      "wins": "Victorias",
-      "losses": "Derrotas",
-      "ratio": "Tasa",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
       "diff": "Diff",
       "total": "Total"
     },
     "title": "1v1 Nemesis",
-    "noNemesis": "No hay Nemesis en 1v1",
-    "wins": "Victorias",
-    "losses": "Derrotas",
+    "noNemesis": "No 1v1 Nemesis",
+    "wins": "Wins",
+    "losses": "Losses",
     "rules": {
-      "trigger": "El contador de Nemesis tiene que ser 'iniciado'",
-      "triggerCondition": "Inicialo jugando contra el mismo jugador 2 veces en 1 dia (UTC).",
-      "aliases": "Aliases se guardan de la ultima partida jugada con ese jugador",
-      "counting": "Despues de iniciarse, todas las partidas 1v1 contra ese jugador se tomaran en cuenta.",
-      "updateTime": "Este se actualiza una vez al dia a las 6 AM UTC.",
-      "steamOnly": "Solo se puede rastrear con jugadores de Steam."
+      "trigger": "Nemesis counter has be to 'triggered'",
+      "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
+      "aliases": "Aliases are saved from the last game played with that player",
+      "counting": "After the trigger, all 1v1 games with that player are counted.",
+      "updateTime": "Data are updated once a day 6 AM UTC.",
+      "steamOnly": "Only Steam players are tracked."
     },
     "alerts": {
       "steamOnly": {
-        "title": "No hay DATA en COH3 Stats",
-        "message": "Estas estadisticas solo estan disponibles para jugadores en Steam.",
-        "voteMessage": "Si te gustaria tener estas estadisticas en consolas tambien, por favor vota / reportalo en nuestro"
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     }
   }
