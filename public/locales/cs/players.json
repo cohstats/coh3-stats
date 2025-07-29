@@ -1,247 +1,247 @@
 {
   "meta": {
-    "title": "{{name}} - COH3 Profil Hráče",
-    "description": "Profil hráče {{name}} v Company of Heroes 3 s {{totalGames}} odehranými hrami a {{winRate}}% úspěšností výher. Zobrazit detailní statistiky, historii zápasů a výkon frakcí.",
+    "title": "{{name}} - COH3 Player Profile",
+    "description": "{{name}}'s Company of Heroes 3 player profile with {{totalGames}} games played and {{winRate}}% win rate. View detailed statistics, match history, and faction performance.",
     "keywords": [
-      "profil hráče",
-      "statistiky hráče",
-      "historie zápasů",
-      "výkon frakcí",
-      "soutěžní hodnocení",
-      "statistiky hráče",
-      "herní statistiky",
-      "data hráče"
+      "player profile",
+      "player statistics",
+      "match history",
+      "faction performance",
+      "competitive rankings",
+      "player stats",
+      "game statistics",
+      "player data"
     ]
   },
   "card": {
     "error": {
-      "title": "Chyba při načítání karty hráče",
-      "loadingError": "Chyba při načítání karty hráče"
+      "title": "Error loading the player card",
+      "loadingError": "Error loading the player card"
     },
-    "title": "Karta hráče - {{name}}",
+    "title": "Player card - {{name}}",
     "titleWithView": {
-      "recentMatches": "Karta hráče - {{name}} - Nedávné zápasy",
-      "replays": "Karta hráče - {{name}} - Záznamy",
-      "standingsDetails": "Karta hráče - {{name}} - Podrobné statistiky",
-      "activity": "Karta hráče - {{name}} - Aktivita",
-      "nemesis": "Karta hráče - {{name}} - Nemesis",
-      "teamsStandings": "Karta hráče - {{name}} - Týmové žebříčky",
-      "teamDetails": "Karta hráče - {{name}} - Detaily týmu"
+      "recentMatches": "Player card - {{name}} - Recent Matches",
+      "replays": "Player card - {{name}} - Replays",
+      "standingsDetails": "Player card - {{name}} - Detailed Stats",
+      "activity": "Player card - {{name}} - Activity",
+      "nemesis": "Player card - {{name}} - Nemesis",
+      "teamsStandings": "Player card - {{name}} - Teams Standings",
+      "teamDetails": "Player card - {{name}} - Team Details"
     }
   },
   "tabs": {
-    "standings": "Žebříčky hráče",
-    "standingsDetails": "Podrobné statistiky",
-    "recentMatches": "Nedávné zápasy",
-    "activity": "Aktivita",
+    "standings": "Player Standings",
+    "standingsDetails": "Detailed Stats",
+    "recentMatches": "Recent Matches",
+    "activity": "Activity",
     "nemesis": "Nemesis",
-    "replays": "Záznamy",
-    "teamsStandings": "Týmové žebříčky"
+    "replays": "Replays",
+    "teamsStandings": "Teams Standings"
   },
   "playerInfo": {
     "bestElo": {
-      "allies": "Nejlepší SPOJENCI ELO {{elo}} v {{mode}} jako {{faction}}",
-      "axis": "Nejlepší OSA ELO {{elo}} v {{mode}} jako {{faction}}"
+      "allies": "Best ALLIES ELO {{elo}} in {{mode}} as {{faction}}",
+      "axis": "Best AXIS ELO {{elo}} in {{mode}} as {{faction}}"
     },
     "stats": {
-      "totalGames": "Celkem her {{count}}",
-      "winRate": "Úspěšnost {{rate}}%",
-      "lastMatch": "Poslední zápas {{time}}"
+      "totalGames": "Total games {{count}}",
+      "winRate": "Win Rate {{rate}}%",
+      "lastMatch": "Last match {{time}}"
     }
   },
   "recentMatches": {
     "filters": {
-      "hideCustomGames": "Skrýt vlastní hry",
-      "showAllGames": "Zobrazit všechny hry"
+      "hideCustomGames": "Hide Custom Games",
+      "showAllGames": "Show All Games"
     },
-    "loadMore": "Načíst další zápasy",
+    "loadMore": "Load More Matches",
     "table": {
       "columns": {
-        "date": "Datum",
-        "map": "Mapa",
-        "duration": "Doba trvání",
-        "type": "Typ",
-        "players": "Hráči",
-        "actions": "Akce"
+        "date": "Date",
+        "map": "Map",
+        "duration": "Duration",
+        "type": "Type",
+        "players": "Players",
+        "actions": "Actions"
       },
-      "noData": "Nebyly nalezeny žádné zápasy"
+      "noData": "No matches found"
     },
     "downloadReplay": {
-      "button": "Stáhnout záznam",
-      "generating": "Generování...",
-      "error": "Chyba při generování záznamu"
+      "button": "Download Replay",
+      "generating": "Generating...",
+      "error": "Error generating replay"
     }
   },
   "standings": {
     "summary": {
       "charts": {
-        "factionDistribution": "Rozdělení frakcí",
-        "gameTypes": "Typy her",
-        "activityLastMonths": "Aktivita v posledních měsících"
+        "factionDistribution": "Faction Distribution",
+        "gameTypes": "Game Types",
+        "activityLastMonths": "Activity Last Months"
       }
     },
     "table": {
       "columns": {
-        "leaderboard": "Žebříček",
-        "rank": "Pořadí",
-        "rating": "Hodnocení",
-        "lastMatch": "Poslední zápas",
-        "streak": "Série",
-        "wins": "Výhry",
-        "losses": "Prohry",
-        "total": "Celkem",
-        "winRate": "Úspěšnost",
-        "type": "Typ",
+        "leaderboard": "Leaderboard",
+        "rank": "Rank",
+        "rating": "Rating",
+        "lastMatch": "Last Match",
+        "streak": "Streak",
+        "wins": "Wins",
+        "losses": "Losses",
+        "total": "Total",
+        "winRate": "Win Rate",
+        "type": "Type",
         "elo": "ELO",
-        "tier": "Úroveň",
-        "ratio": "Poměr",
-        "drops": "Odpojení"
+        "tier": "Tier",
+        "ratio": "Ratio",
+        "drops": "Drops"
       },
       "helpers": {
-        "bestRankAchieved": "Nejlepší dosažené pořadí. Nižší je lepší. Nejlepší pořadí, které hráč kdy měl.",
-        "bestEloAchieved": "Nejlepší dosažené ELO. Vyšší je lepší. Nejlepší ELO, které hráč kdy měl.",
-        "best": "Nejlepší"
+        "bestRankAchieved": "Best Rank Achieved. Lower is better. The best Rank the player ever had.",
+        "bestEloAchieved": "Best ELO Achieved. Higher is better. The best ELO the player ever had.",
+        "best": "Best"
       }
     },
     "faction": {
-      "bestRank": "Nejlepší pořadí",
-      "bestRating": "Nejlepší hodnocení",
-      "bestWinRate": "Nejlepší úspěšnost"
+      "bestRank": "Best Rank",
+      "bestRating": "Best Rating",
+      "bestWinRate": "Best Win Rate"
     }
   },
   "detailedStats": {
     "filters": {
-      "selectFaction": "Vybrat frakci",
-      "selectGameType": "Vybrat typ hry"
+      "selectFaction": "Select Faction",
+      "selectGameType": "Select Game Type"
     },
     "charts": {
-      "playTime": "Rozdělení herního času",
-      "mapsWinRate": "Úspěšnost na mapách",
-      "factionVsFaction": "Frakce proti frakci"
+      "playTime": "Play Time Distribution",
+      "mapsWinRate": "Maps Win Rate",
+      "factionVsFaction": "Faction vs Faction"
     },
-    "noData": "Nejsou k dispozici žádné podrobné statistiky"
+    "noData": "No detailed statistics available"
   },
   "activity": {
-    "title": "Aktivita hráče",
-    "noData": "Nejsou k dispozici žádné údaje o aktivitě",
+    "title": "Player Activity",
+    "noData": "No activity data available",
     "filters": {
-      "timeRange": "Časový rozsah",
-      "timezone": "Časové pásmo"
+      "timeRange": "Time Range",
+      "timezone": "Timezone"
     },
     "alerts": {
       "noData": {
-        "title": "Žádné údaje o aktivitě",
-        "message": "Zdá se, že nezískáváme údaje o aktivitě tohoto hráče.",
-        "reportMessage": "Pokud tato chyba přetrvává, nahlaste ji prosím na"
+        "title": "No Activity Data",
+        "message": "It looks like we are not getting activity data for this player.",
+        "reportMessage": "If this error persists, please report it on"
       },
       "steamOnly": {
-        "title": "Žádné údaje COH3 Stats",
-        "message": "Tyto statistiky jsou k dispozici pouze pro hráče na Steamu.",
-        "voteMessage": "Pokud byste chtěli mít tyto statistiky i na konzolích, hlasujte / nahlaste to prosím na našem"
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     },
     "charts": {
       "calendarDay": {
-        "title": "Aktivita podle kalendářního dne"
+        "title": "Activity by calendar day"
       },
       "hourOfDay": {
-        "title": "Aktivita podle hodiny dne"
+        "title": "Activity by hour of day"
       },
       "weekDay": {
-        "title": "Aktivita podle dne v týdnu"
+        "title": "Activity by week day"
       }
     },
-    "timezoneHelper": "Údaje o aktivitě podle hodin jsou shromažďovány v časovém pásmu UTC. Zobrazení můžete upravit na své místní časové pásmo pomocí tohoto selektoru."
+    "timezoneHelper": "The activity hour data is collected in UTC timezone. You can adjust the display to your local timezone using this selector."
   },
   "teamsStandings": {
-    "title": "Žebříčky uspořádaných týmů",
-    "noData": "Pro tohoto hráče nejsou k dispozici žádné týmové údaje",
-    "axisTeams": "Osa",
-    "alliesTeams": "Spojenci",
-    "axisTeam": "Tým Osy",
-    "alliesTeam": "Tým Spojenců",
-    "mostPlayed": "Nejhranější týmy",
-    "mostRecent": "Nedávné týmy",
-    "checkTeamDetails": "Pro historii zápasů a změn ELO zkontrolujte detaily týmu",
-    "checkTeamLeaderboardsPrefix": "Podívejte se na",
-    "checkTeamLeaderboardsSuffix": "pro zjištění vašeho umístění",
-    "limitedTeams": "Omezeno pouze na 2 týmy",
-    "helperText": "Uspořádané týmy jsou sledovány pouze COH3 Stats, více informací najdete na stránce o nás"
+    "title": "Arranged Teams Standings",
+    "noData": "No teams data available for this player",
+    "axisTeams": "Axis",
+    "alliesTeams": "Allies",
+    "axisTeam": "Axis Team",
+    "alliesTeam": "Allies Team",
+    "mostPlayed": "Most Played Teams",
+    "mostRecent": "Recent Teams",
+    "checkTeamDetails": "For match and ELO change history check the team details",
+    "checkTeamLeaderboardsPrefix": "Check the",
+    "checkTeamLeaderboardsSuffix": "to find your ranking",
+    "limitedTeams": "Limited to 2 teams only",
+    "helperText": "Arranged teams are tracked only by COH3 Stats, see more info in the about page"
   },
   "teamDetails": {
-    "title": "Detaily týmu",
-    "specificTeamTitle": "Detaily týmu",
-    "matchHistory": "Historie zápasů",
-    "eloHistory": "Historie ELO týmu",
-    "winLossHistory": "Historie výher/proher",
-    "teamNotFound": "Tým nenalezen. Zkontrolujte ID týmu a zkuste to znovu.",
-    "detailsButton": "Detaily",
-    "showingMatches": "Zobrazeno {{loaded}} z {{total}} zápasů",
-    "errorLoadingMatches": "Chyba při načítání zápasů: {{error}}"
+    "title": "Team Details",
+    "specificTeamTitle": "Team Details",
+    "matchHistory": "Match History",
+    "eloHistory": "Team ELO History",
+    "winLossHistory": "Win/Loss History",
+    "teamNotFound": "Team not found. Please check the team ID and try again.",
+    "detailsButton": "Details",
+    "showingMatches": "Showing {{loaded}} of {{total}} matches",
+    "errorLoadingMatches": "Error loading matches: {{error}}"
   },
   "teamsTable": {
     "columns": {
-      "type": "Typ",
-      "players": "Hráči",
+      "type": "Type",
+      "players": "Players",
       "elo": "ELO",
-      "streak": "Série",
-      "wins": "Výhry",
-      "losses": "Prohry",
-      "ratio": "Poměr",
-      "total": "Celkem",
-      "lastMatch": "Poslední zápas"
+      "streak": "Streak",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
+      "total": "Total",
+      "lastMatch": "Last Match"
     },
-    "noData": "Nejsou k dispozici žádné údaje o týmech",
-    "eloHelper": "Neoficiální ELO sledované pouze COH3 Stats, více informací najdete na stránce o nás",
-    "bestElo": "Nejlepší {{elo}}"
+    "noData": "No teams data available",
+    "eloHelper": "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
+    "bestElo": "Best {{elo}}"
   },
   "teamMatchesTable": {
     "columns": {
-      "played": "Hrané",
-      "result": "Výsledek",
-      "enemyElo": "ELO nepřítele",
-      "axisPlayers": "Hráči Osy",
-      "alliesPlayers": "Hráči Spojenců",
-      "map": "Mapa"
+      "played": "Played",
+      "result": "Result",
+      "enemyElo": "Enemy ELO",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map"
     },
-    "noData": "Není k dispozici žádná historie zápasů",
-    "showFlags": "Zobrazit vlajky hráčů",
-    "clickForDetails": "Klikněte na řádek pro více detailů",
-    "detailsButton": "Detaily",
-    "teamEloHelper": "Toto ukazuje změnu TÝMOVÉHO ELO sledovaného COH3 Stats, toto je jiné ELO než ELO žebříčku hráče. ELO COH3 Stats se nepoužívá pro matchmaking.",
-    "playerEloHelper": "ELO zobrazené zde je individuální ELO hráče v konkrétním režimu a frakci."
+    "noData": "No match history available",
+    "showFlags": "Show Player Flags",
+    "clickForDetails": "Click on the row for more details",
+    "detailsButton": "Details",
+    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+    "playerEloHelper": "The ELO showned here is the individual player standing ELO in the particular mode and faction."
   },
   "nemesis": {
     "widget": {
       "title": "Top 10 - 1v1 Nemesis",
-      "helperText": "Počítadlo Nemesis musí být 'spuštěno' hraním se stejným hráčem 2krát za 1 den (časové pásmo UTC). Po spuštění se počítají všechny 1v1 hry s tímto hráčem. Přezdívky jsou uloženy z poslední hry hrané s tímto hráčem. Sledováni jsou pouze hráči na Steamu.",
-      "noRecords": "Není sledován žádný 1v1 nemesis"
+      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
+      "noRecords": "No 1v1 nemesis tracked"
     },
     "columns": {
-      "alias": "Přezdívka",
-      "wins": "Výhry",
-      "losses": "Prohry",
-      "ratio": "Poměr",
-      "diff": "Rozdíl",
-      "total": "Celkem"
+      "alias": "Alias",
+      "wins": "Wins",
+      "losses": "Losses",
+      "ratio": "Ratio",
+      "diff": "Diff",
+      "total": "Total"
     },
     "title": "1v1 Nemesis",
-    "noNemesis": "Žádný 1v1 Nemesis",
-    "wins": "Výhry",
-    "losses": "Prohry",
+    "noNemesis": "No 1v1 Nemesis",
+    "wins": "Wins",
+    "losses": "Losses",
     "rules": {
-      "trigger": "Počítadlo Nemesis musí být 'spuštěno'",
-      "triggerCondition": "Spuštění hraním se stejným hráčem 2krát za 1 den (UTC).",
-      "aliases": "Přezdívky jsou uloženy z poslední hry hrané s tímto hráčem",
-      "counting": "Po spuštění se počítají všechny 1v1 hry s tímto hráčem.",
-      "updateTime": "Data jsou aktualizována jednou denně v 6:00 UTC.",
-      "steamOnly": "Sledováni jsou pouze hráči na Steamu."
+      "trigger": "Nemesis counter has be to 'triggered'",
+      "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
+      "aliases": "Aliases are saved from the last game played with that player",
+      "counting": "After the trigger, all 1v1 games with that player are counted.",
+      "updateTime": "Data are updated once a day 6 AM UTC.",
+      "steamOnly": "Only Steam players are tracked."
     },
     "alerts": {
       "steamOnly": {
-        "title": "Žádné údaje COH3 Stats",
-        "message": "Tyto statistiky jsou k dispozici pouze pro hráče na Steamu.",
-        "voteMessage": "Pokud byste chtěli mít tyto statistiky i na konzolích, hlasujte / nahlaste to prosím na našem"
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     }
   }
