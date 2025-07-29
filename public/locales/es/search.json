@@ -1,39 +1,39 @@
 {
   "meta": {
-    "title": "COH3 Stats - Búsqueda",
-    "description": "Busca unidades y jugadores de Steam, Xbox y PSN en Company of Heroes 3.",
+    "title": "COH3 Stats - Search",
+    "description": "Search for units and steam, xbox and psn players in Company of Heroes 3.",
     "keywords": [
-      "buscar jugadores",
-      "buscar datos",
-      "coh3 búsqueda",
-      "búsqueda de unidades",
-      "búsqueda de jugadores",
-      "jugadores steam",
-      "jugadores xbox",
-      "jugadores psn"
+      "search players",
+      "search data",
+      "coh3 search",
+      "units search",
+      "player search",
+      "steam players",
+      "xbox players",
+      "psn players"
     ]
   },
   "sections": {
-    "players": "Jugadores",
-    "units": "Unidades"
+    "players": "Players",
+    "units": "Units"
   },
   "errors": {
-    "searchError": "Error durante la búsqueda"
+    "searchError": "Error while searching"
   },
   "noResults": {
-    "players": "No se encontraron jugadores",
-    "units": "No se encontraron unidades",
-    "unitsEnglishOnly": "La búsqueda de unidades solo admite el idioma inglés"
+    "players": "No players found",
+    "units": "No Units Found",
+    "unitsEnglishOnly": "Unit search supports English Language only"
   },
   "info": {
-    "firstResults": "Solo se muestran los primeros 50 resultados. Por favor, refina tu búsqueda.",
-    "consoleSearch": "La búsqueda de jugadores de consola solo admite coincidencias exactas.",
-    "steamSearch": "También puedes buscar usando el ID de Steam."
+    "firstResults": "Only the first 50 results are displayed. Please refine your search.",
+    "consoleSearch": "Console player search supports exact match only.",
+    "steamSearch": "You can also search using Steam ID."
   },
   "playerCard": {
-    "lastActive": "Última actividad",
-    "steamProfile": "Perfil de Steam",
-    "psnPlayer": "Jugador de PlayStation",
-    "xboxPlayer": "Jugador de XBOX"
+    "lastActive": "Last active",
+    "steamProfile": "Steam Profile",
+    "psnPlayer": "Play Station player",
+    "xboxPlayer": "XBOX player"
   }
 }
