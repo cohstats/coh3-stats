@@ -1,39 +1,39 @@
 {
   "meta": {
-    "title": "App de Escritorio de COH3 Stats",
-    "description": "Descarga la App de Escritorio de COH3 Stats {{version}}. No requiere configurarse. Con un Overlay para OBS. Info detallada de tus oponentes al momento. Notificaciones de sonido para tu juego y mucho mas!.",
+    "title": "Desktop App from COH3 Stats",
+    "description": "Download COH3 Stats Desktop app {{version}}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.",
     "keywords": [
-      "coh3 app de escritorio",
+      "coh3 desktop app",
       "obs overlay",
-      "información de partida en tiempo real",
-      "aplicación de escritorio",
-      "overlay de juego",
-      "análisis de partida",
-      "estadísticas de jugador",
-      "datos de juego en vivo"
+      "realtime match info",
+      "desktop application",
+      "game overlay",
+      "match analysis",
+      "player statistics",
+      "live game data"
     ]
   },
   "download": {
-    "button": "Descarga {{version}}",
-    "buttonAriaLabel": "Descargar instalador de COH3 Stats Desktop App {{version}} para Windows",
-    "downloads": "{{count}} Descargas",
-    "releaseNotes": "Notas de la versión"
+    "button": "Download {{version}}",
+    "buttonAriaLabel": "Download COH3 Stats Desktop App {{version}} installer for Windows",
+    "downloads": "{{count}} downloads",
+    "releaseNotes": "Release Notes"
   },
-  "title": "App de Escritorio COH3 Stats",
-  "subtitle": "¡Obtén información adicional de tu juego actual!",
+  "title": "COH3 Stats Desktop App",
+  "subtitle": "Gain additional intel on your current game!",
   "features": {
-    "title": "Características:",
+    "title": "Features",
     "list": {
-      "noSetup": "Usalo sin ningun esfuerzo, no necesita configurarse - simplemente inicia la aplicacion!",
-      "leaderboard": "Ve las clasificaciones actuales de jugadores incluyendo ELO, Rango, Tasa de Victoria",
-      "teams": "Detecta equipos organizados en tus juegos",
-      "recentGames": "Ve tus juegos recientes directamente en la app",
-      "notifications": "Recibe notificaciones de sonido opcionales al entrar a un juego",
-      "replays": "Sube repeticiones automaticamente a la nube para análisis adicional",
+      "noSetup": "Effortless usage, no setup needed - simply launch the application",
+      "leaderboard": "See current player standings including ELO, Rank, WinRate",
+      "teams": "Detect arranged teams in your games",
+      "recentGames": "See your recent games directly in the app",
+      "notifications": "Receive optional sound notifications upon joining a game",
+      "replays": "Auto upload replays to the cloud for additional analysis",
       "streaming": {
-        "before": "Overlay para transmisiones",
-        "and": "y",
-        "after": "y otras herramientas para transmisiones"
+        "before": "Streamer overlay for",
+        "and": "and",
+        "after": "and other streaming tools"
       }
     }
   }
