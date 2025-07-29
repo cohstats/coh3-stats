@@ -1,39 +1,39 @@
 {
   "meta": {
-    "title": "COH3 Stats - Suche",
-    "description": "Suche nach Einheiten und Steam-, Xbox- und PSN-Spielern in Company of Heroes 3.",
+    "title": "COH3 Stats - Search",
+    "description": "Search for units and steam, xbox and psn players in Company of Heroes 3.",
     "keywords": [
-      "spieler suchen",
-      "daten suchen",
-      "coh3 suche",
-      "einheiten suchen",
-      "spielersuche",
-      "steam spieler",
-      "xbox spieler",
-      "psn spieler"
+      "search players",
+      "search data",
+      "coh3 search",
+      "units search",
+      "player search",
+      "steam players",
+      "xbox players",
+      "psn players"
     ]
   },
   "sections": {
-    "players": "Spieler",
-    "units": "Einheiten"
+    "players": "Players",
+    "units": "Units"
   },
   "errors": {
-    "searchError": "Fehler bei der Suche"
+    "searchError": "Error while searching"
   },
   "noResults": {
-    "players": "Keine Spieler gefunden",
-    "units": "Keine Einheiten gefunden",
-    "unitsEnglishOnly": "Die Einheitensuche unterstützt nur die englische Sprache"
+    "players": "No players found",
+    "units": "No Units Found",
+    "unitsEnglishOnly": "Unit search supports English Language only"
   },
   "info": {
-    "firstResults": "Es werden nur die ersten 50 Ergebnisse angezeigt. Bitte verfeinern Sie Ihre Suche.",
-    "consoleSearch": "Die Konsolenspielersuche unterstützt nur exakte Übereinstimmungen.",
-    "steamSearch": "Sie können auch mit der Steam-ID suchen."
+    "firstResults": "Only the first 50 results are displayed. Please refine your search.",
+    "consoleSearch": "Console player search supports exact match only.",
+    "steamSearch": "You can also search using Steam ID."
   },
   "playerCard": {
-    "lastActive": "Zuletzt aktiv",
-    "steamProfile": "Steam-Profil",
-    "psnPlayer": "PlayStation-Spieler",
-    "xboxPlayer": "XBOX-Spieler"
+    "lastActive": "Last active",
+    "steamProfile": "Steam Profile",
+    "psnPlayer": "Play Station player",
+    "xboxPlayer": "XBOX player"
   }
 }
