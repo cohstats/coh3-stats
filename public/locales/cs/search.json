@@ -1,39 +1,39 @@
 {
   "meta": {
-    "title": "COH3 Stats - Vyhledávání",
-    "description": "Vyhledávání jednotek a hráčů na platformách Steam, Xbox a PSN v Company of Heroes 3.",
+    "title": "COH3 Stats - Search",
+    "description": "Search for units and steam, xbox and psn players in Company of Heroes 3.",
     "keywords": [
-      "vyhledávání hráčů",
-      "vyhledávání dat",
-      "coh3 vyhledávání",
-      "vyhledávání jednotek",
-      "hledání hráčů",
-      "steam hráči",
-      "xbox hráči",
-      "psn hráči"
+      "search players",
+      "search data",
+      "coh3 search",
+      "units search",
+      "player search",
+      "steam players",
+      "xbox players",
+      "psn players"
     ]
   },
   "sections": {
-    "players": "Hráči",
-    "units": "Jednotky"
+    "players": "Players",
+    "units": "Units"
   },
   "errors": {
-    "searchError": "Chyba při vyhledávání"
+    "searchError": "Error while searching"
   },
   "noResults": {
-    "players": "Žádní hráči nenalezeni",
-    "units": "Žádné jednotky nenalezeny",
-    "unitsEnglishOnly": "Vyhledávání jednotek podporuje pouze anglický jazyk"
+    "players": "No players found",
+    "units": "No Units Found",
+    "unitsEnglishOnly": "Unit search supports English Language only"
   },
   "info": {
-    "firstResults": "Zobrazeno je pouze prvních 50 výsledků. Upřesněte prosím své vyhledávání.",
-    "consoleSearch": "Vyhledávání hráčů na konzolích podporuje pouze přesnou shodu.",
-    "steamSearch": "Můžete také vyhledávat pomocí Steam ID."
+    "firstResults": "Only the first 50 results are displayed. Please refine your search.",
+    "consoleSearch": "Console player search supports exact match only.",
+    "steamSearch": "You can also search using Steam ID."
   },
   "playerCard": {
-    "lastActive": "Naposledy aktivní",
-    "steamProfile": "Steam profil",
-    "psnPlayer": "Hráč PlayStation",
-    "xboxPlayer": "Hráč XBOX"
+    "lastActive": "Last active",
+    "steamProfile": "Steam Profile",
+    "psnPlayer": "Play Station player",
+    "xboxPlayer": "XBOX player"
   }
 }
