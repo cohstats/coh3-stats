@@ -1,4 +1,57 @@
 {
+  "leaderboards": {
+    "meta": {
+      "title": "Globální žebříčky statistiky",
+      "description": "Celkové informace o všech žebříčcích v Company of Heroes 3",
+      "keywords": [
+        "coh3 žebříčky",
+        "živý žebříček",
+        "celkové žebříčky",
+        "coh3 žebříček statistiky",
+        "žebříček statistiky",
+        "ranking data"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "Herní statistiky a grafy",
+      "description": "Herní statistiky pro Company of Heroes 3. Podívejte se na míru výher každé frakce / módu a mnoho dalšího.",
+      "keywords": [
+        "coh3 míra výher",
+        "míra výher frakcí",
+        "analýza",
+        "nejlepší frakce",
+        "herní statistiky"
+      ]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "Statistiky map",
+      "description": "Komplexní statistiky map pro Company of Heroes 3 včetně míry výher, popularity a výkonnostních dat.",
+      "keywords": [
+        "coh3 mapy",
+        "statistiky map",
+        "míra výher map",
+        "data map",
+        "analýza bojiště"
+      ]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "Statistiky úspěchů",
+      "description": "Statistiky úspěchů Company of Heroes 3 a míra dokončení napříč všemi hráči.",
+      "keywords": [
+        "coh3 úspěchy",
+        "statistiky úspěchů",
+        "míra dokončení",
+        "úspěchy hráčů",
+        "herní pokrok"
+      ]
+    }
+  },
   "players": {
     "meta": {
       "title": "Statistiky multiplayer hráčů - Company of Heroes 3",

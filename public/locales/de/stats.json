@@ -1,4 +1,57 @@
 {
+  "leaderboards": {
+    "meta": {
+      "title": "Globale Ranglisten-Statistiken",
+      "description": "Allgemeine Informationen über alle Ranglisten in Company of Heroes 3",
+      "keywords": [
+        "coh3 ranglisten",
+        "live ladder",
+        "gesamte ranglisten",
+        "coh3 ladder statistiken",
+        "ranglisten statistiken",
+        "ranking daten"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "Spielstatistiken & Diagramme",
+      "description": "Spielstatistiken für Company of Heroes 3. Sehen Sie die Gewinnrate jeder Fraktion / Modus und vieles mehr.",
+      "keywords": [
+        "coh3 gewinnrate",
+        "fraktionen gewinnrate",
+        "analyse",
+        "beste fraktion",
+        "spielstatistiken"
+      ]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "Kartenstatistiken",
+      "description": "Umfassende Kartenstatistiken für Company of Heroes 3 einschließlich Gewinnraten, Beliebtheit und Leistungsdaten.",
+      "keywords": [
+        "coh3 karten",
+        "kartenstatistiken",
+        "karten gewinnraten",
+        "kartendaten",
+        "schlachtfeld analyse"
+      ]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "Erfolgsstatistiken",
+      "description": "Company of Heroes 3 Erfolgsstatistiken und Abschlussraten aller Spieler.",
+      "keywords": [
+        "coh3 erfolge",
+        "erfolgsstatistiken",
+        "abschlussraten",
+        "spielererfolge",
+        "spielfortschritt"
+      ]
+    }
+  },
   "players": {
     "meta": {
       "title": "Mehrspieler-Spielerstatistiken - Company of Heroes 3",

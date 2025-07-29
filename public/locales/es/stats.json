@@ -1,4 +1,57 @@
 {
+  "leaderboards": {
+    "meta": {
+      "title": "Estadísticas de Clasificaciones Globales",
+      "description": "Información general sobre todas las clasificaciones en Company of Heroes 3",
+      "keywords": [
+        "clasificaciones coh3",
+        "escalera en vivo",
+        "clasificaciones generales",
+        "estadísticas escalera coh3",
+        "estadísticas clasificaciones",
+        "datos de ranking"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "Estadísticas de Juego y Gráficos",
+      "description": "Estadísticas de juego para Company of Heroes 3. Ve la tasa de victorias de cada facción / modo y mucho más.",
+      "keywords": [
+        "tasa de victorias coh3",
+        "tasa de victorias facciones",
+        "análisis",
+        "mejor facción",
+        "estadísticas del juego"
+      ]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "Estadísticas de Mapas",
+      "description": "Estadísticas completas de mapas para Company of Heroes 3 incluyendo tasas de victoria, popularidad y datos de rendimiento.",
+      "keywords": [
+        "mapas coh3",
+        "estadísticas de mapas",
+        "tasas de victoria mapas",
+        "datos de mapas",
+        "análisis de campo de batalla"
+      ]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "Estadísticas de Logros",
+      "description": "Estadísticas de logros de Company of Heroes 3 y tasas de finalización en todos los jugadores.",
+      "keywords": [
+        "logros coh3",
+        "estadísticas de logros",
+        "tasas de finalización",
+        "logros de jugadores",
+        "progreso del juego"
+      ]
+    }
+  },
   "players": {
     "meta": {
       "title": "Estadísticas de Jugadores Multijugador - Company of Heroes 3",
