@@ -1,21 +1,21 @@
 {
-  "title": "Ranglisten-Stufen in Company of Heroes 3",
-  "description": "Basierend auf der ELO eines Spielers werden Spieler in bestimmte Ligen und Stufen eingeteilt.",
-  "matchRequirement": "Ein Spieler benötigt mindestens 10 Spiele pro Fraktion in einem bestimmten Spieltyp, um einen Rang zu erhalten und in einer Stufe platziert zu werden.",
+  "title": "Ranking Tiers in Company of Heroes 3",
+  "description": "Based on the player ELO, players are placed into specific Leagues and Tiers.",
+  "matchRequirement": "A player needs at least 10 matches for each faction in a specific game type to earn a rank and be placed in a tier.",
   "rankDecay": {
-    "title": "Rang-Verfall",
-    "text": "Wenn ein Spieler längere Zeit inaktiv bleibt, verliert er seinen Rang. Er kann ihn jedoch durch ein einziges Spiel zurückerhalten."
+    "title": "Rank Decay",
+    "text": "If a player remains inactive for an extended period, they lose their rank. However, they can regain it by playing just one game."
   },
   "eloDecay": {
-    "title": "ELO-Verfall",
-    "text": "ELO unterliegt ebenfalls dem Verfall. Wenn ein Spieler längere Zeit nicht spielt, kann sein ELO ohne ein Spiel gesenkt werden."
+    "title": "ELO Decay",
+    "text": "ELO is also subject to decay, if a player doesn't play for extended period their ELO might be lowered without playing any game."
   },
   "table": {
     "columns": {
-      "tierName": "Stufen-Name",
-      "eloRating": "ELO-Wertung",
-      "rank": "Rang"
+      "tierName": "Tier Name",
+      "eloRating": "ELO Rating",
+      "rank": "Rank"
     },
-    "topPlayers": "Top {{count}} Spieler"
+    "topPlayers": "Top {{count}} players"
   }
 }
