@@ -1,127 +1,127 @@
 {
   "meta": {
-    "title": "COH3 Průzkumník - Frakce, Jednotky a Budovy",
-    "description": "Prozkoumejte frakce, jednotky, budovy a bojové skupiny v Company of Heroes 3. Detailní statistiky, náklady a informace o poškození pro veškerý herní obsah.",
+    "title": "COH3 Explorer - Factions, Units & Buildings",
+    "description": "Explore Company of Heroes 3 factions, units, buildings, and battlegroups. Detailed stats, costs, and damage information for all game content.",
     "keywords": [
-      "coh3 průzkumník",
-      "frakce",
-      "jednotky",
-      "budovy",
-      "bojové skupiny",
+      "coh3 explorer",
+      "factions",
+      "units",
+      "buildings",
+      "battlegroups",
       "wehrmacht",
-      "americké síly",
+      "us forces",
       "dak",
-      "britské síly",
-      "statistiky jednotek",
-      "poškození",
-      "náklady"
+      "british forces",
+      "unit stats",
+      "damage",
+      "costs"
     ]
   },
   "common": {
-    "units": "Jednotky",
-    "buildings": "Budovy",
-    "battleGroups": "Bojové skupiny",
-    "near": "Blízko",
-    "medium": "Střední",
-    "far": "Daleko",
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups",
+    "near": "Near",
+    "medium": "Medium",
+    "far": "Far",
     "min": "Min",
     "max": "Max",
-    "produces": "Produkuje",
-    "hitpoints": "Životy",
-    "upgrades": "Vylepšení",
-    "costs": "Náklady",
-    "explorer": "Průzkumník"
+    "produces": "Produces",
+    "hitpoints": "Hitpoints",
+    "upgrades": "Upgrades",
+    "costs": "Costs",
+    "explorer": "Explorer"
   },
   "explorer": {
-    "title": "Průzkumník frakcí Company of Heroes 3",
-    "subtitle": "Prozkoumejte všechny jednotky, budovy a bojové skupiny ve hře."
+    "title": "Company of Heroes 3 Factions Explorer",
+    "subtitle": "Explore all the units, buildings and battlegroups in the game."
   },
   "factionPage": {
-    "factionOverview": "Přehled frakce",
+    "factionOverview": "Faction Overview",
     "meta": {
       "title": "{{faction}} - COH3 Explorer",
-      "description": "Prozkoumejte frakci {{faction}} v Company of Heroes 3. Zobrazte jednotky, budovy, bojové skupiny a podrobné statistiky pro armádu {{faction}}.",
+      "description": "Explore {{faction}} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for {{faction}} army.",
       "keywords": [
         "{{faction}}",
         "{{faction}} explorer",
-        "{{faction}} bojové skupiny",
-        "{{faction}} jednotky"
+        "{{faction}} battle groups",
+        "{{faction}} units"
       ]
     }
   },
   "unitPage": {
-    "stats": "Statistiky",
-    "abilities": "Schopnosti",
-    "loadout": "Výbava",
-    "veterancy": "Veteránství",
-    "upkeep": "Údržba za minutu",
-    "reinforce": "Posílit",
-    "construct": "Může stavět",
-    "free": "Zdarma",
-    "weaponNote": "Efektivní přesnost je ovlivněna několika faktory, jako je velikost cíle nebo brnění přijímající jednotky, stejně jako přesnost nebo průraznost útočící jednotky.",
-    "importantNote": "Důležitá poznámka: Tato sekce zobrazuje všechny jednotky dostupné ve hře, včetně těch pouze v kampani."
+    "stats": "Stats",
+    "abilities": "Abilities",
+    "loadout": "Loadout",
+    "veterancy": "Veterancy",
+    "upkeep": "Upkeep per minute",
+    "reinforce": "Reinforce",
+    "construct": "Can Construct",
+    "free": "Free",
+    "weaponNote": "The effective accuracy is impacted by several factors like target size or armor of the receiving unit as well as accuracy or penetration of the attacking one.",
+    "importantNote": "Important Note: This section displays all the units available in-game, including campaign-only."
   },
   "statsCard": {
-    "sightRange": "Dohled",
-    "speed": "Rychlost",
-    "acceleration": "Zrychlení",
-    "deceleration": "Zpomalení",
-    "maxRange": "Maximální dosah",
-    "targetSize": "Velikost cíle",
-    "armor": "Brnění",
-    "captureMultiplier": "Násobitel zachycení",
-    "decaptureMultiplier": "Násobitel uvolnění",
-    "vehicleArmor": "Brnění vozidla"
+    "sightRange": "Sight Range",
+    "speed": "Speed",
+    "acceleration": "Acceleration",
+    "deceleration": "Deceleration",
+    "maxRange": "Max Range",
+    "targetSize": "Target Size",
+    "armor": "Armor",
+    "captureMultiplier": "Capture Multiplier",
+    "decaptureMultiplier": "Decapture Multiplier",
+    "vehicleArmor": "Vehicle Armor"
   },
   "weaponCard": {
-    "accuracy": "Přesnost",
-    "rpm": "Střel za minutu (RPM)",
-    "rangeOfFire": "Dosah střelby",
-    "penetration": "Průraznost",
-    "scatter": "Oblast rozptylu",
-    "damage": "Poškození",
-    "aoeRadius": "Poloměr AoE",
-    "movingAccuracy": "Násobitel přesnosti za pohybu",
-    "movingCooldown": "Násobitel prodlevy za pohybu"
+    "accuracy": "Accuracy",
+    "rpm": "Rounds per Minute (RPM)",
+    "rangeOfFire": "Range of Fire",
+    "penetration": "Penetration",
+    "scatter": "Scatter Area",
+    "damage": "Damage",
+    "aoeRadius": "AoE Radius",
+    "movingAccuracy": "Moving Accuracy Multiplier",
+    "movingCooldown": "Moving Cooldown Multiplier"
   },
   "unitMeta": {
-    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} v Company of Heroes 3.",
-    "costs": "Náklady {{costs}}.",
-    "population": "{{popCap}} populace.",
+    "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
+    "costs": "Costs {{costs}}.",
+    "population": "{{popCap}} population.",
     "abbreviations": {
-      "hitpoints": "ŽB",
-      "manpower": "LS",
-      "fuel": "PH",
+      "hitpoints": "HP",
+      "manpower": "MP",
+      "fuel": "FU",
       "munition": "MU",
-      "armor": "brnění"
+      "armor": "armor"
     },
     "keywords": {
       "vehicles": {
         "tank": "coh3 tank",
-        "vehicle": "coh3 vozidlo",
-        "armorStats": "statistiky brnění",
-        "vehicleGuide": "průvodce vozidly"
+        "vehicle": "coh3 vehicle",
+        "armorStats": "armor stats",
+        "vehicleGuide": "vehicle guide"
       },
       "infantry": {
-        "infantry": "coh3 pěchota",
-        "squadStats": "statistiky družstva",
-        "unitGuide": "průvodce jednotkami",
-        "infantryTactics": "taktiky pěchoty"
+        "infantry": "coh3 infantry",
+        "squadStats": "squad stats",
+        "unitGuide": "unit guide",
+        "infantryTactics": "infantry tactics"
       },
       "teamWeapons": {
-        "teamWeapon": "coh3 týmová zbraň",
-        "supportWeapon": "podpůrná zbraň",
-        "crewWeapon": "zbraň obsluhy",
-        "artillery": "dělostřelectvo"
+        "teamWeapon": "coh3 team weapon",
+        "supportWeapon": "support weapon",
+        "crewWeapon": "crew weapon",
+        "artillery": "artillery"
       },
       "emplacements": {
-        "emplacement": "coh3 opevnění",
-        "defensiveStructure": "obranná struktura",
-        "fortification": "fortifikace"
+        "emplacement": "coh3 emplacement",
+        "defensiveStructure": "defensive structure",
+        "fortification": "fortification"
       },
       "common": {
-        "units": "{{raceId}} jednotky",
-        "army": "{{raceId}} armáda"
+        "units": "{{raceId}} units",
+        "army": "{{raceId}} army"
       }
     }
   }
