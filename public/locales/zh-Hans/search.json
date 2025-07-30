@@ -18,11 +18,22 @@
     "units": "单位"
   },
   "errors": {
-    "noResults": "未找到结果",
-    "searchTooShort": "搜索词太短"
+    "searchError": "Error while searching"
   },
-  "placeholders": {
-    "searchPlayers": "搜索玩家...",
-    "searchUnits": "搜索单位..."
+  "noResults": {
+    "players": "No players found",
+    "units": "No Units Found",
+    "unitsEnglishOnly": "Unit search supports English Language only"
+  },
+  "info": {
+    "firstResults": "Only the first 50 results are displayed. Please refine your search.",
+    "consoleSearch": "Console player search supports exact match only.",
+    "steamSearch": "You can also search using Steam ID."
+  },
+  "playerCard": {
+    "lastActive": "Last active",
+    "steamProfile": "Steam Profile",
+    "psnPlayer": "Play Station player",
+    "xboxPlayer": "XBOX player"
   }
 }
