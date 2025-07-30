@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "COH3 Match {{matchId}} - {{map}} {{mode}}",
+    "description": "Company of Heroes 3 match {{matchId}} details on {{map}} in {{mode}} mode. View player performance, faction matchups, and game statistics.",
+    "keywords": [
+      "match details",
+      "game replay",
+      "match analysis",
+      "player performance",
+      "faction matchup",
+      "game statistics"
+    ]
+  }
+}
