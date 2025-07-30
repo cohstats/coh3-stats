@@ -48,7 +48,7 @@
   },
   "columns": {
     "rank": "Pořadí",
-    "rc": "RC",
+    "rc": "ZR",
     "elo": "ELO",
     "alias": "Přezdívka",
     "streak": "Série",
