@@ -32,12 +32,7 @@
     "meta": {
       "title": "{{faction}} - COH3 探索器",
       "description": "探索英雄连3中的{{faction}}阵营。查看{{faction}}军队的单位、建筑、战斗群和详细统计数据。",
-      "keywords": [
-        "{{faction}}",
-        "{{faction}} 探索器",
-        "{{faction}} 战斗群",
-        "{{faction}} 单位"
-      ]
+      "keywords": ["{{faction}}", "{{faction}} 探索器", "{{faction}} 战斗群", "{{faction}} 单位"]
     }
   }
 }
