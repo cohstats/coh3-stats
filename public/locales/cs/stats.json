@@ -30,13 +30,7 @@
     "meta": {
       "title": "Statistiky map",
       "description": "Komplexní statistiky map pro Company of Heroes 3 včetně míry výher, popularity a výkonnostních dat.",
-      "keywords": [
-        "coh3 mapy",
-        "statistiky map",
-        "míra výher map",
-        "data map",
-        "analýza bojiště"
-      ]
+      "keywords": ["coh3 mapy", "statistiky map", "míra výher map", "data map", "analýza bojiště"]
     }
   },
   "achievements": {
