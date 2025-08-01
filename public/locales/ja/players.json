@@ -1,24 +1,24 @@
 {
   "meta": {
-    "title": "{{name}} - COH3 玩家档案",
-    "description": "{{name}} 的英雄连3玩家档案，已进行 {{totalGames}} 场游戏，胜率为 {{winRate}}%。查看详细统计数据、比赛历史和阵营表现。",
+    "title": "{{name}} - COH3 Player Profile",
+    "description": "{{name}}'s Company of Heroes 3 player profile with {{totalGames}} games played and {{winRate}}% win rate. View detailed statistics, match history, and faction performance.",
     "keywords": [
-      "玩家档案",
-      "玩家统计",
-      "比赛历史",
-      "阵营表现",
-      "竞技排名",
-      "玩家数据",
-      "游戏统计",
-      "玩家信息"
+      "player profile",
+      "player statistics",
+      "match history",
+      "faction performance",
+      "competitive rankings",
+      "player stats",
+      "game statistics",
+      "player data"
     ]
   },
   "card": {
     "error": {
-      "title": "加载玩家卡片时出错",
-      "loadingError": "加载玩家卡片时出错"
+      "title": "Error loading the player card",
+      "loadingError": "Error loading the player card"
     },
-    "title": "玩家卡片",
+    "title": "Player card - {{name}}",
     "titleWithView": {
       "recentMatches": "Player card - {{name}} - Recent Matches",
       "replays": "Player card - {{name}} - Replays",

@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Live Games - Company of Heroes 3",
+    "description": "Current live games in Company of Heroes 3",
+    "keywords": [
+      "coh3 live games",
+      "coh3 realtime matches",
+      "coh3 games",
+      "coh3 current matches in progress"
+    ]
+  },
+  "pageTitle": "Live PC Games",
+  "filters": {
+    "liveGames": {
+      "label": "Live Games",
+      "options": {
+        "1v1": "1 vs 1 Automatch",
+        "2v2": "2 vs 2 Automatch",
+        "3v3": "3 vs 3 Automatch",
+        "4v4": "4 vs 4 Automatch",
+        "ai": "Automatch VS AI",
+        "custom": "Custom Games"
+      }
+    },
+    "sortBy": {
+      "label": "Sort By",
+      "options": {
+        "rank": "Rank",
+        "observers": "Observers",
+        "startgametime": "Start Time"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "Live Games Summary",
+    "tooltip": "Current multiplayer games in progress. Total Players are unique filtered. Keep in mind that there are probably a lot of players in lobby / searching / loading and doing other things. Custom games are not observable by default. Most likely there is much more custom games being played. Games are updated every 5 minutes.",
+    "noGames": {
+      "title": "No Live Games Detected",
+      "message": "COH3 Stats may need to update after a recent game patch."
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs AI",
+      "custom": "Custom"
+    },
+    "totals": {
+      "automatch": "Total in Automatch",
+      "anyGame": "Total in any game"
+    },
+    "games": "games"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "Mode",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "Map",
+      "observers": "Observers",
+      "gameTime": "Game Time",
+      "server": "Server"
+    },
+    "switches": {
+      "showFlags": "Show Player Flags",
+      "showServer": "Show Match Server"
+    },
+    "errors": {
+      "title": "Error getting the live games",
+      "summaryTitle": "Error getting the live games summary"
+    },
+    "dataUpdated": "Data updated on {{time}}"
+  }
+}

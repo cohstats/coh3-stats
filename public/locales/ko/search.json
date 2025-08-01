@@ -1,21 +1,21 @@
 {
   "meta": {
-    "title": "COH3 Stats - 搜索",
-    "description": "在英雄连3中搜索单位和Steam、Xbox、PSN玩家。",
+    "title": "COH3 Stats - Search",
+    "description": "Search for units and steam, xbox and psn players in Company of Heroes 3.",
     "keywords": [
-      "搜索玩家",
-      "搜索数据",
-      "coh3搜索",
-      "单位搜索",
-      "玩家搜索",
-      "steam玩家",
-      "xbox玩家",
-      "psn玩家"
+      "search players",
+      "search data",
+      "coh3 search",
+      "units search",
+      "player search",
+      "steam players",
+      "xbox players",
+      "psn players"
     ]
   },
   "sections": {
-    "players": "玩家",
-    "units": "单位"
+    "players": "Players",
+    "units": "Units"
   },
   "errors": {
     "searchError": "Error while searching"

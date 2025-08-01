@@ -1,31 +1,31 @@
 {
   "meta": {
-    "title": "COH3 探索器 - 阵营、单位和建筑",
-    "description": "探索英雄连3的阵营、单位、建筑和战斗群。所有游戏内容的详细统计、成本和伤害信息。",
+    "title": "COH3 Explorer - Factions, Units & Buildings",
+    "description": "Explore Company of Heroes 3 factions, units, buildings, and battlegroups. Detailed stats, costs, and damage information for all game content.",
     "keywords": [
-      "coh3探索器",
-      "阵营",
-      "单位",
-      "建筑",
-      "战斗群",
-      "国防军",
-      "美军",
-      "德意志非洲军团",
-      "英军",
-      "单位统计",
-      "伤害",
-      "成本"
+      "coh3 explorer",
+      "factions",
+      "units",
+      "buildings",
+      "battlegroups",
+      "wehrmacht",
+      "us forces",
+      "dak",
+      "british forces",
+      "unit stats",
+      "damage",
+      "costs"
     ]
   },
   "common": {
-    "units": "单位",
-    "buildings": "建筑",
-    "battleGroups": "战斗群",
-    "near": "近距离",
-    "medium": "中距离",
-    "far": "远距离",
-    "min": "最小",
-    "max": "最大",
+    "units": "Units",
+    "buildings": "Buildings",
+    "battleGroups": "Battlegroups",
+    "near": "Near",
+    "medium": "Medium",
+    "far": "Far",
+    "min": "Min",
+    "max": "Max",
     "produces": "Produces",
     "hitpoints": "Hitpoints",
     "upgrades": "Upgrades",
@@ -36,30 +36,17 @@
     "title": "Company of Heroes 3 Factions Explorer",
     "subtitle": "Explore all the units, buildings and battlegroups in the game."
   },
-  "dps": {
-    "meta": {
-      "title": "COH3 DPS计算器 - 每秒伤害工具",
-      "description": "计算英雄连3所有单位的每秒伤害(DPS)。比较武器、分析掩体效果，并使用我们的高级DPS计算器优化小队组合。",
-      "keywords": [
-        "coh3 dps计算器",
-        "每秒伤害",
-        "coh3伤害计算器",
-        "单位伤害比较",
-        "武器统计",
-        "掩体分析",
-        "小队优化",
-        "dps工具",
-        "coh3计算器",
-        "单位效率"
-      ]
-    }
-  },
   "factionPage": {
-    "factionOverview": "阵营概览",
+    "factionOverview": "Faction Overview",
     "meta": {
-      "title": "{{faction}} - COH3 探索器",
-      "description": "探索英雄连3中的{{faction}}阵营。查看{{faction}}军队的单位、建筑、战斗群和详细统计数据。",
-      "keywords": ["{{faction}}", "{{faction}} 探索器", "{{faction}} 战斗群", "{{faction}} 单位"]
+      "title": "{{faction}} - COH3 Explorer",
+      "description": "Explore {{faction}} faction in Company of Heroes 3. View units, buildings, battlegroups, and detailed statistics for {{faction}} army.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} explorer",
+        "{{faction}} battle groups",
+        "{{faction}} units"
+      ]
     }
   },
   "unitPage": {
@@ -99,19 +86,19 @@
   },
   "dps": {
     "meta": {
-      "title": "COH3 DPS计算器 - 每秒伤害工具",
-      "description": "计算英雄连3所有单位的每秒伤害(DPS)。比较武器、分析掩体效果，并使用我们的高级DPS计算器优化小队组合。",
+      "title": "COH3 DPS Calculator - Damage Per Second Tool",
+      "description": "Calculate damage per second (DPS) for all Company of Heroes 3 units. Compare weapons, analyze cover effects, and optimize squad combinations with our advanced DPS calculator.",
       "keywords": [
-        "coh3 dps计算器",
-        "每秒伤害",
-        "coh3伤害计算器",
-        "单位伤害比较",
-        "武器统计",
-        "掩体分析",
-        "小队优化",
-        "dps工具",
-        "coh3计算器",
-        "单位效率"
+        "coh3 dps calculator",
+        "damage per second",
+        "coh3 damage calculator",
+        "unit damage comparison",
+        "weapon stats",
+        "cover analysis",
+        "squad optimization",
+        "dps tool",
+        "coh3 calculator",
+        "unit effectiveness"
       ]
     }
   },
