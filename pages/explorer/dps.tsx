@@ -4,14 +4,14 @@ import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappin
 import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
-import Head from "next/head";
 import React, { useEffect } from "react";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
+import { createPageSEO } from "../../src/seo-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
-import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
+import { useTranslation } from "next-i18next";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -23,7 +23,7 @@ interface DpsProps {
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
 const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
-  const { asPath } = useRouter();
+  const { t } = useTranslation(["explorer"]);
 
   useEffect(() => {
     AnalyticsDPSExplorerPageView();
@@ -66,30 +66,12 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
     ebpsData: ebpsData,
   };
 
-  const keywords = generateKeywordsString([
-    "coh3 dps",
-    "dps tools",
-    "coh3 dps calculator",
-    "coh3 units calculator",
-    "coh3 damage calculator",
-    "damage per second coh3",
-  ]);
+  // Create SEO props for DPS calculator page
+  const seoProps = createPageSEO(t, "dps", "/explorer/dps");
 
   return (
     <>
-      <Head>
-        <title>COH3 Stats - DPS Calculator</title>
-        <meta
-          name="description"
-          content={
-            "DPS Calculator for all units. Calculate with types of covers." +
-            "Setup different squad combinations, weapons and much more."
-          }
-        />
-        <meta name="keywords" content={keywords} />
-        {generateAlternateLanguageLinks(asPath)}
-        {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
-      </Head>
+      <NextSeo {...seoProps} />
       <div>
         {isLoading && (
           <Center maw={400} h={250} mx="auto">

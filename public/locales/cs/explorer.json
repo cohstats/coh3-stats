@@ -84,6 +84,24 @@
     "movingAccuracy": "Násobitel přesnosti za pohybu",
     "movingCooldown": "Násobitel prodlevy za pohybu"
   },
+  "dps": {
+    "meta": {
+      "title": "COH3 DPS Kalkulačka - Nástroj pro poškození za sekundu",
+      "description": "Vypočítejte poškození za sekundu (DPS) pro všechny jednotky Company of Heroes 3. Porovnávejte zbraně, analyzujte efekty krytí a optimalizujte kombinace oddílů s naší pokročilou DPS kalkulačkou.",
+      "keywords": [
+        "coh3 dps kalkulačka",
+        "poškození za sekundu",
+        "coh3 kalkulačka poškození",
+        "porovnání poškození jednotek",
+        "statistiky zbraní",
+        "analýza krytí",
+        "optimalizace oddílů",
+        "dps nástroj",
+        "coh3 kalkulačka",
+        "efektivita jednotek"
+      ]
+    }
+  },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} v Company of Heroes 3.",
     "costs": "Náklady {{costs}}.",
