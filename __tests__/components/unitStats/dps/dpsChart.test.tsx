@@ -1,4 +1,4 @@
-import { mapChartData } from "../../../../components/unitStats/dps/dpsChart";
+import { mapChartData } from "../../../../components/unitStats/dps/dpsPageComponent";
 
 describe("mapChartData", () => {
   test("should return chart line with default values when no id is provided", () => {

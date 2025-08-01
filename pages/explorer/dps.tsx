@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { DpsChart } from "../../components/unitStats/dps/dpsChart";
+import { DpsPageComponent } from "../../components/unitStats/dps/dpsPageComponent";
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
@@ -78,7 +78,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
             <Loader />
           </Center>
         )}
-        {!isLoading && <DpsChart {...dbpsData} />}
+        {!isLoading && <DpsPageComponent {...dbpsData} />}
       </div>
     </>
   );

@@ -248,7 +248,7 @@ export const init = (props: IDPSProps) => {
   units2 = [...units1];
 };
 
-export const DpsChart = (props: IDPSProps) => {
+export const DpsPageComponent = (props: IDPSProps) => {
   const filter_def1: string[] = [];
   const filter_def2: string[] = [];
   const searchData_default: CustomizableUnit[] = [];
