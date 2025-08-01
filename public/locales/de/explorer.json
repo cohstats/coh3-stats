@@ -84,6 +84,24 @@
     "movingAccuracy": "Bewegungsgenauigkeitsmultiplikator",
     "movingCooldown": "Bewegungsabkühlungsmultiplikator"
   },
+  "dps": {
+    "meta": {
+      "title": "COH3 DPS-Rechner - Schaden pro Sekunde Tool",
+      "description": "Berechnen Sie Schaden pro Sekunde (DPS) für alle Company of Heroes 3 Einheiten. Vergleichen Sie Waffen, analysieren Sie Deckungseffekte und optimieren Sie Truppkombinationen mit unserem fortschrittlichen DPS-Rechner.",
+      "keywords": [
+        "coh3 dps rechner",
+        "schaden pro sekunde",
+        "coh3 schadenrechner",
+        "einheiten schadenvergleich",
+        "waffenstatistiken",
+        "deckungsanalyse",
+        "truppoptimierung",
+        "dps tool",
+        "coh3 rechner",
+        "einheiteneffektivität"
+      ]
+    }
+  },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
     "costs": "Kostet {{costs}}.",
