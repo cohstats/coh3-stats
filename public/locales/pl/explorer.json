@@ -84,6 +84,24 @@
     "movingAccuracy": "Moving Accuracy Multiplier",
     "movingCooldown": "Moving Cooldown Multiplier"
   },
+  "dps": {
+    "meta": {
+      "title": "COH3 DPS Calculator - Damage Per Second Tool",
+      "description": "Calculate damage per second (DPS) for all Company of Heroes 3 units. Compare weapons, analyze cover effects, and optimize squad combinations with our advanced DPS calculator.",
+      "keywords": [
+        "coh3 dps calculator",
+        "damage per second",
+        "coh3 damage calculator",
+        "unit damage comparison",
+        "weapon stats",
+        "cover analysis",
+        "squad optimization",
+        "dps tool",
+        "coh3 calculator",
+        "unit effectiveness"
+      ]
+    }
+  },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
     "costs": "Costs {{costs}}.",
