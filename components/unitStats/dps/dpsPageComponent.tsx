@@ -282,7 +282,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
 
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
-  setScreenOptions(options, Boolean(isLargeScreen));
+  setScreenOptions(options, isLargeScreen);
 
   // create selection List
   if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
@@ -292,60 +292,13 @@ export const DpsPageComponent = (props: IDPSProps) => {
 
   const chartData = { datasets: [mapChartData([])] };
 
-  const selectionChangeCallback = onSelectionChange;
-  useEffect(() => {
-    const getPatchStats = async () => {
-      // Get Patch data from cache or fetch
-      if (patchChangeIndex == 1) {
-        sbpsData1 = await getSbpsStats(patchUnit1);
-        ebpsData1 = await getEbpsStats(patchUnit1);
-        weaponData1 = await getWeaponStats(patchUnit1);
-        units1 = [];
-        for (const unitSbps of sbpsData1)
-          units1.push(mapCustomizableUnit(unitSbps, ebpsData1, weaponData1));
-        unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
-        if (activeData[0]) {
-          const id = activeData[0].id;
-          activeData[0] = {} as CustomizableUnit;
-          selectionChangeCallback(id, 0);
-        }
-      } else if (patchChangeIndex == 2) {
-        sbpsData2 = await getSbpsStats(patchUnit2);
-        ebpsData2 = await getEbpsStats(patchUnit2);
-        weaponData2 = await getWeaponStats(patchUnit2);
-        units2 = [];
-        for (const unitSbps of sbpsData2)
-          units2.push(mapCustomizableUnit(unitSbps, ebpsData2, weaponData2));
-        unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
-        if (activeData[1]) {
-          const id = activeData[1].id;
-          activeData[1] = {} as CustomizableUnit;
-          selectionChangeCallback(id, 1);
-        }
-      }
-      setPatchChange(0);
-      // setRerender(!rerender);
-    };
-    if (patchChangeIndex > 0) getPatchStats();
-  }, [
-    patchUnit1,
-    patchUnit2,
-    unitFilter1,
-    unitFilter2,
-    activeData,
-    patchChangeIndex,
-    selectionChangeCallback,
-  ]);
-
-  // setScreenOptions(options, isLargeScreen);
-
   // Squad configration has changed
-  function onSquadConfigChange() {
+  const onSquadConfigChange = () => {
     setRerender(!rerender);
-  }
+  };
 
   // synchronize selection field with presented units
-  function onSelectionChange(selection: string | null, index: number) {
+  const onSelectionChange = (selection: string | null, index: number) => {
     if (!selection) {
       // @ts-ignore Because we can not pass an empty object, otherwise we would
       // need to put `.?` safe accessor everywhere.
@@ -371,22 +324,22 @@ export const DpsPageComponent = (props: IDPSProps) => {
         activeData[index].weapon_member.push({ ...loadout });
       setRerender(!rerender);
     }
-  }
+  };
 
-  function onPatchUnitChange(value: string, index: number) {
+  const onPatchUnitChange = (value: string, index: number) => {
     AnalyticsDPSExplorerPatchSelection(value);
 
     if (index == 1) setPatchUnit1(value);
     else setPatchUnit2(value);
     setPatchChange(index);
-  }
+  };
 
-  function toggleFilter(
+  const toggleFilter = (
     filterValue: string,
     unitIndex = 1,
     unitFilter: string[],
     unitSelectionList: CustomizableUnit[],
-  ) {
+  ) => {
     const filterValueIndex = unitFilter.indexOf(filterValue);
 
     if (filterValueIndex < 0) unitFilter.push(filterValue);
@@ -396,7 +349,51 @@ export const DpsPageComponent = (props: IDPSProps) => {
 
     if (unitIndex == 1) setFilter1([...unitFilter]);
     else setFilter2([...unitFilter]);
-  }
+  };
+
+  useEffect(() => {
+    const getPatchStats = async () => {
+      // Get Patch data from cache or fetch
+      if (patchChangeIndex == 1) {
+        sbpsData1 = await getSbpsStats(patchUnit1);
+        ebpsData1 = await getEbpsStats(patchUnit1);
+        weaponData1 = await getWeaponStats(patchUnit1);
+        units1 = [];
+        for (const unitSbps of sbpsData1)
+          units1.push(mapCustomizableUnit(unitSbps, ebpsData1, weaponData1));
+        unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
+        if (activeData[0]) {
+          const id = activeData[0].id;
+          activeData[0] = {} as CustomizableUnit;
+          onSelectionChange(id, 0);
+        }
+      } else if (patchChangeIndex == 2) {
+        sbpsData2 = await getSbpsStats(patchUnit2);
+        ebpsData2 = await getEbpsStats(patchUnit2);
+        weaponData2 = await getWeaponStats(patchUnit2);
+        units2 = [];
+        for (const unitSbps of sbpsData2)
+          units2.push(mapCustomizableUnit(unitSbps, ebpsData2, weaponData2));
+        unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
+        if (activeData[1]) {
+          const id = activeData[1].id;
+          activeData[1] = {} as CustomizableUnit;
+          onSelectionChange(id, 1);
+        }
+      }
+      setPatchChange(0);
+      // setRerender(!rerender);
+    };
+    if (patchChangeIndex > 0) getPatchStats();
+  }, [
+    patchUnit1,
+    patchUnit2,
+    unitFilter1,
+    unitFilter2,
+    activeData,
+    patchChangeIndex,
+    onSelectionChange,
+  ]);
 
   let maxY = 1;
   let maxX = 1;
