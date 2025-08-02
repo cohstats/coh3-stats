@@ -91,8 +91,8 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           <Image
             src={getIconsPathOnCDN(`/icons/races/common/symbols/building_barracks.webp`)}
             alt="Infantry"
-            width={20}
-            height={20}
+            w={20}
+            h={20}
           />
           Units
         </Group>
@@ -153,8 +153,8 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           <Image
             src={getIconsPathOnCDN("/icons/common/squad/squad.webp")}
             alt="Infantry"
-            width={20}
-            height={20}
+            w={20}
+            h={20}
           />
           Squads
         </Group>
@@ -200,8 +200,8 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           <Image
             src={getIconsPathOnCDN(`/icons/races/common/symbols/building_tank_depot.webp`)}
             alt="vehicles"
-            width={20}
-            height={20}
+            w={20}
+            h={20}
           />
           Vehicles
         </Group>
@@ -265,8 +265,8 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
           <Image
             src={getIconsPathOnCDN(`10_retreatpoint`, "export_flatten")}
             alt="vehicles"
-            width={15}
-            height={15}
+            w={15}
+            h={15}
           />
           Strategy points
         </Group>

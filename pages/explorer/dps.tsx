@@ -5,13 +5,13 @@ import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappin
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import React, { useEffect } from "react";
-import { createPageSEO } from "../../src/seo-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
 import { NextSeo } from "next-seo";
 import { useTranslation } from "next-i18next";
+import config from "../../config";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -67,7 +67,37 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   };
 
   // Create SEO props for DPS calculator page
-  const seoProps = createPageSEO(t, "dps", "/explorer/dps");
+  const title = t("dps.meta.title");
+  const description = t("dps.meta.description");
+  const keywords = t("dps.meta.keywords", { returnObjects: true }) as string[];
+
+  const seoProps = {
+    title,
+    description,
+    canonical: `${config.SITE_URL}/explorer/dps`,
+    openGraph: {
+      title,
+      description,
+      url: `${config.SITE_URL}/explorer/dps`,
+      type: "website" as const,
+      images: [
+        {
+          url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
+          width: 192,
+          height: 192,
+          alt: "COH3 Stats logo",
+        },
+      ],
+    },
+    additionalMetaTags: [
+      {
+        name: "keywords",
+        content: Array.isArray(keywords)
+          ? keywords.concat(["coh3", "coh3stats", "Company of Heroes 3"]).join(", ")
+          : "coh3, coh3stats, Company of Heroes 3",
+      },
+    ],
+  };
 
   return (
     <>
