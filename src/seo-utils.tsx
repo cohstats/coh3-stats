@@ -3,9 +3,10 @@ import { TFunction } from "next-i18next";
 import React from "react";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
-import { localizedNames } from "./coh3/coh3-data";
-import { raceType, PlayerCardDataType, platformType } from "./coh3/coh3-types";
+import { localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
+import { raceType, PlayerCardDataType, platformType, ProcessedMatch } from "./coh3/coh3-types";
 import { PlayerSummaryType } from "./players/utils";
+import { getMapLocalizedName } from "./coh3/helpers";
 
 // Default keywords for SEO
 const _defaultKeywords = [
@@ -280,10 +281,13 @@ export const createLeaderboardSEO = (
  * @param t - Translation function
  * @param matchData - Match data object
  */
-export const createMatchSEO = (t: TFunction, matchData: any): NextSeoProps => {
+export const createMatchSEO = (t: TFunction, matchData: ProcessedMatch): NextSeoProps => {
   const matchId = matchData.id;
-  const mapName = matchData.mapname;
-  const mode = matchData.matchtype_id;
+  const mapName = getMapLocalizedName(matchData.mapname);
+  const mode =
+    matchTypesAsObject[matchData.matchtype_id]?.localizedName ||
+    matchTypesAsObject[matchData.matchtype_id]?.name ||
+    "Unknown";
 
   const title = t("matches:meta.title", { matchId, map: mapName, mode });
   const description = t("matches:meta.description", { matchId, map: mapName, mode });
