@@ -20,7 +20,7 @@ export interface ReplayAPIResponse {
       build_number: number;
       name: null;
       version: string;
-    };
+    } | null;
     players: [
       {
         faction: string;
@@ -55,7 +55,7 @@ export interface ProcessedReplayData {
     map_id: string;
     match_id: number;
     mode: string;
-    patch: string;
+    patch: string | null;
     players: Array<{
       name: string;
       profile_id: number;
@@ -109,7 +109,7 @@ const ProcessReplaysData = (
       map_id: replay.map.id,
       match_id: replay.match_id,
       mode: convertReplayModes(replay.mode),
-      patch: replay.patch.version,
+      patch: replay.patch?.version || null,
       players: replay.players.map((player) => ({
         name: player.name,
         profile_id: player.profile_id,
