@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
 import {
@@ -13,34 +13,10 @@ import {
   Filler,
 } from "chart.js";
 
-import { Line } from "react-chartjs-2";
-import {
-  Container,
-  Space,
-  useMantineTheme,
-  Grid,
-  Flex,
-  Box,
-  Stack,
-  Title,
-  Switch,
-  HoverCard,
-  Image,
-  Text,
-  Group,
-  Tooltip,
-  ActionIcon,
-  Select,
-  LoadingOverlay,
-  Center,
-  Button,
-} from "@mantine/core";
-import { UnitSearch } from "./unitSearch";
-import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
+import { Container, Space, useMantineTheme, Grid, Title, Flex } from "@mantine/core";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
-import { IconAdjustments } from "@tabler/icons-react";
 import {
   CustomizableUnit,
   getDpsVsHealth,
@@ -48,31 +24,20 @@ import {
   mapCustomizableUnit,
   updateHealth,
 } from "../../../src/unitStats/dpsCommon";
-import { getFactionIcon } from "../../../src/unitStats";
 import config from "../../../config";
 import {
   AnalyticsDPSExplorerPatchSelection,
   AnalyticsDPSExplorerSquadSelection,
 } from "../../../src/firebase/analytics";
 
-// let unitSelectionList :  CustomizableUnit[] = [];
+// Sub-components
+import { SettingsPanel } from "./components/SettingsPanel";
+import { UnitSelectionPanel } from "./components/UnitSelectionPanel";
+import { UnitCustomizationPanel } from "./components/UnitCustomizationPanel";
+import { ChartPanel } from "./components/ChartPanel";
+
 let unitSelectionList1: CustomizableUnit[] = [];
 let unitSelectionList2: CustomizableUnit[] = [];
-
-import classes from "../DPSChart.module.css";
-
-// function hexToRgbA(hex: string, opacity: string) {
-//   let c: any;
-//   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-//     c = hex.substring(1).split("");
-//     if (c.length == 3) {
-//       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-//     }
-//     c = "0x" + c.join("");
-//     return "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + "," + opacity + ")";
-//   }
-//   throw new Error("Bad Hex");
-// }
 
 ChartJS.register(
   CategoryScale,
@@ -187,34 +152,6 @@ const mapUnitSelection = (
     }
   }
   return selectionFields;
-};
-
-const generateFilterButtons = (
-  unitFilter: string[],
-  callback: any,
-  index = 1,
-  unitSelectionList: CustomizableUnit[],
-) => {
-  const factions = ["afrika_korps", "american", "british_africa", "german"];
-  const filterButtons: any[] = [];
-
-  for (const faction of factions) {
-    const source = getFactionIcon(faction);
-    filterButtons.push(
-      <Tooltip key={faction + index} label="Filter">
-        <ActionIcon
-          key={faction + index}
-          size="md"
-          variant={unitFilter.includes(faction) ? "gradient" : "transparent"}
-          onClick={() => callback(faction, index, unitFilter, unitSelectionList)}
-        >
-          <Image src={source} alt={"Filter"} w={22} h={22} />
-        </ActionIcon>
-      </Tooltip>,
-    );
-  }
-
-  return filterButtons;
 };
 
 let units1: CustomizableUnit[] = [];
@@ -443,12 +380,6 @@ export const DpsPageComponent = (props: IDPSProps) => {
   options.scales.y.suggestedMax = maxY;
   options.scales.x.suggestedMax = maxX;
 
-  // if(chartRef.current)
-  // default values
-  const chartRef = useRef<ChartJS>(null);
-  if (chartRef.current) chartRef.current.config.options = options as any;
-  chartRef.current?.update("show");
-
   return (
     <>
       <Container>
@@ -457,60 +388,18 @@ export const DpsPageComponent = (props: IDPSProps) => {
             <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
           </Grid.Col>
           <Grid.Col span={2}>
-            <Flex
-              // mih={50}
-              // gap="xs"
-              justify="flex-end"
-              //  align="center"
-              //direction="row"
-              wrap="wrap"
-            >
+            <Flex justify="flex-end" wrap="wrap">
               <Space h="2rem" />
-              <Group>
-                <HoverCard width={400} shadow="md">
-                  <HoverCard.Target>
-                    <Button
-                      variant="default"
-                      leftSection={<IconAdjustments opacity={0.6} />}
-                      size="xs"
-                    >
-                      Settings
-                    </Button>
-                  </HoverCard.Target>
-                  <HoverCard.Dropdown>
-                    <Stack>
-                      <Text size="md">Advanced Options</Text>
-                      <Switch
-                        label={"DPS / Target Health (%)"}
-                        checked={showDpsHealth}
-                        onChange={(event) => setShowDpsHealth(event.currentTarget.checked)}
-                        //onClick={() => setCurve(isCurve)}
-                        // size="xs"
-                      />
-                      <Space />
-                      <Switch
-                        label={
-                          <Stack gap="0">
-                            <>Allow All Weapons</>
-                            <Text size="xs" c="dimmed">
-                              Deselects current units
-                            </Text>
-                          </Stack>
-                        }
-                        checked={allowAllWeapons}
-                        onChange={(event) => {
-                          setAllowAllWeapons(event.currentTarget.checked);
-                          // Reset selected units so it loads the units
-                          onSelectionChange(null, 0);
-                          onSelectionChange(null, 1);
-                        }}
-                        //onClick={() => setCurve(isCurve)}
-                        // size="xs"
-                      />
-                    </Stack>
-                  </HoverCard.Dropdown>
-                </HoverCard>
-              </Group>
+              <SettingsPanel
+                showDpsHealth={showDpsHealth}
+                allowAllWeapons={allowAllWeapons}
+                onShowDpsHealthChange={setShowDpsHealth}
+                onAllowAllWeaponsChange={setAllowAllWeapons}
+                onResetUnits={() => {
+                  onSelectionChange(null, 0);
+                  onSelectionChange(null, 1);
+                }}
+              />
             </Flex>
           </Grid.Col>
         </Grid>
@@ -521,171 +410,54 @@ export const DpsPageComponent = (props: IDPSProps) => {
         <>
           <Grid>
             <Grid.Col span={{ md: 6, lg: 6 }}>
-              <Grid>
-                <Grid.Col span={6}>
-                  <Group wrap="nowrap" gap={"sm"}>
-                    {generateFilterButtons(unitFilter1, toggleFilter, 1, unitSelectionList1)}
-                  </Group>
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <Flex
-                    // mih={50}
-                    // gap="xs"
-                    justify="flex-end"
-                    //  align="center"
-                    //direction="row"
-                    wrap="wrap"
-                  >
-                    <Tooltip label={"Patch Version"}>
-                      <Select
-                        styles={{ wrapper: { width: 90 } }}
-                        // label="Your favorite framework/library"
-                        placeholder="Patch"
-                        // onSelect={onSelectPatch}
-                        onChange={(value) => onPatchUnitChange(value as string, 1)}
-                        data={patchList}
-                        defaultValue={config.latestPatch}
-                        withCheckIcon={false}
-                        allowDeselect={false}
-                      />
-                    </Tooltip>
-                  </Flex>
-                </Grid.Col>
-              </Grid>
-              {/* <Space h="2rem" /> */}
-              <Space h="sm" />
-              <UnitSearch
-                key="Search1"
-                searchData={unitSelectionList1}
-                onSelect={onSelectionChange}
-                position={0}
+              <UnitSelectionPanel
+                unitFilter={unitFilter1}
+                unitSelectionList={unitSelectionList1}
+                patchList={patchList}
+                defaultPatch={config.latestPatch}
+                position={1}
+                onFilterToggle={toggleFilter}
+                onPatchChange={onPatchUnitChange}
+                onUnitSelect={onSelectionChange}
               />
-
-              <Space h="sm" />
-              <div style={{ minHeight: 242 }}>
-                {!activeData[0] && (
-                  <Center h={200}>
-                    <Text c="dimmed" size="sm">
-                      Please select a unit
-                    </Text>
-                  </Center>
-                )}
-                {activeData[0] && (
-                  <Box className={classes.unitBoxLeft}>
-                    <DpsUnitCustomizing
-                      key={activeData[0].id + "0." + patchUnit1}
-                      unit={activeData[0]}
-                      onChange={onSquadConfigChange}
-                      index={0}
-                      ebps={ebpsData1}
-                      weapons={weaponData1}
-                      allowAllWeapons={allowAllWeapons}
-                    />
-                  </Box>
-                )}
-              </div>
+              <UnitCustomizationPanel
+                unit={activeData[0]}
+                position={0}
+                patchVersion={patchUnit1}
+                ebpsData={ebpsData1}
+                weaponData={weaponData1}
+                allowAllWeapons={allowAllWeapons}
+                onSquadConfigChange={onSquadConfigChange}
+              />
             </Grid.Col>
 
             <Grid.Col span={{ md: 6, lg: 6 }}>
-              <Grid>
-                <Grid.Col span={{ md: 6, lg: 6 }}>
-                  <Group wrap="nowrap" gap={"sm"}>
-                    {generateFilterButtons(unitFilter2, toggleFilter, 2, unitSelectionList2)}
-                  </Group>
-                </Grid.Col>
-                <Grid.Col span={{ md: 6, lg: 6 }}>
-                  <Flex
-                    // mih={50}
-                    // gap="xs"
-                    justify="flex-end"
-                    //  align="center"
-                    //direction="row"
-                    wrap="wrap"
-                  >
-                    <Space h="2rem" />
-                    <Group>
-                      <Tooltip label={"Patch Version"}>
-                        <Select
-                          styles={{ wrapper: { width: 90 } }}
-                          // label="Your favorite framework/library"
-                          placeholder="Patch"
-                          // onSelect={onSelectPatch}
-                          onChange={(value) => onPatchUnitChange(value as string, 2)}
-                          data={patchList}
-                          defaultValue={config.latestPatch}
-                          withCheckIcon={false}
-                          allowDeselect={false}
-                        />
-                      </Tooltip>
-                    </Group>
-                  </Flex>
-                </Grid.Col>
-              </Grid>
-              {/* </SimpleGrid> */}
-              <Space h="sm" />
-
-              <UnitSearch
-                key="Search2"
-                searchData={unitSelectionList2}
-                onSelect={onSelectionChange}
-                position={1}
+              <UnitSelectionPanel
+                unitFilter={unitFilter2}
+                unitSelectionList={unitSelectionList2}
+                patchList={patchList}
+                defaultPatch={config.latestPatch}
+                position={2}
+                onFilterToggle={toggleFilter}
+                onPatchChange={onPatchUnitChange}
+                onUnitSelect={onSelectionChange}
               />
-
-              <Space h="sm" />
-              <div style={{ minHeight: 242 }}>
-                {!activeData[1] && (
-                  <Center h={200}>
-                    <Text c="dimmed" size="sm">
-                      Please select a unit
-                    </Text>
-                  </Center>
-                )}
-                {activeData[1] && (
-                  <Box className={classes.unitBoxRight}>
-                    <DpsUnitCustomizing
-                      key={activeData[1].id + "1." + patchUnit2}
-                      unit={activeData[1]}
-                      onChange={onSquadConfigChange}
-                      index={1}
-                      ebps={ebpsData2}
-                      weapons={weaponData2}
-                      allowAllWeapons={allowAllWeapons}
-                    />
-                  </Box>
-                )}
-              </div>
+              <UnitCustomizationPanel
+                unit={activeData[1]}
+                position={1}
+                patchVersion={patchUnit2}
+                ebpsData={ebpsData2}
+                weaponData={weaponData2}
+                allowAllWeapons={allowAllWeapons}
+                onSquadConfigChange={onSquadConfigChange}
+              />
             </Grid.Col>
           </Grid>
         </>
       </Container>
 
       <Space h="sm" />
-      <Container size="md">
-        <LoadingOverlay visible={patchChangeIndex > 0} />
-        <Box className={classes.chartBox}>
-          {/* { patchChangeIndex > 0 &&
-            <Container size={'md'}>
-                <Loader />
-            </Container>
-          } */}
-          <Line ref={chartRef as any} options={options as any} data={chartData as any} />
-        </Box>
-        <Space h="sm" />
-        <Text c={"dimmed"} pl={5} fs="italic">
-          * Computation results are based on approximation models using stats from the game files.
-          Values allow us to benchmark the performance in comparison to other units. Values are
-          relative to opponent selection, E.g. small arms DPS against armor will be lower than vs
-          infantry. Values do not necessarily reflect the average time to kill (ttk) in game.
-        </Text>
-        <Text c={"dimmed"} pl={5} fs="italic">
-          ** Area and ballistic DPS (Eg. by Mortar, Tank Guns..) are experimental approximations
-          respecting scatter, penetration and target size. Some information like box sizes of
-          units are not accessible. Also, squads formations and densities are unknown. The
-          calculation assumes every model within the model cap limit to be hit which allows a
-          rough performance comparison but do not necessarily reflect the average time to kill in
-          game.
-        </Text>
-      </Container>
+      <ChartPanel chartData={chartData} chartOptions={options} isLoading={patchChangeIndex > 0} />
     </>
   );
 };
