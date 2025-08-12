@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "COH3 Stats 桌面应用",
+    "description": "下载 COH3 Stats 桌面应用 {{version}}。无需配置。OBS 覆盖功能。当前比赛对手的详细信息。新游戏声音通知等。",
+    "keywords": [
+      "coh3 桌面应用",
+      "obs 覆盖",
+      "实时比赛信息",
+      "桌面应用程序",
+      "游戏覆盖",
+      "比赛分析",
+      "玩家统计",
+      "实时游戏数据"
+    ]
+  },
+  "download": {
+    "button": "下载 {{version}}",
+    "buttonAriaLabel": "下载 Windows 版 COH3 Stats 桌面应用 {{version}} 安装程序",
+    "downloads": "{{count}} 次下载",
+    "releaseNotes": "发布说明"
+  },
+  "title": "COH3 Stats 桌面应用",
+  "subtitle": "获取当前游戏的额外情报！",
+  "features": {
+    "title": "功能",
+    "list": {
+      "noSetup": "轻松使用，无需设置 - 只需启动应用程序",
+      "leaderboard": "查看当前玩家排名，包括 ELO、排名、胜率",
+      "teams": "检测游戏中的组队",
+      "recentGames": "直接在应用中查看最近的游戏",
+      "notifications": "加入游戏时接收可选的声音通知",
+      "replays": "自动上传录像到云端进行额外分析",
+      "streaming": {
+        "before": "适用于",
+        "and": "和",
+        "after": "及其他直播工具的主播覆盖"
+      }
+    }
+  }
+}

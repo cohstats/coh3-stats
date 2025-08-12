@@ -1,0 +1,21 @@
+{
+  "title": "英雄连3中的排名等级",
+  "description": "基于玩家的 ELO，玩家被分配到特定的联赛和等级。",
+  "matchRequirement": "玩家需要在特定游戏类型中每个阵营至少进行10场比赛才能获得排名并被分配到等级。",
+  "rankDecay": {
+    "title": "排名衰减",
+    "text": "如果玩家长时间不活跃，他们会失去排名。但是，他们可以通过玩一场游戏来重新获得排名。"
+  },
+  "eloDecay": {
+    "title": "ELO 衰减",
+    "text": "ELO 也会衰减，如果玩家长时间不玩游戏，他们的 ELO 可能会在不玩任何游戏的情况下降低。"
+  },
+  "table": {
+    "columns": {
+      "tierName": "等级名称",
+      "eloRating": "ELO 评级",
+      "rank": "排名"
+    },
+    "topPlayers": "前 {{count}} 名玩家"
+  }
+}

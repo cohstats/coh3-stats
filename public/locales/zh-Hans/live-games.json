@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "实时游戏 - 英雄连3",
+    "description": "英雄连3中当前的实时游戏",
+    "keywords": [
+      "coh3 实时游戏",
+      "coh3 实时比赛",
+      "coh3 游戏",
+      "coh3 当前进行中的比赛"
+    ]
+  },
+  "pageTitle": "PC 实时游戏",
+  "filters": {
+    "liveGames": {
+      "label": "实时游戏",
+      "options": {
+        "1v1": "1 vs 1 自动匹配",
+        "2v2": "2 vs 2 自动匹配",
+        "3v3": "3 vs 3 自动匹配",
+        "4v4": "4 vs 4 自动匹配",
+        "ai": "自动匹配 VS AI",
+        "custom": "自定义游戏"
+      }
+    },
+    "sortBy": {
+      "label": "排序方式",
+      "options": {
+        "rank": "排名",
+        "observers": "观察者",
+        "startgametime": "开始时间"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "实时游戏摘要",
+    "tooltip": "当前进行中的多人游戏。总玩家数是经过筛选的唯一玩家。请记住，可能有很多玩家在大厅/搜索/加载和做其他事情。自定义游戏默认不可观察。很可能有更多自定义游戏正在进行。游戏每5分钟更新一次。",
+    "noGames": {
+      "title": "未检测到实时游戏",
+      "message": "COH3 Stats 可能需要在最近的游戏补丁后更新。"
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs AI",
+      "custom": "自定义"
+    },
+    "totals": {
+      "automatch": "自动匹配总数",
+      "anyGame": "任何游戏总数"
+    },
+    "games": "游戏"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "模式",
+      "axisPlayers": "轴心国玩家",
+      "alliesPlayers": "盟军玩家",
+      "map": "地图",
+      "observers": "观察者",
+      "gameTime": "游戏时间",
+      "server": "服务器"
+    },
+    "switches": {
+      "showFlags": "显示玩家国旗",
+      "showServer": "显示比赛服务器"
+    },
+    "errors": {
+      "title": "获取实时游戏时出错",
+      "summaryTitle": "获取实时游戏摘要时出错"
+    },
+    "dataUpdated": "数据更新于 {{time}}"
+  }
+}

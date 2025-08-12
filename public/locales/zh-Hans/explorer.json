@@ -25,7 +25,16 @@
     "medium": "中距离",
     "far": "远距离",
     "min": "最小",
-    "max": "最大"
+    "max": "最大",
+    "produces": "生产",
+    "hitpoints": "生命值",
+    "upgrades": "升级",
+    "costs": "成本",
+    "explorer": "探索器"
+  },
+  "explorer": {
+    "title": "英雄连3阵营探索器",
+    "subtitle": "探索游戏中的所有单位、建筑和战斗群。"
   },
   "dps": {
     "meta": {
@@ -51,6 +60,82 @@
       "title": "{{faction}} - COH3 探索器",
       "description": "探索英雄连3中的{{faction}}阵营。查看{{faction}}军队的单位、建筑、战斗群和详细统计数据。",
       "keywords": ["{{faction}}", "{{faction}} 探索器", "{{faction}} 战斗群", "{{faction}} 单位"]
+    }
+  },
+  "unitPage": {
+    "stats": "统计",
+    "abilities": "技能",
+    "loadout": "装备",
+    "veterancy": "老兵等级",
+    "upkeep": "每分钟维护费",
+    "reinforce": "增援",
+    "construct": "可建造",
+    "free": "免费",
+    "weaponNote": "有效精度受多个因素影响，如目标单位的目标大小或装甲，以及攻击单位的精度或穿透力。",
+    "importantNote": "重要提示：此部分显示游戏中所有可用单位，包括仅限战役的单位。"
+  },
+  "statsCard": {
+    "sightRange": "视野范围",
+    "speed": "速度",
+    "acceleration": "加速度",
+    "deceleration": "减速度",
+    "maxRange": "最大射程",
+    "targetSize": "目标大小",
+    "armor": "装甲",
+    "captureMultiplier": "占领倍数",
+    "decaptureMultiplier": "反占领倍数",
+    "vehicleArmor": "载具装甲"
+  },
+  "weaponCard": {
+    "accuracy": "精度",
+    "rpm": "每分钟射击数 (RPM)",
+    "rangeOfFire": "射击范围",
+    "penetration": "穿透力",
+    "scatter": "散布区域",
+    "damage": "伤害",
+    "aoeRadius": "范围伤害半径",
+    "movingAccuracy": "移动精度倍数",
+    "movingCooldown": "移动冷却倍数"
+  },
+  "unitMeta": {
+    "unitDescription": "{{unitName}} - 英雄连3中的{{raceName}} {{unitType}}。",
+    "costs": "成本 {{costs}}。",
+    "population": "{{popCap}} 人口。",
+    "abbreviations": {
+      "hitpoints": "HP",
+      "manpower": "MP",
+      "fuel": "FU",
+      "munition": "MU",
+      "armor": "装甲"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 坦克",
+        "vehicle": "coh3 载具",
+        "armorStats": "装甲统计",
+        "vehicleGuide": "载具指南"
+      },
+      "infantry": {
+        "infantry": "coh3 步兵",
+        "squadStats": "小队统计",
+        "unitGuide": "单位指南",
+        "infantryTactics": "步兵战术"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 团队武器",
+        "supportWeapon": "支援武器",
+        "crewWeapon": "操作武器",
+        "artillery": "火炮"
+      },
+      "emplacements": {
+        "emplacement": "coh3 固定设施",
+        "defensiveStructure": "防御结构",
+        "fortification": "防御工事"
+      },
+      "common": {
+        "units": "{{raceId}} 单位",
+        "army": "{{raceId}} 军队"
+      }
     }
   }
 }

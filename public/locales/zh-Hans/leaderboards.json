@@ -22,5 +22,21 @@
     "platform": "平台",
     "faction": "阵营",
     "type": "类型"
+  },
+  "teams": {
+    "title": "团队排行榜",
+    "pageTitle": "{{side}} {{type}} 团队排行榜",
+    "metaDescription": "{{side}} 团队和 {{type}} 游戏类型的团队排行榜。英雄连3",
+    "filters": {
+      "side": "阵营",
+      "type": "类型",
+      "orderBy": "排序方式"
+    },
+    "pagination": {
+      "itemsPerPage": "每页项目数",
+      "previous": "上一页",
+      "next": "下一页",
+      "showingRange": "显示第 {{start}} - {{end}} 项，共 {{total}} 个团队"
+    }
   }
 }

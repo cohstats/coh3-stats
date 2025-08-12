@@ -19,10 +19,27 @@
   },
   "errors": {
     "noResults": "未找到结果",
-    "searchTooShort": "搜索词太短"
+    "searchTooShort": "搜索词太短",
+    "searchError": "搜索时出错"
+  },
+  "noResults": {
+    "players": "未找到玩家",
+    "units": "未找到单位",
+    "unitsEnglishOnly": "单位搜索仅支持英语"
+  },
+  "info": {
+    "firstResults": "仅显示前50个结果。请细化您的搜索。",
+    "consoleSearch": "主机玩家搜索仅支持精确匹配。",
+    "steamSearch": "您也可以使用Steam ID搜索。"
   },
   "placeholders": {
     "searchPlayers": "搜索玩家...",
     "searchUnits": "搜索单位..."
+  },
+  "playerCard": {
+    "lastActive": "最后活跃",
+    "steamProfile": "Steam 档案",
+    "psnPlayer": "PlayStation 玩家",
+    "xboxPlayer": "XBOX 玩家"
   }
 }

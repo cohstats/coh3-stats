@@ -18,6 +18,231 @@
       "title": "加载玩家卡片时出错",
       "loadingError": "加载玩家卡片时出错"
     },
-    "title": "玩家卡片"
+    "title": "玩家卡片",
+    "titleWithView": {
+      "recentMatches": "玩家 card - {{name}} - 最近比赛",
+      "replays": "玩家 card - {{name}} - 录像",
+      "standingsDetails": "玩家 card - {{name}} - 详细统计",
+      "activity": "玩家 card - {{name}} - 活动",
+      "nemesis": "玩家 card - {{name}} - 宿敌",
+      "teamsStandings": "玩家 card - {{name}} - 团队排名",
+      "teamDetails": "玩家 card - {{name}} - 团队详情"
+    }
+  },
+  "tabs": {
+    "standings": "玩家排名",
+    "standingsDetails": "详细统计",
+    "recentMatches": "最近比赛",
+    "activity": "活动",
+    "nemesis": "宿敌",
+    "replays": "录像",
+    "teamsStandings": "团队排名"
+  },
+  "playerInfo": {
+    "bestElo": {
+      "allies": "最佳 ALLIES ELO {{ELO}} in {{mode}} as {{faction}}",
+      "axis": "最佳 AXIS ELO {{ELO}} in {{mode}} as {{faction}}"
+    },
+    "stats": {
+      "totalGames": "总游戏数 {{count}}",
+      "winRate": "胜率 {{rate}}%",
+      "lastMatch": "最后比赛 {{time}}"
+    }
+  },
+  "recentMatches": {
+    "filters": {
+      "hideCustomGames": "隐藏自定义游戏",
+      "showAllGames": "显示所有游戏"
+    },
+    "loadMore": "加载更多比赛",
+    "table": {
+      "columns": {
+        "date": "日期",
+        "map": "地图",
+        "duration": "持续时间",
+        "type": "类型",
+        "players": "玩家",
+        "actions": "操作"
+      },
+      "noData": "未找到比赛"
+    },
+    "downloadReplay": {
+      "button": "下载录像",
+      "generating": "生成中...",
+      "error": "生成录像时出错"
+    }
+  },
+  "standings": {
+    "summary": {
+      "charts": {
+        "factionDistribution": "阵营分布",
+        "gameTypes": "游戏类型",
+        "activityLastMonths": "最近几个月活动"
+      }
+    },
+    "table": {
+      "columns": {
+        "leaderboard": "排行榜",
+        "rank": "排名",
+        "rating": "评分",
+        "lastMatch": "最后比赛",
+        "streak": "连胜",
+        "wins": "胜利",
+        "losses": "失败",
+        "total": "总计",
+        "winRate": "胜率",
+        "type": "类型",
+        "elo": "ELO",
+        "tier": "等级",
+        "ratio": "比率",
+        "drops": "掉线"
+      },
+      "helpers": {
+        "bestRankAchieved": "Best Rank Achieved. Lower is better. The best Rank the player ever had.",
+        "bestEloAchieved": "Best ELO Achieved. Higher is better. The best ELO the player ever had.",
+        "best": "最佳"
+      }
+    },
+    "faction": {
+      "bestRank": "Best Rank",
+      "bestRating": "Best Rating",
+      "bestWinRate": "Best Win Rate"
+    }
+  },
+  "detailedStats": {
+    "filters": {
+      "selectFaction": "Select Faction",
+      "selectGameType": "Select Game Type"
+    },
+    "charts": {
+      "playTime": "Play Time Distribution",
+      "mapsWinRate": "Maps Win Rate",
+      "factionVsFaction": "Faction vs Faction"
+    },
+    "noData": "No detailed statistics available"
+  },
+  "activity": {
+    "title": "Player Activity",
+    "noData": "No activity data available",
+    "filters": {
+      "timeRange": "Time Range",
+      "timezone": "Timezone"
+    },
+    "alerts": {
+      "noData": {
+        "title": "No Activity Data",
+        "message": "It looks like we are not getting activity data for this player.",
+        "reportMessage": "If this error persists, please report it on"
+      },
+      "steamOnly": {
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
+      }
+    },
+    "charts": {
+      "calendarDay": {
+        "title": "Activity by calendar day"
+      },
+      "hourOfDay": {
+        "title": "Activity by hour of day"
+      },
+      "weekDay": {
+        "title": "Activity by week day"
+      }
+    },
+    "timezoneHelper": "The activity hour data is collected in UTC timezone. You can adjust the display to your local timezone using this selector."
+  },
+  "teamsStandings": {
+    "title": "Arranged Teams Standings",
+    "noData": "No teams data available for this player",
+    "axisTeams": "Axis",
+    "alliesTeams": "Allies",
+    "axisTeam": "Axis Team",
+    "alliesTeam": "Allies Team",
+    "mostPlayed": "Most Played Teams",
+    "mostRecent": "Recent Teams",
+    "checkTeamDetails": "For match and ELO change history check the team details",
+    "checkTeamLeaderboardsPrefix": "Check the",
+    "checkTeamLeaderboardsSuffix": "to find your ranking",
+    "limitedTeams": "Limited to 2 teams only",
+    "helperText": "Arranged teams are tracked only by COH3 Stats, see more info in the about page"
+  },
+  "teamDetails": {
+    "title": "团队详情",
+    "specificTeamTitle": "团队详情",
+    "matchHistory": "Match History",
+    "eloHistory": "Team ELO History",
+    "winLossHistory": "Win/Loss History",
+    "teamNotFound": "Team not found. Please check the team ID and try again.",
+    "detailsButton": "Details",
+    "showingMatches": "Showing {{loaded}} of {{总计}} matches",
+    "errorLoadingMatches": "错误 loading matches: {{错误}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "类型",
+      "players": "玩家",
+      "elo": "ELO",
+      "streak": "连胜",
+      "wins": "胜利",
+      "losses": "失败",
+      "ratio": "比率",
+      "total": "总计",
+      "lastMatch": "最后比赛"
+    },
+    "noData": "No teams data available",
+    "eloHelper": "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
+    "bestElo": "最佳 {{ELO}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "Played",
+      "result": "Result",
+      "enemyElo": "Enemy ELO",
+      "axisPlayers": "Axis Players",
+      "alliesPlayers": "Allies Players",
+      "map": "地图"
+    },
+    "noData": "No match history available",
+    "showFlags": "Show Player Flags",
+    "clickForDetails": "Click on the row for more details",
+    "detailsButton": "Details",
+    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+    "playerEloHelper": "The ELO showned here is the individual player standing ELO in the particular mode and faction."
+  },
+  "nemesis": {
+    "widget": {
+      "title": "Top 10 - 1v1 Nemesis",
+      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
+      "noRecords": "No 1v1 nemesis tracked"
+    },
+    "columns": {
+      "alias": "Alias",
+      "wins": "胜利",
+      "losses": "失败",
+      "ratio": "比率",
+      "diff": "Diff",
+      "total": "总计"
+    },
+    "title": "1v1 Nemesis",
+    "noNemesis": "No 1v1 Nemesis",
+    "wins": "胜利",
+    "losses": "失败",
+    "rules": {
+      "trigger": "Nemesis counter has be to 'triggered'",
+      "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
+      "aliases": "Aliases are saved from the last game played with that player",
+      "counting": "After the trigger, all 1v1 games with that player are counted.",
+      "updateTime": "Data are updated once a day 6 AM UTC.",
+      "steamOnly": "Only Steam players are tracked."
+    },
+    "alerts": {
+      "steamOnly": {
+        "title": "No COH3 Stats Data",
+        "message": "These stats are available only for Steam players.",
+        "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
+      }
+    }
   }
 }
