@@ -21,9 +21,12 @@ import { calculatePageNumber, calculatePositionNumber } from "../../../../src/ut
 import { useRouter } from "next/router";
 import { getDesktopAppRoute, getPlayerCardRoute } from "../../../../src/routes";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import Link from "next/link";
 import EllipsisText from "../../../../components/other/ellipsis-text";
 import RenderMap from "../recent-matches-tab/matches-table/render-map";
+
+dayjs.extend(utc);
 
 const ReplaysTab = ({
   profileID,
@@ -34,7 +37,7 @@ const ReplaysTab = ({
   replaysData: ProcessedReplayData;
   error: string;
 }) => {
-  const { push, query, locale } = useRouter();
+  const { push, query } = useRouter();
   const { start } = query;
 
   const queryStart = parseInt(start as string) || 0;
@@ -210,11 +213,7 @@ const ReplaysTab = ({
                     <Anchor href={getPlayerCardRoute(uploaded_by.profile_id)}>
                       {uploaded_by.name}
                     </Anchor>{" "}
-                    on{" "}
-                    {dayjs(uploaded_at)
-                      .locale(locale || "en")
-                      .format("YYYY-MM-DD HH:mm")}{" "}
-                    UTC
+                    on {dayjs(uploaded_at).utc().format("YYYY-MM-DD HH:mm")} UTC
                   </Text>
                 </div>
               );
