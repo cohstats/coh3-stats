@@ -16,31 +16,43 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
   title = title || "Hitpoints";
 
   // Put the "team_weapon" type in this array.
-  const twEntities: EbpsType[] = [];
+  // const twEntities: EbpsType[] = [];
   // Only take into account the entities that are not a "team_weapon" type.
-  const squadEntities: EbpsType[] = [];
+  // const squadEntities: EbpsType[] = [];
+
+  let totalHitPoints = 0;
+  let twTotalHitPoints = 0;
+  const squadHitPoints = [];
+  const twSquadHitPoints = [];
+
   for (const loadout of squad?.loadout || []) {
     const id = loadout.type.split("/").slice(-1)[0];
     const foundEntity = entities.find((x) => x.id === id);
     if (foundEntity) {
       // Push the entity hitpoints "num" times.
       for (let c = 0; c < loadout.num; c++) {
-        if (foundEntity.unitTypes.includes("team_weapon")) {
-          twEntities.push(foundEntity);
+        // Patch 2.1.4, mortar are missing team_weapon unitType
+        if (foundEntity.unitTypes.includes("team_weapon") || foundEntity.unitType === "mortar") {
+          // twEntities.push(foundEntity);
+          twTotalHitPoints += foundEntity.health.hitpoints;
+          twSquadHitPoints.push(foundEntity.health.hitpoints);
         } else {
-          squadEntities.push(foundEntity);
+          // squadEntities.push(foundEntity);
+          // This check is OK, there seems to be an error in the Relic data.
+          if (typeof foundEntity.health.hitpoints === "number") {
+            totalHitPoints += foundEntity.health.hitpoints;
+          } else {
+            console.warn(`Entity ${foundEntity.id} has no hitpoints as number`);
+          }
+          // We want to push it there even if it's not a number.
+          squadHitPoints.push(foundEntity.health.hitpoints);
         }
       }
     }
   }
 
-  const totalHitpoints = squadEntities.reduce((acc, x) => acc + x.health.hitpoints, 0);
-  const squadHitpoints = squadEntities.map((x) => x.health.hitpoints);
-  const twTotalHitpoints = twEntities.reduce((acc, x) => acc + x.health.hitpoints, 0);
-  const twSquadHitpoints = twEntities.map((x) => x.health.hitpoints);
-
   // Display the first team weapon entity symbol as icon.
-  const twHitpointsSection = (
+  const twHitPointsSection = (
     <Flex direction="row" align="center" gap="md">
       <Stack align="center">
         <ImageWithFallback
@@ -53,10 +65,10 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
       </Stack>
 
       <Progress.Root w="100%" size={24}>
-        {twSquadHitpoints.map((hp, idx) => (
+        {twSquadHitPoints.map((hp, idx) => (
           <Progress.Section
             key={idx}
-            value={(hp / twTotalHitpoints) * 100}
+            value={(hp / twTotalHitPoints) * 100}
             color={colorPalette[idx]}
           >
             <Progress.Label>{hp.toString()}</Progress.Label>
@@ -65,12 +77,12 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
       </Progress.Root>
 
       <Text fw="bold" style={{ textAlign: "end" }}>
-        {twTotalHitpoints}
+        {twTotalHitPoints}
       </Text>
     </Flex>
   );
 
-  const squadHitpointsSection = (
+  const squadHitPointsSection = (
     <Flex direction="row" align="center" gap="md">
       <Stack align="center">
         <ImageWithFallback
@@ -83,10 +95,10 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
       </Stack>
 
       <Progress.Root w="100%" size={24}>
-        {squadHitpoints.map((hp, idx) => (
+        {squadHitPoints.map((hp, idx) => (
           <Progress.Section
             key={idx}
-            value={(hp / totalHitpoints) * 100}
+            value={(hp / totalHitPoints) * 100}
             color={colorPalette[idx]}
           >
             <Progress.Label>{hp.toString()}</Progress.Label>
@@ -95,7 +107,7 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
       </Progress.Root>
 
       <Text fw="bold" style={{ textAlign: "end" }}>
-        {totalHitpoints}
+        {totalHitPoints}
       </Text>
     </Flex>
   );
@@ -106,11 +118,11 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
         {title}
       </Title>
       <Tooltip label={"Squad hitpoints"} withArrow>
-        {squadHitpointsSection}
+        {squadHitPointsSection}
       </Tooltip>
-      {twEntities.length ? (
+      {twSquadHitPoints.length ? (
         <Tooltip label={"Team weapon hitpoints"} withArrow>
-          {twHitpointsSection}
+          {twHitPointsSection}
         </Tooltip>
       ) : (
         <></>
