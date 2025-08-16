@@ -599,6 +599,47 @@ const setEbpsWorkarounds = () => {
       item.ui.iconName = "races/american/buildings/barracks_us";
     },
   });
+
+  ebpsWorkaround("Modify American - Mortar crew hitpoints", {
+    predicate: (item) => item.faction === "american" && item.id === "crew_mortar_us",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.health.hitpoints = 80;
+    },
+  });
+
+  ebpsWorkaround("Modify British - Mortar crew hitpoints", {
+    predicate: (item) => item.faction === "british" && item.id === "crew_mortar_uk",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.health.hitpoints = 80;
+    },
+  });
+
+  ebpsWorkaround("Modify British - Indian Mortar crew hitpoints", {
+    predicate: (item) => item.faction === "british" && item.id === "crew_mortar_indian_uk",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.health.hitpoints = 80;
+    },
+  });
+
+  ebpsWorkaround("Modify British Africa - Mortar crew hitpoints", {
+    predicate: (item) => item.faction === "british_africa" && item.id === "crew_mortar_africa_uk",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.health.hitpoints = 80;
+    },
+  });
+
+  ebpsWorkaround("Modify British Africa - Indian Mortar crew hitpoints", {
+    predicate: (item) =>
+      item.faction === "british_africa" && item.id === "crew_mortar_indian_africa_uk",
+    mutator: (item) => {
+      item = item as EbpsType;
+      item.health.hitpoints = 80;
+    },
+  });
 };
 
 setBattlegroupsWorkarounds();
