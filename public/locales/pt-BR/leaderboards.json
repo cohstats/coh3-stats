@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "title": "{{faction}} {{mode}} Leaderboards",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} leaderboards with player rankings, ELO ratings, and competitive statistics.",
+    "keywords": [
+      "leaderboards",
+      "rankings",
+      "competitive ladder",
+      "elo ratings",
+      "player rankings",
+      "competitive statistics",
+      "faction rankings",
+      "game mode rankings"
+    ]
+  },
+  "title": "Leaderboards for {{race}}",
+  "pageTitle": "Leaderboards for {{race}} {{type}}",
+  "metaDescription": "Ranked leaderboards for faction {{race}} and game type {{type}}. Company of Heroes 3",
+  "errorTitle": "Error getting the leaderboards",
+  "filters": {
+    "region": "Region",
+    "platform": "Platform",
+    "faction": "Faction",
+    "type": "Type"
+  },
+  "teams": {
+    "title": "Team Leaderboards",
+    "pageTitle": "Team Leaderboards for {{side}} {{type}}",
+    "metaDescription": "Team leaderboards for {{side}} teams and game type {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Side",
+      "type": "Type",
+      "orderBy": "Order By"
+    },
+    "pagination": {
+      "itemsPerPage": "Items per page",
+      "previous": "Previous",
+      "next": "Next",
+      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams"
+    }
+  }
+}
