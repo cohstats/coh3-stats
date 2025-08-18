@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     props: {
       error,
       globalAchievements,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "stats"])),
     },
   };
 };
