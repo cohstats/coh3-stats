@@ -61,7 +61,7 @@
     "@nivo/sunburst": "0.94.0",
     "@octokit/rest": "22.0.0",
     "@sentry/nextjs": "9.33.0",
-    "@tabler/icons-react": "3.34.0",
+    "@tabler/icons-react": "3.34.1",
     "chart.js": "4.5.0",
     "clsx": "2.1.1",
     "dayjs": "1.11.13",
