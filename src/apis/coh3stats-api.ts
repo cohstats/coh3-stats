@@ -80,10 +80,10 @@ const getReplayUrl = (matchID: string | number) => {
   return encodeURI(`${config.BASE_REPLAY_STORAGE_URL}/${matchID}.rec`);
 };
 
-const setReplayFileUrl = () => {
+const setReplayFileUrl = (matchID: string | number) => {
   return encodeURI(
     // This will be in the browser / we don't want to touch our GCP directly without proxy
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/setReplayFileHttp`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/matches/${matchID}/replay`,
   );
 };
 
@@ -456,13 +456,12 @@ const generateReplayUrl = async (matchObject: ProcessedMatch) => {
       };
     }
 
-    const response = await fetch(setReplayFileUrl(), {
+    const response = await fetch(setReplayFileUrl(matchObject.id), {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: JSON.stringify({
-        matchID: matchObject.id,
+      body: new URLSearchParams({
         replayURLs: JSON.stringify(
           replayURLs.map((data) => {
             return {
@@ -480,7 +479,7 @@ const generateReplayUrl = async (matchObject: ProcessedMatch) => {
         url: r2url,
         status: "success",
       };
-    } else if (parsedResponse.status === "error") {
+    } else if (parsedResponse.status === "failure") {
       return {
         url: null,
         status: "error",
