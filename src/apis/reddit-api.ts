@@ -24,12 +24,9 @@ let cache: CacheEntry | null = null;
 const fetchRedditPosts = async (numberOfPosts: number): Promise<RedditPostType[]> => {
   try {
     // https://www.reddit.com/r/CompanyOfHeroes/top.json?limit=100&t=week
-    const response = await fetch(
-      "https://www.reddit.com/r/CompanyOfHeroes/top.json?limit=100&t=week",
-      {
-        method: "GET",
-      },
-    );
+    const response = await fetch("https://coh3stats.com/api/redditCF", {
+      method: "GET",
+    });
 
     if (!response.ok) {
       console.warn(`Error getting reddit posts: ${response.statusText}, ${response.status}`);
