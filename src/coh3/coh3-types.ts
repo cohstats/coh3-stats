@@ -77,12 +77,12 @@ export interface LaddersDataArrayObject extends RawLeaderboardStat {
 
 export interface COH3StatsPlayerInfoAPI {
   platform: platformType;
-  COH3PlayTime?: null;
+  // COH3PlayTime?: null;
   RelicProfile: {
     leaderboardStats: Array<RawLeaderboardStat>;
     statGroups: Array<RawStatGroup>;
   };
-  SteamProfile?: Record<string, { steamid: string; profileurl: string; avatarmedium: string }>;
+  // SteamProfile?: Record<string, { steamid: string; profileurl: string; avatarmedium: string }>;
   topTeamsSummary: TopTeamsSummary;
 }
 
@@ -130,8 +130,9 @@ export type InternalStandings = Record<
 
 export type PlayerCardDataType = {
   platform: platformType;
-  steamData: { steamid: string; profileurl: string; avatarmedium: string } | null;
-  COH3PlayTime: null;
+  steamData: { steamid: string; profileurl: string; avatarmedium: string | null } | null;
+  // Cancelled, we are putting too much requests on steam to get this data, it's disabled
+  //COH3PlayTime: null;
   standings: InternalStandings;
   info: {
     relicID: number;
@@ -400,6 +401,7 @@ export interface PlayerProfileCOHStats {
   level: number;
   steam_id: string;
   country: string;
+  steam_avatar?: string;
   leaderboardStats?: Record<string, HistoricLeaderBoardStat>;
   updatedAt: Timestamp;
   stats?: PlayerPersonalCOHStats;

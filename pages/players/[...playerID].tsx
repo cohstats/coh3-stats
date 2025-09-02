@@ -277,7 +277,9 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     playerStatsData = playerCardStatsData?.playerStats
       ? ProcessPlayerCardStatsData(playerCardStatsData.playerStats)
       : null;
-    playerData = playerAPIData ? processPlayerInfoAPIResponse(playerAPIData) : null;
+    playerData = playerAPIData
+      ? processPlayerInfoAPIResponse(playerAPIData, playerCardStatsData?.playerStats)
+      : null;
     replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
 
     res.setHeader("Cache-Control", "public, max-age=15, s-maxage=30, stale-while-revalidate=60");

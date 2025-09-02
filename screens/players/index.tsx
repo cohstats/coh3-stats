@@ -256,7 +256,6 @@ const PlayerCard = ({
               playerStandings={playerData.standings}
               playerStatsData={playerStatsData}
               platform={platform}
-              COH3PlayTime={playerData.COH3PlayTime}
               topTeamsSummary={playerData.topTeamsSummary}
               profileID={playerID}
             />

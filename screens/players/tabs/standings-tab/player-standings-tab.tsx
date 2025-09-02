@@ -4,7 +4,7 @@ import {
   ProcessedCOHPlayerStats,
   TopTeamsSummary,
 } from "../../../../src/coh3/coh3-types";
-import { Container, Flex, Space, Text } from "@mantine/core";
+import { Container, Flex, Space } from "@mantine/core";
 import React from "react";
 import PlayerStandingsFaction from "./player-standings-faction";
 import StandingsSummaryCharts from "./summary-header/standing-summary-charts";
@@ -20,14 +20,12 @@ const PlayerStandingsTab = ({
   playerStandings,
   playerStatsData,
   platform,
-  COH3PlayTime,
   topTeamsSummary,
   profileID,
 }: {
   playerStandings: InternalStandings;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: platformType;
-  COH3PlayTime: number | null;
   topTeamsSummary: TopTeamsSummary | null;
   profileID?: string;
 }) => {
@@ -38,8 +36,6 @@ const PlayerStandingsTab = ({
     await push({ query: { ...query, view: value } });
   };
 
-  const COH3PlayTimeAsHours = COH3PlayTime ? Math.floor(COH3PlayTime / 60) : null;
-
   return (
     <Container size={"xl"} pl={0} pr={0}>
       <Space h="xs" />
@@ -48,11 +44,6 @@ const PlayerStandingsTab = ({
         playerStatsData={playerStatsData}
       />
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-30px" }}>
-        {COH3PlayTime && (
-          <Text span size={"sm"} pr={"md"}>
-            Playtime {COH3PlayTimeAsHours} hrs{" "}
-          </Text>
-        )}
         <MoreButton onClick={() => changeView("activity")} />
       </div>
       <Space h="xs" />
