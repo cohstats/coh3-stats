@@ -1,8 +1,4 @@
-import {
-  platformType,
-  PlayerCardDataType,
-  ProcessedCOHPlayerStats,
-} from "../../../src/coh3/coh3-types";
+import { platformType, ProcessedCOHPlayerStats } from "../../../src/coh3/coh3-types";
 import { DataTable } from "mantine-datatable";
 import {
   Anchor,
@@ -24,10 +20,9 @@ import Link from "next/link";
 import EllipsisText from "../../../components/other/ellipsis-text";
 import React, { useMemo } from "react";
 import {
-  getPlayerCardInfo,
+  getPlayerCardStatsOrNull,
   triggerPlayerNemesisAliasesUpdate,
 } from "../../../src/apis/coh3stats-api";
-import { processPlayerInfoAPIResponse } from "../../../src/players/standings";
 import CountryFlag from "../../../components/country-flag";
 
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
@@ -35,6 +30,14 @@ import { getPlayerCardRoute } from "../../../src/routes";
 import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
 import { useTranslation } from "next-i18next";
+
+// Simplified interface for what we actually need in StomperCard
+interface StomperPlayerData {
+  relicID: number;
+  name: string;
+  country: string;
+  avatarmedium: string | null;
+}
 
 interface IndividualNemesis {
   diff: number;
@@ -83,7 +86,7 @@ const StomperCard = ({
   stomper:
     | {
         data: IndividualNemesis;
-        apiData: PlayerCardDataType;
+        playerData: StomperPlayerData;
       }
     | null
     | undefined;
@@ -107,24 +110,24 @@ const StomperCard = ({
   return (
     <Anchor
       component={LinkWithOutPrefetch}
-      href={getPlayerCardRoute(stomper.apiData.info.relicID || "")}
+      href={getPlayerCardRoute(stomper.playerData.relicID || "")}
       style={{ textDecoration: "none" }}
     >
       <Card p="0">
         <Flex justify="space-between">
           <Group>
             <Avatar
-              src={stomper.apiData.steamData?.avatarmedium}
+              src={stomper.playerData.avatarmedium}
               imageProps={{ loading: "lazy" }}
-              alt={stomper.apiData.info.name}
+              alt={stomper.playerData.name}
               size={50}
               radius="xs"
             />
             <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap">
               <Group gap="xs">
-                <CountryFlag countryCode={stomper.apiData.info.country || ""} />
+                <CountryFlag countryCode={stomper.playerData.country || ""} />
                 <Text span fz="xl">
-                  {stomper.apiData.info.name}
+                  {stomper.playerData.name}
                 </Text>
               </Group>
               <Text span size="sm" c="dimmed">
@@ -175,11 +178,11 @@ const NemesisTab = ({
   const [stomperData, setStomperData] = React.useState<{
     topStomper: {
       data: IndividualNemesis;
-      apiData: PlayerCardDataType;
+      playerData: StomperPlayerData;
     } | null;
     topVictim: {
       data: IndividualNemesis;
-      apiData: PlayerCardDataType;
+      playerData: StomperPlayerData;
     } | null;
   } | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(data.length !== 0);
@@ -197,17 +200,15 @@ const NemesisTab = ({
         let PromiseTopVictimData;
 
         if (stompers.topStomper.player?.profile_id) {
-          PromiseTopStomperData = getPlayerCardInfo(
+          PromiseTopStomperData = getPlayerCardStatsOrNull(
             stompers.topStomper.player?.profile_id,
-            true,
             "",
           );
         }
 
         if (stompers.topVictim.player?.profile_id) {
-          PromiseTopVictimData = getPlayerCardInfo(
+          PromiseTopVictimData = getPlayerCardStatsOrNull(
             stompers.topVictim.player?.profile_id,
-            true,
             "",
           );
         }
@@ -217,16 +218,26 @@ const NemesisTab = ({
           PromiseTopVictimData,
         ]);
         setStomperData({
-          topStomper: topStomperData
+          topStomper: topStomperData?.playerStats
             ? {
                 data: stompers.topStomper,
-                apiData: processPlayerInfoAPIResponse(topStomperData),
+                playerData: {
+                  relicID: topStomperData.playerStats.profile_id,
+                  name: topStomperData.playerStats.alias,
+                  country: topStomperData.playerStats.country,
+                  avatarmedium: topStomperData.playerStats.steam_avatar || null,
+                },
               }
             : null,
-          topVictim: topVictimData
+          topVictim: topVictimData?.playerStats
             ? {
                 data: stompers.topVictim,
-                apiData: processPlayerInfoAPIResponse(topVictimData),
+                playerData: {
+                  relicID: topVictimData.playerStats.profile_id,
+                  name: topVictimData.playerStats.alias,
+                  country: topVictimData.playerStats.country,
+                  avatarmedium: topVictimData.playerStats.steam_avatar || null,
+                },
               }
             : null,
         });

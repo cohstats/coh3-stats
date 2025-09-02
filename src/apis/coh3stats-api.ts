@@ -3,6 +3,7 @@ import {
   GlobalAchievementsData,
   leaderBoardType,
   LiveGameSummary,
+  PlayerProfileCOHStats,
   PlayerReport,
   ProcessedMatch,
   raceType,
@@ -49,10 +50,10 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
 };
 
 const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
-  let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/matches/match?matchID=${matchID}`;
+  let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/matches/${matchID}`;
 
   if (profileIDs && profileIDs.length > 0) {
-    url += `&profileIDs=[${profileIDs.join(",")}]`;
+    url += `?profileIDs=[${profileIDs.join(",")}]`;
   }
 
   return encodeURI(url);
@@ -227,7 +228,10 @@ const getPlayerCardInfo = async (
  * @param playerID
  * @param XForwardedFor
  */
-const getPlayerCardStatsOrNull = async (playerID: string | number, XForwardedFor: string) => {
+const getPlayerCardStatsOrNull = async (
+  playerID: string | number,
+  XForwardedFor: string,
+): Promise<{ playerStats: PlayerProfileCOHStats } | null | undefined> => {
   const xff = cleanXForwardedFor(XForwardedFor);
 
   try {
