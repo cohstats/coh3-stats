@@ -423,7 +423,7 @@ const getYouTubeVideosHttp = async (): Promise<Array<YouTubeVideo>> => {
 
 const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
   const path = encodeURI(
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getPlayerNemesisUpdatesHttp?relicId=${playerID}`,
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/players/${playerID}/nemesisUpdate`,
   );
 
   const response = await fetch(path, {
