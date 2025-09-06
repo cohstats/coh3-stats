@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res, local
   const regionToFetch = (region as LeaderboardRegionTypes) || null;
 
   console.log(
-    `SSR - /leaderboards, race: ${raceToFetch}, type: ${typeToFetch}, platform: ${platformToFetch}, region: ${regionToFetch}`,
+    `SSR - /leaderboards, race: ${raceToFetch}, type: ${typeToFetch}, platform: ${platformToFetch}, region: ${regionToFetch}, locale: ${locale}`,
   );
 
   let startNumber: number | undefined;

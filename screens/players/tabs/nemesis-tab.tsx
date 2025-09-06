@@ -30,6 +30,7 @@ import { getPlayerCardRoute } from "../../../src/routes";
 import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
 import { useTranslation } from "next-i18next";
+import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 
 // Simplified interface for what we actually need in StomperCard
 interface StomperPlayerData {
@@ -410,6 +411,14 @@ const NemesisTab = ({
               title: "Total",
               render: ({ w, l }) => {
                 return w + l;
+              },
+            },
+            {
+              accessor: "lastmatchdate",
+              textAlign: "center",
+              title: "Last Match",
+              render: ({ lm }) => {
+                return lm ? <DynamicTimeAgo timestamp={lm} /> : "-";
               },
             },
           ]}

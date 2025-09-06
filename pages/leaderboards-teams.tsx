@@ -3,7 +3,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import TeamLeaderboards from "../screens/leaderboards-teams/team-leaderboards";
 
 export const getServerSideProps: GetServerSideProps = async ({ locale = "en" }) => {
-  console.log(`SSR - /leaderboards-teams`);
+  console.log(`SSR - /leaderboards-teams, locale: ${locale}`);
 
   return {
     props: {
