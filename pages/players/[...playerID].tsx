@@ -11,6 +11,7 @@ import {
   raceIDsNameAsKey,
 } from "../../src/coh3/coh3-data";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { z } from "zod";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -235,6 +236,12 @@ const ProcessPlayerCardStatsData = (
   };
 };
 
+// Validation schema for player ID
+const PlayerIDSchema = z
+  .string()
+  .min(1, "Player ID cannot be empty")
+  .regex(/^\d+$/, "Player ID must be a valid number");
+
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   params,
   query,
@@ -242,7 +249,25 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   res,
   locale = "en",
 }) => {
-  const playerID = params?.playerID[0] || "";
+  // Validate player ID (first param)
+  const playerIDParam = params?.playerID?.[0];
+  const playerIDValidation = PlayerIDSchema.safeParse(playerIDParam);
+  if (!playerIDValidation.success) {
+    console.warn("SSR Players - Invalid player ID:", playerIDValidation.error.issues);
+    res.statusCode = 400;
+    return {
+      props: {
+        error: "Invalid player ID",
+        playerID: null,
+        playerDataAPI: null,
+        playerStatsData: null,
+        replaysData: null,
+        ...(await serverSideTranslations(locale, ["common", "players"])),
+      },
+    };
+  }
+
+  const playerID = playerIDValidation.data;
   const { view, start } = query;
   const xff = `${req.headers["x-forwarded-for"]}`;
 
