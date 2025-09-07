@@ -223,6 +223,7 @@ const Leaderboards = ({
                     return { value: key, label: region.name };
                   }),
                 ]}
+                allowDeselect={false}
                 onChange={(value) => {
                   if (value === "global") {
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -239,6 +240,7 @@ const Leaderboards = ({
                 style={{ width: 90 }}
                 defaultValue={platformToFetch}
                 value={platformToFetch}
+                allowDeselect={false}
                 data={[
                   { value: "steam", label: "PC" },
                   { value: "xbox", label: "XBOX" },
@@ -254,6 +256,7 @@ const Leaderboards = ({
                 style={{ width: 190 }}
                 defaultValue={raceToFetch}
                 value={raceToFetch}
+                allowDeselect={false}
                 data={[
                   { value: "american", label: "US Forces" },
                   { value: "german", label: "Wehrmacht" },
@@ -271,6 +274,7 @@ const Leaderboards = ({
                 style={{ width: 90 }}
                 defaultValue={typeToFetch}
                 value={typeToFetch}
+                allowDeselect={false}
                 data={[
                   { value: "1v1", label: "1 vs 1" },
                   { value: "2v2", label: "2 vs 2" },

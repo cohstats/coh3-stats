@@ -253,7 +253,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   const playerIDParam = params?.playerID?.[0];
   const playerIDValidation = PlayerIDSchema.safeParse(playerIDParam);
   if (!playerIDValidation.success) {
-    console.warn("SSR Players - Invalid player ID:", playerIDValidation.error.issues);
+    console.warn(`SSR Players - Invalid player ID: ${playerIDParam}`);
     res.statusCode = 400;
     return {
       props: {
