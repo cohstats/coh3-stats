@@ -44,6 +44,14 @@ describe("topLeaderboardsHandler", () => {
     await handler(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({});
+    expect(res.json).toHaveBeenCalledWith({ error: "Internal server error" });
+  });
+
+  test("should return 400 status code on validation error", async () => {
+    mockImplementation = Promise.reject(new Error("Invalid enum value"));
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: "Invalid enum value" });
   });
 });
