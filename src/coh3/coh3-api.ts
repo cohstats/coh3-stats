@@ -45,6 +45,13 @@ const getLeaderBoardData = async (
   const url = _getLeaderBoardsUrl(lbID, sortBy, count, start, platform, region);
 
   const res = await fetch(url, { keepalive: true });
+
+  if (!res.ok) {
+    const error = `Leaderboard API request failed with status ${res.status}: ${res.statusText}`;
+    console.error(error, { url, status: res.status, statusText: res.statusText });
+    throw new Error(error);
+  }
+
   return await res.json();
 };
 
