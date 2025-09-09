@@ -4,8 +4,28 @@ import { raceType, Top1v1LeaderboardsData } from "../coh3/coh3-types";
 import { getOldLeaderboardData } from "../apis/coh3stats-api";
 
 const AMOUNT_OF_PLAYERS = 12;
+const CACHE_DURATION_MS = 3 * 60 * 1000; // 3 minutes
+
+// Simple in-memory cache
+interface CacheEntry {
+  data: Top1v1LeaderboardsData;
+  timestamp: number;
+}
+
+const cache = new Map<raceType, CacheEntry>();
+
+const isCacheValid = (entry: CacheEntry): boolean => {
+  return Date.now() - entry.timestamp < CACHE_DURATION_MS;
+};
 
 const getTop1v1LeaderBoards = async (race: raceType): Promise<Top1v1LeaderboardsData> => {
+  const cachedEntry = cache.get(race);
+
+  // Check if we have valid cached data
+  if (cachedEntry && isCacheValid(cachedEntry)) {
+    return cachedEntry.data;
+  }
+
   const date = new Date();
   const yesterdayTimeStamp =
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() - 1, 0, 0, 0) / 1000;
@@ -43,10 +63,18 @@ const getTop1v1LeaderBoards = async (race: raceType): Promise<Top1v1Leaderboards
     return value;
   });
 
-  return {
+  const result = {
     race: race,
     data: leaderBoardData,
   };
+
+  // Cache the result
+  cache.set(race, {
+    data: result,
+    timestamp: Date.now(),
+  });
+
+  return result;
 };
 
 export { getTop1v1LeaderBoards };
