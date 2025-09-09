@@ -9,6 +9,18 @@ import {
 const BASE_API_URL = "https://coh3-api.reliclink.com";
 
 /**
+ * @param profileIDs max 10 items
+ * @param platform
+ */
+const getPersonalStatsUrl = (profileIDs: string[], platform: platformType = "steam"): string => {
+  const title = apiTitleTypes[platform];
+
+  return encodeURI(
+    `${BASE_API_URL}/community/leaderboard/getpersonalstat?profile_ids=[${profileIDs.join(",")}]&title=${title}`,
+  );
+};
+
+/**
  *
  * @param leaderboard_id
  * @param sortBy 1 - ELO, 0 - Wins*
@@ -55,4 +67,4 @@ const getLeaderBoardData = async (
   return await res.json();
 };
 
-export { getLeaderBoardData, _getLeaderBoardsUrl };
+export { getLeaderBoardData, _getLeaderBoardsUrl, getPersonalStatsUrl };

@@ -621,3 +621,12 @@ export interface TeamLeaderboardResponse {
   totalTeams: number;
   nextCursor: string | null;
 }
+
+export interface PlayerStatsFromRelic {
+  statGroups: Array<RawStatGroup>;
+  leaderboardStats: Array<RawLeaderboardStat>;
+}
+
+export interface PlayerStatsFromRelicAllPlatforms extends PlayerStatsFromRelic {
+  platform: platformType;
+}
