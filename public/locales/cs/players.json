@@ -156,6 +156,7 @@
   "teamsStandings": {
     "title": "Žebříčky uspořádaných týmů",
     "noData": "Pro tohoto hráče nejsou k dispozici žádné týmové údaje",
+    "errorTitle": "Chyba při načítání týmových dat",
     "axisTeams": "Osa",
     "alliesTeams": "Spojenci",
     "axisTeam": "Tým Osy",

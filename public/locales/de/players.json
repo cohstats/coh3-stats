@@ -156,6 +156,7 @@
   "teamsStandings": {
     "title": "Arrangierte Team-Ranglisten",
     "noData": "Keine Team-Daten für diesen Spieler verfügbar",
+    "errorTitle": "Fehler beim Laden der Team-Daten",
     "axisTeams": "Achse",
     "alliesTeams": "Alliierte",
     "axisTeam": "Achsen-Team",

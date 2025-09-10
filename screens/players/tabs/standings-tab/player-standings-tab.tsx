@@ -2,10 +2,9 @@ import {
   InternalStandings,
   platformType,
   ProcessedCOHPlayerStats,
-  TopTeamsSummary,
 } from "../../../../src/coh3/coh3-types";
 import { Container, Flex, Space } from "@mantine/core";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PlayerStandingsFaction from "./player-standings-faction";
 import StandingsSummaryCharts from "./summary-header/standing-summary-charts";
 import NemesisWidget from "./widgets/nemesis-widget";
@@ -15,22 +14,37 @@ import MapsWidget from "./widgets/maps-widget";
 import { useTranslation } from "next-i18next";
 import AliasHistoryWidget from "./widgets/alias-history-widget";
 import TopTeamsInfo from "./top-teams-info";
+import { useIntersection } from "@mantine/hooks";
 
 const PlayerStandingsTab = ({
   playerStandings,
   playerStatsData,
   platform,
-  topTeamsSummary,
   profileID,
 }: {
   playerStandings: InternalStandings;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   platform: platformType;
-  topTeamsSummary: TopTeamsSummary | null;
   profileID?: string;
 }) => {
   const { push, query } = useRouter();
   const { t } = useTranslation("players");
+
+  // Render Top Teams only when the users scrolls down
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { ref, entry } = useIntersection({
+    root: containerRef.current,
+    rootMargin: "300px",
+    threshold: 0.1,
+  });
+
+  const [renderTopTeamsSummary, setRenderTopTeamsSummary] = useState(false);
+
+  useEffect(() => {
+    if (entry?.isIntersecting && !renderTopTeamsSummary) {
+      setRenderTopTeamsSummary(true);
+    }
+  }, [entry, renderTopTeamsSummary]);
 
   const changeView = async (value: string) => {
     await push({ query: { ...query, view: value } });
@@ -81,7 +95,9 @@ const PlayerStandingsTab = ({
             t={t}
           />
           <Space h="xl" />
-          <TopTeamsInfo topTeamsSummary={topTeamsSummary} t={t} profileID={profileID || ""} />
+          <div ref={ref} style={{ minHeight: 900 }}>
+            {renderTopTeamsSummary && <TopTeamsInfo t={t} profileID={profileID || ""} />}
+          </div>
         </div>
 
         <div style={{ width: 300 }}>

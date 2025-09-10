@@ -154,19 +154,20 @@
     "timezoneHelper": "The activity hour data is collected in UTC timezone. You can adjust the display to your local timezone using this selector."
   },
   "teamsStandings": {
-    "title": "Arranged Teams Standings",
-    "noData": "No teams data available for this player",
-    "axisTeams": "Axis",
-    "alliesTeams": "Allies",
-    "axisTeam": "Axis Team",
-    "alliesTeam": "Allies Team",
-    "mostPlayed": "Most Played Teams",
-    "mostRecent": "Recent Teams",
-    "checkTeamDetails": "For match and ELO change history check the team details",
-    "checkTeamLeaderboardsPrefix": "Check the",
-    "checkTeamLeaderboardsSuffix": "to find your ranking",
-    "limitedTeams": "Limited to 2 teams only",
-    "helperText": "Arranged teams are tracked only by COH3 Stats, see more info in the about page"
+    "title": "组织团队排名",
+    "noData": "该玩家没有可用的团队数据",
+    "errorTitle": "加载团队数据时出错",
+    "axisTeams": "轴心国",
+    "alliesTeams": "盟军",
+    "axisTeam": "轴心国团队",
+    "alliesTeam": "盟军团队",
+    "mostPlayed": "最常游戏的团队",
+    "mostRecent": "最近的团队",
+    "checkTeamDetails": "查看比赛和ELO变化历史，请查看团队详情",
+    "checkTeamLeaderboardsPrefix": "查看",
+    "checkTeamLeaderboardsSuffix": "以找到您的排名",
+    "limitedTeams": "仅限2个团队",
+    "helperText": "组织团队仅由COH3 Stats跟踪，更多信息请参见关于页面"
   },
   "teamDetails": {
     "title": "团队详情",

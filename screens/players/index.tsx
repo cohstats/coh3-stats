@@ -256,7 +256,6 @@ const PlayerCard = ({
               playerStandings={playerData.standings}
               playerStatsData={playerStatsData}
               platform={platform}
-              topTeamsSummary={playerData.topTeamsSummary}
               profileID={playerID}
             />
           </Tabs.Panel>

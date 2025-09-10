@@ -156,6 +156,7 @@
   "teamsStandings": {
     "title": "Clasificación de equipos organizados",
     "noData": "No hay datos de equipos disponibles para este jugador",
+    "errorTitle": "Error al cargar datos de equipos",
     "axisTeams": "Eje",
     "alliesTeams": "Aliados",
     "axisTeam": "Equipo del Eje",

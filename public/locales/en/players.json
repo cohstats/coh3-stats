@@ -156,6 +156,7 @@
   "teamsStandings": {
     "title": "Arranged Teams Standings",
     "noData": "No teams data available for this player",
+    "errorTitle": "Error loading teams data",
     "axisTeams": "Axis",
     "alliesTeams": "Allies",
     "axisTeam": "Axis Team",

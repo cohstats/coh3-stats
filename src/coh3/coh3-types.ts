@@ -149,7 +149,6 @@ export type PlayerCardDataType = {
       race: "german" | "american" | "dak" | "british";
     } | null;
   };
-  topTeamsSummary: TopTeamsSummary | null;
 };
 
 export interface CHSTeamCore {

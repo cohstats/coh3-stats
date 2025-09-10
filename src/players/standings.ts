@@ -1,8 +1,8 @@
 import {
-  COH3StatsPlayerInfoAPI,
   leaderBoardType,
   PlayerCardDataType,
   PlayerProfileCOHStats,
+  PlayerStatsFromRelicAllPlatforms,
   raceType,
   RawLeaderboardStat,
   RawStatGroup,
@@ -88,14 +88,14 @@ const filterOnlyPlayerStatGroup = (statGroups: Array<RawStatGroup>) => {
 };
 
 const processPlayerInfoAPIResponse = (
-  data: COH3StatsPlayerInfoAPI,
+  data: PlayerStatsFromRelicAllPlatforms,
   playerStatsData?: PlayerProfileCOHStats | null,
 ): PlayerCardDataType => {
   return {
     platform: data.platform,
-    standings: preparePlayerStandings(data.RelicProfile.leaderboardStats),
-    info: getPlayerInfo(filterOnlyPlayerStatGroup(data.RelicProfile.statGroups)),
-    highestRankTier: calculateHighestRankTier(data.RelicProfile.leaderboardStats),
+    standings: preparePlayerStandings(data.leaderboardStats),
+    info: getPlayerInfo(filterOnlyPlayerStatGroup(data.statGroups)),
+    highestRankTier: calculateHighestRankTier(data.leaderboardStats),
     steamData: (() => {
       // Check if playerStatsData exists and has steam_id
       if (!playerStatsData?.steam_id) {
@@ -109,7 +109,7 @@ const processPlayerInfoAPIResponse = (
       };
     })(),
     //COH3PlayTime: data.COH3PlayTime || null,
-    topTeamsSummary: data.topTeamsSummary || null,
+    // topTeamsSummary: null,
   };
 };
 

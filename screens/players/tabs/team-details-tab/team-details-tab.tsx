@@ -306,6 +306,7 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
               title=""
               teamDetails={false}
               profileID={profileID}
+              loading={isLoading}
               t={t}
             />
           </Stack>

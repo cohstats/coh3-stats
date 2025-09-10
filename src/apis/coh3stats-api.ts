@@ -49,6 +49,12 @@ const getPlayerRecentMatchesUrl = (playerID: string | number) => {
   );
 };
 
+const getPlayerTopTeamsSummary = (playerID: string | number) => {
+  return encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/players/${playerID}/topTeams`,
+  );
+};
+
 const getMatchUrl = (matchID: string | number, profileIDs?: Array<string>) => {
   let url = `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/matches/${matchID}`;
 
@@ -710,6 +716,20 @@ const getTeamLeaderboards = async (
   }
 };
 
+const getTopTeamsSummary = async (playerID: string | number) => {
+  const response = await fetch(getPlayerTopTeamsSummary(playerID));
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error getting top teams summary: ${data.error}`);
+    }
+    throw new Error(`Error getting top teams summary`);
+  }
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -729,4 +749,5 @@ export {
   getTeamDetails,
   getTeamMatches,
   getTeamLeaderboards,
+  getTopTeamsSummary,
 };

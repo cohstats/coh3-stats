@@ -161,7 +161,13 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
           </Title>
 
           {/* Pass an empty string as title to hide it */}
-          <TeamsTable teams={displayData.axisTeams} title="" profileID={profileID} t={t} />
+          <TeamsTable
+            teams={displayData.axisTeams}
+            title=""
+            profileID={profileID}
+            loading={isLoading}
+            t={t}
+          />
           <Group gap={"4"} justify={"center"}>
             <Text size="sm" c="dimmed">
               {t("teamsStandings.checkTeamLeaderboardsPrefix")}
@@ -189,7 +195,13 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
           </Title>
 
           {/* Pass an empty string as title to hide it */}
-          <TeamsTable teams={displayData.alliesTeams} title="" profileID={profileID} t={t} />
+          <TeamsTable
+            teams={displayData.alliesTeams}
+            title=""
+            profileID={profileID}
+            loading={isLoading}
+            t={t}
+          />
           <Group gap={"4"} justify={"center"}>
             <Text size="sm" c="dimmed">
               {t("teamsStandings.checkTeamLeaderboardsPrefix")}

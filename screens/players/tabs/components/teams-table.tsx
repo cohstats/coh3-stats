@@ -11,14 +11,16 @@ import { Group } from "@mantine/core";
 import MoreButton from "./more-button";
 import { useRouter } from "next/router";
 import { TFunction } from "next-i18next";
+import { IconDatabaseOff } from "@tabler/icons-react";
 
 interface TeamsTableProps {
-  teams: TeamSummary[];
+  teams: TeamSummary[] | null;
   title: string;
   showMoreButton?: boolean;
   onMoreClick?: () => void;
   teamDetails?: boolean;
   profileID?: string;
+  loading?: boolean;
   t: TFunction;
 }
 
@@ -29,10 +31,11 @@ const TeamsTable = ({
   onMoreClick,
   teamDetails = true,
   profileID,
+  loading = false,
   t,
 }: TeamsTableProps) => {
   const router = useRouter();
-  const teamsWithLastMatch = teams.filter((team) => team.lmTS);
+  const teamsWithLastMatch = teams?.filter((team) => team.lmTS) || [];
 
   const navigateToTeamDetails = (teamId: string) => {
     router.push({
@@ -51,7 +54,8 @@ const TeamsTable = ({
         horizontalSpacing={5}
         idAccessor={"id"}
         records={teamsWithLastMatch}
-        minHeight={teamsWithLastMatch.length === 0 ? 125 : 50}
+        minHeight={teamsWithLastMatch.length === 0 ? 130 : 50}
+        fetching={loading}
         onRowClick={({ record, event }) => {
           if (event.target instanceof Element) {
             const clickedElement = event.target as Element;
@@ -68,6 +72,7 @@ const TeamsTable = ({
             navigateToTeamDetails(record.id);
           }
         }}
+        noRecordsIcon={<IconDatabaseOff />}
         noRecordsText={t("teamsTable.noData", "No teams data available")}
         columns={[
           {

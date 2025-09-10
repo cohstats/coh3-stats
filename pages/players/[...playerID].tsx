@@ -1,5 +1,5 @@
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
-import { getPlayerCardInfo, getPlayerCardStatsOrNull } from "../../src/apis/coh3stats-api";
+import { getPlayerCardStatsOrNull } from "../../src/apis/coh3stats-api";
 import { GetServerSideProps } from "next";
 import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
 
@@ -12,6 +12,7 @@ import {
 } from "../../src/coh3/coh3-data";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { z } from "zod";
+import { getPlayerStatsFromRelic } from "../../src/coh3/coh3-players";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -287,7 +288,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   // const isFromPlayerPage = isSamePlayer && Boolean(prevPage?.includes("/players/"));
 
   try {
-    const PromisePlayerCardData = getPlayerCardInfo(playerID, true, xff);
+    const PromisePlayerCardData = getPlayerStatsFromRelic(playerID);
     const PromisePlayerCardStatsData = getPlayerCardStatsOrNull(playerID, xff);
     const PromiseReplaysData = isReplaysPage
       ? getReplaysForPlayer(playerID, start as string | undefined)
