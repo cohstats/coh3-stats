@@ -34,11 +34,19 @@ const DynamicCapturedPointsPieChart = dynamic(
 
 const SmallInfoCard = ({ title, children }: { title: string; children: React.ReactNode }) => {
   return (
-    <Card p={10} pt={5} m={10} shadow="sm" withBorder w={190} h={220}>
+    <Card
+      p={{ base: 5, sm: 10 }}
+      pt={{ base: 3, sm: 5 }}
+      m={{ base: 5, sm: 10 }}
+      shadow="sm"
+      withBorder
+      w={{ base: 160, sm: 190 }}
+      h={{ base: 180, sm: 220 }}
+    >
       <Title order={4} ta="center">
         {title}
       </Title>
-      <Space h="xs" />
+      <Space h={{ base: "xs", sm: "xs" }} />
       {children}
     </Card>
   );
@@ -85,7 +93,7 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
       </Flex>
       <PlayerMatchesDataTable data={alliesPlayers} />
       <Space h="md" />
-      <Flex wrap={"wrap"}>
+      <Flex wrap={"wrap"} justify={"center"}>
         <SmallInfoCard title={"Map"}>
           <RenderMap mapName={matchData.mapname as string} width={200} height={140} />
         </SmallInfoCard>

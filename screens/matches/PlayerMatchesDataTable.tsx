@@ -415,7 +415,7 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
   ];
 
   return (
-    <Group gap={"1"} wrap="nowrap" align="stretch">
+    <Group gap={"1"} wrap="nowrap" align="stretch" justify="center">
       {/*<div className={`${classes["vertical-header"]} ${isWinner ? classes["win-indicator"] : classes["loss-indicator"]}`}>*/}
       {/*  {isWinner ? "VICTORY" : "DEFEAT"}*/}
       {/*</div>*/}

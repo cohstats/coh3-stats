@@ -66,6 +66,8 @@ const PlayerStandingsFactionInfo = ({
     cardTitle = "British";
   } else if (faction === "german") {
     cardTitle = "Wehr";
+  } else if (faction === "american") {
+    cardTitle = "USF";
   } else if (faction !== "dak") {
     cardTitle = localizedNames[faction];
   }
