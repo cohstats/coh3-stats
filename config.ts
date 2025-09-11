@@ -212,11 +212,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "2.1.4";
+const latestPatch = "2.1.5";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "2.1.5": {
+      dataTag: "v2.1.5-1", // There is no change in data
+      dataTime: "11/Sep/2025",
+    },
     "2.1.4": {
       dataTag: "v2.1.4-1", // There is no change in data
       dataTime: "31/July/2025",
