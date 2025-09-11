@@ -75,6 +75,10 @@ const getSearchUrl = (searchQuery: string) => {
   );
 };
 
+const getSearchPOSTUrl = () => {
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/search/players`);
+};
+
 const getGlobalAchievementsUrl = (cache_proxy = true) => {
   const path = `/sharedAPIGen2Http/utils/globalAchievements`;
 
@@ -730,6 +734,30 @@ const getTopTeamsSummary = async (playerID: string | number) => {
   }
 };
 
+const searchPlayers = async (searchQuery: string) => {
+  const queryBase64 = Buffer.from(searchQuery).toString("base64");
+
+  const response = await fetch(getSearchPOSTUrl(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      queryBase64: queryBase64,
+    }),
+  });
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    if (response.status === 500) {
+      const data = await response.json();
+      throw new Error(`Error searching players: ${data.error}`);
+    }
+    throw new Error(`Error searching players`);
+  }
+};
+
 export {
   getPlayerCardInfo,
   getPlayerRecentMatches,
@@ -750,4 +778,5 @@ export {
   getTeamMatches,
   getTeamLeaderboards,
   getTopTeamsSummary,
+  searchPlayers,
 };

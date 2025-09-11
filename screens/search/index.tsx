@@ -10,16 +10,15 @@ import {
   Text,
 } from "@mantine/core";
 import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { debounce } from "lodash";
 import { useTranslation } from "next-i18next";
 import { platformType, SearchPlayerCardData } from "../../src/coh3/coh3-types";
 import { SearchPlayerCard } from "./search-components/search-player-card";
 import ErrorCard from "../../components/error-card";
-import { getSearchRoute } from "../../src/routes";
 import { SearchPageUsed, SearchPageView } from "../../src/firebase/analytics";
-import { getSearchUrl } from "../../src/apis/coh3stats-api";
+import { searchPlayers } from "../../src/apis/coh3stats-api";
 import unitsData from "./units-search-data.json";
 import { UnitCard, UnitData } from "./search-components/unit-card";
 
@@ -29,7 +28,7 @@ export const SearchScreen = () => {
   const [data, setData] = React.useState<Array<SearchPlayerCardData> | null>(null);
   const [unitResults, setUnitResults] = React.useState<UnitData[]>([]);
 
-  const { query, push } = useRouter();
+  const { query } = useRouter();
   const { q } = query;
   const { t } = useTranslation(["common", "search"]);
 
@@ -49,50 +48,58 @@ export const SearchScreen = () => {
   };
 
   const [searchValue, setSearchValue] = React.useState(q || "");
+
+  const performSearch = useCallback(async (searchQuery: string) => {
+    if (!searchQuery || searchQuery.length <= 1) {
+      setData(null);
+      setUnitResults([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Search units locally
+      searchUnits(searchQuery);
+
+      // Search players via API
+      const searchResults = await searchPlayers(searchQuery);
+      setData(convertSearchResultsToPlayerCardData(searchResults));
+
+      // Track search usage
+      SearchPageUsed(searchQuery);
+    } catch (e: any) {
+      console.error(`Failed getting data for player search ${searchQuery}`);
+      console.error(e);
+      setError(e.message);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Handle initial load with query parameter
   useEffect(() => {
-    q ? setSearchValue(q as string) : setSearchValue("");
-    SearchPageUsed(q as string);
-
-    (async () => {
-      if (q) {
-        try {
-          setLoading(true);
-          searchUnits(q as string);
-
-          const searchRes = await fetch(getSearchUrl(q as string));
-
-          if (searchRes.status !== 200) {
-            const resData = await searchRes.json();
-            throw new Error(
-              `Failed getting data for player id ${q}: ${JSON.stringify(resData)} `,
-            );
-          } else {
-            setData(convertSearchResultsToPlayerCardData(await searchRes.json()));
-            setError(null);
-          }
-        } catch (e: any) {
-          console.error(`Failed getting data for player id ${q}`);
-          console.error(e);
-          setError(e.message);
-        } finally {
-          setLoading(false);
-        }
-      }
-    })();
+    if (q) {
+      setSearchValue(q as string);
+      performSearch(q as string);
+    }
   }, [q]);
 
-  const debouncedSearch = debounce((value) => {
-    if (value.length > 1) {
-      push(getSearchRoute(value), undefined, { shallow: true });
-    }
-  }, 600);
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      performSearch(value);
+    }, 700),
+    [performSearch],
+  );
 
   const content = error ? (
     <ErrorCard title={t("search:errors.searchError")} body={JSON.stringify(error)} />
   ) : (
     <>
       {" "}
-      {q && (
+      {searchValue && searchValue.length > 1 && (
         <>
           <Divider my="xs" label={t("search:sections.players")} labelPosition="center" />
           {loading && (
@@ -164,10 +171,12 @@ export const SearchScreen = () => {
           leftSection={<IconSearch />}
           w={400}
           radius={"md"}
-          defaultValue={searchValue}
+          value={searchValue}
           placeholder={t("common:search.playersAndUnits")}
           onChange={(event: { currentTarget: { value: any } }) => {
-            debouncedSearch(event.currentTarget.value);
+            const value = event.currentTarget.value;
+            setSearchValue(value);
+            debouncedSearch(value);
           }}
         />
       </Center>
