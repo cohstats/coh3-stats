@@ -69,12 +69,6 @@ const getTwitchStreamsUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/utils/twitch`);
 };
 
-const getSearchUrl = (searchQuery: string) => {
-  return encodeURI(
-    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/search/players?alias=${searchQuery}`,
-  );
-};
-
 const getSearchPOSTUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/search/players`);
 };
@@ -772,7 +766,6 @@ export {
   triggerPlayerNemesisAliasesUpdate,
   getOldLeaderboardData,
   generateReplayUrl,
-  getSearchUrl,
   getTeamsFullSummary,
   getTeamDetails,
   getTeamMatches,
