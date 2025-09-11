@@ -51,44 +51,35 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
     })();
   }, [profileID]);
 
-  if (isLoading) {
-    return (
-      <Container size="lg" p="md">
-        <Space h="lg" />
-        <Title order={2}>{t("teamsStandings.title")}</Title>
-        <Space h="xs" />
-        <Text size="sm" c="dimmed">
-          {t("teamsStandings.checkTeamDetails")}
-        </Text>
-        <Space h="md" />
-        <Stack align="center" gap="md">
-          <Loader size="lg" />
-          <Text>{t("common.loading", "Loading...")}</Text>
-        </Stack>
-      </Container>
-    );
-  }
+  // Team leaderboards link component
+  const teamLeaderboardsLink = (
+    <Group gap={"4"} justify={"center"}>
+      <Text size="sm" c="dimmed">
+        {t("teamsStandings.checkTeamLeaderboardsPrefix")}
+      </Text>
+      <Anchor component={Link} href={getTeamLeaderboardsRoute()} size="sm">
+        {t("leaderboards.teams.title", "Team Leaderboards")}
+      </Anchor>
+      <Text size="sm" c="dimmed">
+        {t("teamsStandings.checkTeamLeaderboardsSuffix")}
+      </Text>
+    </Group>
+  );
 
-  if (error) {
-    return (
-      <Container size="lg" p="md">
-        <Space h="lg" />
-        <Title order={2}>{t("teamsStandings.title")}</Title>
-        <Space h="xs" />
-        <Text size="sm" c="dimmed">
-          {t("teamsStandings.checkTeamDetails")}
-        </Text>
-        <Group>
-          <Text size="sm" c="dimmed">
-            {t("teamsStandings.checkTeamLeaderboardsPrefix")}
-          </Text>
-          <Anchor component={Link} href={getTeamLeaderboardsRoute()} size="sm">
-            {t("leaderboards.teams.title", "Team Leaderboards")}
-          </Anchor>
-          <Text size="sm" c="dimmed">
-            {t("teamsStandings.checkTeamLeaderboardsSuffix")}
-          </Text>
-        </Group>
+  // Determine content based on current state
+  let content: React.ReactNode;
+
+  if (isLoading) {
+    content = (
+      <Stack align="center" gap="md">
+        <Loader size="lg" pt={"150px"} />
+        <Text>{t("common.loading", "Loading...")}</Text>
+      </Stack>
+    );
+  } else if (error) {
+    content = (
+      <>
+        {teamLeaderboardsLink}
         <Space h="md" />
         <Alert
           icon={<IconAlertCircle size={16} />}
@@ -97,55 +88,24 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
         >
           {error}
         </Alert>
-      </Container>
+      </>
     );
-  }
-
-  // If we don't have data, show no data message
-  if (!teamsData) {
-    return (
-      <Container size="lg" p="md">
-        <Space h="lg" />
-        <Title order={2}>{t("teamsStandings.title")}</Title>
-        <Space h="xs" />
-        <Text size="sm" c="dimmed">
-          {t("teamsStandings.checkTeamDetails")}
-        </Text>
-        <Group>
-          <Text size="sm" c="dimmed">
-            {t("teamsStandings.checkTeamLeaderboardsPrefix")}
-          </Text>
-          <Anchor component={Link} href={getTeamLeaderboardsRoute()} size="sm">
-            {t("leaderboards.teams.title", "Team Leaderboards")}
-          </Anchor>
-          <Text size="sm" c="dimmed">
-            {t("teamsStandings.checkTeamLeaderboardsSuffix")}
-          </Text>
-        </Group>
+  } else if (!teamsData) {
+    content = (
+      <>
+        {teamLeaderboardsLink}
         <Space h="md" />
         <Text>{t("teamsStandings.noData")}</Text>
-      </Container>
+      </>
     );
-  }
+  } else {
+    // Prepare the teams data for display
+    const displayData = {
+      axisTeams: teamsData.axisTeams || [],
+      alliesTeams: teamsData.alliesTeams || [],
+    };
 
-  // Prepare the teams data for display
-  const displayData = {
-    axisTeams: teamsData.axisTeams || [],
-    alliesTeams: teamsData.alliesTeams || [],
-  };
-
-  return (
-    <Container size="lg" p="md">
-      <Space h="lg" />
-      <Title order={1} size={"h2"}>
-        {t("teamsStandings.title")}
-      </Title>
-      <Space h="xs" />
-      <Text size="sm" c="dimmed">
-        {t("teamsStandings.checkTeamDetails")}
-      </Text>
-      <Space h="md" />
-
+    content = (
       <Stack gap="xl">
         <Stack gap={"xs"}>
           <Title
@@ -168,17 +128,7 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
             loading={isLoading}
             t={t}
           />
-          <Group gap={"4"} justify={"center"}>
-            <Text size="sm" c="dimmed">
-              {t("teamsStandings.checkTeamLeaderboardsPrefix")}
-            </Text>
-            <Anchor component={Link} href={getTeamLeaderboardsRoute()} size="sm">
-              {t("leaderboards.teams.title", "Team Leaderboards")}
-            </Anchor>
-            <Text size="sm" c="dimmed">
-              {t("teamsStandings.checkTeamLeaderboardsSuffix")}
-            </Text>
-          </Group>
+          {teamLeaderboardsLink}
         </Stack>
 
         <Stack gap={"xs"}>
@@ -202,19 +152,24 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
             loading={isLoading}
             t={t}
           />
-          <Group gap={"4"} justify={"center"}>
-            <Text size="sm" c="dimmed">
-              {t("teamsStandings.checkTeamLeaderboardsPrefix")}
-            </Text>
-            <Anchor component={Link} href={getTeamLeaderboardsRoute()} size="sm">
-              {t("leaderboards.teams.title", "Team Leaderboards")}
-            </Anchor>
-            <Text size="sm" c="dimmed">
-              {t("teamsStandings.checkTeamLeaderboardsSuffix")}
-            </Text>
-          </Group>
+          {teamLeaderboardsLink}
         </Stack>
       </Stack>
+    );
+  }
+
+  return (
+    <Container size="lg" p="md" style={{ minHeight: "900px" }}>
+      <Space h="lg" />
+      <Title order={isLoading ? 2 : 1} size={"h2"}>
+        {t("teamsStandings.title")}
+      </Title>
+      <Space h="xs" />
+      <Text size="sm" c="dimmed">
+        {t("teamsStandings.checkTeamDetails")}
+      </Text>
+      <Space h="md" />
+      {content}
     </Container>
   );
 };
