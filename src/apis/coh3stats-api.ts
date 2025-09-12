@@ -353,6 +353,18 @@ const getGlobalAchievements = async (XForwardedFor: string): Promise<GlobalAchie
   }
 };
 
+const getPlayerConfigsUrl = () => {
+  return encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/admin/player-configs`,
+  );
+};
+
+const setPlayerConfigsUrl = () => {
+  return encodeURI(
+    `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/admin/player-configs`,
+  );
+};
+
 /**
  *
  * @param playerIDs
@@ -366,7 +378,7 @@ const setPlayerCardsConfigAdminHttp = async (
   password: string,
   action = "setCustomGamesHidden",
 ) => {
-  const path = encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/setPlayerCardsConfigHttp`);
+  const path = setPlayerConfigsUrl();
 
   // POST request to the given path
   const response = await fetch(path, {
@@ -386,7 +398,7 @@ const setPlayerCardsConfigAdminHttp = async (
 };
 
 const getPlayersCardsConfigsHttp = async (): Promise<{ profiles: Array<any> }> => {
-  const path = encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}/getPlayersCardsConfigsHttp`);
+  const path = getPlayerConfigsUrl();
 
   const response = await fetch(path, {
     method: "GET",
