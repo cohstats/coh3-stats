@@ -64,7 +64,7 @@ const fetchRedditPosts = async (numberOfPosts: number): Promise<RedditPostType[]
 
               // This is when you link YouTube video
               if (data.post_hint === "rich:video") {
-                return data.thumbnail ?? null;
+                return null;
               }
 
               // This is when you upload video to Reddit
