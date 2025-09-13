@@ -54,12 +54,16 @@ export type UnitUpgrade = {
 };
 
 const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">) => {
-  const spaceRegex = /\\r?\\n|\\r|\\n/g;
+  const spaceRegex = /\\n\\n|\\r?\\n|\\r/g;
   const specialRegex = /\*/g;
 
   const briefText =
     desc.brief_text?.replace(spaceRegex, "\n")?.replace(specialRegex, "") ||
     desc.brief_text_formatter?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+
+  const extraText =
+    desc.extra_text?.replace(spaceRegex, "\n")?.replace(specialRegex, "") ||
+    desc.extra_text_formatter?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
 
   const mobileView = (
     <HoverCard position="top" width={280} shadow="md" withArrow>
@@ -86,7 +90,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
             {briefText}
           </Text>
           <Text fz="md" c="yellow.5">
-            {desc.extra_text}
+            {extraText}
           </Text>
         </Flex>
       </HoverCard.Dropdown>
@@ -125,9 +129,9 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip.Floating multiline label={desc.extra_text || desc.extra_text_formatter}>
+          <Tooltip.Floating multiline label={extraText || desc.extra_text_formatter}>
             <Text fz="sm" lineClamp={3}>
-              {desc.extra_text || desc.extra_text_formatter}
+              {extraText || desc.extra_text_formatter}
             </Text>
           </Tooltip.Floating>
         </Grid.Col>

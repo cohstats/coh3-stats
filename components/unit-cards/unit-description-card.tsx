@@ -40,7 +40,7 @@ export const UnitDescriptionCard = ({
 }) => {
   const factionBackgroundSrc = BattlegroupBackgrounds[faction];
 
-  const spaceRegex = /\\r?\\n|\\r|\\n/g;
+  const spaceRegex = /\\n\\n|\\r?\\n|\\r/g;
   const specialRegex = /\*/g;
   const regexDot = /•/g;
 

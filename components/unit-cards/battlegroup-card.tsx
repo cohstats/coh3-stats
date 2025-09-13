@@ -174,7 +174,7 @@ const BattlegroupBranchMapping = (
       command: upg.cost.command,
     };
 
-    const spaceRegex = /\\r?\\n|\\r|\\n/g;
+    const spaceRegex = /\\n\\n|\\r?\\n|\\r/g;
     const specialRegex = /\*/g;
 
     const briefTextFormatter = ability.ui.briefTextFormatter || upg.ui.briefTextFormatter;
