@@ -73,7 +73,6 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
     content = (
       <Stack align="center" gap="md">
         <Loader size="lg" pt={"150px"} />
-        <Text>{t("common.loading", "Loading...")}</Text>
       </Stack>
     );
   } else if (error) {
