@@ -317,8 +317,7 @@ const getSingleWeaponDPS = (
   /*   Damage per Second *
     -------------------------------------------------
   */
-  const dps =
-    (finalRpm / 60) * (finalHitChance * finalDamage + (1 - finalHitChance) * aoeDamageCombines);
+  const dps = (finalRpm / 60) * (finalHitChance * finalDamage + aoeDamageCombines);
 
   return dps * weapon_member.num;
 };
