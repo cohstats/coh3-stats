@@ -16,6 +16,7 @@ import {
   HoverCard,
   Space,
 } from "@mantine/core";
+import { IconSettings } from "@tabler/icons-react";
 import { WeaponSearch } from "./weaponSearch";
 import { WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
@@ -27,7 +28,10 @@ import {
   mapWeaponMember,
   resolveFactionLinkid,
   WeaponMember,
+  CustomModifiers,
+  createDefaultCustomModifiers,
 } from "../../../src/unitStats/dpsCommon";
+import { CustomConfigModal } from "./CustomConfigModal";
 import Link from "next/link";
 import { UnitSquadCard } from "../../unit-cards/unit-squad-card";
 import { UnitCostCard } from "../../unit-cards/unit-cost-card";
@@ -44,6 +48,7 @@ interface IUnitProps {
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
   const [weaponList, setWeaponList] = useState<WeaponMember[]>([]);
+  const [customConfigOpened, setCustomConfigOpened] = useState(false);
 
   // Create weapon list, `useEffect` to listen for props changes and refresh the
   // weapon data.
@@ -104,6 +109,19 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
       }
     });
     props.onChange(props.unit);
+  }
+
+  function onCustomConfigChange(modifiers: CustomModifiers) {
+    props.unit.custom_modifiers = modifiers;
+    props.onChange(props.unit);
+  }
+
+  function onCustomConfigOpen() {
+    // Ensure custom_modifiers exists
+    if (!props.unit.custom_modifiers) {
+      props.unit.custom_modifiers = createDefaultCustomModifiers();
+    }
+    setCustomConfigOpened(true);
   }
 
   const components: any[] = [];
@@ -216,7 +234,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
             </Group>
           </Grid.Col>
           <Grid.Col span={7}>
-            <Flex gap="xs" justify="flex-end" align="center" direction="row" wrap="wrap">
+            <Flex gap="4" justify="flex-end" align="center" direction="row" wrap="wrap">
               {/* <Rating defaultValue={0} size="sm" count={3} /> */}
               <Tooltip label="Moving">
                 <ActionIcon
@@ -228,11 +246,12 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   <Image
                     src="\icons\common\abilities\tactical_movement_riflemen_us.png"
                     alt="Moving"
-                    h={29}
-                    w={29}
+                    h={27}
+                    w={27}
                   />
                 </ActionIcon>
               </Tooltip>
+
               <Tooltip label="Heavy Cover">
                 <ActionIcon
                   size="lg"
@@ -274,7 +293,22 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   variant={props.unit.cover == "garrison" ? "default" : "transparent"}
                   onClick={() => onCoverChange("garrison")}
                 >
-                  <Image src="/icons/common/units/garrisoned.png" alt="Garrision" h={36} w={32} />
+                  <Image src="/icons/common/units/garrisoned.png" alt="Garrision" h={31} w={27} />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Custom Configuration">
+                <ActionIcon
+                  size="lg"
+                  onClick={onCustomConfigOpen}
+                  color="gray"
+                  variant={
+                    props.unit.custom_modifiers &&
+                    Object.values(props.unit.custom_modifiers).some((mod) => mod.enabled)
+                      ? "default"
+                      : "transparent"
+                  }
+                >
+                  <IconSettings size={24} />
                 </ActionIcon>
               </Tooltip>
             </Flex>
@@ -286,6 +320,17 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
         <Group gap="xs">{components}</Group>
       </Stack>
       {/* </Box> */}
+
+      <CustomConfigModal
+        opened={customConfigOpened}
+        onClose={() => setCustomConfigOpened(false)}
+        customModifiers={props.unit.custom_modifiers || createDefaultCustomModifiers()}
+        onModifiersChange={onCustomConfigChange}
+        unitName={
+          props.unit.screen_name !== "No text found" ? props.unit.screen_name : props.unit.id
+        }
+        unitColor={props.index === 0 ? "blue" : "red"}
+      />
     </>
   );
 };

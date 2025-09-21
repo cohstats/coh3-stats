@@ -40,11 +40,11 @@ const generateFilterButtons = (
       <Tooltip key={faction + index} label="Filter">
         <ActionIcon
           key={faction + index}
-          size="md"
-          variant={unitFilter.includes(faction) ? "gradient" : "transparent"}
+          size="lg"
+          variant={unitFilter.includes(faction) ? "default" : "transparent"}
           onClick={() => callback(faction, index, unitFilter, unitSelectionList)}
         >
-          <Image src={source} alt="Filter" w={22} h={22} />
+          <Image src={source} alt="Filter" w={25} h={25} />
         </ActionIcon>
       </Tooltip>,
     );

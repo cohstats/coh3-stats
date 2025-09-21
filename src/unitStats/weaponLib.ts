@@ -6,6 +6,7 @@ const getSingleWeaponDPS = (
   distance = 0,
   isMoving = false,
   target_unit?: CustomizableUnit,
+  attacking_unit?: CustomizableUnit,
 ) => {
   //Formular: Hitchance * RateOfFire * Damage * ChanceToDamage(E.g. penetration)
   // since we assume it is an endless engagement we also encounter reload time
@@ -36,6 +37,16 @@ const getSingleWeaponDPS = (
     cover = getCoverMultiplier(target_unit.cover, weapon_member.weapon.weapon_bag);
     targetSize = target_unit.target_size;
     armor = target_unit.armor;
+
+    // Apply armor modifier from target unit early (affects all armor calculations)
+    if (target_unit.custom_modifiers?.armor.enabled) {
+      if (target_unit.custom_modifiers.armor.type === "percentage") {
+        armor = armor * (1 + target_unit.custom_modifiers.armor.value / 100);
+      } else {
+        armor = target_unit.custom_modifiers.armor.value;
+      }
+      armor = Math.max(armor, 0.1); // Ensure positive (minimum 0.1 to avoid division by zero)
+    }
   }
 
   const range: RangeType = {
@@ -56,7 +67,7 @@ const getSingleWeaponDPS = (
   const avgDamage =
     ((weapon_bag.damage_max + weapon_bag.damage_min) * cover.damage_multiplier) / 2;
 
-  /*  Hitchance 
+  /*  Hitchance
       --------------------------------------------------
   */
 
@@ -232,19 +243,82 @@ const getSingleWeaponDPS = (
   /* Combined accuracy */
   const acc_combined = accuracy + (1 - accuracy) * scatter_acc;
 
-  /* Hitchance */
-  const hitChance = acc_combined * penetrationChance;
-
-  /*   get rounds per minute 
+  /*   get rounds per minute
     --------------------------------------------------
   */
   const rpm = getWeaponRpm(weapon_bag, distance, isMoving);
   if (rpm == 0) return 0;
 
+  /*   Apply Custom Modifiers
+    --------------------------------------------------
+  */
+  let finalAccuracy = acc_combined;
+  let finalDamage = avgDamage;
+  let finalPenetrationChance = penetrationChance;
+  let finalRpm = rpm;
+  const finalArmor = armor; // Armor is already modified if target has custom modifiers
+
+  // Apply custom modifiers from attacking unit (accuracy, damage, penetration, rpm)
+  if (attacking_unit?.custom_modifiers) {
+    const modifiers = attacking_unit.custom_modifiers;
+
+    // Apply accuracy modifier
+    if (modifiers.accuracy.enabled) {
+      if (modifiers.accuracy.type === "percentage") {
+        finalAccuracy = acc_combined * (1 + modifiers.accuracy.value / 100);
+      } else {
+        finalAccuracy = modifiers.accuracy.value;
+      }
+      finalAccuracy = Math.min(Math.max(finalAccuracy, 0), 1); // Clamp between 0 and 1
+    }
+
+    // Apply damage modifier
+    if (modifiers.damage.enabled) {
+      if (modifiers.damage.type === "percentage") {
+        finalDamage = avgDamage * (1 + modifiers.damage.value / 100);
+      } else {
+        finalDamage = modifiers.damage.value;
+      }
+      finalDamage = Math.max(finalDamage, 0); // Ensure non-negative
+    }
+
+    // Apply penetration modifier
+    if (modifiers.penetration.enabled) {
+      const basePenetration = penetration;
+      let modifiedPenetration = basePenetration;
+
+      if (modifiers.penetration.type === "percentage") {
+        modifiedPenetration = basePenetration * (1 + modifiers.penetration.value / 100);
+      } else {
+        modifiedPenetration = modifiers.penetration.value;
+      }
+
+      finalPenetrationChance = Math.min(Math.max(modifiedPenetration, 0) / finalArmor, 1);
+    }
+
+    // Apply RPM modifier
+    if (modifiers.rpm.enabled) {
+      if (modifiers.rpm.type === "percentage") {
+        finalRpm = rpm * (1 + modifiers.rpm.value / 100);
+      } else {
+        finalRpm = modifiers.rpm.value;
+      }
+      finalRpm = Math.max(finalRpm, 0); // Ensure non-negative
+    }
+  }
+
+  // Recalculate hit chance with modified values
+  // If no penetration modifier was applied, recalculate with modified armor
+  if (attacking_unit?.custom_modifiers?.penetration.enabled !== true) {
+    finalPenetrationChance = Math.min(penetration / finalArmor, 1);
+  }
+  const finalHitChance = finalAccuracy * finalPenetrationChance;
+
   /*   Damage per Second *
     -------------------------------------------------
   */
-  const dps = (rpm / 60) * (hitChance * avgDamage + (1 - hitChance) * aoeDamageCombines);
+  const dps =
+    (finalRpm / 60) * (finalHitChance * finalDamage + (1 - finalHitChance) * aoeDamageCombines);
 
   return dps * weapon_member.num;
 };
