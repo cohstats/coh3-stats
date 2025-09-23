@@ -180,14 +180,24 @@ const BattlegroupBranchMapping = (
 
     const spaceRegex = /\\n\\n|\\r?\\n|\\r/g;
     const specialRegex = /\*/g;
+    const bulletRegex = /\\n•/g;
 
     const briefTextFormatter = ability.ui.briefTextFormatter || upg.ui.briefTextFormatter;
     const briefText =
-      upg.ui.briefText?.replace(spaceRegex, "\n")?.replace(specialRegex, "") ||
-      briefTextFormatter?.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+      upg.ui.briefText
+        ?.replace(bulletRegex, "\n• ")
+        ?.replace(spaceRegex, "\n")
+        ?.replace(specialRegex, "") ||
+      briefTextFormatter
+        ?.replace(bulletRegex, "\n• ")
+        ?.replace(spaceRegex, "\n")
+        ?.replace(specialRegex, "");
 
     const extraTextFormatter = ability.ui.extraTextFormatter || upg.ui.extraTextFormatter;
-    const extraText = extraTextFormatter.replace(spaceRegex, "\n")?.replace(specialRegex, "");
+    const extraText = extraTextFormatter
+      .replace(bulletRegex, "\n• ")
+      ?.replace(spaceRegex, "\n")
+      ?.replace(specialRegex, "");
 
     return (
       <Box p="sm" w="100%" h="100%" className={classes.bgCardBorder}>

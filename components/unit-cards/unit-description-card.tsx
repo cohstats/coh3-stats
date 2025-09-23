@@ -42,9 +42,11 @@ export const UnitDescriptionCard = ({
 
   const spaceRegex = /\\n\\n|\\r?\\n|\\r/g;
   const specialRegex = /\*/g;
+  const bulletRegex = /\\n•/g;
   const regexDot = /•/g;
 
   const briefText = desc.brief_text
+    ?.replace(bulletRegex, "\n• ")
     ?.replace(spaceRegex, "\n")
     ?.replace(specialRegex, "")
     .replace(regexDot, "• ");
