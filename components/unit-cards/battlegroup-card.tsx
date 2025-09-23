@@ -15,6 +15,7 @@ import {
   Image,
   BackgroundImage,
   Text,
+  Group,
 } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,7 +33,7 @@ import {
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
 import { useToggle } from "@mantine/hooks";
-import { IconLane } from "@tabler/icons-react";
+import { IconBaselineDensityLarge, IconLane } from "@tabler/icons-react";
 import { getExplorerUnitRoute } from "../../src/routes";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { getIconsPathOnCDN } from "../../src/utils";
@@ -104,13 +105,16 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
                 className={classes.hiddenMobile}
                 label="Toggle between comparison or default mode."
               >
-                <Switch
-                  checked={value === 1}
-                  onChange={() => toggle()}
-                  // color={value === 2 ? "blue.6" : "yellow.6"}
-                  label={<IconLane size={25} style={{ marginTop: -3 }} />}
-                  labelPosition={"right"}
-                />
+                <Group gap={"xs"}>
+                  <IconLane size={28} />
+                  <Switch
+                    checked={value === 2}
+                    onChange={() => toggle()}
+                    // color={value === 2 ? "blue.6" : "yellow.6"}
+                    label={""}
+                  />
+                  <IconBaselineDensityLarge size={24} />
+                </Group>
               </Tooltip>
             </Flex>
 
