@@ -95,6 +95,7 @@ type CustomModifiers = {
   penetration: CustomModifier;
   rpm: CustomModifier;
   armor: CustomModifier;
+  hitpoints: CustomModifier;
 };
 
 type CustomizableUnit = {
@@ -147,6 +148,7 @@ export const createDefaultCustomModifiers = (): CustomModifiers => ({
   penetration: { type: "percentage", value: 0, enabled: false },
   rpm: { type: "percentage", value: 0, enabled: false },
   armor: { type: "percentage", value: 0, enabled: false },
+  hitpoints: { type: "percentage", value: 0, enabled: false },
 });
 
 export type { CustomModifier, CustomModifiers, CustomModifierType };
@@ -441,14 +443,25 @@ export const getWeaponDPSData = (units: CustomizableUnit[]) => {
 };
 
 export const updateHealth = (unit: CustomizableUnit) => {
+  // Apply hit points modifier to base hitpoints
+  let modifiedHitpoints = unit.hitpoints;
+  if (unit.custom_modifiers?.hitpoints.enabled) {
+    if (unit.custom_modifiers.hitpoints.type === "percentage") {
+      modifiedHitpoints = unit.hitpoints * (1 + unit.custom_modifiers.hitpoints.value / 100);
+    } else {
+      modifiedHitpoints = unit.custom_modifiers.hitpoints.value;
+    }
+    modifiedHitpoints = Math.max(modifiedHitpoints, 1); // Ensure minimum 1 HP
+  }
+
   let health = 0;
   if (unit.unit_type != "vehicles")
     for (const member of unit.weapon_member) {
-      health += unit.hitpoints * member.num * Math.max(member.crew_size, 1);
+      health += modifiedHitpoints * member.num * Math.max(member.crew_size, 1);
     }
   // is vehicle
   else {
-    health += unit.hitpoints;
+    health += modifiedHitpoints;
   }
   unit.health = health;
 };

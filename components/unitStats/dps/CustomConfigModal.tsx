@@ -69,6 +69,12 @@ const statConfigs: StatConfig[] = [
     description: "Target armor value - affects penetration calculations and damage reduction",
     unit: "armor",
   },
+  {
+    key: "hitpoints",
+    label: "Hit Points",
+    description: "Unit health modifier - affects how much damage the unit can take before dying",
+    unit: "HP",
+  },
 ];
 
 export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
@@ -111,6 +117,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       penetration: { type: "percentage", value: 0, enabled: false },
       rpm: { type: "percentage", value: 0, enabled: false },
       armor: { type: "percentage", value: 0, enabled: false },
+      hitpoints: { type: "percentage", value: 0, enabled: false },
     };
     setLocalModifiers(resetModifiers);
     onModifiersChange(resetModifiers);
