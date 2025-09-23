@@ -30,6 +30,7 @@ import {
   WeaponMember,
   CustomModifiers,
   createDefaultCustomModifiers,
+  getModifiedHitpoints,
 } from "../../../src/unitStats/dpsCommon";
 import { CustomConfigModal } from "./CustomConfigModal";
 import Link from "next/link";
@@ -224,7 +225,11 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
                     <Card p="sm" radius="md">
-                      {HitpointCard({ squad: props.unit.sbps, entities: ebpsStats })}
+                      {HitpointCard({
+                        squad: props.unit.sbps,
+                        entities: ebpsStats,
+                        modifiedHitpoints: getModifiedHitpoints(props.unit),
+                      })}
                     </Card>
                   </HoverCard.Dropdown>
                 </HoverCard>

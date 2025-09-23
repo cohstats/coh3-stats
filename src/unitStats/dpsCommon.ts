@@ -442,8 +442,8 @@ export const getWeaponDPSData = (units: CustomizableUnit[]) => {
   return dpsSet;
 };
 
-export const updateHealth = (unit: CustomizableUnit) => {
-  // Apply hit points modifier to base hitpoints
+// Helper function to get modified hitpoints per entity
+export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
   let modifiedHitpoints = unit.hitpoints;
   if (unit.custom_modifiers?.hitpoints.enabled) {
     if (unit.custom_modifiers.hitpoints.type === "percentage") {
@@ -453,6 +453,12 @@ export const updateHealth = (unit: CustomizableUnit) => {
     }
     modifiedHitpoints = Math.max(modifiedHitpoints, 1); // Ensure minimum 1 HP
   }
+  return modifiedHitpoints;
+};
+
+export const updateHealth = (unit: CustomizableUnit) => {
+  // Apply hit points modifier to base hitpoints
+  const modifiedHitpoints = getModifiedHitpoints(unit);
 
   let health = 0;
   if (unit.unit_type != "vehicles")

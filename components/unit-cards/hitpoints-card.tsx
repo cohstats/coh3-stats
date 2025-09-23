@@ -6,13 +6,19 @@ type HitpointsCardInput = {
   squad: SbpsType;
   entities: EbpsType[];
   title?: string;
+  modifiedHitpoints?: number; // Optional modified hitpoints per entity
 };
 
 const squadIcon = "/icons/common/squad/squad.png";
 const weaponIcon = "/icons/races/common/symbols/hmg.png";
 const colorPalette = ["cyan.6", "blue.6", "indigo.6", "violet.6", "grape.6", "pink.6", "red.6"];
 
-export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => {
+export const HitpointCard = ({
+  squad,
+  entities,
+  title,
+  modifiedHitpoints,
+}: HitpointsCardInput) => {
   title = title || "Hitpoints";
 
   // Put the "team_weapon" type in this array.
@@ -31,21 +37,25 @@ export const HitpointCard = ({ squad, entities, title }: HitpointsCardInput) => 
     if (foundEntity) {
       // Push the entity hitpoints "num" times.
       for (let c = 0; c < loadout.num; c++) {
+        // Use modified hitpoints if provided, otherwise use original hitpoints
+        const entityHitpoints =
+          modifiedHitpoints !== undefined ? modifiedHitpoints : foundEntity.health.hitpoints;
+
         // Patch 2.1.4, mortar are missing team_weapon unitType
         if (foundEntity.unitTypes.includes("team_weapon") || foundEntity.unitType === "mortar") {
           // twEntities.push(foundEntity);
-          twTotalHitPoints += foundEntity.health.hitpoints;
-          twSquadHitPoints.push(foundEntity.health.hitpoints);
+          twTotalHitPoints += entityHitpoints;
+          twSquadHitPoints.push(entityHitpoints);
         } else {
           // squadEntities.push(foundEntity);
           // This check is OK, there seems to be an error in the Relic data.
-          if (typeof foundEntity.health.hitpoints === "number") {
-            totalHitPoints += foundEntity.health.hitpoints;
+          if (typeof entityHitpoints === "number") {
+            totalHitPoints += entityHitpoints;
           } else {
             console.warn(`Entity ${foundEntity.id} has no hitpoints as number`);
           }
           // We want to push it there even if it's not a number.
-          squadHitPoints.push(foundEntity.health.hitpoints);
+          squadHitPoints.push(entityHitpoints);
         }
       }
     }

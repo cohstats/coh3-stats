@@ -1,4 +1,8 @@
-import { updateHealth, createDefaultCustomModifiers } from "../../../src/unitStats/dpsCommon";
+import {
+  updateHealth,
+  createDefaultCustomModifiers,
+  getModifiedHitpoints,
+} from "../../../src/unitStats/dpsCommon";
 import type { CustomizableUnit } from "../../../src/unitStats/dpsCommon";
 
 describe("Hit Points Modifier", () => {
@@ -151,5 +155,49 @@ describe("Hit Points Modifier", () => {
 
     // Should use base hitpoints: 80 * 4 * 1 = 320
     expect(unit.health).toBe(320);
+  });
+
+  describe("getModifiedHitpoints helper function", () => {
+    it("should return base hitpoints when no modifier is applied", () => {
+      const unit = createMockUnit(80);
+      const modifiedHitpoints = getModifiedHitpoints(unit);
+      expect(modifiedHitpoints).toBe(80);
+    });
+
+    it("should return modified hitpoints with percentage modifier", () => {
+      const unit = createMockUnit(80);
+      unit.custom_modifiers!.hitpoints = {
+        type: "percentage",
+        value: 25, // +25%
+        enabled: true,
+      };
+
+      const modifiedHitpoints = getModifiedHitpoints(unit);
+      expect(modifiedHitpoints).toBe(100); // 80 * 1.25 = 100
+    });
+
+    it("should return absolute hitpoints with absolute modifier", () => {
+      const unit = createMockUnit(80);
+      unit.custom_modifiers!.hitpoints = {
+        type: "absolute",
+        value: 150,
+        enabled: true,
+      };
+
+      const modifiedHitpoints = getModifiedHitpoints(unit);
+      expect(modifiedHitpoints).toBe(150);
+    });
+
+    it("should return base hitpoints when modifier is disabled", () => {
+      const unit = createMockUnit(80);
+      unit.custom_modifiers!.hitpoints = {
+        type: "percentage",
+        value: 50,
+        enabled: false,
+      };
+
+      const modifiedHitpoints = getModifiedHitpoints(unit);
+      expect(modifiedHitpoints).toBe(80);
+    });
   });
 });
