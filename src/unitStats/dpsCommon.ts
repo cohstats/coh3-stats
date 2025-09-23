@@ -81,6 +81,23 @@ export const mapWeaponMember = (
   return member;
 };
 
+type CustomModifierType = "percentage" | "absolute";
+
+type CustomModifier = {
+  type: CustomModifierType;
+  value: number;
+  enabled: boolean;
+};
+
+type CustomModifiers = {
+  accuracy: CustomModifier;
+  damage: CustomModifier;
+  penetration: CustomModifier;
+  rpm: CustomModifier;
+  armor: CustomModifier;
+  hitpoints: CustomModifier;
+};
+
 type CustomizableUnit = {
   id: string; // filename  -> eg. panzergrenadier_ak
   screen_name: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
@@ -122,7 +139,19 @@ type CustomizableUnit = {
   capture_rate: number;
   capture_revert: number;
   speed: number;
+  custom_modifiers?: CustomModifiers; // Custom stat modifiers
 };
+
+export const createDefaultCustomModifiers = (): CustomModifiers => ({
+  accuracy: { type: "percentage", value: 0, enabled: false },
+  damage: { type: "percentage", value: 0, enabled: false },
+  penetration: { type: "percentage", value: 0, enabled: false },
+  rpm: { type: "percentage", value: 0, enabled: false },
+  armor: { type: "percentage", value: 0, enabled: false },
+  hitpoints: { type: "percentage", value: 0, enabled: false },
+});
+
+export type { CustomModifier, CustomModifiers, CustomModifierType };
 
 export const mapCustomizableUnit = (
   sbpsSelected: SbpsType,
@@ -174,6 +203,7 @@ export const mapCustomizableUnit = (
     dps_m: 0,
     dps_f: 0,
     speed: 0,
+    custom_modifiers: createDefaultCustomModifiers(),
   };
 
   if (sbpsSelected.ui.symbolIconName != "")
@@ -412,15 +442,32 @@ export const getWeaponDPSData = (units: CustomizableUnit[]) => {
   return dpsSet;
 };
 
+// Helper function to get modified hitpoints per entity
+export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
+  let modifiedHitpoints = unit.hitpoints;
+  if (unit.custom_modifiers?.hitpoints.enabled) {
+    if (unit.custom_modifiers.hitpoints.type === "percentage") {
+      modifiedHitpoints = unit.hitpoints * (1 + unit.custom_modifiers.hitpoints.value / 100);
+    } else {
+      modifiedHitpoints = unit.custom_modifiers.hitpoints.value;
+    }
+    modifiedHitpoints = Math.max(modifiedHitpoints, 1); // Ensure minimum 1 HP
+  }
+  return modifiedHitpoints;
+};
+
 export const updateHealth = (unit: CustomizableUnit) => {
+  // Apply hit points modifier to base hitpoints
+  const modifiedHitpoints = getModifiedHitpoints(unit);
+
   let health = 0;
   if (unit.unit_type != "vehicles")
     for (const member of unit.weapon_member) {
-      health += unit.hitpoints * member.num * Math.max(member.crew_size, 1);
+      health += modifiedHitpoints * member.num * Math.max(member.crew_size, 1);
     }
   // is vehicle
   else {
-    health += unit.hitpoints;
+    health += modifiedHitpoints;
   }
   unit.health = health;
 };
@@ -455,7 +502,7 @@ export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) 
     // opponent default values
 
     for (let distance = range_min; distance <= range_max; distance++) {
-      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
+      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2, unit1);
       weaponDps.push({ x: distance, y: dps });
     }
 
@@ -479,7 +526,7 @@ const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: Customi
     // opponent default values
 
     // for (let distance = range_min; distance <= range_max; distance++) {
-    const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2);
+    const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2, unit1);
     weaponDps.push({ x: distance, y: dps });
     // }
 

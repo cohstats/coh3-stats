@@ -23,6 +23,7 @@ import {
   getWeaponDPSData,
   mapCustomizableUnit,
   updateHealth,
+  createDefaultCustomModifiers,
 } from "../../../src/unitStats/dpsCommon";
 import config from "../../../config";
 import {
@@ -259,6 +260,10 @@ export const DpsPageComponent = (props: IDPSProps) => {
       activeData[index].weapon_member = []; // Clear loadout reference
       for (const loadout of unitBp.weapon_member)
         activeData[index].weapon_member.push({ ...loadout });
+
+      // Reset custom modifiers when selecting a new unit
+      activeData[index].custom_modifiers = createDefaultCustomModifiers();
+
       setRerender(!rerender);
     }
   };
@@ -404,7 +409,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
           </Grid.Col>
         </Grid>
 
-        <Space></Space>
+        <Space />
 
         <Space h="xl" />
         <>

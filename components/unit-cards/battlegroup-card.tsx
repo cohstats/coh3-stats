@@ -7,7 +7,7 @@ import {
   Accordion,
   Box,
   Anchor,
-  ActionIcon,
+  Switch,
   Flex,
   Tooltip,
   Select,
@@ -32,7 +32,7 @@ import {
 import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
 import { useToggle } from "@mantine/hooks";
-import { IconAdjustments } from "@tabler/icons-react";
+import { IconLane } from "@tabler/icons-react";
 import { getExplorerUnitRoute } from "../../src/routes";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { getIconsPathOnCDN } from "../../src/utils";
@@ -104,13 +104,13 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
                 className={classes.hiddenMobile}
                 label="Toggle between comparison or default mode."
               >
-                <ActionIcon
-                  variant="transparent"
-                  color={["yellow.6", "blue.6"][value - 1]}
-                  onClick={() => toggle()}
-                >
-                  <IconAdjustments />
-                </ActionIcon>
+                <Switch
+                  checked={value === 1}
+                  onChange={() => toggle()}
+                  // color={value === 2 ? "blue.6" : "yellow.6"}
+                  label={<IconLane size={25} style={{ marginTop: -3 }} />}
+                  labelPosition={"right"}
+                />
               </Tooltip>
             </Flex>
 
