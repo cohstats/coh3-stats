@@ -275,6 +275,7 @@ const OpenData: NextPage = () => {
                 https://github.com/cohstats/coh3-data
               </Anchor>
             </Text>
+            <br />
             <Text span pt={"sm"}>
               You can find all our other open source projects on our Github organization page:
               <br />
