@@ -14,6 +14,7 @@ import {
   getPatchVersionAsMantineV7Groups,
   getCorrectLeaderStartPositions,
   getCookie,
+  compareVersions,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -393,5 +394,45 @@ describe("getCookie", () => {
     }));
 
     expect(getCookie("NEXT_LOCALE")).toBe(null);
+  });
+});
+
+describe("compareVersions", () => {
+  test("should return true when version is greater than minVersion", () => {
+    expect(compareVersions("2.0.0", "1.9.9")).toBe(true);
+    expect(compareVersions("1.10.0", "1.9.0")).toBe(true);
+    expect(compareVersions("1.0.1", "1.0.0")).toBe(true);
+  });
+
+  test("should return false when version is less than minVersion", () => {
+    expect(compareVersions("1.9.9", "2.0.0")).toBe(false);
+    expect(compareVersions("1.9.0", "1.10.0")).toBe(false);
+    expect(compareVersions("1.0.0", "1.0.1")).toBe(false);
+  });
+
+  test("should return true when versions are equal", () => {
+    expect(compareVersions("1.0.0", "1.0.0")).toBe(true);
+    expect(compareVersions("2.5.3", "2.5.3")).toBe(true);
+  });
+
+  test("should handle versions with 'v' prefix", () => {
+    expect(compareVersions("v2.0.0", "1.9.9")).toBe(true);
+    expect(compareVersions("2.0.0", "v1.9.9")).toBe(true);
+    expect(compareVersions("v2.0.0", "v1.9.9")).toBe(true);
+    expect(compareVersions("v1.9.9", "v2.0.0")).toBe(false);
+  });
+
+  test("should handle versions with different number of parts", () => {
+    expect(compareVersions("2.0", "1.9.9")).toBe(true);
+    expect(compareVersions("2.0.0", "1.9")).toBe(true);
+    expect(compareVersions("1.9", "2.0.0")).toBe(false);
+  });
+
+  test("should correctly identify version 2.0.0 and higher", () => {
+    expect(compareVersions("2.0.0", "2.0.0")).toBe(true);
+    expect(compareVersions("2.0.1", "2.0.0")).toBe(true);
+    expect(compareVersions("2.1.0", "2.0.0")).toBe(true);
+    expect(compareVersions("3.0.0", "2.0.0")).toBe(true);
+    expect(compareVersions("1.9.9", "2.0.0")).toBe(false);
   });
 });

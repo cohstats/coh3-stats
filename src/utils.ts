@@ -278,3 +278,28 @@ export const imageUrlTransform = (imageUrl: string | null, format: "webp" = "web
   if (!imageUrl) return null;
   return `${config.SITE_URL}/cdn-cgi/image/format=${format}/${imageUrl}`;
 };
+
+/**
+ * Compares two semantic version strings.
+ * @param version - The version to compare
+ * @param minVersion - The minimum version to compare against
+ * @returns true if version >= minVersion, false otherwise
+ */
+export const compareVersions = (version: string, minVersion: string): boolean => {
+  // Remove 'v' prefix if present
+  const cleanVersion = version.replace(/^v/, "");
+  const cleanMinVersion = minVersion.replace(/^v/, "");
+
+  const versionParts = cleanVersion.split(".").map(Number);
+  const minVersionParts = cleanMinVersion.split(".").map(Number);
+
+  for (let i = 0; i < Math.max(versionParts.length, minVersionParts.length); i++) {
+    const vPart = versionParts[i] || 0;
+    const minPart = minVersionParts[i] || 0;
+
+    if (vPart > minPart) return true;
+    if (vPart < minPart) return false;
+  }
+
+  return true; // versions are equal
+};

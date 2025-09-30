@@ -21,9 +21,8 @@ jest.mock("octokit", () => {
 describe("appUpdateRouteHandler", () => {
   let req: NextApiRequest;
   let res: NextApiResponse;
-  // let octokit: any;
 
-  const setupFetchStub = (data: any) => () =>
+  const setupFetchStub = (data: string) => () =>
     Promise.resolve({ text: () => Promise.resolve(data) });
 
   beforeAll(() => {

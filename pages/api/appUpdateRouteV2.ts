@@ -1,6 +1,5 @@
 /**
  * This route is used be the desktop app to determine if the auto updater should update the app
- * This route handles v1.x updates only
  */
 
 import { NextApiRequest, NextApiResponse } from "next";
@@ -21,7 +20,7 @@ interface GitHubRelease {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(`SSR - /api/appUpdateRoute`);
+  console.log(`SSR - /api/appUpdateRouteV2`);
 
   const octokit = new Octokit();
   const response = await octokit.request("GET /repos/{owner}/{repo}/releases", {
@@ -39,18 +38,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  // Filter releases to only include versions below 2.0.0 (v1.x releases)
+  // Filter releases to only include version 2.0.0 and higher
   const validReleases = (response.data as GitHubRelease[]).filter((release) => {
-    return !release.draft && !release.prerelease && !compareVersions(release.tag_name, "2.0.0");
+    return !release.draft && !release.prerelease && compareVersions(release.tag_name, "2.0.0");
   });
 
   if (validReleases.length === 0) {
     return res.status(404).json({
-      message: "No v1.x releases found",
+      message: "No releases found with version 2.0.0 or higher",
     });
   }
 
-  // Get the latest valid v1.x release (first one in the filtered list)
+  // Get the latest valid release (first one in the filtered list)
   const latestRelease = validReleases[0];
 
   if (latestRelease.published_at === null) {
@@ -58,7 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       message: "Github response has no published at date",
     });
   }
-
   const date = new Date(latestRelease.published_at);
   let sigURL: string | undefined;
   let zipURL: string | undefined;
@@ -79,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (zipURL === undefined || sigURL === undefined) {
     return res.status(500).json({
-      message: "Could not find required assets in latest v1.x release.",
+      message: "Could not find required assets in latest release.",
     });
   }
 
