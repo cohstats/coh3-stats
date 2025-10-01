@@ -27,7 +27,7 @@ import { useTranslation } from "next-i18next";
 interface UnitDetailProps {
   units: SbpsType[];
   raceToFetch: raceType;
-  descriptions: Record<string, Record<string, string>>;
+  descriptions: Record<string, Record<string, string | null>>;
 }
 
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
@@ -58,9 +58,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
           <FactionIcon name={raceToFetch} width={80}></FactionIcon>
           <Stack gap="xs">
             <Title order={1} size={"h2"}>
-              {localizedRace} - {descriptions.common.units}
+              {localizedRace} - {descriptions.common?.units || "Units"}
             </Title>
-            <Text size="md">{descriptions[raceToFetch].description}</Text>
+            {descriptions[raceToFetch]?.description && (
+              <Text size="md">{descriptions[raceToFetch].description}</Text>
+            )}
           </Stack>
         </Flex>
 
@@ -72,7 +74,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         </Flex>
 
         <Stack mt={32}>
-          <Title order={2}>{descriptions.common.units}</Title>
+          <Title order={2}>{descriptions.common?.units || "Units"}</Title>
 
           <Grid>
             {units.map(({ id, ui }) => {

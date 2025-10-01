@@ -67,7 +67,7 @@ interface UnitDetailProps {
     buildables: EbpsType[];
   };
   locale: string;
-  descriptions: Record<string, Record<string, string>>;
+  descriptions: Record<string, Record<string, string | null>>;
 }
 
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, locale }) => {

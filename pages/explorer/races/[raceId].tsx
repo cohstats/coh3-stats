@@ -69,8 +69,8 @@ interface PreCalculatedBuilding {
 interface RaceDetailProps {
   sbpsData: SbpsType[];
   descriptions: {
-    raceDescription: string;
-    buildings: string;
+    raceDescription: string | null;
+    buildings: string | null;
   };
   resolvedBattlegroups: BattlegroupResolvedType[];
   preCalculatedBuildings: PreCalculatedBuilding[]; // New prop for pre-calculated buildings
@@ -136,7 +136,9 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
             <Title order={1} size="h2">
               {localizedRace} - {t("factionPage.factionOverview")}
             </Title>
-            <Text size="md">{descriptions.raceDescription}</Text>
+            {descriptions.raceDescription && (
+              <Text size="md">{descriptions.raceDescription}</Text>
+            )}
           </Stack>
         </Flex>
 
@@ -156,7 +158,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         {/* Buildings Section */}
         <Stack mt={32}>
           <Title order={2} size="h2">
-            {descriptions.buildings}
+            {descriptions.buildings || "Buildings"}
           </Title>
 
           <BuildingMapping

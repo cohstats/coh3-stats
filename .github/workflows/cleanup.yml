@@ -45,7 +45,6 @@ jobs:
           package-type: "container"
           min-versions-to-keep: 0
           delete-only-untagged-versions: true
-          num-old-versions-to-delete: 50
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete old development images
@@ -64,6 +63,6 @@ jobs:
           echo "## Cleanup Summary" >> $GITHUB_STEP_SUMMARY
           echo "✅ Cleaned up old Docker images" >> $GITHUB_STEP_SUMMARY
           echo "- Kept minimum 10 versions overall" >> $GITHUB_STEP_SUMMARY
-          echo "- Removed up to 50 oldest untagged images" >> $GITHUB_STEP_SUMMARY
+          echo "- Removed all untagged images" >> $GITHUB_STEP_SUMMARY
           echo "- Removed up to 20 oldest development images (keeping minimum 5)" >> $GITHUB_STEP_SUMMARY
           echo "- Protected: latest, production, and version tags (v*)" >> $GITHUB_STEP_SUMMARY
