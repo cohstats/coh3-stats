@@ -3,22 +3,21 @@
  * the latest info for their tables.
  */
 import { logger } from "../../src/logger";
-import { getPlayerCardInfo } from "../../src/apis/coh3stats-api";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { json2csv } from "json-2-csv";
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateCSVObject } from "../../src/players/export";
 import { chunk } from "lodash";
+import { getPlayerStatsFromRelic } from "../../src/coh3/coh3-players";
 
-const getPlayerInfo = async (profileID: string, xff: string): Promise<PlayerCardDataType> => {
-  return processPlayerInfoAPIResponse(await getPlayerCardInfo(profileID, true, xff));
+const getPlayerInfo = async (profileID: string): Promise<PlayerCardDataType> => {
+  return processPlayerInfoAPIResponse(await getPlayerStatsFromRelic(profileID));
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const query = req.query;
-    const xff = `${req.headers["x-forwarded-for"]}`;
     const { profileIDs, types } = query;
 
     logger.log(`SSR - /api/playerExport, profileIDs: ${profileIDs}, types: ${types}`);
@@ -59,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const finalArray = [];
 
     for (const singleChunk of chunk(arrayOfIds, 2)) {
-      const playerInfoPromises = singleChunk.map((profileId) => getPlayerInfo(profileId, xff));
+      const playerInfoPromises = singleChunk.map((profileId) => getPlayerInfo(profileId));
       const playerInfoArray = await Promise.all(playerInfoPromises);
       const playerInfoAsCSVObjects = playerInfoArray.map((playerInfo, index) =>
         generateCSVObject(playerInfo, singleChunk[index], parsedTypes || undefined),
