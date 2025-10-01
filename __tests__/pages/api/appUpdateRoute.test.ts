@@ -47,23 +47,27 @@ describe("appUpdateRouteHandler", () => {
   test("should return 200 status code and latest release in", async () => {
     mockRequest.mockResolvedValue({
       status: 200,
-      data: {
-        published_at: "2022-11-28T00:00:00Z",
-        tag_name: "1.0.0",
-        body: "Release notes",
-        assets: [
-          {
-            browser_download_url:
-              "https://github.com/cohstats/coh3-stats-desktop-app/releases/download/1.5.3/COH3.Stats.Desktop.App.fullBundle_1.5.3_x64_en-US.msi",
-          },
-          {
-            browser_download_url: "https://example.com/download.zip",
-          },
-          {
-            browser_download_url: "https://example.com/download.sig",
-          },
-        ],
-      },
+      data: [
+        {
+          published_at: "2022-11-28T00:00:00Z",
+          tag_name: "1.0.0",
+          body: "Release notes",
+          draft: false,
+          prerelease: false,
+          assets: [
+            {
+              browser_download_url:
+                "https://github.com/cohstats/coh3-stats-desktop-app/releases/download/1.5.3/COH3.Stats.Desktop.App.fullBundle_1.5.3_x64_en-US.msi",
+            },
+            {
+              browser_download_url: "https://example.com/download.zip",
+            },
+            {
+              browser_download_url: "https://example.com/download.sig",
+            },
+          ],
+        },
+      ],
     }),
       await handler(req, res);
 
@@ -88,19 +92,23 @@ describe("appUpdateRouteHandler", () => {
   test("should return 500 status code when published_at is null", async () => {
     mockRequest.mockResolvedValue({
       status: 200,
-      data: {
-        published_at: null,
-        tag_name: "1.0.0",
-        body: "Release notes",
-        assets: [
-          {
-            browser_download_url: "https://example.com/download.zip",
-          },
-          {
-            browser_download_url: "https://example.com/download.sig",
-          },
-        ],
-      },
+      data: [
+        {
+          published_at: null,
+          tag_name: "1.0.0",
+          body: "Release notes",
+          draft: false,
+          prerelease: false,
+          assets: [
+            {
+              browser_download_url: "https://example.com/download.zip",
+            },
+            {
+              browser_download_url: "https://example.com/download.sig",
+            },
+          ],
+        },
+      ],
     });
 
     await handler(req, res);
@@ -114,19 +122,23 @@ describe("appUpdateRouteHandler", () => {
   test("should return 500 status code when required assets are not found", async () => {
     mockRequest.mockResolvedValue({
       status: 200,
-      data: {
-        published_at: "2022-11-28T00:00:00Z",
-        tag_name: "1.0.0",
-        body: "Release notes",
-        assets: [],
-      },
+      data: [
+        {
+          published_at: "2022-11-28T00:00:00Z",
+          tag_name: "1.0.0",
+          body: "Release notes",
+          draft: false,
+          prerelease: false,
+          assets: [],
+        },
+      ],
     });
 
     await handler(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
-      message: "Could not find required assets in latest release.",
+      message: "Could not find required assets in latest v1.x release.",
     });
   });
 
@@ -136,19 +148,23 @@ describe("appUpdateRouteHandler", () => {
 
     mockRequest.mockResolvedValue({
       status: 200,
-      data: {
-        published_at: "2022-11-28T00:00:00Z",
-        tag_name: "1.0.0",
-        body: "Release notes",
-        assets: [
-          {
-            browser_download_url: "https://example.com/download.zip",
-          },
-          {
-            browser_download_url: "https://example.com/download.sig",
-          },
-        ],
-      },
+      data: [
+        {
+          published_at: "2022-11-28T00:00:00Z",
+          tag_name: "1.0.0",
+          body: "Release notes",
+          draft: false,
+          prerelease: false,
+          assets: [
+            {
+              browser_download_url: "https://example.com/download.zip",
+            },
+            {
+              browser_download_url: "https://example.com/download.sig",
+            },
+          ],
+        },
+      ],
     });
 
     await handler(req, res);
