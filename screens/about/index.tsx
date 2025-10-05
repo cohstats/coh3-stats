@@ -20,6 +20,7 @@ import DonateSection from "./DonateSection";
 import Link from "next/link";
 import config from "../../config";
 import DataSection from "./DataSection";
+import LegalSection from "./LegalSection";
 
 const BugReports = () => {
   return (
@@ -341,6 +342,12 @@ const sections = [
     menuDisplayName: "Donate",
     pageDisplayName: "Donate and support us",
     component: <DonateSection />,
+  },
+  {
+    name: "legal",
+    menuDisplayName: "Legal",
+    pageDisplayName: "Legal",
+    component: <LegalSection />,
   },
 ];
 

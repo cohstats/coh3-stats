@@ -164,3 +164,7 @@ export const getTeamLeaderboardsRoute = (
 export const getTeamDetailsRoute = (profileId: string | number, teamId: string | number) => {
   return encodeURI(`/players/${profileId}?view=teamDetails&team=${teamId}`);
 };
+
+export const getPrivacyPolicyRoute = () => {
+  return encodeURI(`/legal/privacy`);
+};
