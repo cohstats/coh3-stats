@@ -1,8 +1,10 @@
 {
   "meta": {
-    "title": "App de Escritorio de COH3 Stats",
-    "description": "Descarga la App de Escritorio de COH3 Stats {{version}}. No requiere configurarse. Con un Overlay para OBS. Info detallada de tus oponentes al momento. Notificaciones de sonido para tu juego y mucho mas!.",
+    "title": "Grenadier - COH3 Companion",
+    "description": "Descarga Grenadier - App de Escritorio de COH3 Stats {{version}}. No requiere configurarse. Con un Overlay para OBS. Info detallada de tus oponentes al momento. Notificaciones de sonido para tu juego y mucho mas!.",
     "keywords": [
+      "grenadier",
+      "coh3 companion",
       "coh3 app de escritorio",
       "obs overlay",
       "información de partida en tiempo real",
@@ -14,13 +16,35 @@
     ]
   },
   "download": {
-    "button": "Descarga {{version}}",
-    "buttonAriaLabel": "Descargar instalador de COH3 Stats Desktop App {{version}} para Windows",
+    "button": "Descarga Gratuita {{version}}",
+    "buttonAriaLabel": "Descargar instalador de Grenadier - COH3 Stats Desktop App {{version}} para Windows",
     "downloads": "{{count}} Descargas",
-    "releaseNotes": "Notas de la versión"
+    "releaseNotes": "Notas de la versión",
+    "microsoftStore": "Obtener en Microsoft Store",
+    "microsoftStoreAriaLabel": "Obtener Grenadier - COH3 Companion en Microsoft Store",
+    "or": "O"
   },
-  "title": "App de Escritorio COH3 Stats",
-  "subtitle": "¡Obtén información adicional de tu juego actual!",
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "App de Escritorio COH3 Stats - ¡Obtén información adicional de tu juego actual!",
+  "downloadOptions": {
+    "title": "Opciones de Descarga",
+    "microsoftStore": {
+      "title": "Comprar en Microsoft Store",
+      "benefits": [
+        "Aplicación certificada por Microsoft",
+        "Actualizaciones y parches gestionados por Microsoft",
+        "Licencia de por vida",
+        "¡Apoya la aplicación con tu compra! Gracias"
+      ]
+    },
+    "freeDownload": {
+      "title": "Descarga Gratuita",
+      "benefits": [
+        "Descarga directa, aplicación no certificada",
+        "Mismas características que la aplicación de Microsoft Store"
+      ]
+    }
+  },
   "features": {
     "title": "Características:",
     "list": {
