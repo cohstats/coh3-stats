@@ -1,8 +1,10 @@
 {
   "meta": {
-    "title": "Приложение на ПК от COH3 Stats",
-    "description": "Скачайте приложение COH3 Stats для ПК {{version}}. Не требует отдельной настройки. Функция оверлея для OBS. Подробная информация о ваших текущих противников по игре. Звуковые уведомления о нахождении игры и многое другое.",
+    "title": "Grenadier - COH3 Companion",
+    "description": "Скачайте Grenadier - приложение COH3 Stats для ПК {{version}}. Не требует отдельной настройки. Функция оверлея для OBS. Подробная информация о ваших текущих противников по игре. Звуковые уведомления о нахождении игры и многое другое.",
     "keywords": [
+      "grenadier",
+      "coh3 companion",
       "coh3 приложение для пк",
       "obs оверлей",
       "информация о матче в реальном времени",
@@ -14,13 +16,35 @@
     ]
   },
   "download": {
-    "button": "Скачать {{version}}",
-    "buttonAriaLabel": "Скачать установщик COH3 Stats Desktop App {{version}} для Windows",
+    "button": "Бесплатная загрузка {{version}}",
+    "buttonAriaLabel": "Скачать установщик Grenadier - COH3 Stats Desktop App {{version}} для Windows",
     "downloads": "{{count}} загрузок",
-    "releaseNotes": "Список изменений"
+    "releaseNotes": "Список изменений",
+    "microsoftStore": "Получить в Microsoft Store",
+    "microsoftStoreAriaLabel": "Получить Grenadier - COH3 Companion в Microsoft Store",
+    "or": "ИЛИ"
   },
-  "title": "Приложение COH3 Stats для ПК",
-  "subtitle": "Получайте дополнительную информацию о своей текущей игре!",
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "Приложение COH3 Stats для ПК - Получайте дополнительную информацию о своей текущей игре!",
+  "downloadOptions": {
+    "title": "Варианты загрузки",
+    "microsoftStore": {
+      "title": "Купить в Microsoft Store",
+      "benefits": [
+        "Сертифицированное приложение от Microsoft",
+        "Обновления и исправления управляются Microsoft",
+        "Пожизненная лицензия",
+        "Поддержите приложение покупкой! Спасибо"
+      ]
+    },
+    "freeDownload": {
+      "title": "Бесплатная загрузка",
+      "benefits": [
+        "Прямая загрузка, несертифицированное приложение",
+        "Те же функции, что и в приложении из Microsoft Store"
+      ]
+    }
+  },
   "features": {
     "title": "Возможности:",
     "list": {

@@ -1,8 +1,10 @@
 {
   "meta": {
-    "title": "COH3 Stats 桌面应用",
-    "description": "下载 COH3 Stats 桌面应用 {{version}}。无需配置。OBS 覆盖功能。当前比赛对手的详细信息。新游戏声音通知等。",
+    "title": "Grenadier - COH3 Companion",
+    "description": "下载 Grenadier - COH3 Stats 桌面应用 {{version}}。无需配置。OBS 覆盖功能。当前比赛对手的详细信息。新游戏声音通知等。",
     "keywords": [
+      "grenadier",
+      "coh3 companion",
       "coh3 桌面应用",
       "obs 覆盖",
       "实时比赛信息",
@@ -14,13 +16,35 @@
     ]
   },
   "download": {
-    "button": "下载 {{version}}",
-    "buttonAriaLabel": "下载 Windows 版 COH3 Stats 桌面应用 {{version}} 安装程序",
+    "button": "免费下载 {{version}}",
+    "buttonAriaLabel": "下载 Windows 版 Grenadier - COH3 Stats 桌面应用 {{version}} 安装程序",
     "downloads": "{{count}} 次下载",
-    "releaseNotes": "发布说明"
+    "releaseNotes": "发布说明",
+    "microsoftStore": "在 Microsoft Store 获取",
+    "microsoftStoreAriaLabel": "在 Microsoft Store 获取 Grenadier - COH3 Companion",
+    "or": "或"
   },
-  "title": "COH3 Stats 桌面应用",
-  "subtitle": "获取当前游戏的额外情报！",
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "COH3 Stats 桌面应用 - 获取当前游戏的额外情报！",
+  "downloadOptions": {
+    "title": "下载选项",
+    "microsoftStore": {
+      "title": "在 Microsoft Store 购买",
+      "benefits": [
+        "Microsoft 认证应用",
+        "由 Microsoft 管理更新和补丁",
+        "终身许可",
+        "通过购买支持应用！谢谢"
+      ]
+    },
+    "freeDownload": {
+      "title": "免费下载",
+      "benefits": [
+        "直接下载，非认证应用",
+        "与 Microsoft Store 应用功能相同"
+      ]
+    }
+  },
   "features": {
     "title": "功能",
     "list": {

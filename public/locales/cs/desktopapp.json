@@ -1,8 +1,10 @@
 {
   "meta": {
-    "title": "Desktopová aplikace od COH3 Stats",
-    "description": "Stáhněte si desktopovou aplikaci COH3 Stats {{version}}. Není potřeba žádná konfigurace. Funkce OBS překrytí. Podrobné informace o soupeřích v aktuálním zápase. Zvuková upozornění na novou hru a další.",
+    "title": "Grenadier - COH3 Companion",
+    "description": "Stáhněte si Grenadier - desktopovou aplikaci COH3 Stats {{version}}. Není potřeba žádná konfigurace. Funkce OBS překrytí. Podrobné informace o soupeřích v aktuálním zápase. Zvuková upozornění na novou hru a další.",
     "keywords": [
+      "grenadier",
+      "coh3 companion",
       "coh3 desktopová aplikace",
       "obs překrytí",
       "informace o zápase v reálném čase",
@@ -14,13 +16,35 @@
     ]
   },
   "download": {
-    "button": "Stáhnout {{version}}",
-    "buttonAriaLabel": "Stáhnout instalátor COH3 Stats Desktop App {{version}} pro Windows",
+    "button": "Stáhnout zdarma {{version}}",
+    "buttonAriaLabel": "Stáhnout instalátor Grenadier - COH3 Stats Desktop App {{version}} pro Windows",
     "downloads": "{{count}} stažení",
-    "releaseNotes": "Poznámky k vydání"
+    "releaseNotes": "Poznámky k vydání",
+    "microsoftStore": "Získat v Microsoft Store",
+    "microsoftStoreAriaLabel": "Získat Grenadier - COH3 Companion v Microsoft Store",
+    "or": "NEBO"
   },
-  "title": "COH3 Stats Desktopová Aplikace",
-  "subtitle": "Získejte další informace o vaší aktuální hře!",
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "COH3 Stats Desktopová Aplikace - Získejte další informace o vaší aktuální hře!",
+  "downloadOptions": {
+    "title": "Možnosti stažení",
+    "microsoftStore": {
+      "title": "Koupit v Microsoft Store",
+      "benefits": [
+        "Certifikovaná aplikace od Microsoftu",
+        "Aktualizace a opravy spravované Microsoftem",
+        "Doživotní licence",
+        "Podpořte aplikaci nákupem! Děkujeme"
+      ]
+    },
+    "freeDownload": {
+      "title": "Stažení zdarma",
+      "benefits": [
+        "Přímé stažení, necertifikovaná aplikace",
+        "Stejné funkce jako aplikace z Microsoft Store"
+      ]
+    }
+  },
   "features": {
     "title": "Funkce:",
     "list": {

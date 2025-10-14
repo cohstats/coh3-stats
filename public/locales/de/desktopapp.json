@@ -1,8 +1,10 @@
 {
   "meta": {
-    "title": "Desktop-App von COH3 Stats",
-    "description": "Lade die COH3 Stats Desktop-App {{version}} herunter. Keine Konfiguration erforderlich. OBS Overlay-Funktion. Detaillierte Infos zu deinen aktuellen Gegnern. Soundbenachrichtigungen bei neuen Spielen und mehr.",
+    "title": "Grenadier - COH3 Companion",
+    "description": "Lade Grenadier - COH3 Stats Desktop-App {{version}} herunter. Keine Konfiguration erforderlich. OBS Overlay-Funktion. Detaillierte Infos zu deinen aktuellen Gegnern. Soundbenachrichtigungen bei neuen Spielen und mehr.",
     "keywords": [
+      "grenadier",
+      "coh3 companion",
       "coh3 desktop app",
       "obs overlay",
       "echtzeit match infos",
@@ -14,13 +16,35 @@
     ]
   },
   "download": {
-    "button": "Download {{version}}",
-    "buttonAriaLabel": "COH3 Stats Desktop App {{version}} Installer für Windows herunterladen",
+    "button": "Kostenloser Download {{version}}",
+    "buttonAriaLabel": "Grenadier - COH3 Stats Desktop App {{version}} Installer für Windows herunterladen",
     "downloads": "{{count}} Downloads",
-    "releaseNotes": "Versionshinweise"
+    "releaseNotes": "Versionshinweise",
+    "microsoftStore": "Im Microsoft Store herunterladen",
+    "microsoftStoreAriaLabel": "Grenadier - COH3 Companion im Microsoft Store herunterladen",
+    "or": "ODER"
   },
-  "title": "COH3 Stats Desktop-App",
-  "subtitle": "Erhalte zusätzliche Infos zu deinem aktuellen Spiel!",
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "COH3 Stats Desktop-App - Erhalte zusätzliche Infos zu deinem aktuellen Spiel!",
+  "downloadOptions": {
+    "title": "Download-Optionen",
+    "microsoftStore": {
+      "title": "Im Microsoft Store kaufen",
+      "benefits": [
+        "Von Microsoft zertifizierte App",
+        "Updates und Patches werden von Microsoft verwaltet",
+        "Lebenslange Lizenz",
+        "Unterstütze die App mit deinem Kauf! Vielen Dank"
+      ]
+    },
+    "freeDownload": {
+      "title": "Kostenloser Download",
+      "benefits": [
+        "Direkter Download, nicht zertifizierte App",
+        "Gleiche Funktionen wie die Microsoft Store App"
+      ]
+    }
+  },
   "features": {
     "title": "Funktionen:",
     "list": {

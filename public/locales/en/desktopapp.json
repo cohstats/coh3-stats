@@ -1,8 +1,10 @@
 {
   "meta": {
-    "title": "Desktop App from COH3 Stats",
-    "description": "Download COH3 Stats Desktop app {{version}}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.",
+    "title": "Grenadier - COH3 Companion",
+    "description": "Download Grenadier - COH3 Stats Desktop app {{version}}. No configuration required. OBS Overlay feature. Detailed info on your current match opponents. Sound notifications of new game and more.",
     "keywords": [
+      "grenadier",
+      "coh3 companion",
       "coh3 desktop app",
       "obs overlay",
       "realtime match info",
@@ -14,13 +16,35 @@
     ]
   },
   "download": {
-    "button": "Download {{version}}",
-    "buttonAriaLabel": "Download COH3 Stats Desktop App {{version}} installer for Windows",
+    "button": "Free Download {{version}}",
+    "buttonAriaLabel": "Download Grenadier - COH3 Stats Desktop App {{version}} installer for Windows",
     "downloads": "{{count}} downloads",
-    "releaseNotes": "Release Notes"
+    "releaseNotes": "Release Notes",
+    "microsoftStore": "Get on Microsoft Store",
+    "microsoftStoreAriaLabel": "Get Grenadier - COH3 Companion on Microsoft Store",
+    "or": "OR"
   },
-  "title": "COH3 Stats Desktop App",
-  "subtitle": "Gain additional intel on your current game!",
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "COH3 Stats Desktop App - Gain additional intel on your current game!",
+  "downloadOptions": {
+    "title": "Download Options",
+    "microsoftStore": {
+      "title": "Buy on Microsoft Store",
+      "benefits": [
+        "Certified App by Microsoft",
+        "Updates and patches handled by Microsoft",
+        "Lifetime license",
+        "Support the app with the purchase! Thank you"
+      ]
+    },
+    "freeDownload": {
+      "title": "Free Download",
+      "benefits": [
+        "Direct download, not certified app",
+        "Same features as the Microsoft Store App"
+      ]
+    }
+  },
   "features": {
     "title": "Features",
     "list": {
