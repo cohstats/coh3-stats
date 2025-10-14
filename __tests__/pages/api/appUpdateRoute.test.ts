@@ -45,7 +45,7 @@ describe("appUpdateRouteHandler", () => {
   });
 
   test("should return 200 status code and latest release in", async () => {
-    mockRequest.mockResolvedValue({
+    (mockRequest.mockResolvedValue({
       status: 200,
       data: [
         {
@@ -69,7 +69,7 @@ describe("appUpdateRouteHandler", () => {
         },
       ],
     }),
-      await handler(req, res);
+      await handler(req, res));
 
     expect(res.setHeader).toHaveBeenCalledWith(
       "Cache-Control",
