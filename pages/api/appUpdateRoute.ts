@@ -5,7 +5,6 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
-import { compareVersions } from "../../src/utils";
 
 interface GitHubReleaseAsset {
   browser_download_url: string;
@@ -39,14 +38,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  // Filter releases to only include versions below 2.0.0 (v1.x releases)
-  const validReleases = (response.data as GitHubRelease[]).filter((release) => {
-    return !release.draft && !release.prerelease && !compareVersions(release.tag_name, "2.0.0");
-  });
-
+  const validReleases = response.data as GitHubRelease[];
   if (validReleases.length === 0) {
     return res.status(404).json({
-      message: "No v1.x releases found",
+      message: "No releases found",
     });
   }
 
