@@ -46,8 +46,12 @@ const PlayerStandingsTab = ({
     }
   }, [entry, renderTopTeamsSummary]);
 
-  const changeView = async (value: string) => {
-    await push({ query: { ...query, view: value } });
+  const changeView = async (value: string, faction?: string) => {
+    const newQuery = { ...query, view: value };
+    if (faction) {
+      newQuery.faction = faction;
+    }
+    await push({ query: newQuery });
   };
 
   return (
@@ -67,7 +71,7 @@ const PlayerStandingsTab = ({
             faction={"german"}
             data={playerStandings.german}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "german")}
             t={t}
           />
           <Space h="xs" />
@@ -75,7 +79,7 @@ const PlayerStandingsTab = ({
             faction={"american"}
             data={playerStandings.american}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "american")}
             t={t}
           />
           <Space h="xs" />
@@ -83,7 +87,7 @@ const PlayerStandingsTab = ({
             faction={"dak"}
             data={playerStandings.dak}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "dak")}
             t={t}
           />
           <Space h="xs" />
@@ -91,7 +95,7 @@ const PlayerStandingsTab = ({
             faction={"british"}
             data={playerStandings.british}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "british")}
             t={t}
           />
           <Space h="xl" />

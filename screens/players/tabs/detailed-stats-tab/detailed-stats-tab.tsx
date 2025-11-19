@@ -1,18 +1,18 @@
-// disable eslint for this file
-/* eslint-disable */
-
 import { Container, Flex, Group, Select, Space, Text, Title } from "@mantine/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { getFactionSide } from "../../../../src/coh3/helpers";
 import { localizedGameTypes, localizedNames } from "../../../../src/coh3/coh3-data";
 import {
   leaderBoardType,
+  leaderBoardTypeArray,
   ProcessedCOHPlayerStats,
   raceType,
+  raceTypeArray,
 } from "../../../../src/coh3/coh3-types";
 import InnerDetailedStats from "./inner-detailed-stats";
 import FactionIcon from "../../../../components/faction-icon";
 import { TFunction } from "next-i18next";
+import { useRouter } from "next/router";
 
 const DetailedStatsTab = ({
   playerStatsData,
@@ -21,8 +21,35 @@ const DetailedStatsTab = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   t: TFunction;
 }) => {
-  const [selectedFaction, setSelectedFaction] = React.useState<raceType>("german");
-  const [selectedGameMode, setSelectedGameMode] = React.useState<leaderBoardType>("1v1");
+  const { push, query } = useRouter();
+
+  // Initialize state from URL query parameters or use defaults
+  const factionFromQuery = query.faction as string;
+  const typeFromQuery = query.type as string;
+
+  const initialFaction =
+    factionFromQuery && raceTypeArray.includes(factionFromQuery as raceType)
+      ? (factionFromQuery as raceType)
+      : "german";
+
+  const initialGameMode =
+    typeFromQuery && leaderBoardTypeArray.includes(typeFromQuery as leaderBoardType)
+      ? (typeFromQuery as leaderBoardType)
+      : "1v1";
+
+  const [selectedFaction, setSelectedFaction] = React.useState<raceType>(initialFaction);
+  const [selectedGameMode, setSelectedGameMode] =
+    React.useState<leaderBoardType>(initialGameMode);
+
+  // Update state when URL query parameters change
+  useEffect(() => {
+    if (factionFromQuery && raceTypeArray.includes(factionFromQuery as raceType)) {
+      setSelectedFaction(factionFromQuery as raceType);
+    }
+    if (typeFromQuery && leaderBoardTypeArray.includes(typeFromQuery as leaderBoardType)) {
+      setSelectedGameMode(typeFromQuery as leaderBoardType);
+    }
+  }, [factionFromQuery, typeFromQuery]);
 
   const FactionSide = getFactionSide(selectedFaction);
 
@@ -48,7 +75,13 @@ const DetailedStatsTab = ({
                 value: key,
                 label: value,
               }))}
-              onChange={(value) => setSelectedFaction((value as raceType) || "")}
+              onChange={(value) => {
+                const newFaction = (value as raceType) || "german";
+                setSelectedFaction(newFaction);
+                push({ query: { ...query, faction: newFaction } }, undefined, {
+                  shallow: true,
+                });
+              }}
               w={200}
               withCheckIcon={false}
               allowDeselect={false}
@@ -62,7 +95,13 @@ const DetailedStatsTab = ({
                 value: key,
                 label: value,
               }))}
-              onChange={(value) => setSelectedGameMode((value as leaderBoardType) || "")}
+              onChange={(value) => {
+                const newGameMode = (value as leaderBoardType) || "1v1";
+                setSelectedGameMode(newGameMode);
+                push({ query: { ...query, type: newGameMode } }, undefined, {
+                  shallow: true,
+                });
+              }}
               w={120}
               withCheckIcon={false}
               allowDeselect={false}
