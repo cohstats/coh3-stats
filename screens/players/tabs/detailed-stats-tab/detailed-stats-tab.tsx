@@ -60,7 +60,7 @@ const DetailedStatsTab = ({
                 label: value,
               }))}
               onChange={(value) => setSelectedGameMode((value as leaderBoardType) || "")}
-              w={200}
+              w={120}
               withCheckIcon={false}
               allowDeselect={false}
             />

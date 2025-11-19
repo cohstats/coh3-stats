@@ -387,7 +387,7 @@ export interface PlayerPersonalCOHStats {
       gameTimeSpread: Record<number, WinLossPairType>; // play time in seconds
       factionMatrix: Record<string, { wins: number; losses: number }>;
       maps: Record<string, WinLossPairType>;
-      counters: Record<string, number>;
+      counters: PlayerReportCounters;
     }
   >;
 }
@@ -478,7 +478,7 @@ export interface ProcessedCOHPlayerStats {
         gameTimeSpread: Record<number, WinLossPairType>; // play time in seconds
         factionMatrix: Record<string, { wins: number; losses: number }>;
         maps: Record<string, WinLossPairType>;
-        counters: Record<string, number>;
+        counters: PlayerReportCounters;
       } | null
     >
   >;
