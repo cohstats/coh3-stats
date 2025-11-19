@@ -6,6 +6,7 @@
 
 ## React component development
 - When developing new component which has low amount of props, try to do inline types instead of creating new interface.
+- Add key props when iterating over array of components.
 
 # Code Style
 - Prefer arrow functions over function declarations.

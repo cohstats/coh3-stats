@@ -245,5 +245,54 @@
         "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     }
+  },
+  "counterStatistics": {
+    "title": "计数器统计",
+    "totalMatches": "总场次：{{count}}",
+    "total": "总计",
+    "average": "平均（每场）",
+    "categories": {
+      "combat": "战斗",
+      "productionBuildings": "生产与建筑",
+      "abilitiesCommands": "技能与指令",
+      "other": "其他"
+    },
+    "stats": {
+      "damageData": "造成伤害",
+      "units": "单位",
+      "squads": "小队",
+      "vehicles": "载具",
+      "structureDamage": "建筑伤害",
+      "vehiclesAbandoned": "遗弃载具",
+      "buildings": "建筑",
+      "unitsProduced": "生产单位",
+      "points": "点位",
+      "abilitiesUsed": "使用技能",
+      "totalCommands": "总指令数",
+      "upgrades": "升级",
+      "requisition": "征用",
+      "power": "能量",
+      "commandPointsEarned": "获得指挥点",
+      "entityReinforcements": "单位增援",
+      "veterancy": "老兵等级",
+      "maxPopulation": "最大人口",
+      "gameTime": "游戏时间"
+    },
+    "labels": {
+      "kills": "击杀",
+      "deaths": "死亡",
+      "kd": "KD",
+      "killed": "击杀",
+      "lost": "损失",
+      "produced": "生产",
+      "captured": "占领",
+      "recaptured": "重新占领",
+      "earned": "获得",
+      "spent": "消耗",
+      "max": "最大",
+      "squadXp": "小队经验",
+      "squadRank": "小队等级",
+      "vehicleRank": "载具等级"
+    }
   }
 }

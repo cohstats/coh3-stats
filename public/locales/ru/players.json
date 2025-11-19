@@ -245,5 +245,54 @@
         "voteMessage": "Если вы хотите, чтобы эта статистика была и на консолях, пожалуйста, проголосуйте / сообщите об этом на нашем сайте."
       }
     }
+  },
+  "counterStatistics": {
+    "title": "Статистика счетчиков",
+    "totalMatches": "Всего матчей: {{count}}",
+    "total": "Всего",
+    "average": "Среднее (за матч)",
+    "categories": {
+      "combat": "Бой",
+      "productionBuildings": "Производство и здания",
+      "abilitiesCommands": "Способности и команды",
+      "other": "Прочее"
+    },
+    "stats": {
+      "damageData": "Нанесено урона",
+      "units": "Юниты",
+      "squads": "Отряды",
+      "vehicles": "Техника",
+      "structureDamage": "Урон по зданиям",
+      "vehiclesAbandoned": "Брошенная техника",
+      "buildings": "Здания",
+      "unitsProduced": "Произведено юнитов",
+      "points": "Точки",
+      "abilitiesUsed": "Использовано способностей",
+      "totalCommands": "Всего команд",
+      "upgrades": "Улучшения",
+      "requisition": "Реквизиция",
+      "power": "Энергия",
+      "commandPointsEarned": "Получено командных очков",
+      "entityReinforcements": "Подкрепления юнитов",
+      "veterancy": "Ветеранство",
+      "maxPopulation": "Макс. население",
+      "gameTime": "Время игры"
+    },
+    "labels": {
+      "kills": "Убийств",
+      "deaths": "Смертей",
+      "kd": "КД",
+      "killed": "Убито",
+      "lost": "Потеряно",
+      "produced": "Произведено",
+      "captured": "Захвачено",
+      "recaptured": "Отбито",
+      "earned": "Получено",
+      "spent": "Потрачено",
+      "max": "Макс",
+      "squadXp": "Опыт отряда",
+      "squadRank": "Ранг отряда",
+      "vehicleRank": "Ранг техники"
+    }
   }
 }

@@ -12,11 +12,14 @@ import {
 } from "../../../../src/coh3/coh3-types";
 import InnerDetailedStats from "./inner-detailed-stats";
 import FactionIcon from "../../../../components/faction-icon";
+import { TFunction } from "next-i18next";
 
 const DetailedStatsTab = ({
   playerStatsData,
+  t,
 }: {
   playerStatsData: ProcessedCOHPlayerStats | undefined;
+  t: TFunction;
 }) => {
   const [selectedFaction, setSelectedFaction] = React.useState<raceType>("german");
   const [selectedGameMode, setSelectedGameMode] = React.useState<leaderBoardType>("1v1");
@@ -71,6 +74,7 @@ const DetailedStatsTab = ({
           stats={selectedStats}
           leaderboardStats={selectedLeaderboardStats}
           factionSide={FactionSide}
+          t={t}
         />
         <Space h={"lg"} />
         <Space h={"lg"} />

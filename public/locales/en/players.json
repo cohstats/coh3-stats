@@ -245,5 +245,54 @@
         "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     }
+  },
+  "counterStatistics": {
+    "title": "Counter Statistics",
+    "totalMatches": "Total Matches: {{count}}",
+    "total": "Total",
+    "average": "Average (per match)",
+    "categories": {
+      "combat": "Combat",
+      "productionBuildings": "Production & Buildings",
+      "abilitiesCommands": "Abilities & Commands",
+      "other": "Other"
+    },
+    "stats": {
+      "damageData": "Damage Done",
+      "units": "Units",
+      "squads": "Squads",
+      "vehicles": "Vehicles",
+      "structureDamage": "Structure Damage",
+      "vehiclesAbandoned": "Vehicles Abandoned",
+      "buildings": "Buildings",
+      "unitsProduced": "Units Produced",
+      "points": "Points",
+      "abilitiesUsed": "Abilities Used",
+      "totalCommands": "Total Commands",
+      "upgrades": "Upgrades",
+      "requisition": "Requisition",
+      "power": "Power",
+      "commandPointsEarned": "Command Points Earned",
+      "entityReinforcements": "Entity Reinforcements",
+      "veterancy": "Veterancy",
+      "maxPopulation": "Max Population",
+      "gameTime": "Game Time"
+    },
+    "labels": {
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "kd": "KD",
+      "killed": "Killed",
+      "lost": "Lost",
+      "produced": "Produced",
+      "captured": "Captured",
+      "recaptured": "Recaptured",
+      "earned": "Earned",
+      "spent": "Spent",
+      "max": "Max",
+      "squadXp": "Squad XP",
+      "squadRank": "Squad Rank",
+      "vehicleRank": "Vehicle Rank"
+    }
   }
 }

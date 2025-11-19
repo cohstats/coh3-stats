@@ -12,6 +12,7 @@ import { IconDatabaseOff } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import HistoryCharts from "./history-charts";
 import CounterStatisticsCard from "./components/counter-statistics-card";
+import { TFunction } from "next-i18next";
 
 const DynamicPlayersPlaytimeHistogram = dynamic(
   () => import("./charts/player-playtime-histogram"),
@@ -32,6 +33,7 @@ const InnerDetailedStats = ({
   stats,
   factionSide,
   leaderboardStats,
+  t,
 }: {
   stats: {
     w: number; // wins
@@ -44,6 +46,7 @@ const InnerDetailedStats = ({
   } | null;
   factionSide: FactionSide;
   leaderboardStats: HistoricLeaderBoardStat | null;
+  t: TFunction;
 }) => {
   // console.log(stats?.counters);
 
@@ -72,7 +75,7 @@ const InnerDetailedStats = ({
   return (
     <Container size={"xl"} p={0}>
       {stats.counters && (
-        <CounterStatisticsCard counters={stats.counters} totalMatches={totalMatches} />
+        <CounterStatisticsCard counters={stats.counters} totalMatches={totalMatches} t={t} />
       )}
       <Grid justify="center">
         <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>

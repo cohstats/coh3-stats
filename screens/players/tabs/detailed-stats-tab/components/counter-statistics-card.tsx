@@ -1,13 +1,15 @@
 import { Card, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import { PlayerReportCounters } from "../../../../../src/coh3/coh3-types";
 import React from "react";
+import { TFunction } from "next-i18next";
 
 interface CounterStatisticsCardProps {
   counters: PlayerReportCounters;
   totalMatches: number;
+  t: TFunction;
 }
 
-const CounterStatisticsCard = ({ counters, totalMatches }: CounterStatisticsCardProps) => {
+const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsCardProps) => {
   const formatNumber = (value: number): string => {
     return Math.round(value).toLocaleString();
   };
@@ -97,7 +99,7 @@ const CounterStatisticsCard = ({ counters, totalMatches }: CounterStatisticsCard
     isAverage = false,
   ) => {
     const renderedStats = stats
-      .map((stat) => {
+      .map((stat, index) => {
         if (stat.type === "simple" && stat.key) {
           const value = counters[stat.key] || 0;
           if (value === 0) return null;
@@ -107,13 +109,21 @@ const CounterStatisticsCard = ({ counters, totalMatches }: CounterStatisticsCard
             const timeString = isAverage
               ? convertSecondsToReadableTime(totalMatches > 0 ? value / totalMatches : 0)
               : convertSecondsToReadableTime(value);
-            return renderSimpleStat(stat.label, timeString);
+            return (
+              <div key={`${stat.key}-${index}`}>{renderSimpleStat(stat.label, timeString)}</div>
+            );
           }
 
           const displayValue = isAverage ? formatAverage(value) : formatNumber(value);
-          return renderSimpleStat(stat.label, displayValue);
+          return (
+            <div key={`${stat.key}-${index}`}>{renderSimpleStat(stat.label, displayValue)}</div>
+          );
         } else if (stat.type === "grouped" && stat.items) {
-          return renderGroupedStat(stat.label, stat.items, isAverage);
+          return (
+            <div key={`${stat.label}-${index}`}>
+              {renderGroupedStat(stat.label, stat.items, isAverage)}
+            </div>
+          );
         }
         return null;
       })
@@ -133,104 +143,148 @@ const CounterStatisticsCard = ({ counters, totalMatches }: CounterStatisticsCard
 
   const statGroups = [
     {
-      title: "Combat",
+      title: t("counterStatistics.categories.combat"),
       stats: [
-        { type: "simple" as const, label: "Damage Done", key: "dmgdone" as const },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.damageData"),
+          key: "dmgdone" as const,
+        },
         {
           type: "grouped" as const,
-          label: "Units",
+          label: t("counterStatistics.stats.units"),
           items: [
-            { key: "ekills" as const, shortLabel: "Kills" },
-            { key: "edeaths" as const, shortLabel: "Deaths" },
-            { key: "kd" as const, shortLabel: "KD" },
+            { key: "ekills" as const, shortLabel: t("counterStatistics.labels.kills") },
+            { key: "edeaths" as const, shortLabel: t("counterStatistics.labels.deaths") },
+            { key: "kd" as const, shortLabel: t("counterStatistics.labels.kd") },
           ],
         },
         {
           type: "grouped" as const,
-          label: "Squads",
+          label: t("counterStatistics.stats.squads"),
           items: [
-            { key: "sqkill" as const, shortLabel: "Killed" },
-            { key: "sqlost" as const, shortLabel: "Lost" },
-            { key: "sqprod" as const, shortLabel: "Produced" },
+            { key: "sqkill" as const, shortLabel: t("counterStatistics.labels.killed") },
+            { key: "sqlost" as const, shortLabel: t("counterStatistics.labels.lost") },
+            { key: "sqprod" as const, shortLabel: t("counterStatistics.labels.produced") },
           ],
         },
         {
           type: "grouped" as const,
-          label: "Vehicles",
+          label: t("counterStatistics.stats.vehicles"),
           items: [
-            { key: "vkill" as const, shortLabel: "Killed" },
-            { key: "vlost" as const, shortLabel: "Lost" },
-            { key: "vprod" as const, shortLabel: "Produced" },
+            { key: "vkill" as const, shortLabel: t("counterStatistics.labels.killed") },
+            { key: "vlost" as const, shortLabel: t("counterStatistics.labels.lost") },
+            { key: "vprod" as const, shortLabel: t("counterStatistics.labels.produced") },
           ],
         },
-        { type: "simple" as const, label: "Structure Damage", key: "structdmg" as const },
-        { type: "simple" as const, label: "Vehicles Abandoned", key: "vabnd" as const },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.structureDamage"),
+          key: "structdmg" as const,
+        },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.vehiclesAbandoned"),
+          key: "vabnd" as const,
+        },
       ],
     },
     {
-      title: "Production & Buildings",
+      title: t("counterStatistics.categories.productionBuildings"),
       stats: [
         {
           type: "grouped" as const,
-          label: "Buildings",
+          label: t("counterStatistics.stats.buildings"),
           items: [
-            { key: "bprod" as const, shortLabel: "Produced" },
-            { key: "blost" as const, shortLabel: "Lost" },
+            { key: "bprod" as const, shortLabel: t("counterStatistics.labels.produced") },
+            { key: "blost" as const, shortLabel: t("counterStatistics.labels.lost") },
           ],
         },
-        { type: "simple" as const, label: "Units Produced", key: "unitprod" as const },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.unitsProduced"),
+          key: "unitprod" as const,
+        },
       ],
     },
     {
-      title: "Abilities & Commands",
+      title: t("counterStatistics.categories.abilitiesCommands"),
       stats: [
         {
           type: "grouped" as const,
-          label: "Points",
+          label: t("counterStatistics.stats.points"),
           items: [
-            { key: "pcap" as const, shortLabel: "Captured" },
-            { key: "precap" as const, shortLabel: "Recaptured" },
+            { key: "pcap" as const, shortLabel: t("counterStatistics.labels.captured") },
+            { key: "precap" as const, shortLabel: t("counterStatistics.labels.recaptured") },
           ],
         },
-        { type: "simple" as const, label: "Abilities Used", key: "abil" as const },
-        { type: "simple" as const, label: "Total Commands", key: "totalcmds" as const },
-        { type: "simple" as const, label: "Upgrades", key: "upg" as const },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.abilitiesUsed"),
+          key: "abil" as const,
+        },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.totalCommands"),
+          key: "totalcmds" as const,
+        },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.upgrades"),
+          key: "upg" as const,
+        },
       ],
     },
     {
-      title: "Other",
+      title: t("counterStatistics.categories.other"),
       stats: [
         {
           type: "grouped" as const,
-          label: "Requisition",
+          label: t("counterStatistics.stats.requisition"),
           items: [
-            { key: "reqearn" as const, shortLabel: "Earned" },
-            { key: "reqspnt" as const, shortLabel: "Spent" },
-            { key: "reqmax" as const, shortLabel: "Max" },
+            { key: "reqearn" as const, shortLabel: t("counterStatistics.labels.earned") },
+            { key: "reqspnt" as const, shortLabel: t("counterStatistics.labels.spent") },
+            { key: "reqmax" as const, shortLabel: t("counterStatistics.labels.max") },
           ],
         },
         {
           type: "grouped" as const,
-          label: "Power",
+          label: t("counterStatistics.stats.power"),
           items: [
-            { key: "powearn" as const, shortLabel: "Earned" },
-            { key: "powspnt" as const, shortLabel: "Spent" },
-            { key: "powmax" as const, shortLabel: "Max" },
+            { key: "powearn" as const, shortLabel: t("counterStatistics.labels.earned") },
+            { key: "powspnt" as const, shortLabel: t("counterStatistics.labels.spent") },
+            { key: "powmax" as const, shortLabel: t("counterStatistics.labels.max") },
           ],
         },
-        { type: "simple" as const, label: "Command Points Earned", key: "cpearn" as const },
-        { type: "simple" as const, label: "Entity Reinforcements", key: "erein" as const },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.commandPointsEarned"),
+          key: "cpearn" as const,
+        },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.entityReinforcements"),
+          key: "erein" as const,
+        },
         {
           type: "grouped" as const,
-          label: "Veterancy",
+          label: t("counterStatistics.stats.veterancy"),
           items: [
-            { key: "svetxp" as const, shortLabel: "Squad XP" },
-            { key: "svetrank" as const, shortLabel: "Squad Rank" },
-            { key: "vvetrank" as const, shortLabel: "Vehicle Rank" },
+            { key: "svetxp" as const, shortLabel: t("counterStatistics.labels.squadXp") },
+            { key: "svetrank" as const, shortLabel: t("counterStatistics.labels.squadRank") },
+            { key: "vvetrank" as const, shortLabel: t("counterStatistics.labels.vehicleRank") },
           ],
         },
-        { type: "simple" as const, label: "Max Population", key: "popmax" as const },
-        { type: "simple" as const, label: "Game Time", key: "gt" as const },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.maxPopulation"),
+          key: "popmax" as const,
+        },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.gameTime"),
+          key: "gt" as const,
+        },
       ],
     },
   ];
@@ -239,9 +293,9 @@ const CounterStatisticsCard = ({ counters, totalMatches }: CounterStatisticsCard
     <Card p="md" shadow="sm" w={"100%"} withBorder mb="md">
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify="space-between" align="center">
-          <Title order={3}>Counter Statistics</Title>
+          <Title order={3}>{t("counterStatistics.title")}</Title>
           <Text size="sm" c="dimmed">
-            Total Matches: {totalMatches}
+            {t("counterStatistics.totalMatches", { count: totalMatches })}
           </Text>
         </Group>
       </Card.Section>
@@ -250,20 +304,28 @@ const CounterStatisticsCard = ({ counters, totalMatches }: CounterStatisticsCard
           {/* Total Column */}
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Title order={4} mb="sm">
-              Total
+              {t("counterStatistics.total")}
             </Title>
             <Stack gap="xs">
-              {statGroups.map((group) => renderStatGroup(group.title, group.stats, false))}
+              {statGroups.map((group, index) => (
+                <React.Fragment key={`total-${group.title}-${index}`}>
+                  {renderStatGroup(group.title, group.stats, false)}
+                </React.Fragment>
+              ))}
             </Stack>
           </Grid.Col>
 
           {/* Average Column */}
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Title order={4} mb="sm">
-              Average (per match)
+              {t("counterStatistics.average")}
             </Title>
             <Stack gap="xs">
-              {statGroups.map((group) => renderStatGroup(group.title, group.stats, true))}
+              {statGroups.map((group, index) => (
+                <React.Fragment key={`average-${group.title}-${index}`}>
+                  {renderStatGroup(group.title, group.stats, true)}
+                </React.Fragment>
+              ))}
             </Stack>
           </Grid.Col>
         </Grid>
