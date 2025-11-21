@@ -245,5 +245,71 @@
         "voteMessage": "If you would like to have these stats on Consoles too, please vote / report it on our"
       }
     }
+  },
+  "counterStatistics": {
+    "title": "Counter Statistics",
+    "totalMatches": "Total Matches: {{count}}",
+    "total": "Total",
+    "average": "Average (per match)",
+    "categories": {
+      "combat": "Combat",
+      "productionBuildings": "Production & Buildings",
+      "abilitiesCommands": "Abilities & Commands",
+      "other": "Other"
+    },
+    "stats": {
+      "damageData": "Damage Done",
+      "units": "Units",
+      "squads": "Squads",
+      "vehicles": "Vehicles",
+      "structureDamage": "Structure Damage",
+      "vehiclesAbandoned": "Vehicles Abandoned",
+      "buildings": "Buildings",
+      "unitsProduced": "Units Produced",
+      "points": "Points",
+      "abilitiesUsed": "Abilities Used",
+      "totalCommands": "Total Commands",
+      "apm": "APM (Actions Per Minute)",
+      "upgrades": "Upgrades",
+      "requisition": "Requisition",
+      "power": "Power",
+      "commandPointsEarned": "Command Points Earned",
+      "entityReinforcements": "Entity Reinforcements",
+      "veterancy": "Veterancy",
+      "maxPopulation": "Max Population",
+      "gameTime": "Game Time"
+    },
+    "labels": {
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "kd": "KD",
+      "killed": "Killed",
+      "lost": "Lost",
+      "produced": "Produced",
+      "captured": "Captured",
+      "recaptured": "Recaptured",
+      "earned": "Earned",
+      "spent": "Spent",
+      "max": "Max",
+      "squadXp": "Squad XP",
+      "squadRank": "Squad Rank",
+      "vehicleRank": "Vehicle Rank"
+    }
+  },
+  "counters": {
+    "widget": {
+      "title": "Average Counters",
+      "helperText": "Average counter statistics across all factions for the selected game mode.\n\nK - Kills\nL - Lost\nP - Produced",
+      "unitsKD": "Units K / D / KD",
+      "unitsKDTooltip": "Kills / Deaths / Kill-Death Ratio",
+      "squadsKLP": "Squads K / L / P",
+      "squadsKLPTooltip": "Killed / Lost / Produced",
+      "vehiclesKLP": "Vehicles K / L / P",
+      "vehiclesKLPTooltip": "Killed / Lost / Produced",
+      "apm": "APM",
+      "apmTooltip": "Actions Per Minute",
+      "totalMatches": "Total Matches",
+      "noData": "No counter data available for this game mode"
+    }
   }
 }

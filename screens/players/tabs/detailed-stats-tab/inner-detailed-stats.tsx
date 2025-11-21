@@ -1,6 +1,7 @@
 import {
   FactionSide,
   HistoricLeaderBoardStat,
+  PlayerReportCounters,
   WinLossPairType,
 } from "../../../../src/coh3/coh3-types";
 import { FactionVsFactionCard } from "../../../../components/charts/card-factions-heatmap";
@@ -10,6 +11,8 @@ import React from "react";
 import { IconDatabaseOff } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import HistoryCharts from "./history-charts";
+import CounterStatisticsCard from "./components/counter-statistics-card";
+import { TFunction } from "next-i18next";
 
 const DynamicPlayersPlaytimeHistogram = dynamic(
   () => import("./charts/player-playtime-histogram"),
@@ -30,6 +33,7 @@ const InnerDetailedStats = ({
   stats,
   factionSide,
   leaderboardStats,
+  t,
 }: {
   stats: {
     w: number; // wins
@@ -38,10 +42,11 @@ const InnerDetailedStats = ({
     gameTimeSpread: Record<number, WinLossPairType>; // play time in seconds
     factionMatrix: Record<string, { wins: number; losses: number }>;
     maps: Record<string, WinLossPairType>;
-    counters: Record<string, number>;
+    counters: PlayerReportCounters;
   } | null;
   factionSide: FactionSide;
   leaderboardStats: HistoricLeaderBoardStat | null;
+  t: TFunction;
 }) => {
   // console.log(stats?.counters);
 
@@ -65,8 +70,13 @@ const InnerDetailedStats = ({
       </Center>
     );
 
+  const totalMatches = stats.w + stats.l;
+
   return (
     <Container size={"xl"} p={0}>
+      {stats.counters && (
+        <CounterStatisticsCard counters={stats.counters} totalMatches={totalMatches} t={t} />
+      )}
       <Grid justify="center">
         <Grid.Col span={{ base: 12, xs: 6, md: 6 }}>
           <Card p="md" shadow="sm" w={"100%"} withBorder style={{ overflow: "visible" }}>

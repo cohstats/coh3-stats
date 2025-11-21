@@ -245,5 +245,54 @@
         "voteMessage": "Si te gustaria tener estas estadisticas en consolas tambien, por favor vota / reportalo en nuestro"
       }
     }
+  },
+  "counterStatistics": {
+    "title": "Estadísticas de Contadores",
+    "totalMatches": "Total de Partidas: {{count}}",
+    "total": "Total",
+    "average": "Promedio (por partida)",
+    "categories": {
+      "combat": "Combate",
+      "productionBuildings": "Producción y Edificios",
+      "abilitiesCommands": "Habilidades y Comandos",
+      "other": "Otros"
+    },
+    "stats": {
+      "damageData": "Daño Causado",
+      "units": "Unidades",
+      "squads": "Escuadrones",
+      "vehicles": "Vehículos",
+      "structureDamage": "Daño a Estructuras",
+      "vehiclesAbandoned": "Vehículos Abandonados",
+      "buildings": "Edificios",
+      "unitsProduced": "Unidades Producidas",
+      "points": "Puntos",
+      "abilitiesUsed": "Habilidades Usadas",
+      "totalCommands": "Comandos Totales",
+      "upgrades": "Mejoras",
+      "requisition": "Requisición",
+      "power": "Energía",
+      "commandPointsEarned": "Puntos de Comando Ganados",
+      "entityReinforcements": "Refuerzos de Entidades",
+      "veterancy": "Veteranía",
+      "maxPopulation": "Población Máxima",
+      "gameTime": "Tiempo de Juego"
+    },
+    "labels": {
+      "kills": "Bajas",
+      "deaths": "Muertes",
+      "kd": "KD",
+      "killed": "Eliminados",
+      "lost": "Perdidos",
+      "produced": "Producidos",
+      "captured": "Capturados",
+      "recaptured": "Recapturados",
+      "earned": "Ganados",
+      "spent": "Gastados",
+      "max": "Máx",
+      "squadXp": "XP de Escuadrón",
+      "squadRank": "Rango de Escuadrón",
+      "vehicleRank": "Rango de Vehículo"
+    }
   }
 }

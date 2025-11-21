@@ -245,5 +245,54 @@
         "voteMessage": "Wenn du diese Statistiken auch für Konsolen möchtest, stimme dafür / melde es auf unserem"
       }
     }
+  },
+  "counterStatistics": {
+    "title": "Zählerstatistiken",
+    "totalMatches": "Gesamte Spiele: {{count}}",
+    "total": "Gesamt",
+    "average": "Durchschnitt (pro Spiel)",
+    "categories": {
+      "combat": "Kampf",
+      "productionBuildings": "Produktion & Gebäude",
+      "abilitiesCommands": "Fähigkeiten & Befehle",
+      "other": "Sonstiges"
+    },
+    "stats": {
+      "damageData": "Verursachter Schaden",
+      "units": "Einheiten",
+      "squads": "Trupps",
+      "vehicles": "Fahrzeuge",
+      "structureDamage": "Strukturschaden",
+      "vehiclesAbandoned": "Verlassene Fahrzeuge",
+      "buildings": "Gebäude",
+      "unitsProduced": "Produzierte Einheiten",
+      "points": "Punkte",
+      "abilitiesUsed": "Verwendete Fähigkeiten",
+      "totalCommands": "Gesamte Befehle",
+      "upgrades": "Upgrades",
+      "requisition": "Requisition",
+      "power": "Energie",
+      "commandPointsEarned": "Verdiente Befehlspunkte",
+      "entityReinforcements": "Einheitenverstärkungen",
+      "veterancy": "Veteranität",
+      "maxPopulation": "Maximale Bevölkerung",
+      "gameTime": "Spielzeit"
+    },
+    "labels": {
+      "kills": "Kills",
+      "deaths": "Tode",
+      "kd": "KD",
+      "killed": "Getötet",
+      "lost": "Verloren",
+      "produced": "Produziert",
+      "captured": "Erobert",
+      "recaptured": "Zurückerobert",
+      "earned": "Verdient",
+      "spent": "Ausgegeben",
+      "max": "Max",
+      "squadXp": "Trupp-XP",
+      "squadRank": "Trupp-Rang",
+      "vehicleRank": "Fahrzeug-Rang"
+    }
   }
 }

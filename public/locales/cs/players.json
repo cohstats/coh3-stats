@@ -245,5 +245,54 @@
         "voteMessage": "Pokud byste chtěli mít tyto statistiky i na konzolích, hlasujte / nahlaste to prosím na našem"
       }
     }
+  },
+  "counterStatistics": {
+    "title": "Statistiky počítadel",
+    "totalMatches": "Celkem zápasů: {{count}}",
+    "total": "Celkem",
+    "average": "Průměr (na zápas)",
+    "categories": {
+      "combat": "Boj",
+      "productionBuildings": "Výroba a budovy",
+      "abilitiesCommands": "Schopnosti a příkazy",
+      "other": "Ostatní"
+    },
+    "stats": {
+      "damageData": "Způsobené poškození",
+      "units": "Jednotky",
+      "squads": "Oddíly",
+      "vehicles": "Vozidla",
+      "structureDamage": "Poškození struktur",
+      "vehiclesAbandoned": "Opuštěná vozidla",
+      "buildings": "Budovy",
+      "unitsProduced": "Vyrobené jednotky",
+      "points": "Body",
+      "abilitiesUsed": "Použité schopnosti",
+      "totalCommands": "Celkem příkazů",
+      "upgrades": "Vylepšení",
+      "requisition": "Rekvizice",
+      "power": "Energie",
+      "commandPointsEarned": "Získané velitelské body",
+      "entityReinforcements": "Posily jednotek",
+      "veterancy": "Veteránství",
+      "maxPopulation": "Maximální populace",
+      "gameTime": "Herní čas"
+    },
+    "labels": {
+      "kills": "Zabití",
+      "deaths": "Ztráty",
+      "kd": "KD",
+      "killed": "Zabito",
+      "lost": "Ztraceno",
+      "produced": "Vyrobeno",
+      "captured": "Obsazeno",
+      "recaptured": "Znovu obsazeno",
+      "earned": "Získáno",
+      "spent": "Utraceno",
+      "max": "Max",
+      "squadXp": "XP oddílu",
+      "squadRank": "Hodnost oddílu",
+      "vehicleRank": "Hodnost vozidla"
+    }
   }
 }

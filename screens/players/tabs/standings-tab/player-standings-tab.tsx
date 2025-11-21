@@ -15,6 +15,7 @@ import { useTranslation } from "next-i18next";
 import AliasHistoryWidget from "./widgets/alias-history-widget";
 import TopTeamsInfo from "./top-teams-info";
 import { useIntersection } from "@mantine/hooks";
+import CountersWidget from "./widgets/counters-widget";
 
 const PlayerStandingsTab = ({
   playerStandings,
@@ -46,8 +47,12 @@ const PlayerStandingsTab = ({
     }
   }, [entry, renderTopTeamsSummary]);
 
-  const changeView = async (value: string) => {
-    await push({ query: { ...query, view: value } });
+  const changeView = async (value: string, faction?: string) => {
+    const newQuery: Record<string, string | string[]> = { ...query, view: value };
+    if (faction) {
+      newQuery.faction = faction;
+    }
+    await push({ query: newQuery });
   };
 
   return (
@@ -67,7 +72,7 @@ const PlayerStandingsTab = ({
             faction={"german"}
             data={playerStandings.german}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "german")}
             t={t}
           />
           <Space h="xs" />
@@ -75,7 +80,7 @@ const PlayerStandingsTab = ({
             faction={"american"}
             data={playerStandings.american}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "american")}
             t={t}
           />
           <Space h="xs" />
@@ -83,7 +88,7 @@ const PlayerStandingsTab = ({
             faction={"dak"}
             data={playerStandings.dak}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "dak")}
             t={t}
           />
           <Space h="xs" />
@@ -91,7 +96,7 @@ const PlayerStandingsTab = ({
             faction={"british"}
             data={playerStandings.british}
             platform={platform}
-            moreButtonOnClick={() => changeView("standingsDetails")}
+            moreButtonOnClick={() => changeView("standingsDetails", "british")}
             t={t}
           />
           <Space h="xl" />
@@ -103,6 +108,13 @@ const PlayerStandingsTab = ({
         <div style={{ width: 300 }}>
           <Space h="xl" />
           <Space h="xs" />
+          <CountersWidget
+            playerStatsData={playerStatsData}
+            playerStandings={playerStandings}
+            moreButtonOnClick={() => changeView("standingsDetails")}
+            t={t}
+          />
+          <Space h="md" />
           <MapsWidget playerStatsData={playerStatsData} playerStandings={playerStandings} />
           <Space h="md" />
           <NemesisWidget
