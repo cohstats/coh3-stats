@@ -295,5 +295,21 @@
       "squadRank": "Squad Rank",
       "vehicleRank": "Vehicle Rank"
     }
+  },
+  "counters": {
+    "widget": {
+      "title": "Average Counters",
+      "helperText": "Average counter statistics across all factions for the selected game mode.\n\nK - Kills\nL - Lost\nP - Produced",
+      "unitsKD": "Units K / D / KD",
+      "unitsKDTooltip": "Kills / Deaths / Kill-Death Ratio",
+      "squadsKLP": "Squads K / L / P",
+      "squadsKLPTooltip": "Killed / Lost / Produced",
+      "vehiclesKLP": "Vehicles K / L / P",
+      "vehiclesKLPTooltip": "Killed / Lost / Produced",
+      "apm": "APM",
+      "apmTooltip": "Actions Per Minute",
+      "totalMatches": "Total Matches",
+      "noData": "No counter data available for this game mode"
+    }
   }
 }

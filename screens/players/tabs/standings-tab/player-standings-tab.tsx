@@ -15,6 +15,7 @@ import { useTranslation } from "next-i18next";
 import AliasHistoryWidget from "./widgets/alias-history-widget";
 import TopTeamsInfo from "./top-teams-info";
 import { useIntersection } from "@mantine/hooks";
+import CountersWidget from "./widgets/counters-widget";
 
 const PlayerStandingsTab = ({
   playerStandings,
@@ -107,6 +108,13 @@ const PlayerStandingsTab = ({
         <div style={{ width: 300 }}>
           <Space h="xl" />
           <Space h="xs" />
+          <CountersWidget
+            playerStatsData={playerStatsData}
+            playerStandings={playerStandings}
+            moreButtonOnClick={() => changeView("standingsDetails")}
+            t={t}
+          />
+          <Space h="md" />
           <MapsWidget playerStatsData={playerStatsData} playerStandings={playerStandings} />
           <Space h="md" />
           <NemesisWidget
