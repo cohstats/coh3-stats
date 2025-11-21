@@ -36,7 +36,7 @@ const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsC
   // Render a grouped stat line (e.g., "Killed / Lost / Produced: 288 / 208 / 485")
   const renderGroupedStat = (
     label: string,
-    items: Array<{ key: keyof PlayerReportCounters | "kd"; shortLabel: string }>,
+    items: Array<{ key: keyof PlayerReportCounters | "kd" | "apm"; shortLabel: string }>,
     isAverage = false,
   ): React.ReactNode => {
     const values = items.map((item) => {
@@ -51,6 +51,17 @@ const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsC
         return kdRatio;
       }
 
+      // Special handling for APM (Actions Per Minute)
+      if (item.key === "apm") {
+        const totalCommands = counters.totalcmds || 0;
+        const gameTimeSeconds = counters.gt || 0;
+        const apm = gameTimeSeconds > 0 ? (totalCommands / gameTimeSeconds) * 60 : 0;
+        if (isAverage) {
+          return totalMatches > 0 ? apm : 0;
+        }
+        return apm;
+      }
+
       const value = counters[item.key as keyof PlayerReportCounters] || 0;
       if (isAverage) {
         return totalMatches > 0 ? value / totalMatches : 0;
@@ -58,7 +69,7 @@ const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsC
       return value;
     });
 
-    // Check if all values are zero (except KD ratio)
+    // Check if all values are zero (except KD ratio and APM)
     if (values.every((v) => v === 0)) return null;
 
     const shortLabels = items.map((item) => item.shortLabel).join(" / ");
@@ -66,6 +77,10 @@ const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsC
       .map((v, index) => {
         // Format KD ratio with 1 decimal place
         if (items[index].key === "kd") {
+          return v.toFixed(1);
+        }
+        // Format APM with 1 decimal place
+        if (items[index].key === "apm") {
           return v.toFixed(1);
         }
         return formatNumber(v);
@@ -93,14 +108,29 @@ const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsC
     stats: Array<{
       type: "simple" | "grouped";
       label: string;
-      key?: keyof PlayerReportCounters;
-      items?: Array<{ key: keyof PlayerReportCounters | "kd"; shortLabel: string }>;
+      key?: keyof PlayerReportCounters | "apm";
+      items?: Array<{ key: keyof PlayerReportCounters | "kd" | "apm"; shortLabel: string }>;
     }>,
     isAverage = false,
   ) => {
     const renderedStats = stats
       .map((stat, index) => {
         if (stat.type === "simple" && stat.key) {
+          // Special handling for APM - calculate from totalcmds and gt
+          if (stat.key === "apm") {
+            const totalCommands = counters.totalcmds || 0;
+            const gameTimeSeconds = counters.gt || 0;
+            if (totalCommands === 0 || gameTimeSeconds === 0) return null;
+
+            const apm = (totalCommands / gameTimeSeconds) * 60;
+            const displayValue = isAverage
+              ? (totalMatches > 0 ? apm : 0).toFixed(1)
+              : apm.toFixed(1);
+            return (
+              <div key={`${stat.key}-${index}`}>{renderSimpleStat(stat.label, displayValue)}</div>
+            );
+          }
+
           const value = counters[stat.key] || 0;
           if (value === 0) return null;
 
@@ -227,6 +257,11 @@ const CounterStatisticsCard = ({ counters, totalMatches, t }: CounterStatisticsC
           type: "simple" as const,
           label: t("counterStatistics.stats.totalCommands"),
           key: "totalcmds" as const,
+        },
+        {
+          type: "simple" as const,
+          label: t("counterStatistics.stats.apm"),
+          key: "apm" as const,
         },
         {
           type: "simple" as const,

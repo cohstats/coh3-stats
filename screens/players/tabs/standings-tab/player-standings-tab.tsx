@@ -47,7 +47,7 @@ const PlayerStandingsTab = ({
   }, [entry, renderTopTeamsSummary]);
 
   const changeView = async (value: string, faction?: string) => {
-    const newQuery = { ...query, view: value };
+    const newQuery: Record<string, string | string[]> = { ...query, view: value };
     if (faction) {
       newQuery.faction = faction;
     }
