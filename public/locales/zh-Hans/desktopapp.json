@@ -39,10 +39,7 @@
     },
     "freeDownload": {
       "title": "免费下载",
-      "benefits": [
-        "直接下载，非认证应用",
-        "与 Microsoft Store 应用功能相同"
-      ]
+      "benefits": ["直接下载，非认证应用", "与 Microsoft Store 应用功能相同"]
     }
   },
   "features": {
