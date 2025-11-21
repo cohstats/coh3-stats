@@ -155,7 +155,7 @@ const CountersWidget = ({
 
         {averageCounters && averageCounters.totalMatches > 0 ? (
           <>
-            <Stack gap="xs" p="xs">
+            <Stack gap={4} p="xs">
               {renderStatRow(
                 t("counterStatistics.stats.damageData", "Damage Done"),
                 averageCounters.dmgdone.toLocaleString(),
