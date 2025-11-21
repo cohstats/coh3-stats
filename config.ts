@@ -58,7 +58,7 @@ const statsPatchSelector: Record<
   "2.1.7": {
     from: "2025-09-11",
     to: "now",
-    value: "2.1.5",
+    value: "2.1.7",
     label: "2.1.5 - 2.1.7",
     group: "Opal Scorpion",
   },
