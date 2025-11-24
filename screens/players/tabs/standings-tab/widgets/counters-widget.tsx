@@ -46,9 +46,14 @@ const CountersWidget = ({
     return Object.entries(dataValues).reduce((a, b) => (a[1] > b[1] ? a : b))[0];
   }, [playerStandings]);
 
-  const [selectedType, setSelectedType] = React.useState<"1v1" | "2v2" | "3v3" | "4v4">(
-    (typeWithMostGames as "1v1" | "2v2" | "3v3" | "4v4") || "1v1",
-  );
+  const [selectedType, setSelectedType] = React.useState<"1v1" | "2v2" | "3v3" | "4v4">("1v1");
+
+  // Update selected type to the one with most games on initial load
+  React.useEffect(() => {
+    if (typeWithMostGames) {
+      setSelectedType(typeWithMostGames as "1v1" | "2v2" | "3v3" | "4v4");
+    }
+  }, [typeWithMostGames]);
 
   // Calculate average counters across all factions for the selected game type
   const averageCounters = React.useMemo(() => {
@@ -154,83 +159,83 @@ const CountersWidget = ({
         </Card.Section>
 
         {averageCounters && averageCounters.totalMatches > 0 ? (
-          <>
-            <Stack gap={4} p="xs">
-              {renderStatRow(
-                t("counterStatistics.stats.damageData", "Damage Done"),
-                averageCounters.dmgdone.toLocaleString(),
-              )}
-              {renderStatRow(
-                t("counters.widget.unitsKD", "Units K / D / KD"),
-                `${averageCounters.ekills} / ${averageCounters.edeaths} / ${averageCounters.kd}`,
-                t("counters.widget.unitsKDTooltip", "Kills / Deaths / Kill-Death Ratio"),
-              )}
-              {renderStatRow(
-                t("counters.widget.squadsKLP", "Squads K / L / P"),
-                `${averageCounters.sqkill} / ${averageCounters.sqlost} / ${averageCounters.sqprod}`,
-                t("counters.widget.squadsKLPTooltip", "Killed / Lost / Produced"),
-              )}
-              {renderStatRow(
-                t("counters.widget.vehiclesKLP", "Vehicles K / L / P"),
-                `${averageCounters.vkill} / ${averageCounters.vlost} / ${averageCounters.vprod}`,
-                t("counters.widget.vehiclesKLPTooltip", "Killed / Lost / Produced"),
-              )}
-              {renderStatRow(
-                t("counters.widget.apm", "APM"),
-                averageCounters.apm,
-                t("counters.widget.apmTooltip", "Actions Per Minute"),
-              )}
-              {renderStatRow(
-                t("counters.widget.totalMatches", "Total Matches"),
-                averageCounters.totalMatches,
-              )}
-            </Stack>
-
-            <Flex justify={"center"} pt={"xs"}>
-              <Button.Group>
-                <Button
-                  variant="default"
-                  size={"compact-sm"}
-                  className={classes.mapsWidgetButton}
-                  onClick={() => setSelectedType("1v1")}
-                >
-                  1 vs 1
-                </Button>
-                <Button
-                  variant="default"
-                  size={"compact-sm"}
-                  onClick={() => setSelectedType("2v2")}
-                  className={classes.mapsWidgetButton}
-                >
-                  2 vs 2
-                </Button>
-                <Button
-                  variant="default"
-                  size={"compact-sm"}
-                  onClick={() => setSelectedType("3v3")}
-                  className={classes.mapsWidgetButton}
-                >
-                  3 vs 3
-                </Button>
-                <Button
-                  variant="default"
-                  size={"compact-sm"}
-                  onClick={() => setSelectedType("4v4")}
-                  className={classes.mapsWidgetButton}
-                >
-                  4 vs 4
-                </Button>
-              </Button.Group>
-            </Flex>
-
-            <Flex justify={"flex-end"} pt={"xs"}>
-              <MoreButton onClick={moreButtonOnClick} />
-            </Flex>
-          </>
+          <Stack gap={4} p="xs">
+            {renderStatRow(
+              t("counterStatistics.stats.damageData", "Damage Done"),
+              averageCounters.dmgdone.toLocaleString(),
+            )}
+            {renderStatRow(
+              t("counters.widget.unitsKD", "Units K / D / KD"),
+              `${averageCounters.ekills} / ${averageCounters.edeaths} / ${averageCounters.kd}`,
+              t("counters.widget.unitsKDTooltip", "Kills / Deaths / Kill-Death Ratio"),
+            )}
+            {renderStatRow(
+              t("counters.widget.squadsKLP", "Squads K / L / P"),
+              `${averageCounters.sqkill} / ${averageCounters.sqlost} / ${averageCounters.sqprod}`,
+              t("counters.widget.squadsKLPTooltip", "Killed / Lost / Produced"),
+            )}
+            {renderStatRow(
+              t("counters.widget.vehiclesKLP", "Vehicles K / L / P"),
+              `${averageCounters.vkill} / ${averageCounters.vlost} / ${averageCounters.vprod}`,
+              t("counters.widget.vehiclesKLPTooltip", "Killed / Lost / Produced"),
+            )}
+            {renderStatRow(
+              t("counters.widget.apm", "APM"),
+              averageCounters.apm,
+              t("counters.widget.apmTooltip", "Actions Per Minute"),
+            )}
+            {renderStatRow(
+              t("counters.widget.totalMatches", "Total Matches"),
+              averageCounters.totalMatches,
+            )}
+          </Stack>
         ) : (
           <Text size="sm" c="dimmed" ta="center" p="md">
             {t("counters.widget.noData", "No counter data available for this game mode")}
           </Text>
+        )}
+
+        <Flex justify={"center"} pt={"xs"}>
+          <Button.Group>
+            <Button
+              variant="default"
+              size={"compact-sm"}
+              className={classes.mapsWidgetButton}
+              onClick={() => setSelectedType("1v1")}
+            >
+              1 vs 1
+            </Button>
+            <Button
+              variant="default"
+              size={"compact-sm"}
+              onClick={() => setSelectedType("2v2")}
+              className={classes.mapsWidgetButton}
+            >
+              2 vs 2
+            </Button>
+            <Button
+              variant="default"
+              size={"compact-sm"}
+              onClick={() => setSelectedType("3v3")}
+              className={classes.mapsWidgetButton}
+            >
+              3 vs 3
+            </Button>
+            <Button
+              variant="default"
+              size={"compact-sm"}
+              onClick={() => setSelectedType("4v4")}
+              className={classes.mapsWidgetButton}
+            >
+              4 vs 4
+            </Button>
+          </Button.Group>
+        </Flex>
+
+        {averageCounters && averageCounters.totalMatches > 0 && (
+          <Flex justify={"flex-end"} pt={"xs"}>
+            <MoreButton onClick={moreButtonOnClick} />
+          </Flex>
         )}
       </Card>
     </div>
