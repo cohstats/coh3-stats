@@ -28,6 +28,27 @@
     "symbol": "races/common/symbols/mortar"
   },
   {
+    "id": "partisan_tunnel_constructed_us",
+    "icon": "races/american/buildings/tunnel_hideout_us",
+    "name": "",
+    "faction": "american",
+    "symbol": "races/american/symbols/tunnel"
+  },
+  {
+    "id": "partisan_tunnel_main_us",
+    "icon": "races/german/buildings/fighting_nest_ger",
+    "name": "",
+    "faction": "american",
+    "symbol": "races/american/symbols/tunnel_network"
+  },
+  {
+    "id": "partisan_tunnel_us",
+    "icon": "races/american/buildings/tunnel_hideout_us",
+    "name": "",
+    "faction": "american",
+    "symbol": "races/american/symbols/tunnel"
+  },
+  {
     "id": "artillery_observers_us",
     "icon": "races/american/infantry/artillery_observers_us",
     "name": "Artillery Observer Squad",
@@ -105,6 +126,13 @@
     "symbol": "races/american/symbols/ranger_us"
   },
   {
+    "id": "resistance_fighters_battlegroup_partisans",
+    "icon": "races/american/infantry/resistance_fighters_partisan",
+    "name": "Resistance Fighter Squad",
+    "faction": "american",
+    "symbol": "races/american/symbols/resistance_fighters_partisan"
+  },
+  {
     "id": "resistance_fighters_partisan",
     "icon": "races/american/infantry/resistance_fighters_partisan",
     "name": "Resistance Fighter Squad",
@@ -117,6 +145,13 @@
     "name": "Riflemen Squad",
     "faction": "american",
     "symbol": "races/american/symbols/riflemen_us"
+  },
+  {
+    "id": "saboteurs_battlegroup_partisan",
+    "icon": "races/american/infantry/partisan_sabotour",
+    "name": "Saboteur Squad",
+    "faction": "american",
+    "symbol": "races/american/symbols/partisan_saboteur"
   },
   {
     "id": "saboteurs_partisan",
@@ -390,6 +425,13 @@
     "name": " 2 1⁄2-ton 6×6 Truck",
     "faction": "american",
     "symbol": "races/american/symbols/truck_6x6_us"
+  },
+  {
+    "id": "underground_detonation_spark_us",
+    "icon": "races/afrika_corps/vehicles/goliath_ak_icon",
+    "name": "",
+    "faction": "american",
+    "symbol": "races/common/symbols/sniper"
   },
   {
     "id": "base_defense_uk",
@@ -784,6 +826,13 @@
     "symbol": "races/british/symbols/cwt_truck"
   },
   {
+    "id": "sherman_firefly_uk",
+    "icon": "races/british/vehicles/sherman_firefly_uk",
+    "name": "M4A4 Sherman Firefly Medium Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/sherman_m4a3_us"
+  },
+  {
     "id": "sherman_uk",
     "icon": "races/british/vehicles/sherman_uk",
     "name": "M4A1 Sherman Medium Tank",
@@ -938,6 +987,13 @@
     "symbol": "common/units/symbols/riflemen_us"
   },
   {
+    "id": "polish_lancer_africa_uk",
+    "icon": "races/british/infantry/polish_lancer_africa_uk",
+    "name": "Polish Lancer Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/polish_lancer_africa_uk"
+  },
+  {
     "id": "sapper_africa_uk",
     "icon": "races/british/infantry/sapper_africa_uk",
     "name": "Royal Engineer Section",
@@ -1020,6 +1076,13 @@
     "name": "Vickers Machine Gun Team",
     "faction": "british",
     "symbol": "races/common/symbols/hmg"
+  },
+  {
+    "id": "land_mattress_africa_uk",
+    "icon": "races/british/team_weapons/tw_land_mattress_africa_uk",
+    "name": "Land Mattress Team",
+    "faction": "british",
+    "symbol": "races/british/symbols/land_mattress"
   },
   {
     "id": "mortar_81mm_africa_recrew_uk",
@@ -1239,6 +1302,13 @@
     "symbol": "common/units/symbols/sherman_m4a3_us"
   },
   {
+    "id": "sherman_firefly_africa_uk",
+    "icon": "races/british/vehicles/sherman_firefly_polish_uk",
+    "name": "M4A4 Firefly Tank Destroyer",
+    "faction": "british",
+    "symbol": "races/british/symbols/sherman_firefly_uk"
+  },
+  {
     "id": "stuart_africa_recrewable_uk",
     "icon": "races/british/vehicles/stuart_africa_uk",
     "name": "M3 Stuart Light Tank",
@@ -1307,6 +1377,13 @@
     "name": "Mortar Bunker",
     "faction": "german",
     "symbol": "common/units/symbols/mortar_m1_81mm_us"
+  },
+  {
+    "id": "pantherturm_emplacement_ger",
+    "icon": "races/german/buildings/pantherturm_ger",
+    "name": "Pantherturm Emplacement",
+    "faction": "german",
+    "symbol": "races/german/symbols/pantherturm"
   },
   {
     "id": "bersaglieri_ger",
@@ -1435,6 +1512,13 @@
     "symbol": "races/german/symbols/stormtrooper_ger"
   },
   {
+    "id": "sturmpioneer_ger",
+    "icon": "races/german/infantry/sturmpioneer_ger",
+    "name": "Sturmpioneer Squad",
+    "faction": "german",
+    "symbol": "races/german/symbols/sturmpioneers_ger"
+  },
+  {
     "id": "aa_gun_20mm_ger",
     "icon": "races/german/team_weapons/aa_gun_20mm_german",
     "name": "Flak 30 Anti-aircraft Gun Team",
@@ -1506,7 +1590,7 @@
   },
   {
     "id": "leig_75mm_ger",
-    "icon": "common/units/icons/vehicle_west_german_ig18_infantry_support_gun",
+    "icon": "races/german/team_weapons/leig_75mm_ger",
     "name": "le.IG 18 Support Gun Team",
     "faction": "german",
     "symbol": "races/german/symbols/leig_75mm_ger"
@@ -1545,6 +1629,13 @@
     "name": "221 Scout Car",
     "faction": "german",
     "symbol": "common/units/symbols/armored_car_sdkfz_222_ger"
+  },
+  {
+    "id": "borgward_iv_ger",
+    "icon": "races/german/vehicles/borgward_iv_ger",
+    "name": "Borgward IV Wanze Demolition Vehicle",
+    "faction": "german",
+    "symbol": "races/german/symbols/borgward_iv"
   },
   {
     "id": "brummbar_ger",
@@ -1785,6 +1876,13 @@
     "symbol": "races/common/symbols/hmg"
   },
   {
+    "id": "point_fortification_20mm_aa_ak",
+    "icon": "races/afrika_corps/buildings/oberservation_post_ak_portrait",
+    "name": "Hardpoint",
+    "faction": "dak",
+    "symbol": "races/german/symbols/tw_20mm_emplacement_ger"
+  },
+  {
     "id": "assault_panzergrenadier_ak",
     "icon": "races/afrika_corps/infantry/assault_panzergrenadier_ak",
     "name": "Assault Grenadier Squad",
@@ -1811,6 +1909,13 @@
     "name": "Guastatori Squad",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/guastatori"
+  },
+  {
+    "id": "kriegsmarine_infantry_ak",
+    "icon": "races/afrika_corps/infantry/kriegsmarine_ak",
+    "name": "Kriegsmariner Squad",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/kriegsmarine"
   },
   {
     "id": "medic_ak",
