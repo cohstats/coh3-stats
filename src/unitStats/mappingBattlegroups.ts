@@ -10,6 +10,7 @@ type BattlegroupsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
   path: string; // folder from which the extraction got started. Eg. afrika_corps, american, british.
   faction: string; // races/[factionName]
+  name: string; // name of the battlegroup
   /** The raw activation upgrade reference found at `activation_upgrade/instance_reference`. */
   activationRef: string;
   /** The raw upgrade references found at `branch/upgrades` and resolved namesfound at `branch/name`. */
@@ -35,6 +36,7 @@ const mapBattlegroupData = (
     id: filename,
     path: jsonPath,
     faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
+    name: "",
     activationRef: "",
     branchesRefs: {
       LEFT: {
@@ -58,6 +60,7 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType, locale: string = "en") 
 
   /* --------- UI SECTION --------- */
   bg.activationRef = techTreeBag.activation_upgrade?.instance_reference || "";
+  bg.name = resolveLocstring(techTreeBag.name, locale) || "";
   // The first item in the array is the left branch. The second is the right branch.
   const [leftBranch, rightBranch] = techTreeBag.branches;
   bg.branchesRefs = {

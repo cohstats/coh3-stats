@@ -83,7 +83,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
 
   return (
     <Stack>
-      {resolvedBattlegroups.map(({ id, uiParent, branches }) => {
+      {resolvedBattlegroups.map(({ id, name, uiParent, branches }) => {
         return (
           <Card key={id} p="sm" radius="md" withBorder>
             {/* Header Section */}
@@ -91,7 +91,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
               {UnitUpgradeCard({
                 id,
                 desc: {
-                  screen_name: uiParent.screenName,
+                  screen_name: name,
                   help_text: "",
                   extra_text: "",
                   extra_text_formatter: "",
