@@ -54,6 +54,7 @@ export type BattlegroupResolvedType = {
   id: string;
   path: string;
   faction: string;
+  name: string; // Name of the battlegroup
   /** Extracted from the resolved `activation_upgrade/instance_reference` (found
    * within the battlegroup.json) which points to the corresponding upgrade. */
   uiParent: BattlegroupParentUiData;
@@ -131,6 +132,7 @@ export function resolveBattlegroupBranches(
       id: rawBattlegroup.id,
       path: rawBattlegroup.path,
       faction: rawBattlegroup.path,
+      name: rawBattlegroup.name,
       uiParent: {
         iconName: uiParentUpgrade?.ui.iconName || "",
         screenName: uiParentUpgrade?.ui.screenName || "",
