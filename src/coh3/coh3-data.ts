@@ -611,6 +611,14 @@ const OfficialMapKeys = [
   "alamein_4p",
   "lorraine_4p",
   "tuscan_vineyard_2p",
+  /* ---------- 2.2.0 Maps ---------- */
+  "bologna_2p",
+  "wadi_darnah_4p",
+  "djebel_4p",
+  "semois_4p",
+  "primosole_6p",
+  "oliveto_citra_8p",
+  "powderkeg_8p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -844,5 +852,34 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   tuscan_vineyard_2p: {
     name: "Tuscan Vineyard",
     url: "/tuscan_vineyard_2p/tuscan_vineyard_2p.webp",
+  },
+  /* ------------------------- 2.2.0 Maps ---------------------------- */
+  bologna_2p: {
+    name: "Bologna",
+    url: "/bologna_2p/bologna_2p.webp",
+  },
+  wadi_darnah_4p: {
+    name: "Wadi Darnah",
+    url: "/wadi_darnah_4p/wadi_darnah_4p.webp",
+  },
+  oliveto_citra_8p: {
+    name: "Oliveto Citra",
+    url: "/oliveto_citra_8p/oliveto_citra_8p.webp",
+  },
+  powderkeg_8p: {
+    name: "Powderkeg",
+    url: "/powderkeg_8p/powderkeg_8p.webp",
+  },
+  semois_4p: {
+    name: "Semois",
+    url: "/semois_4p/semois_4p.webp",
+  },
+  djebel_4p: {
+    name: "Djebel Pass",
+    url: "/djebel_4p/djebel_4p.webp",
+  },
+  primosole_6p: {
+    name: "Road to Primosole",
+    url: "/primosole_6p/primosole_6p.webp",
   },
 };
