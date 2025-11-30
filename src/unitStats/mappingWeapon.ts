@@ -247,8 +247,8 @@ const mapWeaponData = (
       aim_time_multiplier_mid: weapon_bag.aim?.aim_time_multiplier?.mid || 1,
       aim_time_multiplier_far: weapon_bag.aim?.aim_time_multiplier?.far || 1,
 
-      fire_aim_time_min: weapon_bag.fire_aim_time?.min || 0,
-      fire_aim_time_max: weapon_bag.fire_aim_time?.max || 0,
+      fire_aim_time_min: weapon_bag.aim?.fire_aim_time?.min || 0,
+      fire_aim_time_max: weapon_bag.aim?.fire_aim_time?.max || 0,
 
       burst_can_burst: weapon_bag.burst?.can_burst == "True" ? true : false,
       burst_duration_min: weapon_bag.burst?.duration?.min || 0,
