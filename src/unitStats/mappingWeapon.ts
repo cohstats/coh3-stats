@@ -1,6 +1,7 @@
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
+import { WeaponBagSchema, WeaponCategory, WeaponClass } from "./types";
 
 const WeaponPatchData: Record<string, Record<string, WeaponType[]>> = {}; // Modified to store by locale and patch
 
@@ -11,50 +12,6 @@ type RangeType = {
   min: number;
   max: number;
 };
-
-/** Taken from the Essence Editor enums. */
-export const WeaponClass = [
-  "rifle",
-  "flame",
-  "hmg",
-  "mortar",
-  "at_gun",
-  "bazooka",
-  "cannon",
-  "sniper",
-  "lmg",
-  "smg",
-  "dummy",
-  "rifle_grenade",
-  "nebelwerfer",
-  "throwing_knife",
-  "panzerfaust",
-  "cannon_burst",
-  "mine",
-  "panzerbuschse",
-  "melee",
-  "grenade_launcher",
-  "artillery_small",
-  "artillery_medium",
-  "cannon_small",
-  "construction_tool",
-  "white_phosphorus",
-  "smoke",
-  "pistol",
-  "minesweeper",
-  "artillery_mobile",
-] as const;
-
-export const WeaponCategory = [
-  "ballistic_weapon",
-  "explosive_weapon",
-  "flame_throwers",
-  "small_arms",
-  "campaign",
-  "parent",
-  "preroll_destruction",
-  "unknown",
-] as const;
 
 export type WeaponStatsType = {
   accuracy_near: number;
@@ -202,7 +159,25 @@ const mapWeaponData = (
   parent: string,
   locale = "en",
 ) => {
-  const weapon_bag: any = node.weapon_bag;
+  const weapon_bag: WeaponBagSchema["weapon_bag"] = node.weapon_bag;
+
+  const rangeDistance = {
+    near: weapon_bag.range?.distance?.near || -1,
+    mid: weapon_bag.range?.distance?.mid || -1,
+    far: weapon_bag.range?.distance?.far || -1,
+    min: weapon_bag.range?.min || 0,
+    max: weapon_bag.range?.max || 0,
+  };
+
+  if (rangeDistance.near === -1) {
+    rangeDistance.near = rangeDistance.min;
+  }
+  if (rangeDistance.mid === -1) {
+    rangeDistance.mid = (rangeDistance.max - rangeDistance.min) / 2;
+  }
+  if (rangeDistance.far === -1) {
+    rangeDistance.far = rangeDistance.max;
+  }
 
   // todo remove redundancy
   const weaponData: WeaponType = {
@@ -213,7 +188,7 @@ const mapWeaponData = (
     path: jsonPath,
     label: key,
     value: key,
-    weapon_class: weapon_bag.weapon_class || "",
+    weapon_class: weapon_bag.weapon_class,
     description: resolveLocstring(weapon_bag.ui_name, locale) || "",
     faction: jsonPath.split("/")[0],
     parent: parent,
@@ -315,19 +290,19 @@ const mapWeaponData = (
       penetration_mid: weapon_bag.penetration?.mid || 0,
       penetration_far: weapon_bag.penetration?.far || 0,
 
-      range_distance_near: weapon_bag.range?.distance?.near || -1,
-      range_distance_mid: weapon_bag.range?.distance?.mid || -1,
-      range_distance_far: weapon_bag.range?.distance?.far || -1,
+      range_distance_near: rangeDistance.near,
+      range_distance_mid: rangeDistance.mid,
+      range_distance_far: rangeDistance.far,
 
-      range_min: weapon_bag.range?.min || 0,
-      range_max: weapon_bag.range?.max || 0,
+      range_min: rangeDistance.min,
+      range_max: rangeDistance.max,
 
       range: {
-        far: weapon_bag.range?.distance?.far || -1,
-        mid: weapon_bag.range?.distance?.mid || -1,
-        near: weapon_bag.range?.distance?.near || -1,
-        min: weapon_bag.range?.min || 0,
-        max: weapon_bag.range?.max || 0,
+        far: rangeDistance.far,
+        mid: rangeDistance.mid,
+        near: rangeDistance.near,
+        min: rangeDistance.min,
+        max: rangeDistance.max,
       },
 
       reload_duration_min: weapon_bag.reload?.duration?.min || 0,
@@ -344,16 +319,11 @@ const mapWeaponData = (
       scatter_distance_scatter_max: weapon_bag.scatter?.distance_scatter_max || 0,
       scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
       scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
-      scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_object_min_hit || 0,
+      scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_obj_hit_min || 0,
       //aoe_distance_object_min : weapon_bag.scatt
       target_type_table: [],
     },
   };
-
-  if (weapon_bag.range.near === -1) weapon_bag.range.near = weapon_bag.range.min;
-  if (weapon_bag.range.mid === -1)
-    weapon_bag.range.mid = (weapon_bag.range.max - weapon_bag.range.min) / 2;
-  if (weapon_bag.range.far === -1) weapon_bag.range.far = weapon_bag.range.max;
 
   if (weapon_bag.target_type_table)
     for (const target_types of weapon_bag.target_type_table) {
