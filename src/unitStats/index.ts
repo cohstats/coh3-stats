@@ -11,3 +11,4 @@ export * from "./mappingUpgrades";
 export * from "./mappingWeapon";
 export * from "./unitStatsLib";
 export * from "./weaponLib";
+export * from "./types";
