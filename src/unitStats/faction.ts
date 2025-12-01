@@ -129,6 +129,7 @@ export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType
   }
   // Sort like in-game menu (no idea how to simplify it).
   const sortedBuildings = [
+    ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("training_center_uk")),
     ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("halftrack_deployment")),
     ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("armory")),
     ...filteredByMultiplayer.filter((x) => x.unitTypes.includes("support_center")),
