@@ -29,10 +29,8 @@ type BattlegroupParentUiData = {
   briefText: string;
 };
 
-type BattleGroupUpgradeType = {
-  /**
-   * The upgrade resolved data.
-   * @TODO The upgrade also requires the command points. */
+export type BattleGroupUpgradeType = {
+  /** The upgrade resolved data. */
   upg: UpgradesType;
   /** The battlegroup ability contains the requirements (link between the
    * ability and the upgrade) and `costs_to_player` fields that we require for
