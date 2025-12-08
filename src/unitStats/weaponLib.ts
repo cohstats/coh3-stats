@@ -216,28 +216,42 @@ const getSingleWeaponDPS = (
     // check how many units will fit into the area
     // const unitPerAreaApproximation = Math.min(Math.max(scatter_area / Math.pow(width,2),1),units)
 
-    let type_damage_mp = 1;
-    //if (target_unit && target_unit.weapon_member)
-    for (const modifier of weapon_bag.target_type_table) {
-      if (modifier.unit_type && target_unit && target_unit.unit_type)
-        type_damage_mp *= modifier.damage_multiplier;
+    /** These two applies towards target types. */
+    let target_damage_mp = 1;
+    let target_accuracy_mp = 1;
+    let target_damage_bonus = 0;
 
-      // Some weapons like AT Guns or Bazookas deal no damage to infantry .
-      // At the moment it is not clear, which attribute exactly causes the zero damage effect.
-      // However, having the infantry in the target table is a good indicator to build a
-      // workaround.
-      if (
-        modifier.unit_type == "infantry" &&
-        (!target_unit || target_unit.unit_type == "infantry")
-      )
-        return 0;
+    /** Find the correct `target_unit.unit_type` within the weapons target type
+     * list `unit_type`. */
+
+    for (const weaponTargetType of weapon_bag.target_type_table) {
+      if (target_unit) {
+        const foundTargetType = target_unit.ebps_default.unitTypes.find(
+          (ut) => ut === weaponTargetType.unit_type,
+        );
+
+        if (foundTargetType) {
+          target_damage_bonus += weaponTargetType.dmg_modifier;
+          target_damage_mp *= weaponTargetType.damage_multiplier;
+          target_accuracy_mp *= weaponTargetType.accuracy_multiplier;
+
+          // console.group("Weapon Id: ", weapon_member.weapon_id);
+          // console.log("-- Weapon Bag: ", weapon_member.weapon.weapon_bag);
+          // console.log("-- Modifier: ", weaponTargetType);
+          // console.log("-- Target Unit: ", target_unit);
+          // console.groupEnd();
+        }
+      }
     }
 
-    // new
-    const aoe_damage_multi = aoe_damage * type_damage_mp * aoePenetrationChance * memberHit;
+    /** Compute the combined AOE damage multipliers. */
+    const aoe_damage_multi =
+      aoe_damage * target_damage_mp * target_accuracy_mp * aoePenetrationChance * memberHit;
 
-    // new
-    aoeDamageCombines = aoe_damage_multi;
+    /** Compute the final AOE damage combined with the base damage modifier (if
+     * applies). */
+    // aoeDamageCombines = aoe_damage_multi;
+    aoeDamageCombines = target_damage_bonus + aoe_damage_multi;
   }
 
   /* Combined accuracy */
