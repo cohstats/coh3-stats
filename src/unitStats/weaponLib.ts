@@ -223,7 +223,7 @@ const getSingleWeaponDPS = (
 
     /** Find the correct `target_unit.unit_type` within the weapons target type
      * list `unit_type`. */
-    const targetUnitTypes = target_unit?.ebps_default.unitTypes || [];
+    const targetUnitTypes = target_unit?.ebps_default?.unitTypes || [];
 
     for (const weaponTargetType of weapon_bag.target_type_table) {
       const foundTargetType = targetUnitTypes.find((ut) => ut === weaponTargetType.unit_type);
