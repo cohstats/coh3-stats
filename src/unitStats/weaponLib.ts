@@ -223,24 +223,15 @@ const getSingleWeaponDPS = (
 
     /** Find the correct `target_unit.unit_type` within the weapons target type
      * list `unit_type`. */
+    const targetUnitTypes = target_unit?.ebps_default.unitTypes || [];
 
     for (const weaponTargetType of weapon_bag.target_type_table) {
-      if (target_unit) {
-        const foundTargetType = target_unit.ebps_default.unitTypes.find(
-          (ut) => ut === weaponTargetType.unit_type,
-        );
+      const foundTargetType = targetUnitTypes.find((ut) => ut === weaponTargetType.unit_type);
 
-        if (foundTargetType) {
-          target_damage_bonus += weaponTargetType.dmg_modifier;
-          target_damage_mp *= weaponTargetType.damage_multiplier;
-          target_accuracy_mp *= weaponTargetType.accuracy_multiplier;
-
-          // console.group("Weapon Id: ", weapon_member.weapon_id);
-          // console.log("-- Weapon Bag: ", weapon_member.weapon.weapon_bag);
-          // console.log("-- Modifier: ", weaponTargetType);
-          // console.log("-- Target Unit: ", target_unit);
-          // console.groupEnd();
-        }
+      if (foundTargetType) {
+        target_damage_bonus += weaponTargetType.dmg_modifier;
+        target_damage_mp *= weaponTargetType.damage_multiplier;
+        target_accuracy_mp *= weaponTargetType.accuracy_multiplier;
       }
     }
 

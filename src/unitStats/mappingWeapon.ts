@@ -326,17 +326,15 @@ const mapWeaponData = (
   };
 
   if (weapon_bag.target_type_table && weapon_bag.target_type_table.length > 0) {
-    for (const targetType of weapon_bag.target_type_table) {
+    for (const { target_unit_type_multipliers } of weapon_bag.target_type_table) {
+      if (!target_unit_type_multipliers) continue;
+      const wm = target_unit_type_multipliers.weapon_multipliers ?? {};
       weaponData.weapon_bag.target_type_table.push({
-        unit_type: targetType.target_unit_type_multipliers?.unit_type || "",
-        dmg_modifier: targetType.target_unit_type_multipliers?.base_damage_modifier || 0,
-        accuracy_multiplier:
-          targetType.target_unit_type_multipliers?.weapon_multipliers?.accuracy_multiplier || 1,
-        penetration_multiplier:
-          targetType.target_unit_type_multipliers?.weapon_multipliers?.penetration_multiplier ||
-          1,
-        damage_multiplier:
-          targetType.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier || 1,
+        unit_type: target_unit_type_multipliers.unit_type,
+        dmg_modifier: target_unit_type_multipliers.base_damage_modifier ?? 0,
+        accuracy_multiplier: wm.accuracy_multiplier ?? 1,
+        penetration_multiplier: wm.penetration_multiplier ?? 1,
+        damage_multiplier: wm.damage_multiplier ?? 1,
       });
     }
   }
