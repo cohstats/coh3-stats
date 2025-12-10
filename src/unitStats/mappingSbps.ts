@@ -17,7 +17,8 @@ type SbpsType = {
   ui: SquadUiData;
   /** Found at `squad_upgrade_ext.upgrades`. List of instance references. */
   upgrades: string[];
-  unitType: string;
+  /** The parent tag within the source JSON. */
+  unitType: "aircraft" | "emplacements" | "infantry" | "team_weapons" | "vehicles";
   /** The `squad_population_ext` holds the base popcap and upkeep per pop per
    * minute costs, which will be stacked with the ebps. */
   populationExt: {
@@ -104,7 +105,7 @@ const mapSbpsData = (
     screenName: filename,
     path: internalSlash(jsonPath),
     faction: jsonPath.split("/")[1] ?? jsonPath,
-    unitType: parent,
+    unitType: parent as SbpsType["unitType"],
     loadout: [],
     ui: {
       iconName: "",

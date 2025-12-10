@@ -1,7 +1,7 @@
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
-import { WeaponBagSchema, WeaponCategory, WeaponClass } from "./types";
+import { TargetUnitTypeMultipliers, WeaponBagSchema, WeaponCategory, WeaponClass } from "./types";
 
 const WeaponPatchData: Record<string, Record<string, WeaponType[]>> = {}; // Modified to store by locale and patch
 
@@ -145,7 +145,7 @@ type WeaponType = {
 };
 
 type TargetType = {
-  unit_type: string;
+  unit_type: TargetUnitTypeMultipliers["unit_type"];
   dmg_modifier: number;
   accuracy_multiplier: number;
   penetration_multiplier: number;
@@ -325,20 +325,19 @@ const mapWeaponData = (
     },
   };
 
-  if (weapon_bag.target_type_table)
-    for (const target_types of weapon_bag.target_type_table) {
+  if (weapon_bag.target_type_table && weapon_bag.target_type_table.length > 0) {
+    for (const { target_unit_type_multipliers } of weapon_bag.target_type_table) {
+      if (!target_unit_type_multipliers) continue;
+      const wm = target_unit_type_multipliers.weapon_multipliers ?? {};
       weaponData.weapon_bag.target_type_table.push({
-        unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
-        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
-        accuracy_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multiplier?.accuracy_multiplier || 1,
-        penetration_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multiplier?.penetration_multiplier ||
-          1,
-        damage_multiplier:
-          target_types.target_unit_type_multiplier?.weapon_multipliers?.damage_multiplier || 1,
+        unit_type: target_unit_type_multipliers.unit_type,
+        dmg_modifier: target_unit_type_multipliers.base_damage_modifier ?? 0,
+        accuracy_multiplier: wm.accuracy_multiplier ?? 1,
+        penetration_multiplier: wm.penetration_multiplier ?? 1,
+        damage_multiplier: wm.damage_multiplier ?? 1,
       });
     }
+  }
 
   return weaponData;
 };
