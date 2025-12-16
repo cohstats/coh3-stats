@@ -269,6 +269,7 @@
       "points": "Punkte",
       "abilitiesUsed": "Verwendete Fähigkeiten",
       "totalCommands": "Gesamte Befehle",
+      "apm": "APM (Aktionen pro Minute)",
       "upgrades": "Upgrades",
       "requisition": "Requisition",
       "power": "Energie",
@@ -293,6 +294,22 @@
       "squadXp": "Trupp-XP",
       "squadRank": "Trupp-Rang",
       "vehicleRank": "Fahrzeug-Rang"
+    }
+  },
+  "counters": {
+    "widget": {
+      "title": "Durchschnittliche Zähler",
+      "helperText": "Durchschnittliche Zählerstatistiken über alle Fraktionen für den ausgewählten Spielmodus.\n\nK - Kills\nV - Verloren\nP - Produziert",
+      "unitsKD": "Einheiten K / T / KD",
+      "unitsKDTooltip": "Kills / Tode / Kill-Tod-Verhältnis",
+      "squadsKLP": "Trupps K / V / P",
+      "squadsKLPTooltip": "Getötet / Verloren / Produziert",
+      "vehiclesKLP": "Fahrzeuge K / V / P",
+      "vehiclesKLPTooltip": "Getötet / Verloren / Produziert",
+      "apm": "APM",
+      "apmTooltip": "Aktionen pro Minute",
+      "totalMatches": "Gesamte Spiele",
+      "noData": "Keine Zählerdaten für diesen Spielmodus verfügbar"
     }
   }
 }

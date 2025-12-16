@@ -269,6 +269,7 @@
       "points": "Body",
       "abilitiesUsed": "Použité schopnosti",
       "totalCommands": "Celkem příkazů",
+      "apm": "APM (Akcí za minutu)",
       "upgrades": "Vylepšení",
       "requisition": "Rekvizice",
       "power": "Energie",
@@ -293,6 +294,22 @@
       "squadXp": "XP oddílu",
       "squadRank": "Hodnost oddílu",
       "vehicleRank": "Hodnost vozidla"
+    }
+  },
+  "counters": {
+    "widget": {
+      "title": "Průměrné počítadla",
+      "helperText": "Průměrné statistiky počítadel napříč všemi frakcemi pro vybraný herní režim.\n\nK - Zabití\nZ - Ztraceno\nV - Vyrobeno",
+      "unitsKD": "Jednotky Z / Ú / KD",
+      "unitsKDTooltip": "Zabití / Ztráty / Poměr zabití-ztráty",
+      "squadsKLP": "Oddíly Z / Z / V",
+      "squadsKLPTooltip": "Zabito / Ztraceno / Vyrobeno",
+      "vehiclesKLP": "Vozidla Z / Z / V",
+      "vehiclesKLPTooltip": "Zabito / Ztraceno / Vyrobeno",
+      "apm": "APM",
+      "apmTooltip": "Akcí za minutu",
+      "totalMatches": "Celkem zápasů",
+      "noData": "Pro tento herní režim nejsou k dispozici žádné údaje o počítadlech"
     }
   }
 }

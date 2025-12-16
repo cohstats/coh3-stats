@@ -294,5 +294,21 @@
       "squadRank": "小队等级",
       "vehicleRank": "载具等级"
     }
+  },
+  "counters": {
+    "widget": {
+      "title": "平均计数器",
+      "helperText": "所选游戏模式下所有阵营的平均计数器统计。\n\nK - 击杀\nL - 损失\nP - 生产",
+      "unitsKD": "单位 K / D / KD",
+      "unitsKDTooltip": "击杀 / 死亡 / 击杀-死亡比",
+      "squadsKLP": "小队 K / L / P",
+      "squadsKLPTooltip": "击杀 / 损失 / 生产",
+      "vehiclesKLP": "载具 K / L / P",
+      "vehiclesKLPTooltip": "击杀 / 损失 / 生产",
+      "apm": "APM",
+      "apmTooltip": "每分钟操作数",
+      "totalMatches": "总场次",
+      "noData": "此游戏模式没有可用的计数器数据"
+    }
   }
 }

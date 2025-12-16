@@ -294,5 +294,21 @@
       "squadRank": "Rango de Escuadrón",
       "vehicleRank": "Rango de Vehículo"
     }
+  },
+  "counters": {
+    "widget": {
+      "title": "Contadores Promedio",
+      "helperText": "Estadísticas de contadores promedio en todas las facciones para el modo de juego seleccionado.\n\nK - Bajas\nP - Perdidos\nPr - Producidos",
+      "unitsKD": "Unidades K / M / KD",
+      "unitsKDTooltip": "Bajas / Muertes / Ratio Bajas-Muertes",
+      "squadsKLP": "Escuadrones K / P / Pr",
+      "squadsKLPTooltip": "Eliminados / Perdidos / Producidos",
+      "vehiclesKLP": "Vehículos K / P / Pr",
+      "vehiclesKLPTooltip": "Eliminados / Perdidos / Producidos",
+      "apm": "APM",
+      "apmTooltip": "Acciones Por Minuto",
+      "totalMatches": "Total de Partidas",
+      "noData": "No hay datos de contadores disponibles para este modo de juego"
+    }
   }
 }
