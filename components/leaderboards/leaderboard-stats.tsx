@@ -217,11 +217,14 @@ const LeaderBoardStats = ({ leaderBoardStats }: { leaderBoardStats: LeaderboardS
         all numbers.{" "}
       </Text>
       <Space h={"xl"} />
-      <Title order={2}>Players with ELO 1600+</Title>
-      <StatsTable data={leaderBoardStats.topLevelPlayers} />
-      <Space h={"xl"} />
       <Title order={2}>Highest ELO</Title>
       <StatsTable data={leaderBoardStats.topElo} />
+      <Space h={"xl"} />
+      <Title order={2}>Players with ELO 1600+</Title>
+      <StatsTable data={leaderBoardStats.elo1600} />
+      <Space h={"xl"} />
+      <Title order={2}>Players with ELO 1800+</Title>
+      <StatsTable data={leaderBoardStats.elo1800} />
     </Container>
   );
 };
