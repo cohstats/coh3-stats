@@ -96,7 +96,7 @@ export type WeaponBag = {
   weapon_class: (typeof WeaponClass)[number];
   fx_aoe_munition_name: string;
   speech_code: string;
-  target_type_table: any[];
+  target_type_table: TargetTypeTableItemSchema[];
   cover_table: CoverTable;
   fx_piercing_munition_name: string;
   charge_option: TemplateReferenceParentSchema;
@@ -113,6 +113,23 @@ export type WeaponBag = {
   audio: Audio;
   weapon_impact_modifier: number;
   conditional_table: any[];
+};
+
+type TargetTypeTableItemSchema = {
+  target_unit_type_multipliers: TargetUnitTypeMultipliers;
+};
+
+export type TargetUnitTypeMultipliers = {
+  unit_type: "destructible_object" | "bunker" | "infantry" | "building";
+  weapon_multipliers: WeaponMultipliers;
+  base_damage_modifier: number;
+};
+
+type WeaponMultipliers = {
+  accuracy_multiplier: number;
+  damage_multiplier: number;
+  penetration_multiplier: number;
+  suppression_multiplier: number;
 };
 
 export type Accuracy = {
