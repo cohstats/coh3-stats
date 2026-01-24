@@ -4,16 +4,10 @@
  */
 import { logger } from "../../src/logger";
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
-import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { json2csv } from "json-2-csv";
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateCSVObject } from "../../src/players/export";
-import { chunk } from "lodash";
-import { getPlayerStatsFromRelic } from "../../src/coh3/coh3-players";
-
-const getPlayerInfo = async (profileID: string): Promise<PlayerCardDataType> => {
-  return processPlayerInfoAPIResponse(await getPlayerStatsFromRelic(profileID));
-};
+import { getMultiplePlayersStatsFromRelic } from "../../src/coh3/coh3-players";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -48,23 +42,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    const arrayOfIds: Array<string> = JSON.parse(profileIDs);
+    const arrayOfIds: Array<number> = JSON.parse(profileIDs);
     logger.log(`Going to parse ${arrayOfIds.length} ids`);
     logger.log(`List of IDs ${arrayOfIds}`);
     if (arrayOfIds.length > 50) {
       return res.status(400).json({ error: "Too many records requested" });
     }
 
-    const finalArray = [];
-
-    for (const singleChunk of chunk(arrayOfIds, 2)) {
-      const playerInfoPromises = singleChunk.map((profileId) => getPlayerInfo(profileId));
-      const playerInfoArray = await Promise.all(playerInfoPromises);
-      const playerInfoAsCSVObjects = playerInfoArray.map((playerInfo, index) =>
-        generateCSVObject(playerInfo, singleChunk[index], parsedTypes || undefined),
-      );
-      finalArray.push(...playerInfoAsCSVObjects);
-    }
+    const playerStatsArray = await getMultiplePlayersStatsFromRelic(
+      arrayOfIds.map((id) => `${id}`),
+    );
+    const finalArray = playerStatsArray.map((playerStats, index) => {
+      const playerInfo = processPlayerInfoAPIResponse(playerStats);
+      return generateCSVObject(playerInfo, arrayOfIds[index], parsedTypes || undefined);
+    });
 
     res
       .status(200)
