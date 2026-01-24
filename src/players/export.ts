@@ -2,7 +2,7 @@ import { leaderBoardType, PlayerCardDataType, raceType } from "../coh3/coh3-type
 
 const generateCSVObject = (
   playerInfo: PlayerCardDataType,
-  profileID: string,
+  profileID: string | number,
   types = ["1v1", "2v2", "3v3", "4v4"],
 ) => {
   const standingsObject: any = {};
