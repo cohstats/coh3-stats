@@ -1304,7 +1304,7 @@
   {
     "id": "sherman_firefly_africa_uk",
     "icon": "races/british/vehicles/sherman_firefly_polish_uk",
-    "name": "M4A4 Firefly Tank Destroyer",
+    "name": "Sherman VC Firefly Tank Destroyer",
     "faction": "british",
     "symbol": "races/british/symbols/sherman_firefly_uk"
   },
