@@ -39,7 +39,7 @@ const TopLeaderboardsSection = ({ initialData, t }: TopLeaderboardsSectionProps)
   }, [selectedRace]);
 
   return (
-    <Paper withBorder shadow="xs" radius="md" mt="md" p={{ base: "xs", sm: "md" }} color="gray">
+    <Paper withBorder shadow="xs" radius="md" mt="md" p={{ base: "xs", sm: "md" }} color="gray" data-testid="leaderboards-section">
       <Tabs
         variant="pills"
         onChange={(value: string | null) => setSelectedRace(value as raceType)}

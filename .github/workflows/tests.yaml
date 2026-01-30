@@ -58,3 +58,63 @@ jobs:
         uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    concurrency:
+      group: e2e-tests-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: "yarn"
+      - name: Cache node modules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules-v2
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Cache NextJS Build
+        uses: actions/cache@v4
+        env:
+          cache-name: next-build-e2e
+        with:
+          path: |
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}-${{ hashFiles('components/**/*.tsx','components/**/*.ts', 'pages/**/*.tsx','pages/**/*.ts', 'src/**/*.tsx','src/**/*.ts' )}}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile install
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build application
+        run: yarn build:slim
+      - name: Run Playwright tests
+        run: yarn test:e2e --project=chromium
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7

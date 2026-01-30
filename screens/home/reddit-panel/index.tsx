@@ -19,6 +19,7 @@ const RedditPanel = ({ redditPostsData, t }: RedditPanelProps) => {
         <div
           key={post.created}
           style={{ padding: 8, paddingLeft: 0, paddingRight: 0, marginBottom: 5 }}
+          data-testid={`reddit-post-${index}`}
         >
           <Flex justify={"space-between"} columnGap={"xs"}>
             <Stack gap={"xs"}>
@@ -72,7 +73,7 @@ const RedditPanel = ({ redditPostsData, t }: RedditPanelProps) => {
   });
 
   return (
-    <Paper withBorder shadow="xs" radius="md" p={{ base: "xs", sm: "md" }} color="gray">
+    <Paper withBorder shadow="xs" radius="md" p={{ base: "xs", sm: "md" }} color="gray" data-testid="reddit-panel">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
         <IconBrandReddit /> <Title size="h3">{t("sections.reddit.title")}</Title>
       </Flex>
