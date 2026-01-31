@@ -108,6 +108,7 @@ export const NewsSection: React.FC<NewsSectionProps> = ({ steamNewsData, t }) =>
         withControls={false}
         withIndicators
         plugins={[autoplay.current]}
+        data-testid="news-carousel"
         styles={{
           indicator: {
             width: rem(42),

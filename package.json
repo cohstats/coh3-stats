@@ -29,7 +29,15 @@
     "sitemap": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/unit-paths.ts > unit-paths.txt && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "test": "TZ=UTC yarn jest",
-    "test:windows": "yarn jest"
+    "test:windows": "yarn jest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:install": "playwright install --with-deps chromium firefox webkit"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,yml}": [
@@ -91,6 +99,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "14.2.35",
+    "@playwright/test": "1.49.1",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@types/jest": "29.5.14",

@@ -10,17 +10,20 @@ const InfoCard = ({
   content,
   title,
   imageSrc,
+  testId,
 }: {
   link: string;
   content: string;
   title: string;
   imageSrc: string;
+  testId?: string;
 }) => {
   return (
     <Anchor
       component={LinkWithOutPrefetch}
       href={link}
       style={{ textDecoration: "none", width: "100%", height: "100%" }}
+      data-testid={testId}
     >
       <Card p={{ base: "xs", sm: "sm" }} radius="md" withBorder className={classes.infoCard}>
         <Stack gap={"xs"} style={{ height: "100%" }}>
@@ -59,6 +62,7 @@ const DPSCalculatorCard = ({ t }: CardProps) => {
       title={t("sections.tools.dpsCalculator.title")}
       imageSrc={getIconsPathOnCDN("/icons/races/common/symbols/hmg.webp")}
       content={t("sections.tools.dpsCalculator.description")}
+      testId="dps-calculator-card"
     />
   );
 };
@@ -70,6 +74,7 @@ const UnitBrowserCard = ({ t }: CardProps) => {
       title={t("sections.tools.unitBrowser.title")}
       imageSrc={getIconsPathOnCDN("/icons/common/squad/squad.webp")}
       content={t("sections.tools.unitBrowser.description")}
+      testId="unit-browser-card"
     />
   );
 };

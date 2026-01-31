@@ -19,7 +19,7 @@ const customJestConfig = {
   // The paths have to be matching with the paths option within the compilerOptions in the tsconfig.json
   // For example:
 
-  testPathIgnorePatterns: ["jest.setup.js", "test-assets", "jest-global-setup.js"],
+  testPathIgnorePatterns: ["jest.setup.js", "test-assets", "jest-global-setup.js", "e2e"],
 
   // motherfucking Jest doesn't support fetch ... I am wondering more and more if Jest is the right lib for tests
   setupFiles: ["./__tests__/jest.setup.js"],

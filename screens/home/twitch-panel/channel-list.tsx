@@ -44,6 +44,7 @@ const ChannelList = ({ onChangeChannel, twitchStreams }: Props) => {
             key={stream.id}
             onClick={() => handleChangeChannel(idx)}
             pos="relative"
+            data-testid={`twitch-stream-${idx}`}
           >
             <BackgroundImage
               radius="md"

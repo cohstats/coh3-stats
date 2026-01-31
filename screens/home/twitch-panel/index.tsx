@@ -50,7 +50,13 @@ const TwitchContainer = ({ twitchStreams, error, t }: Props) => {
   };
 
   return (
-    <Container size="fluid" pb={5} pr={{ base: 1, xs: "md" }} pl={{ base: 1, xs: "md" }}>
+    <Container
+      size="fluid"
+      pb={5}
+      pr={{ base: 1, xs: "md" }}
+      pl={{ base: 1, xs: "md" }}
+      data-testid="twitch-panel"
+    >
       <Flex justify="flex-start" align="center" gap={5} pb="sm">
         <IconBrandTwitch size={35} />
         <Title order={2} size="h2">

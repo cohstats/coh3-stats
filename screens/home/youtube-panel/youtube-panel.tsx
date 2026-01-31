@@ -37,6 +37,7 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData, t }) => {
       className={classes.card}
       radius={"md"}
       withBorder={true}
+      data-testid={`youtube-video-${index}`}
     >
       <Card.Section pb={4}>
         <AspectRatio ratio={16 / 9}>
@@ -55,7 +56,7 @@ const YoutubePanel: React.FC<YoutubePanelProps> = ({ youtubeData, t }) => {
   ));
 
   return (
-    <Paper mt="0" pt="md" pb="md" color="gray">
+    <Paper mt="0" pt="md" pb="md" color="gray" data-testid="youtube-panel">
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap" pb={5}>
         <IconBrandYoutube size={35} /> <Title size="h2">{t("sections.youtube.title")}</Title>
       </Flex>
