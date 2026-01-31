@@ -89,7 +89,7 @@ test.describe("Feature Name", () => {
   test("should do something", async ({ page }) => {
     await navigateAndWait(page, "/path");
     await checkPageLoaded(page);
-    
+
     // Your test assertions
     await expect(page.locator("selector")).toBeVisible();
   });
@@ -107,6 +107,7 @@ test.describe("Feature Name", () => {
 The Playwright configuration is in `playwright.config.ts` at the root of the project.
 
 Key settings:
+
 - **Base URL**: `http://localhost:3000` (configurable via `PLAYWRIGHT_BASE_URL` env var)
 - **Test Directory**: `./e2e`
 - **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari
@@ -117,6 +118,7 @@ Key settings:
 ## CI/CD Integration
 
 Tests are automatically run in GitHub Actions on:
+
 - Pull requests to master
 - Pushes to master
 
@@ -172,4 +174,3 @@ npx playwright show-trace trace.zip
 ### Browser not installed
 
 Run: `npx playwright install`
-

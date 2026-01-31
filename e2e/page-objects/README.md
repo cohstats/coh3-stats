@@ -157,4 +157,3 @@ yarn playwright test --debug
 # Show report
 yarn playwright show-report
 ```
-

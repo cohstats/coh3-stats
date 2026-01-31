@@ -73,7 +73,14 @@ const RedditPanel = ({ redditPostsData, t }: RedditPanelProps) => {
   });
 
   return (
-    <Paper withBorder shadow="xs" radius="md" p={{ base: "xs", sm: "md" }} color="gray" data-testid="reddit-panel">
+    <Paper
+      withBorder
+      shadow="xs"
+      radius="md"
+      p={{ base: "xs", sm: "md" }}
+      color="gray"
+      data-testid="reddit-panel"
+    >
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
         <IconBrandReddit /> <Title size="h3">{t("sections.reddit.title")}</Title>
       </Flex>
