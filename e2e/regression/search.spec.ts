@@ -9,10 +9,14 @@ test.describe("Search Page", () => {
 
   test("should display search interface", async ({ page }) => {
     await navigateAndWait(page, "/search");
-    
-    // Check for search input or content
-    await expect(page.locator("input[type='search'], input[type='text']").first()).toBeVisible();
-    
+
+    // Check for search input - look for the main content input (not the one in header)
+    // The search page input is in main content, not in the header/banner
+    const searchInput = page
+      .locator('main input[placeholder*="Players"], input[placeholder*="Players"]')
+      .last();
+    await expect(searchInput).toBeVisible();
+
     // Check footer
     await checkFooterPresent(page);
   });
@@ -22,4 +26,3 @@ test.describe("Search Page", () => {
     await checkPageLoaded(page);
   });
 });
-

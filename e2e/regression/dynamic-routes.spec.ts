@@ -6,7 +6,7 @@ test.describe("Dynamic Routes - Player Pages", () => {
     // Using a test player ID - this should be replaced with a real one if needed
     await navigateAndWait(page, "/players/1");
     await checkPageLoaded(page);
-    
+
     // Check for player content
     await expect(page.locator("h1, h2").first()).toBeVisible();
     await checkFooterPresent(page);
@@ -23,7 +23,7 @@ test.describe("Dynamic Routes - Match Pages", () => {
     // Using a test match ID - this should be replaced with a real one if needed
     await navigateAndWait(page, "/matches/1");
     await checkPageLoaded(page);
-    
+
     // Check for match content
     await expect(page.locator("h1, h2").first()).toBeVisible();
     await checkFooterPresent(page);
@@ -47,12 +47,11 @@ test.describe("Dynamic Routes - Explorer Unit Pages", () => {
     // The test might fail if the unit doesn't exist, but it tests the route structure
     await page.goto("/explorer/races/american/units/test-unit");
     await page.waitForLoadState("networkidle");
-    
+
     // Either the page loads or shows a not found message
     const hasContent = await page.locator("h1, h2").first().isVisible();
     const hasError = await page.locator("text=not found, text=404").first().isVisible();
-    
+
     expect(hasContent || hasError).toBeTruthy();
   });
 });
-

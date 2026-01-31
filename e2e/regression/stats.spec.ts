@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { navigateAndWait, checkPageLoaded, checkFooterPresent } from "../helpers/test-utils";
 
 test.describe("Stats Pages", () => {
@@ -32,4 +32,3 @@ test.describe("Stats Pages", () => {
     await checkFooterPresent(page);
   });
 });
-

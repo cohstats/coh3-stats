@@ -41,9 +41,8 @@ test.describe("Other Pages", () => {
   test("should handle 404 page", async ({ page }) => {
     await page.goto("/non-existent-page");
     await page.waitForLoadState("networkidle");
-    
+
     // Should show 404 page
     await expect(page.locator("text=404")).toBeVisible();
   });
 });
-

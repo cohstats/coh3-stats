@@ -49,8 +49,9 @@ export class BasePage {
   async checkPageLoaded(): Promise<void> {
     // Check that we're not on an error page
     await expect(this.page.locator("text=Application error")).not.toBeVisible();
-    await expect(this.page.locator("text=404")).not.toBeVisible();
-    
+    // Check for 404 error in page title (more specific than just "text=404")
+    await expect(this.page.locator("h1:has-text('404')")).not.toBeVisible();
+
     // Check that the header is present (common across all pages)
     await expect(this.header).toBeVisible();
   }
@@ -104,4 +105,3 @@ export class BasePage {
     return await this.getByTestId(testId).isVisible();
   }
 }
-

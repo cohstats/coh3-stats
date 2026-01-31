@@ -16,8 +16,9 @@ export const waitForPageLoad = async (page: Page) => {
 export const checkPageLoaded = async (page: Page) => {
   // Check that we're not on an error page
   await expect(page.locator("text=Application error")).not.toBeVisible();
-  await expect(page.locator("text=404")).not.toBeVisible();
-  
+  // Check for 404 error in page title (more specific than just "text=404")
+  await expect(page.locator("h1:has-text('404')")).not.toBeVisible();
+
   // Check that the header is present (common across all pages)
   await expect(page.locator("header")).toBeVisible();
 };
@@ -36,4 +37,3 @@ export const navigateAndWait = async (page: Page, path: string) => {
   await page.goto(path);
   await waitForPageLoad(page);
 };
-

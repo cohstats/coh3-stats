@@ -32,7 +32,7 @@ test.describe("Home Page - Page Object Pattern", () => {
       await expect(newsCarousel.or(fallbackImage)).toBeVisible();
     });
 
-    test("should have carousel indicators when news data is available", async ({ page }) => {
+    test("should have carousel indicators when news data is available", async () => {
       const newsCarousel = homePage.newsCarousel;
       const isCarouselVisible = await newsCarousel.isVisible().catch(() => false);
 
@@ -57,8 +57,8 @@ test.describe("Home Page - Page Object Pattern", () => {
 
     test("should navigate to DPS Calculator when card is clicked", async ({ page }) => {
       await homePage.clickDPSCalculatorCard();
-      await page.waitForURL(/.*dps-calculator.*/);
-      expect(page.url()).toContain("dps-calculator");
+      await page.waitForURL(/.*\/explorer\/dps.*/);
+      expect(page.url()).toContain("/explorer/dps");
     });
 
     test("should navigate to Unit Browser when card is clicked", async ({ page }) => {
@@ -92,7 +92,10 @@ test.describe("Home Page - Page Object Pattern", () => {
     test("should switch between faction tabs", async () => {
       // Switch to British
       await homePage.switchLeaderboardTab("british");
-      await expect(homePage.getLeaderboardTab("british")).toHaveAttribute("aria-selected", "true");
+      await expect(homePage.getLeaderboardTab("british")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
 
       // Switch to German
       await homePage.switchLeaderboardTab("german");
@@ -104,7 +107,10 @@ test.describe("Home Page - Page Object Pattern", () => {
 
       // Switch back to American
       await homePage.switchLeaderboardTab("american");
-      await expect(homePage.getLeaderboardTab("american")).toHaveAttribute("aria-selected", "true");
+      await expect(homePage.getLeaderboardTab("american")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
     });
 
     test("should have View Full Leaderboard button", async () => {
@@ -135,7 +141,7 @@ test.describe("Home Page - Page Object Pattern", () => {
   test.describe("YouTube Panel", () => {
     test("should display youtube panel", async () => {
       await expect(homePage.youtubePanel).toBeVisible();
-      await expect(homePage.youtubePanel).toContainText(/YouTube/i);
+      await expect(homePage.youtubePanel).toContainText(/Last week's videos/i);
     });
 
     test("should display youtube videos if available", async () => {
@@ -150,25 +156,34 @@ test.describe("Home Page - Page Object Pattern", () => {
   });
 
   test.describe("Twitch Panel", () => {
-    test("should display twitch panel", async () => {
-      // Scroll to twitch panel as it's lazy loaded
-      await homePage.twitchPanel.scrollIntoViewIfNeeded();
-      await expect(homePage.twitchPanel).toBeVisible();
-      await expect(homePage.twitchPanel).toContainText(/Twitch/i);
+    test("should display twitch panel", async ({ page }) => {
+      // Scroll to bottom to trigger lazy loading
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      // Wait for the panel to be visible after lazy loading
+      await expect(homePage.twitchPanel).toBeVisible({ timeout: 10000 });
+      await expect(homePage.twitchPanel).toContainText(/Watch Live Streams/i);
     });
 
-    test("should display twitch streams or no streams message", async () => {
-      await homePage.twitchPanel.scrollIntoViewIfNeeded();
+    test("should display twitch streams or no streams message", async ({ page }) => {
+      // Scroll to bottom to trigger lazy loading
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      // Wait for the panel to be visible after lazy loading
+      await expect(homePage.twitchPanel).toBeVisible({ timeout: 10000 });
+
+      // Wait a bit for content to load
+      await page.waitForTimeout(2000);
 
       const streams = homePage.twitchStreams;
       const streamCount = await streams.count();
 
       if (streamCount > 0) {
+        // If there are streams, verify they are visible
         expect(streamCount).toBeGreaterThan(0);
         await expect(streams.first()).toBeVisible();
       } else {
-        // Check for "no streams" message
-        await expect(homePage.twitchPanel).toContainText(/no.*stream/i);
+        // If no streams, check for "no streams" message
+        const panelText = await homePage.twitchPanel.textContent();
+        expect(panelText).toMatch(/No English speaking streams|No streams/i);
       }
     });
   });
@@ -208,4 +223,3 @@ test.describe("Home Page - Page Object Pattern", () => {
     });
   });
 });
-
