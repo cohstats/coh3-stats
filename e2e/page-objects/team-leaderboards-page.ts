@@ -210,6 +210,24 @@ export class TeamLeaderboardsPage extends BasePage {
   }
 
   /**
+   * Get the total number of records from pagination info
+   */
+  async getTotalRecordCount(): Promise<number> {
+    const paginationText = await this.getPaginationInfo();
+    // Extract total from "Showing X - Y of Z teams"
+    const match = paginationText.match(/of (\d+) teams/);
+    return match ? parseInt(match[1], 10) : 0;
+  }
+
+  /**
+   * Get the currently selected records per page value
+   */
+  async getSelectedRecordsPerPage(): Promise<string> {
+    // The select component shows the selected value in its button
+    return await this.recordsPerPageSelect.locator("input").inputValue();
+  }
+
+  /**
    * Click on a player name in the table
    */
   async clickPlayerName(rowIndex: number, playerIndex: number = 0): Promise<void> {
@@ -286,11 +304,15 @@ export class TeamLeaderboardsPage extends BasePage {
       .evaluate((el) => {
         return window.getComputedStyle(el).color;
       });
-    // This is a basic check - you might need to adjust based on actual color values
-    if (expectedColor === "green") {
-      expect(color).toContain("green");
-    } else {
-      expect(color).toContain("red");
-    }
+
+    // Normalize the computed color to RGB format for comparison
+    // Expected colors: green = rgb(64, 192, 87) or similar, red = rgb(250, 82, 82) or similar
+    // The actual RGB values may vary based on the theme, so we check the pattern
+    const colorMapping = {
+      green: /rgb\(\s*\d+,\s*1[5-9]\d|2\d\d,\s*\d+\s*\)/i, // Green has high G value (150+)
+      red: /rgb\(\s*2[0-5]\d,\s*\d{1,2},\s*\d{1,2}\s*\)/i, // Red has high R value (200+)
+    };
+
+    expect(color).toMatch(colorMapping[expectedColor]);
   }
 }

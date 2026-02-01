@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Parse and validate types
-    let parsedTypes: ["1v1", "2v2", "3v3", "4v4"];
+    let parsedTypes: Array<"1v1" | "2v2" | "3v3" | "4v4">;
 
     if (types !== undefined && typeof types !== "string") {
       return res.status(400).json({ error: "types contains invalid data" });
