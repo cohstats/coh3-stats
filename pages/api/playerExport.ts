@@ -23,6 +23,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (typeof profileIDs !== "string") {
       return res.status(400).json({ error: "profile id contains invalid data" });
     }
+
+    // Parse and validate profileIDs
+    let arrayOfIds: Array<number>;
+    try {
+      arrayOfIds = JSON.parse(profileIDs);
+    } catch (e) {
+      logger.error(e);
+      return res.status(400).json({ error: "error parsing the profileIDs data" });
+    }
+
+    if (!Array.isArray(arrayOfIds)) {
+      return res.status(400).json({ error: "profileIDs must be an array" });
+    }
+
+    logger.log(`Going to parse ${arrayOfIds.length} ids`);
+    logger.log(`List of IDs ${arrayOfIds}`);
+    if (arrayOfIds.length > 50) {
+      return res.status(400).json({ error: "Too many records requested" });
+    }
+
+    // Parse and validate types
     let parsedTypes: ["1v1", "2v2", "3v3", "4v4"];
 
     if (types !== undefined && typeof types !== "string") {
@@ -37,16 +58,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: "error parsing the types data" });
       }
 
+      if (!Array.isArray(parsedTypes)) {
+        return res.status(400).json({ error: "types must be an array" });
+      }
+
       if (!parsedTypes.every((type) => ["1v1", "2v2", "3v3", "4v4"].includes(type))) {
         return res.status(400).json({ error: "parsedTypes contains invalid data" });
       }
-    }
-
-    const arrayOfIds: Array<number> = JSON.parse(profileIDs);
-    logger.log(`Going to parse ${arrayOfIds.length} ids`);
-    logger.log(`List of IDs ${arrayOfIds}`);
-    if (arrayOfIds.length > 50) {
-      return res.status(400).json({ error: "Too many records requested" });
     }
 
     const playerStatsArray = await getMultiplePlayersStatsFromRelic(
