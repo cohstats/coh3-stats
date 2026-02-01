@@ -78,13 +78,24 @@ test.describe("Team Leaderboards Page", () => {
       await teamLeaderboardsPage.waitForTableLoad();
 
       const rowCountBefore = await teamLeaderboardsPage.getRowCount();
+      const totalRecords = await teamLeaderboardsPage.getTotalRecordCount();
 
       await teamLeaderboardsPage.selectRecordsPerPage("50");
 
+      // Verify the page size control actually changed to "50"
+      const selectedPageSize = await teamLeaderboardsPage.getSelectedRecordsPerPage();
+      expect(selectedPageSize).toBe("50");
+
       const rowCountAfter = await teamLeaderboardsPage.getRowCount();
 
-      // Row count should change
-      expect(rowCountAfter).not.toBe(rowCountBefore);
+      // Assert the displayed row count equals Math.min(totalRecords, 50)
+      const expectedRowCount = Math.min(totalRecords, 50);
+      expect(rowCountAfter).toBe(expectedRowCount);
+
+      // Also verify that either the row count changed OR total records is <= 50
+      if (totalRecords > 50) {
+        expect(rowCountAfter).not.toBe(rowCountBefore);
+      }
     });
   });
 

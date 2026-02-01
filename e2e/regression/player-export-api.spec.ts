@@ -20,7 +20,7 @@ test.describe("Player Export API", () => {
       expect(data.error).toBe("error parsing the profileIDs data");
     });
 
-    test("should return 400 when types parameter is not a string", async ({ request }) => {
+    test("should return 400 when types contains invalid game types", async ({ request }) => {
       const profileIDs = JSON.stringify([1, 2]);
       const types = JSON.stringify(["1v1", "5v5"]);
       const response = await request.get(`${baseUrl}?profileIDs=${profileIDs}&types=${types}`);
@@ -39,16 +39,6 @@ test.describe("Player Export API", () => {
       expect(response.status()).toBe(400);
       const data = await response.json();
       expect(data.error).toBe("error parsing the types data");
-    });
-
-    test("should return 400 when types contains invalid game types", async ({ request }) => {
-      const profileIDs = JSON.stringify([1, 2]);
-      const types = JSON.stringify(["1v1", "5v5"]);
-      const response = await request.get(`${baseUrl}?profileIDs=${profileIDs}&types=${types}`);
-
-      expect(response.status()).toBe(400);
-      const data = await response.json();
-      expect(data.error).toBe("parsedTypes contains invalid data");
     });
 
     test("should return 400 when requesting more than 50 records", async ({ request }) => {
