@@ -49,7 +49,7 @@
     ]
   },
   "dependencies": {
-    "@bbob/preset-react": "4.2.0",
+    "@bbob/preset-react": "4.3.1",
     "@bbob/react": "4.2.0",
     "@mantine/carousel": "8.3.13",
     "@mantine/core": "8.3.13",
