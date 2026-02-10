@@ -19,6 +19,7 @@
     "button": "Descarga Gratuita {{version}}",
     "buttonAriaLabel": "Descargar instalador de Grenadier - COH3 Stats Desktop App {{version}} para Windows",
     "downloads": "{{count}} Descargas",
+    "totalDownloads": "{{count}} descargas totales",
     "releaseNotes": "Notas de la versión",
     "microsoftStore": "Obtener en Microsoft Store",
     "microsoftStoreAriaLabel": "Obtener Grenadier - COH3 Companion en Microsoft Store",
@@ -54,6 +55,7 @@
       "recentGames": "Ve tus juegos recientes directamente en la app",
       "notifications": "Recibe notificaciones de sonido opcionales al entrar a un juego",
       "replays": "Sube repeticiones automaticamente a la nube para análisis adicional",
+      "muteOnFocusLoss": "Capacidad de silenciar el juego cuando la ventana no está en foco",
       "streaming": {
         "before": "Overlay para transmisiones",
         "and": "y",

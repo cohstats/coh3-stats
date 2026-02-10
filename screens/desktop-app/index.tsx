@@ -25,7 +25,12 @@ import Autoplay from "embla-carousel-autoplay";
 import classes from "./desktop-app.module.css";
 import { createPageSEO } from "../../src/seo-utils";
 
-const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) => {
+const DesktopAppPage: NextPage = ({
+  downloadURL,
+  downloadCount,
+  totalDownloadCount,
+  version,
+}: any) => {
   const { t } = useTranslation("desktopapp");
   const autoplay = useRef(Autoplay({ delay: 4000, stopOnMouseEnter: true }));
 
@@ -110,7 +115,7 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
           <Grid gutter="xl" align="center">
             {/* Left Column - Download Buttons */}
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Stack align="center" gap="md" justify="center" style={{ height: "100%" }}>
+              <Stack align="center" gap="sm" justify="center" style={{ height: "100%" }}>
                 {/* Microsoft Store Button */}
                 <Anchor
                   href="https://apps.microsoft.com/detail/9PBKK60PKDQS"
@@ -142,11 +147,15 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
                       {t("download.button", { version })}
                     </Button>
                   </Anchor>
-                  <Text size="sm" c="dimmed">
-                    {t("download.downloads", { count: downloadCount })}
-                  </Text>
+                  <Stack align="center" gap="0">
+                    <Text size="sm" c="dimmed">
+                      {t("download.downloads", { count: downloadCount })}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {t("download.totalDownloads", { count: totalDownloadCount })}
+                    </Text>
+                  </Stack>
                 </Stack>
-
                 <Anchor
                   href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
                   target="_blank"
@@ -228,6 +237,7 @@ const DesktopAppPage: NextPage = ({ downloadURL, downloadCount, version }: any) 
             <List.Item>{t("features.list.recentGames")}</List.Item>
             <List.Item>{t("features.list.notifications")}</List.Item>
             <List.Item>{t("features.list.replays")}</List.Item>
+            <List.Item>{t("features.list.muteOnFocusLoss")}</List.Item>
             <List.Item>
               {t("features.list.streaming.before")}{" "}
               <Anchor href="https://obsproject.com/" target="_blank" rel="noopener">

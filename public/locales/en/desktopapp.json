@@ -19,6 +19,7 @@
     "button": "Free Download {{version}}",
     "buttonAriaLabel": "Download Grenadier - COH3 Stats Desktop App {{version}} installer for Windows",
     "downloads": "{{count}} downloads",
+    "totalDownloads": "{{count}} total downloads",
     "releaseNotes": "Release Notes",
     "microsoftStore": "Get on Microsoft Store",
     "microsoftStoreAriaLabel": "Get Grenadier - COH3 Companion on Microsoft Store",
@@ -34,14 +35,14 @@
         "Certified App by Microsoft",
         "Updates and patches handled by Microsoft",
         "Lifetime license",
-        "Support the app with the purchase! Thank you"
+        "Support the app with the purchase! ❤"
       ]
     },
     "freeDownload": {
       "title": "Free Download",
       "benefits": [
         "Direct download, not certified app",
-        "Same features as the Microsoft Store App"
+        "Same features as the Microsoft Store App *"
       ]
     }
   },
@@ -54,6 +55,7 @@
       "recentGames": "See your recent games directly in the app",
       "notifications": "Receive optional sound notifications upon joining a game",
       "replays": "Auto upload replays to the cloud for additional analysis",
+      "muteOnFocusLoss": "Ability to mute the game when the window is not in focus",
       "streaming": {
         "before": "Streamer overlay for",
         "and": "and",
