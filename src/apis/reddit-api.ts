@@ -89,12 +89,17 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
   // If no cached data exists, fetch fresh data
   if (!cache) {
     const freshData = await fetchRedditPosts(numberOfPosts);
-    cache = {
-      data: freshData,
-      timestamp: now,
-      isUpdating: false,
-    };
-    logger.info(`Fetched fresh data from Reddit API ${freshData.length}`);
+    // Only cache if we got valid data
+    if (freshData.length > 0) {
+      cache = {
+        data: freshData,
+        timestamp: now,
+        isUpdating: false,
+      };
+      logger.info(`Fetched fresh data from Reddit API ${freshData.length}`);
+    } else {
+      logger.warn(`Failed to fetch initial Reddit data, no cache available`);
+    }
     return freshData;
   }
 
@@ -116,14 +121,25 @@ const getLatestCOH3RedditPosts = async (numberOfPosts = 10): Promise<RedditPostT
     // Update cache asynchronously in the background
     fetchRedditPosts(numberOfPosts)
       .then((freshData) => {
-        cache = {
-          data: freshData,
-          timestamp: Date.now(),
-          isUpdating: false,
-        };
-        logger.info(
-          `Fetched fresh data from Reddit API ${freshData.length} , cache timestamp: ${new Date(cache.timestamp).toISOString()}`,
-        );
+        // Only update cache if we got valid data, otherwise keep stale cache
+        if (freshData.length > 0) {
+          cache = {
+            data: freshData,
+            timestamp: Date.now(),
+            isUpdating: false,
+          };
+          logger.info(
+            `Fetched fresh data from Reddit API ${freshData.length} , cache timestamp: ${new Date(cache.timestamp).toISOString()}`,
+          );
+        } else {
+          logger.warn(
+            `Failed to fetch fresh Reddit data (got 0 results), keeping stale cache with ${cache?.data.length} posts`,
+          );
+          // Reset updating flag so we can try again next time
+          if (cache) {
+            cache.isUpdating = false;
+          }
+        }
       })
       .catch((error) => {
         logger.error(`Error fetching fresh data: ${error}`);
