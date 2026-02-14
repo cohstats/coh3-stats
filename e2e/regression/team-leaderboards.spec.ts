@@ -123,6 +123,9 @@ test.describe("Team Leaderboards Page", () => {
       // Go to next page first
       await teamLeaderboardsPage.goToNextPage();
 
+      // Wait for the previous button to become enabled after navigation
+      await expect(teamLeaderboardsPage.previousPageButton).toBeEnabled({ timeout: 5000 });
+
       const isPreviousEnabled = await teamLeaderboardsPage.isPreviousPageEnabled();
       expect(isPreviousEnabled).toBeTruthy();
 

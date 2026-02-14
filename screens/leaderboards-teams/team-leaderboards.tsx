@@ -311,120 +311,122 @@ const TeamLeaderboards: React.FC = () => {
             </Center>
           ) : leaderboardData && leaderboardData.teams.length > 0 ? (
             <>
-              <DataTable
-                withTableBorder
-                borderRadius="md"
-                highlightOnHover
-                striped
-                verticalSpacing={4}
-                fz="sm"
-                minHeight={300}
-                fetching={loadingMore}
-                records={leaderboardData.teams}
-                columns={[
-                  {
-                    title: t("common:columns.rank"),
-                    accessor: "index",
-                    textAlign: "center",
-                    render: (_, index) => startIndex + index + 1,
-                  },
-                  {
-                    title: (
-                      <Group gap="7" justify="center">
-                        <span>ELO</span>
-                        <HelperIcon
-                          text="Unofficial ELO tracked by COH3 Stats only, see more info in the about page"
-                          iconSize={16}
-                          iconStyle={{ marginBottom: 0 }}
-                        />
-                      </Group>
-                    ),
-                    accessor: "elo",
-                    textAlign: "center",
-                    width: 80,
-                    render: ({ elo }) => Math.round(elo),
-                  },
-                  {
-                    title: "Team",
-                    accessor: "players",
-                    width: "100%",
-                    render: ({ players }) => (
-                      <Stack gap="0" justify="center">
-                        {players.map((player) => (
-                          <Anchor
-                            key={player.profile_id}
-                            component={Link}
-                            href={getPlayerCardRoute(player.profile_id)}
-                          >
-                            <Group gap="xs">
-                              <CountryFlag countryCode={player.country} />
-                              {player.alias}
-                            </Group>
-                          </Anchor>
-                        ))}
-                      </Stack>
-                    ),
-                  },
-                  {
-                    title: t("common:columns.streak"),
-                    accessor: "s",
-                    textAlign: "center",
-                    render: ({ s }) => (
-                      <Text c={s > 0 ? "green" : s < 0 ? "red" : undefined}>
-                        {s > 0 ? `+${s}` : s}
-                      </Text>
-                    ),
-                  },
-                  {
-                    title: t("common:columns.wins"),
-                    accessor: "w",
-                    textAlign: "center",
-                  },
-                  {
-                    title: t("common:columns.losses"),
-                    accessor: "l",
-                    textAlign: "center",
-                  },
-                  {
-                    title: t("common:columns.ratio"),
-                    accessor: "ratio",
-                    textAlign: "center",
-                    render: ({ w, l }) => calculateWinRate(w, l),
-                  },
-                  {
-                    title: t("common:columns.total"),
-                    accessor: "t",
-                    textAlign: "center",
-                  },
-                  {
-                    title: t("common:columns.lastGame"),
-                    accessor: "lmTS",
-                    textAlign: "right",
-                    width: 130,
-                    render: ({ lmTS }) => (lmTS ? <DynamicTimeAgo timestamp={lmTS} /> : "N/A"),
-                  },
-                  {
-                    title: "",
-                    accessor: "actions",
-                    textAlign: "right",
-                    width: 100,
-                    render: (team) => (
-                      <Button
-                        component={Link}
-                        href={
-                          team.players.length > 0
-                            ? getTeamDetailsRoute(team.players[0].profile_id, team.id)
-                            : "#"
-                        }
-                        variant="default"
-                        size="compact-md"
-                      >
-                        Details
-                      </Button>
-                    ),
-                  },
-                ]}
-              />
+              <div data-loading={loadingMore ? "true" : "false"}>
+                <DataTable
+                  withTableBorder
+                  borderRadius="md"
+                  highlightOnHover
+                  striped
+                  verticalSpacing={4}
+                  fz="sm"
+                  minHeight={300}
+                  fetching={loadingMore}
+                  records={leaderboardData.teams}
+                  columns={[
+                    {
+                      title: t("common:columns.rank"),
+                      accessor: "index",
+                      textAlign: "center",
+                      render: (_, index) => startIndex + index + 1,
+                    },
+                    {
+                      title: (
+                        <Group gap="7" justify="center">
+                          <span>ELO</span>
+                          <HelperIcon
+                            text="Unofficial ELO tracked by COH3 Stats only, see more info in the about page"
+                            iconSize={16}
+                            iconStyle={{ marginBottom: 0 }}
+                          />
+                        </Group>
+                      ),
+                      accessor: "elo",
+                      textAlign: "center",
+                      width: 80,
+                      render: ({ elo }) => Math.round(elo),
+                    },
+                    {
+                      title: "Team",
+                      accessor: "players",
+                      width: "100%",
+                      render: ({ players }) => (
+                        <Stack gap="0" justify="center">
+                          {players.map((player) => (
+                            <Anchor
+                              key={player.profile_id}
+                              component={Link}
+                              href={getPlayerCardRoute(player.profile_id)}
+                            >
+                              <Group gap="xs">
+                                <CountryFlag countryCode={player.country} />
+                                {player.alias}
+                              </Group>
+                            </Anchor>
+                          ))}
+                        </Stack>
+                      ),
+                    },
+                    {
+                      title: t("common:columns.streak"),
+                      accessor: "s",
+                      textAlign: "center",
+                      render: ({ s }) => (
+                        <Text c={s > 0 ? "green" : s < 0 ? "red" : undefined}>
+                          {s > 0 ? `+${s}` : s}
+                        </Text>
+                      ),
+                    },
+                    {
+                      title: t("common:columns.wins"),
+                      accessor: "w",
+                      textAlign: "center",
+                    },
+                    {
+                      title: t("common:columns.losses"),
+                      accessor: "l",
+                      textAlign: "center",
+                    },
+                    {
+                      title: t("common:columns.ratio"),
+                      accessor: "ratio",
+                      textAlign: "center",
+                      render: ({ w, l }) => calculateWinRate(w, l),
+                    },
+                    {
+                      title: t("common:columns.total"),
+                      accessor: "t",
+                      textAlign: "center",
+                    },
+                    {
+                      title: t("common:columns.lastGame"),
+                      accessor: "lmTS",
+                      textAlign: "right",
+                      width: 130,
+                      render: ({ lmTS }) => (lmTS ? <DynamicTimeAgo timestamp={lmTS} /> : "N/A"),
+                    },
+                    {
+                      title: "",
+                      accessor: "actions",
+                      textAlign: "right",
+                      width: 100,
+                      render: (team) => (
+                        <Button
+                          component={Link}
+                          href={
+                            team.players.length > 0
+                              ? getTeamDetailsRoute(team.players[0].profile_id, team.id)
+                              : "#"
+                          }
+                          variant="default"
+                          size="compact-md"
+                        >
+                          Details
+                        </Button>
+                      ),
+                    },
+                  ]}
+                />
+              </div>
 
               <Group justify="space-between" mt="xs">
                 <Text size="sm">

@@ -77,6 +77,10 @@ export class TeamLeaderboardsPage extends BasePage {
     return this.page.locator('[data-loader="true"]');
   }
 
+  get loadingIndicator(): Locator {
+    return this.page.locator('[data-loading="true"]');
+  }
+
   // Error State
   get errorCard(): Locator {
     return this.page.locator('[role="alert"], .error-card');
@@ -86,11 +90,19 @@ export class TeamLeaderboardsPage extends BasePage {
    * Wait for the leaderboard table to load
    */
   async waitForTableLoad(): Promise<void> {
-    // Wait for loader to disappear if present
-    await this.page.waitForTimeout(500);
+    // Wait for table to be visible
     await this.leaderboardTable.waitFor({ state: "visible", timeout: 10000 });
-    // Wait for data to populate
-    await this.page.waitForTimeout(1000);
+
+    // Wait for at least one row to be present
+    await this.tableRows.first().waitFor({ state: "visible", timeout: 10000 });
+
+    // Wait for loading indicator to be false if it exists
+    await this.page.waitForSelector('[data-loading="false"]', { timeout: 5000 }).catch(() => {
+      // Ignore if loading indicator doesn't exist
+    });
+
+    // Small delay to ensure React state has settled
+    await this.page.waitForTimeout(100);
   }
 
   /**
@@ -177,6 +189,8 @@ export class TeamLeaderboardsPage extends BasePage {
    */
   async goToNextPage(): Promise<void> {
     await this.nextPageButton.click();
+    // Wait a bit for the click to register
+    await this.page.waitForTimeout(200);
     await this.waitForTableLoad();
   }
 
@@ -185,6 +199,8 @@ export class TeamLeaderboardsPage extends BasePage {
    */
   async goToPreviousPage(): Promise<void> {
     await this.previousPageButton.click();
+    // Wait a bit for the click to register
+    await this.page.waitForTimeout(200);
     await this.waitForTableLoad();
   }
 
