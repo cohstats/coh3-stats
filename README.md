@@ -1,15 +1,7 @@
 # COH3 Stats
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cohstats/coh3-stats)
-[![DeepScan grade](https://deepscan.io/api/teams/15780/projects/22550/branches/667770/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=15780&pid=22550&bid=667770)
-![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m795263234-6c03132c5b21b08d1534fe1d?label=uptime%2030%20days)
-[![Discord](https://img.shields.io/discord/959118129240350740?style=flat&label=Chat%20on%20Discord)](https://discord.gg/jRrnwqMfkr)
-
-Website https://coh3stats.com/
-
-We are looking not only for developers but anyone who would like to contribute
-in building the best site with most info for Company of Heroes 3. All the data will
-be open source for anyone to use! We need people to get the data from the game
+testeswtsetewsts
 / organize the data. Come up with layouts and much more.
 
 Anyone can put a hand in building this site. Please consider joining our [Discord](https://discord.gg/jRrnwqMfkr).
