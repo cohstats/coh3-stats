@@ -70,7 +70,7 @@
     "@octokit/rest": "22.0.1",
     "@sentry/nextjs": "9.46.0",
     "@tabler/icons-react": "3.36.0",
-    "axios": "1.12.2",
+    "axios": "1.13.5",
     "axios-rate-limit": "1.4.0",
     "axios-retry": "4.5.0",
     "chart.js": "4.5.1",
