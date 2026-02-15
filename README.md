@@ -188,7 +188,7 @@ Backend:
 - AWS - SST deployment - this work quite well, we were able to nicely integrate with other services at AWS, however we
   added localization support for many languages. This moved the amount of unique pages to millions and google / bing and LLM bots are keen
   on visiting them all - one day we got quite big Lambda bill from AWS.
-- Self Hosted Docker with Coolify - currently setup, flat rate
+- Self Hosted Docker with Coolify on VPS - currently setup, flat rate
 
 ### High level architecture - outdated
 
