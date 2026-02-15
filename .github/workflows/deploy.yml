@@ -84,7 +84,6 @@ jobs:
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable=${{ github.ref_name == 'master' }}
             type=raw,value=development,enable=${{ github.ref_name == 'master' }}
-            type=raw,value=production,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
           labels: |
             org.opencontainers.image.title=COH3 Stats Frontend
             org.opencontainers.image.description=Company of Heroes 3 Statistics and Leaderboards
