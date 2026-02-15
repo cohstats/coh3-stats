@@ -9,7 +9,7 @@ env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
   REGISTRY: ghcr.io
   IMAGE_NAME: cohstats/coh3-stats
-  COOLIFY_UUID_DEV: eoccooco4kokk40gg8coow4k
+  COOLIFY_UUID_DEV: kg4ks8c80g8wcgco4k4oosgc
 
 jobs:
   build-deploy-web:
