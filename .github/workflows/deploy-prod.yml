@@ -10,6 +10,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: cohstats/coh3-stats
   COOLIFY_UUID_DEV: r8gok0k48s0cgwcowo0kg4k8
+  COOLIFY_BASE_URL: https://coolify.coh3stats.com
 
 jobs:
   build-deploy-web:
@@ -103,7 +104,7 @@ jobs:
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_DEPLOY_TOKEN }}" \
             -H "Content-Type: application/json" \
-            "https://coolify.ovh.coh3stats.com/api/v1/deploy?uuid=${{ env.COOLIFY_UUID_DEV }}&force=false"
+            "${{ env.COOLIFY_BASE_URL }}/api/v1/deploy?uuid=${{ env.COOLIFY_UUID_DEV }}&force=false"
 
 #      - name: "Deploy to AWS - prod"
 #        env:
