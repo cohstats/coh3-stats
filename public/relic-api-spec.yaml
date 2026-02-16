@@ -1,0 +1,653 @@
+openapi: 3.0.3
+info:
+  title: Relic COH3 Community API
+  description: |
+    Unofficial documentation for the Relic Company of Heroes 3 Community API.
+
+    Copy the link to the spec file and import it into your preferred API tool (Postman, Insomnia, etc.)
+
+    **Important Notes:**
+    - This is an unofficial documentation created by the COH3 Stats.
+    - The API have rate limits. Recommend is 5 requests per second. Please use responsibly or you can get banned by Relic.
+    - All endpoints require the `title` parameter: `coh3` (Steam), `coh3xbl` (Xbox), or `coh3psn` (PlayStation).
+
+    For more information, visit [coh3stats.com](https://coh3stats.com).
+  version: 1.0.0
+  contact:
+    name: COH3 Stats
+    url: https://coh3stats.com
+servers:
+  - url: https://coh3-api.reliclink.com/community/leaderboard
+
+paths:
+  /getAvailableLeaderboards:
+    get:
+      summary: Get Available Leaderboards
+      description: |
+        Returns metadata about all available leaderboards, match types, races, factions, and regions.
+        This endpoint is useful for discovering valid leaderboard IDs and understanding the game's structure.
+      operationId: getAvailableLeaderboards
+      tags:
+        - Leaderboards
+      parameters:
+        - name: title
+          in: query
+          required: true
+          description: |
+            Game title identifier based on platform:
+            - `coh3`: Steam
+            - `coh3xbl`: Xbox
+            - `coh3psn`: PlayStation
+          schema:
+            type: string
+            enum: [coh3, coh3xbl, coh3psn]
+            example: coh3
+      responses:
+        '200':
+          description: Successful response with leaderboard metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableLeaderboardsResponse'
+
+  /getLeaderboard2:
+    get:
+      summary: Get Leaderboard Data
+      description: |
+        Returns leaderboard rankings with player statistics.
+        Use `getAvailableLeaderboards` to find valid leaderboard IDs.
+      operationId: getLeaderboard2
+      tags:
+        - Leaderboards
+      parameters:
+        - name: title
+          in: query
+          required: true
+          description: |
+            Game title identifier based on platform:
+            - `coh3`: Steam
+            - `coh3xbl`: Xbox
+            - `coh3psn`: PlayStation
+          schema:
+            type: string
+            enum: [coh3, coh3xbl, coh3psn]
+            example: coh3
+        - name: leaderboard_id
+          in: query
+          required: true
+          description: |
+            Leaderboard ID. Common values:
+            - 2130255: 1v1 American Unranked
+            - 2130261: 1v1 German Unranked
+            - 2130259: 1v1 DAK Unranked
+            - 2130257: 1v1 British Unranked
+          schema:
+            type: integer
+            example: 2130255
+        - name: start
+          in: query
+          required: false
+          description: Starting rank position (1-based)
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+            example: 1
+        - name: count
+          in: query
+          required: false
+          description: Number of results to return (1-200)
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 200
+            example: 100
+        - name: sortBy
+          in: query
+          required: false
+          description: |
+            Sort order for results:
+            - `0`: Sort by Wins
+            - `1`: Sort by ELO
+          schema:
+            type: integer
+            enum: [0, 1]
+            default: 0
+            example: 1
+        - name: leaderboardRegion_id
+          in: query
+          required: false
+          description: |
+            Optional region filter. Region IDs:
+            - 2074389: Europe
+            - 2074390: North America
+            - 2074436: Middle East
+            - 2074437: Asia
+            - 2074438: South America
+            - 2074440: Oceania
+            - 2074441: Africa
+            - 2074442: Unknown
+          schema:
+            type: integer
+            example: 2074389
+      responses:
+        '200':
+          description: Successful response with leaderboard data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaderboardResponse'
+
+  /getPersonalStat:
+    get:
+      summary: Get Player Statistics
+      description: |
+        Returns personal statistics for one or more players.
+        You can query by profile IDs or aliases (Steam names).
+      operationId: getPersonalStat
+      tags:
+        - Players
+      parameters:
+        - name: title
+          in: query
+          required: true
+          description: |
+            Game title identifier based on platform:
+            - `coh3`: Steam
+            - `coh3xbl`: Xbox
+            - `coh3psn`: PlayStation
+          schema:
+            type: string
+            enum: [coh3, coh3xbl, coh3psn]
+            example: coh3
+        - name: profile_ids
+          in: query
+          required: false
+          description: |
+            JSON array of profile IDs to query.
+            Example: [123456, 789012]
+          schema:
+            type: string
+            example: "[871]"
+        - name: aliases
+          in: query
+          required: false
+          description: |
+            JSON array of player aliases (Steam names) to query.
+            Example: ["PlayerName"]
+          schema:
+            type: string
+            example: '["PlayerName"]'
+      responses:
+        '200':
+          description: Successful response with player statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonalStatResponse'
+
+  /getRecentMatchHistoryByProfileId:
+    get:
+      summary: Get Recent Match History
+      description: |
+        Returns recent match history for a specific player.
+        Includes detailed match information and all participants.
+      operationId: getRecentMatchHistory
+      tags:
+        - Matches
+      parameters:
+        - name: title
+          in: query
+          required: true
+          description: |
+            Game title identifier based on platform:
+            - `coh3`: Steam
+            - `coh3xbl`: Xbox
+            - `coh3psn`: PlayStation
+          schema:
+            type: string
+            enum: [coh3, coh3xbl, coh3psn]
+            example: coh3
+        - name: profile_id
+          in: query
+          required: true
+          description: Player's profile ID
+          schema:
+            type: integer
+            example: 871
+      responses:
+        '200':
+          description: Successful response with match history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchHistoryResponse'
+
+components:
+  schemas:
+    ResultWrapper:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Result code (0 = success)
+          example: 0
+        message:
+          type: string
+          description: Result message
+          example: SUCCESS
+
+    AvailableLeaderboardsResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ResultWrapper'
+        leaderboards:
+          type: array
+          description: List of available leaderboards
+          items:
+            $ref: '#/components/schemas/Leaderboard'
+        matchTypes:
+          type: array
+          description: List of match types
+          items:
+            $ref: '#/components/schemas/MatchType'
+        races:
+          type: array
+          description: List of playable races
+          items:
+            $ref: '#/components/schemas/Race'
+        factions:
+          type: array
+          description: List of factions
+          items:
+            $ref: '#/components/schemas/Faction'
+        leaderboardRegions:
+          type: array
+          description: List of leaderboard regions
+          items:
+            $ref: '#/components/schemas/LeaderboardRegion'
+
+    Leaderboard:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique leaderboard ID
+          example: 2000010
+        name:
+          type: string
+          description: Internal leaderboard name
+          example: "1v1_american"
+        isranked:
+          type: integer
+          description: Whether this is a ranked leaderboard (1 = yes)
+          example: 1
+        leaderboardmap:
+          type: array
+          description: Mapping of race/faction to this leaderboard
+          items:
+            type: object
+            properties:
+              matchtype_id:
+                type: integer
+                example: 1
+              statgroup_type:
+                type: integer
+                example: 1
+              race_id:
+                type: integer
+                example: 2057043
+
+    MatchType:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Match type ID
+          example: 1
+        name:
+          type: string
+          description: Internal match type name
+          example: "1v1"
+        localizedName:
+          type: string
+          description: Display name
+          example: "1 vs 1"
+
+    Race:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Race ID
+          example: 2057043
+        name:
+          type: string
+          description: Internal race name
+          example: "american"
+        faction_id:
+          type: integer
+          description: Associated faction ID
+          example: 2056967
+        localizedName:
+          type: string
+          description: Display name
+          example: "US Forces"
+
+    Faction:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Faction ID
+          example: 2056967
+        name:
+          type: string
+          description: Faction name
+          example: "allies"
+
+    LeaderboardRegion:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Region ID
+          example: 0
+        name:
+          type: string
+          description: Region name
+          example: "global"
+
+    LeaderboardResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ResultWrapper'
+        statGroups:
+          type: array
+          description: Player/team group information
+          items:
+            $ref: '#/components/schemas/StatGroup'
+        leaderboardStats:
+          type: array
+          description: Leaderboard statistics for each player/team
+          items:
+            $ref: '#/components/schemas/LeaderboardStat'
+        rankTotal:
+          type: integer
+          description: Total number of ranked players
+          example: 50000
+
+    StatGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Stat group ID
+          example: 123456
+        name:
+          type: string
+          description: Group name (empty for solo players)
+          example: ""
+        type:
+          type: integer
+          description: Group type (1 = solo, 2+ = team)
+          example: 1
+        members:
+          type: array
+          description: Members of this stat group
+          items:
+            $ref: '#/components/schemas/Member'
+
+    Member:
+      type: object
+      properties:
+        profile_id:
+          type: integer
+          description: Player's unique profile ID
+          example: 123456
+        name:
+          type: string
+          description: Internal name
+          example: "/steam/76561198012345678"
+        alias:
+          type: string
+          description: Player's display name
+          example: "PlayerName"
+        personal_statgroup_id:
+          type: integer
+          description: Personal stat group ID
+          example: 123456
+        xp:
+          type: integer
+          description: Experience points
+          example: 1000000
+        level:
+          type: integer
+          description: Player level
+          example: 100
+        leaderboardregion_id:
+          type: integer
+          description: Region ID
+          example: 0
+        country:
+          type: string
+          description: Two-letter country code
+          example: "US"
+
+    LeaderboardStat:
+      type: object
+      properties:
+        statgroup_id:
+          type: integer
+          description: Reference to stat group
+          example: 123456
+        leaderboard_id:
+          type: integer
+          description: Leaderboard ID
+          example: 2130255
+        wins:
+          type: integer
+          description: Number of wins
+          example: 150
+        losses:
+          type: integer
+          description: Number of losses
+          example: 50
+        streak:
+          type: integer
+          description: Current win/loss streak (positive = wins)
+          example: 5
+        disputes:
+          type: integer
+          description: Number of disputed matches
+          example: 0
+        drops:
+          type: integer
+          description: Number of dropped matches
+          example: 2
+        rank:
+          type: integer
+          description: Current rank position
+          example: 100
+        ranktotal:
+          type: integer
+          description: Total ranked players
+          example: 50000
+        ranklevel:
+          type: integer
+          description: Rank tier level
+          example: 20
+        rating:
+          type: number
+          description: ELO rating
+          example: 1450.5
+        regionrank:
+          type: integer
+          description: Rank within region
+          example: 50
+        regionranktotal:
+          type: integer
+          description: Total players in region
+          example: 10000
+        lastmatchdate:
+          type: integer
+          description: Unix timestamp of last match
+          example: 1699999999
+
+    PersonalStatResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ResultWrapper'
+        statGroups:
+          type: array
+          description: Player group information
+          items:
+            $ref: '#/components/schemas/StatGroup'
+        leaderboardStats:
+          type: array
+          description: Player's leaderboard statistics across all modes
+          items:
+            $ref: '#/components/schemas/LeaderboardStat'
+
+    MatchHistoryResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ResultWrapper'
+        matchHistoryStats:
+          type: array
+          description: List of recent matches
+          items:
+            $ref: '#/components/schemas/MatchHistoryStat'
+        profiles:
+          type: array
+          description: Profile information for all players in matches
+          items:
+            $ref: '#/components/schemas/Profile'
+
+    MatchHistoryStat:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique match ID
+          example: 12345678
+        creator_profile_id:
+          type: integer
+          description: Profile ID of match creator
+          example: 123456
+        mapname:
+          type: string
+          description: Internal map name
+          example: "winter_line_8p_mkii"
+        maxplayers:
+          type: integer
+          description: Maximum players in match
+          example: 8
+        matchtype_id:
+          type: integer
+          description: Match type ID (1=1v1, 2=2v2, 3=3v3, 4=4v4)
+          example: 4
+        description:
+          type: string
+          description: Match description
+          example: "AUTOMATCH"
+        startgametime:
+          type: integer
+          description: Unix timestamp when match started
+          example: 1699999999
+        completiontime:
+          type: integer
+          description: Unix timestamp when match ended
+          example: 1700000999
+        matchhistoryreportresults:
+          type: array
+          description: Results for each player in the match
+          items:
+            $ref: '#/components/schemas/MatchHistoryReportResult'
+        matchhistoryitems:
+          type: array
+          description: Items/rewards from the match
+          items:
+            type: object
+        matchurls:
+          type: array
+          description: URLs related to the match (replays, etc.)
+          items:
+            type: object
+
+    MatchHistoryReportResult:
+      type: object
+      properties:
+        matchhistory_id:
+          type: integer
+          description: Match ID reference
+          example: 12345678
+        profile_id:
+          type: integer
+          description: Player's profile ID
+          example: 123456
+        resulttype:
+          type: integer
+          description: Result type (0=loss, 1=win)
+          example: 1
+        teamid:
+          type: integer
+          description: Team ID (0 or 1)
+          example: 0
+        race_id:
+          type: integer
+          description: Race/faction played
+          example: 2057043
+        xpgained:
+          type: integer
+          description: XP gained from match
+          example: 1000
+        counters:
+          type: string
+          description: JSON string with detailed match statistics
+          example: '{"dmgdone": 50000, "kdr": 2.5}'
+        matchstartdate:
+          type: integer
+          description: Unix timestamp of match start
+          example: 1699999999
+
+    Profile:
+      type: object
+      properties:
+        profile_id:
+          type: integer
+          description: Unique profile ID
+          example: 123456
+        name:
+          type: string
+          description: Internal name
+          example: "/steam/76561198012345678"
+        alias:
+          type: string
+          description: Display name
+          example: "PlayerName"
+        personal_statgroup_id:
+          type: integer
+          description: Personal stat group ID
+          example: 123456
+        xp:
+          type: integer
+          description: Experience points
+          example: 1000000
+        level:
+          type: integer
+          description: Player level
+          example: 100
+        leaderboardregion_id:
+          type: integer
+          description: Region ID
+          example: 0
+        country:
+          type: string
+          description: Two-letter country code
+          example: "US"

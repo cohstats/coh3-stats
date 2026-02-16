@@ -193,3 +193,7 @@ export const AnalyticsTeamLeaderBoardsPageView = (side: string, type: string): v
   logFBEvent("team_leaderboards_view");
   logFBEvent(`team_leaderboards_${side}_${type}_view`);
 };
+
+export const AnalyticsRelicApiPageView = (): void => {
+  logFBEvent("relic_api_page_view");
+};

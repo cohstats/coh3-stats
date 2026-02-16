@@ -14,10 +14,12 @@ import {
   getOpenDataRoute,
   getPlayerExportRoute,
   getRankingTiersRoute,
+  getRelicApiRoute,
 } from "../../../src/routes";
 import React from "react";
 import {
   IconActivity,
+  IconApi,
   IconBarrierBlock,
   IconChevronDown,
   IconDatabaseShare,
@@ -55,6 +57,12 @@ const OtherMenu = ({
                 <IconDatabaseShare size={16} />
                 <Anchor component={Link} href={getOpenDataRoute()} onClick={close}>
                   {t("mainMenu.otherMenu.openData")}
+                </Anchor>
+              </Group>
+              <Group gap={"xs"}>
+                <IconApi size={16} />
+                <Anchor component={Link} href={getRelicApiRoute()} onClick={close}>
+                  Relic API Docs
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
@@ -119,6 +127,12 @@ const OtherMenu = ({
               </Anchor>
             </Group>
 
+            <Group gap={"xs"}>
+              <IconApi size={16} />
+              <Anchor component={Link} href={getRelicApiRoute()}>
+                Relic API Docs
+              </Anchor>
+            </Group>
             <Group gap={"xs"}>
               <IconActivity size={16} />
               <Anchor

@@ -119,6 +119,10 @@ export const getRankingTiersRoute = () => {
   return encodeURI(`/other/ranking-tiers`);
 };
 
+export const getRelicApiRoute = () => {
+  return encodeURI(`/other/relic-api`);
+};
+
 export const getNewsRoute = (articleId?: string) => {
   if (articleId) {
     return encodeURI(`/news#${articleId}`);

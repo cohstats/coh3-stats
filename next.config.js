@@ -23,6 +23,12 @@ const nextConfig = {
   i18n,
   // Standalone output for docker file hosting
   output: "standalone",
+  // Transpile Scalar packages to handle CSS imports from node_modules
+  transpilePackages: [
+    "@scalar/api-reference-react",
+    "@scalar/api-reference",
+    "@scalar/agent-chat",
+  ],
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
