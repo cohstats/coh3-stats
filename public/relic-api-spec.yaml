@@ -8,8 +8,9 @@ info:
 
     **Important Notes:**
     - This is an unofficial documentation created by the COH3 Stats.
-    - The API have rate limits. Recommend is 5 requests per second. Please use responsibly or you can get banned by Relic.
+    - The API have rate limits. Recommended is 5 requests per second. Please use responsibly or you can get banned by Relic.
     - All endpoints require the `title` parameter: `coh3` (Steam), `coh3xbl` (Xbox), or `coh3psn` (PlayStation).
+    - It's possible that models have mistakes. Please test and report any issues to us.
 
     For more information, visit [coh3stats.com](https://coh3stats.com).
   version: 1.0.0
