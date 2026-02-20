@@ -17,7 +17,9 @@ let db: Firestore | undefined;
  */
 const init = (): void => {
   app = initializeApp(config.getFirebaseConfig());
-  if (app.name && typeof window !== "undefined") {
+  // Only initialize analytics in production environment (not on localhost or dev environments)
+  // This prevents false positives in e2e tests and avoids polluting analytics with dev data
+  if (app.name && typeof window !== "undefined" && !config.isDevEnv()) {
     analytics = getAnalytics(app);
     // Disable firebase performance, it's reporting shit values
     // performance = getPerformance(app);
