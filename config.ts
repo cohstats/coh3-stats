@@ -16,18 +16,6 @@ export interface FirebaseConfig {
 const getFirebaseConfig = (): FirebaseConfig =>
   JSON.parse(process.env.NEXT_PUBLIC_APP_FIREBASE_CONFIG || "{}");
 
-const useFirebaseEmulators = false;
-
-const firebaseFunctions = {
-  LOCATION: "us-east4",
-  get EMULATORS_URL(): string {
-    return `http://localhost:5001/${getFirebaseConfig().projectId}/${this.LOCATION}`;
-  },
-  get CLOUD_URL(): string {
-    return `https://${this.LOCATION}-coh3-stats-prod.cloudfunctions.net`;
-  },
-};
-
 const isDevEnv = (): boolean => {
   // Browser env
   if (isBrowserEnv()) {
@@ -489,19 +477,13 @@ const config = {
   getEdgioEnvName,
   getPatchDataUrl,
   getPatchDataLocaleUrl,
-  firebaseFunctions,
-  useFirebaseEmulators,
   DISCORD_INVITE_LINK: "https://discord.com/invite/4Bj2y84WAR",
   DONATION_LINK: "https://ko-fi.com/cohstats",
   GITHUB_LINK: repository.url,
   CDN_ASSETS_HOSTING: "https://cdn.coh3stats.com",
   STORAGE_LINK: "https://storage.coh3stats.com",
-  BASE_CLOUD_FUNCTIONS_URL: useFirebaseEmulators
-    ? firebaseFunctions.EMULATORS_URL
-    : firebaseFunctions.CLOUD_URL,
-  BASE_CLOUD_FUNCTIONS_PROXY_URL: useFirebaseEmulators
-    ? firebaseFunctions.EMULATORS_URL
-    : "https://cache.coh3stats.com",
+  BASE_CLOUD_FUNCTIONS_URL: "https://us-east4-coh3-stats-prod.cloudfunctions.net",
+  BASE_CLOUD_FUNCTIONS_PROXY_URL: "https://cache.coh3stats.com",
   patches,
   latestPatch,
   statsPatchSelector,
