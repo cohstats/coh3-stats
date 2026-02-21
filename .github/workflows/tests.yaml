@@ -75,7 +75,7 @@ jobs:
           - test-type: desktop
             projects: --project=chromium --project=firefox --project=webkit
           - test-type: mobile
-            projects: --project="Mobile Chrome" --project="Mobile Safari"
+            projects: --project="Mobile Chrome" --project="Mobile Safari" --workers=1
 
     steps:
       - name: Checkout Repo
