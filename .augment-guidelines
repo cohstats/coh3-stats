@@ -30,3 +30,7 @@ When you need to create AI reports which are .md files, create them in `.ai` fol
 - The folder with locales the en folder is the source of through. When adding adding keys always add keys there first.
 - The locale folder is in public/locales/en with .json file in it
 - When translating other languages, do not translate locales which don't have locale folder created yet.
+
+## e2e Tests
+- When you change data-test-id or anything outside the tests we need to run slim build first
+- Use data-testid as much as possible instead of other selectors

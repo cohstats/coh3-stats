@@ -26,24 +26,29 @@ export class TeamLeaderboardsPage extends BasePage {
 
   // Page Title and Header
   get pageTitle(): Locator {
-    return this.page.locator("h1, h2").first();
+    return this.page.locator("h2").first();
   }
 
-  // Filter Controls
+  // Filter Controls - using data-testid for stability
   get sideSelect(): Locator {
-    return this.page.locator('label:has-text("Side")').locator("..");
+    return this.page.getByTestId("team-leaderboards-side-select");
   }
 
   get typeSelect(): Locator {
-    return this.page.locator('label:has-text("Type")').locator("..");
+    return this.page.getByTestId("team-leaderboards-type-select");
   }
 
   get orderBySelect(): Locator {
-    return this.page.locator('label:has-text("Sort by")').locator("..");
+    return this.page.getByTestId("team-leaderboards-orderby-select");
   }
 
   get recordsPerPageSelect(): Locator {
-    return this.page.locator('label:has-text("Items per page")').locator("..");
+    return this.page.getByTestId("team-leaderboards-records-per-page");
+  }
+
+  // Content container - indicates data is loaded
+  get contentContainer(): Locator {
+    return this.page.getByTestId("team-leaderboards-content");
   }
 
   // Leaderboard Table
@@ -59,47 +64,58 @@ export class TeamLeaderboardsPage extends BasePage {
     return this.leaderboardTable.locator("thead th");
   }
 
-  // Pagination Controls
+  // Pagination Controls - using data-testid for stability
   get previousPageButton(): Locator {
-    return this.page.locator('button:has-text("Previous")');
+    return this.page.getByTestId("team-leaderboards-previous-btn");
   }
 
   get nextPageButton(): Locator {
-    return this.page.locator('button:has-text("Next")');
+    return this.page.getByTestId("team-leaderboards-next-btn");
   }
 
   get paginationInfo(): Locator {
-    return this.page.locator("text=/Showing \\d+ - \\d+ of \\d+ teams/");
+    return this.page.getByTestId("team-leaderboards-pagination-info");
+  }
+
+  get paginationContainer(): Locator {
+    return this.page.getByTestId("team-leaderboards-pagination");
   }
 
   // Loading State
   get loader(): Locator {
-    return this.page.locator('[data-loader="true"]');
-  }
-
-  // Error State
-  get errorCard(): Locator {
-    return this.page.locator('[role="alert"], .error-card');
+    return this.page.getByTestId("team-leaderboards-loader");
   }
 
   /**
-   * Wait for the leaderboard table to load
+   * Wait for the leaderboard table to load with proper conditions
+   * No hardcoded timeouts - uses actual element state
    */
   async waitForTableLoad(): Promise<void> {
-    // Wait for loader to disappear if present
-    await this.page.waitForTimeout(500);
+    // Wait for network to be idle (API responses complete)
+    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
+
+    // Wait for loader to disappear if it was present
+    await this.loader.waitFor({ state: "hidden", timeout: 15000 }).catch(() => {
+      // Loader might not appear if data loads quickly, that's OK
+    });
+
+    // Wait for the content container to be visible (indicates data loaded)
+    await this.contentContainer.waitFor({ state: "visible", timeout: 15000 });
+
+    // Wait for table to be visible
     await this.leaderboardTable.waitFor({ state: "visible", timeout: 10000 });
-    // Wait for data to populate
-    await this.page.waitForTimeout(1000);
+
+    // Wait for at least one row to appear (data is populated)
+    await this.tableRows.first().waitFor({ state: "visible", timeout: 10000 });
   }
 
   /**
-   * Check if the table has data
+   * Check if the table has data using Playwright's auto-retry assertions
    */
   async checkTableHasData(): Promise<void> {
     await this.waitForTableLoad();
-    const rowCount = await this.tableRows.count();
-    expect(rowCount).toBeGreaterThan(0);
+    // Use Playwright's built-in retry mechanism for more stable assertions
+    await expect(this.tableRows.first()).toBeVisible({ timeout: 10000 });
   }
 
   /**
@@ -137,55 +153,169 @@ export class TeamLeaderboardsPage extends BasePage {
   }
 
   /**
-   * Change the side filter
+   * Wait for data to change after a filter/pagination action
+   * Detects when the table content has actually changed
+   */
+  private async waitForDataChange(previousFirstRowText: string): Promise<void> {
+    // Wait for network activity to complete
+    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
+
+    // Wait for the first row content to change (or timeout if data is the same)
+    await this.page
+      .waitForFunction(
+        (oldText) => {
+          const firstRow = document.querySelector("table tbody tr");
+          return firstRow && firstRow.textContent !== oldText;
+        },
+        previousFirstRowText,
+        { timeout: 10000 },
+      )
+      .catch(() => {
+        // Data might be the same after filter change, that's OK
+      });
+
+    // Ensure table is fully loaded
+    await this.waitForTableLoad();
+  }
+
+  /**
+   * Change the side filter with race condition handling
    */
   async selectSide(side: "Axis" | "Allies"): Promise<void> {
+    const previousFirstRowText = await this.tableRows
+      .first()
+      .innerText()
+      .catch(() => "");
+
     await this.sideSelect.click();
     await this.page.locator(`[role="option"]:has-text("${side}")`).click();
-    await this.waitForTableLoad();
+
+    await this.waitForDataChange(previousFirstRowText);
   }
 
   /**
-   * Change the type filter
+   * Change the type filter with race condition handling
    */
   async selectType(type: string): Promise<void> {
+    const previousFirstRowText = await this.tableRows
+      .first()
+      .innerText()
+      .catch(() => "");
+
     await this.typeSelect.click();
     await this.page.locator(`[role="option"]:has-text("${type}")`).click();
-    await this.waitForTableLoad();
+
+    await this.waitForDataChange(previousFirstRowText);
   }
 
   /**
-   * Change the order by filter
+   * Change the order by filter with race condition handling
    */
   async selectOrderBy(orderBy: string): Promise<void> {
+    const previousFirstRowText = await this.tableRows
+      .first()
+      .innerText()
+      .catch(() => "");
+
     await this.orderBySelect.click();
     await this.page.locator(`[role="option"]:has-text("${orderBy}")`).click();
-    await this.waitForTableLoad();
+
+    await this.waitForDataChange(previousFirstRowText);
   }
 
   /**
-   * Change the records per page
+   * Change the records per page with race condition handling
    */
   async selectRecordsPerPage(records: string): Promise<void> {
+    const previousRowCount = await this.tableRows.count();
+
     await this.recordsPerPageSelect.click();
     await this.page.locator(`[role="option"]:has-text("${records}")`).click();
+
+    // Wait for network activity
+    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
+
+    // Wait for row count to potentially change
+    await this.page
+      .waitForFunction(
+        (oldCount) => {
+          const rows = document.querySelectorAll("table tbody tr");
+          return rows.length !== oldCount;
+        },
+        previousRowCount,
+        { timeout: 10000 },
+      )
+      .catch(() => {
+        // Row count might be the same, that's OK
+      });
+
     await this.waitForTableLoad();
   }
 
   /**
-   * Go to next page
+   * Go to next page with race condition handling
    */
   async goToNextPage(): Promise<void> {
+    // Capture both the pagination info and first row text before clicking
+    const previousPaginationText = await this.paginationInfo.innerText().catch(() => "");
+    const previousFirstRowText = await this.tableRows
+      .first()
+      .innerText()
+      .catch(() => "");
+
     await this.nextPageButton.click();
-    await this.waitForTableLoad();
+
+    // Wait for pagination info to change (more reliable than row content)
+    await this.page
+      .waitForFunction(
+        (oldText) => {
+          const paginationEl = document.querySelector(
+            '[data-testid="team-leaderboards-pagination-info"]',
+          );
+          return paginationEl && paginationEl.textContent !== oldText;
+        },
+        previousPaginationText,
+        { timeout: 10000 },
+      )
+      .catch(() => {
+        // Fallback: pagination might not change if on last page
+      });
+
+    // Also wait for data change as a secondary check
+    await this.waitForDataChange(previousFirstRowText);
   }
 
   /**
-   * Go to previous page
+   * Go to previous page with race condition handling
    */
   async goToPreviousPage(): Promise<void> {
+    // Capture both the pagination info and first row text before clicking
+    const previousPaginationText = await this.paginationInfo.innerText().catch(() => "");
+    const previousFirstRowText = await this.tableRows
+      .first()
+      .innerText()
+      .catch(() => "");
+
     await this.previousPageButton.click();
-    await this.waitForTableLoad();
+
+    // Wait for pagination info to change (more reliable than row content)
+    await this.page
+      .waitForFunction(
+        (oldText) => {
+          const paginationEl = document.querySelector(
+            '[data-testid="team-leaderboards-pagination-info"]',
+          );
+          return paginationEl && paginationEl.textContent !== oldText;
+        },
+        previousPaginationText,
+        { timeout: 10000 },
+      )
+      .catch(() => {
+        // Fallback: pagination might not change if on first page
+      });
+
+    // Also wait for data change as a secondary check
+    await this.waitForDataChange(previousFirstRowText);
   }
 
   /**
@@ -206,6 +336,8 @@ export class TeamLeaderboardsPage extends BasePage {
    * Get pagination info text
    */
   async getPaginationInfo(): Promise<string> {
+    // Wait for pagination info to be visible before reading
+    await this.paginationInfo.waitFor({ state: "visible", timeout: 10000 });
     return await this.paginationInfo.innerText();
   }
 
@@ -223,58 +355,40 @@ export class TeamLeaderboardsPage extends BasePage {
    * Get the currently selected records per page value
    */
   async getSelectedRecordsPerPage(): Promise<string> {
-    // The select component shows the selected value in its button
-    return await this.recordsPerPageSelect.locator("input").inputValue();
-  }
+    // Wait for the select to be visible
+    await this.recordsPerPageSelect.waitFor({ state: "visible", timeout: 10000 });
 
-  /**
-   * Click on a player name in the table
-   */
-  async clickPlayerName(rowIndex: number, playerIndex: number = 0): Promise<void> {
-    const row = this.tableRows.nth(rowIndex);
-    const teamCell = row.locator("td").nth(2);
-    const playerLink = teamCell.locator("a").nth(playerIndex);
-    await playerLink.click();
-  }
+    // The data-testid is on the input element itself in Mantine Select
+    // Use evaluate to get the value attribute directly
+    const value = await this.recordsPerPageSelect.evaluate((el) => {
+      // The element is the input itself, check if it has a value attribute
+      if (el instanceof HTMLInputElement) {
+        return el.value;
+      }
 
-  /**
-   * Check if error is displayed
-   */
-  async checkErrorDisplayed(): Promise<void> {
-    await expect(this.errorCard).toBeVisible();
-  }
+      // If it's a wrapper, look for the input inside
+      const input = el.querySelector("input") as HTMLInputElement;
+      if (input?.value) {
+        return input.value;
+      }
 
-  /**
-   * Check if loading state is displayed
-   */
-  async checkLoadingDisplayed(): Promise<void> {
-    await expect(this.loader).toBeVisible();
+      // Fallback: get the value attribute directly
+      return el.getAttribute("value") || "";
+    });
+
+    return value;
   }
 
   /**
    * Check if table columns are correct
    */
   async checkTableColumns(expectedColumns: string[]): Promise<void> {
+    // Wait for headers to be visible first
+    await this.tableHeaders.first().waitFor({ state: "visible", timeout: 10000 });
     const headers = await this.tableHeaders.allInnerTexts();
     for (const column of expectedColumns) {
       expect(headers.some((h) => h.includes(column))).toBeTruthy();
     }
-  }
-
-  /**
-   * Verify page title contains side and type
-   */
-  async checkPageTitleContains(text: string): Promise<void> {
-    const title = await this.pageTitle.innerText();
-    expect(title.toLowerCase()).toContain(text.toLowerCase());
-  }
-
-  /**
-   * Check if a specific team player is in the table
-   */
-  async checkPlayerInTable(playerName: string): Promise<boolean> {
-    const tableText = await this.leaderboardTable.innerText();
-    return tableText.includes(playerName);
   }
 
   /**
@@ -290,29 +404,5 @@ export class TeamLeaderboardsPage extends BasePage {
       players.push(await playerLinks.nth(i).innerText());
     }
     return players;
-  }
-
-  /**
-   * Verify streak color (green for positive, red for negative)
-   */
-  async checkStreakColor(rowIndex: number, expectedColor: "green" | "red"): Promise<void> {
-    const row = this.tableRows.nth(rowIndex);
-    const streakCell = row.locator("td").nth(3);
-    const color = await streakCell
-      .locator("div, span, p")
-      .first()
-      .evaluate((el) => {
-        return window.getComputedStyle(el).color;
-      });
-
-    // Normalize the computed color to RGB format for comparison
-    // Expected colors: green = rgb(64, 192, 87) or similar, red = rgb(250, 82, 82) or similar
-    // The actual RGB values may vary based on the theme, so we check the pattern
-    const colorMapping = {
-      green: /rgb\(\s*\d+,\s*1[5-9]\d|2\d\d,\s*\d+\s*\)/i, // Green has high G value (150+)
-      red: /rgb\(\s*2[0-5]\d,\s*\d{1,2},\s*\d{1,2}\s*\)/i, // Red has high R value (200+)
-    };
-
-    expect(color).toMatch(colorMapping[expectedColor]);
   }
 }
