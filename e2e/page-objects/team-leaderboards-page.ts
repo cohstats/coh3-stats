@@ -263,6 +263,8 @@ export class TeamLeaderboardsPage extends BasePage {
       .innerText()
       .catch(() => "");
 
+    // Explicitly scroll into view for Mobile Safari compatibility
+    await this.nextPageButton.scrollIntoViewIfNeeded();
     await this.nextPageButton.click();
 
     // Wait for pagination info to change (more reliable than row content)
@@ -296,6 +298,8 @@ export class TeamLeaderboardsPage extends BasePage {
       .innerText()
       .catch(() => "");
 
+    // Explicitly scroll into view for Mobile Safari compatibility
+    await this.previousPageButton.scrollIntoViewIfNeeded();
     await this.previousPageButton.click();
 
     // Wait for pagination info to change (more reliable than row content)
