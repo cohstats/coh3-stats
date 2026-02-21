@@ -73,9 +73,9 @@ jobs:
       matrix:
         include:
           - test-type: desktop
-            projects: "chromium firefox webkit"
+            projects: --project=chromium --project=firefox --project=webkit
           - test-type: mobile
-            projects: "Mobile Chrome Mobile Safari"
+            projects: --project="Mobile Chrome" --project="Mobile Safari"
 
     steps:
       - name: Checkout Repo
@@ -124,7 +124,7 @@ jobs:
       - name: Build application
         run: yarn build:slim
       - name: Run Playwright tests
-        run: npx playwright test --project="${{ matrix.projects }}"
+        run: npx playwright test ${{ matrix.projects }}
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
