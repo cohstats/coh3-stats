@@ -272,6 +272,7 @@ const TeamLeaderboards: React.FC = () => {
                 style={{ width: 120 }}
                 allowDeselect={false}
                 withCheckIcon={false}
+                data-testid="team-leaderboards-side-select"
               />
 
               <Select
@@ -286,6 +287,7 @@ const TeamLeaderboards: React.FC = () => {
                 style={{ width: 120 }}
                 allowDeselect={false}
                 withCheckIcon={false}
+                data-testid="team-leaderboards-type-select"
               />
 
               <Select
@@ -299,6 +301,7 @@ const TeamLeaderboards: React.FC = () => {
                 style={{ width: 150 }}
                 allowDeselect={false}
                 withCheckIcon={false}
+                data-testid="team-leaderboards-orderby-select"
               />
             </Group>
           </Group>
@@ -306,11 +309,11 @@ const TeamLeaderboards: React.FC = () => {
           {error ? (
             <ErrorCard title={t("leaderboards:errorTitle")} body={error} />
           ) : loading ? (
-            <Center style={{ height: 200 }}>
+            <Center style={{ height: 200 }} data-testid="team-leaderboards-loader">
               <Loader size="lg" />
             </Center>
           ) : leaderboardData && leaderboardData.teams.length > 0 ? (
-            <>
+            <div data-testid="team-leaderboards-content">
               <DataTable
                 withTableBorder
                 borderRadius="md"
@@ -321,6 +324,7 @@ const TeamLeaderboards: React.FC = () => {
                 minHeight={300}
                 fetching={loadingMore}
                 records={leaderboardData.teams}
+                data-testid="team-leaderboards-table"
                 columns={[
                   {
                     title: t("common:columns.rank"),
@@ -426,8 +430,8 @@ const TeamLeaderboards: React.FC = () => {
                 ]}
               />
 
-              <Group justify="space-between" mt="xs">
-                <Text size="sm">
+              <Group justify="space-between" mt="xs" data-testid="team-leaderboards-pagination">
+                <Text size="sm" data-testid="team-leaderboards-pagination-info">
                   {t("leaderboards:teams.pagination.showingRange", {
                     start: startIndex + 1,
                     end: Math.min(
@@ -451,6 +455,7 @@ const TeamLeaderboards: React.FC = () => {
                     style={{ width: 100 }}
                     allowDeselect={false}
                     withCheckIcon={false}
+                    data-testid="team-leaderboards-records-per-page"
                   />
 
                   <Group gap="xs">
@@ -458,6 +463,7 @@ const TeamLeaderboards: React.FC = () => {
                       variant="outline"
                       disabled={loadingMore || currentPage === 1}
                       onClick={handlePreviousPage}
+                      data-testid="team-leaderboards-previous-btn"
                     >
                       {t("leaderboards:teams.pagination.previous")}
                     </Button>
@@ -470,13 +476,14 @@ const TeamLeaderboards: React.FC = () => {
                       variant="outline"
                       disabled={!nextCursor || loadingMore}
                       onClick={handleNextPage}
+                      data-testid="team-leaderboards-next-btn"
                     >
                       {t("leaderboards:teams.pagination.next")}
                     </Button>
                   </Group>
                 </Group>
               </Group>
-            </>
+            </div>
           ) : (
             <Text>No team leaderboard data found.</Text>
           )}

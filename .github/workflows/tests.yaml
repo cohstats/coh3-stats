@@ -60,13 +60,22 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   e2e-tests:
-    name: E2E Tests
+    name: E2E Tests (${{ matrix.test-type }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     concurrency:
-      group: e2e-tests-${{ github.ref }}
+      group: e2e-tests-${{ matrix.test-type }}-${{ github.ref }}
       cancel-in-progress: true
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - test-type: desktop
+            projects: --project=chromium --project=firefox --project=webkit
+          - test-type: mobile
+            projects: --project="Mobile Chrome" --workers=1
 
     steps:
       - name: Checkout Repo
@@ -96,25 +105,37 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}-${{ hashFiles('components/**/*.tsx','components/**/*.ts', 'pages/**/*.tsx','pages/**/*.ts', 'src/**/*.tsx','src/**/*.ts' )}}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(yarn info @playwright/test version 2>/dev/null | tail -1)" >> $GITHUB_OUTPUT
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
       - name: Install dependencies
         run: yarn --prefer-offline --frozen-lockfile install
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: yarn test:e2e:install
+      - name: Install Playwright Dependencies (OS libs)
+        run: npx playwright install-deps chromium firefox webkit
       - name: Build application
         run: yarn build:slim
       - name: Run Playwright tests
-        run: yarn test:e2e
+        run: npx playwright test ${{ matrix.projects }}
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.test-type }}
           path: playwright-report/
           retention-days: 30
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-results
+          name: playwright-results-${{ matrix.test-type }}
           path: test-results/
           retention-days: 7

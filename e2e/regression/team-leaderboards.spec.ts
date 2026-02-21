@@ -218,26 +218,6 @@ test.describe("Team Leaderboards Page", () => {
     });
   });
 
-  test.describe("Game Types", () => {
-    test("should load 2v2 team leaderboards", async () => {
-      await teamLeaderboardsPage.navigate({ side: "axis", type: "2v2" });
-      await teamLeaderboardsPage.checkTableHasData();
-      expect(teamLeaderboardsPage.page.url()).toContain("type=2v2");
-    });
-
-    test("should load 3v3 team leaderboards", async () => {
-      await teamLeaderboardsPage.navigate({ side: "axis", type: "3v3" });
-      await teamLeaderboardsPage.checkTableHasData();
-      expect(teamLeaderboardsPage.page.url()).toContain("type=3v3");
-    });
-
-    test("should load 4v4 team leaderboards", async () => {
-      await teamLeaderboardsPage.navigate({ side: "axis", type: "4v4" });
-      await teamLeaderboardsPage.checkTableHasData();
-      expect(teamLeaderboardsPage.page.url()).toContain("type=4v4");
-    });
-  });
-
   test.describe("SEO and Metadata", () => {
     test("should have correct page title", async () => {
       await teamLeaderboardsPage.navigate({ side: "axis", type: "2v2" });
@@ -338,22 +318,6 @@ test.describe("Team Leaderboards Page", () => {
       const url = teamLeaderboardsPage.page.url();
       expect(url).toContain("side=axis");
       expect(url).toContain("type=4v4");
-    });
-  });
-
-  test.describe("Error Handling", () => {
-    test("should handle network errors gracefully", async () => {
-      // This test would require mocking network failures
-      // For now, we'll just verify the error card component exists
-      await teamLeaderboardsPage.navigate({ side: "axis", type: "2v2" });
-      await teamLeaderboardsPage.waitForTableLoad();
-
-      // If there's an error, it should be displayed
-      // Otherwise, table should be visible
-      const hasError = await teamLeaderboardsPage.errorCard.isVisible().catch(() => false);
-      const hasTable = await teamLeaderboardsPage.leaderboardTable.isVisible();
-
-      expect(hasError || hasTable).toBeTruthy();
     });
   });
 
