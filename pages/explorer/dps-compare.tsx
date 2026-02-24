@@ -1,32 +1,28 @@
 import { NextPage } from "next";
-import { DpsPageComponent } from "../../components/unitStats/dps/dpsPageComponent";
+import { DpsComparePageComponent } from "../../components/unitStats/dps/dpsComparePageComponent";
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
-import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
+import { AnalyticsDPSComparePageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
 import { NextSeo } from "next-seo";
 import { useTranslation } from "next-i18next";
 import config from "../../config";
 
-interface DpsProps {
+interface DpsCompareProps {
   weaponData: WeaponType[];
-  // sbpsData: SbpsType[];
-  // ebpsData: EbpsType[];
   locstring: Record<string, string | null>;
 }
 
-// Parameter in Curly brackets is destructuring for
-// accessing attributes of Props Structure directly
-const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
+const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) => {
   const { t } = useTranslation(["explorer"]);
 
   useEffect(() => {
-    AnalyticsDPSExplorerPageView();
+    AnalyticsDPSComparePageView();
   }, []);
 
   const [isLoading, setIsLoading] = React.useState(true);
@@ -49,7 +45,6 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
         setSbpsStats(sbpsData);
         setSbpsDataState(sbpsData);
         setEbpsDataState(ebpsData);
-        // Save data again in global variable for clientMode
       } catch (error) {
         console.error("Failed to load data:", error);
       } finally {
@@ -60,25 +55,25 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
     loadData();
   }, []);
 
-  const dbpsData = {
+  const dpsData = {
     weaponData: weaponData,
     sbpsData: sbpsData,
     ebpsData: ebpsData,
   };
 
-  // Create SEO props for DPS calculator page
-  const title = t("dps.meta.title");
-  const description = t("dps.meta.description");
-  const keywords = t("dps.meta.keywords", { returnObjects: true }) as string[];
+  // Create SEO props for DPS Compare page
+  const title = t("dpsCompare.meta.title");
+  const description = t("dpsCompare.meta.description");
+  const keywords = t("dpsCompare.meta.keywords", { returnObjects: true }) as string[];
 
   const seoProps = {
     title,
     description,
-    canonical: `${config.SITE_URL}/explorer/dps`,
+    canonical: `${config.SITE_URL}/explorer/dps-compare`,
     openGraph: {
       title,
       description,
-      url: `${config.SITE_URL}/explorer/dps`,
+      url: `${config.SITE_URL}/explorer/dps-compare`,
       type: "website" as const,
       images: [
         {
@@ -108,14 +103,13 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
             <Loader />
           </Center>
         )}
-        {!isLoading && <DpsPageComponent {...dbpsData} />}
+        {!isLoading && <DpsComparePageComponent {...dpsData} />}
       </div>
     </>
   );
 };
 
 export const getStaticProps = async ({ locale = "en" }) => {
-  // map Data at built time
   const { weaponData, locstring } = await getMappings();
 
   return {
@@ -127,4 +121,4 @@ export const getStaticProps = async ({ locale = "en" }) => {
   };
 };
 
-export default DpsPage;
+export default DpsComparePage;

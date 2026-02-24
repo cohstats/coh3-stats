@@ -126,6 +126,10 @@ export const AnalyticsDPSExplorerPageView = (): void => {
   logFBEvent("explorer_dps_view");
 };
 
+export const AnalyticsDPSComparePageView = (): void => {
+  logFBEvent("explorer_dps_compare_view");
+};
+
 export const AnalyticsDPSExplorerSquadSelection = (unitId: string): void => {
   logFBEvent("explorer_dps_squad_selection", { unitId });
 };
