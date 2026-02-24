@@ -1,10 +1,9 @@
 import React from "react";
-import { Box, Center, Text, Space } from "@mantine/core";
+import { Box, Center, Text, Space, useMantineTheme, MantineColor } from "@mantine/core";
 import { DpsUnitCustomizing } from "../dpsUnitCustomizing";
 import { CustomizableUnit } from "../../../../src/unitStats/dpsCommon";
 import { EbpsType } from "../../../../src/unitStats/mappingEbps";
 import { WeaponType } from "../../../../src/unitStats/mappingWeapon";
-import classes from "../../DPSChart.module.css";
 
 interface UnitCustomizationPanelProps {
   unit: CustomizableUnit | undefined;
@@ -14,6 +13,7 @@ interface UnitCustomizationPanelProps {
   weaponData: WeaponType[];
   allowAllWeapons: boolean;
   onSquadConfigChange: () => void;
+  borderColor: MantineColor;
 }
 
 export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
@@ -24,8 +24,17 @@ export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
   weaponData,
   allowAllWeapons,
   onSquadConfigChange,
+  borderColor,
 }) => {
-  const boxClassName = position === 0 ? classes.unitBoxLeft : classes.unitBoxRight;
+  const theme = useMantineTheme();
+
+  const boxStyle = {
+    borderRadius: "var(--mantine-radius-md)",
+    border: `solid 2px ${theme.colors[borderColor][5]}`,
+    backgroundColor: `light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))`,
+    textAlign: "left" as const,
+    padding: "var(--mantine-spacing-xs)",
+  };
 
   return (
     <>
@@ -39,7 +48,7 @@ export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
           </Center>
         )}
         {unit && (
-          <Box className={boxClassName}>
+          <Box style={boxStyle}>
             <DpsUnitCustomizing
               key={unit.id + "." + position + "." + patchVersion}
               unit={unit}

@@ -102,6 +102,26 @@
       ]
     }
   },
+  "dpsCompare": {
+    "meta": {
+      "title": "COH3 DPS Compare Tool",
+      "description": "Compare damage per second (DPS) of up to 5 attacking units against a single target in Company of Heroes 3. Analyze unit effectiveness and optimize your army composition.",
+      "keywords": [
+        "coh3 dps compare",
+        "unit comparison",
+        "damage comparison",
+        "coh3 unit effectiveness",
+        "army composition",
+        "dps analysis",
+        "coh3 compare tool",
+        "unit matchup"
+      ]
+    },
+    "title": "DPS Compare Tool",
+    "targetUnit": "Target Unit",
+    "attackingUnits": "Attacking Units",
+    "attacker": "Attacker {{number}}"
+  },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
     "costs": "Costs {{costs}}.",

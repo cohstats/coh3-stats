@@ -442,6 +442,30 @@ export const getWeaponDPSData = (units: CustomizableUnit[]) => {
   return dpsSet;
 };
 
+/**
+ * Calculate DPS for multiple attacking units against a single target.
+ * Used in DPS Compare mode where up to 5 attackers can be compared against one target.
+ * @param attackingUnits Array of up to 5 attacking units (can contain undefined)
+ * @param targetUnit The target unit being attacked (optional)
+ * @returns Array of DPS data arrays, one for each attacker
+ */
+export const getCompareDpsData = (
+  attackingUnits: (CustomizableUnit | undefined)[],
+  targetUnit?: CustomizableUnit,
+): CoordinatesDPS[][] => {
+  const dpsSet: CoordinatesDPS[][] = [];
+
+  for (const attacker of attackingUnits) {
+    if (attacker) {
+      dpsSet.push(getCombatDps(attacker, targetUnit));
+    } else {
+      dpsSet.push([]);
+    }
+  }
+
+  return dpsSet;
+};
+
 // Helper function to get modified hitpoints per entity
 export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
   let modifiedHitpoints = unit.hitpoints;
@@ -581,4 +605,4 @@ export const mergePoints = (xPoint: CoordinatesDPS, yPoint: CoordinatesDPS) => {
   return { x: xPoint.x, y: xPoint.y + yPoint.y };
 };
 
-export type { WeaponMember, CustomizableUnit };
+export type { WeaponMember, CustomizableUnit, CoordinatesDPS };

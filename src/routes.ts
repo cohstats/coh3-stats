@@ -83,6 +83,10 @@ export const getDPSCalculatorRoute = () => {
   return encodeURI(`/explorer/dps`);
 };
 
+export const getDPSCompareRoute = () => {
+  return encodeURI(`/explorer/dps-compare`);
+};
+
 export const getUnitBrowserRoute = () => {
   return encodeURI(`/explorer/unit-browser`);
 };

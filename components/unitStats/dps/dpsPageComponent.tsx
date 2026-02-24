@@ -433,6 +433,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 weaponData={weaponData1}
                 allowAllWeapons={allowAllWeapons}
                 onSquadConfigChange={onSquadConfigChange}
+                borderColor="blue"
               />
             </Grid.Col>
 
@@ -455,6 +456,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 weaponData={weaponData2}
                 allowAllWeapons={allowAllWeapons}
                 onSquadConfigChange={onSquadConfigChange}
+                borderColor="red"
               />
             </Grid.Col>
           </Grid>
