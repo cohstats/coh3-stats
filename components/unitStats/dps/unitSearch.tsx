@@ -75,7 +75,7 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
 
   return (
     <div>
-      <Group wrap="nowrap">
+      <Group wrap="nowrap" gap={0}>
         <Image w={60} h={40} src={image} fit="contain" alt="Faction" />
         <HoverCard shadow={"lg"} offset={60}>
           <HoverCard.Target>
@@ -118,26 +118,13 @@ interface ISearchProps {
   searchData: CustomizableUnit[];
   onSelect(selection: string | null, position: number): any;
   position: number;
+  disabled?: boolean;
 }
 
 export const UnitSearch = (props: ISearchProps) => {
-  function onSelectionChange(id: string | null) {
-    //const selectedItems: any[] = [];
-
-    // remove last element so we have never more than 2
-
-    //if (ids.length > 2) ids.splice(1, 1);
-    //   const second_item = id[2]; // remember
-    //   id.pop(); // pop will be recognized by the component
-    //   id.pop();
-    //   id.push(second_item);
-    // }
-    // id.forEach((selection) => {
-    //   const item = props.searchData.find((item) => item.id == selection);
-    //   selectedItems.push(item);
-    // });
+  const onSelectionChange = (id: string | null) => {
     props.onSelect(id, props.position);
-  }
+  };
 
   return (
     <Select
@@ -146,12 +133,11 @@ export const UnitSearch = (props: ISearchProps) => {
       renderOption={renderSelectOption}
       data={props.searchData}
       defaultValue={null}
-      // data = {[]}
-      // valueComponent={Value}
       searchable
       maxDropdownHeight={600}
       nothingFoundMessage="Nobody here. War is over!"
       onChange={(value) => onSelectionChange(value)}
+      disabled={props.disabled}
     />
   );
 };

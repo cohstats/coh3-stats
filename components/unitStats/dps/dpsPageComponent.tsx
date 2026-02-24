@@ -13,7 +13,17 @@ import {
   Filler,
 } from "chart.js";
 
-import { Container, Space, useMantineTheme, Grid, Title, Flex } from "@mantine/core";
+import {
+  Container,
+  Space,
+  useMantineTheme,
+  Grid,
+  Title,
+  Flex,
+  SegmentedControl,
+} from "@mantine/core";
+import { useRouter } from "next/router";
+import { getDPSCompareRoute } from "../../../src/routes";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
@@ -191,6 +201,8 @@ export const DpsPageComponent = (props: IDPSProps) => {
   const filter_def2: string[] = [];
   const searchData_default: CustomizableUnit[] = [];
 
+  const router = useRouter();
+
   const [patchChangeIndex, setPatchChange] = useState(0);
   const [activeData] = useState(searchData_default);
   const [unitFilter1, setFilter1] = useState(filter_def1);
@@ -206,6 +218,12 @@ export const DpsPageComponent = (props: IDPSProps) => {
 
   // const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const handleModeChange = (value: string) => {
+    if (value === "compare") {
+      router.push(getDPSCompareRoute());
+    }
+  };
 
   // We must init ONCE, otherwise the default will override any change.
   useEffect(() => {
@@ -389,10 +407,20 @@ export const DpsPageComponent = (props: IDPSProps) => {
     <>
       <Container>
         <Grid>
-          <Grid.Col span={10}>
-            <Title order={2}>Company of Heroes 3 DPS Benchmark Tool </Title>
+          <Grid.Col span={{ base: 12, sm: 10 }}>
+            <Flex align="center" gap="md" wrap="wrap">
+              <Title order={2}>Company of Heroes 3 DPS Benchmark Tool</Title>
+              <SegmentedControl
+                value="vs"
+                onChange={handleModeChange}
+                data={[
+                  { label: "VS Mode", value: "vs" },
+                  { label: "Compare Mode", value: "compare" },
+                ]}
+              />
+            </Flex>
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col span={{ base: 12, sm: 2 }}>
             <Flex justify="flex-end" wrap="wrap">
               <Space h="2rem" />
               <SettingsPanel

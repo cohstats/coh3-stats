@@ -20,13 +20,15 @@ import {
   Grid,
   Title,
   Flex,
-  Card,
   Text,
-  UnstyledButton,
-  Center,
-  Stack,
   Group,
+  Button,
+  CloseButton,
+  Box,
+  SegmentedControl,
 } from "@mantine/core";
+import { useRouter } from "next/router";
+import { getDPSCalculatorRoute } from "../../../src/routes";
 import { IconPlus } from "@tabler/icons-react";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
@@ -53,6 +55,7 @@ import { UnitCustomizationPanel } from "./components/UnitCustomizationPanel";
 import { ChartPanel } from "./components/ChartPanel";
 import { UnitSearch } from "./unitSearch";
 import { mapChartData, options } from "./dpsPageComponent";
+import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 
 ChartJS.register(
   CategoryScale,
@@ -125,7 +128,14 @@ const setScreenOptions = (isLargeScreen: boolean) => {
 
 export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const theme = useMantineTheme();
+  const router = useRouter();
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
+
+  const handleModeChange = (value: string) => {
+    if (value === "vs") {
+      router.push(getDPSCalculatorRoute());
+    }
+  };
 
   // Shared state
   const [patchVersion, setPatchVersion] = useState(config.latestPatch);
@@ -137,18 +147,11 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   // Target unit
   const [targetUnit, setTargetUnit] = useState<CustomizableUnit | undefined>();
 
-  // Number of visible attacker cards (starts with 2, max 6)
-  const [visibleAttackerCount, setVisibleAttackerCount] = useState(2);
+  // Attacking units (dynamic array, max 6)
+  const [attackingUnits, setAttackingUnits] = useState<CustomizableUnit[]>([]);
 
-  // Attacking units (up to 6)
-  const [attackingUnits, setAttackingUnits] = useState<(CustomizableUnit | undefined)[]>([
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ]);
+  // Selected unit in the dropdown (for adding)
+  const [selectedUnitToAdd, setSelectedUnitToAdd] = useState<string | null>(null);
 
   // Unit selection list
   const [unitSelectionList, setUnitSelectionList] = useState<CustomizableUnit[]>([]);
@@ -199,13 +202,12 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
         }
       }
 
-      const newAttackers = attackingUnits.map((attacker) => {
-        if (attacker) {
+      const newAttackers = attackingUnits
+        .map((attacker) => {
           const newAttacker = cachedUnits.find((u) => u.id === attacker.id);
           return newAttacker ? cloneUnit(newAttacker) : undefined;
-        }
-        return undefined;
-      });
+        })
+        .filter((u): u is CustomizableUnit => u !== undefined);
       setAttackingUnits(newAttackers);
     } finally {
       setIsLoading(false);
@@ -241,21 +243,22 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     }
   };
 
-  // Handle attacker unit selection
-  const handleAttackerSelect = (selection: string | null, index: number) => {
-    if (!selection) {
-      const newAttackers = [...attackingUnits];
-      newAttackers[index] = undefined;
-      setAttackingUnits(newAttackers);
-      return;
-    }
-    AnalyticsDPSExplorerSquadSelection(selection);
-    const unitBp = unitSelectionList.find((u) => u.id === selection);
+  // Add a new attacker unit from the dropdown
+  const handleAddAttacker = () => {
+    if (!selectedUnitToAdd || attackingUnits.length >= 6) return;
+
+    AnalyticsDPSExplorerSquadSelection(selectedUnitToAdd);
+    const unitBp = unitSelectionList.find((u) => u.id === selectedUnitToAdd);
     if (unitBp) {
-      const newAttackers = [...attackingUnits];
-      newAttackers[index] = cloneUnit(unitBp);
-      setAttackingUnits(newAttackers);
+      setAttackingUnits([...attackingUnits, cloneUnit(unitBp)]);
+      setSelectedUnitToAdd(null);
     }
+  };
+
+  // Remove an attacker unit
+  const handleRemoveAttacker = (index: number) => {
+    const newAttackers = attackingUnits.filter((_, i) => i !== index);
+    setAttackingUnits(newAttackers);
   };
 
   // Handle squad config change
@@ -266,25 +269,22 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   // Reset all units
   const handleResetUnits = () => {
     setTargetUnit(undefined);
-    setAttackingUnits([undefined, undefined, undefined, undefined, undefined, undefined]);
-    setVisibleAttackerCount(2);
-  };
-
-  // Add a new attacker card
-  const handleAddAttacker = () => {
-    if (visibleAttackerCount < 6) {
-      setVisibleAttackerCount(visibleAttackerCount + 1);
-    }
+    setAttackingUnits([]);
+    setSelectedUnitToAdd(null);
   };
 
   // Update health for all units
   if (targetUnit) updateHealth(targetUnit);
   attackingUnits.forEach((unit) => {
-    if (unit) updateHealth(unit);
+    updateHealth(unit);
   });
 
-  // Calculate DPS data
-  const dpsLines = getCompareDpsData(attackingUnits, targetUnit);
+  // Calculate DPS data - pad array to match expected format
+  const paddedAttackers: (CustomizableUnit | undefined)[] = [
+    ...attackingUnits,
+    ...Array(6 - attackingUnits.length).fill(undefined),
+  ];
+  const dpsLines = getCompareDpsData(paddedAttackers, targetUnit);
 
   // Build chart data
   const chartData = { datasets: [] as ReturnType<typeof mapChartData>[] };
@@ -292,7 +292,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   let maxX = 1;
 
   attackingUnits.forEach((attacker, index) => {
-    if (attacker && dpsLines[index] && dpsLines[index].length > 0) {
+    if (dpsLines[index] && dpsLines[index].length > 0) {
       const set = mapChartData(dpsLines[index], attacker.screen_name || attacker.id, false);
       set.borderColor = theme.colors[ATTACKER_COLORS[index]][5];
       chartData.datasets.push(set);
@@ -312,7 +312,17 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     <>
       <Container size={"md"}>
         <Group justify="space-between" wrap="wrap">
-          <Title order={2}>Company of Heroes 3 DPS Benchmark Tool - Compare Mode</Title>
+          <Flex align="center" gap="md" wrap="wrap">
+            <Title order={2}>Company of Heroes 3 DPS Benchmark Tool</Title>
+            <SegmentedControl
+              value="compare"
+              onChange={handleModeChange}
+              data={[
+                { label: "VS Mode", value: "vs" },
+                { label: "Compare Mode", value: "compare" },
+              ]}
+            />
+          </Flex>
           <CompareSettingsPanel
             allowAllWeapons={allowAllWeapons}
             onAllowAllWeaponsChange={setAllowAllWeapons}
@@ -334,66 +344,68 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
             onPatchChange={handlePatchChange}
           />
         </Flex>
+
+        {/* Unit selector dropdown with Add button */}
+        <Flex gap="sm" align="flex-end" mb="md">
+          <Box style={{ flex: 1 }}>
+            <UnitSearch
+              key={`add-unit-search-${attackingUnits.length}`}
+              searchData={unitSelectionList}
+              onSelect={(selection) => setSelectedUnitToAdd(selection)}
+              position={-1}
+              disabled={attackingUnits.length >= 6}
+            />
+          </Box>
+          <Button
+            leftSection={<IconPlus size={16} />}
+            onClick={handleAddAttacker}
+            disabled={!selectedUnitToAdd || attackingUnits.length >= 6}
+          >
+            Add Unit
+          </Button>
+        </Flex>
+
+        {/* Attacker units grid */}
         <Grid>
-          {attackingUnits.slice(0, visibleAttackerCount).map((attacker, index) => (
+          {attackingUnits.map((attacker, index) => (
             <Grid.Col key={`attacker-${index}`} span={{ base: 12, sm: 6 }}>
-              <Card withBorder p="sm" pb={0} h="100%" style={{ borderWidth: 2 }}>
-                <Text size="sm" fw={500} c={ATTACKER_COLORS[index]} mb="xs">
-                  Attacker {index + 1}
-                </Text>
-                <UnitSearch
-                  key={`attacker-search-${index}`}
-                  searchData={unitSelectionList}
-                  onSelect={(selection) => handleAttackerSelect(selection, index)}
-                  position={index + 1}
-                />
-                <UnitCustomizationPanel
+              <Box
+                p="sm"
+                pb={0}
+                style={{
+                  borderRadius: "var(--mantine-radius-md)",
+                  border: `solid 2px ${theme.colors[ATTACKER_COLORS[index]][5]}`,
+                  backgroundColor: `light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))`,
+                  textAlign: "left" as const,
+                  padding: "var(--mantine-spacing-xs)",
+                }}
+              >
+                <Flex justify="space-between" align="center" mb="xs">
+                  <Text size="sm" fw={500} c={ATTACKER_COLORS[index]}>
+                    {attacker.screen_name || attacker.id}
+                  </Text>
+                  <CloseButton size="sm" onClick={() => handleRemoveAttacker(index)} />
+                </Flex>
+                <DpsUnitCustomizing
+                  key={attacker.id + "." + (index + 1) + "." + patchVersion}
                   unit={attacker}
-                  position={index + 1}
-                  patchVersion={patchVersion}
-                  ebpsData={cachedEbps}
-                  weaponData={cachedWeapons}
+                  onChange={onSquadConfigChange}
+                  index={index + 1}
+                  ebps={cachedEbps}
+                  weapons={cachedWeapons}
                   allowAllWeapons={allowAllWeapons}
-                  onSquadConfigChange={onSquadConfigChange}
-                  borderColor={ATTACKER_COLORS[index]}
                 />
-              </Card>
+              </Box>
             </Grid.Col>
           ))}
-          {visibleAttackerCount < 6 && (
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <UnstyledButton onClick={handleAddAttacker} w="100%" h="100%">
-                <Card
-                  withBorder
-                  p="sm"
-                  h="100%"
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 2,
-                    minHeight: 150,
-                    cursor: "pointer",
-                  }}
-                >
-                  <Center h="100%">
-                    <Stack align="center" gap="xs">
-                      <IconPlus size={32} stroke={1.5} color={theme.colors.gray[5]} />
-                      <Text size="sm" c="dimmed">
-                        Add Unit
-                      </Text>
-                    </Stack>
-                  </Center>
-                </Card>
-              </UnstyledButton>
-            </Grid.Col>
-          )}
         </Grid>
 
         <Space h="md" />
 
         {/* Target Unit Section - Optional */}
-        <Card withBorder p="md">
+        <div>
           <Title order={4} mb="sm">
-            Optional - Target Unit
+            Target Unit - Optional
           </Title>
           <UnitSearch
             key="target-search"
@@ -413,7 +425,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
               borderColor="gray"
             />
           )}
-        </Card>
+        </div>
       </Container>
 
       <Space h="md" />
