@@ -8,6 +8,7 @@ import { internalSlash } from "../utils";
 // The battlegroup represents the parent BG with its children (branches).
 type BattlegroupsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
+  pbgid: number; // essence id (e.g., 2166439 for kriegsmarine)
   path: string; // folder from which the extraction got started. Eg. afrika_corps, american, british.
   faction: string; // races/[factionName]
   name: string; // name of the battlegroup
@@ -34,6 +35,7 @@ const mapBattlegroupData = (
 ) => {
   const bgEntity: BattlegroupsType = {
     id: filename,
+    pbgid: subtree.pbgid || 0,
     path: jsonPath,
     faction: internalSlash(jsonPath).split("/")[1] ?? jsonPath,
     name: "",
