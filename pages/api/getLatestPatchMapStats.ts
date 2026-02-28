@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const response = {
       latestPatchInfo: statsPatchSelector[config.latestPatch],
-      latestPathDataTag: config.patches[config.latestPatch].dataTag,
+      latestPatchDataTag: config.patches[config.latestPatch].dataTag,
       mapStats: data,
       mapInfo: maps,
     };
