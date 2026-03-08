@@ -19,7 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const data = await getTop1v1LeaderBoards(race);
 
-    res.setHeader("Cache-Control", "public, max-age=60").status(200).json(data);
+    res
+      .setHeader("Cache-Control", "public, max-age=60, stale-while-revalidate=60")
+      .status(200)
+      .json(data);
   } catch (e) {
     logger.error(`Error in topLeaderboards API: ${e}`);
 

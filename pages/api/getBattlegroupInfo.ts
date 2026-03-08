@@ -58,7 +58,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       };
     }
 
-    res.setHeader("Cache-Control", "public, max-age=21600").status(200).json(battlegroupInfo);
+    res
+      .setHeader("Cache-Control", "public, max-age=21600, stale-while-revalidate=7200")
+      .status(200)
+      .json(battlegroupInfo);
   } catch (e) {
     logger.error(e);
     res.status(500).json({ error: "Failed to fetch battlegroup info" });
