@@ -15,6 +15,8 @@ import {
   Text,
   AspectRatio,
   Flex,
+  Pagination,
+  Group,
 } from "@mantine/core";
 import dayjs from "dayjs";
 import { IconShare3 } from "@tabler/icons-react";
@@ -251,7 +253,8 @@ const SingleNewsItem = ({
 
 const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
   const { t } = useTranslation("news");
-  const { locale } = useRouter();
+  const router = useRouter();
+  const { locale } = router;
 
   useEffect(() => {
     AnalyticsNewsPageView();
@@ -261,6 +264,13 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
     return <SingleNewsItem item={item} key={item.date} t={t} locale={locale || "en"} />;
   });
   const image = COH3SteamNews.newsitems[0]?.image || "";
+
+  const currentPage = COH3SteamNews.currentPage ?? 1;
+  const totalPages = COH3SteamNews.totalPages ?? 1;
+
+  const handlePageChange = (page: number) => {
+    router.push({ pathname: "/news", query: { page } });
+  };
 
   // Create SEO props for news page
   const seoProps = createPageSEO(t, "news", "/news");
@@ -288,6 +298,15 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
           <Title>{t("pageTitle")}</Title>
           <Space h={"lg"} />
           {items}
+          {totalPages > 1 && (
+            <Group justify="center" mt="md" mb="md">
+              <Pagination
+                total={totalPages}
+                value={currentPage}
+                onChange={handlePageChange}
+              />
+            </Group>
+          )}
           <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
             {t("sourceText")}
             <br />
