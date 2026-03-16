@@ -80,8 +80,9 @@ jobs:
             echo "DEPLOYMENT_URL=$(cat deployment-url.txt)" >> $GITHUB_ENV
           else
             # Handle the error
-            errorMessage=`cat error.txt`
-            echo "There was an error: $errorMessage"
+            echo "==== Vercel error output ===="
+            cat error.txt
+            exit 1
           fi
 
       - uses: jwalton/gh-find-current-pr@v1
