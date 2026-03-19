@@ -275,8 +275,9 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
     });
   };
 
-  // Create SEO props for news page
-  const seoProps = createPageSEO(t, "news", "/news");
+  // Create SEO props for news page, including page parameter for paginated URLs
+  const pagePath = currentPage > 1 ? `/news?page=${currentPage}` : "/news";
+  const seoProps = createPageSEO(t, "news", pagePath);
 
   try {
     return (
