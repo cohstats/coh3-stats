@@ -300,11 +300,7 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
           {items}
           {totalPages > 1 && (
             <Group justify="center" mt="md" mb="md">
-              <Pagination
-                total={totalPages}
-                value={currentPage}
-                onChange={handlePageChange}
-              />
+              <Pagination total={totalPages} value={currentPage} onChange={handlePageChange} />
             </Group>
           )}
           <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
