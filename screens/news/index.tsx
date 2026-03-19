@@ -269,7 +269,10 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
   const totalPages = COH3SteamNews.totalPages ?? 1;
 
   const handlePageChange = (page: number) => {
-    router.push({ pathname: "/news", query: { page } });
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, page },
+    });
   };
 
   // Create SEO props for news page
