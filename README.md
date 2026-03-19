@@ -25,8 +25,6 @@ The website supports multiple languages through locale files located in `public/
 
 To contribute translations:
 
-THIS IS TEST change
-
 1. Check the current status of translations in our [localization issues](https://github.com/cohstats/coh3-stats/issues?q=label%3Alocalization%20)
 2. Find the locale files in `public/locales` directory
 3. Compare your target language files with the English versions in `public/locales/en`
