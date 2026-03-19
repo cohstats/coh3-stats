@@ -40,6 +40,14 @@ export const getServerSideProps: GetServerSideProps<any> = async ({
   } catch (e) {
     console.error(`Error getting the steam news`);
     console.error(e);
+    if (!COH3SteamNews) {
+      COH3SteamNews = {
+        count: 0,
+        newsitems: [],
+        currentPage: 1,
+        totalPages: 1,
+      };
+    }
   }
 
   return {
