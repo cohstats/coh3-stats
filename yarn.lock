@@ -382,10 +382,10 @@
     "@bbob/plugin-helper" "*"
     "@bbob/types" "*"
 
-"@bbob/react@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@bbob/react/-/react-4.2.0.tgz#d313699145a373204fe444470e11a2bc242bd46e"
-  integrity sha512-gmcTg3vrN5Qc6Epp91f4pU4rf8GCb9AO8CGaTgdvmLMYH4LWoAyZdTGn4J0m3QKAhTdUWvnZjG9YOkI4zXw94A==
+"@bbob/react@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@bbob/react/-/react-4.3.1.tgz#df39718221765d1be106eb59b1f1a57518dd2bd5"
+  integrity sha512-5UrC3qZF0ViER72Am4wglS8MxKUEaFiswprr4xD5j4zM6OoYr8/UA0ebuahgI+HKP365ewK1PTymmPppUrR2ug==
   dependencies:
     "@bbob/core" "*"
     "@bbob/html" "*"
