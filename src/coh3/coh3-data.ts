@@ -619,6 +619,11 @@ const OfficialMapKeys = [
   "primosole_6p",
   "oliveto_citra_8p",
   "powderkeg_8p",
+  /* ---------- 2.3.0 Maps ---------- */
+  "egletons_2p",
+  "pisa_centrale_4p",
+  "sedjenane_6p",
+  "castello_8p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -881,5 +886,22 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   primosole_6p: {
     name: "Road to Primosole",
     url: "/primosole_6p/primosole_6p.webp",
+  },
+  /* ------------------------- 2.3.0 Maps ---------------------------- */
+  egletons_2p: {
+    name: "Égletons",
+    url: "/egletons_2p/egletons_2p.webp",
+  },
+  pisa_centrale_4p: {
+    name: "Pisa Centrale",
+    url: "/pisa_centrale_4p/pisa_centrale_4p.webp",
+  },
+  sedjenane_6p: {
+    name: "Sedjenane Marshes",
+    url: "/sedjenane_6p/sedjenane_6p.webp",
+  },
+  castello_8p: {
+    name: "Castello della Nebbia",
+    url: "/castello_8p/castello_8p.webp",
   },
 };
