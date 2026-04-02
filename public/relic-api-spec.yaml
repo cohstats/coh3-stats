@@ -44,12 +44,12 @@ paths:
             enum: [coh3, coh3xbl, coh3psn]
             example: coh3
       responses:
-        '200':
+        "200":
           description: Successful response with leaderboard metadata
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AvailableLeaderboardsResponse'
+                $ref: "#/components/schemas/AvailableLeaderboardsResponse"
 
   /getLeaderboard2:
     get:
@@ -133,12 +133,12 @@ paths:
             type: integer
             example: 2074389
       responses:
-        '200':
+        "200":
           description: Successful response with leaderboard data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeaderboardResponse'
+                $ref: "#/components/schemas/LeaderboardResponse"
 
   /getPersonalStat:
     get:
@@ -181,12 +181,12 @@ paths:
             type: string
             example: '["PlayerName"]'
       responses:
-        '200':
+        "200":
           description: Successful response with player statistics
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonalStatResponse'
+                $ref: "#/components/schemas/PersonalStatResponse"
 
   /getRecentMatchHistoryByProfileId:
     get:
@@ -218,12 +218,12 @@ paths:
             type: integer
             example: 871
       responses:
-        '200':
+        "200":
           description: Successful response with match history
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MatchHistoryResponse'
+                $ref: "#/components/schemas/MatchHistoryResponse"
 
 components:
   schemas:
@@ -243,32 +243,32 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ResultWrapper'
+          $ref: "#/components/schemas/ResultWrapper"
         leaderboards:
           type: array
           description: List of available leaderboards
           items:
-            $ref: '#/components/schemas/Leaderboard'
+            $ref: "#/components/schemas/Leaderboard"
         matchTypes:
           type: array
           description: List of match types
           items:
-            $ref: '#/components/schemas/MatchType'
+            $ref: "#/components/schemas/MatchType"
         races:
           type: array
           description: List of playable races
           items:
-            $ref: '#/components/schemas/Race'
+            $ref: "#/components/schemas/Race"
         factions:
           type: array
           description: List of factions
           items:
-            $ref: '#/components/schemas/Faction'
+            $ref: "#/components/schemas/Faction"
         leaderboardRegions:
           type: array
           description: List of leaderboard regions
           items:
-            $ref: '#/components/schemas/LeaderboardRegion'
+            $ref: "#/components/schemas/LeaderboardRegion"
 
     Leaderboard:
       type: object
@@ -365,17 +365,17 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ResultWrapper'
+          $ref: "#/components/schemas/ResultWrapper"
         statGroups:
           type: array
           description: Player/team group information
           items:
-            $ref: '#/components/schemas/StatGroup'
+            $ref: "#/components/schemas/StatGroup"
         leaderboardStats:
           type: array
           description: Leaderboard statistics for each player/team
           items:
-            $ref: '#/components/schemas/LeaderboardStat'
+            $ref: "#/components/schemas/LeaderboardStat"
         rankTotal:
           type: integer
           description: Total number of ranked players
@@ -400,7 +400,7 @@ components:
           type: array
           description: Members of this stat group
           items:
-            $ref: '#/components/schemas/Member'
+            $ref: "#/components/schemas/Member"
 
     Member:
       type: object
@@ -502,33 +502,33 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ResultWrapper'
+          $ref: "#/components/schemas/ResultWrapper"
         statGroups:
           type: array
           description: Player group information
           items:
-            $ref: '#/components/schemas/StatGroup'
+            $ref: "#/components/schemas/StatGroup"
         leaderboardStats:
           type: array
           description: Player's leaderboard statistics across all modes
           items:
-            $ref: '#/components/schemas/LeaderboardStat'
+            $ref: "#/components/schemas/LeaderboardStat"
 
     MatchHistoryResponse:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/ResultWrapper'
+          $ref: "#/components/schemas/ResultWrapper"
         matchHistoryStats:
           type: array
           description: List of recent matches
           items:
-            $ref: '#/components/schemas/MatchHistoryStat'
+            $ref: "#/components/schemas/MatchHistoryStat"
         profiles:
           type: array
           description: Profile information for all players in matches
           items:
-            $ref: '#/components/schemas/Profile'
+            $ref: "#/components/schemas/Profile"
 
     MatchHistoryStat:
       type: object
@@ -569,7 +569,7 @@ components:
           type: array
           description: Results for each player in the match
           items:
-            $ref: '#/components/schemas/MatchHistoryReportResult'
+            $ref: "#/components/schemas/MatchHistoryReportResult"
         matchhistoryitems:
           type: array
           description: Items/rewards from the match
