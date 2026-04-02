@@ -30,21 +30,21 @@
   {
     "id": "partisan_tunnel_constructed_us",
     "icon": "races/american/buildings/tunnel_hideout_us",
-    "name": "",
+    "name": "Tunnel Hideout",
     "faction": "american",
     "symbol": "races/american/symbols/tunnel"
   },
   {
     "id": "partisan_tunnel_main_us",
-    "icon": "races/german/buildings/fighting_nest_ger",
-    "name": "",
+    "icon": "races/american/buildings/partisan_tunnel_main_us",
+    "name": "Tunnel Network",
     "faction": "american",
     "symbol": "races/american/symbols/tunnel_network"
   },
   {
     "id": "partisan_tunnel_us",
     "icon": "races/american/buildings/tunnel_hideout_us",
-    "name": "",
+    "name": "Tunnel Hideout",
     "faction": "american",
     "symbol": "races/american/symbols/tunnel"
   },
@@ -544,6 +544,13 @@
     "name": "Sniper",
     "faction": "british",
     "symbol": "races/common/symbols/sniper"
+  },
+  {
+    "id": "ssb_commando",
+    "icon": "races/british/infantry/commando_uk",
+    "name": "",
+    "faction": "british",
+    "symbol": "races/british/symbols/commando"
   },
   {
     "id": "tommy_uk",
@@ -1239,6 +1246,20 @@
     "symbol": "races/british/symbols/cwt_truck"
   },
   {
+    "id": "cwt_lrdg_truck_2pdr_africa_uk",
+    "icon": "races/british/vehicles/cwt_15_africa_uk",
+    "name": "",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_truck"
+  },
+  {
+    "id": "cwt_lrdg_truck_africa_uk_uk",
+    "icon": "races/british/vehicles/cwt_15_africa_uk",
+    "name": "",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_truck"
+  },
+  {
     "id": "dingo_africa_uk",
     "icon": "races/british/vehicles/dingo_africa_uk",
     "name": "Dingo Light Scout Car",
@@ -1806,6 +1827,13 @@
     "symbol": "common/units/symbols/stug_iii_sdkfz_142_ger"
   },
   {
+    "id": "sturmtiger_ger",
+    "icon": "",
+    "name": "",
+    "faction": "german",
+    "symbol": "common/units/symbols/vehicle_west_german_sturmtiger_symbol"
+  },
+  {
     "id": "tiger_ger",
     "icon": "races/german/vehicles/tiger_german",
     "name": "Tiger Heavy Tank",
@@ -2003,10 +2031,10 @@
   },
   {
     "id": "armored_car_8_rad_command_ak",
-    "icon": "common/units/icons/armored_car_sdkfz_222_ger",
+    "icon": "icons_dev_abilities_template_ability_placeholder",
     "name": "Command 8 Rad Armored Car",
     "faction": "dak",
-    "symbol": "common/units/symbols/armored_car_sdkfz_222_ger"
+    "symbol": "icons_dev_abilities_template_ability_placeholder"
   },
   {
     "id": "armored_car_8_rad_stummel_ak",
