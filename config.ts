@@ -52,7 +52,7 @@ const statsPatchSelector: Record<
   },
   "2.2.5": {
     from: "2026-01-29",
-    to: "now",
+    to: "2026-03-31",
     value: "2.2.5",
     label: "2.2.5",
     group: "Scarlet Bison",
