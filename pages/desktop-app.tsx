@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import { Octokit } from "octokit";
 
 import DesktopAppPage from "../screens/desktop-app";
@@ -6,10 +6,10 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default DesktopAppPage;
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ res, locale = "en" }) => {
+export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => {
   const octokit = new Octokit();
 
-  console.log(`SSR - /desktop-app`);
+  console.log(`ISR - /desktop-app`);
 
   let downloadURL = "https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"; // fallback in case request fails
   let downloadCount = 0;
@@ -90,11 +90,6 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res, locale 
     totalDownloadCount = 0;
   }
 
-  res.setHeader(
-    "Cache-Control",
-    "public, max-age=600, s-maxage=1800, stale-while-revalidate=172800",
-  );
-
   return {
     props: {
       downloadURL,
@@ -103,5 +98,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ res, locale 
       version,
       ...(await serverSideTranslations(locale, ["common", "desktopapp"])),
     },
+    // Revalidate every 1800 seconds (30 minutes) as specified in the original s-maxage
+    revalidate: 1800,
   };
 };
