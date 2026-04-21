@@ -40,6 +40,10 @@ RUN \
 FROM base AS runner
 WORKDIR /app
 
+# OCI Image annotations for metadata
+LABEL org.opencontainers.image.title="coh3-stats-fe"
+LABEL org.opencontainers.image.description="COH3 Stats FE Application"
+
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1

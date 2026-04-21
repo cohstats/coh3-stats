@@ -83,7 +83,7 @@ const PlayerCard = ({
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   replaysData: ProcessedReplayData;
 }) => {
-  const { push, query, asPath } = useRouter();
+  const { push, query, asPath, locale, defaultLocale } = useRouter();
   const { view } = query;
   const { t } = useTranslation("players");
 
@@ -101,7 +101,13 @@ const PlayerCard = ({
     if (isBrowserEnv()) {
       const originalUrl = new URL(asPath, window.location.origin);
       const originalQuery = originalUrl.searchParams;
-      const newURL = new URL(`/players/${playerID}/${cleanName}`, window.location.origin);
+
+      // Construct the path with locale prefix if not default locale
+      const localePrefix = locale && locale !== defaultLocale ? `/${locale}` : "";
+      const newURL = new URL(
+        `${localePrefix}/players/${playerID}/${cleanName}`,
+        window.location.origin,
+      );
       newURL.search = originalQuery.toString();
 
       // Use history.replaceState to update URL without affecting navigation
@@ -111,7 +117,7 @@ const PlayerCard = ({
         newURL.toString(),
       );
     }
-  }, [playerID]);
+  }, [playerID, locale, defaultLocale]);
 
   useEffect(() => {
     if (view === "recentMatches") {
