@@ -105,7 +105,7 @@ type CustomizableUnit = {
   faction: string; // from folder structure races\[factionName]
   weapon_member: WeaponMember[]; // set of weapons + amount
   def_weapon_member: WeaponMember[];
-  unit_type: string; // folder Infantry | vehicles | team_weapons | buildings
+  unit_type: SbpsType["unitType"]; // folder Infantry | vehicles | team_weapons | buildings
   help_text: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\help_text
   icon_name: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\icon_name
   faction_icon: string;
@@ -228,14 +228,13 @@ export const mapCustomizableUnit = (
       custUnit.def_damage_type = (custUnit.weapon_member[0] as any).parent || null;
 
     // Armor
-    const ebpsUnit = ebps.find((unit) => unit.id == custUnit.def_member);
+    const def_ebps = ebps.find((unit) => unit.id == custUnit.def_member);
     custUnit.armor =
-      ebpsUnit?.health.armorLayout?.armor || ebpsUnit?.health.armorLayout?.frontArmor || 1;
+      def_ebps?.health.armorLayout?.armor || def_ebps?.health.armorLayout?.frontArmor || 1;
     if (custUnit.unit_type == "vehicles")
-      custUnit.armor = ebpsUnit?.health.armorLayout.frontArmor || 1;
+      custUnit.armor = def_ebps?.health.armorLayout.frontArmor || 1;
 
     // squad hitpoints
-    const def_ebps = ebps.find((unit) => unit.id == custUnit.def_member);
     if (def_ebps) {
       custUnit.ebps_default = def_ebps;
       custUnit.hitpoints = def_ebps.health.hitpoints;
