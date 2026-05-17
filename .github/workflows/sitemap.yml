@@ -54,24 +54,21 @@ jobs:
 
       - name: Create New Branch
         run: |
+          TIMESTAMP=$(date +"%Y-%m-%d-%H%M%S")
+          BRANCH_NAME="automated-content-update-${TIMESTAMP}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
+
           git checkout master
-          git branch -D automated-content-update || true
-          git checkout -b automated-content-update
+          git checkout -b ${BRANCH_NAME}
           git add -A
           git commit -m "Update sitemap and search data"
-          git push origin HEAD --force
+          git push origin HEAD
 
       - name: Create or Update Pull Request
         run: |
           gh auth setup-git
-          gh_pr_up() {
-            PR_EXISTS=$(gh pr list --head automated-content-update | wc -l)
-            if [ "$PR_EXISTS" -eq "0" ]; then
-              gh pr create "$@"
-            else
-              gh pr edit "$@"
-            fi
-          }
-          gh_pr_up --title "Update Sitemap and Search Data" --body "Automatically generated sitemap and search data update" --base master --label "bot" --head automated-content-update
+
+          echo "Creating new PR with branch ${BRANCH_NAME}"
+          gh pr create --title "Update Sitemap and Search Data" --body "Automatically generated sitemap and search data update" --base master --label "bot" --head ${BRANCH_NAME}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
