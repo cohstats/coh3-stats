@@ -13,6 +13,7 @@ import {
   IconChartAreaLine,
   IconChevronDown,
   IconDeviceDesktopAnalytics,
+  IconShieldCheckered,
   IconTrophy,
   IconUsersGroup,
 } from "@tabler/icons-react";
@@ -55,6 +56,17 @@ const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) =>
                 <IconDeviceDesktopAnalytics size={16} />
                 <Anchor component={Link} href={getLeaderBoardStatsRoute()} onClick={close}>
                   {t("mainMenu.statsMenu.leaderboards")}
+                </Anchor>
+              </Group>
+              <Group gap={"xs"}>
+                <IconShieldCheckered size={16} />
+                <Anchor
+                  href="https://cohdb.com/battlegroups"
+                  target="_blank"
+                  rel="noopener"
+                  onClick={close}
+                >
+                  {t("mainMenu.statsMenu.battlegroups")}
                 </Anchor>
               </Group>
               <Group gap={"xs"}>
@@ -105,6 +117,12 @@ const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) =>
               <IconDeviceDesktopAnalytics size={16} />
               <Anchor component={Link} href={getLeaderBoardStatsRoute()}>
                 {t("mainMenu.statsMenu.leaderboards")}
+              </Anchor>
+            </Group>
+            <Group gap={"xs"}>
+              <IconShieldCheckered size={16} />
+              <Anchor href="https://cohdb.com/battlegroups" target="_blank" rel="noopener">
+                {t("mainMenu.statsMenu.battlegroups")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>

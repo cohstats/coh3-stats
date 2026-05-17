@@ -26,6 +26,7 @@ import {
   CloseButton,
   Box,
   SegmentedControl,
+  Stack,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { getDPSCalculatorRoute } from "../../../src/routes";
@@ -404,9 +405,12 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
 
         {/* Target Unit Section - Optional */}
         <div>
-          <Title order={4} mb="sm">
-            Target Unit - Optional
-          </Title>
+          <Stack gap={0} mb="sm">
+            <Title order={4}>Target Unit - Optional</Title>
+            <Text c="dimmed" fs="italic">
+              When comparing vehicles dmg - you need to select target unit (vehicle).
+            </Text>
+          </Stack>
           <UnitSearch
             key="target-search"
             searchData={unitSelectionList}

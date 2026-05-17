@@ -1,6 +1,5 @@
 import {
   getCOHDBReplaysURL,
-  getCOHDBUploadULR,
   ProcessedReplayData,
   RECORDS_PER_REPLAYS_PAGE,
 } from "../../../../src/apis/cohdb-api";
@@ -10,16 +9,11 @@ import { DataTable } from "mantine-datatable";
 import FactionIcon from "../../../../components/faction-icon";
 import { cohDBracesToNormalRaces } from "../../../../src/coh3/coh3-data";
 import { Anchor, Button, Flex, Group, Title, Tooltip, Text, Space, Stack } from "@mantine/core";
-import {
-  IconAlertTriangle,
-  IconCloudUpload,
-  IconDownload,
-  IconUpload,
-} from "@tabler/icons-react";
+import { IconAlertTriangle, IconDownload } from "@tabler/icons-react";
 import config from "../../../../config";
 import { calculatePageNumber, calculatePositionNumber } from "../../../../src/utils";
 import { useRouter } from "next/router";
-import { getDesktopAppRoute, getPlayerCardRoute } from "../../../../src/routes";
+import { getPlayerCardRoute } from "../../../../src/routes";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import Link from "next/link";
@@ -60,17 +54,13 @@ const ReplaysTab = ({
   return (
     <>
       <Group justify="space-between">
-        <Title order={3}>Replays by COHDB</Title>
-        <Group>
-          <Anchor href={getCOHDBUploadULR()} target="_blank">
-            <Button leftSection={<IconUpload />}>Upload Replay</Button>
-          </Anchor>
-          <Tooltip label={"You can automatically upload all your replays with Desktop App"}>
-            <Anchor href={getDesktopAppRoute()}>
-              <Button leftSection={<IconCloudUpload />}>Auto sync Replays</Button>
-            </Anchor>
-          </Tooltip>
-        </Group>
+        <Stack gap="xs">
+          <Title order={3}>Replays by COHDB</Title>
+          <Text c="dimmed" fs="italic">
+            Historic replays - you are no longer able to upload replays manually. You can always
+            download the replays from the matches page.
+          </Text>
+        </Stack>
       </Group>
       <Space h={"md"} />
       <DataTable
