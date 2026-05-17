@@ -58,10 +58,36 @@ const statConfigs: StatConfig[] = [
     unit: "pen",
   },
   {
-    key: "rpm",
+    key: "cooldownReload",
     label: "Rate of Fire",
+    description:
+      "Cooldown and Reload modifier - affects how fast weapons fire, do not add together",
+    unit: "%",
+  },
+  {
+    key: "overallAttackSpeed",
+    label: "Overall Attack Speed",
+    description:
+      "Time between burst modifier - affects how fast weapons fire, do not add together",
+    unit: "%",
+  },
+  {
+    key: "reload",
+    label: "Reload",
+    description: "Reload modifier - affects how fast weapons fire, do not add together",
+    unit: "%",
+  },
+  {
+    key: "burstLength",
+    label: "Burst Length",
+    description: "Duration of burst - affects how fast weapons fire",
+    unit: "%",
+  },
+  {
+    key: "burstShots",
+    label: "Rounds per Burst",
     description: "Rounds per minute modifier - affects how fast weapons fire",
-    unit: "rpm",
+    unit: "%",
   },
   {
     key: "armor",
@@ -115,7 +141,11 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       accuracy: { type: "percentage", value: 0, enabled: false },
       damage: { type: "percentage", value: 0, enabled: false },
       penetration: { type: "percentage", value: 0, enabled: false },
-      rpm: { type: "percentage", value: 0, enabled: false },
+      reload: { type: "percentage", value: 0, enabled: false },
+      cooldownReload: { type: "percentage", value: 0, enabled: false },
+      overallAttackSpeed: { type: "percentage", value: 0, enabled: false },
+      burstLength: { type: "percentage", value: 0, enabled: false },
+      burstShots: { type: "percentage", value: 0, enabled: false },
       armor: { type: "percentage", value: 0, enabled: false },
       hitpoints: { type: "percentage", value: 0, enabled: false },
     };

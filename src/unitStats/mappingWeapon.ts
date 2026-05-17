@@ -336,7 +336,7 @@ const mapWeaponData = (
           target_types.target_unit_type_multipliers?.weapon_multiplier?.penetration_multiplier ||
           1,
         damage_multiplier:
-          target_types.target_unit_type_multiplier?.weapon_multipliers?.damage_multiplier || 1,
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier || 1,
       });
     }
 

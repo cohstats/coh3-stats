@@ -39,32 +39,43 @@ const resolveLocstring = (inLocstring: LocstringObjectSchema, locale: string = "
 };
 
 const resolveTextFormatterLocstring = (
-  inFormatter: TextFormatterSchema,
+  inFormatter: TextFormatterSchema | null | undefined,
   locale: string = "en",
-) => {
-  if (!inFormatter || !inFormatter?.formatter?.locstring?.value) return null;
-  // We lookup for the formatter locstring and replace the values with the argument list.
-  const foundFormatterLoc =
-    unitStatsLocStringCache[locale]?.[inFormatter.formatter.locstring.value] ?? null;
+): string | null => {
+  const locKey = inFormatter?.formatter?.locstring?.value;
+  if (!locKey) return null;
+
+  // Look up the localized formatter string.
+  const foundFormatterLoc = unitStatsLocStringCache[locale]?.[locKey] ?? null;
+
   if (!foundFormatterLoc) return null;
 
-  const valRegex = /(\%\d+\%)/g;
-  const replacements = inFormatter.formatter_arguments.map((x) => {
-    if (x.int_value) return `${x.int_value}`;
-    if (x.float_value) return `${x.float_value}`;
-    if (x.locstring_value) return resolveLocstring(x.locstring_value, locale);
+  const args = inFormatter.formatter_arguments ?? [];
+
+  const replacements = args.map((x): string => {
+    // `!= null` is safer than truthy checks.
+    // Even if 0 cannot happen here, this avoids future surprises.
+    if (x.int_value != null) return `${x.int_value}`;
+    if (x.float_value != null) return `${x.float_value}`;
+
+    if (x.locstring_value != null) {
+      return resolveLocstring(x.locstring_value, locale) ?? "0";
+    }
+
+    return "0";
   });
-  const formattedLoc = foundFormatterLoc.replace(valRegex, () => replacements.shift() ?? "0");
 
-  // Now replace the double % symbol via regex to preserve a single percentage symbol.
-  const perRegex = /(\%\%)/g;
-  const finalFormattedLoc = formattedLoc.replace(perRegex, "%");
+  // Replace numbered placeholders using their actual index.
+  // %1% = replacements[0]
+  // %2% = replacements[1]
+  // etc.
+  const formattedLoc = foundFormatterLoc.replace(/%(\d+)%/g, (_match, indexText) => {
+    const index = Number(indexText) - 1;
+    return replacements[index] ?? "0";
+  });
 
-  // Small formatter step to add spaces instead of the string line break characters.
-  // const lineBreakRegex = /\\r?\\n|\\r|\\n/g;
-  // const lineFormatterLoc = finalFormattedLoc.replace(lineBreakRegex, " ");
-
-  return finalFormattedLoc;
+  // Replace escaped percentage signs.
+  return formattedLoc.replace(/%%/g, "%");
 };
 
 const fetchLocstring = async (locale: string = "en") => {

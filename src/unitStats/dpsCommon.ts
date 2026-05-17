@@ -93,7 +93,11 @@ type CustomModifiers = {
   accuracy: CustomModifier;
   damage: CustomModifier;
   penetration: CustomModifier;
-  rpm: CustomModifier;
+  reload: CustomModifier;
+  cooldownReload: CustomModifier;
+  overallAttackSpeed: CustomModifier;
+  burstLength: CustomModifier;
+  burstShots: CustomModifier;
   armor: CustomModifier;
   hitpoints: CustomModifier;
 };
@@ -146,7 +150,11 @@ export const createDefaultCustomModifiers = (): CustomModifiers => ({
   accuracy: { type: "percentage", value: 0, enabled: false },
   damage: { type: "percentage", value: 0, enabled: false },
   penetration: { type: "percentage", value: 0, enabled: false },
-  rpm: { type: "percentage", value: 0, enabled: false },
+  reload: { type: "percentage", value: 0, enabled: false },
+  cooldownReload: { type: "percentage", value: 0, enabled: false },
+  overallAttackSpeed: { type: "percentage", value: 0, enabled: false },
+  burstLength: { type: "percentage", value: 0, enabled: false },
+  burstShots: { type: "percentage", value: 0, enabled: false },
   armor: { type: "percentage", value: 0, enabled: false },
   hitpoints: { type: "percentage", value: 0, enabled: false },
 });

@@ -159,17 +159,17 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="green.6">
-              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_near))}
+              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_near) * 100) / 100}
             </Text>
           </Grid.Col>
           <Grid.Col span={{ base: 3, md: 3 }}>
             <Text style={{ textAlign: "center" }} c="yellow.6">
-              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_mid))}
+              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_mid) * 100) / 100}
             </Text>
           </Grid.Col>
           <Grid.Col span={{ base: 2, md: 2 }}>
             <Text style={{ textAlign: "center" }} c="red.6">
-              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_far))}
+              {Math.round(getWeaponRpm(weapon_bag, weapon_bag.range_distance_far) * 100) / 100}
             </Text>
           </Grid.Col>
         </Grid>

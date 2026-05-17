@@ -83,9 +83,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
       accu_mid: row.weapon_bag.accuracy_mid,
       accu_far: row.weapon_bag.accuracy_far,
       rpm_near:
-        Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_near)) || "-",
-      rpm_mid: Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_mid)) || "-",
-      rpm_far: Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_far)) || "-",
+        Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_near) * 100) /
+          100 || "-",
+      rpm_mid:
+        Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_mid) * 100) / 100 ||
+        "-",
+      rpm_far:
+        Math.round(getWeaponRpm(row.weapon_bag, row.weapon_bag.range_distance_far) * 100) / 100 ||
+        "-",
       range_near: row.weapon_bag.range?.near || "-",
       range_mid: row.weapon_bag.range?.mid || "-",
       range_far: row.weapon_bag.range?.far || "-",
