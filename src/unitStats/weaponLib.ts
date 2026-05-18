@@ -463,7 +463,7 @@ export const getWeaponRpm = (
     // burstTime_m = weapon_bag.burst_duration_multiplier_mid * movingBurstMp * avgBurstTime;
     // burstTime_f = weapon_bag.burst_duration_multiplier_far * movingBurstMp * avgBurstTime;
 
-    const [burstTimeMin, burstTimeMax] = _getInterpolationByDistanceMinMax(
+    let [burstTimeMin, burstTimeMax] = _getInterpolationByDistanceMinMax(
       distance,
       weapon_bag.range,
       weapon_bag.burst_duration_min,
@@ -472,21 +472,25 @@ export const getWeaponRpm = (
       weapon_bag.burst_duration_multiplier_mid,
       weapon_bag.burst_duration_multiplier_far,
     );
+    burstTimeMin *= movingBurstMp;
+    burstTimeMax *= movingBurstMp;
     let burstLengthMod = 1;
     if (attacking_unit?.custom_modifiers?.burstLength.enabled) {
       if (attacking_unit.custom_modifiers.burstLength.type === "percentage") {
         burstLengthMod = 1 + attacking_unit.custom_modifiers.burstLength.value / 100;
         burstTime = _averageRoundedBurstDuration(
-          burstTimeMin * movingBurstMp * burstLengthMod,
-          burstTimeMax * movingBurstMp * burstLengthMod,
+          burstTimeMin *= burstLengthMod,
+          burstTimeMax *= burstLengthMod,
         );
       } else {
         burstTime = attacking_unit.custom_modifiers.burstLength.value;
+        burstTimeMin = attacking_unit.custom_modifiers.burstLength.value;
+        burstTimeMax = attacking_unit.custom_modifiers.burstLength.value;
       }
     } else
       burstTime = _averageRoundedBurstDuration(
-        burstTimeMin * movingBurstMp,
-        burstTimeMax * movingBurstMp,
+        burstTimeMin,
+        burstTimeMax,
       );
 
     const [burstRateMin, burstRateMax] = _getInterpolationByDistanceMinMax(
@@ -505,8 +509,8 @@ export const getWeaponRpm = (
       if (attacking_unit.custom_modifiers.burstShots.type === "percentage") {
         const burstShotsMod = 1 + attacking_unit.custom_modifiers.burstShots.value / 100;
         burstShots = _averageBurstShots(
-          burstTimeMin * movingBurstMp * burstLengthMod,
-          burstTimeMax * movingBurstMp * burstLengthMod,
+          burstTimeMin,
+          burstTimeMax,
           burstRateMin * burstShotsMod,
           burstRateMax * burstShotsMod,
         );
