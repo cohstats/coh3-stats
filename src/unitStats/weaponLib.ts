@@ -479,19 +479,15 @@ export const getWeaponRpm = (
       if (attacking_unit.custom_modifiers.burstLength.type === "percentage") {
         burstLengthMod = 1 + attacking_unit.custom_modifiers.burstLength.value / 100;
         burstTime = _averageRoundedBurstDuration(
-          burstTimeMin *= burstLengthMod,
-          burstTimeMax *= burstLengthMod,
+          (burstTimeMin *= burstLengthMod),
+          (burstTimeMax *= burstLengthMod),
         );
       } else {
         burstTime = attacking_unit.custom_modifiers.burstLength.value;
         burstTimeMin = attacking_unit.custom_modifiers.burstLength.value;
         burstTimeMax = attacking_unit.custom_modifiers.burstLength.value;
       }
-    } else
-      burstTime = _averageRoundedBurstDuration(
-        burstTimeMin,
-        burstTimeMax,
-      );
+    } else burstTime = _averageRoundedBurstDuration(burstTimeMin, burstTimeMax);
 
     const [burstRateMin, burstRateMax] = _getInterpolationByDistanceMinMax(
       distance,
