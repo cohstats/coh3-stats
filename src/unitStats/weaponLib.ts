@@ -1,6 +1,9 @@
 import { CustomizableUnit, getCoverMultiplier, WeaponMember } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 
+const TICK_DURATION = 0.125;
+const tickRate = 1 / TICK_DURATION;
+
 const getSingleWeaponDPS = (
   weapon_member: WeaponMember,
   distance = 0,
@@ -292,7 +295,7 @@ const getSingleWeaponDPS = (
     // Apply damage modifier
     if (modifiers.damage.enabled) {
       if (modifiers.damage.type === "percentage") {
-        finalDamage = avgDamage * (1 + modifiers.damage.value / 100);
+        finalDamage = finalDamage * (1 + modifiers.damage.value / 100);
       } else {
         finalDamage = modifiers.damage.value;
       }
@@ -409,9 +412,9 @@ export const getWeaponRpm = (
     cooldownMax * movingCooldownMp * cooldownMod,
   );
   // 4 wind up/down
-  let windUp = Math.round(weapon_bag.fire_wind_up * windMod * 8) / 8;
-  const windDown = Math.round(weapon_bag.fire_wind_down * windMod * 8) / 8;
-  if (windUp > 0) windUp += 0.125;
+  let windUp = Math.round(weapon_bag.fire_wind_up * windMod * tickRate) / tickRate;
+  const windDown = Math.round(weapon_bag.fire_wind_down * windMod * tickRate) / tickRate;
+  if (windUp > 0) windUp += TICK_DURATION;
   // Reload duration
   const [reloadTimeMin, reloadTimeMax] = _getInterpolationByDistanceMinMax(
     distance,
@@ -435,13 +438,16 @@ export const getWeaponRpm = (
       reloadTime = attacking_unit.custom_modifiers.reload.value;
     }
   } else {
-    reloadTime = _averageRoundedToNearestTick(reloadTimeMin, reloadTimeMax);
+    reloadTime = _averageRoundedToNearestTick(
+      reloadTimeMin * reloadMod,
+      reloadTimeMax * reloadMod,
+    );
   }
   if (reloadTime == 0) reloadTime = cooldown;
   // Avg clipSize (measured in number of cooldowns, thus we need to add the first shot)
   const avgClipSize = (weapon_bag.reload_frequency_min + weapon_bag.reload_frequency_max + 2) / 2;
 
-  let burstTime = 0.125;
+  let burstTime = TICK_DURATION;
 
   let shotsPerClip = avgClipSize;
 
@@ -469,7 +475,7 @@ export const getWeaponRpm = (
     if (attacking_unit?.custom_modifiers?.burstLength.enabled) {
       if (attacking_unit.custom_modifiers.burstLength.type === "percentage") {
         const burstLengthMod = 1 + attacking_unit.custom_modifiers.burstLength.value / 100;
-        burstTime = _averageRoundedToNearestTick(
+        burstTime = _averageRoundedBurstDuration(
           burstTimeMin * movingBurstMp * burstLengthMod,
           burstTimeMax * movingBurstMp * burstLengthMod,
         );
@@ -477,11 +483,10 @@ export const getWeaponRpm = (
         burstTime = attacking_unit.custom_modifiers.burstLength.value;
       }
     } else
-      burstTime = _averageRoundedToNearestTick(
+      burstTime = _averageRoundedBurstDuration(
         burstTimeMin * movingBurstMp,
         burstTimeMax * movingBurstMp,
       );
-    if (burstTime < 0.125) burstTime = 0.125;
 
     const burstRate = getInterpolationByDistance(
       distance,
@@ -511,7 +516,7 @@ export const getWeaponRpm = (
   let burstDuration = 0;
 
   // time for a burst (mg) or shot (single bolt) + tick time
-  burstDuration = aimTime + burstTime + cooldown + windDown + windUp + 0.125;
+  burstDuration = aimTime + burstTime + cooldown + windDown + windUp + TICK_DURATION;
 
   // Time to empty the clip and reload
   const clipTime = avgClipSize * burstDuration - cooldown + reloadTime;
@@ -661,34 +666,180 @@ const _averageRoundedToNearestTick = (min: number, max: number): number => {
     [min, max] = [max, min];
   }
 
-  if (min == max) {
-    return Math.round(min * 8) / 8;
+  // Single fixed value
+  if (min === max) {
+    return Math.round(min / TICK_DURATION) * TICK_DURATION;
   }
 
-  const lo = min * 8;
-  const hi = max * 8;
+  const halfTick = TICK_DURATION / 2;
+  const totalRange = max - min;
 
   let weightedSum = 0;
 
-  const firstK = Math.floor(lo - 0.5);
-  const lastK = Math.ceil(hi + 0.5);
+  // Wide enough bounds to cover every rounded tick whose interval can overlap [min, max]
+  const firstTickIndex = Math.floor((min - halfTick) / TICK_DURATION);
+  const lastTickIndex = Math.ceil((max + halfTick) / TICK_DURATION);
 
-  for (let k = firstK; k <= lastK; k++) {
-    const intervalStart = k - 0.5;
-    const intervalEnd = k + 0.5;
+  for (let tickIndex = firstTickIndex; tickIndex <= lastTickIndex; tickIndex++) {
+    const roundedValue = tickIndex * TICK_DURATION;
 
-    const overlapStart = Math.max(lo, intervalStart);
-    const overlapEnd = Math.min(hi, intervalEnd);
-    const overlap = overlapEnd - overlapStart;
+    // Raw values in this interval round to roundedValue
+    const roundingIntervalMin = roundedValue - halfTick;
+    const roundingIntervalMax = roundedValue + halfTick;
 
-    if (overlap > 0) {
-      const roundedValue = k / 8;
-      weightedSum += roundedValue * overlap;
-    }
+    // How much of that interval overlaps the actual input range?
+    const overlapMin = Math.max(min, roundingIntervalMin);
+    const overlapMax = Math.min(max, roundingIntervalMax);
+    const overlap = Math.max(0, overlapMax - overlapMin);
+
+    if (overlap === 0) continue;
+
+    weightedSum += roundedValue * overlap;
   }
 
-  return weightedSum / (hi - lo);
+  return weightedSum / totalRange;
 };
+
+const _averageRoundedToNearestInteger = (min: number, max: number): number => {
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+
+  if (min === max) {
+    return Math.round(min);
+  }
+
+  const halfStep = 0.5;
+  const totalRange = max - min;
+
+  let weightedSum = 0;
+
+  // Wide enough bounds to cover every integer whose rounding interval can overlap [min, max]
+  const firstInteger = Math.floor(min - halfStep);
+  const lastInteger = Math.ceil(max + halfStep);
+
+  for (let integer = firstInteger; integer <= lastInteger; integer++) {
+    // Raw values in this interval round to this integer
+    const roundingIntervalMin = integer - halfStep;
+    const roundingIntervalMax = integer + halfStep;
+
+    // How much of that interval overlaps the actual input range?
+    const overlapMin = Math.max(min, roundingIntervalMin);
+    const overlapMax = Math.min(max, roundingIntervalMax);
+    const overlap = Math.max(0, overlapMax - overlapMin);
+
+    if (overlap === 0) continue;
+
+    weightedSum += integer * overlap;
+  }
+
+  return weightedSum / totalRange;
+};
+
+const _averageRoundedBurstDuration = (min: number, max: number): number => {
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+
+  // Single fixed burst duration
+  if (min === max) {
+    const roundedDuration = Math.round(min / TICK_DURATION) * TICK_DURATION;
+    return Math.max(TICK_DURATION, roundedDuration);
+  }
+
+  const halfTick = TICK_DURATION / 2;
+  const totalRange = max - min;
+
+  let weightedSum = 0;
+
+  // Wide enough bounds to cover every rounded tick whose interval can overlap [min, max]
+  const firstTickIndex = Math.floor((min - halfTick) / TICK_DURATION);
+  const lastTickIndex = Math.ceil((max + halfTick) / TICK_DURATION);
+
+  for (let tickIndex = firstTickIndex; tickIndex <= lastTickIndex; tickIndex++) {
+    const roundedDuration = tickIndex * TICK_DURATION;
+
+    // Burst durations can never be shorter than one tick
+    const actualDuration = Math.max(TICK_DURATION, roundedDuration);
+
+    // Raw values in this interval round to roundedDuration
+    const roundingIntervalMin = roundedDuration - halfTick;
+    const roundingIntervalMax = roundedDuration + halfTick;
+
+    // How much of that interval overlaps the actual input range?
+    const overlapMin = Math.max(min, roundingIntervalMin);
+    const overlapMax = Math.min(max, roundingIntervalMax);
+    const overlap = Math.max(0, overlapMax - overlapMin);
+
+    if (overlap === 0) continue;
+
+    weightedSum += actualDuration * overlap;
+  }
+
+  return weightedSum / totalRange;
+};
+
+export function _averageBurstShots(
+  burstTimeMin: number,
+  burstTimeMax: number,
+  burstRateMin: number,
+  burstRateMax: number,
+): number {
+  let min = burstTimeMin;
+  let max = burstTimeMax;
+
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+
+  // Single fixed burst time
+  if (min === max) {
+    const roundedBurstTime = Math.round(min / TICK_DURATION) * TICK_DURATION;
+
+    const actualBurstDuration = Math.max(TICK_DURATION, roundedBurstTime);
+
+    return _averageRoundedToNearestInteger(
+      actualBurstDuration * burstRateMin,
+      actualBurstDuration * burstRateMax,
+    );
+  }
+
+  const halfTick = TICK_DURATION / 2;
+  const totalRange = max - min;
+
+  let weightedShots = 0;
+
+  // Wide enough bounds to cover every rounded tick whose interval can overlap [min, max]
+  const firstTickIndex = Math.floor((min - halfTick) / TICK_DURATION);
+  const lastTickIndex = Math.ceil((max + halfTick) / TICK_DURATION);
+
+  for (let tickIndex = firstTickIndex; tickIndex <= lastTickIndex; tickIndex++) {
+    const roundedBurstTime = tickIndex * TICK_DURATION;
+
+    // Bursts never last less than one tick
+    const actualBurstDuration = Math.max(TICK_DURATION, roundedBurstTime);
+
+    // Raw burst times in this interval round to roundedBurstTime
+    const roundingIntervalMin = roundedBurstTime - halfTick;
+    const roundingIntervalMax = roundedBurstTime + halfTick;
+
+    // How much of that interval overlaps the actual burst-time range?
+    const overlapMin = Math.max(min, roundingIntervalMin);
+    const overlapMax = Math.min(max, roundingIntervalMax);
+    const overlap = Math.max(0, overlapMax - overlapMin);
+
+    if (overlap === 0) continue;
+
+    const averageShotsForThisDuration = _averageRoundedToNearestInteger(
+      actualBurstDuration * burstRateMin,
+      actualBurstDuration * burstRateMax,
+    );
+
+    weightedShots += averageShotsForThisDuration * overlap;
+  }
+
+  return weightedShots / totalRange;
+}
 
 type TargetTypeModifier = {
   unit_type: string;
