@@ -18,14 +18,14 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "22.x"
           cache: "yarn"
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: cache-node-modules-v2
         with:
@@ -35,7 +35,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
       - name: Cache NextJS Build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: next-build-tests
         with:
@@ -79,14 +79,14 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "22.x"
           cache: "yarn"
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: cache-node-modules-v2
         with:
@@ -96,7 +96,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
       - name: Cache NextJS Build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: next-build-e2e
         with:
@@ -109,7 +109,7 @@ jobs:
         id: playwright-version
         run: echo "version=$(yarn info @playwright/test version 2>/dev/null | tail -1)" >> $GITHUB_OUTPUT
       - name: Cache Playwright Browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright

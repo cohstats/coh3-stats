@@ -20,7 +20,7 @@ jobs:
       name: ${{ inputs.stage == 'production' && 'prod' || 'dev' }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
         uses: actions/setup-node@v4
