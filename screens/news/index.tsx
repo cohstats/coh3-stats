@@ -123,6 +123,18 @@ const preset = reactPreset.extend((tags: any) => ({
       content: node.content || [],
     };
   },
+  // Custom handler for dynamiclink tags
+  dynamiclink: (node: { attrs: Record<string, string> }) => {
+    const href = node.attrs?.href || "";
+    return {
+      tag: Anchor,
+      attrs: {
+        href: href,
+        target: "_blank",
+      },
+      content: [href],
+    };
+  },
 }));
 
 class NewsComponentErrorBoundary extends React.Component {
@@ -237,6 +249,7 @@ const SingleNewsItem = ({
                   "spotify",
                   "iframe",
                   "previewyoutube",
+                  "dynamiclink",
                 ],
               }}
             >
