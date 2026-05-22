@@ -332,7 +332,9 @@ const getSingleWeaponDPS = (
   if (attacking_unit?.custom_modifiers?.penetration.enabled !== true) {
     finalPenetrationChance = Math.min(penetration / finalArmor, 1);
   }
-  if (finalPenetrationChance < 0.03) {
+  //autobounce is at 3%, any pen below that automatically fails
+  const AUTOBOUNCE_THRESHOLD = 0.03;
+  if (finalPenetrationChance < AUTOBOUNCE_THRESHOLD) {
     finalPenetrationChance = 0;
   }
 
