@@ -332,12 +332,22 @@ const getSingleWeaponDPS = (
   if (attacking_unit?.custom_modifiers?.penetration.enabled !== true) {
     finalPenetrationChance = Math.min(penetration / finalArmor, 1);
   }
-  const finalHitChance = finalAccuracy * finalPenetrationChance;
+  if (finalPenetrationChance < 0.03) {
+    finalPenetrationChance = 0;
+  }
+
+  const penetrationDamageMultiplier =
+    finalPenetrationChance +
+    (weapon_bag.deflection_has_deflection_damage
+      ? weapon_bag.deflection_damage_multiplier * (1 - finalPenetrationChance)
+      : 0);
+
+  const effectiveHitDamageMultiplier = finalAccuracy * penetrationDamageMultiplier;
 
   /*   Damage per Second *
     -------------------------------------------------
   */
-  const dps = (finalRpm / 60) * (finalHitChance * finalDamage);
+  const dps = (finalRpm / 60) * (effectiveHitDamageMultiplier * finalDamage);
 
   return dps * weapon_member.num;
 };

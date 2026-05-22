@@ -84,6 +84,9 @@ export type WeaponStatsType = {
 
   default_attack_type: string;
 
+  deflection_damage_multiplier: number;
+  deflection_has_deflection_damage: boolean;
+
   fire_wind_down: number;
   fire_wind_up: number;
 
@@ -276,6 +279,10 @@ const mapWeaponData = (
       damage_max: weapon_bag.damage?.max || 0,
 
       default_attack_type: weapon_bag.default_attack_type || "",
+
+      deflection_damage_multiplier: weapon_bag.deflection?.deflection_damage_multiplier || 0,
+      deflection_has_deflection_damage:
+        weapon_bag.deflection?.has_deflection_damage == "True" ? true : false,
 
       fire_wind_down: weapon_bag.fire?.wind_down || 0,
       fire_wind_up: weapon_bag.fire?.wind_up || 0,
