@@ -26,7 +26,10 @@ export type WeaponStatsType = {
   aoe_penetration_mid: number;
   aoe_penetration_near: number;
 
+  aoe_shape: "circle" | "rectangle" | "point" | "unknown";
   aoe_outer_radius: number;
+  aoe_outer_length: number;
+  aoe_width: number;
 
   aoe_damage_far: number;
   aoe_damage_mid: number;
@@ -155,6 +158,18 @@ type TargetType = {
   damage_multiplier: number;
 };
 
+type AoeShape = "point" | "circle" | "rectangle" | "unknown";
+
+const getAoeShape = (templateReference: string | undefined): AoeShape => {
+  const ref = templateReference || "";
+
+  if (ref.includes("point_area_option")) return "point";
+  if (ref.includes("circle_area_option")) return "circle";
+  if (ref.includes("rectangle_area_option")) return "rectangle";
+
+  return "unknown";
+};
+
 const mapWeaponData = (
   key: string,
   node: any,
@@ -215,7 +230,10 @@ const mapWeaponData = (
 
       aoe_damage_max_member: weapon_bag.area_effect?.damage_max_members_per_squad || -1,
 
+      aoe_shape: getAoeShape(weapon_bag.area_effect?.area_info?.template_reference?.value),
       aoe_outer_radius: weapon_bag.area_effect?.area_info?.outer_radius || 0,
+      aoe_outer_length: weapon_bag.area_effect?.area_info?.outer_length || 0,
+      aoe_width: weapon_bag.area_effect?.area_info?.width || 0,
 
       aoe_damage_far: weapon_bag.area_effect?.damage?.far || 1,
       aoe_damage_mid: weapon_bag.area_effect?.damage?.mid || 1,
@@ -338,9 +356,9 @@ const mapWeaponData = (
         unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
         dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
         accuracy_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multiplier?.accuracy_multiplier || 1,
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.accuracy_multiplier || 1,
         penetration_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multiplier?.penetration_multiplier ||
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.penetration_multiplier ||
           1,
         damage_multiplier:
           target_types.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier || 1,

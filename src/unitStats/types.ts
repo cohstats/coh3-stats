@@ -206,10 +206,15 @@ export type AreaEffect = {
 
 export type AreaInfo = {
   template_reference: TemplateReference;
-  outer_radius: number;
-  inner_radius: number;
-  is_two_dimensional: string;
-  dynamic_radius_type: string;
+
+  outer_radius?: number;
+  inner_radius?: number;
+
+  outer_length?: number;
+  width?: number;
+
+  is_two_dimensional?: string;
+  dynamic_radius_type?: string;
 };
 
 export type TemplateReferenceParentSchema = {

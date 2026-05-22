@@ -26,6 +26,7 @@ export const WeaponLoadoutCard = (
   const isValidWeapon =
     weapon_cat == "ballistic_weapon" ||
     weapon_cat == "explosive_weapon" ||
+    weapon_cat == "flame_throwers" ||
     weapon_cat == "small_arms";
   return (
     <Stack gap={8}>
@@ -305,7 +306,7 @@ export const WeaponLoadoutCard = (
           </Grid.Col>
           <Grid.Col span={{ base: 2, md: 2 }}>
             <Text style={{ textAlign: "center" }} c="red.6">
-              {weapon_bag.aoe_outer_radius}
+              {weapon_bag.aoe_width > 0 ? weapon_bag.aoe_width : weapon_bag.aoe_outer_radius}
             </Text>
           </Grid.Col>
         </Grid>
