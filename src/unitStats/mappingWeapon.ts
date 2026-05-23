@@ -127,7 +127,15 @@ export type WeaponStatsType = {
   scatter_distance_scatter_ratio: number;
   scatter_distance_object_min: number;
 
+  setup_time: number;
+
   target_type_table: TargetType[];
+
+  tracking_normal_max_left: number;
+  tracking_normal_max_right: number;
+  tracking_normal_speed_horizontal: number;
+
+  teardown_time: number;
 };
 
 // Maps a single weapon entity
@@ -345,8 +353,16 @@ const mapWeaponData = (
       scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
       scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
       scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_obj_hit_min || 0,
+
+      setup_time: weapon_bag.setup?.duration || 0,
       //aoe_distance_object_min : weapon_bag.scatt
       target_type_table: [],
+
+      tracking_normal_max_left: weapon_bag.tracking?.normal?.max_left || 0,
+      tracking_normal_max_right: weapon_bag.tracking?.normal?.max_right || 0,
+      tracking_normal_speed_horizontal: weapon_bag.tracking?.normal?.speed_horizontal || 0,
+
+      teardown_time: weapon_bag.teardown?.duration || 0,
     },
   };
 
@@ -354,14 +370,14 @@ const mapWeaponData = (
     for (const target_types of weapon_bag.target_type_table) {
       weaponData.weapon_bag.target_type_table.push({
         unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
-        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
+        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier ?? 0,
         accuracy_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multipliers?.accuracy_multiplier || 1,
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.accuracy_multiplier ?? 1,
         penetration_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multipliers?.penetration_multiplier ||
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.penetration_multiplier ??
           1,
         damage_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier || 1,
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier ?? 1,
       });
     }
 

@@ -31,12 +31,14 @@ type UnitSquadInput = {
   sight: {
     coneAngle: number;
     outerRadius: number;
+    tp_global: number;
   };
   moving: {
     acceleration: number;
     deceleration: number;
     defaultSpeed: number;
     maxSpeed: number;
+    rotation: number;
   };
   capture: {
     cap: number;
@@ -62,6 +64,14 @@ const UnitSquadIcons = {
   decap_mult: "/icons/unit_status/bw2/10_retreatpoint.png",
 } as const;
 
+type StatItemProps = {
+  icon: string;
+  alt: string;
+  label: string;
+  value: string | number;
+  show?: boolean;
+};
+
 export const UnitSquadCard = ({
   id,
   capture,
@@ -74,6 +84,39 @@ export const UnitSquadCard = ({
 }: UnitSquadInput) => {
   const { t } = useTranslation(["explorer"]);
 
+  const StatItem = ({
+    icon,
+    alt,
+    label,
+    value,
+    show = true,
+  }: {
+    icon: string;
+    alt: string;
+    label: string;
+    value: string | number;
+    show?: boolean;
+  }) => {
+    if (!show) return null;
+
+    return (
+      <Grid.Col span={{ base: 6, md: 4 }}>
+        <Flex gap={4} align="center" justify="space-between">
+          <Group gap={4} align="center">
+            <ImageWithFallback
+              {...uniformIconSize}
+              fallbackSrc={symbolPlaceholder}
+              src={icon}
+              alt={alt}
+            />
+            <Text>{label}</Text>
+          </Group>
+          <Text style={{ textAlign: "end" }}>{value}</Text>
+        </Flex>
+      </Grid.Col>
+    );
+  };
+
   return (
     <Stack>
       <Stack gap={4}>
@@ -85,152 +128,86 @@ export const UnitSquadCard = ({
         </Text>
       </Stack>
       <Grid fz="sm" columns={12} align="center" gutter="lg">
-        <Grid.Col span={{ base: 6, md: 4 }}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} align="center">
-              <ImageWithFallback
-                {...uniformIconSize}
-                fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["sight_range"]}
-                alt="squad sight range"
-              />
-              <Text>{t("statsCard.sightRange")}</Text>
-            </Group>
-            <Text style={{ textAlign: "end" }}>{sight?.outerRadius || 0.0}</Text>
-          </Flex>
-        </Grid.Col>
+        <StatItem
+          icon={UnitSquadIcons["sight_range"]}
+          alt="squad sight range"
+          label={t("statsCard.sightRange")}
+          value={sight?.outerRadius ?? 0}
+        />
 
-        <Grid.Col span={{ base: 6, md: 4 }}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} align="center">
-              <ImageWithFallback
-                {...uniformIconSize}
-                fallbackSrc={symbolPlaceholder}
-                src={type === "vehicles" ? UnitSquadIcons["max_speed"] : UnitSquadIcons["sprint"]}
-                alt="squad default speed"
-              />
-              <Text>{t("statsCard.speed")}</Text>
-            </Group>
-            <Text style={{ textAlign: "end" }}>{moving?.defaultSpeed || 0.0}</Text>
-          </Flex>
-        </Grid.Col>
+        <StatItem
+          icon={UnitSquadIcons["sight_range"]}
+          alt="squad detection range"
+          label={t("statsCard.detection")}
+          value={sight?.tp_global ?? 0}
+        />
 
-        {type === "vehicles" ? (
-          <Grid.Col span={{ base: 6, md: 4 }}>
-            <Flex gap={4} align="center" justify="space-between">
-              <Group gap={4} align="center">
-                <ImageWithFallback
-                  {...uniformIconSize}
-                  fallbackSrc={symbolPlaceholder}
-                  src={UnitSquadIcons["acceleration"]}
-                  alt="squad acceleration"
-                />
-                <Text>{t("statsCard.acceleration")}</Text>
-              </Group>
-              <Text style={{ textAlign: "end" }}>{moving?.acceleration || 0.0}</Text>
-            </Flex>
-          </Grid.Col>
-        ) : (
-          <></>
-        )}
+        <StatItem
+          icon={UnitSquadIcons["range_of_fire"]}
+          alt="squad max range of fire"
+          label={t("statsCard.maxRange")}
+          value={range?.max ?? 0}
+        />
 
-        {type === "vehicles" ? (
-          <Grid.Col span={{ base: 6, md: 4 }}>
-            <Flex gap={4} align="center" justify="space-between">
-              <Group gap={4} align="center">
-                <ImageWithFallback
-                  {...uniformIconSize}
-                  fallbackSrc={symbolPlaceholder}
-                  src={UnitSquadIcons["deceleration"]}
-                  alt="squad deceleration"
-                />
-                <Text>{t("statsCard.deceleration")}</Text>
-              </Group>
-              <Text style={{ textAlign: "end" }}>{moving?.deceleration || 0.0}</Text>
-            </Flex>
-          </Grid.Col>
-        ) : (
-          <></>
-        )}
+        <StatItem
+          icon={type === "vehicles" ? UnitSquadIcons["max_speed"] : UnitSquadIcons["sprint"]}
+          alt="squad default speed"
+          label={t("statsCard.speed")}
+          value={moving?.defaultSpeed ?? 0}
+        />
 
-        <Grid.Col span={{ base: 6, md: 4 }}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} align="center">
-              <ImageWithFallback
-                {...uniformIconSize}
-                fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["range_of_fire"]}
-                alt="squad max range of fire"
-              />
-              <Text>{t("statsCard.maxRange")}</Text>
-            </Group>
-            <Text style={{ textAlign: "end" }}>{range?.max || 0}</Text>
-          </Flex>
-        </Grid.Col>
+        <StatItem
+          show={type === "vehicles"}
+          icon={UnitSquadIcons["acceleration"]}
+          alt="squad acceleration"
+          label={t("statsCard.acceleration")}
+          value={moving?.acceleration ?? 0}
+        />
 
-        <Grid.Col span={{ base: 6, md: 4 }}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} align="center">
-              <ImageWithFallback
-                {...uniformIconSize}
-                fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["target_size"]}
-                alt="squad target size"
-              />
-              <Text>{t("statsCard.targetSize")}</Text>
-            </Group>
-            <Text style={{ textAlign: "end" }}>{health?.targetSize || 0}</Text>
-          </Flex>
-        </Grid.Col>
+        <StatItem
+          show={type === "vehicles"}
+          icon={UnitSquadIcons["deceleration"]}
+          alt="squad deceleration"
+          label={t("statsCard.deceleration")}
+          value={moving?.deceleration ?? 0}
+        />
 
-        {type !== "vehicles" ? (
-          <Grid.Col span={4}>
-            <Flex gap={4} align="center" justify="space-between">
-              <Group gap={4} align="center">
-                <ImageWithFallback
-                  {...uniformIconSize}
-                  fallbackSrc={symbolPlaceholder}
-                  src={UnitSquadIcons["infantry_armor"]}
-                  alt="squad armor (infantry only)"
-                />
-                <Text>{t("statsCard.armor")}</Text>
-              </Group>
-              <Text style={{ textAlign: "end" }}>{health?.armor || 0}</Text>
-            </Flex>
-          </Grid.Col>
-        ) : (
-          <></>
-        )}
+        <StatItem
+          show={type === "vehicles"}
+          icon={UnitSquadIcons["acceleration"]}
+          alt="squad rotation"
+          label={t("statsCard.rotation")}
+          value={moving?.rotation ?? 0}
+        />
 
-        <Grid.Col span={{ base: 6, md: 4 }}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} align="center">
-              <ImageWithFallback
-                {...uniformIconSize}
-                fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["cap_mult"]}
-                alt="squad capture rate multiplier"
-              />
-              <Text>{t("statsCard.captureMultiplier")}</Text>
-            </Group>
-            <Text style={{ textAlign: "end" }}>{capture?.cap || 0.0}</Text>
-          </Flex>
-        </Grid.Col>
+        <StatItem
+          show={type !== "vehicles"}
+          icon={UnitSquadIcons["infantry_armor"]}
+          alt="squad armor infantry only"
+          label={t("statsCard.armor")}
+          value={health?.armor ?? 0}
+        />
 
-        <Grid.Col span={{ base: 6, md: 4 }}>
-          <Flex gap={4} align="center" justify="space-between">
-            <Group gap={4} align="center">
-              <ImageWithFallback
-                {...uniformIconSize}
-                fallbackSrc={symbolPlaceholder}
-                src={UnitSquadIcons["decap_mult"]}
-                alt="squad decapture rate multiplier"
-              />
-              <Text>{t("statsCard.decaptureMultiplier")}</Text>
-            </Group>
-            <Text style={{ textAlign: "end" }}>{capture?.decap || 0.0}</Text>
-          </Flex>
-        </Grid.Col>
+        <StatItem
+          icon={UnitSquadIcons["cap_mult"]}
+          alt="squad capture rate multiplier"
+          label={t("statsCard.captureMultiplier")}
+          value={capture?.cap ?? 0}
+        />
+
+        <StatItem
+          icon={UnitSquadIcons["decap_mult"]}
+          alt="squad decapture rate multiplier"
+          label={t("statsCard.decaptureMultiplier")}
+          value={capture?.decap ?? 0}
+        />
+
+        <StatItem
+          icon={UnitSquadIcons["target_size"]}
+          alt="squad target size"
+          label={t("statsCard.targetSize")}
+          value={health?.targetSize ?? 0}
+        />
       </Grid>
 
       {type === "vehicles" ? (

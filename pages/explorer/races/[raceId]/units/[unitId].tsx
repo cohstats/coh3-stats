@@ -118,12 +118,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const sightValues = {
     coneAngle: defaultSquadMember.sight_ext.sight_package.cone_angle,
     outerRadius: defaultSquadMember.sight_ext.sight_package.outer_radius,
+    tp_global: defaultSquadMember.sight_ext.detect_camouflage.tp_global,
   };
   const movingValues = {
     defaultSpeed: defaultSquadMember.moving_ext.speed_scaling_table.default_speed,
     maxSpeed: defaultSquadMember.moving_ext.speed_scaling_table.max_speed,
     acceleration: defaultSquadMember.moving_ext.acceleration,
     deceleration: defaultSquadMember.moving_ext.deceleration,
+    rotation: defaultSquadMember.moving_ext.rotation_rate,
   };
 
   // Obtain the total cost of the squad by looking at the loadout.
