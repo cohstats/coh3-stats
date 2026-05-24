@@ -196,6 +196,8 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                           coneAngle: 1,
                           outerRadius:
                             props.unit.ebps_default.sight_ext.sight_package.outer_radius,
+                          tp_global:
+                            props.unit.ebps_default.sight_ext.detect_camouflage.tp_global,
                         }}
                         moving={{
                           defaultSpeed:
@@ -204,6 +206,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                             props.unit.ebps_default.moving_ext.speed_scaling_table.max_speed,
                           acceleration: props.unit.ebps_default.moving_ext.acceleration,
                           deceleration: props.unit.ebps_default.moving_ext.deceleration,
+                          rotation: props.unit.ebps_default.moving_ext.rotation_rate,
                         }}
                         range={{
                           max: props.unit.weapon_member[0]?.weapon.weapon_bag.range.max || 0,

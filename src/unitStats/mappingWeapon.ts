@@ -271,11 +271,11 @@ const mapWeaponData = (
       burst_incremental_target_table_accuracy_multiplier:
         weapon_bag.burst?.incremental_target_table?.accuracy_multiplier || 0,
       burst_incremental_target_table_search_radius_near:
-        weapon_bag.burst?.incremental_target_table?.search_radius.near || 0,
+        weapon_bag.burst?.incremental_target_table?.search_radius?.near || 0,
       burst_incremental_target_table_search_radius_mid:
-        weapon_bag.burst?.incremental_target_table?.search_radius.mid || 0,
+        weapon_bag.burst?.incremental_target_table?.search_radius?.mid || 0,
       burst_incremental_target_table_search_radius_far:
-        weapon_bag.burst?.incremental_target_table?.search_radius.far || 0,
+        weapon_bag.burst?.incremental_target_table?.search_radius?.far || 0,
       burst_rate_of_fire_min: weapon_bag.burst?.rate_of_fire?.min || 0,
       burst_rate_of_fire_max: weapon_bag.burst?.rate_of_fire?.max || 0,
       burst_rate_of_fire_multiplier_near: weapon_bag.burst?.rate_of_fire_multiplier?.near || 1,
@@ -372,11 +372,11 @@ const mapWeaponData = (
 
       setup_time: weapon_bag.setup?.duration || 0,
 
-      suppression_amount: weapon_bag.suppression.amount || 0,
+      suppression_amount: weapon_bag.suppression?.amount || 0,
       suppression_nearby_suppression_multiplier:
-        weapon_bag.suppression.nearby_suppression_multiplier || 0,
+        weapon_bag.suppression?.nearby_suppression_multiplier || 0,
       suppression_nearby_suppression_radius:
-        weapon_bag.suppression.nearby_suppression_radius || 0,
+        weapon_bag.suppression?.nearby_suppression_radius || 0,
       //aoe_distance_object_min : weapon_bag.scatt
       target_type_table: [],
 
