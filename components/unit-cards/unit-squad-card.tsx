@@ -62,15 +62,17 @@ const UnitSquadIcons = {
   deceleration: "/icons/races/common/abilities/handbrake_on.png",
   cap_mult: "/icons/unit_status/bw2/11_capturebonus.png",
   decap_mult: "/icons/unit_status/bw2/10_retreatpoint.png",
+  detection: "/icons/unit_status/bw2/stealth.png",
+  rotation: "/icons/unit_status/bw2/skorpion.png",
 } as const;
 
-type StatItemProps = {
+/*type StatItemProps = {
   icon: string;
   alt: string;
   label: string;
   value: string | number;
   show?: boolean;
-};
+}; */
 
 export const UnitSquadCard = ({
   id,
@@ -136,7 +138,7 @@ export const UnitSquadCard = ({
         />
 
         <StatItem
-          icon={UnitSquadIcons["sight_range"]}
+          icon={UnitSquadIcons["detection"]}
           alt="squad detection range"
           label={t("statsCard.detection")}
           value={sight?.tp_global ?? 0}
@@ -174,7 +176,7 @@ export const UnitSquadCard = ({
 
         <StatItem
           show={type === "vehicles"}
-          icon={UnitSquadIcons["acceleration"]}
+          icon={UnitSquadIcons["rotation"]}
           alt="squad rotation"
           label={t("statsCard.rotation")}
           value={moving?.rotation ?? 0}

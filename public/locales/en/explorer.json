@@ -62,7 +62,7 @@
     "importantNote": "Important Note: This section displays all the units available in-game, including campaign-only."
   },
   "statsCard": {
-    "sightRange": "Sight",
+    "sightRange": "Sight Range",
     "detection": "Detection",
     "speed": "Speed",
     "acceleration": "Acceleration",
@@ -103,7 +103,11 @@
     "coverModifiers": "Cover Modifiers",
     "lightCover": "Light Cover",
     "heavyCover": "Heavy Cover",
-    "garrisonCover": "Garrison"
+    "garrisonCover": "Garrison",
+    "suppressionPerSecond": "Suppression Per Second",
+    "suppressionRadius": "Suppression Radius",
+    "incrementalTargetRadius": "Incremental Target Radius",
+    "incrementalTargetAccuracy": "Inc. Accuracy"
   },
   "dps": {
     "meta": {

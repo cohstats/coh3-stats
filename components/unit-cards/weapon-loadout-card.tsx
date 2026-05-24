@@ -1,10 +1,5 @@
 import { Divider, Flex, Grid, Image, Indicator, Stack, Text, Title } from "@mantine/core";
-import {
-  getScatterArea,
-  getWeaponRpm,
-  WeaponStatsType,
-  _getInterpolationByDistanceMinMax,
-} from "../../src/unitStats";
+import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 import { useTranslation } from "next-i18next";
@@ -22,16 +17,16 @@ type WeaponCardInput = {
 type TargetType = WeaponStatsType["target_type_table"][number];
 
 const WeaponCardIcons = {
-  sight_range: "/icons/unit_status/bw2/5_obervationmode.png",
-  max_speed: "/icons/unit_status/bw2/2_offensivebonus.png",
-  target_size: "/icons/unit_status/bw2/9_markedtarget.png",
-  infantry_armor: "/icons/unit_status/bw2/3_defensivebonus.png",
-  range_of_fire: "/icons/unit_status/bw2/artillery_radio_beacon.png",
-  sprint: "/icons/unit_status/bw2/sprint.png",
-  acceleration: "/icons/unit_status/bw2/12_speedbonus.png",
-  deceleration: "/icons/races/common/abilities/handbrake_on.png",
-  cap_mult: "/icons/unit_status/bw2/11_capturebonus.png",
-  decap_mult: "/icons/unit_status/bw2/10_retreatpoint.png",
+  damage: "/icons/unit_status/bw2/8_damagebonus.png",
+  deflection_damage: "/icons/unit_status/bw2/anti_tank.png",
+  range: "/icons/unit_status/bw2/range_boost.png",
+  aoe_size: "/icons/unit_status/bw2/flame.png",
+  traverse_speed: "/icons/unit_status/bw2/skorpion.png",
+  firing_arc: "/icons/unit_status/bw2/artillery_radio_beacon.png",
+  setup_time: "/icons/unit_status/bw2/lockdown.png",
+  teardown_time: "/icons/unit_status/bw2/retreat.png",
+  suppression_radius: "/icons/unit_status/bw2/suppressive_fire.png",
+  incremental_accuracy: "/icons/unit_status/bw2/accuracy_buff.png",
 } as const;
 
 const getAoeDamageAtDistance = (weapon_bag: WeaponStatsType, distance: number): number => {
@@ -423,6 +418,28 @@ export const WeaponLoadoutCard = (
   const rpmMid = roundValue(getWeaponRpm(weapon_bag, weapon_bag.range_distance_mid));
   const rpmFar = roundValue(getWeaponRpm(weapon_bag, weapon_bag.range_distance_far));
 
+  const suppressionNear = roundValue(
+    ((getWeaponRpm(weapon_bag, weapon_bag.range_distance_near) *
+      weapon_bag.suppression_amount *
+      weapon_bag.suppression_nearby_suppression_multiplier) /
+      60) *
+      100,
+  );
+  const suppressionMid = roundValue(
+    ((getWeaponRpm(weapon_bag, weapon_bag.range_distance_mid) *
+      weapon_bag.suppression_amount *
+      weapon_bag.suppression_nearby_suppression_multiplier) /
+      60) *
+      100,
+  );
+  const suppressionFar = roundValue(
+    ((getWeaponRpm(weapon_bag, weapon_bag.range_distance_far) *
+      weapon_bag.suppression_amount *
+      weapon_bag.suppression_nearby_suppression_multiplier) /
+      60) *
+      100,
+  );
+
   const showMovingStats = isValidWeapon && weapon_bag.moving_can_fire_while_moving;
 
   const damageDisplay =
@@ -557,9 +574,28 @@ export const WeaponLoadoutCard = (
         <RangeStatRow
           show={isValidWeapon}
           label={t("weaponCard.scatter")}
-          near={Math.round(getScatterArea(weapon_bag.range.near, weapon_bag))}
-          mid={Math.round(getScatterArea(weapon_bag.range.mid, weapon_bag))}
-          far={Math.round(getScatterArea(weapon_bag.range.max, weapon_bag))}
+          near={roundValue(getScatterArea(weapon_bag.range.near, weapon_bag), 1)}
+          mid={roundValue(getScatterArea(weapon_bag.range.mid, weapon_bag), 1)}
+          far={roundValue(getScatterArea(weapon_bag.range.max, weapon_bag), 1)}
+        />
+
+        <RangeStatRow
+          show={weapon_bag.suppression_amount > 0}
+          label={t("weaponCard.suppressionPerSecond")}
+          near={suppressionNear}
+          mid={suppressionMid}
+          far={suppressionFar}
+        />
+
+        <RangeStatRow
+          show={
+            weapon_bag.burst_incremental_target_table_accuracy_multiplier > 1 &&
+            weapon_bag.burst_can_burst
+          }
+          label={t("weaponCard.incrementalTargetRadius")}
+          near={weapon_bag.burst_incremental_target_table_search_radius_near}
+          mid={weapon_bag.burst_incremental_target_table_search_radius_mid}
+          far={weapon_bag.burst_incremental_target_table_search_radius_far}
         />
 
         <Divider my={4} />
@@ -567,13 +603,13 @@ export const WeaponLoadoutCard = (
         <CompactStatGrid
           items={[
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["damage"],
               alt: "weapon damage",
               label: t("weaponCard.damage"),
               value: damageDisplay,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["deflection_damage"],
               alt: "weapon deflection damage",
               label: t("weaponCard.deflectionDamage"),
               value:
@@ -583,45 +619,61 @@ export const WeaponLoadoutCard = (
               show: weapon_bag.deflection_has_deflection_damage,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["range"],
               alt: "weapon range",
               label: t("weaponCard.range"),
               value: rangeDisplay,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["aoe_size"],
               alt: "weapon aoe size",
               label: t("weaponCard.aoeSize"),
               value: aoeDisplayValue,
               show: showAoeSize,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["traverse_speed"],
               alt: "weapon traverse speed",
               label: t("weaponCard.traverseSpeed"),
               value: weapon_bag.tracking_normal_speed_horizontal,
               show: weapon_bag.tracking_normal_speed_horizontal < 360,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["firing_arc"],
               alt: "weapon firing arc",
               label: t("weaponCard.arc"),
               value: arcDisplay,
               show: showArc,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["setup_time"],
               alt: "weapon setup time",
               label: t("weaponCard.setup"),
-              value: weapon_bag.setup_time,
+              value: `${weapon_bag.setup_time}s`,
               show: weapon_bag.setup_time > 0,
             },
             {
-              icon: WeaponCardIcons["max_speed"],
+              icon: WeaponCardIcons["teardown_time"],
               alt: "weapon teardown time",
               label: t("weaponCard.teardown"),
-              value: weapon_bag.teardown_time,
+              value: `${weapon_bag.teardown_time}s`,
               show: weapon_bag.teardown_time > 0,
+            },
+            {
+              icon: WeaponCardIcons["suppression_radius"],
+              alt: "weapon suppression radius",
+              label: t("weaponCard.suppressionRadius"),
+              value: weapon_bag.suppression_nearby_suppression_radius,
+              show: weapon_bag.suppression_amount > 0,
+            },
+            {
+              icon: WeaponCardIcons["incremental_accuracy"],
+              alt: "weapon incremental target accuracy",
+              label: t("weaponCard.incrementalTargetAccuracy"),
+              value: `x${weapon_bag.burst_incremental_target_table_accuracy_multiplier}`,
+              show:
+                weapon_bag.burst_incremental_target_table_accuracy_multiplier > 1 &&
+                weapon_bag.burst_can_burst,
             },
           ]}
         />
