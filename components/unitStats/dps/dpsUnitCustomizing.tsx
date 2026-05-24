@@ -197,7 +197,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                           outerRadius:
                             props.unit.ebps_default.sight_ext.sight_package.outer_radius,
                           tp_global:
-                            props.unit.ebps_default.sight_ext.detect_camouflage.tp_global,
+                            props.unit.ebps_default.sight_ext.detect_camouflage?.tp_global ?? 0,
                         }}
                         moving={{
                           defaultSpeed:

@@ -233,11 +233,15 @@ const generateAfrikaKorpsCallInsBuilding = (): EbpsType => {
         default_speed: 0,
         max_speed: 0,
       },
+      rotation_rate: 0,
     },
     sight_ext: {
       sight_package: {
         cone_angle: 0,
         outer_radius: 0,
+      },
+      detect_camouflage: {
+        tp_global: 0
       },
     },
   };
