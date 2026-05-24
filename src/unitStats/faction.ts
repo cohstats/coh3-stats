@@ -241,7 +241,7 @@ const generateAfrikaKorpsCallInsBuilding = (): EbpsType => {
         outer_radius: 0,
       },
       detect_camouflage: {
-        tp_global: 0
+        tp_global: 0,
       },
     },
   };
