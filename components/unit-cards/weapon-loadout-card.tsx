@@ -3,6 +3,7 @@ import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitSta
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 import { useTranslation } from "next-i18next";
+import HelperIcon from "../icon/helper";
 
 type WeaponCardInput = {
   id: string;
@@ -207,27 +208,25 @@ export const WeaponLoadoutCard = (
     if (visibleItems.length === 0) return null;
 
     return (
-      <Grid gutter="xs">
+      <Flex align="center" justify={"center"} gap="xl" wrap="wrap">
         {visibleItems.map((item) => (
-          <Grid.Col key={item.label} span={{ base: 6, md: 4 }}>
-            <Flex justify="flex-start" align="center" gap={6} wrap="nowrap">
-              {item.icon && (
-                <ImageWithFallback
-                  width={16}
-                  height={16}
-                  src={item.icon}
-                  alt={item.alt ?? item.label}
-                  fallbackSrc={symbolPlaceholder}
-                  style={{ opacity: 0.75 }}
-                />
-              )}
+          <Flex key={item.label} justify="flex-start" align="center" gap={6} wrap="nowrap">
+            {item.icon && (
+              <ImageWithFallback
+                width={16}
+                height={16}
+                src={item.icon}
+                alt={item.alt ?? item.label}
+                fallbackSrc={symbolPlaceholder}
+                style={{ opacity: 0.75 }}
+              />
+            )}
 
-              <Text>{item.label}</Text>
-              <Text c="orange.6">{item.value}</Text>
-            </Flex>
-          </Grid.Col>
+            <Text>{item.label}</Text>
+            <Text c="orange.6">{item.value}</Text>
+          </Flex>
         ))}
-      </Grid>
+      </Flex>
     );
   };
 
@@ -375,33 +374,73 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
+            <Flex align="center" gap={4}>
+              <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
+              <HelperIcon
+                text={t("weaponCard.coverModifiersTooltip")}
+                width={300}
+                iconSize={16}
+              />
+            </Flex>
           </Grid.Col>
 
-          <Grid.Col span={{ base: 4, md: 4 }}>
-            <CenterText color="orange.6" value={t("weaponCard.accuracy")} />
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <Flex align="center" justify="center" gap={4}>
+              <Image src="/icons/common/cover/light.png" alt="Light Cover" h={32} w={32} />
+              <Text visibleFrom="md">{t("common.light")}</Text>
+            </Flex>
           </Grid.Col>
 
-          <Grid.Col span={{ base: 4, md: 4 }}>
-            <CenterText color="orange.6" value={t("weaponCard.damage")} />
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <Flex align="center" justify="center" gap={4}>
+              <Image src="/icons/common/cover/heavy.png" alt="Heavy Cover" h={32} w={32} />
+              <Text visibleFrom="md">{t("common.heavy")}</Text>
+            </Flex>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <Flex align="center" justify="center" gap={4}>
+              <Image src="/icons/common/units/garrisoned.png" alt="Garrison" h={31} w={27} />
+              <Text visibleFrom="md">{t("common.garrison")}</Text>
+            </Flex>
           </Grid.Col>
         </Grid>
 
-        {rows.map((row) => (
-          <Grid key={row.label} gutter="xs">
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <Text>{row.label}</Text>
-            </Grid.Col>
+        <Grid gutter="xs">
+          <Grid.Col span={{ base: 4, md: 4 }}>
+            <Text>{t("weaponCard.accuracy")}</Text>
+          </Grid.Col>
 
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <CenterText color="orange.6" value={row.accuracy} />
-            </Grid.Col>
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <CenterText color="orange.6" value={rows[0]?.accuracy} />
+          </Grid.Col>
 
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <CenterText color="orange.6" value={row.damage} />
-            </Grid.Col>
-          </Grid>
-        ))}
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <CenterText color="orange.6" value={rows[1]?.accuracy} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <CenterText color="orange.6" value={rows[2]?.accuracy} />
+          </Grid.Col>
+        </Grid>
+
+        <Grid gutter="xs">
+          <Grid.Col span={{ base: 4, md: 4 }}>
+            <Text>{t("weaponCard.damage")}</Text>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <CenterText color="orange.6" value={rows[0]?.damage} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <CenterText color="orange.6" value={rows[1]?.damage} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2.6, md: 2.6 }}>
+            <CenterText color="orange.6" value={rows[2]?.damage} />
+          </Grid.Col>
+        </Grid>
       </>
     );
   };

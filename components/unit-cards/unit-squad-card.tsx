@@ -129,7 +129,7 @@ export const UnitSquadCard = ({
           {type}
         </Text>
       </Stack>
-      <Grid fz="sm" columns={12} align="center" gutter="lg">
+      <Grid fz="sm" columns={12} align="center" gutter="xs">
         <StatItem
           icon={UnitSquadIcons["sight_range"]}
           alt="squad sight range"

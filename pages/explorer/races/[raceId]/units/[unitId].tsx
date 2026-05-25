@@ -345,7 +345,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
               <Title order={4}>{t("unitPage.stats")}</Title>
-              <Card p="md" radius="md" withBorder>
+              <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder>
                 {UnitSquadCard({
                   id: resolvedSquad.id,
                   type: resolvedSquad.unitType,
@@ -421,7 +421,7 @@ const UnitUpgradeSection: React.FC<{ upgrades: UpgradesType[]; title: string }> 
       <Title order={4}>{title}</Title>
       <Stack>
         {Object.values(upgrades).map(({ id, ui, cost }) => (
-          <Card key={id} p="lg" radius="md" withBorder>
+          <Card key={id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
             <UnitUpgradeCard
               id={id}
               desc={{
@@ -489,7 +489,7 @@ const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }
       <Title order={4}>{title}</Title>
       <Stack>
         {Object.values(abilities).map(({ id, ui, cost }) => (
-          <Card key={id} p="md" radius="md" withBorder>
+          <Card key={id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
             <UnitUpgradeCard
               id={id}
               desc={{
