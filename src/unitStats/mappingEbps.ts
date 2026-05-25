@@ -31,6 +31,7 @@ type EbpsType = {
   moving_ext: {
     acceleration: number;
     deceleration: number;
+    rotation_rate: number;
     speed_scaling_table: {
       default_speed: number;
       max_speed: number;
@@ -42,6 +43,9 @@ type EbpsType = {
       cone_angle: number;
       /**  */
       outer_radius: number;
+    };
+    detect_camouflage: {
+      tp_global: number;
     };
   };
   /** Found at `spawner_ext`. Only applies for buildings. This is needed to
@@ -185,11 +189,15 @@ const mapEbpsData = (
       },
       acceleration: 0,
       deceleration: 0,
+      rotation_rate: 0,
     },
     sight_ext: {
       sight_package: {
         cone_angle: 0,
         outer_radius: 0,
+      },
+      detect_camouflage: {
+        tp_global: 0,
       },
     },
   };
@@ -296,6 +304,7 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
           ebps.moving_ext.speed_scaling_table.max_speed = speedScalingTable?.max_speed || 0;
           ebps.moving_ext.acceleration = extension.acceleration;
           ebps.moving_ext.deceleration = extension.deceleration;
+          ebps.moving_ext.rotation_rate = extension.rotation_rate;
         }
         break;
       case "sight_ext":
@@ -303,6 +312,8 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
           const sightPackage = extension.sight_package;
           ebps.sight_ext.sight_package.cone_angle = sightPackage?.cone_angle || 0;
           ebps.sight_ext.sight_package.outer_radius = sightPackage?.outer_radius || 0;
+          const detect_camouflage = extension.detect_camouflage;
+          ebps.sight_ext.detect_camouflage.tp_global = detect_camouflage?.tp_global || 0;
         }
         break;
       case "combat_ext":

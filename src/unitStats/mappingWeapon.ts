@@ -53,6 +53,10 @@ export type WeaponStatsType = {
   burst_duration_multiplier_near: number;
   burst_duration_multiplier_mid: number;
   burst_duration_multiplier_far: number;
+  burst_incremental_target_table_accuracy_multiplier: number;
+  burst_incremental_target_table_search_radius_near: number;
+  burst_incremental_target_table_search_radius_mid: number;
+  burst_incremental_target_table_search_radius_far: number;
   burst_rate_of_fire_min: number;
   burst_rate_of_fire_max: number;
   burst_rate_of_fire_multiplier_near: number;
@@ -127,7 +131,19 @@ export type WeaponStatsType = {
   scatter_distance_scatter_ratio: number;
   scatter_distance_object_min: number;
 
+  setup_time: number;
+
+  suppression_amount: number;
+  suppression_nearby_suppression_multiplier: number;
+  suppression_nearby_suppression_radius: number;
+
   target_type_table: TargetType[];
+
+  tracking_normal_max_left: number;
+  tracking_normal_max_right: number;
+  tracking_normal_speed_horizontal: number;
+
+  teardown_time: number;
 };
 
 // Maps a single weapon entity
@@ -252,6 +268,14 @@ const mapWeaponData = (
       burst_duration_multiplier_near: weapon_bag.burst?.duration_multiplier?.near || 1,
       burst_duration_multiplier_mid: weapon_bag.burst?.duration_multiplier?.mid || 1,
       burst_duration_multiplier_far: weapon_bag.burst?.duration_multiplier?.far || 1,
+      burst_incremental_target_table_accuracy_multiplier:
+        weapon_bag.burst?.incremental_target_table?.accuracy_multiplier || 0,
+      burst_incremental_target_table_search_radius_near:
+        weapon_bag.burst?.incremental_target_table?.search_radius?.near || 0,
+      burst_incremental_target_table_search_radius_mid:
+        weapon_bag.burst?.incremental_target_table?.search_radius?.mid || 0,
+      burst_incremental_target_table_search_radius_far:
+        weapon_bag.burst?.incremental_target_table?.search_radius?.far || 0,
       burst_rate_of_fire_min: weapon_bag.burst?.rate_of_fire?.min || 0,
       burst_rate_of_fire_max: weapon_bag.burst?.rate_of_fire?.max || 0,
       burst_rate_of_fire_multiplier_near: weapon_bag.burst?.rate_of_fire_multiplier?.near || 1,
@@ -345,8 +369,22 @@ const mapWeaponData = (
       scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
       scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
       scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_obj_hit_min || 0,
+
+      setup_time: weapon_bag.setup?.duration || 0,
+
+      suppression_amount: weapon_bag.suppression?.amount || 0,
+      suppression_nearby_suppression_multiplier:
+        weapon_bag.suppression?.nearby_suppression_multiplier || 0,
+      suppression_nearby_suppression_radius:
+        weapon_bag.suppression?.nearby_suppression_radius || 0,
       //aoe_distance_object_min : weapon_bag.scatt
       target_type_table: [],
+
+      tracking_normal_max_left: weapon_bag.tracking?.normal?.max_left || 0,
+      tracking_normal_max_right: weapon_bag.tracking?.normal?.max_right || 0,
+      tracking_normal_speed_horizontal: weapon_bag.tracking?.normal?.speed_horizontal || 0,
+
+      teardown_time: weapon_bag.teardown?.duration || 0,
     },
   };
 
@@ -354,14 +392,14 @@ const mapWeaponData = (
     for (const target_types of weapon_bag.target_type_table) {
       weaponData.weapon_bag.target_type_table.push({
         unit_type: target_types.target_unit_type_multipliers?.unit_type || "",
-        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier || 0,
+        dmg_modifier: target_types.target_unit_type_multipliers?.base_damage_modifier ?? 0,
         accuracy_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multipliers?.accuracy_multiplier || 1,
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.accuracy_multiplier ?? 1,
         penetration_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multipliers?.penetration_multiplier ||
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.penetration_multiplier ??
           1,
         damage_multiplier:
-          target_types.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier || 1,
+          target_types.target_unit_type_multipliers?.weapon_multipliers?.damage_multiplier ?? 1,
       });
     }
 
