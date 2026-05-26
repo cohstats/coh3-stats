@@ -208,7 +208,7 @@ export const WeaponLoadoutCard = (
     if (visibleItems.length === 0) return null;
 
     return (
-      <Flex align="center" justify={"center"} gap="xl" wrap="wrap">
+      <Flex align="center" justify={"center"} columnGap="xl" wrap="wrap">
         {visibleItems.map((item) => (
           <Flex key={item.label} justify="flex-start" align="center" gap={6} wrap="nowrap">
             {item.icon && (
@@ -723,7 +723,7 @@ export const WeaponLoadoutCard = (
 
         <AoeStatRow
           show={showAoeFalloff}
-          label={t("weaponCard.distance")}
+          label={t("weaponCard.aoeRadius")}
           near={weapon_bag.aoe_distance_near}
           mid={weapon_bag.aoe_distance_mid}
           far={weapon_bag.aoe_distance_far}
