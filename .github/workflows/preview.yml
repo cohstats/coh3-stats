@@ -21,7 +21,10 @@ jobs:
       cancel-in-progress: true
 
     runs-on: ubuntu-latest
-    if: github.repository == 'cohstats/coh3-stats' && secrets.SENTRY_AUTH_TOKEN != '' && secrets.VERCEL_TOKEN != ''
+    env:
+      HAS_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      HAS_VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    if: github.repository == 'cohstats/coh3-stats' && env.HAS_SENTRY_AUTH_TOKEN != '' && env.HAS_VERCEL_TOKEN != ''
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v6
