@@ -1,8 +1,58 @@
-import { CustomizableUnit, getCoverMultiplier, WeaponMember } from "./dpsCommon";
+import { CustomizableUnit, getCoverMultiplier, WeaponMember, CustomModifier } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 
 const TICK_DURATION = 0.125;
 const tickRate = 1 / TICK_DURATION;
+
+type PercentApplyMode = "normal" | "inverse";
+
+interface ApplyCustomModifierOptions {
+  percentMode?: PercentApplyMode;
+  min?: number;
+  max?: number;
+}
+
+export const applyCustomModifier = (
+  baseValue: number,
+  modifier: CustomModifier | undefined,
+  options: ApplyCustomModifierOptions = {},
+): number => {
+  if (!modifier?.enabled) return baseValue;
+
+  const value = Number.isFinite(modifier.value) ? modifier.value : 0;
+  const percentMode = options.percentMode ?? "normal";
+
+  let result = baseValue;
+
+  switch (modifier.type) {
+    case "percentage":
+      result =
+        percentMode === "inverse" ? baseValue * (1 - value / 100) : baseValue * (1 + value / 100);
+      break;
+
+    case "absolute":
+      result = value;
+      break;
+
+    case "additive":
+      result = baseValue + value;
+      break;
+
+    default:
+      result = baseValue;
+      break;
+  }
+
+  if (options.min !== undefined) {
+    result = Math.max(options.min, result);
+  }
+
+  if (options.max !== undefined) {
+    result = Math.min(options.max, result);
+  }
+
+  return result;
+};
 
 const getSingleWeaponDPS = (
   weapon_member: WeaponMember,
@@ -57,14 +107,10 @@ const getSingleWeaponDPS = (
     armor = target_unit.armor;
 
     // Apply armor modifier from target unit early (affects all armor calculations)
-    if (target_unit.custom_modifiers?.armor.enabled) {
-      if (target_unit.custom_modifiers.armor.type === "percentage") {
-        armor = armor * (1 + target_unit.custom_modifiers.armor.value / 100);
-      } else {
-        armor = target_unit.custom_modifiers.armor.value;
-      }
-      armor = Math.max(armor, 0.1); // Ensure positive (minimum 0.1 to avoid division by zero)
-    }
+    armor = applyCustomModifier(armor, target_unit.custom_modifiers?.armor, {
+      percentMode: "normal",
+      min: 0,
+    });
   }
 
   const range: RangeType = {
@@ -293,14 +339,10 @@ const getSingleWeaponDPS = (
     }
 
     // Apply damage modifier
-    if (modifiers.damage.enabled) {
-      if (modifiers.damage.type === "percentage") {
-        finalDamage = finalDamage * (1 + modifiers.damage.value / 100);
-      } else {
-        finalDamage = modifiers.damage.value;
-      }
-      finalDamage = Math.max(finalDamage, 0); // Ensure non-negative
-    }
+    finalDamage = applyCustomModifier(finalDamage, modifiers?.damage, {
+      percentMode: "normal",
+      min: 0,
+    });
 
     // Apply penetration modifier
     if (modifiers.penetration.enabled) {
