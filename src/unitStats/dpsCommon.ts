@@ -4,7 +4,7 @@ import { SbpsType } from "./mappingSbps";
 import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
-import { getSingleWeaponDPS } from "./weaponLib";
+import { getSingleWeaponDPS, applyCustomModifier } from "./weaponLib";
 
 type CoordinatesDPS = { x: number; y: number };
 
@@ -81,12 +81,15 @@ export const mapWeaponMember = (
   return member;
 };
 
-type CustomModifierType = "percentage" | "absolute";
+type CustomModifierType = "percentage" | "absolute" | "additive";
 
 type CustomModifier = {
   type: CustomModifierType;
   value: number;
   enabled: boolean;
+
+  // UI-only: individual percentage entries
+  percentageValues?: number[];
 };
 
 type CustomModifiers = {
@@ -98,6 +101,7 @@ type CustomModifiers = {
   overallAttackSpeed: CustomModifier;
   burstLength: CustomModifier;
   burstShots: CustomModifier;
+  range: CustomModifier;
   armor: CustomModifier;
   hitpoints: CustomModifier;
 };
@@ -155,6 +159,7 @@ export const createDefaultCustomModifiers = (): CustomModifiers => ({
   overallAttackSpeed: { type: "percentage", value: 0, enabled: false },
   burstLength: { type: "percentage", value: 0, enabled: false },
   burstShots: { type: "percentage", value: 0, enabled: false },
+  range: { type: "percentage", value: 0, enabled: false },
   armor: { type: "percentage", value: 0, enabled: false },
   hitpoints: { type: "percentage", value: 0, enabled: false },
 });
@@ -476,16 +481,23 @@ export const getCompareDpsData = (
 
 // Helper function to get modified hitpoints per entity
 export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
-  let modifiedHitpoints = unit.hitpoints;
-  if (unit.custom_modifiers?.hitpoints.enabled) {
-    if (unit.custom_modifiers.hitpoints.type === "percentage") {
-      modifiedHitpoints = unit.hitpoints * (1 + unit.custom_modifiers.hitpoints.value / 100);
-    } else {
-      modifiedHitpoints = unit.custom_modifiers.hitpoints.value;
-    }
-    modifiedHitpoints = Math.max(modifiedHitpoints, 1); // Ensure minimum 1 HP
+  const modifier = unit.custom_modifiers?.hitpoints;
+
+  if (!modifier?.enabled) {
+    return Math.max(unit.hitpoints, 1);
   }
-  return modifiedHitpoints;
+
+  let modifiedHitpoints = unit.hitpoints;
+
+  if (modifier.type === "percentage") {
+    modifiedHitpoints = unit.hitpoints * (1 + modifier.value / 100);
+  } else if (modifier.type === "absolute") {
+    modifiedHitpoints = modifier.value;
+  } else if (modifier.type === "additive") {
+    modifiedHitpoints = unit.hitpoints + modifier.value;
+  }
+
+  return Math.max(modifiedHitpoints, 1);
 };
 
 export const updateHealth = (unit: CustomizableUnit) => {
@@ -502,6 +514,57 @@ export const updateHealth = (unit: CustomizableUnit) => {
     health += modifiedHitpoints;
   }
   unit.health = health;
+};
+
+const getUnitBaseMaxRange = (unit: CustomizableUnit): number => {
+  return unit.weapon_member.reduce((maxRange, ldout) => {
+    return Math.max(maxRange, ldout.weapon.weapon_bag.range_max ?? 0);
+  }, 0);
+};
+
+const getUnitModifiedRangeInfo = (unit: CustomizableUnit) => {
+  const baseMaxRange = getUnitBaseMaxRange(unit);
+
+  if (baseMaxRange <= 0) {
+    return {
+      baseMaxRange: 0,
+      modifiedMaxRange: 0,
+      rangeScale: 1,
+    };
+  }
+
+  const modifiedMaxRange = applyCustomModifier(baseMaxRange, unit.custom_modifiers?.range, {
+    percentMode: "normal",
+    min: 1,
+  });
+
+  return {
+    baseMaxRange,
+    modifiedMaxRange,
+    rangeScale: modifiedMaxRange / baseMaxRange,
+  };
+};
+
+const getUnitDpsAtBaseDistance = (
+  baseDistance: number,
+  unit1: CustomizableUnit,
+  unit2?: CustomizableUnit,
+): number => {
+  let totalDps = 0;
+
+  unit1.weapon_member.forEach((ldout) => {
+    const weapon_member = ldout;
+    const range_min = weapon_member.weapon.weapon_bag.range_min;
+    const range_max = weapon_member.weapon.weapon_bag.range_max;
+
+    if (baseDistance < range_min || baseDistance > range_max) {
+      return;
+    }
+
+    totalDps += getSingleWeaponDPS(weapon_member, baseDistance, unit1.is_moving, unit2, unit1);
+  });
+
+  return totalDps;
 };
 
 export const getDpsVsHealth = (
@@ -521,51 +584,32 @@ export const getDpsVsHealth = (
 };
 
 export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
-  // compute dps for first squad
-  let dpsTotal: CoordinatesDPS[] = [];
+  const dpsTotal: CoordinatesDPS[] = [];
 
-  // compute total dps for complete loadout
-  unit1.weapon_member.forEach((ldout) => {
-    const weapon_member = ldout;
-    const weaponDps = [];
+  const { modifiedMaxRange, rangeScale } = getUnitModifiedRangeInfo(unit1);
 
-    const range_min = weapon_member.weapon.weapon_bag.range_min;
-    const range_max = weapon_member.weapon.weapon_bag.range_max;
-    // opponent default values
+  for (let displayedDistance = 0; displayedDistance <= modifiedMaxRange; displayedDistance++) {
+    const baseDistance = displayedDistance / rangeScale;
 
-    for (let distance = range_min; distance <= range_max; distance++) {
-      const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2, unit1);
-      weaponDps.push({ x: distance, y: dps });
-    }
+    const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2);
 
-    dpsTotal = addDpsData(dpsTotal, weaponDps);
-  });
+    dpsTotal.push({
+      x: displayedDistance,
+      y: dps,
+    });
+  }
 
   return dpsTotal;
 };
 
 const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
-  // compute dps for first squad
-  let dpsTotal: CoordinatesDPS[] = [];
+  const { rangeScale } = getUnitModifiedRangeInfo(unit1);
 
-  // compute total dps for complete loadout
-  unit1.weapon_member.forEach((ldout) => {
-    const weapon_member = ldout;
-    const weaponDps = [];
+  const baseDistance = distance / rangeScale;
 
-    // const range_min = weapon_member.weapon.weapon_bag.range_min;
-    // const range_max = weapon_member.weapon.weapon_bag.range_max;
-    // opponent default values
+  const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2);
 
-    // for (let distance = range_min; distance <= range_max; distance++) {
-    const dps = getSingleWeaponDPS(weapon_member, distance, unit1.is_moving, unit2, unit1);
-    weaponDps.push({ x: distance, y: dps });
-    // }
-
-    dpsTotal = addDpsData(dpsTotal, weaponDps);
-  });
-
-  return Math.floor(dpsTotal[0]?.y || 0);
+  return Math.floor(dps);
 };
 
 // sums up two dps lines
