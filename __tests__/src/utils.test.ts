@@ -15,6 +15,7 @@ import {
   getCorrectLeaderStartPositions,
   getCookie,
   compareVersions,
+  convertUndefinedToNull,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -434,5 +435,100 @@ describe("compareVersions", () => {
     expect(compareVersions("2.1.0", "2.0.0")).toBe(true);
     expect(compareVersions("3.0.0", "2.0.0")).toBe(true);
     expect(compareVersions("1.9.9", "2.0.0")).toBe(false);
+  });
+});
+
+describe("convertUndefinedToNull", () => {
+  test("should convert undefined to null", () => {
+    expect(convertUndefinedToNull(undefined)).toBe(null);
+  });
+
+  test("should keep null as null", () => {
+    expect(convertUndefinedToNull(null)).toBe(null);
+  });
+
+  test("should keep primitive values unchanged", () => {
+    expect(convertUndefinedToNull(42)).toBe(42);
+    expect(convertUndefinedToNull("hello")).toBe("hello");
+    expect(convertUndefinedToNull(true)).toBe(true);
+    expect(convertUndefinedToNull(false)).toBe(false);
+  });
+
+  test("should convert undefined in simple objects to null", () => {
+    const input = {
+      a: 1,
+      b: undefined,
+      c: "test",
+    };
+    const expected = {
+      a: 1,
+      b: null,
+      c: "test",
+    };
+    expect(convertUndefinedToNull(input)).toEqual(expected);
+  });
+
+  test("should convert undefined in nested objects to null", () => {
+    const input = {
+      a: 1,
+      b: {
+        c: undefined,
+        d: {
+          e: undefined,
+          f: "test",
+        },
+      },
+    };
+    const expected = {
+      a: 1,
+      b: {
+        c: null,
+        d: {
+          e: null,
+          f: "test",
+        },
+      },
+    };
+    expect(convertUndefinedToNull(input)).toEqual(expected);
+  });
+
+  test("should convert undefined in arrays to null", () => {
+    const input = [1, undefined, "test", undefined];
+    const expected = [1, null, "test", null];
+    expect(convertUndefinedToNull(input)).toEqual(expected);
+  });
+
+  test("should convert undefined in nested arrays to null", () => {
+    const input = [1, [undefined, 2], { a: undefined, b: 3 }];
+    const expected = [1, [null, 2], { a: null, b: 3 }];
+    expect(convertUndefinedToNull(input)).toEqual(expected);
+  });
+
+  test("should handle complex nested structures", () => {
+    const input = {
+      sbpsData: [
+        {
+          id: "test",
+          reinforce: {
+            time_percentage: undefined,
+            cost: 10,
+          },
+        },
+      ],
+      otherField: undefined,
+    };
+    const expected = {
+      sbpsData: [
+        {
+          id: "test",
+          reinforce: {
+            time_percentage: null,
+            cost: 10,
+          },
+        },
+      ],
+      otherField: null,
+    };
+    expect(convertUndefinedToNull(input)).toEqual(expected);
   });
 });
