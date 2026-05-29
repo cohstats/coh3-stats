@@ -1583,10 +1583,10 @@
   },
   {
     "id": "stormtrooper_ger",
-    "icon": "races/german/infantry/stormtrooper_ger",
-    "name": "Stoßtruppen Squad",
+    "icon": "",
+    "name": "",
     "faction": "german",
-    "symbol": "races/german/symbols/stormtrooper_ger"
+    "symbol": ""
   },
   {
     "id": "sturmpioneer_ger",
@@ -1688,10 +1688,10 @@
   },
   {
     "id": "team_weapon_parent_ger",
-    "icon": "races/american/team_weapons/at_gun57mm_us",
+    "icon": "",
     "name": "",
     "faction": "german",
-    "symbol": "common/units/symbols/at_gun_m1_57mm_us"
+    "symbol": ""
   },
   {
     "id": "armored_car_8_rad_ger",
