@@ -34,7 +34,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import nextI18NextConfig from "../../../next-i18next.config";
 import config from "../../../config";
-import { convertUndefinedToNull } from "../../../src/utils";
 
 // New interface for pre-calculated building data
 interface PreCalculatedBuilding {
@@ -384,10 +383,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      // vo null to avoid Next.js serialization errors
-      sbpsData: convertUndefinedToNull(sbpsData),
-      resolvedBattlegroups: convertUndefinedToNull(resolvedBattlegroups),
-      preCalculatedBuildings: convertUndefinedToNull(preCalculatedBuildings),
+      sbpsData: sbpsData,
+      resolvedBattlegroups: resolvedBattlegroups,
+      preCalculatedBuildings: preCalculatedBuildings,
       descriptions: {
         raceDescription: descriptions[raceId as raceType]?.description || null,
         buildings: descriptions.common.buildings || null,

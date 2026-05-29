@@ -22,7 +22,6 @@ import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import config from "../../config";
-import { convertUndefinedToNull } from "../../src/utils";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -425,15 +424,12 @@ export const getStaticProps: GetStaticProps = async ({ locale = "en" }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
-      // Convert all undefined values to null to avoid Next.js serialization errors
-      calculatedData: convertUndefinedToNull(
-        createCalculateValuesForChallenges({
-          dailyChallengesData,
-          weeklyChallengesData,
-          sbpsData,
-          upgradesData,
-        }),
-      ),
+      calculatedData: createCalculateValuesForChallenges({
+        dailyChallengesData,
+        weeklyChallengesData,
+        sbpsData,
+        upgradesData,
+      }),
     },
   };
 };

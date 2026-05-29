@@ -280,38 +280,6 @@ export const imageUrlTransform = (imageUrl: string | null, format: "webp" = "web
 };
 
 /**
- * Recursively converts all undefined values to null in an object or array.
- * This is necessary for Next.js getStaticProps which cannot serialize undefined values.
- * @param obj - The object or array to sanitize
- * @returns The sanitized object with all undefined values converted to null
- */
-export const convertUndefinedToNull = <T>(obj: T): T => {
-  if (obj === undefined) {
-    return null as unknown as T;
-  }
-
-  if (obj === null) {
-    return obj;
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map((item) => convertUndefinedToNull(item)) as unknown as T;
-  }
-
-  if (typeof obj === "object") {
-    const result: any = {};
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        result[key] = convertUndefinedToNull(obj[key]);
-      }
-    }
-    return result as T;
-  }
-
-  return obj;
-};
-
-/**
  * Compares two semantic version strings.
  * @param version - The version to compare
  * @param minVersion - The minimum version to compare against
