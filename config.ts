@@ -496,8 +496,9 @@ const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeco
   };
 
 const getPatchDataUrl = (dataFile = "", patch = "latest") => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
-  return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
+  return `https://raw.githubusercontent.com/cohstats/coh3-data/refs/heads/data-updates-version-46673/data/${dataFile}`;
 };
 
 const getPatchDataLocaleUrl = (locale = "en", patch = "latest") => {
