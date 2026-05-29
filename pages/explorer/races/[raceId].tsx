@@ -383,9 +383,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      sbpsData,
-      resolvedBattlegroups,
-      preCalculatedBuildings,
+      sbpsData: sbpsData,
+      resolvedBattlegroups: resolvedBattlegroups,
+      preCalculatedBuildings: preCalculatedBuildings,
       descriptions: {
         raceDescription: descriptions[raceId as raceType]?.description || null,
         buildings: descriptions.common.buildings || null,

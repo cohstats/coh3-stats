@@ -285,8 +285,8 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
         break;
       case "squad_reinforce_ext":
         {
-          sbps.reinforce.cost_percentage = extension.time_cost_percentage.cost_percentage;
-          sbps.reinforce.time_percentage = extension.time_cost_percentage.time_percentage;
+          sbps.reinforce.cost_percentage = extension.time_cost_percentage?.cost_percentage ?? 0;
+          sbps.reinforce.time_percentage = extension.time_cost_percentage?.time_percentage ?? 0;
         }
         break;
       case "squad_capture_strategic_point_ext":

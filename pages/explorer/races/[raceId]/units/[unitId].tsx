@@ -133,10 +133,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
   const reinforceCost = {
     cost: Math.floor(
-      (defaultSquadMember.cost.manpower || 0) * resolvedSquad.reinforce.cost_percentage,
+      (defaultSquadMember.cost.manpower || 0) * (resolvedSquad.reinforce.cost_percentage || 1),
     ),
     time: Math.floor(
-      (defaultSquadMember.cost.time || 0) * resolvedSquad.reinforce.time_percentage,
+      (defaultSquadMember.cost.time || 0) * (resolvedSquad.reinforce.time_percentage || 1),
     ),
   };
 
