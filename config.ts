@@ -248,7 +248,7 @@ const latestPatch = "2.4.2";
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
     "2.4.2": {
-      dataTag: "v2.4.2-1",
+      dataTag: "v2.4.2-2",
       dataTime: "27/May/2026",
     },
     "2.4.1": {
@@ -496,9 +496,8 @@ const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeco
   };
 
 const getPatchDataUrl = (dataFile = "", patch = "latest") => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dataTag = patch === "latest" ? patches[latestPatch].dataTag : patches[patch].dataTag;
-  return `https://raw.githubusercontent.com/cohstats/coh3-data/refs/heads/data-updates-version-46673/data/${dataFile}`;
+  return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/${dataFile}`;
 };
 
 const getPatchDataLocaleUrl = (locale = "en", patch = "latest") => {
