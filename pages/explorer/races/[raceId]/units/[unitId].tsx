@@ -49,7 +49,6 @@ import { getMappings } from "../../../../../src/unitStats/mappings";
 import {
   getSbpsWeapons,
   getUpgradeWeaponLoadouts,
-  mapWeaponMember,
   UpgradeWeaponLoadout,
   WeaponMember,
 } from "../../../../../src/unitStats/dpsCommon";
@@ -64,8 +63,14 @@ import Link from "next/link";
 
 type AbilityWeaponLoadout = {
   ability: AbilitiesType;
-  weapons: WeaponMember[];
+  weapons: AbilityWeaponMember[];
   numShots: number | null;
+};
+
+type AbilityWeaponMember = {
+  weapon_id: string;
+  weapon: WeaponType;
+  num: number;
 };
 
 interface UnitDetailProps {
@@ -586,10 +591,10 @@ const UnitUpgradeWeaponSection = (
             c="gray.0"
             style={{
               background:
-                "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 18%, rgba(27, 31, 34, 0.98) 30%)",
-              borderColor: "rgba(77, 171, 168, 0.32)",
+                "linear-gradient(135deg, rgba(9, 20, 38, 0.98) 0%, rgba(30, 96, 185, 0.72) 18%, rgba(27, 31, 34, 0.98) 30%)",
+              borderColor: "rgba(74, 144, 245, 0.38)",
               boxShadow:
-                "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 18px rgba(77, 171, 168, 0.06)",
+                "inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 18px rgba(74, 144, 245, 0.10)",
               color: "var(--mantine-color-gray-0)", // Keep readable in light mode; this card is always dark.
             }}
           >
@@ -690,25 +695,32 @@ const getIdFromReference = (reference: unknown) => {
   return rawReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0] || "";
 };
 
+const mapAbilityWeaponMember = (weapon: WeaponType, num = 1): AbilityWeaponMember => ({
+  weapon_id: weapon.id,
+  weapon,
+  num,
+});
+
 const getWeaponMembersFromAbilityWeaponEbps = (
   sbps: SbpsType,
   ability: AbilitiesType,
   weaponEbpsId: string,
   ebpsData: EbpsType[],
   weaponData: WeaponType[],
-): WeaponMember[] => {
+): AbilityWeaponMember[] => {
   const weaponEbps = ebpsData.find((ebps) => ebps.id === weaponEbpsId);
 
   if (!weaponEbps) {
-    console.warn("Ability weapon EBPS did not resolve", {
-      abilityId: ability.id,
-      abilityName: ability.ui.screenName,
-      weaponEbpsId,
-    });
+    const directWeapon = weaponData.find((gun) => gun.id === weaponEbpsId);
+
+    if (directWeapon) {
+      return [mapAbilityWeaponMember(directWeapon, 1)];
+    }
+
     return [];
   }
 
-  const weaponMembers: WeaponMember[] = [];
+  const weaponMembers: AbilityWeaponMember[] = [];
 
   // Most ability WEAPON_PBG_* values point directly to a weapon EBPS.
   // That EBPS then points to the final weapon stats through weaponId.
@@ -716,14 +728,7 @@ const getWeaponMembersFromAbilityWeaponEbps = (
     const weapon = weaponData.find((gun) => gun.id === weaponEbps.weaponId);
 
     if (weapon) {
-      weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, 1));
-    } else {
-      console.warn("Ability final weapon did not resolve", {
-        abilityId: ability.id,
-        abilityName: ability.ui.screenName,
-        weaponEbpsId,
-        finalWeaponId: weaponEbps.weaponId,
-      });
+      weaponMembers.push(mapAbilityWeaponMember(weapon, 1));
     }
   }
 
@@ -739,7 +744,7 @@ const getWeaponMembersFromAbilityWeaponEbps = (
     const weapon = weaponData.find((gun) => gun.id === referencedWeaponEbps.weaponId);
     if (!weapon) continue;
 
-    weaponMembers.push(mapWeaponMember(sbps, referencedWeaponEbps, weapon, 1));
+    weaponMembers.push(mapAbilityWeaponMember(weapon, 1));
   }
 
   return weaponMembers;

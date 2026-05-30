@@ -70,7 +70,9 @@ type AbilitiesType = {
   range: number | null;
   /** Ability cast min range. Null when missing or zero. */
   minRange: number | null;
-  /** Weapon EBPS IDs referenced by custom_pbgid_properties WEAPON_PBG_1..3. */
+  /** Weapon-related PBG IDs referenced by custom_pbgid_properties WEAPON_PBG_1..3.
+   * Usually weapon EBPS IDs, but some abilities point directly to weapon stat IDs.
+   */
   abilityWeaponIds: string[];
   /** Found in custom_int32_properties/NUM_SHOTS. Null when not present. */
   numShots: number | null;
