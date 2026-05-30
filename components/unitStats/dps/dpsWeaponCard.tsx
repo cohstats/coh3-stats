@@ -90,11 +90,11 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           position: "relative",
           color: isOptionalUpgradeWeapon ? "var(--mantine-color-gray-0)" : undefined,
           background: isOptionalUpgradeWeapon
-            ? "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 15%, rgba(27, 31, 34, 0.98) 30%)"
+            ? "linear-gradient(135deg, rgba(9, 20, 38, 0.98) 0%, rgba(30, 96, 185, 0.68) 15%, rgba(27, 31, 34, 0.98) 30%)"
             : undefined,
-          border: isOptionalUpgradeWeapon ? "1px solid rgba(77, 171, 168, 0.32)" : undefined,
+          border: isOptionalUpgradeWeapon ? "1px solid rgba(96, 165, 250, 0.36)" : undefined,
           boxShadow: isOptionalUpgradeWeapon
-            ? "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 12px rgba(77, 171, 168, 0.05)"
+            ? "inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 12px rgba(96, 165, 250, 0.08)"
             : undefined,
         })}
       >
@@ -109,8 +109,8 @@ export const DpsWeaponCard = (props: IDPSProps) => {
               top: 4,
               left: 7,
               lineHeight: 1,
-              color: "rgba(154, 163, 173, 0.95)",
-              textShadow: "0 0 7px rgba(90, 100, 110, 0.45)",
+              color: "rgba(192, 192, 192, 0.95)",
+              textShadow: "0 0 7px rgba(255, 255, 255, 0.45)",
               pointerEvents: "none",
             }}
           >
@@ -145,10 +145,10 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                   c="gray.0"
                   style={{
                     background:
-                      "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 18%, rgba(27, 31, 34, 0.98) 30%)",
-                    borderColor: "rgba(77, 171, 168, 0.32)",
+                      "linear-gradient(135deg, rgba(9, 20, 38, 0.98) 0%, rgba(30, 96, 185, 0.72) 18%, rgba(27, 31, 34, 0.98) 30%)",
+                    borderColor: "rgba(96, 165, 250, 0.38)",
                     boxShadow:
-                      "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 18px rgba(77, 171, 168, 0.06)",
+                      "inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 18px rgba(96, 165, 250, 0.10)",
                     color: "var(--mantine-color-gray-0)",
                   }}
                 >
