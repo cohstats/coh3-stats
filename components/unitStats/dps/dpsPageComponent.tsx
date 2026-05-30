@@ -27,6 +27,7 @@ import { getDPSCompareRoute } from "../../../src/routes";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
+import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
 import {
   CustomizableUnit,
   getDpsVsHealth,
@@ -180,6 +181,7 @@ interface IDPSProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
+  upgradesData: UpgradesType[];
 }
 
 export const init = (props: IDPSProps) => {
@@ -190,9 +192,11 @@ export const init = (props: IDPSProps) => {
   sbpsData2 = props.sbpsData;
   weaponData2 = props.weaponData;
 
-  // Get Customizable units
-  for (const sbps of props.sbpsData)
-    units1.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData));
+  units1 = [];
+  for (const sbps of props.sbpsData) {
+    units1.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData, props.upgradesData));
+  }
+
   units2 = [...units1];
 };
 
@@ -320,7 +324,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
         weaponData1 = await getWeaponStats(patchUnit1);
         units1 = [];
         for (const unitSbps of sbpsData1)
-          units1.push(mapCustomizableUnit(unitSbps, ebpsData1, weaponData1));
+          units1.push(mapCustomizableUnit(unitSbps, ebpsData1, weaponData1, props.upgradesData));
         unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
         if (activeData[0]) {
           const id = activeData[0].id;
@@ -333,7 +337,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
         weaponData2 = await getWeaponStats(patchUnit2);
         units2 = [];
         for (const unitSbps of sbpsData2)
-          units2.push(mapCustomizableUnit(unitSbps, ebpsData2, weaponData2));
+          units2.push(mapCustomizableUnit(unitSbps, ebpsData2, weaponData2, props.upgradesData));
         unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
         if (activeData[1]) {
           const id = activeData[1].id;

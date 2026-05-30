@@ -1,4 +1,4 @@
-import { Divider, Flex, Grid, Image, Indicator, Stack, Text, Title } from "@mantine/core";
+import { Divider, Flex, Grid, Image, Stack, Text, Title } from "@mantine/core";
 import { getScatterArea, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
@@ -60,6 +60,55 @@ const getAoeDamageAtDistance = (weapon_bag: WeaponStatsType, distance: number): 
 
   return farDamage;
 };
+
+const WeaponIconWithCount = ({
+  count,
+  children,
+}: {
+  count: number;
+  children: React.ReactNode;
+}) => (
+  <div
+    style={{
+      position: "relative",
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 60,
+      minHeight: 36,
+      flexShrink: 0,
+      overflow: "visible",
+    }}
+  >
+    {children}
+
+    <span
+      style={{
+        position: "absolute",
+        top: -7,
+        left: -7,
+        minWidth: 17,
+        height: 17,
+        padding: "0 5px",
+        borderRadius: 999,
+        background: "var(--mantine-color-blue-6)",
+        border: "1px solid rgba(255, 255, 255, 0.35)",
+        color: "white",
+        fontSize: 11,
+        fontWeight: 700,
+        lineHeight: "17px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: "none",
+        zIndex: 1,
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.45)",
+      }}
+    >
+      {count}
+    </span>
+  </div>
+);
 
 export const WeaponLoadoutCard = (
   { id, parent, icon_name, weapon_class, weapon_cat, weapon_bag }: WeaponCardInput,
@@ -445,7 +494,20 @@ export const WeaponLoadoutCard = (
     );
   };
 
-  const iconName = icon_name !== "" ? `/icons/${icon_name}.png` : getDefaultWeaponIcon(parent);
+  const getWeaponIconSrc = (iconName: string) => {
+    const normalizedIconName = iconName.trim();
+
+    if (!normalizedIconName) return "";
+
+    if (normalizedIconName.startsWith("/")) return normalizedIconName;
+
+    return normalizedIconName.endsWith(".png")
+      ? `/icons/${normalizedIconName}`
+      : `/icons/${normalizedIconName}.png`;
+  };
+
+  const weaponIcon = getWeaponIconSrc(icon_name);
+  const parentFallbackIcon = getDefaultWeaponIcon(parent);
   /** Only take into account those weapons categories to display further info.
    * The "special", "flame_throwers", "campaign" are ignored. */
   const isValidWeapon =
@@ -545,27 +607,44 @@ export const WeaponLoadoutCard = (
     <Stack gap={8}>
       {/* Heading */}
       <Flex align="center" gap={16}>
-        <Indicator
-          inline
-          color="red"
-          offset={4}
-          position="top-start"
-          size={20}
-          label={count}
-          withBorder
-        >
-          {icon_name !== "" ? (
+        <WeaponIconWithCount count={count}>
+          {weaponIcon ? (
             <ImageWithFallback
               width={48}
               height={16}
-              src={iconName}
+              src={weaponIcon}
               alt={id}
               fallbackSrc={symbolPlaceholder}
             />
+          ) : parentFallbackIcon ? (
+            <img
+              src={parentFallbackIcon}
+              alt={id}
+              onError={(event) => {
+                event.currentTarget.src =
+                  typeof symbolPlaceholder === "string"
+                    ? symbolPlaceholder
+                    : (symbolPlaceholder as { src: string }).src;
+              }}
+              style={{
+                maxWidth: 56,
+                maxHeight: 36,
+                width: "auto",
+                height: "auto",
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
           ) : (
-            <Image w={48} h={16} src={iconName} alt={id}></Image>
+            <ImageWithFallback
+              width={48}
+              height={16}
+              src=""
+              alt={id}
+              fallbackSrc={symbolPlaceholder}
+            />
           )}
-        </Indicator>
+        </WeaponIconWithCount>
         <Flex direction="column">
           <Title order={6} fw="bold" tt="uppercase">
             {id.split("_").join(" ")}

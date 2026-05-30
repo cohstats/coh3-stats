@@ -35,6 +35,27 @@ interface AbilityRequirementItem {
   };
 }
 
+interface AbilityCustomPbgidPropertyItem {
+  custom_pbgid_property?: {
+    id?: string;
+    pbg?: {
+      instance_reference?: string;
+    };
+  };
+}
+
+interface AbilityCustomInt32PropertyItem {
+  custom_int32_property?: {
+    id?: string;
+    value?: number;
+  };
+}
+
+const ABILITY_WEAPON_PBG_PROPERTY_IDS = new Set(["WEAPON_PBG_1", "WEAPON_PBG_2", "WEAPON_PBG_3"]);
+
+const getIdFromInstanceReference = (instanceReference: string) =>
+  internalSlash(instanceReference).split("/").filter(Boolean).slice(-1)[0] || "";
+
 // Need to be extended by all required fields
 type AbilitiesType = {
   id: string; // filename  -> eg. panzergrenadier_ak
@@ -45,6 +66,10 @@ type AbilitiesType = {
   ui: AbilitiesUiData;
   /** Recharge time when casted the ability. */
   rechargeTime: number;
+  /** Weapon EBPS IDs referenced by custom_pbgid_properties WEAPON_PBG_1..3. */
+  abilityWeaponIds: string[];
+  /** Found in custom_int32_properties/NUM_SHOTS. Null when not present. */
+  numShots: number | null;
   /** Found at `cost_to_player`. */
   cost: AbilitiesCost;
   /**
@@ -122,6 +147,8 @@ const mapAbilitiesData = (
       extraTextFormatter: "",
     },
     rechargeTime: 0,
+    abilityWeaponIds: [],
+    numShots: null,
     cost: {
       fuel: 0,
       manpower: 0,
@@ -161,6 +188,32 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
   ability.cost.manpower = abilityBag.cost_to_player?.manpower || 0;
   ability.cost.popcap = abilityBag.cost_to_player?.popcap || 0;
   ability.rechargeTime = abilityBag.recharge_time || 0;
+
+  /* --------- CUSTOM PROPERTY SECTION --------- */
+  const customProperties = root.custom_properties;
+
+  if (Array.isArray(customProperties?.custom_pbgid_properties)) {
+    for (const item of customProperties.custom_pbgid_properties as AbilityCustomPbgidPropertyItem[]) {
+      const property = item.custom_pbgid_property;
+      const propertyId = property?.id?.toUpperCase() || "";
+      const weaponReference = property?.pbg?.instance_reference || "";
+
+      if (!ABILITY_WEAPON_PBG_PROPERTY_IDS.has(propertyId) || !weaponReference) continue;
+
+      const weaponId = getIdFromInstanceReference(weaponReference);
+      if (weaponId && !ability.abilityWeaponIds.includes(weaponId)) {
+        ability.abilityWeaponIds.push(weaponId);
+      }
+    }
+  }
+
+  const numShotsProperty = (
+    customProperties?.custom_int32_properties as AbilityCustomInt32PropertyItem[] | undefined
+  )?.find((item) => item.custom_int32_property?.id?.toUpperCase() === "NUM_SHOTS");
+  const numShots = Number(numShotsProperty?.custom_int32_property?.value);
+  if (Number.isFinite(numShots) && numShots > 0) {
+    ability.numShots = Math.trunc(numShots);
+  }
 
   /* --------- REQUIREMENTS SECTION --------- */
   if (Array.isArray(abilityBag.requirements)) {

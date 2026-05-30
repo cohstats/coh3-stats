@@ -4,6 +4,7 @@ import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
+import { getReferenceString } from "./dpsCommon";
 
 // Need to be extended by all required fields
 type UpgradesType = {
@@ -21,6 +22,12 @@ type UpgradesType = {
    * `abilities/upgrade_id/upgrade_bag/ui_position`.
    */
   uiPosition: { row: number; column: number };
+
+  /** Found at `custom_properties`. */
+  customProperties: UpgradeCustomProperties;
+
+    /** Found at `upgrade_bag.state_tree_references.on_action_tree.ActionTree_OpeningBranch`. */
+  actionTreeOpeningBranch: string;
 };
 
 /**
@@ -55,6 +62,20 @@ type UpgradeCost = {
   command: number;
 };
 
+type UpgradeCustomInt32Property = {
+  id: string;
+  value: number;
+};
+
+type UpgradeCustomPbgidProperty = {
+  id: string;
+  pbg: string;
+};
+
+type UpgradeCustomProperties = {
+  int32: UpgradeCustomInt32Property[];
+  pbgid: UpgradeCustomPbgidProperty[];
+};
 // Exported variable holding mapped data for each json file. Will be set via
 // `setUpgradesStats`. Can be accessed from everywhere.
 let upgradesStats: UpgradesType[];
@@ -98,9 +119,15 @@ const mapUpgradesData = (
       row: -1,
       column: -1,
     },
+    actionTreeOpeningBranch: "",
+    customProperties: {
+      int32: [],
+      pbgid: [],
+    },
   };
 
   mapUpgradeBag(subtree, upgradesEntity, locale);
+  mapUpgradeCustomProperties(subtree, upgradesEntity);
 
   return upgradesEntity;
 };
@@ -150,9 +177,45 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType, locale: string = "en") 
     }
   }
 
+  upgrade.actionTreeOpeningBranch = upgradeBag.state_tree_references?.on_action_tree?.ActionTree_OpeningBranch ?? "";
+
   /* --------- UI POSITION SECTION --------- */
   upgrade.uiPosition.row = upgradeBag.ui_position?.ui_position_row || -1;
   upgrade.uiPosition.column = upgradeBag.ui_position?.ui_position_column || -1;
+};
+
+const mapUpgradeCustomProperties = (root: any, upgrade: UpgradesType) => {
+  const customProperties = root.custom_properties;
+
+  if (!customProperties) return;
+
+  const customInt32Properties = customProperties.custom_int32_properties;
+  if (Array.isArray(customInt32Properties)) {
+    customInt32Properties.forEach((item: any) => {
+      const property = item.custom_int32_property;
+
+      if (!property?.id) return;
+
+      upgrade.customProperties.int32.push({
+        id: property.id,
+        value: Number(property.value ?? 0),
+      });
+    });
+  }
+
+  const customPbgidProperties = customProperties.custom_pbgid_properties;
+  if (Array.isArray(customPbgidProperties)) {
+    customPbgidProperties.forEach((item: any) => {
+      const property = item.custom_pbgid_property;
+
+      if (!property?.id) return;
+
+      upgrade.customProperties.pbgid.push({
+        id: property.id,
+        pbg: getReferenceString(property.pbg),
+      });
+    });
+  }
 };
 
 // Calls the mapping for each entity and puts the result array into the exported

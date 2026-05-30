@@ -3,6 +3,7 @@ import { DpsComparePageComponent } from "../../components/unitStats/dps/dpsCompa
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
+import { getUpgradesStats, setUpgradesStats, UpgradesType } from "../../src/unitStats/mappingUpgrades";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
@@ -18,6 +19,7 @@ interface DpsCompareProps {
   locstring: Record<string, string | null>;
 }
 
+
 const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) => {
   const { t } = useTranslation(["explorer"]);
 
@@ -28,6 +30,7 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   const [isLoading, setIsLoading] = React.useState(true);
   const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
   const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
+  const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,15 +39,19 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
         if (!unitStatsLocString()) setLocstring(locstring);
         setWeaponStats(weaponData);
 
-        const [ebpsData, sbpsData] = await Promise.all([
+        const [ebpsData, sbpsData, upgradesData] = await Promise.all([
           getEbpsStats("latest"),
           getSbpsStats("latest"),
+          getUpgradesStats(),
         ]);
 
         setEbpsStats(ebpsData);
         setSbpsStats(sbpsData);
-        setSbpsDataState(sbpsData);
+        setUpgradesStats(upgradesData);
+
         setEbpsDataState(ebpsData);
+        setSbpsDataState(sbpsData);
+        setUpgradesDataState(upgradesData);
       } catch (error) {
         console.error("Failed to load data:", error);
       } finally {
@@ -56,9 +63,10 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   }, []);
 
   const dpsData = {
-    weaponData: weaponData,
-    sbpsData: sbpsData,
-    ebpsData: ebpsData,
+    weaponData,
+    sbpsData,
+    ebpsData,
+    upgradesData,
   };
 
   // Create SEO props for DPS Compare page
