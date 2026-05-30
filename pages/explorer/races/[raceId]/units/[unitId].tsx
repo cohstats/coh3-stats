@@ -576,7 +576,7 @@ const UnitUpgradeWeaponSection = (
       <Title order={4}>{title}</Title>
 
       <Stack>
-        {upgradeWeaponLoadouts.map(({ upgrade, weapons, replacementCount }) => (
+        {upgradeWeaponLoadouts.map(({ upgrade, weapons }) => (
           <Card
             key={upgrade.id}
             p="md"
