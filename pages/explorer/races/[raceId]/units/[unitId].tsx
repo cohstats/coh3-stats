@@ -701,17 +701,15 @@ const mapAbilityWeaponMember = (weapon: WeaponType, num = 1): AbilityWeaponMembe
   num,
 });
 
-const getWeaponMembersFromAbilityWeaponEbps = (
-  sbps: SbpsType,
-  ability: AbilitiesType,
-  weaponEbpsId: string,
+const getWeaponMembersFromAbilityWeaponReference = (
+  weaponReferenceId: string,
   ebpsData: EbpsType[],
   weaponData: WeaponType[],
 ): AbilityWeaponMember[] => {
-  const weaponEbps = ebpsData.find((ebps) => ebps.id === weaponEbpsId);
+  const weaponEbps = ebpsData.find((ebps) => ebps.id === weaponReferenceId);
 
   if (!weaponEbps) {
-    const directWeapon = weaponData.find((gun) => gun.id === weaponEbpsId);
+    const directWeapon = weaponData.find((gun) => gun.id === weaponReferenceId);
 
     if (directWeapon) {
       return [mapAbilityWeaponMember(directWeapon, 1)];
@@ -751,7 +749,6 @@ const getWeaponMembersFromAbilityWeaponEbps = (
 };
 
 const getAbilityWeaponLoadouts = (
-  sbps: SbpsType,
   abilities: AbilitiesType[],
   ebpsData: EbpsType[],
   weaponData: WeaponType[],
@@ -759,7 +756,7 @@ const getAbilityWeaponLoadouts = (
   return abilities
     .map((ability) => {
       const weapons = (ability.abilityWeaponIds || []).flatMap((weaponEbpsId) =>
-        getWeaponMembersFromAbilityWeaponEbps(sbps, ability, weaponEbpsId, ebpsData, weaponData),
+        getWeaponMembersFromAbilityWeaponReference(weaponEbpsId, ebpsData, weaponData),
       );
 
       return {
@@ -927,12 +924,7 @@ const createdCalculateValuesForUnits = (
     }
   }
 
-  const abilityWeaponLoadouts = getAbilityWeaponLoadouts(
-    resolvedSquad,
-    abilities,
-    ebpsData,
-    weaponData,
-  );
+  const abilityWeaponLoadouts = getAbilityWeaponLoadouts(abilities, ebpsData, weaponData);
 
   return {
     resolvedSquad,
