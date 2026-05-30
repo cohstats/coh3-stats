@@ -426,10 +426,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
             {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
           </Grid.Col>
           <Grid.Col>
-            {UnitUpgradeWeaponSection(upgradeWeaponLoadouts, "Upgrade weapons")}
+            {UnitUpgradeWeaponSection(upgradeWeaponLoadouts, t("unitPage.upgradeWeapons"))}
           </Grid.Col>
           <Grid.Col>
-            {UnitAbilityWeaponSection(abilityWeaponLoadouts, "Ability weapons")}
+            {UnitAbilityWeaponSection(abilityWeaponLoadouts, t("unitPage.abilityWeapons"))}
           </Grid.Col>
         </Grid>
       </Container>
@@ -624,12 +624,13 @@ const UnitUpgradeWeaponSection = (
   );
 };
 
-const formatShotCount = (numShots: number) => {
+const formatShotCount = (
+  numShots: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) => {
   const shots = Number.isInteger(numShots) ? numShots : Number(numShots.toFixed(2));
 
-  if (shots === 1) return "Fires once";
-
-  return `Fires ${shots} times`;
+  return t("unitPage.abilityWeaponShotCount", { count: shots });
 };
 
 const getIdFromReference = (reference: unknown) => {
@@ -735,6 +736,7 @@ const UnitAbilityWeaponSection = (
   abilityWeaponLoadouts: AbilityWeaponLoadout[],
   title = "Ability weapons",
 ) => {
+  const { t } = useTranslation(["explorer"]);
   if (!abilityWeaponLoadouts?.length) return null;
 
   return (
@@ -775,7 +777,7 @@ const UnitAbilityWeaponSection = (
 
               {numShots !== null && numShots > 0 ? (
                 <Text size="sm" fw={600}>
-                  {formatShotCount(numShots)}
+                  {formatShotCount(numShots, t)}
                 </Text>
               ) : null}
 

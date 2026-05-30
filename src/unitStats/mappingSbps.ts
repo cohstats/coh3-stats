@@ -308,16 +308,6 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
         }
         break;
 
-      case "squad_upgrade_ext":
-        // Check if the `upgrades` is not empty, otherwise skip.
-        if (!extension.upgrades?.length) break;
-        for (const upg of extension.upgrades) {
-          if (upg.upgrade?.instance_reference) {
-            sbps.upgrades.push(upg.upgrade.instance_reference);
-          }
-        }
-        break;
-
       case "squad_upgrade_apply_ext":
         if (!extension.upgrades?.length) break;
 

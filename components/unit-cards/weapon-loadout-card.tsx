@@ -616,7 +616,7 @@ export const WeaponLoadoutCard = (
               alt={id}
               fallbackSrc={symbolPlaceholder}
             />
-          ) : parentFallbackIcon ? (
+          ) : (
             <img
               src={parentFallbackIcon}
               alt={id}
@@ -634,14 +634,6 @@ export const WeaponLoadoutCard = (
                 objectFit: "contain",
                 display: "block",
               }}
-            />
-          ) : (
-            <ImageWithFallback
-              width={48}
-              height={16}
-              src=""
-              alt={id}
-              fallbackSrc={symbolPlaceholder}
             />
           )}
         </WeaponIconWithCount>
