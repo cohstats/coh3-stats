@@ -66,6 +66,10 @@ type AbilitiesType = {
   ui: AbilitiesUiData;
   /** Recharge time when casted the ability. */
   rechargeTime: number;
+  /** Ability cast range. Null when missing or zero. */
+  range: number | null;
+  /** Ability cast min range. Null when missing or zero. */
+  minRange: number | null;
   /** Weapon EBPS IDs referenced by custom_pbgid_properties WEAPON_PBG_1..3. */
   abilityWeaponIds: string[];
   /** Found in custom_int32_properties/NUM_SHOTS. Null when not present. */
@@ -147,6 +151,8 @@ const mapAbilitiesData = (
       extraTextFormatter: "",
     },
     rechargeTime: 0,
+    range: null,
+    minRange: null,
     abilityWeaponIds: [],
     numShots: null,
     cost: {
@@ -188,6 +194,16 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
   ability.cost.manpower = abilityBag.cost_to_player?.manpower || 0;
   ability.cost.popcap = abilityBag.cost_to_player?.popcap || 0;
   ability.rechargeTime = abilityBag.recharge_time || 0;
+
+  const range = Number(abilityBag.range);
+  if (Number.isFinite(range) && range > 0) {
+    ability.range = range;
+  }
+
+  const minRange = Number(abilityBag.min_range);
+  if (Number.isFinite(minRange) && minRange > 0) {
+    ability.minRange = minRange;
+  }
 
   /* --------- CUSTOM PROPERTY SECTION --------- */
   const customProperties = root.custom_properties;

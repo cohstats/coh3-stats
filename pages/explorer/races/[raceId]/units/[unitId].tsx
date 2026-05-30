@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import {
+  Badge,
   Card,
   Container,
   Grid,
@@ -633,6 +634,46 @@ const formatShotCount = (
   return t("unitPage.abilityWeaponShotCount", { count: shots });
 };
 
+const AbilityInfoBadge = ({ children }: { children: React.ReactNode }) => (
+  <Badge
+    size="lg"
+    radius="sm"
+    variant="light"
+    color="orange"
+    styles={{
+      root: {
+        textTransform: "none",
+        background: "rgba(92, 48, 16, 0.72)",
+        border: "1px solid rgba(245, 159, 66, 0.38)",
+        color: "var(--mantine-color-orange-1)",
+        fontWeight: 700,
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.045)",
+      },
+    }}
+  >
+    {children}
+  </Badge>
+);
+
+const formatAbilityRange = (
+  minRange: number | null,
+  range: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) => {
+  const formattedRange = Number.isInteger(range) ? range : Number(range.toFixed(2));
+
+  if (minRange !== null && minRange > 0) {
+    const formattedMinRange = Number.isInteger(minRange) ? minRange : Number(minRange.toFixed(2));
+
+    return t("unitPage.abilityRangeWithMin", {
+      minRange: formattedMinRange,
+      range: formattedRange,
+    });
+  }
+
+  return t("unitPage.abilityRange", { range: formattedRange });
+};
+
 const getIdFromReference = (reference: unknown) => {
   if (!reference || typeof reference !== "object") return "";
 
@@ -730,6 +771,8 @@ const getAbilityDeduplicationKey = (ability: AbilitiesType) =>
     ui: ability.ui,
     abilityWeaponIds: ability.abilityWeaponIds || [],
     numShots: ability.numShots ?? null,
+    range: ability.range ?? null,
+    minRange: ability.minRange ?? null,
   });
 
 const UnitAbilityWeaponSection = (
@@ -775,10 +818,19 @@ const UnitAbilityWeaponSection = (
                 time_cost={ability.cost}
               />
 
-              {numShots !== null && numShots > 0 ? (
-                <Text size="sm" fw={600}>
-                  {formatShotCount(numShots, t)}
-                </Text>
+              {(ability.range !== null && ability.range > 0) ||
+              (numShots !== null && numShots > 0) ? (
+                <Group gap="xs">
+                  {ability.range !== null && ability.range > 0 ? (
+                    <AbilityInfoBadge>
+                      {formatAbilityRange(ability.minRange ?? null, ability.range, t)}
+                    </AbilityInfoBadge>
+                  ) : null}
+
+                  {numShots !== null && numShots > 0 ? (
+                    <AbilityInfoBadge>{formatShotCount(numShots, t)}</AbilityInfoBadge>
+                  ) : null}
+                </Group>
               ) : null}
 
               {weapons.length ? (
