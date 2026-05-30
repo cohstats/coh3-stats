@@ -7,9 +7,11 @@ import {
   CloseButton,
   HoverCard,
   Card,
+  Stack,
 } from "@mantine/core";
 import { WeaponMember } from "../../../src/unitStats/dpsCommon";
 import { WeaponLoadoutCard } from "../../unit-cards/weapon-loadout-card";
+import { UnitUpgradeCard } from "../../unit-cards/unit-upgrade-card";
 import { Line } from "react-chartjs-2";
 
 interface IDPSProps {
@@ -48,18 +50,12 @@ export const DpsWeaponCard = (props: IDPSProps) => {
   // const weaponMember =
 
   //const [activeData] = useState(props.weapon_member);
-
+  const isOptionalUpgradeWeapon = props.weapon_member.source === "optional_upgrade";
+  const sourceUpgrade = props.weapon_member.sourceUpgrade;
   function onNumberChanged(value: number) {
-    if (value <= 0 && props.weapon_member.num == 0) {
-      props.weapon_member.num = 0;
-      value = 0;
-      return;
-    }
+    const nextValue = Number.isFinite(value) ? Math.max(0, value) : 0;
 
-    if (value <= 0) value = 0;
-
-    props.weapon_member.num = value;
-    // setActiveData({ ...props.weapon_member });
+    props.weapon_member.num = nextValue;
     props.onNumberChange(props.weapon_member);
   }
 
@@ -91,10 +87,39 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           //border: theme.colorScheme === "dark" ? "solid 1px " + theme.colors.dark[4] : "solid 1px " + theme.colors.gray[4] ,
           padding: theme.spacing.xs,
           borderRadius: theme.radius.md,
+          position: "relative",
+          color: isOptionalUpgradeWeapon ? "var(--mantine-color-gray-0)" : undefined,
+          background: isOptionalUpgradeWeapon
+            ? "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 15%, rgba(27, 31, 34, 0.98) 30%)"
+            : undefined,
+          border: isOptionalUpgradeWeapon ? "1px solid rgba(77, 171, 168, 0.32)" : undefined,
+          boxShadow: isOptionalUpgradeWeapon
+            ? "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 12px rgba(77, 171, 168, 0.05)"
+            : undefined,
         })}
       >
+        {isOptionalUpgradeWeapon && (
+          <Text
+            component="span"
+            title="Upgrade weapon"
+            fw={900}
+            size="sm"
+            style={{
+              position: "absolute",
+              top: 4,
+              left: 7,
+              lineHeight: 1,
+              color: "rgba(154, 163, 173, 0.95)",
+              textShadow: "0 0 7px rgba(90, 100, 110, 0.45)",
+              pointerEvents: "none",
+            }}
+          >
+            ★
+          </Text>
+        )}
+
         <Group>
-          <HoverCard shadow="md" width={420} position="left" offset={50}>
+          <HoverCard shadow="md" width={580} position="left" offset={50}>
             <HoverCard.Target>
               <Group gap={"xs"}>
                 <img
@@ -104,13 +129,58 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                   // fit="cover"
                   alt={props.weapon_member.weapon_id.substring(0, 10)}
                 />
-                <CloseButton aria-label="Close modal" onClick={onDeleteWeapon} />
+                <CloseButton
+                  aria-label="Remove weapon"
+                  onClick={onDeleteWeapon}
+                  c={isOptionalUpgradeWeapon ? "gray.0" : undefined}
+                />
               </Group>
             </HoverCard.Target>
             <HoverCard.Dropdown>
-              <Card p="lg" radius="md">
-                {WeaponLoadoutCard(props.weapon_member.weapon, 1)}
-              </Card>
+              {isOptionalUpgradeWeapon && sourceUpgrade ? (
+                <Card
+                  p="md"
+                  radius="md"
+                  withBorder
+                  c="gray.0"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 18%, rgba(27, 31, 34, 0.98) 30%)",
+                    borderColor: "rgba(77, 171, 168, 0.32)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 18px rgba(77, 171, 168, 0.06)",
+                    color: "var(--mantine-color-gray-0)",
+                  }}
+                >
+                  <Stack gap="sm">
+                    <UnitUpgradeCard
+                      id={sourceUpgrade.id}
+                      desc={{
+                        screen_name: sourceUpgrade.ui.screenName,
+                        help_text: sourceUpgrade.ui.helpText,
+                        extra_text: sourceUpgrade.ui.extraText,
+                        brief_text: sourceUpgrade.ui.briefText,
+                        icon_name: sourceUpgrade.ui.iconName,
+                        extra_text_formatter: sourceUpgrade.ui.extraTextFormatter,
+                        brief_text_formatter: sourceUpgrade.ui.briefTextFormatter,
+                      }}
+                      time_cost={sourceUpgrade.cost}
+                    />
+
+                    <Card p="lg" radius="md" withBorder>
+                      {WeaponLoadoutCard(
+                        props.weapon_member.weapon,
+                        props.weapon_member.upgradeCount ?? 1,
+                      )}
+                    </Card>
+                  </Stack>
+                </Card>
+              ) : (
+                <Card p="lg" radius="md">
+                  {WeaponLoadoutCard(props.weapon_member.weapon, 1)}
+                </Card>
+              )}
+
               <Line
                 key={props.weapon_member.weapon_id}
                 data={lineData}
@@ -213,15 +283,13 @@ export const DpsWeaponCard = (props: IDPSProps) => {
 
         <Text size="xs">{props.weapon_member.weapon_id.substring(0, 12) + "..."}</Text>
         <Space h="xs" />
-        {props.weapon_member.ebps.unitType == "infantry" && (
-          <NumberInput
-            w={"60px"}
-            defaultValue={props.weapon_member.num}
-            size="xs"
-            onChange={(value) => onNumberChanged(value as number)}
-            value={props.weapon_member.num}
-          />
-        )}
+        <NumberInput
+          w={"60px"}
+          value={props.weapon_member.num ?? 0}
+          min={0}
+          size="xs"
+          onChange={(value) => onNumberChanged(Number(value) || 0)}
+        />
       </Box>
     </>
   );

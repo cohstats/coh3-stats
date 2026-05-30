@@ -5,7 +5,13 @@ import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
 import { extractRequirements } from "./requirement-utils";
+import { getStateTreeSpawnMapping } from "./workarounds";
 
+type SpawnWeaponData = {
+  pbg: string;
+  count: number;
+  replacesNormalWeapon: boolean;
+};
 // need to be extended by all required fields
 type SbpsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
@@ -17,6 +23,16 @@ type SbpsType = {
   ui: SquadUiData;
   /** Found at `squad_upgrade_ext.upgrades`. List of instance references. */
   upgrades: string[];
+
+  /** Found at `squad_upgrade_apply_ext.upgrades`, plus inferred from spawn state trees. */
+  spawnUpgrades: string[];
+
+  /** Found at `squad_action_apply_ext.action_state_trees`. Used for manual spawn-upgrade mapping. */
+  spawnUpgradeStateTrees: string[];
+
+  /** Weapons automatically added on spawn, usually from squad_action_apply_ext state trees. */
+  spawnWeapons: SpawnWeaponData[];
+
   unitType: string;
   /** The `squad_population_ext` holds the base popcap and upkeep per pop per
    * minute costs, which will be stacked with the ebps. */
@@ -116,6 +132,9 @@ const mapSbpsData = (
       armorIcon: "",
     },
     upgrades: [],
+    spawnUpgrades: [],
+    spawnUpgradeStateTrees: [],
+    spawnWeapons: [],
     populationExt: {
       personnel_pop: 0,
       upkeep_per_pop: {
@@ -154,6 +173,11 @@ const mapSbpsData = (
   // compute load out
 
   return sbpsEntity;
+};
+
+const addUnique = (array: string[], value?: string) => {
+  if (!value) return;
+  if (!array.includes(value)) array.push(value);
 };
 
 const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
@@ -283,6 +307,43 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
           };
         }
         break;
+
+      case "squad_upgrade_apply_ext":
+        if (!extension.upgrades?.length) break;
+
+        for (const upg of extension.upgrades) {
+          const upgradeRef = upg.upgrade?.instance_reference;
+          addUnique(sbps.spawnUpgrades, upgradeRef);
+        }
+
+        break;
+
+      case "squad_action_apply_ext":
+        if (!extension.action_state_trees?.length) break;
+
+        for (const actionStateTree of extension.action_state_trees) {
+          const stateTree = actionStateTree.container?.state_tree;
+          addUnique(sbps.spawnUpgradeStateTrees, stateTree);
+
+          const mappedSpawn = getStateTreeSpawnMapping(stateTree);
+
+          for (const upgradeRef of mappedSpawn.upgrades ?? []) {
+            addUnique(sbps.spawnUpgrades, upgradeRef);
+          }
+
+          for (const weaponRef of mappedSpawn.weapons ?? []) {
+            if (!weaponRef.pbg) continue;
+
+            sbps.spawnWeapons.push({
+              pbg: weaponRef.pbg,
+              count: weaponRef.count ?? 1,
+              replacesNormalWeapon: weaponRef.replacesNormalWeapon ?? true,
+            });
+          }
+        }
+
+        break;
+
       case "squad_reinforce_ext":
         {
           sbps.reinforce.cost_percentage = extension.time_cost_percentage?.cost_percentage ?? 0;

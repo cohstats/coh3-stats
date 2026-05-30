@@ -428,51 +428,79 @@ const setEbpsWorkarounds = () => {
       item.ui.iconName = "races/american/buildings/barracks_us";
     },
   });
-
-  ebpsWorkaround("Modify American - Mortar crew hitpoints", {
-    predicate: (item) => item.faction === "american" && item.id === "crew_mortar_us",
-    mutator: (item) => {
-      item = item as EbpsType;
-      item.health.hitpoints = 80;
-    },
-  });
-
-  ebpsWorkaround("Modify British - Mortar crew hitpoints", {
-    predicate: (item) => item.faction === "british" && item.id === "crew_mortar_uk",
-    mutator: (item) => {
-      item = item as EbpsType;
-      item.health.hitpoints = 80;
-    },
-  });
-
-  ebpsWorkaround("Modify British - Indian Mortar crew hitpoints", {
-    predicate: (item) => item.faction === "british" && item.id === "crew_mortar_indian_uk",
-    mutator: (item) => {
-      item = item as EbpsType;
-      item.health.hitpoints = 80;
-    },
-  });
-
-  ebpsWorkaround("Modify British Africa - Mortar crew hitpoints", {
-    predicate: (item) => item.faction === "british_africa" && item.id === "crew_mortar_africa_uk",
-    mutator: (item) => {
-      item = item as EbpsType;
-      item.health.hitpoints = 80;
-    },
-  });
-
-  ebpsWorkaround("Modify British Africa - Indian Mortar crew hitpoints", {
-    predicate: (item) =>
-      item.faction === "british_africa" && item.id === "crew_mortar_indian_africa_uk",
-    mutator: (item) => {
-      item = item as EbpsType;
-      item.health.hitpoints = 80;
-    },
-  });
 };
 
 setBattlegroupsWorkarounds();
 setEbpsWorkarounds();
+
+// spawn-upgrade-state-tree-map.ts
+export const StateTreeToSpawnUpgradeMap: Record<string, string | string[]> = {
+  panzerjaeger_weapon_spawn: "panzerbuchse_panzerpioneer_ak",
+  add_bazooka_bazooka_team_us: "bazooka_bazooka_team_us",
+  toggle_lmg_bazooka_ssf_spawn: "m1941_lmg_special_operations_us",
+  spawn_equip_lmg_commando_uk: "upgrade/german/infantry/mg42_stormtrooper_ger",
+  add_lmg_stormtrooper_ger: "mg42_stormtrooper_ger",
+};
+
+export type StateTreeSpawnWeapon = {
+  pbg: string;
+  count?: number;
+  replacesNormalWeapon?: boolean;
+};
+
+export type StateTreeSpawnMapping = {
+  upgrades?: string[];
+  weapons?: StateTreeSpawnWeapon[];
+};
+
+export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
+  panzerjaeger_weapon_spawn: {
+    weapons: [
+      {
+        pbg: "ebps/races/afrika_korps/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_panzerbuchse39_at_rifle_ak",
+        count: 2,
+        replacesNormalWeapon: true,
+      },
+    ],
+  },
+  add_bazooka_bazooka_team_us: {
+    upgrades: ["bazooka_bazooka_team_us"],
+  },
+  toggle_lmg_bazooka_ssf_spawn: {
+    upgrades: ["m1941_lmg_special_operations_us"],
+  },
+  spawn_equip_lmg_commando_uk: {
+    weapons: [
+      {
+        pbg: "ebps/races/british/weapons/small_arms/machine_guns/light_machine_gun/w_vickers_k_lmg_uk",
+        count: 1,
+        replacesNormalWeapon: true,
+      },
+    ],
+  },
+  add_lmg_stormtrooper_ger: {
+    upgrades: ["mg42_stormtrooper_ger"],
+  },
+
+  // Example direct-weapon state tree:
+  // some_state_tree_that_adds_weapon_directly: {
+  //   weapons: [
+  //     {
+  //       pbg: "ebps/races/german/weapons/small_arms/single_fire/rifle/w_some_weapon",
+  //       count: 1,
+  //       replacesNormalWeapon: true,
+  //     },
+  //   ],
+  // },
+};
+
+export const getStateTreeSpawnMapping = (stateTree?: string): StateTreeSpawnMapping => {
+  if (!stateTree) return {};
+
+  const mapped = StateTreeToSpawnMap[stateTree];
+
+  return mapped ?? {};
+};
 
 // console.log(`Total BG workarounds: ${bgWorkarounds.size}`);
 // console.log(`Total Ebps workarounds: ${ebpsWorkarounds.size}`);

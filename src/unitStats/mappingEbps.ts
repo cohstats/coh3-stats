@@ -332,10 +332,12 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
             }
         }
         break;
-      case "weapon_ext":
-        const weaponPath = extension.weapon.instance_reference.split("/");
-        ebps.weaponId = weaponPath[weaponPath.length - 1];
+      case "weapon_ext": {
+        const weaponReference = extension.weapon?.instance_reference || "";
+        const weaponPath = weaponReference.replace(/\\/g, "/").split("/").filter(Boolean);
+        ebps.weaponId = weaponPath[weaponPath.length - 1] || "";
         break;
+      }
       case "upgrade_ext":
         // Check if the `standard_upgrades` is not empty, otherwise skip.
         if (!extension.standard_upgrades?.length) break;
@@ -394,6 +396,14 @@ const getEbpsStats = async (patch = "latest", locale = "en") => {
       //   console.log("🚀 ~ file: mappingEbps.ts:161 ~ ebpsSet.forEach ~ unitType:", item);
       //   console.groupEnd();
       // }
+
+      // Keep weapon EBPS even when their parent folder is not in the normal unit/entity whitelist.
+      // Ability custom PBGs often point at weapon EBPS under folders such as grenades/satchel-style
+      // categories. Those still need to resolve via weapon_ext.weapon -> weaponId.
+      if (item.weaponId) {
+        ebpsSetAll.push(item);
+        return;
+      }
 
       // filter by relevant entity types
       switch (item.unitType) {

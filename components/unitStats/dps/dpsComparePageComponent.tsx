@@ -34,6 +34,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
+import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
 import {
   CustomizableUnit,
   getCompareDpsData,
@@ -76,6 +77,7 @@ interface IDPSCompareProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
+  upgradesData: UpgradesType[];
 }
 
 // Module-level state for data caching
@@ -90,7 +92,9 @@ const initCompareData = (props: IDPSCompareProps) => {
   cachedWeapons = props.weaponData;
   cachedUnits = [];
   for (const sbps of props.sbpsData) {
-    cachedUnits.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData));
+    cachedUnits.push(
+      mapCustomizableUnit(sbps, props.ebpsData, props.weaponData, props.upgradesData),
+    );
   }
 };
 
@@ -191,7 +195,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
       cachedWeapons = newWeapons;
       cachedUnits = [];
       for (const sbps of newSbps) {
-        cachedUnits.push(mapCustomizableUnit(sbps, newEbps, newWeapons));
+        cachedUnits.push(mapCustomizableUnit(sbps, newEbps, newWeapons, props.upgradesData));
       }
       setUnitSelectionList(mapUnitSelection(cachedSbps, cachedUnits, factionFilter));
 

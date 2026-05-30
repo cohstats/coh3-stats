@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import {
+  Badge,
   Card,
   Container,
   Grid,
@@ -45,7 +46,13 @@ import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-c
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
-import { getSbpsWeapons, WeaponMember } from "../../../../../src/unitStats/dpsCommon";
+import {
+  getSbpsWeapons,
+  getUpgradeWeaponLoadouts,
+  mapWeaponMember,
+  UpgradeWeaponLoadout,
+  WeaponMember,
+} from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";
 import { AnalyticsExplorerUnitDetailsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
@@ -55,12 +62,20 @@ import config from "../../../../../config";
 import { getExplorerFactionRoute } from "../../../../../src/routes";
 import Link from "next/link";
 
+type AbilityWeaponLoadout = {
+  ability: AbilitiesType;
+  weapons: WeaponMember[];
+  numShots: number | null;
+};
+
 interface UnitDetailProps {
   calculatedData: {
     resolvedSquad: SbpsType;
     totalCost: ResourceValues;
     totalUpkeepCost: ResourceValues;
     squadWeapons: WeaponMember[];
+    upgradeWeaponLoadouts: UpgradeWeaponLoadout[];
+    abilityWeaponLoadouts: AbilityWeaponLoadout[];
     resolvedEntities: EbpsType[];
     upgrades: UpgradesType[];
     abilities: AbilitiesType[];
@@ -144,7 +159,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const { totalUpkeepCost } = calculatedData;
 
   // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
-  const { squadWeapons, upgrades, abilities, buildables } = calculatedData;
+  const {
+    squadWeapons,
+    upgradeWeaponLoadouts,
+    abilityWeaponLoadouts,
+    upgrades,
+    abilities,
+    buildables,
+  } = calculatedData;
 
   // Use default weapon for max range.
   const rangeValues = {
@@ -404,6 +426,12 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           <Grid.Col>
             {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
           </Grid.Col>
+          <Grid.Col>
+            {UnitUpgradeWeaponSection(upgradeWeaponLoadouts, t("unitPage.upgradeWeapons"))}
+          </Grid.Col>
+          <Grid.Col>
+            {UnitAbilityWeaponSection(abilityWeaponLoadouts, t("unitPage.abilityWeapons"))}
+          </Grid.Col>
         </Grid>
       </Container>
     </>
@@ -538,6 +566,292 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weap
   );
 };
 
+const UnitUpgradeWeaponSection = (
+  upgradeWeaponLoadouts: UpgradeWeaponLoadout[],
+  title = "Upgrade weapons",
+) => {
+  if (!upgradeWeaponLoadouts?.length) return null;
+
+  return (
+    <Stack>
+      <Title order={4}>{title}</Title>
+
+      <Stack>
+        {upgradeWeaponLoadouts.map(({ upgrade, weapons }) => (
+          <Card
+            key={upgrade.id}
+            p="md"
+            radius="md"
+            withBorder
+            c="gray.0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 18%, rgba(27, 31, 34, 0.98) 30%)",
+              borderColor: "rgba(77, 171, 168, 0.32)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 18px rgba(77, 171, 168, 0.06)",
+              color: "var(--mantine-color-gray-0)", // Keep readable in light mode; this card is always dark.
+            }}
+          >
+            <Stack>
+              <UnitUpgradeCard
+                id={upgrade.id}
+                desc={{
+                  screen_name: upgrade.ui.screenName,
+                  help_text: upgrade.ui.helpText,
+                  extra_text: upgrade.ui.extraText,
+                  brief_text: upgrade.ui.briefText,
+                  icon_name: upgrade.ui.iconName,
+                  extra_text_formatter: upgrade.ui.extraTextFormatter,
+                  brief_text_formatter: upgrade.ui.briefTextFormatter,
+                }}
+                time_cost={upgrade.cost}
+              />
+
+              <Grid columns={2} grow>
+                {weapons.map(({ weapon_id, weapon, num }) => (
+                  <Grid.Col span={{ base: 2, md: 1 }} key={`${upgrade.id}-${weapon_id}`}>
+                    <Card p="lg" radius="md" withBorder>
+                      {WeaponLoadoutCard(weapon, num)}
+                    </Card>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Stack>
+          </Card>
+        ))}
+      </Stack>
+    </Stack>
+  );
+};
+
+const formatShotCount = (
+  numShots: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) => {
+  const shots = Number.isInteger(numShots) ? numShots : Number(numShots.toFixed(2));
+
+  return t("unitPage.abilityWeaponShotCount", { count: shots });
+};
+
+const AbilityInfoBadge = ({ children }: { children: React.ReactNode }) => (
+  <Badge
+    size="lg"
+    radius="sm"
+    variant="light"
+    color="orange"
+    styles={{
+      root: {
+        textTransform: "none",
+        background: "rgba(92, 48, 16, 0.72)",
+        border: "1px solid rgba(245, 159, 66, 0.38)",
+        color: "var(--mantine-color-orange-1)",
+        fontWeight: 700,
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.045)",
+      },
+    }}
+  >
+    {children}
+  </Badge>
+);
+
+const formatAbilityRange = (
+  minRange: number | null,
+  range: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) => {
+  const formattedRange = Number.isInteger(range) ? range : Number(range.toFixed(2));
+
+  if (minRange !== null && minRange > 0) {
+    const formattedMinRange = Number.isInteger(minRange) ? minRange : Number(minRange.toFixed(2));
+
+    return t("unitPage.abilityRangeWithMin", {
+      minRange: formattedMinRange,
+      range: formattedRange,
+    });
+  }
+
+  return t("unitPage.abilityRange", { range: formattedRange });
+};
+
+const getIdFromReference = (reference: unknown) => {
+  if (!reference || typeof reference !== "object") return "";
+
+  const obj = reference as Record<string, unknown>;
+  const rawReference =
+    typeof obj.ebp === "string"
+      ? obj.ebp
+      : typeof obj.pbg === "string"
+        ? obj.pbg
+        : typeof obj.instance_reference === "string"
+          ? obj.instance_reference
+          : "";
+
+  return rawReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0] || "";
+};
+
+const getWeaponMembersFromAbilityWeaponEbps = (
+  sbps: SbpsType,
+  ability: AbilitiesType,
+  weaponEbpsId: string,
+  ebpsData: EbpsType[],
+  weaponData: WeaponType[],
+): WeaponMember[] => {
+  const weaponEbps = ebpsData.find((ebps) => ebps.id === weaponEbpsId);
+
+  if (!weaponEbps) {
+    console.warn("Ability weapon EBPS did not resolve", {
+      abilityId: ability.id,
+      abilityName: ability.ui.screenName,
+      weaponEbpsId,
+    });
+    return [];
+  }
+
+  const weaponMembers: WeaponMember[] = [];
+
+  // Most ability WEAPON_PBG_* values point directly to a weapon EBPS.
+  // That EBPS then points to the final weapon stats through weaponId.
+  if (weaponEbps.weaponId) {
+    const weapon = weaponData.find((gun) => gun.id === weaponEbps.weaponId);
+
+    if (weapon) {
+      weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, 1));
+    } else {
+      console.warn("Ability final weapon did not resolve", {
+        abilityId: ability.id,
+        abilityName: ability.ui.screenName,
+        weaponEbpsId,
+        finalWeaponId: weaponEbps.weaponId,
+      });
+    }
+  }
+
+  // Fallback: some EBPS entries may point to one or more weapon EBPS entries
+  // through weaponRef, like normal unit loadouts do.
+  for (const weaponRef of weaponEbps.weaponRef || []) {
+    const referencedWeaponEbpsId = getIdFromReference(weaponRef);
+    if (!referencedWeaponEbpsId) continue;
+
+    const referencedWeaponEbps = ebpsData.find((ebps) => ebps.id === referencedWeaponEbpsId);
+    if (!referencedWeaponEbps?.weaponId) continue;
+
+    const weapon = weaponData.find((gun) => gun.id === referencedWeaponEbps.weaponId);
+    if (!weapon) continue;
+
+    weaponMembers.push(mapWeaponMember(sbps, referencedWeaponEbps, weapon, 1));
+  }
+
+  return weaponMembers;
+};
+
+const getAbilityWeaponLoadouts = (
+  sbps: SbpsType,
+  abilities: AbilitiesType[],
+  ebpsData: EbpsType[],
+  weaponData: WeaponType[],
+): AbilityWeaponLoadout[] => {
+  return abilities
+    .map((ability) => {
+      const weapons = (ability.abilityWeaponIds || []).flatMap((weaponEbpsId) =>
+        getWeaponMembersFromAbilityWeaponEbps(sbps, ability, weaponEbpsId, ebpsData, weaponData),
+      );
+
+      return {
+        ability,
+        weapons,
+        numShots: ability.numShots ?? null,
+      };
+    })
+    .filter(({ weapons, numShots }) => weapons.length > 0 || numShots !== null);
+};
+
+const getAbilityDeduplicationKey = (ability: AbilitiesType) =>
+  JSON.stringify({
+    ui: ability.ui,
+    abilityWeaponIds: ability.abilityWeaponIds || [],
+    numShots: ability.numShots ?? null,
+    range: ability.range ?? null,
+    minRange: ability.minRange ?? null,
+  });
+
+const UnitAbilityWeaponSection = (
+  abilityWeaponLoadouts: AbilityWeaponLoadout[],
+  title = "Ability weapons",
+) => {
+  const { t } = useTranslation(["explorer"]);
+  if (!abilityWeaponLoadouts?.length) return null;
+
+  return (
+    <Stack>
+      <Title order={4}>{title}</Title>
+
+      <Stack>
+        {abilityWeaponLoadouts.map(({ ability, weapons, numShots }) => (
+          <Card
+            key={ability.id}
+            p="md"
+            radius="md"
+            withBorder
+            c="gray.0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(34, 22, 12, 0.98) 0%, rgba(128, 72, 30, 0.70) 18%, rgba(27, 31, 34, 0.98) 30%)",
+              borderColor: "rgba(245, 159, 66, 0.34)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 18px rgba(245, 159, 66, 0.08)",
+              color: "var(--mantine-color-gray-0)",
+            }}
+          >
+            <Stack>
+              <UnitUpgradeCard
+                id={ability.id}
+                desc={{
+                  screen_name: ability.ui.screenName,
+                  help_text: ability.ui.helpText,
+                  extra_text: ability.ui.extraText,
+                  brief_text: ability.ui.briefText,
+                  icon_name: ability.ui.iconName,
+                  extra_text_formatter: ability.ui.extraTextFormatter,
+                  brief_text_formatter: ability.ui.briefTextFormatter,
+                }}
+                time_cost={ability.cost}
+              />
+
+              {(ability.range !== null && ability.range > 0) ||
+              (numShots !== null && numShots > 0) ? (
+                <Group gap="xs">
+                  {ability.range !== null && ability.range > 0 ? (
+                    <AbilityInfoBadge>
+                      {formatAbilityRange(ability.minRange ?? null, ability.range, t)}
+                    </AbilityInfoBadge>
+                  ) : null}
+
+                  {numShots !== null && numShots > 0 ? (
+                    <AbilityInfoBadge>{formatShotCount(numShots, t)}</AbilityInfoBadge>
+                  ) : null}
+                </Group>
+              ) : null}
+
+              {weapons.length ? (
+                <Grid columns={2} grow>
+                  {weapons.map(({ weapon_id, weapon, num }) => (
+                    <Grid.Col span={{ base: 2, md: 1 }} key={`${ability.id}-${weapon_id}`}>
+                      <Card p="lg" radius="md" withBorder>
+                        {WeaponLoadoutCard(weapon, num)}
+                      </Card>
+                    </Grid.Col>
+                  ))}
+                </Grid>
+              ) : null}
+            </Stack>
+          </Card>
+        ))}
+      </Stack>
+    </Stack>
+  );
+};
+
 const createdCalculateValuesForUnits = (
   data: {
     abilitiesData: AbilitiesType[];
@@ -563,10 +877,18 @@ const createdCalculateValuesForUnits = (
   // Obtain the total upkeep cost of the squad.
   const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
 
-  // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
-  const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponData);
-
   const upgrades = Object.values(getResolvedUpgrades(resolvedSquad.upgrades, upgradesData));
+
+  // Spawn upgrades are baked into the base loadout.
+  const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponData, upgradesData);
+
+  // Purchasable upgrades are shown separately.
+  const upgradeWeaponLoadouts = getUpgradeWeaponLoadouts(
+    resolvedSquad,
+    upgrades,
+    ebpsData,
+    weaponData,
+  );
 
   const rawAbilities = Object.values(
     getResolvedAbilities(resolvedSquad.abilities, abilitiesData),
@@ -588,20 +910,32 @@ const createdCalculateValuesForUnits = (
   // IF the UI is completely the same, we can remove the duplicates.
   // This might lead to some bugs in case other parts would be different.
   const abilities: AbilitiesType[] = [];
+  const seenAbilities = new Set<string>();
   for (const ability of rawAbilities) {
     // If we are missing the name of the ability --> it's most likely broken // remove it here so we save the data
     if (ability.ui.screenName) {
-      if (!abilities.find((x) => JSON.stringify(x.ui) === JSON.stringify(ability.ui))) {
+      const deduplicationKey = getAbilityDeduplicationKey(ability);
+      if (!seenAbilities.has(deduplicationKey)) {
+        seenAbilities.add(deduplicationKey);
         abilities.push(ability);
       }
     }
   }
+
+  const abilityWeaponLoadouts = getAbilityWeaponLoadouts(
+    resolvedSquad,
+    abilities,
+    ebpsData,
+    weaponData,
+  );
 
   return {
     resolvedSquad,
     totalCost,
     totalUpkeepCost,
     squadWeapons,
+    upgradeWeaponLoadouts,
+    abilityWeaponLoadouts,
     resolvedEntities,
     upgrades,
     abilities,

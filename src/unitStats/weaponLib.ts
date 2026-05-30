@@ -86,19 +86,7 @@ const getSingleWeaponDPS = (
   let targetSize = 1;
   let armor = 1;
 
-  const FALLBACK_TARGET_TYPES_BY_UNIT_CATEGORY: Record<string, string[]> = {
-    infantry: ["infantry"],
-    vehicles: ["vehicle"], // source category is "vehicles", target type table wants "vehicle"
-    aircraft: ["aircraft"],
-    team_weapons: ["infantry"], // crewed weapons should still receive infantry modifiers
-  };
-  const rawTargetUnitTypes = target_unit?.ebps_default?.unitTypes ?? [];
-
-  const fallbackTargetUnitTypes = target_unit?.unit_type
-    ? (FALLBACK_TARGET_TYPES_BY_UNIT_CATEGORY[target_unit.unit_type] ?? [])
-    : [];
-
-  const targetUnitTypes = [...new Set([...rawTargetUnitTypes, ...fallbackTargetUnitTypes])];
+  const targetUnitTypes = target_unit?.ebps_default?.unitTypes ?? [];
 
   const targetModifiers = getTargetTypeModifiers(weapon_bag.target_type_table, targetUnitTypes);
   if (target_unit) {
