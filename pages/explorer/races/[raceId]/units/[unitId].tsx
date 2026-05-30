@@ -158,8 +158,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const { totalUpkeepCost } = calculatedData;
 
   // Obtain the squad weapons loadout (ignoring non-damage dealing ones like smoke).
-  const { squadWeapons, upgradeWeaponLoadouts, abilityWeaponLoadouts, upgrades, abilities, buildables } =
-    calculatedData;
+  const {
+    squadWeapons,
+    upgradeWeaponLoadouts,
+    abilityWeaponLoadouts,
+    upgrades,
+    abilities,
+    buildables,
+  } = calculatedData;
 
   // Use default weapon for max range.
   const rangeValues = {
@@ -600,7 +606,6 @@ const UnitUpgradeWeaponSection = (
                 }}
                 time_cost={upgrade.cost}
               />
-
 
               <Grid columns={2} grow>
                 {weapons.map(({ weapon_id, weapon, num }) => (

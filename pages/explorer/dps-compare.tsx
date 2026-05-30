@@ -3,7 +3,11 @@ import { DpsComparePageComponent } from "../../components/unitStats/dps/dpsCompa
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import { getUpgradesStats, setUpgradesStats, UpgradesType } from "../../src/unitStats/mappingUpgrades";
+import {
+  getUpgradesStats,
+  setUpgradesStats,
+  UpgradesType,
+} from "../../src/unitStats/mappingUpgrades";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
@@ -18,7 +22,6 @@ interface DpsCompareProps {
   weaponData: WeaponType[];
   locstring: Record<string, string | null>;
 }
-
 
 const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) => {
   const { t } = useTranslation(["explorer"]);

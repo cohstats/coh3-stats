@@ -180,7 +180,6 @@ const addUnique = (array: string[], value?: string) => {
   if (!array.includes(value)) array.push(value);
 };
 
-
 const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
@@ -308,7 +307,7 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
           };
         }
         break;
-      
+
       case "squad_upgrade_ext":
         // Check if the `upgrades` is not empty, otherwise skip.
         if (!extension.upgrades?.length) break;
@@ -354,7 +353,7 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
         }
 
         break;
-        
+
       case "squad_reinforce_ext":
         {
           sbps.reinforce.cost_percentage = extension.time_cost_percentage?.cost_percentage ?? 0;

@@ -455,13 +455,13 @@ export type StateTreeSpawnMapping = {
 
 export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
   panzerjaeger_weapon_spawn: {
-     weapons: [
-       {
-         pbg: "ebps/races/afrika_korps/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_panzerbuchse39_at_rifle_ak",
-         count: 2,
-         replacesNormalWeapon: true,
-       },
-     ],
+    weapons: [
+      {
+        pbg: "ebps/races/afrika_korps/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_panzerbuchse39_at_rifle_ak",
+        count: 2,
+        replacesNormalWeapon: true,
+      },
+    ],
   },
   add_bazooka_bazooka_team_us: {
     upgrades: ["bazooka_bazooka_team_us"],
@@ -470,13 +470,13 @@ export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
     upgrades: ["m1941_lmg_special_operations_us"],
   },
   spawn_equip_lmg_commando_uk: {
-     weapons: [
-       {
-         pbg: "ebps/races/british/weapons/small_arms/machine_guns/light_machine_gun/w_vickers_k_lmg_uk",
-         count: 1,
-         replacesNormalWeapon: true,
-       },
-     ],
+    weapons: [
+      {
+        pbg: "ebps/races/british/weapons/small_arms/machine_guns/light_machine_gun/w_vickers_k_lmg_uk",
+        count: 1,
+        replacesNormalWeapon: true,
+      },
+    ],
   },
   add_lmg_stormtrooper_ger: {
     upgrades: ["mg42_stormtrooper_ger"],

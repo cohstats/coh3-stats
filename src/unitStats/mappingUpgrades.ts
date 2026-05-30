@@ -26,7 +26,7 @@ type UpgradesType = {
   /** Found at `custom_properties`. */
   customProperties: UpgradeCustomProperties;
 
-    /** Found at `upgrade_bag.state_tree_references.on_action_tree.ActionTree_OpeningBranch`. */
+  /** Found at `upgrade_bag.state_tree_references.on_action_tree.ActionTree_OpeningBranch`. */
   actionTreeOpeningBranch: string;
 };
 
@@ -177,7 +177,8 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType, locale: string = "en") 
     }
   }
 
-  upgrade.actionTreeOpeningBranch = upgradeBag.state_tree_references?.on_action_tree?.ActionTree_OpeningBranch ?? "";
+  upgrade.actionTreeOpeningBranch =
+    upgradeBag.state_tree_references?.on_action_tree?.ActionTree_OpeningBranch ?? "";
 
   /* --------- UI POSITION SECTION --------- */
   upgrade.uiPosition.row = upgradeBag.ui_position?.ui_position_row || -1;

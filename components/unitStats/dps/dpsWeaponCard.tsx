@@ -85,20 +85,19 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           // backgroundColor:
           //   theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
           //border: theme.colorScheme === "dark" ? "solid 1px " + theme.colors.dark[4] : "solid 1px " + theme.colors.gray[4] ,
-            padding: theme.spacing.xs,
-            borderRadius: theme.radius.md,
-            position: "relative",
-            color: isOptionalUpgradeWeapon ? "var(--mantine-color-gray-0)" : undefined,
-            background: isOptionalUpgradeWeapon
-              ? "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 15%, rgba(27, 31, 34, 0.98) 30%)"
-              : undefined,
-            border: isOptionalUpgradeWeapon ? "1px solid rgba(77, 171, 168, 0.32)" : undefined,
-            boxShadow: isOptionalUpgradeWeapon
-              ? "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 12px rgba(77, 171, 168, 0.05)"
-              : undefined,
-          })}
-        >
-
+          padding: theme.spacing.xs,
+          borderRadius: theme.radius.md,
+          position: "relative",
+          color: isOptionalUpgradeWeapon ? "var(--mantine-color-gray-0)" : undefined,
+          background: isOptionalUpgradeWeapon
+            ? "linear-gradient(135deg, rgba(10, 28, 32, 0.98) 0%, rgba(13, 58, 56, 0.78) 15%, rgba(27, 31, 34, 0.98) 30%)"
+            : undefined,
+          border: isOptionalUpgradeWeapon ? "1px solid rgba(77, 171, 168, 0.32)" : undefined,
+          boxShadow: isOptionalUpgradeWeapon
+            ? "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 12px rgba(77, 171, 168, 0.05)"
+            : undefined,
+        })}
+      >
         {isOptionalUpgradeWeapon && (
           <Text
             component="span"
@@ -129,7 +128,8 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                   src={props.weapon_member.image}
                   // fit="cover"
                   alt={props.weapon_member.weapon_id.substring(0, 10)}
-                /><CloseButton
+                />
+                <CloseButton
                   aria-label="Remove weapon"
                   onClick={onDeleteWeapon}
                   c={isOptionalUpgradeWeapon ? "gray.0" : undefined}
@@ -281,15 +281,15 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           </HoverCard>
         </Group>
 
-      <Text size="xs">{props.weapon_member.weapon_id.substring(0, 12) + "..."}</Text>
-      <Space h="xs" />
-      <NumberInput
-        w={"60px"}
-        value={props.weapon_member.num ?? 0}
-        min={0}
-        size="xs"
-        onChange={(value) => onNumberChanged(Number(value) || 0)}
-      />
+        <Text size="xs">{props.weapon_member.weapon_id.substring(0, 12) + "..."}</Text>
+        <Space h="xs" />
+        <NumberInput
+          w={"60px"}
+          value={props.weapon_member.num ?? 0}
+          min={0}
+          size="xs"
+          onChange={(value) => onNumberChanged(Number(value) || 0)}
+        />
       </Box>
     </>
   );

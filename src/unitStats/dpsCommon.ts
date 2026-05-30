@@ -23,8 +23,8 @@ type WeaponMember = {
   description: string;
   /** Value seems to be the same as weapon ID. */
   value: string;
-  dps_default: CoordinatesDPS[]; 
-  
+  dps_default: CoordinatesDPS[];
+
   /** UI marker: weapon was added as an optional upgrade choice. */
   source?: "base" | "optional_upgrade";
   sourceUpgrade?: UpgradesType;
@@ -366,11 +366,7 @@ const getIdFromReference = (reference: unknown) => {
 
   if (!normalizedReference) return "";
 
-  return normalizedReference
-    .replace(/\\/g, "/")
-    .split("/")
-    .filter(Boolean)
-    .slice(-1)[0];
+  return normalizedReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0];
 };
 
 const isDamageDealingWeapon = (weapon?: WeaponType): weapon is WeaponType => {
@@ -444,7 +440,7 @@ const getWeaponsFromSingleUpgrade = (
   const weaponMembers: WeaponMember[] = [];
   let replacementCount = 0;
 
-    if (!isWeaponUpgrade(upgrade)) {
+  if (!isWeaponUpgrade(upgrade)) {
     return {
       weaponMembers,
       replacementCount,
@@ -515,10 +511,7 @@ export const getUpgradeWeaponLoadouts = (
   return upgradeWeaponLoadouts;
 };
 
-const applyWeaponReplacementCount = (
-  weaponCount: number,
-  remainingReplacementCount: number,
-) => {
+const applyWeaponReplacementCount = (weaponCount: number, remainingReplacementCount: number) => {
   if (remainingReplacementCount <= 0) {
     return {
       adjustedWeaponCount: weaponCount,

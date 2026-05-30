@@ -92,7 +92,9 @@ const initCompareData = (props: IDPSCompareProps) => {
   cachedWeapons = props.weaponData;
   cachedUnits = [];
   for (const sbps of props.sbpsData) {
-    cachedUnits.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData, props.upgradesData));
+    cachedUnits.push(
+      mapCustomizableUnit(sbps, props.ebpsData, props.weaponData, props.upgradesData),
+    );
   }
 };
 

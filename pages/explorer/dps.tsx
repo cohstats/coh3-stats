@@ -3,7 +3,11 @@ import { DpsPageComponent } from "../../components/unitStats/dps/dpsPageComponen
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
 import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
 import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import { getUpgradesStats, setUpgradesStats, UpgradesType } from "../../src/unitStats/mappingUpgrades";
+import {
+  getUpgradesStats,
+  setUpgradesStats,
+  UpgradesType,
+} from "../../src/unitStats/mappingUpgrades";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
@@ -30,10 +34,10 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
     AnalyticsDPSExplorerPageView();
   }, []);
 
-    const [isLoading, setIsLoading] = React.useState(true);
-    const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
-    const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
-    const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
+  const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
+  const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
