@@ -433,7 +433,30 @@ const setEbpsWorkarounds = () => {
 setBattlegroupsWorkarounds();
 setEbpsWorkarounds();
 
-// spawn-upgrade-state-tree-map.ts
+//upgrade state tree to weapon map
+export type UpgradeStateTreeWeapon = {
+  weaponId: string;
+  count?: number;
+};
+
+export const UpgradeStateTreeToWeaponMap: Record<string, UpgradeStateTreeWeapon[]> = {
+  mg34_panzer_ak: [{ weaponId: "mg34_panzer_iii_ak", count: 1 }],
+  mg42_tiger_ak: [{ weaponId: "mg34_panzer_iii_ak", count: 1 }],
+  hmg_greyhound_us: [{ weaponId: "50cal_greyhound_us", count: 1 }],
+  hmg_hellcat_us: [{ weaponId: "50cal_hellcat_us", count: 1 }],
+  hmg_sherman: [{ weaponId: "50cal_sherman_us", count: 1 }],
+  hmg_sherman_easy8_us: [{ weaponId: "50cal_sherman_us", count: 1 }],
+  mg42_panzer_ger: [{ weaponId: "mg42_panzer_iv_ger", count: 1 }],
+  mg42_stug_ger: [{ weaponId: "mg42_stug_iii_ger", count: 1 }],
+  mg42_tiger_ger: [{ weaponId: "mg34_tiger_ger", count: 1 }],
+};
+
+export const getUpgradeStateTreeWeapons = (stateTree?: string): UpgradeStateTreeWeapon[] => {
+  if (!stateTree) return [];
+  return UpgradeStateTreeToWeaponMap[stateTree] ?? [];
+};
+
+// spawn upgrade state tree map
 export const StateTreeToSpawnUpgradeMap: Record<string, string | string[]> = {
   panzerjaeger_weapon_spawn: "panzerbuchse_panzerpioneer_ak",
   add_bazooka_bazooka_team_us: "bazooka_bazooka_team_us",

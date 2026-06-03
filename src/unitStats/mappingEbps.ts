@@ -121,12 +121,19 @@ type armorLayoutOption = {
 type combatExt = {
   type: string;
   ebp: string;
+  initializeWeaponsOnCreation: boolean;
 };
 
 // exported variable holding mapped data for each
 // json file. Will be set via setSbpsStats.
 // Can be accessed from everywhere
 let ebpsStats: EbpsType[];
+
+const relicBoolean = (value: unknown, fallback = false) => {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value.toLowerCase() === "true";
+  return fallback;
+};
 
 // mapping a single entity of the json file. eg. panzergrenadier_ak.
 // subtree -> eg. extensions node
@@ -277,7 +284,7 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
           const upkeepPerPop = extension.upkeep_per_pop_per_minute_override;
           ebps.populationExt.personnel_pop = extension.personnel_pop || 0;
           ebps.populationExt.upkeep_per_pop = {
-            manpower: upkeepPerPop?.manpower || 0,
+            manpower: upkeepPerPop?.manpower || 0, //set in tuning_simuliation
             munition: upkeepPerPop?.munition || 0,
             fuel: upkeepPerPop?.fuel || 0,
           };
@@ -318,18 +325,27 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
         break;
       case "combat_ext":
         for (const index in extension.hardpoints) {
-          if (extension.hardpoints[index]?.hardpoint?.weapon_table)
-            for (const weapon_i in extension.hardpoints[index].hardpoint.weapon_table) {
-              const weapon = extension.hardpoints[index].hardpoint.weapon_table[weapon_i];
+          const hardpoint = extension.hardpoints[index]?.hardpoint;
+
+          if (hardpoint?.weapon_table) {
+            for (const weapon_i in hardpoint.weapon_table) {
+              const weapon = hardpoint.weapon_table[weapon_i];
+
               const weapon_ref: combatExt = {
                 type: weapon.weapon.type || "",
                 ebp:
                   weapon.weapon.weapon_entity_attachment?.entity_attach_data.ebp
                     ?.instance_reference || "",
+                initializeWeaponsOnCreation: relicBoolean(
+                  hardpoint.initialize_weapons_on_creation,
+                  true,
+                ),
               };
+
               ebps.weaponRef.push(weapon_ref);
               break; // choose main weapon only
             }
+          }
         }
         break;
       case "weapon_ext": {

@@ -5,6 +5,7 @@ import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS, applyCustomModifier } from "./weaponLib";
+import { getUpgradeStateTreeWeapons } from "./workarounds";
 import type { UpgradesType } from "./mappingUpgrades";
 
 type CoordinatesDPS = { x: number; y: number };
@@ -397,12 +398,14 @@ const findUpgradeByReference = (upgrades: UpgradesType[], reference: unknown) =>
   return upgrades.find((upgrade) => upgrade.id === upgradeId);
 };
 
-const isWeaponUpgrade = (upgrade: UpgradesType) => {
-  const actionTreeOpeningBranch = upgrade.actionTreeOpeningBranch
-    ?.replace(/\\/g, "/")
-    .toLowerCase();
+const getNormalizedUpgradeStateTree = (upgrade: UpgradesType) => {
+  return upgrade.actionTreeOpeningBranch?.replace(/\\/g, "/").toLowerCase();
+};
 
-  return actionTreeOpeningBranch === "weapon_upgrade";
+const isWeaponUpgrade = (upgrade: UpgradesType) => {
+  const stateTree = getNormalizedUpgradeStateTree(upgrade);
+
+  return stateTree === "weapon_upgrade" || getUpgradeStateTreeWeapons(stateTree).length > 0;
 };
 
 const getUpgradeInt32Value = (upgrade: UpgradesType, id: string) => {
@@ -480,6 +483,24 @@ const getWeaponsFromSingleUpgrade = (
     if (upgradeWeaponRef.replacesNormalWeapon) {
       replacementCount += upgradeWeaponRef.count;
     }
+  }
+
+  const stateTree = getNormalizedUpgradeStateTree(upgrade);
+  const mappedStateTreeWeapons = getUpgradeStateTreeWeapons(stateTree);
+  for (const mappedWeapon of mappedStateTreeWeapons) {
+    const count = mappedWeapon.count ?? 1;
+    if (count <= 0) continue;
+
+    const weapon = weapons.find((gun) => gun.id === mappedWeapon.weaponId);
+    if (!isDamageDealingWeapon(weapon)) continue;
+
+    const weaponEbps = ebpsList.find((ebps) => ebps.weaponId === mappedWeapon.weaponId);
+    if (!weaponEbps) continue;
+
+    weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, count));
+
+    // Important: probably false for vehicle pintles.
+    // These are added hardpoint weapons, not replacing the cannon/coax/hull weapon.
   }
 
   return {
@@ -677,6 +698,9 @@ export const getSbpsWeapons = (
 
     // loop through hardpoints get weapon ebps
     for (const weaponRef of unit_ebps.weaponRef) {
+      if (unit_ebps.unitType === "vehicles" && weaponRef.initializeWeaponsOnCreation === false) {
+        continue;
+      }
       // find weapon ebps
       const refPath = weaponRef.ebp.split("/");
 
