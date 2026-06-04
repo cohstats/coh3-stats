@@ -7,6 +7,7 @@ test.describe("Home Page - Page Object Pattern", () => {
   test.beforeAll(async ({ page }) => {
     homePage = new HomePage(page);
     await homePage.navigate();
+    await homePage.waitForPageLoad();
   });
 
   test("should load successfully", async () => {

@@ -7,6 +7,7 @@ test.describe("About Page - Regression Tests", () => {
   test.beforeAll(async ({ page }) => {
     aboutPage = new AboutPage(page);
     await aboutPage.navigate();
+    await aboutPage.waitForPageLoad();
   });
 
   test("should load about page successfully", async () => {
