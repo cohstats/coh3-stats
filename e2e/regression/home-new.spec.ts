@@ -1,13 +1,20 @@
 import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/home-page";
 
+test.describe.configure({ mode: "serial" });
+
 test.describe("Home Page - Page Object Pattern", () => {
   let homePage: HomePage;
 
-  test.beforeAll(async ({ page }) => {
+  test.beforeAll(async ({ browser }) => {
+    const page = await browser.newPage();
     homePage = new HomePage(page);
     await homePage.navigate();
     await homePage.waitForPageLoad();
+  });
+
+  test.afterAll(async () => {
+    await homePage.page.close();
   });
 
   test("should load successfully", async () => {
