@@ -63,21 +63,29 @@ test.describe("Home Page - Page Object Pattern", () => {
       await expect(homePage.unitBrowserCard).toContainText(/Unit|Browser/i);
     });
 
-    test("should navigate to DPS Calculator when card is clicked", async ({ page }) => {
+    test("should navigate to DPS Calculator when card is clicked", async () => {
       await homePage.clickDPSCalculatorCard();
-      await page.waitForURL(/.*\/explorer\/dps.*/);
-      expect(page.url()).toContain("/explorer/dps");
+      await homePage.page.waitForURL(/.*\/explorer\/dps.*/);
+      expect(homePage.page.url()).toContain("/explorer/dps");
     });
 
-    test("should navigate to Unit Browser when card is clicked", async ({ page }) => {
+    test("should navigate to Unit Browser when card is clicked", async () => {
+      // Navigate back to home page first since previous test navigated away
+      await homePage.navigate();
+      await homePage.waitForPageLoad();
+
       await homePage.clickUnitBrowserCard();
-      await page.waitForURL(/.*unit-browser.*/);
-      expect(page.url()).toContain("unit-browser");
+      await homePage.page.waitForURL(/.*unit-browser.*/);
+      expect(homePage.page.url()).toContain("unit-browser");
     });
   });
 
   test.describe("Leaderboards Section", () => {
     test("should display leaderboards section with title", async () => {
+      // Navigate back to home page first since previous tests navigated away
+      await homePage.navigate();
+      await homePage.waitForPageLoad();
+
       await expect(homePage.leaderboardsSection).toBeVisible();
       await expect(homePage.leaderboardsSection).toContainText(/Leaderboard/i);
     });
@@ -125,15 +133,19 @@ test.describe("Home Page - Page Object Pattern", () => {
       await expect(homePage.viewFullLeaderboardButton).toBeVisible();
     });
 
-    test("should navigate to full leaderboard when button is clicked", async ({ page }) => {
+    test("should navigate to full leaderboard when button is clicked", async () => {
       await homePage.clickViewFullLeaderboard();
-      await page.waitForURL(/.*leaderboards.*/);
-      expect(page.url()).toContain("leaderboards");
+      await homePage.page.waitForURL(/.*leaderboards.*/);
+      expect(homePage.page.url()).toContain("leaderboards");
     });
   });
 
   test.describe("Reddit Panel", () => {
     test("should display reddit panel", async () => {
+      // Navigate back to home page first since previous tests navigated away
+      await homePage.navigate();
+      await homePage.waitForPageLoad();
+
       await expect(homePage.redditPanel).toBeVisible();
       await expect(homePage.redditPanel).toContainText(/Reddit/i);
     });
@@ -164,22 +176,22 @@ test.describe("Home Page - Page Object Pattern", () => {
   });
 
   test.describe("Twitch Panel", () => {
-    test("should display twitch panel", async ({ page }) => {
+    test("should display twitch panel", async () => {
       // Scroll to bottom to trigger lazy loading
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await homePage.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       // Wait for the panel to be visible after lazy loading
       await expect(homePage.twitchPanel).toBeVisible({ timeout: 10000 });
       await expect(homePage.twitchPanel).toContainText(/Watch Live Streams/i);
     });
 
-    test("should display twitch streams or no streams message", async ({ page }) => {
+    test("should display twitch streams or no streams message", async () => {
       // Scroll to bottom to trigger lazy loading
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await homePage.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       // Wait for the panel to be visible after lazy loading
       await expect(homePage.twitchPanel).toBeVisible({ timeout: 10000 });
 
       // Wait a bit for content to load
-      await page.waitForTimeout(2000);
+      await homePage.page.waitForTimeout(2000);
 
       const streams = homePage.twitchStreams;
       const streamCount = await streams.count();
@@ -197,22 +209,22 @@ test.describe("Home Page - Page Object Pattern", () => {
   });
 
   test.describe("Responsive Design", () => {
-    test("should be responsive on mobile viewport", async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+    test("should be responsive on mobile viewport", async () => {
+      await homePage.page.setViewportSize({ width: 375, height: 667 });
       await homePage.navigate();
       await homePage.checkPageLoaded();
       await homePage.checkMainSectionsVisible();
     });
 
-    test("should be responsive on tablet viewport", async ({ page }) => {
-      await page.setViewportSize({ width: 768, height: 1024 });
+    test("should be responsive on tablet viewport", async () => {
+      await homePage.page.setViewportSize({ width: 768, height: 1024 });
       await homePage.navigate();
       await homePage.checkPageLoaded();
       await homePage.checkMainSectionsVisible();
     });
 
-    test("should be responsive on desktop viewport", async ({ page }) => {
-      await page.setViewportSize({ width: 1920, height: 1080 });
+    test("should be responsive on desktop viewport", async () => {
+      await homePage.page.setViewportSize({ width: 1920, height: 1080 });
       await homePage.navigate();
       await homePage.checkPageLoaded();
       await homePage.checkMainSectionsVisible();
