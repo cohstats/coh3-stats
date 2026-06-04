@@ -4,7 +4,7 @@ import { HomePage } from "../page-objects/home-page";
 test.describe("Home Page - Page Object Pattern", () => {
   let homePage: HomePage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeAll(async ({ page }) => {
     homePage = new HomePage(page);
     await homePage.navigate();
   });

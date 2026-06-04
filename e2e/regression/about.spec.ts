@@ -4,7 +4,7 @@ import { AboutPage } from "../page-objects";
 test.describe("About Page - Regression Tests", () => {
   let aboutPage: AboutPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeAll(async ({ page }) => {
     aboutPage = new AboutPage(page);
     await aboutPage.navigate();
   });
