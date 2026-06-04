@@ -23,8 +23,9 @@ export class BasePage {
    * Wait for the page to be fully loaded and hydrated
    */
   async waitForPageLoad(): Promise<void> {
+    // Let's try to disable network idel
     // Wait for Next.js to be ready
-    await this.page.waitForLoadState("networkidle");
+    //await this.page.waitForLoadState("networkidle");
     // Wait for React hydration
     await this.page.waitForFunction(() => document.readyState === "complete");
   }
