@@ -341,11 +341,17 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
         ]}
         languageAlternates={generateLanguageAlternates(asPath)}
       />
-      <Container fluid pl={0} pr={0} pt={"md"}>
+      <Container fluid pl={0} pr={0} pt={"md"} data-testid="unit-detail-container">
         <Grid columns={3} grow>
           <Grid.Col span={3}>
             <Group align="stretch" gap="xl">
-              <Card p="md" radius="md" withBorder style={{ flex: 1 }}>
+              <Card
+                p="md"
+                radius="md"
+                withBorder
+                style={{ flex: 1 }}
+                data-testid="unit-description-card"
+              >
                 <UnitDescriptionCard
                   faction={raceId}
                   desc={{
@@ -359,7 +365,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                 />
               </Card>
               <div style={{ display: "flex", alignItems: "stretch" }}>
-                <Link href={getExplorerFactionRoute(raceId)}>
+                <Link href={getExplorerFactionRoute(raceId)} data-testid="faction-link">
                   <FactionIcon
                     name={raceId}
                     width={150}
@@ -371,8 +377,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
-              <Title order={4}>{t("unitPage.stats")}</Title>
-              <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+              <Title order={4} data-testid="stats-heading">
+                {t("unitPage.stats")}
+              </Title>
+              <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder data-testid="stats-card">
                 {UnitSquadCard({
                   id: resolvedSquad.id,
                   type: resolvedSquad.unitType,
@@ -395,8 +403,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
           <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
             <Stack>
-              <Title order={4}>{t("unitPage.stats")}</Title>
-              <Card p="md" radius="md" withBorder>
+              <Title order={4} data-testid="costs-heading">
+                {t("unitPage.stats")}
+              </Title>
+              <Card p="md" radius="md" withBorder data-testid="costs-card">
                 {UnitCostCard(totalCost, t("common.costs"))}
                 {defaultSquadMember.unitType !== "vehicles" &&
                 defaultSquadMember.unitType !== "emplacements" ? (
@@ -405,17 +415,17 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   <></>
                 )}
               </Card>
-              <Card p="md" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder data-testid="hitpoints-card">
                 {HitpointCard({
                   squad: resolvedSquad,
                   entities: resolvedEntities,
                   title: t("common.hitpoints"),
                 })}
               </Card>
-              <Card p="md" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder data-testid="upkeep-card">
                 {UnitCostCard(totalUpkeepCost, t("unitPage.upkeep"))}
               </Card>
-              <Card p="md" radius="md" withBorder>
+              <Card p="md" radius="md" withBorder data-testid="veterancy-card">
                 <VeterancyCard
                   one={resolvedSquad.veterancyInfo.one}
                   two={resolvedSquad.veterancyInfo.two}
@@ -427,8 +437,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
         </Grid>
         <Grid>
-          <Grid.Col>{UnitBuildingSection(buildables, t("unitPage.construct"))}</Grid.Col>
-          <Grid.Col>
+          <Grid.Col data-testid="can-construct-section">
+            {UnitBuildingSection(buildables, t("unitPage.construct"))}
+          </Grid.Col>
+          <Grid.Col data-testid="loadout-section">
             {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
           </Grid.Col>
           <Grid.Col>
@@ -450,11 +462,19 @@ const UnitUpgradeSection: React.FC<{ upgrades: UpgradesType[]; title: string }> 
   if (!upgrades?.length) return null;
 
   return (
-    <Stack>
-      <Title order={4}>{title}</Title>
+    <Stack data-testid="upgrades-section">
+      <Title order={4} data-testid="upgrades-heading">
+        {title}
+      </Title>
       <Stack>
         {Object.values(upgrades).map(({ id, ui, cost }) => (
-          <Card key={id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+          <Card
+            key={id}
+            p={{ base: "xs", sm: "md" }}
+            radius="md"
+            withBorder
+            data-testid={`upgrade-card-${id}`}
+          >
             <UnitUpgradeCard
               id={id}
               desc={{
@@ -480,13 +500,21 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
   if (!buildings || !buildings.length) return <></>;
   return (
     <Stack>
-      <Title order={4}>{title}</Title>
+      <Title order={4} data-testid="can-construct-heading">
+        {title}
+      </Title>
       <SimpleGrid cols={{ base: 3, xs: 1, sm: 2, lg: 3 }}>
         {Object.values(buildings).map(({ id, ui, cost }) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {
             return (
-              <Card key={id} p="md" radius="md" withBorder>
+              <Card
+                key={id}
+                p="md"
+                radius="md"
+                withBorder
+                data-testid={`constructable-card-${id}`}
+              >
                 {ConstructableCard({
                   id,
                   desc: {
@@ -518,11 +546,19 @@ const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }
   if (!abilities?.length) return null;
 
   return (
-    <Stack>
-      <Title order={4}>{title}</Title>
+    <Stack data-testid="abilities-section">
+      <Title order={4} data-testid="abilities-heading">
+        {title}
+      </Title>
       <Stack>
         {Object.values(abilities).map(({ id, ui, cost }) => (
-          <Card key={id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+          <Card
+            key={id}
+            p={{ base: "xs", sm: "md" }}
+            radius="md"
+            withBorder
+            data-testid={`ability-card-${id}`}
+          >
             <UnitUpgradeCard
               id={id}
               desc={{
@@ -546,13 +582,15 @@ const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }
 const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weaponNote = "") => {
   return (
     <Stack>
-      <Title order={4}>{title}</Title>
+      <Title order={4} data-testid="loadout-heading">
+        {title}
+      </Title>
 
       <Grid columns={2} grow>
         {squadWeapons.map(({ weapon_id, weapon, num }) => {
           return (
             <Grid.Col span={{ base: 2, md: 1 }} key={weapon_id}>
-              <Card p="lg" radius="md" withBorder>
+              <Card p="lg" radius="md" withBorder data-testid={`weapon-card-${weapon_id}`}>
                 {WeaponLoadoutCard(weapon, num)}
               </Card>
             </Grid.Col>

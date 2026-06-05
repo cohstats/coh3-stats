@@ -93,7 +93,7 @@ export const HitpointCard = ({
   );
 
   const squadHitPointsSection = (
-    <Flex direction="row" align="center" gap="md">
+    <Flex direction="row" align="center" gap="md" data-testid="squad-health-bars">
       <Stack align="center">
         <ImageWithFallback
           width={32}
@@ -123,8 +123,8 @@ export const HitpointCard = ({
   );
 
   return (
-    <Stack>
-      <Title order={6} style={{ textTransform: "uppercase" }}>
+    <Stack data-testid="hitpoints-section">
+      <Title order={6} style={{ textTransform: "uppercase" }} data-testid="hitpoints-title">
         {title}
       </Title>
       <Tooltip label={"Squad hitpoints"} withArrow>

@@ -28,8 +28,8 @@ export const VeterancyCard = ({ one, two, three, title }: VeterancyInput) => {
   const threeDesc = three.screenName.split(spaceRegex);
 
   return (
-    <Stack>
-      <Title order={6} style={{ textTransform: "uppercase" }}>
+    <Stack data-testid="veterancy-section">
+      <Title order={6} style={{ textTransform: "uppercase" }} data-testid="veterancy-title">
         {title}
       </Title>
       <Grid fz="sm" justify="left" align="center" columns={6} grow gutter="sm">
@@ -42,6 +42,7 @@ export const VeterancyCard = ({ one, two, three, title }: VeterancyInput) => {
                 fit="contain"
                 src={vetStarIconPath}
                 alt="vet 1 star"
+                data-testid="vet-star"
               />
               <Image
                 height={24}
@@ -49,6 +50,7 @@ export const VeterancyCard = ({ one, two, three, title }: VeterancyInput) => {
                 fit="contain"
                 src={vetStarEmptyIconPath}
                 alt="vet 1 empty star"
+                data-testid="vet-star"
               />
               <Image
                 height={24}
@@ -56,6 +58,7 @@ export const VeterancyCard = ({ one, two, three, title }: VeterancyInput) => {
                 fit="contain"
                 src={vetStarEmptyIconPath}
                 alt="vet 1 empty star"
+                data-testid="vet-star"
               />
             </Group>
             <Text>XP: {one.exp}</Text>
