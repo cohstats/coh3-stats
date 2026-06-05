@@ -136,7 +136,14 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                 />
               </Group>
             </HoverCard.Target>
-            <HoverCard.Dropdown>
+            <HoverCard.Dropdown
+              p="xs"
+              style={{
+                maxHeight: "calc(100vh - 32px)",
+                overflowY: "auto",
+                overflowX: "hidden",
+              }}
+            >
               {isOptionalUpgradeWeapon && sourceUpgrade ? (
                 <Card
                   p="md"

@@ -370,6 +370,29 @@ const getIdFromReference = (reference: unknown) => {
   return normalizedReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0];
 };
 
+const shouldSkipBaseVehicleHardpointWeapon = (
+  unitEbps: EbpsType,
+  weaponRef: EbpsType["weaponRef"][number],
+  weapon?: WeaponType,
+) => {
+  if (unitEbps.unitType !== "vehicles") return false;
+
+  // Upgrade/dummy hardpoints can exist in combat_ext but should not be part of base DPS.
+  if (weaponRef.initializeWeaponsOnCreation === false) return true;
+
+  // Internal/action-fired weapons can be initialized, but neither receive attack
+  // commands nor auto-search for targets. Coax/hull MGs usually fail the first
+  // check, but still auto-target, so they survive this.
+  if (
+    weaponRef.receivesAttackCommands === false &&
+    weapon?.weapon_bag.behaviour_enable_auto_target_search === false
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 const isDamageDealingWeapon = (weapon?: WeaponType): weapon is WeaponType => {
   if (!weapon) return false;
 
@@ -698,26 +721,17 @@ export const getSbpsWeapons = (
 
     // loop through hardpoints get weapon ebps
     for (const weaponRef of unit_ebps.weaponRef) {
-      if (unit_ebps.unitType === "vehicles" && weaponRef.initializeWeaponsOnCreation === false) {
-        continue;
-      }
-      // find weapon ebps
       const refPath = weaponRef.ebp.split("/");
 
       const weapon_ebps = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
 
-      // find referenced weapon template
       const weapon = weapons.find((gun) => gun.id == weapon_ebps?.weaponId);
 
-      // ignore loadout when no damage dealing weapon found
-      if (
-        !weapon ||
-        ((weapon as WeaponType).weapon_bag.damage_max == 0 &&
-          weapon.weapon_bag.damage_damage_type !== "explosive") ||
-        (weapon.weapon_bag.damage_damage_type === "explosive" &&
-          weapon.weapon_bag.aoe_outer_radius === 0)
-      )
+      if (shouldSkipBaseVehicleHardpointWeapon(unit_ebps, weaponRef, weapon)) {
         continue;
+      }
+
+      if (!isDamageDealingWeapon(weapon)) continue;
 
       const replacementResult = applyWeaponReplacementCount(num, remainingReplacementCount);
 

@@ -122,6 +122,7 @@ type combatExt = {
   type: string;
   ebp: string;
   initializeWeaponsOnCreation: boolean;
+  receivesAttackCommands: boolean;
 };
 
 // exported variable holding mapped data for each
@@ -284,7 +285,7 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
           const upkeepPerPop = extension.upkeep_per_pop_per_minute_override;
           ebps.populationExt.personnel_pop = extension.personnel_pop || 0;
           ebps.populationExt.upkeep_per_pop = {
-            manpower: upkeepPerPop?.manpower || 0, //set in tuning_simuliation
+            manpower: upkeepPerPop?.manpower || 0,
             munition: upkeepPerPop?.munition || 0,
             fuel: upkeepPerPop?.fuel || 0,
           };
@@ -340,6 +341,7 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
                   hardpoint.initialize_weapons_on_creation,
                   true,
                 ),
+                receivesAttackCommands: relicBoolean(hardpoint.receives_attack_commands, true),
               };
 
               ebps.weaponRef.push(weapon_ref);

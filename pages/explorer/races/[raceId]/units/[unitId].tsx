@@ -3,9 +3,9 @@ import { NextSeo } from "next-seo";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import {
-  Badge,
   Card,
   Container,
+  Flex,
   Grid,
   Group,
   List,
@@ -60,6 +60,7 @@ import { useTranslation } from "next-i18next";
 import config from "../../../../../config";
 import { getExplorerFactionRoute } from "../../../../../src/routes";
 import Link from "next/link";
+import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
 
 type AbilityWeaponLoadout = {
   ability: AbilitiesType;
@@ -89,6 +90,11 @@ interface UnitDetailProps {
   locale: string;
   descriptions: Record<string, Record<string, string | null>>;
 }
+
+const roundToDecimals = (value: number, decimals = 2) => {
+  const factor = 10 ** decimals;
+  return Math.round((value + Number.EPSILON) * factor) / factor;
+};
 
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, locale }) => {
   const { query, asPath } = useRouter();
@@ -152,11 +158,13 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const { totalCost } = calculatedData;
 
   const reinforceCost = {
-    cost: Math.floor(
+    cost: roundToDecimals(
       (defaultSquadMember.cost.manpower || 0) * (resolvedSquad.reinforce.cost_percentage || 1),
+      2,
     ),
-    time: Math.floor(
+    time: roundToDecimals(
       (defaultSquadMember.cost.time || 0) * (resolvedSquad.reinforce.time_percentage || 1),
+      2,
     ),
   };
 
@@ -515,26 +523,31 @@ const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }
   abilities,
   title,
 }) => {
+  const { t } = useTranslation(["explorer"]);
+
   if (!abilities?.length) return null;
 
   return (
     <Stack>
       <Title order={4}>{title}</Title>
       <Stack>
-        {Object.values(abilities).map(({ id, ui, cost }) => (
-          <Card key={id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+        {Object.values(abilities).map((ability) => (
+          <Card key={ability.id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
             <UnitUpgradeCard
-              id={id}
+              id={ability.id}
               desc={{
-                screen_name: ui.screenName,
-                help_text: ui.helpText,
-                extra_text: ui.extraText,
-                brief_text: ui.briefText,
-                icon_name: ui.iconName,
-                extra_text_formatter: ui.extraTextFormatter,
-                brief_text_formatter: ui.briefTextFormatter,
+                screen_name: ability.ui.screenName,
+                help_text: ability.ui.helpText,
+                extra_text: ability.ui.extraText,
+                brief_text: ability.ui.briefText,
+                icon_name: ability.ui.iconName,
+                extra_text_formatter: ability.ui.extraTextFormatter,
+                brief_text_formatter: ability.ui.briefTextFormatter,
               }}
-              time_cost={cost}
+              time_cost={ability.cost}
+              footerContent={
+                <AbilityInfoRow ability={ability} numShots={ability.numShots ?? null} t={t} />
+              }
             />
           </Card>
         ))}
@@ -630,53 +643,180 @@ const UnitUpgradeWeaponSection = (
   );
 };
 
-const formatShotCount = (
-  numShots: number,
-  t: (key: string, options?: Record<string, unknown>) => string,
-) => {
-  const shots = Number.isInteger(numShots) ? numShots : Number(numShots.toFixed(2));
+const AbilityInfoIcons = {
+  range: "/icons/unit_status/bw2/range_boost.png",
+  shots: "/icons/common/abilities/ability_british_counter_barrage.png",
+  duration: "/icons/unit_status/bw2/ammo_swap.png",
+  cooldown: "/icons/common/resources/resource_buildtime_extra.png",
+} as const;
 
-  return t("unitPage.abilityWeaponShotCount", { count: shots });
+const formatShotCount = (numShots: number) => {
+  return Number.isInteger(numShots) ? numShots : Number(numShots.toFixed(2));
 };
 
-const AbilityInfoBadge = ({ children }: { children: React.ReactNode }) => (
-  <Badge
-    size="lg"
-    radius="sm"
-    variant="light"
-    color="orange"
-    styles={{
-      root: {
-        textTransform: "none",
-        background: "rgba(92, 48, 16, 0.72)",
-        border: "1px solid rgba(245, 159, 66, 0.38)",
-        color: "var(--mantine-color-orange-1)",
-        fontWeight: 700,
-        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.045)",
-      },
-    }}
-  >
-    {children}
-  </Badge>
-);
-
-const formatAbilityRange = (
-  minRange: number | null,
-  range: number,
-  t: (key: string, options?: Record<string, unknown>) => string,
-) => {
+const formatAbilityRange = (minRange: number | null, range: number) => {
   const formattedRange = Number.isInteger(range) ? range : Number(range.toFixed(2));
 
   if (minRange !== null && minRange > 0) {
     const formattedMinRange = Number.isInteger(minRange) ? minRange : Number(minRange.toFixed(2));
 
-    return t("unitPage.abilityRangeWithMin", {
-      minRange: formattedMinRange,
-      range: formattedRange,
-    });
+    return `${formattedMinRange} - ${formattedRange}`;
   }
 
-  return t("unitPage.abilityRange", { range: formattedRange });
+  return formattedRange;
+};
+
+const formatSeconds = (seconds: number) => {
+  return Number.isInteger(seconds) ? seconds : Number(seconds.toFixed(2));
+};
+
+const AbilityInfoStat = ({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: React.ReactNode;
+  icon: string;
+}) => (
+  <Stack gap={0}>
+    <Title order={6} tt="uppercase">
+      {label}
+    </Title>
+
+    <Flex align="center" gap={4} mt={4} wrap="nowrap">
+      <ImageWithFallback
+        width={20}
+        height={20}
+        src={icon}
+        alt={label}
+        fallbackSrc={symbolPlaceholder}
+        style={{ flexShrink: 0 }}
+      />
+      <Text>{value}</Text>
+    </Flex>
+  </Stack>
+);
+
+const AbilityInfoRow = ({
+  ability,
+  numShots,
+  t,
+}: {
+  ability: AbilitiesType;
+  numShots?: number | null;
+  t: (key: string, options?: Record<string, unknown>) => string;
+}) => {
+  const items: React.ReactNode[] = [];
+  const isToggle = ability.activation === "toggle";
+
+  const isTargetedAbility = ability.activation === "targeted";
+
+  if (isTargetedAbility && ability.range !== null && ability.range > 0) {
+    items.push(
+      <AbilityInfoStat
+        key="range"
+        icon={AbilityInfoIcons.range}
+        label={t("unitPage.abilityInfoRange")}
+        value={formatAbilityRange(ability.minRange ?? null, ability.range)}
+      />,
+    );
+  }
+
+  if (numShots !== null && numShots !== undefined && numShots > 0) {
+    items.push(
+      <AbilityInfoStat
+        key="shots"
+        icon={AbilityInfoIcons.shots}
+        label={t("unitPage.abilityInfoShots")}
+        value={formatShotCount(numShots)}
+      />,
+    );
+  }
+
+  if (isToggle) {
+    const toggleOn = ability.toggledRechargeTimeOn;
+    const toggleOff = ability.toggledRechargeTimeOff;
+
+    if (toggleOn !== null && toggleOn > 0 && toggleOff !== null && toggleOff > 0) {
+      if (toggleOn === toggleOff) {
+        items.push(
+          <AbilityInfoStat
+            key="toggle"
+            icon={AbilityInfoIcons.cooldown}
+            label={t("unitPage.abilityInfoToggleCooldown")}
+            value={`${formatSeconds(toggleOn)}s`}
+          />,
+        );
+      } else {
+        items.push(
+          <AbilityInfoStat
+            key="toggle-on"
+            icon={AbilityInfoIcons.cooldown}
+            label={t("unitPage.abilityInfoToggleOnCooldown")}
+            value={`${formatSeconds(toggleOn)}s`}
+          />,
+        );
+
+        items.push(
+          <AbilityInfoStat
+            key="toggle-off"
+            icon={AbilityInfoIcons.cooldown}
+            label={t("unitPage.abilityInfoToggleOffCooldown")}
+            value={`${formatSeconds(toggleOff)}s`}
+          />,
+        );
+      }
+    } else if (toggleOn !== null && toggleOn > 0) {
+      items.push(
+        <AbilityInfoStat
+          key="toggle-on"
+          icon={AbilityInfoIcons.cooldown}
+          label={t("unitPage.abilityInfoToggleOnCooldown")}
+          value={`${formatSeconds(toggleOn)}s`}
+        />,
+      );
+    } else if (toggleOff !== null && toggleOff > 0) {
+      items.push(
+        <AbilityInfoStat
+          key="toggle-off"
+          icon={AbilityInfoIcons.cooldown}
+          label={t("unitPage.abilityInfoToggleOffCooldown")}
+          value={`${formatSeconds(toggleOff)}s`}
+        />,
+      );
+    }
+  } else {
+    if (ability.duration !== null && ability.duration > 0) {
+      items.push(
+        <AbilityInfoStat
+          key="duration"
+          icon={AbilityInfoIcons.duration}
+          label={t("unitPage.abilityInfoDuration")}
+          value={`${formatSeconds(ability.duration)}s`}
+        />,
+      );
+    }
+
+    if (ability.rechargeTime > 0) {
+      items.push(
+        <AbilityInfoStat
+          key="cooldown"
+          icon={AbilityInfoIcons.cooldown}
+          label={t("unitPage.abilityInfoCooldown")}
+          value={`${formatSeconds(ability.rechargeTime)}s`}
+        />,
+      );
+    }
+  }
+
+  if (!items.length) return null;
+
+  return (
+    <Group gap="lg" wrap="wrap" justify="flex-start" align="flex-start">
+      {items}
+    </Group>
+  );
 };
 
 const getIdFromReference = (reference: unknown) => {
@@ -700,6 +840,12 @@ const mapAbilityWeaponMember = (weapon: WeaponType, num = 1): AbilityWeaponMembe
   weapon,
   num,
 });
+
+const isDamageDealingWeapon = (weapon: WeaponType) => {
+  const weaponBag = weapon.weapon_bag;
+
+  return weaponBag.damage_min > 0 || weaponBag.damage_max > 0 || weaponBag.suppression_amount > 0;
+};
 
 const getWeaponMembersFromAbilityWeaponReference = (
   weaponReferenceId: string,
@@ -755,9 +901,11 @@ const getAbilityWeaponLoadouts = (
 ): AbilityWeaponLoadout[] => {
   return abilities
     .map((ability) => {
-      const weapons = (ability.abilityWeaponIds || []).flatMap((weaponEbpsId) =>
-        getWeaponMembersFromAbilityWeaponReference(weaponEbpsId, ebpsData, weaponData),
-      );
+      const weapons = (ability.abilityWeaponIds || [])
+        .flatMap((weaponEbpsId) =>
+          getWeaponMembersFromAbilityWeaponReference(weaponEbpsId, ebpsData, weaponData),
+        )
+        .filter(({ weapon }) => isDamageDealingWeapon(weapon));
 
       return {
         ability,
@@ -765,16 +913,21 @@ const getAbilityWeaponLoadouts = (
         numShots: ability.numShots ?? null,
       };
     })
-    .filter(({ weapons, numShots }) => weapons.length > 0 || numShots !== null);
+    .filter(({ weapons }) => weapons.length > 0);
 };
 
 const getAbilityDeduplicationKey = (ability: AbilitiesType) =>
   JSON.stringify({
     ui: ability.ui,
+    activation: ability.activation,
     abilityWeaponIds: ability.abilityWeaponIds || [],
     numShots: ability.numShots ?? null,
     range: ability.range ?? null,
     minRange: ability.minRange ?? null,
+    rechargeTime: ability.rechargeTime ?? 0,
+    toggledRechargeTimeOn: ability.toggledRechargeTimeOn ?? null,
+    toggledRechargeTimeOff: ability.toggledRechargeTimeOff ?? null,
+    duration: ability.duration ?? null,
   });
 
 const UnitAbilityWeaponSection = (
@@ -818,29 +971,18 @@ const UnitAbilityWeaponSection = (
                   brief_text_formatter: ability.ui.briefTextFormatter,
                 }}
                 time_cost={ability.cost}
+                footerContent={<AbilityInfoRow ability={ability} numShots={numShots} t={t} />}
               />
-
-              {(ability.range !== null && ability.range > 0) ||
-              (numShots !== null && numShots > 0) ? (
-                <Group gap="xs">
-                  {ability.range !== null && ability.range > 0 ? (
-                    <AbilityInfoBadge>
-                      {formatAbilityRange(ability.minRange ?? null, ability.range, t)}
-                    </AbilityInfoBadge>
-                  ) : null}
-
-                  {numShots !== null && numShots > 0 ? (
-                    <AbilityInfoBadge>{formatShotCount(numShots, t)}</AbilityInfoBadge>
-                  ) : null}
-                </Group>
-              ) : null}
 
               {weapons.length ? (
                 <Grid columns={2} grow>
                   {weapons.map(({ weapon_id, weapon, num }) => (
                     <Grid.Col span={{ base: 2, md: 1 }} key={`${ability.id}-${weapon_id}`}>
                       <Card p="lg" radius="md" withBorder>
-                        {WeaponLoadoutCard(weapon, num)}
+                        {WeaponLoadoutCard(weapon, num, {
+                          source: "ability",
+                          abilityNumShots: numShots,
+                        })}
                       </Card>
                     </Grid.Col>
                   ))}

@@ -51,6 +51,7 @@ export type UnitUpgrade = {
     // Enable Compact mode.
     compact?: boolean;
   };
+  footerContent?: React.ReactNode;
 };
 
 const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">) => {
@@ -161,7 +162,9 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
   );
 };
 
-export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
+export const UnitUpgradeCard = ({ desc, time_cost, cfg, footerContent }: UnitUpgrade) => {
+  const costContent = hasCost(time_cost) ? UnitCostCard(time_cost) : null;
+
   return (
     <Flex direction="column" gap={16} justify="space-between" style={{ height: "100%" }}>
       <UnitUpgradeCardHeader
@@ -176,7 +179,13 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
         }}
         cfg={cfg}
       />
-      {hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}
+
+      {(costContent || footerContent) && (
+        <Flex align="flex-start" justify="flex-start" gap="lg" wrap="wrap">
+          {costContent}
+          {footerContent}
+        </Flex>
+      )}
     </Flex>
   );
 };

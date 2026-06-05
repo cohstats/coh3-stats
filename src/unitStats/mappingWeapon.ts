@@ -13,6 +13,14 @@ type RangeType = {
   max: number;
 };
 
+type WeaponProjectileType = "none" | "direct" | "artillery";
+
+type ProjectileMeta = {
+  id: string;
+  path: string;
+  isArtillery: boolean;
+};
+
 export type WeaponStatsType = {
   accuracy_near: number;
   accuracy_mid: number;
@@ -35,11 +43,20 @@ export type WeaponStatsType = {
   aoe_damage_mid: number;
   aoe_damage_near: number;
 
+  aoe_damage_friendly_far: number;
+  aoe_damage_friendly_mid: number;
+  aoe_damage_friendly_near: number;
+  aoe_has_friendly_fire: boolean;
+
   aoe_damage_max_member: number;
 
   aoe_distance_near: number;
   aoe_distance_mid: number;
   aoe_distance_far: number;
+
+  aoe_suppression_far: number;
+  aoe_suppression_mid: number;
+  aoe_suppression_near: number;
 
   aim_time_multiplier_near: number;
   aim_time_multiplier_mid: number;
@@ -47,12 +64,15 @@ export type WeaponStatsType = {
   fire_aim_time_min: number;
   fire_aim_time_max: number;
 
+  behaviour_enable_auto_target_search: boolean;
+
   burst_can_burst: boolean;
   burst_duration_min: number;
   burst_duration_max: number;
   burst_duration_multiplier_near: number;
   burst_duration_multiplier_mid: number;
   burst_duration_multiplier_far: number;
+  burst_focus_fire: boolean;
   burst_incremental_target_table_accuracy_multiplier: number;
   burst_incremental_target_table_search_radius_near: number;
   burst_incremental_target_table_search_radius_mid: number;
@@ -72,18 +92,22 @@ export type WeaponStatsType = {
   cover_table_tp_defcover_accuracy_multiplier: number;
   cover_table_tp_defcover_damage_multiplier: number;
   cover_table_tp_defcover_penetration_multiplier: number;
+  cover_table_tp_defcover_cover_aim_time_multiplier: number;
 
   cover_table_tp_garrison_cover_accuracy_multiplier: number;
   cover_table_tp_garrison_cover_damage_multiplier: number;
   cover_table_tp_garrison_cover_penetration_multiplier: number;
+  cover_table_tp_garrison_cover_aim_time_multiplier: number;
 
   cover_table_tp_heavy_cover_accuracy_multiplier: number;
   cover_table_tp_heavy_cover_damage_multiplier: number;
   cover_table_tp_heavy_cover_penetration_multiplier: number;
+  cover_table_tp_heavy_cover_aim_time_multiplier: number;
 
   cover_table_tp_light_cover_accuracy_multiplier: number;
   cover_table_tp_light_cover_damage_multiplier: number;
   cover_table_tp_light_cover_penetration_multiplier: number;
+  cover_table_tp_light_cover_aim_time_multiplier: number;
 
   damage_damage_type: string;
   damage_min: number;
@@ -105,6 +129,11 @@ export type WeaponStatsType = {
   penetration_near: number;
   penetration_mid: number;
   penetration_far: number;
+
+  projectile_id: string;
+  projectile_path: string;
+  projectile_is_artillery: boolean;
+  projectile_type: WeaponProjectileType;
 
   range: RangeType;
 
@@ -130,6 +159,8 @@ export type WeaponStatsType = {
   scatter_distance_scatter_offset: number;
   scatter_distance_scatter_ratio: number;
   scatter_distance_object_min: number;
+  scatter_moving_scatter_angle_multiplier: number;
+  scatter_moving_scatter_distance_multiplier: number;
 
   setup_time: number;
 
@@ -186,12 +217,67 @@ const getAoeShape = (templateReference: string | undefined): AoeShape => {
   return "unknown";
 };
 
+const relicBoolean = (value: unknown, fallback = false) => {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value.toLowerCase() === "true";
+  return fallback;
+};
+
+const getIdFromInstanceReference = (instanceReference = "") => {
+  return instanceReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0] || "";
+};
+
+const getExtensionName = (extension: any) => {
+  return extension?.exts?.template_reference?.value?.split("\\").slice(-1)[0] || "";
+};
+
+const getProjectileExt = (node: any) => {
+  if (!Array.isArray(node.extensions)) return undefined;
+
+  return node.extensions.find(
+    (extension: any) => getExtensionName(extension) === "projectile_ext",
+  )?.exts;
+};
+
+const isProjectileContainer = (_key: string, obj: any) => {
+  return !!getProjectileExt(obj);
+};
+
+const getProjectileMetadataMap = (ebpsRoot: any) => {
+  const projectileMap = new Map<string, ProjectileMeta>();
+
+  for (const obj in ebpsRoot) {
+    const projectileSet = traverseTree(
+      ebpsRoot[obj],
+      isProjectileContainer,
+      (filename: string, subtree: any, jsonPath: string) => {
+        const projectileExt = getProjectileExt(subtree);
+
+        return {
+          id: filename,
+          path: jsonPath,
+          isArtillery: relicBoolean(projectileExt?.artillery?.is_artillery, false),
+        };
+      },
+      obj,
+      obj,
+    );
+
+    for (const projectile of projectileSet) {
+      projectileMap.set(projectile.id, projectile);
+    }
+  }
+
+  return projectileMap;
+};
+
 const mapWeaponData = (
   key: string,
   node: any,
   jsonPath: string,
   parent: string,
   locale = "en",
+  projectileMap: Map<string, ProjectileMeta> = new Map(),
 ) => {
   const weapon_bag: WeaponBagSchema["weapon_bag"] = node.weapon_bag;
 
@@ -212,6 +298,16 @@ const mapWeaponData = (
   if (rangeDistance.far === -1) {
     rangeDistance.far = rangeDistance.max;
   }
+
+  const projectilePath = weapon_bag.projectile?.projectile?.instance_reference || "";
+  const projectileId = getIdFromInstanceReference(projectilePath);
+  const projectileMeta = projectileId ? projectileMap.get(projectileId) : undefined;
+
+  const projectileType: WeaponProjectileType = !projectileId
+    ? "none"
+    : projectileMeta?.isArtillery
+      ? "artillery"
+      : "direct";
 
   // todo remove redundancy
   const weaponData: WeaponType = {
@@ -255,6 +351,15 @@ const mapWeaponData = (
       aoe_damage_mid: weapon_bag.area_effect?.damage?.mid || 1,
       aoe_damage_near: weapon_bag.area_effect?.damage?.near || 1,
 
+      aoe_damage_friendly_far: weapon_bag.area_effect?.damage_friendly?.far ?? 0,
+      aoe_damage_friendly_mid: weapon_bag.area_effect?.damage_friendly?.mid ?? 0,
+      aoe_damage_friendly_near: weapon_bag.area_effect?.damage_friendly?.near ?? 0,
+      aoe_has_friendly_fire: relicBoolean(weapon_bag.area_effect?.has_friendly_fire, false),
+
+      aoe_suppression_far: weapon_bag.area_effect?.suppression?.far ?? 0,
+      aoe_suppression_mid: weapon_bag.area_effect?.suppression?.mid ?? 0,
+      aoe_suppression_near: weapon_bag.area_effect?.suppression?.near ?? 0,
+
       aim_time_multiplier_near: weapon_bag.aim?.aim_time_multiplier?.near || 1,
       aim_time_multiplier_mid: weapon_bag.aim?.aim_time_multiplier?.mid || 1,
       aim_time_multiplier_far: weapon_bag.aim?.aim_time_multiplier?.far || 1,
@@ -262,12 +367,16 @@ const mapWeaponData = (
       fire_aim_time_min: weapon_bag.aim?.fire_aim_time?.min || 0,
       fire_aim_time_max: weapon_bag.aim?.fire_aim_time?.max || 0,
 
+      behaviour_enable_auto_target_search:
+        weapon_bag.behaviour?.enable_auto_target_search !== "False", //default to true
+
       burst_can_burst: weapon_bag.burst?.can_burst == "True" ? true : false,
       burst_duration_min: weapon_bag.burst?.duration?.min || 0,
       burst_duration_max: weapon_bag.burst?.duration?.max || 0,
       burst_duration_multiplier_near: weapon_bag.burst?.duration_multiplier?.near || 1,
       burst_duration_multiplier_mid: weapon_bag.burst?.duration_multiplier?.mid || 1,
       burst_duration_multiplier_far: weapon_bag.burst?.duration_multiplier?.far || 1,
+      burst_focus_fire: weapon_bag.burst?.focus_fire == "True" ? true : false,
       burst_incremental_target_table_accuracy_multiplier:
         weapon_bag.burst?.incremental_target_table?.accuracy_multiplier || 0,
       burst_incremental_target_table_search_radius_near:
@@ -294,6 +403,8 @@ const mapWeaponData = (
         weapon_bag.cover_table?.tp_defcover?.damage_multiplier || 1,
       cover_table_tp_defcover_penetration_multiplier:
         weapon_bag.cover_table?.tp_defcover?.penetration_multiplier || 1,
+      cover_table_tp_defcover_cover_aim_time_multiplier:
+        weapon_bag.cover_table?.tp_defcover?.aim_time_multiplier || 1,
 
       cover_table_tp_garrison_cover_accuracy_multiplier:
         weapon_bag.cover_table?.tp_garrison_cover?.accuracy_multiplier || 1,
@@ -301,6 +412,8 @@ const mapWeaponData = (
         weapon_bag.cover_table?.tp_garrison_cover?.damage_multiplier || 1,
       cover_table_tp_garrison_cover_penetration_multiplier:
         weapon_bag.cover_table?.tp_garrison_cover?.penetration_multiplier || 1,
+      cover_table_tp_garrison_cover_aim_time_multiplier:
+        weapon_bag.cover_table?.tp_garrison_cover?.aim_time_multiplier || 1,
 
       cover_table_tp_heavy_cover_accuracy_multiplier:
         weapon_bag.cover_table?.tp_heavy_cover?.accuracy_multiplier || 1,
@@ -308,6 +421,8 @@ const mapWeaponData = (
         weapon_bag.cover_table?.tp_heavy_cover?.damage_multiplier || 1,
       cover_table_tp_heavy_cover_penetration_multiplier:
         weapon_bag.cover_table?.tp_heavy_cover?.penetration_multiplier || 1,
+      cover_table_tp_heavy_cover_aim_time_multiplier:
+        weapon_bag.cover_table?.tp_heavy_cover?.aim_time_multiplier || 1,
 
       cover_table_tp_light_cover_accuracy_multiplier:
         weapon_bag.cover_table?.tp_light_cover?.accuracy_multiplier || 1,
@@ -315,6 +430,8 @@ const mapWeaponData = (
         weapon_bag.cover_table?.tp_light_cover?.damage_multiplier || 1,
       cover_table_tp_light_cover_penetration_multiplier:
         weapon_bag.cover_table?.tp_light_cover?.penetration_multiplier || 1,
+      cover_table_tp_light_cover_aim_time_multiplier:
+        weapon_bag.cover_table?.tp_light_cover?.aim_time_multiplier || 1,
 
       damage_damage_type: weapon_bag.damage?.damage_type || "",
       damage_min: weapon_bag.damage?.min || 0,
@@ -338,6 +455,11 @@ const mapWeaponData = (
       penetration_near: weapon_bag.penetration?.near || 0,
       penetration_mid: weapon_bag.penetration?.mid || 0,
       penetration_far: weapon_bag.penetration?.far || 0,
+
+      projectile_id: projectileId,
+      projectile_path: projectilePath,
+      projectile_is_artillery: projectileType === "artillery",
+      projectile_type: projectileType,
 
       range_distance_near: rangeDistance.near,
       range_distance_mid: rangeDistance.mid,
@@ -369,6 +491,10 @@ const mapWeaponData = (
       scatter_distance_scatter_offset: weapon_bag.scatter?.distance_scatter_offset || 0,
       scatter_distance_scatter_ratio: weapon_bag.scatter?.distance_scatter_ratio || 0,
       scatter_distance_object_min: weapon_bag.scatter?.distance_scatter_obj_hit_min || 0,
+      scatter_moving_scatter_angle_multiplier:
+        weapon_bag.scatter?.movement_scatter_angle_multiplier ?? 1,
+      scatter_moving_scatter_distance_multiplier:
+        weapon_bag.scatter?.movement_scatter_distance_multiplier ?? 1,
 
       setup_time: weapon_bag.setup?.duration || 0,
 
@@ -412,8 +538,15 @@ const getWeaponStats = async (patch = "latest", locale = "en") => {
   // Check if we already have the data for this patch and locale
   if (WeaponPatchData[patch]?.[locale]) return WeaponPatchData[patch][locale];
 
-  const myReqWeapon = await fetch(config.getPatchDataUrl("weapon.json", patch));
+  const [myReqWeapon, myReqEbps] = await Promise.all([
+    fetch(config.getPatchDataUrl("weapon.json", patch)),
+    fetch(config.getPatchDataUrl("ebps.json", patch)),
+  ]);
+
   const root = await myReqWeapon.json();
+  const ebpsRoot = await myReqEbps.json();
+
+  const projectileMap = getProjectileMetadataMap(ebpsRoot);
 
   const weaponSetAll: WeaponType[] = [];
 
@@ -423,7 +556,7 @@ const getWeaponStats = async (patch = "latest", locale = "en") => {
       root[obj],
       isWeaponBagContainer,
       (filename: string, subtree: any, jsonPath: string, parent: string) =>
-        mapWeaponData(filename, subtree, jsonPath, parent, locale),
+        mapWeaponData(filename, subtree, jsonPath, parent, locale, projectileMap),
       obj,
       obj,
     );

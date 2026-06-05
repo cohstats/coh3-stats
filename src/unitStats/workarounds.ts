@@ -440,6 +440,7 @@ export type UpgradeStateTreeWeapon = {
 };
 
 export const UpgradeStateTreeToWeaponMap: Record<string, UpgradeStateTreeWeapon[]> = {
+  m13_40_hull_gun_ak: [{ weaponId: "breda_38_hull_m13_40_ak", count: 1 }],
   mg34_panzer_ak: [{ weaponId: "mg34_panzer_iii_ak", count: 1 }],
   mg42_tiger_ak: [{ weaponId: "mg34_panzer_iii_ak", count: 1 }],
   hmg_greyhound_us: [{ weaponId: "50cal_greyhound_us", count: 1 }],

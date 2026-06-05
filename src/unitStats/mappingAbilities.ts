@@ -64,8 +64,16 @@ type AbilitiesType = {
   abilityType: string;
   /** Found at `ui_info`. */
   ui: AbilitiesUiData;
+  /** Ability activation type, e.g. targeted, timed, toggle. */
+  activation: string;
   /** Recharge time when casted the ability. */
   rechargeTime: number;
+  /** Duration from channeling.channeling_time_second. Null when not present. */
+  duration: number | null;
+  /** Toggle recharge when switching on. Null when missing or zero. */
+  toggledRechargeTimeOn: number | null;
+  /** Toggle recharge when switching off. Null when missing or zero. */
+  toggledRechargeTimeOff: number | null;
   /** Ability cast range. Null when missing or zero. */
   range: number | null;
   /** Ability cast min range. Null when missing or zero. */
@@ -152,7 +160,11 @@ const mapAbilitiesData = (
       briefTextFormatter: "",
       extraTextFormatter: "",
     },
+    activation: "",
     rechargeTime: 0,
+    duration: null,
+    toggledRechargeTimeOn: null,
+    toggledRechargeTimeOff: null,
     range: null,
     minRange: null,
     abilityWeaponIds: [],
@@ -190,12 +202,27 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
   ability.ui.extraTextFormatter =
     resolveTextFormatterLocstring(abilityBag.ui_info?.extra_text_formatter, locale) || "";
 
+  ability.activation = abilityBag.activation || "";
   /* --------- COST SECTION --------- */
   ability.cost.fuel = abilityBag.cost_to_player?.fuel || 0;
   ability.cost.munition = abilityBag.cost_to_player?.munition || 0;
   ability.cost.manpower = abilityBag.cost_to_player?.manpower || 0;
   ability.cost.popcap = abilityBag.cost_to_player?.popcap || 0;
   ability.rechargeTime = abilityBag.recharge_time || 0;
+
+  const duration = Number(abilityBag.channeling?.channeling_time_second);
+  if (Number.isFinite(duration) && duration > 0) {
+    ability.duration = duration;
+  }
+  const toggledRechargeTimeOn = Number(abilityBag.toggled_recharge_time_on);
+  if (Number.isFinite(toggledRechargeTimeOn) && toggledRechargeTimeOn > 0) {
+    ability.toggledRechargeTimeOn = toggledRechargeTimeOn;
+  }
+
+  const toggledRechargeTimeOff = Number(abilityBag.toggled_recharge_time_off);
+  if (Number.isFinite(toggledRechargeTimeOff) && toggledRechargeTimeOff > 0) {
+    ability.toggledRechargeTimeOff = toggledRechargeTimeOff;
+  }
 
   const range = Number(abilityBag.range);
   if (Number.isFinite(range) && range > 0) {
