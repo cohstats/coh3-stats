@@ -518,6 +518,7 @@ const config = {
   STORAGE_LINK: "https://storage.coh3stats.com",
   BASE_CLOUD_FUNCTIONS_URL: "https://us-east4-coh3-stats-prod.cloudfunctions.net",
   BASE_CLOUD_FUNCTIONS_PROXY_URL: "https://cache.coh3stats.com",
+  RELIC_API_STATUS_LINK: "https://cohstats.instatus.com/",
   patches,
   latestPatch,
   statsPatchSelector,

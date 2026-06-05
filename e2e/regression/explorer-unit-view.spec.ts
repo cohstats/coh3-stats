@@ -54,31 +54,26 @@ test.describe("Explorer Unit View Pages", () => {
         await unitPage.navigate(faction, unitId);
       });
 
-      test("should load successfully without errors", async () => {
+      test("should display all required page elements", async () => {
+        // Check page loaded successfully without errors
         await unitPage.checkUnitPageLoaded();
-      });
 
-      test("should display unit title", async () => {
+        // Check unit title is visible
         await unitPage.checkUnitTitleVisible();
-      });
 
-      test("should display unit stats with numeric values", async () => {
+        // Check unit stats with numeric values are present
         await unitPage.checkStatsPresent();
-      });
 
-      test("should display weapons/loadout section", async () => {
+        // Check weapons/loadout section is present
         await unitPage.checkWeaponsSectionPresent();
-      });
 
-      test("should display abilities section if unit has abilities", async () => {
+        // Check abilities section if unit has abilities
         await unitPage.checkAbilitiesSectionIfPresent();
-      });
 
-      test("should display upgrades section if unit has upgrades", async () => {
+        // Check upgrades section if unit has upgrades
         await unitPage.checkUpgradesSectionIfPresent();
-      });
 
-      test("should display footer", async () => {
+        // Check footer is present
         await unitPage.checkFooterPresent();
       });
     });
