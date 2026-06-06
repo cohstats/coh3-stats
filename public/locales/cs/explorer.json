@@ -24,6 +24,9 @@
     "near": "Blízko",
     "medium": "Střední",
     "far": "Daleko",
+    "light": "Lehký",
+    "heavy": "Těžký",
+    "garrison": "Posádka",
     "min": "Min",
     "max": "Max",
     "produces": "Produkuje",
@@ -59,13 +62,21 @@
     "construct": "Může stavět",
     "free": "Zdarma",
     "weaponNote": "Efektivní přesnost je ovlivněna několika faktory, jako je velikost cíle nebo brnění přijímající jednotky, stejně jako přesnost nebo průraznost útočící jednotky.",
-    "importantNote": "Důležitá poznámka: Tato sekce zobrazuje všechny jednotky dostupné ve hře, včetně těch pouze v kampani."
+    "importantNote": "Důležitá poznámka: Tato sekce zobrazuje všechny jednotky dostupné ve hře, včetně těch pouze v kampani.",
+    "upgradeWeapons": "Zbraně dostupné přes vylepšení",
+    "abilityRange": "Dosah schopnosti: {{range}}",
+    "abilityRangeWithMin": "Dosah schopnosti: {{minRange}} - {{range}}",
+    "abilityWeapons": "Zbraně schopností",
+    "abilityWeaponShotCount_one": "Vystřelí jednou",
+    "abilityWeaponShotCount_other": "Vystřelí {{count}}krát"
   },
   "statsCard": {
     "sightRange": "Dohled",
+    "detection": "Detekce",
     "speed": "Rychlost",
     "acceleration": "Zrychlení",
     "deceleration": "Zpomalení",
+    "rotation": "Rotace",
     "maxRange": "Maximální dosah",
     "targetSize": "Velikost cíle",
     "armor": "Brnění",
@@ -75,14 +86,38 @@
   },
   "weaponCard": {
     "accuracy": "Přesnost",
+    "arc": "Oblouk",
+    "burstDuration": "Délka dávky",
+    "cooldown": "Prodleva",
     "rpm": "Střel za minutu (RPM)",
     "rangeOfFire": "Dosah střelby",
+    "range": "Dosah",
+    "distance": "Vzdálenost",
+    "limit": "Limit",
+    "traverseSpeed": "Rychlost otáčení",
+    "setup": "Příprava",
+    "teardown": "Demontáž",
     "penetration": "Průraznost",
     "scatter": "Oblast rozptylu",
     "damage": "Poškození",
+    "deflectionDamage": "Poškození odražením",
     "aoeRadius": "Poloměr AoE",
+    "aoeSize": "Velikost AoE",
+    "aoeFalloff": "Pokles AoE",
+    "onTheMove": "Multiplikátory za pohybu",
     "movingAccuracy": "Násobitel přesnosti za pohybu",
-    "movingCooldown": "Násobitel prodlevy za pohybu"
+    "movingCooldown": "Násobitel prodlevy za pohybu",
+    "targetModifiers": "Modifikátory cíle",
+    "baseDamage": "Základní poškození",
+    "coverModifiers": "VS. Krytí - Modifikátory",
+    "coverModifiersTooltip": "Při útoku na jednotku v krytu",
+    "lightCover": "Lehký kryt",
+    "heavyCover": "Těžký kryt",
+    "garrisonCover": "Posádka",
+    "suppressionPerSecond": "Potlačení za sekundu",
+    "suppressionRadius": "Poloměr potlačení",
+    "incrementalTargetRadius": "Inkrementální poloměr cíle",
+    "incrementalTargetAccuracy": "Inkr. přesnost"
   },
   "dps": {
     "meta": {
@@ -101,6 +136,26 @@
         "efektivita jednotek"
       ]
     }
+  },
+  "dpsCompare": {
+    "meta": {
+      "title": "Nástroj pro srovnání DPS COH3",
+      "description": "Porovnejte poškození za sekundu (DPS) až 5 útočících jednotek proti jednomu cíli v Company of Heroes 3. Analyzujte efektivitu jednotek a optimalizujte složení vaší armády.",
+      "keywords": [
+        "coh3 srovnání dps",
+        "srovnání jednotek",
+        "srovnání poškození",
+        "efektivita jednotek coh3",
+        "složení armády",
+        "analýza dps",
+        "nástroj srovnání coh3",
+        "souboj jednotek"
+      ]
+    },
+    "title": "Nástroj pro srovnání DPS",
+    "targetUnit": "Cílová jednotka",
+    "attackingUnits": "Útočící jednotky",
+    "attacker": "Útočník {{number}}"
   },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} v Company of Heroes 3.",
