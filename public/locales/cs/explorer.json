@@ -68,7 +68,7 @@
     "abilityRangeWithMin": "Dosah schopnosti: {{minRange}} - {{range}}",
     "abilityWeapons": "Zbraně schopností",
     "abilityWeaponShotCount_one": "Vystřelí jednou",
-    "abilityWeaponShotCount_other": "Vystřelí {{count}}krát"
+    "abilityWeaponShotCount_other": "Vystřelí {{count}} krát"
   },
   "statsCard": {
     "sightRange": "Dohled",
