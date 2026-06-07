@@ -532,11 +532,9 @@ export const getWeaponTiming = (
     burstTimeMin *= movingBurstMp;
     burstTimeMax *= movingBurstMp;
 
-    let burstLengthMod = 1;
-
     if (attacking_unit?.custom_modifiers?.burstLength.enabled) {
       if (attacking_unit.custom_modifiers.burstLength.type === "percentage") {
-        burstLengthMod = 1 + attacking_unit.custom_modifiers.burstLength.value / 100;
+        const burstLengthMod = 1 + attacking_unit.custom_modifiers.burstLength.value / 100;
         burstTimeMin *= burstLengthMod;
         burstTimeMax *= burstLengthMod;
         burstTime = _averageRoundedBurstDuration(burstTimeMin, burstTimeMax);

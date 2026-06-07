@@ -30,7 +30,7 @@ type UpgradeResourceValues = {
   fuel?: number;
   /** Value at `cost/munition`. */
   munition?: number;
-  /** Value at `cost/munition`. */
+  /** Value at `cost/manpower`. */
   manpower?: number;
   /** Value at `cost/popcap`. */
   popcap?: number;

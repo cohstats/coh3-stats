@@ -1,5 +1,6 @@
 import { Box, Grid, Group, Image, List, ListItem, Stack, Text, Title } from "@mantine/core";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
+import { useTranslation } from "next-i18next";
 
 const vetStarIconPath = "/icons/hud/decorators/vet_star.png";
 const vetStarEmptyIconPath = "/icons/hud/decorators/vet_star_empty.png";
@@ -20,7 +21,9 @@ type VeterancyInput = {
 };
 
 export const VeterancyCard = ({ one, two, three, four, title }: VeterancyInput) => {
-  title = title || "Veterancy";
+  const { t } = useTranslation(["explorer"]);
+
+  title = title || t("unitPage.veterancy");
   const spaceRegex = /\\r?\\n|\\r|\\n/g;
 
   const levels = [
@@ -91,7 +94,7 @@ export const VeterancyCard = ({ one, two, three, four, title }: VeterancyInput) 
                           )}
 
                           <Text size="xs" c="dimmed">
-                            Requires: {data.requirement}
+                            {t("unitPage.requirements")}: {data.requirement}
                           </Text>
                         </Group>
                       )}

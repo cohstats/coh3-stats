@@ -264,8 +264,6 @@ const getProjectileMetadataMap = (ebpsRoot: any) => {
       (filename: string, subtree: any, jsonPath: string) => {
         const projectileExt = getProjectileExt(subtree);
 
-        const trajectoryPreviewPath = projectileExt?.trajectory_option?.instance_reference || "";
-
         return {
           id: filename,
           path: jsonPath,
@@ -387,8 +385,8 @@ const mapWeaponData = (
       fire_aim_time_min: weapon_bag.aim?.fire_aim_time?.min || 0,
       fire_aim_time_max: weapon_bag.aim?.fire_aim_time?.max || 0,
 
-      ready_aim_time_min: weapon_bag.aim?.fire_aim_time?.min || 0,
-      ready_aim_time_max: weapon_bag.aim?.fire_aim_time?.max || 0,
+      ready_aim_time_min: weapon_bag.aim?.ready_aim_time?.min || 0,
+      ready_aim_time_max: weapon_bag.aim?.ready_aim_time?.max || 0,
 
       behaviour_enable_auto_target_search:
         weapon_bag.behaviour?.enable_auto_target_search !== "False", //default to true

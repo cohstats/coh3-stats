@@ -76,7 +76,7 @@ const SpawnItemMappings: { [abilityId: string]: string[] } = {
   airborne_right_3_paradrop_at_gun_us: ["at_gun_57mm_paradrop_us"],
   armored_left_2b_recovery_vehicle_us: ["recovery_vehicle_us"],
   armored_right_2a_scott_us: ["scott_us"],
-  armored_right_3_easy_8_task_force_us: ["sherman_easy_8_us"],
+  armored_right_sherman_easy_8_production_unlock_us: ["sherman_easy_8_us"],
   special_operations_left_1a_m29_weasal_us: ["m29_weasal_us"],
   special_operations_left_1b_m29_weasal_with_pack_howitzer: [
     "m29_weasal_us",
@@ -873,6 +873,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "body_shot_australian_light_infantry_uk",
     weaponIds: ["lee_enfield_sharpshooter_uk"],
+    numShots: 1,
   },
   {
     abilityId: "staggered_shot_guards_uk",
@@ -886,6 +887,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
       "bazooka_staggered_shot_guards_africa_uk",
       "bazooka_staggered_shot_stun_guards_africa_uk",
     ],
+    numShots: 2,
   },
   {
     abilityId: "target_weak_point_2pdr_uk",
@@ -903,6 +905,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_81mm_mortar_uk",
     weaponIds: ["81mm_mortar_barrage_uk"],
+    numShots: 6,
   },
   {
     abilityId: "barrage_81mm_mortar_smoke_uk",
@@ -923,6 +926,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_4_2_heavy_mortar_uk",
     weaponIds: ["4_2_inch_heavy_mortar_barrage_uk"],
+    numShots: 4,
   },
   {
     abilityId: "barrage_4_2_heavy_mortar_airburst_uk",
@@ -933,6 +937,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_4_2_airburst_heavy_mortar_uk",
     weaponIds: ["4_2_inch_heavy_mortar_airburst_uk"],
+    numShots: 4,
   },
   {
     abilityId: "barrage_4_2_heavy_mortar_incendiary_uk",
@@ -993,6 +998,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_75mm_pack_howitzer_smoke_uk\\white_phosphorous\\library",
     weaponIds: ["75mm_pack_howitzer_white_phosphorus_uk"],
+    numShots: 6,
   },
   {
     abilityId: "barrage_bishop_uk",
@@ -1003,18 +1009,21 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_bishop_uk",
     weaponIds: ["25pdr_bishop_uk"],
+    numShots: 6,
   },
   {
     abilityId: "first_strike_archer_uk",
     stateTreePath: ["ability_bag", "squad_tree"],
     stateTree: "squad_passive_stationary_bonus",
     weaponIds: ["archer_17pdr_first_strike_uk"],
+    numShots: 1,
   },
   {
     abilityId: "smoke_shot_centaur_uk",
     stateTreePath: ["ability_bag", "entity_tree"],
     stateTree: "smoke_shot_centaur_uk",
     weaponIds: ["95mm_smoke_round_centaur_uk"],
+    numShots: 1,
   },
   {
     abilityId: "hesh_shell_centaur_uk",
@@ -1031,24 +1040,20 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "equip_and_fire_weapon",
     weaponIds: ["17pdr_firefly_sabot_uk"],
+    numShots: 1,
   },
   {
     abilityId: "tread_shot_stuart_uk",
     stateTreePath: ["ability_bag", "entity_tree"],
     stateTree: "tread_shot_stuart_uk",
     weaponIds: ["37mm_treadshot_stuart_uk"],
+    numShots: 1,
   },
   {
     abilityId: "shellburst_cwt_africa_uk",
     stateTreePath: ["ability_bag", "global_tree"],
     stateTree: "shellburst_cwt_truck_uk\\swap_to_shellburst_ammo",
     weaponIds: ["20mm_oerlikon_mount_cwt_shellburst_uk"],
-  },
-  {
-    abilityId: "white_phosphorus_sherman_uk",
-    stateTreePath: ["ability_bag", "entity_tree"],
-    stateTree: "veterancy_1a_white_phosphorous_sherman_us",
-    weaponIds: ["75mm_white_phosphorous_sherman_us"],
   },
   {
     abilityId: "smoke_barrage_humber_uk",
@@ -1069,6 +1074,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "sniper_pinning_shot_ger",
     weaponIds: ["g43_sniper_pinning_shot_ger"],
+    numShots: 1,
   },
   {
     abilityId: "barrage_81mm_mortar_ger",
@@ -1079,6 +1085,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_81mm_mortar_ger",
     weaponIds: ["81mm_mortar_barrage_ger"],
+    numShots: 6,
   },
   {
     abilityId: "smoke_81mm_mortar_ger",
@@ -1109,16 +1116,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_obice_210_howitzer_ger",
     weaponIds: ["obice_210_howitzer_ger"],
-  },
-  {
-    abilityId: "barrage_howitzer_coordinated_obice_210_ger",
-    stateTreePath: [
-      "ability_bag",
-      "ability_active_state_tree_group",
-      "ability_activate_entity_tree",
-    ],
-    stateTree: "barrage_obice_210_howitzer_ger",
-    weaponIds: ["obice_210_howitzer_ger"],
+    numShots: 3,
   },
   {
     abilityId: "button_20mm_aa_flak_ger",
@@ -1143,26 +1141,6 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     weaponIds: ["mg42_wp_hmg_ger"],
   },
   {
-    abilityId: "barrage_halftrack_mortar_explosive_ger",
-    stateTreePath: [
-      "ability_bag",
-      "ability_active_state_tree_group",
-      "ability_activate_entity_tree",
-    ],
-    stateTree: "barrage_halftrack_mortar_ger",
-    weaponIds: ["81mm_halftrack_mortar_barrage_ger"],
-  },
-  {
-    abilityId: "barrage_halftrack_mortar_smoke_ger",
-    stateTreePath: [
-      "ability_bag",
-      "ability_active_state_tree_group",
-      "ability_activate_entity_tree",
-    ],
-    stateTree: "barrage_smoke_halftrack_mortar_ger",
-    weaponIds: ["81mm_mortar_halftrack_smoke_barrage_ak"],
-  },
-  {
     abilityId: "barrage_halftrack_stummel_ger",
     stateTreePath: [
       "ability_bag",
@@ -1171,6 +1149,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_halftrack_stummel_ger",
     weaponIds: ["75mm_barrage_halftrack_stummel_ger"],
+    numShots: 6,
   },
   {
     abilityId: "smoke_barrage_halftrack_stummel_ger",
@@ -1191,6 +1170,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "vet_white_phosphorous_stummel_ger",
     weaponIds: ["white_phosphorous_stummel_ger"],
+    numShots: 1,
   },
   {
     abilityId: "barrage_wespe_ger",
@@ -1201,6 +1181,7 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "barrage_wespe_ger",
     weaponIds: ["105mm_wespe_ger"],
+    numShots: 6,
   },
   {
     abilityId: "white_phosphorus_wirbelwind_vet_ger",

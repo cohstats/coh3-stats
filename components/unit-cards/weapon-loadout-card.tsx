@@ -61,7 +61,7 @@ type OwnUnitAoeDamageSource = "friendly" | "enemy" | "custom" | "none";
 const WeaponCardIcons = {
   damage: "/icons/unit_status/bw2/8_damagebonus.png",
   deflection_damage: "/icons/unit_status/bw2/anti_tank.png",
-  reload_frequency: "/icons/unit_status/bw2/ammo_swap",
+  reload_frequency: "/icons/unit_status/bw2/ammo_swap.png",
   aim_time: "/icons/unit_status/bw2/9_markedtarget.png",
   range: "/icons/unit_status/bw2/range_boost.png",
   aoe_size: "/icons/unit_status/bw2/flame.png",
@@ -194,8 +194,8 @@ export const WeaponLoadoutCard = (
   };
 
   const formatReloadFrequency = () => {
-    const min = weapon_bag.reload_frequency_min;
-    const max = weapon_bag.reload_frequency_max;
+    const min = weapon_bag.reload_frequency_min+1;
+    const max = weapon_bag.reload_frequency_max+1;
 
     const value = min === max ? `${min}` : `${min} - ${max}`;
     const unit = weapon_bag.burst_can_burst ? t("weaponCard.bursts") : t("weaponCard.shots");
@@ -258,7 +258,7 @@ export const WeaponLoadoutCard = (
 
   const isChangedMultiplier = (value: number) => Math.round(value * 100) / 100 !== 1;
 
-  const movingModifierColumns = [
+  const allMovingModifierColumns = [
     {
       key: "accuracy",
       label: t("weaponCard.accuracy"),
@@ -284,7 +284,16 @@ export const WeaponLoadoutCard = (
       label: t("weaponCard.scatterDistance"),
       value: weapon_bag.scatter_moving_scatter_distance_multiplier,
     },
-  ].filter((column) => isChangedMultiplier(column.value));
+  ];
+
+  const changedMovingModifierColumns = allMovingModifierColumns.filter((column) =>
+    isChangedMultiplier(column.value),
+  );
+
+  const movingModifierColumns =
+    changedMovingModifierColumns.length > 0
+      ? changedMovingModifierColumns
+      : [allMovingModifierColumns[0]];
 
   const hasSingleMovingModifier = movingModifierColumns.length === 1;
 
@@ -321,7 +330,7 @@ export const WeaponLoadoutCard = (
           <Text>
             {t("weaponCard.onTheMove")} {column.label}
           </Text>
-          <Text c="orange.6">{formatMultiplier(column.value)}</Text>
+          <Text c="orange.6">{formatMultiplier(column.value, "×1")}</Text>
         </Flex>
       );
     }
@@ -732,7 +741,7 @@ export const WeaponLoadoutCard = (
   const weaponIcon = getWeaponIconSrc(icon_name);
   const parentFallbackIcon = getDefaultWeaponIcon(parent);
   /** Only take into account those weapons categories to display further info.
-   * The "special", "flame_throwers", "campaign" are ignored. */
+   * The "special" and "campaign" categories are ignored. */
   const isValidWeapon =
     weapon_cat == "ballistic_weapon" ||
     weapon_cat == "explosive_weapon" ||
@@ -841,16 +850,6 @@ export const WeaponLoadoutCard = (
     weapon_bag.range.min > 0
       ? `${weapon_bag.range.min} - ${weapon_bag.range.max}`
       : weapon_bag.range.max;
-
-  const getDamageDisplay = (damageMultiplier: number): string | number => {
-    if (weapon_bag.damage_min === weapon_bag.damage_max) {
-      return roundValue(weapon_bag.damage_max * damageMultiplier);
-    }
-
-    return `${roundValue(weapon_bag.damage_min * damageMultiplier)} - ${roundValue(
-      weapon_bag.damage_max * damageMultiplier,
-    )}`;
-  };
 
   const getAverageDamageValue = (damageMultiplier: number) =>
     ((weapon_bag.damage_min + weapon_bag.damage_max) / 2) * damageMultiplier;
@@ -1395,8 +1394,8 @@ export const WeaponLoadoutCard = (
               alt: "weapon aim time",
               label: t("weaponCard.aimTime"),
               value: formatMinMaxSeconds(
-                weapon_bag.ready_aim_time_min,
-                weapon_bag.ready_aim_time_max,
+                Math.round(weapon_bag.ready_aim_time_min*8)/8,
+                Math.round(weapon_bag.ready_aim_time_max*8)/8,
               ),
               show: weapon_bag.ready_aim_time_min > 0 || weapon_bag.ready_aim_time_max > 0,
             },

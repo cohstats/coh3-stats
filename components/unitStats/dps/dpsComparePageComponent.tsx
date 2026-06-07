@@ -87,13 +87,11 @@ let cachedUnits: CustomizableUnit[] = [];
 let cachedEbps: EbpsType[] = [];
 let cachedSbps: SbpsType[] = [];
 let cachedWeapons: WeaponType[] = [];
-let cachedAbilities: AbilitiesType[] = [];
 
 const initCompareData = (props: IDPSCompareProps) => {
   cachedEbps = props.ebpsData;
   cachedSbps = props.sbpsData;
   cachedWeapons = props.weaponData;
-  cachedAbilities = props.abilitiesData;
   cachedUnits = [];
   for (const sbps of props.sbpsData) {
     cachedUnits.push(
@@ -204,7 +202,6 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
       cachedSbps = newSbps;
       cachedEbps = newEbps;
       cachedWeapons = newWeapons;
-      cachedAbilities = newAbilities;
       cachedUnits = [];
       for (const sbps of newSbps) {
         cachedUnits.push(
