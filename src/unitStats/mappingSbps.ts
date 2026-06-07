@@ -12,6 +12,12 @@ type SpawnWeaponData = {
   count: number;
   replacesNormalWeapon: boolean;
 };
+
+type VeterancyRankData = {
+  exp: number;
+  screenName: string;
+  requirementIds: string[];
+};
 // need to be extended by all required fields
 type SbpsType = {
   id: string; // filename  -> eg. panzergrenadier_ak
@@ -50,9 +56,10 @@ type SbpsType = {
   /** Found at `squad_veterancy_ext`. This contains a list of veterancy
    * description / required xp per level. */
   veterancyInfo: {
-    one: { exp: number; screenName: string };
-    two: { exp: number; screenName: string };
-    three: { exp: number; screenName: string };
+    one: VeterancyRankData;
+    two: VeterancyRankData;
+    three: VeterancyRankData;
+    four?: VeterancyRankData;
   };
   /** Found at `squad_requirement_ext`. This contains unit training requirements
    * references. */
@@ -144,18 +151,9 @@ const mapSbpsData = (
       },
     },
     veterancyInfo: {
-      one: {
-        exp: 0,
-        screenName: "",
-      },
-      two: {
-        exp: 0,
-        screenName: "",
-      },
-      three: {
-        exp: 0,
-        screenName: "",
-      },
+      one: { exp: 0, screenName: "", requirementIds: [] },
+      two: { exp: 0, screenName: "", requirementIds: [] },
+      three: { exp: 0, screenName: "", requirementIds: [] },
     },
     reinforce: {
       cost_percentage: 0,
@@ -178,6 +176,29 @@ const mapSbpsData = (
 const addUnique = (array: string[], value?: string) => {
   if (!value) return;
   if (!array.includes(value)) array.push(value);
+};
+
+const getVeterancyRequirementIds = (requirements?: any[]) => {
+  if (!requirements?.length) return [];
+
+  return requirements
+    .flatMap((reqItem) => extractRequirements(reqItem))
+    .filter((req) => !BanishedRequirements.some((v) => req.includes(v)))
+    .map((req) => req.split("/").slice(-1)[0])
+    .filter(Boolean);
+};
+
+const mapVeterancyRank = (rankInfo: any, locale: string): VeterancyRankData => {
+  const rank = rankInfo?.veterancy_rank;
+
+  return {
+    exp: rank?.veterancy_value || 0,
+    screenName:
+      resolveTextFormatterLocstring(rank?.brief_text_formatter, locale) ||
+      resolveLocstring(rank?.brief_text, locale) ||
+      "",
+    requirementIds: getVeterancyRequirementIds(rank?.requirements),
+  };
 };
 
 const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
@@ -270,41 +291,17 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
           // Check if the `race_list` is not empty, otherwise skip.
           if (!extension.race_list?.length) break;
           // The race_list is always one item.
-          const vetExtInfo: any[] = extension.race_list[0].race_data.info.veterancy_rank_info;
+          const vetExtInfo: any[] =
+            extension.race_list[0].race_data.info.veterancy_rank_info || [];
           // Technically the first one is vet 1, second is vet 2 and third is vet 3.
-          sbps.veterancyInfo.one = {
-            exp: vetExtInfo[0].veterancy_rank.veterancy_value || 0,
-            // screenName: resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text) || "",
-            screenName:
-              resolveTextFormatterLocstring(
-                vetExtInfo[0].veterancy_rank.brief_text_formatter,
-                locale,
-              ) ||
-              resolveLocstring(vetExtInfo[0].veterancy_rank.brief_text, locale) ||
-              "",
-          };
-          sbps.veterancyInfo.two = {
-            exp: vetExtInfo[1].veterancy_rank.veterancy_value || 0,
-            // screenName: resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text) || "",
-            screenName:
-              resolveTextFormatterLocstring(
-                vetExtInfo[1].veterancy_rank.brief_text_formatter,
-                locale,
-              ) ||
-              resolveLocstring(vetExtInfo[1].veterancy_rank.brief_text, locale) ||
-              "",
-          };
-          sbps.veterancyInfo.three = {
-            exp: vetExtInfo[2].veterancy_rank.veterancy_value || 0,
-            // screenName: resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text) || "",
-            screenName:
-              resolveTextFormatterLocstring(
-                vetExtInfo[2].veterancy_rank.brief_text_formatter,
-                locale,
-              ) ||
-              resolveLocstring(vetExtInfo[2].veterancy_rank.brief_text, locale) ||
-              "",
-          };
+
+          sbps.veterancyInfo.one = mapVeterancyRank(vetExtInfo[0], locale);
+          sbps.veterancyInfo.two = mapVeterancyRank(vetExtInfo[1], locale);
+          sbps.veterancyInfo.three = mapVeterancyRank(vetExtInfo[2], locale);
+
+          if (vetExtInfo[3]) {
+            sbps.veterancyInfo.four = mapVeterancyRank(vetExtInfo[3], locale);
+          }
         }
         break;
 

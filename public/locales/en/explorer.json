@@ -72,7 +72,9 @@
     "abilityInfoCooldown": "Cooldown",
     "abilityInfoToggleCooldown": "Toggle",
     "abilityInfoToggleOnCooldown": "Toggle On",
-    "abilityInfoToggleOffCooldown": "Toggle Off"
+    "abilityInfoToggleOffCooldown": "Toggle Off",
+    "requirements": "Requires",
+    "requiresVeterancy": "Vet {{rank}}"
   },
   "statsCard": {
     "sightRange": "Sight Range",
@@ -106,6 +108,9 @@
     "damageSpread": "Damage Distribution Area",
     "damage": "Damage",
     "friendlyDamage": "Damage to Allies",
+    "ownUnitDamage": "Damage to Own",
+    "damageIncludesOwnUnits": "Damage to Enemies / Own",
+    "friendlyDamageIncludesOwnUnits": "Damage to Allies / Own",
     "deflectionDamage": "Deflection Damage",
     "aoeRadius": "AoE Radius",
     "aoeSize": "AoE Size",
@@ -123,8 +128,8 @@
     "suppressionRadius": "Suppression Radius",
     "incrementalTargetRadius": "Incremental Target Radius",
     "incrementalTargetAccuracy": "Inc. Accuracy",
-    "refireTime": "Refire Time",
-    "shotDelay": "Shot Delay",
+    "timeBetweenShots": "Refire Time",
+    "timeBetweenShotsMag": "Refire Time",
     "timeBetweenBursts": "Time Between Bursts",
     "reloadCycle": "Reload Cycle",
     "coreStats": "Core Stats",
@@ -133,7 +138,10 @@
     "scatterAngle": "Scatter Angle",
     "scatterDistance": "Scatter Distance",
     "aimTime": "Aim Time",
-    "scatterOffset": "Scatter Offset"
+    "scatterOffset": "Scatter Offset",
+    "reloadFrequency": "Magazine",
+    "bursts": "bursts",
+    "shots": "shots"
   },
   "dps": {
     "meta": {

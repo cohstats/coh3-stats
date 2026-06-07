@@ -4,6 +4,9 @@ import config from "../../config";
 import { internalSlash } from "../utils";
 import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
+import { getAbilityStateTreeWeaponMappings } from "./workarounds";
+import { extractDisplayRequirements } from "./requirement-utils";
+import type { DisplayRequirement } from "./requirement-utils";
 
 /** Child requirements in case of parent requirement being
  * "required_all_in_list". */
@@ -56,6 +59,54 @@ const ABILITY_WEAPON_PBG_PROPERTY_IDS = new Set(["WEAPON_PBG_1", "WEAPON_PBG_2",
 const getIdFromInstanceReference = (instanceReference: string) =>
   internalSlash(instanceReference).split("/").filter(Boolean).slice(-1)[0] || "";
 
+const addUnique = (array: string[], value?: string) => {
+  if (!value) return;
+  if (!array.includes(value)) array.push(value);
+};
+
+const getValueAtPath = (source: unknown, path: readonly (string | number)[]): unknown => {
+  return path.reduce<unknown>((currentValue, pathPart) => {
+    if (currentValue === null || currentValue === undefined) return undefined;
+
+    return (currentValue as Record<string | number, unknown>)[pathPart];
+  }, source);
+};
+
+const getStateTreeAtPath = (source: unknown, path: readonly (string | number)[]) => {
+  const value = getValueAtPath(source, path);
+
+  if (typeof value === "string") return value;
+
+  if (value && typeof value === "object") {
+    const instanceReference = (value as { instance_reference?: unknown }).instance_reference;
+
+    if (typeof instanceReference === "string") return instanceReference;
+  }
+
+  return "";
+};
+
+const applyAbilityStateTreeWeaponMappings = (ability: AbilitiesType, root: unknown) => {
+  for (const mapping of getAbilityStateTreeWeaponMappings(ability.id)) {
+    const stateTree = getStateTreeAtPath(root, mapping.stateTreePath);
+
+    // Strict match by exact path + exact value.
+    // If Relic moves or renames the state tree, this intentionally does nothing.
+    if (stateTree !== mapping.stateTree) continue;
+
+    for (const weaponReference of mapping.weaponIds ?? []) {
+      addUnique(ability.abilityWeaponIds, getIdFromInstanceReference(weaponReference));
+    }
+
+    if (
+      mapping.numShots !== undefined &&
+      (ability.numShots === null || mapping.overrideNumShots)
+    ) {
+      ability.numShots = mapping.numShots;
+    }
+  }
+};
+
 // Need to be extended by all required fields
 type AbilitiesType = {
   id: string; // filename  -> eg. panzergrenadier_ak
@@ -95,6 +146,8 @@ type AbilitiesType = {
      * populate it with `upgrade_name` -> `instance_reference`. */
     playerUpgrade: string;
   };
+  /** Small player-facing requirement list for UI display. */
+  displayRequirements: DisplayRequirement[];
 };
 
 /**
@@ -178,6 +231,7 @@ const mapAbilitiesData = (
     requirements: {
       playerUpgrade: "",
     },
+    displayRequirements: [],
   };
 
   mapAbilityBag(subtree, abilityEntity, locale);
@@ -260,7 +314,11 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
     ability.numShots = Math.trunc(numShots);
   }
 
+  applyAbilityStateTreeWeaponMappings(ability, root);
+
   /* --------- REQUIREMENTS SECTION --------- */
+  ability.displayRequirements = extractDisplayRequirements(abilityBag.requirements);
+
   if (Array.isArray(abilityBag.requirements)) {
     // Find the required player upgrade, which points to the upgrade reference.
     const reqPlayerUpgrade = (abilityBag.requirements as AbilityRequirementItem[]).find(

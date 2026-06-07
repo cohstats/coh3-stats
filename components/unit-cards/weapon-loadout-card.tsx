@@ -56,9 +56,13 @@ type WeaponCardContext = {
 
 type TargetType = WeaponStatsType["target_type_table"][number];
 
+type OwnUnitAoeDamageSource = "friendly" | "enemy" | "custom" | "none";
+
 const WeaponCardIcons = {
   damage: "/icons/unit_status/bw2/8_damagebonus.png",
   deflection_damage: "/icons/unit_status/bw2/anti_tank.png",
+  reload_frequency: "/icons/unit_status/bw2/ammo_swap",
+  aim_time: "/icons/unit_status/bw2/9_markedtarget.png",
   range: "/icons/unit_status/bw2/range_boost.png",
   aoe_size: "/icons/unit_status/bw2/flame.png",
   traverse_speed: "/icons/unit_status/bw2/skorpion.png",
@@ -189,9 +193,19 @@ export const WeaponLoadoutCard = (
     return `${roundValue(value * 100, decimals)}%`;
   };
 
+  const formatReloadFrequency = () => {
+    const min = weapon_bag.reload_frequency_min;
+    const max = weapon_bag.reload_frequency_max;
+
+    const value = min === max ? `${min}` : `${min} - ${max}`;
+    const unit = weapon_bag.burst_can_burst ? t("weaponCard.bursts") : t("weaponCard.shots");
+
+    return `${value} ${unit}`;
+  };
+
   const formatScatterDimensions = (distance: number) => {
     const { width, length } = getScatterDimensions(distance, weapon_bag);
-
+    if (roundValue(width, 1) === 0 && roundValue(length, 1) === 0) return 0;
     return `${roundValue(width, 1)}×${roundValue(length, 1)}`;
   };
 
@@ -222,6 +236,14 @@ export const WeaponLoadoutCard = (
   const showSustainedStats = !isSingleShotAbilityWeapon;
 
   const formatSeconds = (value: number, decimals = 3) => `${roundValue(value, decimals)}s`;
+  const formatMinMaxSeconds = (min: number, max: number, decimals = 3) => {
+    const roundedMin = roundValue(min, decimals);
+    const roundedMax = roundValue(max, decimals);
+
+    if (roundedMin === roundedMax) return `${roundedMax}s`;
+
+    return `${roundedMin}–${roundedMax}s`;
+  };
 
   const roundValue = (value: number, decimals = 2): number => {
     const factor = 10 ** decimals;
@@ -264,11 +286,13 @@ export const WeaponLoadoutCard = (
     },
   ].filter((column) => isChangedMultiplier(column.value));
 
+  const hasSingleMovingModifier = movingModifierColumns.length === 1;
+
   const movingLabelColumnSpan = 2;
   const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
 
   const OnMoveHeader = ({ show = true }: { show?: boolean }) => {
-    if (!show) return null;
+    if (!show || hasSingleMovingModifier) return null;
 
     return (
       <Grid gutter="xs">
@@ -288,6 +312,19 @@ export const WeaponLoadoutCard = (
 
   const OnMoveRow = ({ show = true }: { show?: boolean }) => {
     if (!show) return null;
+
+    if (hasSingleMovingModifier) {
+      const column = movingModifierColumns[0];
+
+      return (
+        <Flex align="center" justify="center" gap={6} wrap="nowrap">
+          <Text>
+            {t("weaponCard.onTheMove")} {column.label}
+          </Text>
+          <Text c="orange.6">{formatMultiplier(column.value)}</Text>
+        </Flex>
+      );
+    }
 
     return (
       <Grid gutter="xs">
@@ -730,7 +767,8 @@ export const WeaponLoadoutCard = (
     weapon_bag.burst_can_burst;
 
   const getSuppressionMultiplier = (accuracy: number) => {
-    if (weapon_bag.projectile_type === "artillery") return null;
+    if (weapon_bag.projectile_type === "artillery" || weapon_bag.projectile_type === "mortar")
+      return null;
 
     if (weapon_bag.projectile_type === "direct") {
       return accuracy;
@@ -831,6 +869,9 @@ export const WeaponLoadoutCard = (
       far: weapon_bag.aoe_damage_friendly_far,
     });
 
+  const getAoeOwnUnitDamageMultiplier = (distance: number) =>
+    getAoeValueAtDistance(weapon_bag, distance, ownUnitAoeDamageValues);
+
   const getAoeSuppressionMultiplier = (distance: number) =>
     getAoeValueAtDistance(weapon_bag, distance, {
       near: weapon_bag.aoe_suppression_near,
@@ -852,18 +893,94 @@ export const WeaponLoadoutCard = (
       weapon_bag.aoe_suppression_mid > 0 ||
       weapon_bag.aoe_suppression_far > 0);
 
+  const areAoeFalloffValuesEqual = (first: AoeFalloffValues, second: AoeFalloffValues) => {
+    const epsilon = 0.000001;
+
+    return (
+      Math.abs(first.near - second.near) < epsilon &&
+      Math.abs(first.mid - second.mid) < epsilon &&
+      Math.abs(first.far - second.far) < epsilon
+    );
+  };
+
+  const normalizeOwnUnitAoeDamageValue = (ownUnitValue: number, friendlyValue: number) => {
+    // Relic-style inherit value.
+    if (ownUnitValue < 0) return friendlyValue;
+
+    return ownUnitValue;
+  };
+
+  const enemyAoeDamageValues = {
+    near: weapon_bag.aoe_damage_near,
+    mid: weapon_bag.aoe_damage_mid,
+    far: weapon_bag.aoe_damage_far,
+  };
+
+  const friendlyAoeDamageValues = {
+    near: weapon_bag.aoe_damage_friendly_near,
+    mid: weapon_bag.aoe_damage_friendly_mid,
+    far: weapon_bag.aoe_damage_friendly_far,
+  };
+
+  const ownUnitAoeDamageValues = {
+    near: normalizeOwnUnitAoeDamageValue(
+      weapon_bag.aoe_damage_own_units_near,
+      weapon_bag.aoe_damage_friendly_near,
+    ),
+    mid: normalizeOwnUnitAoeDamageValue(
+      weapon_bag.aoe_damage_own_units_mid,
+      weapon_bag.aoe_damage_friendly_mid,
+    ),
+    far: normalizeOwnUnitAoeDamageValue(
+      weapon_bag.aoe_damage_own_units_far,
+      weapon_bag.aoe_damage_friendly_far,
+    ),
+  };
+
+  const ownUnitAoeDamageSource: OwnUnitAoeDamageSource =
+    ownUnitAoeDamageValues.near <= 0 &&
+    ownUnitAoeDamageValues.mid <= 0 &&
+    ownUnitAoeDamageValues.far <= 0
+      ? "none"
+      : areAoeFalloffValuesEqual(ownUnitAoeDamageValues, friendlyAoeDamageValues)
+        ? "friendly"
+        : areAoeFalloffValuesEqual(ownUnitAoeDamageValues, enemyAoeDamageValues)
+          ? "enemy"
+          : "custom";
+
+  const hasOwnUnitAoeDamage = ownUnitAoeDamageSource === "custom";
+
+  const getAoeGraphStep = (maxDistance: number) => {
+    if (maxDistance <= 5) return 0.1;
+
+    return 0.2;
+  };
+
   const buildAoeGraphPoints = (getValue: (distance: number) => number) => {
     const maxDistance = weapon_bag.aoe_outer_radius;
-    const samples = Math.max(48, Math.ceil(maxDistance * 10) + 1);
+    const step = getAoeGraphStep(maxDistance);
 
-    return Array.from({ length: samples }, (_, index) => {
-      const distance = (maxDistance * index) / (samples - 1);
+    const regularPoints = Array.from({ length: Math.floor(maxDistance / step) + 1 }, (_, index) =>
+      roundValue(index * step, 2),
+    );
 
-      return {
-        x: roundValue(distance, 2),
-        y: roundValue(getValue(distance), 3),
-      };
-    });
+    const exactPoints = [
+      0,
+      weapon_bag.aoe_distance_near,
+      weapon_bag.aoe_distance_mid,
+      weapon_bag.aoe_distance_far,
+      weapon_bag.aoe_outer_radius,
+    ].map((distance) => roundValue(distance, 2));
+
+    const distances = [...new Set([...regularPoints, ...exactPoints])]
+      .filter((distance) => Number.isFinite(distance))
+      .filter((distance) => distance >= 0 && distance <= maxDistance)
+      .sort((a, b) => a - b);
+
+    return distances.map((distance) => ({
+      x: distance,
+      y: roundValue(getValue(distance), 3),
+    }));
   };
 
   type AoeDatasetOptions = {
@@ -895,9 +1012,19 @@ export const WeaponLoadoutCard = (
     ...(options.borderDash ? { borderDash: options.borderDash } : {}),
   });
 
+  const damageDatasetLabel =
+    ownUnitAoeDamageSource === "enemy"
+      ? t("weaponCard.damageIncludesOwnUnits")
+      : t("weaponCard.damage");
+
+  const friendlyDamageDatasetLabel =
+    ownUnitAoeDamageSource === "friendly"
+      ? t("weaponCard.friendlyDamageIncludesOwnUnits")
+      : t("weaponCard.friendlyDamage");
+
   const aoeChartDatasets = [
     createAoeDataset(
-      t("weaponCard.damage"),
+      damageDatasetLabel,
       buildAoeGraphPoints((distance) => getAverageDamageValue(getAoeDamageMultiplier(distance))),
       theme.colors.orange[5],
       {
@@ -908,7 +1035,7 @@ export const WeaponLoadoutCard = (
 
     hasFriendlyAoeDamage
       ? createAoeDataset(
-          t("weaponCard.friendlyDamage"),
+          friendlyDamageDatasetLabel,
           buildAoeGraphPoints((distance) =>
             getAverageDamageValue(getAoeFriendlyDamageMultiplier(distance)),
           ),
@@ -921,6 +1048,22 @@ export const WeaponLoadoutCard = (
         )
       : null,
 
+    hasOwnUnitAoeDamage
+      ? createAoeDataset(
+          t("weaponCard.ownUnitDamage"),
+          buildAoeGraphPoints((distance) =>
+            getAverageDamageValue(getAoeOwnUnitDamageMultiplier(distance)),
+          ),
+          theme.colors.gray[5],
+          {
+            yAxisID: "yDamage",
+            borderWidth: 2,
+            borderDash: [2, 4],
+            order: 2,
+          },
+        )
+      : null,
+
     hasAoeSuppression
       ? createAoeDataset(
           t("weaponCard.suppression"),
@@ -928,7 +1071,7 @@ export const WeaponLoadoutCard = (
           theme.colors.violet[5],
           {
             yAxisID: "ySuppression",
-            order: 2,
+            order: 3,
           },
         )
       : null,
@@ -1096,21 +1239,28 @@ export const WeaponLoadoutCard = (
           title={t("weaponCard.coreStats")}
           rows={[
             {
-              show: weapon_bag.projectile_type !== "artillery",
+              show:
+                weapon_bag.projectile_type !== "artillery" &&
+                weapon_bag.projectile_type !== "mortar",
               label: t("weaponCard.accuracy"),
               near: formatPercent(weapon_bag.accuracy_near),
               mid: formatPercent(weapon_bag.accuracy_mid),
               far: formatPercent(weapon_bag.accuracy_far),
             },
             {
-              show: weapon_bag.projectile_type === "artillery",
+              show:
+                weapon_bag.projectile_type === "artillery" ||
+                weapon_bag.projectile_type === "mortar",
               label: t("weaponCard.scatter"),
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
             },
             {
-              show: weapon_bag.projectile_type === "artillery" && showScatterOffset,
+              show:
+                (weapon_bag.projectile_type === "artillery" ||
+                  weapon_bag.projectile_type === "mortar") &&
+                showScatterOffset,
               label: t("weaponCard.scatterOffset"),
               near: formatScatterOffset(scatterOffsetNear),
               mid: formatScatterOffset(scatterOffsetMid),
@@ -1128,50 +1278,6 @@ export const WeaponLoadoutCard = (
               near: weapon_bag.penetration_near,
               mid: weapon_bag.penetration_mid,
               far: weapon_bag.penetration_far,
-            },
-          ]}
-        />
-
-        <RangeStatSection
-          show={showSustainedStats}
-          title={t("weaponCard.timing")}
-          rows={[
-            {
-              show: weapon_bag.burst_can_burst,
-              label: t("weaponCard.burstDuration"),
-              near: formatSeconds(timingNear.burstDuration),
-              mid: formatSeconds(timingMid.burstDuration),
-              far: formatSeconds(timingFar.burstDuration),
-            },
-            {
-              show: showRefireTime,
-              label: t("weaponCard.refireTime"),
-              near: formatSeconds(timingNear.timeBetweenBurstsReload + timingNear.burstDuration),
-              mid: formatSeconds(timingMid.timeBetweenBurstsReload + timingMid.burstDuration),
-              far: formatSeconds(timingFar.timeBetweenBurstsReload + timingFar.burstDuration),
-            },
-            {
-              show: showShotDelay,
-              label: t("weaponCard.shotDelay"),
-              near: formatSeconds(
-                timingNear.timeBetweenBurstsCooldown + timingNear.burstDuration,
-              ),
-              mid: formatSeconds(timingMid.timeBetweenBurstsCooldown + timingMid.burstDuration),
-              far: formatSeconds(timingFar.timeBetweenBurstsCooldown + timingFar.burstDuration),
-            },
-            {
-              show: showTimeBetweenBursts,
-              label: t("weaponCard.timeBetweenBursts"),
-              near: formatSeconds(timingNear.timeBetweenBurstsCooldown),
-              mid: formatSeconds(timingMid.timeBetweenBurstsCooldown),
-              far: formatSeconds(timingFar.timeBetweenBurstsCooldown),
-            },
-            {
-              show: showReloadCycle,
-              label: t("weaponCard.reloadCycle"),
-              near: formatSeconds(timingNear.timeBetweenBurstsReload),
-              mid: formatSeconds(timingMid.timeBetweenBurstsReload),
-              far: formatSeconds(timingFar.timeBetweenBurstsReload),
             },
           ]}
         />
@@ -1217,6 +1323,59 @@ export const WeaponLoadoutCard = (
           ]}
         />
 
+        <RangeStatSection
+          show={showSustainedStats}
+          title={t("weaponCard.timing")}
+          rows={[
+            {
+              show: weapon_bag.burst_can_burst,
+              label: t("weaponCard.burstDuration"),
+              near: formatSeconds(timingNear.burstDuration),
+              mid: formatSeconds(timingMid.burstDuration),
+              far: formatSeconds(timingFar.burstDuration),
+            },
+            {
+              show: showRefireTime,
+              label: t("weaponCard.timeBetweenShots"),
+              near: formatSeconds(timingNear.timeBetweenBurstsReload + timingNear.burstDuration),
+              mid: formatSeconds(timingMid.timeBetweenBurstsReload + timingMid.burstDuration),
+              far: formatSeconds(timingFar.timeBetweenBurstsReload + timingFar.burstDuration),
+            },
+            {
+              show: showShotDelay,
+              label: t("weaponCard.timeBetweenShotsMag"),
+              near: formatSeconds(
+                timingNear.timeBetweenBurstsCooldown + timingNear.burstDuration,
+              ),
+              mid: formatSeconds(timingMid.timeBetweenBurstsCooldown + timingMid.burstDuration),
+              far: formatSeconds(timingFar.timeBetweenBurstsCooldown + timingFar.burstDuration),
+            },
+            {
+              show: showTimeBetweenBursts,
+              label: t("weaponCard.timeBetweenBursts"),
+              near: formatSeconds(timingNear.timeBetweenBurstsCooldown),
+              mid: formatSeconds(timingMid.timeBetweenBurstsCooldown),
+              far: formatSeconds(timingFar.timeBetweenBurstsCooldown),
+            },
+            {
+              show: showReloadCycle,
+              label: t("weaponCard.reloadCycle"),
+              near: formatSeconds(
+                timingNear.timeBetweenBurstsReload +
+                  (weapon_bag.burst_can_burst ? 0 : timingNear.burstDuration),
+              ),
+              mid: formatSeconds(
+                timingMid.timeBetweenBurstsReload +
+                  (weapon_bag.burst_can_burst ? 0 : timingMid.burstDuration),
+              ),
+              far: formatSeconds(
+                timingFar.timeBetweenBurstsReload +
+                  (weapon_bag.burst_can_burst ? 0 : timingFar.burstDuration),
+              ),
+            },
+          ]}
+        />
+
         <Divider my={4} />
 
         <CompactStatGrid
@@ -1230,6 +1389,23 @@ export const WeaponLoadoutCard = (
                   (weapon_bag.damage_max + weapon_bag.damage_min)) /
                 2,
               show: weapon_bag.deflection_has_deflection_damage,
+            },
+            {
+              icon: WeaponCardIcons["aim_time"],
+              alt: "weapon aim time",
+              label: t("weaponCard.aimTime"),
+              value: formatMinMaxSeconds(
+                weapon_bag.ready_aim_time_min,
+                weapon_bag.ready_aim_time_max,
+              ),
+              show: weapon_bag.ready_aim_time_min > 0 || weapon_bag.ready_aim_time_max > 0,
+            },
+            {
+              icon: WeaponCardIcons["reload_frequency"],
+              alt: "Weapon Reload Frequency",
+              label: t("weaponCard.reloadFrequency"),
+              value: formatReloadFrequency(),
+              show: hasReloadFrequency,
             },
             {
               icon: WeaponCardIcons["aoe_size"],

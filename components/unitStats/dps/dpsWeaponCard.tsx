@@ -51,7 +51,30 @@ export const DpsWeaponCard = (props: IDPSProps) => {
 
   //const [activeData] = useState(props.weapon_member);
   const isOptionalUpgradeWeapon = props.weapon_member.source === "optional_upgrade";
+  const isOptionalAbilityWeapon = props.weapon_member.source === "optional_ability";
+  const isOptionalSourceWeapon = isOptionalUpgradeWeapon || isOptionalAbilityWeapon;
+
   const sourceUpgrade = props.weapon_member.sourceUpgrade;
+  const sourceAbility = props.weapon_member.sourceAbility;
+  const sourceInfo = isOptionalUpgradeWeapon ? sourceUpgrade : sourceAbility;
+
+  const sourceStyle = isOptionalAbilityWeapon
+    ? {
+        background:
+          "linear-gradient(135deg, rgba(34, 22, 12, 0.98) 0%, rgba(128, 72, 30, 0.70) 18%, rgba(27, 31, 34, 0.98) 30%)",
+        borderColor: "rgba(245, 159, 66, 0.34)",
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 18px rgba(245, 159, 66, 0.08)",
+      }
+    : {
+        background:
+          "linear-gradient(135deg, rgba(9, 20, 38, 0.98) 0%, rgba(30, 96, 185, 0.72) 18%, rgba(27, 31, 34, 0.98) 30%)",
+        borderColor: "rgba(96, 165, 250, 0.38)",
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 18px rgba(96, 165, 250, 0.10)",
+      };
+
+  const sourceMarker = isOptionalAbilityWeapon ? "✦" : "★";
+  const sourceMarkerTitle = isOptionalAbilityWeapon ? "Ability weapon" : "Upgrade weapon";
+
   function onNumberChanged(value: number) {
     const nextValue = Number.isFinite(value) ? Math.max(0, value) : 0;
 
@@ -88,20 +111,16 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           padding: theme.spacing.xs,
           borderRadius: theme.radius.md,
           position: "relative",
-          color: isOptionalUpgradeWeapon ? "var(--mantine-color-gray-0)" : undefined,
-          background: isOptionalUpgradeWeapon
-            ? "linear-gradient(135deg, rgba(9, 20, 38, 0.98) 0%, rgba(30, 96, 185, 0.68) 15%, rgba(27, 31, 34, 0.98) 30%)"
-            : undefined,
-          border: isOptionalUpgradeWeapon ? "1px solid rgba(96, 165, 250, 0.36)" : undefined,
-          boxShadow: isOptionalUpgradeWeapon
-            ? "inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 12px rgba(96, 165, 250, 0.08)"
-            : undefined,
+          color: isOptionalSourceWeapon ? "var(--mantine-color-gray-0)" : undefined,
+          background: isOptionalSourceWeapon ? sourceStyle.background : undefined,
+          border: isOptionalSourceWeapon ? `1px solid ${sourceStyle.borderColor}` : undefined,
+          boxShadow: isOptionalSourceWeapon ? sourceStyle.boxShadow : undefined,
         })}
       >
-        {isOptionalUpgradeWeapon && (
+        {isOptionalSourceWeapon && (
           <Text
             component="span"
-            title="Upgrade weapon"
+            title={sourceMarkerTitle}
             fw={900}
             size="sm"
             style={{
@@ -114,7 +133,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
               pointerEvents: "none",
             }}
           >
-            ★
+            {sourceMarker}
           </Text>
         )}
 
@@ -132,7 +151,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                 <CloseButton
                   aria-label="Remove weapon"
                   onClick={onDeleteWeapon}
-                  c={isOptionalUpgradeWeapon ? "gray.0" : undefined}
+                  c={isOptionalSourceWeapon ? "gray.0" : undefined}
                 />
               </Group>
             </HoverCard.Target>
@@ -144,40 +163,46 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                 overflowX: "hidden",
               }}
             >
-              {isOptionalUpgradeWeapon && sourceUpgrade ? (
+              {isOptionalSourceWeapon && sourceInfo ? (
                 <Card
                   p="md"
                   radius="md"
                   withBorder
                   c="gray.0"
                   style={{
-                    background:
-                      "linear-gradient(135deg, rgba(9, 20, 38, 0.98) 0%, rgba(30, 96, 185, 0.72) 18%, rgba(27, 31, 34, 0.98) 30%)",
-                    borderColor: "rgba(96, 165, 250, 0.38)",
-                    boxShadow:
-                      "inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 18px rgba(96, 165, 250, 0.10)",
+                    background: sourceStyle.background,
+                    borderColor: sourceStyle.borderColor,
+                    boxShadow: sourceStyle.boxShadow,
                     color: "var(--mantine-color-gray-0)",
                   }}
                 >
                   <Stack gap="sm">
                     <UnitUpgradeCard
-                      id={sourceUpgrade.id}
+                      id={sourceInfo.id}
                       desc={{
-                        screen_name: sourceUpgrade.ui.screenName,
-                        help_text: sourceUpgrade.ui.helpText,
-                        extra_text: sourceUpgrade.ui.extraText,
-                        brief_text: sourceUpgrade.ui.briefText,
-                        icon_name: sourceUpgrade.ui.iconName,
-                        extra_text_formatter: sourceUpgrade.ui.extraTextFormatter,
-                        brief_text_formatter: sourceUpgrade.ui.briefTextFormatter,
+                        screen_name: sourceInfo.ui.screenName,
+                        help_text: sourceInfo.ui.helpText,
+                        extra_text: sourceInfo.ui.extraText,
+                        brief_text: sourceInfo.ui.briefText,
+                        icon_name: sourceInfo.ui.iconName,
+                        extra_text_formatter: sourceInfo.ui.extraTextFormatter,
+                        brief_text_formatter: sourceInfo.ui.briefTextFormatter,
                       }}
-                      time_cost={sourceUpgrade.cost}
+                      time_cost={sourceInfo.cost}
                     />
 
                     <Card p="lg" radius="md" withBorder>
                       {WeaponLoadoutCard(
                         props.weapon_member.weapon,
-                        props.weapon_member.upgradeCount ?? 1,
+                        isOptionalAbilityWeapon
+                          ? (props.weapon_member.abilityCount ?? 1)
+                          : (props.weapon_member.upgradeCount ?? 1),
+                        isOptionalAbilityWeapon
+                          ? {
+                              source: "ability",
+                              abilityNumShots: props.weapon_member.abilityNumShots ?? null,
+                            }
+                          : {},
                       )}
                     </Card>
                   </Stack>

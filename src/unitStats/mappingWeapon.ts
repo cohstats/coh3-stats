@@ -13,7 +13,7 @@ type RangeType = {
   max: number;
 };
 
-type WeaponProjectileType = "none" | "direct" | "artillery";
+type WeaponProjectileType = "none" | "direct" | "artillery" | "mortar";
 
 type ProjectileMeta = {
   id: string;
@@ -46,6 +46,11 @@ export type WeaponStatsType = {
   aoe_damage_friendly_far: number;
   aoe_damage_friendly_mid: number;
   aoe_damage_friendly_near: number;
+
+  aoe_damage_own_units_far: number;
+  aoe_damage_own_units_mid: number;
+  aoe_damage_own_units_near: number;
+
   aoe_has_friendly_fire: boolean;
 
   aoe_damage_max_member: number;
@@ -63,6 +68,8 @@ export type WeaponStatsType = {
   aim_time_multiplier_far: number;
   fire_aim_time_min: number;
   fire_aim_time_max: number;
+  ready_aim_time_min: number;
+  ready_aim_time_max: number;
 
   behaviour_enable_auto_target_search: boolean;
 
@@ -227,6 +234,10 @@ const getIdFromInstanceReference = (instanceReference = "") => {
   return instanceReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0] || "";
 };
 
+const isMortarProjectileName = (...values: string[]) => {
+  return values.some((value) => value.toLowerCase().includes("mortar"));
+};
+
 const getExtensionName = (extension: any) => {
   return extension?.exts?.template_reference?.value?.split("\\").slice(-1)[0] || "";
 };
@@ -252,6 +263,8 @@ const getProjectileMetadataMap = (ebpsRoot: any) => {
       isProjectileContainer,
       (filename: string, subtree: any, jsonPath: string) => {
         const projectileExt = getProjectileExt(subtree);
+
+        const trajectoryPreviewPath = projectileExt?.trajectory_option?.instance_reference || "";
 
         return {
           id: filename,
@@ -307,7 +320,9 @@ const mapWeaponData = (
     ? "none"
     : projectileMeta?.isArtillery
       ? "artillery"
-      : "direct";
+      : isMortarProjectileName(projectileId, projectilePath, projectileMeta?.path || "")
+        ? "mortar"
+        : "direct";
 
   // todo remove redundancy
   const weaponData: WeaponType = {
@@ -354,6 +369,11 @@ const mapWeaponData = (
       aoe_damage_friendly_far: weapon_bag.area_effect?.damage_friendly?.far ?? 0,
       aoe_damage_friendly_mid: weapon_bag.area_effect?.damage_friendly?.mid ?? 0,
       aoe_damage_friendly_near: weapon_bag.area_effect?.damage_friendly?.near ?? 0,
+
+      aoe_damage_own_units_far: weapon_bag.area_effect?.damage_own_units?.far ?? 0,
+      aoe_damage_own_units_mid: weapon_bag.area_effect?.damage_own_units?.mid ?? 0,
+      aoe_damage_own_units_near: weapon_bag.area_effect?.damage_own_units?.near ?? 0,
+
       aoe_has_friendly_fire: relicBoolean(weapon_bag.area_effect?.has_friendly_fire, false),
 
       aoe_suppression_far: weapon_bag.area_effect?.suppression?.far ?? 0,
@@ -366,6 +386,9 @@ const mapWeaponData = (
 
       fire_aim_time_min: weapon_bag.aim?.fire_aim_time?.min || 0,
       fire_aim_time_max: weapon_bag.aim?.fire_aim_time?.max || 0,
+
+      ready_aim_time_min: weapon_bag.aim?.fire_aim_time?.min || 0,
+      ready_aim_time_max: weapon_bag.aim?.fire_aim_time?.max || 0,
 
       behaviour_enable_auto_target_search:
         weapon_bag.behaviour?.enable_auto_target_search !== "False", //default to true

@@ -44,6 +44,7 @@ const SpawnItemMappings: { [abilityId: string]: string[] } = {
   infiltration_left_1_vampire_ht_goliath_ak: ["halftrack_250_vampire_ak", "goliath_ak"],
   panzerjager_kommand_elefant_ak: ["elefant_tank_destroyer_ak"],
   kriegsmarine_infantry_ak: ["kriegsmarine_infantry_ak"],
+  elite_forces_tiger_ace_dummy_ak: ["tiger_ace_ak"],
 
   // --- British ---
   british_air_and_sea_left_2a_centaur_cs_uk: ["centaur_africa_uk"],
@@ -64,6 +65,9 @@ const SpawnItemMappings: { [abilityId: string]: string[] } = {
   polish_cavalry_polish_lancer_uk: ["polish_lancer_africa_uk"],
   polish_cavalry_callin_towed_land_mattress_uk: ["land_mattress_africa_uk"],
   polish_cavalry_production_unlock_sherman_firefly_uk: ["sherman_firefly_africa_uk"],
+  special_services_commandos_callin_uk: ["ssb_africa_uk"],
+  special_services_cwt_lrdg_truck_callin_uk: ["cwt_lrdg_truck_africa_uk_uk"],
+  special_services_sniper_callin_uk: ["ssb_sniper_africa_uk"],
 
   // --- American ---
   airborne_right_1a_pathfinders_us: ["pathfinder_us"],
@@ -89,6 +93,9 @@ const SpawnItemMappings: { [abilityId: string]: string[] } = {
   special_weapons_at_gun_3in_m5_us: ["at_gun_3in_m5_us"],
   partisan_resistance_fighter_callin_us: ["resistance_fighters_battlegroup_partisans"],
   partisan_saboteur_callin_us: ["saboteurs_battlegroup_partisan"],
+  french_infantry_callin_us: ["french_infantry_us"],
+  french_maginot_dummy_us: ["tourelle_emplacement_us"],
+  french_production_unlock_char_b1_us: ["char_b1_us"],
 
   // --- German ---
   breakthrough_right_3a_assault_group_ger: ["stormtrooper_ger", "halftrack_ger"],
@@ -110,6 +117,9 @@ const SpawnItemMappings: { [abilityId: string]: string[] } = {
   terror_king_tiger_ger: ["king_tiger_sdkfz_182_ger"],
   last_stand_callin_borgward_iv_ger: ["borgward_iv_ger"],
   last_stand_convert_sturmpioneers_ger: ["sturmpioneer_ger"],
+  siegebreakers_firestorm_doctrine_dummy_ger: ["halftrack_flame_ger"],
+  siegebreakers_siege_camp_spawn_ger: ["bunker_mortar_autobuild_ger"],
+  siegebreakers_production_unlock_sturmtiger_ger: ["sturmtiger_ger"],
 };
 
 /**
@@ -123,10 +133,10 @@ function applyBattlegroupUpgrade(upg: BattleGroupUpgradeType) {
   const abilityId = upg.ability.id;
 
   // 1. Handle the one-off custom case for cost change
-  if (abilityId === "australian_defense_australian_light_infantry_uk") {
-    upg.ability.cost.manpower = 280;
-    // Fall through to set spawnItems as well
-  }
+  //if (abilityId === "australian_defense_australian_light_infantry_uk") {
+  //  upg.ability.cost.manpower = 280;
+  // Fall through to set spawnItems as well
+  //}
 
   // 2. Look up the spawn items and apply if found
   const spawnItems = SpawnItemMappings[abilityId];
@@ -208,6 +218,17 @@ const setBattlegroupsWorkarounds = () => {
       item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
     },
   });
+  // --- Elite Forces BG - Introduced at 2.4.0.
+  bgWorkaround("Modify Afrika Korps - Elite Forces BG Call-Ins", {
+    predicate: (item) => item.faction === "races/afrika_korps" && item.id === "elite_forces",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Off-Shore Support Branch.
+      item.branches.LEFT.upgrades.forEach(applyBattlegroupUpgrade);
+      // Logistics Operations Branch.
+      item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
+    },
+  });
 
   /* ----------------------- UKF BATTLEGROUPS ----------------------- */
 
@@ -274,6 +295,17 @@ const setBattlegroupsWorkarounds = () => {
       // Army In Exile Branch.
       item.branches.LEFT.upgrades.forEach(applyBattlegroupUpgrade);
       // Rocketry Branch.
+      item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
+    },
+  });
+  // --- Special Service BG - Introduced at 2.4.0 (Scarlet Bison).
+  bgWorkaround("Modify British - Special Service BG Call-Ins", {
+    predicate: (item) => item.faction === "races/british" && item.id === "special_services",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Ungentlemanly Warfare Branch.
+      item.branches.LEFT.upgrades.forEach(applyBattlegroupUpgrade);
+      // Reconnaissance-in-Force Branch.
       item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
     },
   });
@@ -346,6 +378,17 @@ const setBattlegroupsWorkarounds = () => {
       item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
     },
   });
+  // --- Free French BG - Introduced at 2.4.0.
+  bgWorkaround("Modify American - Free French BG Call-Ins", {
+    predicate: (item) => item.faction === "races/american" && item.id === "french",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Methodical Battle Doctrine Branch.
+      item.branches.LEFT.upgrades.forEach(applyBattlegroupUpgrade);
+      // Defense in Depth Branch.
+      item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
+    },
+  });
 
   /* ----------------------- WEHR BATTLEGROUPS ----------------------- */
 
@@ -413,6 +456,17 @@ const setBattlegroupsWorkarounds = () => {
       // Desperate Battle Branch.
       item.branches.LEFT.upgrades.forEach(applyBattlegroupUpgrade);
       // Defense In Depth Branch.
+      item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
+    },
+  });
+  // --- Siege Breaker BG - Introduced at 2.4.0.
+  bgWorkaround("Modify German - Siege Breaker BG Call-Ins", {
+    predicate: (item) => item.faction === "races/german" && item.id === "siegebreakers",
+    mutator: (item) => {
+      item = item as BattlegroupResolvedType;
+      // Siegeworks Branch.
+      item.branches.LEFT.upgrades.forEach(applyBattlegroupUpgrade);
+      // Vanguard Tactics Branch.
       item.branches.RIGHT.upgrades.forEach(applyBattlegroupUpgrade);
     },
   });
@@ -528,5 +582,635 @@ export const getStateTreeSpawnMapping = (stateTree?: string): StateTreeSpawnMapp
 
 // console.log(`Total BG workarounds: ${bgWorkarounds.size}`);
 // console.log(`Total Ebps workarounds: ${ebpsWorkarounds.size}`);
+
+export type AbilityStateTreeWeaponMapping = {
+  abilityId: string;
+  stateTreePath: readonly (string | number)[];
+  stateTree: string;
+
+  /**
+   * Weapon EBPS IDs or direct weapon stat IDs.
+   * Full instance_reference paths are okay too.
+   */
+  weaponIds?: string[];
+
+  /**
+   * Optional num-shots override/fill-in.
+   * Can be used without weaponIds.
+   */
+  numShots?: number;
+
+  /**
+   * Default false: only fills numShots if source data did not provide it.
+   */
+  overrideNumShots?: boolean;
+};
+
+export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
+  // Weapon + shot count:
+  // {
+  //   abilityId: "some_ability_id",
+  //   stateTreePath: ["ability_bag", "entity_tree"],
+  //   stateTree: "ability_some_exact_entity_tree",
+  //   weaponIds: ["some_weapon_or_weapon_ebps_id"],
+  //   numShots: 1,
+  // },
+  {
+    abilityId: "s_mine_launcher_tiger_ak",
+    stateTreePath: ["ability_bag", "global_tree"],
+    stateTree: "s_mine_launcher_tiger_ak",
+    weaponIds: ["s_mine_launcher_ak"],
+    numShots: 1,
+  },
+  {
+    abilityId: "armor_shred_pak_38_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "armor_shred_pak_38_ak",
+    weaponIds: ["pak_38_armor_shred_ak"],
+    numShots: 1,
+  },
+  {
+    abilityId: "target_weak_point_flak_88_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "target_weak_point_flak_88_ak",
+    weaponIds: ["88mm_at_gun_target_weak_point_ak"],
+    numShots: 1,
+  },
+  {
+    abilityId: "barrage_howitzer_cannone_105_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_cannone_da_105_ak",
+    weaponIds: ["105mm_howitzer_cannone_barrage_ak"],
+    numShots: 6,
+  },
+  {
+    abilityId: "barrage_howitzer_75mm_leig_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_75mm_leig_ak",
+    weaponIds: ["75mm_barrage_leig_ak"],
+    numShots: 6,
+  },
+  {
+    abilityId: "goliath_detonate_ak",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "self_destruct_goliath_ger",
+    weaponIds: ["goliath_destruct_ak"],
+    numShots: 1,
+  },
+  {
+    abilityId: "barrage_mortar_halftrack_250_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_250_mortar_halftrack_ak",
+    weaponIds: ["81mm_halftrack_mortar_barrage_ger"],
+    numShots: 6,
+  },
+  {
+    abilityId: "toggle_he_ap_rounds_panzer_iv_ger",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "toggle_he_ap_rounds_panzer_iv_ger",
+    weaponIds: ["75mm_panzer_iv_stubby_ger"],
+  },
+  {
+    abilityId: "barrage_semovente_ger",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "barrage_semovente_ger",
+    weaponIds: ["75mm_semovente_artillery_barrage_ger"],
+  },
+  {
+    abilityId: "barrage_howitzer_105mm_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_howitzer_105mm_us",
+    weaponIds: ["105mm_howitzer_us", "105mm_howitzer_charged_us"],
+    numShots: 6,
+  },
+  {
+    abilityId: "veterancy_1a_light_it_up_engineer_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "veterancy_1a_light_it_up_engineer_us\\flamer_upgrade",
+    weaponIds: ["flamethrower_aoe_engineer_us"],
+  },
+  {
+    abilityId: "veterancy_1a_light_it_up_no_flamer_engineer_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "veterancy_1a_light_it_up_engineer_us\\no_upgrade",
+    weaponIds: ["flamethrower_aoe_engineer_us"],
+  },
+  {
+    abilityId: "weapon_crate_ranger_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_squad_tree",
+    ],
+    stateTree: "flight_system_wrapper_library\\squad_wrappers\\paradrop_run_entity_wrapper",
+    weaponIds: [
+      "bazooka_bazooka_team_us",
+      "flamethrower_engineer_us",
+      "bar_riflemen_us",
+      "m1919a6_riflemen_us",
+    ],
+  },
+  {
+    abilityId: "toggle_lmg_bazooka_ssf_us",
+    stateTreePath: ["ability_bag", "squad_tree"],
+    stateTree: "toggle_lmg_bazooka_ssf_us",
+    weaponIds: ["bazooka_devils_brigade_us", "m1941_lmg_devils_brigade_us"],
+  },
+  {
+    abilityId: "barrage_81mm_mortar_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_81mm_mortar_us",
+    weaponIds: ["81mm_mortar_barrage_us"],
+    numShots: 6,
+  },
+  {
+    abilityId: "veterancy_1a_timed_fuze_mortar_81mm_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "veterancy_1a_timed_fuze_mortar_81mm_us",
+    weaponIds: ["81mm_mortar_timed_fuze_us"],
+    numShots: 5,
+  },
+  {
+    abilityId: "veterancy_1b_delayed_fuze_mortar_81mm_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "veterancy_1b_delayed_fuze_mortar_81mm_us",
+    weaponIds: ["81mm_mortar_delayed_fuze_us"],
+    numShots: 5,
+  },
+  {
+    abilityId: "barrage_75mm_pack_howitzer_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_75mm_pack_howitzer_uk",
+    weaponIds: ["75mm_pack_howitzer_barrage_us"],
+    numShots: 8,
+  },
+  {
+    abilityId: "canister_shot_greyhound_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "canister_shot_greyhound_us\\canister_timed\\swap_to_canister",
+    weaponIds: ["37mm_canister_shot_greyhound_us"],
+  },
+  {
+    abilityId: "hvap_hellcat_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "hvap_hellcat_us",
+    weaponIds: ["76mm_hellcat_hvap_us"],
+  },
+  {
+    abilityId: "hvap_hellcat_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "hvap_hellcat_us",
+    weaponIds: ["76mm_hellcat_hvap_us"],
+  },
+  {
+    abilityId: "white_phosphorous_sherman_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "veterancy_1a_white_phosphorous_sherman_us",
+    weaponIds: ["75mm_white_phosphorous_sherman_us"],
+    numShots: 1,
+  },
+  {
+    abilityId: "hvap_sherman_easy_8_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "hvap_sherman_easy_8_us",
+    weaponIds: ["76mm_sherman_easy_8_hvap_us"],
+  },
+  {
+    abilityId: "hvap_sherman_easy_8_vet_3_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "hvap_sherman_easy_8_us",
+    weaponIds: ["76mm_sherman_easy_8_hvap_us"],
+  },
+  {
+    abilityId: "veterancy_1a_he_rounds_sherman_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "sherman_he_rounds_us",
+    weaponIds: ["75mm_sherman_he_rounds_us"],
+  },
+  {
+    abilityId: "veterancy_1b_incendiary_barrage_sherman_bulldozer_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "sherman_bulldozer_incendiary_barrage_us",
+    weaponIds: ["105mm_sherman_incendiary_barrage_us"],
+    numShots: 4,
+  },
+  {
+    abilityId: "barrage_180mm_rockets_whizbang_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_180mm_rockets_whizbang_us",
+    weaponIds: ["180mm_rocket_barrage_whizbang_us"],
+    numShots: 15,
+  },
+  {
+    abilityId: "veterancy_1a_precision_sweep_sherman_us",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "veterancy_1a_precision_sweep_sherman_us",
+    weaponIds: ["180mm_precision_sweep_whizbang_us"],
+    numShots: 15,
+  },
+  {
+    abilityId: "body_shot_australian_light_infantry_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "body_shot_australian_light_infantry_uk",
+    weaponIds: ["lee_enfield_sharpshooter_uk"],
+  },
+  {
+    abilityId: "staggered_shot_guards_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "staggered_shot_guards_uk",
+    weaponIds: [
+      "bazooka_staggered_shot_guards_africa_uk",
+      "bazooka_staggered_shot_stun_guards_africa_uk",
+    ],
+  },
+  {
+    abilityId: "target_weak_point_2pdr_uk",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "target_weak_point_2pdr_uk",
+    weaponIds: ["2pdr_at_gun_twp_uk"],
+    numShots: 1,
+  },
+  {
+    abilityId: "barrage_81mm_mortar_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_81mm_mortar_uk",
+    weaponIds: ["81mm_mortar_barrage_uk"],
+  },
+  {
+    abilityId: "barrage_81mm_mortar_smoke_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_81mm_mortar_smoke_uk",
+    weaponIds: ["81mm_mortar_smoke_uk"],
+  },
+  {
+    abilityId: "barrage_4_2_heavy_mortar_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_4_2_heavy_mortar_uk",
+    weaponIds: ["4_2_inch_heavy_mortar_barrage_uk"],
+  },
+  {
+    abilityId: "barrage_4_2_heavy_mortar_airburst_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_4_2_airburst_heavy_mortar_uk",
+    weaponIds: ["4_2_inch_heavy_mortar_airburst_uk"],
+  },
+  {
+    abilityId: "barrage_4_2_heavy_mortar_incendiary_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_4_2_heavy_mortar_incendiary_uk",
+    weaponIds: ["4_2_inch_heavy_mortar_incendiary_uk"],
+  },
+  {
+    abilityId: "barrage_4_2_heavy_mortar_smoke_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_4_2_heavy_mortar_smoke_uk",
+    weaponIds: ["4_2_inch_heavy_mortar_smoke_uk"],
+  },
+  {
+    abilityId: "barrage_4_2_heavy_mortar_flare_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "flare_4_2_heavy_mortar_uk",
+    weaponIds: ["4_2_inch_heavy_mortar_flare_uk"],
+  },
+  {
+    abilityId: "barrage_75mm_pack_howitzer_smoke_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_75mm_pack_howitzer_smoke_uk",
+    weaponIds: ["75mm_pack_howitzer_smoke_barrage_uk"],
+  },
+  {
+    abilityId: "barrage_75mm_pack_howitzer_incendiary_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_75mm_pack_howitzer_incendiary_uk",
+    weaponIds: ["75mm_pack_howitzer_incendiary_uk"],
+  },
+  {
+    abilityId: "barrage_75mm_pack_howitzer_white_phosphorus_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_75mm_pack_howitzer_smoke_uk\\white_phosphorous\\library",
+    weaponIds: ["75mm_pack_howitzer_white_phosphorus_uk"],
+  },
+  {
+    abilityId: "barrage_bishop_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_bishop_uk",
+    weaponIds: ["25pdr_bishop_uk"],
+  },
+  {
+    abilityId: "first_strike_archer_uk",
+    stateTreePath: ["ability_bag", "squad_tree"],
+    stateTree: "squad_passive_stationary_bonus",
+    weaponIds: ["archer_17pdr_first_strike_uk"],
+  },
+  {
+    abilityId: "smoke_shot_centaur_uk",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "smoke_shot_centaur_uk",
+    weaponIds: ["95mm_smoke_round_centaur_uk"],
+  },
+  {
+    abilityId: "hesh_shell_centaur_uk",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "toggle_weapon",
+    weaponIds: ["95mm_hesh_round_centaur_uk"],
+  },
+  {
+    abilityId: "sabot_sherman_firefly_africa_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "equip_and_fire_weapon",
+    weaponIds: ["17pdr_firefly_sabot_uk"],
+  },
+  {
+    abilityId: "tread_shot_stuart_uk",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "tread_shot_stuart_uk",
+    weaponIds: ["37mm_treadshot_stuart_uk"],
+  },
+  {
+    abilityId: "shellburst_cwt_africa_uk",
+    stateTreePath: ["ability_bag", "global_tree"],
+    stateTree: "shellburst_cwt_truck_uk\\swap_to_shellburst_ammo",
+    weaponIds: ["20mm_oerlikon_mount_cwt_shellburst_uk"],
+  },
+  {
+    abilityId: "white_phosphorus_sherman_uk",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "veterancy_1a_white_phosphorous_sherman_us",
+    weaponIds: ["75mm_white_phosphorous_sherman_us"],
+  },
+  {
+    abilityId: "smoke_barrage_humber_uk",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "smoke_barrage_humber",
+    weaponIds: ["2inch_mortar_smoke_humber_uk"],
+  },
+  {
+    abilityId: "sniper_pinning_shot_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "sniper_pinning_shot_ger",
+    weaponIds: ["g43_sniper_pinning_shot_ger"],
+  },
+  {
+    abilityId: "barrage_81mm_mortar_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_81mm_mortar_ger",
+    weaponIds: ["81mm_mortar_barrage_ger"],
+  },
+  {
+    abilityId: "smoke_81mm_mortar_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "smoke_81mm_mortar_ger",
+    weaponIds: ["81mm_mortar_smoke_ger"],
+  },
+  {
+    abilityId: "flare_81mm_mortar_vet_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "ability_flare_81mm_mortar",
+    weaponIds: ["flare_81mm_mortar_ger"],
+  },
+  {
+    abilityId: "barrage_howitzer_obice_210_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_obice_210_howitzer_ger",
+    weaponIds: ["obice_210_howitzer_ger"],
+  },
+  {
+    abilityId: "barrage_howitzer_coordinated_obice_210_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_obice_210_howitzer_ger",
+    weaponIds: ["obice_210_howitzer_ger"],
+  },
+  {
+    abilityId: "button_20mm_aa_flak_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "button_20mm_aa_flak_ger",
+    weaponIds: ["20mm_aa_gun_button_ger"],
+  },
+  {
+    abilityId: "suppressing_fire_aa_gun_20mm_ger",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "suppressing_fire_aa_gun_20mm_ger",
+    weaponIds: ["20mm_aa_gun_suppressing_fire_ger"],
+  },
+  {
+    abilityId: "white_phosphorus_rounds_hmg_vet_ger",
+    stateTreePath: ["ability_bag", "squad_tree"],
+    stateTree: "ability_vet_hmg_white_phosphorus_rounds",
+    weaponIds: ["mg42_wp_hmg_ger"],
+  },
+  {
+    abilityId: "barrage_halftrack_mortar_explosive_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_halftrack_mortar_ger",
+    weaponIds: ["81mm_halftrack_mortar_barrage_ger"],
+  },
+  {
+    abilityId: "barrage_halftrack_mortar_smoke_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_smoke_halftrack_mortar_ger",
+    weaponIds: ["81mm_mortar_halftrack_smoke_barrage_ak"],
+  },
+  {
+    abilityId: "barrage_halftrack_stummel_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_halftrack_stummel_ger",
+    weaponIds: ["75mm_barrage_halftrack_stummel_ger"],
+  },
+  {
+    abilityId: "smoke_barrage_halftrack_stummel_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "smoke_barrage_halftrack_stummel_ger",
+    weaponIds: ["75mm_smoke_barrage_halftrack_stummel_ger"],
+  },
+  {
+    abilityId: "vet_white_phosphorous_stummel_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "vet_white_phosphorous_stummel_ger",
+    weaponIds: ["white_phosphorous_stummel_ger"],
+  },
+  {
+    abilityId: "barrage_wespe_ger",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_wespe_ger",
+    weaponIds: ["105mm_wespe_ger"],
+  },
+  {
+    abilityId: "white_phosphorus_wirbelwind_vet_ger",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "white_phosphorus_wirbelwind_ger",
+    weaponIds: ["20mm_flakvierling_wirbelwind_wp_ger"],
+  },
+];
+
+export const getAbilityStateTreeWeaponMappings = (abilityId: string) =>
+  AbilityStateTreeWeaponMappings.filter((mapping) => mapping.abilityId === abilityId);
 
 export { bgWorkarounds, ebpsWorkarounds };

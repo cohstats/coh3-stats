@@ -39,6 +39,7 @@ import {
   ConstructableCard,
   UnitUpgradeCard,
 } from "../../../../../components/unit-cards/unit-upgrade-card";
+import type { UnitUpgradeDisplayRequirement } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
@@ -84,6 +85,7 @@ interface UnitDetailProps {
     abilityWeaponLoadouts: AbilityWeaponLoadout[];
     resolvedEntities: EbpsType[];
     upgrades: UpgradesType[];
+    upgradesData: UpgradesType[];
     abilities: AbilitiesType[];
     buildables: EbpsType[];
   };
@@ -117,6 +119,81 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     // How to redirect back?
     return <Error statusCode={404} title="Unit Not Found" />;
   }
+
+  const getIconSrc = (iconName?: string) => {
+    const normalizedIconName = iconName?.trim() ?? "";
+
+    if (!normalizedIconName) return undefined;
+    if (normalizedIconName.startsWith("/")) return normalizedIconName;
+
+    return normalizedIconName.endsWith(".png")
+      ? `/icons/${normalizedIconName}`
+      : `/icons/${normalizedIconName}.png`;
+  };
+
+  const getUpgradeRequirementDisplay = (requirementIds?: string[]) => {
+    if (!requirementIds?.length) return undefined;
+
+    const requirements = requirementIds.map((requirementId) => {
+      const upgrade = calculatedData.upgradesData.find((upgrade) => upgrade.id === requirementId);
+
+      return {
+        label: upgrade?.ui.screenName || requirementId.replaceAll("_", " "),
+        icon: getIconSrc(upgrade?.ui.iconName),
+      };
+    });
+
+    return {
+      label: requirements.map((requirement) => requirement.label).join(", "),
+      icon: requirements[0]?.icon,
+    };
+  };
+
+  const resolveDisplayRequirements = (
+    requirements?: AbilitiesType["displayRequirements"] | UpgradesType["displayRequirements"],
+  ): UnitUpgradeDisplayRequirement[] => {
+    const resolvedRequirements: UnitUpgradeDisplayRequirement[] = [];
+
+    for (const requirement of requirements ?? []) {
+      if (requirement.type === "veterancy") {
+        resolvedRequirements.push({
+          type: "veterancy",
+          label: t("unitPage.requiresVeterancy", { rank: requirement.rank }),
+        });
+
+        continue;
+      }
+
+      const upgrade = calculatedData.upgradesData.find(
+        (upgrade) => upgrade.id === requirement.upgradeId,
+      );
+
+      resolvedRequirements.push({
+        type: "upgrade",
+        label: upgrade?.ui.screenName || requirement.upgradeId.replaceAll("_", " "),
+        icon: getIconSrc(upgrade?.ui.iconName),
+      });
+    }
+
+    return resolvedRequirements;
+  };
+
+  const vetFourRequirement = getUpgradeRequirementDisplay(
+    resolvedSquad.veterancyInfo.four?.requirementIds,
+  );
+
+  const veterancyInfo = {
+    one: resolvedSquad.veterancyInfo.one,
+    two: resolvedSquad.veterancyInfo.two,
+    three: resolvedSquad.veterancyInfo.three,
+    four: resolvedSquad.veterancyInfo.four
+      ? {
+          ...resolvedSquad.veterancyInfo.four,
+          requirement: vetFourRequirement?.label,
+          requirementIcon: vetFourRequirement?.icon,
+        }
+      : undefined,
+  };
 
   const localizedRace = localizedNames[raceId];
 
@@ -397,8 +474,17 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   },
                 })}
               </Card>
-              <UnitUpgradeSection upgrades={upgrades} title={t("common.upgrades")} />
-              <UnitAbilitySection abilities={abilities} title={t("unitPage.abilities")} />
+              <UnitUpgradeSection
+                upgrades={upgrades}
+                title={t("common.upgrades")}
+                getRequirements={resolveDisplayRequirements}
+              />
+
+              <UnitAbilitySection
+                abilities={abilities}
+                title={t("unitPage.abilities")}
+                getRequirements={resolveDisplayRequirements}
+              />
             </Stack>
           </Grid.Col>
           <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
@@ -425,9 +511,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               </Card>
               <Card p="md" radius="md" withBorder>
                 <VeterancyCard
-                  one={resolvedSquad.veterancyInfo.one}
-                  two={resolvedSquad.veterancyInfo.two}
-                  three={resolvedSquad.veterancyInfo.three}
+                  one={veterancyInfo.one}
+                  two={veterancyInfo.two}
+                  three={veterancyInfo.three}
+                  four={veterancyInfo.four}
                   title={t("unitPage.veterancy")}
                 />
               </Card>
@@ -440,10 +527,18 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
             {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
           </Grid.Col>
           <Grid.Col>
-            {UnitUpgradeWeaponSection(upgradeWeaponLoadouts, t("unitPage.upgradeWeapons"))}
+            {UnitUpgradeWeaponSection(
+              upgradeWeaponLoadouts,
+              t("unitPage.upgradeWeapons"),
+              resolveDisplayRequirements,
+            )}
           </Grid.Col>
           <Grid.Col>
-            {UnitAbilityWeaponSection(abilityWeaponLoadouts, t("unitPage.abilityWeapons"))}
+            {UnitAbilityWeaponSection(
+              abilityWeaponLoadouts,
+              t("unitPage.abilityWeapons"),
+              resolveDisplayRequirements,
+            )}
           </Grid.Col>
         </Grid>
       </Container>
@@ -451,30 +546,34 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   );
 };
 
-const UnitUpgradeSection: React.FC<{ upgrades: UpgradesType[]; title: string }> = ({
-  upgrades,
-  title,
-}) => {
+const UnitUpgradeSection: React.FC<{
+  upgrades: UpgradesType[];
+  title: string;
+  getRequirements: (
+    requirements?: UpgradesType["displayRequirements"],
+  ) => UnitUpgradeDisplayRequirement[];
+}> = ({ upgrades, title, getRequirements }) => {
   if (!upgrades?.length) return null;
 
   return (
     <Stack>
       <Title order={4}>{title}</Title>
       <Stack>
-        {Object.values(upgrades).map(({ id, ui, cost }) => (
-          <Card key={id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+        {Object.values(upgrades).map((upgrade) => (
+          <Card key={upgrade.id} p={{ base: "xs", sm: "md" }} radius="md" withBorder>
             <UnitUpgradeCard
-              id={id}
+              id={upgrade.id}
               desc={{
-                screen_name: ui.screenName,
-                help_text: ui.helpText,
-                extra_text: ui.extraText,
-                brief_text: ui.briefText,
-                icon_name: ui.iconName,
-                extra_text_formatter: ui.extraTextFormatter,
-                brief_text_formatter: ui.briefTextFormatter,
+                screen_name: upgrade.ui.screenName,
+                help_text: upgrade.ui.helpText,
+                extra_text: upgrade.ui.extraText,
+                brief_text: upgrade.ui.briefText,
+                icon_name: upgrade.ui.iconName,
+                extra_text_formatter: upgrade.ui.extraTextFormatter,
+                brief_text_formatter: upgrade.ui.briefTextFormatter,
               }}
-              time_cost={cost}
+              time_cost={upgrade.cost}
+              requirements={getRequirements(upgrade.displayRequirements)}
             />
           </Card>
         ))}
@@ -519,10 +618,13 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
   );
 };
 
-const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }> = ({
-  abilities,
-  title,
-}) => {
+const UnitAbilitySection: React.FC<{
+  abilities: AbilitiesType[];
+  title: string;
+  getRequirements: (
+    requirements?: AbilitiesType["displayRequirements"],
+  ) => UnitUpgradeDisplayRequirement[];
+}> = ({ abilities, title, getRequirements }) => {
   const { t } = useTranslation(["explorer"]);
 
   if (!abilities?.length) return null;
@@ -545,6 +647,7 @@ const UnitAbilitySection: React.FC<{ abilities: AbilitiesType[]; title: string }
                 brief_text_formatter: ability.ui.briefTextFormatter,
               }}
               time_cost={ability.cost}
+              requirements={getRequirements(ability.displayRequirements)}
               footerContent={
                 <AbilityInfoRow ability={ability} numShots={ability.numShots ?? null} t={t} />
               }
@@ -587,6 +690,9 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weap
 const UnitUpgradeWeaponSection = (
   upgradeWeaponLoadouts: UpgradeWeaponLoadout[],
   title = "Upgrade weapons",
+  getRequirements: (
+    requirements?: UpgradesType["displayRequirements"],
+  ) => UnitUpgradeDisplayRequirement[],
 ) => {
   if (!upgradeWeaponLoadouts?.length) return null;
 
@@ -624,6 +730,7 @@ const UnitUpgradeWeaponSection = (
                   brief_text_formatter: upgrade.ui.briefTextFormatter,
                 }}
                 time_cost={upgrade.cost}
+                requirements={getRequirements(upgrade.displayRequirements)}
               />
 
               <Grid columns={2} grow>
@@ -916,6 +1023,20 @@ const getAbilityWeaponLoadouts = (
     .filter(({ weapons }) => weapons.length > 0);
 };
 
+const getDisplayRequirementDeduplicationKey = (
+  requirement: AbilitiesType["displayRequirements"][number],
+) => {
+  if (requirement.type === "veterancy") {
+    return `veterancy:${requirement.rank}`;
+  }
+
+  return `${requirement.type}:${requirement.upgradeId}`;
+};
+
+const getAbilityDisplayRequirementsDeduplicationKey = (ability: AbilitiesType) => {
+  return (ability.displayRequirements ?? []).map(getDisplayRequirementDeduplicationKey).sort();
+};
+
 const getAbilityDeduplicationKey = (ability: AbilitiesType) =>
   JSON.stringify({
     ui: ability.ui,
@@ -928,11 +1049,15 @@ const getAbilityDeduplicationKey = (ability: AbilitiesType) =>
     toggledRechargeTimeOn: ability.toggledRechargeTimeOn ?? null,
     toggledRechargeTimeOff: ability.toggledRechargeTimeOff ?? null,
     duration: ability.duration ?? null,
+    displayRequirements: getAbilityDisplayRequirementsDeduplicationKey(ability),
   });
 
 const UnitAbilityWeaponSection = (
   abilityWeaponLoadouts: AbilityWeaponLoadout[],
   title = "Ability weapons",
+  getRequirements: (
+    requirements?: AbilitiesType["displayRequirements"],
+  ) => UnitUpgradeDisplayRequirement[],
 ) => {
   const { t } = useTranslation(["explorer"]);
   if (!abilityWeaponLoadouts?.length) return null;
@@ -972,6 +1097,7 @@ const UnitAbilityWeaponSection = (
                 }}
                 time_cost={ability.cost}
                 footerContent={<AbilityInfoRow ability={ability} numShots={numShots} t={t} />}
+                requirements={getRequirements(ability.displayRequirements)}
               />
 
               {weapons.length ? (
@@ -1077,6 +1203,7 @@ const createdCalculateValuesForUnits = (
     abilityWeaponLoadouts,
     resolvedEntities,
     upgrades,
+    upgradesData,
     abilities,
     buildables,
   };
