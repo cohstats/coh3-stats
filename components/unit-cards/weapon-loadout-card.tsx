@@ -1446,7 +1446,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["suppression"],
               alt: "weapon suppression",
               label: t("weaponCard.suppression"),
-              value: weapon_bag.suppression_amount,
+              value: weapon_bag.suppression_amount * 100,
               show: weapon_bag.suppression_amount > 0 && !showSustainedStats,
             },
             {
