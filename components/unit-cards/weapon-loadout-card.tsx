@@ -69,6 +69,7 @@ const WeaponCardIcons = {
   firing_arc: "/icons/unit_status/bw2/artillery_radio_beacon.png",
   setup_time: "/icons/unit_status/bw2/lockdown.png",
   teardown_time: "/icons/unit_status/bw2/retreat.png",
+  suppression: "/icons/unit_status/bw2/suppression.png",
   suppression_radius: "/icons/unit_status/bw2/suppressive_fire.png",
   incremental_accuracy: "/icons/unit_status/bw2/accuracy_buff.png",
 } as const;
@@ -194,8 +195,8 @@ export const WeaponLoadoutCard = (
   };
 
   const formatReloadFrequency = () => {
-    const min = weapon_bag.reload_frequency_min+1;
-    const max = weapon_bag.reload_frequency_max+1;
+    const min = weapon_bag.reload_frequency_min + 1;
+    const max = weapon_bag.reload_frequency_max + 1;
 
     const value = min === max ? `${min}` : `${min} - ${max}`;
     const unit = weapon_bag.burst_can_burst ? t("weaponCard.bursts") : t("weaponCard.shots");
@@ -1394,8 +1395,8 @@ export const WeaponLoadoutCard = (
               alt: "weapon aim time",
               label: t("weaponCard.aimTime"),
               value: formatMinMaxSeconds(
-                Math.round(weapon_bag.ready_aim_time_min*8)/8,
-                Math.round(weapon_bag.ready_aim_time_max*8)/8,
+                Math.round(weapon_bag.ready_aim_time_min * 8) / 8,
+                Math.round(weapon_bag.ready_aim_time_max * 8) / 8,
               ),
               show: weapon_bag.ready_aim_time_min > 0 || weapon_bag.ready_aim_time_max > 0,
             },
@@ -1440,6 +1441,13 @@ export const WeaponLoadoutCard = (
               label: t("weaponCard.teardown"),
               value: `${weapon_bag.teardown_time}s`,
               show: weapon_bag.teardown_time > 0,
+            },
+            {
+              icon: WeaponCardIcons["suppression"],
+              alt: "weapon suppression",
+              label: t("weaponCard.suppression"),
+              value: weapon_bag.suppression_amount,
+              show: weapon_bag.suppression_amount > 0 && !showSustainedStats,
             },
             {
               icon: WeaponCardIcons["suppression_radius"],
