@@ -35,6 +35,7 @@ import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
 import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
+import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
 import {
   CustomizableUnit,
   getCompareDpsData,
@@ -78,6 +79,7 @@ interface IDPSCompareProps {
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
+  abilitiesData: AbilitiesType[];
 }
 
 // Module-level state for data caching
@@ -93,7 +95,13 @@ const initCompareData = (props: IDPSCompareProps) => {
   cachedUnits = [];
   for (const sbps of props.sbpsData) {
     cachedUnits.push(
-      mapCustomizableUnit(sbps, props.ebpsData, props.weaponData, props.upgradesData),
+      mapCustomizableUnit(
+        sbps,
+        props.ebpsData,
+        props.weaponData,
+        props.upgradesData,
+        props.abilitiesData,
+      ),
     );
   }
 };
@@ -184,10 +192,11 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     setIsLoading(true);
 
     try {
-      const [newSbps, newEbps, newWeapons] = await Promise.all([
+      const [newSbps, newEbps, newWeapons, newAbilities] = await Promise.all([
         getSbpsStats(value),
         getEbpsStats(value),
         getWeaponStats(value),
+        getAbilitiesStats(value),
       ]);
 
       cachedSbps = newSbps;
@@ -195,7 +204,9 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
       cachedWeapons = newWeapons;
       cachedUnits = [];
       for (const sbps of newSbps) {
-        cachedUnits.push(mapCustomizableUnit(sbps, newEbps, newWeapons, props.upgradesData));
+        cachedUnits.push(
+          mapCustomizableUnit(sbps, newEbps, newWeapons, props.upgradesData, newAbilities),
+        );
       }
       setUnitSelectionList(mapUnitSelection(cachedSbps, cachedUnits, factionFilter));
 

@@ -28,6 +28,7 @@ import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
 import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
+import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
 import {
   CustomizableUnit,
   getDpsVsHealth,
@@ -172,29 +173,42 @@ let units2: CustomizableUnit[] = [];
 let ebpsData1: EbpsType[] = [];
 let sbpsData1: SbpsType[] = [];
 let weaponData1: WeaponType[] = [];
+let abilityData1: AbilitiesType[] = [];
 
 let ebpsData2: EbpsType[] = [];
 let sbpsData2: SbpsType[] = [];
 let weaponData2: WeaponType[] = [];
+let abilityData2: AbilitiesType[] = [];
 
 interface IDPSProps {
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
+  abilitiesData: AbilitiesType[];
 }
 
 export const init = (props: IDPSProps) => {
   ebpsData1 = props.ebpsData;
   sbpsData1 = props.sbpsData;
   weaponData1 = props.weaponData;
+  abilityData1 = props.abilitiesData;
   ebpsData2 = props.ebpsData;
   sbpsData2 = props.sbpsData;
   weaponData2 = props.weaponData;
+  abilityData2 = props.abilitiesData;
 
   units1 = [];
   for (const sbps of props.sbpsData) {
-    units1.push(mapCustomizableUnit(sbps, props.ebpsData, props.weaponData, props.upgradesData));
+    units1.push(
+      mapCustomizableUnit(
+        sbps,
+        props.ebpsData,
+        props.weaponData,
+        props.upgradesData,
+        props.abilitiesData,
+      ),
+    );
   }
 
   units2 = [...units1];
@@ -322,9 +336,18 @@ export const DpsPageComponent = (props: IDPSProps) => {
         sbpsData1 = await getSbpsStats(patchUnit1);
         ebpsData1 = await getEbpsStats(patchUnit1);
         weaponData1 = await getWeaponStats(patchUnit1);
+        abilityData1 = await getAbilitiesStats(patchUnit1);
         units1 = [];
         for (const unitSbps of sbpsData1)
-          units1.push(mapCustomizableUnit(unitSbps, ebpsData1, weaponData1, props.upgradesData));
+          units1.push(
+            mapCustomizableUnit(
+              unitSbps,
+              ebpsData1,
+              weaponData1,
+              props.upgradesData,
+              abilityData1,
+            ),
+          );
         unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
         if (activeData[0]) {
           const id = activeData[0].id;
@@ -335,9 +358,18 @@ export const DpsPageComponent = (props: IDPSProps) => {
         sbpsData2 = await getSbpsStats(patchUnit2);
         ebpsData2 = await getEbpsStats(patchUnit2);
         weaponData2 = await getWeaponStats(patchUnit2);
+        abilityData2 = await getAbilitiesStats(patchUnit2);
         units2 = [];
         for (const unitSbps of sbpsData2)
-          units2.push(mapCustomizableUnit(unitSbps, ebpsData2, weaponData2, props.upgradesData));
+          units2.push(
+            mapCustomizableUnit(
+              unitSbps,
+              ebpsData2,
+              weaponData2,
+              props.upgradesData,
+              abilityData2,
+            ),
+          );
         unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
         if (activeData[1]) {
           const id = activeData[1].id;

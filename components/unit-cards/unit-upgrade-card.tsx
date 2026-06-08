@@ -1,11 +1,12 @@
 import { Flex, Grid, Group, HoverCard, Stack, Text, Title, Tooltip } from "@mantine/core";
-import { UnitCostCard } from "./unit-cost-card";
+import { UpgradeCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
 
 import classes from "./Unit.module.css";
 import { useTranslation } from "next-i18next";
 
+const vetStarIconPath = "/icons/hud/decorators/vet_star.png";
 /**
  * These fields can be found at `sbps` inside each unit object.
  *
@@ -38,6 +39,12 @@ type UnitUpgradeDescription = {
   icon_name: string;
 };
 
+export type UnitUpgradeDisplayRequirement = {
+  type: "upgrade" | "veterancy";
+  label: string;
+  icon?: string;
+};
+
 export type UnitUpgrade = {
   id: string;
   desc: UnitUpgradeDescription;
@@ -51,6 +58,8 @@ export type UnitUpgrade = {
     // Enable Compact mode.
     compact?: boolean;
   };
+  footerContent?: React.ReactNode;
+  requirements?: UnitUpgradeDisplayRequirement[];
 };
 
 const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">) => {
@@ -161,7 +170,55 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
   );
 };
 
-export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
+const UnitUpgradeRequirementRow = ({
+  requirements,
+}: {
+  requirements: UnitUpgradeDisplayRequirement[];
+}) => {
+  const { t } = useTranslation(["explorer"]);
+
+  if (!requirements.length) return null;
+
+  return (
+    <Stack gap={4}>
+      <Title order={6} tt="uppercase">
+        {t("unitPage.requirements")}
+      </Title>
+
+      <Group gap="xs" wrap="wrap">
+        {requirements.map((requirement, index) => (
+          <Group key={`${requirement.type}-${requirement.label}-${index}`} gap={4} wrap="nowrap">
+            <ImageWithFallback
+              width={20}
+              height={20}
+              src={requirement.icon || vetStarIconPath}
+              alt={requirement.label}
+              fallbackSrc={iconPlaceholder}
+              style={{ flexShrink: 0 }}
+            />
+
+            <Text size="sm" c="dimmed">
+              {requirement.label}
+            </Text>
+          </Group>
+        ))}
+      </Group>
+    </Stack>
+  );
+};
+
+export const UnitUpgradeCard = ({
+  desc,
+  time_cost,
+  cfg,
+  footerContent,
+  requirements = [],
+}: UnitUpgrade) => {
+  const costContent = hasCost(time_cost) ? UpgradeCostCard(time_cost) : null;
+  const requirementContent = requirements.length ? (
+    <UnitUpgradeRequirementRow requirements={requirements} />
+  ) : null;
+
   return (
     <Flex direction="column" gap={16} justify="space-between" style={{ height: "100%" }}>
       <UnitUpgradeCardHeader
@@ -176,7 +233,19 @@ export const UnitUpgradeCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
         }}
         cfg={cfg}
       />
-      {hasCost(time_cost) ? UnitCostCard(time_cost) : <></>}
+
+      {(costContent || footerContent || requirementContent) && (
+        <Stack gap="xs">
+          {(costContent || footerContent) && (
+            <Flex align="flex-start" justify="flex-start" gap="lg" wrap="wrap">
+              {costContent}
+              {footerContent}
+            </Flex>
+          )}
+
+          {requirementContent}
+        </Stack>
+      )}
     </Flex>
   );
 };
@@ -199,7 +268,7 @@ export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
         cfg={cfg}
       ></UnitUpgradeCardHeader>
       {hasBuildableCost(time_cost) ? (
-        UnitCostCard(time_cost, t("common.costs"))
+        UpgradeCostCard(time_cost, t("common.costs"))
       ) : (
         <Stack gap={0}>
           <Title order={6} style={{ textTransform: "uppercase" }}>

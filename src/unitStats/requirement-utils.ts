@@ -52,6 +52,8 @@ type RequiredTemplateReference = {
     | "requirements\\required_player_resources"
     | "requirements\\required_in_territory"
     | "requirements\\required_player_upgrade"
+    | "requirements\\required_squad_upgrade"
+    | "requirements\\required_squad_veterancy"
     | "requirements\\required_any_in_list"
     | "requirements\\required_all_in_list";
 };
@@ -69,6 +71,144 @@ type Resource = {
   manpower: number;
   requisition: number;
   ultimate: number;
+};
+
+export type DisplayRequirement =
+  | {
+      type: "playerUpgrade";
+      upgradeId: string;
+    }
+  | {
+      type: "squadUpgrade";
+      upgradeId: string;
+    }
+  | {
+      type: "veterancy";
+      rank: number;
+    };
+
+type DisplayRequirementNode = {
+  template_reference?: {
+    value?: string;
+  };
+  is_present?: string | boolean;
+  upgrade_name?: {
+    instance_reference?: string;
+  };
+  veterancy_rank?: number;
+  requirements?: {
+    requirement?: DisplayRequirementNode;
+  }[];
+};
+
+type DisplayRequirementItem = {
+  required?: DisplayRequirementNode;
+};
+
+const getRequirementType = (requirement?: DisplayRequirementNode) => {
+  return requirement?.template_reference?.value?.split("\\").slice(-1)[0] || "";
+};
+
+const getIdFromInstanceReference = (instanceReference?: string) => {
+  return instanceReference?.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0] || "";
+};
+
+const isPresentRequirement = (value: unknown) => {
+  if (value === undefined || value === null) return true;
+  if (typeof value === "boolean") return value;
+
+  return String(value).toLowerCase() === "true";
+};
+
+const getDisplayRequirementKey = (requirement: DisplayRequirement) => {
+  if (requirement.type === "veterancy") return `${requirement.type}-${requirement.rank}`;
+
+  return `${requirement.type}-${requirement.upgradeId}`;
+};
+
+const addUniqueDisplayRequirement = (
+  requirements: DisplayRequirement[],
+  requirement: DisplayRequirement,
+) => {
+  const key = getDisplayRequirementKey(requirement);
+
+  if (!requirements.some((item) => getDisplayRequirementKey(item) === key)) {
+    requirements.push(requirement);
+  }
+};
+
+const mapDisplayRequirementNode = (
+  requirement: DisplayRequirementNode | undefined,
+  output: DisplayRequirement[],
+) => {
+  if (!requirement) return;
+
+  const requirementType = getRequirementType(requirement);
+
+  switch (requirementType) {
+    case "required_player_upgrade": {
+      if (!isPresentRequirement(requirement.is_present)) return;
+
+      const upgradeId = getIdFromInstanceReference(requirement.upgrade_name?.instance_reference);
+      if (!upgradeId) return;
+
+      addUniqueDisplayRequirement(output, {
+        type: "playerUpgrade",
+        upgradeId,
+      });
+      break;
+    }
+
+    case "required_squad_upgrade": {
+      if (!isPresentRequirement(requirement.is_present)) return;
+
+      const upgradeId = getIdFromInstanceReference(requirement.upgrade_name?.instance_reference);
+      if (!upgradeId) return;
+
+      addUniqueDisplayRequirement(output, {
+        type: "squadUpgrade",
+        upgradeId,
+      });
+      break;
+    }
+
+    case "required_squad_veterancy": {
+      const rank = Number(requirement.veterancy_rank);
+
+      if (!Number.isFinite(rank) || rank <= 0) return;
+
+      addUniqueDisplayRequirement(output, {
+        type: "veterancy",
+        rank,
+      });
+      break;
+    }
+
+    case "required_all_in_list": {
+      for (const childRequirement of requirement.requirements ?? []) {
+        mapDisplayRequirementNode(childRequirement.requirement, output);
+      }
+      break;
+    }
+
+    // Intentionally skipped for now.
+    // Displaying OR requirements as a flat "Requires" list would be misleading.
+    case "required_any_in_list":
+    default:
+      break;
+  }
+};
+
+export const extractDisplayRequirements = (requirementTable?: DisplayRequirementItem[]) => {
+  const displayRequirements: DisplayRequirement[] = [];
+
+  if (!Array.isArray(requirementTable)) return displayRequirements;
+
+  for (const requirementItem of requirementTable) {
+    mapDisplayRequirementNode(requirementItem.required, displayRequirements);
+  }
+
+  return displayRequirements;
 };
 
 /** Extract requirement full path of the instance reference. */

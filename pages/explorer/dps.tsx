@@ -8,6 +8,11 @@ import {
   setUpgradesStats,
   UpgradesType,
 } from "../../src/unitStats/mappingUpgrades";
+import {
+  AbilitiesType,
+  getAbilitiesStats,
+  setAbilitiesStats,
+} from "../../src/unitStats/mappingAbilities";
 import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
 import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
@@ -38,6 +43,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
   const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
   const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
+  const [abilitiesData, setAbilitiesDataState] = React.useState<AbilitiesType[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -46,19 +52,22 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
         if (!unitStatsLocString()) setLocstring(locstring);
         setWeaponStats(weaponData);
 
-        const [ebpsData, sbpsData, upgradesData] = await Promise.all([
+        const [ebpsData, sbpsData, upgradesData, abilitiesData] = await Promise.all([
           getEbpsStats("latest"),
           getSbpsStats("latest"),
           getUpgradesStats(),
+          getAbilitiesStats(),
         ]);
 
         setEbpsStats(ebpsData);
         setSbpsStats(sbpsData);
         setUpgradesStats(upgradesData);
+        setAbilitiesStats(abilitiesData);
 
         setEbpsDataState(ebpsData);
         setSbpsDataState(sbpsData);
         setUpgradesDataState(upgradesData);
+        setAbilitiesDataState(abilitiesData);
         // Save data again in global variable for clientMode
       } catch (error) {
         console.error("Failed to load data:", error);
@@ -75,6 +84,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
     sbpsData,
     ebpsData,
     upgradesData,
+    abilitiesData,
   };
 
   // Create SEO props for DPS calculator page

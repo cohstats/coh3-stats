@@ -5,6 +5,8 @@ import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
 import { getReferenceString } from "./dpsCommon";
+import { extractDisplayRequirements } from "./requirement-utils";
+import type { DisplayRequirement } from "./requirement-utils";
 
 // Need to be extended by all required fields
 type UpgradesType = {
@@ -16,6 +18,9 @@ type UpgradesType = {
   ui: UpgradeUiData;
   /** Found at `time_cost`. */
   cost: UpgradeCost;
+  /** Small player-facing requirement list for UI display. */
+  displayRequirements: DisplayRequirement[];
+
   /**
    * As the battlegroup contains a branching display, we gonna use the abilities
    * reference to get the position within the row / column. This is found at
@@ -115,6 +120,8 @@ const mapUpgradesData = (
       time: 0,
       command: 0,
     },
+    /** Small player-facing requirement list for UI display. */
+    displayRequirements: [],
     uiPosition: {
       row: -1,
       column: -1,
@@ -176,6 +183,8 @@ const mapUpgradeBag = (root: any, upgrade: UpgradesType, locale: string = "en") 
       upgrade.cost.command = reqPlayerResources.required.resource?.command || 0;
     }
   }
+
+  upgrade.displayRequirements = extractDisplayRequirements(upgradeBag.requirements);
 
   upgrade.actionTreeOpeningBranch =
     upgradeBag.state_tree_references?.on_action_tree?.ActionTree_OpeningBranch ?? "";

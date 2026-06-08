@@ -12,6 +12,17 @@ export const calculatePositionNumber = (pageNumber: number, RECORD_PER_PAGE = 10
   return (pageNumber - 1) * RECORD_PER_PAGE + 1;
 };
 
+/**
+ * Rounds a number to a specified number of decimal places
+ * @param value - The number to round
+ * @param decimals - Number of decimal places (default: 2)
+ * @returns The rounded number
+ */
+export const roundToDecimals = (value: number, decimals = 2) => {
+  const factor = 10 ** decimals;
+  return Math.round((value + Number.EPSILON) * factor) / factor;
+};
+
 export const isBrowserEnv = () => {
   return typeof window !== "undefined";
 };
