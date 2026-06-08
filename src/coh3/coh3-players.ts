@@ -1,18 +1,8 @@
 import { platformType, PlayerStatsFromRelicAllPlatforms } from "./coh3-types";
-import { getPersonalStatsUrl } from "./coh3-api";
+import { getPersonalStatsUrl, rateLimitedAxios } from "./coh3-api";
 
-import axiosRetry from "axios-retry";
-import axios from "axios";
-import { Agent } from "https";
-import rateLimit from "axios-rate-limit";
 import { chunk } from "lodash";
 import { logger } from "../logger";
-
-const httpsAgent = new Agent({ keepAlive: true });
-
-// Create rate limited axios instance with 5 requests per second
-const rateLimitedAxios = rateLimit(axios.create({ httpsAgent }), { maxRPS: 5 });
-axiosRetry(rateLimitedAxios, { retries: 2, retryDelay: axiosRetry.exponentialDelay });
 
 const _hasData = (
   data:
