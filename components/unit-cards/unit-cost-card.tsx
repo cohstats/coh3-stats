@@ -42,8 +42,8 @@ type UpgradeResourceValues = {
 
 export const UnitCostCard = (costs: ResourceValues, title = "Costs") => (
   <>
-    <Stack gap={0}>
-      <Title order={6} style={{ textTransform: "uppercase" }}>
+    <Stack gap={0} data-testid="costs-section">
+      <Title order={6} style={{ textTransform: "uppercase" }} data-testid="costs-title">
         {title}
       </Title>
       <Flex key="stats_costs_list" align="center" gap={8} mt={4} wrap="wrap">
@@ -92,8 +92,8 @@ export const ReinforceCostCard = (
   title = "Reinforce",
 ) => (
   <>
-    <Stack gap={0}>
-      <Title order={6} tt="uppercase">
+    <Stack gap={0} data-testid="reinforce-section">
+      <Title order={6} tt="uppercase" data-testid="reinforce-title">
         {title}
       </Title>
       <Flex key="reinforce_costs_list" align="center" gap={8} mt={4} wrap="wrap">

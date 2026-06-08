@@ -28,6 +28,7 @@ import {
   IconVideo,
   IconNews,
 } from "@tabler/icons-react";
+import config from "../../../config";
 
 const OtherMenu = ({
   classes,
@@ -69,7 +70,7 @@ const OtherMenu = ({
                 <IconActivity size={16} />
                 <Anchor
                   component={Link}
-                  href={"https://stats.uptimerobot.com/03lN1ckr5j"}
+                  href={config.RELIC_API_STATUS_LINK}
                   target={"_blank"}
                   onClick={close}
                 >
@@ -135,11 +136,7 @@ const OtherMenu = ({
             </Group>
             <Group gap={"xs"}>
               <IconActivity size={16} />
-              <Anchor
-                component={Link}
-                href={"https://stats.uptimerobot.com/03lN1ckr5j"}
-                target={"_blank"}
-              >
+              <Anchor component={Link} href={config.RELIC_API_STATUS_LINK} target={"_blank"}>
                 Relic API Status
               </Anchor>
             </Group>

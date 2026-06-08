@@ -13,6 +13,7 @@
 
 # AI Agent
 When you need to create AI reports which are .md files, create them in `.ai` folder.
+Do not create AI summary reports unless you are told to do them.
 
 ## File Organization
 - Screen-level components go in `/screens` directory, organized by page/feature
@@ -31,6 +32,7 @@ When you need to create AI reports which are .md files, create them in `.ai` fol
 - The locale folder is in public/locales/en with .json file in it
 - When translating other languages, do not translate locales which don't have locale folder created yet.
 
-## e2e Tests
+## e2e Tests in playwright
+- Utilize page object pattern as much as possible
 - When you change data-test-id or anything outside the tests we need to run slim build first
 - Use data-testid as much as possible instead of other selectors

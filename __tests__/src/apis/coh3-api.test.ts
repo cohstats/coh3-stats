@@ -2,18 +2,39 @@
  * @jest-environment node
  */
 
-import { _getLeaderBoardsUrl, getLeaderBoardData } from "../../../src/coh3/coh3-api";
-
-describe("coh3-api", () => {
-  // Mock the fetch function
-  const setupFetchStub = (data: any, ok = true, status = 200) => {
-    return () => Promise.resolve({ json: () => Promise.resolve(data), ok, status });
+jest.mock("axios", () => {
+  const mockGet = jest.fn();
+  const mockInterceptors = {
+    request: { use: jest.fn(), eject: jest.fn() },
+    response: { use: jest.fn(), eject: jest.fn() },
   };
 
+  const mockInstance = {
+    get: mockGet,
+    interceptors: mockInterceptors,
+  };
+
+  return {
+    create: jest.fn(() => mockInstance),
+    __mockInstance: mockInstance, // Export for test access
+  };
+});
+
+jest.mock("axios-rate-limit", () => jest.fn((axiosInstance) => axiosInstance));
+
+jest.mock("axios-retry", () => jest.fn());
+
+import axios from "axios";
+import { _getLeaderBoardsUrl, getLeaderBoardData } from "../../../src/coh3/coh3-api";
+
+// Get the mocked instance
+const mockAxios = axios as any;
+const mockAxiosInstance = mockAxios.__mockInstance;
+
+describe("coh3-api", () => {
   beforeAll(() => {
-    // @ts-ignore
-    jest.spyOn(global, "fetch").mockImplementation(setupFetchStub({}));
     jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.spyOn(console, "debug").mockImplementation(() => {});
   });
 
   afterAll(() => {
@@ -21,8 +42,7 @@ describe("coh3-api", () => {
   });
 
   beforeEach(() => {
-    // @ts-ignore
-    global.fetch.mockClear();
+    mockAxiosInstance.get.mockClear();
   });
 
   test("getLeaderBoardsUrl should return correct URL", () => {
@@ -43,11 +63,11 @@ describe("coh3-api", () => {
     // Define the fake data
     const fakeData = { response: { leaderboard: [] } };
 
-    // @ts-ignore
-    jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeData));
+    // Mock the axios response
+    mockAxiosInstance.get.mockResolvedValue({ data: fakeData });
 
     const result = await getLeaderBoardData("american", "1v1", 0, 100, 1, "steam", "na");
-    expect(global.fetch).toBeCalledTimes(1);
+    expect(mockAxiosInstance.get).toHaveBeenCalledTimes(1);
     expect(result).toEqual(fakeData);
   });
 });

@@ -6,7 +6,26 @@ import {
   leaderboardsIDAsObject,
 } from "./coh3-data";
 
+import axiosRetry from "axios-retry";
+import axios from "axios";
+import { Agent } from "https";
+import rateLimit from "axios-rate-limit";
+import { logger } from "../logger";
+
 const BASE_API_URL = "https://coh3-api.reliclink.com";
+
+const httpsAgent = new Agent({ keepAlive: true });
+
+// Create rate limited axios instance with 8 requests per second
+const rateLimitedAxios = rateLimit(axios.create({ httpsAgent }), { maxRPS: 8 });
+axiosRetry(rateLimitedAxios, {
+  retries: 2,
+  retryDelay: axiosRetry.exponentialDelay,
+  retryCondition: (error) => {
+    // Don't retry on 403 Forbidden
+    return error.response?.status !== 403 && axiosRetry.isNetworkOrIdempotentRequestError(error);
+  },
+});
 
 /**
  * @param profileIDs max 10 items
@@ -56,15 +75,15 @@ const getLeaderBoardData = async (
   const lbID = leaderboardsIDAsObject[leaderBoardType][race];
   const url = _getLeaderBoardsUrl(lbID, sortBy, count, start, platform, region);
 
-  const res = await fetch(url, { keepalive: true });
+  logger.debug(`Fetching leaderboard data with rate limit (maxRPS: 5): ${url}`);
 
-  if (!res.ok) {
-    const error = `Leaderboard API request failed with status ${res.status}: ${res.statusText}`;
-    console.error(error, { url, status: res.status, statusText: res.statusText });
-    throw new Error(error);
+  try {
+    const response = await rateLimitedAxios.get(url);
+    return response.data;
+  } catch (error) {
+    logger.error(`Leaderboard API request failed for ${url}: ${error}`);
+    throw new Error(`Leaderboard API request failed: ${error}`);
   }
-
-  return await res.json();
 };
 
-export { getLeaderBoardData, _getLeaderBoardsUrl, getPersonalStatsUrl };
+export { getLeaderBoardData, _getLeaderBoardsUrl, getPersonalStatsUrl, rateLimitedAxios };

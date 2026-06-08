@@ -1,12 +1,20 @@
 import { test, expect } from "@playwright/test";
 import { AboutPage } from "../page-objects";
 
+test.describe.configure({ mode: "serial" });
+
 test.describe("About Page - Regression Tests", () => {
   let aboutPage: AboutPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeAll(async ({ browser }) => {
+    const page = await browser.newPage();
     aboutPage = new AboutPage(page);
     await aboutPage.navigate();
+    await aboutPage.waitForPageLoad();
+  });
+
+  test.afterAll(async () => {
+    await aboutPage.page.close();
   });
 
   test("should load about page successfully", async () => {

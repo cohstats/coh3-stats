@@ -54,7 +54,13 @@ export const UnitDescriptionCard = ({
   return (
     <>
       <Flex direction="row" align={placement === "list" ? "center" : "start"} gap={"md"}>
-        <BackgroundImage w={96} h={96} src={getIconsPathOnCDN(factionBackgroundSrc)} radius="md">
+        <BackgroundImage
+          w={96}
+          h={96}
+          src={getIconsPathOnCDN(factionBackgroundSrc)}
+          radius="md"
+          data-testid="unit-icon"
+        >
           <ImageWithFallback
             width={96}
             height={96}
@@ -64,7 +70,12 @@ export const UnitDescriptionCard = ({
           />
         </BackgroundImage>
         <Flex direction="column" gap={4}>
-          <Title order={6} style={{ textTransform: "capitalize" }} c="yellow.5">
+          <Title
+            order={6}
+            style={{ textTransform: "capitalize" }}
+            c="yellow.5"
+            data-testid="unit-help-text"
+          >
             {desc.help_text}
           </Title>
           <Flex direction="row" align="center" gap={4}>
@@ -80,6 +91,7 @@ export const UnitDescriptionCard = ({
               size={placement === "singleUnit" ? "h2" : "h3"}
               style={{ textTransform: "capitalize" }}
               lineClamp={1}
+              data-testid="unit-title"
             >
               {desc.screen_name}
             </Title>
@@ -92,6 +104,7 @@ export const UnitDescriptionCard = ({
                 fz="sm"
                 lineClamp={placement === "list" ? 2 : 10}
                 style={{ whiteSpace: "pre-line" }}
+                data-testid="unit-brief-text"
               >
                 {briefText}
               </Text>

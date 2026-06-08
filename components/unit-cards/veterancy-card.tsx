@@ -34,8 +34,8 @@ export const VeterancyCard = ({ one, two, three, four, title }: VeterancyInput) 
   ];
 
   return (
-    <Stack>
-      <Title order={6} style={{ textTransform: "uppercase" }}>
+    <Stack data-testid="veterancy-section">
+      <Title order={6} style={{ textTransform: "uppercase" }} data-testid="veterancy-title">
         {title}
       </Title>
 
@@ -70,6 +70,7 @@ export const VeterancyCard = ({ one, two, three, four, title }: VeterancyInput) 
                             fit="contain"
                             src={index < level ? vetStarIconPath : vetStarEmptyIconPath}
                             alt={`vet ${level} ${index < level ? "star" : "empty star"}`}
+                            data-testid="vet-star"
                           />
                         ))}
                       </Group>
