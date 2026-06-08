@@ -44,7 +44,7 @@ import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-ca
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
-import { getIconsPathOnCDN } from "../../../../../src/utils";
+import { getIconsPathOnCDN, roundToDecimals } from "../../../../../src/utils";
 import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import {
@@ -92,11 +92,6 @@ interface UnitDetailProps {
   locale: string;
   descriptions: Record<string, Record<string, string | null>>;
 }
-
-const roundToDecimals = (value: number, decimals = 2) => {
-  const factor = 10 ** decimals;
-  return Math.round((value + Number.EPSILON) * factor) / factor;
-};
 
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, locale }) => {
   const { query, asPath } = useRouter();
