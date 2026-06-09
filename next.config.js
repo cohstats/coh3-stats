@@ -33,6 +33,8 @@ const nextConfig = {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
   },
+  // We need to increase static page generation because we have some heavy operations
+  staticPageGenerationTimeout: 180,
   // Required for hosting on Netlify
   // async headers() {
   //   return [

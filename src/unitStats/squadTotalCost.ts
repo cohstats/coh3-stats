@@ -25,6 +25,11 @@ export type ResourceValues = {
   command?: number;
 };
 
+const roundToDecimals = (value: number, decimals = 2) => {
+  const factor = 10 ** decimals;
+  return Math.round((value + Number.EPSILON) * factor) / factor;
+};
+
 export function hasCost(costObjc: ResourceValues | undefined) {
   return Object.values(costObjc || {}).some((x) => x && x > 0);
 }
@@ -76,9 +81,9 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
   // console.log("🚀 ~ file: squadTotalCost.ts:71 ~ getSquadTotalCost ~ totalCost:", totalCost);
   // Round the costs, so we avoid floating numbers being displayed in the UI
   // like 399.999995.
-  (Object.keys(totalCost) as Array<keyof ResourceValues>).forEach(
-    (key) => (totalCost[key] = Math.round(totalCost[key])),
-  );
+  (Object.keys(totalCost) as Array<keyof ResourceValues>).forEach((key) => {
+    totalCost[key] = roundToDecimals(totalCost[key], 2);
+  });
   return totalCost;
 }
 
@@ -99,7 +104,7 @@ export function getSquadTotalUpkeepCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]
     (tc, ebpsUnit) => {
       const popcap = ebpsUnit.entity?.populationExt.personnel_pop || 0;
       const upkeepCost = ebpsUnit.entity?.populationExt.upkeep_per_pop;
-      tc.manpower += (upkeepCost?.manpower || 0) * popcap * ebpsUnit.loadout.num;
+      tc.manpower += (upkeepCost?.manpower || 1.05) * popcap * ebpsUnit.loadout.num; //default set in tuning_simulations (unmapped)
       tc.fuel += (upkeepCost?.fuel || 0) * popcap * ebpsUnit.loadout.num;
       tc.munition += (upkeepCost?.munition || 0) * popcap * ebpsUnit.loadout.num;
       return tc;
@@ -114,8 +119,8 @@ export function getSquadTotalUpkeepCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]
   );
   // Round the costs, so we avoid floating numbers being displayed in the UI
   // like 399.999995.
-  (Object.keys(totalUpkeepCost) as Array<"fuel" | "manpower" | "munition">).forEach(
-    (key) => (totalUpkeepCost[key] = Math.round(totalUpkeepCost[key])),
-  );
+  (Object.keys(totalUpkeepCost) as Array<"fuel" | "manpower" | "munition">).forEach((key) => {
+    totalUpkeepCost[key] = roundToDecimals(totalUpkeepCost[key], 2);
+  });
   return totalUpkeepCost;
 }

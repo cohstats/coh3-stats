@@ -319,6 +319,7 @@ export type TpDefcover = {
   damage_multiplier: number;
   penetration_multiplier: number;
   suppression_multiplier: number;
+  aim_time_multiplier?: number;
 };
 
 export type Damage = {

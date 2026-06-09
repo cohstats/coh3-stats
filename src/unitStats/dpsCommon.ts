@@ -5,7 +5,9 @@ import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS, applyCustomModifier } from "./weaponLib";
+import { getUpgradeStateTreeWeapons } from "./workarounds";
 import type { UpgradesType } from "./mappingUpgrades";
+import type { AbilitiesType } from "./mappingAbilities";
 
 type CoordinatesDPS = { x: number; y: number };
 
@@ -26,9 +28,12 @@ type WeaponMember = {
   dps_default: CoordinatesDPS[];
 
   /** UI marker: weapon was added as an optional upgrade choice. */
-  source?: "base" | "optional_upgrade";
+  source?: "base" | "optional_upgrade" | "optional_ability";
   sourceUpgrade?: UpgradesType;
+  sourceAbility?: AbilitiesType;
   upgradeCount?: number;
+  abilityCount?: number;
+  abilityNumShots?: number | null;
 };
 
 export const resolveFactionLinkid = (factionFolderName: string) => {
@@ -190,9 +195,14 @@ const mergeWeaponMembers = (weaponMembers: WeaponMember[]): WeaponMember[] => {
     if (
       existing.num === 0 &&
       existing.source !== "base" &&
-      weaponMember.source === "optional_upgrade"
+      (weaponMember.source === "optional_upgrade" || weaponMember.source === "optional_ability")
     ) {
-      existing.source = "optional_upgrade";
+      existing.source = existing.source ?? weaponMember.source;
+      existing.sourceUpgrade = existing.sourceUpgrade ?? weaponMember.sourceUpgrade;
+      existing.sourceAbility = existing.sourceAbility ?? weaponMember.sourceAbility;
+      existing.upgradeCount = existing.upgradeCount ?? weaponMember.upgradeCount;
+      existing.abilityCount = existing.abilityCount ?? weaponMember.abilityCount;
+      existing.abilityNumShots = existing.abilityNumShots ?? weaponMember.abilityNumShots;
     }
   }
 
@@ -204,6 +214,7 @@ export const mapCustomizableUnit = (
   ebps: EbpsType[],
   weapons: WeaponType[],
   upgrades: UpgradesType[] = [],
+  abilities: AbilitiesType[] = [],
   // weapons?: WeaponType[],
 ) => {
   // Initilaize
@@ -276,11 +287,18 @@ export const mapCustomizableUnit = (
       upgrades,
     );
 
+    const optionalAbilityWeaponMembers = getSbpsOptionalAbilityWeapons(
+      sbpsSelected,
+      ebps,
+      weapons,
+      abilities,
+    );
+
     custUnit.weapon_member = mergeWeaponMembers([
       ...baseWeaponMembers,
       ...optionalUpgradeWeaponMembers,
+      ...optionalAbilityWeaponMembers,
     ]);
-
     // Defaults should stay base-only. Optional upgrade weapons start at 0 and should not affect default DPS.
     custUnit.def_weapon_member = [...baseWeaponMembers];
 
@@ -369,6 +387,29 @@ const getIdFromReference = (reference: unknown) => {
   return normalizedReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0];
 };
 
+const shouldSkipBaseVehicleHardpointWeapon = (
+  unitEbps: EbpsType,
+  weaponRef: EbpsType["weaponRef"][number],
+  weapon?: WeaponType,
+) => {
+  if (unitEbps.unitType !== "vehicles") return false;
+
+  // Upgrade/dummy hardpoints can exist in combat_ext but should not be part of base DPS.
+  if (weaponRef.initializeWeaponsOnCreation === false) return true;
+
+  // Internal/action-fired weapons can be initialized, but neither receive attack
+  // commands nor auto-search for targets. Coax/hull MGs usually fail the first
+  // check, but still auto-target, so they survive this.
+  if (
+    weaponRef.receivesAttackCommands === false &&
+    weapon?.weapon_bag.behaviour_enable_auto_target_search === false
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 const isDamageDealingWeapon = (weapon?: WeaponType): weapon is WeaponType => {
   if (!weapon) return false;
 
@@ -389,6 +430,110 @@ const findEbpsByReference = (ebpsList: EbpsType[], reference: unknown) => {
   return ebpsList.find((ebps) => ebps.id === ebpsId);
 };
 
+const ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS = new Set(["weapon_crate_ranger_us"]);
+
+const isOptionalDpsAbilityWeapon = (ability: AbilitiesType) => {
+  return (
+    ability.activation === "timed" ||
+    ability.activation === "toggle" ||
+    ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS.has(ability.id)
+  );
+};
+
+const findAbilityByReference = (abilities: AbilitiesType[], reference: unknown) => {
+  const abilityId = getIdFromReference(reference);
+
+  if (!abilityId) return undefined;
+
+  return abilities.find((ability) => ability.id === abilityId);
+};
+
+const getDefaultAbilityWeaponCarrier = (sbps: SbpsType, ebpsList: EbpsType[]) => {
+  const loadout =
+    sbps.unitType === "team_weapons" && sbps.loadout.length > 1
+      ? sbps.loadout[1]
+      : sbps.loadout[0];
+
+  return loadout ? findEbpsByReference(ebpsList, loadout.type) : undefined;
+};
+
+const getWeaponMembersFromAbilityWeaponReference = (
+  sbps: SbpsType,
+  weaponReferenceId: string,
+  ebpsList: EbpsType[],
+  weapons: WeaponType[],
+): WeaponMember[] => {
+  const defaultCarrier = getDefaultAbilityWeaponCarrier(sbps, ebpsList);
+  if (!defaultCarrier) return [];
+
+  const directWeapon = weapons.find((gun) => gun.id === weaponReferenceId);
+
+  if (directWeapon) {
+    return isDamageDealingWeapon(directWeapon)
+      ? [mapWeaponMember(sbps, defaultCarrier, directWeapon, 1)]
+      : [];
+  }
+
+  const weaponEbps = ebpsList.find((ebps) => ebps.id === weaponReferenceId);
+  if (!weaponEbps) return [];
+
+  const weaponMembers: WeaponMember[] = [];
+
+  if (weaponEbps.weaponId) {
+    const weapon = weapons.find((gun) => gun.id === weaponEbps.weaponId);
+
+    if (isDamageDealingWeapon(weapon)) {
+      weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, 1));
+    }
+  }
+
+  for (const weaponRef of weaponEbps.weaponRef || []) {
+    const referencedWeaponEbps = findEbpsByReference(ebpsList, weaponRef);
+    if (!referencedWeaponEbps?.weaponId) continue;
+
+    const weapon = weapons.find((gun) => gun.id === referencedWeaponEbps.weaponId);
+    if (!isDamageDealingWeapon(weapon)) continue;
+
+    weaponMembers.push(mapWeaponMember(sbps, referencedWeaponEbps, weapon, 1));
+  }
+
+  return weaponMembers;
+};
+
+export const getSbpsOptionalAbilityWeapons = (
+  sbps: SbpsType,
+  ebpsList: EbpsType[],
+  weapons: WeaponType[],
+  abilities: AbilitiesType[],
+): WeaponMember[] => {
+  const optionalAbilityWeapons: WeaponMember[] = [];
+
+  if (!sbps.abilities?.length) return optionalAbilityWeapons;
+
+  for (const abilityRef of sbps.abilities) {
+    const ability = findAbilityByReference(abilities, abilityRef);
+
+    if (!ability || !isOptionalDpsAbilityWeapon(ability)) continue;
+
+    const weaponMembers = (ability.abilityWeaponIds || []).flatMap((weaponReferenceId) =>
+      getWeaponMembersFromAbilityWeaponReference(sbps, weaponReferenceId, ebpsList, weapons),
+    );
+
+    for (const weaponMember of weaponMembers) {
+      optionalAbilityWeapons.push({
+        ...weaponMember,
+        num: 0,
+        source: "optional_ability",
+        sourceAbility: ability,
+        abilityCount: weaponMember.num,
+        abilityNumShots: ability.numShots ?? null,
+      });
+    }
+  }
+
+  return optionalAbilityWeapons;
+};
+
 const findUpgradeByReference = (upgrades: UpgradesType[], reference: unknown) => {
   const upgradeId = getIdFromReference(reference);
 
@@ -397,12 +542,14 @@ const findUpgradeByReference = (upgrades: UpgradesType[], reference: unknown) =>
   return upgrades.find((upgrade) => upgrade.id === upgradeId);
 };
 
-const isWeaponUpgrade = (upgrade: UpgradesType) => {
-  const actionTreeOpeningBranch = upgrade.actionTreeOpeningBranch
-    ?.replace(/\\/g, "/")
-    .toLowerCase();
+const getNormalizedUpgradeStateTree = (upgrade: UpgradesType) => {
+  return upgrade.actionTreeOpeningBranch?.replace(/\\/g, "/").toLowerCase();
+};
 
-  return actionTreeOpeningBranch === "weapon_upgrade";
+const isWeaponUpgrade = (upgrade: UpgradesType) => {
+  const stateTree = getNormalizedUpgradeStateTree(upgrade);
+
+  return stateTree === "weapon_upgrade" || getUpgradeStateTreeWeapons(stateTree).length > 0;
 };
 
 const getUpgradeInt32Value = (upgrade: UpgradesType, id: string) => {
@@ -415,6 +562,59 @@ const getUpgradePbgidValue = (upgrade: UpgradesType, id: string) => {
   return upgrade.customProperties.pbgid.find(
     (property) => property.id.toUpperCase() === id.toUpperCase(),
   )?.pbg;
+};
+
+const getSquadWeaponCarrierCount = (
+  sbps: SbpsType,
+  ebpsList: EbpsType[],
+  weapons: WeaponType[],
+) => {
+  let weaponCarrierCount = 0;
+  let crewDemand = 0;
+
+  for (const loadout of sbps.loadout) {
+    const unitEbps = findEbpsByReference(ebpsList, loadout.type);
+    if (!unitEbps) continue;
+
+    let num = loadout.num;
+
+    if (crewDemand > 0) {
+      num -= crewDemand;
+    }
+
+    crewDemand = unitEbps.crew_size;
+
+    const hasUsableWeapon = unitEbps.weaponRef.some((weaponRef) => {
+      const weaponEbps = findEbpsByReference(ebpsList, weaponRef.ebp);
+      const weapon = weapons.find((gun) => gun.id === weaponEbps?.weaponId);
+
+      if (shouldSkipBaseVehicleHardpointWeapon(unitEbps, weaponRef, weapon)) return false;
+
+      return isDamageDealingWeapon(weapon);
+    });
+
+    if (hasUsableWeapon) {
+      weaponCarrierCount += Math.max(num, 0);
+    }
+  }
+
+  return Math.max(weaponCarrierCount, 1);
+};
+
+const resolveUpgradeWeaponCount = (
+  count: number | undefined,
+  sbps: SbpsType,
+  ebpsList: EbpsType[],
+  weapons: WeaponType[],
+) => {
+  if (count === undefined) return 1;
+
+  // Relic uses COUNT 0 for some "replace/equip everyone" weapon upgrades.
+  if (count === 0) {
+    return getSquadWeaponCarrierCount(sbps, ebpsList, weapons);
+  }
+
+  return count;
 };
 
 type UpgradeWeaponResult = {
@@ -450,7 +650,7 @@ const getWeaponsFromSingleUpgrade = (
   const weaponPbg1 = getUpgradePbgidValue(upgrade, "WEAPON_PBG_1");
   const weaponPbg2 = getUpgradePbgidValue(upgrade, "WEAPON_PBG_2");
 
-  const weaponPbg1Count = getUpgradeInt32Value(upgrade, "COUNT") ?? 1;
+  const weaponPbg1Count = getUpgradeInt32Value(upgrade, "COUNT");
 
   const upgradeWeaponRefs = [
     {
@@ -467,7 +667,10 @@ const getWeaponsFromSingleUpgrade = (
 
   for (const upgradeWeaponRef of upgradeWeaponRefs) {
     if (!upgradeWeaponRef.pbg) continue;
-    if (upgradeWeaponRef.count <= 0) continue;
+
+    const count = resolveUpgradeWeaponCount(upgradeWeaponRef.count, sbps, ebpsList, weapons);
+
+    if (count <= 0) continue;
 
     const weaponEbps = findEbpsByReference(ebpsList, upgradeWeaponRef.pbg);
     if (!weaponEbps?.weaponId) continue;
@@ -475,11 +678,30 @@ const getWeaponsFromSingleUpgrade = (
     const weapon = weapons.find((gun) => gun.id === weaponEbps.weaponId);
     if (!isDamageDealingWeapon(weapon)) continue;
 
-    weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, upgradeWeaponRef.count));
+    weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, count));
 
     if (upgradeWeaponRef.replacesNormalWeapon) {
-      replacementCount += upgradeWeaponRef.count;
+      replacementCount += count;
     }
+  }
+
+  const stateTree = getNormalizedUpgradeStateTree(upgrade);
+  const mappedStateTreeWeapons = getUpgradeStateTreeWeapons(stateTree);
+  for (const mappedWeapon of mappedStateTreeWeapons) {
+    const count = resolveUpgradeWeaponCount(mappedWeapon.count, sbps, ebpsList, weapons);
+
+    if (count <= 0) continue;
+
+    const weapon = weapons.find((gun) => gun.id === mappedWeapon.weaponId);
+    if (!isDamageDealingWeapon(weapon)) continue;
+
+    const weaponEbps = ebpsList.find((ebps) => ebps.weaponId === mappedWeapon.weaponId);
+    if (!weaponEbps) continue;
+
+    weaponMembers.push(mapWeaponMember(sbps, weaponEbps, weapon, count));
+
+    // Important: probably false for vehicle pintles.
+    // These are added hardpoint weapons, not replacing the cannon/coax/hull weapon.
   }
 
   return {
@@ -677,23 +899,17 @@ export const getSbpsWeapons = (
 
     // loop through hardpoints get weapon ebps
     for (const weaponRef of unit_ebps.weaponRef) {
-      // find weapon ebps
       const refPath = weaponRef.ebp.split("/");
 
       const weapon_ebps = ebpsList.find((wEbp) => wEbp.id == refPath[refPath.length - 1]);
 
-      // find referenced weapon template
       const weapon = weapons.find((gun) => gun.id == weapon_ebps?.weaponId);
 
-      // ignore loadout when no damage dealing weapon found
-      if (
-        !weapon ||
-        ((weapon as WeaponType).weapon_bag.damage_max == 0 &&
-          weapon.weapon_bag.damage_damage_type !== "explosive") ||
-        (weapon.weapon_bag.damage_damage_type === "explosive" &&
-          weapon.weapon_bag.aoe_outer_radius === 0)
-      )
+      if (shouldSkipBaseVehicleHardpointWeapon(unit_ebps, weaponRef, weapon)) {
         continue;
+      }
+
+      if (!isDamageDealingWeapon(weapon)) continue;
 
       const replacementResult = applyWeaponReplacementCount(num, remainingReplacementCount);
 
