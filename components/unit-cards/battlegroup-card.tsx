@@ -275,6 +275,13 @@ const BattlegroupBranchMapping = (
       return (
         <Anchor
           underline={"never"}
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            "&:hover": {
+              textDecoration: "none",
+            },
+          }}
           component={Link}
           href={getExplorerUnitRoute(faction, spawnItemsResolved[0].id)}
         >
