@@ -1,5 +1,6 @@
 import { EbpsType } from "./mappingEbps";
 import { SbpsType } from "./mappingSbps";
+import { roundToDecimals } from "../utils";
 
 /**
  * These fields can be found at `ebps` / `upgrade` inside each entity object.
@@ -23,11 +24,6 @@ export type ResourceValues = {
   time_seconds?: number;
   /** Value at `command`. */
   command?: number;
-};
-
-const roundToDecimals = (value: number, decimals = 2) => {
-  const factor = 10 ** decimals;
-  return Math.round((value + Number.EPSILON) * factor) / factor;
 };
 
 export function hasCost(costObjc: ResourceValues | undefined) {
@@ -82,7 +78,7 @@ export function getSquadTotalCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]) {
   // Round the costs, so we avoid floating numbers being displayed in the UI
   // like 399.999995.
   (Object.keys(totalCost) as Array<keyof ResourceValues>).forEach((key) => {
-    totalCost[key] = roundToDecimals(totalCost[key], 2);
+    totalCost[key] = roundToDecimals(totalCost[key], 1);
   });
   return totalCost;
 }
@@ -120,7 +116,7 @@ export function getSquadTotalUpkeepCost(sbpsUnit: SbpsType, ebpsData: EbpsType[]
   // Round the costs, so we avoid floating numbers being displayed in the UI
   // like 399.999995.
   (Object.keys(totalUpkeepCost) as Array<"fuel" | "manpower" | "munition">).forEach((key) => {
-    totalUpkeepCost[key] = roundToDecimals(totalUpkeepCost[key], 2);
+    totalUpkeepCost[key] = roundToDecimals(totalUpkeepCost[key], 1);
   });
   return totalUpkeepCost;
 }
