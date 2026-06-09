@@ -197,11 +197,11 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const reinforceCost = {
     cost: roundToDecimals(
       (defaultSquadMember.cost.manpower || 0) * (resolvedSquad.reinforce.cost_percentage || 1),
-      2,
+      1,
     ),
     time: roundToDecimals(
       (defaultSquadMember.cost.time || 0) * (resolvedSquad.reinforce.time_percentage || 1),
-      2,
+      1,
     ),
   };
 
