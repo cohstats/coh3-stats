@@ -24,6 +24,9 @@
     "near": "Nah",
     "medium": "Mittel",
     "far": "Fern",
+    "light": "Leicht",
+    "heavy": "Schwer",
+    "garrison": "Garnison",
     "min": "Min",
     "max": "Max",
     "produces": "Produziert",
@@ -59,13 +62,21 @@
     "construct": "Kann bauen",
     "free": "Kostenlos",
     "weaponNote": "Die effektive Genauigkeit wird durch mehrere Faktoren beeinflusst, wie die Zielgröße oder die Panzerung der angegriffenen Einheit sowie die Genauigkeit oder Durchschlagskraft der angreifenden Einheit.",
-    "importantNote": "Wichtiger Hinweis: Dieser Bereich zeigt alle im Spiel verfügbaren Einheiten, einschließlich der nur in der Kampagne verfügbaren."
+    "importantNote": "Wichtiger Hinweis: Dieser Bereich zeigt alle im Spiel verfügbaren Einheiten, einschließlich der nur in der Kampagne verfügbaren.",
+    "upgradeWeapons": "Waffen verfügbar über Upgrade",
+    "abilityRange": "Wirkbereich: {{range}}",
+    "abilityRangeWithMin": "Wirkbereich: {{minRange}} - {{range}}",
+    "abilityWeapons": "Fähigkeitswaffen",
+    "abilityWeaponShotCount_one": "Feuert einmal",
+    "abilityWeaponShotCount_other": "Feuert {{count}} Mal"
   },
   "statsCard": {
     "sightRange": "Sichtweite",
+    "detection": "Erkennung",
     "speed": "Geschwindigkeit",
     "acceleration": "Beschleunigung",
     "deceleration": "Verlangsamung",
+    "rotation": "Drehgeschwindigkeit",
     "maxRange": "Maximale Reichweite",
     "targetSize": "Zielgröße",
     "armor": "Panzerung",
@@ -75,14 +86,38 @@
   },
   "weaponCard": {
     "accuracy": "Genauigkeit",
+    "arc": "Bogen",
+    "burstDuration": "Feuerstoßdauer",
+    "cooldown": "Abkühlung",
     "rpm": "Schüsse pro Minute (RPM)",
     "rangeOfFire": "Schussreichweite",
+    "range": "Reichweite",
+    "distance": "Entfernung",
+    "limit": "Grenze",
+    "traverseSpeed": "Schwenkgeschwindigkeit",
+    "setup": "Aufstellung",
+    "teardown": "Abbau",
     "penetration": "Durchschlagskraft",
     "scatter": "Streuung",
     "damage": "Schaden",
+    "deflectionDamage": "Deflektionsschaden",
     "aoeRadius": "Wirkungsbereich (AoE)-Radius",
+    "aoeSize": "AoE-Größe",
+    "aoeFalloff": "AoE Abfall",
+    "onTheMove": "In Bewegung Multiplikatoren",
     "movingAccuracy": "Bewegungsgenauigkeitsmultiplikator",
-    "movingCooldown": "Bewegungsabkühlungsmultiplikator"
+    "movingCooldown": "Bewegungsabkühlungsmultiplikator",
+    "targetModifiers": "Zielmodifikatoren",
+    "baseDamage": "Basisschaden",
+    "coverModifiers": "VS. Deckung - Modifikatoren",
+    "coverModifiersTooltip": "Wenn gegen eine Einheit in einer Deckung angegriffen wird",
+    "lightCover": "Leichte Deckung",
+    "heavyCover": "Schwere Deckung",
+    "garrisonCover": "Garnison",
+    "suppressionPerSecond": "Unterdrückung pro Sekunde",
+    "suppressionRadius": "Unterdrückungsradius",
+    "incrementalTargetRadius": "Inkrementeller Zielradius",
+    "incrementalTargetAccuracy": "Ink. Genauigkeit"
   },
   "dps": {
     "meta": {
@@ -101,6 +136,26 @@
         "einheiteneffektivität"
       ]
     }
+  },
+  "dpsCompare": {
+    "meta": {
+      "title": "COH3 DPS Vergleichswerkzeug",
+      "description": "Vergleichen Sie Schaden pro Sekunde (DPS) von bis zu 5 angreifenden Einheiten gegen ein einzelnes Ziel in Company of Heroes 3. Analysieren Sie die Effektivität von Einheiten und optimieren Sie Ihre Armeezusammensetzung.",
+      "keywords": [
+        "coh3 dps vergleich",
+        "einheitenvergleich",
+        "schadenvergleich",
+        "coh3 einheiteneffektivität",
+        "armeezusammensetzung",
+        "dps analyse",
+        "coh3 vergleichswerkzeug",
+        "einheiten matchup"
+      ]
+    },
+    "title": "DPS Vergleichswerkzeug",
+    "targetUnit": "Zieleinheit",
+    "attackingUnits": "Angreifende Einheiten",
+    "attacker": "Angreifer {{number}}"
   },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
