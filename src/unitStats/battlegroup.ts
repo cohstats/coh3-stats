@@ -2,6 +2,8 @@ import { raceType } from "../coh3/coh3-types";
 import { AbilitiesType } from "./mappingAbilities";
 import { BattlegroupsType } from "./mappingBattlegroups";
 import { UpgradesType } from "./mappingUpgrades";
+import { SbpsType } from "./mappingSbps";
+import { SpawnItemMappings } from "./workarounds";
 
 export enum BattlegroupArrows {
   AVAILABLE_1X1 = "icons/hud/battlegroups/1x1_available.webp",
@@ -29,6 +31,11 @@ type BattlegroupParentUiData = {
   briefText: string;
 };
 
+export type SpawnItemData = {
+  id: string; // e.g., "panzer_iii_flame_ak"
+  screenName: string; // e.g., "Panzer III Flame Tank"
+};
+
 export type BattleGroupUpgradeType = {
   /** The upgrade resolved data. */
   upg: UpgradesType;
@@ -39,6 +46,8 @@ export type BattleGroupUpgradeType = {
   /** A list of unit spawnable items. This is used for workarounds to re-direct
    * those abilities that call-in a squad. */
   spawnItems: string[];
+  /** Pre-resolved spawn item data with display names */
+  spawnItemsResolved: SpawnItemData[];
 };
 
 export type BattlegroupResolvedBranchType = {
@@ -77,11 +86,44 @@ export function resolveBattlegroupBranches(
   battlegroups: BattlegroupsType[],
   upgrades: UpgradesType[],
   abilities: AbilitiesType[],
+  sbpsData: SbpsType[],
 ) {
   const faction = race === "dak" ? "afrika_korps" : race;
   const battlegroupsByFaction = battlegroups.filter(
     (x) => x.faction === faction && !SkipBattlegroups.includes(x.id),
   );
+
+  // Helper function to create resolved upgrade
+  const createResolvedUpgrade = (
+    foundUpgrade: UpgradesType,
+    foundAbility: AbilitiesType,
+  ): BattleGroupUpgradeType => {
+    // Apply spawn item mapping from workarounds
+    const spawnItemIds = SpawnItemMappings[foundAbility.id] || [];
+
+    // Resolve spawn items with display names
+    const spawnItemsResolved: SpawnItemData[] = spawnItemIds.map((id) => {
+      const foundSbps = sbpsData.find((x) => x.id === id);
+      return {
+        id,
+        screenName: foundSbps?.ui.screenName || id,
+      };
+    });
+
+    // Apply cost overrides (e.g., Australian Light Infantry)
+    const modifiedAbility = { ...foundAbility };
+    if (foundAbility.id === "australian_defense_australian_light_infantry_uk") {
+      modifiedAbility.cost = { ...foundAbility.cost, manpower: 280 };
+    }
+
+    return {
+      upg: foundUpgrade,
+      ability: modifiedAbility,
+      spawnItems: spawnItemIds,
+      spawnItemsResolved,
+    };
+  };
+
   return battlegroupsByFaction.map<BattlegroupResolvedType>((rawBattlegroup) => {
     const leftBranchUpgrades: BattleGroupUpgradeType[] = [];
     const rightBranchUpgrades: BattleGroupUpgradeType[] = [];
@@ -95,11 +137,7 @@ export function resolveBattlegroupBranches(
           (abil) => abil.requirements.playerUpgrade.split("/").slice(-1)[0] === foundUpgrade.id,
         );
         if (foundAbility) {
-          leftBranchUpgrades.push({
-            upg: foundUpgrade,
-            ability: foundAbility,
-            spawnItems: [],
-          });
+          leftBranchUpgrades.push(createResolvedUpgrade(foundUpgrade, foundAbility));
         }
       }
     });
@@ -113,11 +151,7 @@ export function resolveBattlegroupBranches(
           (abil) => abil.requirements.playerUpgrade.split("/").slice(-1)[0] === foundUpgrade.id,
         );
         if (foundAbility) {
-          rightBranchUpgrades.push({
-            upg: foundUpgrade,
-            ability: foundAbility,
-            spawnItems: [],
-          });
+          rightBranchUpgrades.push(createResolvedUpgrade(foundUpgrade, foundAbility));
         }
       }
     });

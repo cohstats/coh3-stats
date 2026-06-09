@@ -67,7 +67,6 @@ interface PreCalculatedBuilding {
 }
 
 interface RaceDetailProps {
-  sbpsData: SbpsType[];
   descriptions: {
     raceDescription: string | null;
     buildings: string | null;
@@ -77,7 +76,6 @@ interface RaceDetailProps {
 }
 
 const RaceDetail: NextPage<RaceDetailProps> = ({
-  sbpsData,
   descriptions,
   resolvedBattlegroups,
   preCalculatedBuildings,
@@ -148,11 +146,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
             {t("common.battleGroups")}
           </Title>
 
-          <BattlegroupCard
-            race={raceToFetch}
-            sbpsData={sbpsData}
-            resolvedBattlegroups={resolvedBattlegroups}
-          />
+          <BattlegroupCard race={raceToFetch} resolvedBattlegroups={resolvedBattlegroups} />
         </Stack>
 
         {/* Buildings Section */}
@@ -365,11 +359,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const descriptions = getUnitStatsCOH3Descriptions(locale);
 
+  // Pass sbpsData to resolve function - it will pre-calculate everything
   const resolvedBattlegroups = resolveBattlegroupBranches(
     raceId,
     battlegroupData,
     upgradesData,
     abilitiesData,
+    sbpsData,
   );
 
   // Pre-calculate building data
@@ -383,7 +379,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      sbpsData: sbpsData,
+      // sbpsData removed - no longer needed on client!
       resolvedBattlegroups: resolvedBattlegroups,
       preCalculatedBuildings: preCalculatedBuildings,
       descriptions: {

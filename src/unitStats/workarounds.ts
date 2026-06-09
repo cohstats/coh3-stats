@@ -31,7 +31,7 @@ const ebpsWorkarounds = new Map<string, Override>();
  * 🗺️ Centralized Mapping Table
  * Maps ability.id (key) to the desired array of spawnItems (value).
  */
-const SpawnItemMappings: { [abilityId: string]: string[] } = {
+export const SpawnItemMappings: { [abilityId: string]: string[] } = {
   // --- Afrika Korps ---
   armored_support_flame_p3_ak: ["panzer_iii_flame_ak"],
   armored_support_command_p4_ak: ["panzer_iv_command_ak"],

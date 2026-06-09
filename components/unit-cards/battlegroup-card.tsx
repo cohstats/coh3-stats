@@ -24,13 +24,11 @@ import {
   AbilitiesType,
   UpgradesType,
   BattlegroupResolvedBranchType,
-  SbpsType,
   hasCost,
   BattlegroupArrows,
   BattlegroupBackgrounds,
   BattlegroupResolvedType,
 } from "../../src/unitStats";
-import { bgWorkarounds } from "../../src/unitStats/workarounds";
 import { UnitUpgradeCard } from "./unit-upgrade-card";
 import { useToggle } from "@mantine/hooks";
 import { IconBaselineDensityLarge, IconLane } from "@tabler/icons-react";
@@ -56,27 +54,15 @@ const groupBy = <T, K extends string | number>(arr: T[], fn: (item: T) => K) => 
 
 interface BattlegroupCardProps {
   race: raceType;
-  sbpsData: SbpsType[];
   resolvedBattlegroups: BattlegroupResolvedType[];
 }
 
 export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
   race,
-  sbpsData,
   resolvedBattlegroups,
 }) => {
-  for (const resBg of resolvedBattlegroups) {
-    for (const [override, { predicate, mutator, validator }] of bgWorkarounds) {
-      if (predicate(resBg)) {
-        mutator(resBg);
-        // console.info(`Overriding ${item.id} with ${override}`);
-        if (validator && !validator(resBg)) {
-          console.error(`Invalid item ${resBg.id} after override ${override}`, resBg);
-          // throw new Error("Error during bg workarounds");
-        }
-      }
-    }
-  }
+  // Workarounds are now applied server-side in resolveBattlegroupBranches
+  // No need for client-side mutations anymore
 
   // Options to toggle between comparison or full width mode for desktop.
   const [value, toggle] = useToggle([1, 2]);
@@ -129,7 +115,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
                       <Title order={4}>{branches.LEFT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.LEFT, race, sbpsData, value === 1)}
+                      {BattlegroupBranchMapping(branches.LEFT, race, value === 1)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
@@ -142,7 +128,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
                       <Title order={4}>{branches.RIGHT.name}</Title>
                     </Accordion.Control>
                     <Accordion.Panel>
-                      {BattlegroupBranchMapping(branches.RIGHT, race, sbpsData, value === 1)}
+                      {BattlegroupBranchMapping(branches.RIGHT, race, value === 1)}
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
@@ -158,7 +144,6 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
 const BattlegroupBranchMapping = (
   branch: BattlegroupResolvedBranchType,
   faction: raceType,
-  sbpsData: SbpsType[],
   compact: boolean = false,
 ) => {
   const router = useRouter();
@@ -258,19 +243,19 @@ const BattlegroupBranchMapping = (
   };
 
   const anchorLinkOrSelect = ({
-    spawnItems,
+    spawnItemsResolved,
     upg,
     ability,
   }: {
-    spawnItems: string[];
+    spawnItemsResolved: { id: string; screenName: string }[];
     upg: UpgradesType;
     ability: AbilitiesType;
   }) => {
-    const uniqueSpawnItems = [...new Set(spawnItems)];
-    const mappedSpawnItems = uniqueSpawnItems.map((id) => {
-      const foundSbps = sbpsData.find((x) => x.id === id);
-      return { value: id, label: foundSbps?.ui.screenName || id };
-    });
+    // Use pre-resolved data - no more sbpsData.find() lookup needed!
+    const mappedSpawnItems = spawnItemsResolved.map(({ id, screenName }) => ({
+      value: id,
+      label: screenName,
+    }));
 
     if (mappedSpawnItems.length > 1) {
       return (
@@ -286,23 +271,18 @@ const BattlegroupBranchMapping = (
           </HoverCard.Dropdown>
         </HoverCard>
       );
-    } else {
+    } else if (mappedSpawnItems.length === 1) {
       return (
         <Anchor
           underline={"never"}
-          style={{
-            textDecoration: "none",
-            color: "inherit",
-            "&:hover": {
-              textDecoration: "none",
-            },
-          }}
           component={Link}
-          href={getExplorerUnitRoute(faction, spawnItems[0])}
+          href={getExplorerUnitRoute(faction, spawnItemsResolved[0].id)}
         >
           {bgCallInCard({ upg, ability })}
         </Anchor>
       );
+    } else {
+      return bgCallInCard({ upg, ability });
     }
   };
 
@@ -330,7 +310,7 @@ const BattlegroupBranchMapping = (
         return (
           <Stack key={`${rowIndex}_${branch.name}`} gap={0} w="100%">
             <Grid columns={branchUpgrades.length === 1 ? 4 : 2} grow>
-              {branchUpgrades.map(({ upg, ability, spawnItems }) => {
+              {branchUpgrades.map(({ upg, ability, spawnItemsResolved }) => {
                 return (
                   <Fragment key={upg.id}>
                     <Grid.Col
@@ -338,8 +318,8 @@ const BattlegroupBranchMapping = (
                       offset={branchUpgrades.length === 1 && !compact ? 1 : 0}
                       span={branchUpgrades.length === 1 && !compact ? 2 : 1}
                     >
-                      {spawnItems.length
-                        ? anchorLinkOrSelect({ spawnItems, upg, ability })
+                      {spawnItemsResolved.length
+                        ? anchorLinkOrSelect({ spawnItemsResolved, upg, ability })
                         : bgCallInCard({ upg, ability })}
                     </Grid.Col>
                     {branchUpgrades.length === 1 && !compact ? (
