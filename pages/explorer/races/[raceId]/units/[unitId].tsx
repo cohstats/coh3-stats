@@ -84,10 +84,21 @@ interface UnitDetailProps {
     upgradeWeaponLoadouts: UpgradeWeaponLoadout[];
     abilityWeaponLoadouts: AbilityWeaponLoadout[];
     resolvedEntities: EbpsType[];
-    upgrades: UpgradesType[];
-    upgradesData: UpgradesType[];
-    abilities: AbilitiesType[];
+    upgrades: Array<
+      UpgradesType & {
+        resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+      }
+    >;
+    abilities: Array<
+      AbilitiesType & {
+        resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+      }
+    >;
     buildables: EbpsType[];
+    veterancyFourRequirement: {
+      label: string;
+      icon?: string;
+    } | null;
   };
   locale: string;
   descriptions: Record<string, Record<string, string | null>>;
@@ -115,67 +126,21 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     return <Error statusCode={404} title="Unit Not Found" />;
   }
 
-  const getIconSrc = (iconName?: string) => {
-    const normalizedIconName = iconName?.trim() ?? "";
-
-    if (!normalizedIconName) return undefined;
-    if (normalizedIconName.startsWith("/")) return normalizedIconName;
-
-    return normalizedIconName.endsWith(".png")
-      ? `/icons/${normalizedIconName}`
-      : `/icons/${normalizedIconName}.png`;
-  };
-
-  const getUpgradeRequirementDisplay = (requirementIds?: string[]) => {
-    if (!requirementIds?.length) return undefined;
-
-    const requirements = requirementIds.map((requirementId) => {
-      const upgrade = calculatedData.upgradesData.find((upgrade) => upgrade.id === requirementId);
-
-      return {
-        label: upgrade?.ui.screenName || requirementId.replaceAll("_", " "),
-        icon: getIconSrc(upgrade?.ui.iconName),
-      };
-    });
-
-    return {
-      label: requirements.map((requirement) => requirement.label).join(", "),
-      icon: requirements[0]?.icon,
-    };
-  };
-
-  const resolveDisplayRequirements = (
-    requirements?: AbilitiesType["displayRequirements"] | UpgradesType["displayRequirements"],
+  // Helper function to translate veterancy requirements on client-side
+  const translateRequirements = (
+    requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ): UnitUpgradeDisplayRequirement[] => {
-    const resolvedRequirements: UnitUpgradeDisplayRequirement[] = [];
-
-    for (const requirement of requirements ?? []) {
-      if (requirement.type === "veterancy") {
-        resolvedRequirements.push({
+    return requirements.map((req) => {
+      if (req.type === "veterancy" && req.rank !== undefined) {
+        return {
           type: "veterancy",
-          label: t("unitPage.requiresVeterancy", { rank: requirement.rank }),
-        });
-
-        continue;
+          label: t("unitPage.requiresVeterancy", { rank: req.rank }),
+          icon: "/icons/hud/decorators/vet_star.png",
+        };
       }
-
-      const upgrade = calculatedData.upgradesData.find(
-        (upgrade) => upgrade.id === requirement.upgradeId,
-      );
-
-      resolvedRequirements.push({
-        type: "upgrade",
-        label: upgrade?.ui.screenName || requirement.upgradeId.replaceAll("_", " "),
-        icon: getIconSrc(upgrade?.ui.iconName),
-      });
-    }
-
-    return resolvedRequirements;
+      return req;
+    });
   };
-
-  const vetFourRequirement = getUpgradeRequirementDisplay(
-    resolvedSquad.veterancyInfo.four?.requirementIds,
-  );
 
   const veterancyInfo = {
     one: resolvedSquad.veterancyInfo.one,
@@ -184,8 +149,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     four: resolvedSquad.veterancyInfo.four
       ? {
           ...resolvedSquad.veterancyInfo.four,
-          requirement: vetFourRequirement?.label,
-          requirementIcon: vetFourRequirement?.icon,
+          requirement: calculatedData.veterancyFourRequirement?.label,
+          requirementIcon: calculatedData.veterancyFourRequirement?.icon,
         }
       : undefined,
   };
@@ -480,13 +445,13 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               <UnitUpgradeSection
                 upgrades={upgrades}
                 title={t("common.upgrades")}
-                getRequirements={resolveDisplayRequirements}
+                translateRequirements={translateRequirements}
               />
 
               <UnitAbilitySection
                 abilities={abilities}
                 title={t("unitPage.abilities")}
-                getRequirements={resolveDisplayRequirements}
+                translateRequirements={translateRequirements}
               />
             </Stack>
           </Grid.Col>
@@ -537,14 +502,16 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
             {UnitUpgradeWeaponSection(
               upgradeWeaponLoadouts,
               t("unitPage.upgradeWeapons"),
-              resolveDisplayRequirements,
+              upgrades,
+              translateRequirements,
             )}
           </Grid.Col>
           <Grid.Col>
             {UnitAbilityWeaponSection(
               abilityWeaponLoadouts,
               t("unitPage.abilityWeapons"),
-              resolveDisplayRequirements,
+              abilities,
+              translateRequirements,
             )}
           </Grid.Col>
         </Grid>
@@ -554,12 +521,16 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 };
 
 const UnitUpgradeSection: React.FC<{
-  upgrades: UpgradesType[];
+  upgrades: Array<
+    UpgradesType & {
+      resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+    }
+  >;
   title: string;
-  getRequirements: (
-    requirements?: UpgradesType["displayRequirements"],
+  translateRequirements: (
+    requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ) => UnitUpgradeDisplayRequirement[];
-}> = ({ upgrades, title, getRequirements }) => {
+}> = ({ upgrades, title, translateRequirements }) => {
   if (!upgrades?.length) return null;
 
   return (
@@ -588,7 +559,7 @@ const UnitUpgradeSection: React.FC<{
                 brief_text_formatter: upgrade.ui.briefTextFormatter,
               }}
               time_cost={upgrade.cost}
-              requirements={getRequirements(upgrade.displayRequirements)}
+              requirements={translateRequirements(upgrade.resolvedDisplayRequirements)}
             />
           </Card>
         ))}
@@ -642,12 +613,16 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
 };
 
 const UnitAbilitySection: React.FC<{
-  abilities: AbilitiesType[];
+  abilities: Array<
+    AbilitiesType & {
+      resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+    }
+  >;
   title: string;
-  getRequirements: (
-    requirements?: AbilitiesType["displayRequirements"],
+  translateRequirements: (
+    requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ) => UnitUpgradeDisplayRequirement[];
-}> = ({ abilities, title, getRequirements }) => {
+}> = ({ abilities, title, translateRequirements }) => {
   const { t } = useTranslation(["explorer"]);
 
   if (!abilities?.length) return null;
@@ -678,7 +653,7 @@ const UnitAbilitySection: React.FC<{
                 brief_text_formatter: ability.ui.briefTextFormatter,
               }}
               time_cost={ability.cost}
-              requirements={getRequirements(ability.displayRequirements)}
+              requirements={translateRequirements(ability.resolvedDisplayRequirements)}
               footerContent={
                 <AbilityInfoRow ability={ability} numShots={ability.numShots ?? null} t={t} />
               }
@@ -723,8 +698,13 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weap
 const UnitUpgradeWeaponSection = (
   upgradeWeaponLoadouts: UpgradeWeaponLoadout[],
   title = "Upgrade weapons",
-  getRequirements: (
-    requirements?: UpgradesType["displayRequirements"],
+  upgrades: Array<
+    UpgradesType & {
+      resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+    }
+  >,
+  translateRequirements: (
+    requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ) => UnitUpgradeDisplayRequirement[],
 ) => {
   if (!upgradeWeaponLoadouts?.length) return null;
@@ -763,7 +743,9 @@ const UnitUpgradeWeaponSection = (
                   brief_text_formatter: upgrade.ui.briefTextFormatter,
                 }}
                 time_cost={upgrade.cost}
-                requirements={getRequirements(upgrade.displayRequirements)}
+                requirements={translateRequirements(
+                  upgrades.find((u) => u.id === upgrade.id)?.resolvedDisplayRequirements || [],
+                )}
               />
 
               <Grid columns={2} grow>
@@ -1088,8 +1070,13 @@ const getAbilityDeduplicationKey = (ability: AbilitiesType) =>
 const UnitAbilityWeaponSection = (
   abilityWeaponLoadouts: AbilityWeaponLoadout[],
   title = "Ability weapons",
-  getRequirements: (
-    requirements?: AbilitiesType["displayRequirements"],
+  abilities: Array<
+    AbilitiesType & {
+      resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+    }
+  >,
+  translateRequirements: (
+    requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ) => UnitUpgradeDisplayRequirement[],
 ) => {
   const { t } = useTranslation(["explorer"]);
@@ -1130,7 +1117,9 @@ const UnitAbilityWeaponSection = (
                 }}
                 time_cost={ability.cost}
                 footerContent={<AbilityInfoRow ability={ability} numShots={numShots} t={t} />}
-                requirements={getRequirements(ability.displayRequirements)}
+                requirements={translateRequirements(
+                  abilities.find((a) => a.id === ability.id)?.resolvedDisplayRequirements || [],
+                )}
               />
 
               {weapons.length ? (
@@ -1153,6 +1142,89 @@ const UnitAbilityWeaponSection = (
       </Stack>
     </Stack>
   );
+};
+
+// Helper function to process icon paths
+const getIconPath = (iconName?: string): string | undefined => {
+  const normalized = iconName?.trim();
+  if (!normalized) return undefined;
+  if (normalized.startsWith("/")) return normalized;
+  return normalized.endsWith(".png") ? `/icons/${normalized}` : `/icons/${normalized}.png`;
+};
+
+// Server-side function to resolve display requirements for upgrades/abilities
+const resolveDisplayRequirementsServer = (
+  requirements: AbilitiesType["displayRequirements"] | UpgradesType["displayRequirements"],
+  upgradesData: UpgradesType[],
+): Array<UnitUpgradeDisplayRequirement & { rank?: number }> => {
+  const resolvedRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }> = [];
+
+  for (const requirement of requirements ?? []) {
+    if (requirement.type === "veterancy") {
+      // Keep veterancy as-is, client will translate
+      resolvedRequirements.push({
+        type: "veterancy",
+        label: "", // Will be translated client-side
+        rank: requirement.rank,
+      });
+      continue;
+    }
+
+    // Handle playerUpgrade and squadUpgrade
+    const upgrade = upgradesData.find((upg) => upg.id === requirement.upgradeId);
+    const iconPath = getIconPath(upgrade?.ui.iconName);
+    const baseRequirement: UnitUpgradeDisplayRequirement = {
+      type: "upgrade",
+      label: upgrade?.ui.screenName || requirement.upgradeId.replaceAll("_", " "),
+    };
+
+    // Only include icon if it's defined (avoid undefined in JSON serialization)
+    if (iconPath !== undefined) {
+      baseRequirement.icon = iconPath;
+    }
+
+    resolvedRequirements.push(baseRequirement);
+  }
+
+  return resolvedRequirements;
+};
+
+// Server-side function to get upgrade requirement display (for veterancy rank 4)
+const getUpgradeRequirementDisplayServer = (
+  requirementIds: string[],
+  upgradesData: UpgradesType[],
+): {
+  label: string;
+  icon?: string;
+} | null => {
+  if (!requirementIds?.length) return null;
+
+  const requirements = requirementIds.map((requirementId) => {
+    const upgrade = upgradesData.find((upgrade) => upgrade.id === requirementId);
+    const iconPath = getIconPath(upgrade?.ui.iconName);
+
+    const requirement: { label: string; icon?: string } = {
+      label: upgrade?.ui.screenName || requirementId.replaceAll("_", " "),
+    };
+
+    // Only include icon if it's defined (avoid undefined in JSON serialization)
+    if (iconPath !== undefined) {
+      requirement.icon = iconPath;
+    }
+
+    return requirement;
+  });
+
+  const result: { label: string; icon?: string } = {
+    label: requirements.map((requirement) => requirement.label).join(", "),
+  };
+
+  const firstIcon = requirements[0]?.icon;
+  if (firstIcon !== undefined) {
+    result.icon = firstIcon;
+  }
+
+  return result;
 };
 
 const createdCalculateValuesForUnits = (
@@ -1180,7 +1252,15 @@ const createdCalculateValuesForUnits = (
   // Obtain the total upkeep cost of the squad.
   const totalUpkeepCost = getSquadTotalUpkeepCost(resolvedSquad, ebpsData);
 
-  const upgrades = Object.values(getResolvedUpgrades(resolvedSquad.upgrades, upgradesData));
+  const upgrades = Object.values(getResolvedUpgrades(resolvedSquad.upgrades, upgradesData)).map(
+    (upgrade) => ({
+      ...upgrade,
+      resolvedDisplayRequirements: resolveDisplayRequirementsServer(
+        upgrade.displayRequirements,
+        upgradesData,
+      ),
+    }),
+  );
 
   // Spawn upgrades are baked into the base loadout.
   const squadWeapons = getSbpsWeapons(resolvedSquad, ebpsData, weaponData, upgradesData);
@@ -1212,7 +1292,11 @@ const createdCalculateValuesForUnits = (
   // Some abilities are duplicated, they have different IDs but the name and description is the same.
   // IF the UI is completely the same, we can remove the duplicates.
   // This might lead to some bugs in case other parts would be different.
-  const abilities: AbilitiesType[] = [];
+  const abilitiesWithResolvedRequirements: Array<
+    AbilitiesType & {
+      resolvedDisplayRequirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>;
+    }
+  > = [];
   const seenAbilities = new Set<string>();
   for (const ability of rawAbilities) {
     // If we are missing the name of the ability --> it's most likely broken // remove it here so we save the data
@@ -1220,12 +1304,30 @@ const createdCalculateValuesForUnits = (
       const deduplicationKey = getAbilityDeduplicationKey(ability);
       if (!seenAbilities.has(deduplicationKey)) {
         seenAbilities.add(deduplicationKey);
-        abilities.push(ability);
+        abilitiesWithResolvedRequirements.push({
+          ...ability,
+          resolvedDisplayRequirements: resolveDisplayRequirementsServer(
+            ability.displayRequirements,
+            upgradesData,
+          ),
+        });
       }
     }
   }
 
-  const abilityWeaponLoadouts = getAbilityWeaponLoadouts(abilities, ebpsData, weaponData);
+  const abilityWeaponLoadouts = getAbilityWeaponLoadouts(
+    abilitiesWithResolvedRequirements,
+    ebpsData,
+    weaponData,
+  );
+
+  // Process veterancy rank 4 requirements
+  const veterancyFourRequirement = resolvedSquad.veterancyInfo?.four?.requirementIds
+    ? getUpgradeRequirementDisplayServer(
+        resolvedSquad.veterancyInfo.four.requirementIds,
+        upgradesData,
+      )
+    : null;
 
   return {
     resolvedSquad,
@@ -1236,9 +1338,9 @@ const createdCalculateValuesForUnits = (
     abilityWeaponLoadouts,
     resolvedEntities,
     upgrades,
-    upgradesData,
-    abilities,
+    abilities: abilitiesWithResolvedRequirements,
     buildables,
+    veterancyFourRequirement,
   };
 };
 
