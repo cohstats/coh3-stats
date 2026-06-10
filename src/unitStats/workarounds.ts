@@ -793,6 +793,16 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     numShots: 8,
   },
   {
+    abilityId: "veterancy_1a_fire_superiority_riflemen_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "veterancy_1a_fire_superiority_riflemen_us",
+    weaponIds: [
+      "garand_rifleman_fire_superiority_us",
+      "thompson_riflemen_leader_fire_superiority_us",
+      "bar_riflemen_fire_superiority_us",
+    ],
+  },
+  {
     abilityId: "canister_shot_greyhound_us",
     stateTreePath: ["ability_bag", "entity_tree"],
     stateTree: "canister_shot_greyhound_us\\canister_timed\\swap_to_canister",
