@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { DesktopAppPage } from "../page-objects/desktop-app-page";
+import { DesktopAppPage } from "../page-objects";
 
 // Enable serial mode - all tests run in order, sharing the same page
 test.describe.configure({ mode: "serial" });
