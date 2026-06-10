@@ -138,6 +138,8 @@
     "scatterAngle": "Scatter Angle",
     "scatterDistance": "Scatter Distance",
     "aimTime": "Aim Time",
+    "aimTimeWithWindUp": "Pre-Fire Time",
+    "windUp": "Wind Up",
     "scatterOffset": "Scatter Offset",
     "reloadFrequency": "Magazine",
     "bursts": "bursts",
