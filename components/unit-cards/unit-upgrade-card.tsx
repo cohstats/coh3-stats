@@ -284,9 +284,11 @@ export const ConstructableCard = ({ desc, time_cost, cfg }: UnitUpgrade) => {
 };
 
 /** Only for the buildable list. */
-const hasBuildableCost = (time_cost: ResourceValues) => {
+const hasBuildableCost = (time_cost: ResourceValues & { time?: number }) => {
   const hasMan = time_cost?.manpower && time_cost.manpower > 0;
   const hasFuel = time_cost?.fuel && time_cost.fuel > 0;
   const hasAmmo = time_cost?.munition && time_cost.munition > 0;
-  return hasMan || hasFuel || hasAmmo;
+  const hasTime = time_cost?.time && time_cost.time > 0;
+
+  return hasMan || hasFuel || hasAmmo || hasTime;
 };
