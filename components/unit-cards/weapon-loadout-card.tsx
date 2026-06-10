@@ -757,7 +757,6 @@ export const WeaponLoadoutCard = (
   const rpmMid = roundValue(timingMid.rpm);
   const rpmFar = roundValue(timingFar.rpm);
 
-  
   const readyAimMin = weapon_bag.ready_aim_time_min ?? 0;
   const readyAimMax = weapon_bag.ready_aim_time_max ?? 0;
   const baseWindUp = weapon_bag.fire_wind_up ?? 0;
@@ -770,7 +769,6 @@ export const WeaponLoadoutCard = (
       : hasWindUp
         ? t("weaponCard.windUp")
         : t("weaponCard.aimTime");
-
 
   const hasReloadFrequency =
     weapon_bag.reload_frequency_min !== 0 || weapon_bag.reload_frequency_max !== 0;
