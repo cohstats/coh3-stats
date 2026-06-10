@@ -70,7 +70,7 @@
     "@octokit/rest": "22.0.1",
     "@scalar/api-reference-react": "0.8.57",
     "@sentry/nextjs": "9.47.1",
-    "@tabler/icons-react": "3.36.0",
+    "@tabler/icons-react": "3.44.0",
     "axios": "1.12.2",
     "axios-rate-limit": "1.4.0",
     "axios-retry": "4.5.0",
