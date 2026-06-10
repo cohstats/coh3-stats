@@ -433,10 +433,16 @@ const findEbpsByReference = (ebpsList: EbpsType[], reference: unknown) => {
 const ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS = new Set(["weapon_crate_ranger_us"]);
 
 const isOptionalDpsAbilityWeapon = (ability: AbilitiesType) => {
+  const hasValidNumShots =
+    typeof ability.numShots === "number" &&
+    Number.isInteger(ability.numShots) &&
+    ability.numShots > 0;
+
   return (
-    ability.activation === "timed" ||
-    ability.activation === "toggle" ||
-    ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS.has(ability.id)
+    !hasValidNumShots &&
+    (ability.activation === "timed" ||
+      ability.activation === "toggle" ||
+      ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS.has(ability.id))
   );
 };
 
@@ -1129,6 +1135,8 @@ export const updateHealth = (unit: CustomizableUnit) => {
 
 const getUnitBaseMaxRange = (unit: CustomizableUnit): number => {
   return unit.weapon_member.reduce((maxRange, ldout) => {
+    if (ldout.num <= 0) return maxRange;
+
     return Math.max(maxRange, ldout.weapon.weapon_bag.range_max ?? 0);
   }, 0);
 };
@@ -1165,6 +1173,11 @@ const getUnitDpsAtBaseDistance = (
 
   unit1.weapon_member.forEach((ldout) => {
     const weapon_member = ldout;
+
+    if (weapon_member.num <= 0) {
+      return;
+    }
+
     const range_min = weapon_member.weapon.weapon_bag.range_min;
     const range_max = weapon_member.weapon.weapon_bag.range_max;
 

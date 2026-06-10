@@ -757,6 +757,21 @@ export const WeaponLoadoutCard = (
   const rpmMid = roundValue(timingMid.rpm);
   const rpmFar = roundValue(timingFar.rpm);
 
+  
+  const readyAimMin = weapon_bag.ready_aim_time_min ?? 0;
+  const readyAimMax = weapon_bag.ready_aim_time_max ?? 0;
+  const baseWindUp = weapon_bag.fire_wind_up ?? 0;
+  const windUp = baseWindUp > 0 ? baseWindUp + 0.125 : 0;
+  const hasAimTime = readyAimMin > 0 || readyAimMax > 0;
+  const hasWindUp = windUp > 0;
+  const aimAndWindUpLabel =
+    hasAimTime && hasWindUp
+      ? t("weaponCard.aimTimeWithWindUp")
+      : hasWindUp
+        ? t("weaponCard.windUp")
+        : t("weaponCard.aimTime");
+
+
   const hasReloadFrequency =
     weapon_bag.reload_frequency_min !== 0 || weapon_bag.reload_frequency_max !== 0;
 
@@ -1393,12 +1408,12 @@ export const WeaponLoadoutCard = (
             {
               icon: WeaponCardIcons["aim_time"],
               alt: "weapon aim time",
-              label: t("weaponCard.aimTime"),
+              label: aimAndWindUpLabel,
               value: formatMinMaxSeconds(
-                Math.round(weapon_bag.ready_aim_time_min * 8) / 8,
-                Math.round(weapon_bag.ready_aim_time_max * 8) / 8,
+                Math.round((readyAimMin + windUp) * 8) / 8,
+                Math.round((readyAimMax + windUp) * 8) / 8,
               ),
-              show: weapon_bag.ready_aim_time_min > 0 || weapon_bag.ready_aim_time_max > 0,
+              show: hasAimTime || hasWindUp,
             },
             {
               icon: WeaponCardIcons["reload_frequency"],

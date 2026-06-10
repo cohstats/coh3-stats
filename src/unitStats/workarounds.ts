@@ -511,15 +511,6 @@ export const getUpgradeStateTreeWeapons = (stateTree?: string): UpgradeStateTree
   return UpgradeStateTreeToWeaponMap[stateTree] ?? [];
 };
 
-// spawn upgrade state tree map
-export const StateTreeToSpawnUpgradeMap: Record<string, string | string[]> = {
-  panzerjaeger_weapon_spawn: "panzerbuchse_panzerpioneer_ak",
-  add_bazooka_bazooka_team_us: "bazooka_bazooka_team_us",
-  toggle_lmg_bazooka_ssf_spawn: "m1941_lmg_special_operations_us",
-  spawn_equip_lmg_commando_uk: "upgrade/german/infantry/mg42_stormtrooper_ger",
-  add_lmg_stormtrooper_ger: "mg42_stormtrooper_ger",
-};
-
 export type StateTreeSpawnWeapon = {
   pbg: string;
   count?: number;
@@ -552,6 +543,15 @@ export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
       {
         pbg: "ebps/races/british/weapons/small_arms/machine_guns/light_machine_gun/w_vickers_k_lmg_uk",
         count: 1,
+        replacesNormalWeapon: true,
+      },
+    ],
+  },
+  add_bazooka_guards_uk: {
+    weapons: [
+      {
+        pbg: "bazooka_guards_africa_uk",
+        count: 2,
         replacesNormalWeapon: true,
       },
     ],
@@ -1032,14 +1032,14 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     weaponIds: ["95mm_hesh_round_centaur_uk"],
   },
   {
-    abilityId: "sabot_sherman_firefly_africa_uk",
+    abilityId: "polish_cavalry_tulip_rocket_strike_sherman_firefly_africa_uk",
     stateTreePath: [
       "ability_bag",
       "ability_active_state_tree_group",
       "ability_activate_entity_tree",
     ],
-    stateTree: "equip_and_fire_weapon",
-    weaponIds: ["17pdr_firefly_sabot_uk"],
+    stateTree: "rotate_and_fire_coax_weapon_salvo",
+    weaponIds: ["tulip_rocket_coaxial_firefly_uk", "tulip_rocket_coaxial_firefly_panzerbane_uk"],
     numShots: 1,
   },
   {
@@ -1064,6 +1064,18 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     ],
     stateTree: "smoke_barrage_humber",
     weaponIds: ["2inch_mortar_smoke_humber_uk"],
+  },
+  {
+    abilityId: "s_mine_launcher_grinding_advance_ger",
+    stateTreePath: ["ability_bag", "global_tree"],
+    stateTree: "s_mine_launcher_tiger_ak\\grinding_advance_launchers\\root",
+    numShots: 1,
+  },
+  {
+    abilityId: "s_mine_launcher_grinding_advance_32_ger",
+    stateTreePath: ["ability_bag", "global_tree"],
+    stateTree: "s_mine_launcher_tiger_ak\\grinding_advance_launchers\\root",
+    numShots: 1,
   },
   {
     abilityId: "sniper_pinning_shot_ger",
