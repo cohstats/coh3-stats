@@ -124,6 +124,10 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: yarn test:e2e:install
 
+      - name: Install Playwright System Dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium firefox webkit
+
       - name: Build application
         run: yarn build:slim
 
