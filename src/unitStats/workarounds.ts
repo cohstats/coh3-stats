@@ -550,7 +550,7 @@ export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
   add_bazooka_guards_uk: {
     weapons: [
       {
-        pbg: "bazooka_guards_africa_uk",
+        pbg: "ebps/races/american/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_bazooka_guards_africa_uk",
         count: 2,
         replacesNormalWeapon: true,
       },

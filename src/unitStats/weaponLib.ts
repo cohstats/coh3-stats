@@ -1,7 +1,7 @@
 import { CustomizableUnit, getCoverMultiplier, WeaponMember, CustomModifier } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 
-const TICK_DURATION = 0.125;
+export const TICK_DURATION = 0.125;
 const tickRate = 1 / TICK_DURATION;
 
 type PercentApplyMode = "normal" | "inverse";

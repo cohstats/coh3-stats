@@ -433,17 +433,16 @@ const findEbpsByReference = (ebpsList: EbpsType[], reference: unknown) => {
 const ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS = new Set(["weapon_crate_ranger_us"]);
 
 const isOptionalDpsAbilityWeapon = (ability: AbilitiesType) => {
+  if (ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS.has(ability.id)) {
+    return true;
+  }
+
   const hasValidNumShots =
     typeof ability.numShots === "number" &&
     Number.isInteger(ability.numShots) &&
     ability.numShots > 0;
 
-  return (
-    !hasValidNumShots &&
-    (ability.activation === "timed" ||
-      ability.activation === "toggle" ||
-      ALWAYS_INCLUDE_OPTIONAL_ABILITY_WEAPON_IDS.has(ability.id))
-  );
+  return !hasValidNumShots && (ability.activation === "timed" || ability.activation === "toggle");
 };
 
 const findAbilityByReference = (abilities: AbilitiesType[], reference: unknown) => {
