@@ -90,6 +90,7 @@ const DesktopAppPage: NextPage = ({
         {/* Image Carousel */}
         <Paper radius="md" mt="md" p="md">
           <Carousel
+            data-testid="desktop-app-carousel"
             height={390}
             emblaOptions={{ loop: true }}
             withControls={false}
@@ -123,7 +124,12 @@ const DesktopAppPage: NextPage = ({
                   rel="noopener"
                   aria-label={t("download.microsoftStoreAriaLabel")}
                 >
-                  <Button size="lg" variant="filled" leftSection={<IconBrandWindows size={20} />}>
+                  <Button
+                    data-testid="microsoft-store-button"
+                    size="lg"
+                    variant="filled"
+                    leftSection={<IconBrandWindows size={20} />}
+                  >
                     {t("download.microsoftStore")}
                   </Button>
                 </Anchor>
@@ -143,20 +149,26 @@ const DesktopAppPage: NextPage = ({
                     type="application/x-msi"
                     aria-label={t("download.buttonAriaLabel", { version })}
                   >
-                    <Button size="lg" variant="outline" leftSection={<IconDownload size={20} />}>
+                    <Button
+                      data-testid="free-download-button"
+                      size="lg"
+                      variant="outline"
+                      leftSection={<IconDownload size={20} />}
+                    >
                       {t("download.button", { version })}
                     </Button>
                   </Anchor>
                   <Stack align="center" gap="0">
-                    <Text size="sm" c="dimmed">
+                    <Text data-testid="download-stats" size="sm" c="dimmed">
                       {t("download.downloads", { count: downloadCount })}
                     </Text>
-                    <Text size="xs" c="dimmed">
+                    <Text data-testid="total-download-stats" size="xs" c="dimmed">
                       {t("download.totalDownloads", { count: totalDownloadCount })}
                     </Text>
                   </Stack>
                 </Stack>
                 <Anchor
+                  data-testid="release-notes-link"
                   href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
                   target="_blank"
                   rel="noopener"
@@ -174,6 +186,7 @@ const DesktopAppPage: NextPage = ({
                     {t("downloadOptions.microsoftStore.title")}
                   </Title>
                   <List
+                    data-testid="ms-store-benefits"
                     spacing="xs"
                     size="sm"
                     icon={
@@ -197,6 +210,7 @@ const DesktopAppPage: NextPage = ({
                     {t("downloadOptions.freeDownload.title")}
                   </Title>
                   <List
+                    data-testid="free-download-benefits"
                     spacing="xs"
                     size="sm"
                     icon={
@@ -223,6 +237,7 @@ const DesktopAppPage: NextPage = ({
         <Paper radius="md" mt="md" p="lg">
           <Title order={3}>{t("features.title")}</Title>
           <List
+            data-testid="features-list"
             spacing="sm"
             mt={"md"}
             icon={

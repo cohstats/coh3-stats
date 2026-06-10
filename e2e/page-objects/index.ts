@@ -9,3 +9,4 @@ export { AboutPage } from "./about-page";
 export { LeaderboardsPage } from "./leaderboards-page";
 export { TeamLeaderboardsPage } from "./team-leaderboards-page";
 export { ExplorerUnitPage } from "./explorer-unit-page";
+export { DesktopAppPage } from "./desktop-app-page";
