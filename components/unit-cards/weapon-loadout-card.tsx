@@ -933,9 +933,9 @@ export const WeaponLoadoutCard = (
         ? speedIncrement
         : DEFAULT_PROJECTILE_SPEED_INCREMENT;
 
-    const steps = Math.ceil((requiredSpeed - baseSpeed) / speedIncrement - 1e-9);
+    const steps = Math.ceil((requiredSpeed - baseSpeed) / effectiveSpeedIncrement - 1e-9);
 
-    return baseSpeed + steps * speedIncrement;
+    return baseSpeed + steps * effectiveSpeedIncrement;
   };
 
   const degreesToRadians = (degrees: number) => (degrees * Math.PI) / 180;
