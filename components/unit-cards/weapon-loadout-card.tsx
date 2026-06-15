@@ -67,11 +67,15 @@ const WeaponCardIcons = {
   aoe_size: "/icons/unit_status/bw2/flame.png",
   traverse_speed: "/icons/unit_status/bw2/skorpion.png",
   firing_arc: "/icons/unit_status/bw2/artillery_radio_beacon.png",
-  setup_time: "/icons/unit_status/bw2/lockdown.png",
-  teardown_time: "/icons/unit_status/bw2/retreat.png",
+  setup_time: "/icons/unit_status/bw2/deploying.png",
+  teardown_time: "/icons/races/common/symbols/building_support_center.png",
   suppression: "/icons/unit_status/bw2/suppression.png",
   suppression_radius: "/icons/unit_status/bw2/suppressive_fire.png",
   incremental_accuracy: "/icons/unit_status/bw2/accuracy_buff.png",
+  detonation_delay: "/icons/common/resources/resource_buildtime_extra.png",
+  projectile_travel_time: "/icons/unit_status/bw2/designated_artillery_overwatch_active.png",
+  projectile_avoidance_arc_max:
+    "/icons/unit_status/bw2/designated_artillery_overwatch_active.png",
 } as const;
 
 type AoeFalloffValues = {
@@ -217,6 +221,8 @@ export const WeaponLoadoutCard = (
   };
 
   const formatScatterOffset = (offset: number): React.ReactNode => {
+    if (offset === 0) return `—`;
+
     if (offset > 0) return `+${offset}m`;
 
     return `${offset}m`;
@@ -781,7 +787,10 @@ export const WeaponLoadoutCard = (
   const showRefireTime = !isBurstWeapon && !hasReloadFrequency;
   const showShotDelay = !isBurstWeapon && hasReloadFrequency;
   const showTimeBetweenBursts = isBurstWeapon;
-  const showReloadCycle = isBurstWeapon || hasReloadFrequency;
+  const showReloadCycle = hasReloadFrequency;
+  const usesAccuracy =
+    !weapon_bag.projectile_is_artillery &&
+    (weapon_bag.accuracy_near > 0 || weapon_bag.accuracy_mid > 0 || weapon_bag.accuracy_far > 0);
 
   const showDamageDistribution =
     weapon_bag.projectile_type === "none" &&
@@ -793,14 +802,18 @@ export const WeaponLoadoutCard = (
     weapon_bag.burst_can_burst;
 
   const getSuppressionMultiplier = (accuracy: number) => {
-    if (weapon_bag.projectile_type === "artillery" || weapon_bag.projectile_type === "mortar")
-      return null;
-
-    if (weapon_bag.projectile_type === "direct") {
+    //show aoe suppression if available, otherwise single target
+    if (weapon_bag.projectile_type === "none") {
+      return weapon_bag.suppression_nearby_suppression_multiplier > 0
+        ? weapon_bag.suppression_nearby_suppression_multiplier
+        : 1;
+    }
+    //projectile weapons only suppress on direct hits
+    if (usesAccuracy) {
       return accuracy;
     }
 
-    return weapon_bag.suppression_nearby_suppression_multiplier;
+    return null;
   };
 
   const getSuppressionPerMinute = (distance: number, accuracy: number) => {
@@ -867,6 +880,108 @@ export const WeaponLoadoutCard = (
     weapon_bag.range.min > 0
       ? `${weapon_bag.range.min} - ${weapon_bag.range.max}`
       : weapon_bag.range.max;
+
+  const PROJECTILE_LAUNCH_HEIGHT = 2;
+  const BASE_GRAVITY = 9.8;
+
+  const getProjectileImpactHeight = () =>
+    weapon_bag.projectile_midair_detonation_height > 0
+      ? weapon_bag.projectile_midair_detonation_height
+      : 0;
+
+  const getBallisticDiscriminant = (
+    distance: number,
+    heightDelta: number,
+    speed: number,
+    gravity: number,
+  ) => {
+    return speed ** 4 - gravity * (gravity * distance ** 2 + 2 * heightDelta * speed ** 2);
+  };
+
+  const getRequiredProjectileSpeed = (distance: number, heightDelta: number, gravity: number) => {
+    if (distance <= 0 || gravity <= 0) return null;
+
+    const requiredSpeedSquared =
+      gravity * (heightDelta + Math.sqrt(distance ** 2 + heightDelta ** 2));
+
+    if (requiredSpeedSquared <= 0) return null;
+
+    return Math.sqrt(requiredSpeedSquared);
+  };
+
+  const getActualProjectileSpeed = (
+    requiredSpeed: number,
+    baseSpeed: number,
+    speedIncrement: number,
+  ) => {
+    if (baseSpeed >= requiredSpeed) return baseSpeed;
+
+    if (speedIncrement <= 0) return requiredSpeed;
+
+    const steps = Math.ceil((requiredSpeed - baseSpeed) / speedIncrement - 1e-9);
+
+    return baseSpeed + steps * speedIncrement;
+  };
+
+  const getProjectileTravelTime = (distance: number) => {
+    if (weapon_bag.projectile_type === "none") return null;
+
+    // Fixed trajectory projectiles use their authored time directly.
+    if (
+      weapon_bag.projectile_trajectory_type === "projectile_trajectory" &&
+      weapon_bag.projectile_trajectory_time_seconds > 0
+    ) {
+      return weapon_bag.projectile_trajectory_time_seconds;
+    }
+
+    // For now, only calculate ballistic time for artillery.
+    if (weapon_bag.projectile_type !== "artillery") return null;
+
+    if (distance <= 0) return null;
+
+    const gravity = BASE_GRAVITY * (weapon_bag.projectile_gravity_multiplier || 1);
+    const impactHeight = getProjectileImpactHeight();
+    const heightDelta = impactHeight - PROJECTILE_LAUNCH_HEIGHT;
+
+    const requiredSpeed = getRequiredProjectileSpeed(distance, heightDelta, gravity);
+
+    if (requiredSpeed === null) return null;
+
+    const speed = getActualProjectileSpeed(
+      requiredSpeed,
+      weapon_bag.projectile_speed,
+      weapon_bag.projectile_speed_increment,
+    );
+
+    if (speed === null) return null;
+
+    const discriminant = getBallisticDiscriminant(distance, heightDelta, speed, gravity);
+
+    if (discriminant < 0) return null;
+
+    const sqrtDiscriminant = Math.sqrt(discriminant);
+
+    const tanTheta =
+      weapon_bag.projectile_firing_angle_type === "high_angle"
+        ? (speed ** 2 + sqrtDiscriminant) / (gravity * distance)
+        : (speed ** 2 - sqrtDiscriminant) / (gravity * distance);
+
+    const theta = Math.atan(tanTheta);
+    const horizontalSpeed = speed * Math.cos(theta);
+
+    if (horizontalSpeed <= 0) return null;
+
+    return distance / horizontalSpeed;
+  };
+
+  const projectileTravelTimeNear = getProjectileTravelTime(weapon_bag.range_distance_near);
+  const projectileTravelTimeMid = getProjectileTravelTime(weapon_bag.range_distance_mid);
+  const projectileTravelTimeFar = getProjectileTravelTime(weapon_bag.range_distance_far);
+
+  const showProjectileTravelTime =
+    projectileTravelTimeNear !== null ||
+    projectileTravelTimeMid !== null ||
+    projectileTravelTimeFar !== null;
 
   const getAverageDamageValue = (damageMultiplier: number) =>
     ((weapon_bag.damage_min + weapon_bag.damage_max) / 2) * damageMultiplier;
@@ -1255,28 +1370,21 @@ export const WeaponLoadoutCard = (
           title={t("weaponCard.coreStats")}
           rows={[
             {
-              show:
-                weapon_bag.projectile_type !== "artillery" &&
-                weapon_bag.projectile_type !== "mortar",
+              show: usesAccuracy,
               label: t("weaponCard.accuracy"),
               near: formatPercent(weapon_bag.accuracy_near),
               mid: formatPercent(weapon_bag.accuracy_mid),
               far: formatPercent(weapon_bag.accuracy_far),
             },
             {
-              show:
-                weapon_bag.projectile_type === "artillery" ||
-                weapon_bag.projectile_type === "mortar",
+              show: !usesAccuracy && weapon_bag.projectile_type !== "none",
               label: t("weaponCard.scatter"),
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
             },
             {
-              show:
-                (weapon_bag.projectile_type === "artillery" ||
-                  weapon_bag.projectile_type === "mortar") &&
-                showScatterOffset,
+              show: !usesAccuracy && weapon_bag.projectile_type !== "none" && showScatterOffset,
               label: t("weaponCard.scatterOffset"),
               near: formatScatterOffset(scatterOffsetNear),
               mid: formatScatterOffset(scatterOffsetMid),
@@ -1302,14 +1410,14 @@ export const WeaponLoadoutCard = (
           title={t("weaponCard.specialMechanics")}
           rows={[
             {
-              show: weapon_bag.projectile_type === "direct",
+              show: usesAccuracy && weapon_bag.projectile_type !== "none",
               label: t("weaponCard.scatter"),
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
             },
             {
-              show: weapon_bag.projectile_type === "direct" && showScatterOffset,
+              show: usesAccuracy && weapon_bag.projectile_type !== "none" && showScatterOffset,
               label: t("weaponCard.scatterOffset"),
               near: formatScatterOffset(scatterOffsetNear),
               mid: formatScatterOffset(scatterOffsetMid),
@@ -1340,25 +1448,43 @@ export const WeaponLoadoutCard = (
         />
 
         <RangeStatSection
-          show={showSustainedStats}
+          show={
+            showSustainedStats || (showProjectileTravelTime && weapon_bag.projectile_is_artillery)
+          }
           title={t("weaponCard.timing")}
           rows={[
             {
-              show: weapon_bag.burst_can_burst,
+              show: showProjectileTravelTime && weapon_bag.projectile_is_artillery,
+              label: t("weaponCard.projectileTravelTime"),
+              near:
+                projectileTravelTimeNear === null
+                  ? "—"
+                  : formatSeconds(projectileTravelTimeNear, 2),
+              mid:
+                projectileTravelTimeMid === null
+                  ? "—"
+                  : formatSeconds(projectileTravelTimeMid, 2),
+              far:
+                projectileTravelTimeFar === null
+                  ? "—"
+                  : formatSeconds(projectileTravelTimeFar, 2),
+            },
+            {
+              show: weapon_bag.burst_can_burst && showSustainedStats,
               label: t("weaponCard.burstDuration"),
               near: formatSeconds(timingNear.burstDuration),
               mid: formatSeconds(timingMid.burstDuration),
               far: formatSeconds(timingFar.burstDuration),
             },
             {
-              show: showRefireTime,
+              show: showRefireTime && showSustainedStats,
               label: t("weaponCard.timeBetweenShots"),
               near: formatSeconds(timingNear.timeBetweenBurstsReload + timingNear.burstDuration),
               mid: formatSeconds(timingMid.timeBetweenBurstsReload + timingMid.burstDuration),
               far: formatSeconds(timingFar.timeBetweenBurstsReload + timingFar.burstDuration),
             },
             {
-              show: showShotDelay,
+              show: showShotDelay && showSustainedStats,
               label: t("weaponCard.timeBetweenShotsMag"),
               near: formatSeconds(
                 timingNear.timeBetweenBurstsCooldown + timingNear.burstDuration,
@@ -1367,14 +1493,14 @@ export const WeaponLoadoutCard = (
               far: formatSeconds(timingFar.timeBetweenBurstsCooldown + timingFar.burstDuration),
             },
             {
-              show: showTimeBetweenBursts,
+              show: showTimeBetweenBursts && showSustainedStats,
               label: t("weaponCard.timeBetweenBursts"),
               near: formatSeconds(timingNear.timeBetweenBurstsCooldown),
               mid: formatSeconds(timingMid.timeBetweenBurstsCooldown),
               far: formatSeconds(timingFar.timeBetweenBurstsCooldown),
             },
             {
-              show: showReloadCycle,
+              show: showReloadCycle && showSustainedStats,
               label: t("weaponCard.reloadCycle"),
               near: formatSeconds(
                 timingNear.timeBetweenBurstsReload +
@@ -1412,6 +1538,30 @@ export const WeaponLoadoutCard = (
               label: aimAndWindUpLabel,
               value: formatMinMaxSeconds(readyAimMin + windUp, readyAimMax + windUp),
               show: hasAimTime || hasWindUp,
+            },
+            {
+              icon: WeaponCardIcons["projectile_travel_time"],
+              alt: "weapon projectile travel time",
+              label: t("weaponCard.projectileTravelTime"),
+              value:
+                projectileTravelTimeFar === null ? "—" : formatSeconds(projectileTravelTimeFar),
+              show: showProjectileTravelTime && weapon_bag.projectile_type === "trajectory",
+            },
+            {
+              icon: WeaponCardIcons["detonation_delay"],
+              alt: "weapon detonation delay",
+              label: t("weaponCard.detonationDelay"),
+              value: formatSeconds(weapon_bag.projectile_delay_detonate_time),
+              show: weapon_bag.projectile_delay_detonate_time > 0,
+            },
+            {
+              icon: WeaponCardIcons["projectile_avoidance_arc_max"],
+              alt: "weapon projectile avoidance arc max",
+              label: t("weaponCard.projectileAvoidanceArcMax"),
+              value: `${weapon_bag.projectile_non_collide_end_angle}°`,
+              show:
+                weapon_bag.projectile_firing_angle_type === "lowest_non_collide_angle" &&
+                weapon_bag.projectile_type === "artillery",
             },
             {
               icon: WeaponCardIcons["reload_frequency"],
@@ -1467,7 +1617,10 @@ export const WeaponLoadoutCard = (
               alt: "weapon suppression radius",
               label: t("weaponCard.suppressionRadius"),
               value: weapon_bag.suppression_nearby_suppression_radius,
-              show: weapon_bag.suppression_amount > 0 && weapon_bag.projectile_type === "none",
+              show:
+                weapon_bag.suppression_amount > 0 &&
+                weapon_bag.projectile_type === "none" &&
+                weapon_bag.suppression_nearby_suppression_multiplier > 0,
             },
             {
               icon: WeaponCardIcons["incremental_accuracy"],

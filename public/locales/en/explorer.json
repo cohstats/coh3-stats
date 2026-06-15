@@ -139,11 +139,14 @@
     "scatterDistance": "Scatter Distance",
     "aimTime": "Aim Time",
     "aimTimeWithWindUp": "Pre-Fire Time",
-    "windUp": "Wind Up",
+    "windUp": "Wind-Up",
     "scatterOffset": "Scatter Offset",
     "reloadFrequency": "Magazine",
     "bursts": "bursts",
-    "shots": "shots"
+    "shots": "shots",
+    "projectileTravelTime": "Time of Flight",
+    "detonationDelay": "Fuse",
+    "projectileAvoidanceArcMax": "Shot Block Avoidance"
   },
   "dps": {
     "meta": {
