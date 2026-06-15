@@ -883,6 +883,8 @@ export const WeaponLoadoutCard = (
 
   const PROJECTILE_LAUNCH_HEIGHT = 2;
   const BASE_GRAVITY = 9.8;
+  const MIN_PROJECTILE_SPEED_INCREMENT = 0.1;
+  const DEFAULT_PROJECTILE_SPEED_INCREMENT = 0.5;
 
   const getProjectileImpactHeight = () =>
     weapon_bag.projectile_midair_detonation_height > 0
@@ -909,6 +911,14 @@ export const WeaponLoadoutCard = (
     return Math.sqrt(requiredSpeedSquared);
   };
 
+  const getProjectileAngle = (lowAngle: number, highAngle: number) => {
+    if (weapon_bag.projectile_firing_angle_type === "high_angle") {
+      return highAngle;
+    }
+
+    return lowAngle;
+  };
+
   const getActualProjectileSpeed = (
     requiredSpeed: number,
     baseSpeed: number,
@@ -916,11 +926,34 @@ export const WeaponLoadoutCard = (
   ) => {
     if (baseSpeed >= requiredSpeed) return baseSpeed;
 
-    if (speedIncrement <= 0) return requiredSpeed;
+    // If increment is below the min, the field is broken
+    // fall back to the projectile default
+    const effectiveSpeedIncrement =
+      speedIncrement >= MIN_PROJECTILE_SPEED_INCREMENT
+        ? speedIncrement
+        : DEFAULT_PROJECTILE_SPEED_INCREMENT;
 
     const steps = Math.ceil((requiredSpeed - baseSpeed) / speedIncrement - 1e-9);
 
     return baseSpeed + steps * speedIncrement;
+  };
+
+  const degreesToRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
+  const getRequiredSpeedForAngle = (
+    distance: number,
+    heightDelta: number,
+    gravity: number,
+    angle: number,
+  ) => {
+    const cosAngle = Math.cos(angle);
+    const tanAngle = Math.tan(angle);
+
+    const denominator = 2 * cosAngle ** 2 * (distance * tanAngle - heightDelta);
+
+    if (denominator <= 0) return null;
+
+    return Math.sqrt((gravity * distance ** 2) / denominator);
   };
 
   const getProjectileTravelTime = (distance: number) => {
@@ -943,6 +976,20 @@ export const WeaponLoadoutCard = (
     const impactHeight = getProjectileImpactHeight();
     const heightDelta = impactHeight - PROJECTILE_LAUNCH_HEIGHT;
 
+    if (weapon_bag.projectile_firing_angle_type === "lowest_non_collide_angle") {
+      const theta = degreesToRadians(weapon_bag.projectile_non_collide_start_angle);
+
+      const speed = getRequiredSpeedForAngle(distance, heightDelta, gravity, theta);
+
+      if (speed === null) return null;
+
+      const horizontalSpeed = speed * Math.cos(theta);
+
+      if (horizontalSpeed <= 0) return null;
+
+      return distance / horizontalSpeed;
+    }
+
     const requiredSpeed = getRequiredProjectileSpeed(distance, heightDelta, gravity);
 
     if (requiredSpeed === null) return null;
@@ -961,12 +1008,16 @@ export const WeaponLoadoutCard = (
 
     const sqrtDiscriminant = Math.sqrt(discriminant);
 
-    const tanTheta =
-      weapon_bag.projectile_firing_angle_type === "high_angle"
-        ? (speed ** 2 + sqrtDiscriminant) / (gravity * distance)
-        : (speed ** 2 - sqrtDiscriminant) / (gravity * distance);
+    const lowTanTheta = (speed ** 2 - sqrtDiscriminant) / (gravity * distance);
+    const highTanTheta = (speed ** 2 + sqrtDiscriminant) / (gravity * distance);
 
-    const theta = Math.atan(tanTheta);
+    const lowAngle = Math.atan(lowTanTheta);
+    const highAngle = Math.atan(highTanTheta);
+
+    const theta = getProjectileAngle(lowAngle, highAngle);
+
+    if (theta === null) return null;
+
     const horizontalSpeed = speed * Math.cos(theta);
 
     if (horizontalSpeed <= 0) return null;

@@ -695,6 +695,29 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     stateTreePath: ["ability_bag", "entity_tree"],
     stateTree: "barrage_semovente_ger",
     weaponIds: ["75mm_semovente_artillery_barrage_ger"],
+    numShots: 4,
+  },
+  {
+    abilityId: "barrage_150mm_stuka_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "barrage_halftrack_stuka_ak",
+    weaponIds: ["280mm_stukazufuss_rocket_ak"],
+    numShots: 6,
+  },
+  {
+    abilityId: "creeping_barrage_stuka_ak",
+    stateTreePath: [
+      "ability_bag",
+      "ability_active_state_tree_group",
+      "ability_activate_entity_tree",
+    ],
+    stateTree: "creeping_barrage_stuka_ak",
+    weaponIds: ["280mm_stukazufuss_creeping_barrage_ak"],
+    numShots: 6,
   },
   {
     abilityId: "barrage_howitzer_105mm_us",

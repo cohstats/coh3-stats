@@ -205,6 +205,7 @@ export type WeaponStatsType = {
   scatter_moving_scatter_distance_multiplier: number;
 
   setup_time: number;
+  setup_requires_aim_elevation: boolean;
 
   suppression_amount: number;
   suppression_nearby_suppression_multiplier: number;
@@ -364,9 +365,9 @@ const mapWeaponData = (
   const weapon_bag: WeaponBagSchema["weapon_bag"] = node.weapon_bag;
 
   const rangeDistance = {
-    near: weapon_bag.range?.distance?.near || -1,
-    mid: weapon_bag.range?.distance?.mid || -1,
-    far: weapon_bag.range?.distance?.far || -1,
+    near: weapon_bag.range?.distance?.near ?? -1,
+    mid: weapon_bag.range?.distance?.mid ?? -1,
+    far: weapon_bag.range?.distance?.far ?? -1,
     min: weapon_bag.range?.min || 0,
     max: weapon_bag.range?.max || 0,
   };
@@ -603,6 +604,7 @@ const mapWeaponData = (
         weapon_bag.scatter?.movement_scatter_distance_multiplier ?? 1,
 
       setup_time: weapon_bag.setup?.duration || 0,
+      setup_requires_aim_elevation: relicBoolean(weapon_bag.setup?.requires_aim_elevation, false),
 
       suppression_amount: weapon_bag.suppression?.amount || 0,
       suppression_nearby_suppression_multiplier:
