@@ -13,12 +13,33 @@ type RangeType = {
   max: number;
 };
 
-type WeaponProjectileType = "none" | "direct" | "artillery" | "mortar";
+type WeaponProjectileType = "none" | "direct" | "trajectory" | "artillery";
 
-type ProjectileMeta = {
+type ProjectileTrajectoryType = "none" | "projectile_trajectory";
+
+type ProjectileFiringAngleType =
+  | "low_angle"
+  | "high_angle"
+  | "lowest_non_collide_angle"
+  | "unknown";
+
+type ProjectileData = {
   id: string;
   path: string;
   isArtillery: boolean;
+
+  speed: number;
+  speedDistanceMultiplier: number;
+  speedIncrement: number;
+  firingAngleType: ProjectileFiringAngleType;
+  nonCollideStartAngle: number;
+  nonCollideEndAngle: number;
+  gravityMultiplier: number;
+
+  delayDetonateTime: number;
+
+  trajectoryType: ProjectileTrajectoryType;
+  trajectoryTimeSeconds: number;
 };
 
 export type WeaponStatsType = {
@@ -141,6 +162,20 @@ export type WeaponStatsType = {
   projectile_path: string;
   projectile_is_artillery: boolean;
   projectile_type: WeaponProjectileType;
+  projectile_speed: number;
+  projectile_speed_distance_multiplier: number;
+  projectile_speed_increment: number;
+  projectile_firing_angle_type: ProjectileFiringAngleType;
+  projectile_non_collide_start_angle: number;
+  projectile_non_collide_end_angle: number;
+  projectile_gravity_multiplier: number;
+
+  projectile_delay_detonate_time: number;
+
+  projectile_trajectory_type: ProjectileTrajectoryType;
+  projectile_trajectory_time_seconds: number;
+
+  projectile_midair_detonation_height: number;
 
   range: RangeType;
 
@@ -170,6 +205,7 @@ export type WeaponStatsType = {
   scatter_moving_scatter_distance_multiplier: number;
 
   setup_time: number;
+  setup_requires_aim_elevation: boolean;
 
   suppression_amount: number;
   suppression_nearby_suppression_multiplier: number;
@@ -234,10 +270,6 @@ const getIdFromInstanceReference = (instanceReference = "") => {
   return instanceReference.replace(/\\/g, "/").split("/").filter(Boolean).slice(-1)[0] || "";
 };
 
-const isMortarProjectileName = (...values: string[]) => {
-  return values.some((value) => value.toLowerCase().includes("mortar"));
-};
-
 const getExtensionName = (extension: any) => {
   return extension?.exts?.template_reference?.value?.split("\\").slice(-1)[0] || "";
 };
@@ -254,8 +286,31 @@ const isProjectileContainer = (_key: string, obj: any) => {
   return !!getProjectileExt(obj);
 };
 
+const getTemplateReferenceValue = (node: any) => {
+  return node?.template_reference?.value || "";
+};
+
+const getProjectileTrajectoryType = (trajectoryOption: any): ProjectileTrajectoryType => {
+  const value = getTemplateReferenceValue(trajectoryOption).toLowerCase();
+
+  if (value.includes("projectile_trajectory_option")) return "projectile_trajectory";
+
+  return "none";
+};
+
+const getProjectileFiringAngleType = (value: unknown): ProjectileFiringAngleType => {
+  switch (value) {
+    case "low_angle":
+    case "high_angle":
+    case "lowest_non_collide_angle":
+      return value;
+    default:
+      return "unknown";
+  }
+};
+
 const getProjectileMetadataMap = (ebpsRoot: any) => {
-  const projectileMap = new Map<string, ProjectileMeta>();
+  const projectileMap = new Map<string, ProjectileData>();
 
   for (const obj in ebpsRoot) {
     const projectileSet = traverseTree(
@@ -263,11 +318,28 @@ const getProjectileMetadataMap = (ebpsRoot: any) => {
       isProjectileContainer,
       (filename: string, subtree: any, jsonPath: string) => {
         const projectileExt = getProjectileExt(subtree);
+        const artillery = projectileExt?.artillery || {};
+        const trajectoryOption = projectileExt?.trajectory_option || {};
+        const trajectoryType = getProjectileTrajectoryType(trajectoryOption);
 
         return {
           id: filename,
           path: jsonPath,
-          isArtillery: relicBoolean(projectileExt?.artillery?.is_artillery, false),
+          isArtillery: relicBoolean(artillery.is_artillery, false),
+
+          speed: projectileExt?.speed ?? 0,
+          speedDistanceMultiplier: artillery.speed_distance_multiplier ?? 0,
+          speedIncrement: artillery.speed_increment ?? 0,
+          firingAngleType: getProjectileFiringAngleType(artillery.firing_angle_type),
+          nonCollideStartAngle: artillery.non_collide_start_angle ?? 10,
+          nonCollideEndAngle: artillery.non_collide_end_angle ?? 89,
+          gravityMultiplier: artillery.gravity_multiplier ?? 1,
+
+          delayDetonateTime: projectileExt?.delay_detonate_time ?? 0,
+
+          trajectoryType,
+          trajectoryTimeSeconds:
+            trajectoryType === "projectile_trajectory" ? (trajectoryOption.time_seconds ?? 0) : 0,
         };
       },
       obj,
@@ -288,14 +360,14 @@ const mapWeaponData = (
   jsonPath: string,
   parent: string,
   locale = "en",
-  projectileMap: Map<string, ProjectileMeta> = new Map(),
+  projectileMap: Map<string, ProjectileData> = new Map(),
 ) => {
   const weapon_bag: WeaponBagSchema["weapon_bag"] = node.weapon_bag;
 
   const rangeDistance = {
-    near: weapon_bag.range?.distance?.near || -1,
-    mid: weapon_bag.range?.distance?.mid || -1,
-    far: weapon_bag.range?.distance?.far || -1,
+    near: weapon_bag.range?.distance?.near ?? -1,
+    mid: weapon_bag.range?.distance?.mid ?? -1,
+    far: weapon_bag.range?.distance?.far ?? -1,
     min: weapon_bag.range?.min || 0,
     max: weapon_bag.range?.max || 0,
   };
@@ -304,7 +376,7 @@ const mapWeaponData = (
     rangeDistance.near = rangeDistance.min;
   }
   if (rangeDistance.mid === -1) {
-    rangeDistance.mid = (rangeDistance.max - rangeDistance.min) / 2;
+    rangeDistance.mid = (rangeDistance.max + rangeDistance.min) / 2;
   }
   if (rangeDistance.far === -1) {
     rangeDistance.far = rangeDistance.max;
@@ -312,14 +384,14 @@ const mapWeaponData = (
 
   const projectilePath = weapon_bag.projectile?.projectile?.instance_reference || "";
   const projectileId = getIdFromInstanceReference(projectilePath);
-  const projectileMeta = projectileId ? projectileMap.get(projectileId) : undefined;
+  const projectileData = projectileId ? projectileMap.get(projectileId) : undefined;
 
   const projectileType: WeaponProjectileType = !projectileId
     ? "none"
-    : projectileMeta?.isArtillery
-      ? "artillery"
-      : isMortarProjectileName(projectileId, projectilePath, projectileMeta?.path || "")
-        ? "mortar"
+    : projectileData?.trajectoryType === "projectile_trajectory"
+      ? "trajectory"
+      : projectileData?.isArtillery
+        ? "artillery"
         : "direct";
 
   // todo remove redundancy
@@ -481,6 +553,20 @@ const mapWeaponData = (
       projectile_path: projectilePath,
       projectile_is_artillery: projectileType === "artillery",
       projectile_type: projectileType,
+      projectile_speed: projectileData?.speed ?? 0,
+      projectile_speed_distance_multiplier: projectileData?.speedDistanceMultiplier ?? 0,
+      projectile_speed_increment: projectileData?.speedIncrement ?? 0,
+      projectile_firing_angle_type: projectileData?.firingAngleType ?? "unknown",
+      projectile_non_collide_start_angle: projectileData?.nonCollideStartAngle ?? 10,
+      projectile_non_collide_end_angle: projectileData?.nonCollideEndAngle ?? 89,
+      projectile_gravity_multiplier: projectileData?.gravityMultiplier ?? 1,
+
+      projectile_delay_detonate_time: projectileData?.delayDetonateTime ?? 0,
+
+      projectile_trajectory_type: projectileData?.trajectoryType ?? "none",
+      projectile_trajectory_time_seconds: projectileData?.trajectoryTimeSeconds ?? 0,
+
+      projectile_midair_detonation_height: weapon_bag.projectile?.midair_detonation_height ?? 0,
 
       range_distance_near: rangeDistance.near,
       range_distance_mid: rangeDistance.mid,
@@ -518,6 +604,7 @@ const mapWeaponData = (
         weapon_bag.scatter?.movement_scatter_distance_multiplier ?? 1,
 
       setup_time: weapon_bag.setup?.duration || 0,
+      setup_requires_aim_elevation: relicBoolean(weapon_bag.setup?.requires_aim_elevation, false),
 
       suppression_amount: weapon_bag.suppression?.amount || 0,
       suppression_nearby_suppression_multiplier:
