@@ -119,7 +119,7 @@
     "lint-staged": "15.5.2",
     "next-sitemap": "4.2.3",
     "postcss-preset-mantine": "1.18.0",
-    "prettier": "3.7.4",
+    "prettier": "3.8.4",
     "typescript": "5.9.3",
     "vercel": "50.33.1"
   }
