@@ -428,14 +428,14 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
       // skip non base factions
       if (!isBaseFaction(item.faction)) return;
 
-      if (unitToBeIgnored(item.id, true)) return;
-
-      // filter by relevant weapon types
+      // Filter by relevant weapon types
       switch (item.unitType) {
         case "emplacements": // Buildable outside base (AA guns, AT guns).
         case "infantry": // General infantry.
         case "team_weapons": // MGs, artillery (the mobile ones).
         case "vehicles": // General vehicles (tanks, armoured cars).
+          // Filter over here, when we get rid of other stuff
+          if (unitToBeIgnored(item.id, true)) return;
           sbpsSetAll.push(item);
           break;
         default:
