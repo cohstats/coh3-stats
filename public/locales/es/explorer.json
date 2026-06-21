@@ -59,7 +59,7 @@
     "construct": "Puede construir",
     "free": "Gratis",
     "weaponNote": "La precisión efectiva es impactada por distintos factores como el tamaño del objetivo o la armadura de la unidad que recibe fuego, tambien como la precisión y penetración del atacante.",
-    "importantNote": "Nota importante: Esta sección muestra todas las unidades disponibles en el juego, incluyendo las exclusivas de la campaña."
+    "importantNote": "Esta sección puede incluir algunas unidades que no son accesibles en el modo escaramuza estándar / multijugador."
   },
   "statsCard": {
     "sightRange": "Alcance de visión",

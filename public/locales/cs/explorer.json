@@ -59,7 +59,7 @@
     "construct": "Může stavět",
     "free": "Zdarma",
     "weaponNote": "Efektivní přesnost je ovlivněna několika faktory, jako je velikost cíle nebo brnění přijímající jednotky, stejně jako přesnost nebo průraznost útočící jednotky.",
-    "importantNote": "Důležitá poznámka: Tato sekce zobrazuje všechny jednotky dostupné ve hře, včetně těch pouze v kampani."
+    "importantNote": "Tato sekce může zahrnovat některé jednotky, které nejsou dostupné ve standardní šarvátce / multiplayerové hře."
   },
   "statsCard": {
     "sightRange": "Dohled",

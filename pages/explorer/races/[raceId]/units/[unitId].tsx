@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import {
+  Box,
   Card,
   Container,
   Flex,
@@ -409,7 +410,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   placement="singleUnit"
                 />
               </Card>
-              <div style={{ display: "flex", alignItems: "stretch" }}>
+              <Box style={{ display: "flex", alignItems: "stretch" }} visibleFrom="sm">
                 <Link href={getExplorerFactionRoute(raceId)} data-testid="faction-link">
                   <FactionIcon
                     name={raceId}
@@ -417,7 +418,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                     style={{ height: "100%", objectFit: "contain" }}
                   />
                 </Link>
-              </div>
+              </Box>
             </Group>
           </Grid.Col>
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>

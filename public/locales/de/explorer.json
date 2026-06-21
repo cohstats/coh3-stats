@@ -59,7 +59,7 @@
     "construct": "Kann bauen",
     "free": "Kostenlos",
     "weaponNote": "Die effektive Genauigkeit wird durch mehrere Faktoren beeinflusst, wie die Zielgröße oder die Panzerung der angegriffenen Einheit sowie die Genauigkeit oder Durchschlagskraft der angreifenden Einheit.",
-    "importantNote": "Wichtiger Hinweis: Dieser Bereich zeigt alle im Spiel verfügbaren Einheiten, einschließlich der nur in der Kampagne verfügbaren."
+    "importantNote": "Dieser Bereich kann einige Einheiten enthalten, die im Standard-Gefecht / Multiplayer-Spiel nicht verfügbar sind."
   },
   "statsCard": {
     "sightRange": "Sichtweite",

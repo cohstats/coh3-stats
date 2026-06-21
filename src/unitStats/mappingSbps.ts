@@ -6,6 +6,7 @@ import config from "../../config";
 import { internalSlash } from "../utils";
 import { extractRequirements } from "./requirement-utils";
 import { getStateTreeSpawnMapping } from "./workarounds";
+import { unitToBeIgnored } from "./coh3-unit-configs";
 
 type SpawnWeaponData = {
   pbg: string;
@@ -427,12 +428,14 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
       // skip non base factions
       if (!isBaseFaction(item.faction)) return;
 
-      // filter by relevant weapon types
+      // Filter by relevant weapon types
       switch (item.unitType) {
         case "emplacements": // Buildable outside base (AA guns, AT guns).
         case "infantry": // General infantry.
         case "team_weapons": // MGs, artillery (the mobile ones).
         case "vehicles": // General vehicles (tanks, armoured cars).
+          // Filter over here, when we get rid of other stuff
+          if (unitToBeIgnored(item.id)) return;
           sbpsSetAll.push(item);
           break;
         default:
