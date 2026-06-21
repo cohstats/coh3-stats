@@ -435,7 +435,7 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
         case "team_weapons": // MGs, artillery (the mobile ones).
         case "vehicles": // General vehicles (tanks, armoured cars).
           // Filter over here, when we get rid of other stuff
-          if (unitToBeIgnored(item.id, true)) return;
+          if (unitToBeIgnored(item.id)) return;
           sbpsSetAll.push(item);
           break;
         default:
