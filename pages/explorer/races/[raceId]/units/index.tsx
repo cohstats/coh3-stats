@@ -66,6 +66,60 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
     );
   });
 
+  // Split filtered units into 4 categories
+  const infantryUnits = filteredUnits.filter((unit) => unit.unitType === "infantry");
+  const teamWeaponUnits = filteredUnits.filter((unit) => unit.unitType === "team_weapons");
+  const vehicleUnits = filteredUnits.filter((unit) => unit.unitType === "vehicles");
+  const emplacementUnits = filteredUnits.filter((unit) => unit.unitType === "emplacements");
+
+  // Helper function to render a unit category
+  const renderUnitCategory = (title: string, units: SbpsType[]) => {
+    if (units.length === 0) return null;
+
+    return (
+      <Stack gap="md">
+        <Title order={3}>{title}</Title>
+        <Grid>
+          {units.map(({ id, ui }) => {
+            if (ui.screenName) {
+              return (
+                <Grid.Col key={id} span={{ xs: 12, md: 6 }}>
+                  <Anchor
+                    c="undefined"
+                    underline={"never"}
+                    style={{
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                    }}
+                    component={LinkWithOutPrefetch}
+                    href={getExplorerUnitRoute(raceToFetch, id)}
+                  >
+                    <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+                      <UnitDescriptionCard
+                        faction={raceToFetch}
+                        desc={{
+                          screen_name: ui.screenName,
+                          help_text: ui.helpText,
+                          brief_text: ui.briefText,
+                          symbol_icon_name: ui.symbolIconName,
+                          icon_name: ui.iconName,
+                        }}
+                        placement="list"
+                      />
+                    </Card>
+                  </Anchor>
+                </Grid.Col>
+              );
+            } else {
+              return null;
+            }
+          })}
+        </Grid>
+      </Stack>
+    );
+  };
+
   return (
     <>
       <Head>
@@ -100,43 +154,10 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             />
           </Flex>
 
-          <Grid>
-            {filteredUnits.map(({ id, ui }) => {
-              if (ui.screenName) {
-                return (
-                  <Grid.Col key={id} span={{ xs: 12, md: 6 }}>
-                    <Anchor
-                      c="undefined"
-                      underline={"never"}
-                      style={{
-                        "&:hover": {
-                          textDecoration: "none",
-                        },
-                      }}
-                      component={LinkWithOutPrefetch}
-                      href={getExplorerUnitRoute(raceToFetch, id)}
-                    >
-                      <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder>
-                        <UnitDescriptionCard
-                          faction={raceToFetch}
-                          desc={{
-                            screen_name: ui.screenName,
-                            help_text: ui.helpText,
-                            brief_text: ui.briefText,
-                            symbol_icon_name: ui.symbolIconName,
-                            icon_name: ui.iconName,
-                          }}
-                          placement="list"
-                        />
-                      </Card>
-                    </Anchor>
-                  </Grid.Col>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </Grid>
+          {renderUnitCategory("Infantry", infantryUnits)}
+          {renderUnitCategory("Team Weapons", teamWeaponUnits)}
+          {renderUnitCategory("Vehicles", vehicleUnits)}
+          {renderUnitCategory("Emplacements", emplacementUnits)}
         </Stack>
         <Flex direction="row" align="center" gap={16} mt={24}>
           <IconBarrierBlock size={50} />
