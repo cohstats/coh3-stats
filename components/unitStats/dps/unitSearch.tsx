@@ -126,6 +126,17 @@ export const UnitSearch = (props: ISearchProps) => {
     props.onSelect(id, props.position);
   };
 
+  const customFilter: SelectProps["filter"] = ({ options, search }) => {
+    const searchValue = search.toLowerCase().trim();
+    return options.filter((option) => {
+      // Get the actual CustomizableUnit from the option
+      const unit = option as unknown as CustomizableUnit;
+      const matchesId = unit.id.toLowerCase().includes(searchValue);
+      const matchesName = unit.screen_name.toLowerCase().includes(searchValue);
+      return matchesId || matchesName;
+    });
+  };
+
   return (
     <Select
       placeholder="Choose unit"
@@ -138,6 +149,7 @@ export const UnitSearch = (props: ISearchProps) => {
       nothingFoundMessage="Nobody here. War is over!"
       onChange={(value) => onSelectionChange(value)}
       disabled={props.disabled}
+      filter={customFilter}
     />
   );
 };
