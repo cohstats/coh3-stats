@@ -63,8 +63,12 @@ const MapsWinRateRMSChart: React.FC<IProps> = ({ data }) => {
       colors={{ scheme: "nivo" }}
       colorBy={"indexValue"}
       theme={getNivoTooltipTheme(colorScheme)}
-      minValue={0}
-      maxValue={max}
+      valueScale={{
+        type: "linear",
+        min: 0,
+        max: max,
+        clamp: true,
+      }}
       labelSkipWidth={21}
       axisLeft={{
         tickSize: 5,

@@ -56,8 +56,12 @@ const MapsWinRateDiffChart: React.FC<IProps> = ({ data }) => {
       colors={{ scheme: "nivo" }}
       colorBy={"indexValue"}
       theme={getNivoTooltipTheme(colorScheme)}
-      minValue={min}
-      maxValue={max}
+      valueScale={{
+        type: "linear",
+        min: min,
+        max: max,
+        clamp: true,
+      }}
       labelSkipWidth={21}
       axisLeft={{
         tickSize: 5,

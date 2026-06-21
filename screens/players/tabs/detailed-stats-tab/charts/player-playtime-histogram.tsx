@@ -51,8 +51,10 @@ const PlayerPlayTimeHistogramChart: React.FC<IProps> = ({ data }) => {
       theme={getNivoTooltipTheme(colorScheme)}
       // colors={{ scheme: 'blues' }}
       // colorBy={"indexValue"}
-      minValue={0}
-      maxValue={"auto"}
+      valueScale={{
+        type: "linear",
+        min: 0,
+      }}
       innerPadding={2}
       defs={[
         {
