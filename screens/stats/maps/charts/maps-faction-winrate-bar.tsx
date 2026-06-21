@@ -68,8 +68,12 @@ const MapsFactionWinRateChart: React.FC<IProps> = ({ data }) => {
       colors={{ scheme: "nivo" }}
       // colorBy={"indexValue"}
       theme={getNivoTooltipTheme(colorScheme)}
-      minValue={min}
-      maxValue={max}
+      valueScale={{
+        type: "linear",
+        min: min,
+        max: max,
+        clamp: true,
+      }}
       animate={false}
       labelSkipHeight={10}
       axisLeft={{

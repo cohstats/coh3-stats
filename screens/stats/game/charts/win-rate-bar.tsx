@@ -34,8 +34,12 @@ const WinRateBarChart: React.FC<IProps> = ({ data }) => {
       indexBy="faction"
       colors={{ scheme: "nivo" }}
       colorBy={"id"}
-      minValue={0}
-      maxValue={100}
+      valueScale={{
+        type: "linear",
+        min: 0,
+        max: 100,
+        clamp: true,
+      }}
       innerPadding={4}
       theme={getNivoTooltipTheme(colorScheme)}
       axisLeft={{
