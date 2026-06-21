@@ -75,7 +75,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
         {generateAlternateLanguageLinks(asPath)}
       </Head>
-      <Container fluid p={0}>
+      <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="center" gap="md">
           <FactionIcon name={raceToFetch} width={80}></FactionIcon>
           <Stack gap="xs">
@@ -86,13 +86,6 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
               <Text size="md">{descriptions[raceToFetch].description}</Text>
             )}
           </Stack>
-        </Flex>
-
-        <Flex direction="row" align="center" gap={16} mt={24}>
-          <IconBarrierBlock size={50} />
-          <Text c="orange.6" fs="italic">
-            {t("unitPage.importantNote")}
-          </Text>
         </Flex>
 
         <Stack mt={32}>
@@ -145,6 +138,12 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             })}
           </Grid>
         </Stack>
+        <Flex direction="row" align="center" gap={16} mt={24}>
+          <IconBarrierBlock size={50} />
+          <Text c="orange.6" fs="italic">
+            {t("unitPage.importantNote")}
+          </Text>
+        </Flex>
       </Container>
     </>
   );
