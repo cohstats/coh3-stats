@@ -6,6 +6,7 @@ import config from "../../config";
 import { internalSlash } from "../utils";
 import { extractRequirements } from "./requirement-utils";
 import { getStateTreeSpawnMapping } from "./workarounds";
+import { unitToBeIgnored } from "./coh3-unit-configs";
 
 type SpawnWeaponData = {
   pbg: string;
@@ -426,6 +427,8 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
     sbpsSet.forEach((item: SbpsType) => {
       // skip non base factions
       if (!isBaseFaction(item.faction)) return;
+
+      if (unitToBeIgnored(item.id, true)) return;
 
       // filter by relevant weapon types
       switch (item.unitType) {

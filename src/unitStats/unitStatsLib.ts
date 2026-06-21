@@ -68,14 +68,9 @@ export const getFactionIcon = (folderName: string): string => {
 };
 
 export const isBaseFaction = (faction: string): boolean => {
-  return [
-    "afrika_corps",
-    "afrika_korps",
-    "american",
-    "german",
-    "british",
-    "british_africa",
-  ].includes(faction);
+  return ["afrika_corps", "afrika_korps", "american", "german", "british_africa"].includes(
+    faction,
+  );
 };
 
 // maybe this can be helpful to find undefined properties

@@ -23,7 +23,6 @@ import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../next-i18next.config";
 import config from "../../../../../config";
 import { useTranslation } from "next-i18next";
-import { unitToBeIgnored } from "../../../../../src/unitStats/coh3-unit-configs";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -129,14 +128,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const raceToFetch = (raceId as raceType) || "american";
   const faction = raceToFetch === "dak" ? "afrika_korps" : raceToFetch;
-  const filteredUnits = sbpsData.filter(
-    (squad: SbpsType) => squad.faction.includes(faction) && !unitToBeIgnored(squad.id, true),
-  );
+  const units = sbpsData.filter((squad: SbpsType) => squad.faction.includes(faction));
 
   return {
     props: {
       raceToFetch,
-      units: filteredUnits,
+      units,
       descriptions: getUnitStatsCOH3Descriptions(context.locale),
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },

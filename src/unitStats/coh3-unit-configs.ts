@@ -1,8 +1,6 @@
 const listOfUnitsTobeIgnored = [
   // Has recrewable in the name.
   /_recrewable_/,
-  // End with _uk but not _africa_uk
-  /(?<!_africa)_uk$/,
 ];
 
 const unitToBeIgnored = (unitID: string, debug = false) => {
