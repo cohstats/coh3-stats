@@ -1,7 +1,17 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { IconBarrierBlock } from "@tabler/icons-react";
-import { Anchor, Card, Flex, Grid, Stack, Text, Title, Container } from "@mantine/core";
+import { IconBarrierBlock, IconSearch } from "@tabler/icons-react";
+import {
+  Anchor,
+  Card,
+  Flex,
+  Grid,
+  Stack,
+  Text,
+  Title,
+  Container,
+  TextInput,
+} from "@mantine/core";
 
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import {
@@ -15,7 +25,7 @@ import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
 import { getExplorerUnitRoute } from "../../../../../src/routes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -34,6 +44,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
   const { asPath } = useRouter();
   const { t } = useTranslation("explorer");
   const localizedRace = localizedNames[raceToFetch];
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     AnalyticsExplorerFactionUnitsView(raceToFetch);
@@ -43,6 +54,17 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
     `${localizedRace} coh3`,
     `Unit List ${localizedRace}`,
   ]);
+
+  // Filter units based on search value
+  const filteredUnits = units.filter((unit) => {
+    if (!searchValue) return true;
+    const searchLower = searchValue.toLowerCase();
+    return (
+      unit.ui.screenName?.toLowerCase().includes(searchLower) ||
+      unit.ui.helpText?.toLowerCase().includes(searchLower) ||
+      unit.ui.briefText?.toLowerCase().includes(searchLower)
+    );
+  });
 
   return (
     <>
@@ -74,10 +96,19 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         </Flex>
 
         <Stack mt={32}>
-          <Title order={2}>{descriptions.common?.units || "Units"}</Title>
+          <Flex direction="row" align="center" justify="space-between" gap="md">
+            <Title order={2}>{descriptions.common?.units || "Units"}</Title>
+            <TextInput
+              placeholder="Search units"
+              leftSection={<IconSearch size="1rem" />}
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.currentTarget.value)}
+              style={{ maxWidth: 300 }}
+            />
+          </Flex>
 
           <Grid>
-            {units.map(({ id, ui }) => {
+            {filteredUnits.map(({ id, ui }) => {
               if (ui.screenName) {
                 return (
                   <Grid.Col key={id} span={{ xs: 12, md: 6 }}>

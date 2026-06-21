@@ -13,6 +13,8 @@ const listOfUnitsTobeIgnored = [
   /^stuart_us$/,
   /^truck_4x4_medical_us$/,
   /^truck_6x6_us$/,
+  // Ignore this unit
+  /^assault_grenadier_ger$/,
 ];
 
 const unitToBeIgnored = (unitID: string, debug = false) => {
