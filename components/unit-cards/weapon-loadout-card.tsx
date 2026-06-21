@@ -6,6 +6,7 @@ import {
   Image,
   Stack,
   Text,
+  Tooltip,
   Title,
   useMantineTheme,
 } from "@mantine/core";
@@ -77,6 +78,25 @@ const WeaponCardIcons = {
   projectile_avoidance_arc_max:
     "/icons/unit_status/bw2/designated_artillery_overwatch_active.png",
 } as const;
+
+const StatLabel = ({ label, tooltip }: { label: React.ReactNode; tooltip?: string }) => {
+  if (!tooltip) {
+    return <Text>{label}</Text>;
+  }
+
+  return (
+    <Tooltip label={tooltip} multiline w={300} withArrow openDelay={250} withinPortal>
+      <Text
+        style={{
+          width: "fit-content",
+          cursor: "help",
+        }}
+      >
+        {label}
+      </Text>
+    </Tooltip>
+  );
+};
 
 type AoeFalloffValues = {
   near: number;
@@ -269,26 +289,37 @@ export const WeaponLoadoutCard = (
     {
       key: "accuracy",
       label: t("weaponCard.accuracy"),
+      tooltip: t("weaponCard.onTheMoveAccuracyTooltip"),
       value: weapon_bag.moving_accuracy_multiplier,
     },
     {
       key: "burstDuration",
       label: t("weaponCard.burstDuration"),
+      tooltip: t("weaponCard.onTheMoveBurstTooltip"),
       value: weapon_bag.moving_burst_multiplier,
     },
     {
       key: "cooldown",
       label: t("weaponCard.cooldown"),
+      tooltip: t("weaponCard.onTheMoveCooldownTooltip"),
       value: weapon_bag.moving_cooldown_multiplier,
     },
     {
       key: "scatterAngle",
       label: t("weaponCard.scatterAngle"),
+      tooltip: t("weaponCard.scatterAngleTooltip"),
       value: weapon_bag.scatter_moving_scatter_angle_multiplier,
     },
     {
       key: "scatterDistance",
       label: t("weaponCard.scatterDistance"),
+      tooltip: t("weaponCard.scatterDistanceTooltip", {
+        scatterDistanceMax: roundValue(weapon_bag.scatter_distance_scatter_max, 1),
+        scatterOffsetMax: roundValue(
+          weapon_bag.scatter_distance_scatter_offset * weapon_bag.scatter_distance_scatter_max,
+          1,
+        ),
+      }),
       value: weapon_bag.scatter_moving_scatter_distance_multiplier,
     },
   ];
@@ -319,7 +350,9 @@ export const WeaponLoadoutCard = (
             key={column.key}
             span={{ base: movingStatColumnSpan, md: movingStatColumnSpan }}
           >
-            <CenterText value={column.label} />
+            <Flex justify="center">
+              <StatLabel label={column.label} tooltip={column.tooltip} />
+            </Flex>
           </Grid.Col>
         ))}
       </Grid>
@@ -334,9 +367,10 @@ export const WeaponLoadoutCard = (
 
       return (
         <Flex align="center" justify="center" gap={6} wrap="nowrap">
-          <Text>
-            {t("weaponCard.onTheMove")} {column.label}
-          </Text>
+          <StatLabel
+            label={`${t("weaponCard.onTheMove")} ${column.label}`}
+            tooltip={column.tooltip ?? t("weaponCard.onTheMoveTooltip")}
+          />
           <Text c="orange.6">{formatMultiplier(column.value, "×1")}</Text>
         </Flex>
       );
@@ -345,7 +379,10 @@ export const WeaponLoadoutCard = (
     return (
       <Grid gutter="xs">
         <Grid.Col span={{ base: movingLabelColumnSpan, md: movingLabelColumnSpan }}>
-          <Text>{t("weaponCard.onTheMove")}</Text>
+          <StatLabel
+            label={t("weaponCard.onTheMove")}
+            tooltip={t("weaponCard.onTheMoveTooltip")}
+          />
         </Grid.Col>
 
         {movingModifierColumns.map((column) => (
@@ -413,12 +450,14 @@ export const WeaponLoadoutCard = (
 
   const RangeStatRow = ({
     label,
+    tooltip,
     near,
     mid,
     far,
     show = true,
   }: {
     label: string;
+    tooltip?: string;
     near: React.ReactNode;
     mid: React.ReactNode;
     far: React.ReactNode;
@@ -429,7 +468,7 @@ export const WeaponLoadoutCard = (
     return (
       <Grid gutter="xs">
         <Grid.Col span={{ base: 4, md: 4 }}>
-          <Text>{label}</Text>
+          <StatLabel label={label} tooltip={tooltip} />
         </Grid.Col>
         <Grid.Col span={{ base: 3, md: 3 }}>
           <CenterText color="green.6" value={near} />
@@ -446,6 +485,7 @@ export const WeaponLoadoutCard = (
 
   type RangeStatRowConfig = {
     label: string;
+    tooltip?: string;
     near: React.ReactNode;
     mid: React.ReactNode;
     far: React.ReactNode;
@@ -483,6 +523,7 @@ export const WeaponLoadoutCard = (
           <RangeStatRow
             key={row.label}
             label={row.label}
+            tooltip={row.tooltip}
             near={row.near}
             mid={row.mid}
             far={row.far}
@@ -494,13 +535,21 @@ export const WeaponLoadoutCard = (
 
   type CompactStatItemConfig = {
     label: string;
+    tooltip?: string;
     value: React.ReactNode;
     icon?: string;
     alt?: string;
     show?: boolean;
   };
 
-  const CompactStatItem = ({ label, value, icon, alt, show = true }: CompactStatItemConfig) => {
+  const CompactStatItem = ({
+    label,
+    tooltip,
+    value,
+    icon,
+    alt,
+    show = true,
+  }: CompactStatItemConfig) => {
     if (!show) return null;
 
     return (
@@ -516,7 +565,7 @@ export const WeaponLoadoutCard = (
           />
         )}
 
-        <Text>{label}</Text>
+        <StatLabel label={label} tooltip={tooltip} />
         <Text c="orange.6">{value}</Text>
       </Flex>
     );
@@ -596,7 +645,14 @@ export const WeaponLoadoutCard = (
 
         <Grid gutter="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
-            <Text fw={600}>{t("weaponCard.targetModifiers")}</Text>
+            <Flex align="center" gap={4}>
+              <Text fw={600}>{t("weaponCard.targetModifiers")}</Text>
+              <HelperIcon
+                text={t("weaponCard.targetModifiersTooltip")}
+                width={300}
+                iconSize={16}
+              />
+            </Flex>
           </Grid.Col>
 
           <Grid.Col span={{ base: 2, md: 2 }}>
@@ -1423,6 +1479,7 @@ export const WeaponLoadoutCard = (
             {
               show: usesAccuracy,
               label: t("weaponCard.accuracy"),
+              tooltip: t("weaponCard.accuracyTooltip"),
               near: formatPercent(weapon_bag.accuracy_near),
               mid: formatPercent(weapon_bag.accuracy_mid),
               far: formatPercent(weapon_bag.accuracy_far),
@@ -1430,6 +1487,7 @@ export const WeaponLoadoutCard = (
             {
               show: !usesAccuracy && weapon_bag.projectile_type !== "none",
               label: t("weaponCard.scatter"),
+              tooltip: t("weaponCard.scatterTooltip"),
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
@@ -1437,6 +1495,7 @@ export const WeaponLoadoutCard = (
             {
               show: !usesAccuracy && weapon_bag.projectile_type !== "none" && showScatterOffset,
               label: t("weaponCard.scatterOffset"),
+              tooltip: t("weaponCard.scatterOffsetTooltip"),
               near: formatScatterOffset(scatterOffsetNear),
               mid: formatScatterOffset(scatterOffsetMid),
               far: formatScatterOffset(scatterOffsetFar),
@@ -1444,12 +1503,14 @@ export const WeaponLoadoutCard = (
             {
               show: showSustainedStats,
               label: t("weaponCard.rpm"),
+              tooltip: t("weaponCard.rpmTooltip"),
               near: rpmNear,
               mid: rpmMid,
               far: rpmFar,
             },
             {
               label: t("weaponCard.penetration"),
+              tooltip: t("weaponCard.penetrationTooltip"),
               near: weapon_bag.penetration_near,
               mid: weapon_bag.penetration_mid,
               far: weapon_bag.penetration_far,
@@ -1463,6 +1524,7 @@ export const WeaponLoadoutCard = (
             {
               show: usesAccuracy && weapon_bag.projectile_type !== "none",
               label: t("weaponCard.scatter"),
+              tooltip: t("weaponCard.scatterTooltip"),
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
@@ -1470,6 +1532,7 @@ export const WeaponLoadoutCard = (
             {
               show: usesAccuracy && weapon_bag.projectile_type !== "none" && showScatterOffset,
               label: t("weaponCard.scatterOffset"),
+              tooltip: t("weaponCard.scatterOffsetTooltip"),
               near: formatScatterOffset(scatterOffsetNear),
               mid: formatScatterOffset(scatterOffsetMid),
               far: formatScatterOffset(scatterOffsetFar),
@@ -1477,6 +1540,7 @@ export const WeaponLoadoutCard = (
             {
               show: showSuppression,
               label: t("weaponCard.suppressionPerSecond"),
+              tooltip: t("weaponCard.suppressionPerSecondTooltip"),
               near: suppressionNear,
               mid: suppressionMid,
               far: suppressionFar,
@@ -1484,6 +1548,7 @@ export const WeaponLoadoutCard = (
             {
               show: showDamageDistribution,
               label: t("weaponCard.damageSpread"),
+              tooltip: t("weaponCard.damageSpreadTooltip"),
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
@@ -1491,6 +1556,7 @@ export const WeaponLoadoutCard = (
             {
               show: showIncrementalTargetRadius,
               label: t("weaponCard.incrementalTargetRadius"),
+              tooltip: t("weaponCard.incrementalTargetRadiusTooltip"),
               near: weapon_bag.burst_incremental_target_table_search_radius_near,
               mid: weapon_bag.burst_incremental_target_table_search_radius_mid,
               far: weapon_bag.burst_incremental_target_table_search_radius_far,
@@ -1507,6 +1573,7 @@ export const WeaponLoadoutCard = (
             {
               show: showProjectileTravelTime && weapon_bag.projectile_is_artillery,
               label: t("weaponCard.projectileTravelTime"),
+              tooltip: t("weaponCard.projectileTravelTimeTooltip"),
               near:
                 projectileTravelTimeNear === null
                   ? "—"
@@ -1523,6 +1590,7 @@ export const WeaponLoadoutCard = (
             {
               show: weapon_bag.burst_can_burst && showSustainedStats,
               label: t("weaponCard.burstDuration"),
+              tooltip: t("weaponCard.burstDurationTooltip"),
               near: formatSeconds(timingNear.burstDuration),
               mid: formatSeconds(timingMid.burstDuration),
               far: formatSeconds(timingFar.burstDuration),
@@ -1530,6 +1598,7 @@ export const WeaponLoadoutCard = (
             {
               show: showRefireTime && showSustainedStats,
               label: t("weaponCard.timeBetweenShots"),
+              tooltip: t("weaponCard.timeBetweenShotsTooltip"),
               near: formatSeconds(timingNear.timeBetweenBurstsReload + timingNear.burstDuration),
               mid: formatSeconds(timingMid.timeBetweenBurstsReload + timingMid.burstDuration),
               far: formatSeconds(timingFar.timeBetweenBurstsReload + timingFar.burstDuration),
@@ -1537,6 +1606,7 @@ export const WeaponLoadoutCard = (
             {
               show: showShotDelay && showSustainedStats,
               label: t("weaponCard.timeBetweenShotsMag"),
+              tooltip: t("weaponCard.timeBetweenShotsMagTooltip"),
               near: formatSeconds(
                 timingNear.timeBetweenBurstsCooldown + timingNear.burstDuration,
               ),
@@ -1546,6 +1616,7 @@ export const WeaponLoadoutCard = (
             {
               show: showTimeBetweenBursts && showSustainedStats,
               label: t("weaponCard.timeBetweenBursts"),
+              tooltip: t("weaponCard.timeBetweenBurstsTooltip"),
               near: formatSeconds(timingNear.timeBetweenBurstsCooldown),
               mid: formatSeconds(timingMid.timeBetweenBurstsCooldown),
               far: formatSeconds(timingFar.timeBetweenBurstsCooldown),
@@ -1553,6 +1624,7 @@ export const WeaponLoadoutCard = (
             {
               show: showReloadCycle && showSustainedStats,
               label: t("weaponCard.reloadCycle"),
+              tooltip: t("weaponCard.reloadCycleTooltip"),
               near: formatSeconds(
                 timingNear.timeBetweenBurstsReload +
                   (weapon_bag.burst_can_burst ? 0 : timingNear.burstDuration),
@@ -1577,6 +1649,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["deflection_damage"],
               alt: "weapon deflection damage",
               label: t("weaponCard.deflectionDamage"),
+              tooltip: t("weaponCard.deflectionDamageTooltip"),
               value:
                 (weapon_bag.deflection_damage_multiplier *
                   (weapon_bag.damage_max + weapon_bag.damage_min)) /
@@ -1587,6 +1660,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["aim_time"],
               alt: "weapon aim time",
               label: aimAndWindUpLabel,
+              tooltip: t("weaponCard.aimTimeWithWindUpTooltip"),
               value: formatMinMaxSeconds(readyAimMin + windUp, readyAimMax + windUp),
               show: hasAimTime || hasWindUp,
             },
@@ -1594,6 +1668,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["projectile_travel_time"],
               alt: "weapon projectile travel time",
               label: t("weaponCard.projectileTravelTime"),
+              tooltip: t("weaponCard.projectileTravelTimeTooltip"),
               value:
                 projectileTravelTimeFar === null ? "—" : formatSeconds(projectileTravelTimeFar),
               show: showProjectileTravelTime && weapon_bag.projectile_type === "trajectory",
@@ -1602,6 +1677,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["detonation_delay"],
               alt: "weapon detonation delay",
               label: t("weaponCard.detonationDelay"),
+              tooltip: t("weaponCard.detonationDelayTooltip"),
               value: formatSeconds(weapon_bag.projectile_delay_detonate_time),
               show: weapon_bag.projectile_delay_detonate_time > 0,
             },
@@ -1609,6 +1685,9 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["projectile_avoidance_arc_max"],
               alt: "weapon projectile avoidance arc max",
               label: t("weaponCard.projectileAvoidanceArcMax"),
+              tooltip: t("weaponCard.projectileAvoidanceArcMaxTooltip", {
+                nonCollideMinAngle: weapon_bag.projectile_non_collide_start_angle,
+              }),
               value: `${weapon_bag.projectile_non_collide_end_angle}°`,
               show:
                 weapon_bag.projectile_firing_angle_type === "lowest_non_collide_angle" &&
@@ -1618,6 +1697,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["reload_frequency"],
               alt: "Weapon Reload Frequency",
               label: t("weaponCard.reloadFrequency"),
+              tooltip: t("weaponCard.reloadFrequencyTooltip"),
               value: formatReloadFrequency(),
               show: hasReloadFrequency,
             },
@@ -1625,6 +1705,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["aoe_size"],
               alt: "weapon aoe size",
               label: t("weaponCard.aoeSize"),
+              tooltip: t("weaponCard.aoeSizeTooltip"),
               value: aoeDisplayValue,
               show: showAoeSize,
             },
@@ -1632,6 +1713,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["traverse_speed"],
               alt: "weapon traverse speed",
               label: t("weaponCard.traverseSpeed"),
+              tooltip: t("weaponCard.traverseSpeedTooltip"),
               value: weapon_bag.tracking_normal_speed_horizontal,
               show: weapon_bag.tracking_normal_speed_horizontal < 360,
             },
@@ -1639,6 +1721,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["firing_arc"],
               alt: "weapon firing arc",
               label: t("weaponCard.arc"),
+              tooltip: t("weaponCard.arcTooltip"),
               value: arcDisplay,
               show: showArc,
             },
@@ -1646,6 +1729,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["setup_time"],
               alt: "weapon setup time",
               label: t("weaponCard.setup"),
+              tooltip: t("weaponCard.setupTooltip"),
               value: `${weapon_bag.setup_time}s`,
               show: weapon_bag.setup_time > 0,
             },
@@ -1653,6 +1737,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["teardown_time"],
               alt: "weapon teardown time",
               label: t("weaponCard.teardown"),
+              tooltip: t("weaponCard.teardownTooltip"),
               value: `${weapon_bag.teardown_time}s`,
               show: weapon_bag.teardown_time > 0,
             },
@@ -1660,6 +1745,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["suppression"],
               alt: "weapon suppression",
               label: t("weaponCard.suppression"),
+              tooltip: t("weaponCard.suppressionTooltip"),
               value: weapon_bag.suppression_amount * 100,
               show: weapon_bag.suppression_amount > 0 && !showSustainedStats,
             },
@@ -1667,6 +1753,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["suppression_radius"],
               alt: "weapon suppression radius",
               label: t("weaponCard.suppressionRadius"),
+              tooltip: t("weaponCard.suppressionRadiusTooltip"),
               value: weapon_bag.suppression_nearby_suppression_radius,
               show:
                 weapon_bag.suppression_amount > 0 &&
@@ -1677,6 +1764,7 @@ export const WeaponLoadoutCard = (
               icon: WeaponCardIcons["incremental_accuracy"],
               alt: "weapon incremental target accuracy",
               label: t("weaponCard.incrementalTargetAccuracy"),
+              tooltip: t("weaponCard.incrementalTargetAccuracyTooltip"),
               value: formatMultiplier(
                 weapon_bag.burst_incremental_target_table_accuracy_multiplier,
               ),
@@ -1696,7 +1784,16 @@ export const WeaponLoadoutCard = (
 
         {showAoeFalloff && aoeChartDatasets.length > 0 && (
           <Stack gap={4}>
-            <Text fw={600}>{t("weaponCard.aoeFalloff")}</Text>
+            <Flex align="center" gap={4}>
+              <Text fw={600}>{t("weaponCard.aoeFalloff")}</Text>
+              <HelperIcon
+                text={t("weaponCard.aoeFalloffTooltip", {
+                  aoeCap: weapon_bag.aoe_damage_max_member,
+                })}
+                width={300}
+                iconSize={16}
+              />
+            </Flex>
 
             <Box h={160}>
               <Line data={aoeChartData} options={aoeChartOptions} />

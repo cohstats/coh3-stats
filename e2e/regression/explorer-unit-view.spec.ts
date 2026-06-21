@@ -425,7 +425,7 @@ test.describe("Explorer Unit View Pages", () => {
         await unitPage.checkUnitPageLoaded();
 
         // Check for target modifiers section and types
-        await unitPage.checkBodyContains(["Target Modifiers"]);
+        await unitPage.checkBodyContains(["VS Target - Modifiers"]);
         await unitPage.checkRangeCategoriesVisible([
           "Building",
           "Emplacement",
