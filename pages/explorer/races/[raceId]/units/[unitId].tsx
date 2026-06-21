@@ -62,6 +62,7 @@ import config from "../../../../../config";
 import { getExplorerFactionRoute } from "../../../../../src/routes";
 import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
+import { unitToBeIgnored } from "../../../../../src/unitStats/coh3-unit-configs";
 
 type AbilityWeaponLoadout = {
   ability: AbilitiesType;
@@ -1385,6 +1386,8 @@ export const getStaticPaths: GetStaticPaths<{ unitId: string }> = async () => {
   for (const faction of factions) {
     const units = sbpsData.filter((squad: any) => squad.faction.includes(faction));
     for (const unit of units) {
+      // Skip units we won't want to show
+      if (unitToBeIgnored(unit.id, false)) continue;
       const factionAsRaceID = faction === "afrika_korps" ? "dak" : faction;
 
       unitPaths.push({
