@@ -22,7 +22,7 @@ const testUnits = [
   },
   {
     faction: "british",
-    unitId: "tommy_uk",
+    unitId: "tommy_africa_uk",
     name: "Infantry Section",
     description: "British infantry unit",
   },
@@ -493,7 +493,7 @@ test.describe("Explorer Unit View Pages", () => {
     await unitPage.checkUnitTitleVisible();
 
     // Navigate to third unit
-    await unitPage.navigate("british", "tommy_uk");
+    await unitPage.navigate("british", "tommy_africa_uk");
     await unitPage.checkUnitPageLoaded();
     await unitPage.checkUnitTitleVisible();
   });
