@@ -100,7 +100,7 @@ test.describe("Explorer Unit View Pages", () => {
         await unitPage.checkWeaponsSectionPresent();
       });
 
-      test("should display unit header with all components", async () => {
+      test("should display unit header with all components", async ({ isMobile }) => {
         await unitPage.checkUnitPageLoaded();
 
         // Check unit icon is visible
@@ -112,8 +112,12 @@ test.describe("Explorer Unit View Pages", () => {
         // Check unit description is present
         await expect(unitPage.unitDescription).toBeVisible();
 
-        // Check faction icon is visible
-        await expect(unitPage.getFactionIcon("american")).toBeVisible();
+        // Check faction icon visibility - hidden on mobile, visible on desktop
+        if (isMobile) {
+          await expect(unitPage.getFactionIcon("american")).toBeHidden();
+        } else {
+          await expect(unitPage.getFactionIcon("american")).toBeVisible();
+        }
       });
 
       test("should be responsive on mobile", async ({ page }) => {
