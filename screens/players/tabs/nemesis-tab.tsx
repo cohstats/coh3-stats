@@ -29,7 +29,7 @@ import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { getPlayerCardRoute } from "../../../src/routes";
 import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 
 // Simplified interface for what we actually need in StomperCard

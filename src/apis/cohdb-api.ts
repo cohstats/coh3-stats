@@ -144,7 +144,7 @@ const getReplaysForPlayer = async (
     `https://cohdb.com/api/v1/replays?profile_id=${playerID}&limit=${limit}&offset=${offset}`,
   );
 
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: "force-cache", next: { revalidate: 300 } });
 
   if (!response.ok) {
     logger.warn(`Error getting replays for player ${playerID}: ${response.statusText}`);

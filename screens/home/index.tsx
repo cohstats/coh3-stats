@@ -12,7 +12,7 @@ import { NewsSection } from "./news-section/news-section";
 import { COH3SteamNewsType } from "../../src/apis/steam-api";
 import YoutubePanel from "./youtube-panel/youtube-panel";
 import { useIntersection } from "@mantine/hooks";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../src/seo-utils";
 
 type Props = {

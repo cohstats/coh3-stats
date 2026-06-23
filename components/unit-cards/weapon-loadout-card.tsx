@@ -14,7 +14,7 @@ import { getScatterDimensions, getWeaponRpm, WeaponStatsType } from "../../src/u
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import { getWeaponTiming, TICK_DURATION } from "../../src/unitStats/weaponLib";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import HelperIcon from "../icon/helper";
 import {
   Chart as ChartJS,

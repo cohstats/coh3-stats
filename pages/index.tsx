@@ -5,7 +5,7 @@ import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
 import { getLatestCOH3RedditPosts, RedditPostType } from "../src/apis/reddit-api";
 import { GetStaticProps } from "next";
 import { COH3SteamNewsType, getCOH3SteamNews, NewsItem } from "../src/apis/steam-api";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 export default Home;
 

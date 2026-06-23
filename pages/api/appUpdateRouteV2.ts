@@ -82,7 +82,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const fileResponse = await fetch(sigURL);
+    const fileResponse = await fetch(sigURL, {
+      cache: "force-cache",
+      next: { revalidate: 3600 },
+    });
     const fileContent = await fileResponse.text();
 
     return res

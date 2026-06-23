@@ -15,8 +15,8 @@ import dayjs from "dayjs";
 import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
 import config from "../../config";
 import { generateExpireTimeStamps } from "../../src/utils";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
+import { useTranslation } from "next-i18next/pages";
 
 //only render on client side
 const DynamicGeoWorldMap = dynamic(

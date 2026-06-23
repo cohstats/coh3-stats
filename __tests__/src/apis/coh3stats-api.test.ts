@@ -43,7 +43,11 @@ describe("coh3stats-api", () => {
     const result = await getPlayerCardInfo(12345, false, "fake-ip");
     expect(global.fetch).toBeCalledWith(
       "https://us-east4-coh3-stats-prod.cloudfunctions.net/sharedAPIGen2Http/players/12345",
-      { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
+      {
+        headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" },
+        cache: "force-cache",
+        next: { revalidate: 300 },
+      },
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(result).toEqual(fakeData);
@@ -309,7 +313,11 @@ describe("coh3stats-api", () => {
     const response = await getStatsData(123, "now", "gameStats", "cache-key-4");
     expect(global.fetch).toBeCalledWith(
       `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=${GET_ANALYSIS_STATS}&ock=cache-key-4`,
-      { headers: undefined },
+      {
+        headers: undefined,
+        cache: "force-cache",
+        next: { revalidate: 300 },
+      },
     );
 
     expect(response).toEqual(fakeStatsData);

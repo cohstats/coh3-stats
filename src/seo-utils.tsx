@@ -1,5 +1,5 @@
 import { NextSeoProps } from "next-seo";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 import React from "react";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
@@ -36,7 +36,7 @@ const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 export const generateAlternateLanguageLinks = (currentPath: string): React.ReactNode => {
   return (
     <>
-      {SUPPORTED_LANGUAGES.map((lang) => (
+      {SUPPORTED_LANGUAGES.map((lang: string) => (
         <link
           key={lang}
           rel="alternate"
@@ -60,7 +60,7 @@ export const generateAlternateLanguageLinks = (currentPath: string): React.React
  * @returns Array of language alternate objects for next-seo
  */
 export const generateLanguageAlternates = (currentPath: string) => {
-  const alternates = SUPPORTED_LANGUAGES.map((lang) => ({
+  const alternates = SUPPORTED_LANGUAGES.map((lang: string) => ({
     hrefLang: lang,
     href: `${config.SITE_URL}${lang === nextI18NextConfig.i18n.defaultLocale ? "" : `/${lang}`}${currentPath}`,
   }));

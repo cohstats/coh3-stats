@@ -5,7 +5,7 @@ import { raceType, Top1v1LeaderboardsData } from "../../../src/coh3/coh3-types";
 import React, { useEffect, useState } from "react";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import Link from "next/link";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface TopLeaderboardsSectionProps {
   initialData: Top1v1LeaderboardsData | null;

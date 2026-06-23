@@ -11,7 +11,7 @@ import NemesisWidget from "./widgets/nemesis-widget";
 import MoreButton from "../components/more-button";
 import { useRouter } from "next/router";
 import MapsWidget from "./widgets/maps-widget";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import AliasHistoryWidget from "./widgets/alias-history-widget";
 import TopTeamsInfo from "./top-teams-info";
 import { useIntersection } from "@mantine/hooks";

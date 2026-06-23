@@ -4,7 +4,7 @@ import { IconUser, IconAlertTriangle } from "@tabler/icons-react";
 import React from "react";
 import HelperIcon from "../../components/icon/helper";
 import ErrorCard from "../../components/error-card";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 const LiveGamesSummaryTable = ({
   data,

@@ -7,7 +7,7 @@ import ErrorCard from "../../../components/error-card";
 import Achievement from "./achievement";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
 
 const GlobalAchievements = ({

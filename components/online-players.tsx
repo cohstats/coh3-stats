@@ -1,7 +1,7 @@
 import { Badge, Flex, Tooltip } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { getNumberOfOnlinePlayersSteamUrl } from "../src/apis/steam-api";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 const fetchOnlinePlayers = async () => {
   try {

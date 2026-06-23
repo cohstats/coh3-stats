@@ -12,7 +12,7 @@ import { IconDatabaseOff } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import HistoryCharts from "./history-charts";
 import CounterStatisticsCard from "./components/counter-statistics-card";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 const DynamicPlayersPlaytimeHistogram = dynamic(
   () => import("./charts/player-playtime-histogram"),

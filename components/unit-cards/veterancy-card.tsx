@@ -1,6 +1,6 @@
 import { Box, Grid, Group, Image, List, ListItem, Stack, Text, Title } from "@mantine/core";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 const vetStarIconPath = "/icons/hud/decorators/vet_star.png";
 const vetStarEmptyIconPath = "/icons/hud/decorators/vet_star_empty.png";

@@ -10,7 +10,7 @@ import { PSNIcon } from "../../../components/icon/psn";
 import { XboxIcon } from "../../../components/icon/xbox";
 import styles from "./search-player-card.module.css";
 import InternalTimeAgo from "../../../components/internal-timeago";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface SearchPlayerCardProps {
   data: SearchPlayerCardData;

@@ -34,7 +34,7 @@ import config from "../../config";
 
 import classes from "./Header.module.css";
 import LanguageSwitcher from "./components/language-switcher";
-import { TFunction, useTranslation } from "next-i18next";
+import { TFunction, useTranslation } from "next-i18next/pages";
 import LinkWithOutPrefetch from "../LinkWithOutPrefetch";
 
 export interface HeaderProps {

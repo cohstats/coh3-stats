@@ -5,7 +5,7 @@ import { IconArrowUp, IconBrandReddit } from "@tabler/icons-react";
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
 import ImageWithModal from "../../../components/image-with-modal";
 import classes from "./reddit.module.css";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface RedditPanelProps {
   redditPostsData: RedditPostType[] | null;

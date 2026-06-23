@@ -30,8 +30,8 @@ import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../src/unitStats/descriptions";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
+import { useTranslation } from "next-i18next/pages";
 import nextI18NextConfig from "../../../next-i18next.config";
 import config from "../../../config";
 
@@ -338,7 +338,7 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 
   // Generate paths for all combinations of race IDs and locales
   const paths = raceIds.flatMap((raceId) =>
-    locales.map((locale) => ({
+    locales.map((locale: string) => ({
       params: { raceId },
       locale,
     })),

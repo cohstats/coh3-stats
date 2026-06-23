@@ -1,7 +1,7 @@
 import { Flex, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
 import { StatsVehicleArmor, VehicleArmorType } from "./vehicle-armor-card";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 // So have to split and make another card for the squad info like Sight Range,
 // Speed (walking, driving), Range of Fire, Reload Time (for tanks), Armor

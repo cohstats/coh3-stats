@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
 import { generateKeywordsString, generateLanguageAlternates } from "../../src/seo-utils";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json

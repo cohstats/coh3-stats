@@ -17,10 +17,10 @@ import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring"
 import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
 import { NextSeo } from "next-seo";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
 
 interface DpsProps {

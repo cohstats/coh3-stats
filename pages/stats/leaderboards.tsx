@@ -9,8 +9,8 @@ import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leade
 import { generateKeywordsString } from "../../src/seo-utils";
 import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
 import { AnalyticsStatsLeaderboardsPageView } from "../../src/firebase/analytics";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
+import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
 
 const Leaderboards = ({

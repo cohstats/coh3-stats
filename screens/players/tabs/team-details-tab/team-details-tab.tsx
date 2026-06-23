@@ -16,7 +16,7 @@ import TeamsTable from "../components/teams-table";
 import TeamMatchesTable from "../components/team-matches-table";
 import { getTeamDetails, getTeamMatches } from "../../../../src/apis/coh3stats-api";
 import { IconAlertCircle, IconCirclePlus } from "@tabler/icons-react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { useRouter } from "next/router";
 import classes from "../Players.module.css";
 import { AnalyticsTeamDetailsTabView } from "../../../../src/firebase/analytics";

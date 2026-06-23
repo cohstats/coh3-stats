@@ -10,7 +10,7 @@ import RenderPlayersLiveGames from "./render-players-live-games";
 import { calculatePageNumber } from "../../src/utils";
 import { useLocalStorage } from "@mantine/hooks";
 import ErrorCard from "../../components/error-card";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 const LiveGamesTable = ({
   data,

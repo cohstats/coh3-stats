@@ -6,7 +6,7 @@ import config from "../../config";
 import { generateKeywordsString } from "../../src/seo-utils";
 import { useRouter } from "next/router";
 import { AnalyticsRelicApiPageView } from "../../src/firebase/analytics";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import "@scalar/api-reference-react/style.css";
 
 // Custom dark theme CSS to match COH3 Stats website colors

@@ -8,7 +8,7 @@ import Link from "next/link";
 import config from "../../config";
 
 import classes from "./Footer.module.css";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation("common");

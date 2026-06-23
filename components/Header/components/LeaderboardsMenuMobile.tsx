@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getLeaderBoardRoute, getTeamLeaderboardsRoute } from "../../../src/routes";
 import { raceTypeArray } from "../../../src/coh3/coh3-types";
 import { localizedNames } from "../../../src/coh3/coh3-data";
-import { TFunction, useTranslation } from "next-i18next";
+import { TFunction, useTranslation } from "next-i18next/pages";
 import FactionIcon from "../../faction-icon";
 
 interface LeaderboardsMenuMobileProps {

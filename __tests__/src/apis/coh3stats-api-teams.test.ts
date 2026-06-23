@@ -84,6 +84,7 @@ describe("Teams API functions", () => {
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining(`/sharedAPIGen2Http/players/${mockProfileId}/teams`),
+        { cache: "force-cache", next: { revalidate: 300 } },
       );
     });
 

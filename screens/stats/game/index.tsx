@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import React from "react";
 import { NextSeo } from "next-seo";
 import { generateKeywordsString } from "../../../src/seo-utils";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import StatsContainerSelector from "../stats-container-selector";
 import config from "../../../config";
 

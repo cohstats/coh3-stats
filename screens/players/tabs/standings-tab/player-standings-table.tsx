@@ -15,7 +15,7 @@ import RankIcon from "../../../../components/rank-icon";
 import HelperIcon from "../../../../components/icon/helper";
 import { IconArrowBigDown, IconArrowBigUp } from "@tabler/icons-react";
 import { getCorrectLeaderStartPositions } from "../../../../src/utils";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 const PlayerStandingsTable = ({
   faction,

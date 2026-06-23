@@ -10,7 +10,7 @@ import {
   leaderboardsIDAsObject,
   raceIDsNameAsKey,
 } from "../../src/coh3/coh3-data";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { z } from "zod";
 import { getPlayerStatsFromRelic } from "../../src/coh3/coh3-players";
 

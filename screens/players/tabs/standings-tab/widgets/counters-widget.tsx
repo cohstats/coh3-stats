@@ -12,7 +12,7 @@ import HelperIcon from "../../../../../components/icon/helper";
 import { localizedGameTypes } from "../../../../../src/coh3/coh3-data";
 import classes from "../../Players.module.css";
 import MoreButton from "../../components/more-button";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 const CountersWidget = ({
   playerStatsData,

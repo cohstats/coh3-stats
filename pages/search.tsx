@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { NextSeo } from "next-seo";
 import { SearchScreen } from "../screens/search";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
+import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../src/seo-utils";
 
 /**

@@ -5,7 +5,7 @@ import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { getNewsRoute } from "../../../src/routes";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 import { imageUrlTransform } from "../../../src/utils";
 
 interface NewsCardProps {
