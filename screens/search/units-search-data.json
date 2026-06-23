@@ -91,27 +91,6 @@
     "symbol": "races/american/symbols/french_infantry_us"
   },
   {
-    "id": "marksman_team_partisan",
-    "icon": "races/american/infantry/marksman_team_partisan",
-    "name": "Marksmen Team",
-    "faction": "american",
-    "symbol": "races/common/symbols/sniper"
-  },
-  {
-    "id": "medic_partisan",
-    "icon": "races/american/infantry/medic_partisan",
-    "name": "Medic",
-    "faction": "american",
-    "symbol": "races/common/symbols/medic"
-  },
-  {
-    "id": "medic_us",
-    "icon": "races/american/infantry/medic_us",
-    "name": "Medic",
-    "faction": "american",
-    "symbol": "races/common/symbols/medic"
-  },
-  {
     "id": "paratrooper_us",
     "icon": "races/american/infantry/paratrooper_us",
     "name": "Paratrooper Squad",
@@ -140,13 +119,6 @@
     "symbol": "races/american/symbols/resistance_fighters_partisan"
   },
   {
-    "id": "resistance_fighters_partisan",
-    "icon": "races/american/infantry/resistance_fighters_partisan",
-    "name": "Resistance Fighter Squad",
-    "faction": "american",
-    "symbol": "races/american/symbols/resistance_fighters_partisan"
-  },
-  {
     "id": "riflemen_us",
     "icon": "races/american/infantry/riflemen_us",
     "name": "Riflemen Squad",
@@ -155,13 +127,6 @@
   },
   {
     "id": "saboteurs_battlegroup_partisan",
-    "icon": "races/american/infantry/partisan_sabotour",
-    "name": "Saboteur Squad",
-    "faction": "american",
-    "symbol": "races/american/symbols/partisan_saboteur"
-  },
-  {
-    "id": "saboteurs_partisan",
     "icon": "races/american/infantry/partisan_sabotour",
     "name": "Saboteur Squad",
     "faction": "american",
@@ -250,13 +215,6 @@
     "name": "M1 Pack Howitzer Team",
     "faction": "american",
     "symbol": "common/units/symbols/vehicle_aef_pack_howitzer_symbol"
-  },
-  {
-    "id": "ambulance_us",
-    "icon": "races/american/vehicles/4x4_truck_medical_us",
-    "name": "WC54 Ambulance",
-    "faction": "american",
-    "symbol": "common/units/symbols/ambulance_wc51_us"
   },
   {
     "id": "chaffee_us",
@@ -406,6 +364,412 @@
     "symbol": "races/common/symbols/sniper"
   },
   {
+    "id": "bofors_emplacement_uk",
+    "icon": "races/british/buildings/emplacement_anti_air_gun_uk",
+    "name": "Bofors Anti-air Emplacement",
+    "faction": "british",
+    "symbol": "races/british/symbols/bofors_towed_afrika_uk"
+  },
+  {
+    "id": "howitzer_25pdr_uk",
+    "icon": "races/british/buildings/emplacement_howitzer_gun_uk",
+    "name": "25-pounder Artillery Emplacement",
+    "faction": "british",
+    "symbol": "common/units/symbols/building_british_25_pounder_symbol"
+  },
+  {
+    "id": "howitzer_base_25pdr_uk",
+    "icon": "common/units/icons/building_british_25_pounder",
+    "name": "25-pounder Artillery Emplacement",
+    "faction": "british",
+    "symbol": "common/units/symbols/building_british_25_pounder_symbol"
+  },
+  {
+    "id": "howitzer_bl_5_5_uk",
+    "icon": "races/british/team_weapons/howitzer_bl_5_5_uk",
+    "name": "BL5.5 Artillery Emplacement",
+    "faction": "british",
+    "symbol": "common/units/symbols/building_british_25_pounder_symbol"
+  },
+  {
+    "id": "australian_light_infantry_uk",
+    "icon": "races/british/infantry/australian_light_infantry_africa_uk",
+    "name": "Australian Light Infantry Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/australian_light_infantry_africa_uk"
+  },
+  {
+    "id": "canadian_heavy_infantry_uk",
+    "icon": "races/british/infantry/heavy_infantry_canadian_uk",
+    "name": "Canadian Shock Troops Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/canadian_heavy_infantry_uk"
+  },
+  {
+    "id": "commando_lmg_uk",
+    "icon": "races/british/infantry/commando_lmg_uk_portrait",
+    "name": "Commando LMG Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/commando_lmg"
+  },
+  {
+    "id": "commando_uk",
+    "icon": "races/british/infantry/commando_uk",
+    "name": "Commando Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/commando"
+  },
+  {
+    "id": "guards_uk",
+    "icon": "races/british/infantry/guards_uk",
+    "name": "Foot Guards Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/guards_uk"
+  },
+  {
+    "id": "gurkhas_uk",
+    "icon": "races/british/infantry/gurkhas_uk",
+    "name": "Gurkha Rifles Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/gurkhas_uk"
+  },
+  {
+    "id": "indian_uk",
+    "icon": "common/units/icons/unit_guards_uk",
+    "name": "",
+    "faction": "british",
+    "symbol": "common/units/symbols/unit_soviet_guards_symbol"
+  },
+  {
+    "id": "medic_uk",
+    "icon": "races/british/infantry/medic_uk",
+    "name": "Medic",
+    "faction": "british",
+    "symbol": "races/common/symbols/medic"
+  },
+  {
+    "id": "sapper_uk",
+    "icon": "races/british/infantry/sapper_uk",
+    "name": "Royal Engineer Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/sapper_uk"
+  },
+  {
+    "id": "sas_squad_uk",
+    "icon": "common/units/icons/unit_british_commando_from_building",
+    "name": "SAS Commando Squad",
+    "faction": "british",
+    "symbol": "common/units/symbols/unit_british_commandos_symbol"
+  },
+  {
+    "id": "sniper_uk",
+    "icon": "common/units/icons/sniper_us",
+    "name": "Sniper",
+    "faction": "british",
+    "symbol": "races/common/symbols/sniper"
+  },
+  {
+    "id": "ssb_commando",
+    "icon": "races/british/infantry/commando_uk",
+    "name": "",
+    "faction": "british",
+    "symbol": "races/british/symbols/commando"
+  },
+  {
+    "id": "tommy_uk",
+    "icon": "races/british/infantry/tommy_uk",
+    "name": "Infantry Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/tommy_uk"
+  },
+  {
+    "id": "anzioannie_uk",
+    "icon": "common/units/icons/at_gun_pak40_75mm_ger",
+    "name": "",
+    "faction": "british",
+    "symbol": "common/units/symbols/at_gun_pak40_75mm_ger"
+  },
+  {
+    "id": "at_gun_17pdr_mobile_uk",
+    "icon": "races/british/team_weapons/at_gun_17pdr_mobile_uk",
+    "name": "17-pounder Anti-tank Gun Team",
+    "faction": "british",
+    "symbol": "races/british/symbols/at_gun_17pdr_mobile_uk"
+  },
+  {
+    "id": "at_gun_17pdr_pheasant_uk",
+    "icon": "races/british/team_weapons/at_gun_17pdr_mobile_uk",
+    "name": "17-pounder Anti-tank Gun Team",
+    "faction": "british",
+    "symbol": "races/british/symbols/at_gun_17pdr_pheasant_uk"
+  },
+  {
+    "id": "at_gun_2pdr_uk",
+    "icon": "races/british/team_weapons/at_gun_2pdr_uk",
+    "name": "2-pounder Light Anti-tank Gun Team",
+    "faction": "british",
+    "symbol": "races/british/symbols/at_gun_2pdr_uk"
+  },
+  {
+    "id": "at_gun_6pdr_uk",
+    "icon": "races/british/team_weapons/at_gun_6pdr_uk",
+    "name": "6-pounder Anti-tank Gun Team",
+    "faction": "british",
+    "symbol": "races/british/symbols/at_gun_6pdr_uk"
+  },
+  {
+    "id": "bofors_towed_uk",
+    "icon": "common/units/icons/building_british_17_pounder",
+    "name": "Bofors Anti-air Gun Team",
+    "faction": "british",
+    "symbol": "races/british/symbols/bofors_towed_afrika_uk"
+  },
+  {
+    "id": "hmg_commando_uk",
+    "icon": "common/units/icons/unit_british_vickers_hmg",
+    "name": "Vickers Machine Gun Team",
+    "faction": "british",
+    "symbol": "races/common/symbols/hmg"
+  },
+  {
+    "id": "hmg_vickers_uk",
+    "icon": "races/british/team_weapons/hmg_vickers_uk",
+    "name": "Vickers Machine Gun Team",
+    "faction": "british",
+    "symbol": "races/common/symbols/hmg"
+  },
+  {
+    "id": "mortar_81mm_uk",
+    "icon": "races/british/team_weapons/mortar_81mm_uk",
+    "name": "ML 3-inch Mortar Team",
+    "faction": "british",
+    "symbol": "races/common/symbols/mortar"
+  },
+  {
+    "id": "mortar_heavy_4_2_uk",
+    "icon": "races/british/team_weapons/mortar_heavy_4_2_uk",
+    "name": "ML 4.2-inch Heavy Mortar Team",
+    "faction": "british",
+    "symbol": "common/units/symbols/unit_german_m1938_120mm_mortar_symbol"
+  },
+  {
+    "id": "pack_howitzer_75mm_uk",
+    "icon": "races/british/team_weapons/pack_howitzer_75mm_uk",
+    "name": "M1 Pack Howitzer Team",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_aef_pack_howitzer_symbol"
+  },
+  {
+    "id": "archer_uk",
+    "icon": "races/british/vehicles/archer_uk",
+    "name": "Archer Tank Destroyer",
+    "faction": "british",
+    "symbol": "races/british/symbols/archer_tank_destroyer"
+  },
+  {
+    "id": "bishop_uk",
+    "icon": "races/british/vehicles/bishop_uk",
+    "name": "Bishop Self-propelled Artillery",
+    "faction": "british",
+    "symbol": "races/british/symbols/bishop_spg"
+  },
+  {
+    "id": "centaur_uk",
+    "icon": "races/british/vehicles/centaur_uk",
+    "name": "Centaur IV Medium Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/centaur"
+  },
+  {
+    "id": "churchill_75mm_uk",
+    "icon": "common/units/icons/vehicle_british_churchill",
+    "name": "Churchill NA 75 Heavy Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_uk"
+  },
+  {
+    "id": "churchill_black_prince_uk",
+    "icon": "races/british/vehicles/churchill_black_prince_uk",
+    "name": "Churchill Black Prince Heavy Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_black_prince"
+  },
+  {
+    "id": "churchill_crocodile_uk",
+    "icon": "races/british/vehicles/churchill_crocodile_uk",
+    "name": "Churchill Crocodile Heavy Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_crocodile_uk"
+  },
+  {
+    "id": "churchill_uk",
+    "icon": "races/british/vehicles/churchill_uk",
+    "name": "Churchill IV Heavy Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_uk"
+  },
+  {
+    "id": "command_churchill_uk",
+    "icon": "races/british/vehicles/churchill_uk",
+    "name": "Command Churchill IV Heavy Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_british_churchill_commander_symbol"
+  },
+  {
+    "id": "crusader_57mm_uk",
+    "icon": "races/british/vehicles/crusader_57mm_uk",
+    "name": "Crusader III Medium Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/crusader_57mm"
+  },
+  {
+    "id": "crusader_aa_uk",
+    "icon": "common/units/icons/vehicle_aef_halftrack_m15a1_aa",
+    "name": "Crusader AA Medium Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/crusader_aa"
+  },
+  {
+    "id": "crusader_uk",
+    "icon": "races/british/vehicles/crusader_uk",
+    "name": "Crusader II Medium Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/crusader_uk"
+  },
+  {
+    "id": "cwt_15_flatbed_uk",
+    "icon": "races/british/vehicles/cwt_15_uk",
+    "name": "CMP 15cwt Anti-air Truck",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_truck"
+  },
+  {
+    "id": "cwt_15_quad_mount_uk",
+    "icon": "races/british/vehicles/cwt_15_quad_mount_uk",
+    "name": "CMP 15cwt Anti-air Truck",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_aa_truck"
+  },
+  {
+    "id": "cwt_15_truck_medical_uk",
+    "icon": "races/british/vehicles/cwt_15_medical_uk",
+    "name": "CMP 15cwt Medical Truck",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_medical"
+  },
+  {
+    "id": "cwt_15_truck_repair_resupply_uk",
+    "icon": "common/units/icons/vehicle_german_2_5_truck",
+    "name": "CMP 15cwt Repair and Resupply Truck",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_truck"
+  },
+  {
+    "id": "cwt_15_truck_uk",
+    "icon": "races/british/vehicles/cwt_15_uk",
+    "name": "CMP 15cwt Truck",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_truck"
+  },
+  {
+    "id": "dingo_uk",
+    "icon": "races/british/vehicles/dingo_uk",
+    "name": "Dingo Light Scout Car",
+    "faction": "british",
+    "symbol": "races/british/symbols/dingo_uk"
+  },
+  {
+    "id": "grant_uk",
+    "icon": "common/units/icons/vehicle_aef_m4a3_sherman",
+    "name": "M3 Grant Medium Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/m3_grant"
+  },
+  {
+    "id": "halftrack_m3_uk",
+    "icon": "races/british/vehicles/halftrack_uk",
+    "name": "M3 Armored Personnel Carrier",
+    "faction": "british",
+    "symbol": "common/units/symbols/halftrack_m3_us"
+  },
+  {
+    "id": "humber_uk",
+    "icon": "races/british/vehicles/humber_uk",
+    "name": "Humber Armored Car",
+    "faction": "british",
+    "symbol": "races/british/symbols/humber_uk"
+  },
+  {
+    "id": "marmon_herrington_uk",
+    "icon": "common/units/icons/armored_car_sdkfz_222_ger",
+    "name": "",
+    "faction": "british",
+    "symbol": "common/units/symbols/armored_car_sdkfz_222_ger"
+  },
+  {
+    "id": "matilda_command_uk",
+    "icon": "common/units/icons/vehicle_british_churchill",
+    "name": "Matilda II Heavy Command Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_british_churchill_symbol"
+  },
+  {
+    "id": "matilda_uk",
+    "icon": "common/units/icons/vehicle_british_churchill",
+    "name": "Matilda II Heavy Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/matilda_uk"
+  },
+  {
+    "id": "pheasant_halftrack_uk",
+    "icon": "races/british/team_weapons/at_gun_17pdr_mobile_uk",
+    "name": "CMP 15cwt Truck",
+    "faction": "british",
+    "symbol": "races/british/symbols/cwt_truck"
+  },
+  {
+    "id": "sherman_firefly_uk",
+    "icon": "races/british/vehicles/sherman_firefly_uk",
+    "name": "M4A4 Sherman Firefly Medium Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/sherman_m4a3_us"
+  },
+  {
+    "id": "sherman_uk",
+    "icon": "races/british/vehicles/sherman_uk",
+    "name": "M4A1 Sherman Medium Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/sherman_m4a3_us"
+  },
+  {
+    "id": "stuart_ace_sp_uk",
+    "icon": "races/british/vehicles/stuart_uk",
+    "name": "M3 Stuart Light Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/stuart_uk"
+  },
+  {
+    "id": "stuart_uk",
+    "icon": "races/british/vehicles/stuart_uk",
+    "name": "M3 Stuart Light Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/stuart_uk"
+  },
+  {
+    "id": "valentine_command_uk",
+    "icon": "races/british/vehicles/valentine_uk",
+    "name": "Valentine II Medium Command Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_british_valentine_symbol"
+  },
+  {
+    "id": "valentine_uk",
+    "icon": "races/british/vehicles/valentine_uk",
+    "name": "Valentine II Medium Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_british_valentine_symbol"
+  },
+  {
     "id": "at_gun_17pdr_pheasant_emplacement_uk",
     "icon": "races/british/buildings/17_pdr_at_emplace_aus",
     "name": "17-pounder Anti-tank Emplacement",
@@ -425,20 +789,6 @@
     "name": "HMG Nest",
     "faction": "british",
     "symbol": "races/common/symbols/hmg_emplacement"
-  },
-  {
-    "id": "howitzer_25pdr_africa_uk",
-    "icon": "races/british/team_weapons/howitzer_25pdr_africa_uk",
-    "name": "25-pounder Artillery Emplacement",
-    "faction": "british",
-    "symbol": "common/units/symbols/building_british_25_pounder_symbol"
-  },
-  {
-    "id": "howitzer_base_25pdr_africa_uk",
-    "icon": "common/units/icons/building_british_25_pounder",
-    "name": "25-pounder Artillery Emplacement",
-    "faction": "british",
-    "symbol": "common/units/symbols/building_british_25_pounder_symbol"
   },
   {
     "id": "howitzer_bl_5_5_africa_uk",
@@ -497,13 +847,6 @@
     "symbol": "common/units/symbols/unit_soviet_guards_symbol"
   },
   {
-    "id": "medic_africa_uk",
-    "icon": "races/british/infantry/medic_uk",
-    "name": "Medic",
-    "faction": "british",
-    "symbol": "races/common/symbols/medic"
-  },
-  {
     "id": "officer_africa_uk",
     "icon": "common/units/icons/riflemen_us",
     "name": "",
@@ -523,20 +866,6 @@
     "name": "Royal Engineer Section",
     "faction": "british",
     "symbol": "races/british/symbols/sapper_uk"
-  },
-  {
-    "id": "sas_africa_uk",
-    "icon": "common/units/icons/unit_british_commando_from_building",
-    "name": "SAS Section",
-    "faction": "british",
-    "symbol": "common/units/symbols/unit_british_commandos_symbol"
-  },
-  {
-    "id": "sniper_africa_uk",
-    "icon": "common/units/icons/sniper_us",
-    "name": "Sniper",
-    "faction": "british",
-    "symbol": "races/common/symbols/sniper"
   },
   {
     "id": "ssb_africa_uk",
@@ -579,20 +908,6 @@
     "name": "6-pounder Anti-tank Gun Team",
     "faction": "british",
     "symbol": "races/british/symbols/at_gun_6pdr_uk"
-  },
-  {
-    "id": "bofors_towed_africa_uk",
-    "icon": "common/units/icons/building_british_17_pounder",
-    "name": "Bofors Anti-air Gun Team",
-    "faction": "british",
-    "symbol": "races/british/symbols/bofors_towed_afrika_uk"
-  },
-  {
-    "id": "hmg_commando_africa_uk",
-    "icon": "common/units/icons/unit_british_vickers_hmg",
-    "name": "Vickers Machine Gun Team",
-    "faction": "british",
-    "symbol": "races/common/symbols/hmg"
   },
   {
     "id": "hmg_vickers_africa_uk",
@@ -658,13 +973,6 @@
     "symbol": "races/british/symbols/centaur"
   },
   {
-    "id": "churchill_75mm_africa_uk",
-    "icon": "common/units/icons/vehicle_british_churchill",
-    "name": "Churchill NA 75 Heavy Tank",
-    "faction": "british",
-    "symbol": "races/british/symbols/churchill_uk"
-  },
-  {
     "id": "churchill_africa_uk",
     "icon": "races/british/vehicles/churchill_africa_uk",
     "name": "Churchill IV Heavy Tank",
@@ -684,13 +992,6 @@
     "name": "Churchill Crocodile Heavy Tank",
     "faction": "british",
     "symbol": "races/british/symbols/churchill_crocodile_uk"
-  },
-  {
-    "id": "command_churchill_africa_uk",
-    "icon": "races/british/vehicles/churchill_africa_uk",
-    "name": "Command Churchill IV Heavy Tank",
-    "faction": "british",
-    "symbol": "common/units/symbols/vehicle_british_churchill_commander_symbol"
   },
   {
     "id": "crusader_57mm_africa_uk",
@@ -714,13 +1015,6 @@
     "symbol": "races/british/symbols/crusader_uk"
   },
   {
-    "id": "cwt_15_flatbed_africa_uk",
-    "icon": "races/british/vehicles/cwt_15_africa_uk",
-    "name": "CMP 15cwt Truck",
-    "faction": "british",
-    "symbol": "races/british/symbols/cwt_truck"
-  },
-  {
     "id": "cwt_15_quad_mount_africa_uk",
     "icon": "races/british/vehicles/cwt_15_quad_mount_africa_uk",
     "name": "CMP 15cwt Anti-air Truck",
@@ -740,13 +1034,6 @@
     "name": "CMP 15cwt Medical Truck",
     "faction": "british",
     "symbol": "races/british/symbols/cwt_medical"
-  },
-  {
-    "id": "cwt_15_truck_repair_resupply_africa_uk",
-    "icon": "common/units/icons/vehicle_german_2_5_truck",
-    "name": "CMP 15cwt Repair and Resupply Truck",
-    "faction": "british",
-    "symbol": "races/british/symbols/cwt_truck"
   },
   {
     "id": "cwt_lrdg_truck_2pdr_africa_uk",
@@ -854,13 +1141,6 @@
     "symbol": "races/common/symbols/hmg_emplacement"
   },
   {
-    "id": "howitzer_105mm_ger",
-    "icon": "races/german/team_weapons/emplacement_howitzer_gun_ger",
-    "name": "leFH 18 Howitzer Emplacement",
-    "faction": "german",
-    "symbol": "common/units/symbols/105mm_howitzer_us"
-  },
-  {
     "id": "howitzer_obice_210_ger",
     "icon": "races/german/team_weapons/tw_howitzer_obice_210_ger",
     "name": "Obice da 210/22 Artillery Emplacement",
@@ -875,13 +1155,6 @@
     "symbol": "races/common/symbols/mortar_emplacement"
   },
   {
-    "id": "mortar_bunker_ger",
-    "icon": "races/german/buildings/bunker_ger",
-    "name": "Mortar Bunker",
-    "faction": "german",
-    "symbol": "common/units/symbols/mortar_m1_81mm_us"
-  },
-  {
     "id": "pantherturm_emplacement_ger",
     "icon": "races/german/buildings/pantherturm_ger",
     "name": "Pantherturm Emplacement",
@@ -894,13 +1167,6 @@
     "name": "Grenadier Squad",
     "faction": "german",
     "symbol": "races/german/symbols/grenadier_ger"
-  },
-  {
-    "id": "bersaglieri_ger",
-    "icon": "races/german/infantry/bersaglieri_ger",
-    "name": "Bersaglieri Squad",
-    "faction": "german",
-    "symbol": "races/afrika_corps/symbols/bersaglieri"
   },
   {
     "id": "coastal_officer_ger",
@@ -938,20 +1204,6 @@
     "symbol": "races/german/symbols/fallshirmpioneers_ger"
   },
   {
-    "id": "fallschirmsniper_ger",
-    "icon": "common/units/icons/sniper_ger",
-    "name": "Fallschirm-sniper",
-    "faction": "german",
-    "symbol": "races/common/symbols/sniper"
-  },
-  {
-    "id": "gebirgsjagers_ger",
-    "icon": "common/units/icons/unit_german_grenadier",
-    "name": "Gebirgsjäger Squad",
-    "faction": "german",
-    "symbol": "common/units/symbols/unit_british_tommy_with_tommy_symbol"
-  },
-  {
     "id": "grenadier_ger",
     "icon": "races/german/infantry/grenadier_ger",
     "name": "Grenadier Squad",
@@ -973,13 +1225,6 @@
     "symbol": "races/german/symbols/jaeger_ger"
   },
   {
-    "id": "medic_ger",
-    "icon": "races/german/infantry/medic_ger",
-    "name": "Medic",
-    "faction": "german",
-    "symbol": "races/common/symbols/medic"
-  },
-  {
     "id": "panzergrenadier_ger",
     "icon": "races/german/infantry/panzer_grenadier_ger",
     "name": "Panzergrenadier Squad",
@@ -992,13 +1237,6 @@
     "name": "Pioneer Squad",
     "faction": "german",
     "symbol": "races/common/symbols/engineer"
-  },
-  {
-    "id": "pioneer_ger_mc_spotter",
-    "icon": "races/german/infantry/pioneer_ger",
-    "name": "Spotter Squad",
-    "faction": "german",
-    "symbol": "common/units/symbols/spotter"
   },
   {
     "id": "sniper_ger",
@@ -1029,25 +1267,11 @@
     "symbol": "races/german/symbols/aa_gun_20mm_ger"
   },
   {
-    "id": "anzioannie_ger",
-    "icon": "common/units/icons/vehicle_soviet_b4_artillery_gun",
-    "name": "Anzio Annie",
-    "faction": "german",
-    "symbol": "common/units/symbols/vehicle_soviet_b4_artillery_gun_symbol"
-  },
-  {
     "id": "at_gun_75mm_ger",
     "icon": "races/german/team_weapons/at_gun_75mm_ger",
     "name": "Pak 40 Anti-tank Gun Team",
     "faction": "german",
     "symbol": "races/german/symbols/75mm_at_gun_ger"
-  },
-  {
-    "id": "at_gun_88mm_pak43_ger",
-    "icon": "common/units/icons/vehicle_west_german_ig18_infantry_support_gun",
-    "name": "Pak 43 Anti-tank Gun Team",
-    "faction": "german",
-    "symbol": "common/units/symbols/vehicle_west_german_ig18_infantry_support_gun_symbol"
   },
   {
     "id": "at_gun_lg40_ger",
@@ -1062,27 +1286,6 @@
     "name": "MG 42 Machine Gun Team",
     "faction": "german",
     "symbol": "races/common/symbols/hmg"
-  },
-  {
-    "id": "howitzer_cannone_da_105_ger",
-    "icon": "races/german/team_weapons/emplacement_howitzer_gun_ger",
-    "name": "Cannone da 105/28 Howitzer",
-    "faction": "german",
-    "symbol": "races/afrika_corps/symbols/cannone_105mm_howitzer"
-  },
-  {
-    "id": "howitzer_obice_da_210_no_sandbags_ger",
-    "icon": "races/german/team_weapons/tw_howitzer_obice_210_ger",
-    "name": "Obice da 210/22 Artillery Emplacement",
-    "faction": "german",
-    "symbol": "common/units/symbols/vehicle_west_german_ig18_infantry_support_gun_symbol"
-  },
-  {
-    "id": "leig_75mm_ger",
-    "icon": "races/german/team_weapons/leig_75mm_ger",
-    "name": "le.IG 18 Support Gun Team",
-    "faction": "german",
-    "symbol": "races/german/symbols/leig_75mm_ger"
   },
   {
     "id": "mortar_81mm_ger",
@@ -1134,20 +1337,6 @@
     "symbol": "common/units/symbols/brummbar_ger"
   },
   {
-    "id": "halftrack_251_flak_ger",
-    "icon": "races/german/vehicles/halftrack_251_flak_german",
-    "name": "Flak Half-track",
-    "faction": "german",
-    "symbol": "races/german/symbols/halftrack_251_flak_ger"
-  },
-  {
-    "id": "halftrack_251_mortar_ger",
-    "icon": "races/german/vehicles/half-track_251_mortar_ger",
-    "name": "Mortar Half-track",
-    "faction": "german",
-    "symbol": "common/units/symbols/halftrack_m3_75mm_us"
-  },
-  {
     "id": "halftrack_flame_ger",
     "icon": "races/german/vehicles/halftrack_flame_german",
     "name": "251/16 Flammpanzerwagen",
@@ -1197,39 +1386,11 @@
     "symbol": "races/german/symbols/king_tiger_ger"
   },
   {
-    "id": "l6_40_flame_ger",
-    "icon": "races/afrika_corps/vehicles/l6_40_flame_ak",
-    "name": "L6/40 Light Flame Tank",
-    "faction": "german",
-    "symbol": "common/units/symbols/vehicle_west_german_panzer_ii_luchs_symbol"
-  },
-  {
-    "id": "l6_40_ger",
-    "icon": "races/afrika_corps/vehicles/l6_40_ak",
-    "name": "L6/40 Light Tank",
-    "faction": "german",
-    "symbol": "common/units/symbols/vehicle_west_german_panzer_ii_luchs_symbol"
-  },
-  {
-    "id": "m13_40_ger",
-    "icon": "races/afrika_corps/vehicles/m13_40_ak",
-    "name": "Carro Armato M13/40 Light Tank",
-    "faction": "german",
-    "symbol": "races/german/symbols/m13_40_ger"
-  },
-  {
     "id": "marder_iii_ger",
     "icon": "races/german/vehicles/marder_iii_german",
     "name": "Marder III M Tank Destroyer",
     "faction": "german",
     "symbol": "races/german/symbols/marder_iii_m"
-  },
-  {
-    "id": "nashorn_ger",
-    "icon": "races/german/vehicles/nashorn_german",
-    "name": "Nashorn Heavy Tank Destroyer",
-    "faction": "german",
-    "symbol": "common/units/symbols/vehicle_german_elefant_tank_destroyer_symbol"
   },
   {
     "id": "panther_ger",
@@ -1251,20 +1412,6 @@
     "name": "Panzer IV Medium Tank",
     "faction": "german",
     "symbol": "common/units/symbols/panzer_iv_sdkfz_161_1_ger"
-  },
-  {
-    "id": "recovery_vehicle_ger",
-    "icon": "common/units/icons/recovery_vehicle_us",
-    "name": "18-tonne Recovery Half-track",
-    "faction": "german",
-    "symbol": "races/german/symbols/recovery_vehicle_ger"
-  },
-  {
-    "id": "semovente_75_18_ger",
-    "icon": "races/afrika_corps/vehicles/semovente_75_18_ak",
-    "name": "Semovente da 75/18 Assault Gun",
-    "faction": "german",
-    "symbol": "races/afrika_corps/symbols/semovente"
   },
   {
     "id": "stug_iii_d_ger",
@@ -1295,32 +1442,11 @@
     "symbol": "common/units/symbols/vehicle_german_tiger_symbol"
   },
   {
-    "id": "truck_2_5_cargo_ger",
-    "icon": "races/german/vehicles/2_5_truck_german",
-    "name": "2.5-tonne Cargo Truck",
-    "faction": "german",
-    "symbol": "races/german/symbols/2_5_truck_ger"
-  },
-  {
-    "id": "truck_2_5_fuel_ger",
-    "icon": "races/german/vehicles/2_5_truck_german",
-    "name": "2.5-tonne Fuel Truck",
-    "faction": "german",
-    "symbol": "races/german/symbols/2_5_truck_ger"
-  },
-  {
     "id": "truck_2_5_ger",
     "icon": "races/german/vehicles/2_5_truck_german",
     "name": "2.5-tonne Utility Truck",
     "faction": "german",
     "symbol": "races/german/symbols/2_5_truck_ger"
-  },
-  {
-    "id": "truck_2_5_medical_ger",
-    "icon": "races/german/vehicles/2_5_truck_german",
-    "name": "2.5-tonne Medical Truck",
-    "faction": "german",
-    "symbol": "races/german/symbols/2_5_truck_medical_ger"
   },
   {
     "id": "wespe_ger",
@@ -1363,13 +1489,6 @@
     "name": "Bersaglieri Squad",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/bersaglieri"
-  },
-  {
-    "id": "coastal_reserve_ak",
-    "icon": "common/units/icons/grenadier_ger",
-    "name": "Coastal Reserves Squad",
-    "faction": "dak",
-    "symbol": "common/units/symbols/grenadier_ger"
   },
   {
     "id": "guastatori_ak",
@@ -1449,20 +1568,6 @@
     "symbol": "races/german/symbols/leig_75mm_ger"
   },
   {
-    "id": "mortar_team_ak",
-    "icon": "races/german/team_weapons/mortar_81mm_ger",
-    "name": "GrW 34 Mortar Team",
-    "faction": "dak",
-    "symbol": "races/common/symbols/mortar"
-  },
-  {
-    "id": "armored_car_222_ak",
-    "icon": "races/afrika_corps/vehicles/armored_car_222_ak",
-    "name": "222 Armored Car",
-    "faction": "dak",
-    "symbol": "races/german/symbols/armored_car_222_ger"
-  },
-  {
     "id": "armored_car_8_rad_ak",
     "icon": "races/afrika_corps/vehicles/armored_car_8_rad_ak",
     "name": "8 Rad Armored Car",
@@ -1475,13 +1580,6 @@
     "name": "Command 8 Rad Armored Car",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/armored_car_8_rad_command_ak"
-  },
-  {
-    "id": "armored_car_8_rad_stummel_ak",
-    "icon": "common/units/icons/armored_car_sdkfz_222_ger",
-    "name": "8 Rad Armored Car",
-    "faction": "dak",
-    "symbol": "common/units/symbols/armored_car_sdkfz_222_ger"
   },
   {
     "id": "armored_tractor_254_ak",
@@ -1519,27 +1617,6 @@
     "symbol": "races/german/symbols/halftrack_250_ger"
   },
   {
-    "id": "halftrack_250_deployment_1_ak",
-    "icon": "races/afrika_corps/vehicles/halftrack_250_ak",
-    "name": "250 Light Carrier",
-    "faction": "dak",
-    "symbol": "races/german/symbols/halftrack_250_ger"
-  },
-  {
-    "id": "halftrack_250_deployment_2_ak",
-    "icon": "races/afrika_corps/vehicles/halftrack_250_ak",
-    "name": "250 Light Carrier",
-    "faction": "dak",
-    "symbol": "races/german/symbols/halftrack_250_ger"
-  },
-  {
-    "id": "halftrack_250_medical_ak",
-    "icon": "common/units/icons/vehicle_german_250_halftrack",
-    "name": "Medical Half-track",
-    "faction": "dak",
-    "symbol": "races/german/symbols/halftrack_medical_ger"
-  },
-  {
     "id": "halftrack_250_mortar_ak",
     "icon": "races/afrika_corps/vehicles/halftrack_250_mortar_ak",
     "name": "Mortar Half-track",
@@ -1561,25 +1638,11 @@
     "symbol": "common/units/symbols/vehicle_west_german_halftrack_251_walking_stuka_symbol"
   },
   {
-    "id": "halftrack_251_weapon_supply_ak",
-    "icon": "common/units/icons/halftrack_sdkfz_251_ger",
-    "name": "Supply Half-track",
-    "faction": "dak",
-    "symbol": "common/units/symbols/halftrack_sdkfz_251_ger"
-  },
-  {
     "id": "halftrack_7_flak_ak",
     "icon": "races/afrika_corps/vehicles/halftrack_7_flak_ak",
     "name": "Flakvierling Half-track",
     "faction": "dak",
     "symbol": "races/german/symbols/halftrack_7_flak_ger"
-  },
-  {
-    "id": "halftrack_medical_ak",
-    "icon": "races/german/vehicles/halftrack_medical_german",
-    "name": "Medical Half-track",
-    "faction": "dak",
-    "symbol": "races/german/symbols/2_5_truck_medical_ger"
   },
   {
     "id": "halftrack_recovery_ak",
@@ -1631,32 +1694,11 @@
     "symbol": "races/german/symbols/m13_40_ger"
   },
   {
-    "id": "m13_40_command_ak",
-    "icon": "races/afrika_corps/vehicles/m13_40_ak",
-    "name": "Command M13/40 Light Tank",
-    "faction": "dak",
-    "symbol": "races/german/symbols/m13_40_ger"
-  },
-  {
     "id": "marder_iii_ak",
     "icon": "races/afrika_corps/vehicles/marder_iii_ak",
     "name": "Marder III Tank Destroyer",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/marder_iii_ak"
-  },
-  {
-    "id": "panzerjager_i_ak",
-    "icon": "common/units/icons/vehicle_soviet_su76m_assault_gun",
-    "name": "Panzerjäger I Tank Destroyer",
-    "faction": "dak",
-    "symbol": "common/units/symbols/vehicle_soviet_su76m_assault_gun_symbol"
-  },
-  {
-    "id": "panzer_iii_37mm_ak",
-    "icon": "races/afrika_corps/vehicles/panzer_iii_ak",
-    "name": "Panzer III Medium Tank",
-    "faction": "dak",
-    "symbol": "common/units/symbols/panzer_iv_sdkfz_161_1_ger"
   },
   {
     "id": "panzer_iii_50mm_long_ak",
@@ -1666,13 +1708,6 @@
     "symbol": "races/german/symbols/panzer_iii_ger"
   },
   {
-    "id": "panzer_iii_50mm_short_ak",
-    "icon": "races/afrika_corps/vehicles/panzer_iii_ak",
-    "name": "Panzer III G Medium Tank",
-    "faction": "dak",
-    "symbol": "common/units/symbols/panzer_iv_sdkfz_161_1_ger"
-  },
-  {
     "id": "panzer_iii_75mm_ak",
     "icon": "races/afrika_corps/vehicles/panzer_iii_75mm_ak",
     "name": "Panzer III N Medium Tank",
@@ -1680,32 +1715,11 @@
     "symbol": "races/afrika_corps/symbols/panzer_iii_75mm_ak"
   },
   {
-    "id": "panzer_iii_ak",
-    "icon": "races/afrika_corps/vehicles/panzer_iii_ak",
-    "name": "Panzer III L Medium Tank",
-    "faction": "dak",
-    "symbol": "races/german/symbols/panzer_iii_ger"
-  },
-  {
-    "id": "panzer_iii_command_ak",
-    "icon": "races/afrika_corps/vehicles/panzer_iii_ak",
-    "name": "Panzer III Medium Tank",
-    "faction": "dak",
-    "symbol": "races/german/symbols/panzer_iii_ger"
-  },
-  {
     "id": "panzer_iii_flame_ak",
     "icon": "races/afrika_corps/vehicles/panzer_iii_flame_ak",
     "name": "Flammpanzer III Medium Tank",
     "faction": "dak",
     "symbol": "races/german/symbols/panzer_iii_flame_ger"
-  },
-  {
-    "id": "panzer_ii_command_ak",
-    "icon": "common/units/icons/vehicle_west_german_panzer_ii_luchs",
-    "name": "Command Panzer II Light Tank",
-    "faction": "dak",
-    "symbol": "common/units/symbols/vehicle_west_german_panzer_ii_luchs_symbol"
   },
   {
     "id": "panzer_iv_ak",
@@ -1720,20 +1734,6 @@
     "name": "Command Panzer IV Medium Tank",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/panzer_iv_command_ak"
-  },
-  {
-    "id": "panzer_iv_stubby_ak",
-    "icon": "races/afrika_corps/vehicles/panzer_iv_command_stubby_ak",
-    "name": "Panzer IV F Medium Tank",
-    "faction": "dak",
-    "symbol": "common/units/symbols/panzer_iv_sdkfz_161_1_ger"
-  },
-  {
-    "id": "panzer_i_command_ak",
-    "icon": "races/afrika_corps/vehicles/2_5_truck_towed_canonne_da_105_ak",
-    "name": "Command Panzer I Light Tank",
-    "faction": "dak",
-    "symbol": "common/units/symbols/vehicle_west_german_panzer_ii_luchs_symbol"
   },
   {
     "id": "semovente_75_18_ak",
@@ -1783,12 +1783,5 @@
     "name": "2.5-tonne Medical Truck",
     "faction": "dak",
     "symbol": "races/german/symbols/2_5_truck_medical_ger"
-  },
-  {
-    "id": "truck_2_5_towed_cannone_da_105_ak",
-    "icon": "races/afrika_corps/vehicles/2_5_truck_towed_canonne_da_105_ak",
-    "name": "2.5-tonne Utility Truck",
-    "faction": "dak",
-    "symbol": "races/german/symbols/2_5_truck_ger"
   }
 ]
