@@ -34,8 +34,8 @@ const testUnits = [
   },
   {
     faction: "dak",
-    unitId: "panzer_iii_ak",
-    name: "Panzer III Medium Tank",
+    unitId: "panzer_iv_ak",
+    name: "Panzer IV Medium Tank",
     description: "DAK tank unit",
   },
 ];
