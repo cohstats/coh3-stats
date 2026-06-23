@@ -178,7 +178,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const raceId = context.params?.raceId as string;
 
   const raceToFetch = (raceId as raceType) || "american";
-  const faction = raceToFetch === "dak" ? "afrika_korps" : raceToFetch;
+
+  const factionMap: Partial<Record<raceType, string>> = {
+    dak: "afrika_korps",
+    british: "british_africa",
+  };
+
+  const faction = factionMap[raceToFetch] ?? raceToFetch;
+
   const units = sbpsData.filter((squad: SbpsType) => squad.faction.includes(faction));
 
   return {
