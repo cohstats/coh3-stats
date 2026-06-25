@@ -15,7 +15,7 @@ const generateAllUnitPages = async () => {
     for (const faction of factions) {
       const units = sbpsData.filter((squad: any) => squad.faction.includes(faction));
       for(const unit of units){
-        const linkFaction = faction === "afrika_korps" ? "dak" : faction
+        const linkFaction = faction === "afrika_korps" ? "dak" : faction === "british_africa" ? "british" : faction;
 
         // For default locale (en), don't include locale in path
         if (locale === nextI18NextConfig.i18n.defaultLocale) {

@@ -17,7 +17,7 @@ const generateSearchData = async () => {
         id: unit.id,
         icon: unit.ui.iconName,
         name: unit.ui.screenName,
-        faction: faction === "afrika_korps" ? "dak" : faction,
+        faction: faction === "afrika_korps" ? "dak" : faction === "british_africa" ? "british" : faction,
         symbol: unit.ui.symbolIconName
       })
     }
