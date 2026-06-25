@@ -8246,12 +8246,12 @@ iterator.prototype@^1.1.5:
     has-symbols "^1.1.0"
     set-function-name "^2.0.2"
 
-javascript-time-ago@2.5.12:
-  version "2.5.12"
-  resolved "https://registry.yarnpkg.com/javascript-time-ago/-/javascript-time-ago-2.5.12.tgz#b789f5c84b0518b38700722627c404a09299c5f9"
-  integrity sha512-s8PPq2HQ3HIbSU0SjhNvTitf5VoXbQWof9q6k3gIX7F2il0ptjD5lONTDccpuKt/2U7RjbCp/TCHPK7eDwO7zQ==
+javascript-time-ago@2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/javascript-time-ago/-/javascript-time-ago-2.6.4.tgz#3149de049ffe3c374eb5a357cd9aaa911aa98fb9"
+  integrity sha512-7K/Z37LuwVaxxjutUDd1pXpznufPcox0b1UYu00ksAMMlV6IsxIvduwL3kgfPxuBVF8jVj7nhrKMPDslMq94aQ==
   dependencies:
-    relative-time-format "^1.1.7"
+    relative-time-format "^1.1.12"
 
 jest-changed-files@^29.7.0:
   version "29.7.0"
@@ -10546,10 +10546,10 @@ rehype-stringify@^10.0.0:
     hast-util-to-html "^9.0.0"
     unified "^11.0.0"
 
-relative-time-format@^1.1.7:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/relative-time-format/-/relative-time-format-1.1.11.tgz#b193d5192434e7c1c6a53e362f811c68a4f18c45"
-  integrity sha512-TH+oV/w77hjaB9xCzoFYJ/Icmr/12+02IAoCI/YGS2UBTbjCbBjHGEBxGnVy4EJvOR1qadGzyFRI6hGaJJG93Q==
+relative-time-format@^1.1.12:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/relative-time-format/-/relative-time-format-1.1.12.tgz#2236c98c48047664bbff0643283dd4f317d26079"
+  integrity sha512-qaZBjmRIuXLfuLnzgqpFdBPa5W0euSX1tMnoMUHGPphLwJmrt8xbNiOIHrlvYOD6oNJ0M5owPCZyPibI8de5pQ==
 
 remark-gfm@^4.0.0:
   version "4.0.1"
