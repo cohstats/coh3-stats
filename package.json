@@ -83,7 +83,7 @@
     "firebase": "11.10.0",
     "i18next": "25.5.2",
     "is-glob": "4.0.3",
-    "javascript-time-ago": "2.5.12",
+    "javascript-time-ago": "2.6.4",
     "json-2-csv": "5.5.11",
     "lodash": "4.18.1",
     "mantine-datatable": "8.3.13",
