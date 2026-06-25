@@ -5382,10 +5382,10 @@ axe-core@^4.10.0:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.11.1.tgz#052ff9b2cbf543f5595028b583e4763b40c78ea7"
   integrity sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==
 
-axios-rate-limit@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/axios-rate-limit/-/axios-rate-limit-1.4.0.tgz#c8eab732cf22dd0d431d5b04d9fc1836b05c0ebd"
-  integrity sha512-uM5PbmSUdSle1I+59Av/wpLuNRobfatIR+FyylSoHcVHT20ohjflNnLMEHZQr7N2QVG/Wlt8jekIPhWwoKtpXQ==
+axios-rate-limit@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/axios-rate-limit/-/axios-rate-limit-1.9.0.tgz#82112abe54c648b662eee58a14e2260b5f6945b3"
+  integrity sha512-p79ltBSUF+8i4uLYr1lu8s28chIaQ8x/oiV3Vb6NDkNAqkKD/AzTAchRPEXK+weRyAkRTIa/GowKcKDn1BHRPQ==
   dependencies:
     axios ">=0.18.0"
 
