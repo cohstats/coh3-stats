@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { TeamsFullSummary } from "../../../../src/coh3/coh3-types";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 import FactionIcon from "../../../../components/faction-icon";
 import TeamsTable from "../components/teams-table";
 import { getTeamsFullSummary } from "../../../../src/apis/coh3stats-api";

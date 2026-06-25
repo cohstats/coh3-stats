@@ -3,7 +3,7 @@ import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { getDPSCalculatorRoute, getUnitBrowserRoute } from "../../src/routes";
 import { getIconsPathOnCDN } from "../../src/utils";
 import classes from "./info-cards.module.css";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 const InfoCard = ({
   link,

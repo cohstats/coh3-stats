@@ -5,7 +5,7 @@ import FactionIcon from "../../../../components/faction-icon";
 import HelperIcon from "../../../../components/icon/helper";
 import TeamsTable from "../components/teams-table";
 import ErrorCard from "../../../../components/error-card";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 import { useRouter } from "next/router";
 import { getTopTeamsSummary } from "../../../../src/apis/coh3stats-api";
 

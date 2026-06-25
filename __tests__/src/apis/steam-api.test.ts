@@ -30,6 +30,7 @@ describe("getCOH3SteamNews", () => {
 
     expect(global.fetch).toHaveBeenCalledWith(
       "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=100",
+      { cache: "force-cache", next: { revalidate: 1800 } },
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
@@ -99,6 +100,7 @@ describe("getCOH3SteamNews", () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledWith(
       "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=1",
+      { cache: "force-cache", next: { revalidate: 1800 } },
     );
   });
 

@@ -161,6 +161,8 @@ const getStatsData = async (
 ) => {
   const response = await fetch(getStatsUrl(startDate, endDate, type, ock, filters), {
     headers: headers,
+    cache: "force-cache",
+    next: { revalidate: 300 },
   });
 
   if (response.ok) {
@@ -214,6 +216,8 @@ const getPlayerCardInfo = async (
       "X-Forwarded-For": xff,
       "c-edge-ip": parseFirstIPFromString(xff),
     },
+    cache: "force-cache",
+    next: { revalidate: 300 },
   });
   const data = await response.json();
 
@@ -244,6 +248,8 @@ const getPlayerCardStatsOrNull = async (
         "X-Forwarded-For": xff,
         "c-edge-ip": parseFirstIPFromString(xff),
       },
+      cache: "force-cache",
+      next: { revalidate: 300 },
     });
     const data = await response.json();
 
@@ -447,6 +453,7 @@ const triggerPlayerNemesisAliasesUpdate = async (playerID: string | number) => {
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   });
 
   return await response.json();
@@ -627,7 +634,10 @@ const getTeamsFullSummary = async (
   profileID: string | number,
   cache_proxy = true,
 ): Promise<TeamsFullSummary> => {
-  const response = await fetch(getTeamsFullSummaryUrl(profileID, cache_proxy));
+  const response = await fetch(getTeamsFullSummaryUrl(profileID, cache_proxy), {
+    cache: "force-cache",
+    next: { revalidate: 300 },
+  });
 
   if (response.ok) {
     return await response.json();

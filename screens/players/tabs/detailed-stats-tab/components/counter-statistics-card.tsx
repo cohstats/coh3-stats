@@ -1,7 +1,7 @@
 import { Card, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import { PlayerReportCounters } from "../../../../../src/coh3/coh3-types";
 import React from "react";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface CounterStatisticsCardProps {
   counters: PlayerReportCounters;

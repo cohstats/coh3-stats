@@ -7,8 +7,8 @@ import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
 import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
+import { useTranslation } from "next-i18next/pages";
 import { useRouter } from "next/router";
 import config from "../../config";
 

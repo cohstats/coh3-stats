@@ -3,7 +3,7 @@ import React from "react";
 import { AspectRatio, Card, Flex, Image, Paper, Text, Title, Tooltip } from "@mantine/core";
 import { IconBrandYoutube } from "@tabler/icons-react";
 import classes from "./youtube-panel.module.css";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 type YoutubePanelProps = {
   youtubeData: YouTubeVideo[] | null;

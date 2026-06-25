@@ -9,7 +9,7 @@ import Link from "next/link";
 import { getLeaderBoardRoute, getTeamLeaderboardsRoute } from "../../../src/routes";
 import React from "react";
 import FactionIcon from "../../../components/faction-icon";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 // Shorter faction names for the menu
 const shortFactionNames: Record<raceType, string> = {

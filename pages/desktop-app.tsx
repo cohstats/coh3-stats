@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import { Octokit } from "octokit";
 
 import DesktopAppPage from "../screens/desktop-app";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 export default DesktopAppPage;
 

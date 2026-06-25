@@ -3,7 +3,7 @@ import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/uti
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import {
   AnalyticsPlayerCardActivityView,
   AnalyticsPlayerCardDetailedStatsView,

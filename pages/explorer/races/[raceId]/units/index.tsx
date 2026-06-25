@@ -28,11 +28,11 @@ import { getExplorerUnitRoute } from "../../../../../src/routes";
 import { useEffect, useState } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../next-i18next.config";
 import config from "../../../../../config";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 interface UnitDetailProps {
   units: SbpsType[];
@@ -215,7 +215,7 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 
   // Generate paths for all combinations of race IDs and locales
   const paths = raceIds.flatMap((raceId) =>
-    locales.map((locale) => ({
+    locales.map((locale: string) => ({
       params: { raceId },
       locale,
     })),

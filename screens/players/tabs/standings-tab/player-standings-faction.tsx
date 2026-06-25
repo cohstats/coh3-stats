@@ -10,7 +10,7 @@ import { Group, Space, Title } from "@mantine/core";
 import FactionIcon from "../../../../components/faction-icon";
 import { localizedNames } from "../../../../src/coh3/coh3-data";
 import PlayerStandingsFactionInfo from "./faction-summary";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 const PlayerStandingsFaction = ({
   faction,

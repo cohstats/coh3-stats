@@ -16,7 +16,7 @@ import {
   AnalyticsLiveGamesTypeSelection,
   AnalyticsLiveGamesView,
 } from "../../src/firebase/analytics";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 // the chart needs to be dynamically imported
 const DynamicLiveGamesLineChart = dynamic(() => import("./live-games-line-chart"), {

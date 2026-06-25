@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getCOH3SteamNews } from "../src/apis/steam-api";
 import SteamNewsPage from "../screens/news";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 const NEWS_PER_PAGE = 10;
 

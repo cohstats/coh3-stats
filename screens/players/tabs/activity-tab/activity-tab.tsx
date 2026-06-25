@@ -16,7 +16,7 @@ import { IconInfoTriangle } from "@tabler/icons-react";
 import Link from "next/link";
 import config from "../../../../config";
 import React, { useState, useEffect } from "react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import HelperIcon from "../../../../components/icon/helper";
 import { isBrowserEnv } from "../../../../src/utils";
 

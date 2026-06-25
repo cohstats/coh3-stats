@@ -2,7 +2,7 @@ import { Box, Center, Container, Flex, Grid, Title, Text } from "@mantine/core";
 import { IconBrandTwitch } from "@tabler/icons-react";
 import { TwitchStream } from "../../../src/coh3/coh3-types";
 import dynamic from "next/dynamic";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 // This needs to be client side only due to some weird errors during SSR
 const TwitchPanel = dynamic(() => import("./twitch-panel"), {

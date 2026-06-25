@@ -10,7 +10,7 @@ import HelperIcon from "../../../../components/icon/helper";
 import { Group } from "@mantine/core";
 import MoreButton from "./more-button";
 import { useRouter } from "next/router";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 import { IconDatabaseOff } from "@tabler/icons-react";
 
 interface TeamsTableProps {

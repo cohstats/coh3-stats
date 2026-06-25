@@ -27,6 +27,8 @@ const fetchRedditPosts = async (numberOfPosts: number): Promise<RedditPostType[]
       "https://storage.coh3stats.com/reddit/reddit_coh3_weekly_top.json",
       {
         method: "GET",
+        cache: "force-cache",
+        next: { revalidate: 1800 },
       },
     );
 

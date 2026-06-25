@@ -6,7 +6,7 @@ import DynamicTimeAgo from "../other/dynamic-timeago";
 import Link from "next/link";
 import React from "react";
 import { Top1v1LeaderboardsData } from "../../src/coh3/coh3-types";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface Props {
   leaderBoardData: Top1v1LeaderboardsData | null;

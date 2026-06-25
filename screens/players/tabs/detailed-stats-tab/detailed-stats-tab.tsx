@@ -11,7 +11,7 @@ import {
 } from "../../../../src/coh3/coh3-types";
 import InnerDetailedStats from "./inner-detailed-stats";
 import FactionIcon from "../../../../components/faction-icon";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 import { useRouter } from "next/router";
 
 const DetailedStatsTab = ({

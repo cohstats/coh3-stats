@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { getGlobalAchievements } from "../../src/apis/coh3stats-api";
 import GlobalAchievementsIndex from "../../screens/stats/achievements";
 import { generateExpireTimeStamps } from "../../src/utils";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
   req,

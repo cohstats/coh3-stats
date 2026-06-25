@@ -15,7 +15,7 @@ import HelperIcon from "../../../../components/icon/helper";
 import DownloadReplayButton from "../recent-matches-tab/matches-table/download-replay";
 import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import MatchDetailDrawer from "../recent-matches-tab/match-detail-drawer";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface TeamMatchesTableProps {
   matches: Array<

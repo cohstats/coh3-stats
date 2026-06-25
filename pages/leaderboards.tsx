@@ -6,7 +6,7 @@ import { raceTypeArray, leaderBoardTypeArray } from "../src/coh3/coh3-types";
 import { leaderboardRegions } from "../src/coh3/coh3-data";
 
 import Leaderboards from "../screens/leaderboards/leaderboards";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 // Define the valid values for validation
 const validRaces = raceTypeArray;

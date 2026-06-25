@@ -4,7 +4,7 @@ import React from "react";
 import { debounce } from "lodash";
 import { getSearchRoute } from "../../../src/routes";
 import { useRouter } from "next/router";
-import { TFunction } from "next-i18next";
+import { TFunction } from "next-i18next/pages";
 
 interface SearchButtonProps {
   redirectOnClick?: boolean;

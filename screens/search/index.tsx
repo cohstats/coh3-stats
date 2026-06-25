@@ -13,7 +13,7 @@ import { IconSearch, IconDatabaseOff } from "@tabler/icons-react";
 import React, { useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { debounce } from "lodash";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { platformType, SearchPlayerCardData } from "../../src/coh3/coh3-types";
 import { SearchPlayerCard } from "./search-components/search-player-card";
 import ErrorCard from "../../components/error-card";

@@ -8,7 +8,7 @@ import { NextSeo } from "next-seo";
 import { Center, Loader } from "@mantine/core";
 import { createMatchSEO } from "../../src/seo-utils";
 import MatchDetail from "./match-detail";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
 
 const MatchDetailRoot: NextPage = () => {

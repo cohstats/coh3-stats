@@ -17,7 +17,7 @@ import { NextPage } from "next";
 import { NextSeo } from "next-seo";
 import config from "../../config";
 import React, { useEffect, useRef } from "react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { AnalyticsDesktopAppPageView } from "../../src/firebase/analytics";
 import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";

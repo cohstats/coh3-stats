@@ -7,7 +7,7 @@ import { generateAlternateLanguageLinks, generateKeywordsString } from "../../sr
 import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
 import { WeaponTable, WeaponTableRow } from "../../components/unitStats/weaponTable";
 import { getScatterArea, getWeaponRpm } from "../../src/unitStats";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
 
 interface WeaponsProps {

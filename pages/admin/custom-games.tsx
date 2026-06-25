@@ -19,7 +19,7 @@ import {
 import { DataTable } from "mantine-datatable";
 import Link from "next/link";
 import { getPlayerCardRoute } from "../../src/routes";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 const ChangeCustomVisibilityForm = () => {
   // state for hideCustomGames

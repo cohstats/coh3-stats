@@ -13,7 +13,7 @@ import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../sr
 import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
 import { NextSeo } from "next-seo";
 import FactionIcon from "../../components/faction-icon";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { createLeaderboardSEO } from "../../src/seo-utils";
 
 const RECORD_PER_PAGE = 100;

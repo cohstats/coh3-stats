@@ -34,7 +34,7 @@ import classes from "./matches-table.module.css";
 import MatchDetailDrawer from "./match-detail-drawer";
 import DownloadReplayButton from "./matches-table/download-replay";
 import { getPlayerRecentMatches } from "../../../../src/apis/coh3stats-api";
-// import { useTranslation } from 'next-i18next';
+// import { useTranslation } from 'next-i18next/pages';
 
 /**
  * Timeago is causing issues with SSR, move to client side

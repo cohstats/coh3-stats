@@ -26,7 +26,7 @@ import { NextSeo } from "next-seo";
 import { createPageSEO } from "../../src/seo-utils";
 import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { useRouter } from "next/router";
 import { imageUrlTransform } from "../../src/utils";
 

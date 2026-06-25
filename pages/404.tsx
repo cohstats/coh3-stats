@@ -1,7 +1,7 @@
 import { Stack } from "@mantine/core";
 import { NextSeo } from "next-seo";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
+import { useTranslation } from "next-i18next/pages";
 
 export default function Custom404() {
   const { t } = useTranslation("common");
