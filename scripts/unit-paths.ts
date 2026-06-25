@@ -8,7 +8,7 @@ const generateAllUnitPages = async () => {
 
   const unitPaths = []
 
-  const factions = ["american", "british", "german", "dak", "afrika_korps"];
+  const factions = ["american", "british_africa", "german", "dak", "afrika_korps"];
   const { locales } = nextI18NextConfig.i18n;
 
   for (const locale of locales) {

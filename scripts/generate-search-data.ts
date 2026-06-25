@@ -7,7 +7,8 @@ const generateSearchData = async () => {
 
   const allUnits = []
 
-  const factions = ["american", "british", "german", "dak", "afrika_korps"];
+  // We want to generate just british africa units
+  const factions = ["american", "british_africa", "german", "dak", "afrika_korps"];
 
   for (const faction of factions) {
     const units = sbpsData.filter((squad: any) => squad.faction.includes(faction));
