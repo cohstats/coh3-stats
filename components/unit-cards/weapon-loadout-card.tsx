@@ -314,7 +314,7 @@ export const WeaponLoadoutCard = (
       key: "scatterDistance",
       label: t("weaponCard.scatterDistance"),
       tooltip: t("weaponCard.scatterDistanceTooltip", {
-        scatterDistanceMax: roundValue(weapon_bag.scatter_distance_scatter_max, 1),
+        scatterDistanceMax: roundValue(weapon_bag.scatter_distance_scatter_max * 2, 1),
         scatterOffsetMax: roundValue(
           weapon_bag.scatter_distance_scatter_offset * weapon_bag.scatter_distance_scatter_max,
           1,
@@ -1552,6 +1552,14 @@ export const WeaponLoadoutCard = (
               near: scatterNear,
               mid: scatterMid,
               far: scatterFar,
+            },
+            {
+              show: showDamageDistribution && showScatterOffset,
+              label: t("weaponCard.damageSpreadOffset"),
+              tooltip: t("weaponCard.damageSpreadOffsetTooltip"),
+              near: formatScatterOffset(scatterOffsetNear),
+              mid: formatScatterOffset(scatterOffsetMid),
+              far: formatScatterOffset(scatterOffsetFar),
             },
             {
               show: showIncrementalTargetRadius,
