@@ -54,7 +54,7 @@ const RenderPlayer = ({
   const isCustomGame = matchType === 0;
 
   const matchHistory = playerInfo.matchhistorymember;
-  let ratingPlayedWith: string | JSX.Element = `${matchHistory.oldrating}`;
+  let ratingPlayedWith: string | React.ReactElement = `${matchHistory.oldrating}`;
   const ratingChange = matchHistory.newrating - matchHistory.oldrating;
   let ratingChangeAsElement =
     ratingChange > 0 ? (
