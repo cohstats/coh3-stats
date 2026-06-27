@@ -172,10 +172,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const locale = context.locale || "en";
+  const params = await context.params;
 
   const { sbpsData } = await getMappings(locale);
 
-  const raceId = context.params?.raceId as string;
+  const raceId = params?.raceId as string;
 
   const raceToFetch = (raceId as raceType) || "american";
 

@@ -352,10 +352,11 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const locale = context.locale || "en";
+  const params = await context.params;
   const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } =
     await getMappings(locale);
 
-  const raceId = context.params?.raceId as raceType;
+  const raceId = params?.raceId as raceType;
 
   const descriptions = getUnitStatsCOH3Descriptions(locale);
 

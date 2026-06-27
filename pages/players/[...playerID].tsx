@@ -244,12 +244,13 @@ const PlayerIDSchema = z
   .regex(/^\d+$/, "Player ID must be a valid number");
 
 export const getServerSideProps: GetServerSideProps<any, { playerID: string }> = async ({
-  params,
+  params: paramsPromise,
   query,
   req,
   res,
   locale = "en",
 }) => {
+  const params = await paramsPromise;
   // Validate player ID (first param)
   const playerIDParam = params?.playerID?.[0];
   const playerIDValidation = PlayerIDSchema.safeParse(playerIDParam);
