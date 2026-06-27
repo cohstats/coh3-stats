@@ -91,10 +91,8 @@ export class TeamLeaderboardsPage extends BasePage {
    * No hardcoded timeouts - uses actual element state
    */
   async waitForTableLoad(): Promise<void> {
-    // Wait for network to be idle (API responses complete)
-    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
-
     // Wait for loader to disappear if it was present
+    // This is the primary indicator that the API response has been received
     await this.loader.waitFor({ state: "hidden", timeout: 15000 }).catch(() => {
       // Loader might not appear if data loads quickly, that's OK
     });
@@ -107,6 +105,12 @@ export class TeamLeaderboardsPage extends BasePage {
 
     // Wait for at least one row to appear (data is populated)
     await this.tableRows.first().waitFor({ state: "visible", timeout: 10000 });
+
+    // Optional: wait a bit for any images/assets to start loading
+    // but don't wait for networkidle as it can timeout with many concurrent image requests (e.g., 4v4 with many country flags)
+    await this.page.waitForLoadState("domcontentloaded").catch(() => {
+      // Already loaded, that's OK
+    });
   }
 
   /**
@@ -157,9 +161,6 @@ export class TeamLeaderboardsPage extends BasePage {
    * Detects when the table content has actually changed
    */
   private async waitForDataChange(previousFirstRowText: string): Promise<void> {
-    // Wait for network activity to complete
-    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
-
     // Wait for the first row content to change (or timeout if data is the same)
     await this.page
       .waitForFunction(
@@ -231,9 +232,6 @@ export class TeamLeaderboardsPage extends BasePage {
 
     await this.recordsPerPageSelect.click();
     await this.page.locator(`[role="option"]:has-text("${records}")`).click();
-
-    // Wait for network activity
-    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
 
     // Wait for row count to potentially change
     await this.page

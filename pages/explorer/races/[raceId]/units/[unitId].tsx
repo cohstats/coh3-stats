@@ -1347,12 +1347,13 @@ const createdCalculateValuesForUnits = (
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const locale = context.locale || "en";
+  const params = await context.params;
 
   const { abilitiesData, ebpsData, sbpsData, upgradesData, weaponData } =
     await getMappings(locale);
 
-  // const raceId = context.params?.raceId as string;
-  const unitId = context.params?.unitId as string;
+  // const raceId = params?.raceId as string;
+  const unitId = params?.unitId as string;
 
   return {
     props: {

@@ -81,6 +81,8 @@ test.describe("Explorer Unit View Pages", () => {
 
   // Additional comprehensive test for one unit
   test.describe("Comprehensive unit page validation (Riflemen)", () => {
+    test.describe.configure({ mode: "serial" });
+
     test.beforeEach(async () => {
       await unitPage.navigate("american", "riflemen_us");
     });
@@ -104,7 +106,7 @@ test.describe("Explorer Unit View Pages", () => {
         await unitPage.checkUnitPageLoaded();
 
         // Check unit icon is visible
-        await expect(unitPage.getUnitIcon("riflemen_us")).toBeVisible();
+        await expect(unitPage.getUnitIcon()).toBeVisible();
 
         // Check unit title
         await expect(unitPage.unitTitle).toBeVisible();
@@ -114,9 +116,9 @@ test.describe("Explorer Unit View Pages", () => {
 
         // Check faction icon visibility - hidden on mobile, visible on desktop
         if (isMobile) {
-          await expect(unitPage.getFactionIcon("american")).toBeHidden();
+          await expect(unitPage.getFactionIcon()).toBeHidden();
         } else {
-          await expect(unitPage.getFactionIcon("american")).toBeVisible();
+          await expect(unitPage.getFactionIcon()).toBeVisible();
         }
       });
 
@@ -445,7 +447,7 @@ test.describe("Explorer Unit View Pages", () => {
         await unitPage.checkUnitPageLoaded();
 
         // Check faction link exists in the page (may not be visible in viewport but should exist)
-        await expect(unitPage.getFactionLink("american").first()).toBeAttached();
+        await expect(unitPage.getFactionLink().first()).toBeAttached();
       });
 
       test("should have working header logo link", async () => {
