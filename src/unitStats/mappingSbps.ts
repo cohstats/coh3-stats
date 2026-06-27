@@ -7,6 +7,7 @@ import { internalSlash } from "../utils";
 import { extractRequirements } from "./requirement-utils";
 import { getStateTreeSpawnMapping } from "./workarounds";
 import { unitToBeIgnored } from "./coh3-unit-configs";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 type SpawnWeaponData = {
   pbg: string;
@@ -406,8 +407,11 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
   const cacheKey = `${patch}-${locale}`;
   if (sbpsPatchData && sbpsPatchData[cacheKey]) return sbpsPatchData[cacheKey];
 
-  const myReqSbps = await fetch(config.getPatchDataUrl("sbps.json", patch));
-  const root = await myReqSbps.json();
+  const sbpsUrl = config.getPatchDataUrl("sbps.json", patch);
+  const root = await fetchJsonWithLogging(
+    sbpsUrl,
+    `sbps.json for patch ${patch}, locale ${locale}`,
+  );
 
   const sbpsSetAll: SbpsType[] = [];
 

@@ -4,6 +4,7 @@ import { resolveLocstring } from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 // need to be extended by all required fields
 type EbpsType = {
@@ -385,9 +386,11 @@ const getEbpsStats = async (patch = "latest", locale = "en") => {
   const cacheKey = `${patch}-${locale}`;
   if (EbpsPatchData && EbpsPatchData[cacheKey]) return EbpsPatchData[cacheKey];
 
-  const myReqEbps = await fetch(config.getPatchDataUrl("ebps.json", patch));
-
-  const root = await myReqEbps.json();
+  const ebpsUrl = config.getPatchDataUrl("ebps.json", patch);
+  const root = await fetchJsonWithLogging(
+    ebpsUrl,
+    `ebps.json for patch ${patch}, locale ${locale}`,
+  );
 
   //@todo initiate mapping to target structure
   const ebpsSetAll: EbpsType[] = [];

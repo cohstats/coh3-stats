@@ -2,6 +2,7 @@ import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { WeaponBagSchema, WeaponCategory, WeaponClass } from "./types";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 const WeaponPatchData: Record<string, Record<string, WeaponType[]>> = {}; // Modified to store by locale and patch
 
@@ -646,13 +647,13 @@ const getWeaponStats = async (patch = "latest", locale = "en") => {
   // Check if we already have the data for this patch and locale
   if (WeaponPatchData[patch]?.[locale]) return WeaponPatchData[patch][locale];
 
-  const [myReqWeapon, myReqEbps] = await Promise.all([
-    fetch(config.getPatchDataUrl("weapon.json", patch)),
-    fetch(config.getPatchDataUrl("ebps.json", patch)),
-  ]);
+  const weaponUrl = config.getPatchDataUrl("weapon.json", patch);
+  const ebpsUrl = config.getPatchDataUrl("ebps.json", patch);
 
-  const root = await myReqWeapon.json();
-  const ebpsRoot = await myReqEbps.json();
+  const [root, ebpsRoot] = await Promise.all([
+    fetchJsonWithLogging(weaponUrl, `weapon.json for patch ${patch}, locale ${locale}`),
+    fetchJsonWithLogging(ebpsUrl, `ebps.json for patch ${patch}, locale ${locale}`),
+  ]);
 
   const projectileMap = getProjectileMetadataMap(ebpsRoot);
 

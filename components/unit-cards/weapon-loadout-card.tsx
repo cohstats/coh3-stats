@@ -1,16 +1,5 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Grid,
-  Image,
-  Stack,
-  Text,
-  Tooltip,
-  Title,
-  useMantineTheme,
-} from "@mantine/core";
-import { getScatterDimensions, getWeaponRpm, WeaponStatsType } from "../../src/unitStats";
+import { Box, Divider, Flex, Stack, Text, Title, useMantineTheme } from "@mantine/core";
+import { getWeaponRpm } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import { getWeaponTiming, TICK_DURATION } from "../../src/unitStats/weaponLib";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
@@ -28,6 +17,46 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import {
+  WeaponCardInput,
+  WeaponCardContext,
+  TargetType,
+  OwnUnitAoeDamageSource,
+  CoverModifierRow,
+  WeaponCardIcons,
+} from "./weapon-loadout/types-and-constants";
+import {
+  formatPercent,
+  formatSeconds,
+  formatMinMaxSeconds,
+  formatMultiplier,
+  formatScatterOffset,
+  roundValue,
+  isChangedMultiplier,
+  getAoeValueAtDistance,
+  formatScatterDimensions,
+  getScatterOffset,
+  areAoeFalloffValuesEqual,
+  normalizeOwnUnitAoeDamageValue,
+  getWeaponIconSrc,
+  buildAoeGraphPoints,
+  createAoeDataset,
+  createAoeChartOptions,
+} from "./weapon-loadout/helpers";
+import { getProjectileTravelTime } from "./weapon-loadout/projectile-calculations";
+import {
+  StatLabel,
+  WeaponIconWithCount,
+  CenterText,
+  PrimaryWeaponStat,
+  CompactStatGrid,
+  RangeStatSection,
+  RangeHeader,
+} from "./weapon-loadout/stat-components";
+import {
+  TargetModifierSection,
+  CoverModifierSection,
+} from "./weapon-loadout/modifier-components";
 
 ChartJS.register(
   CategoryScale,
@@ -40,150 +69,6 @@ ChartJS.register(
   Filler,
 );
 
-type WeaponCardInput = {
-  id: string;
-  icon_name: string; // icon path in game
-  // faction: string;
-  weapon_bag: WeaponStatsType;
-  weapon_class: string;
-  weapon_cat: string;
-  parent: string; // parent file (essence parent folder, eg. rifle, light_machine_gun....)
-};
-
-type WeaponCardContext = {
-  source?: "loadout" | "upgrade" | "ability";
-  abilityNumShots?: number | null;
-};
-
-type TargetType = WeaponStatsType["target_type_table"][number];
-
-type OwnUnitAoeDamageSource = "friendly" | "enemy" | "custom" | "none";
-
-const WeaponCardIcons = {
-  damage: "/icons/unit_status/bw2/8_damagebonus.png",
-  deflection_damage: "/icons/unit_status/bw2/anti_tank.png",
-  reload_frequency: "/icons/unit_status/bw2/ammo_swap.png",
-  aim_time: "/icons/unit_status/bw2/9_markedtarget.png",
-  range: "/icons/unit_status/bw2/range_boost.png",
-  aoe_size: "/icons/unit_status/bw2/flame.png",
-  traverse_speed: "/icons/unit_status/bw2/skorpion.png",
-  firing_arc: "/icons/unit_status/bw2/artillery_radio_beacon.png",
-  setup_time: "/icons/unit_status/bw2/deploying.png",
-  teardown_time: "/icons/races/common/symbols/building_support_center.png",
-  suppression: "/icons/unit_status/bw2/suppression.png",
-  suppression_radius: "/icons/unit_status/bw2/suppressive_fire.png",
-  incremental_accuracy: "/icons/unit_status/bw2/accuracy_buff.png",
-  detonation_delay: "/icons/common/resources/resource_buildtime_extra.png",
-  projectile_travel_time: "/icons/unit_status/bw2/designated_artillery_overwatch_active.png",
-  projectile_avoidance_arc_max:
-    "/icons/unit_status/bw2/designated_artillery_overwatch_active.png",
-} as const;
-
-const StatLabel = ({ label, tooltip }: { label: React.ReactNode; tooltip?: string }) => {
-  if (!tooltip) {
-    return <Text>{label}</Text>;
-  }
-
-  return (
-    <Tooltip label={tooltip} multiline w={300} withArrow openDelay={250} withinPortal>
-      <Text
-        style={{
-          width: "fit-content",
-          cursor: "help",
-        }}
-      >
-        {label}
-      </Text>
-    </Tooltip>
-  );
-};
-
-type AoeFalloffValues = {
-  near: number;
-  mid: number;
-  far: number;
-};
-
-const getAoeValueAtDistance = (
-  weapon_bag: WeaponStatsType,
-  distance: number,
-  values: AoeFalloffValues,
-): number => {
-  const nearDistance = weapon_bag.aoe_distance_near;
-  const midDistance = weapon_bag.aoe_distance_mid;
-  const farDistance = weapon_bag.aoe_distance_far;
-
-  const interpolate = (x: number, x1: number, x2: number, y1: number, y2: number): number => {
-    if (x1 === x2) return y2;
-
-    const t = (x - x1) / (x2 - x1);
-    return y1 + (y2 - y1) * t;
-  };
-
-  if (distance <= nearDistance) {
-    return values.near;
-  }
-
-  if (distance <= midDistance) {
-    return interpolate(distance, nearDistance, midDistance, values.near, values.mid);
-  }
-
-  if (distance <= farDistance) {
-    return interpolate(distance, midDistance, farDistance, values.mid, values.far);
-  }
-
-  return values.far;
-};
-
-const WeaponIconWithCount = ({
-  count,
-  children,
-}: {
-  count: number;
-  children: React.ReactNode;
-}) => (
-  <div
-    style={{
-      position: "relative",
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      width: 60,
-      minHeight: 36,
-      flexShrink: 0,
-      overflow: "visible",
-    }}
-  >
-    {children}
-
-    <span
-      style={{
-        position: "absolute",
-        top: -7,
-        left: -7,
-        minWidth: 17,
-        height: 17,
-        padding: "0 5px",
-        borderRadius: 999,
-        background: "var(--mantine-color-blue-6)",
-        border: "1px solid rgba(255, 255, 255, 0.35)",
-        color: "white",
-        fontSize: 11,
-        fontWeight: 700,
-        lineHeight: "17px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        pointerEvents: "none",
-        zIndex: 1,
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.45)",
-      }}
-    >
-      {count}
-    </span>
-  </div>
-);
-
 export const WeaponLoadoutCard = (
   { id, parent, icon_name, weapon_class, weapon_cat, weapon_bag }: WeaponCardInput,
   count = 1,
@@ -191,32 +76,6 @@ export const WeaponLoadoutCard = (
 ) => {
   const { t } = useTranslation(["explorer"]);
   const theme = useMantineTheme();
-  const formatUnitType = (unitType: string): string =>
-    unitType
-      .replace(/^tp_/, "")
-      .replaceAll("_", " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-
-  const formatBaseDamageModifier = (value: number): React.ReactNode => {
-    if (value === 0) return "—";
-
-    return value > 0 ? `+${value}` : value;
-  };
-
-  const formatMultiplier = (
-    value: number,
-    unchangedValue: React.ReactNode = "—",
-  ): React.ReactNode => {
-    const roundedValue = Math.round(value * 100) / 100;
-
-    if (roundedValue === 1) return unchangedValue;
-
-    return `×${roundedValue}`;
-  };
-
-  const formatPercent = (value: number, decimals = 2) => {
-    return `${roundValue(value * 100, decimals)}%`;
-  };
 
   const formatReloadFrequency = () => {
     const min = weapon_bag.reload_frequency_min + 1;
@@ -226,26 +85,6 @@ export const WeaponLoadoutCard = (
     const unit = weapon_bag.burst_can_burst ? t("weaponCard.bursts") : t("weaponCard.shots");
 
     return `${value} ${unit}`;
-  };
-
-  const formatScatterDimensions = (distance: number) => {
-    const { width, length } = getScatterDimensions(distance, weapon_bag);
-    if (roundValue(width, 1) === 0 && roundValue(length, 1) === 0) return 0;
-    return `${roundValue(width, 1)}×${roundValue(length, 1)}`;
-  };
-
-  const getScatterOffset = (distance: number) => {
-    const { offset } = getScatterDimensions(distance, weapon_bag);
-
-    return roundValue(offset, 1);
-  };
-
-  const formatScatterOffset = (offset: number): React.ReactNode => {
-    if (offset === 0) return `—`;
-
-    if (offset > 0) return `+${offset}m`;
-
-    return `${offset}m`;
   };
 
   const hasTargetModifier = (entry: TargetType): boolean =>
@@ -261,29 +100,6 @@ export const WeaponLoadoutCard = (
   const isSingleShotAbilityWeapon = context.source === "ability" && context.abilityNumShots === 1;
 
   const showSustainedStats = !isSingleShotAbilityWeapon;
-
-  const formatSeconds = (value: number, decimals = 3) => `${roundValue(value, decimals)}s`;
-  const formatMinMaxSeconds = (min: number, max: number, decimals = 3) => {
-    const roundedMin = roundValue(min, decimals);
-    const roundedMax = roundValue(max, decimals);
-
-    if (roundedMin === roundedMax) return `${roundedMax}s`;
-
-    return `${roundedMin}–${roundedMax}s`;
-  };
-
-  const roundValue = (value: number, decimals = 2): number => {
-    const factor = 10 ** decimals;
-    return Math.round(value * factor) / factor;
-  };
-
-  const CenterText = ({ value, color }: { value: React.ReactNode; color?: string }) => (
-    <Text style={{ textAlign: "center" }} c={color}>
-      {value}
-    </Text>
-  );
-
-  const isChangedMultiplier = (value: number) => Math.round(value * 100) / 100 !== 1;
 
   const allMovingModifierColumns = [
     {
@@ -335,27 +151,27 @@ export const WeaponLoadoutCard = (
 
   const hasSingleMovingModifier = movingModifierColumns.length === 1;
 
-  const movingLabelColumnSpan = 2;
-  const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
-
   const OnMoveHeader = ({ show = true }: { show?: boolean }) => {
+    const movingLabelColumnSpan = 2;
+    const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
+
     if (!show || hasSingleMovingModifier) return null;
 
     return (
-      <Grid gutter="xs">
-        <Grid.Col span={{ base: movingLabelColumnSpan, md: movingLabelColumnSpan }} />
+      <Flex direction="column" gap="xs">
+        <Flex gap="xs">
+          <Box style={{ width: `${(movingLabelColumnSpan / 12) * 100}%` }} />
 
-        {movingModifierColumns.map((column) => (
-          <Grid.Col
-            key={column.key}
-            span={{ base: movingStatColumnSpan, md: movingStatColumnSpan }}
-          >
-            <Flex justify="center">
+          {movingModifierColumns.map((column) => (
+            <Box
+              key={column.key}
+              style={{ width: `${(movingStatColumnSpan / 12) * 100}%`, textAlign: "center" }}
+            >
               <StatLabel label={column.label} tooltip={column.tooltip} />
-            </Flex>
-          </Grid.Col>
-        ))}
-      </Grid>
+            </Box>
+          ))}
+        </Flex>
+      </Flex>
     );
   };
 
@@ -376,247 +192,29 @@ export const WeaponLoadoutCard = (
       );
     }
 
+    const movingLabelColumnSpan = 2;
+    const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
+
     return (
-      <Grid gutter="xs">
-        <Grid.Col span={{ base: movingLabelColumnSpan, md: movingLabelColumnSpan }}>
+      <Flex gap="xs" align="center">
+        <Box style={{ width: `${(movingLabelColumnSpan / 12) * 100}%` }}>
           <StatLabel
             label={t("weaponCard.onTheMove")}
             tooltip={t("weaponCard.onTheMoveTooltip")}
           />
-        </Grid.Col>
+        </Box>
 
         {movingModifierColumns.map((column) => (
-          <Grid.Col
+          <Box
             key={column.key}
-            span={{ base: movingStatColumnSpan, md: movingStatColumnSpan }}
+            style={{ width: `${(movingStatColumnSpan / 12) * 100}%`, textAlign: "center" }}
           >
             <CenterText color="orange.6" value={formatMultiplier(column.value)} />
-          </Grid.Col>
-        ))}
-      </Grid>
-    );
-  };
-
-  const formatRangeHeaderDistance = (distance: number) => `${roundValue(distance, 2)}m`;
-
-  const RangeColumnHeader = ({
-    label,
-    distance,
-    color,
-  }: {
-    label: string;
-    distance: number;
-    color: string;
-  }) => (
-    <Stack gap={0} align="center">
-      <Text c={color} fz="xs" opacity={0.8}>
-        {label}
-      </Text>
-      <Text c={color} fw={700}>
-        {formatRangeHeaderDistance(distance)}
-      </Text>
-    </Stack>
-  );
-
-  const RangeHeader = ({ left }: { left?: React.ReactNode }) => (
-    <Grid gutter="xs" align="center">
-      <Grid.Col span={{ base: 4, md: 4 }}>{left}</Grid.Col>
-
-      <Grid.Col span={{ base: 3, md: 3 }}>
-        <RangeColumnHeader
-          color="green.6"
-          label={t("common.near")}
-          distance={weapon_bag.range.near}
-        />
-      </Grid.Col>
-
-      <Grid.Col span={{ base: 3, md: 3 }}>
-        <RangeColumnHeader
-          color="yellow.6"
-          label={t("common.mid")}
-          distance={weapon_bag.range.mid}
-        />
-      </Grid.Col>
-
-      <Grid.Col span={{ base: 2, md: 2 }}>
-        <RangeColumnHeader
-          color="red.6"
-          label={t("common.far")}
-          distance={weapon_bag.range.far}
-        />
-      </Grid.Col>
-    </Grid>
-  );
-
-  const RangeStatRow = ({
-    label,
-    tooltip,
-    near,
-    mid,
-    far,
-    show = true,
-  }: {
-    label: string;
-    tooltip?: string;
-    near: React.ReactNode;
-    mid: React.ReactNode;
-    far: React.ReactNode;
-    show?: boolean;
-  }) => {
-    if (!show) return null;
-
-    return (
-      <Grid gutter="xs">
-        <Grid.Col span={{ base: 4, md: 4 }}>
-          <StatLabel label={label} tooltip={tooltip} />
-        </Grid.Col>
-        <Grid.Col span={{ base: 3, md: 3 }}>
-          <CenterText color="green.6" value={near} />
-        </Grid.Col>
-        <Grid.Col span={{ base: 3, md: 3 }}>
-          <CenterText color="yellow.6" value={mid} />
-        </Grid.Col>
-        <Grid.Col span={{ base: 2, md: 2 }}>
-          <CenterText color="red.6" value={far} />
-        </Grid.Col>
-      </Grid>
-    );
-  };
-
-  type RangeStatRowConfig = {
-    label: string;
-    tooltip?: string;
-    near: React.ReactNode;
-    mid: React.ReactNode;
-    far: React.ReactNode;
-    show?: boolean;
-  };
-
-  const RangeStatSection = ({
-    title,
-    rows,
-    show = true,
-    showDivider = true,
-  }: {
-    title: string;
-    rows: RangeStatRowConfig[];
-    show?: boolean;
-    showDivider?: boolean;
-  }) => {
-    const visibleRows = rows.filter((row) => row.show ?? true);
-
-    if (!show || visibleRows.length === 0) return null;
-
-    return (
-      <>
-        {showDivider ? <Divider my={4} /> : null}
-
-        <Grid gutter="xs">
-          <Grid.Col span={12}>
-            <Text fz="xs" fw={700} tt="uppercase" c="dimmed">
-              {title}
-            </Text>
-          </Grid.Col>
-        </Grid>
-
-        {visibleRows.map((row) => (
-          <RangeStatRow
-            key={row.label}
-            label={row.label}
-            tooltip={row.tooltip}
-            near={row.near}
-            mid={row.mid}
-            far={row.far}
-          />
-        ))}
-      </>
-    );
-  };
-
-  type CompactStatItemConfig = {
-    label: string;
-    tooltip?: string;
-    value: React.ReactNode;
-    icon?: string;
-    alt?: string;
-    show?: boolean;
-  };
-
-  const CompactStatItem = ({
-    label,
-    tooltip,
-    value,
-    icon,
-    alt,
-    show = true,
-  }: CompactStatItemConfig) => {
-    if (!show) return null;
-
-    return (
-      <Flex justify="flex-start" align="center" gap={6} wrap="nowrap">
-        {icon && (
-          <ImageWithFallback
-            width={16}
-            height={16}
-            src={icon}
-            alt={alt ?? label}
-            fallbackSrc={symbolPlaceholder}
-            style={{ opacity: 0.75, flexShrink: 0 }}
-          />
-        )}
-
-        <StatLabel label={label} tooltip={tooltip} />
-        <Text c="orange.6">{value}</Text>
-      </Flex>
-    );
-  };
-
-  const CompactStatGrid = ({ items }: { items: CompactStatItemConfig[] }) => {
-    const visibleItems = items.filter((item) => item.show ?? true);
-
-    if (visibleItems.length === 0) return null;
-
-    return (
-      <Flex align="center" justify="center" columnGap="xl" rowGap={4} wrap="wrap">
-        {visibleItems.map((item) => (
-          <CompactStatItem key={item.label} {...item} />
+          </Box>
         ))}
       </Flex>
     );
   };
-
-  const PrimaryWeaponStat = ({
-    label,
-    value,
-    icon,
-    alt,
-  }: {
-    label: string;
-    value: React.ReactNode;
-    icon: string;
-    alt: string;
-  }) => (
-    <Flex align="center" gap={7} wrap="nowrap" style={{ minWidth: 0 }}>
-      <ImageWithFallback
-        width={19}
-        height={19}
-        src={icon}
-        alt={alt}
-        fallbackSrc={symbolPlaceholder}
-        style={{ opacity: 0.9, flexShrink: 0 }}
-      />
-
-      <Flex align="baseline" gap={4} wrap="nowrap" style={{ minWidth: 0 }}>
-        <Text fz="sm" fw={700} style={{ whiteSpace: "nowrap" }}>
-          {label}
-        </Text>
-
-        <Text fz="md" c="orange.5" fw={800} lh={1.1} style={{ whiteSpace: "nowrap" }}>
-          {value}
-        </Text>
-      </Flex>
-    </Flex>
-  );
 
   const PrimaryWeaponStats = () => (
     <Stack gap={4}>
@@ -635,171 +233,6 @@ export const WeaponLoadoutCard = (
       />
     </Stack>
   );
-
-  const TargetModifierSection = ({ rows }: { rows: TargetType[] }) => {
-    if (rows.length === 0) return null;
-
-    return (
-      <>
-        <Divider my={4} />
-
-        <Grid gutter="xs">
-          <Grid.Col span={{ base: 4, md: 4 }}>
-            <Flex align="center" gap={4}>
-              <Text fw={600}>{t("weaponCard.targetModifiers")}</Text>
-              <HelperIcon
-                text={t("weaponCard.targetModifiersTooltip")}
-                width={300}
-                iconSize={16}
-              />
-            </Flex>
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.baseDamage")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.accuracy")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.penetration")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.damage")} />
-          </Grid.Col>
-        </Grid>
-
-        {rows.map((entry) => (
-          <Grid key={entry.unit_type} gutter="xs">
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <Text>{formatUnitType(entry.unit_type)}</Text>
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText color="orange.6" value={formatBaseDamageModifier(entry.dmg_modifier)} />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText color="orange.6" value={formatMultiplier(entry.accuracy_multiplier)} />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText
-                color="orange.6"
-                value={formatMultiplier(entry.penetration_multiplier)}
-              />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText color="orange.6" value={formatMultiplier(entry.damage_multiplier)} />
-            </Grid.Col>
-          </Grid>
-        ))}
-      </>
-    );
-  };
-
-  type CoverModifierRow = {
-    label: string;
-    accuracy: number;
-    damage: number;
-    aimTime: number;
-  };
-
-  const CoverModifierSection = ({ rows }: { rows: CoverModifierRow[] }) => {
-    if (rows.length === 0) return null;
-
-    const showCoverAimTime = rows.some((row) => row.aimTime !== 1);
-    const statColumnSpan = showCoverAimTime ? 2.6 : 4;
-
-    const coverRows = [
-      {
-        ...rows[0],
-        icon: "/icons/common/cover/light.png",
-      },
-      {
-        ...rows[1],
-        icon: "/icons/common/cover/heavy.png",
-      },
-      {
-        ...rows[2],
-        icon: "/icons/common/units/garrisoned.png",
-      },
-    ];
-
-    return (
-      <>
-        <Divider my={4} />
-
-        <Grid gutter="xs">
-          <Grid.Col span={{ base: 4, md: 4 }}>
-            <Flex align="center" gap={4}>
-              <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
-              <HelperIcon
-                text={t("weaponCard.coverModifiersTooltip")}
-                width={300}
-                iconSize={16}
-              />
-            </Flex>
-          </Grid.Col>
-
-          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-            <CenterText value={t("weaponCard.accuracy")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-            <CenterText value={t("weaponCard.damage")} />
-          </Grid.Col>
-
-          {showCoverAimTime && (
-            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-              <CenterText value={t("weaponCard.aimTime")} />
-            </Grid.Col>
-          )}
-        </Grid>
-
-        {coverRows.map((row) => (
-          <Grid key={row.label} gutter="xs">
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <Flex align="center" gap={4}>
-                <Image src={row.icon} alt={row.label} h={32} w={32} />
-                <Text>{row.label}</Text>
-              </Flex>
-            </Grid.Col>
-
-            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-              <CenterText color="orange.6" value={formatMultiplier(row.accuracy ?? 1, "×1")} />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-              <CenterText color="orange.6" value={formatMultiplier(row.damage ?? 1, "×1")} />
-            </Grid.Col>
-
-            {showCoverAimTime && (
-              <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-                <CenterText color="orange.6" value={formatMultiplier(row.aimTime ?? 1, "×1")} />
-              </Grid.Col>
-            )}
-          </Grid>
-        ))}
-      </>
-    );
-  };
-
-  const getWeaponIconSrc = (iconName: string) => {
-    const normalizedIconName = iconName.trim();
-
-    if (!normalizedIconName) return "";
-
-    if (normalizedIconName.startsWith("/")) return normalizedIconName;
-
-    return normalizedIconName.endsWith(".png")
-      ? `/icons/${normalizedIconName}`
-      : `/icons/${normalizedIconName}.png`;
-  };
 
   const weaponIcon = getWeaponIconSrc(icon_name);
   const parentFallbackIcon = getDefaultWeaponIcon(parent);
@@ -905,13 +338,13 @@ export const WeaponLoadoutCard = (
     showSustainedStats &&
     ((suppressionNear ?? 0) > 0 || (suppressionMid ?? 0) > 0 || (suppressionFar ?? 0) > 0);
 
-  const scatterNear = formatScatterDimensions(weapon_bag.range.near);
-  const scatterMid = formatScatterDimensions(weapon_bag.range.mid);
-  const scatterFar = formatScatterDimensions(weapon_bag.range.far);
+  const scatterNear = formatScatterDimensions(weapon_bag.range.near, weapon_bag);
+  const scatterMid = formatScatterDimensions(weapon_bag.range.mid, weapon_bag);
+  const scatterFar = formatScatterDimensions(weapon_bag.range.far, weapon_bag);
 
-  const scatterOffsetNear = getScatterOffset(weapon_bag.range.near);
-  const scatterOffsetMid = getScatterOffset(weapon_bag.range.mid);
-  const scatterOffsetFar = getScatterOffset(weapon_bag.range.far);
+  const scatterOffsetNear = getScatterOffset(weapon_bag.range.near, weapon_bag);
+  const scatterOffsetMid = getScatterOffset(weapon_bag.range.mid, weapon_bag);
+  const scatterOffsetFar = getScatterOffset(weapon_bag.range.far, weapon_bag);
 
   const showScatterOffset =
     scatterOffsetNear !== 0 || scatterOffsetMid !== 0 || scatterOffsetFar !== 0;
@@ -937,153 +370,18 @@ export const WeaponLoadoutCard = (
       ? `${weapon_bag.range.min} - ${weapon_bag.range.max}`
       : weapon_bag.range.max;
 
-  const PROJECTILE_LAUNCH_HEIGHT = 2;
-  const BASE_GRAVITY = 9.8;
-  const MIN_PROJECTILE_SPEED_INCREMENT = 0.1;
-  const DEFAULT_PROJECTILE_SPEED_INCREMENT = 0.5;
-
-  const getProjectileImpactHeight = () =>
-    weapon_bag.projectile_midair_detonation_height > 0
-      ? weapon_bag.projectile_midair_detonation_height
-      : 0;
-
-  const getBallisticDiscriminant = (
-    distance: number,
-    heightDelta: number,
-    speed: number,
-    gravity: number,
-  ) => {
-    return speed ** 4 - gravity * (gravity * distance ** 2 + 2 * heightDelta * speed ** 2);
-  };
-
-  const getRequiredProjectileSpeed = (distance: number, heightDelta: number, gravity: number) => {
-    if (distance <= 0 || gravity <= 0) return null;
-
-    const requiredSpeedSquared =
-      gravity * (heightDelta + Math.sqrt(distance ** 2 + heightDelta ** 2));
-
-    if (requiredSpeedSquared <= 0) return null;
-
-    return Math.sqrt(requiredSpeedSquared);
-  };
-
-  const getProjectileAngle = (lowAngle: number, highAngle: number) => {
-    if (weapon_bag.projectile_firing_angle_type === "high_angle") {
-      return highAngle;
-    }
-
-    return lowAngle;
-  };
-
-  const getActualProjectileSpeed = (
-    requiredSpeed: number,
-    baseSpeed: number,
-    speedIncrement: number,
-  ) => {
-    if (baseSpeed >= requiredSpeed) return baseSpeed;
-
-    // If increment is below the min, the field is broken
-    // fall back to the projectile default
-    const effectiveSpeedIncrement =
-      speedIncrement >= MIN_PROJECTILE_SPEED_INCREMENT
-        ? speedIncrement
-        : DEFAULT_PROJECTILE_SPEED_INCREMENT;
-
-    const steps = Math.ceil((requiredSpeed - baseSpeed) / effectiveSpeedIncrement - 1e-9);
-
-    return baseSpeed + steps * effectiveSpeedIncrement;
-  };
-
-  const degreesToRadians = (degrees: number) => (degrees * Math.PI) / 180;
-
-  const getRequiredSpeedForAngle = (
-    distance: number,
-    heightDelta: number,
-    gravity: number,
-    angle: number,
-  ) => {
-    const cosAngle = Math.cos(angle);
-    const tanAngle = Math.tan(angle);
-
-    const denominator = 2 * cosAngle ** 2 * (distance * tanAngle - heightDelta);
-
-    if (denominator <= 0) return null;
-
-    return Math.sqrt((gravity * distance ** 2) / denominator);
-  };
-
-  const getProjectileTravelTime = (distance: number) => {
-    if (weapon_bag.projectile_type === "none") return null;
-
-    // Fixed trajectory projectiles use their authored time directly.
-    if (
-      weapon_bag.projectile_trajectory_type === "projectile_trajectory" &&
-      weapon_bag.projectile_trajectory_time_seconds > 0
-    ) {
-      return weapon_bag.projectile_trajectory_time_seconds;
-    }
-
-    // For now, only calculate ballistic time for artillery.
-    if (weapon_bag.projectile_type !== "artillery") return null;
-
-    if (distance <= 0) return null;
-
-    const gravity = BASE_GRAVITY * (weapon_bag.projectile_gravity_multiplier || 1);
-    const impactHeight = getProjectileImpactHeight();
-    const heightDelta = impactHeight - PROJECTILE_LAUNCH_HEIGHT;
-
-    if (weapon_bag.projectile_firing_angle_type === "lowest_non_collide_angle") {
-      const theta = degreesToRadians(weapon_bag.projectile_non_collide_start_angle);
-
-      const speed = getRequiredSpeedForAngle(distance, heightDelta, gravity, theta);
-
-      if (speed === null) return null;
-
-      const horizontalSpeed = speed * Math.cos(theta);
-
-      if (horizontalSpeed <= 0) return null;
-
-      return distance / horizontalSpeed;
-    }
-
-    const requiredSpeed = getRequiredProjectileSpeed(distance, heightDelta, gravity);
-
-    if (requiredSpeed === null) return null;
-
-    const speed = getActualProjectileSpeed(
-      requiredSpeed,
-      weapon_bag.projectile_speed,
-      weapon_bag.projectile_speed_increment,
-    );
-
-    if (speed === null) return null;
-
-    const discriminant = getBallisticDiscriminant(distance, heightDelta, speed, gravity);
-
-    if (discriminant < 0) return null;
-
-    const sqrtDiscriminant = Math.sqrt(discriminant);
-
-    const lowTanTheta = (speed ** 2 - sqrtDiscriminant) / (gravity * distance);
-    const highTanTheta = (speed ** 2 + sqrtDiscriminant) / (gravity * distance);
-
-    const lowAngle = Math.atan(lowTanTheta);
-    const highAngle = Math.atan(highTanTheta);
-
-    const theta = getProjectileAngle(lowAngle, highAngle);
-
-    if (theta === null) return null;
-
-    const horizontalSpeed = speed * Math.cos(theta);
-
-    if (horizontalSpeed <= 0) return null;
-
-    return distance / horizontalSpeed;
-  };
-
-  const projectileTravelTimeNear = getProjectileTravelTime(weapon_bag.range_distance_near);
-  const projectileTravelTimeMid = getProjectileTravelTime(weapon_bag.range_distance_mid);
-  const projectileTravelTimeFar = getProjectileTravelTime(weapon_bag.range_distance_far);
+  const projectileTravelTimeNear = getProjectileTravelTime(
+    weapon_bag.range_distance_near,
+    weapon_bag,
+  );
+  const projectileTravelTimeMid = getProjectileTravelTime(
+    weapon_bag.range_distance_mid,
+    weapon_bag,
+  );
+  const projectileTravelTimeFar = getProjectileTravelTime(
+    weapon_bag.range_distance_far,
+    weapon_bag,
+  );
 
   const showProjectileTravelTime =
     projectileTravelTimeNear !== null ||
@@ -1131,23 +429,6 @@ export const WeaponLoadoutCard = (
       weapon_bag.aoe_suppression_mid > 0 ||
       weapon_bag.aoe_suppression_far > 0);
 
-  const areAoeFalloffValuesEqual = (first: AoeFalloffValues, second: AoeFalloffValues) => {
-    const epsilon = 0.000001;
-
-    return (
-      Math.abs(first.near - second.near) < epsilon &&
-      Math.abs(first.mid - second.mid) < epsilon &&
-      Math.abs(first.far - second.far) < epsilon
-    );
-  };
-
-  const normalizeOwnUnitAoeDamageValue = (ownUnitValue: number, friendlyValue: number) => {
-    // Relic-style inherit value.
-    if (ownUnitValue < 0) return friendlyValue;
-
-    return ownUnitValue;
-  };
-
   const enemyAoeDamageValues = {
     near: weapon_bag.aoe_damage_near,
     mid: weapon_bag.aoe_damage_mid,
@@ -1188,68 +469,6 @@ export const WeaponLoadoutCard = (
 
   const hasOwnUnitAoeDamage = ownUnitAoeDamageSource === "custom";
 
-  const getAoeGraphStep = (maxDistance: number) => {
-    if (maxDistance <= 5) return 0.1;
-
-    return 0.2;
-  };
-
-  const buildAoeGraphPoints = (getValue: (distance: number) => number) => {
-    const maxDistance = weapon_bag.aoe_outer_radius;
-    const step = getAoeGraphStep(maxDistance);
-
-    const regularPoints = Array.from({ length: Math.floor(maxDistance / step) + 1 }, (_, index) =>
-      roundValue(index * step, 2),
-    );
-
-    const exactPoints = [
-      0,
-      weapon_bag.aoe_distance_near,
-      weapon_bag.aoe_distance_mid,
-      weapon_bag.aoe_distance_far,
-      weapon_bag.aoe_outer_radius,
-    ].map((distance) => roundValue(distance, 2));
-
-    const distances = [...new Set([...regularPoints, ...exactPoints])]
-      .filter((distance) => Number.isFinite(distance))
-      .filter((distance) => distance >= 0 && distance <= maxDistance)
-      .sort((a, b) => a - b);
-
-    return distances.map((distance) => ({
-      x: distance,
-      y: roundValue(getValue(distance), 3),
-    }));
-  };
-
-  type AoeDatasetOptions = {
-    yAxisID?: "yDamage" | "ySuppression";
-    borderWidth?: number;
-    borderDash?: number[];
-    order?: number;
-  };
-
-  const createAoeDataset = (
-    label: string,
-    data: { x: number; y: number }[],
-    color: string,
-    options: AoeDatasetOptions = {},
-  ) => ({
-    label,
-    data,
-    yAxisID: options.yAxisID ?? "yDamage",
-    borderWidth: options.borderWidth ?? 3,
-    borderColor: color,
-    tension: 0.1,
-    pointStyle: "cross" as const,
-    fill: false,
-    backgroundColor: "rgba(200, 200, 200, 0.2)",
-    pointRadius: 0,
-    pointHoverRadius: 30,
-    pointHitRadius: 10,
-    order: options.order ?? 1,
-    ...(options.borderDash ? { borderDash: options.borderDash } : {}),
-  });
-
   const damageDatasetLabel =
     ownUnitAoeDamageSource === "enemy"
       ? t("weaponCard.damageIncludesOwnUnits")
@@ -1263,7 +482,10 @@ export const WeaponLoadoutCard = (
   const aoeChartDatasets = [
     createAoeDataset(
       damageDatasetLabel,
-      buildAoeGraphPoints((distance) => getAverageDamageValue(getAoeDamageMultiplier(distance))),
+      buildAoeGraphPoints(
+        (distance) => getAverageDamageValue(getAoeDamageMultiplier(distance)),
+        weapon_bag,
+      ),
       theme.colors.orange[5],
       {
         yAxisID: "yDamage",
@@ -1274,8 +496,9 @@ export const WeaponLoadoutCard = (
     hasFriendlyAoeDamage
       ? createAoeDataset(
           friendlyDamageDatasetLabel,
-          buildAoeGraphPoints((distance) =>
-            getAverageDamageValue(getAoeFriendlyDamageMultiplier(distance)),
+          buildAoeGraphPoints(
+            (distance) => getAverageDamageValue(getAoeFriendlyDamageMultiplier(distance)),
+            weapon_bag,
           ),
           theme.colors.blue[5],
           {
@@ -1289,8 +512,9 @@ export const WeaponLoadoutCard = (
     hasOwnUnitAoeDamage
       ? createAoeDataset(
           t("weaponCard.ownUnitDamage"),
-          buildAoeGraphPoints((distance) =>
-            getAverageDamageValue(getAoeOwnUnitDamageMultiplier(distance)),
+          buildAoeGraphPoints(
+            (distance) => getAverageDamageValue(getAoeOwnUnitDamageMultiplier(distance)),
+            weapon_bag,
           ),
           theme.colors.gray[5],
           {
@@ -1305,7 +529,7 @@ export const WeaponLoadoutCard = (
     hasAoeSuppression
       ? createAoeDataset(
           t("weaponCard.suppression"),
-          buildAoeGraphPoints((distance) => getAoeSuppressionDisplayValue(distance)),
+          buildAoeGraphPoints((distance) => getAoeSuppressionDisplayValue(distance), weapon_bag),
           theme.colors.violet[5],
           {
             yAxisID: "ySuppression",
@@ -1333,67 +557,13 @@ export const WeaponLoadoutCard = (
       .flatMap((dataset) => dataset.data.map((point) => point.y)),
   );
 
-  const aoeChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: "index" as const,
-      intersect: false,
-    },
-    plugins: {
-      legend: {
-        position: "top" as const,
-        display: true,
-      },
-      tooltip: {
-        mode: "index" as const,
-        intersect: false,
-      },
-    },
-    scales: {
-      x: {
-        type: "linear" as const,
-        min: 0,
-        suggestedMax: weapon_bag.aoe_outer_radius,
-        title: {
-          display: true,
-          text: t("weaponCard.distance"),
-        },
-        grid: {
-          lineWidth: 0.5,
-          display: true,
-        },
-      },
-      yDamage: {
-        type: "linear" as const,
-        position: "left" as const,
-        suggestedMin: 0,
-        suggestedMax: Math.ceil(maxAoeDamageGraphValue),
-        title: {
-          display: true,
-          text: t("weaponCard.damage"),
-        },
-        grid: {
-          lineWidth: 0.5,
-          display: false,
-        },
-      },
-      ySuppression: {
-        type: "linear" as const,
-        position: "right" as const,
-        display: hasAoeSuppression,
-        suggestedMin: 0,
-        suggestedMax: Math.ceil(maxAoeSuppressionGraphValue),
-        title: {
-          display: hasAoeSuppression,
-          text: t("weaponCard.suppression"),
-        },
-        grid: {
-          drawOnChartArea: false,
-        },
-      },
-    },
-  };
+  const aoeChartOptions = createAoeChartOptions(
+    weapon_bag,
+    maxAoeDamageGraphValue,
+    maxAoeSuppressionGraphValue,
+    hasAoeSuppression,
+    t,
+  );
 
   const weaponArc = Math.abs(
     weapon_bag.tracking_normal_max_right - weapon_bag.tracking_normal_max_left,
@@ -1471,7 +641,13 @@ export const WeaponLoadoutCard = (
       <Divider />
 
       <Stack gap={2} fz="sm">
-        <RangeHeader left={<PrimaryWeaponStats />} />
+        <RangeHeader
+          left={<PrimaryWeaponStats />}
+          nearDistance={weapon_bag.range.near}
+          midDistance={weapon_bag.range.mid}
+          farDistance={weapon_bag.range.far}
+          t={t}
+        />
 
         <RangeStatSection
           title={t("weaponCard.coreStats")}
@@ -1808,8 +984,8 @@ export const WeaponLoadoutCard = (
             </Box>
           </Stack>
         )}
-        <CoverModifierSection rows={coverModifierRows} />
-        <TargetModifierSection rows={targetModifierRows} />
+        <CoverModifierSection rows={coverModifierRows} t={t} />
+        <TargetModifierSection rows={targetModifierRows} t={t} />
       </Stack>
     </Stack>
   );

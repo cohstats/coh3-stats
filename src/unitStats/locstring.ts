@@ -5,6 +5,7 @@
 // }
 
 import config from "../../config";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 // Map of locale -> locstring
 const unitStatsLocStringCache: Record<string, Record<string, string | null>> = {};
@@ -82,9 +83,7 @@ const fetchLocstring = async (locale: string = "en") => {
   if (unitStatsLocStringCache[locale]) return unitStatsLocStringCache[locale];
 
   const path = config.getPatchDataLocaleUrl(locale);
-  const myReqLocString = await fetch(path);
-
-  const locstring = await myReqLocString.json();
+  const locstring = await fetchJsonWithLogging(path, `locstring for locale ${locale}`);
 
   // some value are undefined, we need to fix that,
   // otherwise we cannot serialize it.

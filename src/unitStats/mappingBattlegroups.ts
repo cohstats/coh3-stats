@@ -4,6 +4,7 @@ import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 // The battlegroup represents the parent BG with its children (branches).
 type BattlegroupsType = {
@@ -91,9 +92,11 @@ const mapTechTreeBag = (root: any, bg: BattlegroupsType, locale: string = "en") 
 const getBattlegroupStats = async (locale: string = "en") => {
   if (battlegroupStats[locale]) return battlegroupStats[locale];
 
-  const myReqBattlegroup = await fetch(config.getPatchDataUrl("battlegroup.json"));
-
-  const root = await myReqBattlegroup.json();
+  const battlegroupUrl = config.getPatchDataUrl("battlegroup.json");
+  const root = await fetchJsonWithLogging(
+    battlegroupUrl,
+    `battlegroup.json for locale ${locale}`,
+  );
 
   const bgSetAll: BattlegroupsType[] = [];
 

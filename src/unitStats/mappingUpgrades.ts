@@ -7,6 +7,7 @@ import { internalSlash } from "../utils";
 import { getReferenceString } from "./dpsCommon";
 import { extractDisplayRequirements } from "./requirement-utils";
 import type { DisplayRequirement } from "./requirement-utils";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 // Need to be extended by all required fields
 type UpgradesType = {
@@ -235,8 +236,8 @@ const getUpgradesStats = async (locale: string = "en") => {
   const cacheKey = `latest-${locale}`;
   if (upgradesPatchData && upgradesPatchData[cacheKey]) return upgradesPatchData[cacheKey];
 
-  const myReqUpgrades = await fetch(config.getPatchDataUrl("upgrade.json"));
-  const root = await myReqUpgrades.json();
+  const upgradeUrl = config.getPatchDataUrl("upgrade.json");
+  const root = await fetchJsonWithLogging(upgradeUrl, `upgrade.json for locale ${locale}`);
 
   const upgradesSetAll: UpgradesType[] = [];
 

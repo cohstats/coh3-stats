@@ -7,6 +7,7 @@ import { traverseTree } from "./unitStatsLib";
 import { getAbilityStateTreeWeaponMappings } from "./workarounds";
 import { extractDisplayRequirements } from "./requirement-utils";
 import type { DisplayRequirement } from "./requirement-utils";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 /** Child requirements in case of parent requirement being
  * "required_all_in_list". */
@@ -356,8 +357,11 @@ const getAbilitiesStats = async (patch = "latest", locale: string = "en") => {
   const cacheKey = `${patch}-${locale}`;
   if (abilitiesPatchData && abilitiesPatchData[cacheKey]) return abilitiesPatchData[cacheKey];
 
-  const myReqAbilities = await fetch(config.getPatchDataUrl("abilities.json", patch));
-  const root = await myReqAbilities.json();
+  const abilitiesUrl = config.getPatchDataUrl("abilities.json", patch);
+  const root = await fetchJsonWithLogging(
+    abilitiesUrl,
+    `abilities.json for patch ${patch}, locale ${locale}`,
+  );
 
   const abilitiesSetAll: AbilitiesType[] = [];
 

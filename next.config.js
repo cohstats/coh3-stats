@@ -6,6 +6,8 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { i18n } = require("./next-i18next.config");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const os = require("os");
 
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
@@ -14,6 +16,8 @@ const { i18n } = require("./next-i18next.config");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Enable React Compiler
+  reactCompiler: true,
   images: {
     // All the images are served from the CF CDN, so we don't need to optimize them.
     // It optimized already optimized images resulting in shit quality.
@@ -31,6 +35,8 @@ const nextConfig = {
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
+    // Build configuration, we have heavy downloads, otherwise it will stall
+    cpus: Math.min(os.cpus().length, 6),
   },
   // We need to increase static page generation because we have some heavy operations
   staticPageGenerationTimeout: 180,

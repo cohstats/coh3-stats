@@ -136,7 +136,7 @@ const GamesPercentageLineChartCard = ({
             legendOffset: -35,
             legendPosition: "middle",
           }}
-          curve="basis"
+          curve="linear"
           colors={{ datum: "color" }}
           //colors={{ scheme: "category10" }}
           enablePoints={false}
