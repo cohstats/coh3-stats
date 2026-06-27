@@ -65,7 +65,8 @@ const listOfUnitsTobeIgnored = [
   /^semovente_75_18_ger$/,
   /^sniper_africa_uk$/,
   /^stuart_us$/,
-  /^truck_2_5_cargo_ger$/,
+  // This truck is referenced in Breakthrough battlegroup.
+  // /^truck_2_5_cargo_ger$/,
   /^truck_2_5_fuel_ger$/,
   /^truck_2_5_medical_ger$/,
   /^truck_2_5_towed_cannone_da_105_ak$/,
