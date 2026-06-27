@@ -38,22 +38,12 @@ const nextConfig = {
     // Build configuration, we have heavy downloads, otherwise it will stall
     cpus: Math.min(os.cpus().length, 6),
   },
+  // Include next-i18next config in standalone output
+  outputFileTracingIncludes: {
+    "/": ["./next-i18next.config.js"],
+  },
   // We need to increase static page generation because we have some heavy operations
   staticPageGenerationTimeout: 180,
-  // Required for hosting on Netlify
-  // async headers() {
-  //   return [
-  //     {
-  //       source: "/:path*",
-  //       headers: [
-  //         {
-  //           key: "Netlify-Vary",
-  //           value: "query",
-  //         },
-  //       ],
-  //     },
-  //   ];
-  // },
 };
 
 const sentryWebpackPluginOptions = {
