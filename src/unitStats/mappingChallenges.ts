@@ -3,6 +3,7 @@
 import config from "../../config";
 import { resolveLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
+import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 
 // Need to be extended by all required fields
 type ChallengesType = {
@@ -268,11 +269,11 @@ const mapChallengeBag = (root: any, challenge: ChallengesType, locale: string = 
 const getDailyChallengeStats = async (locale: string = "en") => {
   if (challengesDaily[locale]) return challengesDaily[locale];
 
-  const myDailyChallenges = await fetch(
-    config.getPatchDataUrl("daily_challenges_store_release.json"),
+  const dailyChallengesUrl = config.getPatchDataUrl("daily_challenges_store_release.json");
+  const root = await fetchJsonWithLogging(
+    dailyChallengesUrl,
+    `daily_challenges_store_release.json for locale ${locale}`,
   );
-
-  const root = await myDailyChallenges.json();
 
   const dailyChallengesAll: ChallengesType[] = [];
 
@@ -309,11 +310,11 @@ const setDailyChallengeStats = (stats: ChallengesType[], locale: string) => {
 const getWeeklyChallengeStats = async (locale: string = "en") => {
   if (challengesWeekly[locale]) return challengesWeekly[locale];
 
-  const myWeeklyChallenges = await fetch(
-    config.getPatchDataUrl("weekly_challenges_store_release.json"),
+  const weeklyChallengesUrl = config.getPatchDataUrl("weekly_challenges_store_release.json");
+  const root = await fetchJsonWithLogging(
+    weeklyChallengesUrl,
+    `weekly_challenges_store_release.json for locale ${locale}`,
   );
-
-  const root = await myWeeklyChallenges.json();
 
   const weeklyChallengesAll: ChallengesType[] = [];
 

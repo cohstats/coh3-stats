@@ -6,6 +6,8 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { i18n } = require("./next-i18next.config");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const os = require("os");
 
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
@@ -33,6 +35,8 @@ const nextConfig = {
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
+    // We need to limit this, otherwise some requests will time out
+    cpus: Math.min(os.cpus().length, 6),
   },
   // We need to increase static page generation because we have some heavy operations
   staticPageGenerationTimeout: 180,
