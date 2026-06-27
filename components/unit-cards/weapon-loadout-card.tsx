@@ -184,6 +184,327 @@ const WeaponIconWithCount = ({
   </div>
 );
 
+type RangeStatRowConfig = {
+  label: string;
+  tooltip?: string;
+  near: React.ReactNode;
+  mid: React.ReactNode;
+  far: React.ReactNode;
+  show?: boolean;
+};
+
+const RangeStatRow = ({
+  label,
+  tooltip,
+  near,
+  mid,
+  far,
+  show = true,
+}: {
+  label: string;
+  tooltip?: string;
+  near: React.ReactNode;
+  mid: React.ReactNode;
+  far: React.ReactNode;
+  show?: boolean;
+}) => {
+  if (!show) return null;
+
+  return (
+    <Grid gutter="xs">
+      <Grid.Col span={{ base: 4, md: 4 }}>
+        <StatLabel label={label} tooltip={tooltip} />
+      </Grid.Col>
+      <Grid.Col span={{ base: 3, md: 3 }}>
+        <CenterText color="green.6" value={near} />
+      </Grid.Col>
+      <Grid.Col span={{ base: 3, md: 3 }}>
+        <CenterText color="yellow.6" value={mid} />
+      </Grid.Col>
+      <Grid.Col span={{ base: 2, md: 2 }}>
+        <CenterText color="red.6" value={far} />
+      </Grid.Col>
+    </Grid>
+  );
+};
+
+const RangeStatSection = ({
+  title,
+  rows,
+  show = true,
+  showDivider = true,
+}: {
+  title: string;
+  rows: RangeStatRowConfig[];
+  show?: boolean;
+  showDivider?: boolean;
+}) => {
+  const visibleRows = rows.filter((row) => row.show ?? true);
+
+  if (!show || visibleRows.length === 0) return null;
+
+  return (
+    <>
+      {showDivider ? <Divider my={4} /> : null}
+
+      <Grid gutter="xs">
+        <Grid.Col span={12}>
+          <Text fz="xs" fw={700} tt="uppercase" c="dimmed">
+            {title}
+          </Text>
+        </Grid.Col>
+      </Grid>
+
+      {visibleRows.map((row) => (
+        <RangeStatRow
+          key={row.label}
+          label={row.label}
+          tooltip={row.tooltip}
+          near={row.near}
+          mid={row.mid}
+          far={row.far}
+        />
+      ))}
+    </>
+  );
+};
+
+const CenterText = ({ value, color }: { value: React.ReactNode; color?: string }) => (
+  <Text style={{ textAlign: "center" }} c={color}>
+    {value}
+  </Text>
+);
+
+type CompactStatItemConfig = {
+  label: string;
+  tooltip?: string;
+  value: React.ReactNode;
+  icon?: string;
+  alt?: string;
+  show?: boolean;
+};
+
+const CompactStatItem = ({
+  label,
+  tooltip,
+  value,
+  icon,
+  alt,
+  show = true,
+}: CompactStatItemConfig) => {
+  if (!show) return null;
+
+  return (
+    <Flex justify="flex-start" align="center" gap={6} wrap="nowrap">
+      {icon && (
+        <ImageWithFallback
+          width={16}
+          height={16}
+          src={icon}
+          alt={alt ?? label}
+          fallbackSrc={symbolPlaceholder}
+          style={{ opacity: 0.75, flexShrink: 0 }}
+        />
+      )}
+
+      <StatLabel label={label} tooltip={tooltip} />
+      <Text c="orange.6">{value}</Text>
+    </Flex>
+  );
+};
+
+const CompactStatGrid = ({ items }: { items: CompactStatItemConfig[] }) => {
+  const visibleItems = items.filter((item) => item.show ?? true);
+
+  if (visibleItems.length === 0) return null;
+
+  return (
+    <Flex align="center" justify="center" columnGap="xl" rowGap={4} wrap="wrap">
+      {visibleItems.map((item) => (
+        <CompactStatItem key={item.label} {...item} />
+      ))}
+    </Flex>
+  );
+};
+
+const formatUnitType = (unitType: string): string =>
+  unitType
+    .replace(/^tp_/, "")
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+const formatBaseDamageModifier = (value: number): React.ReactNode => {
+  if (value === 0) return "—";
+
+  return value > 0 ? `+${value}` : value;
+};
+
+const formatMultiplier = (
+  value: number,
+  unchangedValue: React.ReactNode = "—",
+): React.ReactNode => {
+  const roundedValue = Math.round(value * 100) / 100;
+
+  if (roundedValue === 1) return unchangedValue;
+
+  return `×${roundedValue}`;
+};
+
+type CoverModifierRow = {
+  label: string;
+  accuracy: number;
+  damage: number;
+  aimTime: number;
+  icon?: string;
+};
+
+const TargetModifierSection = ({
+  rows,
+  t,
+}: {
+  rows: TargetType[];
+  t: (key: string) => string;
+}) => {
+  if (rows.length === 0) return null;
+
+  return (
+    <>
+      <Divider my={4} />
+
+      <Grid gutter="xs">
+        <Grid.Col span={{ base: 4, md: 4 }}>
+          <Flex align="center" gap={4}>
+            <Text fw={600}>{t("weaponCard.targetModifiers")}</Text>
+            <HelperIcon text={t("weaponCard.targetModifiersTooltip")} width={300} iconSize={16} />
+          </Flex>
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 2, md: 2 }}>
+          <CenterText color="orange.6" value={t("weaponCard.baseDamage")} />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 2, md: 2 }}>
+          <CenterText color="orange.6" value={t("weaponCard.accuracy")} />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 2, md: 2 }}>
+          <CenterText color="orange.6" value={t("weaponCard.penetration")} />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 2, md: 2 }}>
+          <CenterText color="orange.6" value={t("weaponCard.damage")} />
+        </Grid.Col>
+      </Grid>
+
+      {rows.map((entry) => (
+        <Grid key={entry.unit_type} gutter="xs">
+          <Grid.Col span={{ base: 4, md: 4 }}>
+            <Text>{formatUnitType(entry.unit_type)}</Text>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <CenterText color="orange.6" value={formatBaseDamageModifier(entry.dmg_modifier)} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <CenterText color="orange.6" value={formatMultiplier(entry.accuracy_multiplier)} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <CenterText color="orange.6" value={formatMultiplier(entry.penetration_multiplier)} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 2, md: 2 }}>
+            <CenterText color="orange.6" value={formatMultiplier(entry.damage_multiplier)} />
+          </Grid.Col>
+        </Grid>
+      ))}
+    </>
+  );
+};
+
+const CoverModifierSection = ({
+  rows,
+  t,
+}: {
+  rows: CoverModifierRow[];
+  t: (key: string) => string;
+}) => {
+  if (rows.length === 0) return null;
+
+  const showCoverAimTime = rows.some((row) => row.aimTime !== 1);
+  const statColumnSpan = showCoverAimTime ? 2.6 : 4;
+
+  const coverRows = [
+    {
+      ...rows[0],
+      icon: "/icons/common/cover/light.png",
+    },
+    {
+      ...rows[1],
+      icon: "/icons/common/cover/heavy.png",
+    },
+    {
+      ...rows[2],
+      icon: "/icons/common/units/garrisoned.png",
+    },
+  ];
+
+  return (
+    <>
+      <Divider my={4} />
+
+      <Grid gutter="xs">
+        <Grid.Col span={{ base: 4, md: 4 }}>
+          <Flex align="center" gap={4}>
+            <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
+            <HelperIcon text={t("weaponCard.coverModifiersTooltip")} width={300} iconSize={16} />
+          </Flex>
+        </Grid.Col>
+
+        <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
+          <CenterText value={t("weaponCard.accuracy")} />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
+          <CenterText value={t("weaponCard.damage")} />
+        </Grid.Col>
+
+        {showCoverAimTime && (
+          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
+            <CenterText value={t("weaponCard.aimTime")} />
+          </Grid.Col>
+        )}
+      </Grid>
+
+      {coverRows.map((row) => (
+        <Grid key={row.label} gutter="xs">
+          <Grid.Col span={{ base: 4, md: 4 }}>
+            <Flex align="center" gap={4}>
+              <Image src={row.icon} alt={row.label} h={32} w={32} />
+              <Text>{row.label}</Text>
+            </Flex>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
+            <CenterText color="orange.6" value={formatMultiplier(row.accuracy ?? 1, "×1")} />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
+            <CenterText color="orange.6" value={formatMultiplier(row.damage ?? 1, "×1")} />
+          </Grid.Col>
+
+          {showCoverAimTime && (
+            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
+              <CenterText color="orange.6" value={formatMultiplier(row.aimTime ?? 1, "×1")} />
+            </Grid.Col>
+          )}
+        </Grid>
+      ))}
+    </>
+  );
+};
+
 export const WeaponLoadoutCard = (
   { id, parent, icon_name, weapon_class, weapon_cat, weapon_bag }: WeaponCardInput,
   count = 1,
@@ -191,28 +512,6 @@ export const WeaponLoadoutCard = (
 ) => {
   const { t } = useTranslation(["explorer"]);
   const theme = useMantineTheme();
-  const formatUnitType = (unitType: string): string =>
-    unitType
-      .replace(/^tp_/, "")
-      .replaceAll("_", " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-
-  const formatBaseDamageModifier = (value: number): React.ReactNode => {
-    if (value === 0) return "—";
-
-    return value > 0 ? `+${value}` : value;
-  };
-
-  const formatMultiplier = (
-    value: number,
-    unchangedValue: React.ReactNode = "—",
-  ): React.ReactNode => {
-    const roundedValue = Math.round(value * 100) / 100;
-
-    if (roundedValue === 1) return unchangedValue;
-
-    return `×${roundedValue}`;
-  };
 
   const formatPercent = (value: number, decimals = 2) => {
     return `${roundValue(value * 100, decimals)}%`;
@@ -277,12 +576,6 @@ export const WeaponLoadoutCard = (
     return Math.round(value * factor) / factor;
   };
 
-  const CenterText = ({ value, color }: { value: React.ReactNode; color?: string }) => (
-    <Text style={{ textAlign: "center" }} c={color}>
-      {value}
-    </Text>
-  );
-
   const isChangedMultiplier = (value: number) => Math.round(value * 100) / 100 !== 1;
 
   const allMovingModifierColumns = [
@@ -335,10 +628,10 @@ export const WeaponLoadoutCard = (
 
   const hasSingleMovingModifier = movingModifierColumns.length === 1;
 
-  const movingLabelColumnSpan = 2;
-  const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
-
   const OnMoveHeader = ({ show = true }: { show?: boolean }) => {
+    const movingLabelColumnSpan = 2;
+    const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
+
     if (!show || hasSingleMovingModifier) return null;
 
     return (
@@ -360,6 +653,9 @@ export const WeaponLoadoutCard = (
   };
 
   const OnMoveRow = ({ show = true }: { show?: boolean }) => {
+    const movingLabelColumnSpan = 2;
+    const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
+
     if (!show) return null;
 
     if (hasSingleMovingModifier) {
@@ -448,143 +744,6 @@ export const WeaponLoadoutCard = (
     </Grid>
   );
 
-  const RangeStatRow = ({
-    label,
-    tooltip,
-    near,
-    mid,
-    far,
-    show = true,
-  }: {
-    label: string;
-    tooltip?: string;
-    near: React.ReactNode;
-    mid: React.ReactNode;
-    far: React.ReactNode;
-    show?: boolean;
-  }) => {
-    if (!show) return null;
-
-    return (
-      <Grid gutter="xs">
-        <Grid.Col span={{ base: 4, md: 4 }}>
-          <StatLabel label={label} tooltip={tooltip} />
-        </Grid.Col>
-        <Grid.Col span={{ base: 3, md: 3 }}>
-          <CenterText color="green.6" value={near} />
-        </Grid.Col>
-        <Grid.Col span={{ base: 3, md: 3 }}>
-          <CenterText color="yellow.6" value={mid} />
-        </Grid.Col>
-        <Grid.Col span={{ base: 2, md: 2 }}>
-          <CenterText color="red.6" value={far} />
-        </Grid.Col>
-      </Grid>
-    );
-  };
-
-  type RangeStatRowConfig = {
-    label: string;
-    tooltip?: string;
-    near: React.ReactNode;
-    mid: React.ReactNode;
-    far: React.ReactNode;
-    show?: boolean;
-  };
-
-  const RangeStatSection = ({
-    title,
-    rows,
-    show = true,
-    showDivider = true,
-  }: {
-    title: string;
-    rows: RangeStatRowConfig[];
-    show?: boolean;
-    showDivider?: boolean;
-  }) => {
-    const visibleRows = rows.filter((row) => row.show ?? true);
-
-    if (!show || visibleRows.length === 0) return null;
-
-    return (
-      <>
-        {showDivider ? <Divider my={4} /> : null}
-
-        <Grid gutter="xs">
-          <Grid.Col span={12}>
-            <Text fz="xs" fw={700} tt="uppercase" c="dimmed">
-              {title}
-            </Text>
-          </Grid.Col>
-        </Grid>
-
-        {visibleRows.map((row) => (
-          <RangeStatRow
-            key={row.label}
-            label={row.label}
-            tooltip={row.tooltip}
-            near={row.near}
-            mid={row.mid}
-            far={row.far}
-          />
-        ))}
-      </>
-    );
-  };
-
-  type CompactStatItemConfig = {
-    label: string;
-    tooltip?: string;
-    value: React.ReactNode;
-    icon?: string;
-    alt?: string;
-    show?: boolean;
-  };
-
-  const CompactStatItem = ({
-    label,
-    tooltip,
-    value,
-    icon,
-    alt,
-    show = true,
-  }: CompactStatItemConfig) => {
-    if (!show) return null;
-
-    return (
-      <Flex justify="flex-start" align="center" gap={6} wrap="nowrap">
-        {icon && (
-          <ImageWithFallback
-            width={16}
-            height={16}
-            src={icon}
-            alt={alt ?? label}
-            fallbackSrc={symbolPlaceholder}
-            style={{ opacity: 0.75, flexShrink: 0 }}
-          />
-        )}
-
-        <StatLabel label={label} tooltip={tooltip} />
-        <Text c="orange.6">{value}</Text>
-      </Flex>
-    );
-  };
-
-  const CompactStatGrid = ({ items }: { items: CompactStatItemConfig[] }) => {
-    const visibleItems = items.filter((item) => item.show ?? true);
-
-    if (visibleItems.length === 0) return null;
-
-    return (
-      <Flex align="center" justify="center" columnGap="xl" rowGap={4} wrap="wrap">
-        {visibleItems.map((item) => (
-          <CompactStatItem key={item.label} {...item} />
-        ))}
-      </Flex>
-    );
-  };
-
   const PrimaryWeaponStat = ({
     label,
     value,
@@ -635,159 +794,6 @@ export const WeaponLoadoutCard = (
       />
     </Stack>
   );
-
-  const TargetModifierSection = ({ rows }: { rows: TargetType[] }) => {
-    if (rows.length === 0) return null;
-
-    return (
-      <>
-        <Divider my={4} />
-
-        <Grid gutter="xs">
-          <Grid.Col span={{ base: 4, md: 4 }}>
-            <Flex align="center" gap={4}>
-              <Text fw={600}>{t("weaponCard.targetModifiers")}</Text>
-              <HelperIcon
-                text={t("weaponCard.targetModifiersTooltip")}
-                width={300}
-                iconSize={16}
-              />
-            </Flex>
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.baseDamage")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.accuracy")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.penetration")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 2, md: 2 }}>
-            <CenterText color="orange.6" value={t("weaponCard.damage")} />
-          </Grid.Col>
-        </Grid>
-
-        {rows.map((entry) => (
-          <Grid key={entry.unit_type} gutter="xs">
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <Text>{formatUnitType(entry.unit_type)}</Text>
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText color="orange.6" value={formatBaseDamageModifier(entry.dmg_modifier)} />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText color="orange.6" value={formatMultiplier(entry.accuracy_multiplier)} />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText
-                color="orange.6"
-                value={formatMultiplier(entry.penetration_multiplier)}
-              />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 2, md: 2 }}>
-              <CenterText color="orange.6" value={formatMultiplier(entry.damage_multiplier)} />
-            </Grid.Col>
-          </Grid>
-        ))}
-      </>
-    );
-  };
-
-  type CoverModifierRow = {
-    label: string;
-    accuracy: number;
-    damage: number;
-    aimTime: number;
-  };
-
-  const CoverModifierSection = ({ rows }: { rows: CoverModifierRow[] }) => {
-    if (rows.length === 0) return null;
-
-    const showCoverAimTime = rows.some((row) => row.aimTime !== 1);
-    const statColumnSpan = showCoverAimTime ? 2.6 : 4;
-
-    const coverRows = [
-      {
-        ...rows[0],
-        icon: "/icons/common/cover/light.png",
-      },
-      {
-        ...rows[1],
-        icon: "/icons/common/cover/heavy.png",
-      },
-      {
-        ...rows[2],
-        icon: "/icons/common/units/garrisoned.png",
-      },
-    ];
-
-    return (
-      <>
-        <Divider my={4} />
-
-        <Grid gutter="xs">
-          <Grid.Col span={{ base: 4, md: 4 }}>
-            <Flex align="center" gap={4}>
-              <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
-              <HelperIcon
-                text={t("weaponCard.coverModifiersTooltip")}
-                width={300}
-                iconSize={16}
-              />
-            </Flex>
-          </Grid.Col>
-
-          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-            <CenterText value={t("weaponCard.accuracy")} />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-            <CenterText value={t("weaponCard.damage")} />
-          </Grid.Col>
-
-          {showCoverAimTime && (
-            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-              <CenterText value={t("weaponCard.aimTime")} />
-            </Grid.Col>
-          )}
-        </Grid>
-
-        {coverRows.map((row) => (
-          <Grid key={row.label} gutter="xs">
-            <Grid.Col span={{ base: 4, md: 4 }}>
-              <Flex align="center" gap={4}>
-                <Image src={row.icon} alt={row.label} h={32} w={32} />
-                <Text>{row.label}</Text>
-              </Flex>
-            </Grid.Col>
-
-            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-              <CenterText color="orange.6" value={formatMultiplier(row.accuracy ?? 1, "×1")} />
-            </Grid.Col>
-
-            <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-              <CenterText color="orange.6" value={formatMultiplier(row.damage ?? 1, "×1")} />
-            </Grid.Col>
-
-            {showCoverAimTime && (
-              <Grid.Col span={{ base: statColumnSpan, md: statColumnSpan }}>
-                <CenterText color="orange.6" value={formatMultiplier(row.aimTime ?? 1, "×1")} />
-              </Grid.Col>
-            )}
-          </Grid>
-        ))}
-      </>
-    );
-  };
 
   const getWeaponIconSrc = (iconName: string) => {
     const normalizedIconName = iconName.trim();
@@ -1808,8 +1814,8 @@ export const WeaponLoadoutCard = (
             </Box>
           </Stack>
         )}
-        <CoverModifierSection rows={coverModifierRows} />
-        <TargetModifierSection rows={targetModifierRows} />
+        <CoverModifierSection rows={coverModifierRows} t={t} />
+        <TargetModifierSection rows={targetModifierRows} t={t} />
       </Stack>
     </Stack>
   );

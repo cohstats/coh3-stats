@@ -35,7 +35,7 @@ const nextConfig = {
   experimental: {
     // 256 kB should be OK
     largePageDataBytes: 256 * 1024,
-    // We need to limit this, otherwise some requests will time out
+    // Build configuration, we have heavy downloads, otherwise it will stall
     cpus: Math.min(os.cpus().length, 6),
   },
   // We need to increase static page generation because we have some heavy operations
