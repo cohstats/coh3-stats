@@ -1,5 +1,5 @@
 import { NextSeo } from "next-seo";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Container, Group, Select, Stack, Title } from "@mantine/core";
 import { createPageSEO } from "../../src/seo-utils";
 import { getLiveGames, getLiveGamesSummary } from "../../src/apis/coh3stats-api";
@@ -125,6 +125,13 @@ const LiveGamesIndex = () => {
     push({ query: { ...query, start: startPositionNumber } }, undefined);
   };
 
+  const chartData = useMemo(() => {
+    return [
+      ...(liveGamesSummary?.liveGamesChart.timeLine || []),
+      ...(liveGamesSummary?.liveGamesChart.buffer || []),
+    ];
+  }, [liveGamesSummary]);
+
   return (
     <>
       <NextSeo {...seoProps} />
@@ -182,10 +189,7 @@ const LiveGamesIndex = () => {
           {!isMobile && !liveGamesSummaryError && (
             <div style={{ width: 660, height: 250 }}>
               <DynamicLiveGamesLineChart
-                data={[
-                  ...(liveGamesSummary?.liveGamesChart.timeLine || []),
-                  ...(liveGamesSummary?.liveGamesChart.buffer || []),
-                ]}
+                data={chartData}
                 type={type}
                 loading={liveGamesSummaryLoading}
               />
