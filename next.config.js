@@ -14,6 +14,8 @@ const { i18n } = require("./next-i18next.config");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Enable React Compiler
+  reactCompiler: true,
   images: {
     // All the images are served from the CF CDN, so we don't need to optimize them.
     // It optimized already optimized images resulting in shit quality.
