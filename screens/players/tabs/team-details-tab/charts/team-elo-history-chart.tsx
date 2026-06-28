@@ -110,22 +110,6 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
     },
   ];
 
-  // If no data, show a message
-  if (filteredDateData.length === 0) {
-    return (
-      <div style={{ padding: "8px", width: "100%" }}>
-        <div style={{ borderBottom: "1px solid #dee2e6", padding: "4px 8px" }}>
-          <Title order={4}>{title}</Title>
-        </div>
-        <div style={{ height: 300, padding: "4px" }}>
-          <Center maw={400} h={250} mx="auto">
-            <h3>No match history data available</h3>
-          </Center>
-        </div>
-      </div>
-    );
-  }
-
   // Calculate min and max values for better chart scaling
   let minInData = Infinity;
   let maxInData = -Infinity;
@@ -174,86 +158,92 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
         </Group>
       </div>
       <div style={{ height: 250 }}>
-        <ResponsiveLine
-          data={chartData}
-          margin={{ top: 15, right: 50, bottom: 30, left: 50 }}
-          xFormat="time: %a - %Y-%m-%d"
-          tooltip={({ point }) => (
-            <div
-              style={{
-                background: colorScheme === "dark" ? "#333" : "white",
-                padding: "9px 12px",
-                border: "1px solid #ccc",
-                color: colorScheme === "dark" ? "#ddd" : "#333",
-              }}
-            >
-              <div>
-                <strong>{point.data.xFormatted}</strong>
+        {filteredDateData.length === 0 ? (
+          <Center h={250}>
+            <Text c="dimmed">No match history data available for the selected time period</Text>
+          </Center>
+        ) : (
+          <ResponsiveLine
+            data={chartData}
+            margin={{ top: 15, right: 50, bottom: 30, left: 50 }}
+            xFormat="time: %a - %Y-%m-%d"
+            tooltip={({ point }) => (
+              <div
+                style={{
+                  background: colorScheme === "dark" ? "#333" : "white",
+                  padding: "9px 12px",
+                  border: "1px solid #ccc",
+                  color: colorScheme === "dark" ? "#ddd" : "#333",
+                }}
+              >
+                <div>
+                  <strong>{point.data.xFormatted}</strong>
+                </div>
+                <div>
+                  ELO: <strong>{point.data.y}</strong>
+                </div>
+                <div>
+                  ELO Change:{" "}
+                  <strong>
+                    {point.data.eloChange > 0 ? `+${point.data.eloChange}` : point.data.eloChange}
+                  </strong>
+                </div>
+                <div>
+                  Matches: <strong>{point.data.totalMatches}</strong> ({point.data.wins} W /{" "}
+                  {point.data.losses} L)
+                </div>
               </div>
-              <div>
-                ELO: <strong>{point.data.y}</strong>
-              </div>
-              <div>
-                ELO Change:{" "}
-                <strong>
-                  {point.data.eloChange > 0 ? `+${point.data.eloChange}` : point.data.eloChange}
-                </strong>
-              </div>
-              <div>
-                Matches: <strong>{point.data.totalMatches}</strong> ({point.data.wins} W /{" "}
-                {point.data.losses} L)
-              </div>
-            </div>
-          )}
-          xScale={{
-            format: "%Y-%m-%d",
-            precision: "day",
-            type: "time",
-            useUTC: false,
-          }}
-          yScale={{
-            type: "linear",
-            min: Math.max(minInData - (maxInData - minInData) * 0.2, 1),
-            max: Math.min(maxInData + (maxInData - minInData) * 0.2, 3000),
-          }}
-          axisTop={null}
-          axisRight={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "ELO",
-            legendOffset: 45,
-            legendPosition: "middle",
-            format: (e) => (Number.isInteger(e) ? Math.round(e) : ""),
-          }}
-          axisBottom={{
-            format: "%b %d",
-            legendOffset: 36,
-            legendPosition: "middle",
-          }}
-          axisLeft={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "ELO",
-            legendOffset: -45,
-            legendPosition: "middle",
-            format: (e) => (Number.isInteger(e) ? Math.round(e) : ""),
-          }}
-          curve="monotoneX"
-          colors={{ scheme: "category10" }}
-          enablePoints={true}
-          pointSize={8}
-          // pointColor={{ theme: "background" }}
-          pointBorderWidth={2}
-          pointBorderColor={{ from: "serieColor" }}
-          pointLabelYOffset={-12}
-          useMesh={true}
-          enableGridX={true}
-          enableCrosshair={true}
-          animate={false}
-          theme={getNivoTooltipTheme(colorScheme)}
-        />
+            )}
+            xScale={{
+              format: "%Y-%m-%d",
+              precision: "day",
+              type: "time",
+              useUTC: false,
+            }}
+            yScale={{
+              type: "linear",
+              min: Math.max(minInData - (maxInData - minInData) * 0.2, 1),
+              max: Math.min(maxInData + (maxInData - minInData) * 0.2, 3000),
+            }}
+            axisTop={null}
+            axisRight={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "ELO",
+              legendOffset: 45,
+              legendPosition: "middle",
+              format: (e) => (Number.isInteger(e) ? Math.round(e) : ""),
+            }}
+            axisBottom={{
+              format: "%b %d",
+              legendOffset: 36,
+              legendPosition: "middle",
+            }}
+            axisLeft={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "ELO",
+              legendOffset: -45,
+              legendPosition: "middle",
+              format: (e) => (Number.isInteger(e) ? Math.round(e) : ""),
+            }}
+            curve="monotoneX"
+            colors={{ scheme: "category10" }}
+            enablePoints={true}
+            pointSize={8}
+            // pointColor={{ theme: "background" }}
+            pointBorderWidth={2}
+            pointBorderColor={{ from: "serieColor" }}
+            pointLabelYOffset={-12}
+            useMesh={true}
+            enableGridX={true}
+            enableCrosshair={true}
+            animate={false}
+            theme={getNivoTooltipTheme(colorScheme)}
+          />
+        )}
       </div>
     </div>
   );

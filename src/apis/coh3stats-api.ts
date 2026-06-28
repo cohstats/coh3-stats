@@ -673,7 +673,7 @@ const getTeamDetails = async (
 const getTeamMatches = async (
   matchIDs: Array<string | number>,
   cache_proxy = true,
-): Promise<Record<number, ProcessedMatch>> => {
+): Promise<Record<number, ProcessedMatch | null>> => {
   if (matchIDs.length < 1 || matchIDs.length > 10) {
     throw new Error("Must provide between 1 and 10 match IDs");
   }
@@ -684,10 +684,13 @@ const getTeamMatches = async (
     const data = await response.json();
 
     // Parse the counters field in each match
-    Object.values(data as Record<number, ProcessedMatch>).forEach((match) => {
-      match.matchhistoryreportresults.forEach((result: PlayerReport) => {
-        result.counters = JSON.parse(result.counters as unknown as string);
-      });
+    // Skip null matches (matches that are no longer available)
+    Object.values(data as Record<number, ProcessedMatch | null>).forEach((match) => {
+      if (match && match.matchhistoryreportresults) {
+        match.matchhistoryreportresults.forEach((result: PlayerReport) => {
+          result.counters = JSON.parse(result.counters as unknown as string);
+        });
+      }
     });
 
     return data;

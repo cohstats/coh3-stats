@@ -9,7 +9,7 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { TeamDetails, ProcessedMatch } from "../../../../src/coh3/coh3-types";
 import FactionIcon from "../../../../components/faction-icon";
 import TeamsTable from "../components/teams-table";
@@ -53,100 +53,109 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
   const { team: teamId } = router.query;
 
   // Function to load match data using getTeamMatches
-  const loadMatchData = async (matchIndices: number[]) => {
-    if (!teamData?.mh || matchIndices.length === 0) return;
+  const loadMatchData = useCallback(
+    async (matchIndices: number[]) => {
+      if (!teamData?.mh || matchIndices.length === 0) return;
 
-    try {
-      setIsLoadingMatches(true);
-      setMatchLoadError(null); // Reset any previous error
+      try {
+        setIsLoadingMatches(true);
+        setMatchLoadError(null); // Reset any previous error
 
-      // Get the basic match info from the teamData.mh array
-      const newMatchesBasicInfo = matchIndices.map((index) => teamData.mh[index]);
+        // Get the basic match info from the teamData.mh array
+        const newMatchesBasicInfo = matchIndices.map((index) => teamData.mh[index]);
 
-      // Get the match IDs to fetch detailed data
-      const matchIds = matchIndices.map((index) => teamData.mh[index].m_id);
+        // Get the match IDs to fetch detailed data
+        const matchIds = matchIndices.map((index) => teamData.mh[index].m_id);
 
-      // Fetch detailed match data using getTeamMatches
-      // The response is a Record<number, ProcessedMatch> where keys are match IDs and values are match data
-      const response = await getTeamMatches(matchIds);
+        // Fetch detailed match data using getTeamMatches
+        // The response is a Record<number, ProcessedMatch> where keys are match IDs and values are match data
+        const response = await getTeamMatches(matchIds);
 
-      // Create a map of match IDs to basic info for quick lookup
-      const basicInfoMap = newMatchesBasicInfo.reduce(
-        (map, info) => {
-          map[info.m_id] = info;
-          return map;
-        },
-        {} as Record<number, (typeof newMatchesBasicInfo)[0]>,
-      );
-
-      // Array to hold the combined match data
-      const newCombinedMatches: Array<
-        ProcessedMatch & {
-          w: boolean;
-          eloChange: number;
-          enemyElo: number;
-          ts: number;
-        }
-      > = [];
-
-      // Process the response object (keys are match IDs, values are match data)
-      if (response && typeof response === "object") {
-        // Iterate through each match in the response
-        Object.entries(response).forEach(([id, matchData]) => {
-          const matchId = parseInt(id);
-          const basicInfo = basicInfoMap[matchId];
-
-          // If we have basic info for this match, combine it with the match data
-          if (basicInfo) {
-            newCombinedMatches.push({
-              ...matchData,
-              id: matchId,
-              w: basicInfo.w,
-              eloChange: basicInfo.eloChange,
-              enemyElo: basicInfo.enemyElo,
-              ts: basicInfo.ts,
-            });
-          } else {
-            // Otherwise just add the match data with the ID
-            newCombinedMatches.push({ ...matchData, id: matchId } as any);
-          }
-        });
-      } else {
-        console.error("Unexpected getTeamMatches response format:", response);
-        setError("Failed to load match data: unexpected response format");
-      }
-
-      // Update combined matches with duplicate checking
-      setCombinedMatches((prevMatches) => {
-        // Create a map of existing match IDs for quick lookup
-        const existingMatchIds = new Set(prevMatches.map((match) => match.id));
-
-        // Filter out matches that already exist in prevMatches
-        const uniqueNewMatches = newCombinedMatches.filter(
-          (match) => !existingMatchIds.has(match.id),
+        // Create a map of match IDs to basic info for quick lookup
+        const basicInfoMap = newMatchesBasicInfo.reduce(
+          (map, info) => {
+            map[info.m_id] = info;
+            return map;
+          },
+          {} as Record<number, (typeof newMatchesBasicInfo)[0]>,
         );
 
-        // Combine previous matches with unique new matches and sort by timestamp
-        return [...prevMatches, ...uniqueNewMatches].sort((a, b) => b.ts - a.ts);
-      });
+        // Array to hold the combined match data
+        const newCombinedMatches: Array<
+          ProcessedMatch & {
+            w: boolean;
+            eloChange: number;
+            enemyElo: number;
+            ts: number;
+          }
+        > = [];
 
-      // Update fetched match indices based on the actual matches received
-      // Only count matches that were successfully loaded
-      const successfullyLoadedMatchIds = newCombinedMatches.map((match) => match.id);
+        // Process the response object (keys are match IDs, values are match data)
+        if (response && typeof response === "object") {
+          // Iterate through each match in the response
+          Object.entries(response).forEach(([id, matchData]) => {
+            const matchId = parseInt(id);
+            const basicInfo = basicInfoMap[matchId];
 
-      setFetchedMatchIds((prevIds) => {
-        // Create a set of all match IDs we've fetched so far
-        const allFetchedIds = new Set([...prevIds, ...successfullyLoadedMatchIds]);
-        return Array.from(allFetchedIds);
-      });
-    } catch (err) {
-      console.error("Error fetching team matches:", err);
-      const errorMessage = err instanceof Error ? err.message : "Failed to load match data";
-      setMatchLoadError(errorMessage);
-    } finally {
-      setIsLoadingMatches(false);
-    }
-  };
+            // Skip null matches (matches that are no longer available)
+            if (!matchData) {
+              console.log(`Match ${matchId} is no longer available (null response)`);
+              return;
+            }
+
+            // If we have basic info for this match, combine it with the match data
+            if (basicInfo) {
+              newCombinedMatches.push({
+                ...matchData,
+                id: matchId,
+                w: basicInfo.w,
+                eloChange: basicInfo.eloChange,
+                enemyElo: basicInfo.enemyElo,
+                ts: basicInfo.ts,
+              });
+            } else {
+              // Otherwise just add the match data with the ID
+              newCombinedMatches.push({ ...matchData, id: matchId } as any);
+            }
+          });
+        } else {
+          console.error("Unexpected getTeamMatches response format:", response);
+          setError("Failed to load match data: unexpected response format");
+        }
+
+        // Update combined matches with duplicate checking
+        setCombinedMatches((prevMatches) => {
+          // Create a map of existing match IDs for quick lookup
+          const existingMatchIds = new Set(prevMatches.map((match) => match.id));
+
+          // Filter out matches that already exist in prevMatches
+          const uniqueNewMatches = newCombinedMatches.filter(
+            (match) => !existingMatchIds.has(match.id),
+          );
+
+          // Combine previous matches with unique new matches and sort by timestamp
+          return [...prevMatches, ...uniqueNewMatches].sort((a, b) => b.ts - a.ts);
+        });
+
+        // Update fetched match indices based on the actual matches received
+        // Only count matches that were successfully loaded
+        const successfullyLoadedMatchIds = newCombinedMatches.map((match) => match.id);
+
+        setFetchedMatchIds((prevIds) => {
+          // Create a set of all match IDs we've fetched so far
+          const allFetchedIds = new Set([...prevIds, ...successfullyLoadedMatchIds]);
+          return Array.from(allFetchedIds);
+        });
+      } catch (err) {
+        console.error("Error fetching team matches:", err);
+        const errorMessage = err instanceof Error ? err.message : "Failed to load match data";
+        setMatchLoadError(errorMessage);
+      } finally {
+        setIsLoadingMatches(false);
+      }
+    },
+    [teamData],
+  );
 
   // Load initial match data when team data is loaded
   useEffect(() => {
@@ -159,7 +168,7 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
 
       loadMatchData(initialMatchIndices);
     }
-  }, [teamData]);
+  }, [teamData, loadMatchData]);
 
   // Track page view for analytics
   useEffect(() => {
@@ -317,7 +326,7 @@ const TeamDetailsTab = ({ profileID }: TeamDetailsTabProps) => {
               matchHistory={teamData.mh}
               title={t("teamDetails.eloHistory", "Team ELO History")}
               startingElo={
-                teamData.elo - teamData.mh.reduce((sum, match) => sum + match.eloChange, 0)
+                teamData.elo - teamData.mh.reduce((sum, match) => sum + (match.eloChange || 0), 0)
               }
             />
           )}
