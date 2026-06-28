@@ -99,6 +99,7 @@ const ActivityCalendarDay = ({
               padding: "5px",
               paddingLeft: "10px",
               paddingRight: "10px",
+              whiteSpace: "nowrap",
             }}
           >
             <Group gap={"xs"}>

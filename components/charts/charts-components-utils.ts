@@ -62,6 +62,7 @@ export const getNivoTooltipTheme = (colorScheme: "dark" | "light" | "auto") => {
           fontSize: "13px",
           background: "#333",
           color: "#ddd",
+          whiteSpace: "nowrap",
         },
       },
       labels: {

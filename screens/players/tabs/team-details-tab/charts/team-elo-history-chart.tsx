@@ -174,6 +174,7 @@ const TeamEloHistoryChart = ({ matchHistory, title, startingElo }: TeamEloHistor
                   padding: "9px 12px",
                   border: "1px solid #ccc",
                   color: colorScheme === "dark" ? "#ddd" : "#333",
+                  whiteSpace: "nowrap",
                 }}
               >
                 <div>

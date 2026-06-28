@@ -101,6 +101,7 @@ const ActivityByHour = ({ playerStatsData, timezoneOffset = 0 }: ActivityByHourP
               padding: "5px",
               paddingLeft: "10px",
               paddingRight: "10px",
+              whiteSpace: "nowrap",
             }}
           >
             Total: {(data.wins || 0) + (data.losses || 0)} games

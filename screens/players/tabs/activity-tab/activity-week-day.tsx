@@ -57,6 +57,7 @@ const ActivityByWeekDay = ({ playerStatsData }: { playerStatsData: ProcessedCOHP
               padding: "5px",
               paddingLeft: "10px",
               paddingRight: "10px",
+              whiteSpace: "nowrap",
             }}
           >
             Day: {convertWeekDayToFullName(data.day)}
