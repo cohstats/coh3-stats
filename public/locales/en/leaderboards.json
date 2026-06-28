@@ -36,7 +36,8 @@
       "itemsPerPage": "Items per page",
       "previous": "Previous",
       "next": "Next",
-      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams"
+      "showingRange": "Showing {{start}} - {{end}} of {{total}} teams",
+      "excludeInactive": "Teams inactive for over 1 year are excluded"
     }
   }
 }

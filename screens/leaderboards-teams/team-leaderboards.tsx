@@ -431,16 +431,21 @@ const TeamLeaderboards: React.FC = () => {
               />
 
               <Group justify="space-between" mt="xs" data-testid="team-leaderboards-pagination">
-                <Text size="sm" data-testid="team-leaderboards-pagination-info">
-                  {t("leaderboards:teams.pagination.showingRange", {
-                    start: startIndex + 1,
-                    end: Math.min(
-                      startIndex + leaderboardData.teams.length,
-                      leaderboardData.totalTeams,
-                    ),
-                    total: leaderboardData.totalTeams,
-                  })}
-                </Text>
+                <div>
+                  <Text size="sm" data-testid="team-leaderboards-pagination-info">
+                    {t("leaderboards:teams.pagination.showingRange", {
+                      start: startIndex + 1,
+                      end: Math.min(
+                        startIndex + leaderboardData.teams.length,
+                        leaderboardData.totalTeams,
+                      ),
+                      total: leaderboardData.totalTeams,
+                    })}
+                  </Text>
+                  <Text size="xs" c="dimmed" mt={4}>
+                    {t("leaderboards:teams.pagination.excludeInactive")}
+                  </Text>
+                </div>
 
                 <Group align="flex-end">
                   <Select
