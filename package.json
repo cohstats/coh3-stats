@@ -68,7 +68,7 @@
     "@nivo/radar": "0.99.0",
     "@nivo/sunburst": "0.99.0",
     "@octokit/rest": "22.0.1",
-    "@scalar/api-reference-react": "0.8.57",
+    "@scalar/api-reference-react": "0.9.49",
     "@sentry/nextjs": "10.62.0",
     "@tabler/icons-react": "3.44.0",
     "axios": "1.12.2",
