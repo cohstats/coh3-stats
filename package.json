@@ -122,6 +122,6 @@
     "postcss-preset-mantine": "1.18.0",
     "prettier": "3.8.4",
     "typescript": "5.9.3",
-    "vercel": "50.33.1"
+    "vercel": "50.44.0"
   }
 }
