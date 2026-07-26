@@ -282,11 +282,18 @@ export const getCorrectLeaderStartPositions = (position: number) => {
 
 /**
  * Transforms the image URL to the specified format using Cloudflare's image transformation.
+ * Relative/local paths (e.g. /images/news/...) are returned as-is so they work in dev
+ * and are already served from this site without needing cdn-cgi.
  * @param imageUrl
  * @param format
  */
 export const imageUrlTransform = (imageUrl: string | null, format: "webp" = "webp") => {
-  if (!imageUrl) return null;
+  // BBCode parsers may pass non-string content (e.g. arrays) for [img] nodes.
+  if (typeof imageUrl !== "string" || !imageUrl) return null;
+  // Local/site-relative assets don't go through Cloudflare Image Resizing.
+  if (imageUrl.startsWith("/") && !imageUrl.startsWith("//")) {
+    return imageUrl;
+  }
   return `${config.SITE_URL}/cdn-cgi/image/format=${format}/${imageUrl}`;
 };
 

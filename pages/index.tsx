@@ -4,7 +4,8 @@ import Home from "../screens/home";
 import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
 import { getLatestCOH3RedditPosts, RedditPostType } from "../src/apis/reddit-api";
 import { GetStaticProps } from "next";
-import { COH3SteamNewsType, getCOH3SteamNews, NewsItem } from "../src/apis/steam-api";
+import { COH3SteamNewsType, NewsItem } from "../src/apis/steam-api";
+import { getNews } from "../src/news/get-news";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 export default Home;
@@ -30,7 +31,7 @@ export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => 
       getTwitchStreams(""),
       getTop1v1LeaderBoards("american"),
       getLatestCOH3RedditPosts(),
-      getCOH3SteamNews(3),
+      getNews(3),
       getYouTubeVideosHttp(),
     ]);
 
