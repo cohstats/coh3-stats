@@ -99,14 +99,16 @@ describe("getLocalNews", () => {
 
     expect(items.length).toBeGreaterThan(0);
 
-    const welcome = items.find((item) => item.gid === "local-welcome-to-coh3-stats");
-    expect(welcome).toBeDefined();
-    expect(welcome?.title).toBe("Welcome to COH3 Stats News");
-    expect(welcome?.author).toBe("COH3 Stats");
-    expect(welcome?.date).toBe(1785071282);
-    expect(welcome?.image).toBe("/images/coh3-background-cropped.webp");
-    expect(welcome?.url).toBe("https://laddertournament.com.br/");
-    expect(welcome?.contents).toContain("Site News");
+    const ladderTournament = items.find(
+      (item) => item.gid === "local-announce-ladder-tournament",
+    );
+    expect(ladderTournament).toBeDefined();
+    expect(ladderTournament?.title).toBe("New Ladder Tournament Project for COH3");
+    expect(ladderTournament?.author).toBe("Ladder Tournament");
+    expect(ladderTournament?.date).toBe(1785071282);
+    expect(ladderTournament?.image).toBe("/images/news/ladder-tournament.webp");
+    expect(ladderTournament?.url).toBe("https://laddertournament.com.br/");
+    expect(ladderTournament?.contents).toContain("Ladder Tournament");
   });
 
   it("prefixes local gids to avoid Steam collisions", () => {
