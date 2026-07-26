@@ -81,6 +81,10 @@ resolve it on our hosting
 https://github.com/cohstats/coh3-stats/blob/master/src/utils.ts#L22
 If the image is not found there, you can always add it to the /public folder.
 
+#### Publish new local news
+
+See [src/news/README.md](./src/news/README.md) for instructions on adding site news articles (including images and opening a PR).
+
 ### How to update the data after a new game patch
 
 1. Go to https://github.com/cohstats/coh3-data and generate the new data as per readme

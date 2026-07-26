@@ -43,8 +43,10 @@ const preset = reactPreset.extend((tags: any) => ({
     };
   },
   img: (node: { attrs: Record<string, string>; content: any }) => {
-    // Get image URL from content or src attribute if content is empty
-    const imageUrl = node.content.length > 0 ? node.content : node.attrs?.src;
+    // bbob provides content as an array of child nodes (usually a single string URL)
+    const rawContent = Array.isArray(node.content) ? node.content.join("") : node.content;
+    const imageUrl =
+      typeof rawContent === "string" && rawContent.length > 0 ? rawContent : node.attrs?.src;
 
     return {
       tag: Image,
@@ -194,9 +196,11 @@ const SingleNewsItem = ({
               {item.title}
             </Title>
           </Anchor>
-          <Anchor href={item.url} target={"_blank"}>
-            <IconShare3 className={classes.whiteColor} />
-          </Anchor>
+          {item.url && (
+            <Anchor href={item.url} target={"_blank"}>
+              <IconShare3 className={classes.whiteColor} />
+            </Anchor>
+          )}
         </Flex>
         <Text fz="lg">
           {t("postedBy")} {item.author} {t("on")}{" "}
@@ -320,14 +324,6 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
               <Pagination total={totalPages} value={currentPage} onChange={handlePageChange} />
             </Group>
           )}
-          <Text style={{ textAlign: "center" }} fs={"italic"} c="dimmed">
-            {t("sourceText")}
-            <br />
-            {t("findGamesOn")}{" "}
-            <Anchor href={"https://store.steampowered.com/news/app/1677280"} target={"_blank"}>
-              {t("steamNewsLink")}
-            </Anchor>
-          </Text>
         </Container>
       </>
     );

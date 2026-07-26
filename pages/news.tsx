@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getCOH3SteamNews } from "../src/apis/steam-api";
+import { getNews } from "../src/news/get-news";
 import SteamNewsPage from "../screens/news";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({
   console.log(`SSR - /news page: ${pageParam}`);
 
   try {
-    const allNews = await getCOH3SteamNews();
+    const allNews = await getNews();
 
     const totalItems = allNews.newsitems.length;
     const totalPages = Math.ceil(totalItems / NEWS_PER_PAGE);

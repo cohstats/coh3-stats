@@ -10,7 +10,7 @@ const steamImagesBaseUrl = "https://clan.cloudflare.steamstatic.com/images";
 export type NewsItem = {
   gid: string;
   title: string;
-  url?: string;
+  url?: string | null;
   author?: string;
   contents?: string;
   image: string | null;
