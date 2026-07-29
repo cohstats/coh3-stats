@@ -624,6 +624,9 @@ const OfficialMapKeys = [
   "pisa_centrale_4p",
   "sedjenane_6p",
   "castello_8p",
+  /* ---------- 2.5.0 Maps ---------- */
+  "butcher_and_bolt_2p",
+  "across_the_rhine_6p",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -903,5 +906,14 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   castello_8p: {
     name: "Castello della Nebbia",
     url: "/castello_8p/castello_8p.webp",
+  },
+  /* ------------------------- 2.5.0 Maps ---------------------------- */
+  across_the_rhine_6p: {
+    name: "Across the Savio",
+    url: "/across_the_rhine_6p/across_the_rhine_6p.webp",
+  },
+  butcher_and_bolt_2p: {
+    name: "Butcher & Bolt",
+    url: "/butcher_and_bolt_2p/butcher_and_bolt_2p.webp",
   },
 };
