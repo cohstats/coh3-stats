@@ -55,7 +55,7 @@ export type ParentPbg = {
 
 export type WeaponBag = {
   accuracy: Accuracy;
-  always_calculate_cover_from_shooting_position: Boolean;
+  always_calculate_cover_from_shooting_position: boolean;
   aim: Aim;
   anim_table: AnimTable;
   area_effect: AreaEffect;
