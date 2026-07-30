@@ -30,7 +30,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "2.5.0";
+const defaultStatsPatchSelector = "2.5.1";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -43,11 +43,11 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
-  "2.5.0": {
+  "2.5.1": {
     from: "2026-07-29",
     to: "now",
-    value: "2.5.0",
-    label: "2.5.0",
+    value: "2.5.1",
+    label: "2.5.0 - 2.5.1",
     group: "2.5",
   },
   "2.4.2": {
@@ -249,14 +249,14 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "2.5.0";
+const latestPatch = "2.5.1";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
-    "2.5.0": {
-      dataTag: "v2.5.0-1",
-      dataTime: "29/July/2026",
+    "2.5.1": {
+      dataTag: "v2.5.1-1",
+      dataTime: "30/July/2026",
     },
     "2.4.2": {
       dataTag: "v2.4.2-4",
