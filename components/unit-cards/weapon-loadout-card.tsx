@@ -129,13 +129,7 @@ export const WeaponLoadoutCard = (
     {
       key: "scatterDistance",
       label: t("weaponCard.scatterDistance"),
-      tooltip: t("weaponCard.scatterDistanceTooltip", {
-        scatterDistanceMax: roundValue(weapon_bag.scatter_distance_scatter_max * 2, 1),
-        scatterOffsetMax: roundValue(
-          weapon_bag.scatter_distance_scatter_offset * weapon_bag.scatter_distance_scatter_max,
-          1,
-        ),
-      }),
+      tooltip: t("weaponCard.scatterDistanceTooltip"),
       value: weapon_bag.scatter_moving_scatter_distance_multiplier,
     },
   ];
@@ -261,6 +255,24 @@ export const WeaponLoadoutCard = (
     baseWindUp > 0 ? Math.round((baseWindUp + TICK_DURATION) / TICK_DURATION) * TICK_DURATION : 0;
   const hasAimTime = readyAimMin > 0 || readyAimMax > 0;
   const hasWindUp = windUp > 0;
+  const getAimTimeAtRange = (multiplier = 1) => ({
+    min:
+      Math.round((weapon_bag.ready_aim_time_min * multiplier) / TICK_DURATION) * TICK_DURATION +
+      windUp,
+    max:
+      Math.round((weapon_bag.ready_aim_time_max * multiplier) / TICK_DURATION) * TICK_DURATION +
+      windUp,
+  });
+  const aimTimeNear = getAimTimeAtRange(weapon_bag.aim_time_multiplier_near ?? 1);
+  const aimTimeMid = getAimTimeAtRange(weapon_bag.aim_time_multiplier_mid ?? 1);
+  const aimTimeFar = getAimTimeAtRange(weapon_bag.aim_time_multiplier_far ?? 1);
+  const aimTimesEqual = (
+    first: { min: number; max: number },
+    second: { min: number; max: number },
+  ) => Math.abs(first.min - second.min) < 1e-6 && Math.abs(first.max - second.max) < 1e-6;
+  const showRangeAimTime =
+    hasAimTime &&
+    (!aimTimesEqual(aimTimeNear, aimTimeMid) || !aimTimesEqual(aimTimeMid, aimTimeFar));
   const aimAndWindUpLabel =
     hasAimTime && hasWindUp
       ? t("weaponCard.aimTimeWithWindUp")
@@ -750,7 +762,9 @@ export const WeaponLoadoutCard = (
 
         <RangeStatSection
           show={
-            showSustainedStats || (showProjectileTravelTime && weapon_bag.projectile_is_artillery)
+            showSustainedStats ||
+            showRangeAimTime ||
+            (showProjectileTravelTime && weapon_bag.projectile_is_artillery)
           }
           title={t("weaponCard.timing")}
           rows={[
@@ -770,6 +784,14 @@ export const WeaponLoadoutCard = (
                 projectileTravelTimeFar === null
                   ? "—"
                   : formatSeconds(projectileTravelTimeFar, 2),
+            },
+            {
+              show: showRangeAimTime,
+              label: aimAndWindUpLabel,
+              tooltip: t("weaponCard.aimTimeWithWindUpTooltip"),
+              near: formatMinMaxSeconds(aimTimeNear.min, aimTimeNear.max),
+              mid: formatMinMaxSeconds(aimTimeMid.min, aimTimeMid.max),
+              far: formatMinMaxSeconds(aimTimeFar.min, aimTimeFar.max),
             },
             {
               show: weapon_bag.burst_can_burst && showSustainedStats,
@@ -845,8 +867,8 @@ export const WeaponLoadoutCard = (
               alt: "weapon aim time",
               label: aimAndWindUpLabel,
               tooltip: t("weaponCard.aimTimeWithWindUpTooltip"),
-              value: formatMinMaxSeconds(readyAimMin + windUp, readyAimMax + windUp),
-              show: hasAimTime || hasWindUp,
+              value: formatMinMaxSeconds(aimTimeNear.min, aimTimeNear.max),
+              show: (hasAimTime || hasWindUp) && !showRangeAimTime,
             },
             {
               icon: WeaponCardIcons["projectile_travel_time"],
@@ -984,7 +1006,14 @@ export const WeaponLoadoutCard = (
             </Box>
           </Stack>
         )}
-        <CoverModifierSection rows={coverModifierRows} t={t} />
+        <CoverModifierSection
+          rows={coverModifierRows}
+          t={t}
+          calculateCoverFromProjectileImpact={
+            weapon_bag.projectile_type !== "none" &&
+            !weapon_bag.always_calculate_cover_from_shooting_position
+          }
+        />
         <TargetModifierSection rows={targetModifierRows} t={t} />
       </Stack>
     </Stack>
