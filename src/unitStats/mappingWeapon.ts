@@ -48,6 +48,8 @@ export type WeaponStatsType = {
   accuracy_mid: number;
   accuracy_far: number;
 
+  always_calculate_cover_from_shooting_position: boolean;
+
   aoe_accuracy_far: number;
   aoe_accuracy_mid: number;
   aoe_accuracy_near: number;
@@ -413,6 +415,11 @@ const mapWeaponData = (
       accuracy_near: weapon_bag.accuracy?.near || 0,
       accuracy_mid: weapon_bag.accuracy?.mid || 0,
       accuracy_far: weapon_bag.accuracy?.far || 0,
+
+      always_calculate_cover_from_shooting_position: relicBoolean(
+        weapon_bag.always_calculate_cover_from_shooting_position,
+        false,
+      ),
 
       aoe_accuracy_far: weapon_bag.area_effect?.accuracy?.far || 1,
       aoe_accuracy_mid: weapon_bag.area_effect?.accuracy?.mid || 1,

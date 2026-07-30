@@ -72,14 +72,19 @@ export const TargetModifierSection = ({
 export const CoverModifierSection = ({
   rows,
   t,
+  calculateCoverFromProjectileImpact,
 }: {
   rows: CoverModifierRow[];
   t: (key: string) => string;
+  calculateCoverFromProjectileImpact: boolean;
 }) => {
   if (rows.length === 0) return null;
 
   const showCoverAimTime = rows.some((row) => row.aimTime !== 1);
   const statColumnSpan = showCoverAimTime ? 2.6 : 4;
+  const coverModifiersTooltip = calculateCoverFromProjectileImpact
+    ? t("weaponCard.coverModifiersProjectileImpactTooltip")
+    : t("weaponCard.coverModifiersFiringPositionTooltip");
 
   const coverRows = [
     {
@@ -104,7 +109,7 @@ export const CoverModifierSection = ({
         <Grid.Col span={{ base: 4, md: 4 }}>
           <Flex align="center" gap={4}>
             <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
-            <HelperIcon text={t("weaponCard.coverModifiersTooltip")} width={300} iconSize={16} />
+            <HelperIcon text={coverModifiersTooltip} width={300} iconSize={16} />
           </Flex>
         </Grid.Col>
 
