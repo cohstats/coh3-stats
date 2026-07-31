@@ -151,8 +151,8 @@ const PlayerRecentMatchesTab = ({
       };
       matchTypeMap[matchtype_id] = {
         label: (
-          matchTypesAsObject[matchtype_id]["localizedName"] ||
-          matchTypesAsObject[matchtype_id]["name"] ||
+          matchTypesAsObject[matchtype_id]?.localizedName ||
+          matchTypesAsObject[matchtype_id]?.name ||
           "unknown"
         ).toLowerCase(),
         checked: true,
@@ -430,8 +430,8 @@ const PlayerRecentMatchesTab = ({
             textAlign: "center",
             render: ({ matchtype_id, startgametime, completiontime }) => {
               const matchType =
-                matchTypesAsObject[matchtype_id as number]["localizedName"] ||
-                matchTypesAsObject[matchtype_id as number]["name"] ||
+                matchTypesAsObject[matchtype_id as number]?.localizedName ||
+                matchTypesAsObject[matchtype_id as number]?.name ||
                 "unknown";
               return (
                 <>

@@ -539,6 +539,11 @@ export const matchTypesAsObject: Record<
     name: "4V4_Unranked",
     localizedName: "4 vs 4",
   },
+  101: {
+    id: 101,
+    name: "Final_stand",
+    localizedName: "Final Stand",
+  },
 };
 
 export const gameTypesIDsTypeAsKey = {

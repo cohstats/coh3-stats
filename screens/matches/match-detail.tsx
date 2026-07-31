@@ -59,8 +59,8 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
 
   const matchtype_id = matchData.matchtype_id;
   const matchType =
-    matchTypesAsObject[matchtype_id as number]["localizedName"] ||
-    matchTypesAsObject[matchtype_id as number]["name"] ||
+    matchTypesAsObject[matchtype_id as number]?.localizedName ||
+    matchTypesAsObject[matchtype_id as number]?.name ||
     "unknown";
 
   const mapName = maps[matchData.mapname as keyof typeof maps]?.name || matchData.mapname;
