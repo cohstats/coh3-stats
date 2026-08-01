@@ -47,10 +47,10 @@ const localNews: LocalNewsItem[] = [
 
 [p]Ladder Tournament is a community project made by people who enjoy Company of Heroes 3 and want to see more competitive events happening around the game.[/p]
 
-[p]If you're interested in playing, watching the matches, or simply following the development of the project, you're welcome to join the community..[/p]
+[p]If you're interested in playing, watching the matches, or simply following the development of the project, you're welcome to join the community.[/p]
 
 [h2]Ladder Discord[/h2]
-[p][url=https://discord.com/invite/HQxUnjcrNd]https://https://discord.com/invite/HQxUnjcrNd/[/url][/p]
+[p][url=https://discord.com/invite/HQxUnjcrNd]https://https://discord.com/invite/HQxUnjcrNd[/url][/p]
 
 [h2]Watch the Official Introduction[/h2]
 [p][url=https://www.youtube.com/watch?v=aU4-Jpz5zZs]https://www.youtube.com/watch?v=aU4-Jpz5zZs[/url][/p]
