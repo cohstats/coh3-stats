@@ -25,25 +25,32 @@ const localNews: LocalNewsItem[] = [
     contents: `
 [img]/images/news/ladder-tournament.webp[/img]
 
-[p]The Company of Heroes 3 community continues to take meaningful steps toward strengthening the game's competitive scene. Among the projects gaining the most attention is the Ladder Tournament, a championship created to provide an organized, accessible, and engaging competitive experience for players of all skill levels.[/p]
-[p]More than just another tournament, the project aims to build a solid foundation for the future of the community by connecting players, content creators, tournament organizers, and partners who share the same vision: helping the competitive scene of Company of Heroes 3 grow in a sustainable way.[/p]
+[p]The Company of Heroes 3 community has a new competitive event: the first playoff round of our Ladder Tournament.[/p]
 
-[h2]A Competition Designed to Keep Players Engaged[/h2]
-[p]The Ladder Tournament features a challenge-based format, allowing teams to climb the rankings by defeating higher-ranked opponents.[/p]
-[p]Every match directly impacts the standings, encouraging teams to remain active throughout the competition. At the end of the season, the highest-ranked teams qualify for the Playoffs, where they compete for the championship title.[/p]
-[p]The tournament also follows a clear set of rules designed to promote fairness, transparency, and sportsmanship.[/p]
+[p]The Ladder Tournament was created by a community of Brazilian players with a simple goal: give players another way to compete, meet other players, and stay involved with the CoH3 community.[/p]
 
-[h2]Building a Unified Tournament Ecosystem[/h2]
-[p]The Ladder Tournament team is also in direct contact with IronClad Tournaments. The shared vision is to strengthen the competitive scene by working toward a unified platform where multiple community tournaments can coexist, making it easier for players to discover and participate in Company of Heroes 3 events.[/p]
+[p]The Ladder Tournament uses a challenge-based ranking system. Teams can challenge opponents above them in the standings, and the results of those matches affect their position on the Ladder.[/p]
 
-[h2]Community Casters Supporting the Event[/h2]
-[p]The tournament is supported by respected community casters including HelpingHans, n7Shark, ValieriumBorn, AlekelGames, and SaNgar. Their broadcasts and community engagement help increase the tournament's visibility and introduce more players to the competitive scene.[/p]
+[p]This means teams need to keep playing if they want to move up and secure a good position. The best-ranked teams eventually advance to the Playoffs, followed by the Semifinals and Final.[/p]
 
-[h2]Looking Ahead[/h2]
-[p]The Ladder Tournament team continues to develop new platform features, including player registration, team management, automated challenges, ranking management, and match scheduling.[/p]
+[p]The tournament has its own rules covering challenges, match scheduling, results, and other situations that can happen during the competition.[/p]
 
-[h2]A Project Built by the Community, for the Community[/h2]
-[p]By bringing together organizers, players, casters, and partners, the Ladder Tournament aims to create a sustainable and welcoming competitive environment for the entire Company of Heroes 3 community.[/p]
+[p]The Ladder Tournament team has also been talking with IronClad Tournaments and MetaPlays about ways tournament organizers can work together. One of the ideas being discussed is having a place where players can more easily find different CoH3 tournaments and events instead of having everything scattered across different communities and platforms.[/p]
+
+[p]It's still something being worked on, but the idea is simple: make it easier for players to find tournaments and get involved.[/p]
+
+[p]Several well-known CoH3 casters have also been helping cover Ladder Tournament matches, including HelpingHans, n7Shark, ValieriumBorn, AlekelGames, and SaNgar.[/p]
+
+[p]Having different casters involved also means matches can reach players outside the Brazilian community and bring more attention to the tournament.[/p]
+
+[p]The Ladder Tournament platform is still being developed. The team is currently working on features such as player registration, team management, automated challenges, rankings, and match scheduling.[/p]
+
+[p]Ladder Tournament is a community project made by people who enjoy Company of Heroes 3 and want to see more competitive events happening around the game.[/p]
+
+[p]If you're interested in playing, watching the matches, or simply following the development of the project, you're welcome to join the community..[/p]
+
+[h2]Ladder Discord[/h2]
+[p][url=https://discord.com/invite/HQxUnjcrNd]https://https://discord.com/invite/HQxUnjcrNd/[/url][/p]
 
 [h2]Watch the Official Introduction[/h2]
 [p][url=https://www.youtube.com/watch?v=aU4-Jpz5zZs]https://www.youtube.com/watch?v=aU4-Jpz5zZs[/url][/p]
