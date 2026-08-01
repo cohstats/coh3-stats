@@ -19,7 +19,7 @@ const localNews: LocalNewsItem[] = [
     gid: "local-announce-ladder-tournament",
     title: "New Ladder Tournament Project for COH3",
     author: "Ladder Tournament",
-    date: 1785071282,
+    date: 1785604604,
     image: "/images/news/ladder-tournament.webp",
     url: "https://laddertournament.com.br/",
     contents: `
