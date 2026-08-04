@@ -40,6 +40,25 @@ type MpMapListItem = {
   pointCounts: MpMap["resources"]["counts"];
 };
 
+/**
+ * Everything the table page (`/explorer/maps-table`) shows. It is a superset of the list item - the
+ * table displays every aggregated field of the data file, only the `points` array is left out (it is
+ * by far the heaviest part of the data and the detail page is the one which needs it).
+ */
+type MpMapTableItem = MpMapListItem & {
+  teamLayout: MpMap["teamLayout"];
+  /** Amount of points per kind and tier, eg. `{ fuel: { low: 2, medium: 4 } }`. */
+  pointCountsByTier: MpMap["resources"]["countsByTier"];
+  /** Amount of points which can be captured by players. */
+  totalCapturable: number;
+  /** Income per minute of all the capturable points on the map combined. */
+  incomePerMinute: MpMap["resources"]["incomePerMinute"];
+  /** Bounding box of the points - the part of the map the fighting actually happens on. */
+  playableArea: MpMap["playableAreaEstimate"];
+  version: number;
+  category: MpMap["category"];
+};
+
 const getMpMapMode = (map: Pick<MpMap, "category" | "teamLayout">): MpMapMode => {
   if (map.category === "hoff") return "fs";
 
@@ -58,6 +77,17 @@ const toMpMapListItem = (map: MpMap): MpMapListItem => ({
   author: map.author ?? null,
   mapSize: map.mapSize,
   pointCounts: map.resources.counts,
+});
+
+const toMpMapTableItem = (map: MpMap): MpMapTableItem => ({
+  ...toMpMapListItem(map),
+  teamLayout: map.teamLayout,
+  pointCountsByTier: map.resources.countsByTier,
+  totalCapturable: map.resources.totalCapturable,
+  incomePerMinute: map.resources.incomePerMinute,
+  playableArea: map.playableAreaEstimate,
+  version: map.version,
+  category: map.category,
 });
 
 /**
@@ -112,7 +142,10 @@ type MpMapFilters = {
   lobbyOnly: boolean;
 };
 
-const matchesMpMapSearch = (map: MpMapListItem, search: string) => {
+/** The fields the filters look at - both the list and the table item satisfy this. */
+type MpMapFilterable = Pick<MpMapListItem, "id" | "name" | "mode" | "isLobbyVisible">;
+
+const matchesMpMapSearch = (map: MpMapFilterable, search: string) => {
   const term = search.trim().toLowerCase();
   if (!term) return true;
 
@@ -123,7 +156,7 @@ const matchesMpMapSearch = (map: MpMapListItem, search: string) => {
   );
 };
 
-const filterMpMaps = (maps: MpMapListItem[], filters: MpMapFilters): MpMapListItem[] => {
+const filterMpMaps = <T extends MpMapFilterable>(maps: T[], filters: MpMapFilters): T[] => {
   const { search, modes, lobbyOnly } = filters;
 
   return maps.filter((map) => {
@@ -375,12 +408,15 @@ export {
   sortMpMapsByName,
   stripMpMapNamePrefix,
   toMpMapListItem,
+  toMpMapTableItem,
 };
 export type {
+  MpMapFilterable,
   MpMapFilters,
   MpMapIncomeEntry,
   MpMapListItem,
   MpMapMode,
+  MpMapTableItem,
   MpMapPointMarker,
   MpMapRenderedPointKind,
 };

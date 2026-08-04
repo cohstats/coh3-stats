@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconChevronRight, IconMap2 } from "@tabler/icons-react";
+import { IconChevronRight, IconMap2, IconTable } from "@tabler/icons-react";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
@@ -24,6 +24,7 @@ import {
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
   getExplorerMapsRoute,
+  getExplorerMapsTableRoute,
   getUnitBrowserRoute,
   getWeaponsRoute,
 } from "../../src/routes";
@@ -183,6 +184,29 @@ const Explorer: NextPage = () => {
             </Grid>
           </Stack>
 
+          {/* Maps Section */}
+          <Stack gap="md">
+            <Title order={2}>Maps</Title>
+            <Grid gutter="md">
+              <Grid.Col span={{ base: 12, sm: 6 }}>
+                <InfoCard
+                  link={getExplorerMapsRoute()}
+                  title="All Maps"
+                  description="Browse all multiplayer maps with their resource point layouts and sizes."
+                  icon={<IconMap2 size={30} style={{ flexShrink: 0 }} />}
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
+                <InfoCard
+                  link={getExplorerMapsTableRoute()}
+                  title="Maps Table"
+                  description="Compare all the map data in one sortable table - points, income per minute, sizes and slots."
+                  icon={<IconTable size={30} style={{ flexShrink: 0 }} />}
+                />
+              </Grid.Col>
+            </Grid>
+          </Stack>
+
           {/* Tools Section */}
           <Stack gap="md">
             <Title order={2}>Browser Tools</Title>
@@ -211,14 +235,6 @@ const Explorer: NextPage = () => {
                   title="Challenges"
                   description="View all daily and weekly challenges with completion requirements."
                   imageSrc="/icons/common/resources/resource_skill_points.png"
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, sm: 6 }}>
-                <InfoCard
-                  link={getExplorerMapsRoute()}
-                  title="All Maps"
-                  description="Browse all multiplayer maps with their resource point layouts and sizes."
-                  icon={<IconMap2 size={30} style={{ flexShrink: 0 }} />}
                 />
               </Grid.Col>
             </Grid>

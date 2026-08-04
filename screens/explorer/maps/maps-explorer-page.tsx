@@ -15,6 +15,7 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import MapCard from "./map-card";
+import MapsViewSwitch from "./maps-view-switch";
 import {
   filterMpMaps,
   groupMpMapsByMode,
@@ -90,12 +91,15 @@ const MapsExplorerPage = ({ maps }: { maps: MpMapListItem[] }) => {
   return (
     <Container size="lg" p={0}>
       <Stack gap="lg">
-        <Stack gap={4}>
-          <Title order={1}>{t("page.title")}</Title>
-          <Text size="lg" c="dimmed">
-            {t("page.subtitle")}
-          </Text>
-        </Stack>
+        <Group justify="space-between" align="flex-start" wrap="nowrap">
+          <Stack gap={4}>
+            <Title order={1}>{t("page.title")}</Title>
+            <Text size="lg" c="dimmed">
+              {t("page.subtitle")}
+            </Text>
+          </Stack>
+          <MapsViewSwitch active="cards" t={t} />
+        </Group>
 
         <Stack gap="sm">
           <TextInput

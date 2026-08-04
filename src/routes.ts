@@ -82,6 +82,10 @@ export const getExplorerMapsRoute = () => {
   return encodeURI(`/explorer/maps`);
 };
 
+export const getExplorerMapsTableRoute = () => {
+  return encodeURI(`/explorer/maps-table`);
+};
+
 export const getExplorerMapRoute = (mapId: string) => {
   return encodeURI(`/explorer/maps/${mapId}`);
 };

@@ -166,6 +166,10 @@ export const AnalyticsExplorerMapsListView = (): void => {
   logFBEvent("explorer_maps_list_view");
 };
 
+export const AnalyticsExplorerMapsTableView = (): void => {
+  logFBEvent("explorer_maps_table_view");
+};
+
 export const AnalyticsExplorerMapDetailsView = (mapId: string): void => {
   logFBEvent("explorer_map_details_view", { mapId });
 };
