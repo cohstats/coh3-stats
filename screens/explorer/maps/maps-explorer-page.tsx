@@ -141,10 +141,12 @@ const MapsExplorerPage = ({ maps }: { maps: MpMapListItem[] }) => {
           <Stack key={mode ?? "all"} gap="sm">
             {mode && (
               <Title order={2} size="h3">
-                {t(`sections.${mode}`)}
+                {t(`sections.${mode}`)} ({modeMaps.length})
               </Title>
             )}
-            <SimpleGrid cols={{ base: 1, xs: 2, md: 3 }} spacing="md">
+            {/* The cards are wide (image on the left, text on the right), 2 per row is the most
+                that fits without squeezing the badges. */}
+            <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
               {modeMaps.map((map) => (
                 <MapCard key={map.id} map={map} t={t} />
               ))}

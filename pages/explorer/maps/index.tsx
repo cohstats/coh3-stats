@@ -5,11 +5,7 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import { useTranslation } from "next-i18next/pages";
 import MapsExplorerPage from "../../../screens/explorer/maps/maps-explorer-page";
 import { getMpMaps } from "../../../src/explorer/mp-maps";
-import {
-  MpMapListItem,
-  sortMpMapsByName,
-  toMpMapListItem,
-} from "../../../src/explorer/mp-maps-helpers";
+import { MpMapListItem, toMpMapListItem } from "../../../src/explorer/mp-maps-helpers";
 import { createPageSEO } from "../../../src/seo-utils";
 import { getExplorerMapsRoute } from "../../../src/routes";
 import { AnalyticsExplorerMapsListView } from "../../../src/firebase/analytics";
@@ -39,7 +35,8 @@ export const getStaticProps: GetStaticProps<MapsPageProps> = async ({ locale = "
   // The points layout is by far the heaviest part of the data and the list page doesn't need it.
   const mpMapsData = await getMpMaps({ locale, includePoints: false });
 
-  const maps = sortMpMapsByName(Object.values(mpMapsData?.maps ?? {}).map(toMpMapListItem));
+  // No sorting here - both display paths (grouped by mode / flat while searching) sort themselves.
+  const maps = Object.values(mpMapsData?.maps ?? {}).map(toMpMapListItem);
 
   return {
     props: {

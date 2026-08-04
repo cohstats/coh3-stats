@@ -1,0 +1,8 @@
+/*
+ * Backdrop of the minimap thumbnail. The maps are not all square (320x320 up to 384x320), so
+ * `fit="contain"` letterboxes them - this makes the bars follow the color scheme instead of always
+ * being near black.
+ */
+.minimap {
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
+}

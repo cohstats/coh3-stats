@@ -13,13 +13,17 @@ import type { MpMap } from "./mp-maps-types";
 const MP_MAP_TEAM_LAYOUTS = ["1v1", "2v2", "3v3", "4v4"] as const;
 
 /**
- * Mode of a map as used by the filters. Regular multiplayer maps use their team layout, Hold Off
+ * Mode of a map as used by the filters. Regular multiplayer maps use their team layout, Final Stand
  * (co-op vs AI) maps have no symmetrical teams so they get their own mode.
+ *
+ * Note: the game files call Final Stand "hoff" (Hold Off) - that's the value of `category` in the
+ * raw data. We keep the raw types faithful to the data file and use the in-game name here, in the
+ * app level types.
  */
-type MpMapMode = (typeof MP_MAP_TEAM_LAYOUTS)[number] | "hoff" | "other";
+type MpMapMode = (typeof MP_MAP_TEAM_LAYOUTS)[number] | "fs" | "other";
 
 /** All the modes in display order. */
-const MP_MAP_MODES: MpMapMode[] = [...MP_MAP_TEAM_LAYOUTS, "hoff", "other"];
+const MP_MAP_MODES: MpMapMode[] = [...MP_MAP_TEAM_LAYOUTS, "fs", "other"];
 
 /** Minimal shape of a map needed to render the list page. */
 type MpMapListItem = {
@@ -37,7 +41,7 @@ type MpMapListItem = {
 };
 
 const getMpMapMode = (map: Pick<MpMap, "category" | "teamLayout">): MpMapMode => {
-  if (map.category === "hoff") return "hoff";
+  if (map.category === "hoff") return "fs";
 
   const teamLayout = map.teamLayout as MpMapMode | null;
 
@@ -63,8 +67,14 @@ const toMpMapListItem = (map: MpMap): MpMapListItem => ({
  */
 const stripMpMapNamePrefix = (name: string) => name.replace(/^\(\d+\)\s*/, "");
 
-/** Url of the minimap image on the CDN. Not all maps have one - hoff maps are missing. */
-const getMpMapImageUrl = (mapId: string) => getIconsPathOnCDN(`/${mapId}/${mapId}.webp`, "maps");
+/**
+ * Url of the minimap image on the CDN. Not all maps have one - Final Stand maps are missing.
+ *
+ * We use the `marked.colored` variant, which is the minimap with the resource points marked and
+ * the team colors applied - the plain `<mapId>.webp` is the bare minimap without any points.
+ */
+const getMpMapImageUrl = (mapId: string) =>
+  getIconsPathOnCDN(`/${mapId}/${mapId}.marked.colored.webp`, "maps");
 
 const sortMpMapsByName = <T extends { name: string }>(maps: T[]): T[] =>
   [...maps].sort((a, b) =>
@@ -73,7 +83,7 @@ const sortMpMapsByName = <T extends { name: string }>(maps: T[]): T[] =>
 
 type MpMapFilters = {
   search: string;
-  /** Selected modes. Empty means "all multiplayer modes" - hoff maps are opt-in. */
+  /** Selected modes. Empty means "all multiplayer modes" - Final Stand maps are opt-in. */
   modes: MpMapMode[];
   /** When true, only maps which show up in the in-game lobby are listed. */
   lobbyOnly: boolean;
@@ -96,9 +106,9 @@ const filterMpMaps = (maps: MpMapListItem[], filters: MpMapFilters): MpMapListIt
   return maps.filter((map) => {
     if (lobbyOnly && !map.isLobbyVisible) return false;
 
-    // With no mode selected we show every multiplayer map, hoff maps have to be asked for.
+    // With no mode selected we show every multiplayer map, Final Stand maps have to be asked for.
     if (modes.length === 0) {
-      if (map.mode === "hoff") return false;
+      if (map.mode === "fs") return false;
     } else if (!modes.includes(map.mode)) {
       return false;
     }

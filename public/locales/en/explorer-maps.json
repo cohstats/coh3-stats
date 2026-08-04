@@ -25,19 +25,19 @@
     "mapCount_other": "{{count}} maps"
   },
   "modes": {
-    "1v1": "1v1",
-    "2v2": "2v2",
-    "3v3": "3v3",
-    "4v4": "4v4",
-    "hoff": "Hold Off",
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
     "other": "Other"
   },
   "sections": {
-    "1v1": "1v1 Maps",
-    "2v2": "2v2 Maps",
-    "3v3": "3v3 Maps",
-    "4v4": "4v4 Maps",
-    "hoff": "Hold Off Maps (co-op vs AI)",
+    "1v1": "1 vs 1 Maps",
+    "2v2": "2 vs 2 Maps",
+    "3v3": "3 vs 3 Maps",
+    "4v4": "4 vs 4 Maps",
+    "fs": "Final Stand Maps (co-op vs AI)",
     "other": "Other Maps"
   },
   "card": {
@@ -46,12 +46,14 @@
     "community": "Community",
     "authorTooltip": "Created by {{author}}",
     "notInLobby": "Not in lobby",
-    "notInLobbyTooltip": "This map is not selectable in the in-game lobby."
+    "notInLobbyTooltip": "This map is not selectable in the in-game lobby.",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "Map size"
   },
   "points": {
     "victory": "Victory points",
     "fuel": "Fuel points",
     "munitions": "Munitions points",
-    "strategic": "Strategic points"
+    "strategic": "Manpower points"
   }
 }
