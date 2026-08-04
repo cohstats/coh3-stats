@@ -1,6 +1,6 @@
 import React from "react";
 import { Badge, Card, Group, Image, Stack, Text, Tooltip } from "@mantine/core";
-import { IconFlag3Filled, IconRulerMeasure } from "@tabler/icons-react";
+import { IconRulerMeasure } from "@tabler/icons-react";
 import { TFunction } from "next-i18next/pages";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { getExplorerMapRoute } from "../../../src/routes";
@@ -14,10 +14,7 @@ const IMAGE_SIZE = 170;
 /** Size of the resource / map size icons in the stats row. */
 const STAT_ICON_SIZE = 22;
 
-/**
- * A single value in the stats row of the card - a resource point count or the map size. The game has
- * no exported icon for victory points, so those use a generic icon.
- */
+/** A single value in the stats row of the card - a resource point count or the map size. */
 const CardStat = ({
   value,
   label,
@@ -110,7 +107,12 @@ const MapCard = ({ map, t }: { map: MpMapListItem; t: TFunction }) => {
               <CardStat
                 value={pointCounts.victory}
                 label={t("points.victory")}
-                icon={<IconFlag3Filled size={STAT_ICON_SIZE} />}
+                icon={
+                  <ResourceIcon
+                    src="/icons/common/resources/symbols/mm_victory_point.png"
+                    alt={t("points.victory")}
+                  />
+                }
               />
             )}
             {!!pointCounts.fuel && (

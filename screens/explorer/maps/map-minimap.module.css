@@ -1,0 +1,81 @@
+/*
+ * The minimap and the point overlay. The wrapper gets its aspect ratio from the map size, so the
+ * absolutely positioned markers keep sitting on the right spot at any width.
+ */
+.wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--mantine-radius-md);
+  /* Visible for the handful of maps which have no minimap on the CDN yet - the markers are still
+     drawn on top of it, so the layout stays readable. */
+  background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-6));
+  /* Lets the markers size themselves off the rendered width of the map, see `.marker` below. */
+  container-type: inline-size;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /*
+   * `fill` on purpose: the wrapper already has the aspect ratio of the map size, and the image covers
+   * exactly that area. Its own dimensions are rounded to whole pixels though (a 672x544 map ships as
+   * a 400x326 image), so cropping with `cover` would nudge the markers off by that rounding - a sub
+   * percent stretch keeps them aligned instead.
+   */
+  object-fit: fill;
+}
+
+.marker {
+  position: absolute;
+  /* `left` / `top` are set inline from the point position, this centres the marker on it. */
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  /*
+   * Markers scale with the width of the map instead of being a fixed size: a 4v4 map carries over 30
+   * points, and at phone widths fixed size markers cover each other. The upper bound is the size we
+   * want on a desktop, the lower one keeps them tappable. The plain value is the fallback for
+   * browsers without container query units.
+   */
+  /* `--point-icon-scale` is set per marker from the tier of its point, see `MP_MAP_POINT_TIER_SCALE`. */
+  --point-icon-size: 28px;
+  --point-icon-size: calc(clamp(20px, 4.3cqw, 28px) * var(--point-icon-scale, 1));
+  /* Markers are decoration on top of the image, the tooltip is what carries the detail. */
+  cursor: default;
+  /* Small maps can get busy - keep the important points on top of the resource ones. */
+  z-index: 1;
+}
+
+.markerVictory,
+.markerStart {
+  z-index: 2;
+}
+
+/* The list of details the point tooltips carry. Compact, it is a hint rather than page content. */
+.hintList {
+  margin: 0;
+  padding-left: calc(var(--mantine-spacing-md) + 2px);
+}
+
+.hintList li {
+  /* The default list line height leaves the short items looking sparse. */
+  line-height: 1.45;
+}
+
+.markerLabel {
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  /* Scales with the markers, same reasoning as `--point-icon-size`. */
+  font-size: 12px;
+  font-size: clamp(9px, 1.85cqw, 12px);
+  /* An outline rather than a background - a pill per point would drown the map. */
+  text-shadow:
+    0 0 3px rgba(0, 0, 0, 0.95),
+    0 0 2px rgba(0, 0, 0, 0.95),
+    0 1px 1px rgba(0, 0, 0, 0.95);
+  white-space: nowrap;
+}

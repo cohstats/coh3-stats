@@ -54,6 +54,54 @@
     "victory": "Victory points",
     "fuel": "Fuel points",
     "munitions": "Munitions points",
-    "strategic": "Manpower points"
+    "strategic": "Manpower points",
+    "starting_position": "Player starts",
+    "victorySingle": "Victory point",
+    "fuelSingle": "Fuel point",
+    "munitionsSingle": "Munitions point",
+    "strategicSingle": "Manpower point"
+  },
+  "tiers": {
+    "extra_low": "extra low",
+    "low": "low",
+    "medium": "medium",
+    "extra_medium": "extra medium",
+    "high": "high",
+    "default": "default"
+  },
+  "resources": {
+    "fuel": "Fuel",
+    "munition": "Munitions",
+    "manpower": "Manpower"
+  },
+  "detail": {
+    "backToMaps": "All maps",
+    "overview": "Overview",
+    "description": "Description",
+    "players": "Players",
+    "author": "Author",
+    "mapId": "Map ID",
+    "points": "Resource points",
+    "totalCapturable": "Capturable points",
+    "income": "Income per minute",
+    "incomeTotal": "Total",
+    "incomePerSide": "Per side",
+    "incomePerSideTooltip": "Half of the total income. Maps are close to symmetrical, but points in the middle of the map are contested rather than split, so treat this as an estimate.",
+    "incomeNote": "Income of all capturable points at full control, per minute.",
+    "hoverHint": "Hover over any point on the map to see its details:",
+    "hoverDetails": {
+      "tier": "Tier of the point (extra low up to high)",
+      "income": "Income per minute it generates",
+      "captureTime": "Capture time - how long it takes to take it",
+      "revertTime": "Revert time - how long until it goes neutral again",
+      "secureRadius": "Secure radius around the point"
+    },
+    "tierSizeHint": "The icons on the map are sized by tier, so the higher yield points are the bigger ones.",
+    "pointIncome": "Income: +{{value}} / min",
+    "pointCaptureTime": "Capture time: {{value}}s",
+    "pointRevertTime": "Revert time: {{value}}s",
+    "pointSecureRadius": "Secure radius: {{value}}",
+    "startingPositionTooltip": "Team {{team}} - player {{position}}",
+    "playerPositionTooltip": "Player {{position}}"
   }
 }
