@@ -58,10 +58,22 @@ npx playwright test --project=firefox
 npx playwright test --project=webkit
 ```
 
+### Run the data mapping tests
+
+```bash
+yarn test:e2e:data
+# On Windows
+yarn test:e2e:data:windows
+```
+
+These are the tests in `e2e/data` - see [Data mapping tests](#data-mapping-tests) below.
+
 ## Test Structure
 
 ```
 e2e/
+├── data/
+│   └── mp-maps.spec.ts     # Integration tests of the mp maps mapping (no browser, no app)
 ├── helpers/
 │   └── test-utils.ts       # Common test utilities and helper functions
 ├── smoke/
@@ -95,6 +107,25 @@ test.describe("Feature Name", () => {
   });
 });
 ```
+
+## Data mapping tests
+
+`e2e/data` contains integration tests of our data mapping functions (eg. `src/explorer/mp-maps.ts`).
+They call the functions **directly in Node** - no browser, no running app and no API endpoint
+involved. They live in the e2e suite because they download the real data packages from the coh3-data
+CDN, which is too heavy for the Jest unit tests.
+
+Things to know when adding tests there:
+
+- Only the `data` Playwright project runs them (`testMatch: data/**/*.spec.ts`), the browser projects
+  ignore that folder, so the downloads don't happen four times.
+- The `data` project doesn't need the Next.js server. The `yarn test:e2e:data` script sets
+  `PLAYWRIGHT_SKIP_WEBSERVER=1`, which turns off the `webServer` option of the config.
+- Tests have a 180s timeout - the data packages are heavy.
+- Use `test.skip(...)` when the tested data file isn't part of the data tag of a given patch yet,
+  and remember to clear the mapping caches (eg. `clearMpMapsCache()`) in `beforeEach`.
+- In CI they run in their own `data-mapping-tests` job, which doesn't build the app or install
+  browsers.
 
 ### Helper Functions
 

@@ -37,6 +37,8 @@
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:firefox": "playwright test --project=firefox",
     "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:data": "PLAYWRIGHT_SKIP_WEBSERVER=1 playwright test --project=data",
+    "test:e2e:data:windows": "set PLAYWRIGHT_SKIP_WEBSERVER=1 && playwright test --project=data",
     "test:e2e:install": "playwright install --with-deps chromium firefox webkit"
   },
   "lint-staged": {

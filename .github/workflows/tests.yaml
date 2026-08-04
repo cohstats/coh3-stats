@@ -59,6 +59,49 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+  data-mapping-tests:
+    name: E2E Data Mapping Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    concurrency:
+      group: data-mapping-tests-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.x"
+          cache: "yarn"
+      - name: Cache node modules
+        uses: actions/cache@v5
+        env:
+          cache-name: cache-node-modules-v2
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile install
+
+      # These tests call our data functions directly in Node - no browsers and no app build needed.
+      - name: Run data mapping tests
+        run: yarn test:e2e:data
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-data
+          path: playwright-report/
+          retention-days: 30
+
   e2e-tests:
     name: E2E Tests (${{ matrix.test-type }})
     runs-on: ubuntu-latest

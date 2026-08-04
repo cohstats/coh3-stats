@@ -1,0 +1,506 @@
+[
+  {
+    "id": "across_the_rhine_6p",
+    "name": "(6) Across the Savio",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": true
+  },
+  {
+    "id": "alamein_4p",
+    "name": "(4) El Alamein",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "ancona_railyard_2p",
+    "name": "(2) Ancona Railyard",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "angoville_farms_2p",
+    "name": "(2) Angoville Farms",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "benghazi_6p",
+    "name": "(6) Benghazi",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "black_gold_8p",
+    "name": "(8) Black Gold",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "bologna_2p",
+    "name": "(2) Bologna",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": true
+  },
+  {
+    "id": "butcher_and_bolt_2p",
+    "name": "(2) Butcher & Bolt",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "castello_8p",
+    "name": "(8) Castello della Nebbia",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
+    "id": "catania_crossing_6p",
+    "name": "(6) Catania Crossing",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "cliff_crossing_2p",
+    "name": "(2) Taranto Coastline",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "crossing_in_the_woods_2p",
+    "name": "(2) Crossing in the Woods",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "crossing_in_the_woods_4p",
+    "name": "(4) Crossing in the Woods",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "day_101_4p",
+    "name": "(4) Day 101",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "desert_airfield_6p_mkii",
+    "name": "(6) Gazala Landing Ground",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "desert_village_2p_mkiii",
+    "name": "(2) Road to Tunis",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "djebel_2p",
+    "name": "(2) Djebel Pass",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": true
+  },
+  {
+    "id": "djebel_4p",
+    "name": "(4) Djebel Pass",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": true
+  },
+  {
+    "id": "egletons_2p",
+    "name": "(2) Égletons",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": true
+  },
+  {
+    "id": "eindhoven",
+    "name": "(4) Operation Eindhoven",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": true
+  },
+  {
+    "id": "elst_outskirts_4p",
+    "name": "(4) Elst Outskirts",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "faymonville",
+    "name": "(2) Faymonville",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": true
+  },
+  {
+    "id": "gabes_gap_6p",
+    "name": "(6) Gabès Gap",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "gardens_2p",
+    "name": "(2) Gardens",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "gothic_line_8p",
+    "name": "(6) The Gothic Line",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": true
+  },
+  {
+    "id": "halfa_8p",
+    "name": "(8) Alam el Halfa",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
+    "id": "hill_400_8p",
+    "name": "(8) Hill 400",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_city",
+    "name": "hoff_city",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_dam",
+    "name": "hoff_dam",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_desert",
+    "name": "Qattara Depression",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_elst_outskirts_4p",
+    "name": "hoff_elst_outskirts_4p",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_forest",
+    "name": "The Alpine Wall",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_forest_2",
+    "name": "hoff_forest_2",
+    "mode": "fs",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_gela_outskirts",
+    "name": "Gela Beachhead",
+    "mode": "fs",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_sousse_wetlands",
+    "name": "Fall of Sousse",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "hoff_torrente",
+    "name": "Torrente Ruins",
+    "mode": "fs",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "industrial_railyard_6p_mkii",
+    "name": "(6) L'Aquila",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "langres_2p",
+    "name": "(2) Langres",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "longstop_hill_6p",
+    "name": "(6) Longstop Hill",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "lorraine_4p",
+    "name": "(4) Lorraine",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": true
+  },
+  {
+    "id": "mignano_6p",
+    "name": "(6) Mignano Summit",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "monte_cavo_8p",
+    "name": "(8) Monte Cavo",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "montherme_6p",
+    "name": "(6) Montherme",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "mountain_ruins_6p",
+    "name": "(6) Mignano Summit",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "mountain_ruins_8p_mkii",
+    "name": "(8) Mignano Gap",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "oasis_depot_8p",
+    "name": "(8) Oasis Depot",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
+    "id": "oliveto_citra_8p",
+    "name": "(8) Oliveto Citra",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
+    "id": "pachino_2p",
+    "name": "(2) Pachino Stalemate",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "pisa_central_4p",
+    "name": "(4) Pisa Centrale",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "pisa_centrale_4p",
+    "name": "(4) Pisa Centrale",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "powderkeg_8p",
+    "name": "(8) Powderkeg",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "primosole_4p",
+    "name": "(4) Road to Primosole",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "primosole_6p",
+    "name": "(6) Road to Primosole",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "rails_and_sand_4p",
+    "name": "(4) Campbell's Convoy",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "rapido_river_8p",
+    "name": "(8) Rapido River Crossing",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "red_ball_express_8p",
+    "name": "(8) Red Ball Express",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
+    "id": "rural_castle_4p",
+    "name": "(4) Aere Perennius",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "rural_town_4p",
+    "name": "(4) Pachino Farmlands",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "sangro_river_crossing_6p",
+    "name": "(6) Sangro River Crossing",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "santuario_4p",
+    "name": "(4) Santuario",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": true
+  },
+  {
+    "id": "sedjenane_6p",
+    "name": "(6) Sedjenane Marshes",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "semois_2p",
+    "name": "(2) Semois",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "semois_4p",
+    "name": "(4) Semois",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "sousse_stronghold_8p",
+    "name": "(8) Sousse Stronghold",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "sousse_wetlands_8p",
+    "name": "(8) Sousse Wetlands",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
+    "id": "steppe_8p",
+    "name": "(8) Steppes",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
+    "id": "torrente_4p_mkiii",
+    "name": "(4) Torrente",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "tuscan_vineyard_2p",
+    "name": "(2) Tuscan Vineyards",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": true
+  },
+  {
+    "id": "twin_beach_2p_mkii",
+    "name": "(2) Twin Beaches",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "villa_fiore_2p_mkii",
+    "name": "(2) Villa Fiore",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "wadi_darnah_4p",
+    "name": "(4) Wadi Darnah",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": true
+  },
+  {
+    "id": "winter_line_8p_mkii",
+    "name": "(8) Winter Line",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  }
+]

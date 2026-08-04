@@ -20,6 +20,7 @@
       "unitBrowser": "Unit Browser",
       "challenges": "Challenges",
       "weapons": "Weapons",
+      "maps": "Maps",
       "tools": "Tools"
     },
     "liveGames": "Live Games",
@@ -67,7 +68,7 @@
     }
   },
   "search": {
-    "playersAndUnits": "Players and Units"
+    "playersAndUnits": "Players, Units and Maps"
   },
   "loading": "Loading...",
   "error": "Error",

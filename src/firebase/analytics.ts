@@ -162,6 +162,14 @@ export const AnalyticsExplorerWeaponsView = (): void => {
   logFBEvent("explorer_weapons_view");
 };
 
+export const AnalyticsExplorerMapsListView = (): void => {
+  logFBEvent("explorer_maps_list_view");
+};
+
+export const AnalyticsExplorerMapDetailsView = (mapId: string): void => {
+  logFBEvent("explorer_map_details_view", { mapId });
+};
+
 export const AnalyticsLiveGamesView = (): void => {
   logFBEvent("live_games_view");
 };
