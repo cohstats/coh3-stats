@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "title": "COH3 Maps - All Multiplayer Maps",
+    "description": "Browse all Company of Heroes 3 multiplayer maps. Filter by game mode, see resource point layouts, map sizes and community maps.",
+    "keywords": [
+      "coh3 maps",
+      "company of heroes 3 maps",
+      "1v1 maps",
+      "2v2 maps",
+      "3v3 maps",
+      "4v4 maps",
+      "community maps",
+      "map list"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 Maps",
+    "subtitle": "Browse all the multiplayer maps in the game with their resource layouts.",
+    "noMaps": "No maps match the selected filters."
+  },
+  "filters": {
+    "searchPlaceholder": "Search maps",
+    "lobbyOnly": "In current lobby",
+    "mapCount_one": "{{count}} map",
+    "mapCount_other": "{{count}} maps"
+  },
+  "modes": {
+    "1v1": "1v1",
+    "2v2": "2v2",
+    "3v3": "3v3",
+    "4v4": "4v4",
+    "hoff": "Hold Off",
+    "other": "Other"
+  },
+  "sections": {
+    "1v1": "1v1 Maps",
+    "2v2": "2v2 Maps",
+    "3v3": "3v3 Maps",
+    "4v4": "4v4 Maps",
+    "hoff": "Hold Off Maps (co-op vs AI)",
+    "other": "Other Maps"
+  },
+  "card": {
+    "players_one": "{{count}} player",
+    "players_other": "{{count}} players",
+    "community": "Community",
+    "authorTooltip": "Created by {{author}}",
+    "notInLobby": "Not in lobby",
+    "notInLobbyTooltip": "This map is not selectable in the in-game lobby."
+  },
+  "points": {
+    "victory": "Victory points",
+    "fuel": "Fuel points",
+    "munitions": "Munitions points",
+    "strategic": "Strategic points"
+  }
+}

@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
+import { IconChevronRight, IconMap2 } from "@tabler/icons-react";
 import { raceType } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
@@ -23,6 +23,7 @@ import {
   getDPSCompareRoute,
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
+  getExplorerMapsRoute,
   getUnitBrowserRoute,
   getWeaponsRoute,
 } from "../../src/routes";
@@ -39,11 +40,14 @@ const InfoCard = ({
   title,
   description,
   imageSrc,
+  icon,
 }: {
   link: string;
   title: string;
   description: string;
-  imageSrc: string;
+  imageSrc?: string;
+  /** Used when there is no game icon which fits the tool. */
+  icon?: React.ReactNode;
 }) => {
   return (
     <Anchor
@@ -57,15 +61,17 @@ const InfoCard = ({
             <Title order={4} style={{ flex: 1 }}>
               {title}
             </Title>
-            <Image
-              w={30}
-              h={30}
-              fit="contain"
-              src={imageSrc}
-              alt=""
-              fallbackSrc={"https://placehold.co/30x30?text=X"}
-              style={{ flexShrink: 0 }}
-            />
+            {icon ?? (
+              <Image
+                w={30}
+                h={30}
+                fit="contain"
+                src={imageSrc}
+                alt=""
+                fallbackSrc={"https://placehold.co/30x30?text=X"}
+                style={{ flexShrink: 0 }}
+              />
+            )}
           </Flex>
           <Text size="sm" c="dimmed" style={{ flex: 1 }}>
             {description}
@@ -205,6 +211,14 @@ const Explorer: NextPage = () => {
                   title="Challenges"
                   description="View all daily and weekly challenges with completion requirements."
                   imageSrc="/icons/common/resources/resource_skill_points.png"
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
+                <InfoCard
+                  link={getExplorerMapsRoute()}
+                  title="All Maps"
+                  description="Browse all multiplayer maps with their resource point layouts and sizes."
+                  icon={<IconMap2 size={30} style={{ flexShrink: 0 }} />}
                 />
               </Grid.Col>
             </Grid>
