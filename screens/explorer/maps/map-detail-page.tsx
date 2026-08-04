@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import {
   Anchor,
   Badge,
+  Button,
   Card,
   Divider,
   Grid,
@@ -12,10 +13,17 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
-import { IconArrowLeft, IconInfoCircle, IconRulerMeasure, IconUsers } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconChartBar,
+  IconInfoCircle,
+  IconRulerMeasure,
+  IconUsers,
+} from "@tabler/icons-react";
 import { TFunction } from "next-i18next/pages";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
-import { getExplorerMapsRoute } from "../../../src/routes";
+import { getExplorerMapsRoute, getMapsStatsRoute, mapStatsModeType } from "../../../src/routes";
+import { isOfficialMap } from "../../../src/coh3/coh3-data";
 import MapMinimap from "./map-minimap";
 import MapPointIcon from "./map-point-icon";
 import {
@@ -23,6 +31,7 @@ import {
   getMpMapIncomeSummary,
   getMpMapMode,
   getMpMapPointMarkers,
+  MP_MAP_TEAM_LAYOUTS,
   MpMapIncomeEntry,
   MpMapRenderedPointKind,
 } from "../../../src/explorer/mp-maps-helpers";
@@ -83,6 +92,11 @@ const InfoRow = ({
  */
 const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
   const mode = getMpMapMode(map);
+  // We track the map stats only for the official automatch maps, and only for the team modes.
+  const statsRoute =
+    isOfficialMap(map.id) && MP_MAP_TEAM_LAYOUTS.includes(mode as mapStatsModeType)
+      ? getMapsStatsRoute({ mode: mode as mapStatsModeType, map: map.id })
+      : null;
   const markers = useMemo(() => getMpMapPointMarkers(map), [map]);
   const income = useMemo(() => getMpMapIncomeSummary(map), [map]);
 
@@ -160,6 +174,17 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
                   {t("card.notInLobby")}
                 </Badge>
               </Tooltip>
+            )}
+            {statsRoute && (
+              <Button
+                component={LinkWithOutPrefetch}
+                href={statsRoute}
+                variant="default"
+                leftSection={<IconChartBar size={18} />}
+                ml="auto"
+              >
+                {t("detail.mapStats", { mode })}
+              </Button>
             )}
           </Group>
 

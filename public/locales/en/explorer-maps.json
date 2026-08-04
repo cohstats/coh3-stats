@@ -81,6 +81,7 @@
     "players": "Players",
     "author": "Author",
     "mapId": "Map ID",
+    "mapStats": "{{mode}} map statistics",
     "points": "Resource points",
     "totalCapturable": "Capturable points",
     "income": "Income per minute",

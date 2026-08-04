@@ -39,8 +39,27 @@ export const getGameStatsRoute = () => {
   return encodeURI(`/stats/games`);
 };
 
-export const getMapsStatsRoute = () => {
-  return encodeURI(`/stats/maps`);
+/** Game modes the map stats are tracked for. */
+export type mapStatsModeType = "1v1" | "2v2" | "3v3" | "4v4";
+
+/**
+ * @param mode Pre-selects the game type on the page.
+ * @param map Pre-selects the map in the "Select Map" section, it's the map id, eg. `bologna_2p`.
+ */
+export const getMapsStatsRoute = ({
+  mode,
+  map,
+}: { mode?: mapStatsModeType; map?: string } = {}) => {
+  const searchParams = new URLSearchParams(
+    Object.assign({}, !isUndefined(mode) && { mode }, !isUndefined(map) && { map }) as any,
+  );
+
+  let searchParamString = searchParams.toString();
+  if (searchParamString.length > 0) {
+    searchParamString = "?" + searchParamString;
+  }
+
+  return encodeURI(`/stats/maps${searchParamString}`);
 };
 
 export const getExplorerFactionRoute = (race: raceType) => {
