@@ -75,7 +75,8 @@ export const getStaticProps: GetStaticProps<MapDetailProps> = async (context) =>
       ...(await serverSideTranslations(locale, ["common", "explorer-maps"])),
       map,
     },
-    revalidate: false,
+    // The data was unavailable - retry instead of pinning the soft not-found state forever.
+    revalidate: map ? false : 60,
   };
 };
 

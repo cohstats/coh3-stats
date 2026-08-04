@@ -70,7 +70,7 @@ These are the tests in `e2e/data` - see [Data mapping tests](#data-mapping-tests
 
 ## Test Structure
 
-```
+```text
 e2e/
 ├── data/
 │   └── mp-maps.spec.ts     # Integration tests of the mp maps mapping (no browser, no app)

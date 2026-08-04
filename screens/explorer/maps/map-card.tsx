@@ -86,13 +86,18 @@ const MapCard = ({ map, t }: { map: MpMapListItem; t: TFunction }) => {
             <Badge variant="light" color="gray">
               {t("card.players", { count: map.maxPlayers })}
             </Badge>
-            {map.isCommunity && (
-              <Tooltip label={map.author ? t("card.authorTooltip", { author: map.author }) : ""}>
+            {map.isCommunity &&
+              (map.author ? (
+                <Tooltip label={t("card.authorTooltip", { author: map.author })}>
+                  <Badge variant="light" color="teal">
+                    {t("card.community")}
+                  </Badge>
+                </Tooltip>
+              ) : (
                 <Badge variant="light" color="teal">
                   {t("card.community")}
                 </Badge>
-              </Tooltip>
-            )}
+              ))}
             {!map.isLobbyVisible && (
               <Tooltip label={t("card.notInLobbyTooltip")}>
                 <Badge variant="light" color="red">

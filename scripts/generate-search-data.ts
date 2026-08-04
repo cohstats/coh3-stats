@@ -32,7 +32,12 @@ const generateUnitsSearchData = async () => {
 const generateMapsSearchData = async () => {
   const mpMapsData = await getMpMaps({ includePoints: false });
 
-  if (!mpMapsData) return [];
+  // Don't overwrite the existing search data with an empty maps list on a transient download
+  // failure - this runs unattended (see .github/workflows/sitemap.yml) and would silently wipe map
+  // search results for everyone until the next successful run.
+  if (!mpMapsData) {
+    throw new Error("Multiplayer map data is unavailable, refusing to overwrite search data.");
+  }
 
   // Only the fields the search page actually renders/filters on - the full map has a lot more
   // (mapSize, resources, author, ...) that would just bloat the file we ship to the client.
@@ -60,6 +65,9 @@ const generateSearchData = async () => {
   console.log(`Search data saved to ${mapsSearchDataPath}`);
 }
 
-generateSearchData();
+generateSearchData().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 
 export default generateSearchData

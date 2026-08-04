@@ -257,6 +257,11 @@ test.describe("mp-maps mapping - parsing of the live data from master", () => {
   const MASTER_DATA_URL = `https://raw.githubusercontent.com/cohstats/coh3-data/master/data/${MP_MAPS_DATA_FILE}`;
 
   test("parses the current data from master with the real locstrings", async () => {
+    // The file can be renamed/moved/removed on master independently of this repo (eg. once it lands
+    // in a data tag) - skip rather than fail CI for every PR when that happens.
+    const probe = await fetch(MASTER_DATA_URL, { method: "HEAD" });
+    test.skip(!probe.ok, `${MP_MAPS_DATA_FILE} is no longer on the master branch of coh3-data`);
+
     const [rawResponse, locstringResponse] = await Promise.all([
       fetch(MASTER_DATA_URL),
       fetch(config.getPatchDataLocaleUrl("en", "latest")),

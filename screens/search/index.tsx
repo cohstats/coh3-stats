@@ -57,11 +57,16 @@ export const SearchScreen = () => {
       return;
     }
 
-    const searchTermLower = searchTerm.toLowerCase();
+    // Map ids use underscores where the name uses spaces (eg. `hoff_city` / "Hoff City") - normalize
+    // both sides the same way so a query in either style matches.
+    const normalize = (value: string) =>
+      stripMpMapNamePrefix(value).replace(/[_-]+/g, " ").toLowerCase();
+
+    const searchTermLower = normalize(searchTerm);
     const results = (mapsData as MapSearchData[]).filter(
       (map) =>
-        map.id.toLowerCase().includes(searchTermLower) ||
-        stripMpMapNamePrefix(map.name).toLowerCase().includes(searchTermLower),
+        normalize(map.id).includes(searchTermLower) ||
+        normalize(map.name).includes(searchTermLower),
     );
     setMapResults(results);
   };

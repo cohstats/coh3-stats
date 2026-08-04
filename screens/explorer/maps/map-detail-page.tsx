@@ -106,15 +106,16 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
   // Point kinds which are worth listing with their tier breakdown - the player starts are not.
   const pointRows = RESOURCE_POINT_KINDS.filter((kind) => !!counts[kind]).map((kind) => {
     const tiers = countsByTier[kind] ?? {};
+    const presentTiers = TIER_ORDER.filter((tier) => !!tiers[tier]);
+    // A single unnamed tier carries no information, only list real ones - but if `default` shows up
+    // alongside named tiers, dropping it would make the breakdown disagree with the total count.
+    const namedTiers =
+      presentTiers.length === 1 && presentTiers[0] === "default" ? [] : presentTiers;
 
     return {
       kind,
       count: counts[kind] as number,
-      tiers: TIER_ORDER.filter((tier) => !!tiers[tier])
-        // A single unnamed tier carries no information, only list real ones.
-        .filter((tier) => tier !== "default")
-        .map((tier) => `${tiers[tier]}× ${t(`tiers.${tier}`)}`)
-        .join(", "),
+      tiers: namedTiers.map((tier) => `${tiers[tier]}× ${t(`tiers.${tier}`)}`).join(", "),
     };
   });
 

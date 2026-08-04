@@ -28,10 +28,15 @@ import {
 const parseModesQuery = (value: string | string[] | undefined): MpMapMode[] => {
   const raw = Array.isArray(value) ? value.join(",") : (value ?? "");
 
-  return raw
-    .split(",")
-    .map((mode) => mode.trim())
-    .filter((mode): mode is MpMapMode => MP_MAP_MODES.includes(mode as MpMapMode));
+  return (
+    raw
+      .split(",")
+      .map((mode) => mode.trim())
+      // "other" has no chip to show/clear it - keep the URL's set of modes limited to what the UI can render.
+      .filter(
+        (mode): mode is MpMapMode => mode !== "other" && MP_MAP_MODES.includes(mode as MpMapMode),
+      )
+  );
 };
 
 const MapsExplorerPage = ({ maps }: { maps: MpMapListItem[] }) => {
@@ -100,6 +105,7 @@ const MapsExplorerPage = ({ maps }: { maps: MpMapListItem[] }) => {
         <Stack gap="sm">
           <TextInput
             placeholder={t("filters.searchPlaceholder")}
+            aria-label={t("filters.searchPlaceholder")}
             leftSection={<IconSearch size={16} />}
             value={search}
             onChange={(event) => setSearch(event.currentTarget.value)}

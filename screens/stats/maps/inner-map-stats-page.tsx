@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { DaysMapsAnalysisObjectType, MapStatsDataObject } from "../../../src/analysis-types";
 import { Button, Flex, Group, Select, Space, Stack, Text } from "@mantine/core";
 import { useRouter } from "next/router";
@@ -47,19 +47,22 @@ const InnerMapStatsPage = ({
    * otherwise a param pushed by the container right before this update (eg. the mode) would be
    * dropped from the URL.
    */
-  const pushMapToUrl = (value: string, method: "push" | "replace") => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("map", value);
+  const pushMapToUrl = useCallback(
+    (value: string, method: "push" | "replace") => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("map", value);
 
-    router[method]({ query: Object.fromEntries(params) }, undefined, { shallow: true });
-  };
+      router[method]({ query: Object.fromEntries(params) }, undefined, { shallow: true });
+    },
+    [router],
+  );
 
   // Changing the mode can make the map in the URL invalid, keep the URL in sync with what's shown.
   useEffect(() => {
     if (mapFromQuery && selectedMap && mapFromQuery !== selectedMap) {
       pushMapToUrl(selectedMap, "replace");
     }
-  }, [mapFromQuery, selectedMap]);
+  }, [mapFromQuery, selectedMap, pushMapToUrl]);
 
   return (
     <>
