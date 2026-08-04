@@ -1,0 +1,17 @@
+.mapCard {
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.mapCard:hover {
+  transform: translateY(-2px);
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}
+
+.minimap {
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
+  border-radius: var(--mantine-radius-sm);
+}

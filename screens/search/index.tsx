@@ -20,13 +20,17 @@ import ErrorCard from "../../components/error-card";
 import { SearchPageUsed, SearchPageView } from "../../src/firebase/analytics";
 import { searchPlayers } from "../../src/apis/coh3stats-api";
 import unitsData from "./units-search-data.json";
+import mapsData from "./maps-search-data.json";
 import { UnitCard, UnitData } from "./search-components/unit-card";
+import { MapCard, MapSearchData } from "./search-components/map-card";
+import { stripMpMapNamePrefix } from "../../src/explorer/mp-maps-helpers";
 
 export const SearchScreen = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [data, setData] = React.useState<Array<SearchPlayerCardData> | null>(null);
   const [unitResults, setUnitResults] = React.useState<UnitData[]>([]);
+  const [mapResults, setMapResults] = React.useState<MapSearchData[]>([]);
 
   const { query } = useRouter();
   const { q } = query;
@@ -47,12 +51,28 @@ export const SearchScreen = () => {
     setUnitResults(results);
   };
 
+  const searchMaps = (searchTerm: string) => {
+    if (!searchTerm) {
+      setMapResults([]);
+      return;
+    }
+
+    const searchTermLower = searchTerm.toLowerCase();
+    const results = (mapsData as MapSearchData[]).filter(
+      (map) =>
+        map.id.toLowerCase().includes(searchTermLower) ||
+        stripMpMapNamePrefix(map.name).toLowerCase().includes(searchTermLower),
+    );
+    setMapResults(results);
+  };
+
   const [searchValue, setSearchValue] = React.useState(q || "");
 
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery || searchQuery.length <= 1) {
       setData(null);
       setUnitResults([]);
+      setMapResults([]);
       return;
     }
 
@@ -62,6 +82,9 @@ export const SearchScreen = () => {
 
       // Search units locally
       searchUnits(searchQuery);
+
+      // Search maps locally
+      searchMaps(searchQuery);
 
       // Search players via API
       const searchResults = await searchPlayers(searchQuery);
@@ -156,6 +179,23 @@ export const SearchScreen = () => {
                 </Text>
               ) : (
                 unitResults.map((unit) => <UnitCard key={unit.id} unit={unit} />)
+              )}
+            </Flex>
+          </Container>
+
+          <Divider my="xs" label={t("search:sections.maps")} labelPosition="center" />
+          <Container size={"md"}>
+            <Flex gap="sm" wrap={"wrap"} justify="center">
+              {mapResults.length === 0 ? (
+                <Text c={"dimmed"} size={"sm"}>
+                  <Stack align={"center"} gap={"xs"}>
+                    <IconDatabaseOff />
+                    <div>{t("search:noResults.maps")}</div>
+                  </Stack>
+                  <Space h={"lg"} />
+                </Text>
+              ) : (
+                mapResults.map((map) => <MapCard key={map.id} map={map} t={t} />)
               )}
             </Flex>
           </Container>
