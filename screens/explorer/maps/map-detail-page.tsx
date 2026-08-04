@@ -119,10 +119,12 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
   });
 
   return (
-    <Grid gutter="lg">
+    <Grid gutter="lg" columns={24}>
       {/* Left column - title and the minimap. The description sits under the cards on the right, so
-          that the minimap starts right below the title instead of being pushed down by it. */}
-      <Grid.Col span={{ base: 12, md: 7 }}>
+          that the minimap starts right below the title instead of being pushed down by it.
+          Columns are 13/11 (instead of an even 12/12) so the minimap is ~10% smaller and the
+          stats cards ~10% bigger than an even split. */}
+      <Grid.Col span={{ base: 24, md: 13 }}>
         <Stack gap="md">
           <Stack gap={4}>
             <Anchor
@@ -150,7 +152,7 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
       </Grid.Col>
 
       {/* Right column - the stats cards. */}
-      <Grid.Col span={{ base: 12, md: 5 }}>
+      <Grid.Col span={{ base: 24, md: 11 }}>
         <Stack gap="md">
           {/* The badges line up with the page title on a wide screen, which sits lower than the top
               of the grid column - hence the top padding. */}
