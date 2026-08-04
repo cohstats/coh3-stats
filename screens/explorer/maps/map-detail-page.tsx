@@ -16,6 +16,7 @@ import {
 import {
   IconArrowLeft,
   IconChartBar,
+  IconCrop,
   IconInfoCircle,
   IconRulerMeasure,
   IconUsers,
@@ -195,6 +196,23 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
               label={t("card.mapSizeTooltip")}
               value={t("card.mapSize", { width: map.mapSize.width, height: map.mapSize.height })}
               icon={<IconRulerMeasure size={18} />}
+            />
+            {/* The playable area is only the bounding box of the points, so it always sits right
+                under the map size to make clear it is a subset of it. */}
+            <InfoRow
+              label={
+                // `InfoRow` already wraps the label in a `Text`, so this one has to be a span.
+                <Tooltip label={t("detail.playableAreaTooltip")} multiline w={280}>
+                  <Text size="sm" span>
+                    {t("detail.playableArea")}
+                  </Text>
+                </Tooltip>
+              }
+              value={t("card.mapSize", {
+                width: Math.round(map.playableAreaEstimate.width),
+                height: Math.round(map.playableAreaEstimate.height),
+              })}
+              icon={<IconCrop size={18} />}
             />
             <InfoRow
               label={t("detail.players")}

@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { IconChevronDown, IconMap2, IconMedal } from "@tabler/icons-react";
+import { IconChevronDown, IconMap2, IconMedal, IconTable } from "@tabler/icons-react";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";
@@ -20,6 +20,7 @@ import {
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
   getExplorerMapsRoute,
+  getExplorerMapsTableRoute,
   getUnitBrowserRoute,
   getWeaponsRoute,
 } from "../../../src/routes";
@@ -209,6 +210,24 @@ const MapsLink = ({ close, t }: { close?: () => void; t: (key: string) => string
   );
 };
 
+const MapsTableLink = ({ close, t }: { close?: () => void; t: (key: string) => string }) => {
+  return (
+    <Group gap={4}>
+      <IconTable size={20} />
+      <Text fw={500}>
+        <Anchor
+          c="orange"
+          component={LinkWithOutPrefetch}
+          href={getExplorerMapsTableRoute()}
+          onClick={close}
+        >
+          {t("mainMenu.explMenu.mapsTable")}
+        </Anchor>
+      </Text>
+    </Group>
+  );
+};
+
 const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
   const mobileView = (
     <Group className={classes.hiddenDesktop} grow>
@@ -232,6 +251,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
               <ChallengesLink close={close} t={t} />
               <WeaponsLink close={close} t={t} />
               <MapsLink close={close} t={t} />
+              <MapsTableLink close={close} t={t} />
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -269,6 +289,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
                 <ChallengesLink close={() => null} t={t} />
                 <WeaponsLink close={() => null} t={t} />
                 <MapsLink close={() => null} t={t} />
+                <MapsTableLink close={() => null} t={t} />
               </Stack>
             </Grid.Col>
           </Grid>

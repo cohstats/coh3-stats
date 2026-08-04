@@ -11,6 +11,8 @@ import {
   groupMpMapsByMode,
   sortMpMapsByName,
   stripMpMapNamePrefix,
+  toMpMapListItem,
+  toMpMapTableItem,
 } from "../../../src/explorer/mp-maps-helpers";
 import type { MpMapListItem } from "../../../src/explorer/mp-maps-helpers";
 import type { MpMapPoint } from "../../../src/explorer/mp-maps-types";
@@ -391,6 +393,57 @@ describe("formatMpMapIncome", () => {
     expect(formatMpMapIncome(25.005)).toBe("25");
     expect(formatMpMapIncome(33.015)).toBe("33");
     expect(formatMpMapIncome(12.5)).toBe("12.5");
+  });
+});
+
+describe("toMpMapTableItem", () => {
+  const rawMap = {
+    id: "rural_town_4p",
+    category: "mp",
+    isLobbyVisible: true,
+    isCommunity: false,
+    author: null,
+    version: 3,
+    name: "(4) Pachino Farmlands",
+    description: null,
+    mapSize: { width: 448, height: 416 },
+    playableAreaEstimate: {
+      minX: -160,
+      maxX: 160,
+      minY: -140,
+      maxY: 140,
+      width: 320.5,
+      height: 280,
+    },
+    maxPlayers: 4,
+    teamLayout: "2v2",
+    teams: { "0": 2, "1": 2 },
+    enabledSlots: 4,
+    aiSlots: 0,
+    totalSlots: 4,
+    resources: {
+      counts: { fuel: 4, munitions: 6, strategic: 4, victory: 3, starting_position: 4 },
+      countsByTier: { fuel: { low: 2, medium: 2 } },
+      totalCapturable: 17,
+      incomePerMinute: { fuel: 30.006, manpower: 32, munition: 40 },
+    },
+    points: [],
+  } as unknown as Parameters<typeof toMpMapTableItem>[0];
+
+  it("keeps everything the list item has", () => {
+    expect(toMpMapTableItem(rawMap)).toMatchObject(toMpMapListItem(rawMap));
+  });
+
+  it("adds the aggregated data the table shows", () => {
+    expect(toMpMapTableItem(rawMap)).toMatchObject({
+      teamLayout: "2v2",
+      pointCountsByTier: { fuel: { low: 2, medium: 2 } },
+      totalCapturable: 17,
+      incomePerMinute: { fuel: 30.006, manpower: 32, munition: 40 },
+      playableArea: { width: 320.5, height: 280 },
+      version: 3,
+      category: "mp",
+    });
   });
 });
 

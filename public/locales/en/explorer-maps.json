@@ -18,6 +18,12 @@
     "subtitle": "Browse all the multiplayer maps in the game with their resource layouts.",
     "noMaps": "No maps match the selected filters."
   },
+  "view": {
+    "cards": "Cards",
+    "table": "Table",
+    "cardsTooltip": "Browse the maps as cards with their minimaps",
+    "tableTooltip": "Compare all the map data in a sortable table"
+  },
   "filters": {
     "searchPlaceholder": "Search maps",
     "lobbyOnly": "In current lobby",
@@ -81,6 +87,8 @@
     "players": "Players",
     "author": "Author",
     "mapId": "Map ID",
+    "playableArea": "Playable area",
+    "playableAreaTooltip": "Bounding box of the capture points - the part of the map the fighting happens on. Always smaller than the full map size.",
     "mapStats": "{{mode}} map statistics",
     "points": "Resource points",
     "totalCapturable": "Capturable points",

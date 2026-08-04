@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 Maps Table - All Map Data Compared",
+    "description": "All Company of Heroes 3 multiplayer maps in one sortable table - resource point counts, max income per minute of fuel, munitions and manpower, map sizes and community maps.",
+    "keywords": [
+      "coh3 maps table",
+      "company of heroes 3 map data",
+      "coh3 map income",
+      "coh3 fuel points",
+      "coh3 map size",
+      "map comparison",
+      "map list"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 Maps Table",
+    "subtitle": "All the map data in one sortable table - resource points, income per minute and map sizes.",
+    "noMaps": "No maps match the selected filters."
+  },
+  "filters": {
+    "income": "Income",
+    "incomeTotal": "Total",
+    "incomePerSide": "Per side",
+    "incomeTooltip": "Whether the income columns show the income of the whole map, or the estimated income of one side (half of the total)."
+  },
+  "groups": {
+    "map": "Map",
+    "points": "Resource points",
+    "income": "Income / min",
+    "size": "Size"
+  },
+  "columns": {
+    "name": "Name",
+    "mode": "Mode",
+    "victory": "VP",
+    "fuel": "Fuel",
+    "munitions": "Muni",
+    "strategic": "MP",
+    "capturable": "Total",
+    "mapSize": "Map",
+    "playableArea": "Playable"
+  },
+  "tooltips": {
+    "victory": "Amount of victory points",
+    "fuel": "Amount of fuel points",
+    "munitions": "Amount of munitions points",
+    "strategic": "Amount of manpower (strategic) points",
+    "capturable": "Total amount of points which can be captured by players - the player starting positions are not counted in",
+    "incomeFuel": "Fuel per minute at full control of the map",
+    "incomeMunitions": "Munitions per minute at full control of the map",
+    "incomeManpower": "Manpower per minute at full control of the map",
+    "incomePerSideNote": "Per side is half of the total - maps are close to symmetrical, but the points in the middle are contested rather than split, so treat it as an estimate.",
+    "mapSize": "Size of the map in world units (width × height)",
+    "playableArea": "Bounding box of the capture points - the part of the map the fighting happens on",
+    "mapIdVersion": "Map ID as used by the game files - scenario version {{version}}"
+  },
+  "details": {
+    "button": "Details",
+    "tooltip": "Open the detail page of {{name}}"
+  }
+}
