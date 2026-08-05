@@ -15,6 +15,7 @@ import {
   HoverCard,
   Stack,
   Checkbox,
+  Switch,
   Tooltip,
   ActionIcon,
   Anchor,
@@ -28,8 +29,9 @@ import {
   IconSearch,
   IconSelector,
 } from "@tabler/icons-react";
-import { getFactionIcon } from "../../src/unitStats";
+import { getFactionIcon, isFinalStandUnitId } from "../../src/unitStats";
 import { CustomizableUnit } from "../../src/unitStats/dpsCommon";
+import { FinalStandBadge } from "../final-stand-badge";
 import { internalSlash } from "../../src/utils";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { raceType } from "../../src/coh3/coh3-types";
@@ -255,17 +257,20 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
   if (!colSetup.customVisual) {
     if (colSetup.key === "screen_name") {
       return (
-        <Tooltip label={(unit as any)[colSetup.key]}>
-          <Anchor
-            c="orange"
-            component={LinkWithOutPrefetch}
-            href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
-          >
-            <Text style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
-              {(unit as any)[colSetup.key]}
-            </Text>
-          </Anchor>
-        </Tooltip>
+        <Group gap="xs" wrap="nowrap">
+          <Tooltip label={(unit as any)[colSetup.key]}>
+            <Anchor
+              c="orange"
+              component={LinkWithOutPrefetch}
+              href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
+            >
+              <Text style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
+                {(unit as any)[colSetup.key]}
+              </Text>
+            </Anchor>
+          </Tooltip>
+          {isFinalStandUnitId(unit.id) && <FinalStandBadge size="xs" />}
+        </Group>
       );
     }
 
@@ -320,6 +325,7 @@ const filterData = (
   search: string,
   factionFilter: string[],
   typeFilter: string[],
+  showFinalStand: boolean,
 ) => {
   const query = search.toLowerCase().trim();
   let result = data.filter((item) =>
@@ -329,6 +335,8 @@ const filterData = (
         typeof item[key] == "string" && (item[key] as string).toLowerCase().includes(query),
     ),
   );
+  // Final Stand (DLC / co-op vs AI) units are opt-in.
+  if (!showFinalStand) result = result.filter((item) => !isFinalStandUnitId(item.id));
   result = applyFilter(result, factionFilter, "faction");
   result = applyFilter(result, typeFilter, "unit_type");
   return result;
@@ -342,12 +350,19 @@ const sortData = (
     search: string;
     factionFilter: string[];
     typeFilter: string[];
+    showFinalStand: boolean;
   },
 ) => {
   const { sortBy } = payload;
 
   if (!sortBy) {
-    return filterData(data, payload.search, payload.factionFilter, payload.typeFilter);
+    return filterData(
+      data,
+      payload.search,
+      payload.factionFilter,
+      payload.typeFilter,
+      payload.showFinalStand,
+    );
   }
 
   return filterData(
@@ -371,6 +386,7 @@ const sortData = (
     payload.search,
     payload.factionFilter,
     payload.typeFilter,
+    payload.showFinalStand,
   );
 };
 
@@ -509,9 +525,11 @@ export const UnitTable = ({ inputData }: inputProps) => {
   const [search, setSearch] = useState("");
   const [factionFilter, setFactionFilter] = useState([] as string[]);
   const [typeFilter, setTypeFilter] = useState([] as string[]);
+  // Final Stand (DLC / co-op vs AI) units are opt-in.
+  const [showFinalStand, setShowFinalStand] = useState(false);
 
   const [updateFlag, updateTable] = useState(true);
-  const [sortedData, setSortedData] = useState(tableData);
+  const [sortedData, setSortedData] = useState(() => filterData(tableData, "", [], [], false));
   const [sortBy, setSortBy] = useState<keyof CustomizableUnit | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
@@ -525,9 +543,10 @@ export const UnitTable = ({ inputData }: inputProps) => {
         search: debouncedSearch,
         factionFilter,
         typeFilter,
+        showFinalStand,
       }),
     );
-  }, [debouncedSearch]);
+  }, [debouncedSearch, showFinalStand]);
 
   function toggleFilter(filterValue: string, filterList: string[]) {
     const filterValueIndex = filterList.indexOf(filterValue);
@@ -543,6 +562,7 @@ export const UnitTable = ({ inputData }: inputProps) => {
         search: search,
         factionFilter,
         typeFilter,
+        showFinalStand,
       }),
     );
   }
@@ -552,7 +572,14 @@ export const UnitTable = ({ inputData }: inputProps) => {
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortData(tableData, { sortBy: field, reversed, search, factionFilter, typeFilter }),
+      sortData(tableData, {
+        sortBy: field,
+        reversed,
+        search,
+        factionFilter,
+        typeFilter,
+        showFinalStand,
+      }),
     );
   };
 
@@ -622,6 +649,14 @@ export const UnitTable = ({ inputData }: inputProps) => {
             </Group>
             <Space w={"md"} />
             <Group wrap="nowrap">{generateTypeFilterButtons(toggleFilter, typeFilter)}</Group>
+            <Space w={"md"} />
+            <Switch
+              checked={showFinalStand}
+              onChange={(event) => setShowFinalStand(event.currentTarget.checked)}
+              label={"Final Stand units"}
+              data-testid="final-stand-toggle"
+              size="sm"
+            />
           </Group>
           <TextInput
             placeholder="Search Unit"

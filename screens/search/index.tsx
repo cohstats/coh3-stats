@@ -24,6 +24,7 @@ import mapsData from "./maps-search-data.json";
 import { UnitCard, UnitData } from "./search-components/unit-card";
 import { MapCard, MapSearchData } from "./search-components/map-card";
 import { stripMpMapNamePrefix } from "../../src/explorer/mp-maps-helpers";
+import { isFinalStandUnitId } from "../../src/unitStats/finalStand";
 
 export const SearchScreen = () => {
   const [loading, setLoading] = React.useState(false);
@@ -48,6 +49,8 @@ export const SearchScreen = () => {
 
     const searchTermLower = searchTerm.toLowerCase();
     const results = unitsData.filter((unit) => unit.name.toLowerCase().includes(searchTermLower));
+    // Final Stand (DLC / co-op vs AI) units are marked as such and listed after the regular ones.
+    results.sort((a, b) => Number(isFinalStandUnitId(a.id)) - Number(isFinalStandUnitId(b.id)));
     setUnitResults(results);
   };
 

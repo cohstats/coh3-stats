@@ -17,13 +17,17 @@ import { getFactionIcon } from "../../../../src/unitStats";
 
 interface CompareSettingsPanelProps {
   allowAllWeapons: boolean;
+  showFinalStand: boolean;
   onAllowAllWeaponsChange: (checked: boolean) => void;
+  onShowFinalStandChange: (checked: boolean) => void;
   onResetUnits: () => void;
 }
 
 export const CompareSettingsPanel: React.FC<CompareSettingsPanelProps> = ({
   allowAllWeapons,
+  showFinalStand,
   onAllowAllWeaponsChange,
+  onShowFinalStandChange,
   onResetUnits,
 }) => {
   const handleAllowAllWeaponsChange = (checked: boolean) => {
@@ -54,6 +58,19 @@ export const CompareSettingsPanel: React.FC<CompareSettingsPanelProps> = ({
             }
             checked={allowAllWeapons}
             onChange={(event) => handleAllowAllWeaponsChange(event.currentTarget.checked)}
+          />
+          <Switch
+            label={
+              <Stack gap="0">
+                <>Final Stand Units</>
+                <Text size="xs" c="dimmed">
+                  Units from the Final Stand DLC (co-op vs AI). Deselects current units
+                </Text>
+              </Stack>
+            }
+            checked={showFinalStand}
+            onChange={(event) => onShowFinalStandChange(event.currentTarget.checked)}
+            data-testid="final-stand-toggle"
           />
           <Space />
           <Button variant="light" size="xs" onClick={onResetUnits}>

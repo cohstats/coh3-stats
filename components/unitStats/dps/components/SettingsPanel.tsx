@@ -5,16 +5,20 @@ import { IconAdjustments } from "@tabler/icons-react";
 interface SettingsPanelProps {
   showDpsHealth: boolean;
   allowAllWeapons: boolean;
+  showFinalStand: boolean;
   onShowDpsHealthChange: (checked: boolean) => void;
   onAllowAllWeaponsChange: (checked: boolean) => void;
+  onShowFinalStandChange: (checked: boolean) => void;
   onResetUnits: () => void;
 }
 
 export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   showDpsHealth,
   allowAllWeapons,
+  showFinalStand,
   onShowDpsHealthChange,
   onAllowAllWeaponsChange,
+  onShowFinalStandChange,
   onResetUnits,
 }) => {
   const handleAllowAllWeaponsChange = (checked: boolean) => {
@@ -53,6 +57,20 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               }
               checked={allowAllWeapons}
               onChange={(event) => handleAllowAllWeaponsChange(event.currentTarget.checked)}
+            />
+            <Space />
+            <Switch
+              label={
+                <Stack gap="0">
+                  <>Final Stand Units</>
+                  <Text size="xs" c="dimmed">
+                    Units from the Final Stand DLC (co-op vs AI). Deselects current units
+                  </Text>
+                </Stack>
+              }
+              checked={showFinalStand}
+              onChange={(event) => onShowFinalStandChange(event.currentTarget.checked)}
+              data-testid="final-stand-toggle"
             />
           </Stack>
         </HoverCard.Dropdown>

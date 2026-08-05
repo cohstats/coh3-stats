@@ -6,7 +6,9 @@ import {
   Card,
   Flex,
   Grid,
+  Group,
   Stack,
+  Switch,
   Text,
   Title,
   Container,
@@ -20,7 +22,7 @@ import {
 } from "../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
-import { SbpsType } from "../../../../../src/unitStats";
+import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
 import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
@@ -43,8 +45,11 @@ interface UnitDetailProps {
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
   const { asPath } = useRouter();
   const { t } = useTranslation("explorer");
+  const { t: tCommon } = useTranslation("common");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
+  // Final Stand (DLC / co-op vs AI) units roughly double the roster, they are opt-in.
+  const [showFinalStand, setShowFinalStand] = useState(false);
 
   useEffect(() => {
     AnalyticsExplorerFactionUnitsView(raceToFetch);
@@ -55,8 +60,9 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
     `Unit List ${localizedRace}`,
   ]);
 
-  // Filter units based on search value
+  // Filter units based on the Final Stand toggle and the search value
   const filteredUnits = units.filter((unit) => {
+    if (!showFinalStand && isFinalStandUnit(unit)) return false;
     if (!searchValue) return true;
     const searchLower = searchValue.toLowerCase();
     return (
@@ -106,6 +112,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
                           icon_name: ui.iconName,
                         }}
                         placement="list"
+                        isFinalStand={isFinalStandUnit({ id })}
                       />
                     </Card>
                   </Anchor>
@@ -143,15 +150,37 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         </Flex>
 
         <Stack mt={32}>
-          <Flex direction="row" align="center" justify="space-between" gap="md">
+          <Flex
+            direction="row"
+            align="center"
+            justify="space-between"
+            gap="md"
+            wrap="wrap"
+            rowGap="sm"
+          >
             <Title order={2}>{descriptions.common?.units || "Units"}</Title>
-            <TextInput
-              placeholder="Search units"
-              leftSection={<IconSearch size="1rem" />}
-              value={searchValue}
-              onChange={(event) => setSearchValue(event.currentTarget.value)}
-              style={{ maxWidth: 300 }}
-            />
+            <Group gap="lg" wrap="wrap">
+              <Switch
+                checked={showFinalStand}
+                onChange={(event) => setShowFinalStand(event.currentTarget.checked)}
+                data-testid="final-stand-toggle"
+                label={
+                  <Stack gap={0}>
+                    <Text size="sm">{tCommon("finalStand.showUnits")}</Text>
+                    <Text size="xs" c="dimmed">
+                      {tCommon("finalStand.showUnitsDescription")}
+                    </Text>
+                  </Stack>
+                }
+              />
+              <TextInput
+                placeholder="Search units"
+                leftSection={<IconSearch size="1rem" />}
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.currentTarget.value)}
+                style={{ maxWidth: 300 }}
+              />
+            </Group>
           </Flex>
 
           {renderUnitCategory("Infantry", infantryUnits)}

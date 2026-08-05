@@ -34,6 +34,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
+import { isFinalStandUnit } from "../../../src/unitStats/finalStand";
 import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
 import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
 import {
@@ -57,6 +58,7 @@ import {
 import { UnitCustomizationPanel } from "./components/UnitCustomizationPanel";
 import { ChartPanel } from "./components/ChartPanel";
 import { UnitSearch } from "./unitSearch";
+import { FinalStandBadge } from "../../final-stand-badge";
 import { mapChartData, options } from "./dpsPageComponent";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 
@@ -110,12 +112,15 @@ const mapUnitSelection = (
   sbps: SbpsType[],
   units: CustomizableUnit[],
   unitFilter: string[] = [],
+  showFinalStand = false,
 ) => {
   const selectionFields: CustomizableUnit[] = [];
   for (const squad of sbps) {
     if (
       squad.ui.symbolIconName !== "" &&
       squad.faction !== "british" &&
+      // Final Stand (DLC / co-op vs AI) units are opt-in.
+      (showFinalStand || !isFinalStandUnit(squad)) &&
       (unitFilter.length === 0 || unitFilter.includes(squad.faction))
     ) {
       const custUnit = units.find((u) => u.id === squad.id);
@@ -154,6 +159,8 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const [patchVersion, setPatchVersion] = useState(config.latestPatch);
   const [factionFilter, setFactionFilter] = useState<string[]>([]);
   const [allowAllWeapons, setAllowAllWeapons] = useState(false);
+  // Final Stand (DLC / co-op vs AI) units are opt-in.
+  const [showFinalStand, setShowFinalStand] = useState(false);
   const [rerender, setRerender] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -172,13 +179,17 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   // Initialize data
   useEffect(() => {
     initCompareData(props);
-    setUnitSelectionList(mapUnitSelection(cachedSbps, cachedUnits, factionFilter));
+    setUnitSelectionList(
+      mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
+    );
   }, []);
 
-  // Update selection list when filter changes
+  // Update selection list when the filters change
   useEffect(() => {
-    setUnitSelectionList(mapUnitSelection(cachedSbps, cachedUnits, factionFilter));
-  }, [factionFilter]);
+    setUnitSelectionList(
+      mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
+    );
+  }, [factionFilter, showFinalStand]);
 
   // Patch list
   const patchList = Object.keys(config.patches);
@@ -208,7 +219,9 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
           mapCustomizableUnit(sbps, newEbps, newWeapons, props.upgradesData, newAbilities),
         );
       }
-      setUnitSelectionList(mapUnitSelection(cachedSbps, cachedUnits, factionFilter));
+      setUnitSelectionList(
+        mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
+      );
 
       // Re-select units with new patch data
       if (targetUnit) {
@@ -289,6 +302,12 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     setSelectedUnitToAdd(null);
   };
 
+  // Hiding Final Stand units again would leave already selected ones on the chart.
+  const handleShowFinalStandChange = (checked: boolean) => {
+    handleResetUnits();
+    setShowFinalStand(checked);
+  };
+
   // Update health for all units
   if (targetUnit) updateHealth(targetUnit);
   attackingUnits.forEach((unit) => {
@@ -341,7 +360,9 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
           </Flex>
           <CompareSettingsPanel
             allowAllWeapons={allowAllWeapons}
+            showFinalStand={showFinalStand}
             onAllowAllWeaponsChange={setAllowAllWeapons}
+            onShowFinalStandChange={handleShowFinalStandChange}
             onResetUnits={handleResetUnits}
           />
         </Group>
@@ -397,9 +418,12 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
                 }}
               >
                 <Flex justify="space-between" align="center" mb="xs">
-                  <Text size="sm" fw={500} c={ATTACKER_COLORS[index]}>
-                    {attacker.screen_name || attacker.id}
-                  </Text>
+                  <Group gap="xs" wrap="nowrap">
+                    <Text size="sm" fw={500} c={ATTACKER_COLORS[index]}>
+                      {attacker.screen_name || attacker.id}
+                    </Text>
+                    {isFinalStandUnit({ id: attacker.id }) && <FinalStandBadge size="xs" />}
+                  </Group>
                   <CloseButton size="sm" onClick={() => handleRemoveAttacker(index)} />
                 </Flex>
                 <DpsUnitCustomizing

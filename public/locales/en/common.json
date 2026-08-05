@@ -71,6 +71,15 @@
   "search": {
     "playersAndUnits": "Players, Units and Maps"
   },
+  "finalStand": {
+    "badge": "Final Stand",
+    "unitTooltip": "This unit is from the Final Stand DLC (co-op vs AI). It's not available in the standard skirmish / multiplayer game.",
+    "weaponTooltip": "This weapon is from the Final Stand DLC (co-op vs AI). It's not available in the standard skirmish / multiplayer game.",
+    "showUnits": "Show Final Stand units",
+    "showUnitsDescription": "Units from the Final Stand DLC (co-op vs AI)",
+    "showWeapons": "Show Final Stand weapons",
+    "filterUnits": "Show / hide Final Stand units"
+  },
   "loading": "Loading...",
   "error": "Error",
   "notFound": "Not Found"
