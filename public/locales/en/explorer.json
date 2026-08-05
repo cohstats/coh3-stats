@@ -226,6 +226,8 @@
   },
   "unitMeta": {
     "unitDescription": "{{unitName}} - {{raceName}} {{unitType}} in Company of Heroes 3.",
+    "finalStandName": "Final Stand",
+    "finalStandPrefix": "Final Stand DLC (co-op vs AI).",
     "costs": "Costs {{costs}}.",
     "population": "{{popCap}} population.",
     "abbreviations": {

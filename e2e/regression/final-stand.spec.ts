@@ -58,4 +58,39 @@ test.describe("Final Stand units", () => {
 
     await expect(page.getByTestId("final-stand-badge")).toHaveCount(0);
   });
+
+  test("unit detail page is not indexable and flags the DLC in Open Graph", async ({ page }) => {
+    await navigateAndWait(page, "/explorer/races/german/units/hoff_enemy_fallschirmjagers_ger");
+
+    await expect(page.locator('head > meta[name="robots"]')).toHaveAttribute(
+      "content",
+      /noindex/,
+    );
+    await expect(page.locator('head > meta[property="og:type"]')).toHaveAttribute(
+      "content",
+      "article",
+    );
+    await expect(page.locator('head > meta[property="article:section"]')).toHaveAttribute(
+      "content",
+      "Final Stand",
+    );
+    await expect(page.locator('head > meta[property="og:title"]')).toHaveAttribute(
+      "content",
+      /Final Stand/,
+    );
+    await expect(page.locator('head > meta[property="og:description"]')).toHaveAttribute(
+      "content",
+      /Final Stand/,
+    );
+  });
+
+  test("regular unit detail page stays indexable", async ({ page }) => {
+    await navigateAndWait(page, "/explorer/races/german/units/grenadier_ger");
+
+    await expect(page.locator('head > meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "index,follow",
+    );
+    await expect(page.locator('head > meta[property="article:section"]')).toHaveCount(0);
+  });
 });

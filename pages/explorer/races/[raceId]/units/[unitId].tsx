@@ -225,6 +225,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     max: squadWeapons.length ? squadWeapons[0].weapon.weapon_bag.range.max : 0,
   };
 
+  // Final Stand (DLC / co-op vs AI) units are not part of the standard game, we don't want them in
+  // the search results - see `src/unitStats/finalStand.ts`.
+  const isFinalStand = isFinalStandUnit(resolvedSquad);
+
   // Enhanced meta description with unit details
   const createMetaDescription = () => {
     const unitType = resolvedSquad.unitType.replace(/_/g, " ");
@@ -240,6 +244,11 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
       raceName: localizedRace,
       unitType: unitType,
     });
+
+    // Make it obvious this unit is not part of the standard game.
+    if (isFinalStand) {
+      description = `${t("unitMeta.finalStandPrefix")} ${description}`;
+    }
 
     // Add key stats
     const stats = [];
@@ -346,7 +355,10 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
   const metaDescription = createMetaDescription();
   const metaKeywords = createEnhancedKeywords();
-  const pageTitle = `${resolvedSquad.ui.screenName} - ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")} | COH3 Stats`;
+  const finalStandName = t("unitMeta.finalStandName");
+  const pageTitle = isFinalStand
+    ? `${resolvedSquad.ui.screenName} - ${finalStandName} ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")} | COH3 Stats`
+    : `${resolvedSquad.ui.screenName} - ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")} | COH3 Stats`;
 
   return (
     <>
@@ -354,12 +366,24 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
         title={pageTitle}
         description={metaDescription}
         canonical={`${config.SITE_URL}${asPath}`}
+        // Final Stand units are DLC only content, we don't want them in the search results.
+        noindex={isFinalStand}
         openGraph={{
           title: pageTitle,
           description: metaDescription,
           url: `${config.SITE_URL}${asPath}`,
           siteName: "COH3 Stats",
           locale: locale,
+          // Flag the DLC in Open Graph, so link previews / crawlers know where the unit comes from.
+          ...(isFinalStand
+            ? {
+                type: "article",
+                article: {
+                  section: finalStandName,
+                  tags: [finalStandName, "Company of Heroes 3", "DLC"],
+                },
+              }
+            : {}),
           images: [
             {
               url: getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`),
@@ -381,10 +405,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
             name: "author",
             content: "COH3 Stats",
           },
-          {
-            name: "robots",
-            content: "index, follow",
-          },
+          // The `robots` tag is rendered by NextSeo itself (see the `noindex` prop above).
         ]}
         languageAlternates={generateLanguageAlternates(asPath)}
       />

@@ -1,4 +1,5 @@
 import { getMappings } from "../src/unitStats/mappings";
+import { isFinalStandUnit } from "../src/unitStats/finalStand";
 import nextI18NextConfig from "../next-i18next.config";
 
 const pageHost = "https://coh3stats.com"
@@ -13,7 +14,10 @@ const generateAllUnitPages = async () => {
 
   for (const locale of locales) {
     for (const faction of factions) {
-      const units = sbpsData.filter((squad: any) => squad.faction.includes(faction));
+      // Final Stand (DLC / co-op vs AI) units are noindex, they don't belong in the sitemap.
+      const units = sbpsData.filter(
+        (squad: any) => squad.faction.includes(faction) && !isFinalStandUnit(squad),
+      );
       for(const unit of units){
         const linkFaction = faction === "afrika_korps" ? "dak" : faction === "british_africa" ? "british" : faction;
 
