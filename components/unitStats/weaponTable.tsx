@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
-import { Group, TextInput, Image, Title, Space, Tooltip, ActionIcon } from "@mantine/core";
+import {
+  Group,
+  TextInput,
+  Image,
+  Title,
+  Space,
+  Switch,
+  Tooltip,
+  ActionIcon,
+} from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 
-import { getFactionIcon, WeaponClass } from "../../src/unitStats";
+import { getFactionIcon, isFinalStandFaction, WeaponClass } from "../../src/unitStats";
 import { getIconsPathOnCDN, internalSlash } from "../../src/utils";
+import { FinalStandBadge } from "../final-stand-badge";
 
 import { DataTable, DataTableColumnGroup } from "mantine-datatable";
 
@@ -141,6 +151,12 @@ const TableGroups: DataTableColumnGroup<WeaponTableRow>[] = [
         accessor: "screen_name",
         title: "Name",
         // toggleable: true,
+        render: (record) => (
+          <Group gap="xs" wrap="nowrap">
+            <span>{record.screen_name}</span>
+            {isFinalStandFaction(record.faction) && <FinalStandBadge size="xs" type="weapon" />}
+          </Group>
+        ),
       },
     ],
   },
@@ -315,6 +331,7 @@ const filterData = (
   search: string,
   factionFilter: string[],
   typeFilter: string[],
+  showFinalStand: boolean,
 ) => {
   const query = search.toLowerCase().trim();
   let result = data.filter((item) =>
@@ -323,6 +340,8 @@ const filterData = (
         typeof item[key] == "string" && (item[key] as string).toLowerCase().includes(query),
     ),
   );
+  // Final Stand (DLC / co-op vs AI) weapons are opt-in.
+  if (!showFinalStand) result = result.filter((item) => !isFinalStandFaction(item.faction));
   result = applyFilter(result, factionFilter, "faction");
   result = applyFilter(result, typeFilter, "type");
   return result;
@@ -336,12 +355,19 @@ const sortData = (
     search: string;
     factionFilter: string[];
     typeFilter: string[];
+    showFinalStand: boolean;
   },
 ) => {
   const { sortBy } = payload;
 
   if (!sortBy) {
-    return filterData(data, payload.search, payload.factionFilter, payload.typeFilter);
+    return filterData(
+      data,
+      payload.search,
+      payload.factionFilter,
+      payload.typeFilter,
+      payload.showFinalStand,
+    );
   }
 
   return filterData(
@@ -365,6 +391,7 @@ const sortData = (
     payload.search,
     payload.factionFilter,
     payload.typeFilter,
+    payload.showFinalStand,
   );
 };
 
@@ -511,8 +538,10 @@ export const WeaponTable = ({ inputData }: inputProps) => {
   const [search, setSearch] = useState("");
   const [factionFilter, setFactionFilter] = useState([] as string[]);
   const [typeFilter, setTypeFilter] = useState([] as string[]);
+  // Final Stand (DLC / co-op vs AI) weapons are opt-in.
+  const [showFinalStand, setShowFinalStand] = useState(false);
 
-  const [sortedData, setSortedData] = useState(tableData);
+  const [sortedData, setSortedData] = useState(() => filterData(tableData, "", [], [], false));
   const [pagedData, setPagedData] = useState(sortedData.slice(0, PAGE_SIZE));
 
   const [sortBy] = useState<keyof WeaponTableRow | null>(null);
@@ -536,9 +565,10 @@ export const WeaponTable = ({ inputData }: inputProps) => {
         search: debouncedSearch,
         factionFilter,
         typeFilter,
+        showFinalStand,
       }),
     );
-  }, [debouncedSearch]);
+  }, [debouncedSearch, showFinalStand]);
 
   function toggleFilter(filterValue: string, filterList: string[]) {
     const filterValueIndex = filterList.indexOf(filterValue);
@@ -554,6 +584,7 @@ export const WeaponTable = ({ inputData }: inputProps) => {
         search: search,
         factionFilter,
         typeFilter,
+        showFinalStand,
       }),
     );
   }
@@ -574,6 +605,14 @@ export const WeaponTable = ({ inputData }: inputProps) => {
             <Group wrap="wrap">
               {generateWeaponClassFilterButtons(toggleFilter, typeFilter)}
             </Group>
+            <Space w={"md"} />
+            <Switch
+              checked={showFinalStand}
+              onChange={(event) => setShowFinalStand(event.currentTarget.checked)}
+              label={"Final Stand weapons"}
+              data-testid="final-stand-toggle"
+              size="sm"
+            />
           </Group>
           <TextInput
             placeholder="Search Weapon"

@@ -27,6 +27,7 @@ import { getDPSCompareRoute } from "../../../src/routes";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
+import { isFinalStandUnit } from "../../../src/unitStats/finalStand";
 import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
 import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
 import {
@@ -150,6 +151,7 @@ const mapUnitSelection = (
   sbps: SbpsType[],
   units: CustomizableUnit[],
   unitFilter: string[] = [],
+  showFinalStand = false,
 ) => {
   const selectionFields = [];
 
@@ -157,6 +159,8 @@ const mapUnitSelection = (
     if (
       squad.ui.symbolIconName != "" &&
       squad.faction != "british" &&
+      // Final Stand (DLC / co-op vs AI) units are opt-in.
+      (showFinalStand || !isFinalStandUnit(squad)) &&
       (unitFilter.length == 0 || unitFilter.includes(squad.faction))
     ) {
       const custUnit = units.find((custUnit) => custUnit.id == squad.id);
@@ -233,6 +237,8 @@ export const DpsPageComponent = (props: IDPSProps) => {
   const [isStaircase] = useState(false);
   const [showDpsHealth, setShowDpsHealth] = useState(false);
   const [allowAllWeapons, setAllowAllWeapons] = useState(false);
+  // Final Stand (DLC / co-op vs AI) units are opt-in.
+  const [showFinalStand, setShowFinalStand] = useState(false);
 
   // const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -260,9 +266,9 @@ export const DpsPageComponent = (props: IDPSProps) => {
 
   // create selection List
   if (unitSelectionList1.length == 0 && props.sbpsData.length > 0)
-    unitSelectionList1 = mapUnitSelection(props.sbpsData, units1, unitFilter1);
+    unitSelectionList1 = mapUnitSelection(props.sbpsData, units1, unitFilter1, showFinalStand);
   if (unitSelectionList2.length == 0 && props.sbpsData.length > 0)
-    unitSelectionList2 = mapUnitSelection(props.sbpsData, units2, unitFilter2);
+    unitSelectionList2 = mapUnitSelection(props.sbpsData, units2, unitFilter2, showFinalStand);
 
   const chartData = { datasets: [mapChartData([])] };
 
@@ -329,6 +335,16 @@ export const DpsPageComponent = (props: IDPSProps) => {
     else setFilter2([...unitFilter]);
   };
 
+  // Toggling Final Stand units changes the selection lists, so they get rebuilt (they are rebuilt
+  // when empty) and the currently selected units are cleared.
+  const onShowFinalStandChange = (checked: boolean) => {
+    unitSelectionList1.splice(0, unitSelectionList1.length);
+    unitSelectionList2.splice(0, unitSelectionList2.length);
+    onSelectionChange(null, 0);
+    onSelectionChange(null, 1);
+    setShowFinalStand(checked);
+  };
+
   useEffect(() => {
     const getPatchStats = async () => {
       // Get Patch data from cache or fetch
@@ -348,7 +364,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
               abilityData1,
             ),
           );
-        unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1);
+        unitSelectionList1 = mapUnitSelection(sbpsData1, units1, unitFilter1, showFinalStand);
         if (activeData[0]) {
           const id = activeData[0].id;
           activeData[0] = {} as CustomizableUnit;
@@ -370,7 +386,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
               abilityData2,
             ),
           );
-        unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2);
+        unitSelectionList2 = mapUnitSelection(sbpsData2, units2, unitFilter2, showFinalStand);
         if (activeData[1]) {
           const id = activeData[1].id;
           activeData[1] = {} as CustomizableUnit;
@@ -462,8 +478,10 @@ export const DpsPageComponent = (props: IDPSProps) => {
               <SettingsPanel
                 showDpsHealth={showDpsHealth}
                 allowAllWeapons={allowAllWeapons}
+                showFinalStand={showFinalStand}
                 onShowDpsHealthChange={setShowDpsHealth}
                 onAllowAllWeaponsChange={setAllowAllWeapons}
+                onShowFinalStandChange={onShowFinalStandChange}
                 onResetUnits={() => {
                   onSelectionChange(null, 0);
                   onSelectionChange(null, 1);

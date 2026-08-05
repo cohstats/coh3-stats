@@ -1,5 +1,7 @@
 import { Group, Text, Image, Select, SelectProps } from "@mantine/core";
 import { WeaponMember } from "../../../src/unitStats/dpsCommon";
+import { isFinalStandFaction } from "../../../src/unitStats/finalStand";
+import { FinalStandBadge } from "../../final-stand-badge";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
@@ -9,6 +11,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
 
 const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
   const { image, label, description } = option as unknown as ItemProps;
+  const isFinalStand = isFinalStandFaction((option as unknown as WeaponMember).weapon?.faction);
 
   return (
     <div>
@@ -23,7 +26,10 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
           alt="Weapon Class"
         />
         <div>
-          <Text size="sm">{label}</Text>
+          <Group gap="xs" wrap="nowrap">
+            <Text size="sm">{label}</Text>
+            {isFinalStand && <FinalStandBadge size="xs" type="weapon" withTooltip={false} />}
+          </Group>
           <Text size="xs" opacity={0.65}>
             {description}
           </Text>

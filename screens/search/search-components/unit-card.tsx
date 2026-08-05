@@ -9,6 +9,8 @@ import { raceType } from "../../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../../src/routes";
 import Link from "next/link";
 import styles from "./unit-card.module.css";
+import { isFinalStandUnitId } from "../../../src/unitStats/finalStand";
+import { FinalStandBadge } from "../../../components/final-stand-badge";
 
 export interface UnitData {
   id: string;
@@ -59,6 +61,11 @@ export const UnitCard = ({ unit }: UnitCardProps) => (
           >
             {unit.name}
           </Text>
+          {isFinalStandUnitId(unit.id) && (
+            <Group gap="xs" mt={4}>
+              <FinalStandBadge size="xs" />
+            </Group>
+          )}
         </div>
       </Group>
     </Card>
