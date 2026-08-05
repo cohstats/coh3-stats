@@ -1,8 +1,10 @@
-import { Text, Tooltip } from "@mantine/core";
+import { Anchor, Text, Tooltip } from "@mantine/core";
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import ImageWithModal from "../../../../../components/image-with-modal";
 import { getIconsPathOnCDN } from "../../../../../src/utils";
 import { isOfficialMap, maps } from "../../../../../src/coh3/coh3-data";
+import { getExplorerMapRoute } from "../../../../../src/routes";
 
 const RenderMap = ({
   mapName,
@@ -28,23 +30,37 @@ const RenderMap = ({
     );
   }
 
+  const imageHeight = height ?? 60;
+  const imageWidth = width ?? 60;
+  const mapRoute = getExplorerMapRoute(mapName);
+
   return (
     <>
       <div style={{ width: "100%" }}>
         <Tooltip label={maps[mapName].name}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <ImageWithModal
-              height={height ?? 60}
-              width={width ?? 60}
-              alt={mapName}
-              src={getIconsPathOnCDN(maps[mapName]?.url, "maps")}
-              title={maps[mapName].name}
-            />
+            <Link href={mapRoute}>
+              <Image
+                style={{
+                  cursor: "pointer",
+                  objectFit: "contain",
+                  maxHeight: `${imageWidth}px`,
+                  maxWidth: `${imageHeight}px`,
+                }}
+                height={imageHeight}
+                width={imageWidth}
+                alt={mapName}
+                src={getIconsPathOnCDN(maps[mapName]?.url, "maps")}
+                loading="lazy"
+              />
+            </Link>
           </div>
         </Tooltip>
         {renderTitle && (
           <Text style={{ whiteSpace: "nowrap", textAlign: "center" }} size={"sm"}>
-            {maps[mapName]?.name}
+            <Anchor component={Link} href={mapRoute} inherit c={"inherit"} underline={"hover"}>
+              {maps[mapName]?.name}
+            </Anchor>
           </Text>
         )}
       </div>
