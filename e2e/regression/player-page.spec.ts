@@ -56,7 +56,11 @@ test.describe("Player Page - profile header", () => {
     const description = page.locator('meta[name="description"]');
     await expect(description.first()).toHaveAttribute("content", new RegExp(TEST_PLAYER.alias));
   });
+});
 
+test.describe("Player Page - response headers", () => {
+  // Outside the describe above on purpose: this one needs the navigation response itself, so it
+  // must not pay for a second page load on top of a `beforeEach` navigation.
   test("should send the nofollow robots header", async ({ page }) => {
     // The route sets `x-robots-tag: nofollow` in `getServerSideProps` - player pages are live
     // user data and must not be crawled.

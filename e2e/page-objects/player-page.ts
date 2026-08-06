@@ -139,9 +139,7 @@ export class PlayerPage extends BasePage {
   }
 
   get matchDetailDrawer(): Locator {
-    return this.page.locator('[role="dialog"]', {
-      has: this.getByTestId("match-drawer-open-in-new-tab"),
-    });
+    return this.getByTestId("match-detail-drawer");
   }
 
   get drawerOpenInNewTabButton(): Locator {

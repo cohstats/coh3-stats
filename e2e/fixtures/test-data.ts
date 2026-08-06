@@ -1,3 +1,5 @@
+import { getMatchDetailRoute } from "../../src/routes";
+
 /**
  * Shared, pinned test data for the e2e suite.
  *
@@ -84,7 +86,7 @@ export const MISSING = {
   unitId: "no_such_unit",
 };
 
-/** The player page tabs, keyed by their `?view=` value. */
+/** The player page tabs, keyed by their `?view=` value. Mirrors the tab list in `screens/players`. */
 export const PLAYER_TABS = [
   "standings",
   "standingsDetails",
@@ -97,15 +99,14 @@ export const PLAYER_TABS = [
 
 export type PlayerTab = (typeof PLAYER_TABS)[number];
 
-/** Build the player page route the same way the app does. */
-export const playerRoute = (profileId: string = TEST_PLAYER.profileId, view?: PlayerTab) =>
-  view ? `/players/${profileId}?view=${view}` : `/players/${profileId}`;
-
-/** Build the match detail route the same way `getMatchDetailRoute` does. */
+/**
+ * Build the match detail route. Delegates to the app's own route builder so the tests exercise
+ * exactly the URLs the site produces (percent-encoded brackets included) and cannot drift from it.
+ */
 export const matchRoute = (
   matchId: string = TEST_MATCH.matchId,
   profileIds: Array<number | string> | null = TEST_MATCH.profileIds,
 ) =>
   profileIds && profileIds.length > 0
-    ? `/matches/${matchId}?profileIDs=${JSON.stringify(profileIds)}`
-    : `/matches/${matchId}`;
+    ? getMatchDetailRoute(matchId, profileIds)
+    : getMatchDetailRoute(matchId);

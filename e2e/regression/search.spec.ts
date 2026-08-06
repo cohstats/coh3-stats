@@ -239,7 +239,7 @@ test.describe("Search - header search box", () => {
     await searchPage.headerSearchInput.fill(TEST_PLAYER.alias);
 
     await page.waitForURL(/\/search\?q=/, { timeout: 15000 });
-    expect(page.url()).toContain(`q=${TEST_PLAYER.alias}`);
+    expect(new URL(page.url()).searchParams.get("q")).toBe(TEST_PLAYER.alias);
     await expect(searchPage.searchInput).toHaveValue(TEST_PLAYER.alias);
     await expect(searchPage.playersResults).toBeVisible({ timeout: 30000 });
   });
