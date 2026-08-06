@@ -62,10 +62,15 @@
     "munitions": "Munitions points",
     "strategic": "Manpower points",
     "starting_position": "Player starts",
+    "starting_positionShort": "Player starts",
     "victorySingle": "Victory point",
     "fuelSingle": "Fuel point",
     "munitionsSingle": "Munitions point",
-    "strategicSingle": "Manpower point"
+    "strategicSingle": "Manpower point",
+    "victoryShort": "Victory",
+    "fuelShort": "Fuel",
+    "munitionsShort": "Munitions",
+    "strategicShort": "Manpower"
   },
   "tiers": {
     "extra_low": "extra low",

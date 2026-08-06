@@ -107,7 +107,7 @@ const LegendEntry = ({
       {/* The legend stands for every player start, so it shows a generic `1` of the first team. */}
       <MapPointIcon kind={kind} size={LEGEND_ICON_SIZE} position={1} />
       <Text size="sm">
-        {t(`points.${kind}`)}: <strong>{count}</strong>
+        {t(`points.${kind}Short`)}: <strong>{count}</strong>
       </Text>
     </Group>
   );
