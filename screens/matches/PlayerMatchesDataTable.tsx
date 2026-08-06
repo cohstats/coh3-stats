@@ -10,9 +10,11 @@ import HelperIcon from "../../components/icon/helper";
 
 interface PlayerMatchesDataTableProps {
   data: PlayerReport[];
+  /** Optional test id, so e2e tests can tell the axis and allies tables apart. */
+  testId?: string;
 }
 
-const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
+const PlayerMatchesDataTable = ({ data, testId }: PlayerMatchesDataTableProps) => {
   // const [expandedRecordIds, setExpandedRecordIds] = useState<string[]>([]);
 
   // Custom games might have no player data
@@ -420,6 +422,7 @@ const PlayerMatchesDataTable = ({ data }: PlayerMatchesDataTableProps) => {
       {/*  {isWinner ? "VICTORY" : "DEFEAT"}*/}
       {/*</div>*/}
       <DataTable
+        data-testid={testId}
         highlightOnHover
         withColumnBorders
         striped={true}

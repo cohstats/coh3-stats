@@ -31,7 +31,15 @@ export const MapCard = ({ map, t }: MapCardProps) => {
 
   return (
     <Link href={getExplorerMapRoute(map.id)} style={{ textDecoration: "none" }}>
-      <Card shadow="sm" padding="xs" radius="md" withBorder w={300} className={styles.mapCard}>
+      <Card
+        shadow="sm"
+        padding="xs"
+        radius="md"
+        withBorder
+        w={300}
+        className={styles.mapCard}
+        data-testid={`search-map-card-${map.id}`}
+      >
         <Group gap="xs" align="flex-start" wrap="nowrap">
           <Image
             src={getMpMapImageUrl(map.id)}

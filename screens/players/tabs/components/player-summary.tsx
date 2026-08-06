@@ -34,7 +34,7 @@ const PlayerSummary = ({
   const justifyText = isMobile ? "left" : "right";
 
   return (
-    <Paper>
+    <Paper data-testid="player-summary">
       <Group>
         {isMobile && (
           <Tooltip label={highestTierTooltip} position={"bottom"}>

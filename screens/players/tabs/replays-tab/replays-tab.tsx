@@ -64,6 +64,7 @@ const ReplaysTab = ({
       </Group>
       <Space h={"md"} />
       <DataTable
+        data-testid="player-replays-table"
         minHeight={300}
         withTableBorder
         borderRadius="md"

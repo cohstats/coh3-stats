@@ -56,7 +56,7 @@ const TopTeamsInfo = ({ t, profileID }: TopTeamsInfoProps) => {
   }
 
   return (
-    <Stack>
+    <Stack data-testid="top-teams-info">
       <Group gap="7" align="center">
         <Title order={3}>{t("teamsStandings.title")}</Title>
         <HelperIcon

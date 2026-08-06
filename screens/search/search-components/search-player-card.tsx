@@ -25,7 +25,14 @@ export const SearchPlayerCard: React.FC<SearchPlayerCardProps> = ({ data, t }) =
         href={getPlayerCardRoute(data.relicProfileId)}
         style={{ textDecoration: "none" }}
       >
-        <Card p={4} pl={5} w={300} withBorder className={styles.playerCard}>
+        <Card
+          p={4}
+          pl={5}
+          w={300}
+          withBorder
+          className={styles.playerCard}
+          data-testid={`search-player-card-${data.relicProfileId}`}
+        >
           <Group gap={"xs"}>
             <Avatar
               src={data.avatar}

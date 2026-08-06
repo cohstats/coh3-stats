@@ -25,6 +25,7 @@ export const SearchButton: React.FC<SearchButtonProps> = ({ redirectOnClick, clo
   return (
     <>
       <TextInput
+        data-testid="header-search-input"
         style={{ width: 160 }}
         leftSection={<IconSearch />}
         placeholder={t("search.playersAndUnits")}

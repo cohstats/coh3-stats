@@ -1,57 +1,49 @@
 import { test, expect } from "@playwright/test";
 import { navigateAndWait, checkPageLoaded, checkFooterPresent } from "../helpers/test-utils";
+import { MISSING, TEST_UNIT } from "../fixtures/test-data";
 
-test.describe("Dynamic Routes - Player Pages", () => {
-  test("should load player page with valid ID", async ({ page }) => {
-    // Using a test player ID - this should be replaced with a real one if needed
-    await navigateAndWait(page, "/players/1");
-    await checkPageLoaded(page);
+/**
+ * Regression tests for the dynamic explorer routes.
+ *
+ * The player (`/players/[...playerID]`) and match (`/matches/[matchId]`) routes used to be
+ * "covered" here with nonexistent ids (`/players/1`, `/matches/1`) and an assertion that *some*
+ * heading was visible - which passed even when the pages rendered nothing but an error card.
+ * They now have real coverage in `player-page.spec.ts` and `match-detail.spec.ts`.
+ */
 
-    // Check for player content
-    await expect(page.locator("h1, h2").first()).toBeVisible();
-    await checkFooterPresent(page);
-  });
+test.describe("Dynamic Routes - Explorer faction pages", () => {
+  // The faction pages render every unit of a faction and are the heaviest routes of the site.
+  test.slow();
 
-  test("should load player page with team details view", async ({ page }) => {
-    await navigateAndWait(page, "/players/1?view=teamDetails&team=1");
-    await checkPageLoaded(page);
-  });
+  for (const race of ["american", "german", "british", "dak"] as const) {
+    test(`should load the ${race} faction page`, async ({ page }) => {
+      await navigateAndWait(page, `/explorer/races/${race}`);
+      await checkPageLoaded(page);
+
+      // The faction page lists unit links into the unit detail pages. They live inside
+      // collapsible sections, so assert they exist rather than that they are on screen.
+      const unitLinks = page.locator(`a[href^="/explorer/races/${race}/units/"]`);
+      expect(await unitLinks.count()).toBeGreaterThan(0);
+      await checkFooterPresent(page);
+    });
+  }
 });
 
-test.describe("Dynamic Routes - Match Pages", () => {
-  test("should load match detail page", async ({ page }) => {
-    // Using a test match ID - this should be replaced with a real one if needed
-    await navigateAndWait(page, "/matches/1");
+test.describe("Dynamic Routes - Explorer unit pages", () => {
+  test.slow();
+
+  test("should load a real unit page", async ({ page }) => {
+    await navigateAndWait(page, `/explorer/races/${TEST_UNIT.race}/units/${TEST_UNIT.unitId}`);
     await checkPageLoaded(page);
 
-    // Check for match content
-    await expect(page.locator("h1, h2").first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: TEST_UNIT.name }).first()).toBeVisible();
     await checkFooterPresent(page);
   });
 
-  test("should load match detail page with profile IDs", async ({ page }) => {
-    await navigateAndWait(page, "/matches/1?profileIDs=[1,2]");
-    await checkPageLoaded(page);
-  });
-});
+  test("should render the 404 page for a nonexistent unit", async ({ page }) => {
+    await navigateAndWait(page, `/explorer/races/american/units/${MISSING.unitId}`);
 
-test.describe("Dynamic Routes - Explorer Unit Pages", () => {
-  test("should load explorer faction page", async ({ page }) => {
-    await navigateAndWait(page, "/explorer/races/american");
-    await checkPageLoaded(page);
-    await checkFooterPresent(page);
-  });
-
-  test("should load explorer unit page", async ({ page }) => {
-    // This will need a valid unit ID - using a placeholder
-    // The test might fail if the unit doesn't exist, but it tests the route structure
-    await page.goto("/explorer/races/american/units/test-unit");
-    await page.waitForLoadState("networkidle");
-
-    // Either the page loads or shows a not found message
-    const hasContent = await page.locator("h1, h2").first().isVisible();
-    const hasError = await page.locator("text=not found, text=404").first().isVisible();
-
-    expect(hasContent || hasError).toBeTruthy();
+    await expect(page.locator("body")).toContainText("404");
+    await expect(page.locator("text=Application error")).not.toBeVisible();
   });
 });

@@ -10,3 +10,6 @@ export { LeaderboardsPage } from "./leaderboards-page";
 export { TeamLeaderboardsPage } from "./team-leaderboards-page";
 export { ExplorerUnitPage } from "./explorer-unit-page";
 export { DesktopAppPage } from "./desktop-app-page";
+export { PlayerPage } from "./player-page";
+export { MatchDetailPage } from "./match-detail-page";
+export { SearchPage } from "./search-page";

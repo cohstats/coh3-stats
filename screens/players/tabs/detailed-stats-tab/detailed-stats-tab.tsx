@@ -59,7 +59,7 @@ const DetailedStatsTab = ({
 
   return (
     <>
-      <Container fluid p={0} pt={"md"}>
+      <Container fluid p={0} pt={"md"} data-testid="player-detailed-stats-tab">
         <Flex gap="md" wrap="wrap" justify="space-between" align="center">
           <Title order={3} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             Detailed Statistics for {localizedGameTypes[selectedGameMode]}{" "}
@@ -67,6 +67,7 @@ const DetailedStatsTab = ({
           </Title>
           <Group justify="center">
             <Select
+              data-testid="detailed-stats-faction-select"
               value={selectedFaction}
               label="Faction"
               placeholder={"Select faction"}
@@ -87,6 +88,7 @@ const DetailedStatsTab = ({
               allowDeselect={false}
             />
             <Select
+              data-testid="detailed-stats-game-type-select"
               value={selectedGameMode}
               label="Game Type"
               placeholder={"Select Game Type"}

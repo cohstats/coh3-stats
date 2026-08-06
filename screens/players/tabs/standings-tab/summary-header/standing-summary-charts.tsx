@@ -39,7 +39,7 @@ const StandingsSummaryCharts = ({
   const chartHeight = 160;
 
   return (
-    <Group justify={"space-between"}>
+    <Group justify={"space-between"} data-testid="standings-summary-charts">
       <Paper radius="md">
         <Group m="xs" gap={"xs"}>
           <Text span fw={500}>
@@ -47,13 +47,13 @@ const StandingsSummaryCharts = ({
           </Text>
         </Group>
         <Group gap={"xs"} justify={"center"}>
-          <div className={classes["summary-charts"]}>
+          <div className={classes["summary-charts"]} data-testid="chart-factions-pie">
             <DynamicFactionsPieChart playerStandings={playerStandings} />
           </div>
-          <div className={classes["summary-charts"]}>
+          <div className={classes["summary-charts"]} data-testid="chart-faction-summary-sunburst">
             <DynamicFactionSummaryChart playerStandings={playerStandings} />
           </div>
-          <div className={classes["summary-charts"]}>
+          <div className={classes["summary-charts"]} data-testid="chart-game-types-pie">
             <DynamicGameTypesPieChart playerStandings={playerStandings} />
           </div>
           {/*<div*/}
@@ -91,6 +91,7 @@ const StandingsSummaryCharts = ({
             height: chartHeight,
             width: 380,
           }}
+          data-testid="chart-activity-last-months"
         >
           <ActivityLastMonths playerStatsData={playerStatsData} />
         </div>

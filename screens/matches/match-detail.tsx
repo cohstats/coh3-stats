@@ -32,7 +32,15 @@ const DynamicCapturedPointsPieChart = dynamic(
   },
 );
 
-const SmallInfoCard = ({ title, children }: { title: string; children: React.ReactNode }) => {
+const SmallInfoCard = ({
+  title,
+  testId,
+  children,
+}: {
+  title: string;
+  testId: string;
+  children: React.ReactNode;
+}) => {
   return (
     <Card
       p={{ base: 5, sm: 10 }}
@@ -42,6 +50,7 @@ const SmallInfoCard = ({ title, children }: { title: string; children: React.Rea
       withBorder
       w={{ base: 160, sm: 190 }}
       h={{ base: 180, sm: 220 }}
+      data-testid={testId}
     >
       <Title order={4} ta="center">
         {title}
@@ -69,9 +78,9 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
   const alliesPlayers = getMatchPlayersByFaction(matchData.matchhistoryreportresults, "allies");
 
   return (
-    <Container size={config.mainContainerSize} pl={0} pr={0}>
+    <Container size={config.mainContainerSize} pl={0} pr={0} data-testid="match-detail">
       <Flex justify="space-between" wrap="wrap">
-        <Title order={2}>
+        <Title order={2} data-testid="match-detail-title">
           Match Detail - {matchType} - {mapName}
         </Title>
         <Stack gap="0">
@@ -87,35 +96,35 @@ export default function MatchDetail({ matchData }: { matchData: ProcessedMatch |
       </Flex>
       <Space h="md" />
 
-      <PlayerMatchesDataTable data={axisPlayers} />
+      <PlayerMatchesDataTable data={axisPlayers} testId="match-players-table-axis" />
       <Flex justify="center" align="center" my={"xs"}>
         <IconSwords size={30} />
       </Flex>
-      <PlayerMatchesDataTable data={alliesPlayers} />
+      <PlayerMatchesDataTable data={alliesPlayers} testId="match-players-table-allies" />
       <Space h="md" />
       <Flex wrap={"wrap"} justify={"center"}>
-        <SmallInfoCard title={"Map"}>
+        <SmallInfoCard title={"Map"} testId="match-card-map">
           <RenderMap mapName={matchData.mapname as string} width={200} height={140} />
         </SmallInfoCard>
-        <SmallInfoCard title={"Damage Done"}>
+        <SmallInfoCard title={"Damage Done"} testId="match-card-dmg-done">
           <DynamicDmgDonePieChart alliesPlayers={alliesPlayers} axisPlayers={axisPlayers} />
         </SmallInfoCard>
-        <SmallInfoCard title={"Units Killed"}>
+        <SmallInfoCard title={"Units Killed"} testId="match-card-units-killed">
           <DynamicUnitsKilledPieChart alliesPlayers={alliesPlayers} axisPlayers={axisPlayers} />
         </SmallInfoCard>
-        <SmallInfoCard title={"Vehicles Killed"}>
+        <SmallInfoCard title={"Vehicles Killed"} testId="match-card-vehicles-killed">
           <DynamicVehiclesKilledPieChart
             alliesPlayers={alliesPlayers}
             axisPlayers={axisPlayers}
           />
         </SmallInfoCard>
-        <SmallInfoCard title={"Captured Points"}>
+        <SmallInfoCard title={"Captured Points"} testId="match-card-captured-points">
           <DynamicCapturedPointsPieChart
             alliesPlayers={alliesPlayers}
             axisPlayers={axisPlayers}
           />
         </SmallInfoCard>
-        <SmallInfoCard title={"Replay"}>
+        <SmallInfoCard title={"Replay"} testId="match-card-replay">
           <Stack align="center" justify="center">
             <IconVideo size={80} />
             <DownloadReplayButton match={matchData} />

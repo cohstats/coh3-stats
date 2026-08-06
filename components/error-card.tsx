@@ -17,7 +17,13 @@ const ErrorCard = ({ title, body }: { title: string; body: string }) => {
   return (
     <Container size={"sm"} p={"md"}>
       <Center>
-        <Alert icon={<IconAlertCircle size="2rem" />} title={renderTitle} color="red" miw={450}>
+        <Alert
+          icon={<IconAlertCircle size="2rem" />}
+          title={renderTitle}
+          color="red"
+          miw={450}
+          data-testid="error-card"
+        >
           {defaultBody}
           <br />
           <br />

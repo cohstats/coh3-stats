@@ -158,7 +158,12 @@ const TeamsStandingsTab = ({ profileID, t }: TeamsStandingsTabProps) => {
   }
 
   return (
-    <Container size="lg" p="md" style={{ minHeight: "900px" }}>
+    <Container
+      size="lg"
+      p="md"
+      style={{ minHeight: "900px" }}
+      data-testid="player-teams-standings-tab"
+    >
       <Space h="lg" />
       <Title order={isLoading ? 2 : 1} size={"h2"}>
         {t("teamsStandings.title")}

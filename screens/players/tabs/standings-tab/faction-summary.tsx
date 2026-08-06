@@ -88,7 +88,12 @@ const PlayerStandingsFactionInfo = ({
           <Group m="xs" justify={"space-between"}>
             <Title order={4}> Best of {cardTitle}</Title>
 
-            <ActionIcon onClick={moreButtonOnClick} variant="default">
+            <ActionIcon
+              onClick={moreButtonOnClick}
+              variant="default"
+              aria-label={`More detailed stats for ${cardTitle}`}
+              data-testid={`standings-faction-more-${faction}`}
+            >
               <IconCirclePlus size={"20"} />
             </ActionIcon>
           </Group>

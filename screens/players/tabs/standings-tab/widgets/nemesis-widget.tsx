@@ -15,7 +15,7 @@ const NemesisWidget = ({
   moreButtonOnClick: () => Promise<void>;
 }) => {
   return (
-    <div>
+    <div data-testid="nemesis-widget">
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
           <Group m="xs" justify="space-between">

@@ -26,7 +26,7 @@ const PlayerStandingsFaction = ({
   t: TFunction;
 }) => {
   return (
-    <>
+    <div data-testid={`standings-faction-${faction}`}>
       <Group>
         <FactionIcon name={faction} width={35} />{" "}
         <Title order={2}>{localizedNames[faction]}</Title>
@@ -40,7 +40,7 @@ const PlayerStandingsFaction = ({
           moreButtonOnClick={moreButtonOnClick}
         />
       </Group>
-    </>
+    </div>
   );
 };
 

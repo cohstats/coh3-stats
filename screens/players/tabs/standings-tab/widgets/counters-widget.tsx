@@ -140,7 +140,7 @@ const CountersWidget = ({
   };
 
   return (
-    <div>
+    <div data-testid="counters-widget">
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
           <Group m="xs" justify="space-between">

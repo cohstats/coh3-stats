@@ -231,6 +231,7 @@ const PlayerRecentMatchesTab = ({
         />
       </Flex>
       <DataTable
+        data-testid="recent-matches-table"
         borderRadius="md"
         highlightOnHover
         striped
