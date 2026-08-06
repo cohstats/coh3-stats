@@ -27,6 +27,31 @@
   object-fit: fill;
 }
 
+/*
+ * The territory sector outlines. Stretched over the whole wrapper, same as the image - the viewBox is
+ * the map size, so the paths line up with the terrain and with the markers.
+ */
+.sectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Decoration on top of the image - it must not swallow the hover of the markers underneath it. */
+  pointer-events: none;
+}
+
+.sectors path {
+  fill: none;
+  stroke: #fff;
+  /* Without this the width would be in viewBox units, ie. it would scale with the rendered map. */
+  vector-effect: non-scaling-stroke;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  /* The borders run over bright terrain too, a dark halo keeps them readable everywhere. */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.85));
+  opacity: 0.8;
+}
+
 .marker {
   position: absolute;
   /* `left` / `top` are set inline from the point position, this centres the marker on it. */

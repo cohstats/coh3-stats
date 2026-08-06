@@ -314,9 +314,10 @@ const getMpMapPointMarkers = (
         income: resource ? (point.incomePerMinute?.[resource] ?? null) : null,
         // Only the resource points come in tiers - victory points and player starts are all the same.
         sizeScale: (point.tier && MP_MAP_POINT_TIER_SCALE[point.tier]) || 1,
-        captureTime: point.captureTime,
-        revertTime: point.revertTime,
-        secureRadius: point.secureRadius,
+        // Player starts are not capturable, so the data file exports none of these for them.
+        captureTime: point.captureTime ?? 0,
+        revertTime: point.revertTime ?? 0,
+        secureRadius: point.secureRadius ?? 0,
         // Slots alternate between the teams - even slots are team 0, odd ones team 1 - and the game
         // numbers the players within a team in slot order.
         team: kind === "starting_position" && slot !== undefined && hasTwoTeams ? slot % 2 : null,
@@ -328,6 +329,48 @@ const getMpMapPointMarkers = (
             : null,
       };
     });
+};
+
+/* -------------------------------------------------------------------------- */
+/* Sectors                                                                    */
+/* -------------------------------------------------------------------------- */
+
+/** Outline of a single sector, ready to be dropped into the svg overlay of the minimap. */
+type MpMapSectorPath = {
+  id: number;
+  isBase: boolean;
+  /** `d` attribute of the outline - one closed subpath per ring of the sector. */
+  d: string;
+};
+
+/**
+ * Builds the outlines of the territory sectors in the coordinate system of the minimap image, ie. a
+ * viewBox of `0 0 mapSize.width mapSize.height`.
+ *
+ * The rings are world coordinates centred on `0,0`, the same system the points use, so they are
+ * converted the same way - shift the origin to the top left corner and flip the Y axis.
+ *
+ * Neighbouring sectors share their border, so every one of those is drawn twice. Not worth
+ * de-duplicating: the rings don't line up vertex by vertex, and the strokes land on top of each other
+ * anyway.
+ */
+const getMpMapSectorPaths = (map: Pick<MpMap, "mapSize" | "sectors">): MpMapSectorPath[] => {
+  const { width, height } = map.mapSize;
+  if (!width || !height) return [];
+
+  return (map.sectors ?? [])
+    .map((sector) => ({
+      id: sector.id,
+      isBase: sector.isBase,
+      d: (sector.rings ?? [])
+        // Anything with less than three vertices has no area to outline.
+        .filter((ring) => ring.length > 2)
+        .map(
+          (ring) => `M${ring.map(([x, y]) => `${x + width / 2} ${height / 2 - y}`).join("L")}Z`,
+        )
+        .join(""),
+    }))
+    .filter(({ d }) => d.length > 0);
 };
 
 /** Icon url of a point kind, or `null` for the kinds the game doesn't export an icon for. */
@@ -404,6 +447,7 @@ export {
   getMpMapPlainImageUrl,
   getMpMapPointIconUrl,
   getMpMapPointMarkers,
+  getMpMapSectorPaths,
   groupMpMapsByMode,
   sortMpMapsByName,
   stripMpMapNamePrefix,
@@ -419,4 +463,5 @@ export type {
   MpMapTableItem,
   MpMapPointMarker,
   MpMapRenderedPointKind,
+  MpMapSectorPath,
 };

@@ -106,6 +106,8 @@
       "secureRadius": "Secure radius around the point"
     },
     "tierSizeHint": "The icons on the map are sized by tier, so the higher yield points are the bigger ones.",
+    "showSectors": "Show sectors",
+    "sectorsTooltip": "Draw the territory sectors on the map. A point is only connected to your base once you hold the chain of sectors leading to it.",
     "pointIncome": "Income: +{{value}} / min",
     "pointCaptureTime": "Capture time: {{value}}s",
     "pointRevertTime": "Revert time: {{value}}s",

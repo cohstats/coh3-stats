@@ -32,8 +32,9 @@ type GetMpMapsOptions = {
   /** Locale of the resolved texts, eg. `en`, `de`. */
   locale?: string;
   /**
-   * Whether to include the `points` array of each map. Those are by far the heaviest part of the
-   * data file, set to `false` when only the aggregated resource info is needed.
+   * Whether to include the per map geometry - the `points` and the `sectors` arrays. Those are by
+   * far the heaviest part of the data file, set to `false` when only the aggregated resource info is
+   * needed.
    */
   includePoints?: boolean;
 };
@@ -113,11 +114,12 @@ const parseMpMaps = (
     // Defensive - skip anything which doesn't look like a map entry.
     if (!rawMap || typeof rawMap !== "object" || !rawMap.id) continue;
 
-    const { name, description, points, ...rest } = rawMap;
+    const { name, description, points, sectors, ...rest } = rawMap;
 
     maps[rawMap.id] = {
       ...rest,
       points: includePoints ? (points ?? []) : [],
+      sectors: includePoints ? (sectors ?? []) : [],
       name: resolveMpMapText(name, locstring) ?? rawMap.id,
       description: resolveMpMapText(description, locstring),
       locstringIds: {

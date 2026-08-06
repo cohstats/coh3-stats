@@ -32,6 +32,7 @@ import {
   getMpMapIncomeSummary,
   getMpMapMode,
   getMpMapPointMarkers,
+  getMpMapSectorPaths,
   MP_MAP_TEAM_LAYOUTS,
   MpMapIncomeEntry,
   MpMapRenderedPointKind,
@@ -100,6 +101,7 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
       : null;
   const markers = useMemo(() => getMpMapPointMarkers(map), [map]);
   const income = useMemo(() => getMpMapIncomeSummary(map), [map]);
+  const sectors = useMemo(() => getMpMapSectorPaths(map), [map]);
 
   const { counts, countsByTier, totalCapturable } = map.resources;
   const playersPerTeam = Object.values(map.teams);
@@ -147,6 +149,7 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
             mapName={map.name}
             mapSize={map.mapSize}
             markers={markers}
+            sectors={sectors}
             t={t}
           />
         </Stack>

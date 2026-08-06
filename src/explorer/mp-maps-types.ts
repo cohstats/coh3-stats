@@ -49,26 +49,55 @@ type MpMapPlayableArea = {
   height: number;
 };
 
+/**
+ * A single point of the map.
+ *
+ * Only the first four fields are on every point. Player starts (`starting_position`) carry nothing
+ * but their position and slot - they are not capturable, so none of the capture related fields are
+ * exported for them.
+ */
 type MpMapPoint = {
   /** Entity blueprint of the point, eg. `territory_fuel_point_medium`. */
   ebp: string;
-  ownerId: number;
   x: number;
   y: number;
   kind: MpMapPointKind;
-  /** Grouping category, usually the same as `kind`. Not always present. */
-  category?: MpMapPointKind;
-  tier: MpMapPointTier | null;
-  /** Suffix of the point shape, eg. `_rect15x20`. */
-  shape: string | null;
+  /** Grouping category, usually the same as `kind`. Null for the `other` Final Stand areas. */
+  category?: MpMapPointKind | null;
+  /** Size tier. Missing on the player starts, null on the points which have only one size. */
+  tier?: MpMapPointTier | null;
+  /** Suffix of the point shape, eg. `_rect15x20`. Only exported for non default shapes. */
+  shape?: string | null;
   /** Variant of the point, eg. `starting_position_no_hq`. */
   variant?: string;
   /** Player slot for `starting_position` points. */
   playerSlot?: number;
-  captureTime: number;
-  revertTime: number;
-  secureRadius: number;
+  captureTime?: number;
+  revertTime?: number;
+  secureRadius?: number;
   incomePerMinute?: MpMapIncomePerMinute;
+};
+
+/** A closed loop of world space `[x, y]` coordinates - the outline of a sector. */
+type MpMapSectorRing = Array<[number, number]>;
+
+/**
+ * A territory sector of the map. Sectors are the areas the capture points hold - a point is only
+ * connected to the base once the chain of sectors leading to it is under control.
+ */
+type MpMapSector = {
+  id: number;
+  /** True for the base sectors, the ones the players already own at the start of the match. */
+  isBase: boolean;
+  /** Ids of the sectors this one shares a border with. */
+  neighbors: number[];
+  /** Indices into the `points` array of the map - the points sitting inside this sector. */
+  points: number[];
+  /** Area of the sector in world units. */
+  area: number;
+  /** Outline of the sector. Usually a single ring, a handful of sectors are split into several. */
+  rings: MpMapSectorRing[];
+  bounds: Omit<MpMapPlayableArea, "width" | "height">;
 };
 
 type MpMapResources = {
@@ -119,6 +148,8 @@ type RawMpMap = {
   totalSlots: number;
   resources: MpMapResources;
   points: MpMapPoint[];
+  /** Territory layout of the map. Missing in the data files of older patches. */
+  sectors?: MpMapSector[];
   minimapFiles: string[];
   stylizedMinimapPipelinePath?: string;
   sortIndex?: number | null;
@@ -139,6 +170,8 @@ type MpMapsMeta = {
   categories: Partial<Record<MpMapCategory, number>>;
   lobbyVisibleCount: number;
   communityCount: number;
+  /** Amount of maps which have a sector layout. Added together with the `sectors` field. */
+  withSectorsCount?: number;
 };
 
 /** The raw data file - `__meta` plus one entry per map, keyed by map id. */
@@ -151,7 +184,9 @@ type RawMpMapsFile = {
 /* -------------------------------------------------------------------------- */
 
 /** A single map with the localized name / description resolved. */
-type MpMap = Omit<RawMpMap, "name" | "description"> & {
+type MpMap = Omit<RawMpMap, "name" | "description" | "sectors"> & {
+  /** Territory layout of the map. Empty for patches whose data file has no sectors. */
+  sectors: MpMapSector[];
   /** Localized name, falls back to the English value from the data file. */
   name: string;
   /** Localized description, falls back to the English value from the data file. */
@@ -183,6 +218,8 @@ export type {
   MpMapPointKind,
   MpMapPointTier,
   MpMapResources,
+  MpMapSector,
+  MpMapSectorRing,
   MpMapSize,
   MpMapTeamLayout,
   MpMapsData,

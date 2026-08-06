@@ -8,6 +8,7 @@ import {
   getMpMapPlainImageUrl,
   getMpMapPointIconUrl,
   getMpMapPointMarkers,
+  getMpMapSectorPaths,
   groupMpMapsByMode,
   sortMpMapsByName,
   stripMpMapNamePrefix,
@@ -15,7 +16,7 @@ import {
   toMpMapTableItem,
 } from "../../../src/explorer/mp-maps-helpers";
 import type { MpMapListItem } from "../../../src/explorer/mp-maps-helpers";
-import type { MpMapPoint } from "../../../src/explorer/mp-maps-types";
+import type { MpMapPoint, MpMapSector } from "../../../src/explorer/mp-maps-types";
 
 const createMap = (overrides: Partial<MpMapListItem> = {}): MpMapListItem => ({
   id: "rural_town_4p",
@@ -165,7 +166,6 @@ describe("getMpMapPointIconUrl", () => {
 describe("getMpMapPointMarkers", () => {
   const createPoint = (overrides: Partial<MpMapPoint> = {}): MpMapPoint => ({
     ebp: "territory_fuel_point_medium",
-    ownerId: 0,
     x: 0,
     y: 0,
     kind: "fuel",
@@ -458,5 +458,86 @@ describe("groupMpMapsByMode", () => {
     expect(groups.map(([mode]) => mode)).toEqual(["1v1", "4v4"]);
     // Maps within a group are sorted by name.
     expect(groups[0][1].map(({ id }) => id)).toEqual(["b", "a"]);
+  });
+});
+
+describe("getMpMapSectorPaths", () => {
+  const createSector = (overrides: Partial<MpMapSector> = {}): MpMapSector => ({
+    id: 1,
+    isBase: false,
+    neighbors: [],
+    points: [],
+    area: 100,
+    rings: [
+      [
+        [-10, 10],
+        [10, 10],
+        [10, -10],
+      ],
+    ],
+    bounds: { minX: -10, maxX: 10, minY: -10, maxY: 10 },
+    ...overrides,
+  });
+
+  it("moves the origin to the top left corner and flips the Y axis", () => {
+    const [sector] = getMpMapSectorPaths({
+      mapSize: { width: 400, height: 400 },
+      sectors: [createSector()],
+    });
+
+    // The rings are closed subpaths, so every one of them ends with a `Z`.
+    expect(sector.d).toBe("M190 190L210 190L210 210Z");
+  });
+
+  it("draws every ring of a sector as its own subpath", () => {
+    const [sector] = getMpMapSectorPaths({
+      mapSize: { width: 400, height: 400 },
+      sectors: [
+        createSector({
+          rings: [
+            [
+              [-10, 10],
+              [10, 10],
+              [10, -10],
+            ],
+            [
+              [-20, 20],
+              [20, 20],
+              [20, -20],
+            ],
+          ],
+        }),
+      ],
+    });
+
+    expect(sector.d).toBe("M190 190L210 190L210 210ZM180 180L220 180L220 220Z");
+  });
+
+  it("keeps the id and the base flag, so the overlay can tell the sectors apart", () => {
+    expect(
+      getMpMapSectorPaths({
+        mapSize: { width: 400, height: 400 },
+        sectors: [createSector({ id: 7, isBase: true })],
+      })[0],
+    ).toMatchObject({ id: 7, isBase: true });
+  });
+
+  it("skips degenerate rings and maps without a size", () => {
+    expect(
+      getMpMapSectorPaths({
+        mapSize: { width: 400, height: 400 },
+        sectors: [createSector({ rings: [[[0, 0]]] })],
+      }),
+    ).toEqual([]);
+
+    expect(
+      getMpMapSectorPaths({ mapSize: { width: 0, height: 0 }, sectors: [createSector()] }),
+    ).toEqual([]);
+  });
+
+  it("returns nothing for maps whose data file has no sectors", () => {
+    expect(getMpMapSectorPaths({ mapSize: { width: 400, height: 400 }, sectors: [] })).toEqual(
+      [],
+    );
   });
 });

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Group, Image, Stack, Text, Tooltip } from "@mantine/core";
+import { Box, Group, Image, Stack, Switch, Text, Tooltip } from "@mantine/core";
+import { IconPolygon } from "@tabler/icons-react";
 import { TFunction } from "next-i18next/pages";
 import MapPointIcon from "./map-point-icon";
 import {
@@ -10,6 +11,7 @@ import {
   MP_MAP_POINT_KINDS,
   MpMapPointMarker,
   MpMapRenderedPointKind,
+  MpMapSectorPath,
 } from "../../../src/explorer/mp-maps-helpers";
 import type { MpMapSize } from "../../../src/explorer/mp-maps-types";
 import classes from "./map-minimap.module.css";
@@ -120,22 +122,29 @@ const LegendEntry = ({
  *  - the marked minimap, but only when the map has no point we would draw an icon for anyway (Final
  *    Stand maps have nothing but player starts), so nothing can end up drawn twice;
  *  - the styled background of the wrapper, with just the markers on top of it.
+ *
+ * The territory sectors are drawn on top of the backdrop as an svg overlay, which can be toggled off
+ * for a clean look at the map.
  */
 const MapMinimap = ({
   mapId,
   mapName,
   mapSize,
   markers,
+  sectors,
   t,
 }: {
   mapId: string;
   mapName: string;
   mapSize: MpMapSize;
   markers: MpMapPointMarker[];
+  /** Sector outlines to draw on top of the map. Empty when the data file has no sectors. */
+  sectors: MpMapSectorPath[];
   t: TFunction;
 }) => {
   // Which backdrop we are currently showing - we walk down the list as the images fail to load.
   const [sourceIndex, setSourceIndex] = useState(0);
+  const [showSectors, setShowSectors] = useState(true);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const counts = MP_MAP_POINT_KINDS.map(
@@ -183,16 +192,50 @@ const MapMinimap = ({
             onError={() => setSourceIndex((index) => index + 1)}
           />
         )}
+        {showSectors && sectors.length > 0 && (
+          // The viewBox is the map size, which is exactly the area the image covers - same reason
+          // the image itself uses `object-fit: fill`, hence `preserveAspectRatio="none"`.
+          <svg
+            className={classes.sectors}
+            viewBox={`0 0 ${mapSize.width} ${mapSize.height}`}
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            data-testid={`map-sectors-${mapId}`}
+          >
+            {sectors.map((sector) => (
+              <path key={sector.id} d={sector.d} />
+            ))}
+          </svg>
+        )}
         {markers.map((marker) => (
           <PointMarker key={marker.key} marker={marker} t={t} />
         ))}
       </Box>
 
-      {counts.length > 0 && (
-        <Group gap="md">
-          {counts.map(([kind, count]) => (
-            <LegendEntry key={kind} kind={kind} count={count} t={t} />
-          ))}
+      {(counts.length > 0 || sectors.length > 0) && (
+        <Group gap="md" justify="space-between">
+          <Group gap="md">
+            {counts.map(([kind, count]) => (
+              <LegendEntry key={kind} kind={kind} count={count} t={t} />
+            ))}
+          </Group>
+          {sectors.length > 0 && (
+            <Tooltip label={t("detail.sectorsTooltip")} multiline w={260}>
+              <Switch
+                checked={showSectors}
+                onChange={(event) => setShowSectors(event.currentTarget.checked)}
+                label={
+                  <Group gap={4} wrap="nowrap">
+                    <IconPolygon size={16} />
+                    {t("detail.showSectors")}
+                  </Group>
+                }
+                labelPosition="left"
+                size="md"
+                data-testid="map-sectors-toggle"
+              />
+            </Tooltip>
+          )}
         </Group>
       )}
 

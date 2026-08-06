@@ -48,7 +48,6 @@ const rawFile = {
     points: [
       {
         ebp: "territory_victory_point_territory",
-        ownerId: 0,
         x: 36.9,
         y: 65.5,
         kind: "victory",
@@ -58,6 +57,23 @@ const rawFile = {
         captureTime: 25,
         revertTime: 10,
         secureRadius: 6,
+      },
+    ],
+    sectors: [
+      {
+        id: 1,
+        isBase: true,
+        neighbors: [3],
+        points: [],
+        area: 34803,
+        rings: [
+          [
+            [-205, -72],
+            [-104, -72],
+            [-104, 160],
+          ],
+        ],
+        bounds: { minX: -205, maxX: -104, minY: -72, maxY: 160 },
       },
     ],
     minimapFiles: ["across_the_rhine_6p_mm_generated.rrtex"],
@@ -94,7 +110,6 @@ const rawFile = {
     points: [
       {
         ebp: "starting_position",
-        ownerId: 0,
         x: 0,
         y: 0,
         kind: "starting_position",
@@ -153,12 +168,17 @@ describe("parseMpMaps", () => {
     expect(maps["hoff_map_2p"].tuningVariant).toBe("hoff");
   });
 
-  test("includes the points by default and strips them when asked to", () => {
-    expect(parseMpMaps(rawFile, locstring).maps["across_the_rhine_6p"].points).toHaveLength(1);
+  test("includes the points and sectors by default and strips them when asked to", () => {
+    const withPoints = parseMpMaps(rawFile, locstring).maps["across_the_rhine_6p"];
+    expect(withPoints.points).toHaveLength(1);
+    expect(withPoints.sectors).toHaveLength(1);
 
     const withoutPoints = parseMpMaps(rawFile, locstring, false);
     expect(withoutPoints.maps["across_the_rhine_6p"].points).toEqual([]);
+    expect(withoutPoints.maps["across_the_rhine_6p"].sectors).toEqual([]);
     expect(withoutPoints.maps["hoff_map_2p"].points).toEqual([]);
+    // Maps of older data files have no sectors at all - those end up with an empty list.
+    expect(parseMpMaps(rawFile, locstring).maps["hoff_map_2p"].sectors).toEqual([]);
     // The aggregated resource data is still there.
     expect(withoutPoints.maps["across_the_rhine_6p"].resources.totalCapturable).toBe(21);
   });
