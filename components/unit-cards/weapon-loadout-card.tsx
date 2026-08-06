@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Stack, Text, Title, useMantineTheme } from "@mantine/core";
+import { Box, Divider, Flex, Grid, Stack, Text, Title, useMantineTheme } from "@mantine/core";
 import { getWeaponRpm } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import { getWeaponTiming, TICK_DURATION } from "../../src/unitStats/weaponLib";
@@ -145,27 +145,36 @@ export const WeaponLoadoutCard = (
 
   const hasSingleMovingModifier = movingModifierColumns.length === 1;
 
-  const OnMoveHeader = ({ show = true }: { show?: boolean }) => {
-    const movingLabelColumnSpan = 2;
-    const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
+  /** Label column matches RangeStatRow's 4/12; the stat columns split the rest evenly. */
+  const OnMoveGrid = ({
+    label,
+    renderCell,
+  }: {
+    label?: React.ReactNode;
+    renderCell: (column: (typeof movingModifierColumns)[number]) => React.ReactNode;
+  }) => (
+    <Grid gutter="xs" align="center">
+      <Grid.Col span={4}>{label}</Grid.Col>
 
+      {movingModifierColumns.map((column) => (
+        <Grid.Col key={column.key} span="auto">
+          {renderCell(column)}
+        </Grid.Col>
+      ))}
+    </Grid>
+  );
+
+  const OnMoveHeader = ({ show = true }: { show?: boolean }) => {
     if (!show || hasSingleMovingModifier) return null;
 
     return (
-      <Flex direction="column" gap="xs">
-        <Flex gap="xs">
-          <Box style={{ width: `${(movingLabelColumnSpan / 12) * 100}%` }} />
-
-          {movingModifierColumns.map((column) => (
-            <Box
-              key={column.key}
-              style={{ width: `${(movingStatColumnSpan / 12) * 100}%`, textAlign: "center" }}
-            >
-              <StatLabel label={column.label} tooltip={column.tooltip} />
-            </Box>
-          ))}
-        </Flex>
-      </Flex>
+      <OnMoveGrid
+        renderCell={(column) => (
+          <Flex justify="center">
+            <StatLabel label={column.label} tooltip={column.tooltip} />
+          </Flex>
+        )}
+      />
     );
   };
 
@@ -186,27 +195,18 @@ export const WeaponLoadoutCard = (
       );
     }
 
-    const movingLabelColumnSpan = 2;
-    const movingStatColumnSpan = 10 / Math.max(movingModifierColumns.length, 1);
-
     return (
-      <Flex gap="xs" align="center">
-        <Box style={{ width: `${(movingLabelColumnSpan / 12) * 100}%` }}>
+      <OnMoveGrid
+        label={
           <StatLabel
             label={t("weaponCard.onTheMove")}
             tooltip={t("weaponCard.onTheMoveTooltip")}
           />
-        </Box>
-
-        {movingModifierColumns.map((column) => (
-          <Box
-            key={column.key}
-            style={{ width: `${(movingStatColumnSpan / 12) * 100}%`, textAlign: "center" }}
-          >
-            <CenterText color="orange.6" value={formatMultiplier(column.value)} />
-          </Box>
-        ))}
-      </Flex>
+        }
+        renderCell={(column) => (
+          <CenterText color="orange.6" value={formatMultiplier(column.value)} />
+        )}
+      />
     );
   };
 
