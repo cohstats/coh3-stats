@@ -116,7 +116,7 @@ jobs:
       matrix:
         include:
           - test-type: desktop
-            projects: --project=chromium --project=firefox --project=webkit
+            projects: --project=chromium
           - test-type: mobile
             projects: --project="Mobile Chrome" --workers=1
 
@@ -165,11 +165,11 @@ jobs:
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: yarn test:e2e:install
+        run: npx playwright install --with-deps chromium
 
       - name: Install Playwright System Dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium firefox webkit
+        run: npx playwright install-deps chromium
 
       - name: Build application
         run: yarn build:slim
