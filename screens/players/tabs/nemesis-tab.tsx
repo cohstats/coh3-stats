@@ -283,7 +283,7 @@ const NemesisTab = ({
 
   return (
     <>
-      <Container size={"md"} pl={0} pr={0}>
+      <Container size={"md"} pl={0} pr={0} data-testid="player-nemesis-tab">
         <Space h={"lg"} />
         <Title order={1} size={"h2"}>
           {t("nemesis.title")}

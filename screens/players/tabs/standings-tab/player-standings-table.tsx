@@ -37,6 +37,7 @@ const PlayerStandingsTable = ({
   return (
     <>
       <DataTable
+        data-testid={`standings-table-${faction}`}
         style={{
           flexGrow: 1,
           maxHeight: "inherit",

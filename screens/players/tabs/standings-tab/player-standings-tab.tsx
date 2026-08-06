@@ -56,7 +56,7 @@ const PlayerStandingsTab = ({
   };
 
   return (
-    <Container size={"xl"} pl={0} pr={0}>
+    <Container size={"xl"} pl={0} pr={0} data-testid="player-standings-tab">
       <Space h="xs" />
       <StandingsSummaryCharts
         playerStandings={playerStandings}
@@ -100,7 +100,7 @@ const PlayerStandingsTab = ({
             t={t}
           />
           <Space h="xl" />
-          <div ref={ref} style={{ minHeight: 900 }}>
+          <div ref={ref} style={{ minHeight: 900 }} data-testid="top-teams-info-container">
             {renderTopTeamsSummary && <TopTeamsInfo t={t} profileID={profileID || ""} />}
           </div>
         </div>

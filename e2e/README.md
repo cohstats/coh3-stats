@@ -47,7 +47,7 @@ yarn test:e2e:headed
 ### Run specific test file
 
 ```bash
-npx playwright test e2e/smoke/home.spec.ts
+npx playwright test e2e/regression/home-new.spec.ts
 ```
 
 ### Run tests for specific browser
@@ -73,20 +73,31 @@ These are the tests in `e2e/data` - see [Data mapping tests](#data-mapping-tests
 ```
 e2e/
 ├── data/
-│   └── mp-maps.spec.ts     # Integration tests of the mp maps mapping (no browser, no app)
+│   └── mp-maps.spec.ts          # Integration tests of the mp maps mapping (no browser, no app)
+├── fixtures/
+│   ├── test-data.ts             # Pinned real player / match / map / unit ids used by the specs
+│   └── page-issues.ts           # console-error + failed-request collector fixture
 ├── helpers/
-│   └── test-utils.ts       # Common test utilities and helper functions
-├── smoke/
-│   ├── home.spec.ts        # Home page tests
-│   ├── leaderboards.spec.ts # Leaderboards tests
-│   ├── search.spec.ts      # Search page tests
-│   ├── about.spec.ts       # About page tests
-│   ├── news.spec.ts        # News page tests
-│   ├── stats.spec.ts       # Stats pages tests
-│   ├── explorer.spec.ts    # Explorer pages tests
-│   ├── other-pages.spec.ts # Other static pages tests
-│   └── dynamic-routes.spec.ts # Dynamic route tests
-└── README.md               # This file
+│   └── test-utils.ts            # Common test utilities and helper functions
+├── page-objects/                # One page object per tested area (see page-objects/README.md)
+├── regression/
+│   ├── home-new.spec.ts         # Home page
+│   ├── leaderboards.spec.ts     # 1v1 - 4v4 leaderboards
+│   ├── team-leaderboards.spec.ts # Team leaderboards
+│   ├── player-page.spec.ts      # Player profile - all tabs, deep links, error paths
+│   ├── match-detail.spec.ts     # Match detail - rosters, charts, profileIDs, error paths
+│   ├── search.spec.ts           # Search - player / unit / map results + header search
+│   ├── explorer-unit-view.spec.ts # Unit detail pages
+│   ├── explorer.spec.ts         # Explorer index pages
+│   ├── dynamic-routes.spec.ts   # Explorer faction / unit routes
+│   ├── final-stand.spec.ts      # Final Stand DLC gating
+│   ├── desktop-app.spec.ts      # Desktop app page
+│   ├── about.spec.ts            # About / FAQ
+│   ├── news.spec.ts             # News page
+│   ├── stats.spec.ts            # Stats pages
+│   ├── other-pages.spec.ts      # Other static pages
+│   └── player-export-api.spec.ts # Player export API route
+└── README.md                    # This file
 ```
 
 ## Writing Tests
@@ -133,6 +144,45 @@ Things to know when adding tests there:
 - `checkPageLoaded(page)` - Verify page loaded without errors
 - `checkFooterPresent(page)` - Verify footer is present
 
+## Test data (`e2e/fixtures/test-data.ts`)
+
+The player, match, map and unit pages render live data, so their tests need **real** ids. Never
+invent one (`/players/1`, `/matches/1`) - a nonexistent id renders an error card, which makes the
+test pass while telling you nothing.
+
+Import the pinned entities instead:
+
+```typescript
+import { TEST_PLAYER, TEST_MATCH, TEST_MAP, TEST_UNIT, MISSING } from "../fixtures/test-data";
+```
+
+`MISSING` holds ids that are guaranteed _not_ to resolve - use them for the error-path tests.
+`test-data.ts` documents how to refresh each entity if one ever disappears upstream.
+
+Two things worth knowing about the pinned data:
+
+- Matches are indexed per participating profile, so a match route needs the `?profileIDs=[...]`
+  param that `getMatchDetailRoute` produces. Use the `matchRoute()` helper.
+- The COH3 Stats API rejects very low match ids with a `400` (error card) and answers `404` for
+  well-formed but unknown ones ("No match found"). Both states are covered separately.
+
+## Page issues fixture (`e2e/fixtures/page-issues.ts`)
+
+`checkPageLoaded()` only asserts that a header is visible - it passes on a page whose body failed
+to hydrate. When a spec needs to prove a page rendered _cleanly_, use the `pageIssues` fixture:
+
+```typescript
+import { test, expect } from "../fixtures/page-issues";
+
+test("renders cleanly", async ({ page, pageIssues }) => {
+  await page.goto("/");
+  expect(pageIssues.errors()).toEqual([]);
+});
+```
+
+It records console errors, uncaught exceptions, failed requests and 5xx responses, filtering out
+known third-party noise (analytics, embeds, Steam avatars).
+
 ## Configuration
 
 The Playwright configuration is in `playwright.config.ts` at the root of the project.
@@ -141,9 +191,9 @@ Key settings:
 
 - **Base URL**: `http://localhost:3000` (configurable via `PLAYWRIGHT_BASE_URL` env var)
 - **Test Directory**: `./e2e`
-- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari
+- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome
 - **Retries**: 2 retries on CI, 0 locally
-- **Workers**: 1 worker on CI, parallel locally
+- **Workers**: 2 workers on CI, parallel locally
 - **Web Server**: Automatically starts `yarn start` before tests
 
 ## CI/CD Integration
@@ -168,7 +218,7 @@ npx playwright show-report
 ### Debug specific test
 
 ```bash
-npx playwright test --debug e2e/smoke/home.spec.ts
+npx playwright test --debug e2e/regression/home-new.spec.ts
 ```
 
 ### View traces

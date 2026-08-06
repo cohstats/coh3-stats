@@ -184,7 +184,7 @@ const PlayerCard = ({
   return (
     <>
       <NextSeo {...seoProps} title={pageTitle} />
-      <Container fluid p={0}>
+      <Container fluid p={0} data-testid="player-card">
         <Container
           fluid
           pl={{ base: 1, xs: "md" }}
@@ -200,6 +200,7 @@ const PlayerCard = ({
                 radius="sm"
                 size="xl"
                 mt={5}
+                data-testid="player-avatar"
               />
               <Stack gap={"xs"}>
                 <Group>
@@ -208,7 +209,7 @@ const PlayerCard = ({
                     width={40}
                     height={30}
                   />
-                  <Title> {playerData.info.name}</Title>
+                  <Title data-testid="player-name"> {playerData.info.name}</Title>
                 </Group>
                 <Group gap={"xs"}>
                   <PlayerIdIcon
@@ -245,16 +246,30 @@ const PlayerCard = ({
           defaultValue={(view as string) || "standings"}
           onChange={tabChangeFunction}
         >
-          <Tabs.List justify="center">
-            <Tabs.Tab value={"standings"}>{t("tabs.standings")}</Tabs.Tab>
-            <Tabs.Tab value={"standingsDetails"}>{t("tabs.standingsDetails")}</Tabs.Tab>
-            <Tabs.Tab value={"teamsStandings"}>{t("tabs.teamsStandings")}</Tabs.Tab>
+          <Tabs.List justify="center" data-testid="player-tabs">
+            <Tabs.Tab value={"standings"} data-testid="player-tab-standings">
+              {t("tabs.standings")}
+            </Tabs.Tab>
+            <Tabs.Tab value={"standingsDetails"} data-testid="player-tab-standingsDetails">
+              {t("tabs.standingsDetails")}
+            </Tabs.Tab>
+            <Tabs.Tab value={"teamsStandings"} data-testid="player-tab-teamsStandings">
+              {t("tabs.teamsStandings")}
+            </Tabs.Tab>
             {/*Team Details tab is hidden on purpose, you can get there only with details*/}
             {/*<Tabs.Tab value={"teamDetails"}>{t("tabs.teamDetails", "Team Details")}</Tabs.Tab>*/}
-            <Tabs.Tab value={"recentMatches"}>{t("tabs.recentMatches")}</Tabs.Tab>
-            <Tabs.Tab value={"activity"}>{t("tabs.activity")}</Tabs.Tab>
-            <Tabs.Tab value={"nemesis"}>{t("tabs.nemesis")}</Tabs.Tab>
-            <Tabs.Tab value={"replays"}>{t("tabs.replays")}</Tabs.Tab>
+            <Tabs.Tab value={"recentMatches"} data-testid="player-tab-recentMatches">
+              {t("tabs.recentMatches")}
+            </Tabs.Tab>
+            <Tabs.Tab value={"activity"} data-testid="player-tab-activity">
+              {t("tabs.activity")}
+            </Tabs.Tab>
+            <Tabs.Tab value={"nemesis"} data-testid="player-tab-nemesis">
+              {t("tabs.nemesis")}
+            </Tabs.Tab>
+            <Tabs.Tab value={"replays"} data-testid="player-tab-replays">
+              {t("tabs.replays")}
+            </Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">

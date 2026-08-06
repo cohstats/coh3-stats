@@ -129,15 +129,15 @@ export const SearchScreen = () => {
         <>
           <Divider my="xs" label={t("search:sections.players")} labelPosition="center" />
           {loading && (
-            <Center maw={400} h={250} mx="auto">
+            <Center maw={400} h={250} mx="auto" data-testid="search-loader">
               <Loader />
             </Center>
           )}
           {data && !loading && (
-            <Container size={"md"}>
+            <Container size={"md"} data-testid="search-players-results">
               <Flex gap="sm" wrap={"wrap"} justify="center">
                 {data.length === 0 && (
-                  <Text c={"dimmed"}>
+                  <Text c={"dimmed"} data-testid="search-no-results-players">
                     <Stack align={"center"} gap={"xs"}>
                       <IconDatabaseOff />
                       <div>{t("search:noResults.players")}</div>
@@ -169,10 +169,10 @@ export const SearchScreen = () => {
           )}
 
           <Divider my="xs" label={t("search:sections.units")} labelPosition="center" />
-          <Container size={"md"}>
+          <Container size={"md"} data-testid="search-units-results">
             <Flex gap="sm" wrap={"wrap"} justify="center">
               {unitResults.length === 0 ? (
-                <Text c={"dimmed"} size={"sm"}>
+                <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-units">
                   <Stack align={"center"} gap={"xs"}>
                     <IconDatabaseOff />
                     <div>{t("search:noResults.units")}</div>
@@ -187,10 +187,10 @@ export const SearchScreen = () => {
           </Container>
 
           <Divider my="xs" label={t("search:sections.maps")} labelPosition="center" />
-          <Container size={"md"}>
+          <Container size={"md"} data-testid="search-maps-results">
             <Flex gap="sm" wrap={"wrap"} justify="center">
               {mapResults.length === 0 ? (
-                <Text c={"dimmed"} size={"sm"}>
+                <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-maps">
                   <Stack align={"center"} gap={"xs"}>
                     <IconDatabaseOff />
                     <div>{t("search:noResults.maps")}</div>
@@ -211,6 +211,7 @@ export const SearchScreen = () => {
     <Container size={"lg"}>
       <Center>
         <Input
+          data-testid="search-input"
           leftSection={<IconSearch />}
           w={400}
           radius={"md"}

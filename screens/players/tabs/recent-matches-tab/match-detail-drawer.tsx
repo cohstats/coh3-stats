@@ -38,11 +38,23 @@ const MatchDetailDrawer = ({
   }
 
   return (
-    <Drawer opened={opened} onClose={onClose} size="xl" withCloseButton={false} position="bottom">
+    <Drawer
+      opened={opened}
+      onClose={onClose}
+      size="xl"
+      withCloseButton={false}
+      position="bottom"
+      data-testid="match-detail-drawer"
+    >
       <Container size={config.mainContainerSize} pl={0} pr={0}>
         <Group justify="space-between">
           <Group>
-            <Button component="a" href={fullDetailRoute} target="_blank">
+            <Button
+              component="a"
+              href={fullDetailRoute}
+              target="_blank"
+              data-testid="match-drawer-open-in-new-tab"
+            >
               Open In New Tab
             </Button>
             <CopyButton value={fullRouteWithBase}>

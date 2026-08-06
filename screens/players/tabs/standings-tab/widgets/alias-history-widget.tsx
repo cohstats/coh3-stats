@@ -13,7 +13,7 @@ const AliasHistoryWidget = ({
   const aliases = playerStatsData?.aliasHistory || [];
 
   return (
-    <div>
+    <div data-testid="alias-history-widget">
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
           <Group m="xs" justify="space-between">

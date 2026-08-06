@@ -80,7 +80,7 @@ const MapsWidget = ({
   });
 
   return (
-    <div>
+    <div data-testid="maps-widget">
       <Card padding="sm" radius="md" withBorder style={{ overflow: "visible" }}>
         <Card.Section>
           <Group m="xs" justify="space-between">

@@ -15,10 +15,18 @@ Page Object Model is a design pattern that creates an object repository for web 
 
 ```
 e2e/page-objects/
-├── base-page.ts       # Base class with common functionality
-├── home-page.ts       # HomePage specific selectors and methods
-├── index.ts           # Export all page objects
-└── README.md          # This file
+├── base-page.ts             # Base class with common functionality
+├── about-page.ts            # About / FAQ page
+├── desktop-app-page.ts      # Desktop app page
+├── explorer-unit-page.ts    # Explorer unit detail page
+├── home-page.ts             # Home page
+├── leaderboards-page.ts     # 1v1 - 4v4 leaderboards
+├── match-detail-page.ts     # Match detail page
+├── player-page.ts           # Player profile page (all tabs)
+├── search-page.ts           # Search page + header search box
+├── team-leaderboards-page.ts # Team leaderboards
+├── index.ts                 # Export all page objects
+└── README.md                # This file
 ```
 
 ## Base Page

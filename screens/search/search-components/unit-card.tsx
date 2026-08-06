@@ -29,7 +29,15 @@ export const UnitCard = ({ unit }: UnitCardProps) => (
     href={getExplorerUnitRoute(unit.faction as raceType, unit.id)}
     style={{ textDecoration: "none" }}
   >
-    <Card shadow="sm" padding="xs" radius="md" withBorder w={300} className={styles.unitCard}>
+    <Card
+      shadow="sm"
+      padding="xs"
+      radius="md"
+      withBorder
+      w={300}
+      className={styles.unitCard}
+      data-testid={`search-unit-card-${unit.id}`}
+    >
       <ImageWithFallback
         src={`/icons/${unit.symbol}`}
         fallbackSrc={symbolPlaceholder}

@@ -69,7 +69,7 @@ const MatchDetailRoot: NextPage = () => {
   if (!matchData && !isLoading && !error) {
     content = (
       <Center maw={400} h={250} mx="auto">
-        <h3>No match found</h3>
+        <h3 data-testid="match-not-found">No match found</h3>
       </Center>
     );
   }

@@ -118,9 +118,12 @@ const ActivityTab = ({
     );
 
   return (
-    <Container size={"lg"} pl={0} pr={0}>
+    <Container size={"lg"} pl={0} pr={0} data-testid="player-activity-tab">
       <Space h={"lg"} />
-      <div style={{ height: 200 * yearDiff, paddingBottom: 30 }}>
+      <div
+        style={{ height: 200 * yearDiff, paddingBottom: 30 }}
+        data-testid="activity-calendar-chart"
+      >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Title order={2}>{t("activity.charts.calendarDay.title")}</Title>
           <Text span size="sm" fs="italic">
@@ -130,7 +133,7 @@ const ActivityTab = ({
         <DynamicActivityByCalendarDay playerStatsData={playerStatsData} fromYear={fromYear} />
       </div>
       <Space h={"lg"} />
-      <div style={{ height: 200, paddingBottom: 50 }}>
+      <div style={{ height: 200, paddingBottom: 50 }} data-testid="activity-hour-chart">
         <div
           style={{
             display: "flex",
@@ -188,7 +191,7 @@ const ActivityTab = ({
         />
       </div>
       <Space h={"lg"} />
-      <div style={{ height: 200 }}>
+      <div style={{ height: 200 }} data-testid="activity-weekday-chart">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Title order={2}>{t("activity.charts.weekDay.title")}</Title>
         </div>
