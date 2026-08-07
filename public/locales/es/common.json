@@ -20,6 +20,8 @@
       "unitBrowser": "Buscador de unidades",
       "challenges": "Retos",
       "weapons": "Armas",
+      "maps": "Mapas",
+      "mapsTable": "Tabla de Mapas",
       "tools": "Herramientas"
     },
     "liveGames": "Juegos en vivo",
@@ -68,6 +70,15 @@
   },
   "search": {
     "playersAndUnits": "Jugadores y Unidades"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "unitTooltip": "Esta unidad es del DLC Final Stand (cooperativo contra la IA). No está disponible en el juego estándar de escaramuza / multijugador.",
+    "weaponTooltip": "Esta arma es del DLC Final Stand (cooperativo contra la IA). No está disponible en el juego estándar de escaramuza / multijugador.",
+    "showUnits": "Mostrar unidades de Final Stand",
+    "showUnitsDescription": "Unidades del DLC Final Stand (cooperativo contra la IA)",
+    "showWeapons": "Mostrar armas de Final Stand",
+    "filterUnits": "Mostrar / ocultar unidades de Final Stand"
   },
   "loading": "Cargando...",
   "error": "Error",

@@ -20,6 +20,8 @@
       "unitBrowser": "Prohlížeč jednotek",
       "challenges": "Výzvy",
       "weapons": "Zbraně",
+      "maps": "Mapy",
+      "mapsTable": "Tabulka map",
       "tools": "Nástroje"
     },
     "liveGames": "Živé hry",
@@ -68,6 +70,15 @@
   },
   "search": {
     "playersAndUnits": "Hráči a jednotky"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "unitTooltip": "Tato jednotka pochází z DLC Final Stand (kooperace proti AI). Není dostupná ve standardní šarvátce / multiplayerové hře.",
+    "weaponTooltip": "Tato zbraň pochází z DLC Final Stand (kooperace proti AI). Není dostupná ve standardní šarvátce / multiplayerové hře.",
+    "showUnits": "Zobrazit jednotky Final Stand",
+    "showUnitsDescription": "Jednotky z DLC Final Stand (kooperace proti AI)",
+    "showWeapons": "Zobrazit zbraně Final Stand",
+    "filterUnits": "Zobrazit / skrýt jednotky Final Stand"
   },
   "loading": "Načítání...",
   "error": "Chyba",

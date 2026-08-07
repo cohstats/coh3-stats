@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "COH3 Mapas - Todos los Mapas Multijugador",
+    "description": "Explora todos los mapas multijugador de Company of Heroes 3. Filtra por modo de juego, consulta la disposición de puntos de recursos, tamaños de mapas y mapas de la comunidad.",
+    "keywords": [
+      "coh3 mapas",
+      "mapas de company of heroes 3",
+      "mapas 1v1",
+      "mapas 2v2",
+      "mapas 3v3",
+      "mapas 4v4",
+      "mapas de la comunidad",
+      "lista de mapas"
+    ]
+  },
+  "page": {
+    "title": "Mapas de Company of Heroes 3",
+    "subtitle": "Explora todos los mapas multijugador del juego con su disposición de recursos.",
+    "noMaps": "Ningún mapa coincide con los filtros seleccionados."
+  },
+  "view": {
+    "cards": "Tarjetas",
+    "table": "Tabla",
+    "cardsTooltip": "Explora los mapas como tarjetas con sus minimapas",
+    "tableTooltip": "Compara todos los datos de los mapas en una tabla ordenable"
+  },
+  "filters": {
+    "searchPlaceholder": "Buscar mapas",
+    "lobbyOnly": "En la sala actual",
+    "mapCount_one": "{{count}} mapa",
+    "mapCount_other": "{{count}} mapas"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "Otro"
+  },
+  "sections": {
+    "1v1": "Mapas de 1 vs 1",
+    "2v2": "Mapas de 2 vs 2",
+    "3v3": "Mapas de 3 vs 3",
+    "4v4": "Mapas de 4 vs 4",
+    "fs": "Mapas de Final Stand (cooperativo contra la IA)",
+    "other": "Otros Mapas"
+  },
+  "card": {
+    "players_one": "{{count}} jugador",
+    "players_other": "{{count}} jugadores",
+    "community": "Comunidad",
+    "authorTooltip": "Creado por {{author}}",
+    "notInLobby": "No está en la sala",
+    "notInLobbyTooltip": "Este mapa no se puede seleccionar en la sala de espera del juego.",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "Tamaño del mapa"
+  },
+  "points": {
+    "victory": "Puntos de victoria",
+    "fuel": "Puntos de combustible",
+    "munitions": "Puntos de municiones",
+    "strategic": "Puntos de mano de obra",
+    "starting_position": "Posiciones iniciales de jugadores",
+    "starting_positionShort": "Posiciones iniciales",
+    "victorySingle": "Punto de victoria",
+    "fuelSingle": "Punto de combustible",
+    "munitionsSingle": "Punto de municiones",
+    "strategicSingle": "Punto de mano de obra",
+    "victoryShort": "Victoria",
+    "fuelShort": "Combustible",
+    "munitionsShort": "Municiones",
+    "strategicShort": "Mano de obra"
+  },
+  "tiers": {
+    "extra_low": "extra bajo",
+    "low": "bajo",
+    "medium": "medio",
+    "extra_medium": "extra medio",
+    "high": "alto",
+    "default": "por defecto"
+  },
+  "resources": {
+    "fuel": "Combustible",
+    "munition": "Municiones",
+    "manpower": "Mano de Obra"
+  },
+  "detail": {
+    "backToMaps": "Todos los mapas",
+    "overview": "Resumen",
+    "description": "Descripción",
+    "players": "Jugadores",
+    "author": "Autor",
+    "mapId": "ID del Mapa",
+    "playableArea": "Área jugable",
+    "playableAreaTooltip": "Cuadro delimitador de los puntos de captura - la parte del mapa donde ocurre el combate. Siempre más pequeño que el tamaño total del mapa.",
+    "mapStats": "Estadísticas del mapa para {{mode}}",
+    "points": "Puntos de recursos",
+    "totalCapturable": "Puntos capturables",
+    "income": "Ingreso por minuto",
+    "incomeTotal": "Total",
+    "incomePerSide": "Por bando",
+    "incomePerSideTooltip": "La mitad del ingreso total. Los mapas son casi simétricos, pero los puntos en el centro del mapa se disputan en lugar de dividirse, así que trátalo como una estimación.",
+    "incomeNote": "Ingreso de todos los puntos capturables con control total, por minuto.",
+    "hoverHint": "Pasa el cursor sobre cualquier punto del mapa para ver sus detalles:",
+    "hoverDetails": {
+      "tier": "Nivel del punto (extra bajo hasta alto)",
+      "income": "Ingreso por minuto que genera",
+      "captureTime": "Tiempo de captura - cuánto tarda en capturarse",
+      "revertTime": "Tiempo de reversión - cuánto tarda en volverse neutral de nuevo",
+      "secureRadius": "Radio seguro alrededor del punto"
+    },
+    "tierSizeHint": "Los iconos en el mapa tienen un tamaño según su nivel, por lo que los puntos de mayor rendimiento son más grandes.",
+    "showSectors": "Mostrar sectores",
+    "sectorsTooltip": "Dibuja los sectores territoriales en el mapa. Un punto solo está conectado a tu base una vez que controlas la cadena de sectores que llevan a él.",
+    "pointIncome": "Ingreso: +{{value}} / min",
+    "pointCaptureTime": "Tiempo de captura: {{value}}s",
+    "pointRevertTime": "Tiempo de reversión: {{value}}s",
+    "pointSecureRadius": "Radio seguro: {{value}}",
+    "startingPositionTooltip": "Equipo {{team}} - jugador {{position}}",
+    "playerPositionTooltip": "Jugador {{position}}"
+  }
+}

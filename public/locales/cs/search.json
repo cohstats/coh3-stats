@@ -15,7 +15,8 @@
   },
   "sections": {
     "players": "Hráči",
-    "units": "Jednotky"
+    "units": "Jednotky",
+    "maps": "Mapy"
   },
   "errors": {
     "searchError": "Chyba při vyhledávání"
@@ -23,7 +24,21 @@
   "noResults": {
     "players": "Žádní hráči nenalezeni",
     "units": "Žádné jednotky nenalezeny",
-    "unitsEnglishOnly": "Vyhledávání jednotek podporuje pouze anglický jazyk"
+    "unitsEnglishOnly": "Vyhledávání jednotek podporuje pouze anglický jazyk",
+    "maps": "Žádné mapy nenalezeny"
+  },
+  "mapCard": {
+    "modes": {
+      "1v1": "1vs1",
+      "2v2": "2vs2",
+      "3v3": "3vs3",
+      "4v4": "4vs4",
+      "fs": "Final Stand",
+      "other": "Ostatní"
+    },
+    "players_one": "{{count}} hráč",
+    "players_other": "{{count}} hráčů",
+    "community": "Komunita"
   },
   "info": {
     "firstResults": "Zobrazeno je pouze prvních 50 výsledků. Upřesněte prosím své vyhledávání.",

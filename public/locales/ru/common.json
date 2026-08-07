@@ -20,6 +20,8 @@
       "unitBrowser": "Список подразделений",
       "challenges": "Задания",
       "weapons": "Вооружение",
+      "maps": "Карты",
+      "mapsTable": "Таблица карт",
       "tools": "Инструменты"
     },
     "liveGames": "Активные игры",
@@ -68,6 +70,15 @@
   },
   "search": {
     "playersAndUnits": "Игроки и подразделения"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "unitTooltip": "Это подразделение из дополнения Final Stand (кооператив против ИИ). Оно недоступно в стандартной перестрелке / мультиплеере.",
+    "weaponTooltip": "Это оружие из дополнения Final Stand (кооператив против ИИ). Оно недоступно в стандартной перестрелке / мультиплеере.",
+    "showUnits": "Показать подразделения Final Stand",
+    "showUnitsDescription": "Подразделения из дополнения Final Stand (кооператив против ИИ)",
+    "showWeapons": "Показать оружие Final Stand",
+    "filterUnits": "Показать / скрыть подразделения Final Stand"
   },
   "loading": "Загрузка...",
   "error": "Ошибка",

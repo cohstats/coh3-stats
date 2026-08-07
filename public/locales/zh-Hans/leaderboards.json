@@ -36,7 +36,8 @@
       "itemsPerPage": "每页项目数",
       "previous": "上一页",
       "next": "下一页",
-      "showingRange": "显示第 {{start}} - {{end}} 项，共 {{total}} 个团队"
+      "showingRange": "显示第 {{start}} - {{end}} 项，共 {{total}} 个团队",
+      "excludeInactive": "已排除超过 1 年未活动的团队"
     }
   }
 }

@@ -36,7 +36,8 @@
       "itemsPerPage": "Elementos por página",
       "previous": "Anterior",
       "next": "Siguiente",
-      "showingRange": "Mostrando {{start}} - {{end}} de {{total}} equipos"
+      "showingRange": "Mostrando {{start}} - {{end}} de {{total}} equipos",
+      "excludeInactive": "Los equipos inactivos por más de 1 año quedan excluidos"
     }
   }
 }

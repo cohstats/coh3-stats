@@ -36,7 +36,8 @@
       "itemsPerPage": "Položek na stránku",
       "previous": "Předchozí",
       "next": "Další",
-      "showingRange": "Zobrazeno {{start}} - {{end}} z {{total}} týmů"
+      "showingRange": "Zobrazeno {{start}} - {{end}} z {{total}} týmů",
+      "excludeInactive": "Týmy neaktivní déle než 1 rok jsou vyloučeny"
     }
   }
 }

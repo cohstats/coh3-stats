@@ -15,7 +15,8 @@
   },
   "sections": {
     "players": "Jugadores",
-    "units": "Unidades"
+    "units": "Unidades",
+    "maps": "Mapas"
   },
   "errors": {
     "searchError": "Error durante la búsqueda"
@@ -23,7 +24,21 @@
   "noResults": {
     "players": "No se encontraron jugadores",
     "units": "No se encontraron unidades",
-    "unitsEnglishOnly": "La búsqueda de unidades solo admite el idioma inglés"
+    "unitsEnglishOnly": "La búsqueda de unidades solo admite el idioma inglés",
+    "maps": "No se encontraron mapas"
+  },
+  "mapCard": {
+    "modes": {
+      "1v1": "1vs1",
+      "2v2": "2vs2",
+      "3v3": "3vs3",
+      "4v4": "4vs4",
+      "fs": "Final Stand",
+      "other": "Otro"
+    },
+    "players_one": "{{count}} jugador",
+    "players_other": "{{count}} jugadores",
+    "community": "Comunidad"
   },
   "info": {
     "firstResults": "Solo se muestran los primeros 50 resultados. Por favor, refina tu búsqueda.",

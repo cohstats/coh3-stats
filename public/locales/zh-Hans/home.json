@@ -22,7 +22,6 @@
     },
     "leaderboards": {
       "title": "1v1 排行榜",
-      "description": "查看当前的排行榜和顶级玩家。",
       "viewFullLeaderboard": "查看完整排行榜",
       "factions": {
         "american": "美军",
@@ -31,13 +30,7 @@
         "dak": "DAK"
       }
     },
-    "liveGames": {
-      "title": "实时游戏",
-      "description": "观看当前正在进行的游戏。"
-    },
     "tools": {
-      "title": "工具",
-      "description": "探索游戏数据和工具。",
       "dpsCalculator": {
         "title": "DPS 计算器",
         "description": "比较游戏中所有单位的DPS。使用不同武器自定义单位装备。您还可以考虑单位的HP。"
@@ -49,18 +42,15 @@
     },
     "twitch": {
       "title": "观看直播",
-      "description": "观看最新的英雄连3直播。",
       "noStreams": "目前没有英语直播在Twitch上播放。"
     },
     "youtube": {
       "title": "上周的视频",
-      "description": "观看最新的英雄连3视频。",
       "noData": "没有可用的YouTube视频",
       "views": "观看次数"
     },
     "reddit": {
       "title": "热门COH3 Reddit帖子",
-      "description": "查看最新的社区讨论。",
       "noData": "没有可用的Reddit帖子"
     }
   },

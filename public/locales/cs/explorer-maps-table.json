@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 Tabulka map - Porovnání všech dat map",
+    "description": "Všechny multiplayerové mapy Company of Heroes 3 v jedné řaditelné tabulce - počty zdrojových bodů, maximální příjem za minutu paliva, munice a pracovní síly, velikosti map a komunitní mapy.",
+    "keywords": [
+      "coh3 tabulka map",
+      "data map company of heroes 3",
+      "coh3 příjem mapy",
+      "coh3 body paliva",
+      "coh3 velikost mapy",
+      "porovnání map",
+      "seznam map"
+    ]
+  },
+  "page": {
+    "title": "Tabulka map Company of Heroes 3",
+    "subtitle": "Všechna data map v jedné řaditelné tabulce - zdrojové body, příjem za minutu a velikosti map.",
+    "noMaps": "Žádné mapy neodpovídají zvoleným filtrům."
+  },
+  "filters": {
+    "income": "Příjem",
+    "incomeTotal": "Celkem",
+    "incomePerSide": "Za stranu",
+    "incomeTooltip": "Zda sloupce příjmu zobrazují příjem celé mapy, nebo odhadovaný příjem jedné strany (polovina celkového)."
+  },
+  "groups": {
+    "map": "Mapa",
+    "points": "Zdrojové body",
+    "income": "Příjem / min",
+    "size": "Velikost"
+  },
+  "columns": {
+    "name": "Název",
+    "mode": "Mód",
+    "victory": "VP",
+    "fuel": "Palivo",
+    "munitions": "Muni",
+    "strategic": "PS",
+    "capturable": "Celkem",
+    "mapSize": "Mapa",
+    "playableArea": "Hratelná"
+  },
+  "tooltips": {
+    "victory": "Počet vítězných bodů",
+    "fuel": "Počet bodů paliva",
+    "munitions": "Počet bodů munice",
+    "strategic": "Počet bodů pracovní síly (strategické)",
+    "capturable": "Celkový počet bodů, které mohou hráči zabrat - startovní pozice hráčů se nepočítají",
+    "incomeFuel": "Palivo za minutu při plné kontrole mapy",
+    "incomeMunitions": "Munice za minutu při plné kontrole mapy",
+    "incomeManpower": "Pracovní síla za minutu při plné kontrole mapy",
+    "incomePerSideNote": "Za stranu je polovina celku - mapy jsou téměř symetrické, ale body uprostřed jsou spíše sporné než rozdělené, takže to berte jako odhad.",
+    "mapSize": "Velikost mapy v herních jednotkách (šířka × výška)",
+    "playableArea": "Ohraničující box kontrolních bodů - část mapy, na které probíhá boj",
+    "mapIdVersion": "ID mapy podle herních souborů - verze scénáře {{version}}"
+  },
+  "details": {
+    "button": "Podrobnosti",
+    "tooltip": "Otevřít stránku podrobností pro {{name}}"
+  }
+}

@@ -20,6 +20,8 @@
       "unitBrowser": "Einheiten-Browser",
       "challenges": "Herausforderungen",
       "weapons": "Waffen",
+      "maps": "Karten",
+      "mapsTable": "Kartentabelle",
       "tools": "Werkzeuge"
     },
     "liveGames": "Laufende Spiele",
@@ -68,6 +70,15 @@
   },
   "search": {
     "playersAndUnits": "Spieler und Einheiten"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "unitTooltip": "Diese Einheit stammt aus dem Final Stand DLC (Koop gegen KI). Sie ist im normalen Gefecht- / Mehrspielermodus nicht verfügbar.",
+    "weaponTooltip": "Diese Waffe stammt aus dem Final Stand DLC (Koop gegen KI). Sie ist im normalen Gefecht- / Mehrspielermodus nicht verfügbar.",
+    "showUnits": "Final Stand Einheiten anzeigen",
+    "showUnitsDescription": "Einheiten aus dem Final Stand DLC (Koop gegen KI)",
+    "showWeapons": "Final Stand Waffen anzeigen",
+    "filterUnits": "Final Stand Einheiten anzeigen / ausblenden"
   },
   "loading": "Wird geladen...",
   "error": "Fehler",

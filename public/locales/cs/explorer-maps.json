@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "COH3 Mapy - Všechny multiplayerové mapy",
+    "description": "Procházejte všechny multiplayerové mapy Company of Heroes 3. Filtrujte podle herního módu, prohlédněte si rozložení zdrojů, velikosti map a komunitní mapy.",
+    "keywords": [
+      "coh3 mapy",
+      "company of heroes 3 mapy",
+      "1v1 mapy",
+      "2v2 mapy",
+      "3v3 mapy",
+      "4v4 mapy",
+      "komunitní mapy",
+      "seznam map"
+    ]
+  },
+  "page": {
+    "title": "Mapy Company of Heroes 3",
+    "subtitle": "Procházejte všechny multiplayerové mapy ve hře s jejich rozložením zdrojů.",
+    "noMaps": "Žádné mapy neodpovídají zvoleným filtrům."
+  },
+  "view": {
+    "cards": "Karty",
+    "table": "Tabulka",
+    "cardsTooltip": "Procházejte mapy jako karty s jejich minimapami",
+    "tableTooltip": "Porovnejte všechna data map v řaditelné tabulce"
+  },
+  "filters": {
+    "searchPlaceholder": "Hledat mapy",
+    "lobbyOnly": "V aktuální lobby",
+    "mapCount_one": "{{count}} mapa",
+    "mapCount_other": "{{count}} map"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "Ostatní"
+  },
+  "sections": {
+    "1v1": "Mapy pro 1 vs 1",
+    "2v2": "Mapy pro 2 vs 2",
+    "3v3": "Mapy pro 3 vs 3",
+    "4v4": "Mapy pro 4 vs 4",
+    "fs": "Mapy Final Stand (kooperace proti AI)",
+    "other": "Ostatní mapy"
+  },
+  "card": {
+    "players_one": "{{count}} hráč",
+    "players_other": "{{count}} hráčů",
+    "community": "Komunita",
+    "authorTooltip": "Vytvořil {{author}}",
+    "notInLobby": "Není v lobby",
+    "notInLobbyTooltip": "Tato mapa není vybratelná v herní lobby.",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "Velikost mapy"
+  },
+  "points": {
+    "victory": "Vítězné body",
+    "fuel": "Body paliva",
+    "munitions": "Body munice",
+    "strategic": "Body pracovní síly",
+    "starting_position": "Startovní pozice hráčů",
+    "starting_positionShort": "Startovní pozice",
+    "victorySingle": "Vítězný bod",
+    "fuelSingle": "Bod paliva",
+    "munitionsSingle": "Bod munice",
+    "strategicSingle": "Bod pracovní síly",
+    "victoryShort": "Vítězství",
+    "fuelShort": "Palivo",
+    "munitionsShort": "Munice",
+    "strategicShort": "Pracovní síla"
+  },
+  "tiers": {
+    "extra_low": "velmi nízký",
+    "low": "nízký",
+    "medium": "střední",
+    "extra_medium": "vyšší střední",
+    "high": "vysoký",
+    "default": "výchozí"
+  },
+  "resources": {
+    "fuel": "Palivo",
+    "munition": "Munice",
+    "manpower": "Pracovní síla"
+  },
+  "detail": {
+    "backToMaps": "Všechny mapy",
+    "overview": "Přehled",
+    "description": "Popis",
+    "players": "Hráči",
+    "author": "Autor",
+    "mapId": "ID mapy",
+    "playableArea": "Hratelná oblast",
+    "playableAreaTooltip": "Ohraničující box kontrolních bodů - část mapy, na které probíhá boj. Vždy menší než celková velikost mapy.",
+    "mapStats": "Statistiky mapy pro {{mode}}",
+    "points": "Zdrojové body",
+    "totalCapturable": "Zabratelné body",
+    "income": "Příjem za minutu",
+    "incomeTotal": "Celkem",
+    "incomePerSide": "Za stranu",
+    "incomePerSideTooltip": "Polovina celkového příjmu. Mapy jsou téměř symetrické, ale body uprostřed mapy jsou spíše sporné než rozdělené, takže to berte jako odhad.",
+    "incomeNote": "Příjem ze všech zabratelných bodů při plné kontrole, za minutu.",
+    "hoverHint": "Najeďte na libovolný bod na mapě pro zobrazení podrobností:",
+    "hoverDetails": {
+      "tier": "Úroveň bodu (velmi nízká až vysoká)",
+      "income": "Příjem za minutu, který generuje",
+      "captureTime": "Doba zabrání - jak dlouho trvá jej zabrat",
+      "revertTime": "Doba návratu - jak dlouho trvá, než se opět stane neutrálním",
+      "secureRadius": "Bezpečný poloměr okolo bodu"
+    },
+    "tierSizeHint": "Ikony na mapě jsou velikostně odstupňovány podle úrovně, takže výnosnější body jsou větší.",
+    "showSectors": "Zobrazit sektory",
+    "sectorsTooltip": "Vykreslí územní sektory na mapě. Bod je propojen s vaší základnou pouze pokud držíte řetěz sektorů, který k němu vede.",
+    "pointIncome": "Příjem: +{{value}} / min",
+    "pointCaptureTime": "Doba zabrání: {{value}}s",
+    "pointRevertTime": "Doba návratu: {{value}}s",
+    "pointSecureRadius": "Bezpečný poloměr: {{value}}",
+    "startingPositionTooltip": "Tým {{team}} - hráč {{position}}",
+    "playerPositionTooltip": "Hráč {{position}}"
+  }
+}

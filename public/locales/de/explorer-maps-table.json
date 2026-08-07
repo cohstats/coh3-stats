@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 Kartentabelle - Alle Kartendaten im Vergleich",
+    "description": "Alle Company of Heroes 3 Mehrspielerkarten in einer sortierbaren Tabelle - Anzahl der Ressourcenpunkte, maximales Einkommen pro Minute an Treibstoff, Munition und Mannschaft, Kartengrößen und Community-Karten.",
+    "keywords": [
+      "coh3 kartentabelle",
+      "company of heroes 3 kartendaten",
+      "coh3 karteneinkommen",
+      "coh3 treibstoffpunkte",
+      "coh3 kartengröße",
+      "kartenvergleich",
+      "kartenliste"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 Kartentabelle",
+    "subtitle": "Alle Kartendaten in einer sortierbaren Tabelle - Ressourcenpunkte, Einkommen pro Minute und Kartengrößen.",
+    "noMaps": "Keine Karten entsprechen den ausgewählten Filtern."
+  },
+  "filters": {
+    "income": "Einkommen",
+    "incomeTotal": "Gesamt",
+    "incomePerSide": "Pro Seite",
+    "incomeTooltip": "Ob die Einkommensspalten das Einkommen der gesamten Karte oder das geschätzte Einkommen einer Seite (Hälfte des Gesamtwerts) anzeigen."
+  },
+  "groups": {
+    "map": "Karte",
+    "points": "Ressourcenpunkte",
+    "income": "Einkommen / Min",
+    "size": "Größe"
+  },
+  "columns": {
+    "name": "Name",
+    "mode": "Modus",
+    "victory": "SP",
+    "fuel": "Treibstoff",
+    "munitions": "Muni",
+    "strategic": "MP",
+    "capturable": "Gesamt",
+    "mapSize": "Karte",
+    "playableArea": "Spielbar"
+  },
+  "tooltips": {
+    "victory": "Anzahl der Siegpunkte",
+    "fuel": "Anzahl der Treibstoffpunkte",
+    "munitions": "Anzahl der Munitionspunkte",
+    "strategic": "Anzahl der Mannschaftspunkte (strategisch)",
+    "capturable": "Gesamtzahl der Punkte, die von Spielern erobert werden können - die Startpositionen der Spieler werden nicht mitgezählt",
+    "incomeFuel": "Treibstoff pro Minute bei voller Kontrolle der Karte",
+    "incomeMunitions": "Munition pro Minute bei voller Kontrolle der Karte",
+    "incomeManpower": "Mannschaft pro Minute bei voller Kontrolle der Karte",
+    "incomePerSideNote": "Pro Seite ist die Hälfte des Gesamtwerts - Karten sind fast symmetrisch, aber die Punkte in der Mitte werden eher umkämpft als aufgeteilt, daher als Schätzung zu betrachten.",
+    "mapSize": "Größe der Karte in Weltmaßeinheiten (Breite × Höhe)",
+    "playableArea": "Umgebender Bereich der Eroberungspunkte - der Teil der Karte, auf dem gekämpft wird",
+    "mapIdVersion": "Karten-ID wie in den Spieldateien verwendet - Szenarioversion {{version}}"
+  },
+  "details": {
+    "button": "Details",
+    "tooltip": "Detailseite von {{name}} öffnen"
+  }
+}

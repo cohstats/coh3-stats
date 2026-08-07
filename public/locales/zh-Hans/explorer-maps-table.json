@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 地图表格 - 所有地图数据对比",
+    "description": "英雄连3所有多人游戏地图汇总于一个可排序表格 - 资源点数量，燃料、弹药和人力每分钟最大收入，地图大小和社区地图。",
+    "keywords": [
+      "coh3地图表格",
+      "英雄连3地图数据",
+      "coh3地图收入",
+      "coh3燃料点",
+      "coh3地图大小",
+      "地图对比",
+      "地图列表"
+    ]
+  },
+  "page": {
+    "title": "英雄连3地图表格",
+    "subtitle": "所有地图数据汇总于一个可排序表格 - 资源点、每分钟收入和地图大小。",
+    "noMaps": "没有符合所选筛选条件的地图。"
+  },
+  "filters": {
+    "income": "收入",
+    "incomeTotal": "总计",
+    "incomePerSide": "单方",
+    "incomeTooltip": "收入列显示的是整张地图的收入，还是一方（总收入的一半）的估算收入。"
+  },
+  "groups": {
+    "map": "地图",
+    "points": "资源点",
+    "income": "收入 / 分钟",
+    "size": "大小"
+  },
+  "columns": {
+    "name": "名称",
+    "mode": "模式",
+    "victory": "胜利点",
+    "fuel": "燃料",
+    "munitions": "弹药",
+    "strategic": "人力",
+    "capturable": "总计",
+    "mapSize": "地图",
+    "playableArea": "可游玩区域"
+  },
+  "tooltips": {
+    "victory": "胜利点数量",
+    "fuel": "燃料点数量",
+    "munitions": "弹药点数量",
+    "strategic": "人力（战略）点数量",
+    "capturable": "玩家可占领的点位总数——不包括玩家出生点",
+    "incomeFuel": "完全控制地图时每分钟的燃料收入",
+    "incomeMunitions": "完全控制地图时每分钟的弹药收入",
+    "incomeManpower": "完全控制地图时每分钟的人力收入",
+    "incomePerSideNote": "单方收入为总收入的一半——地图大致对称，但中央的点是争夺的而非平分的，因此请将其视为估算值。",
+    "mapSize": "以世界单位表示的地图大小（宽 × 高）",
+    "playableArea": "占领点的边界框——地图中发生战斗的区域",
+    "mapIdVersion": "游戏文件中使用的地图 ID——场景版本 {{version}}"
+  },
+  "details": {
+    "button": "详情",
+    "tooltip": "打开 {{name}} 的详情页面"
+  }
+}

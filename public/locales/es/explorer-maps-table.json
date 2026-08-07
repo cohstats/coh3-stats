@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 Tabla de Mapas - Todos los Datos de Mapas Comparados",
+    "description": "Todos los mapas multijugador de Company of Heroes 3 en una tabla ordenable - cantidad de puntos de recursos, ingreso máximo por minuto de combustible, municiones y mano de obra, tamaños de mapas y mapas de la comunidad.",
+    "keywords": [
+      "coh3 tabla de mapas",
+      "datos de mapas de company of heroes 3",
+      "coh3 ingreso de mapas",
+      "coh3 puntos de combustible",
+      "coh3 tamaño de mapa",
+      "comparación de mapas",
+      "lista de mapas"
+    ]
+  },
+  "page": {
+    "title": "Tabla de Mapas de Company of Heroes 3",
+    "subtitle": "Todos los datos de los mapas en una tabla ordenable - puntos de recursos, ingreso por minuto y tamaños de mapas.",
+    "noMaps": "Ningún mapa coincide con los filtros seleccionados."
+  },
+  "filters": {
+    "income": "Ingreso",
+    "incomeTotal": "Total",
+    "incomePerSide": "Por bando",
+    "incomeTooltip": "Si las columnas de ingreso muestran el ingreso de todo el mapa, o el ingreso estimado de un bando (mitad del total)."
+  },
+  "groups": {
+    "map": "Mapa",
+    "points": "Puntos de recursos",
+    "income": "Ingreso / min",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "name": "Nombre",
+    "mode": "Modo",
+    "victory": "PV",
+    "fuel": "Combustible",
+    "munitions": "Muni",
+    "strategic": "MO",
+    "capturable": "Total",
+    "mapSize": "Mapa",
+    "playableArea": "Jugable"
+  },
+  "tooltips": {
+    "victory": "Cantidad de puntos de victoria",
+    "fuel": "Cantidad de puntos de combustible",
+    "munitions": "Cantidad de puntos de municiones",
+    "strategic": "Cantidad de puntos de mano de obra (estratégicos)",
+    "capturable": "Cantidad total de puntos que pueden ser capturados por jugadores - las posiciones iniciales de los jugadores no se cuentan",
+    "incomeFuel": "Combustible por minuto con control total del mapa",
+    "incomeMunitions": "Municiones por minuto con control total del mapa",
+    "incomeManpower": "Mano de obra por minuto con control total del mapa",
+    "incomePerSideNote": "Por bando es la mitad del total - los mapas son casi simétricos, pero los puntos en el centro se disputan en lugar de dividirse, así que trátalo como una estimación.",
+    "mapSize": "Tamaño del mapa en unidades del mundo (ancho × alto)",
+    "playableArea": "Cuadro delimitador de los puntos de captura - la parte del mapa donde ocurre el combate",
+    "mapIdVersion": "ID del mapa según los archivos del juego - versión de escenario {{version}}"
+  },
+  "details": {
+    "button": "Detalles",
+    "tooltip": "Abrir la página de detalles de {{name}}"
+  }
+}

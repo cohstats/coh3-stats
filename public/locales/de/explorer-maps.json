@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "COH3 Karten - Alle Mehrspielerkarten",
+    "description": "Durchsuche alle Company of Heroes 3 Mehrspielerkarten. Filtere nach Spielmodus, sieh dir Ressourcenpunkt-Layouts, Kartengrößen und Community-Karten an.",
+    "keywords": [
+      "coh3 karten",
+      "company of heroes 3 karten",
+      "1v1 karten",
+      "2v2 karten",
+      "3v3 karten",
+      "4v4 karten",
+      "community karten",
+      "kartenliste"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 Karten",
+    "subtitle": "Durchsuche alle Mehrspielerkarten im Spiel mit ihren Ressourcen-Layouts.",
+    "noMaps": "Keine Karten entsprechen den ausgewählten Filtern."
+  },
+  "view": {
+    "cards": "Karten-Ansicht",
+    "table": "Tabelle",
+    "cardsTooltip": "Durchsuche die Karten als Kacheln mit ihren Minikarten",
+    "tableTooltip": "Vergleiche alle Kartendaten in einer sortierbaren Tabelle"
+  },
+  "filters": {
+    "searchPlaceholder": "Karten suchen",
+    "lobbyOnly": "In aktueller Lobby",
+    "mapCount_one": "{{count}} Karte",
+    "mapCount_other": "{{count}} Karten"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "Sonstige"
+  },
+  "sections": {
+    "1v1": "1 vs 1 Karten",
+    "2v2": "2 vs 2 Karten",
+    "3v3": "3 vs 3 Karten",
+    "4v4": "4 vs 4 Karten",
+    "fs": "Final Stand Karten (Koop gegen KI)",
+    "other": "Sonstige Karten"
+  },
+  "card": {
+    "players_one": "{{count}} Spieler",
+    "players_other": "{{count}} Spieler",
+    "community": "Community",
+    "authorTooltip": "Erstellt von {{author}}",
+    "notInLobby": "Nicht in der Lobby",
+    "notInLobbyTooltip": "Diese Karte ist in der Spiel-Lobby nicht auswählbar.",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "Kartengröße"
+  },
+  "points": {
+    "victory": "Siegpunkte",
+    "fuel": "Treibstoffpunkte",
+    "munitions": "Munitionspunkte",
+    "strategic": "Mannschaftspunkte",
+    "starting_position": "Spielerstartpositionen",
+    "starting_positionShort": "Startpositionen",
+    "victorySingle": "Siegpunkt",
+    "fuelSingle": "Treibstoffpunkt",
+    "munitionsSingle": "Munitionspunkt",
+    "strategicSingle": "Mannschaftspunkt",
+    "victoryShort": "Sieg",
+    "fuelShort": "Treibstoff",
+    "munitionsShort": "Munition",
+    "strategicShort": "Mannschaft"
+  },
+  "tiers": {
+    "extra_low": "sehr niedrig",
+    "low": "niedrig",
+    "medium": "mittel",
+    "extra_medium": "gehoben mittel",
+    "high": "hoch",
+    "default": "standard"
+  },
+  "resources": {
+    "fuel": "Treibstoff",
+    "munition": "Munition",
+    "manpower": "Mannschaft"
+  },
+  "detail": {
+    "backToMaps": "Alle Karten",
+    "overview": "Übersicht",
+    "description": "Beschreibung",
+    "players": "Spieler",
+    "author": "Autor",
+    "mapId": "Karten-ID",
+    "playableArea": "Spielbarer Bereich",
+    "playableAreaTooltip": "Umgebender Bereich der Eroberungspunkte - der Teil der Karte, auf dem gekämpft wird. Immer kleiner als die gesamte Kartengröße.",
+    "mapStats": "{{mode}} Kartenstatistiken",
+    "points": "Ressourcenpunkte",
+    "totalCapturable": "Eroberbare Punkte",
+    "income": "Einkommen pro Minute",
+    "incomeTotal": "Gesamt",
+    "incomePerSide": "Pro Seite",
+    "incomePerSideTooltip": "Die Hälfte des Gesamteinkommens. Karten sind fast symmetrisch, aber Punkte in der Kartenmitte werden eher umkämpft als aufgeteilt, daher als Schätzung zu betrachten.",
+    "incomeNote": "Einkommen aller eroberbaren Punkte bei voller Kontrolle, pro Minute.",
+    "hoverHint": "Fahre mit der Maus über einen beliebigen Punkt auf der Karte, um Details zu sehen:",
+    "hoverDetails": {
+      "tier": "Stufe des Punktes (sehr niedrig bis hoch)",
+      "income": "Einkommen pro Minute, das er generiert",
+      "captureTime": "Eroberungszeit - wie lange es dauert, ihn einzunehmen",
+      "revertTime": "Rückfallzeit - wie lange es dauert, bis er wieder neutral wird",
+      "secureRadius": "Sicherungsradius um den Punkt"
+    },
+    "tierSizeHint": "Die Symbole auf der Karte sind nach Stufe skaliert, sodass die ertragreicheren Punkte größer sind.",
+    "showSectors": "Sektoren anzeigen",
+    "sectorsTooltip": "Zeichnet die Gebietssektoren auf der Karte. Ein Punkt ist nur dann mit deiner Basis verbunden, wenn du die Kette der zu ihm führenden Sektoren hältst.",
+    "pointIncome": "Einkommen: +{{value}} / Min",
+    "pointCaptureTime": "Eroberungszeit: {{value}}s",
+    "pointRevertTime": "Rückfallzeit: {{value}}s",
+    "pointSecureRadius": "Sicherungsradius: {{value}}",
+    "startingPositionTooltip": "Team {{team}} - Spieler {{position}}",
+    "playerPositionTooltip": "Spieler {{position}}"
+  }
+}

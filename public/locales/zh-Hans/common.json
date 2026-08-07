@@ -20,6 +20,8 @@
       "unitBrowser": "单位浏览器",
       "challenges": "挑战",
       "weapons": "武器",
+      "maps": "地图",
+      "mapsTable": "地图表格",
       "tools": "工具"
     },
     "liveGames": "实时游戏",
@@ -68,6 +70,15 @@
   },
   "search": {
     "playersAndUnits": "玩家和单位"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "unitTooltip": "该单位来自 Final Stand DLC（人机合作模式）。在标准遭遇战/多人游戏中不可用。",
+    "weaponTooltip": "该武器来自 Final Stand DLC（人机合作模式）。在标准遭遇战/多人游戏中不可用。",
+    "showUnits": "显示 Final Stand 单位",
+    "showUnitsDescription": "来自 Final Stand DLC 的单位(人机合作模式)",
+    "showWeapons": "显示 Final Stand 武器",
+    "filterUnits": "显示/隐藏 Final Stand 单位"
   },
   "loading": "正在加载...",
   "error": "错误",

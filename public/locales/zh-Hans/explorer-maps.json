@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "COH3 地图 - 所有多人游戏地图",
+    "description": "浏览英雄连3的所有多人游戏地图。按游戏模式筛选，查看资源点布局、地图大小和社区地图。",
+    "keywords": [
+      "coh3地图",
+      "英雄连3地图",
+      "1v1地图",
+      "2v2地图",
+      "3v3地图",
+      "4v4地图",
+      "社区地图",
+      "地图列表"
+    ]
+  },
+  "page": {
+    "title": "英雄连3地图",
+    "subtitle": "浏览游戏中的所有多人游戏地图及其资源布局。",
+    "noMaps": "没有符合所选筛选条件的地图。"
+  },
+  "view": {
+    "cards": "卡片视图",
+    "table": "表格视图",
+    "cardsTooltip": "以卡片形式浏览地图及其小地图",
+    "tableTooltip": "在可排序的表格中比较所有地图数据"
+  },
+  "filters": {
+    "searchPlaceholder": "搜索地图",
+    "lobbyOnly": "当前大厅中",
+    "mapCount_one": "{{count}} 张地图",
+    "mapCount_other": "{{count}} 张地图"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "其他"
+  },
+  "sections": {
+    "1v1": "1 对 1 地图",
+    "2v2": "2 对 2 地图",
+    "3v3": "3 对 3 地图",
+    "4v4": "4 对 4 地图",
+    "fs": "Final Stand 地图（人机合作模式）",
+    "other": "其他地图"
+  },
+  "card": {
+    "players_one": "{{count}} 名玩家",
+    "players_other": "{{count}} 名玩家",
+    "community": "社区",
+    "authorTooltip": "由 {{author}} 创建",
+    "notInLobby": "不在大厅中",
+    "notInLobbyTooltip": "该地图在游戏大厅中不可选择。",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "地图大小"
+  },
+  "points": {
+    "victory": "胜利点",
+    "fuel": "燃料点",
+    "munitions": "弹药点",
+    "strategic": "人力点",
+    "starting_position": "玩家出生点",
+    "starting_positionShort": "出生点",
+    "victorySingle": "胜利点",
+    "fuelSingle": "燃料点",
+    "munitionsSingle": "弹药点",
+    "strategicSingle": "人力点",
+    "victoryShort": "胜利",
+    "fuelShort": "燃料",
+    "munitionsShort": "弹药",
+    "strategicShort": "人力"
+  },
+  "tiers": {
+    "extra_low": "极低",
+    "low": "低",
+    "medium": "中等",
+    "extra_medium": "中高",
+    "high": "高",
+    "default": "默认"
+  },
+  "resources": {
+    "fuel": "燃料",
+    "munition": "弹药",
+    "manpower": "人力"
+  },
+  "detail": {
+    "backToMaps": "所有地图",
+    "overview": "概览",
+    "description": "描述",
+    "players": "玩家",
+    "author": "作者",
+    "mapId": "地图 ID",
+    "playableArea": "可游玩区域",
+    "playableAreaTooltip": "占领点的边界框——地图中发生战斗的区域。始终小于地图的完整大小。",
+    "mapStats": "{{mode}} 地图统计",
+    "points": "资源点",
+    "totalCapturable": "可占领点",
+    "income": "每分钟收入",
+    "incomeTotal": "总计",
+    "incomePerSide": "单方",
+    "incomePerSideTooltip": "总收入的一半。地图大致对称，但地图中央的点是争夺的而非平分的，因此请将其视为估算值。",
+    "incomeNote": "在完全控制情况下，所有可占领点每分钟的收入。",
+    "hoverHint": "将鼠标悬停在地图上的任意点，查看其详细信息：",
+    "hoverDetails": {
+      "tier": "点位等级（从极低到高）",
+      "income": "该点每分钟产生的收入",
+      "captureTime": "占领时间——占领它所需的时间",
+      "revertTime": "恢复时间——它恢复中立所需的时间",
+      "secureRadius": "该点周围的安全半径"
+    },
+    "tierSizeHint": "地图上的图标按等级缩放，因此产出更高的点位图标更大。",
+    "showSectors": "显示区块",
+    "sectorsTooltip": "在地图上绘制领土区块。只有当你控制通往某点的区块链时，该点才会与你的基地相连。",
+    "pointIncome": "收入：+{{value}} / 分钟",
+    "pointCaptureTime": "占领时间：{{value}} 秒",
+    "pointRevertTime": "恢复时间：{{value}} 秒",
+    "pointSecureRadius": "安全半径：{{value}}",
+    "startingPositionTooltip": "{{team}} 队 - 玩家 {{position}}",
+    "playerPositionTooltip": "玩家 {{position}}"
+  }
+}

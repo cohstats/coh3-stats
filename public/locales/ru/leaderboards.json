@@ -36,7 +36,8 @@
       "itemsPerPage": "Элементов на странице",
       "previous": "Назад",
       "next": "Далее",
-      "showingRange": "Показано {{start}} - {{end}} из {{total}} команд"
+      "showingRange": "Показано {{start}} - {{end}} из {{total}} команд",
+      "excludeInactive": "Команды, неактивные более 1 года, исключены"
     }
   }
 }

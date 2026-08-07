@@ -269,6 +269,7 @@
       "points": "点位",
       "abilitiesUsed": "使用技能",
       "totalCommands": "总指令数",
+      "apm": "APM（每分钟操作数）",
       "upgrades": "升级",
       "requisition": "征用",
       "power": "能量",
