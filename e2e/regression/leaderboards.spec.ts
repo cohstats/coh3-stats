@@ -81,6 +81,30 @@ test.describe("Leaderboards Page", () => {
       await leaderboardsPage.selectRegion("Global");
       await leaderboardsPage.checkTableHasData();
     });
+
+    test("should change the faction filter", async () => {
+      await leaderboardsPage.navigate({ race: "american", type: "1v1" });
+      await leaderboardsPage.waitForTableLoad();
+
+      await leaderboardsPage.selectFaction("Wehrmacht");
+      await leaderboardsPage.checkTableHasData();
+
+      expect(leaderboardsPage.page.url()).toContain("race=german");
+      await leaderboardsPage.checkPageTitleContainsFaction("Wehrmacht");
+    });
+
+    test("should change the platform filter", async () => {
+      await leaderboardsPage.navigate({ race: "american", type: "1v1" });
+      await leaderboardsPage.waitForTableLoad();
+
+      await leaderboardsPage.selectPlatform("XBOX");
+
+      expect(leaderboardsPage.page.url()).toContain("platform=xbox");
+      // The console ladders are much smaller, so the table can legitimately be empty - what has to
+      // hold is that the page still renders the leaderboard instead of an error.
+      await expect(leaderboardsPage.leaderboardTable).toBeVisible();
+      await expect(leaderboardsPage.page.locator("text=Application error")).not.toBeVisible();
+    });
   });
 
   test.describe("Pagination", () => {

@@ -56,6 +56,10 @@ export class LeaderboardsPage extends BasePage {
     return this.page.locator('label:has-text("Type")').locator("..");
   }
 
+  get factionSelect(): Locator {
+    return this.page.locator('label:has-text("Faction")').locator("..");
+  }
+
   // Leaderboard Table
   get leaderboardTable(): Locator {
     return this.page.locator("table").first();
@@ -149,6 +153,15 @@ export class LeaderboardsPage extends BasePage {
   async selectPlatform(platform: string): Promise<void> {
     await this.platformSelect.click();
     await this.page.locator(`[role="option"]:has-text("${platform}")`).click();
+    await this.waitForTableLoad();
+  }
+
+  /**
+   * Change the faction filter
+   */
+  async selectFaction(faction: string): Promise<void> {
+    await this.factionSelect.click();
+    await this.page.locator(`[role="option"]:has-text("${faction}")`).click();
     await this.waitForTableLoad();
   }
 

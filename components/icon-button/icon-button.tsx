@@ -7,6 +7,8 @@ export interface IconButtonProps {
   children?: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   style?: React.CSSProperties;
+  /** Optional `data-testid` - the label changes with the state, so it can't be selected on. */
+  testId?: string;
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -15,6 +17,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   className,
   onClick,
   style,
+  testId,
 }) => (
   <>
     <Tooltip label={label}>
@@ -26,6 +29,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
         className={className}
         style={style}
         aria-label={label?.toString()}
+        data-testid={testId}
       >
         {children}
       </ActionIcon>

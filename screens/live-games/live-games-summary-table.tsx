@@ -25,7 +25,13 @@ const LiveGamesSummaryTable = ({
 
   return (
     <>
-      <Card p="md" shadow="sm" withBorder style={{ maxWidth: 620, minHeight: 170 }}>
+      <Card
+        p="md"
+        shadow="sm"
+        withBorder
+        style={{ maxWidth: 620, minHeight: 170 }}
+        data-testid="live-games-summary"
+      >
         <Card.Section pl={"xs"} pr={"xs"}>
           <Group m="xs" justify={isMobile ? "center" : "space-between"}>
             <Title order={4}>{t("summaryTable.title")}</Title>

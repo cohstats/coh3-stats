@@ -19,8 +19,10 @@ export const checkPageLoaded = async (page: Page) => {
   // Check for 404 error in page title (more specific than just "text=404")
   await expect(page.locator("h1:has-text('404')")).not.toBeVisible();
 
-  // Check that the header is present (common across all pages)
-  await expect(page.locator("header")).toBeVisible();
+  // Check that the site header is present (common across all pages). `.first()` because embedded
+  // third-party content can bring its own `<header>` - the Scalar API reference on
+  // `/other/relic-api` does.
+  await expect(page.locator("header").first()).toBeVisible();
 };
 
 /**

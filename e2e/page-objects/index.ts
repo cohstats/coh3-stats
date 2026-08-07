@@ -13,3 +13,7 @@ export { DesktopAppPage } from "./desktop-app-page";
 export { PlayerPage } from "./player-page";
 export { MatchDetailPage } from "./match-detail-page";
 export { SearchPage } from "./search-page";
+export { MapsExplorerPage, MapsTablePage, MapDetailPage } from "./explorer-maps-page";
+export { StatsPage } from "./stats-page";
+export { SiteChromePage } from "./site-chrome-page";
+export { DpsPage } from "./dps-page";

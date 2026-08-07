@@ -356,6 +356,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
                 { label: "VS Mode", value: "vs" },
                 { label: "Compare Mode", value: "compare" },
               ]}
+              data-testid="dps-mode-control"
             />
           </Flex>
           <CompareSettingsPanel
@@ -391,12 +392,14 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
               onSelect={(selection) => setSelectedUnitToAdd(selection)}
               position={-1}
               disabled={attackingUnits.length >= 6}
+              testId="dps-compare-add-search"
             />
           </Box>
           <Button
             leftSection={<IconPlus size={16} />}
             onClick={handleAddAttacker}
             disabled={!selectedUnitToAdd || attackingUnits.length >= 6}
+            data-testid="dps-compare-add-button"
           >
             Add Unit
           </Button>
@@ -416,6 +419,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
                   textAlign: "left" as const,
                   padding: "var(--mantine-spacing-xs)",
                 }}
+                data-testid={`dps-attacker-${index}`}
               >
                 <Flex justify="space-between" align="center" mb="xs">
                   <Group gap="xs" wrap="nowrap">
@@ -455,6 +459,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
             searchData={unitSelectionList}
             onSelect={handleTargetSelect}
             position={0}
+            testId="dps-compare-target-search"
           />
           {targetUnit && (
             <UnitCustomizationPanel

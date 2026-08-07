@@ -133,7 +133,7 @@ const InnerMapsStatsPage = ({
 
   if (loading) {
     content = (
-      <Center maw={400} h={250} mx="auto">
+      <Center maw={400} h={250} mx="auto" data-testid="stats-loading">
         <Loader />
       </Center>
     );
@@ -173,7 +173,12 @@ const InnerMapsStatsPage = ({
       <Container size={1230}>
         <Flex gap={"md"} justify="center">
           <Group gap={0}>
-            <Title order={2} style={{ textAlign: "center" }} p={"md"}>
+            <Title
+              order={2}
+              style={{ textAlign: "center" }}
+              p={"md"}
+              data-testid="stats-games-analyzed"
+            >
               Games analyzed {matchCount.toLocaleString()}
             </Title>
             {matchCount < 1000 && (
@@ -203,6 +208,7 @@ const InnerMapsStatsPage = ({
               </Group>
             }
             size={"md"}
+            testId="map-stats-maps-played"
           >
             <DynamicMapsPlayedBarChart data={sortedAnalysisData} />
           </MapChartCard>
@@ -230,6 +236,7 @@ const InnerMapsStatsPage = ({
               </Group>
             }
             size={"md"}
+            testId="map-stats-winrate-deviation"
           >
             <DynamicMapsWinRateRMSChart data={sortedAnalysisData} />
           </MapChartCard>
@@ -244,6 +251,7 @@ const InnerMapsStatsPage = ({
               </Group>
             }
             size={"md"}
+            testId="map-stats-sides-winrate"
           >
             <MapsWinRateDiffChart data={sortedAnalysisData} />
           </MapChartCard>
@@ -277,6 +285,7 @@ const InnerMapsStatsPage = ({
             }
             size={"md"}
             height={320}
+            testId="map-stats-average-playtime"
           >
             <DynamicMapsPlayTimeBarChart data={sortedAnalysisData} />
           </MapChartCard>
@@ -295,13 +304,17 @@ const InnerMapsStatsPage = ({
     );
   } else if (!loading && !error) {
     content = (
-      <Center maw={400} h={250} mx="auto">
+      <Center maw={400} h={250} mx="auto" data-testid="stats-no-data">
         <h3>No data for the selected period</h3>
       </Center>
     );
   }
 
-  return <div style={{ minHeight: 2300 }}>{content}</div>;
+  return (
+    <div style={{ minHeight: 2300 }} data-testid="maps-stats-content">
+      {content}
+    </div>
+  );
 };
 
 export default InnerMapsStatsPage;

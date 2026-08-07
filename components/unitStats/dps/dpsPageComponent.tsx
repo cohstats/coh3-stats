@@ -469,6 +469,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                   { label: "VS Mode", value: "vs" },
                   { label: "Compare Mode", value: "compare" },
                 ]}
+                data-testid="dps-mode-control"
               />
             </Flex>
           </Grid.Col>

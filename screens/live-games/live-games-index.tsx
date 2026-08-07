@@ -170,6 +170,7 @@ const LiveGamesIndex = () => {
                   { value: "custom", label: t("filters.liveGames.options.custom") },
                 ]}
                 onChange={selectType}
+                data-testid="live-games-type-select"
               />
               <Select
                 withCheckIcon={false}
@@ -183,11 +184,12 @@ const LiveGamesIndex = () => {
                   { value: "startgametime", label: t("filters.sortBy.options.startgametime") },
                 ]}
                 onChange={selectOrder}
+                data-testid="live-games-order-select"
               />
             </Group>
           </Stack>
           {!isMobile && !liveGamesSummaryError && (
-            <div style={{ width: 660, height: 250 }}>
+            <div style={{ width: 660, height: 250 }} data-testid="live-games-chart">
               <DynamicLiveGamesLineChart
                 data={chartData}
                 type={type}

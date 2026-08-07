@@ -116,6 +116,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
           border: isOptionalSourceWeapon ? `1px solid ${sourceStyle.borderColor}` : undefined,
           boxShadow: isOptionalSourceWeapon ? sourceStyle.boxShadow : undefined,
         })}
+        data-testid="dps-weapon-card"
       >
         {isOptionalSourceWeapon && (
           <Text

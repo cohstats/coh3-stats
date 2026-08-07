@@ -125,6 +125,8 @@ interface ISearchProps {
   onSelect(selection: string | null, position: number): any;
   position: number;
   disabled?: boolean;
+  /** Optional `data-testid` - the page renders several of these selects side by side. */
+  testId?: string;
 }
 
 export const UnitSearch = (props: ISearchProps) => {
@@ -156,6 +158,7 @@ export const UnitSearch = (props: ISearchProps) => {
       onChange={(value) => onSelectionChange(value)}
       disabled={props.disabled}
       filter={customFilter}
+      data-testid={props.testId}
     />
   );
 };
