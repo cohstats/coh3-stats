@@ -132,6 +132,7 @@ const LiveGamesTable = ({
         />
       </Flex>
       <DataTable
+        data-testid="live-games-table"
         idAccessor={"id"}
         borderRadius="md"
         highlightOnHover

@@ -17,7 +17,7 @@ const Achievement = ({ achievement }: AchievementProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
-    <Card my={10} p={"xs"} radius="md" withBorder>
+    <Card my={10} p={"xs"} radius="md" withBorder data-testid="achievement-card">
       <div
         style={{
           display: "flex",

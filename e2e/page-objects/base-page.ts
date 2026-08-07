@@ -33,17 +33,18 @@ export class BasePage {
   }
 
   /**
-   * Get the header element
+   * Get the site header element. `.first()` because embedded third-party content can render a
+   * `<header>` of its own - the Scalar API reference on `/other/relic-api` does.
    */
   get header(): Locator {
-    return this.page.locator("header");
+    return this.page.locator("header").first();
   }
 
   /**
    * Get the footer element
    */
   get footer(): Locator {
-    return this.page.locator("footer");
+    return this.page.locator("footer").first();
   }
 
   /**

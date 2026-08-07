@@ -14,6 +14,7 @@ const DevSiteNotification = () => {
         size="lg"
         radius="md"
         bg={"orange.3"}
+        data-testid="dev-site-notification"
       >
         <Text size="md" c="black">
           You are using the dev version of the site. If you are not here on purpose, please use

@@ -96,6 +96,7 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
         searchData={unitSelectionList}
         onSelect={onUnitSelect}
         position={position === 1 ? 0 : 1}
+        testId={`dps-unit-search-${position}`}
       />
     </>
   );

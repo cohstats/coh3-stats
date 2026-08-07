@@ -7,12 +7,15 @@ const MapChartCard = ({
   children,
   height = 280,
   width = 380,
+  testId,
 }: {
   title: string | React.ReactNode;
   size: "md" | "xl";
   children: React.ReactNode;
   height?: number;
   width?: number;
+  /** Optional `data-testid` so the e2e tests can tell the charts apart. */
+  testId?: string;
 }) => {
   let chartWidth = width;
   let chartHeight = height;
@@ -23,7 +26,14 @@ const MapChartCard = ({
   }
 
   return (
-    <Card p="md" shadow="sm" w={chartWidth} withBorder style={{ overflow: "visible" }}>
+    <Card
+      p="md"
+      shadow="sm"
+      w={chartWidth}
+      withBorder
+      style={{ overflow: "visible" }}
+      data-testid={testId}
+    >
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">

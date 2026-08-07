@@ -18,12 +18,16 @@ e2e/page-objects/
 ├── base-page.ts             # Base class with common functionality
 ├── about-page.ts            # About / FAQ page
 ├── desktop-app-page.ts      # Desktop app page
+├── dps-page.ts              # DPS benchmark tool (VS + compare mode)
+├── explorer-maps-page.ts    # Map explorer - card view, table view, map detail
 ├── explorer-unit-page.ts    # Explorer unit detail page
 ├── home-page.ts             # Home page
 ├── leaderboards-page.ts     # 1v1 - 4v4 leaderboards
 ├── match-detail-page.ts     # Match detail page
 ├── player-page.ts           # Player profile page (all tabs)
 ├── search-page.ts           # Search page + header search box
+├── site-chrome-page.ts      # Header / footer, nav menus, theme + language switcher
+├── stats-page.ts            # /stats/games + /stats/maps filter bar and charts
 ├── team-leaderboards-page.ts # Team leaderboards
 ├── index.ts                 # Export all page objects
 └── README.md                # This file
@@ -144,7 +148,7 @@ get submitButton(): Locator {
 yarn playwright test
 
 # Run specific test file
-yarn playwright test e2e/smoke/home.spec.ts
+yarn playwright test e2e/regression/home-new.spec.ts
 
 # Run in UI mode
 yarn playwright test --ui

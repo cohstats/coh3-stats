@@ -110,6 +110,7 @@ const PlayerStats = ({
                     gridColumnGap: "15px",
                     // paddingBottom: "20px",
                   }}
+                  data-testid="player-stats-counters"
                 >
                   <div style={{ gridColumn: 1, justifySelf: "end" }}>
                     <Group gap={5}>
@@ -162,7 +163,7 @@ const PlayerStats = ({
               </Text>
             </Center>
 
-            <div style={{ minHeight: "840px" }}>
+            <div style={{ minHeight: "840px" }} data-testid="player-stats-charts">
               <DynamicGeoWorldMap data={countries} />
               <DynamicPlayersLineChart data={historyData} />
             </div>

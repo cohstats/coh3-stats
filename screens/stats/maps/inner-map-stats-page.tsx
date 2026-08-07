@@ -75,6 +75,7 @@ const InnerMapStatsPage = ({
         w={220}
         allowDeselect={false}
         withCheckIcon={false}
+        data-testid="map-stats-map-select"
       />
       <Space h="sm" />
       <Flex gap={"xs"} wrap="wrap" justify="space-between">

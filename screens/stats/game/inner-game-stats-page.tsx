@@ -60,10 +60,13 @@ const ChartCard = ({
   title,
   size,
   children,
+  testId,
 }: {
   title: string | React.ReactNode;
   size: "md" | "xl";
   children: React.ReactNode;
+  /** Optional `data-testid` so the e2e tests can tell the charts apart. */
+  testId?: string;
 }) => {
   let width = 300;
   let chartHeight = 265;
@@ -74,7 +77,14 @@ const ChartCard = ({
   }
 
   return (
-    <Card p="md" shadow="sm" w={width} withBorder style={{ overflow: "visible" }}>
+    <Card
+      p="md"
+      shadow="sm"
+      w={width}
+      withBorder
+      style={{ overflow: "visible" }}
+      data-testid={testId}
+    >
       {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
 
       <Card.Section withBorder inheritPadding py="xs">
@@ -149,7 +159,7 @@ const InnerGameStatsPage = ({
 
   if (loading) {
     content = (
-      <Center maw={400} h={250} mx="auto">
+      <Center maw={400} h={250} mx="auto" data-testid="stats-loading">
         <Loader />
       </Center>
     );
@@ -189,7 +199,12 @@ const InnerGameStatsPage = ({
       <>
         <Flex gap={"xl"} justify="center">
           <Group gap={0}>
-            <Title order={2} style={{ textAlign: "center" }} p={"md"}>
+            <Title
+              order={2}
+              style={{ textAlign: "center" }}
+              p={"md"}
+              data-testid="stats-games-analyzed"
+            >
               Games analyzed {matchCount.toLocaleString()}
             </Title>
             {matchCount < 1000 && (
@@ -214,19 +229,28 @@ const InnerGameStatsPage = ({
         {matchCount > 0 && (
           <>
             <Flex gap={"md"} wrap="wrap" justify="space-between">
-              <ChartCard title={`Factions Played ${mode}`} size={"md"}>
+              <ChartCard
+                title={`Factions Played ${mode}`}
+                size={"md"}
+                testId="stats-factions-played"
+              >
                 <DynamicFactionsPlayedPieChart data={analysisData} />
               </ChartCard>
 
-              <ChartCard title={`Games Results ${mode}`} size={"md"}>
+              <ChartCard title={`Games Results ${mode}`} size={"md"} testId="stats-games-results">
                 <DynamicGamesBarChart data={analysisData} />
               </ChartCard>
 
-              <ChartCard title={`Faction Winrate ${mode}`} size={"md"}>
+              <ChartCard
+                title={`Faction Winrate ${mode}`}
+                size={"md"}
+                testId="stats-faction-winrate"
+              >
                 <DynamicWinRateBarChart data={analysisData} />
               </ChartCard>
 
               <ChartCard
+                testId="stats-maps-played"
                 title={
                   <Group justify={"space-between"}>
                     <Group gap={"xs"}>
@@ -254,7 +278,7 @@ const InnerGameStatsPage = ({
             <Space h="xl" />
             <Flex gap={"md"} wrap="wrap" justify="space-between">
               <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
-              <ChartCard title={`Game Time ${mode}`} size={"xl"}>
+              <ChartCard title={`Game Time ${mode}`} size={"xl"} testId="stats-game-time">
                 <DynamicPlayTimeHistogramChart data={analysisData} />
               </ChartCard>
             </Flex>
@@ -303,13 +327,17 @@ const InnerGameStatsPage = ({
     );
   } else if (!loading && !error) {
     content = (
-      <Center maw={400} h={250} mx="auto">
+      <Center maw={400} h={250} mx="auto" data-testid="stats-no-data">
         <h3>No data for the selected period</h3>
       </Center>
     );
   }
 
-  return <div style={{ minHeight: 1600 }}>{content}</div>;
+  return (
+    <div style={{ minHeight: 1600 }} data-testid="game-stats-content">
+      {content}
+    </div>
+  );
 };
 
 export default InnerGameStatsPage;

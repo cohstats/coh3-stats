@@ -9,7 +9,7 @@ This directory contains end-to-end (e2e) tests for the COH3 Stats application us
 First, install Playwright and its dependencies:
 
 ```bash
-yarn add -E -D @playwright/test@1.49.1
+yarn add -E -D @playwright/test
 ```
 
 Then install the Playwright browsers:
@@ -82,20 +82,28 @@ e2e/
 ├── page-objects/                # One page object per tested area (see page-objects/README.md)
 ├── regression/
 │   ├── home-new.spec.ts         # Home page
+│   ├── site-chrome.spec.ts      # Header / footer, nav menus, theme + language switcher, burger menu
+│   ├── i18n.spec.ts             # Locale sweep, hreflang, language switcher round trip
 │   ├── leaderboards.spec.ts     # 1v1 - 4v4 leaderboards
 │   ├── team-leaderboards.spec.ts # Team leaderboards
 │   ├── player-page.spec.ts      # Player profile - all tabs, deep links, error paths
 │   ├── match-detail.spec.ts     # Match detail - rosters, charts, profileIDs, error paths
 │   ├── search.spec.ts           # Search - player / unit / map results + header search
+│   ├── stats-filters.spec.ts    # /stats/* - shared filter bar, url sync, charts
+│   ├── live-games.spec.ts       # Live games - filters, table, chart, error states
+│   ├── explorer-maps.spec.ts    # Map explorer - cards, table, detail, view switch
+│   ├── explorer-tools.spec.ts   # Explorer index, challenges, weapons, unit browser, admin
 │   ├── explorer-unit-view.spec.ts # Unit detail pages
-│   ├── explorer.spec.ts         # Explorer index pages
+│   ├── dps.spec.ts              # DPS benchmark tool + compare mode
 │   ├── dynamic-routes.spec.ts   # Explorer faction / unit routes
 │   ├── final-stand.spec.ts      # Final Stand DLC gating
 │   ├── desktop-app.spec.ts      # Desktop app page
 │   ├── about.spec.ts            # About / FAQ
 │   ├── news.spec.ts             # News page
-│   ├── stats.spec.ts            # Stats pages
-│   ├── other-pages.spec.ts      # Other static pages
+│   ├── other-pages.spec.ts      # /other/* + privacy policy
+│   ├── error-paths.spec.ts      # Unknown routes, malformed params, upstream failures
+│   ├── seo.spec.ts              # Title / description / canonical / OG sweep
+│   ├── api-routes.spec.ts       # appUpdateRouteV2, getBattlegroupInfo, getLatestPatchMapStats
 │   └── player-export-api.spec.ts # Player export API route
 └── README.md                    # This file
 ```
@@ -182,6 +190,31 @@ test("renders cleanly", async ({ page, pageIssues }) => {
 
 It records console errors, uncaught exceptions, failed requests and 5xx responses, filtering out
 known third-party noise (analytics, embeds, Steam avatars).
+
+## Live API vs mocking
+
+Most of the site renders live data from the COH3 Stats API. The policy the suite follows:
+
+- **Live calls** for the happy paths - they double as an "upstream is alive" check. Assert the
+  structure (a table has rows, a chart has an `svg`), never a concrete number that changes hourly.
+- **`page.route` interception** whenever a test needs a _specific_ state: an upstream 500, an empty
+  result set, or a row with known values. Intercept with a **predicate**
+  (`(url) => url.href.includes("...")`), not a glob - the glob form does not reliably match the
+  query strings these endpoints use.
+- Interception only works for requests the **browser** makes. The leaderboards, the player profile
+  and the match detail fetch in `getServerSideProps`, so their failure paths have to be provoked
+  with invalid input instead.
+- When a live endpoint can legitimately have nothing to show (no live games right now, no stats for
+  the current patch), `test.skip(true, "...")` inside the test with a reason - do not weaken the
+  assertion for everyone else.
+
+## Locales and `build:slim`
+
+`next-i18next.config.js` ships **English only** when `FULL_BUILD=false`, which is what
+`yarn build:slim` (used locally and by the CI e2e job) does. `next start` re-reads the config
+without that env var, so the localized routes are usually still served - but `i18n.spec.ts` does not
+assume it: every locale-specific test probes the route first and skips itself when the locale is not
+part of the build.
 
 ## Configuration
 

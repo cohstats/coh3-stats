@@ -94,9 +94,17 @@ const convertForTable = (data: Record<raceType, Record<leaderBoardType, number>>
   return rows;
 };
 
-const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, number>> }) => {
+const StatsTable = ({
+  data,
+  testId,
+}: {
+  data: Record<raceType, Record<leaderBoardType, number>>;
+  /** Optional `data-testid` so the e2e tests can tell the four identical tables apart. */
+  testId?: string;
+}) => {
   return (
     <DataTable
+      data-testid={testId}
       records={convertForTable(data)}
       idAccessor={"race"}
       columns={[
@@ -209,22 +217,22 @@ const StatsTable = ({ data }: { data: Record<raceType, Record<leaderBoardType, n
 
 const LeaderBoardStats = ({ leaderBoardStats }: { leaderBoardStats: LeaderboardStatsType }) => {
   return (
-    <Container size={"sm"}>
+    <Container size={"sm"} data-testid="leaderboard-stats">
       <Title order={2}>Amount of players in leaderboards</Title>
-      <StatsTable data={leaderBoardStats.totalPlayers} />
+      <StatsTable data={leaderBoardStats.totalPlayers} testId="leaderboard-stats-total-players" />
       <Text c={"dimmed"} fs="italic" pl={5} fz={"sm"}>
         * Keep in mind that one player is usually ranked in various modes. You can&apos;t sum up
         all numbers.{" "}
       </Text>
       <Space h={"xl"} />
       <Title order={2}>Highest ELO</Title>
-      <StatsTable data={leaderBoardStats.topElo} />
+      <StatsTable data={leaderBoardStats.topElo} testId="leaderboard-stats-top-elo" />
       <Space h={"xl"} />
       <Title order={2}>Players with ELO 1600+</Title>
-      <StatsTable data={leaderBoardStats.elo1600} />
+      <StatsTable data={leaderBoardStats.elo1600} testId="leaderboard-stats-elo-1600" />
       <Space h={"xl"} />
       <Title order={2}>Players with ELO 1800+</Title>
-      <StatsTable data={leaderBoardStats.elo1800} />
+      <StatsTable data={leaderBoardStats.elo1800} testId="leaderboard-stats-elo-1800" />
     </Container>
   );
 };

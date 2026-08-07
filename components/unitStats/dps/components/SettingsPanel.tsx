@@ -44,6 +44,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               label="DPS / Target Health (%)"
               checked={showDpsHealth}
               onChange={(event) => onShowDpsHealthChange(event.currentTarget.checked)}
+              data-testid="dps-health-toggle"
             />
             <Space />
             <Switch

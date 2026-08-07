@@ -19,6 +19,7 @@ export const ColorSchemeToggle: React.FC<ColorSchemeToggleProps> = ({ onClick })
   return (
     <IconButton
       label={colorScheme === "dark" ? "Light mode" : "Dark mode"}
+      testId="color-scheme-toggle"
       onClick={handleClick}
       style={{
         backgroundColor:

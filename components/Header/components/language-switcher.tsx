@@ -68,6 +68,7 @@ export const LanguageSwitcher: React.FC = () => {
   return (
     <Select
       radius="md"
+      data-testid="language-switcher"
       value={router.locale}
       onChange={handleLanguageChange}
       withCheckIcon={false}
