@@ -48,7 +48,7 @@ export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
           </Center>
         )}
         {unit && (
-          <Box style={boxStyle}>
+          <Box style={boxStyle} data-testid={`dps-unit-card-${position}`}>
             <DpsUnitCustomizing
               key={unit.id + "." + position + "." + patchVersion}
               unit={unit}

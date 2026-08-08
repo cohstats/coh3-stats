@@ -73,8 +73,17 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
     const defaultPatchView = config.statsPatchSelector[config.defaultStatsPatchSelector];
 
     if (!fromQuery && !toQuery && defaultPatchView) {
+      // The stats pages are statically generated, so on mount `query` is still empty - spreading it
+      // here would drop every other param of a deep link (`?mode=`, `?filters=`, `?map=`), which is
+      // exactly what `getMapsStatsRoute` produces. Read them off the live url instead.
       push(
-        { query: { ...query, from: defaultPatchView.from, to: defaultPatchView.to } },
+        {
+          query: {
+            ...Object.fromEntries(queryParams),
+            from: defaultPatchView.from,
+            to: defaultPatchView.to,
+          },
+        },
         undefined,
         {
           shallow: true,
@@ -460,10 +469,12 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             data={patchSelectorData}
             withCheckIcon={false}
             w={145}
+            data-testid="stats-patch-select"
           />
           <DatePickerInput
             type="range"
             label="Pick dates range"
+            data-testid="stats-date-range"
             value={valueDatePicker}
             onChange={(val) => {
               // Convert string values to Date objects to preserve existing behavior
@@ -523,6 +534,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             disabled={multiFilter.length > 0}
             w={200}
             allowDeselect={false}
+            data-testid="stats-elo-select"
           />
 
           <SegmentedControl
@@ -530,6 +542,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
             data={segmentedControlGameTypeData}
             value={mode}
             onChange={(value) => selectMode(value as "all" | "1v1" | "2v2" | "3v3" | "4v4")}
+            data-testid="stats-mode-control"
           />
         </Flex>
 
@@ -548,11 +561,13 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
                 onChange={setMultiFilter}
                 clearable
                 w={600}
+                data-testid="stats-elo-multiselect"
               />
               <Button
                 variant="default"
                 onClick={generateEloAdvancedFilter}
                 disabled={multiFilter.length === 0}
+                data-testid="stats-elo-generate"
               >
                 Generate Analysis
               </Button>

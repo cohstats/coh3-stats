@@ -68,9 +68,13 @@ test.describe("Team Leaderboards Page", () => {
       await teamLeaderboardsPage.waitForTableLoad();
 
       await teamLeaderboardsPage.selectType("3 vs 3");
-      await teamLeaderboardsPage.checkTableHasData();
 
-      expect(teamLeaderboardsPage.page.url()).toContain("type=3v3");
+      // The select pushes the new type into the url and only then refetches, so poll for the url
+      // instead of reading it once - `selectType` returns as soon as the table content changed.
+      await expect
+        .poll(() => teamLeaderboardsPage.page.url(), { timeout: 15000 })
+        .toContain("type=3v3");
+      await teamLeaderboardsPage.checkTableHasData();
     });
 
     test("should change records per page", async () => {
