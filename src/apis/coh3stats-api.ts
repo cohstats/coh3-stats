@@ -485,6 +485,7 @@ const generateReplayUrl = async (matchObject: ProcessedMatch) => {
 
     const response = await fetch(setReplayFileUrl(matchObject.id), {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
