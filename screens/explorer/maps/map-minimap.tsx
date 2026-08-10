@@ -12,8 +12,8 @@ import {
   MpMapPointMarker,
   MpMapRenderedPointKind,
   MpMapSectorPath,
-} from "../../../src/explorer/mp-maps-helpers";
-import type { MpMapSize } from "../../../src/explorer/mp-maps-types";
+} from "../../../src/explorer/maps/mp-maps-helpers";
+import type { MpMapSize } from "../../../src/explorer/maps/mp-maps-types";
 import classes from "./map-minimap.module.css";
 
 /**

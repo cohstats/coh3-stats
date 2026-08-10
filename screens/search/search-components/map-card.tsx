@@ -7,7 +7,7 @@ import {
   getMpMapImageUrl,
   MpMapMode,
   stripMpMapNamePrefix,
-} from "../../../src/explorer/mp-maps-helpers";
+} from "../../../src/explorer/maps/mp-maps-helpers";
 import styles from "./map-card.module.css";
 
 const IMAGE_SIZE = 90;

@@ -34,7 +34,7 @@ import {
   MpMapRenderedPointKind,
   MpMapTableItem,
   stripMpMapNamePrefix,
-} from "../../../src/explorer/mp-maps-helpers";
+} from "../../../src/explorer/maps/mp-maps-helpers";
 
 /** Side of the minimap thumbnail in the first column. */
 const THUMBNAIL_SIZE = 40;

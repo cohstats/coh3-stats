@@ -1,5 +1,5 @@
-import { parseMpMaps, resolveMpMapText } from "../../../src/explorer/mp-maps";
-import type { RawMpMapsFile } from "../../../src/explorer/mp-maps-types";
+import { parseMpMaps, resolveMpMapText } from "../../../src/explorer/maps/mp-maps";
+import type { RawMpMapsFile } from "../../../src/explorer/maps/mp-maps-types";
 
 const rawFile = {
   __meta: {

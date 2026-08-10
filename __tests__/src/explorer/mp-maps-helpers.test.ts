@@ -14,9 +14,9 @@ import {
   stripMpMapNamePrefix,
   toMpMapListItem,
   toMpMapTableItem,
-} from "../../../src/explorer/mp-maps-helpers";
-import type { MpMapListItem } from "../../../src/explorer/mp-maps-helpers";
-import type { MpMapPoint, MpMapSector } from "../../../src/explorer/mp-maps-types";
+} from "../../../src/explorer/maps/mp-maps-helpers";
+import type { MpMapListItem } from "../../../src/explorer/maps/mp-maps-helpers";
+import type { MpMapPoint, MpMapSector } from "../../../src/explorer/maps/mp-maps-types";
 
 const createMap = (overrides: Partial<MpMapListItem> = {}): MpMapListItem => ({
   id: "rural_town_4p",

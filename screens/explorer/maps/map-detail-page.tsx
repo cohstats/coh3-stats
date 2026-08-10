@@ -36,8 +36,8 @@ import {
   MP_MAP_TEAM_LAYOUTS,
   MpMapIncomeEntry,
   MpMapRenderedPointKind,
-} from "../../../src/explorer/mp-maps-helpers";
-import type { MpMap } from "../../../src/explorer/mp-maps-types";
+} from "../../../src/explorer/maps/mp-maps-helpers";
+import type { MpMap } from "../../../src/explorer/maps/mp-maps-types";
 
 /** Order the point tiers are displayed in, from the smallest to the biggest. */
 const TIER_ORDER = ["extra_low", "low", "medium", "extra_medium", "high", "default"];

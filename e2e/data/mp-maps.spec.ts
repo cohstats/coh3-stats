@@ -15,8 +15,8 @@ import {
   getMpMaps,
   parseMpMaps,
   MP_MAPS_DATA_FILE,
-} from "../../src/explorer/mp-maps";
-import type { MpMap, MpMapsData, RawMpMapsFile } from "../../src/explorer/mp-maps-types";
+} from "../../src/explorer/maps/mp-maps";
+import type { MpMap, MpMapsData, RawMpMapsFile } from "../../src/explorer/maps/mp-maps-types";
 
 /**
  * The data file was added to the coh3-data repo only recently, so it's not part of the older

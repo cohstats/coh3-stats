@@ -23,7 +23,7 @@ import unitsData from "./units-search-data.json";
 import mapsData from "./maps-search-data.json";
 import { UnitCard, UnitData } from "./search-components/unit-card";
 import { MapCard, MapSearchData } from "./search-components/map-card";
-import { stripMpMapNamePrefix } from "../../src/explorer/mp-maps-helpers";
+import { stripMpMapNamePrefix } from "../../src/explorer/maps/mp-maps-helpers";
 import { isFinalStandUnitId } from "../../src/unitStats/finalStand";
 
 export const SearchScreen = () => {

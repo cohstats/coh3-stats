@@ -6,7 +6,7 @@
  * `toMpMapListItem` is for.
  */
 
-import { getIconsPathOnCDN } from "../utils";
+import { getIconsPathOnCDN } from "../../utils";
 import type { MpMap, MpMapPoint, MpMapPointKind } from "./mp-maps-types";
 
 /** Team layouts we group / filter by, in the order they should be displayed. */

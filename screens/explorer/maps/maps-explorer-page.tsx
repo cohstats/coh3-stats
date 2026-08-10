@@ -23,7 +23,7 @@ import {
   MpMapListItem,
   MpMapMode,
   sortMpMapsByName,
-} from "../../../src/explorer/mp-maps-helpers";
+} from "../../../src/explorer/maps/mp-maps-helpers";
 
 /** Parses the `mode` query param, eg. `?mode=3v3,4v4`. Unknown values are dropped. */
 const parseModesQuery = (value: string | string[] | undefined): MpMapMode[] => {

@@ -5,7 +5,7 @@ import { TFunction } from "next-i18next/pages";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { getExplorerMapRoute } from "../../../src/routes";
 import { getIconsPathOnCDN } from "../../../src/utils";
-import { getMpMapImageUrl, MpMapListItem } from "../../../src/explorer/mp-maps-helpers";
+import { getMpMapImageUrl, MpMapListItem } from "../../../src/explorer/maps/mp-maps-helpers";
 import classes from "./map-card.module.css";
 
 /** Side of the (square) minimap thumbnail on the left of the card. */

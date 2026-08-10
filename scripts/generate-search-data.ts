@@ -1,6 +1,6 @@
 import { getMappings } from "../src/unitStats/mappings";
-import { getMpMaps } from "../src/explorer/mp-maps";
-import { getMpMapMode } from "../src/explorer/mp-maps-helpers";
+import { getMpMaps } from "../src/explorer/maps/mp-maps";
+import { getMpMapMode } from "../src/explorer/maps/mp-maps-helpers";
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 

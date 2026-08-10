@@ -3,7 +3,7 @@ import { Box, Image } from "@mantine/core";
 import {
   getMpMapPointIconUrl,
   MpMapRenderedPointKind,
-} from "../../../src/explorer/mp-maps-helpers";
+} from "../../../src/explorer/maps/mp-maps-helpers";
 import classes from "./map-point-icon.module.css";
 
 /** Team colors of the player starts, matching the ones the game uses on its own minimap. */

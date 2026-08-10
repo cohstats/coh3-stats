@@ -9,9 +9,9 @@
  * patch + locale + includePoints combination.
  */
 
-import config from "../../config";
-import { fetchJsonWithLogging } from "../unitStats/fetch-mappings-withLogs";
-import { fetchLocstring } from "../unitStats/locstring";
+import config from "../../../config";
+import { fetchJsonWithLogging } from "../../unitStats/fetch-mappings-withLogs";
+import { fetchLocstring } from "../../unitStats/locstring";
 import type {
   MpMap,
   MpMapsData,
