@@ -11,7 +11,7 @@
 
 import config from "../../../config";
 import { fetchJsonWithLogging } from "../../unitStats/fetch-mappings-withLogs";
-import { fetchLocstring } from "../../unitStats/locstring";
+import { clearPatchLocstringCache, getLocstringForPatch } from "../patch-locstring";
 import type {
   MpMap,
   MpMapsData,
@@ -42,43 +42,8 @@ type GetMpMapsOptions = {
 // Cache of parsed data, keyed by patch + locale + includePoints.
 const mpMapsCache: Record<string, MpMapsData> = {};
 
-// Cache of locstrings for patches other than the latest one, keyed by patch + locale.
-// The latest patch is served from the shared unitStats locstring cache.
-const patchLocstringCache: Record<string, Record<string, string | null>> = {};
-
 const getCacheKey = (patch: string, locale: string, includePoints: boolean) =>
   `${patch}-${locale}-${includePoints}`;
-
-/**
- * Returns the locstring map for the given patch and locale.
- *
- * For the latest patch we reuse the shared unitStats locstring cache, so the (heavy) locstring file
- * is downloaded only once per locale. For older patches we keep a separate cache, because the
- * unitStats one is keyed by locale only.
- */
-const getLocstringForPatch = async (
-  patch: string,
-  locale: string,
-): Promise<Record<string, string | null>> => {
-  if (patch === "latest" || patch === config.latestPatch) {
-    return (await fetchLocstring(locale)) ?? {};
-  }
-
-  const cacheKey = `${patch}-${locale}`;
-  if (patchLocstringCache[cacheKey]) return patchLocstringCache[cacheKey];
-
-  const url = config.getPatchDataLocaleUrl(locale, patch);
-  const locstring = await fetchJsonWithLogging(
-    url,
-    `locstring for locale ${locale}, patch ${patch}`,
-  );
-
-  // Some values are undefined, we need to fix that, otherwise we cannot serialize it.
-  for (const prop in locstring) if (!locstring[prop]) locstring[prop] = null;
-
-  patchLocstringCache[cacheKey] = locstring;
-  return locstring;
-};
 
 /**
  * Resolves a localizable text of the data file. Falls back to the English value baked into the
@@ -184,7 +149,7 @@ const getMpMaps = async (options: GetMpMapsOptions = {}): Promise<MpMapsData | n
 /** Clears the in-memory caches, useful in tests. */
 const clearMpMapsCache = () => {
   for (const key of Object.keys(mpMapsCache)) delete mpMapsCache[key];
-  for (const key of Object.keys(patchLocstringCache)) delete patchLocstringCache[key];
+  clearPatchLocstringCache();
 };
 
 export { getMpMaps, parseMpMaps, resolveMpMapText, clearMpMapsCache, MP_MAPS_DATA_FILE };

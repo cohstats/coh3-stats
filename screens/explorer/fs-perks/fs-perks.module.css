@@ -1,0 +1,117 @@
+/*
+ * The perk tree - one column per tier, laid out left to right the way the game shows it. The column
+ * count comes from the data (8 tiers today), so the track count is set inline by the component.
+ */
+.tierGrid {
+  display: grid;
+  gap: var(--mantine-spacing-md);
+  /* Every column is as tall as the tallest tier, so the shorter ones can center their perks. */
+  align-items: stretch;
+  padding-bottom: var(--mantine-spacing-xs);
+}
+
+.tierColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  height: 100%;
+}
+
+/*
+ * Tiers have a different amount of perks. The perks take the whole column below the header and are
+ * centered in it, which puts one perk in the middle and keeps two of them evenly spaced around it.
+ */
+.tierPerks {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.tierHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+/*
+ * The perk icons carry their own octagonal frame, so they sit on the page bare - no card around
+ * them. That leaves only the icon itself to carry the states, hence the glow instead of a border.
+ */
+.perkTile {
+  line-height: 0;
+  border-radius: var(--mantine-radius-md);
+  transition:
+    transform 100ms ease,
+    filter 100ms ease;
+}
+
+/* The perk pinned in the detail card below the tree. */
+.perkTileSelected {
+  filter: drop-shadow(0 0 5px var(--mantine-color-orange-6));
+}
+
+.perkTile:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.12) drop-shadow(0 0 5px var(--mantine-color-orange-5));
+}
+
+.perkTile:focus-visible {
+  outline: 2px solid var(--mantine-color-orange-5);
+  outline-offset: 2px;
+}
+
+.perkIcon {
+  border-radius: var(--mantine-radius-sm);
+}
+
+/*
+ * The level table hugs its content instead of filling the card. With the effect column right aligned
+ * a full width table would push the effects against the card edge, away from the other columns.
+ */
+.levelTable {
+  width: auto;
+  align-self: flex-start;
+}
+
+/*
+ * The pinned perk card below the tree. Its content is narrow, a full width card would leave most of
+ * it empty. Below the md breakpoint half of the page is narrower than the level table needs, so the
+ * card takes the whole width there - raw breakpoint values, the $mantine-* ones are not substituted.
+ */
+.detailCard {
+  max-width: 50%;
+}
+
+@media (max-width: 62em) {
+  .detailCard {
+    max-width: 100%;
+  }
+}
+
+/* Faction switch in the page header. */
+.factionButton {
+  padding: 4px 6px;
+  line-height: 0;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid transparent;
+  opacity: 0.55;
+  transition:
+    opacity 100ms ease,
+    border-color 100ms ease;
+}
+
+.factionButton:hover {
+  opacity: 1;
+}
+
+.factionButtonActive {
+  opacity: 1;
+  border-color: var(--mantine-color-orange-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+}
