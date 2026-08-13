@@ -1,4 +1,7 @@
 {
+  "faction": {
+    "switchTooltip": "Zu {{faction}} wechseln"
+  },
   "mainMenu": {
     "leaderboards": "Bestenlisten",
     "regularLeaderboards": "Reguläre Bestenlisten",
@@ -22,7 +25,9 @@
       "weapons": "Waffen",
       "maps": "Karten",
       "mapsTable": "Kartentabelle",
-      "tools": "Werkzeuge"
+      "tools": "Werkzeuge",
+      "fsPerks": "Final Stand Perks",
+      "fsUnits": "Final Stand Einheiten"
     },
     "liveGames": "Laufende Spiele",
     "desktopApp": "Desktop-App",
@@ -73,12 +78,15 @@
   },
   "finalStand": {
     "badge": "Final Stand",
+    "enemyBadge": "Gegner",
     "unitTooltip": "Diese Einheit stammt aus dem Final Stand DLC (Koop gegen KI). Sie ist im normalen Gefecht- / Mehrspielermodus nicht verfügbar.",
     "weaponTooltip": "Diese Waffe stammt aus dem Final Stand DLC (Koop gegen KI). Sie ist im normalen Gefecht- / Mehrspielermodus nicht verfügbar.",
+    "enemyTooltip": "Dies ist die KI-gesteuerte Gegnerseite des Final Stand Rosters, nicht die Seite, die du selbst spielst.",
     "showUnits": "Final Stand Einheiten anzeigen",
     "showUnitsDescription": "Einheiten aus dem Final Stand DLC (Koop gegen KI)",
     "showWeapons": "Final Stand Waffen anzeigen",
-    "filterUnits": "Final Stand Einheiten anzeigen / ausblenden"
+    "filterUnits": "Final Stand Einheiten anzeigen / ausblenden",
+    "multiplayerUnits": "Mehrspieler-Einheiten"
   },
   "loading": "Wird geladen...",
   "error": "Fehler",

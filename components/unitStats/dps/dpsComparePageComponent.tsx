@@ -34,7 +34,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
-import { isFinalStandUnit } from "../../../src/unitStats/finalStand";
+import { isFinalStandEnemyUnit, isFinalStandUnit } from "../../../src/unitStats/finalStand";
 import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
 import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
 import {
@@ -59,6 +59,7 @@ import { UnitCustomizationPanel } from "./components/UnitCustomizationPanel";
 import { ChartPanel } from "./components/ChartPanel";
 import { UnitSearch } from "./unitSearch";
 import { FinalStandBadge } from "../../final-stand-badge";
+import { FinalStandEnemyBadge } from "../../final-stand-enemy-badge";
 import { mapChartData, options } from "./dpsPageComponent";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
 
@@ -427,6 +428,9 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
                       {attacker.screen_name || attacker.id}
                     </Text>
                     {isFinalStandUnit({ id: attacker.id }) && <FinalStandBadge size="xs" />}
+                    {isFinalStandEnemyUnit({ id: attacker.id }) && (
+                      <FinalStandEnemyBadge size="xs" />
+                    )}
                   </Group>
                   <CloseButton size="sm" onClick={() => handleRemoveAttacker(index)} />
                 </Flex>

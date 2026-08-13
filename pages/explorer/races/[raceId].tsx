@@ -3,12 +3,13 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
-import { raceType } from "../../../src/coh3/coh3-types";
+import { raceType, raceTypeArray } from "../../../src/coh3/coh3-types";
 import {
   BuildingCard,
   BuildingSchema,
 } from "../../../components/unit-cards/building-description-card";
 import FactionIcon from "../../../components/faction-icon";
+import { FactionSwitch } from "../../../components/faction-switch";
 import { BuildingType } from "../../../src/coh3";
 import {
   SbpsType,
@@ -26,6 +27,7 @@ import {
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateKeywordsString, generateLanguageAlternates } from "../../../src/seo-utils";
+import { getExplorerFactionRoute } from "../../../src/routes";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
@@ -128,16 +130,23 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         languageAlternates={generateLanguageAlternates(asPath)}
       />
       <Container fluid p={0}>
-        <Flex direction="row" align="center" gap="md">
-          <FactionIcon name={raceToFetch} width={80} />
-          <Stack gap="xs">
-            <Title order={1} size="h2">
-              {localizedRace} - {t("factionPage.factionOverview")}
-            </Title>
-            {descriptions.raceDescription && (
-              <Text size="md">{descriptions.raceDescription}</Text>
-            )}
-          </Stack>
+        <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
+          <Flex direction="row" align="center" gap="md">
+            <FactionIcon name={raceToFetch} width={80} />
+            <Stack gap="xs">
+              <Title order={1} size="h2">
+                {localizedRace} - {t("factionPage.factionOverview")}
+              </Title>
+              {descriptions.raceDescription && (
+                <Text size="md">{descriptions.raceDescription}</Text>
+              )}
+            </Stack>
+          </Flex>
+          <FactionSwitch
+            races={raceTypeArray}
+            activeRace={raceToFetch}
+            getHref={getExplorerFactionRoute}
+          />
         </Flex>
 
         {/* Battlegroups Section */}

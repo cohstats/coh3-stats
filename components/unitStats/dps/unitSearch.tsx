@@ -1,9 +1,15 @@
 import { Group, Text, Image, Select, HoverCard, Stack, SelectProps } from "@mantine/core";
 import { UnitCostCard } from "../../unit-cards/unit-cost-card";
 import { CustomizableUnit } from "../../../src/unitStats/dpsCommon";
-import { ebpsStats, getSquadTotalCost, isFinalStandUnitId } from "../../../src/unitStats";
+import {
+  ebpsStats,
+  getSquadTotalCost,
+  isFinalStandEnemyUnitId,
+  isFinalStandUnitId,
+} from "../../../src/unitStats";
 import { Line } from "react-chartjs-2";
 import { FinalStandBadge } from "../../final-stand-badge";
+import { FinalStandEnemyBadge } from "../../final-stand-enemy-badge";
 
 // interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
 //   image: string;
@@ -109,6 +115,9 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
             <Text size="sm">{label}</Text>
             {isFinalStandUnitId((option as CustomizableUnit).id) && (
               <FinalStandBadge size="xs" withTooltip={false} />
+            )}
+            {isFinalStandEnemyUnitId((option as CustomizableUnit).id) && (
+              <FinalStandEnemyBadge size="xs" />
             )}
           </Group>
           <Text size="xs" opacity={0.65}>

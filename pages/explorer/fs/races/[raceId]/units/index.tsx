@@ -1,56 +1,57 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Head from "next/head";
-import { IconBarrierBlock, IconSearch } from "@tabler/icons-react";
+import { NextSeo } from "next-seo";
+import { IconSearch } from "@tabler/icons-react";
 import {
   Anchor,
   Card,
+  Container,
   Flex,
   Grid,
   Group,
   Stack,
   Text,
-  Title,
-  Container,
   TextInput,
+  Title,
 } from "@mantine/core";
 
-import { raceType, raceTypeArray } from "../../../../../src/coh3/coh3-types";
+import { raceType, raceTypeArray } from "../../../../../../src/coh3/coh3-types";
 import {
-  generateAlternateLanguageLinks,
   generateKeywordsString,
-} from "../../../../../src/seo-utils";
-import { localizedNames } from "../../../../../src/coh3/coh3-data";
-import { getMappings } from "../../../../../src/unitStats/mappings";
-import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
-import FactionIcon from "../../../../../components/faction-icon";
-import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
-import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
-import { FinalStandUnitsSwitch } from "../../../../../components/final-stand-units-switch";
-import { FactionSwitch } from "../../../../../components/faction-switch";
+  generateLanguageAlternates,
+} from "../../../../../../src/seo-utils";
+import { localizedNames } from "../../../../../../src/coh3/coh3-data";
+import { getMappings } from "../../../../../../src/unitStats/mappings";
+import {
+  isFinalStandEnemyUnit,
+  isFinalStandUnit,
+  SbpsType,
+} from "../../../../../../src/unitStats";
+import FactionIcon from "../../../../../../components/faction-icon";
+import { UnitDescriptionCard } from "../../../../../../components/unit-cards/unit-description-card";
+import LinkWithOutPrefetch from "../../../../../../components/LinkWithOutPrefetch";
+import { FinalStandUnitsSwitch } from "../../../../../../components/final-stand-units-switch";
+import { FactionSwitch } from "../../../../../../components/faction-switch";
 import {
   getExplorerFactionUnitsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
-} from "../../../../../src/routes";
+} from "../../../../../../src/routes";
 import { useEffect, useState } from "react";
-import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
-import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
+import { AnalyticsExplorerFactionUnitsView } from "../../../../../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
-import nextI18NextConfig from "../../../../../next-i18next.config";
-import config from "../../../../../config";
+import nextI18NextConfig from "../../../../../../next-i18next.config";
+import config from "../../../../../../config";
 import { useTranslation } from "next-i18next/pages";
 
-interface UnitDetailProps {
+interface FsUnitsProps {
   units: SbpsType[];
   raceToFetch: raceType;
-  descriptions: Record<string, Record<string, string | null>>;
 }
 
-const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
+const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
   const { asPath } = useRouter();
   const { t } = useTranslation("explorer");
-  const { t: tCommon } = useTranslation("common");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
 
@@ -58,14 +59,20 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
     AnalyticsExplorerFactionUnitsView(raceToFetch);
   }, []);
 
-  const metaKeywords = generateKeywordsString([
-    `${localizedRace} coh3`,
-    `Unit List ${localizedRace}`,
-  ]);
+  const metaKeywords = generateKeywordsString(
+    t("finalStandUnitsPage.meta.keywords", {
+      faction: localizedRace,
+      returnObjects: true,
+    }) as string[],
+  );
 
-  // Final Stand (DLC / co-op vs AI) units have their own dedicated page - see `FinalStandUnitsSwitch`.
+  // Not "COH3 Explorer" - both the unit list and og:title/description should say Final Stand up
+  // front, so link previews and search results are never confused with the multiplayer roster.
+  const pageTitle = t("finalStandUnitsPage.meta.title", { faction: localizedRace });
+  const metaDescription = t("finalStandUnitsPage.meta.description", { faction: localizedRace });
+  const canonical = `${config.SITE_URL}${asPath}`;
+
   const filteredUnits = units.filter((unit) => {
-    if (isFinalStandUnit(unit)) return false;
     if (!searchValue) return true;
     const searchLower = searchValue.toLowerCase();
     return (
@@ -115,6 +122,8 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
                           icon_name: ui.iconName,
                         }}
                         placement="list"
+                        isFinalStand
+                        isEnemy={isFinalStandEnemyUnit({ id })}
                       />
                     </Card>
                   </Anchor>
@@ -131,30 +140,48 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
 
   return (
     <>
-      <Head>
-        <title>{`${localizedRace} Units - COH3 Explorer`}</title>
-        <meta name="description" content={`${localizedRace} Units - COH3 Explorer`} />
-        <meta name="keywords" content={metaKeywords} />
-        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={metaDescription}
+        canonical={canonical}
+        openGraph={{
+          title: `${pageTitle} | COH3 Stats`,
+          description: metaDescription,
+          url: canonical,
+          type: "website",
+          siteName: "COH3 Stats",
+          images: [
+            {
+              url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+              width: 64,
+              height: 64,
+              alt: `${localizedRace} faction icon`,
+            },
+          ],
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: metaKeywords,
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">
             <FactionIcon name={raceToFetch} width={80}></FactionIcon>
             <Stack gap="xs">
               <Title order={1} size={"h2"}>
-                {localizedRace} - {tCommon("finalStand.multiplayerUnits")}
+                {localizedRace} - {t("finalStandUnitsPage.title")}
               </Title>
-              {descriptions[raceToFetch]?.description && (
-                <Text size="md">{descriptions[raceToFetch].description}</Text>
-              )}
+              <Text size="md">{t("finalStandUnitsPage.description")}</Text>
             </Stack>
           </Flex>
           <FactionSwitch
             races={raceTypeArray}
             activeRace={raceToFetch}
-            getHref={getExplorerFactionUnitsRoute}
+            getHref={getExplorerFsUnitsRoute}
           />
         </Flex>
 
@@ -167,15 +194,15 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             wrap="wrap"
             rowGap="sm"
           >
-            <Title order={2}>{tCommon("finalStand.multiplayerUnits")}</Title>
+            <Title order={2}>{t("finalStandUnitsPage.title")}</Title>
             <Group gap="lg" wrap="wrap">
               <FinalStandUnitsSwitch
-                checked={false}
+                checked={true}
                 standardHref={getExplorerFactionUnitsRoute(raceToFetch)}
                 finalStandHref={getExplorerFsUnitsRoute(raceToFetch)}
               />
               <TextInput
-                placeholder="Search units"
+                placeholder={t("finalStandUnitsPage.searchPlaceholder")}
                 leftSection={<IconSearch size="1rem" />}
                 value={searchValue}
                 onChange={(event) => setSearchValue(event.currentTarget.value)}
@@ -184,31 +211,41 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             </Group>
           </Flex>
 
-          {renderUnitCategory("Infantry", infantryUnits)}
-          {renderUnitCategory("Team Weapons", teamWeaponUnits)}
-          {renderUnitCategory("Vehicles", vehicleUnits)}
-          {renderUnitCategory("Emplacements", emplacementUnits)}
+          {filteredUnits.length === 0 ? (
+            <Text c="dimmed">{t("finalStandUnitsPage.empty", { faction: localizedRace })}</Text>
+          ) : (
+            <>
+              {renderUnitCategory(t("finalStandUnitsPage.categories.infantry"), infantryUnits)}
+              {renderUnitCategory(
+                t("finalStandUnitsPage.categories.teamWeapons"),
+                teamWeaponUnits,
+              )}
+              {renderUnitCategory(t("finalStandUnitsPage.categories.vehicles"), vehicleUnits)}
+              {renderUnitCategory(
+                t("finalStandUnitsPage.categories.emplacements"),
+                emplacementUnits,
+              )}
+            </>
+          )}
         </Stack>
-        <Flex direction="row" align="center" gap={16} mt={24}>
-          <IconBarrierBlock size={50} />
-          <Text c="orange.6" fs="italic">
-            {t("unitPage.importantNote")}
-          </Text>
-        </Flex>
       </Container>
     </>
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<FsUnitsProps> = async (context) => {
   const locale = context.locale || "en";
   const params = await context.params;
 
-  const { sbpsData } = await getMappings(locale);
-
   const raceId = params?.raceId as string;
 
-  const raceToFetch = (raceId as raceType) || "american";
+  if (!raceTypeArray.includes(raceId as raceType)) {
+    return { notFound: true, revalidate: false };
+  }
+
+  const { sbpsData } = await getMappings(locale);
+
+  const raceToFetch = raceId as raceType;
 
   const factionMap: Partial<Record<raceType, string>> = {
     dak: "afrika_korps",
@@ -217,13 +254,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const faction = factionMap[raceToFetch] ?? raceToFetch;
 
-  const units = sbpsData.filter((squad: SbpsType) => squad.faction.includes(faction));
+  const units = sbpsData.filter(
+    (squad: SbpsType) => squad.faction.includes(faction) && isFinalStandUnit(squad),
+  );
 
   return {
     props: {
       raceToFetch,
       units,
-      descriptions: getUnitStatsCOH3Descriptions(context.locale),
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
     revalidate: false,
@@ -258,4 +296,4 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
   };
 };
 
-export default ExplorerUnits;
+export default FsUnits;

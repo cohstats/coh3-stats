@@ -1,7 +1,7 @@
 import { Top1v1LeaderboardsData, TwitchStream, YouTubeVideo } from "../../src/coh3/coh3-types";
 import { NextPage } from "next";
 import { Container, Grid, Paper } from "@mantine/core";
-import { DPSCalculatorCard, UnitBrowserCard } from "./info-cards";
+import { DPSCalculatorCard, ExplorerCard } from "./info-cards";
 import React, { useEffect, useRef, useState } from "react";
 import TwitchContainer from "./twitch-panel";
 import { NextSeo } from "next-seo";
@@ -62,7 +62,7 @@ const Home: NextPage<Props> = ({
                 <DPSCalculatorCard t={t} />
               </Grid.Col>
               <Grid.Col span={{ sm: 6 }} style={{ display: "flex" }}>
-                <UnitBrowserCard t={t} />
+                <ExplorerCard t={t} />
               </Grid.Col>
             </Grid>
             <TopLeaderboardsSection initialData={topLeaderBoardsData} t={t} />

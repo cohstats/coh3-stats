@@ -90,6 +90,16 @@ export const getExplorerMapRoute = (mapId: string) => {
   return encodeURI(`/explorer/maps/${mapId}`);
 };
 
+/** Final Stand perk tree of a faction. */
+export const getExplorerFsPerksRoute = (race: raceType) => {
+  return encodeURI(`/explorer/fs/races/${race}/perks`);
+};
+
+/** Final Stand-only unit list of a faction. */
+export const getExplorerFsUnitsRoute = (race: raceType) => {
+  return encodeURI(`/explorer/fs/races/${race}/units`);
+};
+
 /**
  * @param race Notice the stupid afrika_korps and british_africa, they even have typos in the name. Relic :facepalm:
  * @param unitId

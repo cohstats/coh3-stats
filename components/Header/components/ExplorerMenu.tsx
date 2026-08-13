@@ -10,7 +10,14 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { IconChevronDown, IconMap2, IconMedal, IconTable } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconMap2,
+  IconMedal,
+  IconStars,
+  IconTable,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
 import FactionIcon from "../../faction-icon";
@@ -19,6 +26,8 @@ import {
   getDPSCalculatorRoute,
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
+  getExplorerFsPerksRoute,
+  getExplorerFsUnitsRoute,
   getExplorerMapsRoute,
   getExplorerMapsTableRoute,
   getUnitBrowserRoute,
@@ -92,6 +101,31 @@ const explorerFactionLink = (
             onClick={close}
           >
             {t("mainMenu.explMenu.units")}
+          </Anchor>
+        </Group>
+      </Stack>
+      <Divider />
+      <Stack gap={4}>
+        <Group gap={4}>
+          <IconStars size={20} color="var(--mantine-color-teal-6)" />
+          <Anchor
+            c="teal"
+            component={LinkWithOutPrefetch}
+            href={getExplorerFsPerksRoute(faction)}
+            onClick={close}
+          >
+            {t("mainMenu.explMenu.fsPerks")}
+          </Anchor>
+        </Group>
+        <Group gap={4}>
+          <IconUsersGroup size={20} color="var(--mantine-color-teal-6)" />
+          <Anchor
+            c="teal"
+            component={LinkWithOutPrefetch}
+            href={getExplorerFsUnitsRoute(faction)}
+            onClick={close}
+          >
+            {t("mainMenu.explMenu.fsUnits")}
           </Anchor>
         </Group>
       </Stack>

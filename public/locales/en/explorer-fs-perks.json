@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand Perks - COH3",
+    "description": "The full Final Stand perk tree of {{faction}} in Company of Heroes 3 - every tier, perk level, effect and perk point cost.",
+    "keywords": [
+      "coh3 final stand perks",
+      "final stand perk tree",
+      "company of heroes 3 final stand",
+      "perk points",
+      "hold off perks"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand Perks",
+    "subtitle": "The complete perk tree, tier by tier. Hover a perk for its levels and effects, click it to pin it below.",
+    "notAvailable": "The Final Stand perks data is not available at the moment. Please try again later."
+  },
+  "summary": {
+    "perks_one": "{{count}} perk",
+    "perks_other": "{{count}} perks",
+    "levels_one": "{{count}} level",
+    "levels_other": "{{count}} levels",
+    "levelsTooltip": "Perk levels in the tree - the amount of buys needed to max everything out",
+    "tiers_one": "{{count}} tier",
+    "tiers_other": "{{count}} tiers"
+  },
+  "tier": {
+    "title": "Tier {{tier}}",
+    "unlock": "Unlock at {{count}}",
+    "unlockStart": "From the start",
+    "unlockTooltip": "This tier unlocks once you have bought {{count}} perk levels.",
+    "unlockStartTooltip": "This tier is available from the start of the mission."
+  },
+  "perk": {
+    "levels_one": "{{count}} level",
+    "levels_other": "{{count}} levels",
+    "singleLevel": "Single unlock",
+    "cost_one": "{{count}} perk point",
+    "cost_other": "{{count}} perk points",
+    "noEffect": "No effect text in the game files",
+    "noDescription": "No description in the game files",
+    "modifiers": "Modifiers",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Lvl",
+    "cost": "Cost",
+    "total": "Total",
+    "effect": "Effect"
+  },
+  "faction": {
+    "switchTooltip": "Show the {{faction}} perk tree"
+  }
+}

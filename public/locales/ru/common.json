@@ -1,4 +1,7 @@
 {
+  "faction": {
+    "switchTooltip": "Переключиться на {{faction}}"
+  },
   "mainMenu": {
     "leaderboards": "Таблица лидеров",
     "regularLeaderboards": "Обычная таблица лидеров",
@@ -22,7 +25,9 @@
       "weapons": "Вооружение",
       "maps": "Карты",
       "mapsTable": "Таблица карт",
-      "tools": "Инструменты"
+      "tools": "Инструменты",
+      "fsPerks": "Final Stand - Умения",
+      "fsUnits": "Final Stand - Подразделения"
     },
     "liveGames": "Активные игры",
     "desktopApp": "Приложение",
@@ -73,12 +78,15 @@
   },
   "finalStand": {
     "badge": "Final Stand",
+    "enemyBadge": "Враг",
     "unitTooltip": "Это подразделение из дополнения Final Stand (кооператив против ИИ). Оно недоступно в стандартной перестрелке / мультиплеере.",
     "weaponTooltip": "Это оружие из дополнения Final Stand (кооператив против ИИ). Оно недоступно в стандартной перестрелке / мультиплеере.",
+    "enemyTooltip": "Это враждебная сторона состава Final Stand, управляемая ИИ, а не та, за которую играете вы.",
     "showUnits": "Показать подразделения Final Stand",
     "showUnitsDescription": "Подразделения из дополнения Final Stand (кооператив против ИИ)",
     "showWeapons": "Показать оружие Final Stand",
-    "filterUnits": "Показать / скрыть подразделения Final Stand"
+    "filterUnits": "Показать / скрыть подразделения Final Stand",
+    "multiplayerUnits": "Подразделения мультиплеера"
   },
   "loading": "Загрузка...",
   "error": "Ошибка",

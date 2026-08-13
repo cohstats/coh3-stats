@@ -1,4 +1,7 @@
 {
+  "faction": {
+    "switchTooltip": "Switch to {{faction}}"
+  },
   "mainMenu": {
     "leaderboards": "Leaderboards",
     "regularLeaderboards": "Regular Leaderboards",
@@ -22,7 +25,9 @@
       "weapons": "Weapons",
       "maps": "Maps",
       "mapsTable": "Maps Table",
-      "tools": "Tools"
+      "tools": "Tools",
+      "fsPerks": "Final Stand Perks",
+      "fsUnits": "Final Stand Units"
     },
     "liveGames": "Live Games",
     "desktopApp": "Desktop App",
@@ -73,12 +78,15 @@
   },
   "finalStand": {
     "badge": "Final Stand",
+    "enemyBadge": "Enemy",
     "unitTooltip": "This unit is from the Final Stand DLC (co-op vs AI). It's not available in the standard skirmish / multiplayer game.",
     "weaponTooltip": "This weapon is from the Final Stand DLC (co-op vs AI). It's not available in the standard skirmish / multiplayer game.",
+    "enemyTooltip": "This is the AI-controlled enemy side of the Final Stand roster, not the one you play as.",
     "showUnits": "Show Final Stand units",
     "showUnitsDescription": "Units from the Final Stand DLC (co-op vs AI)",
     "showWeapons": "Show Final Stand weapons",
-    "filterUnits": "Show / hide Final Stand units"
+    "filterUnits": "Show / hide Final Stand units",
+    "multiplayerUnits": "Multiplayer Units"
   },
   "loading": "Loading...",
   "error": "Error",

@@ -25,9 +25,9 @@
         "title": "DPS Calculator",
         "description": "Compare DPS of all units in the game. Customize the unit load out with different weapons. You can also take into consideration the HP of the units."
       },
-      "unitBrowser": {
-        "title": "Unit Browser",
-        "description": "Explore game units, including stats, weapons, and upgrades. Navigate the Explorer menu for faction overview and more details."
+      "explorer": {
+        "title": "Explorer",
+        "description": "Browse factions, units, weapons, and maps in detail. Also includes Final Stand perks and units, plus the DPS calculator."
       }
     },
     "leaderboards": {

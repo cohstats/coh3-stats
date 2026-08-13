@@ -38,7 +38,15 @@
   },
   "explorer": {
     "title": "Company of Heroes 3 Factions Explorer",
-    "subtitle": "Explore all the units, buildings and battlegroups in the game."
+    "subtitle": "Explore all the units, buildings and battlegroups in the game.",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Content from the Final Stand DLC (co-op vs AI) - not available in the standard skirmish / multiplayer game.",
+      "perksHeading": "Perks",
+      "unitsHeading": "Units",
+      "perksCardTitle": "{{faction}} Perks",
+      "unitsCardTitle": "{{faction}} Units"
+    }
   },
   "factionPage": {
     "factionOverview": "Faction Overview",
@@ -52,6 +60,28 @@
         "{{faction}} units"
       ]
     }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "{{faction}} Final Stand Units",
+      "description": "{{faction}} Final Stand Units - the co-op vs AI DLC roster in Company of Heroes 3. Not available in the standard skirmish / multiplayer game.",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand Unit List {{faction}}",
+        "coh3 final stand dlc",
+        "hold off co-op units"
+      ]
+    },
+    "title": "Final Stand Units",
+    "description": "Units exclusive to the Final Stand DLC (co-op vs AI) - not available in the standard skirmish / multiplayer game.",
+    "searchPlaceholder": "Search units",
+    "categories": {
+      "infantry": "Infantry",
+      "teamWeapons": "Team Weapons",
+      "vehicles": "Vehicles",
+      "emplacements": "Emplacements"
+    },
+    "empty": "No Final Stand units found for {{faction}}."
   },
   "unitPage": {
     "stats": "Stats",

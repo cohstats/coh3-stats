@@ -9,8 +9,9 @@ import { raceType } from "../../../src/coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../../src/routes";
 import Link from "next/link";
 import styles from "./unit-card.module.css";
-import { isFinalStandUnitId } from "../../../src/unitStats/finalStand";
+import { isFinalStandEnemyUnitId, isFinalStandUnitId } from "../../../src/unitStats/finalStand";
 import { FinalStandBadge } from "../../../components/final-stand-badge";
+import { FinalStandEnemyBadge } from "../../../components/final-stand-enemy-badge";
 
 export interface UnitData {
   id: string;
@@ -72,6 +73,7 @@ export const UnitCard = ({ unit }: UnitCardProps) => (
           {isFinalStandUnitId(unit.id) && (
             <Group gap="xs" mt={4}>
               <FinalStandBadge size="xs" />
+              {isFinalStandEnemyUnitId(unit.id) && <FinalStandEnemyBadge size="xs" />}
             </Group>
           )}
         </div>

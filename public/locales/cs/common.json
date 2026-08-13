@@ -1,4 +1,7 @@
 {
+  "faction": {
+    "switchTooltip": "Přepnout na {{faction}}"
+  },
   "mainMenu": {
     "leaderboards": "Žebříčky",
     "regularLeaderboards": "Běžné žebříčky",
@@ -22,7 +25,9 @@
       "weapons": "Zbraně",
       "maps": "Mapy",
       "mapsTable": "Tabulka map",
-      "tools": "Nástroje"
+      "tools": "Nástroje",
+      "fsPerks": "Final Stand - Vylepšení",
+      "fsUnits": "Final Stand - Jednotky"
     },
     "liveGames": "Živé hry",
     "desktopApp": "Desktopová aplikace",
@@ -73,12 +78,15 @@
   },
   "finalStand": {
     "badge": "Final Stand",
+    "enemyBadge": "Nepřítel",
     "unitTooltip": "Tato jednotka pochází z DLC Final Stand (kooperace proti AI). Není dostupná ve standardní šarvátce / multiplayerové hře.",
     "weaponTooltip": "Tato zbraň pochází z DLC Final Stand (kooperace proti AI). Není dostupná ve standardní šarvátce / multiplayerové hře.",
+    "enemyTooltip": "Toto je nepřátelská strana rosteru Final Stand ovládaná AI, nikoliv ta, za kterou hrajete.",
     "showUnits": "Zobrazit jednotky Final Stand",
     "showUnitsDescription": "Jednotky z DLC Final Stand (kooperace proti AI)",
     "showWeapons": "Zobrazit zbraně Final Stand",
-    "filterUnits": "Zobrazit / skrýt jednotky Final Stand"
+    "filterUnits": "Zobrazit / skrýt jednotky Final Stand",
+    "multiplayerUnits": "Jednotky pro multiplayer"
   },
   "loading": "Načítání...",
   "error": "Chyba",
