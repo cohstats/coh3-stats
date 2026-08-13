@@ -60,7 +60,7 @@ const FsPerksPage = ({
 
     const perkId = router.query.perk;
     setSelectedPerkId(typeof perkId === "string" && findFsPerk(race, perkId) ? perkId : null);
-  }, [router.isReady, race.race]);
+  }, [router.isReady, router.query.perk, race.race]);
 
   const handleSelect = useCallback(
     (perkId: string) => {

@@ -42,6 +42,7 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../../next-i18next.config";
 import config from "../../../../../../config";
+import { useTranslation } from "next-i18next/pages";
 
 interface FsUnitsProps {
   units: SbpsType[];
@@ -50,6 +51,7 @@ interface FsUnitsProps {
 
 const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
   const { asPath } = useRouter();
+  const { t } = useTranslation("explorer");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
 
@@ -57,17 +59,17 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
     AnalyticsExplorerFactionUnitsView(raceToFetch);
   }, []);
 
-  const metaKeywords = generateKeywordsString([
-    `${localizedRace} coh3 final stand`,
-    `Final Stand Unit List ${localizedRace}`,
-    "coh3 final stand dlc",
-    "hold off co-op units",
-  ]);
+  const metaKeywords = generateKeywordsString(
+    t("finalStandUnitsPage.meta.keywords", {
+      faction: localizedRace,
+      returnObjects: true,
+    }) as string[],
+  );
 
   // Not "COH3 Explorer" - both the unit list and og:title/description should say Final Stand up
   // front, so link previews and search results are never confused with the multiplayer roster.
-  const pageTitle = `${localizedRace} Final Stand Units`;
-  const metaDescription = `${localizedRace} Final Stand Units - the co-op vs AI DLC roster in Company of Heroes 3. Not available in the standard skirmish / multiplayer game.`;
+  const pageTitle = t("finalStandUnitsPage.meta.title", { faction: localizedRace });
+  const metaDescription = t("finalStandUnitsPage.meta.description", { faction: localizedRace });
   const canonical = `${config.SITE_URL}${asPath}`;
 
   const filteredUnits = units.filter((unit) => {
@@ -171,12 +173,9 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
             <FactionIcon name={raceToFetch} width={80}></FactionIcon>
             <Stack gap="xs">
               <Title order={1} size={"h2"}>
-                {localizedRace} - Final Stand Units
+                {localizedRace} - {t("finalStandUnitsPage.title")}
               </Title>
-              <Text size="md">
-                Units exclusive to the Final Stand DLC (co-op vs AI) - not available in the
-                standard skirmish / multiplayer game.
-              </Text>
+              <Text size="md">{t("finalStandUnitsPage.description")}</Text>
             </Stack>
           </Flex>
           <FactionSwitch
@@ -195,7 +194,7 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
             wrap="wrap"
             rowGap="sm"
           >
-            <Title order={2}>Final Stand Units</Title>
+            <Title order={2}>{t("finalStandUnitsPage.title")}</Title>
             <Group gap="lg" wrap="wrap">
               <FinalStandUnitsSwitch
                 checked={true}
@@ -203,7 +202,7 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
                 finalStandHref={getExplorerFsUnitsRoute(raceToFetch)}
               />
               <TextInput
-                placeholder="Search units"
+                placeholder={t("finalStandUnitsPage.searchPlaceholder")}
                 leftSection={<IconSearch size="1rem" />}
                 value={searchValue}
                 onChange={(event) => setSearchValue(event.currentTarget.value)}
@@ -213,13 +212,19 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
           </Flex>
 
           {filteredUnits.length === 0 ? (
-            <Text c="dimmed">No Final Stand units found for {localizedRace}.</Text>
+            <Text c="dimmed">{t("finalStandUnitsPage.empty", { faction: localizedRace })}</Text>
           ) : (
             <>
-              {renderUnitCategory("Infantry", infantryUnits)}
-              {renderUnitCategory("Team Weapons", teamWeaponUnits)}
-              {renderUnitCategory("Vehicles", vehicleUnits)}
-              {renderUnitCategory("Emplacements", emplacementUnits)}
+              {renderUnitCategory(t("finalStandUnitsPage.categories.infantry"), infantryUnits)}
+              {renderUnitCategory(
+                t("finalStandUnitsPage.categories.teamWeapons"),
+                teamWeaponUnits,
+              )}
+              {renderUnitCategory(t("finalStandUnitsPage.categories.vehicles"), vehicleUnits)}
+              {renderUnitCategory(
+                t("finalStandUnitsPage.categories.emplacements"),
+                emplacementUnits,
+              )}
             </>
           )}
         </Stack>

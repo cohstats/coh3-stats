@@ -41,6 +41,7 @@ const PerkTile = ({
         onClick={() => onSelect(perk.id)}
         className={`${classes.perkTile} ${selected ? classes.perkTileSelected : ""}`}
         aria-label={perk.name}
+        aria-pressed={selected}
         data-testid={`fs-perk-tile-${perk.id}`}
       >
         <Image

@@ -95,7 +95,7 @@ const getFsPerkCostToLevel = (perk: Pick<FsPerk, "levels">, level: number): numb
 /** Whether a perk is a single unlock rather than something to level up. */
 const isSingleLevelFsPerk = (perk: Pick<FsPerk, "maxLevel">): boolean => perk.maxLevel <= 1;
 
-/** Matches a perk against a search term - name, effect texts and the raw perk id. */
+/** Matches a perk against a search term - name, description and the raw perk id. */
 const matchesFsPerkSearch = (perk: FsPerk, search: string): boolean => {
   const term = search.trim().toLowerCase();
   if (!term) return true;

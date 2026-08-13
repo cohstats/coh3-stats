@@ -47,6 +47,7 @@ export const FactionSwitch = ({
               race === activeRace ? classes.factionButtonActive : ""
             }`}
             aria-label={localizedNames[race]}
+            aria-current={race === activeRace ? "page" : undefined}
             data-testid={`${testIdPrefix}${race}`}
           >
             <FactionIcon name={race} width={iconSize} />

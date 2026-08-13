@@ -50,6 +50,7 @@ interface UnitDetailProps {
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
   const { asPath } = useRouter();
   const { t } = useTranslation("explorer");
+  const { t: tCommon } = useTranslation("common");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
 
@@ -143,7 +144,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             <FactionIcon name={raceToFetch} width={80}></FactionIcon>
             <Stack gap="xs">
               <Title order={1} size={"h2"}>
-                {localizedRace} - Multiplayer Units
+                {localizedRace} - {tCommon("finalStand.multiplayerUnits")}
               </Title>
               {descriptions[raceToFetch]?.description && (
                 <Text size="md">{descriptions[raceToFetch].description}</Text>
@@ -166,7 +167,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             wrap="wrap"
             rowGap="sm"
           >
-            <Title order={2}>Multiplayer Units</Title>
+            <Title order={2}>{tCommon("finalStand.multiplayerUnits")}</Title>
             <Group gap="lg" wrap="wrap">
               <FinalStandUnitsSwitch
                 checked={false}

@@ -144,12 +144,7 @@ type RawFsPerksFile = {
 /* -------------------------------------------------------------------------- */
 
 /** A modifier of a perk level, with the raw blueprint path of `pbgid` values kept as is. */
-type FsPerkModifier = {
-  /** Game modifier name, eg. `WEAPON_PENETRATION_MODIFIER`. */
-  id: string;
-  type: FsPerkModifierType;
-  value: number | string;
-};
+type FsPerkModifier = RawFsPerkModifier;
 
 /** A single level of a perk. */
 type FsPerkLevel = {

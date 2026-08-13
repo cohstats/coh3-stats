@@ -244,14 +244,13 @@ const Explorer: NextPage = () => {
 
           {/* Final Stand Section */}
           <Stack gap="md">
-            <Title order={2}>Final Stand</Title>
+            <Title order={2}>{t("explorer.finalStand.title")}</Title>
             <Text size="sm" c="dimmed">
-              Content from the Final Stand DLC (co-op vs AI) - not available in the standard
-              skirmish / multiplayer game.
+              {t("explorer.finalStand.description")}
             </Text>
 
             <Title order={3} size="h5">
-              Perks
+              {t("explorer.finalStand.perksHeading")}
             </Title>
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
               {Races.map((faction: raceType) => {
@@ -268,7 +267,9 @@ const Explorer: NextPage = () => {
                         <Flex direction="row" align="center" gap="md">
                           <FactionIcon name={faction} width={64} />
                           <Title order={3} size="h4" fw="bold">
-                            {localizedNames[faction]} Perks
+                            {t("explorer.finalStand.perksCardTitle", {
+                              faction: localizedNames[faction],
+                            })}
                           </Title>
                         </Flex>
                         <IconChevronRight size={16} />
@@ -280,7 +281,7 @@ const Explorer: NextPage = () => {
             </SimpleGrid>
 
             <Title order={3} size="h5">
-              Units
+              {t("explorer.finalStand.unitsHeading")}
             </Title>
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
               {Races.map((faction: raceType) => {
@@ -297,7 +298,9 @@ const Explorer: NextPage = () => {
                         <Flex direction="row" align="center" gap="md">
                           <FactionIcon name={faction} width={64} />
                           <Title order={3} size="h4" fw="bold">
-                            {localizedNames[faction]} Units
+                            {t("explorer.finalStand.unitsCardTitle", {
+                              faction: localizedNames[faction],
+                            })}
                           </Title>
                         </Flex>
                         <IconChevronRight size={16} />

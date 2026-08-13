@@ -30,6 +30,7 @@ export const FinalStandUnitsSwitch = ({
         href={standardHref}
         variant={checked ? "default" : "filled"}
         size="sm"
+        aria-current={checked ? undefined : "page"}
         data-testid="final-stand-view-standard"
       >
         {t("finalStand.multiplayerUnits")}
@@ -39,6 +40,7 @@ export const FinalStandUnitsSwitch = ({
         href={finalStandHref}
         variant={checked ? "filled" : "default"}
         size="sm"
+        aria-current={checked ? "page" : undefined}
         data-testid="final-stand-view-finalstand"
       >
         {t("finalStand.badge")}
