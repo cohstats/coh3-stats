@@ -15,6 +15,9 @@
 /** Prefix of every Final Stand unit / entity ID. */
 const FINAL_STAND_ID_PREFIX = "hoff_";
 
+/** Prefix of the AI-controlled enemy side of the Final Stand roster (eg. `hoff_enemy_riflemen_us`). */
+const FINAL_STAND_ENEMY_ID_PREFIX = "hoff_enemy_";
+
 /** Folder Final Stand content lives in, which is also the mapped `faction` of its weapons. */
 const FINAL_STAND_FOLDER = "hoff";
 
@@ -38,6 +41,17 @@ const isFinalStandUnit = (unit?: { id?: string; path?: string } | null): boolean
 };
 
 /**
+ * Whether the given Final Stand unit / entity ID belongs to the AI-controlled enemy side of the
+ * roster (`hoff_enemy_*`), as opposed to the player-controlled one (`hoff_player_*`).
+ */
+const isFinalStandEnemyUnitId = (id?: string | null): boolean =>
+  !!id && id.startsWith(FINAL_STAND_ENEMY_ID_PREFIX);
+
+/** Whether the given unit belongs to the AI-controlled enemy side of the Final Stand roster. */
+const isFinalStandEnemyUnit = (unit?: { id?: string } | null): boolean =>
+  isFinalStandEnemyUnitId(unit?.id);
+
+/**
  * Whether the given faction folder name is the Final Stand one. Weapons and upgrades are mapped with
  * the top level folder as their faction, so Final Stand ones end up as `hoff`.
  */
@@ -56,9 +70,12 @@ const filterFinalStandUnits = <T extends { id?: string; path?: string }>(
 
 export {
   FINAL_STAND_ID_PREFIX,
+  FINAL_STAND_ENEMY_ID_PREFIX,
   FINAL_STAND_FOLDER,
   isFinalStandUnitId,
   isFinalStandUnit,
+  isFinalStandEnemyUnitId,
+  isFinalStandEnemyUnit,
   isFinalStandFaction,
   filterFinalStandUnits,
 };

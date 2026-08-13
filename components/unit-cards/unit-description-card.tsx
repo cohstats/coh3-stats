@@ -5,6 +5,7 @@ import { raceType } from "../../src/coh3/coh3-types";
 import { getIconsPathOnCDN } from "../../src/utils";
 import { BattlegroupBackgrounds } from "../../src/unitStats";
 import { FinalStandBadge } from "../final-stand-badge";
+import { FinalStandEnemyBadge } from "../final-stand-enemy-badge";
 
 /**
  * These fields can be found at `sbps` inside each unit object.
@@ -35,12 +36,15 @@ export const UnitDescriptionCard = ({
   faction,
   placement,
   isFinalStand,
+  isEnemy,
 }: {
   desc: UnitDescription;
   faction: raceType;
   placement?: "list" | "singleUnit" | "building";
   /** Shows the Final Stand DLC badge next to the name. */
   isFinalStand?: boolean;
+  /** Shows the Final Stand "Enemy" badge next to the name. */
+  isEnemy?: boolean;
 }) => {
   const factionBackgroundSrc = BattlegroupBackgrounds[faction];
 
@@ -100,6 +104,7 @@ export const UnitDescriptionCard = ({
               {desc.screen_name}
             </Title>
             {isFinalStand && <FinalStandBadge size={placement === "singleUnit" ? "md" : "sm"} />}
+            {isEnemy && <FinalStandEnemyBadge size={placement === "singleUnit" ? "md" : "sm"} />}
           </Flex>
 
           {/* Symbol horizontal aligned with brief text. */}

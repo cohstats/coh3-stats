@@ -92,7 +92,12 @@ export const getExplorerMapRoute = (mapId: string) => {
 
 /** Final Stand perk tree of a faction. */
 export const getExplorerFsPerksRoute = (race: raceType) => {
-  return encodeURI(`/explorer/fs/perks/${race}`);
+  return encodeURI(`/explorer/fs/races/${race}/perks`);
+};
+
+/** Final Stand-only unit list of a faction. */
+export const getExplorerFsUnitsRoute = (race: raceType) => {
+  return encodeURI(`/explorer/fs/races/${race}/units`);
 };
 
 /**

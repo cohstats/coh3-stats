@@ -1,4 +1,7 @@
 {
+  "faction": {
+    "switchTooltip": "Cambiar a {{faction}}"
+  },
   "mainMenu": {
     "leaderboards": "Clasificación",
     "regularLeaderboards": "Clasificación Regular",
@@ -73,12 +76,15 @@
   },
   "finalStand": {
     "badge": "Final Stand",
+    "enemyBadge": "Enemigo",
     "unitTooltip": "Esta unidad es del DLC Final Stand (cooperativo contra la IA). No está disponible en el juego estándar de escaramuza / multijugador.",
     "weaponTooltip": "Esta arma es del DLC Final Stand (cooperativo contra la IA). No está disponible en el juego estándar de escaramuza / multijugador.",
+    "enemyTooltip": "Este es el bando enemigo controlado por la IA del roster de Final Stand, no el que juegas tú.",
     "showUnits": "Mostrar unidades de Final Stand",
     "showUnitsDescription": "Unidades del DLC Final Stand (cooperativo contra la IA)",
     "showWeapons": "Mostrar armas de Final Stand",
-    "filterUnits": "Mostrar / ocultar unidades de Final Stand"
+    "filterUnits": "Mostrar / ocultar unidades de Final Stand",
+    "multiplayerUnits": "Unidades multijugador"
   },
   "loading": "Cargando...",
   "error": "Error",

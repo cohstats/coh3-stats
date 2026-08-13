@@ -22,6 +22,7 @@ import {
   getResolvedConstruction,
   getResolvedUpgrades,
   isFinalStandUnit,
+  isFinalStandEnemyUnit,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
   ResourceValues,
@@ -431,6 +432,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   }}
                   placement="singleUnit"
                   isFinalStand={isFinalStandUnit(resolvedSquad)}
+                  isEnemy={isFinalStandEnemyUnit(resolvedSquad)}
                 />
               </Card>
               <Box style={{ display: "flex", alignItems: "stretch" }} visibleFrom="sm">

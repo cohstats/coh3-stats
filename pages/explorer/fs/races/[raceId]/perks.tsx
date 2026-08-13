@@ -3,15 +3,15 @@ import { NextSeo } from "next-seo";
 import { Container, Stack, Text, Title } from "@mantine/core";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../../config";
-import { getFsPerks } from "../../../../src/explorer/fs-perks/fs-perks";
-import { getFsPerksRace } from "../../../../src/explorer/fs-perks/fs-perks-helpers";
-import type { FsPerksRace } from "../../../../src/explorer/fs-perks/fs-perks-types";
-import { localizedNames } from "../../../../src/coh3/coh3-data";
-import { raceTypeArray, type raceType } from "../../../../src/coh3/coh3-types";
-import { getExplorerFsPerksRoute } from "../../../../src/routes";
-import { createPageSEO } from "../../../../src/seo-utils";
-import FsPerksPage from "../../../../screens/explorer/fs-perks/fs-perks-page";
+import config from "../../../../../config";
+import { getFsPerks } from "../../../../../src/explorer/fs-perks/fs-perks";
+import { getFsPerksRace } from "../../../../../src/explorer/fs-perks/fs-perks-helpers";
+import type { FsPerksRace } from "../../../../../src/explorer/fs-perks/fs-perks-types";
+import { localizedNames } from "../../../../../src/coh3/coh3-data";
+import { raceTypeArray, type raceType } from "../../../../../src/coh3/coh3-types";
+import { getExplorerFsPerksRoute } from "../../../../../src/routes";
+import { createPageSEO } from "../../../../../src/seo-utils";
+import FsPerksPage from "../../../../../screens/explorer/fs-perks/fs-perks-page";
 
 interface FsPerksProps {
   /** `null` only when the data file could not be downloaded at build time. */

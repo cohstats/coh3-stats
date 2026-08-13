@@ -23,6 +23,8 @@ import {
   getDPSCompareRoute,
   getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
+  getExplorerFsPerksRoute,
+  getExplorerFsUnitsRoute,
   getExplorerMapsRoute,
   getExplorerMapsTableRoute,
   getUnitBrowserRoute,
@@ -143,6 +145,73 @@ const Explorer: NextPage = () => {
                     underline={"never"}
                     component={LinkWithOutPrefetch}
                     href={getExplorerFactionUnitsRoute(faction)}
+                  >
+                    <Card p="sm" radius="md" withBorder>
+                      <Flex direction="row" justify="space-between" align="center">
+                        <Flex direction="row" align="center" gap="md">
+                          <FactionIcon name={faction} width={64} />
+                          <Title order={3} size="h4" fw="bold">
+                            {localizedNames[faction]} Units
+                          </Title>
+                        </Flex>
+                        <IconChevronRight size={16} />
+                      </Flex>
+                    </Card>
+                  </Anchor>
+                );
+              })}
+            </SimpleGrid>
+          </Stack>
+
+          {/* Final Stand Section */}
+          <Stack gap="md">
+            <Title order={2}>Final Stand</Title>
+            <Text size="sm" c="dimmed">
+              Content from the Final Stand DLC (co-op vs AI) - not available in the standard
+              skirmish / multiplayer game.
+            </Text>
+
+            <Title order={3} size="h5">
+              Perks
+            </Title>
+            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+              {Races.map((faction: raceType) => {
+                return (
+                  <Anchor
+                    key={`explorer_fs_perks_${faction}`}
+                    c="undefined"
+                    underline={"never"}
+                    component={LinkWithOutPrefetch}
+                    href={getExplorerFsPerksRoute(faction)}
+                  >
+                    <Card p="sm" radius="md" withBorder>
+                      <Flex direction="row" justify="space-between" align="center">
+                        <Flex direction="row" align="center" gap="md">
+                          <FactionIcon name={faction} width={64} />
+                          <Title order={3} size="h4" fw="bold">
+                            {localizedNames[faction]} Perks
+                          </Title>
+                        </Flex>
+                        <IconChevronRight size={16} />
+                      </Flex>
+                    </Card>
+                  </Anchor>
+                );
+              })}
+            </SimpleGrid>
+
+            <Title order={3} size="h5">
+              Units
+            </Title>
+            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+              {Races.map((faction: raceType) => {
+                return (
+                  <Anchor
+                    key={`explorer_fs_units_${faction}`}
+                    c="undefined"
+                    underline={"never"}
+                    component={LinkWithOutPrefetch}
+                    href={getExplorerFsUnitsRoute(faction)}
                   >
                     <Card p="sm" radius="md" withBorder>
                       <Flex direction="row" justify="space-between" align="center">

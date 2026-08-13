@@ -93,25 +93,3 @@
     max-width: 100%;
   }
 }
-
-/* Faction switch in the page header. */
-.factionButton {
-  padding: 4px 6px;
-  line-height: 0;
-  border-radius: var(--mantine-radius-md);
-  border: 1px solid transparent;
-  opacity: 0.55;
-  transition:
-    opacity 100ms ease,
-    border-color 100ms ease;
-}
-
-.factionButton:hover {
-  opacity: 1;
-}
-
-.factionButtonActive {
-  opacity: 1;
-  border-color: var(--mantine-color-orange-6);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-}

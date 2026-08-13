@@ -1,55 +1,55 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { IconBarrierBlock, IconSearch } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 import {
   Anchor,
   Card,
+  Container,
   Flex,
   Grid,
   Group,
   Stack,
   Text,
-  Title,
-  Container,
   TextInput,
+  Title,
 } from "@mantine/core";
 
-import { raceType, raceTypeArray } from "../../../../../src/coh3/coh3-types";
+import { raceType, raceTypeArray } from "../../../../../../src/coh3/coh3-types";
 import {
   generateAlternateLanguageLinks,
   generateKeywordsString,
-} from "../../../../../src/seo-utils";
-import { localizedNames } from "../../../../../src/coh3/coh3-data";
-import { getMappings } from "../../../../../src/unitStats/mappings";
-import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
-import FactionIcon from "../../../../../components/faction-icon";
-import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
-import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
-import { FinalStandUnitsSwitch } from "../../../../../components/final-stand-units-switch";
-import { FactionSwitch } from "../../../../../components/faction-switch";
+} from "../../../../../../src/seo-utils";
+import { localizedNames } from "../../../../../../src/coh3/coh3-data";
+import { getMappings } from "../../../../../../src/unitStats/mappings";
+import {
+  isFinalStandEnemyUnit,
+  isFinalStandUnit,
+  SbpsType,
+} from "../../../../../../src/unitStats";
+import FactionIcon from "../../../../../../components/faction-icon";
+import { UnitDescriptionCard } from "../../../../../../components/unit-cards/unit-description-card";
+import LinkWithOutPrefetch from "../../../../../../components/LinkWithOutPrefetch";
+import { FinalStandUnitsSwitch } from "../../../../../../components/final-stand-units-switch";
+import { FactionSwitch } from "../../../../../../components/faction-switch";
 import {
   getExplorerFactionUnitsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
-} from "../../../../../src/routes";
+} from "../../../../../../src/routes";
 import { useEffect, useState } from "react";
-import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
-import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
+import { AnalyticsExplorerFactionUnitsView } from "../../../../../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
-import nextI18NextConfig from "../../../../../next-i18next.config";
-import config from "../../../../../config";
-import { useTranslation } from "next-i18next/pages";
+import nextI18NextConfig from "../../../../../../next-i18next.config";
+import config from "../../../../../../config";
 
-interface UnitDetailProps {
+interface FsUnitsProps {
   units: SbpsType[];
   raceToFetch: raceType;
-  descriptions: Record<string, Record<string, string | null>>;
 }
 
-const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
+const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
   const { asPath } = useRouter();
-  const { t } = useTranslation("explorer");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
 
@@ -58,13 +58,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
   }, []);
 
   const metaKeywords = generateKeywordsString([
-    `${localizedRace} coh3`,
-    `Unit List ${localizedRace}`,
+    `${localizedRace} coh3 final stand`,
+    `Final Stand Unit List ${localizedRace}`,
   ]);
 
-  // Final Stand (DLC / co-op vs AI) units have their own dedicated page - see `FinalStandUnitsSwitch`.
   const filteredUnits = units.filter((unit) => {
-    if (isFinalStandUnit(unit)) return false;
     if (!searchValue) return true;
     const searchLower = searchValue.toLowerCase();
     return (
@@ -114,6 +112,8 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
                           icon_name: ui.iconName,
                         }}
                         placement="list"
+                        isFinalStand
+                        isEnemy={isFinalStandEnemyUnit({ id })}
                       />
                     </Card>
                   </Anchor>
@@ -131,8 +131,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
   return (
     <>
       <Head>
-        <title>{`${localizedRace} Units - COH3 Explorer`}</title>
-        <meta name="description" content={`${localizedRace} Units - COH3 Explorer`} />
+        <title>{`${localizedRace} Final Stand Units - COH3 Explorer`}</title>
+        <meta
+          name="description"
+          content={`${localizedRace} Final Stand (co-op vs AI) Units - COH3 Explorer`}
+        />
         <meta name="keywords" content={metaKeywords} />
         <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
         {generateAlternateLanguageLinks(asPath)}
@@ -143,17 +146,18 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             <FactionIcon name={raceToFetch} width={80}></FactionIcon>
             <Stack gap="xs">
               <Title order={1} size={"h2"}>
-                {localizedRace} - Multiplayer Units
+                {localizedRace} - Final Stand Units
               </Title>
-              {descriptions[raceToFetch]?.description && (
-                <Text size="md">{descriptions[raceToFetch].description}</Text>
-              )}
+              <Text size="md">
+                Units exclusive to the Final Stand DLC (co-op vs AI) - not available in the
+                standard skirmish / multiplayer game.
+              </Text>
             </Stack>
           </Flex>
           <FactionSwitch
             races={raceTypeArray}
             activeRace={raceToFetch}
-            getHref={getExplorerFactionUnitsRoute}
+            getHref={getExplorerFsUnitsRoute}
           />
         </Flex>
 
@@ -166,10 +170,10 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             wrap="wrap"
             rowGap="sm"
           >
-            <Title order={2}>Multiplayer Units</Title>
+            <Title order={2}>Final Stand Units</Title>
             <Group gap="lg" wrap="wrap">
               <FinalStandUnitsSwitch
-                checked={false}
+                checked={true}
                 standardHref={getExplorerFactionUnitsRoute(raceToFetch)}
                 finalStandHref={getExplorerFsUnitsRoute(raceToFetch)}
               />
@@ -183,23 +187,23 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             </Group>
           </Flex>
 
-          {renderUnitCategory("Infantry", infantryUnits)}
-          {renderUnitCategory("Team Weapons", teamWeaponUnits)}
-          {renderUnitCategory("Vehicles", vehicleUnits)}
-          {renderUnitCategory("Emplacements", emplacementUnits)}
+          {filteredUnits.length === 0 ? (
+            <Text c="dimmed">No Final Stand units found for {localizedRace}.</Text>
+          ) : (
+            <>
+              {renderUnitCategory("Infantry", infantryUnits)}
+              {renderUnitCategory("Team Weapons", teamWeaponUnits)}
+              {renderUnitCategory("Vehicles", vehicleUnits)}
+              {renderUnitCategory("Emplacements", emplacementUnits)}
+            </>
+          )}
         </Stack>
-        <Flex direction="row" align="center" gap={16} mt={24}>
-          <IconBarrierBlock size={50} />
-          <Text c="orange.6" fs="italic">
-            {t("unitPage.importantNote")}
-          </Text>
-        </Flex>
       </Container>
     </>
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<FsUnitsProps> = async (context) => {
   const locale = context.locale || "en";
   const params = await context.params;
 
@@ -216,13 +220,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const faction = factionMap[raceToFetch] ?? raceToFetch;
 
-  const units = sbpsData.filter((squad: SbpsType) => squad.faction.includes(faction));
+  const units = sbpsData.filter(
+    (squad: SbpsType) => squad.faction.includes(faction) && isFinalStandUnit(squad),
+  );
 
   return {
     props: {
       raceToFetch,
       units,
-      descriptions: getUnitStatsCOH3Descriptions(context.locale),
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
     revalidate: false,
@@ -257,4 +262,4 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
   };
 };
 
-export default ExplorerUnits;
+export default FsUnits;

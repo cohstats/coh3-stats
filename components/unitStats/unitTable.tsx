@@ -29,9 +29,10 @@ import {
   IconSearch,
   IconSelector,
 } from "@tabler/icons-react";
-import { getFactionIcon, isFinalStandUnitId } from "../../src/unitStats";
+import { getFactionIcon, isFinalStandEnemyUnitId, isFinalStandUnitId } from "../../src/unitStats";
 import { CustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { FinalStandBadge } from "../final-stand-badge";
+import { FinalStandEnemyBadge } from "../final-stand-enemy-badge";
 import { internalSlash } from "../../src/utils";
 import { getExplorerUnitRoute } from "../../src/routes";
 import { raceType } from "../../src/coh3/coh3-types";
@@ -270,6 +271,7 @@ const getCellVisual = (colSetup: tableColSetup, unit: CustomizableUnit) => {
             </Anchor>
           </Tooltip>
           {isFinalStandUnitId(unit.id) && <FinalStandBadge size="xs" />}
+          {isFinalStandEnemyUnitId(unit.id) && <FinalStandEnemyBadge size="xs" />}
         </Group>
       );
     }

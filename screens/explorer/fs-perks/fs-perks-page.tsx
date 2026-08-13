@@ -13,8 +13,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { TFunction } from "next-i18next/pages";
-import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
-import FactionIcon from "../../../components/faction-icon";
+import { FactionSwitch } from "../../../components/faction-switch";
 import { localizedNames } from "../../../src/coh3/coh3-data";
 import type { raceType } from "../../../src/coh3/coh3-types";
 import {
@@ -37,38 +36,6 @@ const FACTION_BADGE_SIZE = 90;
 
 /** Size of the faction icons of the switch. */
 const FACTION_SWITCH_SIZE = 30;
-
-/** Links to the perk tree of the other factions. Not a menu entry - only reachable from here. */
-const FactionSwitch = ({
-  races,
-  activeRace,
-  t,
-}: {
-  races: raceType[];
-  activeRace: raceType;
-  t: TFunction;
-}) => (
-  <Group gap={4}>
-    {races.map((race) => (
-      <Tooltip
-        key={race}
-        label={t("faction.switchTooltip", { faction: localizedNames[race] })}
-        withArrow
-      >
-        <LinkWithOutPrefetch
-          href={getExplorerFsPerksRoute(race)}
-          className={`${classes.factionButton} ${
-            race === activeRace ? classes.factionButtonActive : ""
-          }`}
-          aria-label={localizedNames[race]}
-          data-testid={`fs-perks-faction-${race}`}
-        >
-          <FactionIcon name={race} width={FACTION_SWITCH_SIZE} />
-        </LinkWithOutPrefetch>
-      </Tooltip>
-    ))}
-  </Group>
-);
 
 /**
  * The Final Stand perk tree of a single faction - one column per tier from left to right, with the
@@ -151,7 +118,14 @@ const FsPerksPage = ({
             </Stack>
           </Group>
 
-          <FactionSwitch races={availableRaces} activeRace={race.race} t={t} />
+          <FactionSwitch
+            races={availableRaces}
+            activeRace={race.race}
+            getHref={getExplorerFsPerksRoute}
+            getTooltipLabel={(r) => t("faction.switchTooltip", { faction: localizedNames[r] })}
+            iconSize={FACTION_SWITCH_SIZE}
+            testIdPrefix="fs-perks-faction-"
+          />
         </Group>
 
         {/* The tree keeps its column width on small screens and scrolls instead of collapsing. */}
