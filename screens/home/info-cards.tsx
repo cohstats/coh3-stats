@@ -1,6 +1,6 @@
 import { Anchor, Card, Group, Image, Stack, Text, Title } from "@mantine/core";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
-import { getDPSCalculatorRoute, getUnitBrowserRoute } from "../../src/routes";
+import { getDPSCalculatorRoute } from "../../src/routes";
 import { getIconsPathOnCDN } from "../../src/utils";
 import classes from "./info-cards.module.css";
 import { TFunction } from "next-i18next/pages";
@@ -67,16 +67,16 @@ const DPSCalculatorCard = ({ t }: CardProps) => {
   );
 };
 
-const UnitBrowserCard = ({ t }: CardProps) => {
+const ExplorerCard = ({ t }: CardProps) => {
   return (
     <InfoCard
-      link={getUnitBrowserRoute()}
-      title={t("sections.tools.unitBrowser.title")}
+      link={"/explorer"}
+      title={t("sections.tools.explorer.title")}
       imageSrc={getIconsPathOnCDN("/icons/common/squad/squad.webp")}
-      content={t("sections.tools.unitBrowser.description")}
-      testId="unit-browser-card"
+      content={t("sections.tools.explorer.description")}
+      testId="explorer-card"
     />
   );
 };
 
-export { DPSCalculatorCard, UnitBrowserCard };
+export { DPSCalculatorCard, ExplorerCard };

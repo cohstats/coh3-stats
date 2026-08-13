@@ -25,7 +25,9 @@
       "weapons": "Вооружение",
       "maps": "Карты",
       "mapsTable": "Таблица карт",
-      "tools": "Инструменты"
+      "tools": "Инструменты",
+      "fsPerks": "Final Stand - Умения",
+      "fsUnits": "Final Stand - Подразделения"
     },
     "liveGames": "Активные игры",
     "desktopApp": "Приложение",

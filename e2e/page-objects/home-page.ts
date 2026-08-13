@@ -24,8 +24,8 @@ export class HomePage extends BasePage {
     return this.getByTestId("dps-calculator-card");
   }
 
-  get unitBrowserCard(): Locator {
-    return this.getByTestId("unit-browser-card");
+  get explorerCard(): Locator {
+    return this.getByTestId("explorer-card");
   }
 
   // Leaderboards Section
@@ -104,7 +104,7 @@ export class HomePage extends BasePage {
     await expect(newsSection).toBeVisible({ timeout: 10000 });
 
     await expect(this.dpsCalculatorCard).toBeVisible();
-    await expect(this.unitBrowserCard).toBeVisible();
+    await expect(this.explorerCard).toBeVisible();
     await expect(this.leaderboardsSection).toBeVisible();
   }
 
@@ -116,10 +116,10 @@ export class HomePage extends BasePage {
   }
 
   /**
-   * Click on Unit Browser card
+   * Click on Explorer card
    */
-  async clickUnitBrowserCard(): Promise<void> {
-    await this.unitBrowserCard.click();
+  async clickExplorerCard(): Promise<void> {
+    await this.explorerCard.click();
   }
 
   /**

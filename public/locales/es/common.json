@@ -25,7 +25,9 @@
       "weapons": "Armas",
       "maps": "Mapas",
       "mapsTable": "Tabla de Mapas",
-      "tools": "Herramientas"
+      "tools": "Herramientas",
+      "fsPerks": "Final Stand - Ventajas",
+      "fsUnits": "Final Stand - Unidades"
     },
     "liveGames": "Juegos en vivo",
     "desktopApp": "App de Escritorio",

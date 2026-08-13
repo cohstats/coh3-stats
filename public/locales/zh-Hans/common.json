@@ -25,7 +25,9 @@
       "weapons": "武器",
       "maps": "地图",
       "mapsTable": "地图表格",
-      "tools": "工具"
+      "tools": "工具",
+      "fsPerks": "Final Stand 天赋",
+      "fsUnits": "Final Stand 单位"
     },
     "liveGames": "实时游戏",
     "desktopApp": "桌面应用",

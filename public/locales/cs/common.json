@@ -25,7 +25,9 @@
       "weapons": "Zbraně",
       "maps": "Mapy",
       "mapsTable": "Tabulka map",
-      "tools": "Nástroje"
+      "tools": "Nástroje",
+      "fsPerks": "Final Stand - Vylepšení",
+      "fsUnits": "Final Stand - Jednotky"
     },
     "liveGames": "Živé hry",
     "desktopApp": "Desktopová aplikace",

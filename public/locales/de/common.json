@@ -25,7 +25,9 @@
       "weapons": "Waffen",
       "maps": "Karten",
       "mapsTable": "Kartentabelle",
-      "tools": "Werkzeuge"
+      "tools": "Werkzeuge",
+      "fsPerks": "Final Stand Perks",
+      "fsUnits": "Final Stand Einheiten"
     },
     "liveGames": "Laufende Spiele",
     "desktopApp": "Desktop-App",

@@ -58,9 +58,9 @@ test.describe("Home Page - Page Object Pattern", () => {
       await expect(homePage.dpsCalculatorCard).toContainText(/DPS|Calculator/i);
     });
 
-    test("should display Unit Browser card", async () => {
-      await expect(homePage.unitBrowserCard).toBeVisible();
-      await expect(homePage.unitBrowserCard).toContainText(/Unit|Browser/i);
+    test("should display Explorer card", async () => {
+      await expect(homePage.explorerCard).toBeVisible();
+      await expect(homePage.explorerCard).toContainText(/Explorer/i);
     });
 
     test("should navigate to DPS Calculator when card is clicked", async () => {
@@ -69,14 +69,14 @@ test.describe("Home Page - Page Object Pattern", () => {
       expect(homePage.page.url()).toContain("/explorer/dps");
     });
 
-    test("should navigate to Unit Browser when card is clicked", async () => {
+    test("should navigate to Explorer when card is clicked", async () => {
       // Navigate back to home page first since previous test navigated away
       await homePage.navigate();
       await homePage.waitForPageLoad();
 
-      await homePage.clickUnitBrowserCard();
-      await homePage.page.waitForURL(/.*unit-browser.*/);
-      expect(homePage.page.url()).toContain("unit-browser");
+      await homePage.clickExplorerCard();
+      await homePage.page.waitForURL(/\/explorer$/);
+      expect(homePage.page.url()).toContain("/explorer");
     });
   });
 
