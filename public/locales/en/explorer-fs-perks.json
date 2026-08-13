@@ -39,8 +39,7 @@
     "noEffect": "No effect text in the game files",
     "noDescription": "No description in the game files",
     "modifiers": "Modifiers",
-    "modifierRange": "{{from}} → {{to}}",
-    "clickHint": "Click to pin this perk below"
+    "modifierRange": "{{from}} → {{to}}"
   },
   "table": {
     "level": "Lvl",

@@ -232,11 +232,15 @@ export const getStaticProps: GetStaticProps<FsUnitsProps> = async (context) => {
   const locale = context.locale || "en";
   const params = await context.params;
 
-  const { sbpsData } = await getMappings(locale);
-
   const raceId = params?.raceId as string;
 
-  const raceToFetch = (raceId as raceType) || "american";
+  if (!raceTypeArray.includes(raceId as raceType)) {
+    return { notFound: true, revalidate: false };
+  }
+
+  const { sbpsData } = await getMappings(locale);
+
+  const raceToFetch = raceId as raceType;
 
   const factionMap: Partial<Record<raceType, string>> = {
     dak: "afrika_korps",
