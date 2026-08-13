@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { IconSearch } from "@tabler/icons-react";
 import {
   Anchor,
@@ -16,8 +16,8 @@ import {
 
 import { raceType, raceTypeArray } from "../../../../../../src/coh3/coh3-types";
 import {
-  generateAlternateLanguageLinks,
   generateKeywordsString,
+  generateLanguageAlternates,
 } from "../../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../../src/unitStats/mappings";
@@ -60,7 +60,15 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
   const metaKeywords = generateKeywordsString([
     `${localizedRace} coh3 final stand`,
     `Final Stand Unit List ${localizedRace}`,
+    "coh3 final stand dlc",
+    "hold off co-op units",
   ]);
+
+  // Not "COH3 Explorer" - both the unit list and og:title/description should say Final Stand up
+  // front, so link previews and search results are never confused with the multiplayer roster.
+  const pageTitle = `${localizedRace} Final Stand Units`;
+  const metaDescription = `${localizedRace} Final Stand Units - the co-op vs AI DLC roster in Company of Heroes 3. Not available in the standard skirmish / multiplayer game.`;
+  const canonical = `${config.SITE_URL}${asPath}`;
 
   const filteredUnits = units.filter((unit) => {
     if (!searchValue) return true;
@@ -130,16 +138,33 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
 
   return (
     <>
-      <Head>
-        <title>{`${localizedRace} Final Stand Units - COH3 Explorer`}</title>
-        <meta
-          name="description"
-          content={`${localizedRace} Final Stand (co-op vs AI) Units - COH3 Explorer`}
-        />
-        <meta name="keywords" content={metaKeywords} />
-        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
-        {generateAlternateLanguageLinks(asPath)}
-      </Head>
+      <NextSeo
+        title={pageTitle}
+        description={metaDescription}
+        canonical={canonical}
+        openGraph={{
+          title: `${pageTitle} | COH3 Stats`,
+          description: metaDescription,
+          url: canonical,
+          type: "website",
+          siteName: "COH3 Stats",
+          images: [
+            {
+              url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+              width: 64,
+              height: 64,
+              alt: `${localizedRace} faction icon`,
+            },
+          ],
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: metaKeywords,
+          },
+        ]}
+        languageAlternates={generateLanguageAlternates(asPath)}
+      />
       <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">

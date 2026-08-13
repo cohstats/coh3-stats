@@ -357,9 +357,12 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const metaDescription = createMetaDescription();
   const metaKeywords = createEnhancedKeywords();
   const finalStandName = t("unitMeta.finalStandName");
+  // The <title> tag goes through the sitewide "%s | COH3 Stats" template (see `next-seo.config.js`),
+  // so it must NOT repeat the suffix itself - only `openGraph.title` (which bypasses the template).
   const pageTitle = isFinalStand
-    ? `${resolvedSquad.ui.screenName} - ${finalStandName} ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")} | COH3 Stats`
-    : `${resolvedSquad.ui.screenName} - ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")} | COH3 Stats`;
+    ? `${resolvedSquad.ui.screenName} - ${finalStandName} ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")}`
+    : `${resolvedSquad.ui.screenName} - ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")}`;
+  const ogTitle = `${pageTitle} | COH3 Stats`;
 
   return (
     <>
@@ -370,7 +373,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
         // Final Stand units are DLC only content, we don't want them in the search results.
         noindex={isFinalStand}
         openGraph={{
-          title: pageTitle,
+          title: ogTitle,
           description: metaDescription,
           url: `${config.SITE_URL}${asPath}`,
           siteName: "COH3 Stats",
