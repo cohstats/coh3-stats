@@ -29,7 +29,7 @@ const localNews: LocalNewsItem[] = [
 
 [h2]The finalists are:[/h2]
 
-[p]Lem22 / vonMises / Cunha vs Lion Heart / SaNgar / Mr.Sipan[/p]
+[p][url=https://coh3stats.com/players/366826/lem22[/url]Lem22[/p] / [url=https://coh3stats.com/players/31145/vonMises[/url]vonMises[/p] / [url=https://coh3stats.com/players/153969/Cunha[/url]Cunha[/p] vs [url=https://coh3stats.com/players/59864/LionHeart[/url]Lion Heart[/p] / [url=https://coh3stats.com/players/991764/SaNgarBR[/url]SaNgar[/p] / [url=https://coh3stats.com/players/487/RiPMrSipan[/url]Mr.Sipan[/p][/p]
 
 [h2]Livestream details[/h2]
 
