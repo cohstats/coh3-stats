@@ -20,7 +20,7 @@ const localNews: LocalNewsItem[] = [
     title: "Ladder Tournament Season #1 Grand Final",
     author: "Ladder Tournament",
     date: 1787153270,
-    image: "/images/news/ladder-tournament.webp",
+    image: "/images/news/ladder-tournament-optimized.webp",
     url: "https://laddertournament.com.br/",
     contents: `
 [img]/images/news/ladder-tournament.webp[/img]
