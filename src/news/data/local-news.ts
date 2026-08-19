@@ -29,7 +29,7 @@ const localNews: LocalNewsItem[] = [
 
 [h2]The finalists are:[/h2]
 
-[p][url=https://coh3stats.com/players/366826/lem22[/url]Lem22[/p] / [url=https://coh3stats.com/players/31145/vonMises[/url]vonMises[/p] / [url=https://coh3stats.com/players/153969/Cunha[/url]Cunha[/p] vs [url=https://coh3stats.com/players/59864/LionHeart[/url]Lion Heart[/p] / [url=https://coh3stats.com/players/991764/SaNgarBR[/url]SaNgar[/p] / [url=https://coh3stats.com/players/487/RiPMrSipan[/url]Mr.Sipan[/p][/p]
+[p][url=https://coh3stats.com/players/366826/lem22]Lem22[/url] / [url=https://coh3stats.com/players/31145/vonMises]vonMises[/url] / [url=https://coh3stats.com/players/153969/Cunha]Cunha[/url] vs [url=https://coh3stats.com/players/59864/LionHeart]Lion Heart[/url] / [url=https://coh3stats.com/players/991764/SaNgarBR]SaNgar[/url] / [url=https://coh3stats.com/players/487/RiPMrSipan]Mr.Sipan[/url][/p]
 
 [h2]Livestream details[/h2]
 
