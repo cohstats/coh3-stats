@@ -17,6 +17,40 @@ export type LocalNewsItem = {
 const localNews: LocalNewsItem[] = [
   {
     gid: "local-announce-ladder-tournament",
+    title: "Ladder Tournament Season #1 Grand Final",
+    author: "Ladder Tournament",
+    date: 1787153270,
+    image: "/images/news/ladder-tournament.webp",
+    url: "https://laddertournament.com.br/",
+    contents: `
+[img]/images/news/ladder-tournament.webp[/img]
+
+[p]Just a quick heads-up, the coh3 ladder tournament season #1 final is today.[/p]
+
+[h2]The finalists are:[/h2]
+
+[p]Lem22 / vonMises / Cunha vs Lion Heart / SaNgar / Mr.Sipan[/p]
+
+[h2]Livestream details[/h2]
+
+[p][url=https://www.youtube.com/@Alekelgames]AlekelGames[/url] will be streaming in portuguese today at 9 PM BRT / 8 PM EDT / 7 PM CDT / 6 PM MDT / 5 PM PDT / 12 AM BST[/p]
+
+[p]The other english-speaking casters will be streaming the matches on different days.[/p]
+
+[p]We’ll have both english and brazilian casters covering the final, so everyone can follow the action in their preferred language.[/p]
+
+[p][url=https://laddertournament.com.br/]On the official ladder tournament website[/url], as soon as the stream is ready, “live” will show up in the menu. just keep an eye on it there.[/p]
+
+[h2]For more information[/h2]
+
+[p]if you want to join us for the next season, visit our [url=https://discord.gg/HQxUnjcrNd]discord[/url]Official Discord[/p]
+
+[p][url=https://laddertournament.com.br/]Visit the Official Website[/url][/p]
+
+`.trim(),
+  },
+  {
+    gid: "local-announce-ladder-tournament",
     title: "New Ladder Tournament Project for COH3",
     author: "Ladder Tournament",
     date: 1785604604,
@@ -49,14 +83,11 @@ const localNews: LocalNewsItem[] = [
 
 [p]If you're interested in playing, watching the matches, or simply following the development of the project, you're welcome to join the community.[/p]
 
-[h2]Ladder Discord[/h2]
-[p][url=https://discord.com/invite/HQxUnjcrNd]https://https://discord.com/invite/HQxUnjcrNd[/url][/p]
+[p][url=https://discord.com/invite/HQxUnjcrNd]Official Discord[/url][/p]
 
-[h2]Watch the Official Introduction[/h2]
-[p][url=https://www.youtube.com/watch?v=aU4-Jpz5zZs]https://www.youtube.com/watch?v=aU4-Jpz5zZs[/url][/p]
+[p][url=https://www.youtube.com/watch?v=aU4-Jpz5zZs]Watch the Official Introduction[/url][/p]
 
-[h2]Visit the Official Website[/h2]
-[p][url=https://laddertournament.com.br/]https://laddertournament.com.br/[/url][/p]
+[p][url=https://laddertournament.com.br/]Visit the Official Website[/url][/p]
 `.trim(),
   },
 ];
