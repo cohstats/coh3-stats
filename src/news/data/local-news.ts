@@ -43,7 +43,7 @@ const localNews: LocalNewsItem[] = [
 
 [h2]For more information[/h2]
 
-[p]if you want to join us for the next season, visit our [url=https://discord.gg/HQxUnjcrNd]discord[/url]Official Discord[/p]
+[p]if you want to join us for the next season, visit our [url=https://discord.gg/HQxUnjcrNd]Official Discord[/url][/p]
 
 [p][url=https://laddertournament.com.br/]Visit the Official Website[/url][/p]
 
