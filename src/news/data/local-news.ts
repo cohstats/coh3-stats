@@ -16,7 +16,7 @@ export type LocalNewsItem = {
  */
 const localNews: LocalNewsItem[] = [
   {
-    gid: "local-announce-ladder-tournament",
+    gid: "local-ladder-tournament-season1-final",
     title: "Ladder Tournament Season #1 Grand Final",
     author: "Ladder Tournament",
     date: 1787153270,
