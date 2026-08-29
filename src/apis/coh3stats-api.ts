@@ -556,6 +556,10 @@ const _fetchFirstXLinesOfLeaderBoards = async (url: string, amountOfPlayers: num
       }
     }
 
+    if (!lines.length) {
+      return {};
+    }
+
     // Remove the starts of the file
     lines[0] = lines[0].replace('{"leaderboards":[', "");
 
