@@ -1,0 +1,73 @@
+/*
+ * The Final Stand technology draft - one section per pick, top to bottom in the order the game
+ * offers them.
+ */
+
+/*
+ * Technology cards. A fixed minimum keeps the descriptions readable, `auto-fill` then puts as many
+ * of them next to each other as fit - four on a wide screen, one on a phone.
+ */
+.techGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--mantine-spacing-sm);
+  align-items: stretch;
+}
+
+.techCard {
+  height: 100%;
+  transition:
+    border-color 100ms ease,
+    transform 100ms ease;
+}
+
+.techCard:hover {
+  border-color: var(--mantine-color-orange-6);
+  transform: translateY(-2px);
+}
+
+/* The icons of the game files carry their own frame, so they only need the corners rounded off. */
+.techIcon {
+  border-radius: var(--mantine-radius-sm);
+  flex: none;
+}
+
+/*
+ * A technology which an earlier pick already described in full. It is repeated as a chip, so the
+ * pool of a pick stays complete without repeating twenty cards.
+ */
+.techChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-xl);
+  background-color: var(--mantine-color-body);
+  line-height: 1.2;
+  transition:
+    border-color 100ms ease,
+    background-color 100ms ease;
+}
+
+.techChip:hover {
+  border-color: var(--mantine-color-orange-6);
+  background-color: var(--mantine-color-default-hover);
+}
+
+.techChipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/*
+ * The pick header. The wave badge is the anchor of the section, so it keeps its own column and the
+ * title wraps beside it instead of below it.
+ */
+.pickHeader {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mantine-spacing-sm);
+  flex-wrap: wrap;
+}
