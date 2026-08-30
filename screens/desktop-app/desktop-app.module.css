@@ -34,3 +34,52 @@
   vertical-align: bottom;
   margin-bottom: 2px;
 }
+
+/* Version comparison table.
+   Borders are only drawn on the rows that need them - `light-dark()` compiles into a
+   `[data-mantine-color-scheme="dark"]` prefixed rule, which outranks any lower specificity
+   selector trying to remove the border again. */
+.comparison-table thead th,
+.comparison-table tbody td {
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.comparison-table tfoot td {
+  padding-top: var(--mantine-spacing-md);
+}
+
+.feature-column {
+  width: auto;
+  min-width: 260px;
+}
+
+.option-column {
+  width: 180px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Highlight the Microsoft Store column across the whole table */
+.store-column {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+}
+
+.comparison-table thead .store-column {
+  border-top-left-radius: var(--mantine-radius-md);
+  border-top-right-radius: var(--mantine-radius-md);
+}
+
+.comparison-table tfoot .store-column {
+  border-bottom-left-radius: var(--mantine-radius-md);
+  border-bottom-right-radius: var(--mantine-radius-md);
+}
+
+.icon-included {
+  color: var(--mantine-color-green-6);
+  vertical-align: middle;
+}
+
+.icon-excluded {
+  color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3));
+  vertical-align: middle;
+}

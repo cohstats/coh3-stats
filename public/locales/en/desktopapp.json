@@ -27,23 +27,18 @@
   },
   "title": "Grenadier - COH3 Companion",
   "subtitle": "COH3 Stats Desktop App - Gain additional intel on your current game!",
-  "downloadOptions": {
-    "title": "Download Options",
-    "microsoftStore": {
-      "title": "Buy on Microsoft Store",
-      "benefits": [
-        "Certified App by Microsoft",
-        "Updates and patches handled by Microsoft",
-        "Lifetime license",
-        "Support the app with the purchase! ❤"
-      ]
-    },
-    "freeDownload": {
+  "comparison": {
+    "title": "Choose your version",
+    "featureColumn": "Feature",
+    "recommended": "Recommended",
+    "free": {
       "title": "Free Download",
-      "benefits": [
-        "Direct download, not certified app",
-        "Same features as the Microsoft Store App *"
-      ]
+      "subtitle": "Direct download, not a certified app"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Certified by Microsoft, lifetime license",
+      "supportNote": "Support the development with your purchase! ❤"
     }
   },
   "features": {
@@ -54,8 +49,9 @@
       "teams": "Detect arranged teams in your games",
       "recentGames": "See your recent games directly in the app",
       "notifications": "Receive optional sound notifications upon joining a game",
-      "replays": "Auto upload replays to the cloud for additional analysis",
       "muteOnFocusLoss": "Ability to mute the game when the window is not in focus",
+      "friendsGroup": "Friends Group Detection - see which players are playing together",
+      "loadingOverlay": "Loading overlay - opponent intel right on the loading screen",
       "streaming": {
         "before": "Streamer overlay for",
         "and": "and",

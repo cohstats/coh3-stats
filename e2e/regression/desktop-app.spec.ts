@@ -88,22 +88,24 @@ test.describe("Desktop App Page", () => {
     });
   });
 
-  test.describe("Download Options Comparison", () => {
-    test("Microsoft Store benefits list should contain exactly 4 items", async () => {
-      const count = await desktopAppPage.getMsStoreBenefitsCount();
-      expect(count).toBe(4);
+  test.describe("Version Comparison", () => {
+    test("Comparison table should be visible", async () => {
+      await expect(desktopAppPage.comparisonTable).toBeVisible();
     });
 
-    test("Free Download benefits list should contain exactly 2 items", async () => {
-      const count = await desktopAppPage.getFreeDownloadBenefitsCount();
-      expect(count).toBe(2);
+    test("Comparison table should contain exactly 9 feature rows", async () => {
+      const count = await desktopAppPage.getComparisonFeatureRowCount();
+      expect(count).toBe(9);
     });
-  });
 
-  test.describe("Features Section", () => {
-    test("Features list should contain exactly 8 items", async () => {
-      const count = await desktopAppPage.getFeaturesCount();
-      expect(count).toBe(8);
+    test("Free version should include 7 of the 9 features", async () => {
+      const count = await desktopAppPage.getIncludedFeatureCount(1);
+      expect(count).toBe(7);
+    });
+
+    test("Microsoft Store version should include all 9 features", async () => {
+      const count = await desktopAppPage.getIncludedFeatureCount(2);
+      expect(count).toBe(9);
     });
 
     test("OBS link should point to obsproject.com with target='_blank'", async () => {
