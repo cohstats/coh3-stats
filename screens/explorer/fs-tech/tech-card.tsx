@@ -1,8 +1,7 @@
 import React from "react";
-import { Anchor, Badge, Card, Group, Image, Stack, Text, Tooltip } from "@mantine/core";
+import { Badge, Card, Group, Image, Stack, Text, Tooltip } from "@mantine/core";
 import { TFunction } from "next-i18next/pages";
 import { iconPlaceholder } from "../../../components/placeholders";
-import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import type { raceType } from "../../../src/coh3/coh3-types";
 import {
   FS_TECH_NO_THRESHOLD_MAX,
@@ -47,8 +46,9 @@ const useWaveLabel = (technology: FsTechnology, t: TFunction): string | null => 
  * properties behind it are deliberately not shown (nor even parsed, see `RawFsTechnology`).
  *
  * There is no selected state, a card is never opened or pinned. This is the whole technology. The
- * one thing a card leads anywhere is a `unit` technology - its name links to the unit page of the
- * squad it unlocks.
+ * one exception is a `unit` technology: the whole card is then a link to the unit page of the squad
+ * it unlocks, opened in a new tab so the reader does not lose their place in the draft. Only those
+ * cards react to the pointer - a card which leads nowhere stays still under it.
  */
 const TechCard = ({
   technology,
@@ -64,106 +64,122 @@ const TechCard = ({
   const categoryColor = CATEGORY_COLORS[technology.category ?? "passive"] ?? "gray";
   const unitRoute = getFsTechUnitRoute(technology, race);
 
+  const content = (
+    <Stack gap="xs">
+      <Group gap="xs" wrap="nowrap" align="flex-start">
+        <Image
+          src={getFsTechIconUrl(technology)}
+          alt={technology.name}
+          w={TECH_ICON_SIZE}
+          h={TECH_ICON_SIZE}
+          fit="contain"
+          className={classes.techIcon}
+          fallbackSrc={iconPlaceholder.src}
+        />
+
+        <Stack gap={2} style={{ minWidth: 0 }}>
+          {/*
+           * A unit card is a link as a whole - the colour of the name plus the way the card
+           * answers the pointer is what says so.
+           */}
+          <Text
+            fw={600}
+            lh={1.2}
+            c={unitRoute ? "orange" : undefined}
+            data-testid={unitRoute ? `fs-tech-unit-link-${technology.id}` : undefined}
+          >
+            {technology.name}
+          </Text>
+          {technology.typeLabel && (
+            <Text size="xs" c="dimmed">
+              {technology.typeLabel}
+            </Text>
+          )}
+        </Stack>
+      </Group>
+
+      <Group gap={4}>
+        <Badge size="xs" variant="light" color={categoryColor}>
+          {t(`category.${technology.category ?? "passive"}`)}
+        </Badge>
+
+        {/* Only the shared technologies are marked - a faction one is the default. */}
+        {technology.source === "common" && (
+          <Tooltip label={t("tech.commonTooltip")} withArrow>
+            <Badge size="xs" variant="light" color="gray">
+              {t("tech.common")}
+            </Badge>
+          </Tooltip>
+        )}
+
+        {waveLabel && (
+          <Tooltip label={t("tech.waveTooltip")} withArrow>
+            <Badge size="xs" variant="light" color="orange">
+              {waveLabel}
+            </Badge>
+          </Tooltip>
+        )}
+
+        {technology.tags.map((tag) => (
+          <Badge key={tag} size="xs" variant="outline" color="gray">
+            {formatFsTechTag(tag)}
+          </Badge>
+        ))}
+
+        {!technology.enabled && (
+          <Tooltip label={t("tech.disabledTooltip")} withArrow>
+            <Badge size="xs" variant="light" color="red">
+              {t("tech.disabled")}
+            </Badge>
+          </Tooltip>
+        )}
+      </Group>
+
+      {technology.description ? (
+        <Text size="sm" style={{ whiteSpace: "pre-line" }}>
+          {technology.description}
+        </Text>
+      ) : (
+        <Text size="sm" c="dimmed" fs="italic">
+          {t("tech.noDescription")}
+        </Text>
+      )}
+
+      {technology.extraText && (
+        <Text size="sm" c="dimmed" style={{ whiteSpace: "pre-line" }}>
+          {technology.extraText}
+        </Text>
+      )}
+    </Stack>
+  );
+
+  if (!unitRoute) {
+    return (
+      <Card
+        withBorder
+        padding="sm"
+        radius="md"
+        className={classes.techCard}
+        data-testid={`fs-tech-card-${technology.id}`}
+      >
+        {content}
+      </Card>
+    );
+  }
+
   return (
     <Card
       withBorder
       padding="sm"
       radius="md"
-      className={classes.techCard}
+      component="a"
+      href={unitRoute}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${classes.techCard} ${classes.techCardLink}`}
       data-testid={`fs-tech-card-${technology.id}`}
     >
-      <Stack gap="xs">
-        <Group gap="xs" wrap="nowrap" align="flex-start">
-          <Image
-            src={getFsTechIconUrl(technology)}
-            alt={technology.name}
-            w={TECH_ICON_SIZE}
-            h={TECH_ICON_SIZE}
-            fit="contain"
-            className={classes.techIcon}
-            fallbackSrc={iconPlaceholder.src}
-          />
-
-          <Stack gap={2} style={{ minWidth: 0 }}>
-            {unitRoute ? (
-              <Tooltip label={t("tech.unitLinkTooltip", { unit: technology.name })} withArrow>
-                <Anchor
-                  component={LinkWithOutPrefetch}
-                  href={unitRoute}
-                  fw={600}
-                  lh={1.2}
-                  c="orange"
-                  data-testid={`fs-tech-unit-link-${technology.id}`}
-                >
-                  {technology.name}
-                </Anchor>
-              </Tooltip>
-            ) : (
-              <Text fw={600} lh={1.2}>
-                {technology.name}
-              </Text>
-            )}
-            {technology.typeLabel && (
-              <Text size="xs" c="dimmed">
-                {technology.typeLabel}
-              </Text>
-            )}
-          </Stack>
-        </Group>
-
-        <Group gap={4}>
-          <Badge size="xs" variant="light" color={categoryColor}>
-            {t(`category.${technology.category ?? "passive"}`)}
-          </Badge>
-
-          {/* Only the shared technologies are marked - a faction one is the default. */}
-          {technology.source === "common" && (
-            <Tooltip label={t("tech.commonTooltip")} withArrow>
-              <Badge size="xs" variant="light" color="gray">
-                {t("tech.common")}
-              </Badge>
-            </Tooltip>
-          )}
-
-          {waveLabel && (
-            <Tooltip label={t("tech.waveTooltip")} withArrow>
-              <Badge size="xs" variant="light" color="orange">
-                {waveLabel}
-              </Badge>
-            </Tooltip>
-          )}
-
-          {technology.tags.map((tag) => (
-            <Badge key={tag} size="xs" variant="outline" color="gray">
-              {formatFsTechTag(tag)}
-            </Badge>
-          ))}
-
-          {!technology.enabled && (
-            <Tooltip label={t("tech.disabledTooltip")} withArrow>
-              <Badge size="xs" variant="light" color="red">
-                {t("tech.disabled")}
-              </Badge>
-            </Tooltip>
-          )}
-        </Group>
-
-        {technology.description ? (
-          <Text size="sm" style={{ whiteSpace: "pre-line" }}>
-            {technology.description}
-          </Text>
-        ) : (
-          <Text size="sm" c="dimmed" fs="italic">
-            {t("tech.noDescription")}
-          </Text>
-        )}
-
-        {technology.extraText && (
-          <Text size="sm" c="dimmed" style={{ whiteSpace: "pre-line" }}>
-            {technology.extraText}
-          </Text>
-        )}
-      </Stack>
+      {content}
     </Card>
   );
 };

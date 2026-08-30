@@ -16,12 +16,21 @@
 
 .techCard {
   height: 100%;
+}
+
+/*
+ * A card of a `unit` technology - the whole card is the link to the unit page. Only these cards
+ * answer the pointer: a card which leads nowhere must not look as if it did.
+ */
+.techCardLink {
+  color: inherit;
+  text-decoration: none;
   transition:
     border-color 100ms ease,
     transform 100ms ease;
 }
 
-.techCard:hover {
+.techCardLink:hover {
   border-color: var(--mantine-color-orange-6);
   transform: translateY(-2px);
 }

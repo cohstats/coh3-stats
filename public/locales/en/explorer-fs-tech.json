@@ -62,7 +62,6 @@
     "waveTooltip": "The waves this technology can be offered in. Only the passive picks respect it - the unit and ability picks ignore it.",
     "disabled": "Disabled",
     "disabledTooltip": "This technology is in the game files but switched off, so it cannot be offered.",
-    "unitLinkTooltip": "Open the unit page of {{unit}}",
     "noDescription": "No description in the game files"
   },
   "unreachable": {
