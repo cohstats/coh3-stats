@@ -108,9 +108,7 @@ const explorerFactionLink = (
       </Stack>
       <Divider />
       <Stack gap={4}>
-        <Text size="sm" fw={500} c="dimmed">
-          {t("mainMenu.explMenu.finalStand")}
-        </Text>
+        <Text fw={700}>{t("mainMenu.explMenu.finalStand")}</Text>
         <Group gap={4}>
           <IconBinaryTree size={20} color="var(--mantine-color-teal-6)" />
           <Anchor
