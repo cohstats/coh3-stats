@@ -26,8 +26,10 @@
       "maps": "Mapy",
       "mapsTable": "Tabulka map",
       "tools": "Nástroje",
-      "fsPerks": "Final Stand - Vylepšení",
-      "fsUnits": "Final Stand - Jednotky"
+      "finalStand": "Final Stand",
+      "fsTech": "FS Tech",
+      "fsPerks": "FS Perks",
+      "fsUnits": "FS Units"
     },
     "liveGames": "Živé hry",
     "desktopApp": "Desktopová aplikace",

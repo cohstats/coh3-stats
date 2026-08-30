@@ -26,9 +26,10 @@
       "maps": "Maps",
       "mapsTable": "Maps Table",
       "tools": "Tools",
-      "fsPerks": "Final Stand Perks",
-      "fsUnits": "Final Stand Units",
-      "fsTech": "Final Stand Technologies"
+      "finalStand": "Final Stand",
+      "fsTech": "FS Tech",
+      "fsPerks": "FS Perks",
+      "fsUnits": "FS Units"
     },
     "liveGames": "Live Games",
     "desktopApp": "Desktop App",

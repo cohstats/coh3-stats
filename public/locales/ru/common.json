@@ -26,8 +26,10 @@
       "maps": "Карты",
       "mapsTable": "Таблица карт",
       "tools": "Инструменты",
-      "fsPerks": "Final Stand - Умения",
-      "fsUnits": "Final Stand - Подразделения"
+      "finalStand": "Final Stand",
+      "fsTech": "FS Tech",
+      "fsPerks": "FS Perks",
+      "fsUnits": "FS Units"
     },
     "liveGames": "Активные игры",
     "desktopApp": "Приложение",

@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import {
   Badge,
   Button,
@@ -14,6 +15,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
+import { useDebouncedValue } from "@mantine/hooks";
 import { TFunction } from "next-i18next/pages";
 import FactionIcon from "../../../components/faction-icon";
 import { FactionSwitch } from "../../../components/faction-switch";
@@ -39,6 +41,37 @@ const FACTION_ICON_SIZE = 64;
 
 /** Size of the faction icons of the switch. */
 const FACTION_SWITCH_SIZE = 30;
+
+/** How long the search box waits before it writes the typed term into the url. */
+const SEARCH_URL_DEBOUNCE_MS = 300;
+
+/**
+ * The filters of the page together with the faction they were read for.
+ *
+ * Switching the faction keeps this component mounted, so the state has to say which faction it
+ * belongs to - otherwise the filters of the previous faction would be written into the url of the
+ * new one before they are reset.
+ */
+type FsTechFilterState = Required<FsTechFilters> & { race: raceType };
+
+/** Filter state with nothing filtered - the initial state and what the reset button goes back to. */
+const emptyFilters = (race: raceType): FsTechFilterState => ({
+  race,
+  search: "",
+  typeLabels: [],
+  tags: [],
+  includeCommon: true,
+});
+
+/**
+ * Reads a comma separated list out of the url, dropping every value the faction doesn't offer - a
+ * link built for another faction shouldn't be able to filter the whole page away.
+ */
+const parseListQuery = (value: string | string[] | undefined, allowed: string[]): string[] => {
+  const raw = Array.isArray(value) ? value : (value?.split(",") ?? []);
+
+  return raw.map((entry) => entry.trim()).filter((entry) => allowed.includes(entry));
+};
 
 /** A pick with its pool already filtered and split into the cards and the chips of the section. */
 type RenderedPick = {
@@ -190,20 +223,70 @@ const FsTechPage = ({
   meta: FsTechMeta;
   t: TFunction;
 }) => {
-  const [search, setSearch] = useState("");
-  const [typeLabels, setTypeLabels] = useState<string[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
-  const [includeCommon, setIncludeCommon] = useState(true);
+  const router = useRouter();
+  const [filterState, setFilterState] = useState<FsTechFilterState>(() =>
+    emptyFilters(race.race),
+  );
 
+  const { search, typeLabels, tags, includeCommon } = filterState;
   const filters: FsTechFilters = { search, typeLabels, tags, includeCommon };
   const hasFilters = !!search || typeLabels.length > 0 || tags.length > 0 || !includeCommon;
 
-  const resetFilters = () => {
-    setSearch("");
-    setTypeLabels([]);
-    setTags([]);
-    setIncludeCommon(true);
-  };
+  const updateFilters = useCallback(
+    (update: Partial<FsTechFilterState>) =>
+      setFilterState((previous) => ({ ...previous, ...update })),
+    [],
+  );
+
+  const resetFilters = useCallback(() => setFilterState(emptyFilters(race.race)), [race.race]);
+
+  // The page is statically generated, so the query is only known after hydration. A faction switch
+  // leaves this component mounted with an empty query, which resets the filters here as well.
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const { search: searchQuery, type, tag, common } = router.query;
+
+    setFilterState({
+      race: race.race,
+      search: typeof searchQuery === "string" ? searchQuery : "",
+      typeLabels: parseListQuery(type, race.typeLabels),
+      tags: parseListQuery(tag, race.tags),
+      includeCommon: common !== "false",
+    });
+  }, [router.isReady, race.race]);
+
+  // The search filters as you type, but only lands in the url once the typing stops - one history
+  // entry per keystroke would be useless and a `replace` per keystroke is just noise.
+  const [debouncedSearch] = useDebouncedValue(search, SEARCH_URL_DEBOUNCE_MS);
+
+  // Keep the url in sync with the filters, so a filtered page can be shared as a link. Skipped
+  // until the effect above has read the filters of the faction which is currently rendered.
+  useEffect(() => {
+    // Nothing is written while the debounce is still catching up with the search box - that keeps
+    // the half typed terms out of the url and the term of a shared link in it.
+    if (!router.isReady || filterState.race !== race.race || debouncedSearch !== search) return;
+
+    const query: Record<string, string> = { raceId: race.race };
+    if (debouncedSearch.trim()) query.search = debouncedSearch.trim();
+    if (typeLabels.length > 0) query.type = typeLabels.join(",");
+    if (tags.length > 0) query.tag = tags.join(",");
+    if (!includeCommon) query.common = "false";
+
+    router.replace({ pathname: router.pathname, query }, undefined, {
+      shallow: true,
+      scroll: false,
+    });
+  }, [
+    router.isReady,
+    filterState.race,
+    race.race,
+    search,
+    debouncedSearch,
+    typeLabels,
+    tags,
+    includeCommon,
+  ]);
 
   const picks = useMemo(
     () => renderPicks(race, filters),
@@ -274,13 +357,13 @@ const FsTechPage = ({
         <TechFilters
           race={race}
           search={search}
-          onSearchChange={setSearch}
+          onSearchChange={(value) => updateFilters({ search: value })}
           typeLabels={typeLabels}
-          onTypeLabelsChange={setTypeLabels}
+          onTypeLabelsChange={(value) => updateFilters({ typeLabels: value })}
           tags={tags}
-          onTagsChange={setTags}
+          onTagsChange={(value) => updateFilters({ tags: value })}
           includeCommon={includeCommon}
-          onIncludeCommonChange={setIncludeCommon}
+          onIncludeCommonChange={(value) => updateFilters({ includeCommon: value })}
           onReset={resetFilters}
           hasFilters={hasFilters}
           t={t}

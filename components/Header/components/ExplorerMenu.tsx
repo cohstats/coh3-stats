@@ -108,6 +108,20 @@ const explorerFactionLink = (
       </Stack>
       <Divider />
       <Stack gap={4}>
+        <Text size="sm" fw={500} c="dimmed">
+          {t("mainMenu.explMenu.finalStand")}
+        </Text>
+        <Group gap={4}>
+          <IconBinaryTree size={20} color="var(--mantine-color-teal-6)" />
+          <Anchor
+            c="teal"
+            component={LinkWithOutPrefetch}
+            href={getExplorerFsTechRoute(faction)}
+            onClick={close}
+          >
+            {t("mainMenu.explMenu.fsTech")}
+          </Anchor>
+        </Group>
         <Group gap={4}>
           <IconStars size={20} color="var(--mantine-color-teal-6)" />
           <Anchor
@@ -128,17 +142,6 @@ const explorerFactionLink = (
             onClick={close}
           >
             {t("mainMenu.explMenu.fsUnits")}
-          </Anchor>
-        </Group>
-        <Group gap={4}>
-          <IconBinaryTree size={20} color="var(--mantine-color-teal-6)" />
-          <Anchor
-            c="teal"
-            component={LinkWithOutPrefetch}
-            href={getExplorerFsTechRoute(faction)}
-            onClick={close}
-          >
-            {t("mainMenu.explMenu.fsTech")}
           </Anchor>
         </Group>
       </Stack>
