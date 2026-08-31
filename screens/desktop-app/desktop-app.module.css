@@ -59,6 +59,15 @@
   vertical-align: middle;
 }
 
+/* The header and footer stacks are of different heights - the store column carries a badge and
+   a support note, the free column two download counters - and the wrapping of those texts
+   changes per language. Anchoring the cells to the top keeps the column titles and the two
+   download buttons on the same line in every locale, instead of centering each cell on its own. */
+.comparison-table thead .option-column,
+.comparison-table tfoot .option-column {
+  vertical-align: top;
+}
+
 /* Highlight the Microsoft Store column across the whole table */
 .store-column {
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));

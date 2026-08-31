@@ -27,39 +27,64 @@
   },
   "title": "Grenadier - COH3 Companion",
   "subtitle": "App de Escritorio COH3 Stats - ¡Obtén información adicional de tu juego actual!",
-  "downloadOptions": {
-    "title": "Opciones de Descarga",
-    "microsoftStore": {
-      "title": "Comprar en Microsoft Store",
-      "benefits": [
-        "Aplicación certificada por Microsoft",
-        "Actualizaciones y parches gestionados por Microsoft",
-        "Licencia de por vida",
-        "¡Apoya la aplicación con tu compra! Gracias"
-      ]
-    },
-    "freeDownload": {
+  "comparison": {
+    "title": "Elige tu versión",
+    "featureColumn": "Característica",
+    "recommended": "Recomendado",
+    "free": {
       "title": "Descarga Gratuita",
-      "benefits": [
-        "Descarga directa, aplicación no certificada",
-        "Mismas características que la aplicación de Microsoft Store"
-      ]
+      "subtitle": "Descarga directa, aplicación no certificada"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Certificada por Microsoft, licencia de por vida",
+      "supportNote": "¡Apoya el desarrollo con tu compra! ❤"
     }
   },
   "features": {
-    "title": "Características:",
+    "title": "Características",
     "list": {
-      "noSetup": "Usalo sin ningun esfuerzo, no necesita configurarse - simplemente inicia la aplicacion!",
-      "leaderboard": "Ve las clasificaciones actuales de jugadores incluyendo ELO, Rango, Tasa de Victoria",
-      "teams": "Detecta equipos organizados en tus juegos",
-      "recentGames": "Ve tus juegos recientes directamente en la app",
-      "notifications": "Recibe notificaciones de sonido opcionales al entrar a un juego",
-      "replays": "Sube repeticiones automaticamente a la nube para análisis adicional",
-      "muteOnFocusLoss": "Capacidad de silenciar el juego cuando la ventana no está en foco",
+      "noSetup": {
+        "label": "Sin configuración",
+        "description": "uso sencillo, solo inicia la aplicación"
+      },
+      "leaderboard": {
+        "label": "ELO, Rango, Tasa de Victoria",
+        "description": "de cada jugador de la partida"
+      },
+      "teams": {
+        "label": "Detección de equipos organizados",
+        "description": "descubre si tus oponentes entraron en cola como equipo premade"
+      },
+      "recentGames": {
+        "label": "Partidas recientes",
+        "description": "tu historial de partidas dentro de la app"
+      },
+      "leaderboards": {
+        "label": "Clasificaciones",
+        "description": "consulta las clasificaciones directamente en la app"
+      },
+      "notifications": {
+        "label": "Notificaciones de sonido",
+        "description": "recibe un aviso en cuanto empieza una partida"
+      },
+      "muteOnFocusLoss": {
+        "label": "Silencio automático",
+        "description": "silencia el juego cuando la ventana pierde el foco"
+      },
       "streaming": {
-        "before": "Overlay para transmisiones",
+        "label": "Overlay para streamers",
+        "before": "para",
         "and": "y",
-        "after": "y otras herramientas para transmisiones"
+        "after": "y otras herramientas de transmisión"
+      },
+      "friendsGroup": {
+        "label": "Detección de grupos de amigos",
+        "description": "ve qué jugadores juegan juntos"
+      },
+      "loadingOverlay": {
+        "label": "Overlay en la pantalla de carga",
+        "description": "información del oponente antes de que empiece la partida"
       }
     }
   }

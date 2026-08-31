@@ -67,8 +67,8 @@ const DesktopAppPage: NextPage = ({
     </Carousel.Slide>
   ));
 
-  // Streamer overlay feature contains links, so it's rendered as a node
-  const streamingFeature = (
+  // Streamer overlay feature contains links, so its description is rendered as a node
+  const streamingDescription = (
     <>
       {t("features.list.streaming.before")}{" "}
       <Anchor href="https://obsproject.com/" target="_blank" rel="noopener">
@@ -82,18 +82,29 @@ const DesktopAppPage: NextPage = ({
     </>
   );
 
+  // Every feature reads as a bold lead-in followed by a short description
+  const featureLabel = (key: string, description?: React.ReactNode) => (
+    <>
+      <Text span fw={700}>
+        {t(`features.list.${key}.label`)}
+      </Text>{" "}
+      &mdash; {description ?? t(`features.list.${key}.description`)}
+    </>
+  );
+
   // Feature comparison - `free` marks whether the feature is part of the free version,
   // all of them are always part of the Microsoft Store version
-  const features: Array<{ key: string; label: React.ReactNode; free: boolean }> = [
-    { key: "noSetup", label: t("features.list.noSetup"), free: true },
-    { key: "leaderboard", label: t("features.list.leaderboard"), free: true },
-    { key: "teams", label: t("features.list.teams"), free: true },
-    { key: "recentGames", label: t("features.list.recentGames"), free: true },
-    { key: "notifications", label: t("features.list.notifications"), free: true },
-    { key: "muteOnFocusLoss", label: t("features.list.muteOnFocusLoss"), free: true },
-    { key: "streaming", label: streamingFeature, free: true },
-    { key: "friendsGroup", label: t("features.list.friendsGroup"), free: false },
-    { key: "loadingOverlay", label: t("features.list.loadingOverlay"), free: false },
+  const features: Array<{ key: string; description?: React.ReactNode; free: boolean }> = [
+    { key: "noSetup", free: true },
+    { key: "leaderboard", free: true },
+    { key: "teams", free: true },
+    { key: "recentGames", free: true },
+    { key: "leaderboards", free: true },
+    { key: "notifications", free: true },
+    { key: "muteOnFocusLoss", free: true },
+    { key: "streaming", description: streamingDescription, free: true },
+    { key: "friendsGroup", free: false },
+    { key: "loadingOverlay", free: false },
   ];
 
   const includedIcon = (
@@ -199,7 +210,9 @@ const DesktopAppPage: NextPage = ({
               <Table.Tbody>
                 {features.map((feature) => (
                   <Table.Tr key={feature.key} data-testid="comparison-feature-row">
-                    <Table.Td className={classes["feature-column"]}>{feature.label}</Table.Td>
+                    <Table.Td className={classes["feature-column"]}>
+                      {featureLabel(feature.key, feature.description)}
+                    </Table.Td>
                     <Table.Td className={classes["option-column"]}>
                       {feature.free ? includedIcon : excludedIcon}
                     </Table.Td>

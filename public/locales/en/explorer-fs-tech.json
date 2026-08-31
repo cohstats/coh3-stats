@@ -12,7 +12,7 @@
   },
   "page": {
     "title": "{{faction}} Final Stand Technologies",
-    "subtitle": "The technology draft, pick by pick. Every pick offers {{choices}} of the technologies below and you can hold {{slots}} of them at a time.",
+    "subtitle": "The technology draft, pick by pick. A run gives you {{picks}} picks, each of them offers {{choices}} of the technologies below - and everything you pick stays with you for the rest of the match.",
     "notAvailable": "The Final Stand technologies data is not available at the moment. Please try again later."
   },
   "summary": {
@@ -24,9 +24,9 @@
     "abilities_other": "{{count}} abilities",
     "passives_one": "{{count}} passive",
     "passives_other": "{{count}} passives",
-    "slots_one": "{{count}} slot",
-    "slots_other": "{{count}} slots",
-    "slotsTooltip": "Technologies you can hold at the same time during a Final Stand run."
+    "picks_one": "{{count}} pick",
+    "picks_other": "{{count}} picks",
+    "picksTooltip": "Picks of a run - one before the first wave and one at the start of every wave after it, rotating unit, passive and ability."
   },
   "category": {
     "unit": "Unit",
@@ -63,10 +63,6 @@
     "disabled": "Disabled",
     "disabledTooltip": "This technology is in the game files but switched off, so it cannot be offered.",
     "noDescription": "No description in the game files"
-  },
-  "unreachable": {
-    "title": "Not offered in the draft",
-    "subtitle": "These technologies are in the game files but their wave window lies outside the picks of a run, so the draft never offers them."
   },
   "faction": {
     "switchTooltip": "Show the {{faction}} technologies"

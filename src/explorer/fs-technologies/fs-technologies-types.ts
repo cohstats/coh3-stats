@@ -157,7 +157,10 @@ type RawFsTechPick = {
 type RawFsTechMeta = {
   /** Technologies offered per pick. */
   choicesPerPick: number;
-  /** Technology slots a player can hold. */
+  /**
+   * Choice slots the technology menu has (`technologies_slot_a` .. `_e`). It caps how many
+   * technologies one pick can offer, not how many a player may hold - every pick is permanent.
+   */
   maxSlots: number;
   /** How often the same technology may be offered within one pick. */
   maxOfferingCount: number;

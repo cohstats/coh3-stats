@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Badge,
+  Box,
   Button,
   Card,
   Chip,
   Container,
-  Divider,
   Group,
   Stack,
   Text,
@@ -32,9 +32,7 @@ import type {
   FsTechnology,
 } from "../../../src/explorer/fs-technologies/fs-technologies-types";
 import { getExplorerFsTechRoute } from "../../../src/routes";
-import TechCard from "./tech-card";
 import TechPickSection from "./tech-pick-section";
-import classes from "./fs-tech.module.css";
 
 /** Size of the faction icon in the page header. */
 const FACTION_ICON_SIZE = 64;
@@ -309,8 +307,8 @@ const FsTechPage = ({
   return (
     <Container size="lg" p={0}>
       <Stack gap="lg">
-        {/* The switch sits in the top right corner and drops below the title once space runs out. */}
-        <Group gap="md" align="flex-start" justify="space-between">
+        {/* The switch stays pinned to the top right corner - the title block next to it shrinks. */}
+        <Group gap="md" align="flex-start" justify="space-between" wrap="nowrap">
           <Group gap="md" wrap="nowrap" align="flex-start" style={{ minWidth: 0 }}>
             <FactionIcon name={race.race} width={FACTION_ICON_SIZE} />
 
@@ -319,7 +317,7 @@ const FsTechPage = ({
                 {t("page.title", { faction: race.name })}
               </Title>
               <Text c="dimmed">
-                {t("page.subtitle", { choices: meta.choicesPerPick, slots: meta.maxSlots })}
+                {t("page.subtitle", { choices: meta.choicesPerPick, picks: race.picks.length })}
               </Text>
 
               <Group gap={6}>
@@ -335,23 +333,25 @@ const FsTechPage = ({
                 <Badge variant="light" color="teal">
                   {t("summary.passives", { count: race.categoryCounts.passive })}
                 </Badge>
-                <Tooltip label={t("summary.slotsTooltip")} multiline w={260} withArrow>
+                <Tooltip label={t("summary.picksTooltip")} multiline w={260} withArrow>
                   <Badge variant="light" color="orange">
-                    {t("summary.slots", { count: meta.maxSlots })}
+                    {t("summary.picks", { count: race.picks.length })}
                   </Badge>
                 </Tooltip>
               </Group>
             </Stack>
           </Group>
 
-          <FactionSwitch
-            races={availableRaces}
-            activeRace={race.race}
-            getHref={getExplorerFsTechRoute}
-            getTooltipLabel={(r) => t("faction.switchTooltip", { faction: localizedNames[r] })}
-            iconSize={FACTION_SWITCH_SIZE}
-            testIdPrefix="fs-tech-faction-"
-          />
+          <Box style={{ flexShrink: 0 }}>
+            <FactionSwitch
+              races={availableRaces}
+              activeRace={race.race}
+              getHref={getExplorerFsTechRoute}
+              getTooltipLabel={(r) => t("faction.switchTooltip", { faction: localizedNames[r] })}
+              iconSize={FACTION_SWITCH_SIZE}
+              testIdPrefix="fs-tech-faction-"
+            />
+          </Box>
         </Group>
 
         <TechFilters
@@ -396,34 +396,6 @@ const FsTechPage = ({
             );
           })}
         </Stack>
-
-        {/*
-         * Technologies the draft cannot reach - their wave window lies outside the twelve picks.
-         * They are in the game files, so they are shown rather than dropped.
-         */}
-        {unreachable.length > 0 && (
-          <>
-            <Divider />
-            <Stack gap="xs">
-              <Group gap="xs" align="baseline">
-                <Title order={2} size="h4">
-                  {t("unreachable.title")}
-                </Title>
-                <Badge variant="light" color="gray">
-                  {unreachable.length}
-                </Badge>
-              </Group>
-              <Text c="dimmed" size="sm">
-                {t("unreachable.subtitle")}
-              </Text>
-              <div className={classes.techGrid}>
-                {unreachable.map((technology) => (
-                  <TechCard key={technology.id} technology={technology} race={race.race} t={t} />
-                ))}
-              </div>
-            </Stack>
-          </>
-        )}
       </Stack>
     </Container>
   );

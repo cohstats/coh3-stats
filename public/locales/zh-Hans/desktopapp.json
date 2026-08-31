@@ -27,36 +27,64 @@
   },
   "title": "Grenadier - COH3 Companion",
   "subtitle": "COH3 Stats 桌面应用 - 获取当前游戏的额外情报！",
-  "downloadOptions": {
-    "title": "下载选项",
-    "microsoftStore": {
-      "title": "在 Microsoft Store 购买",
-      "benefits": [
-        "Microsoft 认证应用",
-        "由 Microsoft 管理更新和补丁",
-        "终身许可",
-        "通过购买支持应用！谢谢"
-      ]
-    },
-    "freeDownload": {
+  "comparison": {
+    "title": "选择你的版本",
+    "featureColumn": "功能",
+    "recommended": "推荐",
+    "free": {
       "title": "免费下载",
-      "benefits": ["直接下载，非认证应用", "与 Microsoft Store 应用功能相同"]
+      "subtitle": "直接下载，非认证应用"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Microsoft 认证，终身许可",
+      "supportNote": "购买即可支持开发！❤"
     }
   },
   "features": {
     "title": "功能",
     "list": {
-      "noSetup": "轻松使用，无需设置 - 只需启动应用程序",
-      "leaderboard": "查看当前玩家排名，包括 ELO、排名、胜率",
-      "teams": "检测游戏中的组队",
-      "recentGames": "直接在应用中查看最近的游戏",
-      "notifications": "加入游戏时接收可选的声音通知",
-      "replays": "自动上传录像到云端进行额外分析",
-      "muteOnFocusLoss": "当窗口失去焦点时可以静音游戏",
+      "noSetup": {
+        "label": "无需设置",
+        "description": "轻松使用，只需启动应用"
+      },
+      "leaderboard": {
+        "label": "ELO、排名、胜率",
+        "description": "显示比赛中每位玩家的数据"
+      },
+      "teams": {
+        "label": "组队检测",
+        "description": "查看对手是否为预先组好的队伍"
+      },
+      "recentGames": {
+        "label": "最近的游戏",
+        "description": "在应用中查看你的对战记录"
+      },
+      "leaderboards": {
+        "label": "排行榜",
+        "description": "直接在应用中查看排行榜"
+      },
+      "notifications": {
+        "label": "声音通知",
+        "description": "游戏开始时立即提醒你"
+      },
+      "muteOnFocusLoss": {
+        "label": "自动静音",
+        "description": "窗口失去焦点时将游戏静音"
+      },
       "streaming": {
+        "label": "主播覆盖层",
         "before": "适用于",
         "and": "和",
-        "after": "及其他直播工具的主播覆盖"
+        "after": "及其他直播工具"
+      },
+      "friendsGroup": {
+        "label": "好友组队检测",
+        "description": "查看哪些玩家在一起游戏"
+      },
+      "loadingOverlay": {
+        "label": "加载画面覆盖层",
+        "description": "在比赛开始前了解对手情报"
       }
     }
   }

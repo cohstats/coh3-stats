@@ -93,19 +93,19 @@ test.describe("Desktop App Page", () => {
       await expect(desktopAppPage.comparisonTable).toBeVisible();
     });
 
-    test("Comparison table should contain exactly 9 feature rows", async () => {
+    test("Comparison table should contain exactly 10 feature rows", async () => {
       const count = await desktopAppPage.getComparisonFeatureRowCount();
-      expect(count).toBe(9);
+      expect(count).toBe(10);
     });
 
-    test("Free version should include 7 of the 9 features", async () => {
+    test("Free version should include 8 of the 10 features", async () => {
       const count = await desktopAppPage.getIncludedFeatureCount(1);
-      expect(count).toBe(7);
+      expect(count).toBe(8);
     });
 
-    test("Microsoft Store version should include all 9 features", async () => {
+    test("Microsoft Store version should include all 10 features", async () => {
       const count = await desktopAppPage.getIncludedFeatureCount(2);
-      expect(count).toBe(9);
+      expect(count).toBe(10);
     });
 
     test("OBS link should point to obsproject.com with target='_blank'", async () => {

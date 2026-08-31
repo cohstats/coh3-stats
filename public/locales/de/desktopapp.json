@@ -27,39 +27,64 @@
   },
   "title": "Grenadier - COH3 Companion",
   "subtitle": "COH3 Stats Desktop-App - Erhalte zusätzliche Infos zu deinem aktuellen Spiel!",
-  "downloadOptions": {
-    "title": "Download-Optionen",
-    "microsoftStore": {
-      "title": "Im Microsoft Store kaufen",
-      "benefits": [
-        "Von Microsoft zertifizierte App",
-        "Updates und Patches werden von Microsoft verwaltet",
-        "Lebenslange Lizenz",
-        "Unterstütze die App mit deinem Kauf! Vielen Dank"
-      ]
-    },
-    "freeDownload": {
+  "comparison": {
+    "title": "Wähle deine Version",
+    "featureColumn": "Funktion",
+    "recommended": "Empfohlen",
+    "free": {
       "title": "Kostenloser Download",
-      "benefits": [
-        "Direkter Download, nicht zertifizierte App",
-        "Gleiche Funktionen wie die Microsoft Store App"
-      ]
+      "subtitle": "Direkter Download, keine zertifizierte App"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Von Microsoft zertifiziert, lebenslange Lizenz",
+      "supportNote": "Unterstütze die Entwicklung mit deinem Kauf! ❤"
     }
   },
   "features": {
-    "title": "Funktionen:",
+    "title": "Funktionen",
     "list": {
-      "noSetup": "Einfache Nutzung, keine Einrichtung nötig - einfach die App starten",
-      "leaderboard": "Sieh aktuelle Spieler-Ranglisten mit ELO, Rang, Gewinnrate",
-      "teams": "Erkenne arrangierte Teams in deinen Spielen",
-      "recentGames": "Sieh deine letzten Spiele direkt in der App",
-      "notifications": "Erhalte optionale Soundbenachrichtigungen beim Beitritt zu einem Spiel",
-      "replays": "Automatischer Upload von Replays in die Cloud für zusätzliche Analysen",
-      "muteOnFocusLoss": "Möglichkeit, das Spiel stummzuschalten, wenn das Fenster nicht im Fokus ist",
+      "noSetup": {
+        "label": "Keine Einrichtung nötig",
+        "description": "einfache Nutzung, starte einfach die App"
+      },
+      "leaderboard": {
+        "label": "ELO, Rang, Gewinnrate",
+        "description": "für jeden Spieler im Match"
+      },
+      "teams": {
+        "label": "Erkennung arrangierter Teams",
+        "description": "sieh, ob deine Gegner als Premade in die Warteschlange gegangen sind"
+      },
+      "recentGames": {
+        "label": "Letzte Spiele",
+        "description": "deine Match-Historie direkt in der App"
+      },
+      "leaderboards": {
+        "label": "Ranglisten",
+        "description": "sieh Ranglisten direkt in der App"
+      },
+      "notifications": {
+        "label": "Soundbenachrichtigungen",
+        "description": "werde benachrichtigt, sobald ein Spiel startet"
+      },
+      "muteOnFocusLoss": {
+        "label": "Automatisch stummschalten",
+        "description": "schaltet das Spiel stumm, wenn das Fenster den Fokus verliert"
+      },
       "streaming": {
-        "before": "Streamer-Overlay für",
+        "label": "Streamer-Overlay",
+        "before": "für",
         "and": "und",
         "after": "und andere Streaming-Tools"
+      },
+      "friendsGroup": {
+        "label": "Erkennung von Freundesgruppen",
+        "description": "sieh, welche Spieler zusammen spielen"
+      },
+      "loadingOverlay": {
+        "label": "Ladebildschirm-Overlay",
+        "description": "Gegner-Infos schon vor Spielbeginn"
       }
     }
   }

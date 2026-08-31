@@ -44,18 +44,47 @@
   "features": {
     "title": "Features",
     "list": {
-      "noSetup": "Effortless usage, no setup needed - simply launch the application",
-      "leaderboard": "See current player standings including ELO, Rank, WinRate",
-      "teams": "Detect arranged teams in your games",
-      "recentGames": "See your recent games directly in the app",
-      "notifications": "Receive optional sound notifications upon joining a game",
-      "muteOnFocusLoss": "Ability to mute the game when the window is not in focus",
-      "friendsGroup": "Friends Group Detection - see which players are playing together",
-      "loadingOverlay": "Loading overlay - opponent intel right on the loading screen",
+      "noSetup": {
+        "label": "No setup needed",
+        "description": "effortless usage, simply launch the application"
+      },
+      "leaderboard": {
+        "label": "ELO, Rank, Win Rate",
+        "description": "for every player in the match"
+      },
+      "teams": {
+        "label": "Arranged Team Detection",
+        "description": "see if your opponents queued as a premade"
+      },
+      "recentGames": {
+        "label": "Recent Games",
+        "description": "your match history right in the app"
+      },
+      "leaderboards": {
+        "label": "Leaderboards",
+        "description": "see leaderboards directly in the app"
+      },
+      "notifications": {
+        "label": "Sound Notifications",
+        "description": "get pinged the moment a game starts"
+      },
+      "muteOnFocusLoss": {
+        "label": "Auto Mute",
+        "description": "silence the game when the window loses focus"
+      },
       "streaming": {
-        "before": "Streamer overlay for",
+        "label": "Streamer Overlay",
+        "before": "for",
         "and": "and",
         "after": "and other streaming tools"
+      },
+      "friendsGroup": {
+        "label": "Friends Group Detection",
+        "description": "see which players play together"
+      },
+      "loadingOverlay": {
+        "label": "Loading Screen Overlay",
+        "description": "opponent intel before the match starts"
       }
     }
   }
