@@ -105,7 +105,10 @@ test.describe("Search Page - player results", () => {
     const profileId = await searchPage.profileIdOfCard(card);
 
     await card.click();
-    await page.waitForURL(new RegExp(`/players/${profileId}`));
+    // The page rewrites the URL to `/players/<id>/<cleanAlias>` once it has the player data, so
+    // anchor the id to a `/`, a query string or the end - `/players/1610` must not match
+    // `/players/16100`.
+    await page.waitForURL(new RegExp(`/players/${profileId}([/?]|$)`));
     // The card truncates long aliases, so assert on the query the API matched rather than on the
     // exact text of the card.
     await expect(page.getByTestId("player-name")).toContainText(
