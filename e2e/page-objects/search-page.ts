@@ -59,6 +59,20 @@ export class SearchPage extends BasePage {
     return this.getByTestId(`search-player-card-${profileId}`);
   }
 
+  /**
+   * Read the relic profile id back out of a player card's test id. The player search API returns
+   * a capped, activity-ordered list, so the tests pick a card out of the response instead of
+   * pinning a profile that can drop out of it.
+   */
+  async profileIdOfCard(card: Locator): Promise<string> {
+    const testId = await card.getAttribute("data-testid");
+    const profileId = testId?.replace("search-player-card-", "");
+
+    expect(profileId).toMatch(/^\d+$/);
+
+    return profileId as string;
+  }
+
   get unitCards(): Locator {
     return this.page.locator('[data-testid^="search-unit-card-"]');
   }

@@ -75,29 +75,45 @@ test.describe("Search Page - ?q= hydration", () => {
 });
 
 test.describe("Search Page - player results", () => {
-  test("should find the pinned player and link to their profile", async ({ page }) => {
+  // The API answers with a capped list of the *recently active* profiles matching the alias, so
+  // no single profile is guaranteed to be in it - a pinned id silently drops out of the response
+  // once the player stops playing. These tests therefore assert on the first returned card.
+  test("should find players matching the query and link to their profile", async ({ page }) => {
     const searchPage = new SearchPage(page);
     await searchPage.navigate(TEST_PLAYER.alias);
     await expect(searchPage.playersResults).toBeVisible({ timeout: 30000 });
 
-    const card = searchPage.playerCard(TEST_PLAYER.profileId);
+    const card = searchPage.playerCards.first();
     await expect(card).toBeVisible();
-    await expect(card).toContainText(TEST_PLAYER.alias);
+    // Every returned alias contains the query (the API matches on a substring of the alias).
+    await expect(card).toContainText(new RegExp(TEST_PLAYER.alias, "i"));
     // Last-active line.
     await expect(card).toContainText(/Last active/i);
 
-    const link = page.locator(`a[href="/players/${TEST_PLAYER.profileId}"]`).first();
+    const profileId = await searchPage.profileIdOfCard(card);
+    const link = page.locator(`a[href="/players/${profileId}"]`).first();
     await expect(link).toBeVisible();
   });
 
   test("should navigate to the player profile from a result card", async ({ page }) => {
     const searchPage = new SearchPage(page);
     await searchPage.navigate(TEST_PLAYER.alias);
-    await expect(searchPage.playerCard(TEST_PLAYER.profileId)).toBeVisible({ timeout: 30000 });
+    await expect(searchPage.playersResults).toBeVisible({ timeout: 30000 });
 
-    await searchPage.playerCard(TEST_PLAYER.profileId).click();
-    await page.waitForURL(new RegExp(`/players/${TEST_PLAYER.profileId}`));
-    await expect(page.getByTestId("player-name")).toHaveText(TEST_PLAYER.alias);
+    const card = searchPage.playerCards.first();
+    await expect(card).toBeVisible();
+    const profileId = await searchPage.profileIdOfCard(card);
+
+    await card.click();
+    // The page rewrites the URL to `/players/<id>/<cleanAlias>` once it has the player data, so
+    // anchor the id to a `/`, a query string or the end - `/players/1610` must not match
+    // `/players/16100`.
+    await page.waitForURL(new RegExp(`/players/${profileId}([/?]|$)`));
+    // The card truncates long aliases, so assert on the query the API matched rather than on the
+    // exact text of the card.
+    await expect(page.getByTestId("player-name")).toContainText(
+      new RegExp(TEST_PLAYER.alias, "i"),
+    );
   });
 
   test("should show the no-players-found state for a nonsense query", async ({ page }) => {
