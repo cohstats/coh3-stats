@@ -21,8 +21,8 @@ import type { raceType } from "../../coh3/coh3-types";
 type RawFsTechLocstringId = string;
 
 /**
- * A text built from a formatter locstring and its arguments - identical to the perks file, see
- * `resolveFsTechFormatter` for the placeholder syntax.
+ * A text built from a formatter locstring and its arguments - identical to the perks file; see
+ * `resolveLocstringFormatter` (in `src/explorer/patch-locstring.ts`) for the placeholder syntax.
  */
 type RawFsTechTextFormatter = {
   formatter: RawFsTechLocstringId;
