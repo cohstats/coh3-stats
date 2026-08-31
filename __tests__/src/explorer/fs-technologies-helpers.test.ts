@@ -35,7 +35,6 @@ const buildTechnology = (id: string, overrides: Partial<FsTechnology> = {}): FsT
   alwaysAvailable: true,
   weight: 100,
   commandCost: 1,
-  enabled: true,
   squad: null,
   ability: null,
   upgrade: null,
@@ -154,6 +153,12 @@ describe("canFsTechBeOfferedInPick", () => {
 
   it("never offers a disabled technology", () => {
     expect(canFsTechBeOfferedInPick({ ...unit, enabled: false }, unitPick)).toBe(false);
+  });
+
+  it("survives a pick without upgrade types", () => {
+    const { upgradeTypes: _upgradeTypes, ...pickWithoutUpgradeTypes } = unitPick;
+
+    expect(canFsTechBeOfferedInPick(unit, pickWithoutUpgradeTypes)).toBe(false);
   });
 });
 

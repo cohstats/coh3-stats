@@ -99,7 +99,10 @@ type RawFsTechnology = {
   weight: number;
   /** Command points the technology costs. Currently `1` for every technology. */
   commandCost: number;
-  /** `false` for a technology which is in the files but switched off. */
+  /**
+   * `false` for a technology which is in the files but switched off. Those are dropped while
+   * parsing, so a parsed `FsTechnology` is always an enabled one.
+   */
   enabled: boolean;
   ui: RawFsTechUi;
   properties?: RawFsTechProperty[];
@@ -209,7 +212,6 @@ type FsTechnology = {
   alwaysAvailable: boolean;
   weight: number;
   commandCost: number;
-  enabled: boolean;
   /** Squad / ability / upgrade blueprint the technology unlocks, `null` when it unlocks none. */
   squad: string | null;
   ability: string | null;
@@ -255,9 +257,8 @@ type FsTechnologiesRace = {
   /** The draft, with the pool of every pick resolved. */
   picks: FsTechPick[];
   /**
-   * Technologies which no pick of the draft can offer - either their wave window lies outside the
-   * draft or they have no bucket and no category. Kept so nothing of the data file is silently
-   * dropped.
+   * Technologies which no pick of the draft can offer, because their wave window lies outside the
+   * draft. Kept so nothing of the data file is silently dropped - the pages don't render them.
    */
   unreachableTechnologies: FsTechnology[];
   /** Amount of technologies of the faction. */

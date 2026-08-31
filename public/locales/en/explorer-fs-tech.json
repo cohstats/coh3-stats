@@ -60,8 +60,6 @@
     "waveUntil": "Until wave {{wave}}",
     "waveRange": "Waves {{from}} - {{to}}",
     "waveTooltip": "The waves this technology can be offered in. Only the passive picks respect it - the unit and ability picks ignore it.",
-    "disabled": "Disabled",
-    "disabledTooltip": "This technology is in the game files but switched off, so it cannot be offered.",
     "noDescription": "No description in the game files"
   },
   "faction": {

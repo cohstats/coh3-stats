@@ -138,7 +138,8 @@ const rawFile: RawFsTechnologiesFile = {
           thresholdMin: 15,
           ui: { screenName: "10", icon: "technology/hoff/common/upkeep" },
         }),
-        // Switched off in the game files - it may not show up in any pick.
+        // Switched off in the game files - it is dropped while parsing, so it reaches no pick and
+        // no count of the page.
         buildRawTechnology("hoff_technology_unit_disabled_ak", {
           enabled: false,
           ui: { screenName: "10", icon: "races/afrika_corps/infantry/disabled" },
@@ -230,22 +231,26 @@ describe("parseFsTechnologies", () => {
     ]);
   });
 
-  it("never offers a disabled technology", () => {
+  it("drops a disabled technology instead of parsing it", () => {
+    const parsed = dak.technologies.map(({ id }) => id);
     const offered = dak.picks.flatMap(({ technologies }) => technologies.map(({ id }) => id));
 
+    expect(parsed).not.toContain("hoff_technology_unit_disabled_ak");
     expect(offered).not.toContain("hoff_technology_unit_disabled_ak");
+    expect(dak.unreachableTechnologies.map(({ id }) => id)).not.toContain(
+      "hoff_technology_unit_disabled_ak",
+    );
   });
 
   it("keeps the technologies no pick can offer", () => {
     expect(dak.unreachableTechnologies.map(({ id }) => id)).toEqual([
       "hoff_technology_passive_reduced_upkeep",
-      "hoff_technology_unit_disabled_ak",
     ]);
   });
 
   it("counts the technologies and collects the filter values", () => {
-    expect(dak.technologyCount).toBe(5);
-    expect(dak.categoryCounts).toEqual({ unit: 2, ability: 0, passive: 3 });
+    expect(dak.technologyCount).toBe(4);
+    expect(dak.categoryCounts).toEqual({ unit: 1, ability: 0, passive: 3 });
     expect(dak.typeLabels).toEqual(["Infantry"]);
     expect(dak.tags).toEqual(["Technology_Infantry"]);
   });

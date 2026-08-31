@@ -90,8 +90,6 @@ const parseFsTechnology = (
   alwaysAvailable: isFsTechAlwaysAvailable(rawTechnology),
   weight: rawTechnology.weight ?? 100,
   commandCost: rawTechnology.commandCost ?? 0,
-  // Only an explicit `false` disables a technology, a missing flag means it is on.
-  enabled: rawTechnology.enabled !== false,
   squad: rawTechnology.squad ?? null,
   ability: rawTechnology.ability ?? null,
   upgrade: rawTechnology.upgrade ?? null,
@@ -145,7 +143,12 @@ const parseFsTechnologiesRace = (
   rawPicks: RawFsTechPick[],
   locstring: PatchLocstring,
 ): FsTechnologiesRace => {
-  const rawTechnologies = rawRace.technologies ?? [];
+  // A technology which is switched off in the game files never reaches the frontend - no pick can
+  // offer it, so it must not show up in the counts, in the filter values or in a search either.
+  // Only an explicit `false` disables a technology, a missing flag means it is on.
+  const rawTechnologies = (rawRace.technologies ?? []).filter(
+    (rawTechnology) => rawTechnology.enabled !== false,
+  );
 
   const technologies = rawTechnologies.map((rawTechnology) =>
     parseFsTechnology(rawTechnology, locstring),

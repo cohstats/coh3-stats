@@ -174,7 +174,7 @@ export const SearchScreen = () => {
           <Divider my="xs" label={t("search:sections.units")} labelPosition="center" />
           <Container size={"md"} data-testid="search-units-results">
             <Flex gap="sm" wrap={"wrap"} justify="center">
-              {unitResults.length === 0 ? (
+              {unitResults.length === 0 && fsUnitResults.length === 0 ? (
                 <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-units">
                   <Stack align={"center"} gap={"xs"}>
                     <IconDatabaseOff />

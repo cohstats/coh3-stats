@@ -114,21 +114,26 @@ const isFsTechAlwaysAvailable = (
  *
  * Wave thresholds only apply to picks which don't `ignoreThresholds` - the unit and ability picks
  * do, so their whole bucket is always on the table.
+ *
+ * Runs on the raw data, so every field of it is treated as possibly missing - a single malformed
+ * entry of the data file may not throw and take the whole page down with it.
  */
 const canFsTechBeOfferedInPick = (
   technology: Pick<
     RawFsTechnology,
     "buckets" | "category" | "enabled" | "thresholdMin" | "thresholdMax"
   >,
-  pick: Pick<RawFsTechPick, "category" | "upgradeTypes" | "ignoreThresholds" | "wave">,
+  pick: Pick<RawFsTechPick, "category" | "ignoreThresholds" | "wave"> &
+    Partial<Pick<RawFsTechPick, "upgradeTypes">>,
 ): boolean => {
   if (technology.enabled === false) return false;
 
   const buckets = technology.buckets ?? [];
+  const upgradeTypes = pick.upgradeTypes ?? [];
 
   const inBucket =
     buckets.length > 0
-      ? pick.upgradeTypes.some((upgradeType) => buckets.includes(upgradeType))
+      ? upgradeTypes.some((upgradeType) => buckets.includes(upgradeType))
       : (technology.category ?? "passive") === pick.category;
 
   if (!inBucket) return false;

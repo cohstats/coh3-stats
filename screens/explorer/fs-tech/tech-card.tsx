@@ -125,14 +125,6 @@ const TechCard = ({
             {formatFsTechTag(tag)}
           </Badge>
         ))}
-
-        {!technology.enabled && (
-          <Tooltip label={t("tech.disabledTooltip")} withArrow>
-            <Badge size="xs" variant="light" color="red">
-              {t("tech.disabled")}
-            </Badge>
-          </Tooltip>
-        )}
       </Group>
 
       {technology.description ? (

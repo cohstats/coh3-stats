@@ -238,6 +238,10 @@ const FsTechPage = ({
 
   const resetFilters = useCallback(() => setFilterState(emptyFilters(race.race)), [race.race]);
 
+  // Whether the query of the url was already read into the state below. The sync effect must not
+  // run before that happened - it would see the empty initial filters and strip a shared link.
+  const [queryApplied, setQueryApplied] = useState(false);
+
   // The page is statically generated, so the query is only known after hydration. A faction switch
   // leaves this component mounted with an empty query, which resets the filters here as well.
   useEffect(() => {
@@ -245,6 +249,7 @@ const FsTechPage = ({
 
     const { search: searchQuery, type, tag, common } = router.query;
 
+    setQueryApplied(true);
     setFilterState({
       race: race.race,
       search: typeof searchQuery === "string" ? searchQuery : "",
@@ -263,7 +268,8 @@ const FsTechPage = ({
   useEffect(() => {
     // Nothing is written while the debounce is still catching up with the search box - that keeps
     // the half typed terms out of the url and the term of a shared link in it.
-    if (!router.isReady || filterState.race !== race.race || debouncedSearch !== search) return;
+    if (!router.isReady || !queryApplied || filterState.race !== race.race) return;
+    if (debouncedSearch !== search) return;
 
     const query: Record<string, string> = { raceId: race.race };
     if (debouncedSearch.trim()) query.search = debouncedSearch.trim();
@@ -277,6 +283,7 @@ const FsTechPage = ({
     });
   }, [
     router.isReady,
+    queryApplied,
     filterState.race,
     race.race,
     search,
@@ -291,18 +298,11 @@ const FsTechPage = ({
     [race, search, typeLabels, tags, includeCommon],
   );
 
-  const unreachable = useMemo(
-    () =>
-      race.unreachableTechnologies.filter((technology) =>
-        matchesFsTechFilters(technology, filters),
-      ),
-    [race, search, typeLabels, tags, includeCommon],
-  );
-
-  const matchCount = new Set([
-    ...picks.flatMap(({ newTechnologies }) => newTechnologies.map(({ id }) => id)),
-    ...unreachable.map(({ id }) => id),
-  ]).size;
+  // Counts the technologies which are rendered as a card. The unreachable ones of the faction have
+  // no section on the page, so they must not be counted either.
+  const matchCount = new Set(
+    picks.flatMap(({ newTechnologies }) => newTechnologies.map(({ id }) => id)),
+  ).size;
 
   return (
     <Container size="lg" p={0}>
