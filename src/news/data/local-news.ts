@@ -16,6 +16,30 @@ export type LocalNewsItem = {
  */
 const localNews: LocalNewsItem[] = [
   {
+    gid: "local-final-stand-full-coverage",
+    title: "COH3 Stats - Final Stand now fully covered",
+    author: "COH3 Stats",
+    date: 1788163921,
+    contents: `
+[p]The Explorer now covers the whole Final Stand DLC (co-op vs AI): the technology draft, the perk trees and the DLC-only unit rosters, for all four factions.[/p]
+
+[h2]Technologies[/h2]
+
+[p]Every technology that can be offered in a run, pick by pick: [url=https://coh3stats.com/explorer/fs/races/american/tech]US Forces[/url] / [url=https://coh3stats.com/explorer/fs/races/british/tech]British Forces[/url] / [url=https://coh3stats.com/explorer/fs/races/german/tech]Wehrmacht[/url] / [url=https://coh3stats.com/explorer/fs/races/dak/tech]Deutsches Afrikakorps[/url][/p]
+
+[h2]Perks[/h2]
+
+[p]The complete perk tree with all tiers, levels, effects and perk point costs: [url=https://coh3stats.com/explorer/fs/races/american/perks]US Forces[/url] / [url=https://coh3stats.com/explorer/fs/races/british/perks]British Forces[/url] / [url=https://coh3stats.com/explorer/fs/races/german/perks]Wehrmacht[/url] / [url=https://coh3stats.com/explorer/fs/races/dak/perks]Deutsches Afrikakorps[/url][/p]
+
+[h2]Units[/h2]
+
+[p]The Final Stand-only units, with full unit stats: [url=https://coh3stats.com/explorer/fs/races/american/units]US Forces[/url] / [url=https://coh3stats.com/explorer/fs/races/british/units]British Forces[/url] / [url=https://coh3stats.com/explorer/fs/races/german/units]Wehrmacht[/url] / [url=https://coh3stats.com/explorer/fs/races/dak/units]Deutsches Afrikakorps[/url][/p]
+[p]You can also search for FS units using the page search.[/p]
+
+[p]As always, if you spot something wrong or missing, let us know on our [url=https://discord.com/invite/4Bj2y84WAR]Discord[/url].[/p]
+`.trim(),
+  },
+  {
     gid: "local-ladder-tournament-season1-final",
     title: "Ladder Tournament Season #1 Grand Final",
     author: "Ladder Tournament",
