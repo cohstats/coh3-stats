@@ -15,8 +15,15 @@ import { localizedNames } from "../../coh3/coh3-data";
 import type { raceType } from "../../coh3/coh3-types";
 import { raceTypeArray } from "../../coh3/coh3-types";
 import { fetchJsonWithLogging } from "../../unitStats/fetch-mappings-withLogs";
-import { getLocstringForPatch, type PatchLocstring } from "../patch-locstring";
-import { formatFsPerkNumber, toAppRace } from "./fs-perks-helpers";
+import {
+  getLocstringForPatch,
+  resolveLocstring,
+  resolveLocstringFormatter,
+  resolveLocstringText,
+  unescapeLocstringText,
+  type PatchLocstring,
+} from "../patch-locstring";
+import { toAppRace } from "./fs-perks-helpers";
 import type {
   FsPerk,
   FsPerkLevel,
@@ -24,8 +31,6 @@ import type {
   FsPerksData,
   FsPerksRace,
   RawFsPerk,
-  RawFsPerkLocstringId,
-  RawFsPerkTextFormatter,
   RawFsPerkTier,
   RawFsPerksFile,
   RawFsPerksRace,
@@ -46,77 +51,13 @@ const fsPerksCache: Record<string, FsPerksData> = {};
 const getCacheKey = (patch: string, locale: string) => `${patch}-${locale}`;
 
 /**
- * The locstring files carry the line breaks of the game as literal `\r\n` / `\n` escape sequences.
- * Turn them into real new lines, so the texts can be rendered with `white-space: pre-line`.
+ * The generic locstring plumbing lives in `../patch-locstring`, shared with the other data files.
+ * These aliases keep the names the perks module has always exported.
  */
-const unescapeFsPerkText = (text: string): string =>
-  text.replace(/\\r\\n|\\r|\\n/g, "\n").replace(/\\t/g, "\t");
-
-/** Resolves a plain locstring id. */
-const resolveFsPerkLocstring = (
-  locstringId: RawFsPerkLocstringId | undefined | null,
-  locstring: PatchLocstring,
-): string | null => {
-  if (!locstringId) return null;
-
-  const text = locstring[locstringId];
-
-  return text ? unescapeFsPerkText(text) : null;
-};
-
-/**
- * Resolves a formatter text - the localized formatter string with its arguments substituted in.
- *
- * The game uses `%1%` style placeholders, optionally with a format spec after a colon. The only spec
- * the perks data uses is `.p` (percent), whose argument is already a percentage - `%1:.p%` with the
- * argument `20` renders as `20%`. Unknown specs fall back to the plain value.
- *
- * Numeric arguments are printed as they are, string arguments are locstring ids themselves (eg. the
- * localized `Fuel` / `Munitions` a salvage perk grants).
- */
-const resolveFsPerkFormatter = (
-  textFormatter: RawFsPerkTextFormatter | undefined | null,
-  locstring: PatchLocstring,
-): string | null => {
-  const formatter = resolveFsPerkLocstring(textFormatter?.formatter, locstring);
-  if (!formatter) return null;
-
-  const args = textFormatter?.arguments ?? [];
-
-  const resolveArgument = (argument: number | string | undefined, spec?: string): string => {
-    if (argument === undefined) return "";
-
-    const value =
-      typeof argument === "number"
-        ? formatFsPerkNumber(argument)
-        : // A string argument is a locstring id, fall back to it being a literal text.
-          (resolveFsPerkLocstring(argument, locstring) ?? argument);
-
-    return spec?.startsWith(".p") ? `${value}%` : value;
-  };
-
-  return (
-    formatter
-      // %1% / %1:.p% - the index is 1 based.
-      .replace(/%(\d+)(?::([^%]*))?%/g, (_match, indexText, spec) =>
-        resolveArgument(args[Number(indexText) - 1], spec),
-      )
-      // Escaped percentage signs.
-      .replace(/%%/g, "%")
-  );
-};
-
-/**
- * Resolves a text which the data file stores either as a plain locstring or as a formatter. Both are
- * optional and mutually exclusive - the plain text wins when a perk ever ends up having both.
- */
-const resolveFsPerkText = (
-  locstringId: RawFsPerkLocstringId | undefined | null,
-  textFormatter: RawFsPerkTextFormatter | undefined | null,
-  locstring: PatchLocstring,
-): string | null =>
-  resolveFsPerkLocstring(locstringId, locstring) ??
-  resolveFsPerkFormatter(textFormatter, locstring);
+const unescapeFsPerkText = unescapeLocstringText;
+const resolveFsPerkLocstring = resolveLocstring;
+const resolveFsPerkFormatter = resolveLocstringFormatter;
+const resolveFsPerkText = resolveLocstringText;
 
 const parseFsPerkLevels = (rawPerk: RawFsPerk, locstring: PatchLocstring): FsPerkLevel[] => {
   let cumulativeCost = 0;

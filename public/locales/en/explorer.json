@@ -45,7 +45,9 @@
       "perksHeading": "Perks",
       "unitsHeading": "Units",
       "perksCardTitle": "{{faction}} Perks",
-      "unitsCardTitle": "{{faction}} Units"
+      "unitsCardTitle": "{{faction}} Units",
+      "techHeading": "Technologies",
+      "techCardTitle": "{{faction}} Technologies"
     }
   },
   "factionPage": {

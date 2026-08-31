@@ -27,39 +27,64 @@
   },
   "title": "Grenadier - COH3 Companion",
   "subtitle": "COH3 Stats Desktopová Aplikace - Získejte další informace o vaší aktuální hře!",
-  "downloadOptions": {
-    "title": "Možnosti stažení",
-    "microsoftStore": {
-      "title": "Koupit v Microsoft Store",
-      "benefits": [
-        "Certifikovaná aplikace od Microsoftu",
-        "Aktualizace a opravy spravované Microsoftem",
-        "Doživotní licence",
-        "Podpořte aplikaci nákupem! Děkujeme"
-      ]
-    },
-    "freeDownload": {
+  "comparison": {
+    "title": "Vyberte si verzi",
+    "featureColumn": "Funkce",
+    "recommended": "Doporučeno",
+    "free": {
       "title": "Stažení zdarma",
-      "benefits": [
-        "Přímé stažení, necertifikovaná aplikace",
-        "Stejné funkce jako aplikace z Microsoft Store"
-      ]
+      "subtitle": "Přímé stažení, necertifikovaná aplikace"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Certifikováno Microsoftem, doživotní licence",
+      "supportNote": "Podpořte vývoj svým nákupem! ❤"
     }
   },
   "features": {
-    "title": "Funkce:",
+    "title": "Funkce",
     "list": {
-      "noSetup": "Snadné použití, není potřeba žádné nastavení - stačí spustit aplikaci",
-      "leaderboard": "Zobrazit aktuální postavení hráčů včetně ELO, Pořadí, Míry výher",
-      "teams": "Detekce organizovaných týmů ve vašich hrách",
-      "recentGames": "Zobrazit vaše nedávné hry přímo v aplikaci",
-      "notifications": "Získejte volitelná zvuková upozornění při připojení ke hře",
-      "replays": "Automatické nahrávání záznamů do cloudu pro další analýzu",
-      "muteOnFocusLoss": "Možnost ztlumit hru, když okno není v popředí",
+      "noSetup": {
+        "label": "Bez nastavování",
+        "description": "snadné použití, stačí spustit aplikaci"
+      },
+      "leaderboard": {
+        "label": "ELO, pořadí, míra výher",
+        "description": "pro každého hráče v zápase"
+      },
+      "teams": {
+        "label": "Detekce organizovaných týmů",
+        "description": "zjistěte, zda se vaši soupeři přihlásili jako předem sestavený tým"
+      },
+      "recentGames": {
+        "label": "Nedávné hry",
+        "description": "historie vašich zápasů přímo v aplikaci"
+      },
+      "leaderboards": {
+        "label": "Žebříčky",
+        "description": "prohlížejte žebříčky přímo v aplikaci"
+      },
+      "notifications": {
+        "label": "Zvuková upozornění",
+        "description": "dostanete upozornění ve chvíli, kdy hra začne"
+      },
+      "muteOnFocusLoss": {
+        "label": "Automatické ztlumení",
+        "description": "ztlumí hru, když okno není v popředí"
+      },
       "streaming": {
-        "before": "Překrytí pro streamery pro",
+        "label": "Překrytí pro streamery",
+        "before": "pro",
         "and": "a",
         "after": "a další streamovací nástroje"
+      },
+      "friendsGroup": {
+        "label": "Detekce skupin přátel",
+        "description": "podívejte se, kteří hráči hrají spolu"
+      },
+      "loadingOverlay": {
+        "label": "Překrytí načítací obrazovky",
+        "description": "informace o soupeřích ještě před začátkem zápasu"
       }
     }
   }

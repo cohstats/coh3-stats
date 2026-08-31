@@ -31,6 +31,7 @@ export const SearchScreen = () => {
   const [error, setError] = React.useState<string | null>(null);
   const [data, setData] = React.useState<Array<SearchPlayerCardData> | null>(null);
   const [unitResults, setUnitResults] = React.useState<UnitData[]>([]);
+  const [fsUnitResults, setFsUnitResults] = React.useState<UnitData[]>([]);
   const [mapResults, setMapResults] = React.useState<MapSearchData[]>([]);
 
   const { query } = useRouter();
@@ -44,14 +45,15 @@ export const SearchScreen = () => {
   const searchUnits = (searchTerm: string) => {
     if (!searchTerm) {
       setUnitResults([]);
+      setFsUnitResults([]);
       return;
     }
 
     const searchTermLower = searchTerm.toLowerCase();
     const results = unitsData.filter((unit) => unit.name.toLowerCase().includes(searchTermLower));
-    // Final Stand (DLC / co-op vs AI) units are marked as such and listed after the regular ones.
-    results.sort((a, b) => Number(isFinalStandUnitId(a.id)) - Number(isFinalStandUnitId(b.id)));
-    setUnitResults(results);
+    // Final Stand (DLC / co-op vs AI) units get their own section after the regular ones.
+    setUnitResults(results.filter((unit) => !isFinalStandUnitId(unit.id)));
+    setFsUnitResults(results.filter((unit) => isFinalStandUnitId(unit.id)));
   };
 
   const searchMaps = (searchTerm: string) => {
@@ -75,6 +77,7 @@ export const SearchScreen = () => {
     if (!searchQuery || searchQuery.length <= 1) {
       setData(null);
       setUnitResults([]);
+      setFsUnitResults([]);
       setMapResults([]);
       return;
     }
@@ -171,7 +174,7 @@ export const SearchScreen = () => {
           <Divider my="xs" label={t("search:sections.units")} labelPosition="center" />
           <Container size={"md"} data-testid="search-units-results">
             <Flex gap="sm" wrap={"wrap"} justify="center">
-              {unitResults.length === 0 ? (
+              {unitResults.length === 0 && fsUnitResults.length === 0 ? (
                 <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-units">
                   <Stack align={"center"} gap={"xs"}>
                     <IconDatabaseOff />
@@ -185,6 +188,23 @@ export const SearchScreen = () => {
               )}
             </Flex>
           </Container>
+
+          {fsUnitResults.length > 0 && (
+            <>
+              <Divider
+                my="xs"
+                label={t("search:sections.finalStandUnits")}
+                labelPosition="center"
+              />
+              <Container size={"md"} data-testid="search-fs-units-results">
+                <Flex gap="sm" wrap={"wrap"} justify="center">
+                  {fsUnitResults.map((unit) => (
+                    <UnitCard key={unit.id} unit={unit} />
+                  ))}
+                </Flex>
+              </Container>
+            </>
+          )}
 
           <Divider my="xs" label={t("search:sections.maps")} labelPosition="center" />
           <Container size={"md"} data-testid="search-maps-results">

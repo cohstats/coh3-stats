@@ -100,6 +100,11 @@ export const getExplorerFsUnitsRoute = (race: raceType) => {
   return encodeURI(`/explorer/fs/races/${race}/units`);
 };
 
+/** Final Stand technology draft of a faction. */
+export const getExplorerFsTechRoute = (race: raceType) => {
+  return encodeURI(`/explorer/fs/races/${race}/tech`);
+};
+
 /**
  * @param race Notice the stupid afrika_korps and british_africa, they even have typos in the name. Relic :facepalm:
  * @param unitId

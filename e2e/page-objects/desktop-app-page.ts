@@ -40,18 +40,13 @@ export class DesktopAppPage extends BasePage {
     return this.getByTestId("release-notes-link");
   }
 
-  // Download Options Comparison Section
-  get msStoreBenefitsList(): Locator {
-    return this.getByTestId("ms-store-benefits");
+  // Version Comparison Section
+  get comparisonTable(): Locator {
+    return this.getByTestId("comparison-table");
   }
 
-  get freeDownloadBenefitsList(): Locator {
-    return this.getByTestId("free-download-benefits");
-  }
-
-  // Features Section
-  get featuresListItems(): Locator {
-    return this.getByTestId("features-list").locator(".mantine-List-item");
+  get comparisonFeatureRows(): Locator {
+    return this.getByTestId("comparison-feature-row");
   }
 
   get obsLink(): Locator {
@@ -88,24 +83,20 @@ export class DesktopAppPage extends BasePage {
   }
 
   /**
-   * Get the count of Microsoft Store benefits
+   * Get the number of feature rows in the comparison table
    */
-  async getMsStoreBenefitsCount(): Promise<number> {
-    return await this.msStoreBenefitsList.locator(".mantine-List-item").count();
+  async getComparisonFeatureRowCount(): Promise<number> {
+    return await this.comparisonFeatureRows.count();
   }
 
   /**
-   * Get the count of Free Download benefits
+   * Get the number of features included in a given column of the comparison table.
+   * Column 1 is the Free Download column, column 2 is the Microsoft Store column.
    */
-  async getFreeDownloadBenefitsCount(): Promise<number> {
-    return await this.freeDownloadBenefitsList.locator(".mantine-List-item").count();
-  }
-
-  /**
-   * Get the count of feature items
-   */
-  async getFeaturesCount(): Promise<number> {
-    return await this.featuresListItems.count();
+  async getIncludedFeatureCount(column: 1 | 2): Promise<number> {
+    return await this.comparisonFeatureRows
+      .locator(`td:nth-child(${column + 1}) .tabler-icon-check`)
+      .count();
   }
 
   /**

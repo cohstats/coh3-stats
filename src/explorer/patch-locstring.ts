@@ -120,11 +120,107 @@ const clearPatchLocstringCache = () => {
   for (const key of Object.keys(patchLocstringCache)) delete patchLocstringCache[key];
 };
 
+/* -------------------------------------------------------------------------- */
+/* Resolving texts                                                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * A text built from a formatter locstring and its arguments, eg. the formatter `"%1:.p%"` with the
+ * argument `20` renders as `20%`.
+ *
+ * Arguments are either numbers (rendered as they are) or locstring ids (eg. `"11152057"` -> the
+ * localized `Munitions`). Several data files of the repo use this shape, so it lives here.
+ */
+type LocstringFormatter = {
+  formatter: string;
+  arguments: Array<number | string>;
+};
+
+/**
+ * The locstring files carry the line breaks of the game as literal `\r\n` / `\n` escape sequences.
+ * Turn them into real new lines, so the texts can be rendered with `white-space: pre-line`.
+ */
+const unescapeLocstringText = (text: string): string =>
+  text.replace(/\\r\\n|\\r|\\n/g, "\n").replace(/\\t/g, "\t");
+
+/** Formats a number of a data file for display, without trailing zeros. */
+const formatLocstringNumber = (value: number): string => String(Math.round(value * 1000) / 1000);
+
+/** Resolves a plain locstring id. `null` for a missing / empty text. */
+const resolveLocstring = (
+  locstringId: string | undefined | null,
+  locstring: PatchLocstring,
+): string | null => {
+  if (!locstringId) return null;
+
+  const text = locstring[locstringId];
+
+  return text ? unescapeLocstringText(text) : null;
+};
+
+/**
+ * Resolves a formatter text - the localized formatter string with its arguments substituted in.
+ *
+ * The game uses `%1%` style placeholders, optionally with a format spec after a colon. The only spec
+ * the data files use is `.p` (percent), whose argument is already a percentage - `%1:.p%` with the
+ * argument `20` renders as `20%`. Unknown specs fall back to the plain value.
+ *
+ * Numeric arguments are printed as they are, string arguments are locstring ids themselves (eg. the
+ * localized `Fuel` / `Munitions` a salvage effect grants).
+ */
+const resolveLocstringFormatter = (
+  textFormatter: LocstringFormatter | undefined | null,
+  locstring: PatchLocstring,
+): string | null => {
+  const formatter = resolveLocstring(textFormatter?.formatter, locstring);
+  if (!formatter) return null;
+
+  const args = textFormatter?.arguments ?? [];
+
+  const resolveArgument = (argument: number | string | undefined, spec?: string): string => {
+    if (argument === undefined) return "";
+
+    const value =
+      typeof argument === "number"
+        ? formatLocstringNumber(argument)
+        : // A string argument is a locstring id, fall back to it being a literal text.
+          (resolveLocstring(argument, locstring) ?? argument);
+
+    return spec?.startsWith(".p") ? `${value}%` : value;
+  };
+
+  return (
+    formatter
+      // %1% / %1:.p% - the index is 1 based.
+      .replace(/%(\d+)(?::([^%]*))?%/g, (_match, indexText, spec) =>
+        resolveArgument(args[Number(indexText) - 1], spec),
+      )
+      // Escaped percentage signs.
+      .replace(/%%/g, "%")
+  );
+};
+
+/**
+ * Resolves a text which a data file stores either as a plain locstring or as a formatter. Both are
+ * optional and mutually exclusive - the plain text wins when an entry ever ends up having both.
+ */
+const resolveLocstringText = (
+  locstringId: string | undefined | null,
+  textFormatter: LocstringFormatter | undefined | null,
+  locstring: PatchLocstring,
+): string | null =>
+  resolveLocstring(locstringId, locstring) ?? resolveLocstringFormatter(textFormatter, locstring);
+
 export {
   PATCH_LOCSTRING_LOCALES,
   DEFAULT_PATCH_LOCSTRING_LOCALE,
   clearPatchLocstringCache,
+  formatLocstringNumber,
   getLocstringForPatch,
+  resolveLocstring,
+  resolveLocstringFormatter,
+  resolveLocstringText,
   resolvePatchLocstringLocale,
+  unescapeLocstringText,
 };
-export type { PatchLocstring, PatchLocstringLocale };
+export type { LocstringFormatter, PatchLocstring, PatchLocstringLocale };

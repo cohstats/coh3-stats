@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand Technologies - COH3",
+    "description": "The full Final Stand technology draft of {{faction}} in Company of Heroes 3 - every unit, ability and passive that can be offered, pick by pick.",
+    "keywords": [
+      "coh3 final stand technologies",
+      "final stand tech draft",
+      "company of heroes 3 final stand",
+      "final stand units abilities passives",
+      "hold off technologies"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand Technologies",
+    "subtitle": "The technology draft, pick by pick. A run gives you {{picks}} picks, each of them offers {{choices}} of the technologies below - and everything you pick stays with you for the rest of the match.",
+    "notAvailable": "The Final Stand technologies data is not available at the moment. Please try again later."
+  },
+  "summary": {
+    "technologies_one": "{{count}} technology",
+    "technologies_other": "{{count}} technologies",
+    "units_one": "{{count}} unit",
+    "units_other": "{{count}} units",
+    "abilities_one": "{{count}} ability",
+    "abilities_other": "{{count}} abilities",
+    "passives_one": "{{count}} passive",
+    "passives_other": "{{count}} passives",
+    "picks_one": "{{count}} pick",
+    "picks_other": "{{count}} picks",
+    "picksTooltip": "Picks of a run - one before the first wave and one at the start of every wave after it, rotating unit, passive and ability."
+  },
+  "category": {
+    "unit": "Unit",
+    "ability": "Ability",
+    "passive": "Passive"
+  },
+  "filters": {
+    "searchPlaceholder": "Search technologies",
+    "type": "Type",
+    "tags": "Tags",
+    "common": "Shared technologies",
+    "commonTooltip": "Technologies every faction can be offered. Turn off to see only the technologies of this faction.",
+    "reset": "Reset",
+    "matches_one": "{{count}} technology matches",
+    "matches_other": "{{count}} technologies match"
+  },
+  "pick": {
+    "title": "Pick {{pick}}",
+    "wave": "Wave {{wave}}",
+    "waveTooltip": "The wave this pick happens after. Wave 0 is the setup phase before the first wave.",
+    "pool": "{{choices}} of {{count}}",
+    "poolTooltip": "How many technologies the game offers and how many it can pick them from.",
+    "repeated_one": "{{count}} more from an earlier pick",
+    "repeated_other": "{{count}} more from earlier picks",
+    "empty": "No technology of this pick matches the filters."
+  },
+  "tech": {
+    "common": "Shared",
+    "commonTooltip": "Every faction can be offered this technology.",
+    "waveFrom": "From wave {{wave}}",
+    "waveUntil": "Until wave {{wave}}",
+    "waveRange": "Waves {{from}} - {{to}}",
+    "waveTooltip": "The waves this technology can be offered in. Only the passive picks respect it - the unit and ability picks ignore it.",
+    "noDescription": "No description in the game files"
+  },
+  "faction": {
+    "switchTooltip": "Show the {{faction}} technologies"
+  }
+}

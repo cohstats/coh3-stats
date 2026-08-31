@@ -1,18 +1,18 @@
 import {
   Anchor,
+  Badge,
+  Box,
   Button,
   Container,
   Image,
-  List,
   Paper,
   Stack,
+  Table,
   Text,
-  ThemeIcon,
   Title,
-  Grid,
   rem,
 } from "@mantine/core";
-import { IconCheck, IconBrandWindows, IconDownload } from "@tabler/icons-react";
+import { IconCheck, IconMinus, IconBrandWindows, IconDownload } from "@tabler/icons-react";
 import { NextPage } from "next";
 import { NextSeo } from "next-seo";
 import config from "../../config";
@@ -67,6 +67,53 @@ const DesktopAppPage: NextPage = ({
     </Carousel.Slide>
   ));
 
+  // Streamer overlay feature contains links, so its description is rendered as a node
+  const streamingDescription = (
+    <>
+      {t("features.list.streaming.before")}{" "}
+      <Anchor href="https://obsproject.com/" target="_blank" rel="noopener">
+        OBS
+      </Anchor>{" "}
+      {t("features.list.streaming.and")}{" "}
+      <Anchor href="https://www.twitch.tv/broadcast/studio" target="_blank" rel="noopener">
+        Twitch Studio
+      </Anchor>{" "}
+      {t("features.list.streaming.after")}
+    </>
+  );
+
+  // Every feature reads as a bold lead-in followed by a short description
+  const featureLabel = (key: string, description?: React.ReactNode) => (
+    <>
+      <Text span fw={700}>
+        {t(`features.list.${key}.label`)}
+      </Text>{" "}
+      &mdash; {description ?? t(`features.list.${key}.description`)}
+    </>
+  );
+
+  // Feature comparison - `free` marks whether the feature is part of the free version,
+  // all of them are always part of the Microsoft Store version
+  const features: Array<{ key: string; description?: React.ReactNode; free: boolean }> = [
+    { key: "noSetup", free: true },
+    { key: "leaderboard", free: true },
+    { key: "teams", free: true },
+    { key: "recentGames", free: true },
+    { key: "leaderboards", free: true },
+    { key: "notifications", free: true },
+    { key: "muteOnFocusLoss", free: true },
+    { key: "streaming", description: streamingDescription, free: true },
+    { key: "friendsGroup", free: false },
+    { key: "loadingOverlay", free: false },
+  ];
+
+  const includedIcon = (
+    <IconCheck size={20} stroke={2.5} className={classes["icon-included"]} aria-hidden />
+  );
+  const excludedIcon = (
+    <IconMinus size={20} stroke={2.5} className={classes["icon-excluded"]} aria-hidden />
+  );
+
   return (
     <>
       <NextSeo
@@ -111,164 +158,139 @@ const DesktopAppPage: NextPage = ({
           </Carousel>
         </Paper>
 
-        {/* Download Buttons Section */}
+        {/* Version comparison with download options */}
         <Paper radius="md" mt="md" p="lg">
-          <Grid gutter="xl" align="center">
-            {/* Left Column - Download Buttons */}
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Stack align="center" gap="sm" justify="center" style={{ height: "100%" }}>
-                {/* Microsoft Store Button */}
-                <Anchor
-                  href="https://apps.microsoft.com/detail/9PBKK60PKDQS"
-                  target="_blank"
-                  rel="noopener"
-                  aria-label={t("download.microsoftStoreAriaLabel")}
-                >
-                  <Button
-                    data-testid="microsoft-store-button"
-                    size="lg"
-                    variant="filled"
-                    leftSection={<IconBrandWindows size={20} />}
-                  >
-                    {t("download.microsoftStore")}
-                  </Button>
-                </Anchor>
+          <Title order={3} mb="md">
+            {t("comparison.title")}
+          </Title>
 
-                {/* OR Divider */}
-                <Text size="lg" fw={700} c="dimmed">
-                  {t("download.or")}
-                </Text>
+          <Table.ScrollContainer minWidth={620} type="native">
+            <Table
+              data-testid="comparison-table"
+              verticalSpacing="xs"
+              horizontalSpacing="md"
+              withRowBorders={false}
+              className={classes["comparison-table"]}
+            >
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th className={classes["feature-column"]}>
+                    <Text fw={700} size="lg">
+                      {t("comparison.featureColumn")}
+                    </Text>
+                  </Table.Th>
+                  <Table.Th className={classes["option-column"]}>
+                    <Stack gap={2} align="center">
+                      {/* Empty slot keeps both column titles on the same line */}
+                      <Box h={rem(22)} />
+                      <Text fw={700} size="lg">
+                        {t("comparison.free.title")}
+                      </Text>
+                      <Text size="xs" c="dimmed" fw={400} ta="center">
+                        {t("comparison.free.subtitle")}
+                      </Text>
+                    </Stack>
+                  </Table.Th>
+                  <Table.Th className={`${classes["option-column"]} ${classes["store-column"]}`}>
+                    <Stack gap={2} align="center">
+                      <Badge size="sm" variant="filled" h={rem(22)}>
+                        {t("comparison.recommended")}
+                      </Badge>
+                      <Text fw={700} size="lg">
+                        {t("comparison.microsoftStore.title")}
+                      </Text>
+                      <Text size="xs" c="dimmed" fw={400} ta="center">
+                        {t("comparison.microsoftStore.subtitle")}
+                      </Text>
+                    </Stack>
+                  </Table.Th>
+                </Table.Tr>
+              </Table.Thead>
 
-                {/* Free Download Button */}
-                <Stack align="center" gap="xs">
-                  <Anchor
-                    href={downloadURL}
-                    target="_blank"
-                    rel="noopener"
-                    download
-                    type="application/x-msi"
-                    aria-label={t("download.buttonAriaLabel", { version })}
-                  >
-                    <Button
-                      data-testid="free-download-button"
-                      size="lg"
-                      variant="outline"
-                      leftSection={<IconDownload size={20} />}
+              <Table.Tbody>
+                {features.map((feature) => (
+                  <Table.Tr key={feature.key} data-testid="comparison-feature-row">
+                    <Table.Td className={classes["feature-column"]}>
+                      {featureLabel(feature.key, feature.description)}
+                    </Table.Td>
+                    <Table.Td className={classes["option-column"]}>
+                      {feature.free ? includedIcon : excludedIcon}
+                    </Table.Td>
+                    <Table.Td
+                      className={`${classes["option-column"]} ${classes["store-column"]}`}
                     >
-                      {t("download.button", { version })}
-                    </Button>
-                  </Anchor>
-                  <Stack align="center" gap="0">
-                    <Text data-testid="download-stats" size="sm" c="dimmed">
-                      {t("download.downloads", { count: downloadCount })}
-                    </Text>
-                    <Text data-testid="total-download-stats" size="xs" c="dimmed">
-                      {t("download.totalDownloads", { count: totalDownloadCount })}
-                    </Text>
-                  </Stack>
-                </Stack>
-                <Anchor
-                  data-testid="release-notes-link"
-                  href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {t("download.releaseNotes")}
-                </Anchor>
-              </Stack>
-            </Grid.Col>
+                      {includedIcon}
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
 
-            {/* Right Column - Download Options Comparison */}
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Stack gap="md">
-                <Paper p="md" withBorder radius="md">
-                  <Title order={4} mb="md">
-                    {t("downloadOptions.microsoftStore.title")}
-                  </Title>
-                  <List
-                    data-testid="ms-store-benefits"
-                    spacing="xs"
-                    size="sm"
-                    icon={
-                      <ThemeIcon size={20} radius="xl" className={classes["list-icon"]}>
-                        <IconCheck stroke={1.5} />
-                      </ThemeIcon>
-                    }
-                  >
-                    {(
-                      t("downloadOptions.microsoftStore.benefits", {
-                        returnObjects: true,
-                      }) as string[]
-                    ).map((benefit: string, index: number) => (
-                      <List.Item key={index}>{benefit}</List.Item>
-                    ))}
-                  </List>
-                </Paper>
-
-                <Paper p="md" withBorder radius="md">
-                  <Title order={4} mb="md">
-                    {t("downloadOptions.freeDownload.title")}
-                  </Title>
-                  <List
-                    data-testid="free-download-benefits"
-                    spacing="xs"
-                    size="sm"
-                    icon={
-                      <ThemeIcon size={20} radius="xl" className={classes["list-icon"]}>
-                        <IconCheck stroke={1.5} />
-                      </ThemeIcon>
-                    }
-                  >
-                    {(
-                      t("downloadOptions.freeDownload.benefits", {
-                        returnObjects: true,
-                      }) as string[]
-                    ).map((benefit: string, index: number) => (
-                      <List.Item key={index}>{benefit}</List.Item>
-                    ))}
-                  </List>
-                </Paper>
-              </Stack>
-            </Grid.Col>
-          </Grid>
-        </Paper>
-
-        {/* Features Section */}
-        <Paper radius="md" mt="md" p="lg">
-          <Title order={3}>{t("features.title")}</Title>
-          <List
-            data-testid="features-list"
-            spacing="sm"
-            mt={"md"}
-            icon={
-              <ThemeIcon size={20} radius="xl" className={classes["list-icon"]}>
-                <IconCheck stroke={1.5} />
-              </ThemeIcon>
-            }
-          >
-            <List.Item>{t("features.list.noSetup")}</List.Item>
-            <List.Item>{t("features.list.leaderboard")}</List.Item>
-            <List.Item>{t("features.list.teams")}</List.Item>
-            <List.Item>{t("features.list.recentGames")}</List.Item>
-            <List.Item>{t("features.list.notifications")}</List.Item>
-            <List.Item>{t("features.list.replays")}</List.Item>
-            <List.Item>{t("features.list.muteOnFocusLoss")}</List.Item>
-            <List.Item>
-              {t("features.list.streaming.before")}{" "}
-              <Anchor href="https://obsproject.com/" target="_blank" rel="noopener">
-                OBS
-              </Anchor>{" "}
-              {t("features.list.streaming.and")}{" "}
-              <Anchor
-                href="https://www.twitch.tv/broadcast/studio"
-                target="_blank"
-                rel="noopener"
-              >
-                Twitch Studio
-              </Anchor>{" "}
-              {t("features.list.streaming.after")}
-            </List.Item>
-          </List>
+              <Table.Tfoot>
+                <Table.Tr>
+                  <Table.Td className={classes["feature-column"]}>
+                    <Anchor
+                      data-testid="release-notes-link"
+                      href="https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"
+                      target="_blank"
+                      rel="noopener"
+                      size="sm"
+                    >
+                      {t("download.releaseNotes")}
+                    </Anchor>
+                  </Table.Td>
+                  <Table.Td className={classes["option-column"]}>
+                    <Stack gap={4} align="center">
+                      <Anchor
+                        href={downloadURL}
+                        target="_blank"
+                        rel="noopener"
+                        download
+                        type="application/x-msi"
+                        aria-label={t("download.buttonAriaLabel", { version })}
+                      >
+                        <Button
+                          data-testid="free-download-button"
+                          size="md"
+                          variant="outline"
+                          leftSection={<IconDownload size={20} />}
+                        >
+                          {t("download.button", { version })}
+                        </Button>
+                      </Anchor>
+                      <Text data-testid="download-stats" size="xs" c="dimmed">
+                        {t("download.downloads", { count: downloadCount })}
+                      </Text>
+                      <Text data-testid="total-download-stats" size="xs" c="dimmed">
+                        {t("download.totalDownloads", { count: totalDownloadCount })}
+                      </Text>
+                    </Stack>
+                  </Table.Td>
+                  <Table.Td className={`${classes["option-column"]} ${classes["store-column"]}`}>
+                    <Stack gap={4} align="center">
+                      <Anchor
+                        href="https://apps.microsoft.com/detail/9PBKK60PKDQS"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label={t("download.microsoftStoreAriaLabel")}
+                      >
+                        <Button
+                          data-testid="microsoft-store-button"
+                          size="md"
+                          variant="filled"
+                          leftSection={<IconBrandWindows size={20} />}
+                        >
+                          {t("download.microsoftStore")}
+                        </Button>
+                      </Anchor>
+                      <Text size="xs" c="dimmed" ta="center">
+                        {t("comparison.microsoftStore.supportNote")}
+                      </Text>
+                    </Stack>
+                  </Table.Td>
+                </Table.Tr>
+              </Table.Tfoot>
+            </Table>
+          </Table.ScrollContainer>
         </Paper>
       </Container>
     </>

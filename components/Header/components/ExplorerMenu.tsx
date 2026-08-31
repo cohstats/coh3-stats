@@ -17,6 +17,7 @@ import {
   IconStars,
   IconTable,
   IconUsersGroup,
+  IconBinaryTree,
 } from "@tabler/icons-react";
 import React from "react";
 import { raceType } from "../../../src/coh3/coh3-types";
@@ -28,6 +29,7 @@ import {
   getExplorerFactionUnitsRoute,
   getExplorerFsPerksRoute,
   getExplorerFsUnitsRoute,
+  getExplorerFsTechRoute,
   getExplorerMapsRoute,
   getExplorerMapsTableRoute,
   getUnitBrowserRoute,
@@ -106,6 +108,18 @@ const explorerFactionLink = (
       </Stack>
       <Divider />
       <Stack gap={4}>
+        <Text fw={700}>{t("mainMenu.explMenu.finalStand")}</Text>
+        <Group gap={4}>
+          <IconBinaryTree size={20} color="var(--mantine-color-teal-6)" />
+          <Anchor
+            c="teal"
+            component={LinkWithOutPrefetch}
+            href={getExplorerFsTechRoute(faction)}
+            onClick={close}
+          >
+            {t("mainMenu.explMenu.fsTech")}
+          </Anchor>
+        </Group>
         <Group gap={4}>
           <IconStars size={20} color="var(--mantine-color-teal-6)" />
           <Anchor
