@@ -120,7 +120,8 @@
     "armor": "Armor",
     "captureMultiplier": "Capture Multiplier",
     "decaptureMultiplier": "Decapture Multiplier",
-    "vehicleArmor": "Vehicle Armor"
+    "vehicleArmor": "Vehicle Armor",
+    "vehicleArmorHint": "Refers to the ingame armor critical blueprint."
   },
   "weaponCard": {
     "accuracy": "Accuracy",

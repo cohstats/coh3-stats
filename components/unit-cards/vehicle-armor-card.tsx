@@ -1,4 +1,4 @@
-import { DefaultMantineColor, Flex, Grid, Image, Text, Title } from "@mantine/core";
+import { DefaultMantineColor, Flex, Grid, Image, Stack, Text, Title } from "@mantine/core";
 
 /**
  * Armor type, found within `sbps` ->
@@ -41,36 +41,46 @@ const VehicleArmorCover = [
   { icon: "/icons/common/cover/negative.png", armor: "rear" },
 ] as const;
 
-export const StatsVehicleArmor = (cfg: StatsVehicleInput, title = "Vehicle Armor") => (
-  <>
-    <Flex direction="column">
+export const StatsVehicleArmor = (
+  cfg: StatsVehicleInput,
+  title = "Vehicle Armor",
+  hint = "Refers to the ingame armor critical blueprint.",
+) => (
+  <Stack gap="xs">
+    <Flex direction="row" gap={8} align="center">
       <Title order={6} style={{ textTransform: "uppercase" }}>
         {title}
       </Title>
-      <Text
-        fz="xs"
-        fw={700}
-        style={{ textTransform: "capitalize" }}
-        c={VehicleTypeColor[cfg.type]}
-      >
-        {cfg.type.split("_").join(" ")}
+      <Text fz="xs" fs="italic" c="dimmed" style={{ textTransform: "capitalize" }}>
+        ({hint})
       </Text>
     </Flex>
-    <Flex direction="column" justify={"center"} mt={12}>
-      {/*There is some mantine bug with this image I can't figure out what is wrong*/}
-      <Flex justify={"center"}>
-        <Image
-          mb={12}
-          h={128}
-          w={256}
-          fit="contain"
-          src={`/icons/hud/vehicle_criticals/${cfg.type}.png`}
-          alt="Vehicle Type"
-        />
-      </Flex>
-      {generateArmorRow(cfg.armorValues)}
+    <Flex
+      direction={{ base: "column", sm: "row" }}
+      align="center"
+      justify={{ base: "center", sm: "space-between" }}
+      gap="md"
+    >
+      <Image
+        h={128}
+        w={256}
+        fit="contain"
+        src={`/icons/hud/vehicle_criticals/${cfg.type}.png`}
+        alt="Vehicle Type"
+      />
+      <Stack gap={4} w="100%" maw={{ sm: 280 }}>
+        <Text
+          fz="xs"
+          fw={700}
+          style={{ textTransform: "capitalize" }}
+          c={VehicleTypeColor[cfg.type]}
+        >
+          {cfg.type?.split("_").join(" ")}
+        </Text>
+        {generateArmorRow(cfg.armorValues)}
+      </Stack>
     </Flex>
-  </>
+  </Stack>
 );
 
 const generateArmorRow = (armorValues: VehicleArmor) => {
@@ -78,8 +88,8 @@ const generateArmorRow = (armorValues: VehicleArmor) => {
     return (
       <Grid key={`vehicle_armor_${armor}`} fz="xs" align="center" columns={3} grow>
         <Grid.Col span={2}>
-          <Flex key={armor} direction="row" align="center" gap={8}>
-            <Image h={24} w={24} fit="contain" src={icon} alt="Frontal Armor" />
+          <Flex direction="row" align="center" gap={8}>
+            <Image h={24} w={24} fit="contain" src={icon} alt={`${armor} armor`} />
             <Text style={{ textTransform: "uppercase" }}>{armor}</Text>
           </Flex>
         </Grid.Col>
