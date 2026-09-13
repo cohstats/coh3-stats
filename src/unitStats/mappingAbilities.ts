@@ -4,7 +4,7 @@ import config from "../../config";
 import { internalSlash } from "../utils";
 import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
 import { traverseTree } from "./unitStatsLib";
-import { getAbilityStateTreeWeaponMappings } from "./workarounds";
+import { getAbilityStateTreeWeaponMappings, getAbilityCostMappings } from "./workarounds";
 import { extractDisplayRequirements } from "./requirement-utils";
 import type { DisplayRequirement } from "./requirement-utils";
 import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
@@ -105,6 +105,15 @@ const applyAbilityStateTreeWeaponMappings = (ability: AbilitiesType, root: unkno
     ) {
       ability.numShots = mapping.numShots;
     }
+  }
+};
+
+const applyAbilityCostMappings = (ability: AbilitiesType) => {
+  for (const mapping of getAbilityCostMappings(ability.id)) {
+    if (mapping.cost.fuel !== undefined) ability.cost.fuel = mapping.cost.fuel;
+    if (mapping.cost.manpower !== undefined) ability.cost.manpower = mapping.cost.manpower;
+    if (mapping.cost.munition !== undefined) ability.cost.munition = mapping.cost.munition;
+    if (mapping.cost.popcap !== undefined) ability.cost.popcap = mapping.cost.popcap;
   }
 };
 
@@ -316,6 +325,7 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
   }
 
   applyAbilityStateTreeWeaponMappings(ability, root);
+  applyAbilityCostMappings(ability);
 
   /* --------- REQUIREMENTS SECTION --------- */
   ability.displayRequirements = extractDisplayRequirements(abilityBag.requirements);
