@@ -110,15 +110,9 @@ export function resolveBattlegroupBranches(
       };
     });
 
-    // Apply cost overrides (e.g., Australian Light Infantry)
-    const modifiedAbility = { ...foundAbility };
-    if (foundAbility.id === "australian_defense_australian_light_infantry_uk") {
-      modifiedAbility.cost = { ...foundAbility.cost, manpower: 280 };
-    }
-
     return {
       upg: foundUpgrade,
-      ability: modifiedAbility,
+      ability: foundAbility,
       spawnItems: spawnItemIds,
       spawnItemsResolved,
     };
