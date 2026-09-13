@@ -582,6 +582,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   three={veterancyInfo.three}
                   four={veterancyInfo.four}
                   title={t("unitPage.veterancy")}
+                  layout="inline"
                 />
               </Card>
 
