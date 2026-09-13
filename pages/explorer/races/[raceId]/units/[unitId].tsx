@@ -471,17 +471,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   },
                 })}
               </Card>
-              <UnitUpgradeSection
-                upgrades={upgrades}
-                title={t("common.upgrades")}
-                translateRequirements={translateRequirements}
-              />
-
-              <UnitAbilitySection
-                abilities={abilities}
-                title={t("unitPage.abilities")}
-                translateRequirements={translateRequirements}
-              />
             </Stack>
           </Grid.Col>
           <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
@@ -521,6 +510,20 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
         </Grid>
         <Grid>
+          <Grid.Col>
+            <UnitUpgradeSection
+              upgrades={upgrades}
+              title={t("common.upgrades")}
+              translateRequirements={translateRequirements}
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <UnitAbilitySection
+              abilities={abilities}
+              title={t("unitPage.abilities")}
+              translateRequirements={translateRequirements}
+            />
+          </Grid.Col>
           <Grid.Col data-testid="can-construct-section">
             {UnitBuildingSection(buildables, t("unitPage.construct"))}
           </Grid.Col>
