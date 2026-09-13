@@ -130,6 +130,39 @@ const UnitTabs = ({
   );
 };
 
+const UnitCostGroup = ({
+  totalCost,
+  totalUpkeepCost,
+  reinforceCost,
+  isReinforceVisible,
+  layout = "inline",
+}: {
+  totalCost: ResourceValues;
+  totalUpkeepCost: ResourceValues;
+  reinforceCost: { cost: number; time: number };
+  isReinforceVisible: boolean;
+  layout?: "inline" | "stacked";
+}) => {
+  const isInline = layout === "inline";
+  const inlineColumns = isInline ? (isReinforceVisible ? 3 : 2) : 1;
+
+  return (
+    <Card p="md" radius="md" withBorder data-testid="costs-card" style={{ flex: 1 }}>
+      <Stack gap="md">
+        <SimpleGrid cols={inlineColumns} spacing="sm">
+          <Box>{UnitCostCard(totalCost, "Costs")}</Box>
+          <Box data-testid="upkeep-card">{UnitCostCard(totalUpkeepCost, "Upkeep")}</Box>
+          {isReinforceVisible ? (
+            <Box data-testid="reinforce-card">
+              {ReinforceCostCard(reinforceCost, "Reinforce")}
+            </Box>
+          ) : null}
+        </SimpleGrid>
+      </Stack>
+    </Card>
+  );
+};
+
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, locale }) => {
   const { query, asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
@@ -475,7 +508,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
         <UnitTabs defaultValue="stats">
           <Tabs.List grow mb="md">
             <Tabs.Tab value="stats" data-testid="tab-stats">
-              {t("unitPage.tabStats")}
+              Stats & Loadout
             </Tabs.Tab>
             {upgrades?.length ? (
               <Tabs.Tab value="upgrades" data-testid="tab-upgrades">
@@ -492,79 +525,91 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                 {t("unitPage.tabConstruction")}
               </Tabs.Tab>
             ) : null}
-            <Tabs.Tab value="weapons" data-testid="tab-weapons">
-              {t("unitPage.tabWeapons")}
-            </Tabs.Tab>
           </Tabs.List>
 
-          {/* Stats: squad stats + costs/hitpoints/upkeep/veterancy */}
+          {/* Stats: squad stats + costs/hitpoints/upkeep/veterancy + loadout/weapons */}
           <Tabs.Panel value="stats">
-            <Grid columns={3} grow>
-              <Grid.Col span={{ md: 2, xs: 3 }}>
-                <Stack>
-                  <Title order={4} data-testid="stats-heading">
-                    {t("unitPage.stats")}
-                  </Title>
-                  <Card
-                    p={{ base: "xs", sm: "md" }}
-                    radius="md"
-                    withBorder
-                    data-testid="stats-card"
-                  >
-                    {UnitSquadCard({
-                      id: resolvedSquad.id,
-                      type: resolvedSquad.unitType,
-                      health: armorValues,
-                      ui: {
-                        armorIcon: resolvedSquad.ui.armorIcon,
-                      },
-                      sight: sightValues,
-                      moving: movingValues,
-                      range: rangeValues,
-                      capture: {
-                        cap: resolvedSquad.capture_rate,
-                        decap: resolvedSquad.capture_revert,
-                      },
-                    })}
-                  </Card>
-                </Stack>
-              </Grid.Col>
-              <Grid.Col span={{ md: 1, xs: 3 }}>
-                <Stack>
-                  <Title order={4} data-testid="costs-heading">
-                    {t("unitPage.tabStats")}
-                  </Title>
-                  <Card p="md" radius="md" withBorder data-testid="costs-card">
-                    {UnitCostCard(totalCost, t("common.costs"))}
-                    {defaultSquadMember.unitType !== "vehicles" &&
-                    defaultSquadMember.unitType !== "emplacements" ? (
-                      ReinforceCostCard(reinforceCost, t("unitPage.reinforce"))
-                    ) : (
-                      <></>
-                    )}
-                  </Card>
-                  <Card p="md" radius="md" withBorder data-testid="hitpoints-card">
-                    {HitpointCard({
-                      squad: resolvedSquad,
-                      entities: resolvedEntities,
-                      title: t("common.hitpoints"),
-                    })}
-                  </Card>
-                  <Card p="md" radius="md" withBorder data-testid="upkeep-card">
-                    {UnitCostCard(totalUpkeepCost, t("unitPage.upkeep"))}
-                  </Card>
-                  <Card p="md" radius="md" withBorder data-testid="veterancy-card">
-                    <VeterancyCard
-                      one={veterancyInfo.one}
-                      two={veterancyInfo.two}
-                      three={veterancyInfo.three}
-                      four={veterancyInfo.four}
-                      title={t("unitPage.veterancy")}
-                    />
-                  </Card>
-                </Stack>
-              </Grid.Col>
-            </Grid>
+            <Stack gap="md">
+              <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder data-testid="stats-card">
+                {UnitSquadCard({
+                  id: resolvedSquad.id,
+                  type: resolvedSquad.unitType,
+                  health: armorValues,
+                  ui: {
+                    armorIcon: resolvedSquad.ui.armorIcon,
+                  },
+                  sight: sightValues,
+                  moving: movingValues,
+                  range: rangeValues,
+                  capture: {
+                    cap: resolvedSquad.capture_rate,
+                    decap: resolvedSquad.capture_revert,
+                  },
+                })}
+              </Card>
+
+              <Group align="stretch" gap="md" grow wrap="wrap">
+                <UnitCostGroup
+                  totalCost={totalCost}
+                  totalUpkeepCost={totalUpkeepCost}
+                  reinforceCost={reinforceCost}
+                  isReinforceVisible={
+                    defaultSquadMember.unitType !== "vehicles" &&
+                    defaultSquadMember.unitType !== "emplacements"
+                  }
+                  layout="inline"
+                />
+
+                <Card
+                  p="md"
+                  radius="md"
+                  withBorder
+                  data-testid="hitpoints-card"
+                  style={{ flex: 1 }}
+                >
+                  {HitpointCard({
+                    squad: resolvedSquad,
+                    entities: resolvedEntities,
+                    title: t("common.hitpoints"),
+                  })}
+                </Card>
+              </Group>
+
+              <Card p="md" radius="md" withBorder data-testid="veterancy-card">
+                <VeterancyCard
+                  one={veterancyInfo.one}
+                  two={veterancyInfo.two}
+                  three={veterancyInfo.three}
+                  four={veterancyInfo.four}
+                  title={t("unitPage.veterancy")}
+                />
+              </Card>
+
+              <Stack data-testid="loadout-and-weapons-section">
+                <Title order={4} data-testid="loadout-heading">
+                  Loadout & Weapons
+                </Title>
+                <div data-testid="loadout-section">
+                  {UnitWeaponSection(
+                    squadWeapons,
+                    t("unitPage.loadout"),
+                    t("unitPage.weaponNote"),
+                  )}
+                </div>
+                {UnitUpgradeWeaponSection(
+                  upgradeWeaponLoadouts,
+                  t("unitPage.upgradeWeapons"),
+                  upgrades,
+                  translateRequirements,
+                )}
+                {UnitAbilityWeaponSection(
+                  abilityWeaponLoadouts,
+                  t("unitPage.abilityWeapons"),
+                  abilities,
+                  translateRequirements,
+                )}
+              </Stack>
+            </Stack>
           </Tabs.Panel>
 
           {/* Upgrades */}
@@ -595,27 +640,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               {UnitBuildingSection(buildables, t("unitPage.tabConstruction"))}
             </Tabs.Panel>
           ) : null}
-
-          {/* Loadout & Weapons */}
-          <Tabs.Panel value="weapons">
-            <Stack>
-              <div data-testid="loadout-section">
-                {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
-              </div>
-              {UnitUpgradeWeaponSection(
-                upgradeWeaponLoadouts,
-                t("unitPage.upgradeWeapons"),
-                upgrades,
-                translateRequirements,
-              )}
-              {UnitAbilityWeaponSection(
-                abilityWeaponLoadouts,
-                t("unitPage.abilityWeapons"),
-                abilities,
-                translateRequirements,
-              )}
-            </Stack>
-          </Tabs.Panel>
         </UnitTabs>
       </Container>
     </>
