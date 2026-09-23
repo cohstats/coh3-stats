@@ -1,7 +1,8 @@
-import { Flex, Grid, Group, HoverCard, Stack, Text, Title, Tooltip } from "@mantine/core";
+import { Flex, Grid, Group, HoverCard, Stack, Text, Title } from "@mantine/core";
 import { UpgradeCostCard } from "./unit-cost-card";
 import ImageWithFallback, { iconPlaceholder } from "../placeholders";
 import { hasCost, ResourceValues } from "../../src/unitStats";
+import { CohTooltip } from "../common/coh-tooltip";
 
 import classes from "./Unit.module.css";
 import { useTranslation } from "next-i18next/pages";
@@ -130,19 +131,19 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip.Floating multiline style={{ whiteSpace: "pre-line" }} label={briefText}>
+          <CohTooltip floating label={briefText}>
             <Text fz="sm" lineClamp={7} style={{ whiteSpace: "pre-line" }}>
               {briefText}
             </Text>
-          </Tooltip.Floating>
+          </CohTooltip>
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Tooltip.Floating multiline label={extraText || desc.extra_text_formatter}>
+          <CohTooltip floating label={extraText || desc.extra_text_formatter}>
             <Text fz="sm" lineClamp={3}>
               {extraText || desc.extra_text_formatter}
             </Text>
-          </Tooltip.Floating>
+          </CohTooltip>
         </Grid.Col>
       </Grid>
     </>
