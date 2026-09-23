@@ -16,6 +16,43 @@ export type LocalNewsItem = {
  */
 const localNews: LocalNewsItem[] = [
   {
+    gid: "local-ironclad-the-new-front",
+    title: "IronClad Tournaments Is Live — Academy & Challenge Spots Still Open",
+    author: "IronClad Tournaments",
+    date: 1789363026,
+    image: "/images/news/ironclad-the-new-front.webp",
+    url: "https://www.ironcladtournaments.com/",
+    contents: `
+[img]/images/news/ironclad-the-new-front.webp[/img]
+
+[h2]The New Front is underway[/h2]
+[p]A new home for competitive Company of Heroes 3 is live. [b]IronClad Tournaments[/b] brings player profiles, tournament history and ELO-based divisions together in one community platform — and its first event, [b]The New Front[/b], is already underway.[/p]
+
+[h2]Main/Pro is closed and in progress[/h2]
+[p]The [b]Main/Pro division (1400+ ELO)[/b] is full, registration is closed, and the competition is in progress. Follow the action as the first IronClad event unfolds.[/p]
+
+[h2]Academy and Challenge still have places[/h2]
+[p]There is still time to join the division that fits your level:[/p]
+[p][b]Academy — 0–1099 ELO:[/b] 5/8 places filled. [b]3 places still open.[/b][/p]
+[p][b]Challenge — 1100–1399 ELO:[/b] 3/8 places filled. [b]5 places still open.[/b][/p]
+[p]These are the current numbers at the time of writing. Check the [url=https://www.ironcladtournaments.com/tournaments]tournament page[/url] for the latest availability.[/p]
+
+[h2]Competitive CoH3 for different skill levels[/h2]
+[p]You do not have to be a top-ranked player to take part. IronClad's ELO-based divisions give players a fair competitive setting with opponents around their level, whether they are entering their first tournament or building on past experience.[/p]
+[p][b]Your ELO. Your division. Your competition.[/b][/p]
+
+[h2]Create your competitive profile[/h2]
+[p]Create your IronClad profile, connect Steam and verify your Relic 1v1 ELO. Track your tournament history and competitive journey as you play, improve and return for future events.[/p]
+
+[h2]Free registration — join The New Front[/h2]
+[p]Registration is [b]free[/b]. Visit the website to create your profile and apply for an open division, or join the Discord to meet the community and ask questions.[/p]
+[p][url=https://www.ironcladtournaments.com/]Visit IronClad Tournaments[/url] • [url=https://discord.gg/ZQSQjBNRm3]Join the IronClad Discord[/url][/p]
+
+[h2]Help shape what comes next[/h2]
+[p]IronClad has just launched, and feedback is welcome. If you spot a bug, have an idea or want to share your experience, let us know on Discord. Help us build a better place for the CoH3 community to compete.[/p]
+`.trim(),
+  },
+  {
     gid: "local-final-stand-full-coverage",
     title: "COH3 Stats - Final Stand now fully covered",
     author: "COH3 Stats",
