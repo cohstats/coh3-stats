@@ -266,8 +266,12 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
           // When it is empty, it has a value of "0".
           const screenName = uiExtInfo?.screen_name;
           sbps.ui.screenName = resolveLocstring(screenName, locale) || "";
-          const helpText = uiExtInfo?.help_text;
-          sbps.ui.helpText = resolveLocstring(helpText, locale) || "";
+          const helpText = resolveLocstring(uiExtInfo?.help_text, locale);
+          const helpTextFormatter = resolveTextFormatterLocstring(
+            uiExtInfo?.help_text_formatter,
+            locale,
+          );
+          sbps.ui.helpText = helpText || helpTextFormatter || "";
           const extraText = uiExtInfo?.extra_text;
           sbps.ui.extraText = resolveLocstring(extraText, locale) || "";
           const briefText = resolveLocstring(uiExtInfo?.brief_text, locale);

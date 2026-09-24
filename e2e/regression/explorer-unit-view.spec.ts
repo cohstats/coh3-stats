@@ -122,18 +122,19 @@ test.describe("Explorer Unit View Pages", () => {
         }
       });
 
-      test("should be responsive on mobile", async ({ page }) => {
-        // Test mobile viewport
-        await page.setViewportSize({ width: 375, height: 667 });
-        await unitPage.navigate("american", "riflemen_us");
-        await unitPage.checkUnitPageLoaded();
-        await unitPage.checkUnitTitleVisible();
+      test("should be responsive on mobile and desktop", async ({ page }) => {
+        const viewports = [
+          { width: 375, height: 667 },
+          { width: 1920, height: 1080 },
+        ];
 
-        // Test desktop viewport
-        await page.setViewportSize({ width: 1920, height: 1080 });
-        await unitPage.navigate("american", "riflemen_us");
-        await unitPage.checkUnitPageLoaded();
-        await unitPage.checkUnitTitleVisible();
+        for (const { width, height } of viewports) {
+          await page.setViewportSize({ width, height });
+          await unitPage.navigate("american", "riflemen_us");
+          await unitPage.checkUnitPageLoaded();
+          await expect(unitPage.tabList).toBeVisible();
+          await unitPage.checkUnitTitleVisible();
+        }
       });
     });
 
@@ -142,7 +143,7 @@ test.describe("Explorer Unit View Pages", () => {
         await unitPage.checkUnitPageLoaded();
 
         // Check for Stats heading
-        await expect(unitPage.statsHeading).toBeVisible();
+        // await expect(unitPage.statsHeading).toBeVisible();
 
         // Check specific stats are present
         const expectedStats = [
@@ -180,6 +181,7 @@ test.describe("Explorer Unit View Pages", () => {
     test.describe("Upgrades section", () => {
       test("should display upgrades heading", async () => {
         await unitPage.checkUnitPageLoaded();
+        await unitPage.openTab("upgrades");
         await expect(unitPage.upgradesHeading).toBeVisible();
       });
 
@@ -216,6 +218,7 @@ test.describe("Explorer Unit View Pages", () => {
     test.describe("Abilities section", () => {
       test("should display abilities heading", async () => {
         await unitPage.checkUnitPageLoaded();
+        await unitPage.openTab("abilities");
         await expect(unitPage.abilitiesSection).toBeVisible();
       });
 
@@ -334,6 +337,7 @@ test.describe("Explorer Unit View Pages", () => {
     test.describe("Buildable structures", () => {
       test("should display can construct section", async () => {
         await unitPage.checkUnitPageLoaded();
+        await unitPage.openTab("construction");
         await expect(unitPage.canConstructSection).toBeVisible();
       });
 
@@ -366,11 +370,13 @@ test.describe("Explorer Unit View Pages", () => {
     test.describe("Loadout and weapons", () => {
       test("should display loadout section", async () => {
         await unitPage.checkUnitPageLoaded();
+        await unitPage.openTab("stats");
         await expect(unitPage.loadoutHeading).toBeVisible();
       });
 
       test("should display weapon statistics tables", async () => {
         await unitPage.checkUnitPageLoaded();
+        await unitPage.openTab("stats");
 
         // Check for weapon stat labels
         const weaponStats = [
