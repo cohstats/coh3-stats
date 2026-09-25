@@ -558,10 +558,10 @@
     "@bbob/plugin-helper" "*"
     "@bbob/types" "*"
 
-"@bbob/react@4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@bbob/react/-/react-4.3.1.tgz#df39718221765d1be106eb59b1f1a57518dd2bd5"
-  integrity sha512-5UrC3qZF0ViER72Am4wglS8MxKUEaFiswprr4xD5j4zM6OoYr8/UA0ebuahgI+HKP365ewK1PTymmPppUrR2ug==
+"@bbob/react@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@bbob/react/-/react-4.4.1.tgz#fe692b5989f369005140e1ae9d02bda8e1f20b9d"
+  integrity sha512-JvXt0+ds6qyRnJ76piQ3fyiIXkOQxyi0Fbg8PmXxpc9e2aY9WJ1Z0CdZE4g8kxxyPcwJPGZCBTf3XtGZZYswBg==
   dependencies:
     "@bbob/core" "*"
     "@bbob/html" "*"
