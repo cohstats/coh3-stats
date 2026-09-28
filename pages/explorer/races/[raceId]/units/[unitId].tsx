@@ -12,7 +12,6 @@ import {
   List,
   SimpleGrid,
   Stack,
-  Tabs,
   Text,
   Title,
 } from "@mantine/core";
@@ -58,7 +57,6 @@ import {
   WeaponMember,
 } from "../../../../../src/unitStats/dpsCommon";
 import { useEffect } from "react";
-// import { useMediaQuery } from "@mantine/hooks";
 import { AnalyticsExplorerUnitDetailsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
@@ -109,56 +107,31 @@ interface UnitDetailProps {
   descriptions: Record<string, Record<string, string | null>>;
 }
 
-const UnitTabs = ({
-  defaultValue,
-  children,
-}: {
-  defaultValue: string;
-  children: React.ReactNode;
-}) => {
-  // const isMobile = useMediaQuery("(max-width: 48em)");
-
-  return (
-    <Tabs
-      // orientation={isMobile ? "horizontal" : "vertical"}
-      orientation="horizontal"
-      variant="outline"
-      defaultValue={defaultValue}
-    >
-      {children}
-    </Tabs>
-  );
-};
-
 const UnitCostGroup = ({
   totalCost,
   totalUpkeepCost,
   reinforceCost,
   isReinforceVisible,
-  layout = "inline",
 }: {
   totalCost: ResourceValues;
   totalUpkeepCost: ResourceValues;
   reinforceCost: { cost: number; time: number };
   isReinforceVisible: boolean;
-  layout?: "inline" | "stacked";
 }) => {
-  const isInline = layout === "inline";
-  const inlineColumns = isInline ? (isReinforceVisible ? 3 : 2) : 1;
+  const { t } = useTranslation(["explorer"]);
 
+  // Inline on small screens where the column is full width, stacked in the md+ side column.
   return (
-    <Card p="md" radius="md" withBorder data-testid="costs-card" style={{ flex: 1 }}>
-      <Stack gap="md">
-        <SimpleGrid cols={inlineColumns} spacing="sm">
-          <Box>{UnitCostCard(totalCost, "Costs")}</Box>
-          <Box data-testid="upkeep-card">{UnitCostCard(totalUpkeepCost, "Upkeep")}</Box>
-          {isReinforceVisible ? (
-            <Box data-testid="reinforce-card">
-              {ReinforceCostCard(reinforceCost, "Reinforce")}
-            </Box>
-          ) : null}
-        </SimpleGrid>
-      </Stack>
+    <Card p="md" radius="md" withBorder data-testid="costs-card">
+      <SimpleGrid cols={{ base: 1, xs: isReinforceVisible ? 3 : 2, md: 1 }} spacing="sm">
+        <Box>{UnitCostCard(totalCost, t("common.costs"))}</Box>
+        <Box data-testid="upkeep-card">{UnitCostCard(totalUpkeepCost, t("unitPage.upkeep"))}</Box>
+        {isReinforceVisible ? (
+          <Box data-testid="reinforce-card">
+            {ReinforceCostCard(reinforceCost, t("unitPage.reinforce"))}
+          </Box>
+        ) : null}
+      </SimpleGrid>
     </Card>
   );
 };
@@ -470,66 +443,46 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
         languageAlternates={generateLanguageAlternates(asPath)}
       />
       <Container fluid pl={0} pr={0} pt={"md"} data-testid="unit-detail-container">
-        <Stack mb="md">
-          <Group align="stretch" gap="xl">
-            <Card
-              p="md"
-              radius="md"
-              withBorder
-              style={{ flex: 1 }}
-              data-testid="unit-description-card"
-            >
-              <UnitDescriptionCard
-                faction={raceId}
-                desc={{
-                  screen_name: resolvedSquad.ui.screenName,
-                  help_text: resolvedSquad.ui.helpText,
-                  brief_text: resolvedSquad.ui.briefText,
-                  symbol_icon_name: resolvedSquad.ui.symbolIconName,
-                  icon_name: resolvedSquad.ui.iconName,
-                }}
-                placement="singleUnit"
-                isFinalStand={isFinalStandUnit(resolvedSquad)}
-                isEnemy={isFinalStandEnemyUnit(resolvedSquad)}
-              />
-            </Card>
-            <Box style={{ display: "flex", alignItems: "stretch" }} visibleFrom="sm">
-              <Link href={getExplorerFactionRoute(raceId)} data-testid="faction-link">
-                <FactionIcon
-                  name={raceId}
-                  width={150}
-                  style={{ height: "100%", objectFit: "contain" }}
+        <Grid columns={3} grow>
+          <Grid.Col span={3}>
+            <Group align="stretch" gap="xl">
+              <Card
+                p="md"
+                radius="md"
+                withBorder
+                style={{ flex: 1 }}
+                data-testid="unit-description-card"
+              >
+                <UnitDescriptionCard
+                  faction={raceId}
+                  desc={{
+                    screen_name: resolvedSquad.ui.screenName,
+                    help_text: resolvedSquad.ui.helpText,
+                    brief_text: resolvedSquad.ui.briefText,
+                    symbol_icon_name: resolvedSquad.ui.symbolIconName,
+                    icon_name: resolvedSquad.ui.iconName,
+                  }}
+                  placement="singleUnit"
+                  isFinalStand={isFinalStandUnit(resolvedSquad)}
+                  isEnemy={isFinalStandEnemyUnit(resolvedSquad)}
                 />
-              </Link>
-            </Box>
-          </Group>
-        </Stack>
-
-        <UnitTabs defaultValue="stats">
-          <Tabs.List grow mb="md">
-            <Tabs.Tab value="stats" data-testid="tab-stats">
-              Stats & Loadout
-            </Tabs.Tab>
-            {upgrades?.length ? (
-              <Tabs.Tab value="upgrades" data-testid="tab-upgrades">
-                {t("common.upgrades")}
-              </Tabs.Tab>
-            ) : null}
-            {abilities?.length ? (
-              <Tabs.Tab value="abilities" data-testid="tab-abilities">
-                {t("unitPage.abilities")}
-              </Tabs.Tab>
-            ) : null}
-            {buildables?.length ? (
-              <Tabs.Tab value="construction" data-testid="tab-construction">
-                {t("unitPage.tabConstruction")}
-              </Tabs.Tab>
-            ) : null}
-          </Tabs.List>
-
-          {/* Stats: squad stats + costs/hitpoints/upkeep/veterancy + loadout/weapons */}
-          <Tabs.Panel value="stats">
-            <Stack gap="md">
+              </Card>
+              <Box style={{ display: "flex", alignItems: "stretch" }} visibleFrom="sm">
+                <Link href={getExplorerFactionRoute(raceId)} data-testid="faction-link">
+                  <FactionIcon
+                    name={raceId}
+                    width={150}
+                    style={{ height: "100%", objectFit: "contain" }}
+                  />
+                </Link>
+              </Box>
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
+            <Stack>
+              <Title order={4} data-testid="stats-heading">
+                {t("unitPage.stats")}
+              </Title>
               <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder data-testid="stats-card">
                 {UnitSquadCard({
                   id: resolvedSquad.id,
@@ -547,34 +500,40 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   },
                 })}
               </Card>
+              <UnitUpgradeSection
+                upgrades={upgrades}
+                title={t("common.upgrades")}
+                translateRequirements={translateRequirements}
+              />
 
-              <Group align="stretch" gap="md" grow wrap="wrap">
-                <UnitCostGroup
-                  totalCost={totalCost}
-                  totalUpkeepCost={totalUpkeepCost}
-                  reinforceCost={reinforceCost}
-                  isReinforceVisible={
-                    defaultSquadMember.unitType !== "vehicles" &&
-                    defaultSquadMember.unitType !== "emplacements"
-                  }
-                  layout="inline"
-                />
-
-                <Card
-                  p="md"
-                  radius="md"
-                  withBorder
-                  data-testid="hitpoints-card"
-                  style={{ flex: 1 }}
-                >
-                  {HitpointCard({
-                    squad: resolvedSquad,
-                    entities: resolvedEntities,
-                    title: t("common.hitpoints"),
-                  })}
-                </Card>
-              </Group>
-
+              <UnitAbilitySection
+                abilities={abilities}
+                title={t("unitPage.abilities")}
+                translateRequirements={translateRequirements}
+              />
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
+            <Stack>
+              <Title order={4} data-testid="costs-heading">
+                {t("unitPage.stats")}
+              </Title>
+              <UnitCostGroup
+                totalCost={totalCost}
+                totalUpkeepCost={totalUpkeepCost}
+                reinforceCost={reinforceCost}
+                isReinforceVisible={
+                  defaultSquadMember.unitType !== "vehicles" &&
+                  defaultSquadMember.unitType !== "emplacements"
+                }
+              />
+              <Card p="md" radius="md" withBorder data-testid="hitpoints-card">
+                {HitpointCard({
+                  squad: resolvedSquad,
+                  entities: resolvedEntities,
+                  title: t("common.hitpoints"),
+                })}
+              </Card>
               <Card p="md" radius="md" withBorder data-testid="veterancy-card">
                 <VeterancyCard
                   one={veterancyInfo.one}
@@ -582,66 +541,35 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                   three={veterancyInfo.three}
                   four={veterancyInfo.four}
                   title={t("unitPage.veterancy")}
-                  layout="inline"
                 />
               </Card>
-
-              <Stack data-testid="loadout-and-weapons-section">
-                <Title order={4} data-testid="loadout-heading">
-                  Loadout & Weapons
-                </Title>
-                <div data-testid="loadout-section">
-                  {UnitWeaponSection(
-                    squadWeapons,
-                    t("unitPage.loadout"),
-                    t("unitPage.weaponNote"),
-                  )}
-                </div>
-                {UnitUpgradeWeaponSection(
-                  upgradeWeaponLoadouts,
-                  t("unitPage.upgradeWeapons"),
-                  upgrades,
-                  translateRequirements,
-                )}
-                {UnitAbilityWeaponSection(
-                  abilityWeaponLoadouts,
-                  t("unitPage.abilityWeapons"),
-                  abilities,
-                  translateRequirements,
-                )}
-              </Stack>
             </Stack>
-          </Tabs.Panel>
-
-          {/* Upgrades */}
-          {upgrades?.length ? (
-            <Tabs.Panel value="upgrades" data-testid="upgrades-section">
-              <UnitUpgradeSection
-                upgrades={upgrades}
-                title={t("common.upgrades")}
-                translateRequirements={translateRequirements}
-              />
-            </Tabs.Panel>
-          ) : null}
-
-          {/* Abilities */}
-          {abilities?.length ? (
-            <Tabs.Panel value="abilities">
-              <UnitAbilitySection
-                abilities={abilities}
-                title={t("unitPage.abilities")}
-                translateRequirements={translateRequirements}
-              />
-            </Tabs.Panel>
-          ) : null}
-
-          {/* Construction Menu */}
-          {buildables?.length ? (
-            <Tabs.Panel value="construction" data-testid="can-construct-section">
-              {UnitBuildingSection(buildables, t("unitPage.tabConstruction"))}
-            </Tabs.Panel>
-          ) : null}
-        </UnitTabs>
+          </Grid.Col>
+        </Grid>
+        <Grid>
+          <Grid.Col data-testid="can-construct-section">
+            {UnitBuildingSection(buildables, t("unitPage.construct"))}
+          </Grid.Col>
+          <Grid.Col data-testid="loadout-section">
+            {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
+          </Grid.Col>
+          <Grid.Col>
+            {UnitUpgradeWeaponSection(
+              upgradeWeaponLoadouts,
+              t("unitPage.upgradeWeapons"),
+              upgrades,
+              translateRequirements,
+            )}
+          </Grid.Col>
+          <Grid.Col>
+            {UnitAbilityWeaponSection(
+              abilityWeaponLoadouts,
+              t("unitPage.abilityWeapons"),
+              abilities,
+              translateRequirements,
+            )}
+          </Grid.Col>
+        </Grid>
       </Container>
     </>
   );

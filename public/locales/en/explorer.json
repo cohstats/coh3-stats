@@ -106,11 +106,7 @@
     "abilityInfoToggleOnCooldown": "Toggle On",
     "abilityInfoToggleOffCooldown": "Toggle Off",
     "requirements": "Requires",
-    "requiresVeterancy": "Vet {{rank}}",
-    "tabOverview": "Overview",
-    "tabStats": "Stats",
-    "tabWeapons": "Loadout & Weapons",
-    "tabConstruction": "Construction Menu"
+    "requiresVeterancy": "Vet {{rank}}"
   },
   "statsCard": {
     "sightRange": "Sight Range",
