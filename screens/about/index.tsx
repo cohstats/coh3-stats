@@ -11,6 +11,7 @@ import {
   Divider,
   Space,
   Text,
+  List,
 } from "@mantine/core";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../../src/firebase/analytics";
@@ -80,11 +81,15 @@ const ArrangedTeams = () => {
       </Text>
       <Space h={"xs"} />
       <Text fw={700}>TLDR:</Text>
-      <li>
-        Day 1 Play at least 3 games with your team - same side (axis/allies) - same game type
-        (2v2/3v3/4v4)
-      </li>
-      <li>Day 2 Any game you play with your team is counted towards your team statistics.</li>
+      <List withPadding>
+        <List.Item>
+          Day 1 Play at least 3 games with your team - same side (axis/allies) - same game type
+          (2v2/3v3/4v4)
+        </List.Item>
+        <List.Item>
+          Day 2 Any game you play with your team is counted towards your team statistics.
+        </List.Item>
+      </List>
       <Space h={"xs"} />
       <Title order={4}>ELO Tracking</Title>
       <Text>
@@ -101,30 +106,34 @@ const Statistics = () => {
   return (
     <>
       <Title order={4}>Data</Title>
-      <li>Tracking only "automatch" matches. Not custom games or AI games.</li>
+      <List withPadding>
+        <List.Item>Tracking only "automatch" matches. Not custom games or AI games.</List.Item>
+      </List>
       See Data source article bellow for more details.
       <Space h={"xs"} />
       <Title order={4}>ELO Filtering</Title>
-      <li>
-        You can filter by single ELO group like{" "}
-        <Anchor
-          target={"_blank"}
-          href={"/stats/games?from=2024-05-02&to=2024-07-15&filters=stats-average-1400-1599"}
-        >
-          this
-        </Anchor>
-      </li>
-      <li>
-        You can filter by combining multiple ELO groups like{" "}
-        <Anchor
-          target={"_blank"}
-          href={
-            "/stats/games?from=2024-05-02&to=2024-07-15&filters=stats-limit-1600-9999%2Cstats-limit-1400-1599%2Cstats-limit-1250-1399"
-          }
-        >
-          this
-        </Anchor>
-      </li>
+      <List withPadding>
+        <List.Item>
+          You can filter by single ELO group like{" "}
+          <Anchor
+            target={"_blank"}
+            href={"/stats/games?from=2024-05-02&to=2024-07-15&filters=stats-average-1400-1599"}
+          >
+            this
+          </Anchor>
+        </List.Item>
+        <List.Item>
+          You can filter by combining multiple ELO groups like{" "}
+          <Anchor
+            target={"_blank"}
+            href={
+              "/stats/games?from=2024-05-02&to=2024-07-15&filters=stats-limit-1600-9999%2Cstats-limit-1400-1599%2Cstats-limit-1250-1399"
+            }
+          >
+            this
+          </Anchor>
+        </List.Item>
+      </List>
       It's recommended to combine multiple ELO groups to get more data for you analysis. Keep in
       mind that you need thousands of games to get meaningful results.
       <Space h={"xs"} />
@@ -132,19 +141,21 @@ const Statistics = () => {
         <Title order={5}>Average Group Filter</Title>
         <>
           <Text>Average ELO of all players fit in the specified group.</Text>
-          <li>
-            <Text c={"green"} span>
-              Good
-            </Text>{" "}
-            - a lot of games can fit into the group.
-          </li>
-          <li>
-            <Text c={"red"} span>
-              {" "}
-              Bad
-            </Text>{" "}
-            - the game might not be balanced, it can be team A 1100 ELO vs Team B 1600 ELO.
-          </li>
+          <List withPadding>
+            <List.Item>
+              <Text c={"green"} span>
+                Good
+              </Text>{" "}
+              - a lot of games can fit into the group.
+            </List.Item>
+            <List.Item>
+              <Text c={"red"} span>
+                {" "}
+                Bad
+              </Text>{" "}
+              - the game might not be balanced, it can be team A 1100 ELO vs Team B 1600 ELO.
+            </List.Item>
+          </List>
           Formula:
           <Text style={{ fontStyle: "italic" }}>
             Sum ELO of all players in match divided by number of players.
@@ -157,20 +168,22 @@ const Statistics = () => {
             Average ELO of all players fit in the specified group while the difference between the
             teams ELO is bellow 20%
           </Text>
-          <li>
-            <Text c={"green"} span>
-              Good
-            </Text>{" "}
-            - provides balanced games with more games to analyze. Useful for 3v3 and 4v4
-          </li>
-          <li>
-            <Text c={"red"} span>
-              {" "}
-              Bad
-            </Text>{" "}
-            - the team itself might not be balanced. Team A can have player with 1600 and 800 ELO
-            resulting in the average ELO of 1200 of team A.
-          </li>
+          <List withPadding>
+            <List.Item>
+              <Text c={"green"} span>
+                Good
+              </Text>{" "}
+              - provides balanced games with more games to analyze. Useful for 3v3 and 4v4
+            </List.Item>
+            <List.Item>
+              <Text c={"red"} span>
+                {" "}
+                Bad
+              </Text>{" "}
+              - the team itself might not be balanced. Team A can have player with 1600 and 800
+              ELO resulting in the average ELO of 1200 of team A.
+            </List.Item>
+          </List>
           Formula:
           <Text style={{ fontStyle: "italic" }}>
             Calculate average ELO of team A and team B. The difference between the ELO of the team
@@ -184,20 +197,22 @@ const Statistics = () => {
             Average ELO of all players fit in the specified group while the difference between the
             lowest ELO and highest ELO player is less then 400.
           </Text>
-          <li>
-            <Text c={"green"} span>
-              Good
-            </Text>{" "}
-            - provides balanced games
-          </li>
-          <li>
-            <Text c={"red"} span>
-              {" "}
-              Bad
-            </Text>{" "}
-            - less games can fit into this group. Very low matches in mode 3v3 and 4v4 can fit
-            into this group.
-          </li>
+          <List withPadding>
+            <List.Item>
+              <Text c={"green"} span>
+                Good
+              </Text>{" "}
+              - provides balanced games
+            </List.Item>
+            <List.Item>
+              <Text c={"red"} span>
+                {" "}
+                Bad
+              </Text>{" "}
+              - less games can fit into this group. Very low matches in mode 3v3 and 4v4 can fit
+              into this group.
+            </List.Item>
+          </List>
           Formula:
           <Text style={{ fontStyle: "italic" }}>
             Sum ELO of all players in match divided by number of players to get match ELO. The
@@ -211,19 +226,21 @@ const Statistics = () => {
             Average ELO of all players fit in the specified group while the difference between the
             lowest ELO and highest ELO player is less then 400.
           </Text>
-          <li>
-            <Text c={"green"} span>
-              Good
-            </Text>{" "}
-            - should provide the most balanced games
-          </li>
-          <li>
-            <Text c={"red"} span>
-              {" "}
-              Bad
-            </Text>{" "}
-            - very low matches fit. Unusable for 3v3 and 4v4.
-          </li>
+          <List withPadding>
+            <List.Item>
+              <Text c={"green"} span>
+                Good
+              </Text>{" "}
+              - should provide the most balanced games
+            </List.Item>
+            <List.Item>
+              <Text c={"red"} span>
+                {" "}
+                Bad
+              </Text>{" "}
+              - very low matches fit. Unusable for 3v3 and 4v4.
+            </List.Item>
+          </List>
           Formula:
           <Text style={{ fontStyle: "italic" }}>
             All players in the match has to fit into the specified group. The difference between
@@ -264,28 +281,30 @@ const Localization = () => {
       </Text>
       <Space h={"xs"} />
       <Text>You can submit translations (partial translations are welcome) through:</Text>
-      <li>
-        Creating a post in the feature request section on our{" "}
-        <Anchor
-          href={config.DISCORD_INVITE_LINK}
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          Discord
-        </Anchor>
-      </li>
-      <li>
-        Creating an{" "}
-        <Anchor href="https://github.com/cohstats/coh3-stats/issues" target="_blank">
-          Issue on GitHub
-        </Anchor>
-      </li>
-      <li>
-        Submitting a{" "}
-        <Anchor href="https://github.com/cohstats/coh3-stats/pulls" target="_blank">
-          Pull Request on GitHub
-        </Anchor>
-      </li>
+      <List withPadding>
+        <List.Item>
+          Creating a post in the feature request section on our{" "}
+          <Anchor
+            href={config.DISCORD_INVITE_LINK}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            Discord
+          </Anchor>
+        </List.Item>
+        <List.Item>
+          Creating an{" "}
+          <Anchor href="https://github.com/cohstats/coh3-stats/issues" target="_blank">
+            Issue on GitHub
+          </Anchor>
+        </List.Item>
+        <List.Item>
+          Submitting a{" "}
+          <Anchor href="https://github.com/cohstats/coh3-stats/pulls" target="_blank">
+            Pull Request on GitHub
+          </Anchor>
+        </List.Item>
+      </List>
       <Space h={"xs"} />
       <Text>
         If you have any questions about the translation process, feel free to ask on our{" "}
