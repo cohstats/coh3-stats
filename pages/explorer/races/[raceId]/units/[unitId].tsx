@@ -47,6 +47,11 @@ import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-ca
 import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
+import {
+  UnitSectionNav,
+  UnitSectionNavItem,
+  unitSectionClassName,
+} from "../../../../../components/unit-cards/unit-section-nav";
 import { getIconsPathOnCDN, roundToDecimals } from "../../../../../src/utils";
 import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
@@ -383,6 +388,31 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     return generateKeywordsString(baseKeywords);
   };
 
+  // Only link sections which are rendered, in the order they appear on the page.
+  const visibleBuildablesCount = buildables.filter(({ ui }) => ui.screenName).length;
+  const sectionNavItems: UnitSectionNavItem[] = [
+    { id: "stats", label: t("unitPage.stats") },
+    ...(upgrades.length
+      ? [{ id: "upgrades", label: t("common.upgrades"), count: upgrades.length }]
+      : []),
+    ...(abilities.length
+      ? [{ id: "abilities", label: t("unitPage.abilities"), count: abilities.length }]
+      : []),
+    ...(visibleBuildablesCount
+      ? [{ id: "construct", label: t("unitPage.construct"), count: visibleBuildablesCount }]
+      : []),
+    { id: "loadout", label: t("unitPage.loadout") },
+    ...(abilityWeaponLoadouts.length
+      ? [
+          {
+            id: "ability-weapons",
+            label: t("unitPage.abilityWeapons"),
+            count: abilityWeaponLoadouts.length,
+          },
+        ]
+      : []),
+  ];
+
   const metaDescription = createMetaDescription();
   const metaKeywords = createEnhancedKeywords();
   const finalStandName = t("unitMeta.finalStandName");
@@ -478,12 +508,20 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               </Box>
             </Group>
           </Grid.Col>
+        </Grid>
+        {/* Outside of the grids, so it stays sticky for the whole page. */}
+        <UnitSectionNav items={sectionNavItems} />
+        <Grid columns={3} grow>
           <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
             <Stack>
-              <Title order={4} data-testid="stats-heading">
-                {t("unitPage.stats")}
-              </Title>
-              <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder data-testid="stats-card">
+              <Card
+                id="stats"
+                className={unitSectionClassName}
+                p={{ base: "xs", sm: "md" }}
+                radius="md"
+                withBorder
+                data-testid="stats-card"
+              >
                 {UnitSquadCard({
                   id: resolvedSquad.id,
                   type: resolvedSquad.unitType,
@@ -515,9 +553,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
           <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
             <Stack>
-              <Title order={4} data-testid="costs-heading">
-                {t("unitPage.stats")}
-              </Title>
               <UnitCostGroup
                 totalCost={totalCost}
                 totalUpkeepCost={totalUpkeepCost}
@@ -547,10 +582,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
         </Grid>
         <Grid>
-          <Grid.Col data-testid="can-construct-section">
+          <Grid.Col
+            id="construct"
+            className={unitSectionClassName}
+            data-testid="can-construct-section"
+          >
             {UnitBuildingSection(buildables, t("unitPage.construct"))}
           </Grid.Col>
-          <Grid.Col data-testid="loadout-section">
+          <Grid.Col id="loadout" className={unitSectionClassName} data-testid="loadout-section">
             {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
           </Grid.Col>
           <Grid.Col>
@@ -561,7 +600,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               translateRequirements,
             )}
           </Grid.Col>
-          <Grid.Col>
+          <Grid.Col id="ability-weapons" className={unitSectionClassName}>
             {UnitAbilityWeaponSection(
               abilityWeaponLoadouts,
               t("unitPage.abilityWeapons"),
@@ -589,7 +628,7 @@ const UnitUpgradeSection: React.FC<{
   if (!upgrades?.length) return null;
 
   return (
-    <Stack data-testid="upgrades-section">
+    <Stack id="upgrades" className={unitSectionClassName} data-testid="upgrades-section">
       <Title order={4} data-testid="upgrades-heading">
         {title}
       </Title>
@@ -683,7 +722,7 @@ const UnitAbilitySection: React.FC<{
   if (!abilities?.length) return null;
 
   return (
-    <Stack data-testid="abilities-section">
+    <Stack id="abilities" className={unitSectionClassName} data-testid="abilities-section">
       <Title order={4} data-testid="abilities-heading">
         {title}
       </Title>
