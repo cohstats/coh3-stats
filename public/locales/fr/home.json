@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Statistiques de Company of Heroes 3",
+    "description": "Statistiques de Company of Heroes 3. Classements, fiche joueur, parties passées, statistiques des unités, calculateur de DPS, explorateur de groupements tactiques, explorateur d'armes, parties en direct, dernières actualités COH3, dernières vidéos YouTube et streams Twitch. Et bien plus encore.",
+    "keywords": [
+      "classements",
+      "fiches joueurs",
+      "statistiques des unités",
+      "parties en direct",
+      "calculateur de dps",
+      "groupements tactiques",
+      "explorateur d'armes",
+      "historique des parties",
+      "streams twitch",
+      "vidéos youtube"
+    ]
+  },
+  "sections": {
+    "news": {
+      "title": "Dernières actualités",
+      "newsLabel": "Actualités"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "Calculateur de DPS",
+        "description": "Comparez le DPS de toutes les unités du jeu. Personnalisez l'équipement des unités avec différentes armes. Vous pouvez aussi prendre en compte les PV des unités."
+      },
+      "explorer": {
+        "title": "Explorateur",
+        "description": "Parcourez en détail les factions, unités, armes et cartes. Inclut aussi les atouts et unités Final Stand, ainsi que le calculateur de DPS."
+      }
+    },
+    "leaderboards": {
+      "title": "Classements 1v1",
+      "viewFullLeaderboard": "Voir le classement complet",
+      "factions": {
+        "american": "USF",
+        "british": "Britanniques",
+        "german": "Wehrmacht",
+        "dak": "DAK"
+      }
+    },
+    "reddit": {
+      "title": "Meilleurs posts Reddit COH3",
+      "noData": "Aucun post Reddit disponible"
+    },
+    "youtube": {
+      "title": "Vidéos de la semaine dernière",
+      "noData": "Aucune vidéo YouTube disponible",
+      "views": "vues"
+    },
+    "twitch": {
+      "title": "Regarder les streams en direct",
+      "noStreams": "Aucun stream en anglais n'est actuellement diffusé sur Twitch."
+    }
+  },
+  "leaderboardTable": {
+    "errorTitle": "Erreur lors du chargement des classements"
+  }
+}

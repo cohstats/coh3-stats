@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 맵 표 - 모든 맵 데이터 비교",
+    "description": "Company of Heroes 3 멀티플레이 맵 전체를 정렬 가능한 하나의 표로 제공합니다. 자원 지점 수, 분당 최대 연료·탄약·인력 수입, 맵 크기 및 커뮤니티 맵.",
+    "keywords": [
+      "coh3 맵 표",
+      "company of heroes 3 맵 데이터",
+      "coh3 맵 수입",
+      "coh3 연료 지점",
+      "coh3 맵 크기",
+      "맵 비교",
+      "맵 목록"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 맵 표",
+    "subtitle": "정렬 가능한 하나의 표에 담은 모든 맵 데이터 - 자원 지점, 분당 수입, 맵 크기.",
+    "noMaps": "선택한 필터와 일치하는 맵이 없습니다."
+  },
+  "filters": {
+    "income": "수입",
+    "incomeTotal": "전체",
+    "incomePerSide": "진영당",
+    "incomeTooltip": "수입 열에 맵 전체의 수입을 표시할지, 한쪽 진영의 예상 수입(전체의 절반)을 표시할지 선택합니다."
+  },
+  "groups": {
+    "map": "맵",
+    "points": "자원 지점",
+    "income": "수입 / 분",
+    "size": "크기"
+  },
+  "columns": {
+    "name": "이름",
+    "mode": "모드",
+    "victory": "VP",
+    "fuel": "연료",
+    "munitions": "탄약",
+    "strategic": "인력",
+    "capturable": "합계",
+    "mapSize": "맵",
+    "playableArea": "전투 영역"
+  },
+  "tooltips": {
+    "victory": "승리 지점 수",
+    "fuel": "연료 지점 수",
+    "munitions": "탄약 지점 수",
+    "strategic": "인력(전략) 지점 수",
+    "capturable": "플레이어가 점령할 수 있는 지점의 총 개수 - 플레이어 시작 위치는 포함되지 않습니다",
+    "incomeFuel": "맵 전체를 장악했을 때의 분당 연료",
+    "incomeMunitions": "맵 전체를 장악했을 때의 분당 탄약",
+    "incomeManpower": "맵 전체를 장악했을 때의 분당 인력",
+    "incomePerSideNote": "진영당 수입은 전체의 절반입니다. 맵은 거의 대칭이지만 중앙의 지점은 나뉘지 않고 쟁탈 대상이 되므로 추정치로 참고하세요.",
+    "mapSize": "월드 단위 기준 맵 크기(너비 × 높이)",
+    "playableArea": "점령 지점을 둘러싼 경계 상자 - 실제 전투가 벌어지는 맵 영역",
+    "mapIdVersion": "게임 파일에서 사용하는 맵 ID - 시나리오 버전 {{version}}"
+  },
+  "details": {
+    "button": "상세",
+    "tooltip": "{{name}} 상세 페이지 열기"
+  }
+}

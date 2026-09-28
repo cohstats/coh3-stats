@@ -1,0 +1,21 @@
+{
+  "title": "Poziomy rankingowe w Company of Heroes 3",
+  "description": "Na podstawie ELO gracze są przydzielani do konkretnych lig i poziomów.",
+  "matchRequirement": "Aby zdobyć rangę i zostać przydzielonym do poziomu, gracz musi rozegrać co najmniej 10 meczów każdą frakcją w danym typie gry.",
+  "rankDecay": {
+    "title": "Utrata rangi",
+    "text": "Jeśli gracz przez dłuższy czas jest nieaktywny, traci swoją rangę. Może ją jednak odzyskać, rozgrywając zaledwie jedną grę."
+  },
+  "eloDecay": {
+    "title": "Spadek ELO",
+    "text": "ELO również podlega spadkowi - jeśli gracz przez dłuższy czas nie gra, jego ELO może zostać obniżone bez rozegrania żadnej gry."
+  },
+  "table": {
+    "columns": {
+      "tierName": "Nazwa poziomu",
+      "eloRating": "ELO",
+      "rank": "Pozycja"
+    },
+    "topPlayers": "Top {{count}} graczy"
+  }
+}

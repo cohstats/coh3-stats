@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "COH3 매치 {{matchId}} - {{map}} {{mode}}",
+    "description": "{{map}} 맵, {{mode}} 모드에서 진행된 Company of Heroes 3 매치 {{matchId}}의 상세 정보. 플레이어 성과, 진영 대결 구도, 게임 통계를 확인하세요.",
+    "keywords": [
+      "coh3 매치 상세",
+      "게임 리플레이",
+      "매치 분석",
+      "플레이어 성과",
+      "진영 대결",
+      "게임 통계"
+    ]
+  }
+}

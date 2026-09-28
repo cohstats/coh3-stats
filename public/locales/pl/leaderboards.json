@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Rankingi {{faction}} {{mode}}",
+    "description": "Rankingi Company of Heroes 3 dla frakcji {{faction}} w trybie {{mode}} - pozycje graczy, ELO i statystyki rozgrywek rankingowych.",
+    "keywords": [
+      "coh3 rankingi",
+      "ranking graczy",
+      "drabinka rankingowa",
+      "elo",
+      "pozycje graczy",
+      "statystyki rankingowe",
+      "ranking frakcji",
+      "ranking trybów gry"
+    ]
+  },
+  "title": "Rankingi - {{race}}",
+  "pageTitle": "Rankingi - {{race}} {{type}}",
+  "metaDescription": "Rankingi dla frakcji {{race}} w trybie {{type}}. Company of Heroes 3",
+  "errorTitle": "Błąd podczas pobierania rankingów",
+  "filters": {
+    "region": "Region",
+    "platform": "Platforma",
+    "faction": "Frakcja",
+    "type": "Typ"
+  },
+  "teams": {
+    "title": "Rankingi drużynowe",
+    "pageTitle": "Rankingi drużynowe - {{side}} {{type}}",
+    "metaDescription": "Rankingi drużynowe dla strony {{side}} w trybie {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Strona",
+      "type": "Typ",
+      "orderBy": "Sortuj według"
+    },
+    "pagination": {
+      "itemsPerPage": "Pozycji na stronę",
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "showingRange": "Wyświetlono {{start}} - {{end}} z {{total}} drużyn",
+      "excludeInactive": "Drużyny nieaktywne od ponad roku są pominięte"
+    }
+  }
+}

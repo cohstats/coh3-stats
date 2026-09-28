@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "COH3 マップ - 全マルチプレイマップ",
+    "description": "Company of Heroes 3 の全マルチプレイマップを閲覧。ゲームモードで絞り込み、資源ポイントの配置、マップサイズ、コミュニティマップを確認できます。",
+    "keywords": [
+      "coh3 マップ",
+      "company of heroes 3 マップ",
+      "1v1 マップ",
+      "2v2 マップ",
+      "3v3 マップ",
+      "4v4 マップ",
+      "コミュニティマップ",
+      "マップ一覧"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 マップ",
+    "subtitle": "ゲーム内のすべてのマルチプレイマップを資源配置とともに閲覧できます。",
+    "noMaps": "選択したフィルターに一致するマップはありません。"
+  },
+  "view": {
+    "cards": "カード",
+    "table": "表",
+    "cardsTooltip": "ミニマップ付きのカード形式でマップを閲覧",
+    "tableTooltip": "並べ替え可能な表ですべてのマップデータを比較"
+  },
+  "filters": {
+    "searchPlaceholder": "マップを検索",
+    "lobbyOnly": "現在のロビーで選択可能",
+    "mapCount_one": "{{count}} マップ",
+    "mapCount_other": "{{count}} マップ"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "その他"
+  },
+  "sections": {
+    "1v1": "1 vs 1 マップ",
+    "2v2": "2 vs 2 マップ",
+    "3v3": "3 vs 3 マップ",
+    "4v4": "4 vs 4 マップ",
+    "fs": "Final Stand マップ（AI との協力プレイ）",
+    "other": "その他のマップ"
+  },
+  "card": {
+    "players_one": "{{count}} 人",
+    "players_other": "{{count}} 人",
+    "community": "コミュニティ",
+    "authorTooltip": "作成者: {{author}}",
+    "notInLobby": "ロビー対象外",
+    "notInLobbyTooltip": "このマップはゲーム内ロビーでは選択できません。",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "マップサイズ"
+  },
+  "points": {
+    "victory": "勝利ポイント",
+    "fuel": "燃料ポイント",
+    "munitions": "弾薬ポイント",
+    "strategic": "人員ポイント",
+    "starting_position": "プレイヤー開始地点",
+    "starting_positionShort": "開始地点",
+    "victorySingle": "勝利ポイント",
+    "fuelSingle": "燃料ポイント",
+    "munitionsSingle": "弾薬ポイント",
+    "strategicSingle": "人員ポイント",
+    "victoryShort": "勝利",
+    "fuelShort": "燃料",
+    "munitionsShort": "弾薬",
+    "strategicShort": "人員"
+  },
+  "tiers": {
+    "extra_low": "最低",
+    "low": "低",
+    "medium": "中",
+    "extra_medium": "中+",
+    "high": "高",
+    "default": "標準"
+  },
+  "resources": {
+    "fuel": "燃料",
+    "munition": "弾薬",
+    "manpower": "人員"
+  },
+  "detail": {
+    "backToMaps": "すべてのマップ",
+    "overview": "概要",
+    "description": "説明",
+    "players": "プレイヤー数",
+    "author": "作成者",
+    "mapId": "マップ ID",
+    "playableArea": "戦闘範囲",
+    "playableAreaTooltip": "占領ポイントを囲む範囲 - マップ上で戦闘が行われる部分です。常にマップ全体のサイズより小さくなります。",
+    "mapStats": "{{mode}} マップ統計",
+    "points": "資源ポイント",
+    "totalCapturable": "占領可能なポイント",
+    "income": "毎分の収入",
+    "incomeTotal": "合計",
+    "incomePerSide": "片側",
+    "incomePerSideTooltip": "合計収入の半分です。マップはほぼ左右対称ですが、マップ中央のポイントは分け合うのではなく奪い合いになるため、推定値としてご覧ください。",
+    "incomeNote": "すべての占領可能なポイントを完全に支配した場合の毎分の収入です。",
+    "hoverHint": "マップ上のポイントにカーソルを合わせると詳細を表示します:",
+    "hoverDetails": {
+      "tier": "ポイントのティア（最低から高まで）",
+      "income": "生み出す毎分の収入",
+      "captureTime": "占領時間 - 占領にかかる時間",
+      "revertTime": "中立化時間 - 再び中立に戻るまでの時間",
+      "secureRadius": "ポイント周辺の確保範囲"
+    },
+    "tierSizeHint": "マップ上のアイコンはティアに応じた大きさで表示され、収入の多いポイントほど大きくなります。",
+    "showSectors": "セクターを表示",
+    "sectorsTooltip": "マップ上に領域セクターを描画します。ポイントは、そこへ至るセクターの連なりを確保して初めて自軍の拠点とつながります。",
+    "pointIncome": "収入: +{{value}} / 分",
+    "pointCaptureTime": "占領時間: {{value}} 秒",
+    "pointRevertTime": "中立化時間: {{value}} 秒",
+    "pointSecureRadius": "確保範囲: {{value}}",
+    "startingPositionTooltip": "チーム {{team}} - プレイヤー {{position}}",
+    "playerPositionTooltip": "プレイヤー {{position}}"
+  }
+}

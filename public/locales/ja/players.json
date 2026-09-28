@@ -1,0 +1,313 @@
+{
+  "meta": {
+    "title": "{{name}} - COH3 プレイヤープロフィール",
+    "description": "{{name}} の Company of Heroes 3 プレイヤープロフィール。試合数 {{totalGames}}、勝率 {{winRate}}%。詳細な統計、試合履歴、陣営別の成績を確認できます。",
+    "keywords": [
+      "coh3 プレイヤープロフィール",
+      "プレイヤー統計",
+      "試合履歴",
+      "陣営別 成績",
+      "ランキング",
+      "プレイヤー 成績",
+      "試合統計",
+      "プレイヤーデータ"
+    ]
+  },
+  "card": {
+    "error": {
+      "title": "プレイヤーカードの読み込み中にエラーが発生しました",
+      "loadingError": "プレイヤーカードの読み込み中にエラーが発生しました"
+    },
+    "title": "プレイヤーカード - {{name}}",
+    "titleWithView": {
+      "recentMatches": "プレイヤーカード - {{name}} - 最近の試合",
+      "standingsDetails": "プレイヤーカード - {{name}} - 詳細統計",
+      "activity": "プレイヤーカード - {{name}} - アクティビティ",
+      "nemesis": "プレイヤーカード - {{name}} - 宿敵",
+      "teamsStandings": "プレイヤーカード - {{name}} - チーム成績",
+      "teamDetails": "プレイヤーカード - {{name}} - チーム詳細"
+    }
+  },
+  "tabs": {
+    "standings": "プレイヤー成績",
+    "standingsDetails": "詳細統計",
+    "recentMatches": "最近の試合",
+    "activity": "アクティビティ",
+    "nemesis": "宿敵",
+    "teamsStandings": "チーム成績"
+  },
+  "playerInfo": {
+    "bestElo": {
+      "allies": "連合軍の最高 ELO {{elo}}（{{mode}}、{{faction}}）",
+      "axis": "枢軸軍の最高 ELO {{elo}}（{{mode}}、{{faction}}）"
+    },
+    "stats": {
+      "totalGames": "総試合数 {{count}}",
+      "winRate": "勝率 {{rate}}%",
+      "lastMatch": "最終試合 {{time}}"
+    }
+  },
+  "recentMatches": {
+    "filters": {
+      "hideCustomGames": "カスタムゲームを非表示",
+      "showAllGames": "すべての試合を表示"
+    },
+    "loadMore": "さらに試合を読み込む",
+    "table": {
+      "columns": {
+        "date": "日付",
+        "map": "マップ",
+        "duration": "試合時間",
+        "type": "タイプ",
+        "players": "プレイヤー",
+        "actions": "操作"
+      },
+      "noData": "試合が見つかりません"
+    },
+    "downloadReplay": {
+      "button": "リプレイをダウンロード",
+      "generating": "生成中...",
+      "error": "リプレイの生成中にエラーが発生しました"
+    }
+  },
+  "standings": {
+    "summary": {
+      "charts": {
+        "factionDistribution": "陣営の分布",
+        "gameTypes": "ゲームタイプ",
+        "activityLastMonths": "直近数か月のアクティビティ"
+      }
+    },
+    "table": {
+      "columns": {
+        "leaderboard": "リーダーボード",
+        "rank": "ランク",
+        "rating": "レーティング",
+        "lastMatch": "最終試合",
+        "streak": "連勝/連敗",
+        "wins": "勝利",
+        "losses": "敗北",
+        "total": "合計",
+        "winRate": "勝率",
+        "type": "タイプ",
+        "elo": "ELO",
+        "tier": "ティア",
+        "ratio": "勝率",
+        "drops": "切断"
+      },
+      "helpers": {
+        "bestRankAchieved": "達成した最高ランク。低いほど優秀です。そのプレイヤーがこれまでに到達した最高のランクです。",
+        "bestEloAchieved": "達成した最高 ELO。高いほど優秀です。そのプレイヤーがこれまでに到達した最高の ELO です。",
+        "best": "最高"
+      }
+    },
+    "faction": {
+      "bestRank": "最高ランク",
+      "bestRating": "最高レーティング",
+      "bestWinRate": "最高勝率"
+    }
+  },
+  "detailedStats": {
+    "filters": {
+      "selectFaction": "陣営を選択",
+      "selectGameType": "ゲームタイプを選択"
+    },
+    "charts": {
+      "playTime": "試合時間の分布",
+      "mapsWinRate": "マップ別勝率",
+      "factionVsFaction": "陣営 対 陣営"
+    },
+    "noData": "詳細な統計はありません"
+  },
+  "activity": {
+    "title": "プレイヤーのアクティビティ",
+    "noData": "アクティビティデータはありません",
+    "filters": {
+      "timeRange": "期間",
+      "timezone": "タイムゾーン"
+    },
+    "alerts": {
+      "noData": {
+        "title": "アクティビティデータなし",
+        "message": "このプレイヤーのアクティビティデータを取得できていないようです。",
+        "reportMessage": "このエラーが続く場合は、こちらでご報告ください:"
+      },
+      "steamOnly": {
+        "title": "COH3 Stats のデータなし",
+        "message": "この統計は Steam プレイヤーのみ利用できます。",
+        "voteMessage": "コンソールでもこの統計を利用したい場合は、こちらで投票／ご要望ください:"
+      }
+    },
+    "charts": {
+      "calendarDay": {
+        "title": "日付別のアクティビティ"
+      },
+      "hourOfDay": {
+        "title": "時間帯別のアクティビティ"
+      },
+      "weekDay": {
+        "title": "曜日別のアクティビティ"
+      }
+    },
+    "timezoneHelper": "時間帯別のアクティビティデータは UTC で収集されています。このセレクターで表示をお住まいのタイムゾーンに合わせられます。"
+  },
+  "teamsStandings": {
+    "title": "固定チームの成績",
+    "noData": "このプレイヤーのチームデータはありません",
+    "errorTitle": "チームデータの読み込み中にエラーが発生しました",
+    "axisTeams": "枢軸軍",
+    "alliesTeams": "連合軍",
+    "axisTeam": "枢軸軍チーム",
+    "alliesTeam": "連合軍チーム",
+    "mostPlayed": "最もプレイしたチーム",
+    "mostRecent": "最近のチーム",
+    "checkTeamDetails": "試合と ELO の変動履歴はチーム詳細をご確認ください",
+    "checkTeamLeaderboardsPrefix": "ランキングは",
+    "checkTeamLeaderboardsSuffix": "でご確認ください",
+    "limitedTeams": "2 チームまでに制限されています",
+    "helperText": "固定チームは COH3 Stats のみで追跡しています。詳しくは「このサイトについて」ページをご覧ください"
+  },
+  "teamDetails": {
+    "title": "チーム詳細",
+    "specificTeamTitle": "チーム詳細",
+    "matchHistory": "試合履歴",
+    "eloHistory": "チーム ELO 履歴",
+    "winLossHistory": "勝敗履歴",
+    "teamNotFound": "チームが見つかりません。チーム ID を確認して、もう一度お試しください。",
+    "detailsButton": "詳細",
+    "showingMatches": "{{total}} 試合中 {{loaded}} 試合を表示",
+    "errorLoadingMatches": "試合の読み込み中にエラーが発生しました: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "タイプ",
+      "players": "プレイヤー",
+      "elo": "ELO",
+      "streak": "連勝/連敗",
+      "wins": "勝利",
+      "losses": "敗北",
+      "ratio": "勝率",
+      "total": "合計",
+      "lastMatch": "最終試合"
+    },
+    "noData": "チームデータはありません",
+    "eloHelper": "COH3 Stats のみで追跡している非公式の ELO です。詳しくは「このサイトについて」ページをご覧ください",
+    "bestElo": "最高 {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "日時",
+      "result": "結果",
+      "enemyElo": "敵 ELO",
+      "axisPlayers": "枢軸軍プレイヤー",
+      "alliesPlayers": "連合軍プレイヤー",
+      "map": "マップ"
+    },
+    "noData": "試合履歴はありません",
+    "showFlags": "プレイヤーの国旗を表示",
+    "clickForDetails": "行をクリックすると詳細を表示します",
+    "detailsButton": "詳細",
+    "teamEloHelper": "これは COH3 Stats が追跡しているチーム ELO の変動で、プレイヤー成績の ELO とは異なります。COH3 Stats の ELO はマッチングには使用されません。",
+    "playerEloHelper": "ここに表示される ELO は、該当するモードと陣営における個人プレイヤーの ELO です。"
+  },
+  "nemesis": {
+    "widget": {
+      "title": "トップ 10 - 1v1 宿敵",
+      "helperText": "宿敵カウンターは、同じプレイヤーと 1 日（UTC）に 2 回対戦することで「発動」する必要があります。発動後は、そのプレイヤーとのすべての 1v1 の試合がカウントされます。名前はそのプレイヤーとの最後の試合から保存されます。Steam プレイヤーのみ追跡しています。",
+      "noRecords": "1v1 の宿敵は記録されていません"
+    },
+    "columns": {
+      "alias": "名前",
+      "wins": "勝利",
+      "losses": "敗北",
+      "ratio": "勝率",
+      "diff": "差",
+      "total": "合計"
+    },
+    "title": "1v1 宿敵",
+    "noNemesis": "1v1 の宿敵なし",
+    "wins": "勝利",
+    "losses": "敗北",
+    "rules": {
+      "trigger": "宿敵カウンターは「発動」する必要があります",
+      "triggerCondition": "同じプレイヤーと 1 日（UTC）に 2 回対戦すると発動します。",
+      "aliases": "名前はそのプレイヤーとの最後の試合から保存されます",
+      "counting": "発動後は、そのプレイヤーとのすべての 1v1 の試合がカウントされます。",
+      "updateTime": "データは毎日 UTC 午前 6 時に更新されます。",
+      "steamOnly": "Steam プレイヤーのみ追跡しています。"
+    },
+    "alerts": {
+      "steamOnly": {
+        "title": "COH3 Stats のデータなし",
+        "message": "この統計は Steam プレイヤーのみ利用できます。",
+        "voteMessage": "コンソールでもこの統計を利用したい場合は、こちらで投票／ご要望ください:"
+      }
+    }
+  },
+  "counterStatistics": {
+    "title": "カウンター統計",
+    "totalMatches": "総試合数: {{count}}",
+    "total": "合計",
+    "average": "平均（1 試合あたり）",
+    "categories": {
+      "combat": "戦闘",
+      "productionBuildings": "生産と建物",
+      "abilitiesCommands": "アビリティとコマンド",
+      "other": "その他"
+    },
+    "stats": {
+      "damageData": "与ダメージ",
+      "units": "ユニット",
+      "squads": "分隊",
+      "vehicles": "車両",
+      "structureDamage": "建物へのダメージ",
+      "vehiclesAbandoned": "放棄した車両",
+      "buildings": "建物",
+      "unitsProduced": "生産ユニット数",
+      "points": "ポイント",
+      "abilitiesUsed": "使用アビリティ数",
+      "totalCommands": "総コマンド数",
+      "apm": "APM（1 分あたりの操作数）",
+      "upgrades": "アップグレード",
+      "requisition": "徴発",
+      "power": "電力",
+      "commandPointsEarned": "獲得コマンドポイント",
+      "entityReinforcements": "エンティティ増援",
+      "veterancy": "練度",
+      "maxPopulation": "最大人口",
+      "gameTime": "試合時間"
+    },
+    "labels": {
+      "kills": "キル",
+      "deaths": "デス",
+      "kd": "KD",
+      "killed": "撃破",
+      "lost": "損失",
+      "produced": "生産",
+      "captured": "占領",
+      "recaptured": "奪還",
+      "earned": "獲得",
+      "spent": "消費",
+      "max": "最大",
+      "squadXp": "分隊 XP",
+      "squadRank": "分隊ランク",
+      "vehicleRank": "車両ランク"
+    }
+  },
+  "counters": {
+    "widget": {
+      "title": "平均カウンター",
+      "helperText": "選択したゲームモードにおける全陣営の平均カウンター統計です。\n\nK - 撃破\nL - 損失\nP - 生産",
+      "unitsKD": "ユニット K / D / KD",
+      "unitsKDTooltip": "キル / デス / キルデス比",
+      "squadsKLP": "分隊 K / L / P",
+      "squadsKLPTooltip": "撃破 / 損失 / 生産",
+      "vehiclesKLP": "車両 K / L / P",
+      "vehiclesKLPTooltip": "撃破 / 損失 / 生産",
+      "apm": "APM",
+      "apmTooltip": "1 分あたりの操作数",
+      "totalMatches": "総試合数",
+      "noData": "このゲームモードのカウンターデータはありません"
+    }
+  }
+}

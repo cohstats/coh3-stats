@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "COH3 マップ一覧表 - 全マップデータを比較",
+    "description": "Company of Heroes 3 の全マルチプレイマップを並べ替え可能な一つの表に。資源ポイント数、燃料・弾薬・人員の毎分最大収入、マップサイズ、コミュニティマップ。",
+    "keywords": [
+      "coh3 マップ一覧表",
+      "company of heroes 3 マップデータ",
+      "coh3 マップ 収入",
+      "coh3 燃料ポイント",
+      "coh3 マップサイズ",
+      "マップ比較",
+      "マップ一覧"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 マップ一覧表",
+    "subtitle": "すべてのマップデータを並べ替え可能な一つの表に - 資源ポイント、毎分の収入、マップサイズ。",
+    "noMaps": "選択したフィルターに一致するマップはありません。"
+  },
+  "filters": {
+    "income": "収入",
+    "incomeTotal": "合計",
+    "incomePerSide": "片側",
+    "incomeTooltip": "収入の列にマップ全体の収入を表示するか、片側の推定収入（合計の半分）を表示するかを切り替えます。"
+  },
+  "groups": {
+    "map": "マップ",
+    "points": "資源ポイント",
+    "income": "収入 / 分",
+    "size": "サイズ"
+  },
+  "columns": {
+    "name": "名前",
+    "mode": "モード",
+    "victory": "VP",
+    "fuel": "燃料",
+    "munitions": "弾薬",
+    "strategic": "人員",
+    "capturable": "合計",
+    "mapSize": "マップ",
+    "playableArea": "戦闘範囲"
+  },
+  "tooltips": {
+    "victory": "勝利ポイントの数",
+    "fuel": "燃料ポイントの数",
+    "munitions": "弾薬ポイントの数",
+    "strategic": "人員（戦略）ポイントの数",
+    "capturable": "プレイヤーが占領できるポイントの合計数 - プレイヤーの開始地点は含みません",
+    "incomeFuel": "マップを完全に支配した場合の毎分の燃料",
+    "incomeMunitions": "マップを完全に支配した場合の毎分の弾薬",
+    "incomeManpower": "マップを完全に支配した場合の毎分の人員",
+    "incomePerSideNote": "片側の値は合計の半分です。マップはほぼ左右対称ですが、中央のポイントは分け合うのではなく奪い合いになるため、推定値としてご覧ください。",
+    "mapSize": "ワールド単位でのマップサイズ（幅 × 高さ）",
+    "playableArea": "占領ポイントを囲む範囲 - マップ上で戦闘が行われる部分",
+    "mapIdVersion": "ゲームファイルで使用されるマップ ID - シナリオバージョン {{version}}"
+  },
+  "details": {
+    "button": "詳細",
+    "tooltip": "{{name}} の詳細ページを開く"
+  }
+}

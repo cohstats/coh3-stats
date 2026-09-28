@@ -1,0 +1,96 @@
+{
+  "faction": {
+    "switchTooltip": "{{faction}}に切り替え"
+  },
+  "mainMenu": {
+    "leaderboards": "リーダーボード",
+    "regularLeaderboards": "通常リーダーボード",
+    "teamLeaderboards": "チームリーダーボード",
+    "statistics": "統計",
+    "statsMenu": {
+      "games": "ゲーム統計",
+      "maps": "マップ統計",
+      "players": "プレイヤー統計",
+      "leaderboards": "リーダーボード統計",
+      "battlegroups": "バトルグループ統計",
+      "achievements": "実績統計"
+    },
+    "explorer": "エクスプローラー",
+    "explMenu": {
+      "buildings": "建物",
+      "units": "ユニット",
+      "dpsCalculator": "DPS - ユニット比較",
+      "unitBrowser": "ユニットブラウザー",
+      "challenges": "チャレンジ",
+      "weapons": "武器",
+      "maps": "マップ",
+      "mapsTable": "マップ一覧表",
+      "tools": "ツール",
+      "finalStand": "Final Stand",
+      "fsTech": "FS テクノロジー",
+      "fsPerks": "FS パーク",
+      "fsUnits": "FS ユニット"
+    },
+    "liveGames": "ライブゲーム",
+    "desktopApp": "デスクトップアプリ",
+    "other": "その他",
+    "otherMenu": {
+      "tiers": "ランクティア",
+      "openData": "オープンデータ",
+      "coh3News": "COH3 ニュース",
+      "playerExport": "プレイヤーエクスポート API"
+    },
+    "about": "このサイトについて",
+    "supportUs": "支援する"
+  },
+  "header": {
+    "playerInGames": "プレイ中のプレイヤー",
+    "onlinePlayersTooltip": "{{date}} 時点の Company of Heroes 3 のオンラインプレイヤー数"
+  },
+  "footer": {
+    "gamePatch": "ゲームパッチ",
+    "gamePatchInfo": "このサイトに表示されているデータのゲームパッチ:",
+    "unofficialSite": "このサイトは Company of Heroes 3 の非公式ファンサイトです。",
+    "visitText1": "Company of Heroes 2 の統計と分析は",
+    "visitText2": "をご覧ください",
+    "trademark": "Company of Heroes は Relic Entertainment の登録商標です。",
+    "assets": "COH の画像およびその他の素材の権利は Relic Entertainment に帰属します。"
+  },
+  "columns": {
+    "rank": "ランク",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "名前",
+    "streak": "連勝/連敗",
+    "ratio": "勝率",
+    "total": "合計",
+    "lastGame": "最終試合",
+    "tier": "ティア",
+    "wins": "勝利",
+    "losses": "敗北"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - ページが見つかりません",
+      "message": "不具合だと思われる場合は、Discord でご報告ください"
+    }
+  },
+  "search": {
+    "playersAndUnits": "プレイヤー、ユニット、マップ"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "enemyBadge": "敵",
+    "unitTooltip": "このユニットは Final Stand DLC（AI との協力プレイ）のものです。通常のスカーミッシュ／マルチプレイでは使用できません。",
+    "weaponTooltip": "この武器は Final Stand DLC（AI との協力プレイ）のものです。通常のスカーミッシュ／マルチプレイでは使用できません。",
+    "enemyTooltip": "これは Final Stand の編成のうち、AI が操作する敵側のものです。プレイヤーが操作する側ではありません。",
+    "showUnits": "Final Stand のユニットを表示",
+    "showUnitsDescription": "Final Stand DLC（AI との協力プレイ）のユニット",
+    "showWeapons": "Final Stand の武器を表示",
+    "filterUnits": "Final Stand のユニットを表示／非表示",
+    "multiplayerUnits": "マルチプレイ用ユニット"
+  },
+  "loading": "読み込み中...",
+  "error": "エラー",
+  "notFound": "見つかりません"
+}

@@ -1,0 +1,313 @@
+{
+  "meta": {
+    "title": "{{name}} - profil gracza COH3",
+    "description": "Profil gracza {{name}} w Company of Heroes 3: {{totalGames}} rozegranych gier i {{winRate}}% wygranych. Szczegółowe statystyki, historia meczów i wyniki frakcji.",
+    "keywords": [
+      "profil gracza",
+      "statystyki gracza",
+      "historia meczów",
+      "wyniki frakcji",
+      "rankingi",
+      "coh3 statystyki gracza",
+      "statystyki gry",
+      "dane gracza"
+    ]
+  },
+  "card": {
+    "error": {
+      "title": "Błąd podczas ładowania karty gracza",
+      "loadingError": "Błąd podczas ładowania karty gracza"
+    },
+    "title": "Karta gracza - {{name}}",
+    "titleWithView": {
+      "recentMatches": "Karta gracza - {{name}} - ostatnie mecze",
+      "standingsDetails": "Karta gracza - {{name}} - szczegółowe statystyki",
+      "activity": "Karta gracza - {{name}} - aktywność",
+      "nemesis": "Karta gracza - {{name}} - nemezis",
+      "teamsStandings": "Karta gracza - {{name}} - drużyny",
+      "teamDetails": "Karta gracza - {{name}} - szczegóły drużyny"
+    }
+  },
+  "tabs": {
+    "standings": "Pozycje gracza",
+    "standingsDetails": "Szczegółowe statystyki",
+    "recentMatches": "Ostatnie mecze",
+    "activity": "Aktywność",
+    "nemesis": "Nemezis",
+    "teamsStandings": "Drużyny"
+  },
+  "playerInfo": {
+    "bestElo": {
+      "allies": "Najlepsze ELO ALIANTÓW {{elo}} w {{mode}} jako {{faction}}",
+      "axis": "Najlepsze ELO OSI {{elo}} w {{mode}} jako {{faction}}"
+    },
+    "stats": {
+      "totalGames": "Łącznie gier: {{count}}",
+      "winRate": "Wygrane: {{rate}}%",
+      "lastMatch": "Ostatni mecz: {{time}}"
+    }
+  },
+  "recentMatches": {
+    "filters": {
+      "hideCustomGames": "Ukryj gry niestandardowe",
+      "showAllGames": "Pokaż wszystkie gry"
+    },
+    "loadMore": "Wczytaj więcej meczów",
+    "table": {
+      "columns": {
+        "date": "Data",
+        "map": "Mapa",
+        "duration": "Czas trwania",
+        "type": "Typ",
+        "players": "Gracze",
+        "actions": "Akcje"
+      },
+      "noData": "Nie znaleziono meczów"
+    },
+    "downloadReplay": {
+      "button": "Pobierz powtórkę",
+      "generating": "Generowanie...",
+      "error": "Błąd podczas generowania powtórki"
+    }
+  },
+  "standings": {
+    "summary": {
+      "charts": {
+        "factionDistribution": "Rozkład frakcji",
+        "gameTypes": "Typy gier",
+        "activityLastMonths": "Aktywność w ostatnich miesiącach"
+      }
+    },
+    "table": {
+      "columns": {
+        "leaderboard": "Ranking",
+        "rank": "Pozycja",
+        "rating": "Ocena",
+        "lastMatch": "Ostatni mecz",
+        "streak": "Seria",
+        "wins": "Wygrane",
+        "losses": "Porażki",
+        "total": "Razem",
+        "winRate": "% wygranych",
+        "type": "Typ",
+        "elo": "ELO",
+        "tier": "Poziom",
+        "ratio": "Stosunek",
+        "drops": "Rozłączenia"
+      },
+      "helpers": {
+        "bestRankAchieved": "Najlepsza osiągnięta pozycja. Im niższa, tym lepiej. Najlepsza pozycja, jaką gracz kiedykolwiek miał.",
+        "bestEloAchieved": "Najlepsze osiągnięte ELO. Im wyższe, tym lepiej. Najlepsze ELO, jakie gracz kiedykolwiek miał.",
+        "best": "Najlepsze"
+      }
+    },
+    "faction": {
+      "bestRank": "Najlepsza pozycja",
+      "bestRating": "Najlepsza ocena",
+      "bestWinRate": "Najlepszy % wygranych"
+    }
+  },
+  "detailedStats": {
+    "filters": {
+      "selectFaction": "Wybierz frakcję",
+      "selectGameType": "Wybierz typ gry"
+    },
+    "charts": {
+      "playTime": "Rozkład czasu gry",
+      "mapsWinRate": "% wygranych na mapach",
+      "factionVsFaction": "Frakcja vs frakcja"
+    },
+    "noData": "Brak szczegółowych statystyk"
+  },
+  "activity": {
+    "title": "Aktywność gracza",
+    "noData": "Brak danych o aktywności",
+    "filters": {
+      "timeRange": "Zakres czasu",
+      "timezone": "Strefa czasowa"
+    },
+    "alerts": {
+      "noData": {
+        "title": "Brak danych o aktywności",
+        "message": "Wygląda na to, że nie otrzymujemy danych o aktywności tego gracza.",
+        "reportMessage": "Jeśli ten błąd będzie się powtarzał, zgłoś go na"
+      },
+      "steamOnly": {
+        "title": "Brak danych COH3 Stats",
+        "message": "Te statystyki są dostępne tylko dla graczy ze Steama.",
+        "voteMessage": "Jeśli chcesz mieć te statystyki także na konsolach, zagłosuj / zgłoś to na naszym"
+      }
+    },
+    "charts": {
+      "calendarDay": {
+        "title": "Aktywność według dni kalendarza"
+      },
+      "hourOfDay": {
+        "title": "Aktywność według godzin"
+      },
+      "weekDay": {
+        "title": "Aktywność według dni tygodnia"
+      }
+    },
+    "timezoneHelper": "Dane o godzinach aktywności są zbierane w strefie UTC. Za pomocą tego selektora możesz zmienić wyświetlanie na swoją lokalną strefę czasową."
+  },
+  "teamsStandings": {
+    "title": "Pozycje ustalonych drużyn",
+    "noData": "Brak danych o drużynach tego gracza",
+    "errorTitle": "Błąd podczas ładowania danych drużyn",
+    "axisTeams": "Oś",
+    "alliesTeams": "Alianci",
+    "axisTeam": "Drużyna Osi",
+    "alliesTeam": "Drużyna aliantów",
+    "mostPlayed": "Najczęściej grające drużyny",
+    "mostRecent": "Ostatnie drużyny",
+    "checkTeamDetails": "Historię meczów i zmian ELO znajdziesz w szczegółach drużyny",
+    "checkTeamLeaderboardsPrefix": "Sprawdź",
+    "checkTeamLeaderboardsSuffix": "i znajdź swoją pozycję",
+    "limitedTeams": "Ograniczone tylko do 2 drużyn",
+    "helperText": "Ustalone drużyny są śledzone wyłącznie przez COH3 Stats, więcej informacji na stronie O stronie"
+  },
+  "teamDetails": {
+    "title": "Szczegóły drużyny",
+    "specificTeamTitle": "Szczegóły drużyny",
+    "matchHistory": "Historia meczów",
+    "eloHistory": "Historia ELO drużyny",
+    "winLossHistory": "Historia wygranych/porażek",
+    "teamNotFound": "Nie znaleziono drużyny. Sprawdź ID drużyny i spróbuj ponownie.",
+    "detailsButton": "Szczegóły",
+    "showingMatches": "Wyświetlono {{loaded}} z {{total}} meczów",
+    "errorLoadingMatches": "Błąd podczas ładowania meczów: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "Typ",
+      "players": "Gracze",
+      "elo": "ELO",
+      "streak": "Seria",
+      "wins": "Wygrane",
+      "losses": "Porażki",
+      "ratio": "Stosunek",
+      "total": "Razem",
+      "lastMatch": "Ostatni mecz"
+    },
+    "noData": "Brak danych o drużynach",
+    "eloHelper": "Nieoficjalne ELO śledzone wyłącznie przez COH3 Stats, więcej informacji na stronie O stronie",
+    "bestElo": "Najlepsze {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "Rozegrano",
+      "result": "Wynik",
+      "enemyElo": "ELO wroga",
+      "axisPlayers": "Gracze Osi",
+      "alliesPlayers": "Gracze aliantów",
+      "map": "Mapa"
+    },
+    "noData": "Brak historii meczów",
+    "showFlags": "Pokaż flagi graczy",
+    "clickForDetails": "Kliknij wiersz, aby zobaczyć szczegóły",
+    "detailsButton": "Szczegóły",
+    "teamEloHelper": "Tu widać zmianę ELO DRUŻYNY śledzoną przez COH3 Stats - to inne ELO niż ELO z pozycji gracza. ELO COH3 Stats nie jest używane do dobierania przeciwników.",
+    "playerEloHelper": "Pokazane tu ELO to indywidualne ELO gracza w danym trybie i frakcji."
+  },
+  "nemesis": {
+    "widget": {
+      "title": "Top 10 - nemezis 1v1",
+      "helperText": "Licznik nemezis musi zostać „uruchomiony” przez zagranie z tym samym graczem 2 razy w ciągu 1 dnia (strefa UTC). Po uruchomieniu liczone są wszystkie gry 1v1 z tym graczem. Pseudonimy są zapisywane z ostatniej gry z tym graczem. Śledzeni są tylko gracze ze Steama.",
+      "noRecords": "Brak śledzonych nemezis 1v1"
+    },
+    "columns": {
+      "alias": "Pseudonim",
+      "wins": "Wygrane",
+      "losses": "Porażki",
+      "ratio": "Stosunek",
+      "diff": "Różnica",
+      "total": "Razem"
+    },
+    "title": "Nemezis 1v1",
+    "noNemesis": "Brak nemezis 1v1",
+    "wins": "Wygrane",
+    "losses": "Porażki",
+    "rules": {
+      "trigger": "Licznik nemezis musi zostać „uruchomiony”",
+      "triggerCondition": "Uruchamia się po zagraniu z tym samym graczem 2 razy w ciągu 1 dnia (UTC).",
+      "aliases": "Pseudonimy są zapisywane z ostatniej gry z tym graczem",
+      "counting": "Po uruchomieniu liczone są wszystkie gry 1v1 z tym graczem.",
+      "updateTime": "Dane są aktualizowane raz dziennie o 6:00 UTC.",
+      "steamOnly": "Śledzeni są tylko gracze ze Steama."
+    },
+    "alerts": {
+      "steamOnly": {
+        "title": "Brak danych COH3 Stats",
+        "message": "Te statystyki są dostępne tylko dla graczy ze Steama.",
+        "voteMessage": "Jeśli chcesz mieć te statystyki także na konsolach, zagłosuj / zgłoś to na naszym"
+      }
+    }
+  },
+  "counterStatistics": {
+    "title": "Statystyki liczników",
+    "totalMatches": "Łącznie meczów: {{count}}",
+    "total": "Razem",
+    "average": "Średnio (na mecz)",
+    "categories": {
+      "combat": "Walka",
+      "productionBuildings": "Produkcja i budynki",
+      "abilitiesCommands": "Umiejętności i komendy",
+      "other": "Inne"
+    },
+    "stats": {
+      "damageData": "Zadane obrażenia",
+      "units": "Jednostki",
+      "squads": "Oddziały",
+      "vehicles": "Pojazdy",
+      "structureDamage": "Obrażenia budowli",
+      "vehiclesAbandoned": "Porzucone pojazdy",
+      "buildings": "Budynki",
+      "unitsProduced": "Wyprodukowane jednostki",
+      "points": "Punkty",
+      "abilitiesUsed": "Użyte umiejętności",
+      "totalCommands": "Łącznie komend",
+      "apm": "APM (akcje na minutę)",
+      "upgrades": "Ulepszenia",
+      "requisition": "Rekwizycja",
+      "power": "Energia",
+      "commandPointsEarned": "Zdobyte punkty dowodzenia",
+      "entityReinforcements": "Uzupełnienia żołnierzy",
+      "veterancy": "Doświadczenie",
+      "maxPopulation": "Maks. populacja",
+      "gameTime": "Czas gry"
+    },
+    "labels": {
+      "kills": "Zabójstwa",
+      "deaths": "Śmierci",
+      "kd": "KD",
+      "killed": "Zniszczone",
+      "lost": "Stracone",
+      "produced": "Wyprodukowane",
+      "captured": "Przejęte",
+      "recaptured": "Odbite",
+      "earned": "Zdobyte",
+      "spent": "Wydane",
+      "max": "Maks.",
+      "squadXp": "XP oddziału",
+      "squadRank": "Ranga oddziału",
+      "vehicleRank": "Ranga pojazdu"
+    }
+  },
+  "counters": {
+    "widget": {
+      "title": "Średnie liczniki",
+      "helperText": "Średnie statystyki liczników ze wszystkich frakcji dla wybranego trybu gry.\n\nZ - zniszczone\nS - stracone\nW - wyprodukowane",
+      "unitsKD": "Jednostki Z / Ś / KD",
+      "unitsKDTooltip": "Zabójstwa / śmierci / stosunek zabójstw do śmierci",
+      "squadsKLP": "Oddziały Z / S / W",
+      "squadsKLPTooltip": "Zniszczone / stracone / wyprodukowane",
+      "vehiclesKLP": "Pojazdy Z / S / W",
+      "vehiclesKLPTooltip": "Zniszczone / stracone / wyprodukowane",
+      "apm": "APM",
+      "apmTooltip": "Akcje na minutę",
+      "totalMatches": "Łącznie meczów",
+      "noData": "Brak danych liczników dla tego trybu gry"
+    }
+  }
+}

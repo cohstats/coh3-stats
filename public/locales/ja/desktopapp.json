@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Grenadier - COH3 コンパニオン",
+    "description": "Grenadier - COH3 Stats デスクトップアプリ {{version}} をダウンロード。設定不要。OBS オーバーレイ機能。対戦相手の詳細情報。新しい試合のサウンド通知など。",
+    "keywords": [
+      "grenadier",
+      "coh3 コンパニオン",
+      "coh3 デスクトップアプリ",
+      "obs オーバーレイ",
+      "リアルタイム 試合情報",
+      "デスクトップアプリケーション",
+      "ゲーム オーバーレイ",
+      "試合分析",
+      "プレイヤー統計",
+      "ライブゲームデータ"
+    ]
+  },
+  "download": {
+    "button": "無料ダウンロード {{version}}",
+    "buttonAriaLabel": "Grenadier - COH3 Stats デスクトップアプリ {{version}} の Windows 用インストーラーをダウンロード",
+    "downloads": "{{count}} ダウンロード",
+    "totalDownloads": "累計 {{count}} ダウンロード",
+    "releaseNotes": "リリースノート",
+    "microsoftStore": "Microsoft Store で入手",
+    "microsoftStoreAriaLabel": "Grenadier - COH3 コンパニオンを Microsoft Store で入手",
+    "or": "または"
+  },
+  "title": "Grenadier - COH3 コンパニオン",
+  "subtitle": "COH3 Stats デスクトップアプリ - 現在の試合の情報をさらに入手しましょう！",
+  "comparison": {
+    "title": "バージョンを選択",
+    "featureColumn": "機能",
+    "recommended": "おすすめ",
+    "free": {
+      "title": "無料ダウンロード",
+      "subtitle": "直接ダウンロード、認証済みアプリではありません"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Microsoft 認証済み、永続ライセンス",
+      "supportNote": "ご購入で開発を応援してください！ ❤"
+    }
+  },
+  "features": {
+    "title": "機能",
+    "list": {
+      "noSetup": {
+        "label": "設定不要",
+        "description": "アプリを起動するだけで簡単に使えます"
+      },
+      "leaderboard": {
+        "label": "ELO、ランク、勝率",
+        "description": "試合中の全プレイヤーについて表示"
+      },
+      "teams": {
+        "label": "固定チームの検出",
+        "description": "対戦相手が事前に組んだチームでマッチングしたかを確認"
+      },
+      "recentGames": {
+        "label": "最近の試合",
+        "description": "アプリ内で試合履歴を確認"
+      },
+      "leaderboards": {
+        "label": "リーダーボード",
+        "description": "アプリ内で直接リーダーボードを確認"
+      },
+      "notifications": {
+        "label": "サウンド通知",
+        "description": "試合が始まった瞬間にお知らせ"
+      },
+      "muteOnFocusLoss": {
+        "label": "自動ミュート",
+        "description": "ウィンドウのフォーカスが外れるとゲームを消音"
+      },
+      "streaming": {
+        "label": "配信者向けオーバーレイ",
+        "before": "対応：",
+        "and": "、",
+        "after": "などの配信ツール"
+      },
+      "friendsGroup": {
+        "label": "フレンドグループの検出",
+        "description": "一緒にプレイしているプレイヤーを確認"
+      },
+      "loadingOverlay": {
+        "label": "ロード画面オーバーレイ",
+        "description": "試合開始前に対戦相手の情報を表示"
+      }
+    }
+  }
+}

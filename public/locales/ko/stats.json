@@ -1,0 +1,70 @@
+{
+  "leaderboards": {
+    "meta": {
+      "title": "전체 순위표 통계",
+      "description": "Company of Heroes 3 모든 순위표에 대한 종합 정보",
+      "keywords": [
+        "coh3 순위표",
+        "실시간 래더",
+        "전체 순위표",
+        "coh3 래더 통계",
+        "순위표 통계",
+        "랭킹 데이터"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "게임 통계 및 차트",
+      "description": "Company of Heroes 3 게임 통계. 진영 및 모드별 승률 등 다양한 정보를 확인하세요.",
+      "keywords": ["coh3 승률", "진영 승률", "분석", "최고의 진영", "게임 통계"]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "맵 통계",
+      "description": "승률, 인기도, 성과 데이터를 포함한 Company of Heroes 3 종합 맵 통계.",
+      "keywords": ["coh3 맵", "맵 통계", "맵 승률", "맵 데이터", "전장 분석"]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "도전 과제 통계",
+      "description": "전체 플레이어 기준 Company of Heroes 3 도전 과제 통계 및 달성률.",
+      "keywords": [
+        "coh3 도전 과제",
+        "도전 과제 통계",
+        "달성률",
+        "플레이어 도전 과제",
+        "게임 진행도"
+      ]
+    }
+  },
+  "players": {
+    "meta": {
+      "title": "멀티플레이 플레이어 통계 - Company of Heroes 3",
+      "description": "Company of Heroes 3의 모든 멀티플레이 플레이어에 대한 종합 정보.\n현재 멀티플레이 플레이어 {{count, number}}명을 추적하고 있습니다.",
+      "keywords": [
+        "coh3 플레이어 통계",
+        "플레이어 통계",
+        "플레이어 국가",
+        "coh3 플레이어 기록",
+        "멀티플레이 통계",
+        "플레이어 추적",
+        "게임 통계",
+        "플레이어 데이터"
+      ]
+    },
+    "title": "PC 플레이어 통계",
+    "totalTrackedPlayers": "추적 중인 총 플레이어 수",
+    "totalTrackedPlayersTooltip": "2023년 5월 19일 이후 어떤 게임 모드에서든 멀티플레이를 한 번 이상 플레이한 플레이어만 추적할 수 있습니다.",
+    "multiplayerPlayersLast30Days": "최근 30일간 멀티플레이 플레이어",
+    "multiplayerPlayersLast7Days": "최근 7일간 멀티플레이 플레이어",
+    "multiplayerPlayersLast24Hours": "최근 24시간 멀티플레이 플레이어",
+    "dataUpdatedOn": "데이터 갱신 시각:",
+    "xboxPsNote": "Xbox 및 PS 플레이어는 여기서 추적하지 않습니다."
+  },
+  "errors": {
+    "gettingPlayerStats": "플레이어 통계를 불러오는 중 오류가 발생했습니다"
+  }
+}

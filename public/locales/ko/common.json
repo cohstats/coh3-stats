@@ -1,0 +1,96 @@
+{
+  "faction": {
+    "switchTooltip": "{{faction}}(으)로 전환"
+  },
+  "mainMenu": {
+    "leaderboards": "순위표",
+    "regularLeaderboards": "일반 순위표",
+    "teamLeaderboards": "팀 순위표",
+    "statistics": "통계",
+    "statsMenu": {
+      "games": "게임 통계",
+      "maps": "맵 통계",
+      "players": "플레이어 통계",
+      "leaderboards": "순위표 통계",
+      "battlegroups": "전투단 통계",
+      "achievements": "도전 과제 통계"
+    },
+    "explorer": "탐색기",
+    "explMenu": {
+      "buildings": "건물",
+      "units": "유닛",
+      "dpsCalculator": "DPS - 유닛 비교",
+      "unitBrowser": "유닛 브라우저",
+      "challenges": "도전",
+      "weapons": "무기",
+      "maps": "맵",
+      "mapsTable": "맵 표",
+      "tools": "도구",
+      "finalStand": "Final Stand",
+      "fsTech": "FS 기술",
+      "fsPerks": "FS 특전",
+      "fsUnits": "FS 유닛"
+    },
+    "liveGames": "진행 중인 게임",
+    "desktopApp": "데스크톱 앱",
+    "other": "기타",
+    "otherMenu": {
+      "tiers": "랭킹 티어",
+      "openData": "오픈 데이터",
+      "coh3News": "COH3 뉴스",
+      "playerExport": "플레이어 내보내기 API"
+    },
+    "about": "소개",
+    "supportUs": "후원하기"
+  },
+  "header": {
+    "playerInGames": "게임 중인 플레이어",
+    "onlinePlayersTooltip": "{{date}} 기준 Company of Heroes 3 온라인 플레이어 수"
+  },
+  "footer": {
+    "gamePatch": "게임 패치",
+    "gamePatchInfo": "이 사이트에 표시되는 데이터의 게임 패치 버전:",
+    "unofficialSite": "이 사이트는 Company of Heroes 3의 비공식 팬 사이트입니다.",
+    "visitText1": "Company of Heroes 2 통계 및 분석:",
+    "visitText2": "방문하기",
+    "trademark": "Company of Heroes는 Relic Entertainment의 등록 상표입니다.",
+    "assets": "COH 이미지 및 기타 에셋의 소유권은 Relic Entertainment에 있습니다."
+  },
+  "columns": {
+    "rank": "순위",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "닉네임",
+    "streak": "연속",
+    "ratio": "승률",
+    "total": "합계",
+    "lastGame": "최근 게임",
+    "tier": "티어",
+    "wins": "승",
+    "losses": "패"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - 페이지를 찾을 수 없음",
+      "message": "버그라고 생각되시면 Discord에 제보해 주세요"
+    }
+  },
+  "search": {
+    "playersAndUnits": "플레이어, 유닛 및 맵"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "enemyBadge": "적",
+    "unitTooltip": "이 유닛은 Final Stand DLC(AI 상대 협동전)의 유닛입니다. 일반 전투/멀티플레이 게임에서는 사용할 수 없습니다.",
+    "weaponTooltip": "이 무기는 Final Stand DLC(AI 상대 협동전)의 무기입니다. 일반 전투/멀티플레이 게임에서는 사용할 수 없습니다.",
+    "enemyTooltip": "Final Stand 편성 중 AI가 조종하는 적 진영이며, 플레이어가 플레이하는 진영이 아닙니다.",
+    "showUnits": "Final Stand 유닛 표시",
+    "showUnitsDescription": "Final Stand DLC(AI 상대 협동전)의 유닛",
+    "showWeapons": "Final Stand 무기 표시",
+    "filterUnits": "Final Stand 유닛 표시/숨기기",
+    "multiplayerUnits": "멀티플레이 유닛"
+  },
+  "loading": "불러오는 중...",
+  "error": "오류",
+  "notFound": "찾을 수 없음"
+}

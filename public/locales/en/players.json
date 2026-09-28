@@ -207,13 +207,13 @@
     "showFlags": "Show Player Flags",
     "clickForDetails": "Click on the row for more details",
     "detailsButton": "Details",
-    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO then player standings ELO. COH3 Stats ELO is not used for matchmaking.",
-    "playerEloHelper": "The ELO showned here is the individual player standing ELO in the particular mode and faction."
+    "teamEloHelper": "This shows TEAM ELO change tracked by COH3 Stats, this is different ELO than player standings ELO. COH3 Stats ELO is not used for matchmaking.",
+    "playerEloHelper": "The ELO shown here is the individual player standing ELO in the particular mode and faction."
   },
   "nemesis": {
     "widget": {
       "title": "Top 10 - 1v1 Nemesis",
-      "helperText": "Nemesis counter has be to 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
+      "helperText": "Nemesis counter has to be 'triggered' by playing the same player 2 times in 1 day (UTC timezone). After the trigger, all 1v1 games with that player are counted. Aliases are saved from the last game played with that player. Only Steam players are tracked.",
       "noRecords": "No 1v1 nemesis tracked"
     },
     "columns": {
@@ -229,7 +229,7 @@
     "wins": "Wins",
     "losses": "Losses",
     "rules": {
-      "trigger": "Nemesis counter has be to 'triggered'",
+      "trigger": "Nemesis counter has to be 'triggered'",
       "triggerCondition": "Trigger by playing with the same player 2 times in 1 day (UTC).",
       "aliases": "Aliases are saved from the last game played with that player",
       "counting": "After the trigger, all 1v1 games with that player are counted.",

@@ -1,0 +1,21 @@
+{
+  "title": "Paliers de classement dans Company of Heroes 3",
+  "description": "En fonction de leur ELO, les joueurs sont placés dans des ligues et des paliers spécifiques.",
+  "matchRequirement": "Un joueur doit disputer au moins 10 parties avec chaque faction dans un type de partie donné pour obtenir un rang et être placé dans un palier.",
+  "rankDecay": {
+    "title": "Perte de rang",
+    "text": "Si un joueur reste inactif pendant une longue période, il perd son rang. Il peut cependant le récupérer en jouant une seule partie."
+  },
+  "eloDecay": {
+    "title": "Baisse de l'ELO",
+    "text": "L'ELO peut aussi baisser : si un joueur ne joue pas pendant une longue période, son ELO peut diminuer sans qu'il ait joué la moindre partie."
+  },
+  "table": {
+    "columns": {
+      "tierName": "Nom du palier",
+      "eloRating": "Classement ELO",
+      "rank": "Rang"
+    },
+    "topPlayers": "Top {{count}} joueurs"
+  }
+}

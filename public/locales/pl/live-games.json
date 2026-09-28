@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Gry na żywo - Company of Heroes 3",
+    "description": "Aktualnie trwające gry w Company of Heroes 3",
+    "keywords": [
+      "coh3 gry na żywo",
+      "coh3 mecze w czasie rzeczywistym",
+      "coh3 gry",
+      "coh3 trwające mecze"
+    ]
+  },
+  "pageTitle": "Gry na żywo (PC)",
+  "filters": {
+    "liveGames": {
+      "label": "Gry na żywo",
+      "options": {
+        "1v1": "Automatch 1 vs 1",
+        "2v2": "Automatch 2 vs 2",
+        "3v3": "Automatch 3 vs 3",
+        "4v4": "Automatch 4 vs 4",
+        "ai": "Automatch przeciwko SI",
+        "custom": "Gry niestandardowe"
+      }
+    },
+    "sortBy": {
+      "label": "Sortuj według",
+      "options": {
+        "rank": "Pozycja",
+        "observers": "Obserwujący",
+        "startgametime": "Czas rozpoczęcia"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "Podsumowanie gier na żywo",
+    "tooltip": "Aktualnie trwające gry wieloosobowe. Łączna liczba graczy obejmuje unikalnych graczy. Pamiętaj, że wielu graczy jest pewnie w lobby, szuka gry, ładuje się lub robi coś innego. Gier niestandardowych domyślnie nie można obserwować, więc najpewniej toczy się ich znacznie więcej. Dane są aktualizowane co 5 minut.",
+    "noGames": {
+      "title": "Nie wykryto gier na żywo",
+      "message": "COH3 Stats może wymagać aktualizacji po niedawnym patchu gry."
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs SI",
+      "custom": "Niestandardowe"
+    },
+    "totals": {
+      "automatch": "Łącznie w automatchu",
+      "anyGame": "Łącznie we wszystkich grach"
+    },
+    "games": "gier"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "Tryb",
+      "axisPlayers": "Gracze Osi",
+      "alliesPlayers": "Gracze aliantów",
+      "map": "Mapa",
+      "observers": "Obserwujący",
+      "gameTime": "Czas gry",
+      "server": "Serwer"
+    },
+    "switches": {
+      "showFlags": "Pokaż flagi graczy",
+      "showServer": "Pokaż serwer meczu"
+    },
+    "errors": {
+      "title": "Błąd podczas pobierania gier na żywo",
+      "summaryTitle": "Błąd podczas pobierania podsumowania gier na żywo"
+    },
+    "dataUpdated": "Dane zaktualizowano: {{time}}"
+  }
+}

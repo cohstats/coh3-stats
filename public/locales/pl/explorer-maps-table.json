@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Tabela map COH3 - porównanie danych wszystkich map",
+    "description": "Wszystkie mapy multiplayer Company of Heroes 3 w jednej tabeli - liczba punktów zasobów, maks. przychód paliwa, amunicji i siły roboczej na minutę, rozmiary map.",
+    "keywords": [
+      "coh3 tabela map",
+      "company of heroes 3 dane map",
+      "coh3 przychód mapy",
+      "coh3 punkty paliwa",
+      "coh3 rozmiar mapy",
+      "porównanie map",
+      "lista map"
+    ]
+  },
+  "page": {
+    "title": "Tabela map Company of Heroes 3",
+    "subtitle": "Wszystkie dane map w jednej sortowalnej tabeli - punkty zasobów, przychód na minutę i rozmiary map.",
+    "noMaps": "Żadna mapa nie pasuje do wybranych filtrów."
+  },
+  "filters": {
+    "income": "Przychód",
+    "incomeTotal": "Łącznie",
+    "incomePerSide": "Na stronę",
+    "incomeTooltip": "Czy kolumny przychodu pokazują przychód z całej mapy, czy szacowany przychód jednej strony (połowę całości)."
+  },
+  "groups": {
+    "map": "Mapa",
+    "points": "Punkty zasobów",
+    "income": "Przychód / min",
+    "size": "Rozmiar"
+  },
+  "columns": {
+    "name": "Nazwa",
+    "mode": "Tryb",
+    "victory": "PZ",
+    "fuel": "Paliwo",
+    "munitions": "Amun.",
+    "strategic": "SR",
+    "capturable": "Razem",
+    "mapSize": "Mapa",
+    "playableArea": "Pole gry"
+  },
+  "tooltips": {
+    "victory": "Liczba punktów zwycięstwa",
+    "fuel": "Liczba punktów paliwa",
+    "munitions": "Liczba punktów amunicji",
+    "strategic": "Liczba punktów siły roboczej (strategicznych)",
+    "capturable": "Łączna liczba punktów, które gracze mogą przejąć - pozycje startowe graczy nie są wliczane",
+    "incomeFuel": "Paliwo na minutę przy pełnej kontroli mapy",
+    "incomeMunitions": "Amunicja na minutę przy pełnej kontroli mapy",
+    "incomeManpower": "Siła robocza na minutę przy pełnej kontroli mapy",
+    "incomePerSideNote": "Wartość na stronę to połowa całości - mapy są prawie symetryczne, ale o punkty na środku się walczy, a nie dzieli je po równo, więc traktuj to jako szacunek.",
+    "mapSize": "Rozmiar mapy w jednostkach świata gry (szerokość × wysokość)",
+    "playableArea": "Obszar wyznaczony przez punkty do przejęcia - część mapy, na której toczy się walka",
+    "mapIdVersion": "ID mapy używane w plikach gry - wersja scenariusza {{version}}"
+  },
+  "details": {
+    "button": "Szczegóły",
+    "tooltip": "Otwórz stronę szczegółów mapy {{name}}"
+  }
+}

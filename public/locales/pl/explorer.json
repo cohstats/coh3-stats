@@ -1,0 +1,304 @@
+{
+  "meta": {
+    "title": "Eksplorator COH3 - frakcje, jednostki i budynki",
+    "description": "Poznaj frakcje, jednostki, budynki i grupy bojowe Company of Heroes 3. Szczegółowe statystyki, koszty i obrażenia dla całej zawartości gry.",
+    "keywords": [
+      "coh3 eksplorator",
+      "frakcje",
+      "jednostki",
+      "budynki",
+      "grupy bojowe",
+      "wehrmacht",
+      "siły usa",
+      "dak",
+      "siły brytyjskie",
+      "statystyki jednostek",
+      "obrażenia",
+      "koszty"
+    ]
+  },
+  "common": {
+    "units": "Jednostki",
+    "buildings": "Budynki",
+    "battleGroups": "Grupy bojowe",
+    "near": "Blisko",
+    "medium": "Średnio",
+    "mid": "Średnio",
+    "far": "Daleko",
+    "light": "Lekka",
+    "heavy": "Ciężka",
+    "garrison": "Garnizon",
+    "min": "Min.",
+    "max": "Maks.",
+    "produces": "Produkuje",
+    "hitpoints": "Punkty życia",
+    "upgrades": "Ulepszenia",
+    "costs": "Koszty",
+    "explorer": "Eksplorator"
+  },
+  "explorer": {
+    "title": "Eksplorator frakcji Company of Heroes 3",
+    "subtitle": "Poznaj wszystkie jednostki, budynki i grupy bojowe w grze.",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Zawartość z DLC Final Stand (co-op przeciwko SI) - niedostępna w standardowej potyczce / grze wieloosobowej.",
+      "perksHeading": "Perki",
+      "unitsHeading": "Jednostki",
+      "perksCardTitle": "Perki - {{faction}}",
+      "unitsCardTitle": "Jednostki - {{faction}}",
+      "techHeading": "Technologie",
+      "techCardTitle": "Technologie - {{faction}}"
+    }
+  },
+  "factionPage": {
+    "factionOverview": "Przegląd frakcji",
+    "meta": {
+      "title": "{{faction}} - Eksplorator COH3",
+      "description": "Poznaj frakcję {{faction}} w Company of Heroes 3. Jednostki, budynki, grupy bojowe i szczegółowe statystyki armii {{faction}}.",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} eksplorator",
+        "{{faction}} grupy bojowe",
+        "{{faction}} jednostki"
+      ]
+    }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "Jednostki Final Stand - {{faction}}",
+      "description": "Jednostki Final Stand frakcji {{faction}} - skład z DLC co-op przeciwko SI w Company of Heroes 3. Niedostępne w standardowej potyczce / grze wieloosobowej.",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand lista jednostek {{faction}}",
+        "coh3 final stand dlc",
+        "hold off jednostki co-op"
+      ]
+    },
+    "title": "Jednostki Final Stand",
+    "description": "Jednostki dostępne wyłącznie w DLC Final Stand (co-op przeciwko SI) - niedostępne w standardowej potyczce / grze wieloosobowej.",
+    "searchPlaceholder": "Szukaj jednostek",
+    "categories": {
+      "infantry": "Piechota",
+      "teamWeapons": "Broń zespołowa",
+      "vehicles": "Pojazdy",
+      "emplacements": "Stanowiska"
+    },
+    "empty": "Nie znaleziono jednostek Final Stand dla frakcji {{faction}}."
+  },
+  "unitPage": {
+    "stats": "Statystyki",
+    "abilities": "Umiejętności",
+    "loadout": "Wyposażenie",
+    "veterancy": "Doświadczenie",
+    "upkeep": "Utrzymanie na minutę",
+    "reinforce": "Uzupełnienie",
+    "construct": "Może budować",
+    "free": "Darmowe",
+    "weaponNote": "Na efektywną celność wpływa kilka czynników, np. rozmiar celu czy pancerz jednostki przyjmującej ostrzał, a także celność lub przebicie jednostki atakującej.",
+    "importantNote": "Ta sekcja może zawierać jednostki, które nie są dostępne w standardowej potyczce / grze wieloosobowej.",
+    "upgradeWeapons": "Broń dostępna po ulepszeniu",
+    "abilityWeapons": "Broń umiejętności",
+    "openInDpsTool": "Otwórz w narzędziu DPS",
+    "abilityInfoRange": "Zasięg",
+    "abilityInfoShots": "Strzały",
+    "abilityInfoDuration": "Czas trwania",
+    "abilityInfoCooldown": "Odnowienie",
+    "abilityInfoToggleCooldown": "Przełączenie",
+    "abilityInfoToggleOnCooldown": "Włączenie",
+    "abilityInfoToggleOffCooldown": "Wyłączenie",
+    "requirements": "Wymaga",
+    "requiresVeterancy": "Wet. {{rank}}"
+  },
+  "statsCard": {
+    "sightRange": "Zasięg wzroku",
+    "detection": "Wykrywanie",
+    "speed": "Prędkość",
+    "acceleration": "Przyspieszenie",
+    "deceleration": "Hamowanie",
+    "rotation": "Obrót",
+    "maxRange": "Maks. zasięg",
+    "targetSize": "Rozmiar celu",
+    "armor": "Pancerz",
+    "captureMultiplier": "Mnożnik przejmowania",
+    "decaptureMultiplier": "Mnożnik neutralizacji",
+    "vehicleArmor": "Pancerz pojazdu",
+    "vehicleArmorHint": "Odnosi się do wewnętrznego blueprintu krytycznych trafień pancerza w grze."
+  },
+  "weaponCard": {
+    "accuracy": "Celność",
+    "accuracyTooltip": "Szansa na pewne trafienie; w razie niepowodzenia pocisk ulega rozrzutowi. Mnożona przez \"rozmiar celu\".",
+    "arc": "Kąt ostrzału",
+    "arcTooltip": "Poziomy kąt ostrzału broni, zanim jednostka musi się obrócić, zmienić pozycję lub ponownie rozstawić",
+    "burstDuration": "Czas serii",
+    "burstDurationTooltip": "Średni czas oddawania jednej serii",
+    "cooldown": "Odnowienie",
+    "rpm": "Strzały na minutę",
+    "rpmTooltip": "Szybkostrzelność ciągła",
+    "rangeOfFire": "Zasięg ognia",
+    "range": "Zasięg",
+    "distance": "Odległość",
+    "limit": "Limit",
+    "traverseSpeed": "Prędkość obrotu",
+    "traverseSpeedTooltip": "Jak szybko broń może się obracać na boki",
+    "setup": "Rozstawienie",
+    "setupTooltip": "Czas potrzebny jednostce na rozstawienie przed oddaniem strzału",
+    "teardown": "Złożenie",
+    "teardownTooltip": "Czas potrzebny jednostce na złożenie broni przed ruszeniem",
+    "penetration": "Przebicie",
+    "penetrationTooltip": "Szansa na zadanie obrażeń to przebicie podzielone przez pancerz",
+    "scatter": "Obszar rozrzutu",
+    "scatterTooltip": "Szerokość × długość, obszar, w którym mogą upaść chybione pociski.",
+    "damageSpread": "Obszar rozkładu obrażeń",
+    "damageSpreadTooltip": "Szerokość × długość, broń strzela losowo w modele w tym obszarze wokół celu. Dotyczy tylko modeli w zasięgu i w kącie ostrzału.",
+    "damageSpreadOffset": "Przesunięcie obsz. obrażeń",
+    "damageSpreadOffsetTooltip": "Środek obszaru rozkładu obrażeń znajduje się tak daleko za celem.",
+    "damage": "Obrażenia",
+    "friendlyDamage": "Obrażenia sojuszników",
+    "ownUnitDamage": "Obrażenia własnych",
+    "damageIncludesOwnUnits": "Obrażenia wrogów / własnych",
+    "friendlyDamageIncludesOwnUnits": "Obrażenia sojuszników / własnych",
+    "deflectionDamage": "Obrażenia od rykoszetu",
+    "deflectionDamageTooltip": "Obrażenia zadawane po nieudanym przebiciu",
+    "aoeRadius": "Promień obszarowy",
+    "aoeSize": "Rozmiar obszaru",
+    "aoeSizeTooltip": "Szerokość × długość prostokątnego obszaru obrażeń. Zaczyna się od punktu trafienia i biegnie dalej.",
+    "aoeFalloff": "Spadek obrażeń obsz.",
+    "aoeFalloffTooltip": "Obrażenia i przygwożdżenie zależnie od odległości od punktu trafienia. Może zranić do {{aoeCap}} członków oddziału. -1 oznacza brak limitu.",
+    "onTheMove": "W ruchu",
+    "onTheMoveTooltip": "Kary, gdy jednostka się porusza.",
+    "onTheMoveAccuracyTooltip": "Zmienia celność o podaną wartość, gdy jednostka się porusza.",
+    "onTheMoveBurstTooltip": "Zmienia czas serii o podaną wartość, gdy jednostka się porusza.",
+    "onTheMoveCooldownTooltip": "Zmienia odnowienie broni o podaną wartość. Odnowienie to jedna część pełnego cyklu strzału.",
+    "targetModifiers": "Przeciw celom - modyfikatory",
+    "targetModifiersTooltip": "Na 1 cel może działać kilka modyfikatorów",
+    "baseDamage": "Bazowe obr.",
+    "coverModifiers": "Przeciw osłonie - modyfikatory",
+    "coverModifiersProjectileImpactTooltip": "Przy ataku na jednostkę w osłonie. Obrażenia i przygwożdżenie są liczone od miejsca trafienia pocisku.",
+    "coverModifiersFiringPositionTooltip": "Przy ataku na jednostkę w osłonie. Obrażenia i przygwożdżenie są liczone od pozycji strzelającego.",
+    "lightCover": "Lekka osłona",
+    "heavyCover": "Ciężka osłona",
+    "garrisonCover": "Garnizon",
+    "suppression": "Przygwożdżenie",
+    "suppressionTooltip": "Nakładane przygwożdżenie. Powyżej 20 jednostka jest przygwożdżona.",
+    "suppressionPerSecond": "Przygwożdżenie na sekundę",
+    "suppressionPerSecondTooltip": "Uśrednione ciągłe przygwożdżenie na sekundę przed regeneracją i odpornością. Powyżej 20 jednostka jest przygwożdżona.",
+    "suppressionRadius": "Promień przygwożdżenia",
+    "suppressionRadiusTooltip": "Promień wokół celu, w którym jednostki zostaną przygwożdżone; dotyczy tylko jednostek w zasięgu i w kącie ostrzału.",
+    "incrementalTargetRadius": "Promień celności przyrostowej",
+    "incrementalTargetRadiusTooltip": "Promień wokół celu, który gra uwzględnia przy celności przyrostowej",
+    "incrementalTargetAccuracy": "Celność przyrost.",
+    "incrementalTargetAccuracyTooltip": "Każdy model w promieniu celności przyrostowej wokół celu nakłada ten modyfikator celności, wykładniczo",
+    "timeBetweenShots": "Czas między strzałami",
+    "timeBetweenShotsTooltip": "Średni czas między strzałami",
+    "timeBetweenShotsMag": "Czas między strzałami",
+    "timeBetweenShotsMagTooltip": "Średni czas między strzałami, bez cykli przeładowania.",
+    "timeBetweenBursts": "Czas między seriami",
+    "timeBetweenBurstsTooltip": "Średnia przerwa między seriami",
+    "reloadCycle": "Cykl przeładowania",
+    "reloadCycleTooltip": "Średni czas między strzałami, gdy model musi przeładować",
+    "coreStats": "Podstawowe statystyki",
+    "timing": "Czasy",
+    "specialMechanics": "Mechaniki specjalne",
+    "scatterAngle": "Kąt rozrzutu",
+    "scatterAngleTooltip": "Zmienia szerokość obszaru rozrzutu.",
+    "scatterDistance": "Odległość rozrzutu",
+    "scatterDistanceTooltip": "Zmienia długość obszaru rozrzutu i jego przesunięcie.",
+    "aimTime": "Czas celowania",
+    "aimTimeWithWindUp": "Czas przed strzałem",
+    "aimTimeWithWindUpTooltip": "Czas od zakończenia animacji przygotowania do faktycznego strzału. NIE ma rozkładu jednostajnego.",
+    "windUp": "Przygotowanie",
+    "scatterOffset": "Przesunięcie rozrzutu",
+    "scatterOffsetTooltip": "Środek rozrzutu znajduje się tak daleko za celem.",
+    "reloadFrequency": "Magazynek",
+    "reloadFrequencyTooltip": "Po tylu strzałach/seriach broń przechodzi cykl przeładowania",
+    "bursts": "serii",
+    "shots": "strzałów",
+    "projectileTravelTime": "Czas lotu",
+    "projectileTravelTimeTooltip": "Czas między strzałem a trafieniem pocisku, bez przeszkód na drodze",
+    "detonationDelay": "Zapalnik",
+    "detonationDelayTooltip": "Czas między trafieniem a detonacją",
+    "projectileAvoidanceArcMax": "Omijanie przeszkód",
+    "projectileAvoidanceArcMaxTooltip": "Maksymalny kąt, jakiego broń może użyć, aby ominąć przeszkody. Bez przeszkód strzela pod kątem {{nonCollideMinAngle}}°."
+  },
+  "dps": {
+    "meta": {
+      "title": "Kalkulator DPS COH3",
+      "description": "Oblicz obrażenia na sekundę (DPS) wszystkich jednostek Company of Heroes 3. Porównuj broń, analizuj wpływ osłon i optymalizuj skład oddziałów.",
+      "keywords": [
+        "coh3 kalkulator dps",
+        "obrażenia na sekundę",
+        "coh3 kalkulator obrażeń",
+        "porównanie obrażeń jednostek",
+        "statystyki broni",
+        "analiza osłon",
+        "optymalizacja oddziałów",
+        "narzędzie dps",
+        "coh3 kalkulator",
+        "skuteczność jednostek"
+      ]
+    }
+  },
+  "dpsCompare": {
+    "meta": {
+      "title": "Porównywarka DPS COH3",
+      "description": "Porównaj obrażenia na sekundę (DPS) maksymalnie 5 atakujących jednostek przeciwko jednemu celowi w Company of Heroes 3. Analizuj skuteczność jednostek i skład armii.",
+      "keywords": [
+        "coh3 porównanie dps",
+        "porównanie jednostek",
+        "porównanie obrażeń",
+        "coh3 skuteczność jednostek",
+        "skład armii",
+        "analiza dps",
+        "coh3 porównywarka",
+        "pojedynek jednostek"
+      ]
+    },
+    "title": "Porównywarka DPS",
+    "targetUnit": "Jednostka docelowa",
+    "attackingUnits": "Atakujące jednostki",
+    "attacker": "Atakujący {{number}}"
+  },
+  "unitMeta": {
+    "unitDescription": "{{unitName}} - {{unitType}} ({{raceName}}) w Company of Heroes 3.",
+    "finalStandName": "Final Stand",
+    "finalStandPrefix": "DLC Final Stand (co-op przeciwko SI).",
+    "costs": "Koszt: {{costs}}.",
+    "population": "Populacja: {{popCap}}.",
+    "abbreviations": {
+      "hitpoints": "HP",
+      "manpower": "SR",
+      "fuel": "PAL",
+      "munition": "AM",
+      "armor": "pancerza"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 czołg",
+        "vehicle": "coh3 pojazd",
+        "armorStats": "statystyki pancerza",
+        "vehicleGuide": "poradnik pojazdów"
+      },
+      "infantry": {
+        "infantry": "coh3 piechota",
+        "squadStats": "statystyki oddziału",
+        "unitGuide": "poradnik jednostek",
+        "infantryTactics": "taktyka piechoty"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 broń zespołowa",
+        "supportWeapon": "broń wsparcia",
+        "crewWeapon": "broń obsługiwana przez załogę",
+        "artillery": "artyleria"
+      },
+      "emplacements": {
+        "emplacement": "coh3 stanowisko",
+        "defensiveStructure": "budowla obronna",
+        "fortification": "fortyfikacja"
+      },
+      "common": {
+        "units": "{{raceId}} jednostki",
+        "army": "{{raceId}} armia"
+      }
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Grenadier - COH3 컴패니언",
+    "description": "Grenadier - COH3 Stats 데스크톱 앱 {{version}}을 다운로드하세요. 별도 설정이 필요 없습니다. OBS 오버레이 기능, 현재 매치 상대에 대한 상세 정보, 새 게임 알림음 등을 제공합니다.",
+    "keywords": [
+      "grenadier",
+      "coh3 컴패니언",
+      "coh3 데스크톱 앱",
+      "obs 오버레이",
+      "실시간 매치 정보",
+      "데스크톱 애플리케이션",
+      "게임 오버레이",
+      "매치 분석",
+      "플레이어 통계",
+      "실시간 게임 데이터"
+    ]
+  },
+  "download": {
+    "button": "무료 다운로드 {{version}}",
+    "buttonAriaLabel": "Windows용 Grenadier - COH3 Stats 데스크톱 앱 {{version}} 설치 파일 다운로드",
+    "downloads": "다운로드 {{count}}회",
+    "totalDownloads": "총 다운로드 {{count}}회",
+    "releaseNotes": "릴리스 노트",
+    "microsoftStore": "Microsoft Store에서 받기",
+    "microsoftStoreAriaLabel": "Microsoft Store에서 Grenadier - COH3 컴패니언 받기",
+    "or": "또는"
+  },
+  "title": "Grenadier - COH3 컴패니언",
+  "subtitle": "COH3 Stats 데스크톱 앱 - 현재 게임에 대한 추가 정보를 확보하세요!",
+  "comparison": {
+    "title": "버전 선택",
+    "featureColumn": "기능",
+    "recommended": "추천",
+    "free": {
+      "title": "무료 다운로드",
+      "subtitle": "직접 다운로드, 인증되지 않은 앱"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Microsoft 인증, 평생 라이선스",
+      "supportNote": "구매로 개발을 후원해 주세요! ❤"
+    }
+  },
+  "features": {
+    "title": "기능",
+    "list": {
+      "noSetup": {
+        "label": "설정 불필요",
+        "description": "애플리케이션 실행만으로 간편하게 사용"
+      },
+      "leaderboard": {
+        "label": "ELO, 순위, 승률",
+        "description": "매치의 모든 플레이어 대상"
+      },
+      "teams": {
+        "label": "사전 구성 팀 감지",
+        "description": "상대가 미리 팀을 짜서 대기열에 들어왔는지 확인"
+      },
+      "recentGames": {
+        "label": "최근 게임",
+        "description": "앱에서 바로 보는 매치 기록"
+      },
+      "leaderboards": {
+        "label": "순위표",
+        "description": "앱에서 바로 순위표 확인"
+      },
+      "notifications": {
+        "label": "알림음",
+        "description": "게임이 시작되는 순간 알림"
+      },
+      "muteOnFocusLoss": {
+        "label": "자동 음소거",
+        "description": "창이 포커스를 잃으면 게임 소리 끄기"
+      },
+      "streaming": {
+        "label": "스트리머 오버레이",
+        "before": "스트리밍 도구 지원:",
+        "and": "및",
+        "after": "등"
+      },
+      "friendsGroup": {
+        "label": "친구 그룹 감지",
+        "description": "함께 플레이하는 플레이어 확인"
+      },
+      "loadingOverlay": {
+        "label": "로딩 화면 오버레이",
+        "description": "매치 시작 전 상대 정보 확인"
+      }
+    }
+  }
+}

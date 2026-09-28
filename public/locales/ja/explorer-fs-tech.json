@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand テクノロジー - COH3",
+    "description": "Company of Heroes 3 における {{faction}} の Final Stand テクノロジードラフトの全容 - 提示されうるすべてのユニット、アビリティ、パッシブを選択ごとに紹介。",
+    "keywords": [
+      "coh3 final stand テクノロジー",
+      "final stand テクノロジードラフト",
+      "company of heroes 3 final stand",
+      "final stand ユニット アビリティ パッシブ",
+      "hold off テクノロジー"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand テクノロジー",
+    "subtitle": "選択ごとのテクノロジードラフトです。1 回のプレイで {{picks}} 回の選択があり、それぞれで下記のテクノロジーから {{choices}} 個が提示されます。選んだものは試合終了まで引き継がれます。",
+    "notAvailable": "現在、Final Stand のテクノロジーデータを利用できません。しばらくしてから再度お試しください。"
+  },
+  "summary": {
+    "technologies_one": "{{count}} テクノロジー",
+    "technologies_other": "{{count}} テクノロジー",
+    "units_one": "{{count}} ユニット",
+    "units_other": "{{count}} ユニット",
+    "abilities_one": "{{count}} アビリティ",
+    "abilities_other": "{{count}} アビリティ",
+    "passives_one": "{{count}} パッシブ",
+    "passives_other": "{{count}} パッシブ",
+    "picks_one": "{{count}} 回の選択",
+    "picks_other": "{{count}} 回の選択",
+    "picksTooltip": "1 回のプレイでの選択回数 - 最初のウェーブの前に 1 回、その後は各ウェーブの開始時に 1 回ずつ、ユニット、パッシブ、アビリティの順に巡回します。"
+  },
+  "category": {
+    "unit": "ユニット",
+    "ability": "アビリティ",
+    "passive": "パッシブ"
+  },
+  "filters": {
+    "searchPlaceholder": "テクノロジーを検索",
+    "type": "種類",
+    "tags": "タグ",
+    "common": "共通テクノロジー",
+    "commonTooltip": "すべての陣営に提示されうるテクノロジーです。オフにすると、この陣営固有のテクノロジーのみを表示します。",
+    "reset": "リセット",
+    "matches_one": "{{count}} 件のテクノロジーが一致",
+    "matches_other": "{{count}} 件のテクノロジーが一致"
+  },
+  "pick": {
+    "title": "選択 {{pick}}",
+    "wave": "ウェーブ {{wave}}",
+    "waveTooltip": "この選択が行われる直前のウェーブです。ウェーブ 0 は最初のウェーブ前の準備フェーズです。",
+    "pool": "{{count}} 個中 {{choices}} 個",
+    "poolTooltip": "ゲームが提示するテクノロジーの数と、その抽選元となるテクノロジーの数です。",
+    "repeated_one": "以前の選択からさらに {{count}} 件",
+    "repeated_other": "以前の選択からさらに {{count}} 件",
+    "empty": "この選択には、フィルターに一致するテクノロジーがありません。"
+  },
+  "tech": {
+    "common": "共通",
+    "commonTooltip": "このテクノロジーはすべての陣営に提示される可能性があります。",
+    "waveFrom": "ウェーブ {{wave}} から",
+    "waveUntil": "ウェーブ {{wave}} まで",
+    "waveRange": "ウェーブ {{from}} - {{to}}",
+    "waveTooltip": "このテクノロジーが提示されうるウェーブです。これが適用されるのはパッシブの選択のみで、ユニットとアビリティの選択では無視されます。",
+    "noDescription": "ゲームファイルに説明がありません"
+  },
+  "faction": {
+    "switchTooltip": "{{faction}} のテクノロジーを表示"
+  }
+}

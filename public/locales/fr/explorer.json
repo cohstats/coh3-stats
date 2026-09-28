@@ -1,0 +1,304 @@
+{
+  "meta": {
+    "title": "Explorateur COH3 - Factions, unités et bâtiments",
+    "description": "Explorez les factions, unités, bâtiments et groupements tactiques de Company of Heroes 3. Statistiques, coûts et dégâts détaillés pour tout le contenu du jeu.",
+    "keywords": [
+      "explorateur coh3",
+      "factions",
+      "unités",
+      "bâtiments",
+      "groupements tactiques",
+      "wehrmacht",
+      "forces américaines",
+      "dak",
+      "forces britanniques",
+      "statistiques des unités",
+      "dégâts",
+      "coûts"
+    ]
+  },
+  "common": {
+    "units": "Unités",
+    "buildings": "Bâtiments",
+    "battleGroups": "Groupements tactiques",
+    "near": "Proche",
+    "medium": "Moyen",
+    "mid": "Moyenne",
+    "far": "Loin",
+    "light": "Léger",
+    "heavy": "Lourd",
+    "garrison": "Garnison",
+    "min": "Min",
+    "max": "Max",
+    "produces": "Produit",
+    "hitpoints": "Points de vie",
+    "upgrades": "Améliorations",
+    "costs": "Coûts",
+    "explorer": "Explorateur"
+  },
+  "explorer": {
+    "title": "Explorateur des factions de Company of Heroes 3",
+    "subtitle": "Explorez toutes les unités, tous les bâtiments et tous les groupements tactiques du jeu.",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Contenu du DLC Final Stand (coopération contre l'IA) - non disponible dans les escarmouches / parties multijoueurs classiques.",
+      "perksHeading": "Atouts",
+      "unitsHeading": "Unités",
+      "perksCardTitle": "Atouts {{faction}}",
+      "unitsCardTitle": "Unités {{faction}}",
+      "techHeading": "Technologies",
+      "techCardTitle": "Technologies {{faction}}"
+    }
+  },
+  "factionPage": {
+    "factionOverview": "Aperçu de la faction",
+    "meta": {
+      "title": "{{faction}} - Explorateur COH3",
+      "description": "Explorez la faction {{faction}} dans Company of Heroes 3. Consultez les unités, bâtiments, groupements tactiques et statistiques détaillées de l'armée {{faction}}.",
+      "keywords": [
+        "{{faction}}",
+        "explorateur {{faction}}",
+        "groupements tactiques {{faction}}",
+        "unités {{faction}}"
+      ]
+    }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "Unités Final Stand {{faction}}",
+      "description": "Unités Final Stand {{faction}} - l'effectif du DLC coopératif contre l'IA de Company of Heroes 3. Non disponibles dans les escarmouches / parties multijoueurs classiques.",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Liste des unités Final Stand {{faction}}",
+        "dlc coh3 final stand",
+        "unités coopératives hold off"
+      ]
+    },
+    "title": "Unités Final Stand",
+    "description": "Unités exclusives au DLC Final Stand (coopération contre l'IA) - non disponibles dans les escarmouches / parties multijoueurs classiques.",
+    "searchPlaceholder": "Rechercher des unités",
+    "categories": {
+      "infantry": "Infanterie",
+      "teamWeapons": "Armes collectives",
+      "vehicles": "Véhicules",
+      "emplacements": "Emplacements"
+    },
+    "empty": "Aucune unité Final Stand trouvée pour {{faction}}."
+  },
+  "unitPage": {
+    "stats": "Statistiques",
+    "abilities": "Capacités",
+    "loadout": "Équipement",
+    "veterancy": "Vétérance",
+    "upkeep": "Entretien par minute",
+    "reinforce": "Renfort",
+    "construct": "Peut construire",
+    "free": "Gratuit",
+    "weaponNote": "La précision effective dépend de plusieurs facteurs, comme la taille de la cible ou le blindage de l'unité visée, ainsi que la précision ou la pénétration de l'unité attaquante.",
+    "importantNote": "Cette section peut inclure des unités qui ne sont pas accessibles dans les escarmouches / parties multijoueurs classiques.",
+    "upgradeWeapons": "Armes disponibles via amélioration",
+    "abilityWeapons": "Armes de capacité",
+    "openInDpsTool": "Ouvrir dans l'outil DPS",
+    "abilityInfoRange": "Portée",
+    "abilityInfoShots": "Tirs",
+    "abilityInfoDuration": "Durée",
+    "abilityInfoCooldown": "Recharge",
+    "abilityInfoToggleCooldown": "Activation",
+    "abilityInfoToggleOnCooldown": "Activer",
+    "abilityInfoToggleOffCooldown": "Désactiver",
+    "requirements": "Requiert",
+    "requiresVeterancy": "Vét. {{rank}}"
+  },
+  "statsCard": {
+    "sightRange": "Champ de vision",
+    "detection": "Détection",
+    "speed": "Vitesse",
+    "acceleration": "Accélération",
+    "deceleration": "Décélération",
+    "rotation": "Rotation",
+    "maxRange": "Portée max.",
+    "targetSize": "Taille de cible",
+    "armor": "Blindage",
+    "captureMultiplier": "Multiplicateur de capture",
+    "decaptureMultiplier": "Multiplicateur de neutralisation",
+    "vehicleArmor": "Blindage du véhicule",
+    "vehicleArmorHint": "Correspond au blueprint de critiques de blindage du jeu."
+  },
+  "weaponCard": {
+    "accuracy": "Précision",
+    "accuracyTooltip": "Chance de toucher à coup sûr ; en cas d'échec, le tir est dispersé. Multipliée par la « taille de cible » de la cible.",
+    "arc": "Arc",
+    "arcTooltip": "L'arc de tir horizontal de l'arme avant que l'unité doive pivoter, se repositionner ou se remettre en position",
+    "burstDuration": "Durée de rafale",
+    "burstDurationTooltip": "Temps moyen passé à tirer une rafale",
+    "cooldown": "Recharge",
+    "rpm": "Coups par minute",
+    "rpmTooltip": "Cadence de tir soutenue",
+    "rangeOfFire": "Portée de tir",
+    "range": "Portée",
+    "distance": "Distance",
+    "limit": "Limite",
+    "traverseSpeed": "Vitesse de pivotement",
+    "traverseSpeedTooltip": "La rapidité avec laquelle l'arme peut pivoter latéralement",
+    "setup": "Mise en batterie",
+    "setupTooltip": "Temps nécessaire à l'unité pour se mettre en batterie avant de pouvoir tirer",
+    "teardown": "Démontage",
+    "teardownTooltip": "Temps nécessaire à l'unité pour se démonter avant de pouvoir se déplacer",
+    "penetration": "Pénétration",
+    "penetrationTooltip": "La chance d'infliger des dégâts est égale à la pénétration divisée par le blindage",
+    "scatter": "Zone de dispersion",
+    "scatterTooltip": "Largeur × longueur, zone où les tirs dispersés peuvent atterrir.",
+    "damageSpread": "Zone de répartition des dégâts",
+    "damageSpreadTooltip": "Largeur × longueur, l'arme tire aléatoirement sur les modèles de cette zone autour de la cible. S'applique uniquement aux modèles à portée et dans l'arc de tir.",
+    "damageSpreadOffset": "Décalage zone répart. dégâts",
+    "damageSpreadOffsetTooltip": "La zone de répartition des dégâts est centrée à cette distance derrière la cible.",
+    "damage": "Dégâts",
+    "friendlyDamage": "Dégâts aux alliés",
+    "ownUnitDamage": "Dégâts à ses unités",
+    "damageIncludesOwnUnits": "Dégâts aux ennemis / à ses unités",
+    "friendlyDamageIncludesOwnUnits": "Dégâts aux alliés / à ses unités",
+    "deflectionDamage": "Dégâts de déviation",
+    "deflectionDamageTooltip": "Dégâts infligés après une pénétration ratée",
+    "aoeRadius": "Rayon de zone",
+    "aoeSize": "Taille de zone",
+    "aoeSizeTooltip": "Largeur × longueur de la zone rectangulaire de dégâts de zone. Commence au point d'impact et s'étend vers l'avant.",
+    "aoeFalloff": "Atténuation de zone",
+    "aoeFalloffTooltip": "Dégâts et suppression selon la distance au point d'impact. Peut toucher jusqu'à {{aoeCap}} membres par escouade. -1 signifie sans limite.",
+    "onTheMove": "En mouvement",
+    "onTheMoveTooltip": "Pénalités lorsque l'unité se déplace.",
+    "onTheMoveAccuracyTooltip": "Modifie la précision de la valeur indiquée lorsque l'unité se déplace.",
+    "onTheMoveBurstTooltip": "Modifie la durée de rafale de la valeur indiquée lorsque l'unité se déplace.",
+    "onTheMoveCooldownTooltip": "Modifie la recharge de l'arme de la valeur indiquée. La recharge fait partie du cycle de tir complet.",
+    "targetModifiers": "Contre cible - Modificateurs",
+    "targetModifiersTooltip": "Plusieurs modificateurs peuvent s'appliquer à une même cible",
+    "baseDamage": "Dégâts de base",
+    "coverModifiers": "Contre couvert - Modificateurs",
+    "coverModifiersProjectileImpactTooltip": "Lors d'une attaque contre une unité à couvert. Les dégâts et la suppression sont calculés depuis le point d'impact du projectile.",
+    "coverModifiersFiringPositionTooltip": "Lors d'une attaque contre une unité à couvert. Les dégâts et la suppression sont calculés depuis la position de tir.",
+    "lightCover": "Couvert léger",
+    "heavyCover": "Couvert lourd",
+    "garrisonCover": "Garnison",
+    "suppression": "Suppression",
+    "suppressionTooltip": "Suppression appliquée. Au-delà de 20, l'unité est supprimée.",
+    "suppressionPerSecond": "Suppression par seconde",
+    "suppressionPerSecondTooltip": "Suppression soutenue moyenne appliquée par seconde, avant récupération et résistance. Au-delà de 20, l'unité est supprimée.",
+    "suppressionRadius": "Rayon de suppression",
+    "suppressionRadiusTooltip": "Rayon autour de la cible dans lequel les unités subissent la suppression ; s'applique uniquement aux unités à portée et dans l'arc de tir.",
+    "incrementalTargetRadius": "Rayon de cible incrémental",
+    "incrementalTargetRadiusTooltip": "Rayon autour de la cible pris en compte par le jeu pour la précision incrémentale",
+    "incrementalTargetAccuracy": "Précision incr.",
+    "incrementalTargetAccuracyTooltip": "Chaque modèle situé dans le rayon de cible incrémental autour de la cible applique ce modificateur de précision, de façon exponentielle",
+    "timeBetweenShots": "Temps entre tirs",
+    "timeBetweenShotsTooltip": "Temps moyen entre deux tirs",
+    "timeBetweenShotsMag": "Temps entre tirs",
+    "timeBetweenShotsMagTooltip": "Temps moyen entre deux tirs, hors cycles de rechargement.",
+    "timeBetweenBursts": "Temps entre rafales",
+    "timeBetweenBurstsTooltip": "Temps mort moyen entre deux rafales",
+    "reloadCycle": "Cycle de rechargement",
+    "reloadCycleTooltip": "Temps moyen entre deux tirs lorsque le modèle doit recharger",
+    "coreStats": "Statistiques principales",
+    "timing": "Temps",
+    "specialMechanics": "Mécaniques spéciales",
+    "scatterAngle": "Angle de dispersion",
+    "scatterAngleTooltip": "Modifie la largeur de la zone de dispersion.",
+    "scatterDistance": "Distance de dispersion",
+    "scatterDistanceTooltip": "Modifie la longueur et le décalage de la zone de dispersion.",
+    "aimTime": "Temps de visée",
+    "aimTimeWithWindUp": "Temps avant tir",
+    "aimTimeWithWindUpTooltip": "Temps entre la fin des animations de préparation et le tir effectif. Distribution NON uniforme.",
+    "windUp": "Préparation",
+    "scatterOffset": "Décalage de dispersion",
+    "scatterOffsetTooltip": "La dispersion est centrée à cette distance derrière la cible.",
+    "reloadFrequency": "Chargeur",
+    "reloadFrequencyTooltip": "Après ce nombre de tirs/rafales, l'arme effectue un cycle de rechargement",
+    "bursts": "rafales",
+    "shots": "tirs",
+    "projectileTravelTime": "Temps de vol",
+    "projectileTravelTimeTooltip": "Temps entre le tir et l'impact du projectile, sans obstacle sur la trajectoire",
+    "detonationDelay": "Fusée",
+    "detonationDelayTooltip": "Temps entre l'impact et la détonation",
+    "projectileAvoidanceArcMax": "Évitement d'obstacles",
+    "projectileAvoidanceArcMaxTooltip": "Angle maximal que l'arme peut utiliser pour franchir les obstacles. Sans obstacle, elle tire à {{nonCollideMinAngle}}°."
+  },
+  "dps": {
+    "meta": {
+      "title": "Calculateur de DPS COH3",
+      "description": "Calculez les dégâts par seconde (DPS) de toutes les unités de Company of Heroes 3. Comparez les armes, analysez l'effet des couverts et optimisez vos escouades.",
+      "keywords": [
+        "calculateur dps coh3",
+        "dégâts par seconde",
+        "calculateur de dégâts coh3",
+        "comparaison des dégâts des unités",
+        "statistiques des armes",
+        "analyse des couverts",
+        "optimisation des escouades",
+        "outil dps",
+        "calculateur coh3",
+        "efficacité des unités"
+      ]
+    }
+  },
+  "dpsCompare": {
+    "meta": {
+      "title": "Outil de comparaison DPS COH3",
+      "description": "Comparez les dégâts par seconde (DPS) de jusqu'à 5 unités attaquantes contre une seule cible dans Company of Heroes 3. Analysez l'efficacité des unités et optimisez votre armée.",
+      "keywords": [
+        "comparaison dps coh3",
+        "comparaison d'unités",
+        "comparaison des dégâts",
+        "efficacité des unités coh3",
+        "composition d'armée",
+        "analyse dps",
+        "outil de comparaison coh3",
+        "affrontement d'unités"
+      ]
+    },
+    "title": "Outil de comparaison DPS",
+    "targetUnit": "Unité cible",
+    "attackingUnits": "Unités attaquantes",
+    "attacker": "Attaquant {{number}}"
+  },
+  "unitMeta": {
+    "unitDescription": "{{unitName}} - {{unitType}} {{raceName}} dans Company of Heroes 3.",
+    "finalStandName": "Final Stand",
+    "finalStandPrefix": "DLC Final Stand (coopération contre l'IA).",
+    "costs": "Coûte {{costs}}.",
+    "population": "{{popCap}} de population.",
+    "abbreviations": {
+      "hitpoints": "PV",
+      "manpower": "MO",
+      "fuel": "CA",
+      "munition": "MU",
+      "armor": "blindage"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "char coh3",
+        "vehicle": "véhicule coh3",
+        "armorStats": "statistiques de blindage",
+        "vehicleGuide": "guide des véhicules"
+      },
+      "infantry": {
+        "infantry": "infanterie coh3",
+        "squadStats": "statistiques d'escouade",
+        "unitGuide": "guide des unités",
+        "infantryTactics": "tactiques d'infanterie"
+      },
+      "teamWeapons": {
+        "teamWeapon": "arme collective coh3",
+        "supportWeapon": "arme de soutien",
+        "crewWeapon": "arme servie",
+        "artillery": "artillerie"
+      },
+      "emplacements": {
+        "emplacement": "emplacement coh3",
+        "defensiveStructure": "structure défensive",
+        "fortification": "fortification"
+      },
+      "common": {
+        "units": "unités {{raceId}}",
+        "army": "armée {{raceId}}"
+      }
+    }
+  }
+}

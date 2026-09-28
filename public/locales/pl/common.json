@@ -1,0 +1,96 @@
+{
+  "faction": {
+    "switchTooltip": "Przełącz na: {{faction}}"
+  },
+  "mainMenu": {
+    "leaderboards": "Rankingi",
+    "regularLeaderboards": "Rankingi standardowe",
+    "teamLeaderboards": "Rankingi drużynowe",
+    "statistics": "Statystyki",
+    "statsMenu": {
+      "games": "Statystyki gier",
+      "maps": "Statystyki map",
+      "players": "Statystyki graczy",
+      "leaderboards": "Statystyki rankingów",
+      "battlegroups": "Statystyki grup bojowych",
+      "achievements": "Statystyki osiągnięć"
+    },
+    "explorer": "Eksplorator",
+    "explMenu": {
+      "buildings": "Budynki",
+      "units": "Jednostki",
+      "dpsCalculator": "DPS - porównanie jednostek",
+      "unitBrowser": "Przeglądarka jednostek",
+      "challenges": "Wyzwania",
+      "weapons": "Uzbrojenie",
+      "maps": "Mapy",
+      "mapsTable": "Tabela map",
+      "tools": "Narzędzia",
+      "finalStand": "Final Stand",
+      "fsTech": "Technologie FS",
+      "fsPerks": "Perki FS",
+      "fsUnits": "Jednostki FS"
+    },
+    "liveGames": "Gry na żywo",
+    "desktopApp": "Aplikacja desktopowa",
+    "other": "Inne",
+    "otherMenu": {
+      "tiers": "Poziomy rankingowe",
+      "openData": "Otwarte dane",
+      "coh3News": "Wiadomości COH3",
+      "playerExport": "API eksportu graczy"
+    },
+    "about": "O stronie",
+    "supportUs": "Wesprzyj nas"
+  },
+  "header": {
+    "playerInGames": "Gracze w grze",
+    "onlinePlayersTooltip": "Liczba graczy online w Company of Heroes 3 na dzień {{date}}"
+  },
+  "footer": {
+    "gamePatch": "Patch gry",
+    "gamePatchInfo": "Dane wyświetlane na stronie pochodzą z patcha",
+    "unofficialSite": "To nieoficjalna strona fanowska poświęcona Company of Heroes 3.",
+    "visitText1": "Odwiedź",
+    "visitText2": "po statystyki i analizy Company of Heroes 2",
+    "trademark": "Company of Heroes jest zastrzeżonym znakiem towarowym Relic Entertainment.",
+    "assets": "Grafiki COH i inne zasoby są własnością Relic Entertainment."
+  },
+  "columns": {
+    "rank": "Pozycja",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "Pseudonim",
+    "streak": "Seria",
+    "ratio": "Stosunek",
+    "total": "Razem",
+    "lastGame": "Ostatnia gra",
+    "tier": "Poziom",
+    "wins": "Wygrane",
+    "losses": "Porażki"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Nie znaleziono strony",
+      "message": "Jeśli uważasz, że to błąd, zgłoś go na naszym Discordzie"
+    }
+  },
+  "search": {
+    "playersAndUnits": "Gracze, jednostki i mapy"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "enemyBadge": "Wróg",
+    "unitTooltip": "Ta jednostka pochodzi z DLC Final Stand (co-op przeciwko SI). Nie jest dostępna w standardowej potyczce / grze wieloosobowej.",
+    "weaponTooltip": "Ta broń pochodzi z DLC Final Stand (co-op przeciwko SI). Nie jest dostępna w standardowej potyczce / grze wieloosobowej.",
+    "enemyTooltip": "To wroga strona sterowana przez SI w składzie Final Stand, a nie ta, którą grasz.",
+    "showUnits": "Pokaż jednostki Final Stand",
+    "showUnitsDescription": "Jednostki z DLC Final Stand (co-op przeciwko SI)",
+    "showWeapons": "Pokaż broń Final Stand",
+    "filterUnits": "Pokaż / ukryj jednostki Final Stand",
+    "multiplayerUnits": "Jednostki multiplayer"
+  },
+  "loading": "Ładowanie...",
+  "error": "Błąd",
+  "notFound": "Nie znaleziono"
+}

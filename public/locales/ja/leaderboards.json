@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "{{faction}} {{mode}} リーダーボード",
+    "description": "Company of Heroes 3 の {{faction}} {{mode}} リーダーボード。プレイヤーランキング、ELO レーティング、対戦統計を掲載。",
+    "keywords": [
+      "coh3 リーダーボード",
+      "coh3 ランキング",
+      "ランクマッチ ラダー",
+      "elo レーティング",
+      "プレイヤーランキング",
+      "対戦統計",
+      "陣営別ランキング",
+      "ゲームモード別ランキング"
+    ]
+  },
+  "title": "{{race}} のリーダーボード",
+  "pageTitle": "{{race}} {{type}} のリーダーボード",
+  "metaDescription": "陣営 {{race}}、ゲームタイプ {{type}} のランクリーダーボード。Company of Heroes 3",
+  "errorTitle": "リーダーボードの取得中にエラーが発生しました",
+  "filters": {
+    "region": "地域",
+    "platform": "プラットフォーム",
+    "faction": "陣営",
+    "type": "タイプ"
+  },
+  "teams": {
+    "title": "チームリーダーボード",
+    "pageTitle": "{{side}} {{type}} のチームリーダーボード",
+    "metaDescription": "{{side}} チーム、ゲームタイプ {{type}} のチームリーダーボード。Company of Heroes 3",
+    "filters": {
+      "side": "陣営側",
+      "type": "タイプ",
+      "orderBy": "並べ替え"
+    },
+    "pagination": {
+      "itemsPerPage": "1 ページあたりの件数",
+      "previous": "前へ",
+      "next": "次へ",
+      "showingRange": "{{total}} チーム中 {{start}} - {{end}} を表示",
+      "excludeInactive": "1 年以上活動のないチームは除外されています"
+    }
+  }
+}

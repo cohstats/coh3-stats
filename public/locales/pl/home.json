@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "COH3 Stats - statystyki Company of Heroes 3",
+    "description": "Statystyki Company of Heroes 3. Rankingi, karty graczy, historia meczów, statystyki jednostek, kalkulator DPS, grupy bojowe, uzbrojenie, gry na żywo, wiadomości COH3, YouTube i Twitch.",
+    "keywords": [
+      "coh3 rankingi",
+      "karty graczy",
+      "statystyki jednostek",
+      "gry na żywo",
+      "kalkulator dps",
+      "grupy bojowe",
+      "eksplorator uzbrojenia",
+      "historia meczów",
+      "streamy twitch",
+      "filmy youtube"
+    ]
+  },
+  "sections": {
+    "news": {
+      "title": "Najnowsze wiadomości",
+      "newsLabel": "Wiadomości"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "Kalkulator DPS",
+        "description": "Porównaj DPS wszystkich jednostek w grze. Dostosuj wyposażenie jednostki, dobierając różne rodzaje broni. Możesz też uwzględnić HP jednostek."
+      },
+      "explorer": {
+        "title": "Eksplorator",
+        "description": "Przeglądaj szczegółowo frakcje, jednostki, uzbrojenie i mapy. Zawiera też perki i jednostki Final Stand oraz kalkulator DPS."
+      }
+    },
+    "leaderboards": {
+      "title": "Rankingi 1v1",
+      "viewFullLeaderboard": "Pokaż pełny ranking",
+      "factions": {
+        "american": "USF",
+        "british": "Brytyjczycy",
+        "german": "Wehrmacht",
+        "dak": "DAK"
+      }
+    },
+    "reddit": {
+      "title": "Najlepsze posty o COH3 na Reddicie",
+      "noData": "Brak dostępnych postów z Reddita"
+    },
+    "youtube": {
+      "title": "Filmy z ostatniego tygodnia",
+      "noData": "Brak dostępnych filmów z YouTube",
+      "views": "wyświetleń"
+    },
+    "twitch": {
+      "title": "Oglądaj transmisje na żywo",
+      "noStreams": "Obecnie na Twitchu nie ma żadnych anglojęzycznych transmisji."
+    }
+  },
+  "leaderboardTable": {
+    "errorTitle": "Błąd podczas pobierania rankingów"
+  }
+}

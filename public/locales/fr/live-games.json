@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Parties en direct - Company of Heroes 3",
+    "description": "Parties en cours sur Company of Heroes 3",
+    "keywords": [
+      "parties en direct coh3",
+      "parties en temps réel coh3",
+      "parties coh3",
+      "parties coh3 en cours"
+    ]
+  },
+  "pageTitle": "Parties PC en direct",
+  "filters": {
+    "liveGames": {
+      "label": "Parties en direct",
+      "options": {
+        "1v1": "Partie rapide 1 vs 1",
+        "2v2": "Partie rapide 2 vs 2",
+        "3v3": "Partie rapide 3 vs 3",
+        "4v4": "Partie rapide 4 vs 4",
+        "ai": "Partie rapide contre l'IA",
+        "custom": "Parties personnalisées"
+      }
+    },
+    "sortBy": {
+      "label": "Trier par",
+      "options": {
+        "rank": "Rang",
+        "observers": "Observateurs",
+        "startgametime": "Heure de début"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "Résumé des parties en direct",
+    "tooltip": "Parties multijoueurs actuellement en cours. Le total des joueurs ne compte chaque joueur qu'une fois. Gardez à l'esprit que de nombreux joueurs sont probablement dans un salon, en recherche, en chargement ou occupés à autre chose. Les parties personnalisées ne sont pas observables par défaut, il y en a donc très probablement bien plus en cours. Les parties sont mises à jour toutes les 5 minutes.",
+    "noGames": {
+      "title": "Aucune partie en direct détectée",
+      "message": "COH3 Stats doit peut-être être mis à jour suite à un récent correctif du jeu."
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs IA",
+      "custom": "Personnalisée"
+    },
+    "totals": {
+      "automatch": "Total en partie rapide",
+      "anyGame": "Total toutes parties"
+    },
+    "games": "parties"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "Mode",
+      "axisPlayers": "Joueurs de l'Axe",
+      "alliesPlayers": "Joueurs Alliés",
+      "map": "Carte",
+      "observers": "Observateurs",
+      "gameTime": "Durée de la partie",
+      "server": "Serveur"
+    },
+    "switches": {
+      "showFlags": "Afficher les drapeaux des joueurs",
+      "showServer": "Afficher le serveur de la partie"
+    },
+    "errors": {
+      "title": "Erreur lors du chargement des parties en direct",
+      "summaryTitle": "Erreur lors du chargement du résumé des parties en direct"
+    },
+    "dataUpdated": "Données mises à jour le {{time}}"
+  }
+}

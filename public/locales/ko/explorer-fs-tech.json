@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand 기술 - COH3",
+    "description": "Company of Heroes 3 {{faction}} 진영의 Final Stand 기술 드래프트 전체 - 선택지로 제시될 수 있는 모든 유닛, 능력, 패시브를 선택 순서별로 정리했습니다.",
+    "keywords": [
+      "coh3 final stand 기술",
+      "final stand 기술 드래프트",
+      "company of heroes 3 final stand",
+      "final stand 유닛 능력 패시브",
+      "hold off 기술"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand 기술",
+    "subtitle": "선택 순서별 기술 드래프트입니다. 한 판에서 {{picks}}번 선택하며, 매번 아래 기술 중 {{choices}}개가 제시됩니다. 선택한 기술은 매치가 끝날 때까지 유지됩니다.",
+    "notAvailable": "현재 Final Stand 기술 데이터를 사용할 수 없습니다. 나중에 다시 시도해 주세요."
+  },
+  "summary": {
+    "technologies_one": "기술 {{count}}개",
+    "technologies_other": "기술 {{count}}개",
+    "units_one": "유닛 {{count}}개",
+    "units_other": "유닛 {{count}}개",
+    "abilities_one": "능력 {{count}}개",
+    "abilities_other": "능력 {{count}}개",
+    "passives_one": "패시브 {{count}}개",
+    "passives_other": "패시브 {{count}}개",
+    "picks_one": "선택 {{count}}회",
+    "picks_other": "선택 {{count}}회",
+    "picksTooltip": "한 판의 선택 횟수 - 첫 웨이브 전에 한 번, 이후 매 웨이브 시작 시 한 번씩 선택하며 유닛, 패시브, 능력 순으로 돌아갑니다."
+  },
+  "category": {
+    "unit": "유닛",
+    "ability": "능력",
+    "passive": "패시브"
+  },
+  "filters": {
+    "searchPlaceholder": "기술 검색",
+    "type": "유형",
+    "tags": "태그",
+    "common": "공용 기술",
+    "commonTooltip": "모든 진영에 제시될 수 있는 기술입니다. 끄면 이 진영의 기술만 표시됩니다.",
+    "reset": "초기화",
+    "matches_one": "일치하는 기술 {{count}}개",
+    "matches_other": "일치하는 기술 {{count}}개"
+  },
+  "pick": {
+    "title": "선택 {{pick}}",
+    "wave": "웨이브 {{wave}}",
+    "waveTooltip": "이 선택이 이루어지는 웨이브입니다. 웨이브 0은 첫 웨이브 전의 준비 단계입니다.",
+    "pool": "{{count}}개 중 {{choices}}개",
+    "poolTooltip": "게임이 제시하는 기술 수와 그 기술을 고르는 후보 풀의 크기입니다.",
+    "repeated_one": "이전 선택의 기술 {{count}}개 더",
+    "repeated_other": "이전 선택의 기술 {{count}}개 더",
+    "empty": "이 선택에서 필터와 일치하는 기술이 없습니다."
+  },
+  "tech": {
+    "common": "공용",
+    "commonTooltip": "모든 진영에 이 기술이 제시될 수 있습니다.",
+    "waveFrom": "웨이브 {{wave}}부터",
+    "waveUntil": "웨이브 {{wave}}까지",
+    "waveRange": "웨이브 {{from}} - {{to}}",
+    "waveTooltip": "이 기술이 제시될 수 있는 웨이브입니다. 패시브 선택에만 적용되며, 유닛 및 능력 선택에는 적용되지 않습니다.",
+    "noDescription": "게임 파일에 설명이 없습니다"
+  },
+  "faction": {
+    "switchTooltip": "{{faction}} 기술 보기"
+  }
+}
