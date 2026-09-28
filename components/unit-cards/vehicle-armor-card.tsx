@@ -51,7 +51,7 @@ export const StatsVehicleArmor = (
       <Title order={6} style={{ textTransform: "uppercase" }}>
         {title}
       </Title>
-      <Text fz="xs" fs="italic" c="dimmed" style={{ textTransform: "capitalize" }}>
+      <Text fz="xs" fs="italic" c="dimmed">
         ({hint})
       </Text>
     </Flex>
