@@ -17,7 +17,7 @@ export const TargetModifierSection = ({
     <>
       <Divider my={4} />
 
-      <Grid gutter="xs">
+      <Grid gap="xs">
         <Grid.Col span={{ base: 4, md: 4 }}>
           <Flex align="center" gap={4}>
             <Text fw={600}>{t("weaponCard.targetModifiers")}</Text>
@@ -43,7 +43,7 @@ export const TargetModifierSection = ({
       </Grid>
 
       {rows.map((entry) => (
-        <Grid key={entry.unit_type} gutter="xs">
+        <Grid key={entry.unit_type} gap="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>{formatUnitType(entry.unit_type)}</Text>
           </Grid.Col>
@@ -105,7 +105,7 @@ export const CoverModifierSection = ({
     <>
       <Divider my={4} />
 
-      <Grid gutter="xs">
+      <Grid gap="xs">
         <Grid.Col span={{ base: 4, md: 4 }}>
           <Flex align="center" gap={4}>
             <Text fw={600}>{t("weaponCard.coverModifiers")}</Text>
@@ -129,7 +129,7 @@ export const CoverModifierSection = ({
       </Grid>
 
       {coverRows.map((row) => (
-        <Grid key={row.label} gutter="xs">
+        <Grid key={row.label} gap="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
             <Flex align="center" gap={4}>
               <Image src={row.icon} alt={row.label} h={32} w={32} />

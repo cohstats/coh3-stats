@@ -107,7 +107,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
             {/* Branches Section */}
             <Divider my={12} size="md"></Divider>
 
-            <Grid columns={2} gutter={0}>
+            <Grid columns={2} gap={0}>
               <Grid.Col span={value}>
                 <Accordion p={0} chevronPosition="right" variant="filled">
                   <Accordion.Item value="left_branch">

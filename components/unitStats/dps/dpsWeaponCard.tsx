@@ -225,7 +225,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
 
                 <Text>{activeData.weapon_id}</Text>
                 <Divider my="sm" />
-                <Grid gutter="xs">
+                <Grid gap="xs">
                   <Grid.Col md={4} span={4}>
                     Accuracy:
                   </Grid.Col>
@@ -240,7 +240,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                   </Grid.Col>
                 </Grid>
 
-                <Grid gutter="xs">
+                <Grid gap="xs">
                   <Grid.Col md={4} span={4}>
                     RPM:
                   </Grid.Col>
@@ -255,7 +255,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                   </Grid.Col>
                 </Grid>
 
-                <Grid gutter="xs">
+                <Grid gap="xs">
                   <Grid.Col md={4} span={4}>
                     Damage:
                   </Grid.Col>
@@ -268,7 +268,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                 {(activeData.weapon.weapon_cat == "ballistic_weapon" ||
                   activeData.weapon.weapon_cat == "explosive_weapon") && (
                   <>
-                    <Grid gutter="xs">
+                    <Grid gap="xs">
                       <Grid.Col md={4} span={4}>
                         Penetration:{" "}
                       </Grid.Col>
@@ -283,7 +283,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                       </Grid.Col>
                     </Grid>
 
-                    <Grid gutter="xs">
+                    <Grid gap="xs">
                       <Grid.Col md={4} span={4}>
                         Scatter Area:
                       </Grid.Col>
@@ -297,7 +297,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                         {Math.round(getScatterArea(weapon_bag.range.far, weapon_bag))}
                       </Grid.Col>
                     </Grid>
-                    <Grid gutter="xs">
+                    <Grid gap="xs">
                       <Grid.Col md={4} span={4}>
                         AoE Radius:
                       </Grid.Col>

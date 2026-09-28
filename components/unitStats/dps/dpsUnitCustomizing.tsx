@@ -142,7 +142,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   return (
     <>
       <Stack align="left" justify="flex-start" gap="xs">
-        <Grid gutter="xs">
+        <Grid gap="xs">
           <Grid.Col span={5}>
             <Group wrap="nowrap">
               <Tooltip label={props.unit.screen_name}>

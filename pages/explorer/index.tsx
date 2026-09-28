@@ -163,7 +163,7 @@ const Explorer: NextPage = () => {
           {/* DPS Tools Section */}
           <Stack gap="md">
             <Title order={2}>DPS Tools</Title>
-            <Grid gutter="md">
+            <Grid gap="md">
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <InfoCard
                   link={getDPSCalculatorRoute()}
@@ -186,7 +186,7 @@ const Explorer: NextPage = () => {
           {/* Maps Section */}
           <Stack gap="md">
             <Title order={2}>Maps</Title>
-            <Grid gutter="md">
+            <Grid gap="md">
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <InfoCard
                   link={getExplorerMapsRoute()}
@@ -209,7 +209,7 @@ const Explorer: NextPage = () => {
           {/* Tools Section */}
           <Stack gap="md">
             <Title order={2}>Browser Tools</Title>
-            <Grid gutter="md">
+            <Grid gap="md">
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <InfoCard
                   link={getUnitBrowserRoute()}

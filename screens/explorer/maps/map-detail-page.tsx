@@ -122,7 +122,7 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
   });
 
   return (
-    <Grid gutter="lg" columns={24}>
+    <Grid gap="lg" columns={24}>
       {/* Left column - title and the minimap. The description sits under the cards on the right, so
           that the minimap starts right below the title instead of being pushed down by it.
           Columns are 13/11 (instead of an even 12/12) so the minimap is ~10% smaller and the
