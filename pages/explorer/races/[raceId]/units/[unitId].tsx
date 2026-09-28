@@ -671,7 +671,7 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
       <Title order={4} data-testid="can-construct-heading">
         {title}
       </Title>
-      <SimpleGrid cols={{ base: 3, xs: 1, sm: 2, lg: 3 }}>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
         {Object.values(buildings).map(({ id, ui, cost }) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {

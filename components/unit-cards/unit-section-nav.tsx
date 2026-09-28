@@ -113,6 +113,7 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
               radius="md"
               // Buttons stretch to the grid cell on phones, keep the label on the left.
               justify="flex-start"
+              classNames={{ root: classes.root, label: classes.label, section: classes.badge }}
               aria-current={isActive ? "location" : undefined}
               data-testid={`unit-section-nav-${id}`}
               rightSection={

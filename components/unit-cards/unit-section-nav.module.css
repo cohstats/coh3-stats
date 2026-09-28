@@ -29,6 +29,31 @@
   }
 }
 
+/* Very narrow phones, let long labels ("Ability Weapons", longer translations) wrap
+   instead of being cut off. */
+@media (max-width: 24em) {
+  .root {
+    height: auto;
+    min-height: var(--button-height);
+    padding: 4px 6px;
+  }
+
+  .label {
+    font-size: 13px;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.2;
+    /* Long single words, e.g. German "Fähigkeitswaffen". */
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
+
+  /* Match Mantine's own `[data-position]` selector so this wins. */
+  .badge[data-position="right"] {
+    margin-inline-start: 4px;
+  }
+}
+
 @media (min-width: 64em) and (max-width: 100em) {
   .nav {
     top: 100px;

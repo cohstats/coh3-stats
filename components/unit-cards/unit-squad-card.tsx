@@ -121,14 +121,14 @@ export const UnitSquadCard = ({
 
   return (
     <Stack>
-      <Stack gap={4}>
-        <Title order={6} style={{ textTransform: "uppercase" }}>
+      <Group gap="xs" align="baseline">
+        <Title order={6} style={{ textTransform: "uppercase", wordBreak: "break-word" }}>
           {id}
         </Title>
         <Text c="yellow.5" style={{ textTransform: "capitalize" }}>
           {type}
         </Text>
-      </Stack>
+      </Group>
       <Grid fz="sm" columns={12} align="center" gutter="xs">
         <StatItem
           icon={UnitSquadIcons["sight_range"]}
