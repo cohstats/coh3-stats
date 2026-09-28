@@ -125,20 +125,13 @@ export const SpawnItemMappings: { [abilityId: string]: string[] } = {
 /**
  * 🛠️ Single, Reusable Upgrade Mutator Function
  * Checks the lookup table for the ability ID and applies the appropriate spawnItems.
- * Handles the single custom case for manpower cost.
  *
  * @param upg The Battlegroup Upgrade item to modify.
  */
 function applyBattlegroupUpgrade(upg: BattleGroupUpgradeType) {
   const abilityId = upg.ability.id;
 
-  // 1. Handle the one-off custom case for cost change
-  //if (abilityId === "australian_defense_australian_light_infantry_uk") {
-  //  upg.ability.cost.manpower = 280;
-  // Fall through to set spawnItems as well
-  //}
-
-  // 2. Look up the spawn items and apply if found
+  // Look up the spawn items and apply if found
   const spawnItems = SpawnItemMappings[abilityId];
   if (spawnItems) {
     upg.spawnItems = spawnItems;
@@ -1238,5 +1231,27 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
 
 export const getAbilityStateTreeWeaponMappings = (abilityId: string) =>
   AbilityStateTreeWeaponMappings.filter((mapping) => mapping.abilityId === abilityId);
+
+export type AbilityCostMapping = {
+  abilityId: string;
+  cost: {
+    fuel?: number;
+    manpower?: number;
+    munition?: number;
+    popcap?: number;
+  };
+};
+
+export const AbilityCostMappings: AbilityCostMapping[] = [
+  {
+    abilityId: "australian_defense_australian_light_infantry_uk",
+    cost: {
+      manpower: 280,
+    },
+  },
+];
+
+export const getAbilityCostMappings = (abilityId: string) =>
+  AbilityCostMappings.filter((mapping) => mapping.abilityId === abilityId);
 
 export { bgWorkarounds, ebpsWorkarounds };

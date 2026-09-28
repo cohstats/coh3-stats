@@ -106,7 +106,11 @@
     "abilityInfoToggleOnCooldown": "Toggle On",
     "abilityInfoToggleOffCooldown": "Toggle Off",
     "requirements": "Requires",
-    "requiresVeterancy": "Vet {{rank}}"
+    "requiresVeterancy": "Vet {{rank}}",
+    "tabOverview": "Overview",
+    "tabStats": "Stats",
+    "tabWeapons": "Loadout & Weapons",
+    "tabConstruction": "Construction Menu"
   },
   "statsCard": {
     "sightRange": "Sight Range",
@@ -120,7 +124,8 @@
     "armor": "Armor",
     "captureMultiplier": "Capture Multiplier",
     "decaptureMultiplier": "Decapture Multiplier",
-    "vehicleArmor": "Vehicle Armor"
+    "vehicleArmor": "Vehicle Armor",
+    "vehicleArmorHint": "Refers to the ingame armor critical blueprint."
   },
   "weaponCard": {
     "accuracy": "Accuracy",

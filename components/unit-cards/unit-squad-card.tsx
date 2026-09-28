@@ -219,6 +219,7 @@ export const UnitSquadCard = ({
             armorValues: health,
           },
           t("statsCard.vehicleArmor"),
+          t("statsCard.vehicleArmorHint"),
         )
       ) : (
         <></>
