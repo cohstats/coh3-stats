@@ -39,7 +39,7 @@ export const VeterancyCard = ({ one, two, three, four, title }: VeterancyInput) 
         {title}
       </Title>
 
-      <Grid fz="sm" justify="left" align="center" columns={6} grow gutter="sm">
+      <Grid fz="sm" justify="left" align="center" columns={6} grow gap="sm">
         {levels.map(({ level, data }) => {
           const desc = data.screenName.split(spaceRegex);
           const maxStars = Math.max(3, level);
@@ -58,7 +58,7 @@ export const VeterancyCard = ({ one, two, three, four, title }: VeterancyInput) 
                     : undefined
                 }
               >
-                <Grid fz="sm" justify="left" align="center" columns={6} grow gutter="sm">
+                <Grid fz="sm" justify="left" align="center" columns={6} grow gap="sm">
                   <Grid.Col span={{ base: 1, md: 2 }}>
                     <Stack align="center" gap="xs">
                       <Group gap={2} grow>

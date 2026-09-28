@@ -116,7 +116,7 @@ const UnitUpgradeCardHeader = ({ desc, cfg }: Pick<UnitUpgrade, "desc" | "cfg">)
         fallbackSrc={iconPlaceholder}
       />
 
-      <Grid gutter={1} align="stretch">
+      <Grid gap={1} align="stretch">
         <Grid.Col span={12}>
           <Title order={6} style={{ textTransform: "capitalize" }} c="yellow.5" lineClamp={1}>
             {desc.help_text}

@@ -6,7 +6,12 @@ import "mantine-datatable/styles.css";
 import { AppProps } from "next/app";
 import Router from "next/router";
 import Head from "next/head";
-import { localStorageColorSchemeManager, MantineProvider } from "@mantine/core";
+import {
+  createTheme,
+  localStorageColorSchemeManager,
+  MantineProvider,
+  v8CssVariablesResolver,
+} from "@mantine/core";
 // import { Notifications } from "@mantine/notifications";
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
@@ -26,6 +31,11 @@ import { useRouter } from "next/router";
 import { getCookie } from "../src/utils";
 import { DefaultSeo } from "next-seo";
 import defaultSEO from "../next-seo.config";
+
+// Keep the Mantine 8.x look after the 9.x upgrade (default radius was "sm" in 8.x)
+const theme = createTheme({
+  defaultRadius: "sm",
+});
 
 const emptyInitialI18NextConfig: UserConfig = {
   i18n: {
@@ -152,7 +162,13 @@ function App(props: AppProps) {
         />
       </Head>
 
-      <MantineProvider defaultColorScheme="dark" colorSchemeManager={colorSchemeManager}>
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme="dark"
+        colorSchemeManager={colorSchemeManager}
+        // Keep the 8.x "light" variant colors (transparent instead of solid)
+        cssVariablesResolver={v8CssVariablesResolver}
+      >
         {/*<Notifications />*/}
         {layoutContent && contentWithLayout}
         {!layoutContent && contentWithoutLayout}

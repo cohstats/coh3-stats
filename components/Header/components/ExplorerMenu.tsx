@@ -319,7 +319,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
           </Anchor>
         </HoverCard.Target>
         <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-          <Grid gutter={8} columns={4}>
+          <Grid gap={8} columns={4}>
             <Grid.Col span={3}>
               <Grid columns={4} align="center">
                 <Grid.Col span={1}>{explorerFactionLink("german", () => null, t)}</Grid.Col>

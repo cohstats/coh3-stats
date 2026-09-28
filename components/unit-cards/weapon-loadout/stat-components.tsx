@@ -183,7 +183,7 @@ export const RangeStatRow = ({
   if (!show) return null;
 
   return (
-    <Grid gutter="xs">
+    <Grid gap="xs">
       <Grid.Col span={{ base: 4, md: 4 }}>
         <StatLabel label={label} tooltip={tooltip} />
       </Grid.Col>
@@ -219,7 +219,7 @@ export const RangeStatSection = ({
     <>
       {showDivider ? <Divider my={4} /> : null}
 
-      <Grid gutter="xs">
+      <Grid gap="xs">
         <Grid.Col span={12}>
           <Text fz="xs" fw={700} tt="uppercase" c="dimmed">
             {title}
@@ -273,7 +273,7 @@ export const RangeHeader = ({
   farDistance: number;
   t: (key: string) => string;
 }) => (
-  <Grid gutter="xs" align="center">
+  <Grid gap="xs" align="center">
     <Grid.Col span={{ base: 4, md: 4 }}>{left}</Grid.Col>
 
     <Grid.Col span={{ base: 3, md: 3 }}>

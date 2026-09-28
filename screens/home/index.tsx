@@ -57,7 +57,7 @@ const Home: NextPage<Props> = ({
         <Grid>
           <Grid.Col span={{ sm: 7 }}>
             <NewsSection steamNewsData={steamNewsData} t={t} />
-            <Grid gutter="xs" pt={"md"} style={{ alignItems: "stretch" }}>
+            <Grid gap="xs" pt={"md"} style={{ alignItems: "stretch" }}>
               <Grid.Col span={{ sm: 6 }} style={{ display: "flex" }}>
                 <DPSCalculatorCard t={t} />
               </Grid.Col>

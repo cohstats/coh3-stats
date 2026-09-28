@@ -153,7 +153,7 @@ export const WeaponLoadoutCard = (
     label?: React.ReactNode;
     renderCell: (column: (typeof movingModifierColumns)[number]) => React.ReactNode;
   }) => (
-    <Grid gutter="xs" align="center">
+    <Grid gap="xs" align="center">
       <Grid.Col span={4}>{label}</Grid.Col>
 
       {movingModifierColumns.map((column) => (
