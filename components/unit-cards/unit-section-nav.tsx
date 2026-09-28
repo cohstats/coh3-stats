@@ -11,9 +11,20 @@ export type UnitSectionNavItem = {
 // Section wrappers must use this class so the jump lands below the sticky header + nav.
 export const unitSectionClassName = classes.section;
 
-export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
+export const UnitSectionNav = ({
+  items,
+  leftSection,
+  rightSection,
+}: {
+  items: UnitSectionNavItem[];
+  /** Shown on the left only once the nav is stuck to the top, e.g. the unit icon. Desktop only. */
+  leftSection?: React.ReactNode;
+  /** Extra actions on the right side of the nav, e.g. a link to another tool. */
+  rightSection?: React.ReactNode;
+}) => {
   const navRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState<string | null>(items[0]?.id ?? null);
+  const [isStuck, setIsStuck] = useState(false);
   // The items array is rebuilt on every render, only re-subscribe when the sections change.
   const sectionIdsKey = items.map(({ id }) => id).join(",");
 
@@ -21,7 +32,13 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
     const sectionIds = sectionIdsKey.split(",");
 
     const onScroll = () => {
-      const navBottom = navRef.current?.getBoundingClientRect().bottom ?? 0;
+      const nav = navRef.current;
+      const navRect = nav?.getBoundingClientRect();
+      const navBottom = navRect?.bottom ?? 0;
+      if (nav && navRect) {
+        const stickyTop = parseFloat(window.getComputedStyle(nav).top) || 0;
+        setIsStuck(window.scrollY > 0 && navRect.top <= stickyTop + 1);
+      }
       const atPageBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
 
@@ -98,6 +115,16 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
 
   return (
     <Box component="nav" ref={navRef} className={classes.nav} data-testid="unit-section-nav">
+      {leftSection && (
+        <div
+          className={classes.lead}
+          data-visible={isStuck || undefined}
+          aria-hidden={!isStuck}
+          data-testid="unit-section-nav-lead"
+        >
+          {leftSection}
+        </div>
+      )}
       <div className={classes.list}>
         {items.map(({ id, label, count }) => {
           const isActive = id === activeId;
@@ -129,6 +156,7 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
           );
         })}
       </div>
+      {rightSection}
     </Box>
   );
 };

@@ -2,6 +2,9 @@
 .nav {
   position: sticky;
   top: 60px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-xs);
   z-index: 98;
   margin-top: var(--mantine-spacing-md);
   margin-bottom: var(--mantine-spacing-md);
@@ -14,7 +17,31 @@
   );
 }
 
+/* Fades in on the left once the nav is stuck, so the unit stays recognisable when scrolled.
+   Its space is always reserved, so the buttons don't shift when it appears. */
+.lead {
+  flex-shrink: 0;
+  align-self: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 150ms ease,
+    visibility 150ms;
+}
+
+.lead[data-visible] {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 48em) {
+  .lead {
+    display: none;
+  }
+}
+
 .list {
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
   gap: var(--mantine-spacing-xs);

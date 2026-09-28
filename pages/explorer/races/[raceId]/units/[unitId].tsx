@@ -1,9 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { NextSeo } from "next-seo";
 import Error from "next/error";
+import { IconExternalLink } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import {
   Box,
+  Button,
   Card,
   Container,
   Flex,
@@ -30,7 +32,10 @@ import {
   UpgradesType,
   WeaponType,
 } from "../../../../../src/unitStats";
-import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
+import {
+  UnitDescriptionCard,
+  UnitIcon,
+} from "../../../../../components/unit-cards/unit-description-card";
 import FactionIcon from "../../../../../components/faction-icon";
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
@@ -67,7 +72,7 @@ import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descr
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../../../config";
-import { getExplorerFactionRoute } from "../../../../../src/routes";
+import { getDPSCalculatorRoute, getExplorerFactionRoute } from "../../../../../src/routes";
 import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
 
@@ -510,7 +515,36 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
         </Grid>
         {/* Outside of the grids, so it stays sticky for the whole page. */}
-        <UnitSectionNav items={sectionNavItems} />
+        <UnitSectionNav
+          items={sectionNavItems}
+          leftSection={
+            <UnitIcon
+              faction={raceId}
+              iconName={resolvedSquad.ui.iconName}
+              screenName={resolvedSquad.ui.screenName}
+              size={30}
+            />
+          }
+          rightSection={
+            // The DPS tool lists only units with weapons, and hides Final Stand units by default.
+            squadWeapons.length > 0 && !isFinalStand ? (
+              <Button
+                component="a"
+                href={getDPSCalculatorRoute(resolvedSquad.id)}
+                target="_blank"
+                rel="noopener"
+                variant="default"
+                size="compact-md"
+                radius="md"
+                rightSection={<IconExternalLink size={16} />}
+                visibleFrom="sm"
+                data-testid="unit-open-dps"
+              >
+                {t("unitPage.openInDpsTool")}
+              </Button>
+            ) : undefined
+          }
+        />
         {/* The side column is 30% wide on desktop, on phones it goes above the stats. */}
         <Grid columns={10} grow>
           <Grid.Col span={{ base: 10, md: 7 }} order={{ base: 2, md: 1 }}>
