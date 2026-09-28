@@ -1,7 +1,7 @@
 import { Anchor, Card, Flex, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import { raceType } from "../../src/coh3/coh3-types";
+import { raceType, raceTypeArray } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
@@ -10,8 +10,6 @@ import {
   getExplorerFsTechRoute,
   getExplorerFsUnitsRoute,
 } from "../../src/routes";
-
-const Races: raceType[] = ["german", "american", "dak", "british"];
 
 const FactionLinkCard = ({
   faction,
@@ -84,7 +82,7 @@ const FinalStandSection = ({ showTitle = true }: { showTitle?: boolean }) => {
             {group.heading}
           </Title>
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            {Races.map((faction: raceType) => (
+            {raceTypeArray.map((faction) => (
               <FactionLinkCard
                 key={`explorer_fs_${group.key}_${faction}`}
                 faction={faction}
