@@ -18,7 +18,7 @@ describe("getPlayerMatchHistoryResult", () => {
         resulttype: 1,
         teamid: 1,
         race_id: 1,
-        counters: "",
+        counters: "" as any,
         profile: {
           name: "Player1",
           alias: "P1",
@@ -45,7 +45,7 @@ describe("getPlayerMatchHistoryResult", () => {
         resulttype: 2,
         teamid: 2,
         race_id: 2,
-        counters: "",
+        counters: "" as any,
         profile: {
           name: "Player2",
           alias: "P2",
@@ -70,6 +70,7 @@ describe("getPlayerMatchHistoryResult", () => {
     ],
     matchhistoryitems: [],
     profile_ids: [1, 2],
+    matchurls: [],
   };
 
   test("returns the correct result for an existing player", () => {
@@ -105,7 +106,7 @@ describe("isPlayerVictorious", () => {
         resulttype: 1,
         teamid: 1,
         race_id: 1,
-        counters: "",
+        counters: "" as any,
         profile: {
           name: "Player1",
           alias: "P1",
@@ -132,7 +133,7 @@ describe("isPlayerVictorious", () => {
         resulttype: 2,
         teamid: 2,
         race_id: 2,
-        counters: "",
+        counters: "" as any,
         profile: {
           name: "Player2",
           alias: "P2",
@@ -157,6 +158,7 @@ describe("isPlayerVictorious", () => {
     ],
     matchhistoryitems: [],
     profile_ids: [1, 2],
+    matchurls: [],
   };
 
   test("returns true if the player is victorious", () => {

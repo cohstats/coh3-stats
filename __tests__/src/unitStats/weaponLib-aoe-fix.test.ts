@@ -4,7 +4,7 @@ import { WeaponStatsType } from "../../../src/unitStats/mappingWeapon";
 
 describe("AOE Damage Fix", () => {
   // Mock weapon with AOE capabilities
-  const mockWeaponBag: WeaponStatsType = {
+  const mockWeaponBag = {
     // Basic weapon stats
     accuracy_near: 0.8,
     accuracy_mid: 0.6,
@@ -98,7 +98,7 @@ describe("AOE Damage Fix", () => {
       min: 0,
       max: 35,
     },
-  };
+  } as unknown as WeaponStatsType;
 
   const mockWeaponMember: WeaponMember = {
     weapon_id: "test_weapon",
