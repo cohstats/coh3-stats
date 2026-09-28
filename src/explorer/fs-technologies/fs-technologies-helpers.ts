@@ -6,7 +6,7 @@
  * a draft pick can offer and the filtering the pages need.
  */
 
-import { cohDBracesToNormalRaces } from "../../coh3/coh3-data";
+import { gameRaceNamesToAppRaces } from "../../coh3/coh3-data";
 import { raceTypeArray, type raceType } from "../../coh3/coh3-types";
 import { getExplorerUnitRoute } from "../../routes";
 import { getIconsPathOnCDN } from "../../utils";
@@ -44,7 +44,7 @@ const toAppRaceFromTechRace = (race?: string | null): raceType | null => {
 
   if (raceTypeArray.includes(name as raceType)) return name as raceType;
 
-  return cohDBracesToNormalRaces[name] ?? null;
+  return gameRaceNamesToAppRaces[name] ?? null;
 };
 
 /** The technology list of a faction, or `null` when the data file has none for it. */

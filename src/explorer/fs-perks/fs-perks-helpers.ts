@@ -5,7 +5,7 @@
  * the icon paths of the data file into CDN urls and the small bits of formatting the perk cards need.
  */
 
-import { cohDBracesToNormalRaces } from "../../coh3/coh3-data";
+import { gameRaceNamesToAppRaces } from "../../coh3/coh3-data";
 import { raceTypeArray, type raceType } from "../../coh3/coh3-types";
 import { getIconsPathOnCDN } from "../../utils";
 import type {
@@ -24,15 +24,14 @@ import type {
  * Maps a race id of the game files onto the race the app uses.
  *
  * The perks data file spells the factions the way the game files do - `afrika_korps`,
- * `british_africa`, `americans`, `germans` - which is the same odd spelling the cohdb API uses, so we
- * reuse its mapping. Race ids which already are one of ours (the shorter keys of the data file) are
- * passed through, anything unknown gives `null`.
+ * `british_africa`, `americans`, `germans`. Race ids which already are one of ours (the shorter keys
+ * of the data file) are passed through, anything unknown gives `null`.
  */
 const toAppRace = (raceId?: string | null): raceType | null => {
   if (!raceId) return null;
   if (raceTypeArray.includes(raceId as raceType)) return raceId as raceType;
 
-  return cohDBracesToNormalRaces[raceId] ?? null;
+  return gameRaceNamesToAppRaces[raceId] ?? null;
 };
 
 /** The perk tree of a faction, or `null` when the data file has none for it. */
