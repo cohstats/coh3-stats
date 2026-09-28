@@ -62,6 +62,12 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
     };
 
     updateOffset();
+    // A direct `#section` link can be scrolled by the browser before the offset is measured.
+    const hashTarget =
+      window.location.hash && document.getElementById(window.location.hash.slice(1));
+    if (hashTarget) {
+      requestAnimationFrame(() => hashTarget.scrollIntoView({ block: "start" }));
+    }
     const resizeObserver = new ResizeObserver(updateOffset);
     resizeObserver.observe(nav);
     // The sticky `top` changes with the site header height on resize.
@@ -75,9 +81,15 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
 
   const onClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     const element = document.getElementById(id);
-    if (!element) return;
+    // Leave new tab / new window clicks to the browser.
+    const isModifiedClick =
+      event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+    if (!element || isModifiedClick) return;
     event.preventDefault();
     element.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Move keyboard focus to the section, so tabbing continues from there.
+    if (!element.hasAttribute("tabindex")) element.setAttribute("tabindex", "-1");
+    element.focus({ preventScroll: true });
     // Keep the URL shareable without triggering a Next.js navigation.
     window.history.replaceState(window.history.state, "", `#${id}`);
   };
@@ -99,6 +111,8 @@ export const UnitSectionNav = ({ items }: { items: UnitSectionNavItem[] }) => {
               color={isActive ? undefined : "gray"}
               size="compact-md"
               radius="md"
+              // Buttons stretch to the grid cell on phones, keep the label on the left.
+              justify="flex-start"
               aria-current={isActive ? "location" : undefined}
               data-testid={`unit-section-nav-${id}`}
               rightSection={

@@ -44,7 +44,7 @@ import {
 } from "../../../../../components/unit-cards/unit-upgrade-card";
 import type { UnitUpgradeDisplayRequirement } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
-import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
+import { WeaponLoadoutCardView } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
 import {
@@ -522,21 +522,21 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
                 withBorder
                 data-testid="stats-card"
               >
-                {UnitSquadCard({
-                  id: resolvedSquad.id,
-                  type: resolvedSquad.unitType,
-                  health: armorValues,
-                  ui: {
+                <UnitSquadCard
+                  id={resolvedSquad.id}
+                  type={resolvedSquad.unitType}
+                  health={armorValues}
+                  ui={{
                     armorIcon: resolvedSquad.ui.armorIcon,
-                  },
-                  sight: sightValues,
-                  moving: movingValues,
-                  range: rangeValues,
-                  capture: {
+                  }}
+                  sight={sightValues}
+                  moving={movingValues}
+                  range={rangeValues}
+                  capture={{
                     cap: resolvedSquad.capture_rate,
                     decap: resolvedSquad.capture_revert,
-                  },
-                })}
+                  }}
+                />
               </Card>
               <UnitUpgradeSection
                 upgrades={upgrades}
@@ -606,6 +606,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               t("unitPage.abilityWeapons"),
               abilities,
               translateRequirements,
+              t,
             )}
           </Grid.Col>
         </Grid>
@@ -682,9 +683,9 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
                 withBorder
                 data-testid={`constructable-card-${id}`}
               >
-                {ConstructableCard({
-                  id,
-                  desc: {
+                <ConstructableCard
+                  id={id}
+                  desc={{
                     screen_name: ui.screenName,
                     help_text: ui.helpText,
                     extra_text: ui.extraText,
@@ -692,9 +693,9 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
                     icon_name: ui.iconName,
                     extra_text_formatter: "",
                     brief_text_formatter: "",
-                  },
-                  time_cost: cost,
-                })}
+                  }}
+                  time_cost={cost}
+                />
               </Card>
             );
           } else {
@@ -771,7 +772,7 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weap
           return (
             <Grid.Col span={{ base: 2, md: 1 }} key={weapon_id}>
               <Card p="lg" radius="md" withBorder data-testid={`weapon-card-${weapon_id}`}>
-                {WeaponLoadoutCard(weapon, num)}
+                <WeaponLoadoutCardView weapon={weapon} count={num} />
               </Card>
             </Grid.Col>
           );
@@ -846,7 +847,7 @@ const UnitUpgradeWeaponSection = (
                 {weapons.map(({ weapon_id, weapon, num }) => (
                   <Grid.Col span={{ base: 2, md: 1 }} key={`${upgrade.id}-${weapon_id}`}>
                     <Card p="lg" radius="md" withBorder>
-                      {WeaponLoadoutCard(weapon, num)}
+                      <WeaponLoadoutCardView weapon={weapon} count={num} />
                     </Card>
                   </Grid.Col>
                 ))}
@@ -1172,8 +1173,9 @@ const UnitAbilityWeaponSection = (
   translateRequirements: (
     requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ) => UnitUpgradeDisplayRequirement[],
+  // Passed in, this is called as a plain function so it must not use hooks itself.
+  t: (key: string, options?: Record<string, unknown>) => string,
 ) => {
-  const { t } = useTranslation(["explorer"]);
   if (!abilityWeaponLoadouts?.length) return null;
 
   return (
@@ -1221,10 +1223,14 @@ const UnitAbilityWeaponSection = (
                   {weapons.map(({ weapon_id, weapon, num }) => (
                     <Grid.Col span={{ base: 2, md: 1 }} key={`${ability.id}-${weapon_id}`}>
                       <Card p="lg" radius="md" withBorder>
-                        {WeaponLoadoutCard(weapon, num, {
-                          source: "ability",
-                          abilityNumShots: numShots,
-                        })}
+                        <WeaponLoadoutCardView
+                          weapon={weapon}
+                          count={num}
+                          context={{
+                            source: "ability",
+                            abilityNumShots: numShots,
+                          }}
+                        />
                       </Card>
                     </Grid.Col>
                   ))}
