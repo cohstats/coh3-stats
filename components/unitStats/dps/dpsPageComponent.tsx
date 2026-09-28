@@ -254,6 +254,37 @@ export const DpsPageComponent = (props: IDPSProps) => {
     init(props);
   }, []);
 
+  // The selected units are kept in the URL (`?unit1=...&unit2=...`), so the page can be linked to.
+  // State, not a ref, so the URL is written only after the preselected units are rendered.
+  const [urlUnitsApplied, setUrlUnitsApplied] = useState(false);
+  const selectedUnit1 = activeData[0]?.id;
+  const selectedUnit2 = activeData[1]?.id;
+
+  useEffect(() => {
+    if (!router.isReady || urlUnitsApplied) return;
+    // The lists are built during render, which ran before `init`.
+    if (unitSelectionList1.length == 0)
+      unitSelectionList1 = mapUnitSelection(props.sbpsData, units1, unitFilter1, showFinalStand);
+    if (unitSelectionList2.length == 0)
+      unitSelectionList2 = mapUnitSelection(props.sbpsData, units2, unitFilter2, showFinalStand);
+    const { unit1, unit2 } = router.query;
+    if (typeof unit1 === "string") onSelectionChange(unit1, 0);
+    if (typeof unit2 === "string") onSelectionChange(unit2, 1);
+    setUrlUnitsApplied(true);
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if (!urlUnitsApplied) return;
+    if (router.query.unit1 === selectedUnit1 && router.query.unit2 === selectedUnit2) return;
+    const query: Record<string, string> = {};
+    if (selectedUnit1) query.unit1 = selectedUnit1;
+    if (selectedUnit2) query.unit2 = selectedUnit2;
+    router.replace({ pathname: router.pathname, query }, undefined, {
+      shallow: true,
+      scroll: false,
+    });
+  }, [urlUnitsApplied, selectedUnit1, selectedUnit2]);
+
   // if(config.isDevEnv())
   const patchList = [];
   for (const key in config.patches) {
@@ -504,6 +535,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 patchList={patchList}
                 defaultPatch={config.latestPatch}
                 position={1}
+                selectedUnitId={selectedUnit1}
                 onFilterToggle={toggleFilter}
                 onPatchChange={onPatchUnitChange}
                 onUnitSelect={onSelectionChange}
@@ -527,6 +559,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 patchList={patchList}
                 defaultPatch={config.latestPatch}
                 position={2}
+                selectedUnitId={selectedUnit2}
                 onFilterToggle={toggleFilter}
                 onPatchChange={onPatchUnitChange}
                 onUnitSelect={onSelectionChange}

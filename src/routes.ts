@@ -125,8 +125,13 @@ export const getExplorerUnitRoute = (
   return encodeURI(`/explorer/races/${race}/units/${unitId}`);
 };
 
-export const getDPSCalculatorRoute = () => {
-  return encodeURI(`/explorer/dps`);
+/** Optionally preselects the units (squad ids) on the left / right side. */
+export const getDPSCalculatorRoute = (unit1?: string, unit2?: string) => {
+  const params = new URLSearchParams();
+  if (unit1) params.set("unit1", unit1);
+  if (unit2) params.set("unit2", unit2);
+  const query = params.toString();
+  return encodeURI(`/explorer/dps`) + (query ? `?${query}` : "");
 };
 
 export const getDPSCompareRoute = () => {
