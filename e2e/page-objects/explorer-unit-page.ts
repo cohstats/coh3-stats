@@ -39,6 +39,29 @@ export class ExplorerUnitPage extends BasePage {
   // ==================== Sections ====================
 
   /**
+   * Get the tab list root for the explorer unit page
+   */
+  get tabList(): Locator {
+    return this.page.locator('[role="tablist"]');
+  }
+
+  /**
+   * Get a specific unit tab by key
+   */
+  getTab(tabName: "stats" | "upgrades" | "abilities" | "construction"): Locator {
+    return this.page.getByTestId(`tab-${tabName}`);
+  }
+
+  /**
+   * Click a specific unit tab and wait for its panel to become visible
+   */
+  async openTab(tabName: "stats" | "upgrades" | "abilities" | "construction"): Promise<void> {
+    const tab = this.getTab(tabName);
+    await expect(tab).toBeVisible();
+    await tab.click();
+  }
+
+  /**
    * Get the stats section heading
    */
   get statsHeading(): Locator {
@@ -216,8 +239,11 @@ export class ExplorerUnitPage extends BasePage {
    * Check if the abilities section exists (if unit has abilities)
    */
   async checkAbilitiesSectionIfPresent(): Promise<void> {
-    const abilitiesVisible = await this.abilitiesSection.isVisible().catch(() => false);
-    if (abilitiesVisible) {
+    const abilitiesTabVisible = await this.getTab("abilities")
+      .isVisible()
+      .catch(() => false);
+    if (abilitiesTabVisible) {
+      await this.openTab("abilities");
       await expect(this.abilitiesSection).toBeVisible();
     }
   }
@@ -226,6 +252,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check if the weapons section exists and has content
    */
   async checkWeaponsSectionPresent(): Promise<void> {
+    await this.openTab("stats");
     await expect(this.weaponsSection).toBeVisible();
   }
 
@@ -233,8 +260,11 @@ export class ExplorerUnitPage extends BasePage {
    * Check if the upgrades section exists (if unit has upgrades)
    */
   async checkUpgradesSectionIfPresent(): Promise<void> {
-    const upgradesVisible = await this.upgradesHeading.isVisible().catch(() => false);
-    if (upgradesVisible) {
+    const upgradesTabVisible = await this.getTab("upgrades")
+      .isVisible()
+      .catch(() => false);
+    if (upgradesTabVisible) {
+      await this.openTab("upgrades");
       await expect(this.upgradesHeading).toBeVisible();
     }
   }
@@ -274,6 +304,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check all upgrades are visible
    */
   async checkUpgradesVisible(upgrades: string[]): Promise<void> {
+    await this.openTab("upgrades");
     for (const upgrade of upgrades) {
       const upgradeElement = this.page.getByText(upgrade).first();
       await expect(upgradeElement).toBeVisible();
@@ -284,6 +315,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check all abilities are visible
    */
   async checkAbilitiesVisible(abilities: string[]): Promise<void> {
+    await this.openTab("abilities");
     for (const ability of abilities) {
       const abilityElement = this.page.getByText(ability).first();
       await expect(abilityElement).toBeVisible();
@@ -294,6 +326,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check all structures are visible
    */
   async checkStructuresVisible(structures: string[]): Promise<void> {
+    await this.openTab("construction");
     for (const structure of structures) {
       const structureElement = this.page.getByText(structure).first();
       await expect(structureElement).toBeVisible();
@@ -304,6 +337,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check weapon stats are visible
    */
   async checkWeaponStatsVisible(stats: string[]): Promise<void> {
+    await this.openTab("stats");
     for (const stat of stats) {
       const statElement = this.page.getByText(stat, { exact: false }).first();
       await expect(statElement).toBeVisible();
@@ -314,6 +348,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check range categories are visible
    */
   async checkRangeCategoriesVisible(ranges: string[]): Promise<void> {
+    await this.openTab("stats");
     for (const range of ranges) {
       const rangeElement = this.page.getByText(range, { exact: true }).first();
       await expect(rangeElement).toBeVisible();
@@ -390,6 +425,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check upgrade icons exist
    */
   async checkUpgradeIconsExist(): Promise<void> {
+    await this.openTab("upgrades");
     const count = await this.upgradeIcons.count();
     expect(count).toBeGreaterThan(0);
   }
@@ -398,6 +434,7 @@ export class ExplorerUnitPage extends BasePage {
    * Check ability icons exist
    */
   async checkAbilityIconsExist(): Promise<void> {
+    await this.openTab("abilities");
     const count = await this.abilityIcons.count();
     expect(count).toBeGreaterThan(0);
   }
