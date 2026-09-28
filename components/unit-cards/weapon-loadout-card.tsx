@@ -1019,3 +1019,18 @@ export const WeaponLoadoutCard = (
     </Stack>
   );
 };
+
+/**
+ * Component version of `WeaponLoadoutCard`. Render it as JSX instead of calling
+ * `WeaponLoadoutCard()` inside another component, otherwise its hooks are counted
+ * as hooks of the parent and break it when the number of rendered weapons changes.
+ */
+export const WeaponLoadoutCardView = ({
+  weapon,
+  count = 1,
+  context = {},
+}: {
+  weapon: WeaponCardInput;
+  count?: number;
+  context?: WeaponCardContext;
+}) => WeaponLoadoutCard(weapon, count, context);

@@ -1,9 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { NextSeo } from "next-seo";
 import Error from "next/error";
+import { IconExternalLink } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import {
   Box,
+  Button,
   Card,
   Container,
   Flex,
@@ -30,7 +32,10 @@ import {
   UpgradesType,
   WeaponType,
 } from "../../../../../src/unitStats";
-import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
+import {
+  UnitDescriptionCard,
+  UnitIcon,
+} from "../../../../../components/unit-cards/unit-description-card";
 import FactionIcon from "../../../../../components/faction-icon";
 import { raceType } from "../../../../../src/coh3/coh3-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
@@ -44,9 +49,14 @@ import {
 } from "../../../../../components/unit-cards/unit-upgrade-card";
 import type { UnitUpgradeDisplayRequirement } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
-import { WeaponLoadoutCard } from "../../../../../components/unit-cards/weapon-loadout-card";
+import { WeaponLoadoutCardView } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
+import {
+  UnitSectionNav,
+  UnitSectionNavItem,
+  unitSectionClassName,
+} from "../../../../../components/unit-cards/unit-section-nav";
 import { getIconsPathOnCDN, roundToDecimals } from "../../../../../src/utils";
 import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
@@ -62,7 +72,7 @@ import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descr
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../../../config";
-import { getExplorerFactionRoute } from "../../../../../src/routes";
+import { getDPSCalculatorRoute, getExplorerFactionRoute } from "../../../../../src/routes";
 import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
 
@@ -383,6 +393,31 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
     return generateKeywordsString(baseKeywords);
   };
 
+  // Only link sections which are rendered, in the order they appear on the page.
+  const visibleBuildablesCount = buildables.filter(({ ui }) => ui.screenName).length;
+  const sectionNavItems: UnitSectionNavItem[] = [
+    { id: "stats", label: t("unitPage.stats") },
+    ...(upgrades.length
+      ? [{ id: "upgrades", label: t("common.upgrades"), count: upgrades.length }]
+      : []),
+    ...(abilities.length
+      ? [{ id: "abilities", label: t("unitPage.abilities"), count: abilities.length }]
+      : []),
+    ...(visibleBuildablesCount
+      ? [{ id: "construct", label: t("unitPage.construct"), count: visibleBuildablesCount }]
+      : []),
+    { id: "loadout", label: t("unitPage.loadout") },
+    ...(abilityWeaponLoadouts.length
+      ? [
+          {
+            id: "ability-weapons",
+            label: t("unitPage.abilityWeapons"),
+            count: abilityWeaponLoadouts.length,
+          },
+        ]
+      : []),
+  ];
+
   const metaDescription = createMetaDescription();
   const metaKeywords = createEnhancedKeywords();
   const finalStandName = t("unitMeta.finalStandName");
@@ -478,27 +513,65 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               </Box>
             </Group>
           </Grid.Col>
-          <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
+        </Grid>
+        {/* Outside of the grids, so it stays sticky for the whole page. */}
+        <UnitSectionNav
+          items={sectionNavItems}
+          leftSection={
+            <UnitIcon
+              faction={raceId}
+              iconName={resolvedSquad.ui.iconName}
+              screenName={resolvedSquad.ui.screenName}
+              size={30}
+            />
+          }
+          rightSection={
+            // The DPS tool lists only units with weapons, and hides Final Stand units by default.
+            squadWeapons.length > 0 && !isFinalStand ? (
+              <Button
+                component="a"
+                href={getDPSCalculatorRoute(resolvedSquad.id)}
+                target="_blank"
+                rel="noopener"
+                variant="default"
+                size="compact-md"
+                radius="md"
+                rightSection={<IconExternalLink size={16} />}
+                visibleFrom="sm"
+                data-testid="unit-open-dps"
+              >
+                {t("unitPage.openInDpsTool")}
+              </Button>
+            ) : undefined
+          }
+        />
+        {/* The side column is 30% wide on desktop, on phones it goes above the stats. */}
+        <Grid columns={10} grow>
+          <Grid.Col span={{ base: 10, md: 7 }} order={{ base: 2, md: 1 }}>
             <Stack>
-              <Title order={4} data-testid="stats-heading">
-                {t("unitPage.stats")}
-              </Title>
-              <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder data-testid="stats-card">
-                {UnitSquadCard({
-                  id: resolvedSquad.id,
-                  type: resolvedSquad.unitType,
-                  health: armorValues,
-                  ui: {
+              <Card
+                id="stats"
+                className={unitSectionClassName}
+                p={{ base: "xs", sm: "md" }}
+                radius="md"
+                withBorder
+                data-testid="stats-card"
+              >
+                <UnitSquadCard
+                  id={resolvedSquad.id}
+                  type={resolvedSquad.unitType}
+                  health={armorValues}
+                  ui={{
                     armorIcon: resolvedSquad.ui.armorIcon,
-                  },
-                  sight: sightValues,
-                  moving: movingValues,
-                  range: rangeValues,
-                  capture: {
+                  }}
+                  sight={sightValues}
+                  moving={movingValues}
+                  range={rangeValues}
+                  capture={{
                     cap: resolvedSquad.capture_rate,
                     decap: resolvedSquad.capture_revert,
-                  },
-                })}
+                  }}
+                />
               </Card>
               <UnitUpgradeSection
                 upgrades={upgrades}
@@ -513,11 +586,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               />
             </Stack>
           </Grid.Col>
-          <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
+          <Grid.Col span={{ base: 10, md: 3 }} order={{ base: 1, md: 2 }}>
             <Stack>
-              <Title order={4} data-testid="costs-heading">
-                {t("unitPage.stats")}
-              </Title>
               <UnitCostGroup
                 totalCost={totalCost}
                 totalUpkeepCost={totalUpkeepCost}
@@ -547,10 +617,14 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
           </Grid.Col>
         </Grid>
         <Grid>
-          <Grid.Col data-testid="can-construct-section">
+          <Grid.Col
+            id="construct"
+            className={unitSectionClassName}
+            data-testid="can-construct-section"
+          >
             {UnitBuildingSection(buildables, t("unitPage.construct"))}
           </Grid.Col>
-          <Grid.Col data-testid="loadout-section">
+          <Grid.Col id="loadout" className={unitSectionClassName} data-testid="loadout-section">
             {UnitWeaponSection(squadWeapons, t("unitPage.loadout"), t("unitPage.weaponNote"))}
           </Grid.Col>
           <Grid.Col>
@@ -561,12 +635,13 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               translateRequirements,
             )}
           </Grid.Col>
-          <Grid.Col>
+          <Grid.Col id="ability-weapons" className={unitSectionClassName}>
             {UnitAbilityWeaponSection(
               abilityWeaponLoadouts,
               t("unitPage.abilityWeapons"),
               abilities,
               translateRequirements,
+              t,
             )}
           </Grid.Col>
         </Grid>
@@ -589,7 +664,7 @@ const UnitUpgradeSection: React.FC<{
   if (!upgrades?.length) return null;
 
   return (
-    <Stack data-testid="upgrades-section">
+    <Stack id="upgrades" className={unitSectionClassName} data-testid="upgrades-section">
       <Title order={4} data-testid="upgrades-heading">
         {title}
       </Title>
@@ -631,7 +706,7 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
       <Title order={4} data-testid="can-construct-heading">
         {title}
       </Title>
-      <SimpleGrid cols={{ base: 3, xs: 1, sm: 2, lg: 3 }}>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
         {Object.values(buildings).map(({ id, ui, cost }) => {
           // If we are missing the name of the ability --> it's most likely broken
           if (ui.screenName) {
@@ -643,9 +718,9 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
                 withBorder
                 data-testid={`constructable-card-${id}`}
               >
-                {ConstructableCard({
-                  id,
-                  desc: {
+                <ConstructableCard
+                  id={id}
+                  desc={{
                     screen_name: ui.screenName,
                     help_text: ui.helpText,
                     extra_text: ui.extraText,
@@ -653,9 +728,9 @@ const UnitBuildingSection = (buildings: EbpsType[], title = "Can Construct") => 
                     icon_name: ui.iconName,
                     extra_text_formatter: "",
                     brief_text_formatter: "",
-                  },
-                  time_cost: cost,
-                })}
+                  }}
+                  time_cost={cost}
+                />
               </Card>
             );
           } else {
@@ -683,7 +758,7 @@ const UnitAbilitySection: React.FC<{
   if (!abilities?.length) return null;
 
   return (
-    <Stack data-testid="abilities-section">
+    <Stack id="abilities" className={unitSectionClassName} data-testid="abilities-section">
       <Title order={4} data-testid="abilities-heading">
         {title}
       </Title>
@@ -732,7 +807,7 @@ const UnitWeaponSection = (squadWeapons: WeaponMember[], title = "Loadout", weap
           return (
             <Grid.Col span={{ base: 2, md: 1 }} key={weapon_id}>
               <Card p="lg" radius="md" withBorder data-testid={`weapon-card-${weapon_id}`}>
-                {WeaponLoadoutCard(weapon, num)}
+                <WeaponLoadoutCardView weapon={weapon} count={num} />
               </Card>
             </Grid.Col>
           );
@@ -807,7 +882,7 @@ const UnitUpgradeWeaponSection = (
                 {weapons.map(({ weapon_id, weapon, num }) => (
                   <Grid.Col span={{ base: 2, md: 1 }} key={`${upgrade.id}-${weapon_id}`}>
                     <Card p="lg" radius="md" withBorder>
-                      {WeaponLoadoutCard(weapon, num)}
+                      <WeaponLoadoutCardView weapon={weapon} count={num} />
                     </Card>
                   </Grid.Col>
                 ))}
@@ -1133,8 +1208,9 @@ const UnitAbilityWeaponSection = (
   translateRequirements: (
     requirements: Array<UnitUpgradeDisplayRequirement & { rank?: number }>,
   ) => UnitUpgradeDisplayRequirement[],
+  // Passed in, this is called as a plain function so it must not use hooks itself.
+  t: (key: string, options?: Record<string, unknown>) => string,
 ) => {
-  const { t } = useTranslation(["explorer"]);
   if (!abilityWeaponLoadouts?.length) return null;
 
   return (
@@ -1182,10 +1258,14 @@ const UnitAbilityWeaponSection = (
                   {weapons.map(({ weapon_id, weapon, num }) => (
                     <Grid.Col span={{ base: 2, md: 1 }} key={`${ability.id}-${weapon_id}`}>
                       <Card p="lg" radius="md" withBorder>
-                        {WeaponLoadoutCard(weapon, num, {
-                          source: "ability",
-                          abilityNumShots: numShots,
-                        })}
+                        <WeaponLoadoutCardView
+                          weapon={weapon}
+                          count={num}
+                          context={{
+                            source: "ability",
+                            abilityNumShots: numShots,
+                          }}
+                        />
                       </Card>
                     </Grid.Col>
                   ))}

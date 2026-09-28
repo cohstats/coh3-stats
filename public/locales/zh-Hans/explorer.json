@@ -79,6 +79,7 @@
     "importantNote": "此部分可能包括一些在标准遭遇战/多人游戏中无法使用的单位。",
     "upgradeWeapons": "通过升级获得的武器",
     "abilityWeapons": "技能武器",
+    "openInDpsTool": "在 DPS 工具中打开",
     "abilityInfoRange": "范围",
     "abilityInfoShots": "射击次数",
     "abilityInfoDuration": "持续时间",

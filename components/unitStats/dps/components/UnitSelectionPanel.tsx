@@ -10,6 +10,7 @@ interface UnitSelectionPanelProps {
   patchList: string[];
   defaultPatch: string;
   position: number;
+  selectedUnitId?: string;
   onFilterToggle: (
     filterValue: string,
     unitIndex: number,
@@ -59,6 +60,7 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
   patchList,
   defaultPatch,
   position,
+  selectedUnitId,
   onFilterToggle,
   onPatchChange,
   onUnitSelect,
@@ -95,6 +97,7 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
         key={`Search${position}`}
         searchData={unitSelectionList}
         onSelect={onUnitSelect}
+        value={selectedUnitId ?? null}
         position={position === 1 ? 0 : 1}
         testId={`dps-unit-search-${position}`}
       />

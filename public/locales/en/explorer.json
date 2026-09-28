@@ -98,6 +98,7 @@
     "importantNote": "This section might include some units which are not accessible in standard skirmish / multiplayer game.",
     "upgradeWeapons": "Weapons Available Via Upgrade",
     "abilityWeapons": "Ability Weapons",
+    "openInDpsTool": "Open in DPS Tool",
     "abilityInfoRange": "Range",
     "abilityInfoShots": "Shots",
     "abilityInfoDuration": "Duration",

@@ -125,3 +125,31 @@ export const UnitDescriptionCard = ({
     </>
   );
 };
+
+/** The unit icon on its faction background, as in the card above, at any size. */
+export const UnitIcon = ({
+  faction,
+  iconName,
+  screenName,
+  size,
+}: {
+  faction: raceType;
+  iconName: string;
+  screenName: string;
+  size: number;
+}) => (
+  <BackgroundImage
+    w={size}
+    h={size}
+    src={getIconsPathOnCDN(BattlegroupBackgrounds[faction])}
+    radius="sm"
+  >
+    <ImageWithFallback
+      width={size}
+      height={size}
+      src={`/icons/${iconName}.png`}
+      alt={screenName}
+      fallbackSrc={iconPlaceholder}
+    />
+  </BackgroundImage>
+);

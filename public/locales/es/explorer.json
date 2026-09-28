@@ -66,6 +66,7 @@
     "importantNote": "Esta sección puede incluir algunas unidades que no son accesibles en el modo escaramuza estándar / multijugador.",
     "upgradeWeapons": "Armas disponibles mediante mejora",
     "abilityWeapons": "Armas de habilidad",
+    "openInDpsTool": "Abrir en la herramienta DPS",
     "abilityInfoRange": "Alcance",
     "abilityInfoShots": "Disparos",
     "abilityInfoDuration": "Duración",

@@ -134,6 +134,8 @@ interface ISearchProps {
   onSelect(selection: string | null, position: number): any;
   position: number;
   disabled?: boolean;
+  /** Controls the select, e.g. when the unit is preselected from the URL. Uncontrolled when omitted. */
+  value?: string | null;
   /** Optional `data-testid` - the page renders several of these selects side by side. */
   testId?: string;
 }
@@ -160,7 +162,7 @@ export const UnitSearch = (props: ISearchProps) => {
       clearable
       renderOption={renderSelectOption}
       data={props.searchData}
-      defaultValue={null}
+      {...(props.value !== undefined ? { value: props.value } : { defaultValue: null })}
       searchable
       maxDropdownHeight={600}
       nothingFoundMessage="Nobody here. War is over!"

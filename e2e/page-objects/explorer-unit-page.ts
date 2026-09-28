@@ -39,10 +39,10 @@ export class ExplorerUnitPage extends BasePage {
   // ==================== Sections ====================
 
   /**
-   * Get the stats section heading
+   * Get the stats card
    */
-  get statsHeading(): Locator {
-    return this.page.getByTestId("stats-heading");
+  get statsCard(): Locator {
+    return this.page.getByTestId("stats-card");
   }
 
   /**

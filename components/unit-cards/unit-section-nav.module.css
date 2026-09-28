@@ -1,0 +1,94 @@
+/* Sits right under the sticky site header, see `components/Header/Header.module.css`. */
+.nav {
+  position: sticky;
+  top: 60px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-xs);
+  z-index: 98;
+  margin-top: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+  padding-top: var(--mantine-spacing-xs);
+  padding-bottom: var(--mantine-spacing-xs);
+  background-color: var(--mantine-color-body);
+  border-bottom: light-dark(
+    1px solid var(--mantine-color-gray-2),
+    1px solid var(--mantine-color-dark-5)
+  );
+}
+
+/* Fades in on the left once the nav is stuck, so the unit stays recognisable when scrolled.
+   Its space is always reserved, so the buttons don't shift when it appears. */
+.lead {
+  flex-shrink: 0;
+  align-self: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 150ms ease,
+    visibility 150ms;
+}
+
+.lead[data-visible] {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 48em) {
+  .lead {
+    display: none;
+  }
+}
+
+.list {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-xs);
+}
+
+/* On phones stack the buttons into a two column grid instead of one long row. */
+@media (max-width: 48em) {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+}
+
+/* Very narrow phones, let long labels ("Ability Weapons", longer translations) wrap
+   instead of being cut off. */
+@media (max-width: 24em) {
+  .root {
+    height: auto;
+    min-height: var(--button-height);
+    padding: 4px 6px;
+  }
+
+  .label {
+    font-size: 13px;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.2;
+    /* Long single words, e.g. German "Fähigkeitswaffen". */
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
+
+  /* Match Mantine's own `[data-position]` selector so this wins. */
+  .badge[data-position="right"] {
+    margin-inline-start: 4px;
+  }
+}
+
+@media (min-width: 64em) and (max-width: 100em) {
+  .nav {
+    top: 100px;
+  }
+}
+
+/* Keep the section visible below the site header + this nav when jumping to it.
+   The offset is measured by the nav, as its height depends on how the buttons wrap. */
+.section {
+  scroll-margin-top: var(--unit-section-nav-offset, 124px);
+}

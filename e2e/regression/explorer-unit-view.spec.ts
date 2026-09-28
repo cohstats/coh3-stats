@@ -141,8 +141,8 @@ test.describe("Explorer Unit View Pages", () => {
       test("should display all core stats with numeric values", async () => {
         await unitPage.checkUnitPageLoaded();
 
-        // Check for Stats heading
-        await expect(unitPage.statsHeading).toBeVisible();
+        // Check for Stats card
+        await expect(unitPage.statsCard).toBeVisible();
 
         // Check specific stats are present
         const expectedStats = [
