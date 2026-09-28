@@ -19,7 +19,7 @@ describe("Hit Points Modifier", () => {
         crew_size: 1,
         image: "",
         dps_default: [],
-      },
+      } as any,
     ],
     def_weapon_member: [],
     unit_type: "infantry",

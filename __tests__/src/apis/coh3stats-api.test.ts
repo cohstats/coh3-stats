@@ -101,7 +101,7 @@ describe("coh3stats-api", () => {
             resulttype: 1,
             teamid: 1,
             race_id: 129494,
-            counters: "{}",
+            counters: "{}" as any,
             profile: {
               name: "Test Player",
               alias: "Test",
@@ -126,6 +126,7 @@ describe("coh3stats-api", () => {
         ],
         matchhistoryitems: [],
         profile_ids: [12345],
+        matchurls: [],
       },
       {
         id: 2,
@@ -143,7 +144,7 @@ describe("coh3stats-api", () => {
             resulttype: 1,
             teamid: 1,
             race_id: 129494,
-            counters: "{}",
+            counters: "{}" as any,
             profile: {
               name: "Test Player",
               alias: "Test",
@@ -168,6 +169,7 @@ describe("coh3stats-api", () => {
         ],
         matchhistoryitems: [],
         profile_ids: [12345],
+        matchurls: [],
       },
       {
         id: 3,
@@ -185,7 +187,7 @@ describe("coh3stats-api", () => {
             resulttype: 1,
             teamid: 1,
             race_id: 129494,
-            counters: "{}",
+            counters: "{}" as any,
             profile: {
               name: "Test Player",
               alias: "Test",
@@ -210,6 +212,7 @@ describe("coh3stats-api", () => {
         ],
         matchhistoryitems: [],
         profile_ids: [12345],
+        matchurls: [],
       },
     ];
 
@@ -235,7 +238,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 500));
 
     try {
-      await getPlayerRecentMatches(12345, "");
+      await getPlayerRecentMatches(12345);
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player recent matches: test error"));
     }
@@ -250,7 +253,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 400));
 
     try {
-      await getPlayerRecentMatches(12345, "fake-ip");
+      await getPlayerRecentMatches(12345);
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player recent matches"));
     }

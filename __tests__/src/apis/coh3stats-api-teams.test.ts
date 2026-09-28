@@ -201,11 +201,11 @@ describe("Teams API functions", () => {
       const result = await getTeamMatches(mockMatchIds);
 
       // Check that the counters were parsed from string to object
-      expect(result[12345].matchhistoryreportresults[0].counters).toEqual({
+      expect(result[12345]!.matchhistoryreportresults[0].counters).toEqual({
         kills: 10,
         deaths: 5,
       });
-      expect(result[67890].matchhistoryreportresults[0].counters).toEqual({
+      expect(result[67890]!.matchhistoryreportresults[0].counters).toEqual({
         kills: 15,
         deaths: 8,
       });
