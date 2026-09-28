@@ -28,10 +28,6 @@ export const AnalyticsPlayerCardMatchView = (profile_id?: number | string): void
   logFBEvent("player_card_matches_view", { profile_id });
 };
 
-export const AnalyticsPlayerCardReplaysView = (profile_id?: number | string): void => {
-  logFBEvent("player_card_replays_view", { profile_id });
-};
-
 export const AnalyticsPlayerCardNemesisView = (profile_id?: number | string): void => {
   logFBEvent("player_card_nemesis_view", { profile_id });
 };

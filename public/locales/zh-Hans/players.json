@@ -21,7 +21,6 @@
     "title": "玩家卡片",
     "titleWithView": {
       "recentMatches": "玩家 card - {{name}} - 最近比赛",
-      "replays": "玩家 card - {{name}} - 录像",
       "standingsDetails": "玩家 card - {{name}} - 详细统计",
       "activity": "玩家 card - {{name}} - 活动",
       "nemesis": "玩家 card - {{name}} - 宿敌",
@@ -35,7 +34,6 @@
     "recentMatches": "最近比赛",
     "activity": "活动",
     "nemesis": "宿敌",
-    "replays": "录像",
     "teamsStandings": "团队排名"
   },
   "playerInfo": {
