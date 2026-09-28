@@ -25,9 +25,9 @@
         "title": "Kalkulačka DPS",
         "description": "Porovnejte DPS všech jednotek ve hře. Přizpůsobte výbavu jednotky různými zbraněmi. Můžete také vzít v úvahu HP jednotek."
       },
-      "unitBrowser": {
-        "title": "Prohlížeč jednotek",
-        "description": "Prozkoumejte herní jednotky, včetně statistik, zbraní a vylepšení. Procházejte menu Průzkumníka pro přehled frakcí a další podrobnosti."
+      "explorer": {
+        "title": "Průzkumník",
+        "description": "Procházejte podrobně frakce, jednotky, zbraně a mapy. Obsahuje také perky a jednotky Final Stand a kalkulačku DPS."
       }
     },
     "leaderboards": {

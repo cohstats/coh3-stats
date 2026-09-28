@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand Perks - COH3",
+    "description": "Der vollständige Final Stand Perk-Baum von {{faction}} in Company of Heroes 3 - jede Stufe, jedes Perk-Level, jeder Effekt und alle Perk-Punkte-Kosten.",
+    "keywords": [
+      "coh3 final stand perks",
+      "final stand perk-baum",
+      "company of heroes 3 final stand",
+      "perk-punkte",
+      "hold off perks"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand Perks",
+    "subtitle": "Der komplette Perk-Baum, Stufe für Stufe. Fahre mit der Maus über ein Perk, um seine Level und Effekte zu sehen, klicke darauf, um es unten anzuheften.",
+    "notAvailable": "Die Final Stand Perk-Daten sind derzeit nicht verfügbar. Bitte versuche es später erneut."
+  },
+  "summary": {
+    "perks_one": "{{count}} Perk",
+    "perks_other": "{{count}} Perks",
+    "levels_one": "{{count}} Level",
+    "levels_other": "{{count}} Level",
+    "levelsTooltip": "Perk-Level im Baum - die Anzahl an Käufen, die nötig ist, um alles zu maximieren",
+    "tiers_one": "{{count}} Stufe",
+    "tiers_other": "{{count}} Stufen"
+  },
+  "tier": {
+    "title": "Stufe {{tier}}",
+    "unlock": "Freischaltung bei {{count}}",
+    "unlockStart": "Von Beginn an",
+    "unlockTooltip": "Diese Stufe wird freigeschaltet, sobald du {{count}} Perk-Level gekauft hast.",
+    "unlockStartTooltip": "Diese Stufe ist ab Beginn der Mission verfügbar."
+  },
+  "perk": {
+    "levels_one": "{{count}} Level",
+    "levels_other": "{{count}} Level",
+    "singleLevel": "Einmalige Freischaltung",
+    "cost_one": "{{count}} Perk-Punkt",
+    "cost_other": "{{count}} Perk-Punkte",
+    "noEffect": "Kein Effekttext in den Spieldateien",
+    "noDescription": "Keine Beschreibung in den Spieldateien",
+    "modifiers": "Modifikatoren",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Lvl",
+    "cost": "Kosten",
+    "total": "Gesamt",
+    "effect": "Effekt"
+  },
+  "faction": {
+    "switchTooltip": "Perk-Baum von {{faction}} anzeigen"
+  }
+}

@@ -25,9 +25,9 @@
         "title": "DPS-Rechner",
         "description": "Vergleiche den DPS (Damage per Second / Schaden pro Sekunde) aller Einheiten im Spiel. Passe die Ausrüstung der Einheiten mit verschiedenen Waffen an. Du kannst auch die HP (Health Points / Lebenspunkte) der Einheiten berücksichtigen."
       },
-      "unitBrowser": {
-        "title": "Einheiten-Browser",
-        "description": "Erkunde Spieleinheiten, inklusive Werte, Waffen und Upgrades. Navigiere durch das Explorer-Menü für eine Fraktionsübersicht und mehr Details."
+      "explorer": {
+        "title": "Explorer",
+        "description": "Durchsuche Fraktionen, Einheiten, Waffen und Karten im Detail. Enthält außerdem Final Stand Perks und Einheiten sowie den DPS-Rechner."
       }
     },
     "leaderboards": {

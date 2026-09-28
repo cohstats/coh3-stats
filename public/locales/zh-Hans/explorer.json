@@ -38,24 +38,16 @@
   },
   "explorer": {
     "title": "英雄连3阵营探索器",
-    "subtitle": "探索游戏中的所有单位、建筑和战斗群。"
-  },
-  "dps": {
-    "meta": {
-      "title": "COH3 DPS计算器 - 每秒伤害工具",
-      "description": "计算英雄连3所有单位的每秒伤害(DPS)。比较武器、分析掩体效果，并使用我们的高级DPS计算器优化小队组合。",
-      "keywords": [
-        "coh3 dps计算器",
-        "每秒伤害",
-        "coh3伤害计算器",
-        "单位伤害比较",
-        "武器统计",
-        "掩体分析",
-        "小队优化",
-        "dps工具",
-        "coh3计算器",
-        "单位效率"
-      ]
+    "subtitle": "探索游戏中的所有单位、建筑和战斗群。",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "来自 Final Stand DLC（人机合作模式）的内容 - 在标准遭遇战 / 多人游戏中不可用。",
+      "perksHeading": "天赋",
+      "unitsHeading": "单位",
+      "perksCardTitle": "{{faction}} 天赋",
+      "unitsCardTitle": "{{faction}} 单位",
+      "techHeading": "科技",
+      "techCardTitle": "{{faction}} 科技"
     }
   },
   "factionPage": {
@@ -65,6 +57,28 @@
       "description": "探索英雄连3中的{{faction}}阵营。查看{{faction}}军队的单位、建筑、战斗群和详细统计数据。",
       "keywords": ["{{faction}}", "{{faction}} 探索器", "{{faction}} 战斗群", "{{faction}} 单位"]
     }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "{{faction}} Final Stand 单位",
+      "description": "{{faction}} Final Stand 单位 - 《英雄连3》人机合作 DLC 的单位列表。在标准遭遇战 / 多人游戏中不可用。",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand 单位列表 {{faction}}",
+        "coh3 final stand dlc",
+        "英雄连3 合作模式 单位"
+      ]
+    },
+    "title": "Final Stand 单位",
+    "description": "Final Stand DLC（人机合作模式）专属单位 - 在标准遭遇战 / 多人游戏中不可用。",
+    "searchPlaceholder": "搜索单位",
+    "categories": {
+      "infantry": "步兵",
+      "teamWeapons": "班组武器",
+      "vehicles": "载具",
+      "emplacements": "固定工事"
+    },
+    "empty": "未找到 {{faction}} 的 Final Stand 单位。"
   },
   "unitPage": {
     "stats": "统计",
@@ -102,7 +116,8 @@
     "armor": "装甲",
     "captureMultiplier": "占领倍数",
     "decaptureMultiplier": "反占领倍数",
-    "vehicleArmor": "载具装甲"
+    "vehicleArmor": "载具装甲",
+    "vehicleArmorHint": "指游戏内装甲暴击的蓝图。"
   },
   "weaponCard": {
     "accuracy": "精度",
@@ -199,6 +214,24 @@
     "detonationDelayTooltip": "命中与引爆之间的时间",
     "projectileAvoidanceArcMax": "障碍规避",
     "projectileAvoidanceArcMaxTooltip": "武器用于规避障碍物的最大角度。没有障碍物时以 {{nonCollideMinAngle}}° 开火。"
+  },
+  "dps": {
+    "meta": {
+      "title": "COH3 DPS计算器 - 每秒伤害工具",
+      "description": "计算英雄连3所有单位的每秒伤害(DPS)。比较武器、分析掩体效果，并使用我们的高级DPS计算器优化小队组合。",
+      "keywords": [
+        "coh3 dps计算器",
+        "每秒伤害",
+        "coh3伤害计算器",
+        "单位伤害比较",
+        "武器统计",
+        "掩体分析",
+        "小队优化",
+        "dps工具",
+        "coh3计算器",
+        "单位效率"
+      ]
+    }
   },
   "dpsCompare": {
     "meta": {

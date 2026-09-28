@@ -16,6 +16,7 @@
   "sections": {
     "players": "玩家",
     "units": "单位",
+    "finalStandUnits": "Final Stand 单位",
     "maps": "地图"
   },
   "errors": {

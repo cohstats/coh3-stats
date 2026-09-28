@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand 科技 - COH3",
+    "description": "《英雄连3》中 {{faction}} 的完整 Final Stand 科技选择 - 每轮选择中可能出现的所有单位、技能和被动效果。",
+    "keywords": [
+      "coh3 final stand 科技",
+      "final stand 科技选择",
+      "company of heroes 3 final stand",
+      "final stand 单位 技能 被动",
+      "英雄连3 final stand"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand 科技",
+    "subtitle": "科技选择，逐轮展示。一局游戏共有 {{picks}} 次选择，每次从下列科技中提供 {{choices}} 项 - 你选择的一切都会保留到比赛结束。",
+    "notAvailable": "Final Stand 科技数据暂时不可用，请稍后再试。"
+  },
+  "summary": {
+    "technologies_one": "{{count}} 项科技",
+    "technologies_other": "{{count}} 项科技",
+    "units_one": "{{count}} 个单位",
+    "units_other": "{{count}} 个单位",
+    "abilities_one": "{{count}} 个技能",
+    "abilities_other": "{{count}} 个技能",
+    "passives_one": "{{count}} 个被动",
+    "passives_other": "{{count}} 个被动",
+    "picks_one": "{{count}} 次选择",
+    "picks_other": "{{count}} 次选择",
+    "picksTooltip": "一局游戏中的选择次数 - 第一波之前一次，之后每一波开始时各一次，依次轮换单位、被动和技能。"
+  },
+  "category": {
+    "unit": "单位",
+    "ability": "技能",
+    "passive": "被动"
+  },
+  "filters": {
+    "searchPlaceholder": "搜索科技",
+    "type": "类型",
+    "tags": "标签",
+    "common": "通用科技",
+    "commonTooltip": "所有阵营都可能获得的科技。关闭后仅显示该阵营的科技。",
+    "reset": "重置",
+    "matches_one": "{{count}} 项科技符合",
+    "matches_other": "{{count}} 项科技符合"
+  },
+  "pick": {
+    "title": "第 {{pick}} 次选择",
+    "wave": "第 {{wave}} 波",
+    "waveTooltip": "此次选择发生在该波次之后。第 0 波是第一波之前的准备阶段。",
+    "pool": "{{count}} 选 {{choices}}",
+    "poolTooltip": "游戏提供多少项科技，以及从多少项中进行挑选。",
+    "repeated_one": "另有 {{count}} 项来自之前的选择",
+    "repeated_other": "另有 {{count}} 项来自之前的选择",
+    "empty": "此次选择中没有符合筛选条件的科技。"
+  },
+  "tech": {
+    "common": "通用",
+    "commonTooltip": "所有阵营都可能获得此科技。",
+    "waveFrom": "第 {{wave}} 波起",
+    "waveUntil": "至第 {{wave}} 波",
+    "waveRange": "第 {{from}} - {{to}} 波",
+    "waveTooltip": "此科技可能出现的波次。只有被动选择遵循此限制 - 单位和技能选择会忽略它。",
+    "noDescription": "游戏文件中没有描述"
+  },
+  "faction": {
+    "switchTooltip": "显示 {{faction}} 的科技"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Tecnologías de Final Stand de {{faction}} - COH3",
+    "description": "La selección completa de tecnologías de Final Stand de {{faction}} en Company of Heroes 3: cada unidad, habilidad y pasiva que puede ofrecerse, elección por elección.",
+    "keywords": [
+      "coh3 final stand tecnologías",
+      "final stand selección de tecnologías",
+      "company of heroes 3 final stand",
+      "final stand unidades habilidades pasivas",
+      "hold off tecnologías"
+    ]
+  },
+  "page": {
+    "title": "Tecnologías de Final Stand de {{faction}}",
+    "subtitle": "La selección de tecnologías, elección por elección. Una partida te da {{picks}} elecciones, cada una ofrece {{choices}} de las tecnologías de abajo, y todo lo que elijas se queda contigo durante el resto de la partida.",
+    "notAvailable": "Los datos de tecnologías de Final Stand no están disponibles en este momento. Por favor, inténtalo más tarde."
+  },
+  "summary": {
+    "technologies_one": "{{count}} tecnología",
+    "technologies_other": "{{count}} tecnologías",
+    "units_one": "{{count}} unidad",
+    "units_other": "{{count}} unidades",
+    "abilities_one": "{{count}} habilidad",
+    "abilities_other": "{{count}} habilidades",
+    "passives_one": "{{count}} pasiva",
+    "passives_other": "{{count}} pasivas",
+    "picks_one": "{{count}} elección",
+    "picks_other": "{{count}} elecciones",
+    "picksTooltip": "Elecciones de una partida: una antes de la primera oleada y otra al inicio de cada oleada posterior, alternando unidad, pasiva y habilidad."
+  },
+  "category": {
+    "unit": "Unidad",
+    "ability": "Habilidad",
+    "passive": "Pasiva"
+  },
+  "filters": {
+    "searchPlaceholder": "Buscar tecnologías",
+    "type": "Tipo",
+    "tags": "Etiquetas",
+    "common": "Tecnologías compartidas",
+    "commonTooltip": "Tecnologías que pueden ofrecerse a todas las facciones. Desactívalo para ver solo las tecnologías de esta facción.",
+    "reset": "Restablecer",
+    "matches_one": "{{count}} tecnología coincide",
+    "matches_other": "{{count}} tecnologías coinciden"
+  },
+  "pick": {
+    "title": "Elección {{pick}}",
+    "wave": "Oleada {{wave}}",
+    "waveTooltip": "La oleada tras la cual ocurre esta elección. La oleada 0 es la fase de preparación antes de la primera oleada.",
+    "pool": "{{choices}} de {{count}}",
+    "poolTooltip": "Cuántas tecnologías ofrece el juego y entre cuántas puede elegirlas.",
+    "repeated_one": "{{count}} más de una elección anterior",
+    "repeated_other": "{{count}} más de elecciones anteriores",
+    "empty": "Ninguna tecnología de esta elección coincide con los filtros."
+  },
+  "tech": {
+    "common": "Compartida",
+    "commonTooltip": "Esta tecnología puede ofrecerse a todas las facciones.",
+    "waveFrom": "Desde la oleada {{wave}}",
+    "waveUntil": "Hasta la oleada {{wave}}",
+    "waveRange": "Oleadas {{from}} - {{to}}",
+    "waveTooltip": "Las oleadas en las que puede ofrecerse esta tecnología. Solo las elecciones de pasivas lo respetan; las elecciones de unidades y habilidades lo ignoran.",
+    "noDescription": "Sin descripción en los archivos del juego"
+  },
+  "faction": {
+    "switchTooltip": "Mostrar las tecnologías de {{faction}}"
+  }
+}

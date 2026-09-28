@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Ventajas de Final Stand de {{faction}} - COH3",
+    "description": "El árbol completo de ventajas de Final Stand de {{faction}} en Company of Heroes 3: cada nivel del árbol, nivel de ventaja, efecto y coste en puntos de ventaja.",
+    "keywords": [
+      "coh3 final stand ventajas",
+      "final stand árbol de ventajas",
+      "company of heroes 3 final stand",
+      "puntos de ventaja",
+      "hold off ventajas"
+    ]
+  },
+  "page": {
+    "title": "Ventajas de Final Stand de {{faction}}",
+    "subtitle": "El árbol de ventajas completo, rango por rango. Pasa el ratón sobre una ventaja para ver sus niveles y efectos, haz clic para fijarla abajo.",
+    "notAvailable": "Los datos de ventajas de Final Stand no están disponibles en este momento. Por favor, inténtalo más tarde."
+  },
+  "summary": {
+    "perks_one": "{{count}} ventaja",
+    "perks_other": "{{count}} ventajas",
+    "levels_one": "{{count}} nivel",
+    "levels_other": "{{count}} niveles",
+    "levelsTooltip": "Niveles de ventajas en el árbol: la cantidad de compras necesarias para maximizarlo todo",
+    "tiers_one": "{{count}} rango",
+    "tiers_other": "{{count}} rangos"
+  },
+  "tier": {
+    "title": "Rango {{tier}}",
+    "unlock": "Se desbloquea con {{count}}",
+    "unlockStart": "Desde el inicio",
+    "unlockTooltip": "Este rango se desbloquea una vez que hayas comprado {{count}} niveles de ventajas.",
+    "unlockStartTooltip": "Este rango está disponible desde el inicio de la misión."
+  },
+  "perk": {
+    "levels_one": "{{count}} nivel",
+    "levels_other": "{{count}} niveles",
+    "singleLevel": "Desbloqueo único",
+    "cost_one": "{{count}} punto de ventaja",
+    "cost_other": "{{count}} puntos de ventaja",
+    "noEffect": "Sin texto de efecto en los archivos del juego",
+    "noDescription": "Sin descripción en los archivos del juego",
+    "modifiers": "Modificadores",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Nv.",
+    "cost": "Coste",
+    "total": "Total",
+    "effect": "Efecto"
+  },
+  "faction": {
+    "switchTooltip": "Mostrar el árbol de ventajas de {{faction}}"
+  }
+}

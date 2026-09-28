@@ -28,6 +28,8 @@
     "searchPlaceholder": "Поиск карт",
     "lobbyOnly": "В текущем лобби",
     "mapCount_one": "{{count}} карта",
+    "mapCount_few": "{{count}} карты",
+    "mapCount_many": "{{count}} карт",
     "mapCount_other": "{{count}} карт"
   },
   "modes": {
@@ -48,6 +50,8 @@
   },
   "card": {
     "players_one": "{{count}} игрок",
+    "players_few": "{{count}} игрока",
+    "players_many": "{{count}} игроков",
     "players_other": "{{count}} игроков",
     "community": "Сообщество",
     "authorTooltip": "Создано {{author}}",

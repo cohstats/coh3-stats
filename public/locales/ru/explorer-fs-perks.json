@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "{{faction}} - перки Final Stand - COH3",
+    "description": "Полное дерево перков Final Stand для фракции {{faction}} в Company of Heroes 3 - все ярусы, уровни перков, эффекты и стоимость в очках перков.",
+    "keywords": [
+      "coh3 final stand перки",
+      "final stand дерево перков",
+      "company of heroes 3 final stand",
+      "очки перков",
+      "hold off перки"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} - перки Final Stand",
+    "subtitle": "Полное дерево перков, ярус за ярусом. Наведите курсор на перк, чтобы увидеть его уровни и эффекты, нажмите, чтобы закрепить его ниже.",
+    "notAvailable": "Данные о перках Final Stand сейчас недоступны. Пожалуйста, попробуйте позже."
+  },
+  "summary": {
+    "perks_one": "{{count}} перк",
+    "perks_few": "{{count}} перка",
+    "perks_many": "{{count}} перков",
+    "perks_other": "{{count}} перка",
+    "levels_one": "{{count}} уровень",
+    "levels_few": "{{count}} уровня",
+    "levels_many": "{{count}} уровней",
+    "levels_other": "{{count}} уровня",
+    "levelsTooltip": "Уровни перков в дереве - количество покупок, необходимое, чтобы прокачать всё до максимума",
+    "tiers_one": "{{count}} ярус",
+    "tiers_few": "{{count}} яруса",
+    "tiers_many": "{{count}} ярусов",
+    "tiers_other": "{{count}} яруса"
+  },
+  "tier": {
+    "title": "Ярус {{tier}}",
+    "unlock": "Открывается при {{count}}",
+    "unlockStart": "С начала",
+    "unlockTooltip": "Этот ярус открывается, когда вы купите {{count}} уровней перков.",
+    "unlockStartTooltip": "Этот ярус доступен с начала миссии."
+  },
+  "perk": {
+    "levels_one": "{{count}} уровень",
+    "levels_few": "{{count}} уровня",
+    "levels_many": "{{count}} уровней",
+    "levels_other": "{{count}} уровня",
+    "singleLevel": "Разовое открытие",
+    "cost_one": "{{count}} очко перков",
+    "cost_few": "{{count}} очка перков",
+    "cost_many": "{{count}} очков перков",
+    "cost_other": "{{count}} очка перков",
+    "noEffect": "В файлах игры нет описания эффекта",
+    "noDescription": "В файлах игры нет описания",
+    "modifiers": "Модификаторы",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Ур.",
+    "cost": "Цена",
+    "total": "Всего",
+    "effect": "Эффект"
+  },
+  "faction": {
+    "switchTooltip": "Показать дерево перков фракции {{faction}}"
+  }
+}

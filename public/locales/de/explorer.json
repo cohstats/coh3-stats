@@ -38,7 +38,17 @@
   },
   "explorer": {
     "title": "Company of Heroes 3 Fraktionen Explorer",
-    "subtitle": "Erkunde alle Einheiten, Gebäude und Kampfgruppen im Spiel."
+    "subtitle": "Erkunde alle Einheiten, Gebäude und Kampfgruppen im Spiel.",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Inhalte aus dem Final Stand DLC (Koop gegen KI) - nicht im normalen Gefecht / Mehrspieler verfügbar.",
+      "perksHeading": "Perks",
+      "unitsHeading": "Einheiten",
+      "perksCardTitle": "{{faction}} Perks",
+      "unitsCardTitle": "{{faction}} Einheiten",
+      "techHeading": "Technologien",
+      "techCardTitle": "{{faction}} Technologien"
+    }
   },
   "factionPage": {
     "factionOverview": "Fraktionsübersicht",
@@ -52,6 +62,28 @@
         "{{faction}} einheiten"
       ]
     }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "{{faction}} Final Stand Einheiten",
+      "description": "{{faction}} Final Stand Einheiten - die Einheitenliste des Koop-gegen-KI-DLCs in Company of Heroes 3. Nicht im normalen Gefecht / Mehrspieler verfügbar.",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand Einheitenliste {{faction}}",
+        "coh3 final stand dlc",
+        "hold off koop einheiten"
+      ]
+    },
+    "title": "Final Stand Einheiten",
+    "description": "Exklusive Einheiten des Final Stand DLC (Koop gegen KI) - nicht im normalen Gefecht / Mehrspieler verfügbar.",
+    "searchPlaceholder": "Einheiten suchen",
+    "categories": {
+      "infantry": "Infanterie",
+      "teamWeapons": "Teamwaffen",
+      "vehicles": "Fahrzeuge",
+      "emplacements": "Stellungen"
+    },
+    "empty": "Keine Final Stand Einheiten für {{faction}} gefunden."
   },
   "unitPage": {
     "stats": "Werte",
@@ -89,7 +121,8 @@
     "armor": "Panzerung",
     "captureMultiplier": "Eroberungsmultiplikator",
     "decaptureMultiplier": "Verlustmultiplikator",
-    "vehicleArmor": "Fahrzeugpanzerung"
+    "vehicleArmor": "Fahrzeugpanzerung",
+    "vehicleArmorHint": "Bezieht sich auf die Spiel-Blueprint für kritische Panzerungstreffer."
   },
   "weaponCard": {
     "accuracy": "Genauigkeit",

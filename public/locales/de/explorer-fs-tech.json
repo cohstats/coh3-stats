@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand Technologien - COH3",
+    "description": "Die vollständige Final Stand Technologie-Auswahl von {{faction}} in Company of Heroes 3 - jede Einheit, Fähigkeit und jedes Passiv, das angeboten werden kann, Wahl für Wahl.",
+    "keywords": [
+      "coh3 final stand technologien",
+      "final stand technologie-auswahl",
+      "company of heroes 3 final stand",
+      "final stand einheiten fähigkeiten passive",
+      "hold off technologien"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand Technologien",
+    "subtitle": "Die Technologie-Auswahl, Wahl für Wahl. Ein Durchlauf gibt dir {{picks}} Wahlen, jede davon bietet {{choices}} der unten stehenden Technologien an - und alles, was du wählst, bleibt dir für den Rest des Spiels erhalten.",
+    "notAvailable": "Die Final Stand Technologie-Daten sind derzeit nicht verfügbar. Bitte versuche es später erneut."
+  },
+  "summary": {
+    "technologies_one": "{{count}} Technologie",
+    "technologies_other": "{{count}} Technologien",
+    "units_one": "{{count}} Einheit",
+    "units_other": "{{count}} Einheiten",
+    "abilities_one": "{{count}} Fähigkeit",
+    "abilities_other": "{{count}} Fähigkeiten",
+    "passives_one": "{{count}} Passiv",
+    "passives_other": "{{count}} Passive",
+    "picks_one": "{{count}} Wahl",
+    "picks_other": "{{count}} Wahlen",
+    "picksTooltip": "Wahlen eines Durchlaufs - eine vor der ersten Welle und eine zu Beginn jeder weiteren Welle, abwechselnd Einheit, Passiv und Fähigkeit."
+  },
+  "category": {
+    "unit": "Einheit",
+    "ability": "Fähigkeit",
+    "passive": "Passiv"
+  },
+  "filters": {
+    "searchPlaceholder": "Technologien suchen",
+    "type": "Typ",
+    "tags": "Tags",
+    "common": "Gemeinsame Technologien",
+    "commonTooltip": "Technologien, die jeder Fraktion angeboten werden können. Deaktivieren, um nur die Technologien dieser Fraktion zu sehen.",
+    "reset": "Zurücksetzen",
+    "matches_one": "{{count}} Technologie passt",
+    "matches_other": "{{count}} Technologien passen"
+  },
+  "pick": {
+    "title": "Wahl {{pick}}",
+    "wave": "Welle {{wave}}",
+    "waveTooltip": "Die Welle, nach der diese Wahl stattfindet. Welle 0 ist die Vorbereitungsphase vor der ersten Welle.",
+    "pool": "{{choices}} von {{count}}",
+    "poolTooltip": "Wie viele Technologien das Spiel anbietet und aus wie vielen es sie auswählen kann.",
+    "repeated_one": "{{count}} weitere aus einer früheren Wahl",
+    "repeated_other": "{{count}} weitere aus früheren Wahlen",
+    "empty": "Keine Technologie dieser Wahl entspricht den Filtern."
+  },
+  "tech": {
+    "common": "Gemeinsam",
+    "commonTooltip": "Diese Technologie kann jeder Fraktion angeboten werden.",
+    "waveFrom": "Ab Welle {{wave}}",
+    "waveUntil": "Bis Welle {{wave}}",
+    "waveRange": "Wellen {{from}} - {{to}}",
+    "waveTooltip": "Die Wellen, in denen diese Technologie angeboten werden kann. Nur die Passiv-Wahlen berücksichtigen dies - die Einheiten- und Fähigkeiten-Wahlen ignorieren es.",
+    "noDescription": "Keine Beschreibung in den Spieldateien"
+  },
+  "faction": {
+    "switchTooltip": "Technologien von {{faction}} anzeigen"
+  }
+}

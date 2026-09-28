@@ -20,6 +20,16 @@
       "title": "最新新闻",
       "newsLabel": "新闻"
     },
+    "tools": {
+      "dpsCalculator": {
+        "title": "DPS 计算器",
+        "description": "比较游戏中所有单位的DPS。使用不同武器自定义单位装备。您还可以考虑单位的HP。"
+      },
+      "explorer": {
+        "title": "探索器",
+        "description": "详细浏览阵营、单位、武器和地图。还包括 Final Stand 天赋和单位，以及 DPS 计算器。"
+      }
+    },
     "leaderboards": {
       "title": "1v1 排行榜",
       "viewFullLeaderboard": "查看完整排行榜",
@@ -30,28 +40,18 @@
         "dak": "DAK"
       }
     },
-    "tools": {
-      "dpsCalculator": {
-        "title": "DPS 计算器",
-        "description": "比较游戏中所有单位的DPS。使用不同武器自定义单位装备。您还可以考虑单位的HP。"
-      },
-      "unitBrowser": {
-        "title": "单位浏览器",
-        "description": "探索游戏单位，包括统计数据、武器和升级。导航探索器菜单以获取阵营概览和更多详细信息。"
-      }
-    },
-    "twitch": {
-      "title": "观看直播",
-      "noStreams": "目前没有英语直播在Twitch上播放。"
+    "reddit": {
+      "title": "热门COH3 Reddit帖子",
+      "noData": "没有可用的Reddit帖子"
     },
     "youtube": {
       "title": "上周的视频",
       "noData": "没有可用的YouTube视频",
       "views": "观看次数"
     },
-    "reddit": {
-      "title": "热门COH3 Reddit帖子",
-      "noData": "没有可用的Reddit帖子"
+    "twitch": {
+      "title": "观看直播",
+      "noStreams": "目前没有英语直播在Twitch上播放。"
     }
   },
   "leaderboardTable": {

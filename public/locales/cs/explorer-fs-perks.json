@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand perky - COH3",
+    "description": "Kompletní strom perků Final Stand pro frakci {{faction}} v Company of Heroes 3 - všechny úrovně stromu, úrovně perků, efekty a ceny v bodech perků.",
+    "keywords": [
+      "coh3 final stand perky",
+      "final stand strom perků",
+      "company of heroes 3 final stand",
+      "body perků",
+      "hold off perky"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand perky",
+    "subtitle": "Kompletní strom perků, úroveň po úrovni. Najeďte myší na perk pro zobrazení jeho úrovní a efektů, kliknutím ho připnete níže.",
+    "notAvailable": "Data perků Final Stand nejsou momentálně k dispozici. Zkuste to prosím později."
+  },
+  "summary": {
+    "perks_one": "{{count}} perk",
+    "perks_few": "{{count}} perky",
+    "perks_many": "{{count}} perku",
+    "perks_other": "{{count}} perků",
+    "levels_one": "{{count}} úroveň",
+    "levels_few": "{{count}} úrovně",
+    "levels_many": "{{count}} úrovně",
+    "levels_other": "{{count}} úrovní",
+    "levelsTooltip": "Počet úrovní perků ve stromu - kolik nákupů je potřeba k vylepšení všeho na maximum",
+    "tiers_one": "{{count}} stupeň",
+    "tiers_few": "{{count}} stupně",
+    "tiers_many": "{{count}} stupně",
+    "tiers_other": "{{count}} stupňů"
+  },
+  "tier": {
+    "title": "Stupeň {{tier}}",
+    "unlock": "Odemčení při {{count}}",
+    "unlockStart": "Od začátku",
+    "unlockTooltip": "Tento stupeň se odemkne, jakmile koupíte {{count}} úrovní perků.",
+    "unlockStartTooltip": "Tento stupeň je dostupný od začátku mise."
+  },
+  "perk": {
+    "levels_one": "{{count}} úroveň",
+    "levels_few": "{{count}} úrovně",
+    "levels_many": "{{count}} úrovně",
+    "levels_other": "{{count}} úrovní",
+    "singleLevel": "Jednorázové odemčení",
+    "cost_one": "{{count}} bod perků",
+    "cost_few": "{{count}} body perků",
+    "cost_many": "{{count}} bodu perků",
+    "cost_other": "{{count}} bodů perků",
+    "noEffect": "Herní soubory neobsahují popis efektu",
+    "noDescription": "Herní soubory neobsahují popis",
+    "modifiers": "Modifikátory",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Úr.",
+    "cost": "Cena",
+    "total": "Celkem",
+    "effect": "Efekt"
+  },
+  "faction": {
+    "switchTooltip": "Zobrazit strom perků frakce {{faction}}"
+  }
+}
