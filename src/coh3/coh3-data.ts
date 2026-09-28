@@ -632,6 +632,12 @@ const OfficialMapKeys = [
   /* ---------- 2.5.0 Maps ---------- */
   "butcher_and_bolt_2p",
   "across_the_rhine_6p",
+  /* ---------- Final Stand (Hold Off) Maps ---------- */
+  "hoff_desert",
+  "hoff_forest",
+  "hoff_gela_outskirts",
+  "hoff_sousse_wetlands",
+  "hoff_torrente",
 ] as const;
 
 export function isOfficialMap(mapname: string): mapname is (typeof OfficialMapKeys)[number] {
@@ -920,5 +926,27 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   butcher_and_bolt_2p: {
     name: "Butcher & Bolt",
     url: "/butcher_and_bolt_2p/butcher_and_bolt_2p.webp",
+  },
+  /* ------------------ Final Stand (Hold Off) Maps ------------------ */
+  // The CDN has only the marked variant of the minimaps for the Final Stand maps
+  hoff_desert: {
+    name: "Qattara Depression",
+    url: "/hoff_desert/hoff_desert.marked.colored.webp",
+  },
+  hoff_forest: {
+    name: "The Alpine Wall",
+    url: "/hoff_forest/hoff_forest.marked.colored.webp",
+  },
+  hoff_gela_outskirts: {
+    name: "Gela Beachhead",
+    url: "/hoff_gela_outskirts/hoff_gela_outskirts.marked.colored.webp",
+  },
+  hoff_sousse_wetlands: {
+    name: "Fall of Sousse",
+    url: "/hoff_sousse_wetlands/hoff_sousse_wetlands.marked.colored.webp",
+  },
+  hoff_torrente: {
+    name: "Torrente Ruins",
+    url: "/hoff_torrente/hoff_torrente.marked.colored.webp",
   },
 };

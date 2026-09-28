@@ -39,7 +39,7 @@ const RenderMap = ({
       <div style={{ width: "100%" }}>
         <Tooltip label={maps[mapName].name}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <Link href={mapRoute}>
+            <Link href={mapRoute} target="_blank">
               <Image
                 style={{
                   cursor: "pointer",
@@ -58,7 +58,14 @@ const RenderMap = ({
         </Tooltip>
         {renderTitle && (
           <Text style={{ whiteSpace: "nowrap", textAlign: "center" }} size={"sm"}>
-            <Anchor component={Link} href={mapRoute} inherit c={"inherit"} underline={"hover"}>
+            <Anchor
+              component={Link}
+              href={mapRoute}
+              target="_blank"
+              inherit
+              c={"inherit"}
+              underline={"hover"}
+            >
               {maps[mapName]?.name}
             </Anchor>
           </Text>

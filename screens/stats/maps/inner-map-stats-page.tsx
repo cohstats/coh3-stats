@@ -112,6 +112,7 @@ const InnerMapStatsPage = ({
               <Button
                 component={Link}
                 href={getExplorerMapRoute(selectedMap)}
+                target="_blank"
                 variant="default"
                 size="compact-sm"
                 rightSection={<IconExternalLink size={16} />}
