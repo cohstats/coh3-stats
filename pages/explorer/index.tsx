@@ -13,7 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconChevronRight, IconMap2, IconTable } from "@tabler/icons-react";
-import { raceType } from "../../src/coh3/coh3-types";
+import { raceTypeArray } from "../../src/coh3/coh3-types";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import FactionIcon from "../../components/faction-icon";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
@@ -33,8 +33,6 @@ import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../src/seo-utils";
 import { getIconsPathOnCDN } from "../../src/utils";
 import FinalStandSection from "../../screens/explorer/final-stand-section";
-
-const Races: raceType[] = ["german", "american", "dak", "british"];
 
 // Reusable InfoCard component for tool links
 const InfoCard = ({
@@ -106,7 +104,7 @@ const Explorer: NextPage = () => {
           <Stack gap="md">
             <Title order={2}>Battlegroups & Buildings</Title>
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
-              {Races.map((faction: raceType) => {
+              {raceTypeArray.map((faction) => {
                 return (
                   <Anchor
                     key={`explorer_${faction}`}
@@ -136,7 +134,7 @@ const Explorer: NextPage = () => {
           <Stack gap="md">
             <Title order={2}>Units</Title>
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
-              {Races.map((faction: raceType) => {
+              {raceTypeArray.map((faction) => {
                 return (
                   <Anchor
                     key={`explorer_units_${faction}`}
