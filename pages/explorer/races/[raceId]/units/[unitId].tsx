@@ -511,8 +511,9 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
         </Grid>
         {/* Outside of the grids, so it stays sticky for the whole page. */}
         <UnitSectionNav items={sectionNavItems} />
-        <Grid columns={3} grow>
-          <Grid.Col span={{ md: 2, xs: 3 }} order={1}>
+        {/* The side column is 30% wide on desktop, on phones it goes above the stats. */}
+        <Grid columns={10} grow>
+          <Grid.Col span={{ base: 10, md: 7 }} order={{ base: 2, md: 1 }}>
             <Stack>
               <Card
                 id="stats"
@@ -551,7 +552,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
               />
             </Stack>
           </Grid.Col>
-          <Grid.Col span={{ md: 1, xs: 3 }} order={2}>
+          <Grid.Col span={{ base: 10, md: 3 }} order={{ base: 1, md: 2 }}>
             <Stack>
               <UnitCostGroup
                 totalCost={totalCost}
