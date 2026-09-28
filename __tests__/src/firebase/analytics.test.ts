@@ -3,7 +3,6 @@ import {
   AnalyticsTeamDetailsTabView,
   AnalyticsPlayerCardView,
   AnalyticsPlayerCardMatchView,
-  AnalyticsPlayerCardReplaysView,
   AnalyticsPlayerCardNemesisView,
   AnalyticsPlayerCardActivityView,
   AnalyticsPlayerCardDetailedStatsView,
@@ -55,15 +54,6 @@ describe("Firebase Analytics", () => {
     AnalyticsPlayerCardMatchView(profileId);
 
     expect(webFirebase.logFBEvent).toHaveBeenCalledWith("player_card_matches_view", {
-      profile_id: profileId,
-    });
-  });
-
-  test("AnalyticsPlayerCardReplaysView should log correct event", () => {
-    const profileId = "123456";
-    AnalyticsPlayerCardReplaysView(profileId);
-
-    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("player_card_replays_view", {
       profile_id: profileId,
     });
   });

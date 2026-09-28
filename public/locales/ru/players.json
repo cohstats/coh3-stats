@@ -21,7 +21,6 @@
     "title": "Карточка игрока - {{name}}",
     "titleWithView": {
       "recentMatches": "Карточка игрока - {{name}} - Недавние игры",
-      "replays": "Карточка игрока -  {{name}} - Повторы",
       "standingsDetails": "Карточка игрока - {{name}} - Подробная статистика",
       "activity": "Карточка игрока - {{name}} - Активность",
       "nemesis": "Карточка игрока - {{name}} - Закляты враг",
@@ -35,7 +34,6 @@
     "recentMatches": "Недавние игры",
     "activity": "Активность",
     "nemesis": "Закляты враг",
-    "replays": "Повторы",
     "teamsStandings": "Рейтинг команд"
   },
   "playerInfo": {

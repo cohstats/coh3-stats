@@ -1,7 +1,6 @@
 import { processPlayerInfoAPIResponse } from "../../src/players/standings";
 import { getPlayerCardStatsOrNull } from "../../src/apis/coh3stats-api";
 import { GetServerSideProps } from "next";
-import { getReplaysForPlayer, ProcessReplaysData } from "../../src/apis/cohdb-api";
 
 import PlayerCard from "../../screens/players";
 import { PlayerProfileCOHStats, ProcessedCOHPlayerStats } from "../../src/coh3/coh3-types";
@@ -263,17 +262,15 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
         playerID: null,
         playerDataAPI: null,
         playerStatsData: null,
-        replaysData: null,
         ...(await serverSideTranslations(locale, ["common", "players"])),
       },
     };
   }
 
   const playerID = playerIDValidation.data;
-  const { view, start } = query;
+  const { view } = query;
   const xff = `${req.headers["x-forwarded-for"]}`;
 
-  const isReplaysPage = view === "replays";
   // const viewStandings = view === "standings";
 
   console.log(`SSR - /players/${playerID}, view: ${view}, locale: ${locale}`);
@@ -281,7 +278,6 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   let playerData = null;
   let playerStatsData = null;
   let error = null;
-  let replaysData = null;
 
   // const prevPage = req.headers.referer;
   // const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
@@ -291,14 +287,10 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   try {
     const PromisePlayerCardData = getPlayerStatsFromRelic(playerID);
     const PromisePlayerCardStatsData = getPlayerCardStatsOrNull(playerID, xff);
-    const PromiseReplaysData = isReplaysPage
-      ? getReplaysForPlayer(playerID, start as string | undefined)
-      : Promise.resolve();
 
-    const [playerAPIData, playerCardStatsData, replaysAPIDAta] = await Promise.all([
+    const [playerAPIData, playerCardStatsData] = await Promise.all([
       PromisePlayerCardData,
       PromisePlayerCardStatsData,
-      PromiseReplaysData,
     ]);
 
     playerStatsData = playerCardStatsData?.playerStats
@@ -307,7 +299,6 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     playerData = playerAPIData
       ? processPlayerInfoAPIResponse(playerAPIData, playerCardStatsData?.playerStats)
       : null;
-    replaysData = isReplaysPage ? ProcessReplaysData(replaysAPIDAta) : null;
 
     res.setHeader("Cache-Control", "public, max-age=15, s-maxage=30, stale-while-revalidate=60");
     res.setHeader("x-robots-tag", "nofollow");
@@ -323,7 +314,6 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       playerDataAPI: playerData,
       error,
       playerStatsData,
-      replaysData,
       ...(await serverSideTranslations(locale, ["common", "players"])),
     }, // will be passed to the page component as props
   };

@@ -313,7 +313,7 @@ test.describe("Player Page - detailed stats tab", () => {
   });
 });
 
-test.describe("Player Page - nemesis, teams and replays tabs", () => {
+test.describe("Player Page - nemesis and teams tabs", () => {
   test("should render the nemesis tab", async ({ page }) => {
     const playerPage = new PlayerPage(page);
     await playerPage.navigate(TEST_PLAYER.profileId, { view: "nemesis" });
@@ -328,17 +328,6 @@ test.describe("Player Page - nemesis, teams and replays tabs", () => {
 
     await expect(playerPage.teamsStandingsTab).toBeVisible({ timeout: 30000 });
     await expect(playerPage.teamsStandingsTab).toContainText(/team/i);
-  });
-
-  test("should render the replays tab", async ({ page }) => {
-    const playerPage = new PlayerPage(page);
-    await playerPage.navigate(TEST_PLAYER.profileId, { view: "replays" });
-
-    // Replays come from COHDB and can legitimately be empty or unavailable, but the tab must
-    // render either the table or a proper error card - never a blank panel.
-    await expect(playerPage.replaysTable.or(playerPage.errorCard).first()).toBeVisible({
-      timeout: 30000,
-    });
   });
 });
 

@@ -21,7 +21,6 @@
     "title": "Tarjeta del Jugador - {{name}}",
     "titleWithView": {
       "recentMatches": "Tarjeta del jugador - {{name}} - Partidas recientes",
-      "replays": "Tarjeta del jugador - {{name}} - Repeticiones",
       "standingsDetails": "Tarjeta del jugador - {{name}} - Stats detallados",
       "activity": "Tarjeta del jugador - {{name}} - Actividad",
       "nemesis": "Tarjeta del jugador - {{name}} - Nemesis",
@@ -35,7 +34,6 @@
     "recentMatches": "Partidas recientes",
     "activity": "Actividad",
     "nemesis": "Nemesis",
-    "replays": "Repeticiones",
     "teamsStandings": "Clasificación de equipos"
   },
   "playerInfo": {

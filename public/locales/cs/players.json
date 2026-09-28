@@ -21,7 +21,6 @@
     "title": "Karta hráče - {{name}}",
     "titleWithView": {
       "recentMatches": "Karta hráče - {{name}} - Nedávné zápasy",
-      "replays": "Karta hráče - {{name}} - Záznamy",
       "standingsDetails": "Karta hráče - {{name}} - Podrobné statistiky",
       "activity": "Karta hráče - {{name}} - Aktivita",
       "nemesis": "Karta hráče - {{name}} - Nemesis",
@@ -35,7 +34,6 @@
     "recentMatches": "Nedávné zápasy",
     "activity": "Aktivita",
     "nemesis": "Nemesis",
-    "replays": "Záznamy",
     "teamsStandings": "Týmové žebříčky"
   },
   "playerInfo": {

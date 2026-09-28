@@ -9,7 +9,6 @@ import {
   AnalyticsPlayerCardDetailedStatsView,
   AnalyticsPlayerCardMatchView,
   AnalyticsPlayerCardNemesisView,
-  AnalyticsPlayerCardReplaysView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
@@ -20,7 +19,6 @@ import { Steam } from "../../components/icon/steam";
 import { PSNIcon } from "../../components/icon/psn";
 import { XboxIcon } from "../../components/icon/xbox";
 import ErrorCard from "../../components/error-card";
-import { ProcessedReplayData } from "../../src/apis/cohdb-api";
 import { isBrowserEnv } from "../../src/utils";
 import CountryFlag from "../../components/country-flag";
 import PlayerIdIcon from "./tabs/components/player-id-icon";
@@ -30,7 +28,6 @@ import PlayerRecentMatchesTab from "./tabs/recent-matches-tab/player-recent-matc
 import PlayerStandingsTab from "./tabs/standings-tab/player-standings-tab";
 import ActivityTab from "./tabs/activity-tab/activity-tab";
 import NemesisTab from "./tabs/nemesis-tab";
-import ReplaysTab from "./tabs/replays-tab/replays-tab";
 import TeamsStandingsTab from "./tabs/teams-standings-tab/teams-standings-tab";
 import TeamDetailsTab from "./tabs/team-details-tab/team-details-tab";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -75,13 +72,11 @@ const PlayerCard = ({
   playerDataAPI,
   error,
   playerStatsData,
-  replaysData,
 }: {
   playerID: string;
   playerDataAPI: PlayerCardDataType | null;
   error: string;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
-  replaysData: ProcessedReplayData;
 }) => {
   const { push, query, asPath, locale, defaultLocale } = useRouter();
   const { view } = query;
@@ -122,8 +117,6 @@ const PlayerCard = ({
   useEffect(() => {
     if (view === "recentMatches") {
       AnalyticsPlayerCardMatchView(playerID);
-    } else if (view === "replays") {
-      AnalyticsPlayerCardReplaysView(playerID);
     } else if (view === "standingsDetails") {
       AnalyticsPlayerCardDetailedStatsView(playerID);
     } else if (view === "activity") {
@@ -142,14 +135,8 @@ const PlayerCard = ({
   }, [playerID, view]);
 
   const tabChangeFunction = async (value: any) => {
-    let haveAllData = true;
-    // The replays are SSR data, we need to request them
-    if (value === "replays") {
-      haveAllData = false;
-    }
-
     await push({ query: { ...query, view: value } }, undefined, {
-      shallow: haveAllData,
+      shallow: true,
     });
   };
 
@@ -163,7 +150,6 @@ const PlayerCard = ({
 
   const viewTitleKeys = {
     recentMatches: "card.titleWithView.recentMatches",
-    replays: "card.titleWithView.replays",
     standingsDetails: "card.titleWithView.standingsDetails",
     activity: "card.titleWithView.activity",
     nemesis: "card.titleWithView.nemesis",
@@ -267,9 +253,6 @@ const PlayerCard = ({
             <Tabs.Tab value={"nemesis"} data-testid="player-tab-nemesis">
               {t("tabs.nemesis")}
             </Tabs.Tab>
-            <Tabs.Tab value={"replays"} data-testid="player-tab-replays">
-              {t("tabs.replays")}
-            </Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="standings">
@@ -299,10 +282,6 @@ const PlayerCard = ({
               platform={platform}
               profileID={playerID}
             />
-          </Tabs.Panel>
-          <Tabs.Panel value={"replays"}>
-            <Space h="lg" />
-            <ReplaysTab replaysData={replaysData} profileID={playerID} error={error} />
           </Tabs.Panel>
           <Tabs.Panel value={"teamsStandings"}>
             <TeamsStandingsTab profileID={playerID} t={t} />

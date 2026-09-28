@@ -353,7 +353,7 @@ export const raceIDsNameAsKey = {
   british: 203852,
 };
 
-// This is what we get from the cohdb.com API
+// Race names as used by the game data files (and the former cohdb.com API)
 export const cohDBracesToNormalRaces: Record<string, raceType> = {
   afrika_korps: "dak",
   british_africa: "british",

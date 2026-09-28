@@ -204,8 +204,4 @@ export class PlayerPage extends BasePage {
   get teamsStandingsTab(): Locator {
     return this.getByTestId("player-teams-standings-tab");
   }
-
-  get replaysTable(): Locator {
-    return this.getByTestId("player-replays-table");
-  }
 }
