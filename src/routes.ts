@@ -90,6 +90,11 @@ export const getExplorerMapRoute = (mapId: string) => {
   return encodeURI(`/explorer/maps/${mapId}`);
 };
 
+/** Final Stand DLC overview - links to perks, units and tech of all factions. */
+export const getExplorerFsRoute = () => {
+  return encodeURI(`/explorer/fs`);
+};
+
 /** Final Stand perk tree of a faction. */
 export const getExplorerFsPerksRoute = (race: raceType) => {
   return encodeURI(`/explorer/fs/races/${race}/perks`);
