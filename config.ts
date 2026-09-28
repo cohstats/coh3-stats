@@ -30,7 +30,7 @@ const getEdgioEnvName = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "2.5.3";
+const defaultStatsPatchSelector = "2.5.6";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -43,12 +43,12 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
-  "2.5.3": {
+  "2.5.6": {
     from: "2026-07-29",
     to: "now",
-    value: "2.5.3",
-    label: "2.5.0 - 2.5.3",
-    group: "2.5",
+    value: "2.5.6",
+    label: "2.5.0 - 2.5.6",
+    group: "2.5.x",
   },
   "2.4.2": {
     from: "2026-05-14",
@@ -249,13 +249,13 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "2.5.3";
+const latestPatch = "2.5.6";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
-    "2.5.3": {
-      dataTag: "v2.5.3-3",
+    "2.5.6": {
+      dataTag: "v2.5.3-3", // 2.5.6 has no data changes from 2.5.3
       dataTime: "31/July/2026",
     },
     "2.4.2": {
@@ -299,7 +299,7 @@ const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeco
       dataTime: "27/Nov/2025",
     },
     "2.1.7": {
-      dataTag: "v2.1.5-1", // This is the tag of the data repo
+      dataTag: "v2.1.5-1", // There is no change in data
       dataTime: "13/Nov/2025",
     },
     "2.1.5": {
