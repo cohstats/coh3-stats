@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "title": "Cartes COH3 - Toutes les cartes multijoueurs",
+    "description": "Parcourez toutes les cartes multijoueurs de Company of Heroes 3. Filtrez par mode de jeu, consultez la disposition des points de ressources, la taille des cartes et les cartes communautaires.",
+    "keywords": [
+      "cartes coh3",
+      "cartes company of heroes 3",
+      "cartes 1v1",
+      "cartes 2v2",
+      "cartes 3v3",
+      "cartes 4v4",
+      "cartes communautaires",
+      "liste des cartes"
+    ]
+  },
+  "page": {
+    "title": "Cartes de Company of Heroes 3",
+    "subtitle": "Parcourez toutes les cartes multijoueurs du jeu avec la disposition de leurs ressources.",
+    "noMaps": "Aucune carte ne correspond aux filtres sélectionnés."
+  },
+  "view": {
+    "cards": "Fiches",
+    "table": "Tableau",
+    "cardsTooltip": "Parcourir les cartes sous forme de fiches avec leurs mini-cartes",
+    "tableTooltip": "Comparer toutes les données des cartes dans un tableau triable"
+  },
+  "filters": {
+    "searchPlaceholder": "Rechercher des cartes",
+    "lobbyOnly": "Dans le salon actuel",
+    "mapCount_one": "{{count}} carte",
+    "mapCount_many": "{{count}} cartes",
+    "mapCount_other": "{{count}} cartes"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "Autres"
+  },
+  "sections": {
+    "1v1": "Cartes 1 vs 1",
+    "2v2": "Cartes 2 vs 2",
+    "3v3": "Cartes 3 vs 3",
+    "4v4": "Cartes 4 vs 4",
+    "fs": "Cartes Final Stand (coopération contre l'IA)",
+    "other": "Autres cartes"
+  },
+  "card": {
+    "players_one": "{{count}} joueur",
+    "players_many": "{{count}} joueurs",
+    "players_other": "{{count}} joueurs",
+    "community": "Communauté",
+    "authorTooltip": "Créée par {{author}}",
+    "notInLobby": "Hors salon",
+    "notInLobbyTooltip": "Cette carte ne peut pas être sélectionnée dans le salon du jeu.",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "Taille de la carte"
+  },
+  "points": {
+    "victory": "Points de victoire",
+    "fuel": "Points de carburant",
+    "munitions": "Points de munitions",
+    "strategic": "Points de main-d'œuvre",
+    "starting_position": "Départs des joueurs",
+    "starting_positionShort": "Départs des joueurs",
+    "victorySingle": "Point de victoire",
+    "fuelSingle": "Point de carburant",
+    "munitionsSingle": "Point de munitions",
+    "strategicSingle": "Point de main-d'œuvre",
+    "victoryShort": "Victoire",
+    "fuelShort": "Carburant",
+    "munitionsShort": "Munitions",
+    "strategicShort": "Main-d'œuvre"
+  },
+  "tiers": {
+    "extra_low": "très faible",
+    "low": "faible",
+    "medium": "moyen",
+    "extra_medium": "moyen plus",
+    "high": "élevé",
+    "default": "par défaut"
+  },
+  "resources": {
+    "fuel": "Carburant",
+    "munition": "Munitions",
+    "manpower": "Main-d'œuvre"
+  },
+  "detail": {
+    "backToMaps": "Toutes les cartes",
+    "overview": "Aperçu",
+    "description": "Description",
+    "players": "Joueurs",
+    "author": "Auteur",
+    "mapId": "ID de la carte",
+    "playableArea": "Zone jouable",
+    "playableAreaTooltip": "Zone englobant les points de capture - la partie de la carte où se déroulent les combats. Toujours plus petite que la taille totale de la carte.",
+    "mapStats": "Statistiques de la carte en {{mode}}",
+    "points": "Points de ressources",
+    "totalCapturable": "Points capturables",
+    "income": "Revenu par minute",
+    "incomeTotal": "Total",
+    "incomePerSide": "Par camp",
+    "incomePerSideTooltip": "La moitié du revenu total. Les cartes sont presque symétriques, mais les points au centre de la carte sont disputés plutôt que partagés, il s'agit donc d'une estimation.",
+    "incomeNote": "Revenu de tous les points capturables en contrôle total, par minute.",
+    "hoverHint": "Survolez n'importe quel point de la carte pour voir ses détails :",
+    "hoverDetails": {
+      "tier": "Palier du point (de très faible à élevé)",
+      "income": "Revenu par minute qu'il génère",
+      "captureTime": "Temps de capture - le temps nécessaire pour le prendre",
+      "revertTime": "Temps de neutralisation - le temps avant qu'il redevienne neutre",
+      "secureRadius": "Rayon de sécurisation autour du point"
+    },
+    "tierSizeHint": "Les icônes sur la carte sont dimensionnées selon leur palier : les points les plus rentables sont les plus grands.",
+    "showSectors": "Afficher les secteurs",
+    "sectorsTooltip": "Dessine les secteurs de territoire sur la carte. Un point n'est relié à votre base que si vous tenez la chaîne de secteurs qui y mène.",
+    "pointIncome": "Revenu : +{{value}} / min",
+    "pointCaptureTime": "Temps de capture : {{value}} s",
+    "pointRevertTime": "Temps de neutralisation : {{value}} s",
+    "pointSecureRadius": "Rayon de sécurisation : {{value}}",
+    "startingPositionTooltip": "Équipe {{team}} - joueur {{position}}",
+    "playerPositionTooltip": "Joueur {{position}}"
+  }
+}

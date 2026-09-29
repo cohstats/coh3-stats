@@ -16,6 +16,7 @@
   "sections": {
     "players": "Игроки",
     "units": "Подразделения",
+    "finalStandUnits": "Подразделения Final Stand",
     "maps": "Карты"
   },
   "errors": {
@@ -37,6 +38,8 @@
       "other": "Другое"
     },
     "players_one": "{{count}} игрок",
+    "players_few": "{{count}} игрока",
+    "players_many": "{{count}} игроков",
     "players_other": "{{count}} игроков",
     "community": "Сообщество"
   },

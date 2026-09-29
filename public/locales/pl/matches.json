@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "Mecz COH3 {{matchId}} - {{map}} {{mode}}",
+    "description": "Szczegóły meczu Company of Heroes 3 {{matchId}} na mapie {{map}} w trybie {{mode}}. Wyniki graczy, pojedynki frakcji i statystyki gry.",
+    "keywords": [
+      "coh3 szczegóły meczu",
+      "powtórka gry",
+      "analiza meczu",
+      "wyniki graczy",
+      "pojedynek frakcji",
+      "statystyki gry"
+    ]
+  }
+}

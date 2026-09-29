@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand technologie - COH3",
+    "description": "Kompletní výběr technologií Final Stand pro frakci {{faction}} v Company of Heroes 3 - všechny jednotky, schopnosti a pasivní bonusy, které mohou být nabídnuty, výběr po výběru.",
+    "keywords": [
+      "coh3 final stand technologie",
+      "final stand výběr technologií",
+      "company of heroes 3 final stand",
+      "final stand jednotky schopnosti pasivy",
+      "hold off technologie"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand technologie",
+    "subtitle": "Výběr technologií, jeden výběr po druhém. Počet výběrů za hru: {{picks}}. Každý z nich nabízí {{choices}} z níže uvedených technologií - a vše, co si vyberete, vám zůstane po zbytek zápasu.",
+    "notAvailable": "Data technologií Final Stand nejsou momentálně k dispozici. Zkuste to prosím později."
+  },
+  "summary": {
+    "technologies_one": "{{count}} technologie",
+    "technologies_few": "{{count}} technologie",
+    "technologies_many": "{{count}} technologie",
+    "technologies_other": "{{count}} technologií",
+    "units_one": "{{count}} jednotka",
+    "units_few": "{{count}} jednotky",
+    "units_many": "{{count}} jednotky",
+    "units_other": "{{count}} jednotek",
+    "abilities_one": "{{count}} schopnost",
+    "abilities_few": "{{count}} schopnosti",
+    "abilities_many": "{{count}} schopnosti",
+    "abilities_other": "{{count}} schopností",
+    "passives_one": "{{count}} pasivní bonus",
+    "passives_few": "{{count}} pasivní bonusy",
+    "passives_many": "{{count}} pasivního bonusu",
+    "passives_other": "{{count}} pasivních bonusů",
+    "picks_one": "{{count}} výběr",
+    "picks_few": "{{count}} výběry",
+    "picks_many": "{{count}} výběru",
+    "picks_other": "{{count}} výběrů",
+    "picksTooltip": "Výběry během hry - jeden před první vlnou a jeden na začátku každé další vlny, střídavě jednotka, pasivní bonus a schopnost."
+  },
+  "category": {
+    "unit": "Jednotka",
+    "ability": "Schopnost",
+    "passive": "Pasivní bonus"
+  },
+  "filters": {
+    "searchPlaceholder": "Hledat technologie",
+    "type": "Typ",
+    "tags": "Štítky",
+    "common": "Sdílené technologie",
+    "commonTooltip": "Technologie, které mohou být nabídnuty všem frakcím. Vypněte pro zobrazení pouze technologií této frakce.",
+    "reset": "Resetovat",
+    "matches_one": "Odpovídá {{count}} technologie",
+    "matches_few": "Odpovídají {{count}} technologie",
+    "matches_many": "Odpovídá {{count}} technologie",
+    "matches_other": "Odpovídá {{count}} technologií"
+  },
+  "pick": {
+    "title": "Výběr {{pick}}",
+    "wave": "Vlna {{wave}}",
+    "waveTooltip": "Vlna, po které tento výběr probíhá. Vlna 0 je přípravná fáze před první vlnou.",
+    "pool": "{{choices}} z {{count}}",
+    "poolTooltip": "Kolik technologií hra nabídne a z kolika je může vybírat.",
+    "repeated_one": "{{count}} další z dřívějšího výběru",
+    "repeated_few": "{{count}} další z dřívějších výběrů",
+    "repeated_many": "{{count}} dalších z dřívějších výběrů",
+    "repeated_other": "{{count}} dalších z dřívějších výběrů",
+    "empty": "Žádná technologie tohoto výběru neodpovídá filtrům."
+  },
+  "tech": {
+    "common": "Sdílená",
+    "commonTooltip": "Tato technologie může být nabídnuta všem frakcím.",
+    "waveFrom": "Od vlny {{wave}}",
+    "waveUntil": "Do vlny {{wave}}",
+    "waveRange": "Vlny {{from}} - {{to}}",
+    "waveTooltip": "Vlny, ve kterých může být tato technologie nabídnuta. Respektují to pouze výběry pasivních bonusů - výběry jednotek a schopností to ignorují.",
+    "noDescription": "Herní soubory neobsahují popis"
+  },
+  "faction": {
+    "switchTooltip": "Zobrazit technologie frakce {{faction}}"
+  }
+}

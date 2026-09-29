@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Company of Heroes 3 統計",
+    "description": "Company of Heroes 3 の統計サイト。リーダーボード、プレイヤーカード、過去の試合、ユニット統計、DPS 計算機、バトルグループ・武器エクスプローラー、ライブゲーム、最新の COH3 ニュース、最新の YouTube 動画と Twitch 配信など。",
+    "keywords": [
+      "coh3 リーダーボード",
+      "coh3 プレイヤーカード",
+      "coh3 ユニット統計",
+      "coh3 ライブゲーム",
+      "coh3 dps 計算機",
+      "company of heroes 3 バトルグループ",
+      "武器エクスプローラー",
+      "試合履歴",
+      "twitch 配信",
+      "youtube 動画"
+    ]
+  },
+  "sections": {
+    "news": {
+      "title": "最新ニュース",
+      "newsLabel": "ニュース"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "DPS 計算機",
+        "description": "ゲーム内の全ユニットの DPS を比較できます。さまざまな武器でユニットの装備をカスタマイズでき、ユニットの HP も考慮に入れられます。"
+      },
+      "explorer": {
+        "title": "エクスプローラー",
+        "description": "陣営、ユニット、武器、マップを詳しく閲覧できます。Final Stand のパークやユニット、DPS 計算機も含まれます。"
+      }
+    },
+    "leaderboards": {
+      "title": "1v1 リーダーボード",
+      "viewFullLeaderboard": "リーダーボード全体を見る",
+      "factions": {
+        "american": "USF",
+        "british": "イギリス軍",
+        "german": "ドイツ国防軍",
+        "dak": "DAK"
+      }
+    },
+    "reddit": {
+      "title": "COH3 Reddit 人気投稿",
+      "noData": "Reddit の投稿はありません"
+    },
+    "youtube": {
+      "title": "先週の動画",
+      "noData": "YouTube の動画はありません",
+      "views": "回視聴"
+    },
+    "twitch": {
+      "title": "ライブ配信を視聴",
+      "noStreams": "現在 Twitch で配信中の英語の配信はありません。"
+    }
+  },
+  "leaderboardTable": {
+    "errorTitle": "リーダーボードの取得中にエラーが発生しました"
+  }
+}

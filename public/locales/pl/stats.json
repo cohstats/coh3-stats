@@ -1,0 +1,77 @@
+{
+  "leaderboards": {
+    "meta": {
+      "title": "Statystyki globalnych rankingów",
+      "description": "Ogólne informacje o wszystkich rankingach w Company of Heroes 3",
+      "keywords": [
+        "coh3 rankingi",
+        "ranking na żywo",
+        "ogólne rankingi",
+        "coh3 statystyki rankingów",
+        "statystyki rankingów",
+        "dane rankingowe"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "Statystyki i wykresy gier",
+      "description": "Statystyki gier Company of Heroes 3. Sprawdź % wygranych każdej frakcji / trybu i wiele więcej.",
+      "keywords": [
+        "coh3 winrate",
+        "coh3 procent wygranych",
+        "winrate frakcji",
+        "analiza",
+        "najlepsza frakcja",
+        "statystyki gier"
+      ]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "Statystyki map",
+      "description": "Kompleksowe statystyki map Company of Heroes 3, w tym % wygranych, popularność i dane o wynikach.",
+      "keywords": ["coh3 mapy", "statystyki map", "winrate map", "dane map", "analiza pola bitwy"]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "Statystyki osiągnięć",
+      "description": "Statystyki osiągnięć w Company of Heroes 3 i odsetek ich zdobycia wśród wszystkich graczy.",
+      "keywords": [
+        "coh3 osiągnięcia",
+        "statystyki osiągnięć",
+        "odsetek ukończenia",
+        "osiągnięcia graczy",
+        "postęp w grze"
+      ]
+    }
+  },
+  "players": {
+    "meta": {
+      "title": "Statystyki graczy multiplayer - Company of Heroes 3",
+      "description": "Ogólne informacje o wszystkich graczach multiplayer w Company of Heroes 3.\nObecnie śledzonych graczy multiplayer: {{count, number}}.",
+      "keywords": [
+        "coh3 statystyki graczy",
+        "statystyki graczy",
+        "kraje graczy",
+        "coh3 historia graczy",
+        "statystyki multiplayer",
+        "śledzenie graczy",
+        "statystyki gier",
+        "dane graczy"
+      ]
+    },
+    "title": "Statystyki graczy PC",
+    "totalTrackedPlayers": "Łączna liczba śledzonych graczy",
+    "totalTrackedPlayersTooltip": "Możemy śledzić tylko graczy, którzy od 19 maja 2023 r. zagrali w multiplayer przynajmniej raz w dowolnym trybie gry.",
+    "multiplayerPlayersLast30Days": "Gracze multiplayer w ostatnich 30 dniach",
+    "multiplayerPlayersLast7Days": "Gracze multiplayer w ostatnich 7 dniach",
+    "multiplayerPlayersLast24Hours": "Gracze multiplayer w ostatnich 24 godzinach",
+    "dataUpdatedOn": "Dane zaktualizowano",
+    "xboxPsNote": "Nie śledzimy tu graczy z XBOX i PS."
+  },
+  "errors": {
+    "gettingPlayerStats": "Błąd podczas pobierania statystyk graczy"
+  }
+}

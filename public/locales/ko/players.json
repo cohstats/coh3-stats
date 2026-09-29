@@ -1,0 +1,313 @@
+{
+  "meta": {
+    "title": "{{name}} - COH3 플레이어 프로필",
+    "description": "{{name}}의 Company of Heroes 3 플레이어 프로필 - 총 {{totalGames}}게임, 승률 {{winRate}}%. 상세 통계, 매치 기록, 진영별 성과를 확인하세요.",
+    "keywords": [
+      "coh3 플레이어 프로필",
+      "플레이어 통계",
+      "매치 기록",
+      "진영별 성과",
+      "경쟁 순위",
+      "플레이어 능력치",
+      "게임 통계",
+      "플레이어 데이터"
+    ]
+  },
+  "card": {
+    "error": {
+      "title": "플레이어 카드를 불러오는 중 오류가 발생했습니다",
+      "loadingError": "플레이어 카드를 불러오는 중 오류가 발생했습니다"
+    },
+    "title": "플레이어 카드 - {{name}}",
+    "titleWithView": {
+      "recentMatches": "플레이어 카드 - {{name}} - 최근 매치",
+      "standingsDetails": "플레이어 카드 - {{name}} - 상세 통계",
+      "activity": "플레이어 카드 - {{name}} - 활동",
+      "nemesis": "플레이어 카드 - {{name}} - 천적",
+      "teamsStandings": "플레이어 카드 - {{name}} - 팀 순위",
+      "teamDetails": "플레이어 카드 - {{name}} - 팀 상세"
+    }
+  },
+  "tabs": {
+    "standings": "플레이어 순위",
+    "standingsDetails": "상세 통계",
+    "recentMatches": "최근 매치",
+    "activity": "활동",
+    "nemesis": "천적",
+    "teamsStandings": "팀 순위"
+  },
+  "playerInfo": {
+    "bestElo": {
+      "allies": "연합군 최고 ELO {{elo}} - {{mode}}, {{faction}}",
+      "axis": "추축군 최고 ELO {{elo}} - {{mode}}, {{faction}}"
+    },
+    "stats": {
+      "totalGames": "총 게임 수 {{count}}",
+      "winRate": "승률 {{rate}}%",
+      "lastMatch": "최근 매치 {{time}}"
+    }
+  },
+  "recentMatches": {
+    "filters": {
+      "hideCustomGames": "사용자 지정 게임 숨기기",
+      "showAllGames": "모든 게임 표시"
+    },
+    "loadMore": "매치 더 불러오기",
+    "table": {
+      "columns": {
+        "date": "날짜",
+        "map": "맵",
+        "duration": "시간",
+        "type": "유형",
+        "players": "플레이어",
+        "actions": "작업"
+      },
+      "noData": "매치를 찾을 수 없습니다"
+    },
+    "downloadReplay": {
+      "button": "리플레이 다운로드",
+      "generating": "생성 중...",
+      "error": "리플레이 생성 중 오류가 발생했습니다"
+    }
+  },
+  "standings": {
+    "summary": {
+      "charts": {
+        "factionDistribution": "진영 분포",
+        "gameTypes": "게임 유형",
+        "activityLastMonths": "최근 몇 달간 활동"
+      }
+    },
+    "table": {
+      "columns": {
+        "leaderboard": "순위표",
+        "rank": "순위",
+        "rating": "레이팅",
+        "lastMatch": "최근 매치",
+        "streak": "연속",
+        "wins": "승",
+        "losses": "패",
+        "total": "합계",
+        "winRate": "승률",
+        "type": "유형",
+        "elo": "ELO",
+        "tier": "티어",
+        "ratio": "승률",
+        "drops": "이탈"
+      },
+      "helpers": {
+        "bestRankAchieved": "최고 달성 순위. 낮을수록 좋습니다. 플레이어가 기록한 역대 최고 순위입니다.",
+        "bestEloAchieved": "최고 달성 ELO. 높을수록 좋습니다. 플레이어가 기록한 역대 최고 ELO입니다.",
+        "best": "최고"
+      }
+    },
+    "faction": {
+      "bestRank": "최고 순위",
+      "bestRating": "최고 레이팅",
+      "bestWinRate": "최고 승률"
+    }
+  },
+  "detailedStats": {
+    "filters": {
+      "selectFaction": "진영 선택",
+      "selectGameType": "게임 유형 선택"
+    },
+    "charts": {
+      "playTime": "플레이 시간 분포",
+      "mapsWinRate": "맵별 승률",
+      "factionVsFaction": "진영 대 진영"
+    },
+    "noData": "상세 통계가 없습니다"
+  },
+  "activity": {
+    "title": "플레이어 활동",
+    "noData": "활동 데이터가 없습니다",
+    "filters": {
+      "timeRange": "기간",
+      "timezone": "시간대"
+    },
+    "alerts": {
+      "noData": {
+        "title": "활동 데이터 없음",
+        "message": "이 플레이어의 활동 데이터를 받아오지 못하고 있는 것 같습니다.",
+        "reportMessage": "이 오류가 계속되면 다음에 제보해 주세요:"
+      },
+      "steamOnly": {
+        "title": "COH3 Stats 데이터 없음",
+        "message": "이 통계는 Steam 플레이어만 이용할 수 있습니다.",
+        "voteMessage": "콘솔에서도 이 통계를 보고 싶으시면 다음에서 투표하거나 요청해 주세요:"
+      }
+    },
+    "charts": {
+      "calendarDay": {
+        "title": "날짜별 활동"
+      },
+      "hourOfDay": {
+        "title": "시간대별 활동"
+      },
+      "weekDay": {
+        "title": "요일별 활동"
+      }
+    },
+    "timezoneHelper": "시간별 활동 데이터는 UTC 시간대로 수집됩니다. 이 선택기로 표시 시간을 현지 시간대로 바꿀 수 있습니다."
+  },
+  "teamsStandings": {
+    "title": "사전 구성 팀 순위",
+    "noData": "이 플레이어의 팀 데이터가 없습니다",
+    "errorTitle": "팀 데이터를 불러오는 중 오류가 발생했습니다",
+    "axisTeams": "추축군",
+    "alliesTeams": "연합군",
+    "axisTeam": "추축군 팀",
+    "alliesTeam": "연합군 팀",
+    "mostPlayed": "가장 많이 플레이한 팀",
+    "mostRecent": "최근 팀",
+    "checkTeamDetails": "매치 및 ELO 변동 기록은 팀 상세에서 확인하세요",
+    "checkTeamLeaderboardsPrefix": "내 순위는",
+    "checkTeamLeaderboardsSuffix": "에서 확인하세요",
+    "limitedTeams": "최대 2개 팀만 표시",
+    "helperText": "사전 구성 팀은 COH3 Stats에서만 추적합니다. 자세한 내용은 소개 페이지를 참고하세요"
+  },
+  "teamDetails": {
+    "title": "팀 상세",
+    "specificTeamTitle": "팀 상세",
+    "matchHistory": "매치 기록",
+    "eloHistory": "팀 ELO 기록",
+    "winLossHistory": "승패 기록",
+    "teamNotFound": "팀을 찾을 수 없습니다. 팀 ID를 확인한 후 다시 시도해 주세요.",
+    "detailsButton": "상세",
+    "showingMatches": "전체 {{total}}개 매치 중 {{loaded}}개 표시",
+    "errorLoadingMatches": "매치를 불러오는 중 오류 발생: {{error}}"
+  },
+  "teamsTable": {
+    "columns": {
+      "type": "유형",
+      "players": "플레이어",
+      "elo": "ELO",
+      "streak": "연속",
+      "wins": "승",
+      "losses": "패",
+      "ratio": "승률",
+      "total": "합계",
+      "lastMatch": "최근 매치"
+    },
+    "noData": "팀 데이터가 없습니다",
+    "eloHelper": "COH3 Stats에서만 추적하는 비공식 ELO입니다. 자세한 내용은 소개 페이지를 참고하세요",
+    "bestElo": "최고 {{elo}}"
+  },
+  "teamMatchesTable": {
+    "columns": {
+      "played": "플레이 일시",
+      "result": "결과",
+      "enemyElo": "상대 ELO",
+      "axisPlayers": "추축군 플레이어",
+      "alliesPlayers": "연합군 플레이어",
+      "map": "맵"
+    },
+    "noData": "매치 기록이 없습니다",
+    "showFlags": "플레이어 국기 표시",
+    "clickForDetails": "행을 클릭하면 자세한 정보를 볼 수 있습니다",
+    "detailsButton": "상세",
+    "teamEloHelper": "COH3 Stats에서 추적하는 팀 ELO 변동입니다. 플레이어 순위 ELO와는 다른 ELO이며, COH3 Stats ELO는 매치메이킹에 사용되지 않습니다.",
+    "playerEloHelper": "여기에 표시되는 ELO는 해당 모드와 진영에서의 개인 플레이어 순위 ELO입니다."
+  },
+  "nemesis": {
+    "widget": {
+      "title": "상위 10 - 1v1 천적",
+      "helperText": "천적 카운터는 하루(UTC 기준)에 같은 플레이어와 2번 대전해야 '활성화'됩니다. 활성화 이후에는 해당 플레이어와의 모든 1v1 게임이 집계됩니다. 닉네임은 해당 플레이어와 마지막으로 플레이한 게임 기준으로 저장됩니다. Steam 플레이어만 추적합니다.",
+      "noRecords": "추적된 1v1 천적이 없습니다"
+    },
+    "columns": {
+      "alias": "닉네임",
+      "wins": "승",
+      "losses": "패",
+      "ratio": "승률",
+      "diff": "차이",
+      "total": "합계"
+    },
+    "title": "1v1 천적",
+    "noNemesis": "1v1 천적 없음",
+    "wins": "승",
+    "losses": "패",
+    "rules": {
+      "trigger": "천적 카운터는 '활성화'되어야 합니다",
+      "triggerCondition": "하루(UTC 기준)에 같은 플레이어와 2번 대전하면 활성화됩니다.",
+      "aliases": "닉네임은 해당 플레이어와 마지막으로 플레이한 게임 기준으로 저장됩니다",
+      "counting": "활성화 이후에는 해당 플레이어와의 모든 1v1 게임이 집계됩니다.",
+      "updateTime": "데이터는 매일 UTC 오전 6시에 한 번 갱신됩니다.",
+      "steamOnly": "Steam 플레이어만 추적합니다."
+    },
+    "alerts": {
+      "steamOnly": {
+        "title": "COH3 Stats 데이터 없음",
+        "message": "이 통계는 Steam 플레이어만 이용할 수 있습니다.",
+        "voteMessage": "콘솔에서도 이 통계를 보고 싶으시면 다음에서 투표하거나 요청해 주세요:"
+      }
+    }
+  },
+  "counterStatistics": {
+    "title": "카운터 통계",
+    "totalMatches": "총 매치: {{count}}",
+    "total": "합계",
+    "average": "평균(매치당)",
+    "categories": {
+      "combat": "전투",
+      "productionBuildings": "생산 및 건물",
+      "abilitiesCommands": "능력 및 명령",
+      "other": "기타"
+    },
+    "stats": {
+      "damageData": "가한 피해",
+      "units": "유닛",
+      "squads": "분대",
+      "vehicles": "차량",
+      "structureDamage": "건물 피해",
+      "vehiclesAbandoned": "버려진 차량",
+      "buildings": "건물",
+      "unitsProduced": "생산한 유닛",
+      "points": "지점",
+      "abilitiesUsed": "사용한 능력",
+      "totalCommands": "총 명령 수",
+      "apm": "APM(분당 행동 수)",
+      "upgrades": "업그레이드",
+      "requisition": "보급",
+      "power": "전력",
+      "commandPointsEarned": "획득한 지휘 포인트",
+      "entityReinforcements": "병력 보충",
+      "veterancy": "숙련도",
+      "maxPopulation": "최대 인구",
+      "gameTime": "게임 시간"
+    },
+    "labels": {
+      "kills": "처치",
+      "deaths": "사망",
+      "kd": "KD",
+      "killed": "처치",
+      "lost": "손실",
+      "produced": "생산",
+      "captured": "점령",
+      "recaptured": "재점령",
+      "earned": "획득",
+      "spent": "사용",
+      "max": "최대",
+      "squadXp": "분대 XP",
+      "squadRank": "분대 등급",
+      "vehicleRank": "차량 등급"
+    }
+  },
+  "counters": {
+    "widget": {
+      "title": "평균 카운터",
+      "helperText": "선택한 게임 모드에서 모든 진영의 평균 카운터 통계입니다.\n\nK - 처치(Kills)\nL - 손실(Lost)\nP - 생산(Produced)",
+      "unitsKD": "유닛 K / D / KD",
+      "unitsKDTooltip": "처치 / 사망 / 처치-사망 비율",
+      "squadsKLP": "분대 K / L / P",
+      "squadsKLPTooltip": "처치 / 손실 / 생산",
+      "vehiclesKLP": "차량 K / L / P",
+      "vehiclesKLPTooltip": "처치 / 손실 / 생산",
+      "apm": "APM",
+      "apmTooltip": "분당 행동 수",
+      "totalMatches": "총 매치",
+      "noData": "이 게임 모드의 카운터 데이터가 없습니다"
+    }
+  }
+}

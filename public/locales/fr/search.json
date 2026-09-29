@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Recherche",
+    "description": "Recherchez des unités et des joueurs Steam, Xbox et PSN dans Company of Heroes 3.",
+    "keywords": [
+      "rechercher des joueurs",
+      "rechercher des données",
+      "recherche coh3",
+      "recherche d'unités",
+      "recherche de joueurs",
+      "joueurs steam",
+      "joueurs xbox",
+      "joueurs psn"
+    ]
+  },
+  "sections": {
+    "players": "Joueurs",
+    "units": "Unités",
+    "finalStandUnits": "Unités Final Stand",
+    "maps": "Cartes"
+  },
+  "errors": {
+    "searchError": "Erreur lors de la recherche"
+  },
+  "noResults": {
+    "players": "Aucun joueur trouvé",
+    "units": "Aucune unité trouvée",
+    "unitsEnglishOnly": "La recherche d'unités ne prend en charge que l'anglais",
+    "maps": "Aucune carte trouvée"
+  },
+  "mapCard": {
+    "modes": {
+      "1v1": "1vs1",
+      "2v2": "2vs2",
+      "3v3": "3vs3",
+      "4v4": "4vs4",
+      "fs": "Final Stand",
+      "other": "Autres"
+    },
+    "players_one": "{{count}} joueur",
+    "players_many": "{{count}} joueurs",
+    "players_other": "{{count}} joueurs",
+    "community": "Communauté"
+  },
+  "info": {
+    "firstResults": "Seuls les 50 premiers résultats sont affichés. Veuillez affiner votre recherche.",
+    "consoleSearch": "La recherche de joueurs console ne prend en charge que la correspondance exacte.",
+    "steamSearch": "Vous pouvez aussi rechercher à l'aide d'un Steam ID."
+  },
+  "playerCard": {
+    "lastActive": "Dernière activité",
+    "steamProfile": "Profil Steam",
+    "psnPlayer": "Joueur PlayStation",
+    "xboxPlayer": "Joueur XBOX"
+  }
+}

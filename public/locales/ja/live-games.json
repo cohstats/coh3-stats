@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "ライブゲーム - Company of Heroes 3",
+    "description": "Company of Heroes 3 で現在進行中のライブゲーム",
+    "keywords": [
+      "coh3 ライブゲーム",
+      "coh3 リアルタイム 試合",
+      "coh3 ゲーム",
+      "coh3 進行中の試合"
+    ]
+  },
+  "pageTitle": "PC ライブゲーム",
+  "filters": {
+    "liveGames": {
+      "label": "ライブゲーム",
+      "options": {
+        "1v1": "1 vs 1 オートマッチ",
+        "2v2": "2 vs 2 オートマッチ",
+        "3v3": "3 vs 3 オートマッチ",
+        "4v4": "4 vs 4 オートマッチ",
+        "ai": "対 AI オートマッチ",
+        "custom": "カスタムゲーム"
+      }
+    },
+    "sortBy": {
+      "label": "並べ替え",
+      "options": {
+        "rank": "ランク",
+        "observers": "観戦者",
+        "startgametime": "開始時刻"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "ライブゲーム概要",
+    "tooltip": "現在進行中のマルチプレイの試合です。プレイヤー合計は重複を除いた人数です。ロビー、マッチング待ち、ロード中など、他の状態にいるプレイヤーも多数いると考えられます。カスタムゲームは既定では観戦できないため、実際にはさらに多くのカスタムゲームがプレイされている可能性が高いです。データは 5 分ごとに更新されます。",
+    "noGames": {
+      "title": "ライブゲームが検出されません",
+      "message": "最近のゲームパッチ後、COH3 Stats の更新が必要な可能性があります。"
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "対 AI",
+      "custom": "カスタム"
+    },
+    "totals": {
+      "automatch": "オートマッチ合計",
+      "anyGame": "全ゲーム合計"
+    },
+    "games": "試合"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "モード",
+      "axisPlayers": "枢軸軍プレイヤー",
+      "alliesPlayers": "連合軍プレイヤー",
+      "map": "マップ",
+      "observers": "観戦者",
+      "gameTime": "試合時間",
+      "server": "サーバー"
+    },
+    "switches": {
+      "showFlags": "プレイヤーの国旗を表示",
+      "showServer": "試合サーバーを表示"
+    },
+    "errors": {
+      "title": "ライブゲームの取得中にエラーが発生しました",
+      "summaryTitle": "ライブゲーム概要の取得中にエラーが発生しました"
+    },
+    "dataUpdated": "データ更新日時: {{time}}"
+  }
+}

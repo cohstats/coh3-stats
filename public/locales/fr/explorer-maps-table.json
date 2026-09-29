@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Tableau des cartes COH3 - Toutes les données des cartes comparées",
+    "description": "Toutes les cartes multijoueurs de Company of Heroes 3 dans un tableau triable - nombre de points de ressources, revenu maximal par minute en carburant, munitions et main-d'œuvre, tailles des cartes et cartes communautaires.",
+    "keywords": [
+      "tableau des cartes coh3",
+      "données des cartes company of heroes 3",
+      "revenu des cartes coh3",
+      "points de carburant coh3",
+      "taille des cartes coh3",
+      "comparaison des cartes",
+      "liste des cartes"
+    ]
+  },
+  "page": {
+    "title": "Tableau des cartes de Company of Heroes 3",
+    "subtitle": "Toutes les données des cartes dans un tableau triable - points de ressources, revenu par minute et tailles des cartes.",
+    "noMaps": "Aucune carte ne correspond aux filtres sélectionnés."
+  },
+  "filters": {
+    "income": "Revenu",
+    "incomeTotal": "Total",
+    "incomePerSide": "Par camp",
+    "incomeTooltip": "Indique si les colonnes de revenu affichent le revenu de toute la carte ou le revenu estimé d'un camp (la moitié du total)."
+  },
+  "groups": {
+    "map": "Carte",
+    "points": "Points de ressources",
+    "income": "Revenu / min",
+    "size": "Taille"
+  },
+  "columns": {
+    "name": "Nom",
+    "mode": "Mode",
+    "victory": "PV",
+    "fuel": "Carb.",
+    "munitions": "Mun.",
+    "strategic": "MO",
+    "capturable": "Total",
+    "mapSize": "Carte",
+    "playableArea": "Jouable"
+  },
+  "tooltips": {
+    "victory": "Nombre de points de victoire",
+    "fuel": "Nombre de points de carburant",
+    "munitions": "Nombre de points de munitions",
+    "strategic": "Nombre de points de main-d'œuvre (stratégiques)",
+    "capturable": "Nombre total de points pouvant être capturés par les joueurs - les positions de départ des joueurs ne sont pas comptées",
+    "incomeFuel": "Carburant par minute en contrôlant toute la carte",
+    "incomeMunitions": "Munitions par minute en contrôlant toute la carte",
+    "incomeManpower": "Main-d'œuvre par minute en contrôlant toute la carte",
+    "incomePerSideNote": "Le revenu par camp correspond à la moitié du total - les cartes sont presque symétriques, mais les points du centre sont disputés plutôt que partagés, il s'agit donc d'une estimation.",
+    "mapSize": "Taille de la carte en unités du monde (largeur × hauteur)",
+    "playableArea": "Zone englobant les points de capture - la partie de la carte où se déroulent les combats",
+    "mapIdVersion": "ID de la carte utilisé dans les fichiers du jeu - version du scénario {{version}}"
+  },
+  "details": {
+    "button": "Détails",
+    "tooltip": "Ouvrir la page de détail de {{name}}"
+  }
+}

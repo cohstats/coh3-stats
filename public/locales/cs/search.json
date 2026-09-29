@@ -16,6 +16,7 @@
   "sections": {
     "players": "Hráči",
     "units": "Jednotky",
+    "finalStandUnits": "Final Stand jednotky",
     "maps": "Mapy"
   },
   "errors": {
@@ -37,6 +38,8 @@
       "other": "Ostatní"
     },
     "players_one": "{{count}} hráč",
+    "players_few": "{{count}} hráči",
+    "players_many": "{{count}} hráče",
     "players_other": "{{count}} hráčů",
     "community": "Komunita"
   },

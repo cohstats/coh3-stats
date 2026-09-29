@@ -28,6 +28,8 @@
     "searchPlaceholder": "Hledat mapy",
     "lobbyOnly": "V aktuální lobby",
     "mapCount_one": "{{count}} mapa",
+    "mapCount_few": "{{count}} mapy",
+    "mapCount_many": "{{count}} mapy",
     "mapCount_other": "{{count}} map"
   },
   "modes": {
@@ -48,6 +50,8 @@
   },
   "card": {
     "players_one": "{{count}} hráč",
+    "players_few": "{{count}} hráči",
+    "players_many": "{{count}} hráče",
     "players_other": "{{count}} hráčů",
     "community": "Komunita",
     "authorTooltip": "Vytvořil {{author}}",

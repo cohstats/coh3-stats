@@ -18,7 +18,7 @@
       "title": "加载玩家卡片时出错",
       "loadingError": "加载玩家卡片时出错"
     },
-    "title": "玩家卡片",
+    "title": "玩家卡片 - {{name}}",
     "titleWithView": {
       "recentMatches": "玩家 card - {{name}} - 最近比赛",
       "standingsDetails": "玩家 card - {{name}} - 详细统计",
@@ -38,8 +38,8 @@
   },
   "playerInfo": {
     "bestElo": {
-      "allies": "最佳 ALLIES ELO {{ELO}} in {{mode}} as {{faction}}",
-      "axis": "最佳 AXIS ELO {{ELO}} in {{mode}} as {{faction}}"
+      "allies": "以 {{faction}} 在 {{mode}} 中的最佳同盟国 ELO：{{elo}}",
+      "axis": "以 {{faction}} 在 {{mode}} 中的最佳轴心国 ELO：{{elo}}"
     },
     "stats": {
       "totalGames": "总游戏数 {{count}}",
@@ -175,8 +175,8 @@
     "winLossHistory": "Win/Loss History",
     "teamNotFound": "Team not found. Please check the team ID and try again.",
     "detailsButton": "Details",
-    "showingMatches": "Showing {{loaded}} of {{总计}} matches",
-    "errorLoadingMatches": "错误 loading matches: {{错误}}"
+    "showingMatches": "显示 {{loaded}} / {{total}} 场比赛",
+    "errorLoadingMatches": "加载比赛时出错：{{error}}"
   },
   "teamsTable": {
     "columns": {
@@ -192,7 +192,7 @@
     },
     "noData": "No teams data available",
     "eloHelper": "Unofficial ELO tracked by COH3 Stats only, see more info in the about page",
-    "bestElo": "最佳 {{ELO}}"
+    "bestElo": "最佳 {{elo}}"
   },
   "teamMatchesTable": {
     "columns": {

@@ -1,0 +1,304 @@
+{
+  "meta": {
+    "title": "COH3 エクスプローラー - 陣営、ユニット、建物",
+    "description": "Company of Heroes 3 の陣営、ユニット、建物、バトルグループを探索。すべてのゲームコンテンツの詳細な性能、コスト、ダメージ情報を掲載。",
+    "keywords": [
+      "coh3 エクスプローラー",
+      "陣営",
+      "ユニット",
+      "建物",
+      "バトルグループ",
+      "ドイツ国防軍",
+      "アメリカ軍",
+      "dak",
+      "イギリス軍",
+      "ユニット性能",
+      "ダメージ",
+      "コスト"
+    ]
+  },
+  "common": {
+    "units": "ユニット",
+    "buildings": "建物",
+    "battleGroups": "バトルグループ",
+    "near": "近",
+    "medium": "中",
+    "mid": "中",
+    "far": "遠",
+    "light": "軽",
+    "heavy": "重",
+    "garrison": "駐屯",
+    "min": "最小",
+    "max": "最大",
+    "produces": "生産",
+    "hitpoints": "耐久力",
+    "upgrades": "アップグレード",
+    "costs": "コスト",
+    "explorer": "エクスプローラー"
+  },
+  "explorer": {
+    "title": "Company of Heroes 3 陣営エクスプローラー",
+    "subtitle": "ゲーム内のすべてのユニット、建物、バトルグループを探索できます。",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Final Stand DLC（AI との協力プレイ）のコンテンツです。通常のスカーミッシュ／マルチプレイでは利用できません。",
+      "perksHeading": "パーク",
+      "unitsHeading": "ユニット",
+      "perksCardTitle": "{{faction}} パーク",
+      "unitsCardTitle": "{{faction}} ユニット",
+      "techHeading": "テクノロジー",
+      "techCardTitle": "{{faction}} テクノロジー"
+    }
+  },
+  "factionPage": {
+    "factionOverview": "陣営の概要",
+    "meta": {
+      "title": "{{faction}} - COH3 エクスプローラー",
+      "description": "Company of Heroes 3 の {{faction}} 陣営を探索。{{faction}} のユニット、建物、バトルグループ、詳細な統計を確認できます。",
+      "keywords": [
+        "{{faction}}",
+        "{{faction}} エクスプローラー",
+        "{{faction}} バトルグループ",
+        "{{faction}} ユニット"
+      ]
+    }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "{{faction}} Final Stand ユニット",
+      "description": "{{faction}} の Final Stand ユニット - Company of Heroes 3 の協力プレイ（対 AI）DLC の編成。通常のスカーミッシュ／マルチプレイでは使用できません。",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand ユニット一覧 {{faction}}",
+        "coh3 final stand dlc",
+        "hold off 協力プレイ ユニット"
+      ]
+    },
+    "title": "Final Stand ユニット",
+    "description": "Final Stand DLC（AI との協力プレイ）専用のユニットです。通常のスカーミッシュ／マルチプレイでは使用できません。",
+    "searchPlaceholder": "ユニットを検索",
+    "categories": {
+      "infantry": "歩兵",
+      "teamWeapons": "支援火器",
+      "vehicles": "車両",
+      "emplacements": "設置兵器"
+    },
+    "empty": "{{faction}} の Final Stand ユニットは見つかりませんでした。"
+  },
+  "unitPage": {
+    "stats": "性能",
+    "abilities": "アビリティ",
+    "loadout": "装備",
+    "veterancy": "練度",
+    "upkeep": "毎分の維持費",
+    "reinforce": "増援",
+    "construct": "建設可能",
+    "free": "無料",
+    "weaponNote": "実際の命中率は、標的のサイズや装甲といった被攻撃側の要素や、攻撃側の命中率や貫通力など、さまざまな要因に左右されます。",
+    "importantNote": "このセクションには、通常のスカーミッシュ／マルチプレイでは使用できないユニットが含まれている場合があります。",
+    "upgradeWeapons": "アップグレードで使用可能な武器",
+    "abilityWeapons": "アビリティの武器",
+    "openInDpsTool": "DPS ツールで開く",
+    "abilityInfoRange": "射程",
+    "abilityInfoShots": "発射数",
+    "abilityInfoDuration": "持続時間",
+    "abilityInfoCooldown": "クールダウン",
+    "abilityInfoToggleCooldown": "切替",
+    "abilityInfoToggleOnCooldown": "オン切替",
+    "abilityInfoToggleOffCooldown": "オフ切替",
+    "requirements": "必要条件",
+    "requiresVeterancy": "練度 {{rank}}"
+  },
+  "statsCard": {
+    "sightRange": "視界",
+    "detection": "探知",
+    "speed": "速度",
+    "acceleration": "加速",
+    "deceleration": "減速",
+    "rotation": "旋回",
+    "maxRange": "最大射程",
+    "targetSize": "標的サイズ",
+    "armor": "装甲",
+    "captureMultiplier": "占領倍率",
+    "decaptureMultiplier": "占領解除倍率",
+    "vehicleArmor": "車両装甲",
+    "vehicleArmorHint": "ゲーム内の装甲クリティカルのブループリントを指します。"
+  },
+  "weaponCard": {
+    "accuracy": "命中率",
+    "accuracyTooltip": "確実に命中する確率です。失敗した場合は代わりに散布されます。標的の「標的サイズ」が乗算されます。",
+    "arc": "射角",
+    "arcTooltip": "ユニットが旋回、移動、または再設置することなく射撃できる武器の水平射角",
+    "burstDuration": "バースト時間",
+    "burstDurationTooltip": "1 回のバーストの平均射撃時間",
+    "cooldown": "クールダウン",
+    "rpm": "毎分発射数",
+    "rpmTooltip": "持続的な発射レート",
+    "rangeOfFire": "射程",
+    "range": "射程",
+    "distance": "距離",
+    "limit": "上限",
+    "traverseSpeed": "旋回速度",
+    "traverseSpeedTooltip": "武器が左右に向きを変える速さ",
+    "setup": "設置",
+    "setupTooltip": "ユニットが射撃可能になるまでに必要な設置時間",
+    "teardown": "撤収",
+    "teardownTooltip": "ユニットが移動可能になるまでに必要な撤収時間",
+    "penetration": "貫通力",
+    "penetrationTooltip": "ダメージを与える確率は貫通力を装甲で割った値です",
+    "scatter": "散布範囲",
+    "scatterTooltip": "幅 × 長さ。散布された弾が着弾しうる範囲です。",
+    "damageSpread": "ダメージ分配範囲",
+    "damageSpreadTooltip": "幅 × 長さ。武器は標的周辺のこの範囲内のモデルをランダムに攻撃します。射程内かつ射角内のモデルにのみ適用されます。",
+    "damageSpreadOffset": "ダメージ分配範囲のオフセット",
+    "damageSpreadOffsetTooltip": "ダメージ分配範囲の中心は、標的からこの距離だけ後方になります。",
+    "damage": "ダメージ",
+    "friendlyDamage": "味方へのダメージ",
+    "ownUnitDamage": "自軍へのダメージ",
+    "damageIncludesOwnUnits": "敵 / 自軍へのダメージ",
+    "friendlyDamageIncludesOwnUnits": "味方 / 自軍へのダメージ",
+    "deflectionDamage": "跳弾ダメージ",
+    "deflectionDamageTooltip": "貫通に失敗した際に与えるダメージ",
+    "aoeRadius": "範囲攻撃の半径",
+    "aoeSize": "範囲攻撃のサイズ",
+    "aoeSizeTooltip": "矩形の範囲ダメージエリアの幅 × 長さ。着弾点から前方に広がります。",
+    "aoeFalloff": "範囲攻撃の減衰",
+    "aoeFalloffTooltip": "着弾点からの距離によるダメージと制圧。1 分隊あたり最大 {{aoeCap}} 人までダメージを与えられます。-1 は上限なしです。",
+    "onTheMove": "移動中",
+    "onTheMoveTooltip": "ユニットが移動中の場合のペナルティ。",
+    "onTheMoveAccuracyTooltip": "ユニットが移動中の場合、命中率をこの値で修正します。",
+    "onTheMoveBurstTooltip": "ユニットが移動中の場合、バースト時間をこの値で修正します。",
+    "onTheMoveCooldownTooltip": "武器のクールダウンをこの値で修正します。クールダウンは再射撃サイクル全体の一部です。",
+    "targetModifiers": "対標的 - 修正値",
+    "targetModifiersTooltip": "1 つの標的に複数の修正値が適用される場合があります",
+    "baseDamage": "基本ダメージ",
+    "coverModifiers": "対遮蔽 - 修正値",
+    "coverModifiersProjectileImpactTooltip": "遮蔽物内のユニットを攻撃する場合。ダメージと制圧は弾の着弾点から計算されます。",
+    "coverModifiersFiringPositionTooltip": "遮蔽物内のユニットを攻撃する場合。ダメージと制圧は射撃位置から計算されます。",
+    "lightCover": "軽遮蔽",
+    "heavyCover": "重遮蔽",
+    "garrisonCover": "駐屯",
+    "suppression": "制圧",
+    "suppressionTooltip": "与える制圧値。20 を超えると制圧状態になります。",
+    "suppressionPerSecond": "毎秒の制圧値",
+    "suppressionPerSecondTooltip": "回復や耐性を考慮する前の、毎秒の平均的な持続制圧値。20 を超えると制圧状態になります。",
+    "suppressionRadius": "制圧半径",
+    "suppressionRadiusTooltip": "標的周辺でこの半径内にいるユニットが制圧を受けます。射程内かつ射角内のユニットにのみ適用されます。",
+    "incrementalTargetRadius": "追加標的半径",
+    "incrementalTargetRadiusTooltip": "追加命中率の計算でゲームが考慮する、標的周辺の半径",
+    "incrementalTargetAccuracy": "追加命中率",
+    "incrementalTargetAccuracyTooltip": "標的周辺の追加標的半径内にいる各モデルごとに、この命中率修正値が指数的に適用されます",
+    "timeBetweenShots": "再射撃時間",
+    "timeBetweenShotsTooltip": "射撃間の平均時間",
+    "timeBetweenShotsMag": "再射撃時間",
+    "timeBetweenShotsMagTooltip": "リロードサイクルを除いた射撃間の平均時間。",
+    "timeBetweenBursts": "バースト間隔",
+    "timeBetweenBurstsTooltip": "バースト間の平均待機時間",
+    "reloadCycle": "リロードサイクル",
+    "reloadCycleTooltip": "モデルがリロードを必要とする場合の射撃間の平均時間",
+    "coreStats": "基本性能",
+    "timing": "タイミング",
+    "specialMechanics": "特殊な仕組み",
+    "scatterAngle": "散布角",
+    "scatterAngleTooltip": "散布範囲の幅を修正します。",
+    "scatterDistance": "散布距離",
+    "scatterDistanceTooltip": "散布範囲の長さとオフセットを修正します。",
+    "aimTime": "照準時間",
+    "aimTimeWithWindUp": "射撃前時間",
+    "aimTimeWithWindUpTooltip": "準備アニメーションの終了から実際に射撃するまでの時間。一様分布ではありません。",
+    "windUp": "ワインドアップ",
+    "scatterOffset": "散布オフセット",
+    "scatterOffsetTooltip": "散布の中心は、標的からこの距離だけ後方になります。",
+    "reloadFrequency": "マガジン",
+    "reloadFrequencyTooltip": "この回数の射撃／バーストの後、武器はリロードサイクルに入ります",
+    "bursts": "バースト",
+    "shots": "発",
+    "projectileTravelTime": "飛翔時間",
+    "projectileTravelTimeTooltip": "障害物がない場合の、射撃から着弾までの時間",
+    "detonationDelay": "信管",
+    "detonationDelayTooltip": "着弾から爆発までの時間",
+    "projectileAvoidanceArcMax": "障害物回避",
+    "projectileAvoidanceArcMaxTooltip": "武器が障害物を越えるために使用できる最大角度。障害物がない場合は {{nonCollideMinAngle}}° で射撃します。"
+  },
+  "dps": {
+    "meta": {
+      "title": "COH3 DPS 計算機",
+      "description": "Company of Heroes 3 の全ユニットの秒間ダメージ（DPS）を計算。武器の比較、遮蔽の影響の分析、分隊構成の最適化ができる高度な DPS 計算機です。",
+      "keywords": [
+        "coh3 dps 計算機",
+        "秒間ダメージ",
+        "coh3 ダメージ計算機",
+        "ユニット ダメージ比較",
+        "武器性能",
+        "遮蔽 分析",
+        "分隊 最適化",
+        "dps ツール",
+        "coh3 計算機",
+        "ユニット 有効性"
+      ]
+    }
+  },
+  "dpsCompare": {
+    "meta": {
+      "title": "COH3 DPS 比較ツール",
+      "description": "Company of Heroes 3 で、最大 5 体の攻撃ユニットの 1 つの標的に対する秒間ダメージ（DPS）を比較。ユニットの有効性を分析し、部隊編成を最適化できます。",
+      "keywords": [
+        "coh3 dps 比較",
+        "ユニット比較",
+        "ダメージ比較",
+        "coh3 ユニット 有効性",
+        "部隊編成",
+        "dps 分析",
+        "coh3 比較ツール",
+        "ユニット 相性"
+      ]
+    },
+    "title": "DPS 比較ツール",
+    "targetUnit": "標的ユニット",
+    "attackingUnits": "攻撃ユニット",
+    "attacker": "攻撃側 {{number}}"
+  },
+  "unitMeta": {
+    "unitDescription": "{{unitName}} - Company of Heroes 3 の {{raceName}} {{unitType}}。",
+    "finalStandName": "Final Stand",
+    "finalStandPrefix": "Final Stand DLC（AI との協力プレイ）。",
+    "costs": "コスト {{costs}}。",
+    "population": "人口 {{popCap}}。",
+    "abbreviations": {
+      "hitpoints": "HP",
+      "manpower": "人員",
+      "fuel": "燃料",
+      "munition": "弾薬",
+      "armor": "装甲"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 戦車",
+        "vehicle": "coh3 車両",
+        "armorStats": "装甲 性能",
+        "vehicleGuide": "車両 ガイド"
+      },
+      "infantry": {
+        "infantry": "coh3 歩兵",
+        "squadStats": "分隊 性能",
+        "unitGuide": "ユニット ガイド",
+        "infantryTactics": "歩兵 戦術"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 支援火器",
+        "supportWeapon": "支援兵器",
+        "crewWeapon": "搭乗員 兵器",
+        "artillery": "砲兵"
+      },
+      "emplacements": {
+        "emplacement": "coh3 設置兵器",
+        "defensiveStructure": "防御施設",
+        "fortification": "要塞化"
+      },
+      "common": {
+        "units": "{{raceId}} ユニット",
+        "army": "{{raceId}} 軍"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "COH3 試合 {{matchId}} - {{map}} {{mode}}",
+    "description": "Company of Heroes 3 の試合 {{matchId}}（{{map}}、{{mode}} モード）の詳細。プレイヤーの成績、陣営の組み合わせ、試合統計を確認できます。",
+    "keywords": [
+      "coh3 試合詳細",
+      "リプレイ",
+      "試合分析",
+      "プレイヤー成績",
+      "陣営 対戦",
+      "試合統計"
+    ]
+  }
+}

@@ -38,7 +38,17 @@
   },
   "explorer": {
     "title": "Průzkumník frakcí Company of Heroes 3",
-    "subtitle": "Prozkoumejte všechny jednotky, budovy a bojové skupiny ve hře."
+    "subtitle": "Prozkoumejte všechny jednotky, budovy a bojové skupiny ve hře.",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Obsah z DLC Final Stand (kooperace proti AI) - není dostupný ve standardní skirmish / multiplayer hře.",
+      "perksHeading": "Perky",
+      "unitsHeading": "Jednotky",
+      "perksCardTitle": "{{faction}} perky",
+      "unitsCardTitle": "{{faction}} jednotky",
+      "techHeading": "Technologie",
+      "techCardTitle": "{{faction}} technologie"
+    }
   },
   "factionPage": {
     "factionOverview": "Přehled frakce",
@@ -52,6 +62,28 @@
         "{{faction}} jednotky"
       ]
     }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "{{faction}} Final Stand jednotky",
+      "description": "{{faction}} Final Stand jednotky - soupiska DLC s kooperací proti AI v Company of Heroes 3. Nejsou dostupné ve standardní skirmish / multiplayer hře.",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand seznam jednotek {{faction}}",
+        "coh3 final stand dlc",
+        "hold off kooperace jednotky"
+      ]
+    },
+    "title": "Final Stand jednotky",
+    "description": "Jednotky dostupné pouze v DLC Final Stand (kooperace proti AI) - nejsou dostupné ve standardní skirmish / multiplayer hře.",
+    "searchPlaceholder": "Hledat jednotky",
+    "categories": {
+      "infantry": "Pěchota",
+      "teamWeapons": "Týmové zbraně",
+      "vehicles": "Vozidla",
+      "emplacements": "Opevnění"
+    },
+    "empty": "Pro frakci {{faction}} nebyly nalezeny žádné Final Stand jednotky."
   },
   "unitPage": {
     "stats": "Statistiky",
@@ -89,7 +121,8 @@
     "armor": "Brnění",
     "captureMultiplier": "Násobitel zachycení",
     "decaptureMultiplier": "Násobitel uvolnění",
-    "vehicleArmor": "Brnění vozidla"
+    "vehicleArmor": "Brnění vozidla",
+    "vehicleArmorHint": "Odkazuje na herní blueprint kritických zásahů brnění."
   },
   "weaponCard": {
     "accuracy": "Přesnost",

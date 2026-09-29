@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Grenadier - COH3 Companion",
+    "description": "Pobierz Grenadier - aplikację desktopową COH3 Stats {{version}}. Bez konfiguracji. Nakładka OBS, szczegóły o przeciwnikach w bieżącym meczu, dźwiękowe powiadomienia o nowej grze i więcej.",
+    "keywords": [
+      "grenadier",
+      "coh3 companion",
+      "coh3 aplikacja desktopowa",
+      "nakładka obs",
+      "informacje o meczu na żywo",
+      "aplikacja desktopowa",
+      "nakładka do gry",
+      "analiza meczu",
+      "statystyki graczy",
+      "dane gry na żywo"
+    ]
+  },
+  "download": {
+    "button": "Pobierz za darmo {{version}}",
+    "buttonAriaLabel": "Pobierz instalator aplikacji Grenadier - COH3 Stats Desktop App {{version}} dla systemu Windows",
+    "downloads": "Pobrania: {{count}}",
+    "totalDownloads": "Łącznie pobrań: {{count}}",
+    "releaseNotes": "Informacje o wydaniu",
+    "microsoftStore": "Pobierz z Microsoft Store",
+    "microsoftStoreAriaLabel": "Pobierz Grenadier - COH3 Companion z Microsoft Store",
+    "or": "LUB"
+  },
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "Aplikacja desktopowa COH3 Stats - zdobądź dodatkowe informacje o swojej bieżącej grze!",
+  "comparison": {
+    "title": "Wybierz swoją wersję",
+    "featureColumn": "Funkcja",
+    "recommended": "Polecane",
+    "free": {
+      "title": "Darmowe pobieranie",
+      "subtitle": "Bezpośrednie pobranie, aplikacja bez certyfikatu"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Certyfikowana przez Microsoft, licencja dożywotnia",
+      "supportNote": "Wesprzyj rozwój aplikacji swoim zakupem! ❤"
+    }
+  },
+  "features": {
+    "title": "Funkcje",
+    "list": {
+      "noSetup": {
+        "label": "Bez konfiguracji",
+        "description": "prosta obsługa, po prostu uruchom aplikację"
+      },
+      "leaderboard": {
+        "label": "ELO, pozycja, % wygranych",
+        "description": "dla każdego gracza w meczu"
+      },
+      "teams": {
+        "label": "Wykrywanie ustalonych drużyn",
+        "description": "sprawdź, czy przeciwnicy dołączyli do kolejki jako gotowa drużyna"
+      },
+      "recentGames": {
+        "label": "Ostatnie gry",
+        "description": "historia Twoich meczów w aplikacji"
+      },
+      "leaderboards": {
+        "label": "Rankingi",
+        "description": "przeglądaj rankingi bezpośrednio w aplikacji"
+      },
+      "notifications": {
+        "label": "Powiadomienia dźwiękowe",
+        "description": "sygnał w chwili rozpoczęcia gry"
+      },
+      "muteOnFocusLoss": {
+        "label": "Automatyczne wyciszanie",
+        "description": "wycisza grę, gdy okno traci fokus"
+      },
+      "streaming": {
+        "label": "Nakładka dla streamerów",
+        "before": "dla",
+        "and": "i",
+        "after": "oraz innych narzędzi do streamowania"
+      },
+      "friendsGroup": {
+        "label": "Wykrywanie grup znajomych",
+        "description": "zobacz, którzy gracze grają razem"
+      },
+      "loadingOverlay": {
+        "label": "Nakładka ekranu ładowania",
+        "description": "informacje o przeciwnikach przed startem meczu"
+      }
+    }
+  }
+}

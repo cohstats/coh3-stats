@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "COH3 Stats - 검색",
+    "description": "Company of Heroes 3의 유닛과 Steam, Xbox, PSN 플레이어를 검색하세요.",
+    "keywords": [
+      "플레이어 검색",
+      "데이터 검색",
+      "coh3 검색",
+      "유닛 검색",
+      "coh3 플레이어 검색",
+      "steam 플레이어",
+      "xbox 플레이어",
+      "psn 플레이어"
+    ]
+  },
+  "sections": {
+    "players": "플레이어",
+    "units": "유닛",
+    "finalStandUnits": "Final Stand 유닛",
+    "maps": "맵"
+  },
+  "errors": {
+    "searchError": "검색 중 오류가 발생했습니다"
+  },
+  "noResults": {
+    "players": "플레이어를 찾을 수 없습니다",
+    "units": "유닛을 찾을 수 없습니다",
+    "unitsEnglishOnly": "유닛 검색은 영어만 지원합니다",
+    "maps": "맵을 찾을 수 없습니다"
+  },
+  "mapCard": {
+    "modes": {
+      "1v1": "1vs1",
+      "2v2": "2vs2",
+      "3v3": "3vs3",
+      "4v4": "4vs4",
+      "fs": "Final Stand",
+      "other": "기타"
+    },
+    "players_one": "플레이어 {{count}}명",
+    "players_other": "플레이어 {{count}}명",
+    "community": "커뮤니티"
+  },
+  "info": {
+    "firstResults": "처음 50개의 결과만 표시됩니다. 검색어를 좁혀 주세요.",
+    "consoleSearch": "콘솔 플레이어 검색은 정확히 일치하는 이름만 지원합니다.",
+    "steamSearch": "Steam ID로도 검색할 수 있습니다."
+  },
+  "playerCard": {
+    "lastActive": "최근 활동",
+    "steamProfile": "Steam 프로필",
+    "psnPlayer": "PlayStation 플레이어",
+    "xboxPlayer": "Xbox 플레이어"
+  }
+}

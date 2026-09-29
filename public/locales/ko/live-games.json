@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "진행 중인 게임 - Company of Heroes 3",
+    "description": "Company of Heroes 3에서 현재 진행 중인 게임",
+    "keywords": [
+      "coh3 진행 중인 게임",
+      "coh3 실시간 매치",
+      "coh3 게임",
+      "coh3 현재 진행 중인 매치"
+    ]
+  },
+  "pageTitle": "진행 중인 PC 게임",
+  "filters": {
+    "liveGames": {
+      "label": "진행 중인 게임",
+      "options": {
+        "1v1": "1 vs 1 자동 매칭",
+        "2v2": "2 vs 2 자동 매칭",
+        "3v3": "3 vs 3 자동 매칭",
+        "4v4": "4 vs 4 자동 매칭",
+        "ai": "AI 상대 자동 매칭",
+        "custom": "사용자 지정 게임"
+      }
+    },
+    "sortBy": {
+      "label": "정렬 기준",
+      "options": {
+        "rank": "순위",
+        "observers": "관전자",
+        "startgametime": "시작 시간"
+      }
+    }
+  },
+  "summaryTable": {
+    "title": "진행 중인 게임 요약",
+    "tooltip": "현재 진행 중인 멀티플레이 게임입니다. 총 플레이어 수는 중복을 제외한 수입니다. 로비에 있거나, 매치를 찾거나, 로딩 중이거나, 다른 활동을 하는 플레이어도 많을 수 있다는 점을 참고하세요. 사용자 지정 게임은 기본적으로 관전할 수 없으므로, 실제로는 훨씬 더 많은 사용자 지정 게임이 진행 중일 가능성이 높습니다. 게임 정보는 5분마다 갱신됩니다.",
+    "noGames": {
+      "title": "진행 중인 게임이 감지되지 않음",
+      "message": "최근 게임 패치 이후 COH3 Stats의 업데이트가 필요할 수 있습니다."
+    },
+    "modes": {
+      "1v1": "1 vs 1",
+      "2v2": "2 vs 2",
+      "3v3": "3 vs 3",
+      "4v4": "4 vs 4",
+      "vsAI": "vs AI",
+      "custom": "사용자 지정"
+    },
+    "totals": {
+      "automatch": "자동 매칭 합계",
+      "anyGame": "전체 게임 합계"
+    },
+    "games": "게임"
+  },
+  "gamesTable": {
+    "columns": {
+      "mode": "모드",
+      "axisPlayers": "추축군 플레이어",
+      "alliesPlayers": "연합군 플레이어",
+      "map": "맵",
+      "observers": "관전자",
+      "gameTime": "게임 시간",
+      "server": "서버"
+    },
+    "switches": {
+      "showFlags": "플레이어 국기 표시",
+      "showServer": "매치 서버 표시"
+    },
+    "errors": {
+      "title": "진행 중인 게임을 불러오는 중 오류가 발생했습니다",
+      "summaryTitle": "진행 중인 게임 요약을 불러오는 중 오류가 발생했습니다"
+    },
+    "dataUpdated": "데이터 갱신 시각: {{time}}"
+  }
+}

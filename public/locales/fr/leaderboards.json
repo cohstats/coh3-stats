@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Classements {{faction}} {{mode}}",
+    "description": "Classements {{faction}} {{mode}} de Company of Heroes 3 avec le rang des joueurs, leur ELO et leurs statistiques compétitives.",
+    "keywords": [
+      "classements",
+      "rangs",
+      "échelle compétitive",
+      "classement elo",
+      "rang des joueurs",
+      "statistiques compétitives",
+      "classement des factions",
+      "classement par mode de jeu"
+    ]
+  },
+  "title": "Classements pour {{race}}",
+  "pageTitle": "Classements pour {{race}} {{type}}",
+  "metaDescription": "Classements pour la faction {{race}} et le type de partie {{type}}. Company of Heroes 3",
+  "errorTitle": "Erreur lors du chargement des classements",
+  "filters": {
+    "region": "Région",
+    "platform": "Plateforme",
+    "faction": "Faction",
+    "type": "Type"
+  },
+  "teams": {
+    "title": "Classements par équipe",
+    "pageTitle": "Classements par équipe pour {{side}} {{type}}",
+    "metaDescription": "Classements des équipes {{side}} pour le type de partie {{type}}. Company of Heroes 3",
+    "filters": {
+      "side": "Camp",
+      "type": "Type",
+      "orderBy": "Trier par"
+    },
+    "pagination": {
+      "itemsPerPage": "Éléments par page",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "showingRange": "Affichage de {{start}} - {{end}} sur {{total}} équipes",
+      "excludeInactive": "Les équipes inactives depuis plus d'un an sont exclues"
+    }
+  }
+}

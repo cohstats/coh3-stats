@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand 天赋 - COH3",
+    "description": "《英雄连3》中 {{faction}} 的完整 Final Stand 天赋树 - 每一阶、每个天赋等级、效果以及天赋点消耗。",
+    "keywords": [
+      "coh3 final stand 天赋",
+      "final stand 天赋树",
+      "company of heroes 3 final stand",
+      "天赋点",
+      "英雄连3 final stand"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand 天赋",
+    "subtitle": "完整的天赋树，逐阶展示。将鼠标悬停在天赋上可查看其等级和效果，点击可将其固定在下方。",
+    "notAvailable": "Final Stand 天赋数据暂时不可用，请稍后再试。"
+  },
+  "summary": {
+    "perks_one": "{{count}} 个天赋",
+    "perks_other": "{{count}} 个天赋",
+    "levels_one": "{{count}} 级",
+    "levels_other": "{{count}} 级",
+    "levelsTooltip": "天赋树中的天赋等级总数 - 即全部升满所需的购买次数",
+    "tiers_one": "{{count}} 阶",
+    "tiers_other": "{{count}} 阶"
+  },
+  "tier": {
+    "title": "第 {{tier}} 阶",
+    "unlock": "{{count}} 级解锁",
+    "unlockStart": "初始可用",
+    "unlockTooltip": "购买 {{count}} 个天赋等级后解锁此阶。",
+    "unlockStartTooltip": "此阶从任务开始时即可使用。"
+  },
+  "perk": {
+    "levels_one": "{{count}} 级",
+    "levels_other": "{{count}} 级",
+    "singleLevel": "一次性解锁",
+    "cost_one": "{{count}} 天赋点",
+    "cost_other": "{{count}} 天赋点",
+    "noEffect": "游戏文件中没有效果文本",
+    "noDescription": "游戏文件中没有描述",
+    "modifiers": "修正值",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "等级",
+    "cost": "消耗",
+    "total": "总计",
+    "effect": "效果"
+  },
+  "faction": {
+    "switchTooltip": "显示 {{faction}} 的天赋树"
+  }
+}

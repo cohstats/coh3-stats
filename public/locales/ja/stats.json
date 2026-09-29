@@ -1,0 +1,64 @@
+{
+  "leaderboards": {
+    "meta": {
+      "title": "グローバルリーダーボード統計",
+      "description": "Company of Heroes 3 の全リーダーボードに関する総合情報",
+      "keywords": [
+        "coh3 リーダーボード",
+        "ライブ ラダー",
+        "総合リーダーボード",
+        "coh3 ラダー統計",
+        "リーダーボード統計",
+        "ランキングデータ"
+      ]
+    }
+  },
+  "games": {
+    "meta": {
+      "title": "ゲーム統計とグラフ",
+      "description": "Company of Heroes 3 のゲーム統計。各陣営／モードの勝率などを確認できます。",
+      "keywords": ["coh3 勝率", "陣営 勝率", "分析", "最強陣営", "試合統計"]
+    }
+  },
+  "maps": {
+    "meta": {
+      "title": "マップ統計",
+      "description": "勝率、人気度、成績データを含む Company of Heroes 3 の総合的なマップ統計。",
+      "keywords": ["coh3 マップ", "マップ統計", "マップ 勝率", "マップデータ", "戦場 分析"]
+    }
+  },
+  "achievements": {
+    "meta": {
+      "title": "実績統計",
+      "description": "全プレイヤーにおける Company of Heroes 3 の実績統計と達成率。",
+      "keywords": ["coh3 実績", "実績統計", "達成率", "プレイヤー 実績", "ゲーム進行度"]
+    }
+  },
+  "players": {
+    "meta": {
+      "title": "マルチプレイ プレイヤー統計 - Company of Heroes 3",
+      "description": "Company of Heroes 3 の全マルチプレイ プレイヤーに関する総合情報。\n現在 {{count, number}} 人のマルチプレイ プレイヤーを追跡中。",
+      "keywords": [
+        "coh3 プレイヤー統計",
+        "プレイヤー統計",
+        "プレイヤーの国",
+        "coh3 プレイヤー推移",
+        "マルチプレイ統計",
+        "プレイヤー追跡",
+        "ゲーム統計",
+        "プレイヤーデータ"
+      ]
+    },
+    "title": "PC プレイヤー統計",
+    "totalTrackedPlayers": "追跡中のプレイヤー総数",
+    "totalTrackedPlayersTooltip": "追跡できるのは、2023 年 5 月 19 日以降にいずれかのゲームモードでマルチプレイを 1 回以上プレイしたプレイヤーのみです。",
+    "multiplayerPlayersLast30Days": "過去 30 日間のマルチプレイ プレイヤー",
+    "multiplayerPlayersLast7Days": "過去 7 日間のマルチプレイ プレイヤー",
+    "multiplayerPlayersLast24Hours": "過去 24 時間のマルチプレイ プレイヤー",
+    "dataUpdatedOn": "データ更新日時:",
+    "xboxPsNote": "ここでは XBOX と PS のプレイヤーは追跡していません。"
+  },
+  "errors": {
+    "gettingPlayerStats": "プレイヤー統計の取得中にエラーが発生しました"
+  }
+}

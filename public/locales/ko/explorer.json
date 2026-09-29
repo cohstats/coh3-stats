@@ -1,0 +1,299 @@
+{
+  "meta": {
+    "title": "COH3 탐색기 - 진영, 유닛 및 건물",
+    "description": "Company of Heroes 3의 진영, 유닛, 건물, 전투단을 살펴보세요. 모든 게임 콘텐츠의 상세 능력치, 비용, 피해 정보를 제공합니다.",
+    "keywords": [
+      "coh3 탐색기",
+      "진영",
+      "유닛",
+      "건물",
+      "전투단",
+      "국방군",
+      "미군",
+      "dak",
+      "영국군",
+      "유닛 능력치",
+      "피해",
+      "비용"
+    ]
+  },
+  "common": {
+    "units": "유닛",
+    "buildings": "건물",
+    "battleGroups": "전투단",
+    "near": "근거리",
+    "medium": "중거리",
+    "mid": "중거리",
+    "far": "원거리",
+    "light": "경엄폐",
+    "heavy": "중엄폐",
+    "garrison": "주둔",
+    "min": "최소",
+    "max": "최대",
+    "produces": "생산",
+    "hitpoints": "체력",
+    "upgrades": "업그레이드",
+    "costs": "비용",
+    "explorer": "탐색기"
+  },
+  "explorer": {
+    "title": "Company of Heroes 3 진영 탐색기",
+    "subtitle": "게임의 모든 유닛, 건물, 전투단을 살펴보세요.",
+    "finalStand": {
+      "title": "Final Stand",
+      "description": "Final Stand DLC(AI 상대 협동전) 콘텐츠 - 일반 전투/멀티플레이 게임에서는 사용할 수 없습니다.",
+      "perksHeading": "특전",
+      "unitsHeading": "유닛",
+      "perksCardTitle": "{{faction}} 특전",
+      "unitsCardTitle": "{{faction}} 유닛",
+      "techHeading": "기술",
+      "techCardTitle": "{{faction}} 기술"
+    }
+  },
+  "factionPage": {
+    "factionOverview": "진영 개요",
+    "meta": {
+      "title": "{{faction}} - COH3 탐색기",
+      "description": "Company of Heroes 3의 {{faction}} 진영을 살펴보세요. {{faction}} 군대의 유닛, 건물, 전투단 및 상세 통계를 확인할 수 있습니다.",
+      "keywords": ["{{faction}}", "{{faction}} 탐색기", "{{faction}} 전투단", "{{faction}} 유닛"]
+    }
+  },
+  "finalStandUnitsPage": {
+    "meta": {
+      "title": "{{faction}} Final Stand 유닛",
+      "description": "{{faction}} Final Stand 유닛 - Company of Heroes 3 AI 상대 협동전 DLC의 편성입니다. 일반 전투/멀티플레이 게임에서는 사용할 수 없습니다.",
+      "keywords": [
+        "{{faction}} coh3 final stand",
+        "Final Stand 유닛 목록 {{faction}}",
+        "coh3 final stand dlc",
+        "hold off 협동전 유닛"
+      ]
+    },
+    "title": "Final Stand 유닛",
+    "description": "Final Stand DLC(AI 상대 협동전) 전용 유닛 - 일반 전투/멀티플레이 게임에서는 사용할 수 없습니다.",
+    "searchPlaceholder": "유닛 검색",
+    "categories": {
+      "infantry": "보병",
+      "teamWeapons": "팀 화기",
+      "vehicles": "차량",
+      "emplacements": "진지"
+    },
+    "empty": "{{faction}}의 Final Stand 유닛을 찾을 수 없습니다."
+  },
+  "unitPage": {
+    "stats": "능력치",
+    "abilities": "능력",
+    "loadout": "무장",
+    "veterancy": "숙련도",
+    "upkeep": "분당 유지비",
+    "reinforce": "보충",
+    "construct": "건설 가능",
+    "free": "무료",
+    "weaponNote": "실제 명중률은 대상의 크기나 장갑 등 피격 유닛의 여러 요소와 공격 유닛의 명중률 및 관통력의 영향을 받습니다.",
+    "importantNote": "이 섹션에는 일반 전투/멀티플레이 게임에서 사용할 수 없는 일부 유닛이 포함될 수 있습니다.",
+    "upgradeWeapons": "업그레이드로 얻는 무기",
+    "abilityWeapons": "능력 무기",
+    "openInDpsTool": "DPS 도구에서 열기",
+    "abilityInfoRange": "사거리",
+    "abilityInfoShots": "발사 수",
+    "abilityInfoDuration": "지속 시간",
+    "abilityInfoCooldown": "재사용 대기시간",
+    "abilityInfoToggleCooldown": "전환",
+    "abilityInfoToggleOnCooldown": "켜기",
+    "abilityInfoToggleOffCooldown": "끄기",
+    "requirements": "요구 사항",
+    "requiresVeterancy": "숙련도 {{rank}}"
+  },
+  "statsCard": {
+    "sightRange": "시야",
+    "detection": "탐지",
+    "speed": "속도",
+    "acceleration": "가속",
+    "deceleration": "감속",
+    "rotation": "회전",
+    "maxRange": "최대 사거리",
+    "targetSize": "피격 크기",
+    "armor": "장갑",
+    "captureMultiplier": "점령 배율",
+    "decaptureMultiplier": "점령 해제 배율",
+    "vehicleArmor": "차량 장갑",
+    "vehicleArmorHint": "게임 내 장갑 치명타 블루프린트를 의미합니다."
+  },
+  "weaponCard": {
+    "accuracy": "명중률",
+    "accuracyTooltip": "확정 명중 확률이며, 실패하면 대신 탄이 분산됩니다. 대상의 \"피격 크기\"가 곱해집니다.",
+    "arc": "사격 각도",
+    "arcTooltip": "유닛이 회전, 재배치 또는 재설치하지 않고 사격할 수 있는 무기의 수평 사격 각도",
+    "burstDuration": "점사 지속 시간",
+    "burstDurationTooltip": "1회 점사에 소요되는 평균 시간",
+    "cooldown": "재사격 대기",
+    "rpm": "분당 발사 수",
+    "rpmTooltip": "지속 연사 속도",
+    "rangeOfFire": "사격 거리",
+    "range": "사거리",
+    "distance": "거리",
+    "limit": "한계",
+    "traverseSpeed": "선회 속도",
+    "traverseSpeedTooltip": "무기가 좌우로 얼마나 빠르게 움직일 수 있는지",
+    "setup": "설치",
+    "setupTooltip": "유닛이 사격하기 전 설치에 필요한 시간",
+    "teardown": "해체",
+    "teardownTooltip": "유닛이 이동하기 전 해체에 필요한 시간",
+    "penetration": "관통력",
+    "penetrationTooltip": "피해를 줄 확률은 관통력을 장갑으로 나눈 값입니다",
+    "scatter": "분산 범위",
+    "scatterTooltip": "너비 × 길이, 분산된 탄이 떨어질 수 있는 범위입니다.",
+    "damageSpread": "피해 분배 범위",
+    "damageSpreadTooltip": "너비 × 길이, 무기가 대상 주변의 이 범위 안에 있는 모델을 무작위로 공격합니다. 사거리 안에 있고 사격 각도 내에 있는 모델에만 적용됩니다.",
+    "damageSpreadOffset": "피해 분배 범위 오프셋",
+    "damageSpreadOffsetTooltip": "피해 분배 범위의 중심이 대상 뒤로 이만큼 떨어져 있습니다.",
+    "damage": "피해",
+    "friendlyDamage": "아군 피해",
+    "ownUnitDamage": "자신 유닛 피해",
+    "damageIncludesOwnUnits": "적 / 자신 유닛 피해",
+    "friendlyDamageIncludesOwnUnits": "아군 / 자신 유닛 피해",
+    "deflectionDamage": "도탄 피해",
+    "deflectionDamageTooltip": "관통 실패 시 입히는 피해",
+    "aoeRadius": "범위 피해 반경",
+    "aoeSize": "범위 피해 크기",
+    "aoeSizeTooltip": "직사각형 범위 피해 영역의 너비 × 길이. 탄착 지점부터 앞쪽으로 적용됩니다.",
+    "aoeFalloff": "범위 피해 감쇠",
+    "aoeFalloffTooltip": "탄착 지점으로부터의 거리에 따른 피해 및 제압. 분대당 최대 {{aoeCap}}명에게 피해를 줄 수 있습니다. -1은 제한 없음입니다.",
+    "onTheMove": "이동 중",
+    "onTheMoveTooltip": "유닛이 이동 중일 때의 페널티입니다.",
+    "onTheMoveAccuracyTooltip": "유닛이 이동 중일 때 명중률을 주어진 값만큼 조정합니다.",
+    "onTheMoveBurstTooltip": "유닛이 이동 중일 때 점사 지속 시간을 주어진 값만큼 조정합니다.",
+    "onTheMoveCooldownTooltip": "무기 재사격 대기를 주어진 값만큼 조정합니다. 재사격 대기는 전체 재사격 주기의 일부입니다.",
+    "targetModifiers": "대상별 - 수정치",
+    "targetModifiersTooltip": "하나의 대상에 여러 수정치가 적용될 수 있습니다",
+    "baseDamage": "기본 피해",
+    "coverModifiers": "엄폐별 - 수정치",
+    "coverModifiersProjectileImpactTooltip": "엄폐 중인 유닛을 공격할 때 적용됩니다. 피해와 제압은 탄착 지점을 기준으로 계산됩니다.",
+    "coverModifiersFiringPositionTooltip": "엄폐 중인 유닛을 공격할 때 적용됩니다. 피해와 제압은 사격 위치를 기준으로 계산됩니다.",
+    "lightCover": "경엄폐",
+    "heavyCover": "중엄폐",
+    "garrisonCover": "주둔",
+    "suppression": "제압",
+    "suppressionTooltip": "가해지는 제압 수치입니다. 20을 넘으면 제압 상태가 됩니다.",
+    "suppressionPerSecond": "초당 제압",
+    "suppressionPerSecondTooltip": "회복 및 저항 적용 전, 초당 가해지는 평균 지속 제압 수치입니다. 20을 넘으면 제압 상태가 됩니다.",
+    "suppressionRadius": "제압 반경",
+    "suppressionRadiusTooltip": "대상 주변에서 제압을 받는 유닛의 반경입니다. 사거리 안에 있고 사격 각도 내에 있는 유닛에만 적용됩니다.",
+    "incrementalTargetRadius": "추가 대상 반경",
+    "incrementalTargetRadiusTooltip": "게임이 추가 명중률 계산에 고려하는 대상 주변 반경",
+    "incrementalTargetAccuracy": "추가 명중률",
+    "incrementalTargetAccuracyTooltip": "대상 주변 추가 대상 반경 안의 모델마다 이 명중률 수정치가 지수적으로 적용됩니다",
+    "timeBetweenShots": "재사격 시간",
+    "timeBetweenShotsTooltip": "발사 간 평균 시간",
+    "timeBetweenShotsMag": "재사격 시간",
+    "timeBetweenShotsMagTooltip": "재장전 주기를 제외한 발사 간 평균 시간입니다.",
+    "timeBetweenBursts": "점사 간격",
+    "timeBetweenBurstsTooltip": "점사 사이의 평균 대기 시간",
+    "reloadCycle": "재장전 주기",
+    "reloadCycleTooltip": "모델이 재장전해야 할 때의 평균 사격 간격",
+    "coreStats": "핵심 능력치",
+    "timing": "타이밍",
+    "specialMechanics": "특수 메커니즘",
+    "scatterAngle": "분산 각도",
+    "scatterAngleTooltip": "분산 범위의 너비를 조정합니다.",
+    "scatterDistance": "분산 거리",
+    "scatterDistanceTooltip": "분산 범위의 길이와 오프셋을 조정합니다.",
+    "aimTime": "조준 시간",
+    "aimTimeWithWindUp": "사격 전 시간",
+    "aimTimeWithWindUpTooltip": "준비 애니메이션이 끝난 후 실제로 사격하기까지의 시간입니다. 균등 분포가 아닙니다.",
+    "windUp": "예열",
+    "scatterOffset": "분산 오프셋",
+    "scatterOffsetTooltip": "분산 범위의 중심이 대상 뒤로 이만큼 떨어져 있습니다.",
+    "reloadFrequency": "탄창",
+    "reloadFrequencyTooltip": "이 횟수만큼 발사/점사한 후 무기가 재장전 주기에 들어갑니다",
+    "bursts": "점사",
+    "shots": "발",
+    "projectileTravelTime": "비행 시간",
+    "projectileTravelTimeTooltip": "장애물이 없을 때 사격부터 탄착까지의 시간",
+    "detonationDelay": "신관",
+    "detonationDelayTooltip": "탄착부터 폭발까지의 시간",
+    "projectileAvoidanceArcMax": "장애물 회피",
+    "projectileAvoidanceArcMaxTooltip": "무기가 장애물을 넘기기 위해 사용할 수 있는 최대 각도입니다. 장애물이 없으면 {{nonCollideMinAngle}}°로 사격합니다."
+  },
+  "dps": {
+    "meta": {
+      "title": "COH3 DPS 계산기",
+      "description": "Company of Heroes 3 모든 유닛의 초당 피해량(DPS)을 계산합니다. 고급 DPS 계산기로 무기를 비교하고, 엄폐 효과를 분석하고, 분대 조합을 최적화하세요.",
+      "keywords": [
+        "coh3 dps 계산기",
+        "초당 피해량",
+        "coh3 피해 계산기",
+        "유닛 피해 비교",
+        "무기 능력치",
+        "엄폐 분석",
+        "분대 최적화",
+        "dps 도구",
+        "coh3 계산기",
+        "유닛 효율"
+      ]
+    }
+  },
+  "dpsCompare": {
+    "meta": {
+      "title": "COH3 DPS 비교 도구",
+      "description": "Company of Heroes 3에서 최대 5개 공격 유닛의 초당 피해량(DPS)을 단일 대상 기준으로 비교합니다. 유닛 효율을 분석하고 부대 구성을 최적화하세요.",
+      "keywords": [
+        "coh3 dps 비교",
+        "유닛 비교",
+        "피해 비교",
+        "coh3 유닛 효율",
+        "부대 구성",
+        "dps 분석",
+        "coh3 비교 도구",
+        "유닛 상성"
+      ]
+    },
+    "title": "DPS 비교 도구",
+    "targetUnit": "대상 유닛",
+    "attackingUnits": "공격 유닛",
+    "attacker": "공격자 {{number}}"
+  },
+  "unitMeta": {
+    "unitDescription": "{{unitName}} - Company of Heroes 3의 {{raceName}} {{unitType}}.",
+    "finalStandName": "Final Stand",
+    "finalStandPrefix": "Final Stand DLC(AI 상대 협동전).",
+    "costs": "비용 {{costs}}.",
+    "population": "인구 {{popCap}}.",
+    "abbreviations": {
+      "hitpoints": "HP",
+      "manpower": "인력",
+      "fuel": "연료",
+      "munition": "탄약",
+      "armor": "장갑"
+    },
+    "keywords": {
+      "vehicles": {
+        "tank": "coh3 전차",
+        "vehicle": "coh3 차량",
+        "armorStats": "장갑 능력치",
+        "vehicleGuide": "차량 가이드"
+      },
+      "infantry": {
+        "infantry": "coh3 보병",
+        "squadStats": "분대 능력치",
+        "unitGuide": "유닛 가이드",
+        "infantryTactics": "보병 전술"
+      },
+      "teamWeapons": {
+        "teamWeapon": "coh3 팀 화기",
+        "supportWeapon": "지원 화기",
+        "crewWeapon": "운용 화기",
+        "artillery": "포병"
+      },
+      "emplacements": {
+        "emplacement": "coh3 진지",
+        "defensiveStructure": "방어 구조물",
+        "fortification": "요새화"
+      },
+      "common": {
+        "units": "{{raceId}} 유닛",
+        "army": "{{raceId}} 군대"
+      }
+    }
+  }
+}

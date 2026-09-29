@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "{{faction}} {{mode}} 순위표",
+    "description": "Company of Heroes 3 {{faction}} {{mode}} 순위표 - 플레이어 순위, ELO 레이팅 및 경쟁 통계를 제공합니다.",
+    "keywords": [
+      "coh3 순위표",
+      "랭킹",
+      "경쟁 래더",
+      "elo 레이팅",
+      "플레이어 순위",
+      "경쟁 통계",
+      "진영 순위",
+      "게임 모드 순위"
+    ]
+  },
+  "title": "{{race}} 순위표",
+  "pageTitle": "{{race}} {{type}} 순위표",
+  "metaDescription": "{{race}} 진영, {{type}} 게임 유형의 랭크 순위표. Company of Heroes 3",
+  "errorTitle": "순위표를 불러오는 중 오류가 발생했습니다",
+  "filters": {
+    "region": "지역",
+    "platform": "플랫폼",
+    "faction": "진영",
+    "type": "유형"
+  },
+  "teams": {
+    "title": "팀 순위표",
+    "pageTitle": "{{side}} {{type}} 팀 순위표",
+    "metaDescription": "{{side}} 팀, {{type}} 게임 유형의 팀 순위표. Company of Heroes 3",
+    "filters": {
+      "side": "진영",
+      "type": "유형",
+      "orderBy": "정렬 기준"
+    },
+    "pagination": {
+      "itemsPerPage": "페이지당 항목 수",
+      "previous": "이전",
+      "next": "다음",
+      "showingRange": "전체 {{total}}팀 중 {{start}} - {{end}} 표시",
+      "excludeInactive": "1년 이상 활동하지 않은 팀은 제외됩니다"
+    }
+  }
+}

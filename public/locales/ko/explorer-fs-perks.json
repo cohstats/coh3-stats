@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand 특전 - COH3",
+    "description": "Company of Heroes 3 {{faction}} 진영의 Final Stand 특전 트리 전체 - 모든 티어, 특전 레벨, 효과 및 특전 포인트 비용.",
+    "keywords": [
+      "coh3 final stand 특전",
+      "final stand 특전 트리",
+      "company of heroes 3 final stand",
+      "특전 포인트",
+      "hold off 특전"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand 특전",
+    "subtitle": "티어별 전체 특전 트리입니다. 특전에 마우스를 올리면 레벨과 효과가 표시되고, 클릭하면 아래에 고정됩니다.",
+    "notAvailable": "현재 Final Stand 특전 데이터를 사용할 수 없습니다. 나중에 다시 시도해 주세요."
+  },
+  "summary": {
+    "perks_one": "특전 {{count}}개",
+    "perks_other": "특전 {{count}}개",
+    "levels_one": "레벨 {{count}}개",
+    "levels_other": "레벨 {{count}}개",
+    "levelsTooltip": "트리의 특전 레벨 수 - 모든 특전을 최대로 올리는 데 필요한 구매 횟수입니다",
+    "tiers_one": "티어 {{count}}개",
+    "tiers_other": "티어 {{count}}개"
+  },
+  "tier": {
+    "title": "티어 {{tier}}",
+    "unlock": "{{count}}레벨 구매 시 해금",
+    "unlockStart": "처음부터 사용 가능",
+    "unlockTooltip": "특전 레벨을 {{count}}개 구매하면 이 티어가 해금됩니다.",
+    "unlockStartTooltip": "이 티어는 임무 시작부터 사용할 수 있습니다."
+  },
+  "perk": {
+    "levels_one": "{{count}}레벨",
+    "levels_other": "{{count}}레벨",
+    "singleLevel": "단일 해금",
+    "cost_one": "특전 포인트 {{count}}",
+    "cost_other": "특전 포인트 {{count}}",
+    "noEffect": "게임 파일에 효과 설명이 없습니다",
+    "noDescription": "게임 파일에 설명이 없습니다",
+    "modifiers": "수정치",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "레벨",
+    "cost": "비용",
+    "total": "합계",
+    "effect": "효과"
+  },
+  "faction": {
+    "switchTooltip": "{{faction}} 특전 트리 보기"
+  }
+}

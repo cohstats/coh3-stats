@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "{{faction}} Final Stand パーク - COH3",
+    "description": "Company of Heroes 3 における {{faction}} の Final Stand パークツリーの全容 - すべてのティア、パークレベル、効果、パークポイントのコスト。",
+    "keywords": [
+      "coh3 final stand パーク",
+      "final stand パークツリー",
+      "company of heroes 3 final stand",
+      "パークポイント",
+      "hold off パーク"
+    ]
+  },
+  "page": {
+    "title": "{{faction}} Final Stand パーク",
+    "subtitle": "ティアごとの完全なパークツリーです。パークにカーソルを合わせるとレベルと効果を表示し、クリックすると下に固定表示します。",
+    "notAvailable": "現在、Final Stand のパークデータを利用できません。しばらくしてから再度お試しください。"
+  },
+  "summary": {
+    "perks_one": "{{count}} パーク",
+    "perks_other": "{{count}} パーク",
+    "levels_one": "{{count}} レベル",
+    "levels_other": "{{count}} レベル",
+    "levelsTooltip": "ツリー内のパークレベルの合計 - すべてを最大にするのに必要な購入回数",
+    "tiers_one": "{{count}} ティア",
+    "tiers_other": "{{count}} ティア"
+  },
+  "tier": {
+    "title": "ティア {{tier}}",
+    "unlock": "{{count}} で解放",
+    "unlockStart": "最初から",
+    "unlockTooltip": "このティアはパークレベルを {{count}} 購入すると解放されます。",
+    "unlockStartTooltip": "このティアはミッション開始時から利用できます。"
+  },
+  "perk": {
+    "levels_one": "{{count}} レベル",
+    "levels_other": "{{count}} レベル",
+    "singleLevel": "単一解放",
+    "cost_one": "{{count}} パークポイント",
+    "cost_other": "{{count}} パークポイント",
+    "noEffect": "ゲームファイルに効果のテキストがありません",
+    "noDescription": "ゲームファイルに説明がありません",
+    "modifiers": "修正値",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Lv",
+    "cost": "コスト",
+    "total": "合計",
+    "effect": "効果"
+  },
+  "faction": {
+    "switchTooltip": "{{faction}} のパークツリーを表示"
+  }
+}

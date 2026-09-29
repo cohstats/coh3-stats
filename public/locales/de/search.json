@@ -16,6 +16,7 @@
   "sections": {
     "players": "Spieler",
     "units": "Einheiten",
+    "finalStandUnits": "Final Stand Einheiten",
     "maps": "Karten"
   },
   "errors": {

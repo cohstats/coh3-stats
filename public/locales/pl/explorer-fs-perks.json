@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "Perki Final Stand - {{faction}} - COH3",
+    "description": "Pełne drzewko perków Final Stand frakcji {{faction}} w Company of Heroes 3 - wszystkie poziomy, stopnie perków, efekty i koszty w punktach perków.",
+    "keywords": [
+      "coh3 final stand perki",
+      "final stand drzewko perków",
+      "company of heroes 3 final stand",
+      "punkty perków",
+      "hold off perki"
+    ]
+  },
+  "page": {
+    "title": "Perki Final Stand - {{faction}}",
+    "subtitle": "Kompletne drzewko perków, poziom po poziomie. Najedź na perk, aby zobaczyć jego stopnie i efekty, kliknij, aby przypiąć go poniżej.",
+    "notAvailable": "Dane o perkach Final Stand są w tej chwili niedostępne. Spróbuj ponownie później."
+  },
+  "summary": {
+    "perks_one": "{{count}} perk",
+    "perks_few": "{{count}} perki",
+    "perks_many": "{{count}} perków",
+    "perks_other": "{{count}} perka",
+    "levels_one": "{{count}} stopień",
+    "levels_few": "{{count}} stopnie",
+    "levels_many": "{{count}} stopni",
+    "levels_other": "{{count}} stopnia",
+    "levelsTooltip": "Stopnie perków w drzewku - liczba zakupów potrzebnych, aby rozwinąć wszystko na maksa",
+    "tiers_one": "{{count}} poziom",
+    "tiers_few": "{{count}} poziomy",
+    "tiers_many": "{{count}} poziomów",
+    "tiers_other": "{{count}} poziomu"
+  },
+  "tier": {
+    "title": "Poziom {{tier}}",
+    "unlock": "Odblokowanie od {{count}}",
+    "unlockStart": "Od początku",
+    "unlockTooltip": "Ten poziom odblokuje się, gdy liczba kupionych stopni perków osiągnie {{count}}.",
+    "unlockStartTooltip": "Ten poziom jest dostępny od początku misji."
+  },
+  "perk": {
+    "levels_one": "{{count}} stopień",
+    "levels_few": "{{count}} stopnie",
+    "levels_many": "{{count}} stopni",
+    "levels_other": "{{count}} stopnia",
+    "singleLevel": "Jednorazowe odblokowanie",
+    "cost_one": "{{count}} punkt perków",
+    "cost_few": "{{count}} punkty perków",
+    "cost_many": "{{count}} punktów perków",
+    "cost_other": "{{count}} punktu perków",
+    "noEffect": "Brak opisu efektu w plikach gry",
+    "noDescription": "Brak opisu w plikach gry",
+    "modifiers": "Modyfikatory",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "St.",
+    "cost": "Koszt",
+    "total": "Razem",
+    "effect": "Efekt"
+  },
+  "faction": {
+    "switchTooltip": "Pokaż drzewko perków: {{faction}}"
+  }
+}

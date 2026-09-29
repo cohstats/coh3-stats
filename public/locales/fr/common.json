@@ -1,0 +1,96 @@
+{
+  "faction": {
+    "switchTooltip": "Passer à {{faction}}"
+  },
+  "mainMenu": {
+    "leaderboards": "Classements",
+    "regularLeaderboards": "Classements individuels",
+    "teamLeaderboards": "Classements par équipe",
+    "statistics": "Statistiques",
+    "statsMenu": {
+      "games": "Statistiques des parties",
+      "maps": "Statistiques des cartes",
+      "players": "Statistiques des joueurs",
+      "leaderboards": "Statistiques des classements",
+      "battlegroups": "Statistiques des groupements tactiques",
+      "achievements": "Statistiques des succès"
+    },
+    "explorer": "Explorateur",
+    "explMenu": {
+      "buildings": "Bâtiments",
+      "units": "Unités",
+      "dpsCalculator": "DPS - Comparaison d'unités",
+      "unitBrowser": "Navigateur d'unités",
+      "challenges": "Défis",
+      "weapons": "Armes",
+      "maps": "Cartes",
+      "mapsTable": "Tableau des cartes",
+      "tools": "Outils",
+      "finalStand": "Final Stand",
+      "fsTech": "Technologies FS",
+      "fsPerks": "Atouts FS",
+      "fsUnits": "Unités FS"
+    },
+    "liveGames": "Parties en direct",
+    "desktopApp": "Application de bureau",
+    "other": "Autres",
+    "otherMenu": {
+      "tiers": "Paliers de classement",
+      "openData": "Données ouvertes",
+      "coh3News": "Actualités COH3",
+      "playerExport": "API d'export des joueurs"
+    },
+    "about": "À propos",
+    "supportUs": "Nous soutenir"
+  },
+  "header": {
+    "playerInGames": "Joueurs en jeu",
+    "onlinePlayersTooltip": "Nombre de joueurs en ligne sur Company of Heroes 3 au {{date}}"
+  },
+  "footer": {
+    "gamePatch": "Version du jeu",
+    "gamePatchInfo": "Les données affichées sur le site proviennent de la version du jeu",
+    "unofficialSite": "Ceci est un site non officiel créé par des fans de Company Of Heroes 3.",
+    "visitText1": "Visitez",
+    "visitText2": "pour les statistiques et analyses de Company of Heroes 2",
+    "trademark": "Company of Heroes est une marque déposée de Relic Entertainment.",
+    "assets": "Les images de COH et les autres ressources appartiennent à Relic Entertainment."
+  },
+  "columns": {
+    "rank": "Rang",
+    "rc": "RC",
+    "elo": "ELO",
+    "alias": "Pseudo",
+    "streak": "Série",
+    "ratio": "Ratio",
+    "total": "Total",
+    "lastGame": "Dernière partie",
+    "tier": "Palier",
+    "wins": "Victoires",
+    "losses": "Défaites"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Page introuvable",
+      "message": "Si vous pensez qu'il s'agit d'un bug, signalez-le sur notre Discord"
+    }
+  },
+  "search": {
+    "playersAndUnits": "Joueurs, unités et cartes"
+  },
+  "finalStand": {
+    "badge": "Final Stand",
+    "enemyBadge": "Ennemi",
+    "unitTooltip": "Cette unité provient du DLC Final Stand (coopération contre l'IA). Elle n'est pas disponible dans les escarmouches / parties multijoueurs classiques.",
+    "weaponTooltip": "Cette arme provient du DLC Final Stand (coopération contre l'IA). Elle n'est pas disponible dans les escarmouches / parties multijoueurs classiques.",
+    "enemyTooltip": "Il s'agit du camp ennemi contrôlé par l'IA dans Final Stand, et non de celui que vous jouez.",
+    "showUnits": "Afficher les unités Final Stand",
+    "showUnitsDescription": "Unités du DLC Final Stand (coopération contre l'IA)",
+    "showWeapons": "Afficher les armes Final Stand",
+    "filterUnits": "Afficher / masquer les unités Final Stand",
+    "multiplayerUnits": "Unités multijoueurs"
+  },
+  "loading": "Chargement...",
+  "error": "Erreur",
+  "notFound": "Introuvable"
+}

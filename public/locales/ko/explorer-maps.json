@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "COH3 맵 - 모든 멀티플레이 맵",
+    "description": "Company of Heroes 3의 모든 멀티플레이 맵을 살펴보세요. 게임 모드별 필터, 자원 지점 배치, 맵 크기 및 커뮤니티 맵을 확인할 수 있습니다.",
+    "keywords": [
+      "coh3 맵",
+      "company of heroes 3 맵",
+      "1v1 맵",
+      "2v2 맵",
+      "3v3 맵",
+      "4v4 맵",
+      "커뮤니티 맵",
+      "맵 목록"
+    ]
+  },
+  "page": {
+    "title": "Company of Heroes 3 맵",
+    "subtitle": "게임의 모든 멀티플레이 맵과 자원 배치를 살펴보세요.",
+    "noMaps": "선택한 필터와 일치하는 맵이 없습니다."
+  },
+  "view": {
+    "cards": "카드",
+    "table": "표",
+    "cardsTooltip": "미니맵이 포함된 카드 형식으로 맵 보기",
+    "tableTooltip": "정렬 가능한 표로 모든 맵 데이터 비교"
+  },
+  "filters": {
+    "searchPlaceholder": "맵 검색",
+    "lobbyOnly": "현재 로비에 있는 맵",
+    "mapCount_one": "맵 {{count}}개",
+    "mapCount_other": "맵 {{count}}개"
+  },
+  "modes": {
+    "1v1": "1vs1",
+    "2v2": "2vs2",
+    "3v3": "3vs3",
+    "4v4": "4vs4",
+    "fs": "Final Stand",
+    "other": "기타"
+  },
+  "sections": {
+    "1v1": "1 vs 1 맵",
+    "2v2": "2 vs 2 맵",
+    "3v3": "3 vs 3 맵",
+    "4v4": "4 vs 4 맵",
+    "fs": "Final Stand 맵(AI 상대 협동전)",
+    "other": "기타 맵"
+  },
+  "card": {
+    "players_one": "플레이어 {{count}}명",
+    "players_other": "플레이어 {{count}}명",
+    "community": "커뮤니티",
+    "authorTooltip": "제작자: {{author}}",
+    "notInLobby": "로비에 없음",
+    "notInLobbyTooltip": "이 맵은 게임 내 로비에서 선택할 수 없습니다.",
+    "mapSize": "{{width}} × {{height}}",
+    "mapSizeTooltip": "맵 크기"
+  },
+  "points": {
+    "victory": "승리 지점",
+    "fuel": "연료 지점",
+    "munitions": "탄약 지점",
+    "strategic": "인력 지점",
+    "starting_position": "플레이어 시작 위치",
+    "starting_positionShort": "시작 위치",
+    "victorySingle": "승리 지점",
+    "fuelSingle": "연료 지점",
+    "munitionsSingle": "탄약 지점",
+    "strategicSingle": "인력 지점",
+    "victoryShort": "승리",
+    "fuelShort": "연료",
+    "munitionsShort": "탄약",
+    "strategicShort": "인력"
+  },
+  "tiers": {
+    "extra_low": "매우 낮음",
+    "low": "낮음",
+    "medium": "보통",
+    "extra_medium": "보통 이상",
+    "high": "높음",
+    "default": "기본"
+  },
+  "resources": {
+    "fuel": "연료",
+    "munition": "탄약",
+    "manpower": "인력"
+  },
+  "detail": {
+    "backToMaps": "모든 맵",
+    "overview": "개요",
+    "description": "설명",
+    "players": "플레이어",
+    "author": "제작자",
+    "mapId": "맵 ID",
+    "playableArea": "전투 영역",
+    "playableAreaTooltip": "점령 지점을 둘러싼 경계 상자 - 실제 전투가 벌어지는 맵 영역입니다. 항상 전체 맵 크기보다 작습니다.",
+    "mapStats": "{{mode}} 맵 통계",
+    "points": "자원 지점",
+    "totalCapturable": "점령 가능 지점",
+    "income": "분당 수입",
+    "incomeTotal": "전체",
+    "incomePerSide": "진영당",
+    "incomePerSideTooltip": "전체 수입의 절반입니다. 맵은 거의 대칭이지만 맵 중앙의 지점은 나뉘지 않고 쟁탈 대상이 되므로 추정치로 참고하세요.",
+    "incomeNote": "모든 점령 가능 지점을 장악했을 때의 분당 수입입니다.",
+    "hoverHint": "맵의 지점에 마우스를 올리면 상세 정보가 표시됩니다:",
+    "hoverDetails": {
+      "tier": "지점 등급(매우 낮음부터 높음까지)",
+      "income": "생성하는 분당 수입",
+      "captureTime": "점령 시간 - 지점을 점령하는 데 걸리는 시간",
+      "revertTime": "중립화 시간 - 다시 중립 상태가 되기까지 걸리는 시간",
+      "secureRadius": "지점 주변의 확보 반경"
+    },
+    "tierSizeHint": "맵의 아이콘은 등급에 따라 크기가 달라지므로, 산출량이 높은 지점일수록 크게 표시됩니다.",
+    "showSectors": "구역 표시",
+    "sectorsTooltip": "맵에 영토 구역을 표시합니다. 지점까지 이어지는 구역을 모두 확보해야 해당 지점이 기지와 연결됩니다.",
+    "pointIncome": "수입: +{{value}} / 분",
+    "pointCaptureTime": "점령 시간: {{value}}초",
+    "pointRevertTime": "중립화 시간: {{value}}초",
+    "pointSecureRadius": "확보 반경: {{value}}",
+    "startingPositionTooltip": "{{team}}팀 - 플레이어 {{position}}",
+    "playerPositionTooltip": "플레이어 {{position}}"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Technologies Final Stand {{faction}} - COH3",
+    "description": "La sélection complète des technologies Final Stand de {{faction}} dans Company of Heroes 3 - chaque unité, capacité et passif pouvant être proposé, choix par choix.",
+    "keywords": [
+      "technologies final stand coh3",
+      "sélection des technologies final stand",
+      "company of heroes 3 final stand",
+      "unités capacités passifs final stand",
+      "technologies hold off"
+    ]
+  },
+  "page": {
+    "title": "Technologies Final Stand {{faction}}",
+    "subtitle": "La sélection des technologies, choix par choix. Une partie vous offre {{picks}} choix, chacun proposant {{choices}} des technologies ci-dessous - et tout ce que vous choisissez vous accompagne jusqu'à la fin de la partie.",
+    "notAvailable": "Les données des technologies Final Stand ne sont pas disponibles pour le moment. Veuillez réessayer plus tard."
+  },
+  "summary": {
+    "technologies_one": "{{count}} technologie",
+    "technologies_many": "{{count}} technologies",
+    "technologies_other": "{{count}} technologies",
+    "units_one": "{{count}} unité",
+    "units_many": "{{count}} unités",
+    "units_other": "{{count}} unités",
+    "abilities_one": "{{count}} capacité",
+    "abilities_many": "{{count}} capacités",
+    "abilities_other": "{{count}} capacités",
+    "passives_one": "{{count}} passif",
+    "passives_many": "{{count}} passifs",
+    "passives_other": "{{count}} passifs",
+    "picks_one": "{{count}} choix",
+    "picks_many": "{{count}} choix",
+    "picks_other": "{{count}} choix",
+    "picksTooltip": "Choix d'une partie - un avant la première vague et un au début de chaque vague suivante, en alternant unité, passif et capacité."
+  },
+  "category": {
+    "unit": "Unité",
+    "ability": "Capacité",
+    "passive": "Passif"
+  },
+  "filters": {
+    "searchPlaceholder": "Rechercher des technologies",
+    "type": "Type",
+    "tags": "Étiquettes",
+    "common": "Technologies communes",
+    "commonTooltip": "Technologies pouvant être proposées à toutes les factions. Désactivez pour ne voir que les technologies de cette faction.",
+    "reset": "Réinitialiser",
+    "matches_one": "{{count}} technologie correspond",
+    "matches_many": "{{count}} technologies correspondent",
+    "matches_other": "{{count}} technologies correspondent"
+  },
+  "pick": {
+    "title": "Choix {{pick}}",
+    "wave": "Vague {{wave}}",
+    "waveTooltip": "La vague après laquelle ce choix a lieu. La vague 0 est la phase de préparation avant la première vague.",
+    "pool": "{{choices}} sur {{count}}",
+    "poolTooltip": "Combien de technologies le jeu propose et parmi combien il peut les choisir.",
+    "repeated_one": "{{count}} de plus issue d'un choix précédent",
+    "repeated_many": "{{count}} de plus issues des choix précédents",
+    "repeated_other": "{{count}} de plus issues des choix précédents",
+    "empty": "Aucune technologie de ce choix ne correspond aux filtres."
+  },
+  "tech": {
+    "common": "Commune",
+    "commonTooltip": "Cette technologie peut être proposée à toutes les factions.",
+    "waveFrom": "À partir de la vague {{wave}}",
+    "waveUntil": "Jusqu'à la vague {{wave}}",
+    "waveRange": "Vagues {{from}} - {{to}}",
+    "waveTooltip": "Les vagues au cours desquelles cette technologie peut être proposée. Seuls les choix de passifs en tiennent compte - les choix d'unités et de capacités l'ignorent.",
+    "noDescription": "Aucune description dans les fichiers du jeu"
+  },
+  "faction": {
+    "switchTooltip": "Afficher les technologies {{faction}}"
+  }
+}

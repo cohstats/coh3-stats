@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Atouts Final Stand {{faction}} - COH3",
+    "description": "L'arbre d'atouts Final Stand complet de {{faction}} dans Company of Heroes 3 - chaque palier, niveau d'atout, effet et coût en points d'atout.",
+    "keywords": [
+      "atouts final stand coh3",
+      "arbre d'atouts final stand",
+      "company of heroes 3 final stand",
+      "points d'atout",
+      "atouts hold off"
+    ]
+  },
+  "page": {
+    "title": "Atouts Final Stand {{faction}}",
+    "subtitle": "L'arbre d'atouts complet, palier par palier. Survolez un atout pour voir ses niveaux et effets, cliquez dessus pour l'épingler ci-dessous.",
+    "notAvailable": "Les données des atouts Final Stand ne sont pas disponibles pour le moment. Veuillez réessayer plus tard."
+  },
+  "summary": {
+    "perks_one": "{{count}} atout",
+    "perks_many": "{{count}} atouts",
+    "perks_other": "{{count}} atouts",
+    "levels_one": "{{count}} niveau",
+    "levels_many": "{{count}} niveaux",
+    "levels_other": "{{count}} niveaux",
+    "levelsTooltip": "Niveaux d'atout de l'arbre - le nombre d'achats nécessaires pour tout maximiser",
+    "tiers_one": "{{count}} palier",
+    "tiers_many": "{{count}} paliers",
+    "tiers_other": "{{count}} paliers"
+  },
+  "tier": {
+    "title": "Palier {{tier}}",
+    "unlock": "Débloqué à {{count}}",
+    "unlockStart": "Dès le début",
+    "unlockTooltip": "Ce palier se débloque une fois que vous avez acheté {{count}} niveaux d'atout.",
+    "unlockStartTooltip": "Ce palier est disponible dès le début de la mission."
+  },
+  "perk": {
+    "levels_one": "{{count}} niveau",
+    "levels_many": "{{count}} niveaux",
+    "levels_other": "{{count}} niveaux",
+    "singleLevel": "Déblocage unique",
+    "cost_one": "{{count}} point d'atout",
+    "cost_many": "{{count}} points d'atout",
+    "cost_other": "{{count}} points d'atout",
+    "noEffect": "Aucun texte d'effet dans les fichiers du jeu",
+    "noDescription": "Aucune description dans les fichiers du jeu",
+    "modifiers": "Modificateurs",
+    "modifierRange": "{{from}} → {{to}}"
+  },
+  "table": {
+    "level": "Niv.",
+    "cost": "Coût",
+    "total": "Total",
+    "effect": "Effet"
+  },
+  "faction": {
+    "switchTooltip": "Afficher l'arbre d'atouts {{faction}}"
+  }
+}

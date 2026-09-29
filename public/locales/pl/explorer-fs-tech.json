@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "title": "Technologie Final Stand - {{faction}} - COH3",
+    "description": "Pełna pula technologii Final Stand frakcji {{faction}} w Company of Heroes 3 - wszystkie jednostki, umiejętności i zdolności pasywne do wyboru, wybór po wyborze.",
+    "keywords": [
+      "coh3 final stand technologie",
+      "final stand wybór technologii",
+      "company of heroes 3 final stand",
+      "final stand jednostki umiejętności pasywne",
+      "hold off technologie"
+    ]
+  },
+  "page": {
+    "title": "Technologie Final Stand - {{faction}}",
+    "subtitle": "Wybór technologii, krok po kroku. Liczba wyborów w rozgrywce: {{picks}}. W każdym z nich otrzymujesz do wyboru {{choices}} z poniższych technologii - a wszystko, co wybierzesz, zostaje z Tobą do końca meczu.",
+    "notAvailable": "Dane o technologiach Final Stand są w tej chwili niedostępne. Spróbuj ponownie później."
+  },
+  "summary": {
+    "technologies_one": "{{count}} technologia",
+    "technologies_few": "{{count}} technologie",
+    "technologies_many": "{{count}} technologii",
+    "technologies_other": "{{count}} technologii",
+    "units_one": "{{count}} jednostka",
+    "units_few": "{{count}} jednostki",
+    "units_many": "{{count}} jednostek",
+    "units_other": "{{count}} jednostki",
+    "abilities_one": "{{count}} umiejętność",
+    "abilities_few": "{{count}} umiejętności",
+    "abilities_many": "{{count}} umiejętności",
+    "abilities_other": "{{count}} umiejętności",
+    "passives_one": "{{count}} zdolność pasywna",
+    "passives_few": "{{count}} zdolności pasywne",
+    "passives_many": "{{count}} zdolności pasywnych",
+    "passives_other": "{{count}} zdolności pasywnej",
+    "picks_one": "{{count}} wybór",
+    "picks_few": "{{count}} wybory",
+    "picks_many": "{{count}} wyborów",
+    "picks_other": "{{count}} wyboru",
+    "picksTooltip": "Wybory w trakcie rozgrywki - jeden przed pierwszą falą i po jednym na początku każdej kolejnej fali, na zmianę: jednostka, zdolność pasywna i umiejętność."
+  },
+  "category": {
+    "unit": "Jednostka",
+    "ability": "Umiejętność",
+    "passive": "Pasywna"
+  },
+  "filters": {
+    "searchPlaceholder": "Szukaj technologii",
+    "type": "Typ",
+    "tags": "Tagi",
+    "common": "Wspólne technologie",
+    "commonTooltip": "Technologie, które może otrzymać każda frakcja. Wyłącz, aby zobaczyć tylko technologie tej frakcji.",
+    "reset": "Resetuj",
+    "matches_one": "Pasuje {{count}} technologia",
+    "matches_few": "Pasują {{count}} technologie",
+    "matches_many": "Pasuje {{count}} technologii",
+    "matches_other": "Pasuje {{count}} technologii"
+  },
+  "pick": {
+    "title": "Wybór {{pick}}",
+    "wave": "Fala {{wave}}",
+    "waveTooltip": "Fala, po której następuje ten wybór. Fala 0 to faza przygotowań przed pierwszą falą.",
+    "pool": "{{choices}} z {{count}}",
+    "poolTooltip": "Ile technologii gra oferuje i z ilu może je wylosować.",
+    "repeated_one": "+{{count}} z wcześniejszego wyboru",
+    "repeated_few": "+{{count}} z wcześniejszych wyborów",
+    "repeated_many": "+{{count}} z wcześniejszych wyborów",
+    "repeated_other": "+{{count}} z wcześniejszych wyborów",
+    "empty": "Żadna technologia z tego wyboru nie pasuje do filtrów."
+  },
+  "tech": {
+    "common": "Wspólna",
+    "commonTooltip": "Tę technologię może otrzymać każda frakcja.",
+    "waveFrom": "Od fali {{wave}}",
+    "waveUntil": "Do fali {{wave}}",
+    "waveRange": "Fale {{from}} - {{to}}",
+    "waveTooltip": "Fale, w których ta technologia może się pojawić. Uwzględniają to tylko wybory zdolności pasywnych - wybory jednostek i umiejętności to ignorują.",
+    "noDescription": "Brak opisu w plikach gry"
+  },
+  "faction": {
+    "switchTooltip": "Pokaż technologie: {{faction}}"
+  }
+}

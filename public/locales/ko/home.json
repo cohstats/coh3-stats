@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "COH3 Stats - Company of Heroes 3 통계",
+    "description": "Company of Heroes 3 통계. 순위표, 플레이어 카드, 지난 매치, 유닛 능력치, DPS 계산기, 전투단 탐색기, 무기 탐색기, 진행 중인 게임, 최신 COH3 뉴스, 최신 YouTube 및 Twitch 방송 등 다양한 정보를 제공합니다.",
+    "keywords": [
+      "coh3 순위표",
+      "플레이어 카드",
+      "유닛 능력치",
+      "진행 중인 게임",
+      "dps 계산기",
+      "전투단",
+      "무기 탐색기",
+      "매치 기록",
+      "twitch 방송",
+      "youtube 영상"
+    ]
+  },
+  "sections": {
+    "news": {
+      "title": "최신 뉴스",
+      "newsLabel": "뉴스"
+    },
+    "tools": {
+      "dpsCalculator": {
+        "title": "DPS 계산기",
+        "description": "게임 내 모든 유닛의 DPS를 비교합니다. 다양한 무기로 유닛 무장을 구성하고, 유닛의 HP까지 고려할 수 있습니다."
+      },
+      "explorer": {
+        "title": "탐색기",
+        "description": "진영, 유닛, 무기, 맵을 자세히 살펴봅니다. Final Stand 특전과 유닛, DPS 계산기도 포함되어 있습니다."
+      }
+    },
+    "leaderboards": {
+      "title": "1v1 순위표",
+      "viewFullLeaderboard": "전체 순위표 보기",
+      "factions": {
+        "american": "미군",
+        "british": "영국군",
+        "german": "국방군",
+        "dak": "DAK"
+      }
+    },
+    "reddit": {
+      "title": "COH3 Reddit 인기 게시물",
+      "noData": "Reddit 게시물이 없습니다"
+    },
+    "youtube": {
+      "title": "지난주 영상",
+      "noData": "YouTube 영상이 없습니다",
+      "views": "조회"
+    },
+    "twitch": {
+      "title": "생방송 시청",
+      "noStreams": "현재 Twitch에서 방송 중인 영어 방송이 없습니다."
+    }
+  },
+  "leaderboardTable": {
+    "errorTitle": "순위표를 불러오는 중 오류가 발생했습니다"
+  }
+}

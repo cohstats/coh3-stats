@@ -25,9 +25,9 @@
         "title": "Calculadora de DPS",
         "description": "Compara el DPS de todas las unidades del juego. Personaliza el equipo de la unidad con diferentes armas. También puedes tener en cuenta los puntos de vida de las unidades."
       },
-      "unitBrowser": {
-        "title": "Explorador de Unidades",
-        "description": "Explora las unidades del juego, incluyendo estadísticas, armas y mejoras. Navega por el menú del Explorador para obtener una vista general de las facciones y más detalles."
+      "explorer": {
+        "title": "Explorador",
+        "description": "Explora en detalle facciones, unidades, armas y mapas. También incluye las ventajas y unidades de Final Stand, además de la calculadora de DPS."
       }
     },
     "leaderboards": {

@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Grenadier - COH3 Companion",
+    "description": "Téléchargez Grenadier - l'application de bureau COH3 Stats {{version}}. Aucune configuration requise. Overlay OBS. Informations détaillées sur les adversaires de votre partie en cours. Notifications sonores de nouvelle partie et bien plus.",
+    "keywords": [
+      "grenadier",
+      "coh3 companion",
+      "application de bureau coh3",
+      "overlay obs",
+      "infos de partie en temps réel",
+      "application de bureau",
+      "overlay de jeu",
+      "analyse de partie",
+      "statistiques des joueurs",
+      "données de partie en direct"
+    ]
+  },
+  "download": {
+    "button": "Téléchargement gratuit {{version}}",
+    "buttonAriaLabel": "Télécharger le programme d'installation Windows de Grenadier - application de bureau COH3 Stats {{version}}",
+    "downloads": "{{count}} téléchargements",
+    "totalDownloads": "{{count}} téléchargements au total",
+    "releaseNotes": "Notes de version",
+    "microsoftStore": "Obtenir sur le Microsoft Store",
+    "microsoftStoreAriaLabel": "Obtenir Grenadier - COH3 Companion sur le Microsoft Store",
+    "or": "OU"
+  },
+  "title": "Grenadier - COH3 Companion",
+  "subtitle": "Application de bureau COH3 Stats - Obtenez des renseignements supplémentaires sur votre partie en cours !",
+  "comparison": {
+    "title": "Choisissez votre version",
+    "featureColumn": "Fonctionnalité",
+    "recommended": "Recommandée",
+    "free": {
+      "title": "Téléchargement gratuit",
+      "subtitle": "Téléchargement direct, application non certifiée"
+    },
+    "microsoftStore": {
+      "title": "Microsoft Store",
+      "subtitle": "Certifiée par Microsoft, licence à vie",
+      "supportNote": "Soutenez le développement grâce à votre achat ! ❤"
+    }
+  },
+  "features": {
+    "title": "Fonctionnalités",
+    "list": {
+      "noSetup": {
+        "label": "Aucune installation nécessaire",
+        "description": "utilisation sans effort, lancez simplement l'application"
+      },
+      "leaderboard": {
+        "label": "ELO, rang, taux de victoire",
+        "description": "pour chaque joueur de la partie"
+      },
+      "teams": {
+        "label": "Détection des équipes organisées",
+        "description": "voyez si vos adversaires sont venus en équipe préformée"
+      },
+      "recentGames": {
+        "label": "Parties récentes",
+        "description": "votre historique de parties directement dans l'application"
+      },
+      "leaderboards": {
+        "label": "Classements",
+        "description": "consultez les classements directement dans l'application"
+      },
+      "notifications": {
+        "label": "Notifications sonores",
+        "description": "soyez averti dès qu'une partie commence"
+      },
+      "muteOnFocusLoss": {
+        "label": "Coupure automatique du son",
+        "description": "coupez le son du jeu quand la fenêtre perd le focus"
+      },
+      "streaming": {
+        "label": "Overlay pour streamers",
+        "before": "pour",
+        "and": "et",
+        "after": "et d'autres outils de streaming"
+      },
+      "friendsGroup": {
+        "label": "Détection des groupes d'amis",
+        "description": "voyez quels joueurs jouent ensemble"
+      },
+      "loadingOverlay": {
+        "label": "Overlay de l'écran de chargement",
+        "description": "des infos sur l'adversaire avant le début de la partie"
+      }
+    }
+  }
+}
