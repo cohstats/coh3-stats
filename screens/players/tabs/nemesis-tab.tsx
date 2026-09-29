@@ -417,6 +417,7 @@ const NemesisTab = ({
               accessor: "lastmatchdate",
               textAlign: "center",
               title: "Last Match",
+              width: 130,
               render: ({ lm }) => {
                 return lm ? <DynamicTimeAgo timestamp={lm} /> : "-";
               },

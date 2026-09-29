@@ -29,96 +29,114 @@ const ActivityCalendarDay = ({
     },
   };
 
+  // Nivo always renders multiple years oldest-first, so we render one calendar per year
+  // to show the latest year on top
+  const firstYear = dayjs(fromYear).year();
+  const currentYear = dayjs().year();
+  const years = Array.from({ length: currentYear - firstYear + 1 }, (_, i) => currentYear - i);
+
   return (
-    <ResponsiveCalendarCanvas
-      data={playerStatsData.activityByDate}
-      from={fromYear}
-      to={dayjs(new Date()).locale("en").format("YYYY-MM-DD")}
-      // This is dark 5 || ideally we take this from the THEME
-      emptyColor={colorScheme === "light" ? "#eeeeee" : theme.colors.dark[5]}
-      colors={[
-        "#f15854",
-        "#f4665f",
-        "#f8736a",
-        "#fa7f76",
-        "#fd8c82",
-        "#ff988e",
-        "#ffa39a",
-        "#ffafa6",
-        "#ffbbb2",
-        "#ffc6bf",
-        "#baddba",
-        "#add6ac",
-        "#9fcf9f",
-        "#91c892",
-        "#83c185",
-        "#74ba78",
-        "#65b36b",
-        "#55ac5e",
-        "#44a551",
-        "#2f9e44",
-      ]}
-      minValue={-10}
-      maxValue={10}
-      margin={{ top: 40, right: 40, bottom: 10, left: 40 }}
-      yearSpacing={40}
-      // monthBorderColor="#ffffff"
-      monthBorderWidth={1}
-      dayBorderWidth={2}
-      dayBorderColor={colorScheme === "light" ? "#ffffff" : theme.colors.dark[7]} // dark "#242424"
-      // legends={[
-      //   {
-      //     anchor: "bottom-right",
-      //     direction: "row",
-      //     translateY: 36,
-      //     itemCount: 4,
-      //     itemWidth: 42,
-      //     itemHeight: 36,
-      //     itemsSpacing: 14,
-      //     itemDirection: "right-to-left",
-      //   },
-      // ]}
-      theme={chartColorTheme}
-      // @ts-ignore
-      tooltip={({
-        value,
-        day,
-        data,
-      }: {
-        value: string;
-        color: string;
-        day: string;
-        data: { wins: number; losses: number };
-      }) => {
-        if (value === undefined) return null;
-        const toolTipBackground = colorScheme === "light" ? "#eeeeee" : theme.colors.dark[4];
-        return (
-          <div
-            style={{
-              backgroundColor: toolTipBackground,
-              padding: "5px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <Group gap={"xs"}>
-              {day}:{" "}
-              <Text span c={"green"}>
-                {" "}
-                {data.wins} W
-              </Text>{" "}
-              -{" "}
-              <Text span c={"red"}>
-                {" "}
-                {data.losses} L
-              </Text>
-            </Group>
-          </div>
-        );
-      }}
-    />
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      {years.map((year) => (
+        <div key={year} style={{ flex: 1, minHeight: 0 }}>
+          {renderYearCalendar(year)}
+        </div>
+      ))}
+    </div>
   );
+
+  function renderYearCalendar(year: number) {
+    return (
+      <ResponsiveCalendarCanvas
+        data={playerStatsData.activityByDate.filter((d) => d.day.startsWith(`${year}-`))}
+        // Use local Date objects, parsing "YYYY-01-01" strings as UTC can shift the year
+        from={new Date(year, 0, 1)}
+        to={new Date(year, 11, 31)}
+        // This is dark 5 || ideally we take this from the THEME
+        emptyColor={colorScheme === "light" ? "#eeeeee" : theme.colors.dark[5]}
+        colors={[
+          "#f15854",
+          "#f4665f",
+          "#f8736a",
+          "#fa7f76",
+          "#fd8c82",
+          "#ff988e",
+          "#ffa39a",
+          "#ffafa6",
+          "#ffbbb2",
+          "#ffc6bf",
+          "#baddba",
+          "#add6ac",
+          "#9fcf9f",
+          "#91c892",
+          "#83c185",
+          "#74ba78",
+          "#65b36b",
+          "#55ac5e",
+          "#44a551",
+          "#2f9e44",
+        ]}
+        minValue={-10}
+        maxValue={10}
+        margin={{ top: 40, right: 40, bottom: 0, left: 40 }}
+        // monthBorderColor="#ffffff"
+        monthBorderWidth={1}
+        dayBorderWidth={2}
+        dayBorderColor={colorScheme === "light" ? "#ffffff" : theme.colors.dark[7]} // dark "#242424"
+        // legends={[
+        //   {
+        //     anchor: "bottom-right",
+        //     direction: "row",
+        //     translateY: 36,
+        //     itemCount: 4,
+        //     itemWidth: 42,
+        //     itemHeight: 36,
+        //     itemsSpacing: 14,
+        //     itemDirection: "right-to-left",
+        //   },
+        // ]}
+        theme={chartColorTheme}
+        // @ts-ignore
+        tooltip={({
+          value,
+          day,
+          data,
+        }: {
+          value: string;
+          color: string;
+          day: string;
+          data: { wins: number; losses: number };
+        }) => {
+          if (value === undefined) return null;
+          const toolTipBackground = colorScheme === "light" ? "#eeeeee" : theme.colors.dark[4];
+          return (
+            <div
+              style={{
+                backgroundColor: toolTipBackground,
+                padding: "5px",
+                paddingLeft: "10px",
+                paddingRight: "10px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <Group gap={"xs"}>
+                {day}:{" "}
+                <Text span c={"green"}>
+                  {" "}
+                  {data.wins} W
+                </Text>{" "}
+                -{" "}
+                <Text span c={"red"}>
+                  {" "}
+                  {data.losses} L
+                </Text>
+              </Group>
+            </div>
+          );
+        }}
+      />
+    );
+  }
 };
 
 export default ActivityCalendarDay;
