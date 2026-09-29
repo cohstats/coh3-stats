@@ -7,7 +7,7 @@
     "url": "https://github.com/cohstats/coh3-stats"
   },
   "engines": {
-    "node": ">=20",
+    "node": ">=20.19",
     "npm": "please-use-yarn"
   },
   "scripts": {
@@ -71,7 +71,7 @@
     "@nivo/sunburst": "0.99.0",
     "@octokit/rest": "22.0.1",
     "@scalar/api-reference-react": "0.8.57",
-    "@sentry/nextjs": "10.75.3",
+    "@sentry/nextjs": "11.1.0",
     "@tabler/icons-react": "3.48.0",
     "axios": "1.20.0",
     "axios-rate-limit": "1.9.0",
