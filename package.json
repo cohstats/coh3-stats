@@ -11,6 +11,7 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
+    "prebuild": "yarn prefetch-data",
     "build": "next build",
     "build:slim": "FULL_BUILD=false next build",
     "build:slim:windows": "set FULL_BUILD=false && next build",
@@ -25,6 +26,7 @@
     "next:build": "next build",
     "next:dev": "next dev",
     "prepare": "husky",
+    "prefetch-data": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/prefetch-data.ts",
     "search-data": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\"  scripts/generate-search-data.ts",
     "sitemap": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/unit-paths.ts > unit-paths.txt && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
