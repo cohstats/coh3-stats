@@ -3,9 +3,13 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from "@sentry/nextjs";
+import { sentryDataCollection } from "./data-collection";
 
 Sentry.init({
   dsn: "https://963a73a12146449490c37b42cfc1419f@o4504995920543744.ingest.us.sentry.io/4504995924344832",
+
+  // Keep the v10 (sendDefaultPii: false) data collection behaviour
+  dataCollection: sentryDataCollection,
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.01,
