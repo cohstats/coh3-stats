@@ -3,7 +3,7 @@
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require("@sentry/nextjs/config");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { i18n } = require("./next-i18next.config");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -65,8 +65,12 @@ const sentryWebpackPluginOptions = {
   // side errors will fail.
   // tunnelRoute: "/monitoring",
 
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
+  webpack: {
+    // Automatically tree-shake Sentry logger statements to reduce bundle size
+    treeshake: {
+      removeDebugLogging: true,
+    },
+  },
 };
 
 if (process.env.ANALYZE === "true") {
