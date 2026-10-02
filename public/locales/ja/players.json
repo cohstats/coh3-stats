@@ -225,6 +225,15 @@
       "total": "合計"
     },
     "title": "1v1 宿敵",
+    "countries": {
+      "title": "国別の対戦相手",
+      "summary": "{{countries}}か国の{{players}}人のプレイヤー",
+      "players": "プレイヤー",
+      "games": "試合",
+      "clearFilter": "フィルターを解除",
+      "hint": "チップにカーソルを合わせると勝敗と勝率を表示します。クリックで表を絞り込みます。",
+      "tooltip": "{{players}}人 · {{games}}試合 · {{wins}}勝 {{losses}}敗 (勝率{{winRate}}%)"
+    },
     "noNemesis": "1v1 の宿敵なし",
     "wins": "勝利",
     "losses": "敗北",

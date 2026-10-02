@@ -201,6 +201,44 @@ export class PlayerPage extends BasePage {
     return this.getByTestId("player-nemesis-tab");
   }
 
+  get nemesisTableRows(): Locator {
+    return this.nemesisTab.locator("table tbody tr");
+  }
+
+  get nemesisCountriesSummary(): Locator {
+    return this.getByTestId("nemesis-countries-summary");
+  }
+
+  get nemesisCountryChips(): Locator {
+    return this.nemesisCountriesSummary.getByTestId("nemesis-country-chip");
+  }
+
+  get nemesisCountriesClearFilter(): Locator {
+    return this.nemesisCountriesSummary.getByTestId("nemesis-countries-clear-filter");
+  }
+
+  nemesisTableHeader(title: string): Locator {
+    return this.nemesisTab.locator("table thead th", { hasText: title });
+  }
+
+  /**
+   * Reads one column of the nemesis table as numbers. Column index is 0-based:
+   * Alias, Wins, Losses, Diff, Ratio, Total, Last Match.
+   */
+  async getNemesisColumnNumbers(columnIndex: number): Promise<number[]> {
+    const texts = await this.nemesisTableRows
+      .locator(`td:nth-child(${columnIndex + 1})`)
+      .allInnerTexts();
+    return texts.map((text) => parseInt(text.replace(/[^\d-]/g, ""), 10));
+  }
+
+  /** Country codes of the flags in the Alias column, lowercased ("" for unknown). */
+  async getNemesisRowCountries(): Promise<string[]> {
+    return this.nemesisTableRows.evaluateAll((rows) =>
+      rows.map((row) => (row.querySelector("td img")?.getAttribute("alt") || "").toLowerCase()),
+    );
+  }
+
   get teamsStandingsTab(): Locator {
     return this.getByTestId("player-teams-standings-tab");
   }

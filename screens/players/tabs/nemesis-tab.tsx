@@ -1,5 +1,5 @@
 import { platformType, ProcessedCOHPlayerStats } from "../../../src/coh3/coh3-types";
-import { DataTable } from "mantine-datatable";
+import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import {
   Anchor,
   Card,
@@ -31,6 +31,8 @@ import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
 import { useTranslation } from "next-i18next/pages";
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
+import NemesisCountriesSummary from "./nemesis-countries-summary";
+import { filterAndSortNemesis, NemesisRecord } from "../../../src/players/nemesis";
 
 // Simplified interface for what we actually need in StomperCard
 interface StomperPlayerData {
@@ -175,6 +177,27 @@ const NemesisTab = ({
 }) => {
   const { t } = useTranslation("players");
   const data = playerStatsData?.nemesis || [];
+
+  const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus<NemesisRecord>>({
+    columnAccessor: "total",
+    direction: "desc",
+  });
+
+  const [selectedCountry, setSelectedCountry] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setSelectedCountry(null);
+  }, [profileID]);
+
+  const sortedData = useMemo(
+    () =>
+      filterAndSortNemesis(playerStatsData?.nemesis || [], {
+        columnAccessor: sortStatus.columnAccessor as string,
+        direction: sortStatus.direction,
+        country: selectedCountry,
+      }),
+    [playerStatsData?.nemesis, sortStatus, selectedCountry],
+  );
 
   const [stomperData, setStomperData] = React.useState<{
     topStomper: {
@@ -345,9 +368,17 @@ const NemesisTab = ({
           </Stack>
         </Flex>
         <Space h={"lg"} />
+        <NemesisCountriesSummary
+          nemesis={data}
+          selectedCountry={selectedCountry}
+          onSelectCountry={setSelectedCountry}
+        />
+        <Space h={"md"} />
         <DataTable
           minHeight={450}
-          records={data}
+          records={sortedData}
+          sortStatus={sortStatus}
+          onSortStatusChange={setSortStatus}
           noRecordsText="No 1v1 nemesis tracked"
           withTableBorder={true}
           borderRadius="md"
@@ -357,6 +388,7 @@ const NemesisTab = ({
           columns={[
             {
               accessor: "alias",
+              sortable: true,
               textAlign: "left",
               title: "Alias",
               width: "100%",
@@ -377,16 +409,19 @@ const NemesisTab = ({
             },
             {
               accessor: "w",
+              sortable: true,
               textAlign: "center",
               title: "Wins",
             },
             {
               accessor: "l",
+              sortable: true,
               textAlign: "center",
               title: "Losses",
             },
             {
               accessor: "diff",
+              sortable: true,
               textAlign: "center",
               title: "Diff",
               render: ({ w, l }) => {
@@ -398,6 +433,7 @@ const NemesisTab = ({
             },
             {
               accessor: "wl",
+              sortable: true,
               textAlign: "center",
               title: "Ratio",
               render: ({ w, l }) => {
@@ -407,6 +443,7 @@ const NemesisTab = ({
             },
             {
               accessor: "total",
+              sortable: true,
               textAlign: "center",
               title: "Total",
               render: ({ w, l }) => {
@@ -415,6 +452,7 @@ const NemesisTab = ({
             },
             {
               accessor: "lastmatchdate",
+              sortable: true,
               textAlign: "center",
               title: "Last Match",
               render: ({ lm }) => {

@@ -225,6 +225,15 @@
       "total": "总计"
     },
     "title": "1v1 Nemesis",
+    "countries": {
+      "title": "按国家/地区统计对手",
+      "summary": "来自 {{countries}} 个国家/地区的 {{players}} 名玩家",
+      "players": "玩家",
+      "games": "场次",
+      "clearFilter": "清除筛选",
+      "hint": "将鼠标悬停在标签上可查看胜负和胜率。点击可筛选表格。",
+      "tooltip": "{{players}} 名玩家 · {{games}} 场 · {{wins}}胜 {{losses}}负 (胜率 {{winRate}}%)"
+    },
     "noNemesis": "No 1v1 Nemesis",
     "wins": "胜利",
     "losses": "失败",

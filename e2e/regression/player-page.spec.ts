@@ -322,6 +322,96 @@ test.describe("Player Page - nemesis and teams tabs", () => {
     await expect(playerPage.nemesisTab.locator("table").first()).toBeVisible();
   });
 
+  test.describe("nemesis table and country summary", () => {
+    let playerPage: PlayerPage;
+
+    const isSorted = (values: number[], direction: "asc" | "desc") =>
+      values.every((value, i) =>
+        i === 0 ? true : direction === "asc" ? values[i - 1] <= value : values[i - 1] >= value,
+      );
+
+    const sum = (values: number[]) => values.reduce((total, value) => total + value, 0);
+
+    const getChipCounts = async () =>
+      (await playerPage.nemesisCountryChips.allInnerTexts()).map((text) => parseInt(text, 10));
+
+    test.beforeEach(async ({ page }) => {
+      playerPage = new PlayerPage(page);
+      await playerPage.navigate(TEST_PLAYER.profileId, { view: "nemesis" });
+      await expect(playerPage.nemesisTableRows.first()).toBeVisible();
+      await expect(playerPage.nemesisCountriesSummary).toBeVisible();
+    });
+
+    test("should sort by total games by default and reverse on header click", async () => {
+      // Column 5 = Total
+      expect(isSorted(await playerPage.getNemesisColumnNumbers(5), "desc")).toBe(true);
+
+      await playerPage.nemesisTableHeader("Total").click();
+      await expect
+        .poll(async () => isSorted(await playerPage.getNemesisColumnNumbers(5), "asc"))
+        .toBe(true);
+    });
+
+    test("should sort by another column and reverse it on second click", async () => {
+      // Column 1 = Wins. The direction carries over from the previous sort, so only check
+      // that the column is sorted and that the second click flips it.
+      const wins = () => playerPage.getNemesisColumnNumbers(1);
+      const sortedDirection = async () => {
+        const values = await wins();
+        return isSorted(values, "desc") ? "desc" : isSorted(values, "asc") ? "asc" : null;
+      };
+
+      await playerPage.nemesisTableHeader("Wins").click();
+      await expect.poll(sortedDirection).not.toBeNull();
+      const firstDirection = await sortedDirection();
+
+      await playerPage.nemesisTableHeader("Wins").click();
+      await expect.poll(sortedDirection).toBe(firstDirection === "desc" ? "asc" : "desc");
+    });
+
+    test("should count every nemesis player and game in the country chips", async () => {
+      const rowCount = await playerPage.nemesisTableRows.count();
+      const chipCounts = await getChipCounts();
+      expect(sum(chipCounts)).toBe(rowCount);
+      expect(isSorted(chipCounts, "desc")).toBe(true);
+
+      await playerPage.nemesisCountriesSummary.getByText("Games", { exact: true }).click();
+      const totalGames = sum(await playerPage.getNemesisColumnNumbers(5));
+      // In games mode the chips are re-sorted by games and sum up to all games played
+      await expect.poll(async () => sum(await getChipCounts())).toBe(totalGames);
+      expect(isSorted(await getChipCounts(), "desc")).toBe(true);
+    });
+
+    test("should filter the table by country and clear the filter", async () => {
+      const allRows = await playerPage.nemesisTableRows.count();
+      const chip = playerPage.nemesisCountryChips.first();
+      const country = (await chip.getAttribute("data-country")) || "";
+      const expectedRows = parseInt(await chip.innerText(), 10);
+
+      await chip.click();
+      await expect(chip).toHaveAttribute("aria-pressed", "true");
+      await expect(playerPage.nemesisTableRows).toHaveCount(expectedRows);
+      const rowCountries = await playerPage.getNemesisRowCountries();
+      const expectedFlag = country === "xx" ? "" : country;
+      expect(rowCountries.every((rowCountry) => rowCountry === expectedFlag)).toBe(true);
+
+      await playerPage.nemesisCountriesClearFilter.click();
+      await expect(playerPage.nemesisTableRows).toHaveCount(allRows);
+      await expect(playerPage.nemesisCountriesClearFilter).not.toBeVisible();
+      await expect(chip).toHaveAttribute("aria-pressed", "false");
+    });
+
+    test("should clear the country filter when clicking the selected chip again", async () => {
+      const allRows = await playerPage.nemesisTableRows.count();
+      const chip = playerPage.nemesisCountryChips.nth(1);
+
+      await chip.click();
+      await expect(playerPage.nemesisTableRows).not.toHaveCount(allRows);
+      await chip.click();
+      await expect(playerPage.nemesisTableRows).toHaveCount(allRows);
+    });
+  });
+
   test("should render the teams standings tab", async ({ page }) => {
     const playerPage = new PlayerPage(page);
     await playerPage.navigate(TEST_PLAYER.profileId, { view: "teamsStandings" });
