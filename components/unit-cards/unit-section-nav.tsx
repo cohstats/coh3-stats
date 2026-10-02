@@ -15,12 +15,15 @@ export const UnitSectionNav = ({
   items,
   leftSection,
   rightSection,
+  centered,
 }: {
   items: UnitSectionNavItem[];
   /** Shown on the left only once the nav is stuck to the top, e.g. the unit icon. Desktop only. */
   leftSection?: React.ReactNode;
   /** Extra actions on the right side of the nav, e.g. a link to another tool. */
   rightSection?: React.ReactNode;
+  /** Center the buttons instead of aligning them to the left, e.g. on the search page. */
+  centered?: boolean;
 }) => {
   const navRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState<string | null>(items[0]?.id ?? null);
@@ -125,7 +128,7 @@ export const UnitSectionNav = ({
           {leftSection}
         </div>
       )}
-      <div className={classes.list}>
+      <div className={classes.list} data-centered={centered || undefined}>
         {items.map(({ id, label, count }) => {
           const isActive = id === activeId;
           return (

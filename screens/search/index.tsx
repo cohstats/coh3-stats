@@ -25,6 +25,11 @@ import { UnitCard, UnitData } from "./search-components/unit-card";
 import { MapCard, MapSearchData } from "./search-components/map-card";
 import { stripMpMapNamePrefix } from "../../src/explorer/maps/mp-maps-helpers";
 import { isFinalStandUnitId } from "../../src/unitStats/finalStand";
+import {
+  UnitSectionNav,
+  UnitSectionNavItem,
+  unitSectionClassName,
+} from "../../components/unit-cards/unit-section-nav";
 
 export const SearchScreen = () => {
   const [loading, setLoading] = React.useState(false);
@@ -123,74 +128,100 @@ export const SearchScreen = () => {
     [performSearch],
   );
 
+  const showResults = searchValue && searchValue.length > 1;
+
+  // Jump links to the result sections, the players count is unknown until the request finishes.
+  const sectionNavItems: UnitSectionNavItem[] = [
+    {
+      id: "players",
+      label: t("search:sections.players"),
+      count: data && !loading ? data.length : undefined,
+    },
+    { id: "units", label: t("search:sections.units"), count: unitResults.length },
+    ...(fsUnitResults.length > 0
+      ? [
+          {
+            id: "fs-units",
+            label: t("search:nav.finalStandUnits"),
+            count: fsUnitResults.length,
+          },
+        ]
+      : []),
+    { id: "maps", label: t("search:sections.maps"), count: mapResults.length },
+  ];
+
   const content = error ? (
     <ErrorCard title={t("search:errors.searchError")} body={JSON.stringify(error)} />
   ) : (
     <>
       {" "}
-      {searchValue && searchValue.length > 1 && (
+      {showResults && (
         <>
-          <Divider my="xs" label={t("search:sections.players")} labelPosition="center" />
-          {loading && (
-            <Center maw={400} h={250} mx="auto" data-testid="search-loader">
-              <Loader />
-            </Center>
-          )}
-          {data && !loading && (
-            <Container size={"md"} data-testid="search-players-results">
+          <div id="players" className={unitSectionClassName}>
+            <Divider my="xs" label={t("search:sections.players")} labelPosition="center" />
+            {loading && (
+              <Center maw={400} h={250} mx="auto" data-testid="search-loader">
+                <Loader />
+              </Center>
+            )}
+            {data && !loading && (
+              <Container size={"md"} data-testid="search-players-results">
+                <Flex gap="sm" wrap={"wrap"} justify="center">
+                  {data.length === 0 && (
+                    <Text c={"dimmed"} data-testid="search-no-results-players">
+                      <Stack align={"center"} gap={"xs"}>
+                        <IconDatabaseOff />
+                        <div>{t("search:noResults.players")}</div>
+                      </Stack>
+                      <Space h={"lg"} />
+                    </Text>
+                  )}
+                  {data.map((playerData) => {
+                    return (
+                      <SearchPlayerCard data={playerData} key={playerData.relicProfileId} t={t} />
+                    );
+                  })}
+                </Flex>
+                <Space />
+                <Stack align={"center"} gap={0}>
+                  {data.length >= 50 && (
+                    <Text c={"dimmed"} fs={"italic"}>
+                      {t("search:info.firstResults")}
+                    </Text>
+                  )}
+                  <Text c={"dimmed"} fs={"italic"}>
+                    {t("search:info.consoleSearch")}
+                  </Text>
+                  <Text c={"dimmed"} fs={"italic"}>
+                    {t("search:info.steamSearch")}
+                  </Text>
+                </Stack>
+              </Container>
+            )}
+          </div>
+
+          <div id="units" className={unitSectionClassName}>
+            <Divider my="xs" label={t("search:sections.units")} labelPosition="center" />
+            <Container size={"md"} data-testid="search-units-results">
               <Flex gap="sm" wrap={"wrap"} justify="center">
-                {data.length === 0 && (
-                  <Text c={"dimmed"} data-testid="search-no-results-players">
+                {unitResults.length === 0 && fsUnitResults.length === 0 ? (
+                  <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-units">
                     <Stack align={"center"} gap={"xs"}>
                       <IconDatabaseOff />
-                      <div>{t("search:noResults.players")}</div>
+                      <div>{t("search:noResults.units")}</div>
+                      <div>{t("search:noResults.unitsEnglishOnly")}</div>
                     </Stack>
                     <Space h={"lg"} />
                   </Text>
+                ) : (
+                  unitResults.map((unit) => <UnitCard key={unit.id} unit={unit} />)
                 )}
-                {data.map((playerData) => {
-                  return (
-                    <SearchPlayerCard data={playerData} key={playerData.relicProfileId} t={t} />
-                  );
-                })}
               </Flex>
-              <Space />
-              <Stack align={"center"} gap={0}>
-                {data.length >= 50 && (
-                  <Text c={"dimmed"} fs={"italic"}>
-                    {t("search:info.firstResults")}
-                  </Text>
-                )}
-                <Text c={"dimmed"} fs={"italic"}>
-                  {t("search:info.consoleSearch")}
-                </Text>
-                <Text c={"dimmed"} fs={"italic"}>
-                  {t("search:info.steamSearch")}
-                </Text>
-              </Stack>
             </Container>
-          )}
-
-          <Divider my="xs" label={t("search:sections.units")} labelPosition="center" />
-          <Container size={"md"} data-testid="search-units-results">
-            <Flex gap="sm" wrap={"wrap"} justify="center">
-              {unitResults.length === 0 && fsUnitResults.length === 0 ? (
-                <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-units">
-                  <Stack align={"center"} gap={"xs"}>
-                    <IconDatabaseOff />
-                    <div>{t("search:noResults.units")}</div>
-                    <div>{t("search:noResults.unitsEnglishOnly")}</div>
-                  </Stack>
-                  <Space h={"lg"} />
-                </Text>
-              ) : (
-                unitResults.map((unit) => <UnitCard key={unit.id} unit={unit} />)
-              )}
-            </Flex>
-          </Container>
+          </div>
 
           {fsUnitResults.length > 0 && (
-            <>
+            <div id="fs-units" className={unitSectionClassName}>
               <Divider
                 my="xs"
                 label={t("search:sections.finalStandUnits")}
@@ -203,25 +234,27 @@ export const SearchScreen = () => {
                   ))}
                 </Flex>
               </Container>
-            </>
+            </div>
           )}
 
-          <Divider my="xs" label={t("search:sections.maps")} labelPosition="center" />
-          <Container size={"md"} data-testid="search-maps-results">
-            <Flex gap="sm" wrap={"wrap"} justify="center">
-              {mapResults.length === 0 ? (
-                <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-maps">
-                  <Stack align={"center"} gap={"xs"}>
-                    <IconDatabaseOff />
-                    <div>{t("search:noResults.maps")}</div>
-                  </Stack>
-                  <Space h={"lg"} />
-                </Text>
-              ) : (
-                mapResults.map((map) => <MapCard key={map.id} map={map} t={t} />)
-              )}
-            </Flex>
-          </Container>
+          <div id="maps" className={unitSectionClassName}>
+            <Divider my="xs" label={t("search:sections.maps")} labelPosition="center" />
+            <Container size={"md"} data-testid="search-maps-results">
+              <Flex gap="sm" wrap={"wrap"} justify="center">
+                {mapResults.length === 0 ? (
+                  <Text c={"dimmed"} size={"sm"} data-testid="search-no-results-maps">
+                    <Stack align={"center"} gap={"xs"}>
+                      <IconDatabaseOff />
+                      <div>{t("search:noResults.maps")}</div>
+                    </Stack>
+                    <Space h={"lg"} />
+                  </Text>
+                ) : (
+                  mapResults.map((map) => <MapCard key={map.id} map={map} t={t} />)
+                )}
+              </Flex>
+            </Container>
+          </div>
         </>
       )}
     </>
@@ -244,6 +277,8 @@ export const SearchScreen = () => {
           }}
         />
       </Center>
+      {/* Outside of the content, so it stays sticky for the whole page. */}
+      {showResults && !error && <UnitSectionNav items={sectionNavItems} centered />}
       <div style={{ minHeight: "1200px" }}>{content}</div>
     </Container>
   );

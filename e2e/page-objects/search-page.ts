@@ -41,6 +41,10 @@ export class SearchPage extends BasePage {
     return this.getByTestId("search-units-results");
   }
 
+  get fsUnitsResults(): Locator {
+    return this.getByTestId("search-fs-units-results");
+  }
+
   get mapsResults(): Locator {
     return this.getByTestId("search-maps-results");
   }
@@ -87,6 +91,22 @@ export class SearchPage extends BasePage {
 
   mapCard(mapId: string): Locator {
     return this.getByTestId(`search-map-card-${mapId}`);
+  }
+
+  // ------------------------------------------------------------- section nav
+
+  /** Sticky jump-to-section nav under the input, shared with the unit page. */
+  get sectionNav(): Locator {
+    return this.getByTestId("unit-section-nav");
+  }
+
+  sectionNavButton(id: "players" | "units" | "fs-units" | "maps"): Locator {
+    return this.getByTestId(`unit-section-nav-${id}`);
+  }
+
+  /** The result count badge on a section nav button. */
+  sectionNavCount(id: "players" | "units" | "fs-units" | "maps"): Locator {
+    return this.sectionNavButton(id).locator(".mantine-Badge-root");
   }
 
   // ---------------------------------------------------------------- empty state

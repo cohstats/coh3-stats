@@ -181,6 +181,48 @@ test.describe("Search Page - unit results", () => {
   });
 });
 
+test.describe("Search Page - section nav", () => {
+  test("should show the result counts and jump to a section", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.navigate(TEST_UNIT.name);
+    await expect(searchPage.unitsResults).toBeVisible({ timeout: 30000 });
+
+    await expect(searchPage.sectionNav).toBeVisible();
+    await expect(searchPage.sectionNavButton("players")).toBeVisible();
+    await expect(searchPage.sectionNavCount("maps")).toHaveText("0");
+
+    // `unitCards` matches the Final Stand section too, count each section on its own.
+    const unitCount = await searchPage.unitsResults.locator(searchPage.unitCards).count();
+    await expect(searchPage.sectionNavCount("units")).toHaveText(String(unitCount));
+
+    // "Grenadier Squad" matches Final Stand units as well.
+    await expect(searchPage.fsUnitsResults).toBeVisible();
+    const fsUnitCount = await searchPage.fsUnitsResults.locator(searchPage.unitCards).count();
+    expect(fsUnitCount).toBeGreaterThan(0);
+    await expect(searchPage.sectionNavCount("fs-units")).toHaveText(String(fsUnitCount));
+
+    const unitsButton = searchPage.sectionNavButton("units");
+
+    await unitsButton.click();
+    await expect(page).toHaveURL(/#units$/);
+    await expect(unitsButton).toHaveAttribute("aria-current", "location");
+    // Sticky, so it stays on screen after the jump.
+    await expect(searchPage.sectionNav).toBeInViewport();
+  });
+
+  test("should hide the FS Units button when no Final Stand unit matches", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    // Only a regular unit is named "Wespe", there is no Final Stand variant.
+    await searchPage.navigate("Wespe");
+    await expect(searchPage.unitsResults).toBeVisible({ timeout: 30000 });
+
+    await expect(searchPage.sectionNav).toBeVisible();
+    await expect(searchPage.sectionNavCount("units")).toHaveText("1");
+    await expect(searchPage.fsUnitsResults).toHaveCount(0);
+    await expect(searchPage.sectionNavButton("fs-units")).toHaveCount(0);
+  });
+});
+
 test.describe("Search Page - map results", () => {
   test("should find maps by name and link to the map detail page", async ({ page }) => {
     const searchPage = new SearchPage(page);
