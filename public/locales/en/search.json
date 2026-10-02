@@ -19,6 +19,9 @@
     "finalStandUnits": "Final Stand Units",
     "maps": "Maps"
   },
+  "nav": {
+    "finalStandUnits": "FS Units"
+  },
   "errors": {
     "searchError": "Error while searching"
   },

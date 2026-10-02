@@ -89,6 +89,17 @@ export class SearchPage extends BasePage {
     return this.getByTestId(`search-map-card-${mapId}`);
   }
 
+  // ------------------------------------------------------------- section nav
+
+  /** Sticky jump-to-section nav under the input, shared with the unit page. */
+  get sectionNav(): Locator {
+    return this.getByTestId("unit-section-nav");
+  }
+
+  sectionNavButton(id: "players" | "units" | "fs-units" | "maps"): Locator {
+    return this.getByTestId(`unit-section-nav-${id}`);
+  }
+
   // ---------------------------------------------------------------- empty state
 
   get noPlayersFound(): Locator {

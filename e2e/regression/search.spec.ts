@@ -181,6 +181,28 @@ test.describe("Search Page - unit results", () => {
   });
 });
 
+test.describe("Search Page - section nav", () => {
+  test("should show the result counts and jump to a section", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.navigate(TEST_UNIT.name);
+    await expect(searchPage.unitsResults).toBeVisible({ timeout: 30000 });
+
+    await expect(searchPage.sectionNav).toBeVisible();
+    await expect(searchPage.sectionNavButton("players")).toBeVisible();
+    await expect(searchPage.sectionNavButton("maps")).toContainText("0");
+
+    const unitCount = await searchPage.unitCards.count();
+    const unitsButton = searchPage.sectionNavButton("units");
+    await expect(unitsButton).toContainText(String(unitCount));
+
+    await unitsButton.click();
+    await expect(page).toHaveURL(/#units$/);
+    await expect(unitsButton).toHaveAttribute("aria-current", "location");
+    // Sticky, so it stays on screen after the jump.
+    await expect(searchPage.sectionNav).toBeInViewport();
+  });
+});
+
 test.describe("Search Page - map results", () => {
   test("should find maps by name and link to the map detail page", async ({ page }) => {
     const searchPage = new SearchPage(page);
