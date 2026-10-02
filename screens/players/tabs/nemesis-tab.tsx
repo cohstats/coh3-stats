@@ -1,6 +1,5 @@
 import { platformType, ProcessedCOHPlayerStats } from "../../../src/coh3/coh3-types";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import sortBy from "lodash/sortBy";
 import {
   Anchor,
   Card,
@@ -32,7 +31,8 @@ import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
 import { useTranslation } from "next-i18next/pages";
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
-import NemesisCountriesSummary, { UNKNOWN_COUNTRY } from "./nemesis-countries-summary";
+import NemesisCountriesSummary from "./nemesis-countries-summary";
+import { filterAndSortNemesis, NemesisRecord } from "../../../src/players/nemesis";
 
 // Simplified interface for what we actually need in StomperCard
 interface StomperPlayerData {
@@ -41,18 +41,6 @@ interface StomperPlayerData {
   country: string;
   avatarmedium: string | null;
 }
-
-type NemesisRecord = ProcessedCOHPlayerStats["nemesis"][number];
-
-const NEMESIS_SORT_VALUE: Record<string, (record: NemesisRecord) => string | number> = {
-  alias: ({ alias }) => (alias || "").toLowerCase(),
-  w: ({ w }) => w,
-  l: ({ l }) => l,
-  diff: ({ w, l }) => w - l,
-  wl: ({ w, l }) => (w + l > 0 ? w / (w + l) : 0),
-  total: ({ w, l }) => w + l,
-  lastmatchdate: ({ lm }) => lm || 0,
-};
 
 interface IndividualNemesis {
   diff: number;
@@ -201,15 +189,15 @@ const NemesisTab = ({
     setSelectedCountry(null);
   }, [profileID]);
 
-  const sortedData = useMemo(() => {
-    const nemesis: NemesisRecord[] = (playerStatsData?.nemesis || []).filter(
-      ({ c }) => !selectedCountry || (c?.toLowerCase() || UNKNOWN_COUNTRY) === selectedCountry,
-    );
-    const sortValue =
-      NEMESIS_SORT_VALUE[sortStatus.columnAccessor as string] || NEMESIS_SORT_VALUE.total;
-    const sorted = sortBy(nemesis, sortValue);
-    return sortStatus.direction === "desc" ? sorted.reverse() : sorted;
-  }, [playerStatsData?.nemesis, sortStatus, selectedCountry]);
+  const sortedData = useMemo(
+    () =>
+      filterAndSortNemesis(playerStatsData?.nemesis || [], {
+        columnAccessor: sortStatus.columnAccessor as string,
+        direction: sortStatus.direction,
+        country: selectedCountry,
+      }),
+    [playerStatsData?.nemesis, sortStatus, selectedCountry],
+  );
 
   const [stomperData, setStomperData] = React.useState<{
     topStomper: {

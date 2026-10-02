@@ -2,55 +2,30 @@ import { Button, Card, Group, SegmentedControl, Text, Tooltip } from "@mantine/c
 import { useTranslation } from "next-i18next/pages";
 import React, { useMemo } from "react";
 import CountryFlag, { getCountryName } from "../../../components/country-flag";
-import { ProcessedCOHPlayerStats } from "../../../src/coh3/coh3-types";
-
-// Used for players without a country, matches the fallback flag in CountryFlag
-export const UNKNOWN_COUNTRY = "xx";
-
-type CountMode = "players" | "games";
-
-interface CountrySummary {
-  country: string;
-  players: number;
-  games: number;
-  wins: number;
-  losses: number;
-}
+import {
+  NemesisCountMode,
+  NemesisRecord,
+  summarizeNemesisCountries,
+} from "../../../src/players/nemesis";
 
 const NemesisCountriesSummary = ({
   nemesis,
   selectedCountry,
   onSelectCountry,
 }: {
-  nemesis: ProcessedCOHPlayerStats["nemesis"];
+  nemesis: NemesisRecord[];
   selectedCountry: string | null;
   onSelectCountry: (country: string | null) => void;
 }) => {
   const { t } = useTranslation("players");
-  const [mode, setMode] = React.useState<CountMode>("players");
+  const [mode, setMode] = React.useState<NemesisCountMode>("players");
 
-  const countries = useMemo(() => {
-    const byCountry: Record<string, CountrySummary> = {};
-    for (const { c, w, l } of nemesis) {
-      const country = c?.toLowerCase() || UNKNOWN_COUNTRY;
-      byCountry[country] ??= { country, players: 0, games: 0, wins: 0, losses: 0 };
-      byCountry[country].players++;
-      byCountry[country].games += w + l;
-      byCountry[country].wins += w;
-      byCountry[country].losses += l;
-    }
-    return Object.values(byCountry);
-  }, [nemesis]);
-
-  const sortedCountries = useMemo(
-    () => [...countries].sort((a, b) => b[mode] - a[mode] || b.games - a.games),
-    [countries, mode],
-  );
+  const countries = useMemo(() => summarizeNemesisCountries(nemesis, mode), [nemesis, mode]);
 
   if (countries.length === 0) return null;
 
   return (
-    <Card padding="sm" radius="md" withBorder>
+    <Card padding="sm" radius="md" withBorder data-testid="nemesis-countries-summary">
       <Group justify="space-between" mb="xs" gap="xs">
         <Group gap="xs">
           <Text fw={500}>{t("nemesis.countries.title")}</Text>
@@ -63,14 +38,19 @@ const NemesisCountriesSummary = ({
         </Group>
         <Group gap="xs">
           {selectedCountry && (
-            <Button size="compact-xs" variant="subtle" onClick={() => onSelectCountry(null)}>
+            <Button
+              size="compact-xs"
+              variant="subtle"
+              onClick={() => onSelectCountry(null)}
+              data-testid="nemesis-countries-clear-filter"
+            >
               {t("nemesis.countries.clearFilter")}
             </Button>
           )}
           <SegmentedControl
             size="xs"
             value={mode}
-            onChange={(value) => setMode(value as CountMode)}
+            onChange={(value) => setMode(value as NemesisCountMode)}
             data={[
               { label: t("nemesis.countries.players"), value: "players" },
               { label: t("nemesis.countries.games"), value: "games" },
@@ -79,7 +59,7 @@ const NemesisCountriesSummary = ({
         </Group>
       </Group>
       <Group gap={6}>
-        {sortedCountries.map((summary) => {
+        {countries.map((summary) => {
           const isSelected = selectedCountry === summary.country;
           return (
             <Tooltip
@@ -111,6 +91,8 @@ const NemesisCountriesSummary = ({
                 }
                 onClick={() => onSelectCountry(isSelected ? null : summary.country)}
                 aria-pressed={isSelected}
+                data-testid="nemesis-country-chip"
+                data-country={summary.country}
               >
                 {summary[mode]}
               </Button>
