@@ -231,6 +231,7 @@
       "players": "Players",
       "games": "Games",
       "clearFilter": "Clear filter",
+      "hint": "Hover a chip for W/L and win rate. Click to filter the table.",
       "tooltip": "{{players}} players · {{games}} games · {{wins}}W {{losses}}L ({{winRate}}%)"
     },
     "noNemesis": "No 1v1 Nemesis",

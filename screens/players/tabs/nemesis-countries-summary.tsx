@@ -118,6 +118,9 @@ const NemesisCountriesSummary = ({
           );
         })}
       </Group>
+      <Text size="xs" c="dimmed" mt="xs">
+        {t("nemesis.countries.hint")}
+      </Text>
     </Card>
   );
 };
