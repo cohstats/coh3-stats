@@ -1,0 +1,13 @@
+.factionTab {
+  border: 1px solid transparent;
+  background-color: transparent;
+
+  &[data-active] {
+    border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2));
+    background-color: transparent;
+  }
+
+  &[data-active]:hover {
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  }
+}
