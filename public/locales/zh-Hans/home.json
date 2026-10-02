@@ -40,6 +40,16 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "搜索玩家、单位和地图",
+      "submit": "搜索",
+      "players": "玩家",
+      "playersHint": "数据、比赛",
+      "units": "单位",
+      "unitsHint": "武器、花费",
+      "maps": "地图",
+      "mapsHint": "胜率"
+    },
     "reddit": {
       "title": "热门COH3 Reddit帖子",
       "noData": "没有可用的Reddit帖子"

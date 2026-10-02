@@ -40,6 +40,16 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "Search players, units and maps",
+      "submit": "Search",
+      "players": "Players",
+      "playersHint": "Stats, matches",
+      "units": "Units",
+      "unitsHint": "Weapons, costs",
+      "maps": "Maps",
+      "mapsHint": "Win rates"
+    },
     "reddit": {
       "title": "Top COH3 Reddit posts",
       "noData": "No Reddit posts available"

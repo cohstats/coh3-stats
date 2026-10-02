@@ -40,6 +40,16 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "Szukaj graczy, jednostek i map",
+      "submit": "Szukaj",
+      "players": "Gracze",
+      "playersHint": "Statystyki, mecze",
+      "units": "Jednostki",
+      "unitsHint": "Broń, koszty",
+      "maps": "Mapy",
+      "mapsHint": "Współczynnik wygranych"
+    },
     "reddit": {
       "title": "Najlepsze posty o COH3 na Reddicie",
       "noData": "Brak dostępnych postów z Reddita"

@@ -40,6 +40,16 @@
         "dak": "ДАК"
       }
     },
+    "search": {
+      "placeholder": "Поиск игроков, юнитов и карт",
+      "submit": "Искать",
+      "players": "Игроки",
+      "playersHint": "Статистика, матчи",
+      "units": "Юниты",
+      "unitsHint": "Оружие, стоимость",
+      "maps": "Карты",
+      "mapsHint": "Процент побед"
+    },
     "reddit": {
       "title": "Лучшие посты по COH3 на Reddit",
       "noData": "Нет доступных постов на Reddit"
