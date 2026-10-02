@@ -1,5 +1,6 @@
 import { platformType, ProcessedCOHPlayerStats } from "../../../src/coh3/coh3-types";
-import { DataTable } from "mantine-datatable";
+import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import sortBy from "lodash/sortBy";
 import {
   Anchor,
   Card,
@@ -31,6 +32,7 @@ import { IconInfoTriangle } from "@tabler/icons-react";
 import config from "../../../config";
 import { useTranslation } from "next-i18next/pages";
 import DynamicTimeAgo from "../../../components/other/dynamic-timeago";
+import NemesisCountriesSummary, { UNKNOWN_COUNTRY } from "./nemesis-countries-summary";
 
 // Simplified interface for what we actually need in StomperCard
 interface StomperPlayerData {
@@ -39,6 +41,18 @@ interface StomperPlayerData {
   country: string;
   avatarmedium: string | null;
 }
+
+type NemesisRecord = ProcessedCOHPlayerStats["nemesis"][number];
+
+const NEMESIS_SORT_VALUE: Record<string, (record: NemesisRecord) => string | number> = {
+  alias: ({ alias }) => (alias || "").toLowerCase(),
+  w: ({ w }) => w,
+  l: ({ l }) => l,
+  diff: ({ w, l }) => w - l,
+  wl: ({ w, l }) => (w + l > 0 ? w / (w + l) : 0),
+  total: ({ w, l }) => w + l,
+  lastmatchdate: ({ lm }) => lm || 0,
+};
 
 interface IndividualNemesis {
   diff: number;
@@ -175,6 +189,27 @@ const NemesisTab = ({
 }) => {
   const { t } = useTranslation("players");
   const data = playerStatsData?.nemesis || [];
+
+  const [sortStatus, setSortStatus] = React.useState<DataTableSortStatus<NemesisRecord>>({
+    columnAccessor: "total",
+    direction: "desc",
+  });
+
+  const [selectedCountry, setSelectedCountry] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setSelectedCountry(null);
+  }, [profileID]);
+
+  const sortedData = useMemo(() => {
+    const nemesis: NemesisRecord[] = (playerStatsData?.nemesis || []).filter(
+      ({ c }) => !selectedCountry || (c?.toLowerCase() || UNKNOWN_COUNTRY) === selectedCountry,
+    );
+    const sortValue =
+      NEMESIS_SORT_VALUE[sortStatus.columnAccessor as string] || NEMESIS_SORT_VALUE.total;
+    const sorted = sortBy(nemesis, sortValue);
+    return sortStatus.direction === "desc" ? sorted.reverse() : sorted;
+  }, [playerStatsData?.nemesis, sortStatus, selectedCountry]);
 
   const [stomperData, setStomperData] = React.useState<{
     topStomper: {
@@ -345,9 +380,17 @@ const NemesisTab = ({
           </Stack>
         </Flex>
         <Space h={"lg"} />
+        <NemesisCountriesSummary
+          nemesis={data}
+          selectedCountry={selectedCountry}
+          onSelectCountry={setSelectedCountry}
+        />
+        <Space h={"md"} />
         <DataTable
           minHeight={450}
-          records={data}
+          records={sortedData}
+          sortStatus={sortStatus}
+          onSortStatusChange={setSortStatus}
           noRecordsText="No 1v1 nemesis tracked"
           withTableBorder={true}
           borderRadius="md"
@@ -357,6 +400,7 @@ const NemesisTab = ({
           columns={[
             {
               accessor: "alias",
+              sortable: true,
               textAlign: "left",
               title: "Alias",
               width: "100%",
@@ -377,16 +421,19 @@ const NemesisTab = ({
             },
             {
               accessor: "w",
+              sortable: true,
               textAlign: "center",
               title: "Wins",
             },
             {
               accessor: "l",
+              sortable: true,
               textAlign: "center",
               title: "Losses",
             },
             {
               accessor: "diff",
+              sortable: true,
               textAlign: "center",
               title: "Diff",
               render: ({ w, l }) => {
@@ -398,6 +445,7 @@ const NemesisTab = ({
             },
             {
               accessor: "wl",
+              sortable: true,
               textAlign: "center",
               title: "Ratio",
               render: ({ w, l }) => {
@@ -407,6 +455,7 @@ const NemesisTab = ({
             },
             {
               accessor: "total",
+              sortable: true,
               textAlign: "center",
               title: "Total",
               render: ({ w, l }) => {
@@ -415,6 +464,7 @@ const NemesisTab = ({
             },
             {
               accessor: "lastmatchdate",
+              sortable: true,
               textAlign: "center",
               title: "Last Match",
               render: ({ lm }) => {

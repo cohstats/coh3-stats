@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Tooltip } from "@mantine/core";
 
-const getCountryName = (countryCode: string): string => {
+export const getCountryName = (countryCode: string): string => {
   const countryMapping: { [code: string]: string } = {
     ac: "Ascension Island",
     ad: "Andorra",
@@ -278,11 +278,13 @@ const CountryFlag = ({
   size = "md",
   width,
   height,
+  withTooltip = true,
 }: {
   countryCode?: string;
   size?: "md" | "sm" | "xs";
   width?: number;
   height?: number;
+  withTooltip?: boolean;
 }) => {
   let internalWidth = width || 20;
   let internalHeight = height || 18;
@@ -300,17 +302,19 @@ const CountryFlag = ({
     ? `https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.3.2/flags/4x3/${countryCode.toLowerCase()}.svg`
     : `/flags/4x3/xx.svg`;
 
-  return (
-    <Tooltip label={getCountryName(countryCode || "xx")}>
-      <Image
-        src={src}
-        alt={countryCode || ""}
-        width={internalWidth}
-        height={internalHeight}
-        loading="lazy"
-      />
-    </Tooltip>
+  const image = (
+    <Image
+      src={src}
+      alt={countryCode || ""}
+      width={internalWidth}
+      height={internalHeight}
+      loading="lazy"
+    />
   );
+
+  if (!withTooltip) return image;
+
+  return <Tooltip label={getCountryName(countryCode || "xx")}>{image}</Tooltip>;
 };
 
 export default CountryFlag;

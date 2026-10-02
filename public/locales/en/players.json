@@ -225,6 +225,14 @@
       "total": "Total"
     },
     "title": "1v1 Nemesis",
+    "countries": {
+      "title": "Opponents by country",
+      "summary": "{{players}} players from {{countries}} countries",
+      "players": "Players",
+      "games": "Games",
+      "clearFilter": "Clear filter",
+      "tooltip": "{{players}} players · {{games}} games · {{wins}}W {{losses}}L ({{winRate}}%)"
+    },
     "noNemesis": "No 1v1 Nemesis",
     "wins": "Wins",
     "losses": "Losses",
