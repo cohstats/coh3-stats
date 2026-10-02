@@ -278,7 +278,7 @@ export const SearchScreen = () => {
         />
       </Center>
       {/* Outside of the content, so it stays sticky for the whole page. */}
-      {showResults && !error && <UnitSectionNav items={sectionNavItems} />}
+      {showResults && !error && <UnitSectionNav items={sectionNavItems} centered />}
       <div style={{ minHeight: "1200px" }}>{content}</div>
     </Container>
   );

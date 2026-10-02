@@ -47,6 +47,10 @@
   gap: var(--mantine-spacing-xs);
 }
 
+.list[data-centered] {
+  justify-content: center;
+}
+
 /* On phones stack the buttons into a two column grid instead of one long row. */
 @media (max-width: 48em) {
   .list {
