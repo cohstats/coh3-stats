@@ -6,17 +6,22 @@ import {
   chartDataObjectsForTimeSeries,
   getNivoTooltipTheme,
 } from "../../../../components/charts/charts-components-utils";
-import { DaysAnalysisObjectType } from "../../../../src/analysis-types";
+import {
+  DaysWithAllAnalysisObjectType,
+  gameStatsModeType,
+  getModeLabel,
+} from "../../../../src/stats/combine-game-stats";
+import { DayAnalysisObjectType } from "../../../../src/analysis-types";
 import dayjs from "dayjs";
-import { leaderBoardType, raceType } from "../../../../src/coh3/coh3-types";
+import { raceType } from "../../../../src/coh3/coh3-types";
 import HelperIcon from "../../../../components/icon/helper";
 
 const GamesPercentageLineChartCard = ({
   data,
   mode,
 }: {
-  data: DaysAnalysisObjectType;
-  mode: "all" | "1v1" | "2v2" | "3v3" | "4v4";
+  data: DaysWithAllAnalysisObjectType;
+  mode: gameStatsModeType;
 }) => {
   const { colorScheme } = useMantineColorScheme();
   const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
@@ -33,7 +38,7 @@ const GamesPercentageLineChartCard = ({
   } = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
   Object.entries(data).forEach(([key, value]) => {
-    const dayAnalysisObject = value[mode as leaderBoardType];
+    const dayAnalysisObject: Partial<DayAnalysisObjectType> = value[mode] || {};
     // Init it to 0
     totalGamesForEachDay[key] = 0;
 
@@ -69,7 +74,7 @@ const GamesPercentageLineChartCard = ({
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Group>
-            <Title order={3}>Faction popularity over time {mode}</Title>
+            <Title order={3}>Faction popularity over time {getModeLabel(mode)}</Title>
             <HelperIcon
               width={360}
               text={"This is stacked area chart. It's % of games played as each faction."}
