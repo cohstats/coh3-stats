@@ -44,11 +44,8 @@
       "placeholder": "Rechercher joueurs, unités et cartes",
       "submit": "Rechercher",
       "players": "Joueurs",
-      "playersHint": "Stats, parties",
       "units": "Unités",
-      "unitsHint": "Armes, coûts",
-      "maps": "Cartes",
-      "mapsHint": "Taux de victoire"
+      "maps": "Cartes"
     },
     "reddit": {
       "title": "Meilleurs posts Reddit COH3",

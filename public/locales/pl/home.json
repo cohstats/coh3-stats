@@ -44,11 +44,8 @@
       "placeholder": "Szukaj graczy, jednostek i map",
       "submit": "Szukaj",
       "players": "Gracze",
-      "playersHint": "Statystyki, mecze",
       "units": "Jednostki",
-      "unitsHint": "Broń, koszty",
-      "maps": "Mapy",
-      "mapsHint": "Współczynnik wygranych"
+      "maps": "Mapy"
     },
     "reddit": {
       "title": "Najlepsze posty o COH3 na Reddicie",

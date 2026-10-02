@@ -44,11 +44,8 @@
       "placeholder": "Search players, units and maps",
       "submit": "Search",
       "players": "Players",
-      "playersHint": "Stats, matches",
       "units": "Units",
-      "unitsHint": "Weapons, costs",
-      "maps": "Maps",
-      "mapsHint": "Win rates"
+      "maps": "Maps"
     },
     "reddit": {
       "title": "Top COH3 Reddit posts",

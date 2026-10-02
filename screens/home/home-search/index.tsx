@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Paper, SimpleGrid, Stack, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Group, Paper, SimpleGrid, Text, TextInput } from "@mantine/core";
 import { IconArrowRight, IconMap, IconSearch, IconTank, IconUsers } from "@tabler/icons-react";
 import { TFunction } from "next-i18next/pages";
 import { useRouter } from "next/router";
@@ -25,13 +25,9 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
   };
 
   const categories = [
-    {
-      icon: IconUsers,
-      label: t("sections.search.players"),
-      hint: t("sections.search.playersHint"),
-    },
-    { icon: IconTank, label: t("sections.search.units"), hint: t("sections.search.unitsHint") },
-    { icon: IconMap, label: t("sections.search.maps"), hint: t("sections.search.mapsHint") },
+    { icon: IconUsers, label: t("sections.search.players") },
+    { icon: IconTank, label: t("sections.search.units") },
+    { icon: IconMap, label: t("sections.search.maps") },
   ];
 
   return (
@@ -58,6 +54,7 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
             <ActionIcon
               type="submit"
               variant="subtle"
+              color="gray"
               size="lg"
               radius="md"
               aria-label={t("sections.search.submit")}
@@ -68,26 +65,22 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
         />
       </form>
       <SimpleGrid cols={3} spacing={0} className={classes.categories}>
-        {categories.map(({ icon: Icon, label, hint }) => (
-          <Stack
+        {categories.map(({ icon: Icon, label }) => (
+          <Group
             key={label}
-            gap={2}
-            align="center"
+            gap={6}
+            justify="center"
+            wrap="nowrap"
             py="xs"
             px={4}
             className={classes.category}
             onClick={() => inputRef.current?.focus()}
           >
-            <Group gap={6} wrap="nowrap">
-              <Icon size={20} className={classes.icon} />
-              <Text fw={500} size="sm">
-                {label}
-              </Text>
-            </Group>
-            <Text size="xs" c="dimmed" ta="center">
-              {hint}
+            <Icon size={20} />
+            <Text fw={500} size="sm">
+              {label}
             </Text>
-          </Stack>
+          </Group>
         ))}
       </SimpleGrid>
     </Paper>

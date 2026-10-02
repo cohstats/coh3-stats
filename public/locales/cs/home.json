@@ -44,11 +44,8 @@
       "placeholder": "Hledat hráče, jednotky a mapy",
       "submit": "Hledat",
       "players": "Hráči",
-      "playersHint": "Statistiky, zápasy",
       "units": "Jednotky",
-      "unitsHint": "Zbraně, ceny",
-      "maps": "Mapy",
-      "mapsHint": "Úspěšnost"
+      "maps": "Mapy"
     },
     "reddit": {
       "title": "Nejlepší příspěvky COH3 na Redditu",

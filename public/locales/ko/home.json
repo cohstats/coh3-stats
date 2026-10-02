@@ -44,11 +44,8 @@
       "placeholder": "플레이어, 유닛, 맵 검색",
       "submit": "검색",
       "players": "플레이어",
-      "playersHint": "통계, 경기",
       "units": "유닛",
-      "unitsHint": "무기, 비용",
-      "maps": "맵",
-      "mapsHint": "승률"
+      "maps": "맵"
     },
     "reddit": {
       "title": "COH3 Reddit 인기 게시물",

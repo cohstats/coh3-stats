@@ -44,11 +44,8 @@
       "placeholder": "プレイヤー、ユニット、マップを検索",
       "submit": "検索",
       "players": "プレイヤー",
-      "playersHint": "統計、試合",
       "units": "ユニット",
-      "unitsHint": "武器、コスト",
-      "maps": "マップ",
-      "mapsHint": "勝率"
+      "maps": "マップ"
     },
     "reddit": {
       "title": "COH3 Reddit 人気投稿",
