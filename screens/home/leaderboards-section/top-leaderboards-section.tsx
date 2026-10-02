@@ -67,8 +67,8 @@ const TopLeaderboardsSection = ({ initialData, t }: TopLeaderboardsSectionProps)
               const factionName = t(`sections.leaderboards.factions.${faction}`);
               return (
                 <Tooltip key={faction} label={factionName} withArrow>
-                  <Tabs.Tab value={faction} aria-label={factionName} px="xs">
-                    <FactionIcon name={faction} width={28} style={{ display: "block" }} />
+                  <Tabs.Tab value={faction} aria-label={factionName}>
+                    <FactionIcon name={faction} width={24} style={{ display: "block" }} />
                   </Tabs.Tab>
                 </Tooltip>
               );
