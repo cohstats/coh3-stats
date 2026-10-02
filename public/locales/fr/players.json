@@ -225,6 +225,15 @@
       "total": "Total"
     },
     "title": "Némésis 1v1",
+    "countries": {
+      "title": "Adversaires par pays",
+      "summary": "{{players}} joueurs de {{countries}} pays",
+      "players": "Joueurs",
+      "games": "Parties",
+      "clearFilter": "Effacer le filtre",
+      "hint": "Survolez une pastille pour voir V/D et le taux de victoire. Cliquez pour filtrer le tableau.",
+      "tooltip": "{{players}} joueurs · {{games}} parties · {{wins}}V {{losses}}D ({{winRate}} %)"
+    },
     "noNemesis": "Aucune némésis 1v1",
     "wins": "Victoires",
     "losses": "Défaites",

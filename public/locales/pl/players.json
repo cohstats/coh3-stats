@@ -225,6 +225,15 @@
       "total": "Razem"
     },
     "title": "Nemezis 1v1",
+    "countries": {
+      "title": "Przeciwnicy według kraju",
+      "summary": "{{players}} graczy z {{countries}} krajów",
+      "players": "Gracze",
+      "games": "Gry",
+      "clearFilter": "Wyczyść filtr",
+      "hint": "Najedź na plakietkę, aby zobaczyć W/P i współczynnik wygranych. Kliknij, aby przefiltrować tabelę.",
+      "tooltip": "{{players}} graczy · {{games}} gier · {{wins}}W {{losses}}P ({{winRate}}%)"
+    },
     "noNemesis": "Brak nemezis 1v1",
     "wins": "Wygrane",
     "losses": "Porażki",

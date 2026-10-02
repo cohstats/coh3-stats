@@ -225,6 +225,15 @@
       "total": "Celkem"
     },
     "title": "1v1 Nemesis",
+    "countries": {
+      "title": "Soupeři podle zemí",
+      "summary": "{{players}} hráčů z {{countries}} zemí",
+      "players": "Hráči",
+      "games": "Hry",
+      "clearFilter": "Zrušit filtr",
+      "hint": "Najeďte na štítek pro výhry/prohry a win rate. Kliknutím vyfiltrujete tabulku.",
+      "tooltip": "{{players}} hráčů · {{games}} her · {{wins}}V {{losses}}P ({{winRate}} %)"
+    },
     "noNemesis": "Žádný 1v1 Nemesis",
     "wins": "Výhry",
     "losses": "Prohry",

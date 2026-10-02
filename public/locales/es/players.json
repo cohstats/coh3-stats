@@ -225,6 +225,15 @@
       "total": "Total"
     },
     "title": "1v1 Nemesis",
+    "countries": {
+      "title": "Oponentes por país",
+      "summary": "{{players}} jugadores de {{countries}} países",
+      "players": "Jugadores",
+      "games": "Partidas",
+      "clearFilter": "Quitar filtro",
+      "hint": "Pasa el cursor sobre un chip para ver V/D y el porcentaje de victorias. Haz clic para filtrar la tabla.",
+      "tooltip": "{{players}} jugadores · {{games}} partidas · {{wins}}V {{losses}}D ({{winRate}}%)"
+    },
     "noNemesis": "No hay Nemesis en 1v1",
     "wins": "Victorias",
     "losses": "Derrotas",

@@ -225,6 +225,15 @@
       "total": "Gesamt"
     },
     "title": "1v1 Nemesis",
+    "countries": {
+      "title": "Gegner nach Land",
+      "summary": "{{players}} Spieler aus {{countries}} Ländern",
+      "players": "Spieler",
+      "games": "Spiele",
+      "clearFilter": "Filter entfernen",
+      "hint": "Fahre über einen Chip für S/N und Siegquote. Klicke, um die Tabelle zu filtern.",
+      "tooltip": "{{players}} Spieler · {{games}} Spiele · {{wins}}S {{losses}}N ({{winRate}} %)"
+    },
     "noNemesis": "Keine 1v1 Nemesis",
     "wins": "Siege",
     "losses": "Niederlagen",
