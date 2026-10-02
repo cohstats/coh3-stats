@@ -189,11 +189,20 @@ test.describe("Search Page - section nav", () => {
 
     await expect(searchPage.sectionNav).toBeVisible();
     await expect(searchPage.sectionNavButton("players")).toBeVisible();
-    await expect(searchPage.sectionNavButton("maps")).toContainText("0");
+    await expect(searchPage.sectionNavCount("maps")).toHaveText("0");
 
-    const unitCount = await searchPage.unitCards.count();
+    // `unitCards` matches the Final Stand section too, count each section on its own.
+    const unitCount = await searchPage.unitsResults.locator(searchPage.unitCards).count();
+    await expect(searchPage.sectionNavCount("units")).toHaveText(String(unitCount));
+
+    const fsUnitCount = await searchPage.fsUnitsResults.locator(searchPage.unitCards).count();
+    if (fsUnitCount > 0) {
+      await expect(searchPage.sectionNavCount("fs-units")).toHaveText(String(fsUnitCount));
+    } else {
+      await expect(searchPage.sectionNavButton("fs-units")).toHaveCount(0);
+    }
+
     const unitsButton = searchPage.sectionNavButton("units");
-    await expect(unitsButton).toContainText(String(unitCount));
 
     await unitsButton.click();
     await expect(page).toHaveURL(/#units$/);
