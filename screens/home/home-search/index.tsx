@@ -3,7 +3,6 @@ import { IconArrowRight, IconMap, IconSearch, IconTank, IconUsers } from "@table
 import { TFunction } from "next-i18next/pages";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import { getSearchRoute } from "../../../src/routes";
 import classes from "./home-search.module.css";
 
 interface HomeSearchProps {
@@ -18,16 +17,17 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
   const submit = () => {
     const query = value.trim();
     if (query.length > 1) {
-      push(getSearchRoute(query));
+      // Pass the query separately so Next.js encodes reserved characters like & and #
+      push({ pathname: "/search", query: { q: query } });
     } else {
       inputRef.current?.focus();
     }
   };
 
   const categories = [
-    { icon: IconUsers, label: t("sections.search.players") },
-    { icon: IconTank, label: t("sections.search.units") },
-    { icon: IconMap, label: t("sections.search.maps") },
+    { key: "players", icon: IconUsers, label: t("sections.search.players") },
+    { key: "units", icon: IconTank, label: t("sections.search.units") },
+    { key: "maps", icon: IconMap, label: t("sections.search.maps") },
   ];
 
   return (
@@ -53,6 +53,7 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
           rightSection={
             <ActionIcon
               type="submit"
+              data-testid="home-search-submit"
               variant="subtle"
               color="gray"
               size="lg"
@@ -65,9 +66,10 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
         />
       </form>
       <SimpleGrid cols={3} spacing={0} className={classes.categories}>
-        {categories.map(({ icon: Icon, label }) => (
+        {categories.map(({ key, icon: Icon, label }) => (
           <Group
-            key={label}
+            key={key}
+            data-testid={`home-search-category-${key}`}
             gap={6}
             justify="center"
             wrap="nowrap"

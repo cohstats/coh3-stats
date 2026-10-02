@@ -22,6 +22,19 @@ export class SearchPage extends BasePage {
     return this.getByTestId("header-search-input");
   }
 
+  /** The large search box on the home page, above the Reddit panel. */
+  get homeSearchInput(): Locator {
+    return this.getByTestId("home-search-input");
+  }
+
+  get homeSearchSubmit(): Locator {
+    return this.getByTestId("home-search-submit");
+  }
+
+  homeSearchCategory(key: "players" | "units" | "maps"): Locator {
+    return this.getByTestId(`home-search-category-${key}`);
+  }
+
   /**
    * Type a query and wait for the debounce + the player request to settle.
    */
