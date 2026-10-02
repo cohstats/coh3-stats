@@ -195,12 +195,11 @@ test.describe("Search Page - section nav", () => {
     const unitCount = await searchPage.unitsResults.locator(searchPage.unitCards).count();
     await expect(searchPage.sectionNavCount("units")).toHaveText(String(unitCount));
 
+    // "Grenadier Squad" matches Final Stand units as well.
+    await expect(searchPage.fsUnitsResults).toBeVisible();
     const fsUnitCount = await searchPage.fsUnitsResults.locator(searchPage.unitCards).count();
-    if (fsUnitCount > 0) {
-      await expect(searchPage.sectionNavCount("fs-units")).toHaveText(String(fsUnitCount));
-    } else {
-      await expect(searchPage.sectionNavButton("fs-units")).toHaveCount(0);
-    }
+    expect(fsUnitCount).toBeGreaterThan(0);
+    await expect(searchPage.sectionNavCount("fs-units")).toHaveText(String(fsUnitCount));
 
     const unitsButton = searchPage.sectionNavButton("units");
 
@@ -209,6 +208,18 @@ test.describe("Search Page - section nav", () => {
     await expect(unitsButton).toHaveAttribute("aria-current", "location");
     // Sticky, so it stays on screen after the jump.
     await expect(searchPage.sectionNav).toBeInViewport();
+  });
+
+  test("should hide the FS Units button when no Final Stand unit matches", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    // Only a regular unit is named "Wespe", there is no Final Stand variant.
+    await searchPage.navigate("Wespe");
+    await expect(searchPage.unitsResults).toBeVisible({ timeout: 30000 });
+
+    await expect(searchPage.sectionNav).toBeVisible();
+    await expect(searchPage.sectionNavCount("units")).toHaveText("1");
+    await expect(searchPage.fsUnitsResults).toHaveCount(0);
+    await expect(searchPage.sectionNavButton("fs-units")).toHaveCount(0);
   });
 });
 
