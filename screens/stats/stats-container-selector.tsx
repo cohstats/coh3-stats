@@ -217,7 +217,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
   };
 
   const segmentedControlGameTypeData = [
-    ...(statsType === "gameStats" ? [{ label: "All", value: "all", disabled: true }] : []),
+    ...(statsType === "gameStats" ? [{ label: "All", value: "all" }] : []),
     { label: "1 vs 1", value: "1v1" },
     { label: "2 vs 2", value: "2v2" },
     { label: "3 vs 3", value: "3v3" },
