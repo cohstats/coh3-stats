@@ -41,8 +41,7 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
         <TextInput
           ref={inputRef}
           data-testid="home-search-input"
-          size="lg"
-          styles={{ input: { fontSize: "var(--mantine-font-size-md)" } }}
+          size="md"
           variant="unstyled"
           px="md"
           value={value}
@@ -57,7 +56,7 @@ const HomeSearch = ({ t }: HomeSearchProps) => {
               data-testid="home-search-submit"
               variant="subtle"
               color="gray"
-              size="lg"
+              size="md"
               radius="md"
               aria-label={t("sections.search.submit")}
             >
