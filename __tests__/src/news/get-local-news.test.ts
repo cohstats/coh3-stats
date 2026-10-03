@@ -105,7 +105,9 @@ describe("getLocalNews", () => {
     expect(ladderTournament).toBeDefined();
     expect(ladderTournament?.title).toBe("New Ladder Tournament Project for COH3");
     expect(ladderTournament?.author).toBe("Ladder Tournament");
-    expect(ladderTournament?.image).toBe("/images/news/ladder-tournament.webp");
+    expect(ladderTournament?.image).toBe(
+      "https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg",
+    );
     expect(ladderTournament?.url).toBe("https://laddertournament.com.br/");
     expect(ladderTournament?.contents).toContain("Ladder Tournament");
   });
