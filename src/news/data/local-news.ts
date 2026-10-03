@@ -17,7 +17,7 @@ export type LocalNewsItem = {
 const localNews: LocalNewsItem[] = [
   {
     gid: "local-ladder-tournament-season-2-registration",
-    title: "Registration",
+    title: "Ladder Tournament - Season 2 Registration",
     author: "Ladder Tournament",
     date: 1791034176,
     image:
