@@ -7,18 +7,7 @@ import {
   getAnalysisStatsHttpResponse,
   StatsDataObject,
 } from "../../../src/analysis-types";
-import {
-  Card,
-  Center,
-  Flex,
-  Loader,
-  Space,
-  Title,
-  Text,
-  Group,
-  Button,
-  Tooltip,
-} from "@mantine/core";
+import { Center, Flex, Loader, Space, Title, Text, Group, Button, Tooltip } from "@mantine/core";
 import ErrorCard from "../../../components/error-card";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
@@ -31,10 +20,11 @@ import { IconAlertTriangle, IconCirclePlus } from "@tabler/icons-react";
 import {
   combineModesAnalysis,
   gameStatsModeType,
-  getTotalGameTimeHours,
   withCombinedDays,
 } from "../../../src/stats/combine-game-stats";
-import { leaderBoardType, leaderBoardTypeArray } from "../../../src/coh3/coh3-types";
+import { leaderBoardType } from "../../../src/coh3/coh3-types";
+import { ChartCard, SectionTitle, TitleWithHelper } from "./chart-card";
+import AllModesComparison from "./all-modes-comparison";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -62,88 +52,8 @@ const DynamicGamesPercentageLineChartCard = dynamic(
   },
 );
 
-// Charts comparing the game modes, shown only for the "all" mode
-const DynamicModesPieChart = dynamic(() => import("./charts/modes/modes-pie"), { ssr: false });
-const DynamicAvgGameTimePerModeBar = dynamic(
-  () => import("./charts/modes/avg-game-time-per-mode-bar"),
-  { ssr: false },
-);
-const DynamicFactionPopularityPerModeBar = dynamic(
-  () => import("./charts/modes/faction-popularity-per-mode-bar"),
-  { ssr: false },
-);
-const DynamicFactionWinRatePerModeBar = dynamic(
-  () => import("./charts/modes/faction-winrate-per-mode-bar"),
-  { ssr: false },
-);
-const DynamicGameLengthDistributionLine = dynamic(
-  () => import("./charts/modes/game-length-distribution-line"),
-  { ssr: false },
-);
-
 const factionSlotsHelperText =
   "Combined for all the modes. Every player is counted - one 4v4 game adds 8 faction results, one 1v1 game only 2. Team games therefore have much bigger weight in these numbers.";
-
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <Title order={2} size="h3" pt="md" pb="sm">
-    {children}
-  </Title>
-);
-
-const TitleWithHelper = ({ title, helper }: { title: string; helper: string }) => (
-  <Group gap={6} wrap="nowrap">
-    <Text inherit>{title}</Text>
-    <HelperIcon width={320} text={helper} />
-  </Group>
-);
-
-// React component which accepts inner children. And accepts a title prop.
-const ChartCard = ({
-  title,
-  size,
-  children,
-  testId,
-}: {
-  title: string | React.ReactNode;
-  size: "md" | "lg" | "xl";
-  children: React.ReactNode;
-  /** Optional `data-testid` so the e2e tests can tell the charts apart. */
-  testId?: string;
-}) => {
-  let width = 300;
-  let chartHeight = 265;
-
-  if (size === "xl") {
-    width = 465;
-    chartHeight = 390;
-  }
-
-  if (size === "lg") {
-    width = 635;
-    chartHeight = 390;
-  }
-
-  return (
-    <Card
-      p="md"
-      shadow="sm"
-      w={width}
-      withBorder
-      style={{ overflow: "visible" }}
-      data-testid={testId}
-    >
-      {/* top, right, left margins are negative – -1 * theme.spacing.xl */}
-
-      <Card.Section withBorder inheritPadding py="xs">
-        <Title order={3}>{title}</Title>
-      </Card.Section>
-      {/* right, left margins are negative – -1 * theme.spacing.xl */}
-      <Card.Section w={width} h={chartHeight} py="xs">
-        {children}
-      </Card.Section>
-    </Card>
-  );
-};
 
 const useDeepCompareMemo = (
   timeStamps: {
@@ -244,14 +154,6 @@ const InnerGameStatsPage = ({
     // In "all" the section title already says it, the narrow cards have no space for it
     const titleSuffix = isAll ? "" : ` ${mode}`;
 
-    const valuesPerMode = (getValue: (modeAnalysis: AnalysisObjectType) => number) =>
-      Object.fromEntries(
-        leaderBoardTypeArray.map((leaderBoard) => [
-          leaderBoard,
-          analysis[leaderBoard] ? getValue(analysis[leaderBoard]) : 0,
-        ]),
-      ) as Record<leaderBoardType, number>;
-
     // Faction results in "all" are counted per player, explain it in the chart titles
     const factionChartTitle = (title: string) =>
       isAll ? (
@@ -295,72 +197,7 @@ const InnerGameStatsPage = ({
           <>
             {isAll && (
               <>
-                <SectionTitle>Across game modes</SectionTitle>
-                <Flex gap={"md"} wrap="wrap" justify="space-between">
-                  <ChartCard title={"Games per mode"} size={"md"} testId="stats-games-per-mode">
-                    <DynamicModesPieChart
-                      values={valuesPerMode((modeAnalysis) => modeAnalysis.matchCount || 0)}
-                      unit={"games"}
-                    />
-                  </ChartCard>
-                  <ChartCard title={"Hours played"} size={"md"} testId="stats-hours-per-mode">
-                    <DynamicModesPieChart
-                      values={valuesPerMode(getTotalGameTimeHours)}
-                      unit={"hours"}
-                    />
-                  </ChartCard>
-                  <ChartCard
-                    title={"Avg game time"}
-                    size={"md"}
-                    testId="stats-avg-game-time-per-mode"
-                  >
-                    <DynamicAvgGameTimePerModeBar analysis={analysis} />
-                  </ChartCard>
-                  <ChartCard
-                    title={
-                      <TitleWithHelper
-                        title={"Faction popularity"}
-                        helper={"Share of the players playing each faction in the game mode."}
-                      />
-                    }
-                    size={"md"}
-                    testId="stats-faction-popularity-per-mode"
-                  >
-                    <DynamicFactionPopularityPerModeBar analysis={analysis} />
-                  </ChartCard>
-                </Flex>
-                <Space h="xl" />
-                <Flex gap={"md"} wrap="wrap" justify="space-between">
-                  <ChartCard
-                    title={
-                      <TitleWithHelper
-                        title={"Faction winrate per mode"}
-                        helper={
-                          "The bars start at 50% winrate. Bars above the line mean the faction wins more than it loses in that game mode."
-                        }
-                      />
-                    }
-                    size={"lg"}
-                    testId="stats-faction-winrate-per-mode"
-                  >
-                    <DynamicFactionWinRatePerModeBar analysis={analysis} />
-                  </ChartCard>
-                  <ChartCard
-                    title={
-                      <TitleWithHelper
-                        title={"Game length per mode"}
-                        helper={
-                          "Percentage of the games in each game mode which ended within the time range. Hover over the chart to compare the modes."
-                        }
-                      />
-                    }
-                    size={"lg"}
-                    testId="stats-game-length-per-mode"
-                  >
-                    <DynamicGameLengthDistributionLine analysis={analysis} />
-                  </ChartCard>
-                </Flex>
-                <Space h="xl" />
+                <AllModesComparison analysis={analysis} />
                 <SectionTitle>All modes combined</SectionTitle>
               </>
             )}
