@@ -40,6 +40,13 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "Search players, units and maps",
+      "submit": "Search",
+      "players": "Players",
+      "units": "Units",
+      "maps": "Maps"
+    },
     "reddit": {
       "title": "Top COH3 Reddit posts",
       "noData": "No Reddit posts available"

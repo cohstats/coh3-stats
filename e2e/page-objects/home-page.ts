@@ -44,7 +44,7 @@ export class HomePage extends BasePage {
       german: "Wehrmacht",
       dak: "DAK",
     };
-    return this.leaderboardsSection.locator(`[role="tab"]:has-text("${tabNames[faction]}")`);
+    return this.leaderboardsSection.getByRole("tab", { name: tabNames[faction], exact: true });
   }
 
   get leaderboardsTable(): Locator {

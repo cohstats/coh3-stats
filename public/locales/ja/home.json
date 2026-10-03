@@ -40,6 +40,13 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "プレイヤー、ユニット、マップを検索",
+      "submit": "検索",
+      "players": "プレイヤー",
+      "units": "ユニット",
+      "maps": "マップ"
+    },
     "reddit": {
       "title": "COH3 Reddit 人気投稿",
       "noData": "Reddit の投稿はありません"

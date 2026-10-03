@@ -40,6 +40,13 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "Buscar jugadores, unidades y mapas",
+      "submit": "Buscar",
+      "players": "Jugadores",
+      "units": "Unidades",
+      "maps": "Mapas"
+    },
     "reddit": {
       "title": "Mejores publicaciones de COH3 en Reddit",
       "noData": "No hay publicaciones disponibles en Reddit"

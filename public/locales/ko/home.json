@@ -40,6 +40,13 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "플레이어, 유닛, 맵 검색",
+      "submit": "검색",
+      "players": "플레이어",
+      "units": "유닛",
+      "maps": "맵"
+    },
     "reddit": {
       "title": "COH3 Reddit 인기 게시물",
       "noData": "Reddit 게시물이 없습니다"

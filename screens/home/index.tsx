@@ -8,6 +8,7 @@ import { NextSeo } from "next-seo";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
 import { RedditPostType } from "../../src/apis/reddit-api";
 import RedditPanel from "./reddit-panel";
+import HomeSearch from "./home-search";
 import { NewsSection } from "./news-section/news-section";
 import { COH3SteamNewsType } from "../../src/apis/steam-api";
 import YoutubePanel from "./youtube-panel/youtube-panel";
@@ -68,6 +69,7 @@ const Home: NextPage<Props> = ({
             <TopLeaderboardsSection initialData={topLeaderBoardsData} t={t} />
           </Grid.Col>
           <Grid.Col span={{ sm: 5 }}>
+            <HomeSearch t={t} />
             <RedditPanel redditPostsData={redditPostsData} t={t} />
           </Grid.Col>
         </Grid>

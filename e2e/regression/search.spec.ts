@@ -311,3 +311,67 @@ test.describe("Search - header search box", () => {
     expect(page.url()).not.toContain("/search");
   });
 });
+
+test.describe("Search - home page search box", () => {
+  test("should redirect to the search page on Enter", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.goto("/");
+
+    await searchPage.homeSearchInput.fill(TEST_UNIT.name);
+    await searchPage.homeSearchInput.press("Enter");
+
+    await page.waitForURL(/\/search\?q=/, { timeout: 15000 });
+    expect(new URL(page.url()).searchParams.get("q")).toBe(TEST_UNIT.name);
+    await expect(searchPage.searchInput).toHaveValue(TEST_UNIT.name);
+  });
+
+  test("should redirect to the search page from the arrow button", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.goto("/");
+
+    await searchPage.homeSearchInput.fill(TEST_MAP.searchName);
+    await searchPage.homeSearchSubmit.click();
+
+    await page.waitForURL(/\/search\?q=/, { timeout: 15000 });
+    expect(new URL(page.url()).searchParams.get("q")).toBe(TEST_MAP.searchName);
+  });
+
+  test("should keep reserved URL characters in the query", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.goto("/");
+
+    const query = "A&B #1";
+    await searchPage.homeSearchInput.fill(query);
+    await searchPage.homeSearchInput.press("Enter");
+
+    await page.waitForURL(/\/search\?q=/, { timeout: 15000 });
+    const url = new URL(page.url());
+    expect(url.searchParams.get("q")).toBe(query);
+    expect(url.hash).toBe("");
+  });
+
+  test("should not redirect for a single character and keep the input focused", async ({
+    page,
+  }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.goto("/");
+
+    await searchPage.homeSearchInput.fill("a");
+    await searchPage.homeSearchSubmit.click();
+    await page.waitForTimeout(1500);
+
+    expect(page.url()).not.toContain("/search");
+    await expect(searchPage.homeSearchInput).toBeFocused();
+  });
+
+  test("should focus the input when a category tile is clicked", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.goto("/");
+
+    for (const key of ["players", "units", "maps"] as const) {
+      await searchPage.homeSearchInput.blur();
+      await searchPage.homeSearchCategory(key).click();
+      await expect(searchPage.homeSearchInput).toBeFocused();
+    }
+  });
+});

@@ -40,6 +40,13 @@
         "dak": "DAK"
       }
     },
+    "search": {
+      "placeholder": "Hledat hráče, jednotky a mapy",
+      "submit": "Hledat",
+      "players": "Hráči",
+      "units": "Jednotky",
+      "maps": "Mapy"
+    },
     "reddit": {
       "title": "Nejlepší příspěvky COH3 na Redditu",
       "noData": "Žádné příspěvky z Redditu nejsou k dispozici"

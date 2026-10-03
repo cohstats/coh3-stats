@@ -1,4 +1,4 @@
-import { Flex, Paper, Tabs, Title, Space, Button } from "@mantine/core";
+import { Flex, Paper, Tabs, Title, Space, Button, Tooltip } from "@mantine/core";
 import { IconArrowRight, IconTrophy } from "@tabler/icons-react";
 import TopLeaderboardsTable from "../../../components/leaderboards/top-leaderboards-table";
 import { raceType, Top1v1LeaderboardsData } from "../../../src/coh3/coh3-types";
@@ -6,6 +6,10 @@ import React, { useEffect, useState } from "react";
 import { getLeaderBoardRoute } from "../../../src/routes";
 import Link from "next/link";
 import { TFunction } from "next-i18next/pages";
+import FactionIcon from "../../../components/faction-icon";
+import classes from "./top-leaderboards-section.module.css";
+
+const factions: raceType[] = ["american", "british", "german", "dak"];
 
 interface TopLeaderboardsSectionProps {
   initialData: Top1v1LeaderboardsData | null;
@@ -50,6 +54,7 @@ const TopLeaderboardsSection = ({ initialData, t }: TopLeaderboardsSectionProps)
     >
       <Tabs
         variant="pills"
+        classNames={{ tab: classes.factionTab }}
         onChange={(value: string | null) => setSelectedRace(value as raceType)}
         value={selectedRace}
       >
@@ -58,11 +63,16 @@ const TopLeaderboardsSection = ({ initialData, t }: TopLeaderboardsSectionProps)
             <IconTrophy /> <Title size="h3">{t("sections.leaderboards.title")}</Title>
           </Flex>
           <Tabs.List>
-            {/*TODO: We could maybe utilize icons ? Or on mobile it could be just icons*/}
-            <Tabs.Tab value="american">USF</Tabs.Tab>
-            <Tabs.Tab value="british">British</Tabs.Tab>
-            <Tabs.Tab value="german">Wehrmacht</Tabs.Tab>
-            <Tabs.Tab value="dak">DAK</Tabs.Tab>
+            {factions.map((faction) => {
+              const factionName = t(`sections.leaderboards.factions.${faction}`);
+              return (
+                <Tooltip key={faction} label={factionName} withArrow>
+                  <Tabs.Tab value={faction} aria-label={factionName}>
+                    <FactionIcon name={faction} width={24} style={{ display: "block" }} />
+                  </Tabs.Tab>
+                </Tooltip>
+              );
+            })}
           </Tabs.List>
         </Flex>
 
