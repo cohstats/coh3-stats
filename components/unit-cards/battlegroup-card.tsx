@@ -9,7 +9,6 @@ import {
   Anchor,
   Switch,
   Flex,
-  Tooltip,
   Select,
   HoverCard,
   Image,
@@ -20,6 +19,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { raceType } from "../../src/coh3/coh3-types";
+import { CohTooltip } from "../common/coh-tooltip";
 import {
   AbilitiesType,
   UpgradesType,
@@ -87,7 +87,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
                 },
                 time_cost: {},
               })}
-              <Tooltip
+              <CohTooltip
                 className={classes.hiddenMobile}
                 label="Toggle between comparison or default mode."
               >
@@ -101,7 +101,7 @@ export const BattlegroupCard: React.FC<BattlegroupCardProps> = ({
                   />
                   <IconBaselineDensityLarge size={24} />
                 </Group>
-              </Tooltip>
+              </CohTooltip>
             </Flex>
 
             {/* Branches Section */}
@@ -184,6 +184,8 @@ const BattlegroupBranchMapping = (
       ?.replace(spaceRegex, "\n")
       ?.replace(specialRegex, "");
 
+    const fullTooltipText = [briefText, extraText].filter(Boolean).join("\n\n");
+
     return (
       <Box p="sm" w="100%" h="100%" className={classes.bgCardBorder}>
         <Flex direction="column" h="100%" gap={16} justify="space-between">
@@ -213,12 +215,7 @@ const BattlegroupBranchMapping = (
             </Stack>
           </Flex>
 
-          <Tooltip.Floating
-            multiline
-            style={{ whiteSpace: "pre-line" }}
-            label={briefText}
-            w={600}
-          >
+          <CohTooltip floating label={fullTooltipText} w={600}>
             <Stack gap={8} justify="flex-start" style={{ flexGrow: 1 }}>
               <Text
                 fz="sm"
@@ -235,7 +232,7 @@ const BattlegroupBranchMapping = (
                 {extraText}
               </Text>
             </Stack>
-          </Tooltip.Floating>
+          </CohTooltip>
           <Flex>{hasCost(costs) ? UnitCostCard(costs) : <></>}</Flex>
         </Flex>
       </Box>
