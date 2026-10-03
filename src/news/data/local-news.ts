@@ -20,7 +20,8 @@ const localNews: LocalNewsItem[] = [
     title: "Registration",
     author: "Ladder Tournament",
     date: 1791034176,
-    image: "https://laddertournament.com.br/assets/banner-blood-and-steel-lt-season-2-coh3stats.jpg",
+    image:
+      "https://laddertournament.com.br/assets/banner-blood-and-steel-lt-season-2-coh3stats.jpg",
     url: "https://laddertournament.com.br/",
     contents: `
 [img]https://laddertournament.com.br/assets/banner-blood-and-steel-lt-season-2-coh3stats.jpg[/img]
