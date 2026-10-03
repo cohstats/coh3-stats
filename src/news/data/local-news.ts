@@ -16,6 +16,24 @@ export type LocalNewsItem = {
  */
 const localNews: LocalNewsItem[] = [
   {
+    gid: "local-ladder-tournament-season-2-registration",
+    title: "Registration",
+    author: "Ladder Tournament",
+    date: 1791034176,
+    image: "https://laddertournament.com.br/assets/banner-blood-and-steel-lt-season-2-coh3stats.jpg",
+    url: "https://laddertournament.com.br/",
+    contents: `
+[img]https://laddertournament.com.br/assets/banner-blood-and-steel-lt-season-2-coh3stats.jpg[/img]
+
+[h2]Ladder Tournament Season 2: Blood & Steel is coming soon![/h2]
+
+[p]Registration opens October 5th. For registration fees, prize details, and more information, check out our [url=https://laddertournament.com.br/]official website[/url] or [url=https://discord.gg/HQxUnjcrNd]discord server[/url].[/p]
+
+[previewyoutube=Jq4UVUk29o4;full][/previewyoutube]
+
+`.trim(),
+  },
+  {
     gid: "local-final-stand-full-coverage",
     title: "COH3 Stats - Final Stand now fully covered",
     author: "COH3 Stats",
@@ -44,10 +62,10 @@ const localNews: LocalNewsItem[] = [
     title: "Ladder Tournament Season #1 Grand Final",
     author: "Ladder Tournament",
     date: 1787153270,
-    image: "/images/news/ladder-tournament-optimized.webp",
+    image: "https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg",
     url: "https://laddertournament.com.br/",
     contents: `
-[img]/images/news/ladder-tournament.webp[/img]
+[img]https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg[/img]
 
 [p]Just a quick heads-up, the coh3 ladder tournament season #1 final is today.[/p]
 
@@ -78,10 +96,10 @@ const localNews: LocalNewsItem[] = [
     title: "New Ladder Tournament Project for COH3",
     author: "Ladder Tournament",
     date: 1785604604,
-    image: "/images/news/ladder-tournament.webp",
+    image: "https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg",
     url: "https://laddertournament.com.br/",
     contents: `
-[img]/images/news/ladder-tournament.webp[/img]
+[img]https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg[/img]
 
 [p]The Company of Heroes 3 community has a new competitive event: the first playoff round of our Ladder Tournament.[/p]
 
