@@ -76,14 +76,17 @@ const preset = reactPreset.extend((tags: any) => ({
         attrs: {
           ratio: 16 / 9,
         },
-        content: {
-          tag: "iframe",
-          attrs: {
-            src: `https://www.youtube.com/embed/${youtubeId}`,
-            frameBorder: "0",
-            allowFullScreen: true,
+        // bbob only renders array content; a single node object is silently dropped
+        content: [
+          {
+            tag: "iframe",
+            attrs: {
+              src: `https://www.youtube.com/embed/${youtubeId}`,
+              frameBorder: "0",
+              allowFullScreen: true,
+            },
           },
-        },
+        ],
       };
     } catch (e) {
       console.error(e);
