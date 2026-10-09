@@ -29,6 +29,11 @@ const getEdgioEnvName = (): string | null => {
   return process.env.EDGIO_ENVIRONMENT_NAME || null;
 };
 
+// Server-only secret, available only on the server (not prefixed with NEXT_PUBLIC_)
+const getLadderTournamentApiToken = (): string | null => {
+  return process.env.LADDER_TOURNAMENT_API_TOKEN || null;
+};
+
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
 const defaultStatsPatchSelector = "2.5.6";
 
@@ -520,6 +525,7 @@ const config = {
   getFirebaseConfig,
   isDevEnv,
   getEdgioEnvName,
+  getLadderTournamentApiToken,
   getPatchDataUrl,
   getPatchDataLocaleUrl,
   DISCORD_INVITE_LINK: "https://discord.com/invite/4Bj2y84WAR",
@@ -529,6 +535,7 @@ const config = {
   STORAGE_LINK: "https://storage.coh3stats.com",
   BASE_CLOUD_FUNCTIONS_URL: "https://us-east4-coh3-stats-prod.cloudfunctions.net",
   BASE_CLOUD_FUNCTIONS_PROXY_URL: "https://cache.coh3stats.com",
+  LADDER_TOURNAMENT_API_BASE_URL: "https://laddertournament.com.br:8099/api/external",
   RELIC_API_STATUS_LINK: "https://cohstats.instatus.com/",
   patches,
   latestPatch,

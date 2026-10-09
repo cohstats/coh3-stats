@@ -49,6 +49,14 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
+### Environment variables
+
+Public / non-secret values are committed in `.env`. Secrets must be placed in `.env.local` (git-ignored) locally and in the hosting environment settings.
+
+| Variable                      | Description                                                                                                                |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `LADDER_TOURNAMENT_API_TOKEN` | Server-only token for the [Ladder Tournament API](https://laddertournament.com.br/api/). Never prefix with `NEXT_PUBLIC_`. |
+
 Before making an MR please create an issue describing what you want to change and how you want to change it so we can have some discussion. Furthermore, it avoids multiple people working on the same thing.
 
 Feel free to create a fork and make an MR. Before PR you can test your code with `yarn build` to make sure it builds.

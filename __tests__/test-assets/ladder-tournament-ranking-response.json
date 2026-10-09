@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "seasonid": 1,
+      "relicid": 123456,
+      "matches": 22,
+      "wins": 19,
+      "losses": 3,
+      "score": 57,
+      "rating": 0.86,
+      "ladderwinner": "Yes",
+      "ironcladwinner": "No",
+      "metaplayswinner": "No",
+      "championsOfheroeswinner": "No",
+      "thelegend": "No"
+    },
+    {
+      "seasonid": 2,
+      "relicid": 123456,
+      "matches": 10,
+      "wins": 6,
+      "losses": 4,
+      "score": 18,
+      "rating": 0.6,
+      "ladderwinner": "No",
+      "ironcladwinner": "No",
+      "metaplayswinner": "Yes",
+      "championsOfheroeswinner": "No",
+      "thelegend": "No"
+    }
+  ],
+  "page": 1,
+  "pageSize": 500,
+  "total": 2,
+  "totalPages": 1,
+  "hasPrevious": false,
+  "hasNext": false,
+  "count": 2
+}
