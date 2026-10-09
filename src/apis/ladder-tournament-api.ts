@@ -7,49 +7,72 @@ import { logger } from "../logger";
  * The API is protected by a token (X-Api-Token header) - SERVER SIDE USAGE ONLY.
  */
 
-type LadderTournamentYesNo = "Yes" | "No";
+// Responses are validated against these schemas (documented API contract),
+// so a change of the response keys on the API side fails loudly instead of returning undefined fields.
+const yesNoSchema = z.enum(["Yes", "No"]);
 
-interface LadderTournamentRankingItem {
-  seasonid: number;
-  relicid: number;
-  matches: number;
-  wins: number;
-  losses: number;
-  score: number;
+const rankingItemSchema = z.object({
+  seasonid: z.number(),
+  relicid: z.number(),
+  matches: z.number(),
+  wins: z.number(),
+  losses: z.number(),
+  score: z.number(),
   // Win rate as decimal, eg 0.86
-  rating: number;
-  ladderwinner: LadderTournamentYesNo;
-  ironcladwinner: LadderTournamentYesNo;
-  metaplayswinner: LadderTournamentYesNo;
-  championsOfheroeswinner: LadderTournamentYesNo;
-  thelegend: LadderTournamentYesNo;
-}
+  rating: z.number(),
+  ladderwinner: yesNoSchema,
+  ironcladwinner: yesNoSchema,
+  metaplayswinner: yesNoSchema,
+  championsOfheroeswinner: yesNoSchema,
+  thelegend: yesNoSchema,
+});
 
-interface LadderTournamentRankingResponse {
-  items: LadderTournamentRankingItem[];
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  count: number;
-}
+const rankingResponseSchema = z.object({
+  items: z.array(rankingItemSchema),
+  page: z.number(),
+  pageSize: z.number(),
+  total: z.number(),
+  totalPages: z.number(),
+  hasPrevious: z.boolean(),
+  hasNext: z.boolean(),
+  count: z.number(),
+});
 
-interface LadderTournamentCasterVideo {
-  title: string;
-  castedBy: string;
+const casterVideoSchema = z.object({
+  title: z.string(),
+  castedBy: z.string(),
   // ISO 8601, eg 2026-09-07T00:00:00
-  publishedAt: string;
-  stage: string;
+  publishedAt: z.string(),
+  stage: z.string(),
   // Empty string when not available
-  videoUrlYoutube: string;
+  videoUrlYoutube: z.string(),
   // Empty string when not available
-  videoUrlTwitch: string;
-  seasonId: number;
+  videoUrlTwitch: z.string(),
+  seasonId: z.number(),
   // Comma separated relic IDs, eg "111,222,333,444"
-  playerRelicId: string;
-}
+  playerRelicId: z.string(),
+});
+
+const casterVideosResponseSchema = z.array(casterVideoSchema);
+
+type LadderTournamentYesNo = z.infer<typeof yesNoSchema>;
+type LadderTournamentRankingItem = z.infer<typeof rankingItemSchema>;
+type LadderTournamentRankingResponse = z.infer<typeof rankingResponseSchema>;
+type LadderTournamentCasterVideo = z.infer<typeof casterVideoSchema>;
+
+const parseLadderTournamentResponse = <T>(
+  schema: z.ZodType<T>,
+  data: unknown,
+  name: string,
+): T => {
+  const parsed = schema.safeParse(data);
+  if (!parsed.success) {
+    const message = `Invalid Ladder Tournament ${name} response: ${z.prettifyError(parsed.error)}`;
+    logger.error(message);
+    throw new Error(message);
+  }
+  return parsed.data;
+};
 
 const DEFAULT_RANKING_PAGE_SIZE = 500;
 
@@ -112,7 +135,7 @@ const getLadderTournamentRanking = async (
   );
 
   if (response.ok) {
-    return await response.json();
+    return parseLadderTournamentResponse(rankingResponseSchema, await response.json(), "ranking");
   } else {
     logger.error(
       `Error getting Ladder Tournament ranking for relicId ${relicId}, status code: ${response.status}`,
@@ -142,7 +165,11 @@ const fetchCasterVideos = async (): Promise<LadderTournamentCasterVideo[]> => {
   );
 
   if (response.ok) {
-    return await response.json();
+    return parseLadderTournamentResponse(
+      casterVideosResponseSchema,
+      await response.json(),
+      "caster videos",
+    );
   } else {
     logger.error(
       `Error getting Ladder Tournament caster videos, status code: ${response.status}`,

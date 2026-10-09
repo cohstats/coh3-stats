@@ -50,7 +50,11 @@ describe("ladder-tournament-api", () => {
   });
 
   afterAll(() => {
-    process.env.LADDER_TOURNAMENT_API_TOKEN = originalToken;
+    if (originalToken === undefined) {
+      delete process.env.LADDER_TOURNAMENT_API_TOKEN;
+    } else {
+      process.env.LADDER_TOURNAMENT_API_TOKEN = originalToken;
+    }
   });
 
   describe("URL builders", () => {
@@ -114,6 +118,60 @@ describe("ladder-tournament-api", () => {
       fetchSpy.mockImplementation(() => errorResponse(500));
 
       await expect(getLadderTournamentRanking(123456)).rejects.toThrow("status code: 500");
+    });
+
+    it("throws when the response has different keys than documented (live Portuguese keys)", async () => {
+      // Real response returned by the live server on 2026-10-09
+      const portugueseResponse = {
+        items: [
+          {
+            seasonIdFk: 1,
+            coh3StatsId: 366826,
+            confrontos: 15,
+            vitorias: 13,
+            derrotas: 2,
+            pontos: 13,
+            rating: 0.86,
+            vencedorLadder: "Yes",
+            vencedorIronclad: "No",
+            vencedorMetaplays: "No",
+            vencedorCoh: "No",
+            aLenda: "No",
+          },
+        ],
+        page: 1,
+        pageSize: 500,
+        total: 1,
+        totalPages: 1,
+        hasPrevious: false,
+        hasNext: false,
+        count: 1,
+      };
+      fetchSpy.mockImplementation(() => okResponse(portugueseResponse));
+
+      await expect(getLadderTournamentRanking(366826)).rejects.toThrow(
+        "Invalid Ladder Tournament ranking response",
+      );
+    });
+
+    it("throws when a winner flag has an unexpected value", async () => {
+      const response = {
+        ...rankingResponse,
+        items: [{ ...rankingResponse.items[0], ladderwinner: "Maybe" }],
+      };
+      fetchSpy.mockImplementation(() => okResponse(response));
+
+      await expect(getLadderTournamentRanking(123456)).rejects.toThrow(
+        "Invalid Ladder Tournament ranking response",
+      );
+    });
+
+    it("throws when the pagination fields are missing", async () => {
+      fetchSpy.mockImplementation(() => okResponse({ items: rankingResponse.items }));
+
+      await expect(getLadderTournamentRanking(123456)).rejects.toThrow(
+        "Invalid Ladder Tournament ranking response",
+      );
     });
 
     it.each([0, -1, "abc", 1.5, ""])(
@@ -259,6 +317,33 @@ describe("ladder-tournament-api", () => {
       const result = await getLadderTournamentCasterVideos();
       expect(result).toEqual(casterVideosResponse);
       expect(fetchSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("throws on a response with unexpected keys and does not cache it", async () => {
+      const { playerRelicId, ...withoutPlayers } = casterVideosResponse[0];
+      fetchSpy
+        .mockImplementationOnce(() => okResponse([{ ...withoutPlayers, players: playerRelicId }]))
+        .mockImplementationOnce(() => okResponse(casterVideosResponse));
+
+      await expect(getLadderTournamentCasterVideos()).rejects.toThrow(
+        "Invalid Ladder Tournament caster videos response",
+      );
+
+      expect(await getLadderTournamentCasterVideos()).toEqual(casterVideosResponse);
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("keeps stale data when the background refresh returns an invalid response", async () => {
+      fetchSpy
+        .mockImplementationOnce(() => okResponse(casterVideosResponse))
+        .mockImplementationOnce(() => okResponse({ videos: casterVideosResponse }));
+
+      await getLadderTournamentCasterVideos();
+      now += TWO_HOURS + 1;
+
+      expect(await getLadderTournamentCasterVideos()).toEqual(casterVideosResponse);
+      await flushPromises();
+      expect(await getLadderTournamentCasterVideos()).toEqual(casterVideosResponse);
     });
 
     it("throws when the token is not set", async () => {
