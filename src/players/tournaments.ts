@@ -39,7 +39,7 @@ export type PlayerTournament = {
   color: string;
   // Sorted from the newest season
   seasons: PlayerTournamentSeason[];
-  // true when the tournament data couldn't be loaded
+  // true when the ranking couldn't be loaded, the seasons then contain only the casts (if any)
   unavailable: boolean;
 };
 
@@ -62,12 +62,10 @@ const LADDER_TOURNAMENT_TITLE_FLAGS = [
   "thelegend",
 ] as const satisfies ReadonlyArray<keyof LadderTournamentRankingItem>;
 
-const sortByPublishedAtDesc = (a: LadderTournamentCasterVideo, b: LadderTournamentCasterVideo) =>
-  (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0);
-
 /**
  * Builds the Ladder Tournament section from the SSR data.
- * Expects the videos to be already filtered for the player.
+ * Expects the videos to be already filtered for the player and sorted from the newest
+ * (as returned by getLadderTournamentCasterVideosForPlayer), the casts keep that order.
  */
 export const buildLadderTournament = (data: LadderTournamentPlayerData): PlayerTournament => {
   const ranking = data.ladderRanking ?? [];
@@ -100,7 +98,6 @@ export const buildLadderTournament = (data: LadderTournamentPlayerData): PlayerT
   }
 
   const seasons = [...seasonsById.values()].sort((a, b) => b.seasonId - a.seasonId);
-  seasons.forEach((season) => season.casts.sort(sortByPublishedAtDesc));
 
   return {
     id: "ladderTournament",
@@ -110,7 +107,8 @@ export const buildLadderTournament = (data: LadderTournamentPlayerData): PlayerT
     monogram: "LT",
     color: "green",
     seasons,
-    unavailable: data.ladderRanking === null && data.videos === null,
+    // The ranking is the source of the seasons and the stats, without it we can't tell if the player played
+    unavailable: data.ladderRanking === null,
   };
 };
 

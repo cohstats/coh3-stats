@@ -1,4 +1,5 @@
 import React from "react";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { AspectRatio, Badge, Box, Card, Image, Stack, Text, Tooltip } from "@mantine/core";
 import { IconBrandTwitch, IconPlayerPlayFilled } from "@tabler/icons-react";
@@ -14,13 +15,14 @@ type TournamentVideoCardProps = {
 const isFinalStage = (stage: string) => ["FINAL", "FINALS"].includes(stage.trim().toUpperCase());
 
 /**
- * Formats the publish date in the active locale, eg "Sep 7, 2026" / "7. 9. 2026".
+ * Formats the publish date, eg "7 Sep 2026".
+ * Uses dayjs instead of toLocaleDateString, so the SSR and the client output are the same (no hydration mismatch).
  * The API date has no timezone, so it's parsed and formatted in the same (local) time zone.
  */
 const formatPublishedAt = (publishedAt: string, locale: string) => {
-  const date = new Date(publishedAt);
-  if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" });
+  const date = dayjs(publishedAt);
+  if (!date.isValid()) return "";
+  return date.locale(locale).format("D MMM YYYY");
 };
 
 /**

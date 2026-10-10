@@ -280,9 +280,9 @@ const getLadderTournamentCasterVideosForPlayer = async (
 };
 
 type LadderTournamentPlayerData = {
-  // null when the data couldn't be loaded
+  // Sorted from the newest, null when the data couldn't be loaded
   videos: LadderTournamentCasterVideo[] | null;
-  // Sorted from the newest season, null when the data couldn't be loaded
+  // In the API order, null when the data couldn't be loaded
   ladderRanking: LadderTournamentRankingItem[] | null;
 };
 
@@ -313,10 +313,7 @@ const getLadderTournamentPlayerData = async (
 
   return {
     videos: videosResult.status === "fulfilled" ? videosResult.value : null,
-    ladderRanking:
-      rankingResult.status === "fulfilled"
-        ? [...rankingResult.value.items].sort((a, b) => b.seasonid - a.seasonid)
-        : null,
+    ladderRanking: rankingResult.status === "fulfilled" ? rankingResult.value.items : null,
   };
 };
 

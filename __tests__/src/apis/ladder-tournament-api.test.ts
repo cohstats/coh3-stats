@@ -404,7 +404,7 @@ describe("ladder-tournament-api", () => {
         return videosFail ? errorResponse(500) : okResponse(casterVideosResponse);
       });
 
-    it("returns the player videos and the ranking sorted from the newest season", async () => {
+    it("returns the player videos and the ranking", async () => {
       mockByUrl();
 
       const result = await getLadderTournamentPlayerData(991764);
@@ -413,7 +413,7 @@ describe("ladder-tournament-api", () => {
         "A Bad Day to Be An Aussie G2",
         "Desert Armour Clash!",
       ]);
-      expect(result.ladderRanking?.map((item) => item.seasonid)).toEqual([2, 1]);
+      expect(result.ladderRanking).toEqual(rankingResponse.items);
     });
 
     it("returns null for the ranking when it fails, but keeps the videos", async () => {

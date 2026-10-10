@@ -69,7 +69,7 @@ describe("TournamentsTab", () => {
     const castsRow = after.slice(0, after.indexOf("</tr>"));
     expect(count(castsRow, /data-testid="tournament-video-/g)).toBe(3);
     // Caster and the publish date formatted in the active locale
-    expect(castsRow).toContain("HelpingHans · Sep 7, 2026");
+    expect(castsRow).toContain("HelpingHans · 7 Sep 2026");
     expect(html).toContain('tournaments.summary.titles {"count":1}');
   });
 
@@ -117,5 +117,25 @@ describe("TournamentsTab", () => {
     });
 
     expect(html).toContain("tournaments.unavailable");
+  });
+
+  test("renders the unavailable state instead of the empty state when only the ranking failed", () => {
+    const html = renderTab({
+      tournamentData: { videos: [], ladderRanking: null },
+      playerName: "Thomas",
+    });
+
+    expect(html).toContain("tournaments.unavailable");
+    expect(html).not.toContain("tournaments.noData");
+  });
+
+  test("keeps the casts with the unavailable notice when only the ranking failed", () => {
+    const html = renderTab({
+      tournamentData: { videos, ladderRanking: null },
+      playerName: "Thomas",
+    });
+
+    expect(html).toContain("tournaments.unavailable");
+    expect(count(html, /data-testid="tournament-video-/g)).toBe(3);
   });
 });

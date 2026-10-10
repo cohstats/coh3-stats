@@ -2,7 +2,7 @@ import { PlayerCardDataType, ProcessedCOHPlayerStats } from "../../src/coh3/coh3
 import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next/pages";
 import {
   AnalyticsPlayerCardActivityView,
@@ -143,7 +143,17 @@ const PlayerCard = ({
     }
   }, [playerID, view]);
 
+  // The active tab is switched right away, router query is updated only after the navigation
+  // finishes - for the non-shallow tournaments tab that is after SSR, so the tab shows its loader meanwhile
+  const currentView = (view as string) || "standings";
+  const [activeTab, setActiveTab] = useState(currentView);
+  useEffect(() => {
+    // Sync with the url, eg on browser back / forward
+    setActiveTab(currentView);
+  }, [currentView]);
+
   const tabChangeFunction = async (value: any) => {
+    setActiveTab(value);
     await push({ query: { ...query, view: value } }, undefined, {
       // Tournament data are loaded with SSR, so we need to run getServerSideProps for this tab
       shallow: value !== "tournaments",
@@ -239,8 +249,7 @@ const PlayerCard = ({
         <Tabs
           variant={"outline"}
           keepMounted={false}
-          value={(view as string) || "standings"}
-          defaultValue={(view as string) || "standings"}
+          value={activeTab}
           onChange={tabChangeFunction}
         >
           <Tabs.List justify="center" mt={5} data-testid="player-tabs">

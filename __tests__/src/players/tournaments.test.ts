@@ -35,9 +35,8 @@ describe("buildLadderTournament", () => {
     expect(tournament.seasons[0].titles).toEqual(["ladderwinner", "thelegend"]);
   });
 
-  test("assigns the casts to their season sorted from the newest", () => {
-    const olderFirst = [...videos].reverse();
-    const tournament = buildLadderTournament({ videos: olderFirst, ladderRanking: ranking });
+  test("assigns the casts to their season in the given (newest first) order", () => {
+    const tournament = buildLadderTournament({ videos, ladderRanking: ranking });
 
     const season1 = tournament.seasons.find((season) => season.seasonId === 1);
     const season2 = tournament.seasons.find((season) => season.seasonId === 2);
@@ -57,8 +56,13 @@ describe("buildLadderTournament", () => {
     expect(tournament.seasons[0].casts).toHaveLength(3);
   });
 
-  test("is unavailable only when all the data failed to load", () => {
+  test("is unavailable when the ranking failed to load, even when the videos loaded", () => {
     expect(buildLadderTournament({ videos: null, ladderRanking: null }).unavailable).toBe(true);
+    expect(buildLadderTournament({ videos: [], ladderRanking: null }).unavailable).toBe(true);
+    expect(buildLadderTournament({ videos, ladderRanking: null })).toMatchObject({
+      unavailable: true,
+      seasons: [{ seasonId: 1, stats: null }],
+    });
     expect(buildLadderTournament({ videos: null, ladderRanking: [] }).unavailable).toBe(false);
   });
 });

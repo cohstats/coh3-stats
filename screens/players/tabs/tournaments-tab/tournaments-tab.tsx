@@ -21,6 +21,7 @@ import {
   buildLadderTournament,
   getTournamentAggregate,
   PlayerTournament,
+  PlayerTournamentAggregate,
   PlayerTournamentSeason,
 } from "../../../../src/players/tournaments";
 import TournamentVideoCard from "../../../../components/tournament-videos/tournament-video-card";
@@ -123,13 +124,14 @@ const SeasonRows = ({ season }: { season: PlayerTournamentSeason }) => {
 
 const TournamentSection = ({
   tournament,
+  aggregate,
   playerName,
 }: {
   tournament: PlayerTournament;
+  aggregate: PlayerTournamentAggregate;
   playerName: string;
 }) => {
   const { t } = useTranslation("players");
-  const aggregate = getTournamentAggregate(tournament.seasons);
 
   const aggregateParts = [
     t("tournaments.aggregate.seasons", { count: aggregate.seasons }),
@@ -141,53 +143,59 @@ const TournamentSection = ({
     );
   }
 
+  // Without the ranking we can't say the player hasn't played, the casts (if any) are still shown
+  const unavailableNotice = tournament.unavailable && (
+    <Text c="dimmed" px="lg" pb="md">
+      {t("tournaments.unavailable")}
+    </Text>
+  );
+
   let content: React.ReactNode;
-  if (tournament.unavailable) {
-    content = (
-      <Text c="dimmed" px="lg" pb="md">
-        {t("tournaments.unavailable")}
-      </Text>
-    );
-  } else if (tournament.seasons.length === 0) {
-    content = (
+  if (tournament.seasons.length === 0) {
+    content = unavailableNotice || (
       <Text c="dimmed" px="lg" pb="md">
         {t("tournaments.noData", { name: playerName })}
       </Text>
     );
   } else {
     content = (
-      <Table.ScrollContainer minWidth={820} type="native">
-        <Table layout="fixed" verticalSpacing="sm" horizontalSpacing="lg">
-          <Table.Thead className={classes.head}>
-            <Table.Tr>
-              <Table.Th w="13%" className={classes.headCell}>
-                {t("tournaments.columns.season")}
-              </Table.Th>
-              <Table.Th className={classes.headCell}>{t("tournaments.columns.result")}</Table.Th>
-              <Table.Th w="10%" className={classes.headCell}>
-                {t("tournaments.columns.matches")}
-              </Table.Th>
-              <Table.Th w="11%" className={classes.headCell}>
-                {t("tournaments.columns.winsLosses")}
-              </Table.Th>
-              <Table.Th w="11%" className={classes.headCell}>
-                {t("tournaments.columns.winRate")}
-              </Table.Th>
-              <Table.Th w="9%" className={classes.headCell}>
-                {t("tournaments.columns.score")}
-              </Table.Th>
-              <Table.Th w="15%" className={classes.headCell}>
-                {t("tournaments.columns.casts")}
-              </Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {tournament.seasons.map((season) => (
-              <SeasonRows season={season} key={season.seasonId} />
-            ))}
-          </Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
+      <>
+        {unavailableNotice}
+        <Table.ScrollContainer minWidth={820} type="native">
+          <Table layout="fixed" verticalSpacing="sm" horizontalSpacing="lg">
+            <Table.Thead className={classes.head}>
+              <Table.Tr>
+                <Table.Th w="13%" className={classes.headCell}>
+                  {t("tournaments.columns.season")}
+                </Table.Th>
+                <Table.Th className={classes.headCell}>
+                  {t("tournaments.columns.result")}
+                </Table.Th>
+                <Table.Th w="10%" className={classes.headCell}>
+                  {t("tournaments.columns.matches")}
+                </Table.Th>
+                <Table.Th w="11%" className={classes.headCell}>
+                  {t("tournaments.columns.winsLosses")}
+                </Table.Th>
+                <Table.Th w="11%" className={classes.headCell}>
+                  {t("tournaments.columns.winRate")}
+                </Table.Th>
+                <Table.Th w="9%" className={classes.headCell}>
+                  {t("tournaments.columns.score")}
+                </Table.Th>
+                <Table.Th w="15%" className={classes.headCell}>
+                  {t("tournaments.columns.casts")}
+                </Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {tournament.seasons.map((season) => (
+                <SeasonRows season={season} key={season.seasonId} />
+              ))}
+            </Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+      </>
     );
   }
 
@@ -255,12 +263,21 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
   }
 
   // More tournaments can be added here, they share the same shape
-  const tournaments = [buildLadderTournament(tournamentData)];
+  const tournaments = [buildLadderTournament(tournamentData)].map((tournament) => ({
+    tournament,
+    aggregate: getTournamentAggregate(tournament.seasons),
+  }));
 
-  const playedTournamentsCount = tournaments.filter((tournament) =>
-    tournament.seasons.some((season) => season.stats),
+  const playedTournamentsCount = tournaments.filter(
+    ({ aggregate }) => aggregate.seasons > 0,
   ).length;
-  const totals = getTournamentAggregate(tournaments.flatMap((tournament) => tournament.seasons));
+  const totals = tournaments.reduce(
+    (acc, { aggregate }) => ({
+      seasons: acc.seasons + aggregate.seasons,
+      titles: acc.titles + aggregate.titles,
+    }),
+    { seasons: 0, titles: 0 },
+  );
 
   return (
     <Container
@@ -291,9 +308,10 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
           )}
         </Group>
 
-        {tournaments.map((tournament) => (
+        {tournaments.map(({ tournament, aggregate }) => (
           <TournamentSection
             tournament={tournament}
+            aggregate={aggregate}
             playerName={playerName}
             key={tournament.id}
           />
