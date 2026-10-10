@@ -12,6 +12,10 @@ import {
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { z } from "zod";
 import { getPlayerStatsFromRelic } from "../../src/coh3/coh3-players";
+import {
+  getLadderTournamentPlayerData,
+  LadderTournamentPlayerData,
+} from "../../src/apis/ladder-tournament-api";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -262,6 +266,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
         playerID: null,
         playerDataAPI: null,
         playerStatsData: null,
+        tournamentData: null,
         ...(await serverSideTranslations(locale, ["common", "players"])),
       },
     };
@@ -272,12 +277,15 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   const xff = `${req.headers["x-forwarded-for"]}`;
 
   // const viewStandings = view === "standings";
+  // Tournament data are loaded only for the tournaments tab (the tab switch to it is not shallow)
+  const viewTournaments = view === "tournaments";
 
   console.log(`SSR - /players/${playerID}, view: ${view}, locale: ${locale}`);
 
   let playerData = null;
   let playerStatsData = null;
   let error = null;
+  let tournamentData: LadderTournamentPlayerData | null = null;
 
   // const prevPage = req.headers.referer;
   // const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
@@ -287,11 +295,18 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   try {
     const PromisePlayerCardData = getPlayerStatsFromRelic(playerID);
     const PromisePlayerCardStatsData = getPlayerCardStatsOrNull(playerID, xff);
+    // Never throws, failed parts are returned as null
+    const PromiseTournamentData = viewTournaments
+      ? getLadderTournamentPlayerData(playerID)
+      : Promise.resolve(null);
 
-    const [playerAPIData, playerCardStatsData] = await Promise.all([
+    const [playerAPIData, playerCardStatsData, playerTournamentData] = await Promise.all([
       PromisePlayerCardData,
       PromisePlayerCardStatsData,
+      PromiseTournamentData,
     ]);
+
+    tournamentData = playerTournamentData;
 
     playerStatsData = playerCardStatsData?.playerStats
       ? ProcessPlayerCardStatsData(playerCardStatsData.playerStats)
@@ -314,6 +329,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
       playerDataAPI: playerData,
       error,
       playerStatsData,
+      tournamentData,
       ...(await serverSideTranslations(locale, ["common", "players"])),
     }, // will be passed to the page component as props
   };

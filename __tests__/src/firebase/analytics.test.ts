@@ -6,6 +6,7 @@ import {
   AnalyticsPlayerCardNemesisView,
   AnalyticsPlayerCardActivityView,
   AnalyticsPlayerCardDetailedStatsView,
+  AnalyticsPlayerCardTournamentsView,
   AnalyticsTeamLeaderBoardsPageView,
 } from "../../../src/firebase/analytics";
 import webFirebase from "../../../src/firebase/web-firebase";
@@ -81,6 +82,15 @@ describe("Firebase Analytics", () => {
     AnalyticsPlayerCardDetailedStatsView(profileId);
 
     expect(webFirebase.logFBEvent).toHaveBeenCalledWith("player_card_detailed_stats_view", {
+      profile_id: profileId,
+    });
+  });
+
+  test("AnalyticsPlayerCardTournamentsView should log correct event", () => {
+    const profileId = "123456";
+    AnalyticsPlayerCardTournamentsView(profileId);
+
+    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("player_card_tournaments_view", {
       profile_id: profileId,
     });
   });

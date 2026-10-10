@@ -279,6 +279,44 @@ const getLadderTournamentCasterVideosForPlayer = async (
     .slice(0, parsedLimit.data);
 };
 
+type LadderTournamentPlayerData = {
+  // Sorted from the newest, null when the data couldn't be loaded
+  videos: LadderTournamentCasterVideo[] | null;
+  // In the API order, null when the data couldn't be loaded
+  ladderRanking: LadderTournamentRankingItem[] | null;
+};
+
+// The player card shows all the casts grouped by season, the limit is only a safety net
+const PLAYER_CARD_VIDEOS_LIMIT = 200;
+
+/**
+ * Loads all the Ladder Tournament data needed for the player card.
+ * Never throws - the parts which fail to load are returned as null.
+ * @param relicId Relic profile ID of the player
+ */
+const getLadderTournamentPlayerData = async (
+  relicId: number | string,
+): Promise<LadderTournamentPlayerData> => {
+  const [videosResult, rankingResult] = await Promise.allSettled([
+    getLadderTournamentCasterVideosForPlayer(relicId, PLAYER_CARD_VIDEOS_LIMIT),
+    getLadderTournamentRanking(relicId),
+  ]);
+
+  if (videosResult.status === "rejected") {
+    logger.error(`Failed getting Ladder Tournament videos for player ${relicId}`);
+    logger.error(videosResult.reason);
+  }
+  if (rankingResult.status === "rejected") {
+    logger.error(`Failed getting Ladder Tournament ranking for player ${relicId}`);
+    logger.error(rankingResult.reason);
+  }
+
+  return {
+    videos: videosResult.status === "fulfilled" ? videosResult.value : null,
+    ladderRanking: rankingResult.status === "fulfilled" ? rankingResult.value.items : null,
+  };
+};
+
 /**
  * Only for unit tests - resets the in-memory caster videos cache.
  */
@@ -292,6 +330,7 @@ export type {
   LadderTournamentRankingItem,
   LadderTournamentRankingResponse,
   LadderTournamentCasterVideo,
+  LadderTournamentPlayerData,
 };
 export {
   getLadderTournamentRankingUrl,
@@ -299,5 +338,6 @@ export {
   getLadderTournamentRanking,
   getLadderTournamentCasterVideos,
   getLadderTournamentCasterVideosForPlayer,
+  getLadderTournamentPlayerData,
   __resetLadderTournamentCasterVideosCache,
 };

@@ -25,7 +25,8 @@
       "activity": "Player card - {{name}} - Activity",
       "nemesis": "Player card - {{name}} - Nemesis",
       "teamsStandings": "Player card - {{name}} - Teams Standings",
-      "teamDetails": "Player card - {{name}} - Team Details"
+      "teamDetails": "Player card - {{name}} - Team Details",
+      "tournaments": "Player card - {{name}} - Tournaments"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Recent Matches",
     "activity": "Activity",
     "nemesis": "Nemesis",
-    "teamsStandings": "Teams Standings"
+    "teamsStandings": "Teams Standings",
+    "tournaments": "Tournaments"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,50 @@
       "apmTooltip": "Actions Per Minute",
       "totalMatches": "Total Matches",
       "noData": "No counter data available for this game mode"
+    }
+  },
+  "tournaments": {
+    "title": "Tournaments",
+    "summary": {
+      "tournaments_one": "{{count}} tournament",
+      "tournaments_other": "{{count}} tournaments",
+      "seasons_one": "{{count}} season",
+      "seasons_other": "{{count}} seasons",
+      "titles_one": "{{count}} title",
+      "titles_other": "{{count}} titles"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} season",
+      "seasons_other": "{{count}} seasons",
+      "matches_one": "{{count}} match",
+      "matches_other": "{{count}} matches",
+      "winRate": "{{winRate}} win rate"
+    },
+    "communityTournament": "Community tournament",
+    "visitSite": "Visit site",
+    "columns": {
+      "season": "Season",
+      "result": "Result",
+      "matches": "Matches",
+      "winsLosses": "W / L",
+      "winRate": "Win rate",
+      "score": "Score",
+      "casts": "Casts"
+    },
+    "season": "Season {{season}}",
+    "casts_one": "{{count}} cast",
+    "casts_other": "{{count}} casts",
+    "noData": "{{name}} hasn't played in this tournament yet.",
+    "unavailable": "Tournament data is currently unavailable.",
+    "titles": {
+      "ladderwinner": "Ladder Winner",
+      "ironcladwinner": "Ironclad Winner",
+      "metaplayswinner": "Metaplays Winner",
+      "championsOfheroeswinner": "Champions of Heroes Winner",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Ladder Tournament"
     }
   }
 }

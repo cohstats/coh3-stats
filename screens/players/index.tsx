@@ -2,13 +2,14 @@ import { PlayerCardDataType, ProcessedCOHPlayerStats } from "../../src/coh3/coh3
 import { calculatePlayerSummary, PlayerSummaryType } from "../../src/players/utils";
 import { localizedNames } from "../../src/coh3/coh3-data";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next/pages";
 import {
   AnalyticsPlayerCardActivityView,
   AnalyticsPlayerCardDetailedStatsView,
   AnalyticsPlayerCardMatchView,
   AnalyticsPlayerCardNemesisView,
+  AnalyticsPlayerCardTournamentsView,
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
@@ -28,6 +29,8 @@ import PlayerRecentMatchesTab from "./tabs/recent-matches-tab/player-recent-matc
 import PlayerStandingsTab from "./tabs/standings-tab/player-standings-tab";
 import ActivityTab from "./tabs/activity-tab/activity-tab";
 import NemesisTab from "./tabs/nemesis-tab";
+import TournamentsTab from "./tabs/tournaments-tab/tournaments-tab";
+import type { LadderTournamentPlayerData } from "../../src/apis/ladder-tournament-api";
 import TeamsStandingsTab from "./tabs/teams-standings-tab/teams-standings-tab";
 import TeamDetailsTab from "./tabs/team-details-tab/team-details-tab";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -72,11 +75,14 @@ const PlayerCard = ({
   playerDataAPI,
   error,
   playerStatsData,
+  tournamentData,
 }: {
   playerID: string;
   playerDataAPI: PlayerCardDataType | null;
   error: string;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
+  // Loaded with SSR only for the tournaments view
+  tournamentData: LadderTournamentPlayerData | null;
 }) => {
   const { push, query, asPath, locale, defaultLocale } = useRouter();
   const { view } = query;
@@ -112,7 +118,8 @@ const PlayerCard = ({
         newURL.toString(),
       );
     }
-  }, [playerID, locale, defaultLocale]);
+    // view is needed, because the non-shallow navigation to the tournaments tab drops the name from the url
+  }, [playerID, locale, defaultLocale, view]);
 
   useEffect(() => {
     if (view === "recentMatches") {
@@ -123,6 +130,8 @@ const PlayerCard = ({
       AnalyticsPlayerCardActivityView(playerID);
     } else if (view === "nemesis") {
       AnalyticsPlayerCardNemesisView(playerID);
+    } else if (view === "tournaments") {
+      AnalyticsPlayerCardTournamentsView(playerID);
     } else if (view === "teamsStandings") {
       // You can add analytics tracking for the new tab if needed
       AnalyticsPlayerCardView(playerID);
@@ -134,9 +143,20 @@ const PlayerCard = ({
     }
   }, [playerID, view]);
 
+  // The active tab is switched right away, router query is updated only after the navigation
+  // finishes - for the non-shallow tournaments tab that is after SSR, so the tab shows its loader meanwhile
+  const currentView = (view as string) || "standings";
+  const [activeTab, setActiveTab] = useState(currentView);
+  useEffect(() => {
+    // Sync with the url, eg on browser back / forward
+    setActiveTab(currentView);
+  }, [currentView]);
+
   const tabChangeFunction = async (value: any) => {
+    setActiveTab(value);
     await push({ query: { ...query, view: value } }, undefined, {
-      shallow: true,
+      // Tournament data are loaded with SSR, so we need to run getServerSideProps for this tab
+      shallow: value !== "tournaments",
     });
   };
 
@@ -155,6 +175,7 @@ const PlayerCard = ({
     nemesis: "card.titleWithView.nemesis",
     teamsStandings: "card.titleWithView.teamsStandings",
     teamDetails: "card.titleWithView.teamDetails",
+    tournaments: "card.titleWithView.tournaments",
   };
 
   const playerSummary = calculatePlayerSummary(playerData.standings);
@@ -228,11 +249,10 @@ const PlayerCard = ({
         <Tabs
           variant={"outline"}
           keepMounted={false}
-          value={(view as string) || "standings"}
-          defaultValue={(view as string) || "standings"}
+          value={activeTab}
           onChange={tabChangeFunction}
         >
-          <Tabs.List justify="center" data-testid="player-tabs">
+          <Tabs.List justify="center" mt={5} data-testid="player-tabs">
             <Tabs.Tab value={"standings"} data-testid="player-tab-standings">
               {t("tabs.standings")}
             </Tabs.Tab>
@@ -252,6 +272,9 @@ const PlayerCard = ({
             </Tabs.Tab>
             <Tabs.Tab value={"nemesis"} data-testid="player-tab-nemesis">
               {t("tabs.nemesis")}
+            </Tabs.Tab>
+            <Tabs.Tab value={"tournaments"} data-testid="player-tab-tournaments">
+              {t("tabs.tournaments")}
             </Tabs.Tab>
           </Tabs.List>
 
@@ -285,6 +308,9 @@ const PlayerCard = ({
           </Tabs.Panel>
           <Tabs.Panel value={"teamsStandings"}>
             <TeamsStandingsTab profileID={playerID} t={t} />
+          </Tabs.Panel>
+          <Tabs.Panel value={"tournaments"}>
+            <TournamentsTab tournamentData={tournamentData} playerName={playerData.info.name} />
           </Tabs.Panel>
           <Tabs.Panel value={"teamDetails"}>
             <TeamDetailsTab profileID={playerID} />

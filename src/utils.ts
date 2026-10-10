@@ -321,3 +321,34 @@ export const compareVersions = (version: string, minVersion: string): boolean =>
 
   return true; // versions are equal
 };
+
+/**
+ * Extracts the YouTube video ID from a YouTube URL.
+ * Supports watch?v=, youtu.be/, /live/, /embed/ and /shorts/ URLs.
+ * @returns the video ID or null when it can't be extracted
+ */
+export const getYoutubeVideoId = (url: string | null | undefined): string | null => {
+  if (!url) return null;
+
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(url.trim());
+  } catch {
+    return null;
+  }
+
+  const host = parsedUrl.hostname.replace(/^(www\.|m\.)/, "");
+  let videoId: string | null = null;
+
+  if (host === "youtu.be") {
+    videoId = parsedUrl.pathname.split("/")[1] || null;
+  } else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+    videoId = parsedUrl.searchParams.get("v");
+    if (!videoId) {
+      const match = parsedUrl.pathname.match(/^\/(?:live|embed|shorts)\/([^/]+)/);
+      videoId = match ? match[1] : null;
+    }
+  }
+
+  return videoId && /^[\w-]{6,}$/.test(videoId) ? videoId : null;
+};
