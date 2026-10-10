@@ -286,7 +286,8 @@ type LadderTournamentPlayerData = {
   ladderRanking: LadderTournamentRankingItem[] | null;
 };
 
-const PLAYER_CARD_VIDEOS_LIMIT = 6;
+// The player card shows all the casts grouped by season, the limit is only a safety net
+const PLAYER_CARD_VIDEOS_LIMIT = 200;
 
 /**
  * Loads all the Ladder Tournament data needed for the player card.

@@ -1,33 +1,32 @@
 import React from "react";
 import {
   Anchor,
+  Avatar,
   Badge,
+  Box,
   Container,
   Group,
   Loader,
-  Space,
+  Paper,
+  ScrollArea,
   Stack,
   Table,
   Text,
   Title,
 } from "@mantine/core";
-import { IconExternalLink, IconTrophy } from "@tabler/icons-react";
+import { IconExternalLink, IconPlayerPlayFilled, IconTrophy } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import type {
-  LadderTournamentPlayerData,
-  LadderTournamentRankingItem,
-} from "../../../../src/apis/ladder-tournament-api";
-import TournamentVideosPanel from "../../../../components/tournament-videos/tournament-videos-panel";
+import type { LadderTournamentPlayerData } from "../../../../src/apis/ladder-tournament-api";
+import {
+  buildLadderTournament,
+  getTournamentAggregate,
+  PlayerTournament,
+  PlayerTournamentSeason,
+} from "../../../../src/players/tournaments";
+import TournamentVideoCard from "../../../../components/tournament-videos/tournament-video-card";
+import classes from "./tournaments-tab.module.css";
 
-const LADDER_TOURNAMENT_URL = "https://laddertournament.com.br";
-
-const LADDER_TOURNAMENT_TITLES = [
-  "ladderwinner",
-  "ironcladwinner",
-  "metaplayswinner",
-  "championsOfheroeswinner",
-  "thelegend",
-] as const;
+const COLUMNS_COUNT = 7;
 
 interface TournamentsTabProps {
   // null until the data are loaded with SSR
@@ -35,65 +34,212 @@ interface TournamentsTabProps {
   playerName: string;
 }
 
-const LadderTournamentTable = ({ ranking }: { ranking: LadderTournamentRankingItem[] }) => {
+const Dash = () => <Text c="dimmed">—</Text>;
+
+const formatWinRate = (winRate: number) => `${Math.round(winRate * 100)}%`;
+
+const SeasonRows = ({ season }: { season: PlayerTournamentSeason }) => {
   const { t } = useTranslation("players");
-
-  const rows = ranking.map((item) => {
-    const titles = LADDER_TOURNAMENT_TITLES.filter((title) => item[title] === "Yes");
-
-    return (
-      <Table.Tr key={item.seasonid}>
-        <Table.Td>
-          <Text fw={500}>
-            {t("tournaments.ladderTournament.season", { season: item.seasonid })}
-          </Text>
-        </Table.Td>
-        <Table.Td>{item.matches}</Table.Td>
-        <Table.Td>
-          <Text span c="green">
-            {item.wins}
-          </Text>
-          {" / "}
-          <Text span c="red">
-            {item.losses}
-          </Text>
-        </Table.Td>
-        <Table.Td>{Math.round(item.rating * 100)}%</Table.Td>
-        <Table.Td>{item.score}</Table.Td>
-        <Table.Td>
-          <Group gap={4}>
-            {titles.map((title) => (
-              <Badge
-                key={title}
-                color="yellow"
-                variant="light"
-                leftSection={<IconTrophy size={12} />}
-              >
-                {t(`tournaments.ladderTournament.titles.${title}`)}
-              </Badge>
-            ))}
-          </Group>
-        </Table.Td>
-      </Table.Tr>
-    );
-  });
+  const { stats, titles, casts } = season;
 
   return (
-    <Table.ScrollContainer minWidth={600}>
-      <Table striped highlightOnHover verticalSpacing="xs" data-testid="ladder-tournament-table">
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{t("tournaments.ladderTournament.columns.season")}</Table.Th>
-            <Table.Th>{t("tournaments.ladderTournament.columns.matches")}</Table.Th>
-            <Table.Th>{t("tournaments.ladderTournament.columns.winsLosses")}</Table.Th>
-            <Table.Th>{t("tournaments.ladderTournament.columns.winRate")}</Table.Th>
-            <Table.Th>{t("tournaments.ladderTournament.columns.score")}</Table.Th>
-            <Table.Th>{t("tournaments.ladderTournament.columns.titles")}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    </Table.ScrollContainer>
+    <>
+      <Table.Tr data-testid={`tournament-season-${season.seasonId}`}>
+        <Table.Td>
+          <Text fw={600}>{t("tournaments.season", { season: season.seasonId })}</Text>
+        </Table.Td>
+        <Table.Td>
+          {titles.length > 0 ? (
+            <Group gap={4}>
+              {titles.map((title) => (
+                <Badge
+                  key={title}
+                  color="yellow"
+                  variant="light"
+                  leftSection={<IconTrophy size={13} />}
+                >
+                  {t(`tournaments.titles.${title}`)}
+                </Badge>
+              ))}
+            </Group>
+          ) : (
+            <Dash />
+          )}
+        </Table.Td>
+        <Table.Td>{stats ? stats.matches : <Dash />}</Table.Td>
+        <Table.Td>
+          {stats ? (
+            <>
+              <Text span c="green">
+                {stats.wins}
+              </Text>
+              <Text span c="dimmed">
+                {" / "}
+              </Text>
+              <Text span c="red">
+                {stats.losses}
+              </Text>
+            </>
+          ) : (
+            <Dash />
+          )}
+        </Table.Td>
+        <Table.Td>{stats ? formatWinRate(stats.winRate) : <Dash />}</Table.Td>
+        <Table.Td>{stats ? stats.score : <Dash />}</Table.Td>
+        <Table.Td>
+          {casts.length > 0 ? (
+            <Group gap={6} wrap="nowrap" className={classes.castsLabel}>
+              <IconPlayerPlayFilled size={12} />
+              <Text span fw={600} size="sm">
+                {t("tournaments.casts", { count: casts.length })}
+              </Text>
+            </Group>
+          ) : (
+            <Dash />
+          )}
+        </Table.Td>
+      </Table.Tr>
+      {casts.length > 0 && (
+        <Table.Tr className={classes.castsRow}>
+          <Table.Td colSpan={COLUMNS_COUNT} py="md">
+            <ScrollArea type="auto" offsetScrollbars scrollbarSize={8}>
+              <Group gap="sm" wrap="nowrap" align="stretch">
+                {casts.map((video, index) => (
+                  <Box
+                    className={classes.castCard}
+                    key={`${video.videoUrlYoutube || video.videoUrlTwitch}-${index}`}
+                  >
+                    <TournamentVideoCard video={video} index={index} />
+                  </Box>
+                ))}
+              </Group>
+            </ScrollArea>
+          </Table.Td>
+        </Table.Tr>
+      )}
+    </>
+  );
+};
+
+const TournamentSection = ({
+  tournament,
+  playerName,
+}: {
+  tournament: PlayerTournament;
+  playerName: string;
+}) => {
+  const { t } = useTranslation("players");
+  const aggregate = getTournamentAggregate(tournament.seasons);
+
+  const aggregateParts = [
+    t("tournaments.aggregate.seasons", { count: aggregate.seasons }),
+    t("tournaments.aggregate.matches", { count: aggregate.matches }),
+  ];
+  if (aggregate.winRate !== null) {
+    aggregateParts.push(
+      t("tournaments.aggregate.winRate", { winRate: formatWinRate(aggregate.winRate) }),
+    );
+  }
+
+  let content: React.ReactNode;
+  if (tournament.unavailable) {
+    content = (
+      <Text c="dimmed" px="lg" pb="md">
+        {t("tournaments.unavailable")}
+      </Text>
+    );
+  } else if (tournament.seasons.length === 0) {
+    content = (
+      <Text c="dimmed" px="lg" pb="md">
+        {t("tournaments.noData", { name: playerName })}
+      </Text>
+    );
+  } else {
+    content = (
+      <Table.ScrollContainer minWidth={820} type="native">
+        <Table layout="fixed" verticalSpacing="sm" horizontalSpacing="lg">
+          <Table.Thead className={classes.head}>
+            <Table.Tr>
+              <Table.Th w="13%" className={classes.headCell}>
+                {t("tournaments.columns.season")}
+              </Table.Th>
+              <Table.Th className={classes.headCell}>{t("tournaments.columns.result")}</Table.Th>
+              <Table.Th w="10%" className={classes.headCell}>
+                {t("tournaments.columns.matches")}
+              </Table.Th>
+              <Table.Th w="11%" className={classes.headCell}>
+                {t("tournaments.columns.winsLosses")}
+              </Table.Th>
+              <Table.Th w="11%" className={classes.headCell}>
+                {t("tournaments.columns.winRate")}
+              </Table.Th>
+              <Table.Th w="9%" className={classes.headCell}>
+                {t("tournaments.columns.score")}
+              </Table.Th>
+              <Table.Th w="15%" className={classes.headCell}>
+                {t("tournaments.columns.casts")}
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {tournament.seasons.map((season) => (
+              <SeasonRows season={season} key={season.seasonId} />
+            ))}
+          </Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    );
+  }
+
+  return (
+    <Paper
+      withBorder
+      radius="md"
+      p={0}
+      style={{ overflow: "hidden" }}
+      data-testid={`tournament-section-${tournament.id}`}
+    >
+      <Group justify="space-between" wrap="wrap" gap="sm" px="lg" py="md">
+        <Group gap="sm" wrap="nowrap">
+          <Avatar
+            src={tournament.logo}
+            alt={t(tournament.nameKey)}
+            size={40}
+            radius="sm"
+            color={tournament.color}
+            variant="light"
+            imageProps={{ loading: "lazy" }}
+          >
+            {tournament.monogram}
+          </Avatar>
+          <Stack gap={2}>
+            <Title order={3} size="h4" fw={700}>
+              {t(tournament.nameKey)}
+            </Title>
+            <Text size="sm" c="dimmed">
+              {t("tournaments.communityTournament")}
+              {" · "}
+              <Anchor
+                href={tournament.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="sm"
+                style={{ display: "inline-flex", alignItems: "center", gap: 2 }}
+              >
+                {t("tournaments.visitSite")}
+                <IconExternalLink size={13} />
+              </Anchor>
+            </Text>
+          </Stack>
+        </Group>
+        {aggregate.seasons > 0 && (
+          <Text size="sm" c="dimmed">
+            {aggregateParts.join(" · ")}
+          </Text>
+        )}
+      </Group>
+      {content}
+    </Paper>
   );
 };
 
@@ -108,18 +254,13 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
     );
   }
 
-  const { videos, ladderRanking } = tournamentData;
+  // More tournaments can be added here, they share the same shape
+  const tournaments = [buildLadderTournament(tournamentData)];
 
-  let ladderContent: React.ReactNode;
-  if (ladderRanking === null) {
-    ladderContent = <Text c="dimmed">{t("tournaments.ladderTournament.unavailable")}</Text>;
-  } else if (ladderRanking.length === 0) {
-    ladderContent = (
-      <Text c="dimmed">{t("tournaments.ladderTournament.noData", { name: playerName })}</Text>
-    );
-  } else {
-    ladderContent = <LadderTournamentTable ranking={ladderRanking} />;
-  }
+  const playedTournamentsCount = tournaments.filter((tournament) =>
+    tournament.seasons.some((season) => season.stats),
+  ).length;
+  const totals = getTournamentAggregate(tournaments.flatMap((tournament) => tournament.seasons));
 
   return (
     <Container
@@ -128,34 +269,35 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
       style={{ minHeight: "900px" }}
       data-testid="player-tournaments-tab"
     >
-      <TournamentVideosPanel
-        videos={videos}
-        title={t("tournaments.videosTitle")}
-        emptyText={t("tournaments.noVideos", { name: playerName })}
-      />
-
-      <Space h="xl" />
-      <Title order={2} size="h2">
-        {t("tournaments.title")}
-      </Title>
-      <Space h="md" />
-
-      <Stack gap="xs" data-testid="ladder-tournament-section">
-        <Title order={3} size="h3">
-          {t("tournaments.ladderTournament.title")}
-        </Title>
-        <Group gap="xs">
-          <Text size="sm" c="dimmed">
-            {t("tournaments.ladderTournament.description")}
-          </Text>
-          <Anchor href={LADDER_TOURNAMENT_URL} target="_blank" size="sm">
-            <Group gap={4} wrap="nowrap">
-              {t("tournaments.ladderTournament.link")}
-              <IconExternalLink size={14} />
-            </Group>
-          </Anchor>
+      <Stack gap="lg">
+        <Group gap="md" align="baseline" wrap="wrap">
+          <Title order={1} size="h2">
+            {t("tournaments.title")}
+          </Title>
+          {totals.seasons > 0 && (
+            <Text size="sm" c="dimmed" data-testid="tournaments-summary">
+              {t("tournaments.summary.tournaments", { count: playedTournamentsCount })}
+              {" · "}
+              {t("tournaments.summary.seasons", { count: totals.seasons })}
+              {totals.titles > 0 && (
+                <>
+                  {" · "}
+                  <Text span c="yellow" fw={600} inherit>
+                    {t("tournaments.summary.titles", { count: totals.titles })}
+                  </Text>
+                </>
+              )}
+            </Text>
+          )}
         </Group>
-        {ladderContent}
+
+        {tournaments.map((tournament) => (
+          <TournamentSection
+            tournament={tournament}
+            playerName={playerName}
+            key={tournament.id}
+          />
+        ))}
       </Stack>
     </Container>
   );

@@ -1,20 +1,38 @@
 .card {
-  width: 30%;
-  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: border-color 0.15s ease;
 }
 
 .card:hover {
-  box-shadow: 0 0 5px #808080;
+  border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2));
 }
 
 .thumbnail {
   position: relative;
 }
 
+.playOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: var(--mantine-color-white);
+  pointer-events: none;
+}
+
 .stageBadge {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  right: 6px;
+  bottom: 6px;
   z-index: 1;
 }
 
@@ -23,16 +41,4 @@
   align-items: center;
   justify-content: center;
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
-}
-
-@media (max-width: 1000px) {
-  .card {
-    width: 45%;
-  }
-}
-
-@media (max-width: 600px) {
-  .card {
-    width: 100%;
-  }
 }

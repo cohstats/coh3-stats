@@ -1,8 +1,7 @@
 import React from "react";
-import dayjs from "dayjs";
-import { AspectRatio, Badge, Box, Card, Group, Image, Text, Title, Tooltip } from "@mantine/core";
-import { IconBrandTwitch } from "@tabler/icons-react";
-import { useTranslation } from "next-i18next/pages";
+import { useRouter } from "next/router";
+import { AspectRatio, Badge, Box, Card, Image, Stack, Text, Tooltip } from "@mantine/core";
+import { IconBrandTwitch, IconPlayerPlayFilled } from "@tabler/icons-react";
 import type { LadderTournamentCasterVideo } from "../../src/apis/ladder-tournament-api";
 import { getYoutubeVideoId } from "../../src/utils";
 import classes from "./tournament-videos.module.css";
@@ -12,82 +11,83 @@ type TournamentVideoCardProps = {
   index?: number;
 };
 
-const getStageBadgeColor = (stage: string) => {
-  const normalizedStage = stage.trim().toUpperCase();
-  if (normalizedStage === "FINAL" || normalizedStage === "FINALS") return "yellow";
-  if (normalizedStage.includes("SEMI")) return "orange";
-  if (normalizedStage.includes("THIRD")) return "grape";
-  return "gray";
+const isFinalStage = (stage: string) => ["FINAL", "FINALS"].includes(stage.trim().toUpperCase());
+
+/**
+ * Formats the publish date in the active locale, eg "Sep 7, 2026" / "7. 9. 2026".
+ * The API date has no timezone, so it's parsed and formatted in the same (local) time zone.
+ */
+const formatPublishedAt = (publishedAt: string, locale: string) => {
+  const date = new Date(publishedAt);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" });
 };
 
 /**
  * Card for a single casted tournament video.
- * YouTube videos are preferred, Twitch is used as a fallback.
+ * Links to YouTube, Twitch is used as a fallback.
  */
 const TournamentVideoCard: React.FC<TournamentVideoCardProps> = ({ video, index = 0 }) => {
-  const { t } = useTranslation("common");
-
+  const { locale = "en" } = useRouter();
   const youtubeVideoId = getYoutubeVideoId(video.videoUrlYoutube);
   const videoUrl = video.videoUrlYoutube || video.videoUrlTwitch;
-  const publishedAt = dayjs(video.publishedAt);
+  const date = formatPublishedAt(video.publishedAt, locale);
 
   return (
     <Card
-      shadow="sm"
-      padding="xs"
+      padding={0}
       component="a"
       href={videoUrl || undefined}
       target="_blank"
       // we are OK with sending the referer header to youtube / twitch
       rel=""
-      m={{ base: 5, md: "sm" }}
+      radius="md"
+      withBorder
       className={classes.card}
-      radius={"md"}
-      withBorder={true}
       data-testid={`tournament-video-${index}`}
     >
-      <Card.Section pb={4} className={classes.thumbnail}>
-        {video.stage && (
-          <Badge
-            className={classes.stageBadge}
-            color={getStageBadgeColor(video.stage)}
-            variant="filled"
-            size="sm"
-          >
-            {video.stage}
-          </Badge>
-        )}
+      <Card.Section className={classes.thumbnail}>
         <AspectRatio ratio={16 / 9}>
           {youtubeVideoId ? (
             <Image
               src={`https://i.ytimg.com/vi_webp/${youtubeVideoId}/hqdefault.webp`}
-              h={"auto"}
               alt={video.title}
               loading="lazy"
             />
           ) : (
             <Box className={classes.placeholder}>
-              <IconBrandTwitch size={48} />
+              <IconBrandTwitch size={40} />
             </Box>
           )}
         </AspectRatio>
+        <span className={classes.playOverlay}>
+          <IconPlayerPlayFilled size={14} />
+        </span>
+        {video.stage && (
+          // Filled, so it's readable on top of the thumbnail
+          <Badge
+            className={classes.stageBadge}
+            color={isFinalStage(video.stage) ? "yellow" : "dark"}
+            variant="filled"
+            autoContrast
+            size="xs"
+            radius="sm"
+          >
+            {video.stage}
+          </Badge>
+        )}
       </Card.Section>
-      <Tooltip.Floating label={video.title} multiline>
-        <Title order={5} lineClamp={2}>
-          {video.title}
-        </Title>
-      </Tooltip.Floating>
-      <Text c="dimmed" size="sm">
-        {t("tournamentVideos.castedBy", { caster: video.castedBy })}
-      </Text>
-      <Group justify="space-between" gap={4}>
-        <Text c="dimmed" size="xs">
-          {publishedAt.isValid() ? publishedAt.locale("en").format("MMM D, YYYY") : ""}
+      <Stack gap={4} p="xs">
+        <Tooltip.Floating label={video.title} multiline>
+          <Text fw={600} size="sm" lineClamp={2} lh={1.3}>
+            {video.title}
+          </Text>
+        </Tooltip.Floating>
+        <Text c="dimmed" size="xs" lineClamp={1}>
+          {video.castedBy}
+          {date && ` · ${date}`}
         </Text>
-        <Text c="dimmed" size="xs">
-          {t("tournamentVideos.season", { season: video.seasonId })}
-        </Text>
-      </Group>
+      </Stack>
     </Card>
   );
 };

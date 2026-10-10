@@ -243,7 +243,7 @@ const PlayerCard = ({
           defaultValue={(view as string) || "standings"}
           onChange={tabChangeFunction}
         >
-          <Tabs.List justify="center" data-testid="player-tabs">
+          <Tabs.List justify="center" mt={5} data-testid="player-tabs">
             <Tabs.Tab value={"standings"} data-testid="player-tab-standings">
               {t("tabs.standings")}
             </Tabs.Tab>
