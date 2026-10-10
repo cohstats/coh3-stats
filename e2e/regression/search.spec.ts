@@ -221,6 +221,18 @@ test.describe("Search Page - section nav", () => {
     await expect(searchPage.fsUnitsResults).toHaveCount(0);
     await expect(searchPage.sectionNavButton("fs-units")).toHaveCount(0);
   });
+
+  test("should drop the selected section when the query changes", async ({ page }) => {
+    const searchPage = new SearchPage(page);
+    await searchPage.navigate(TEST_UNIT.name);
+    await expect(searchPage.unitsResults).toBeVisible({ timeout: 30000 });
+
+    await searchPage.sectionNavButton("units").click();
+    await expect(page).toHaveURL(/#units$/);
+
+    await searchPage.searchInput.fill("Wespe");
+    await expect(page).not.toHaveURL(/#/);
+  });
 });
 
 test.describe("Search Page - map results", () => {
