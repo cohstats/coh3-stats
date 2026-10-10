@@ -272,6 +272,15 @@ export const SearchScreen = () => {
           placeholder={t("common:search.playersAndUnits")}
           onChange={(event: { currentTarget: { value: any } }) => {
             const value = event.currentTarget.value;
+            // A new search drops the selected section, otherwise the nav jumps back to it
+            // when the results re-render and the input scrolls out of view.
+            if (window.location.hash) {
+              window.history.replaceState(
+                window.history.state,
+                "",
+                window.location.pathname + window.location.search,
+              );
+            }
             setSearchValue(value);
             debouncedSearch(value);
           }}
