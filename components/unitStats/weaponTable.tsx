@@ -531,8 +531,6 @@ const PAGE_SIZE = 150;
 export const WeaponTable = ({ inputData }: inputProps) => {
   tableData = inputData;
 
-  const toggleId = "weapon-toggleable-id";
-
   const [page, setPage] = useState(1);
 
   const [search, setSearch] = useState("");
@@ -549,7 +547,7 @@ export const WeaponTable = ({ inputData }: inputProps) => {
 
   const [debouncedSearch] = useDebouncedValue(search, 600);
   // const { effectiveColumns, resetColumnsToggle } = useDataTableColumns<WeaponTableRow>({
-  //   key: toggleId,
+  //   key: "weapon-toggleable-id",
   //   columns: TableColumns,
   // });
 
@@ -635,7 +633,8 @@ export const WeaponTable = ({ inputData }: inputProps) => {
           height={600}
           miw={700}
           striped={true}
-          storeColumnsKey={toggleId}
+          // Don't use storeColumnsKey: the table has no column toggling / reordering, and a
+          // stale column order persisted in localStorage misaligns the cells with group headers.
           groups={TableGroups}
           // columns={effectiveColumns}
           records={pagedData}
