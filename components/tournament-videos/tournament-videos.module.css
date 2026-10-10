@@ -1,0 +1,38 @@
+.card {
+  width: 30%;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 5px #808080;
+}
+
+.thumbnail {
+  position: relative;
+}
+
+.stageBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}
+
+@media (max-width: 1000px) {
+  .card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 100%;
+  }
+}

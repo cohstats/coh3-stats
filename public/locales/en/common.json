@@ -92,5 +92,12 @@
   },
   "loading": "Loading...",
   "error": "Error",
-  "notFound": "Not Found"
+  "notFound": "Not Found",
+  "tournamentVideos": {
+    "title": "Tournament Videos",
+    "castedBy": "Casted by {{caster}}",
+    "season": "Season {{season}}",
+    "noVideos": "No tournament videos found.",
+    "unavailable": "Tournament videos are currently unavailable."
+  }
 }

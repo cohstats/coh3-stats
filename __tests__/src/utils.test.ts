@@ -15,6 +15,7 @@ import {
   getCorrectLeaderStartPositions,
   getCookie,
   compareVersions,
+  getYoutubeVideoId,
 } from "../../src/utils";
 
 describe("getIconsPathOnCDN", () => {
@@ -434,5 +435,31 @@ describe("compareVersions", () => {
     expect(compareVersions("2.1.0", "2.0.0")).toBe(true);
     expect(compareVersions("3.0.0", "2.0.0")).toBe(true);
     expect(compareVersions("1.9.9", "2.0.0")).toBe(false);
+  });
+});
+
+describe("getYoutubeVideoId", () => {
+  test.each([
+    ["https://www.youtube.com/watch?v=dbIEhEpEKoA", "dbIEhEpEKoA"],
+    ["https://youtube.com/watch?v=_0MBJNZURwk&t=120s", "_0MBJNZURwk"],
+    ["https://m.youtube.com/watch?v=5VdVd_secYk", "5VdVd_secYk"],
+    ["https://youtu.be/dbIEhEpEKoA?si=abc", "dbIEhEpEKoA"],
+    ["https://www.youtube.com/live/dbIEhEpEKoA?feature=share", "dbIEhEpEKoA"],
+    ["https://www.youtube.com/embed/dbIEhEpEKoA", "dbIEhEpEKoA"],
+    ["https://www.youtube.com/shorts/dbIEhEpEKoA", "dbIEhEpEKoA"],
+    [" https://www.youtube.com/watch?v=dbIEhEpEKoA ", "dbIEhEpEKoA"],
+  ])("extracts the video ID from %s", (url, expected) => {
+    expect(getYoutubeVideoId(url)).toBe(expected);
+  });
+
+  test.each([
+    [""],
+    [null],
+    [undefined],
+    ["not a url"],
+    ["https://www.twitch.tv/videos/123456789"],
+    ["https://www.youtube.com/@HelpingHans"],
+  ])("returns null for %s", (url) => {
+    expect(getYoutubeVideoId(url)).toBeNull();
   });
 });

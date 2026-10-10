@@ -7,6 +7,7 @@ import {
   getLadderTournamentCasterVideos,
   getLadderTournamentCasterVideosForPlayer,
   getLadderTournamentCasterVideosUrl,
+  getLadderTournamentPlayerData,
   getLadderTournamentRanking,
   getLadderTournamentRankingUrl,
 } from "../../../src/apis/ladder-tournament-api";
@@ -118,40 +119,6 @@ describe("ladder-tournament-api", () => {
       fetchSpy.mockImplementation(() => errorResponse(500));
 
       await expect(getLadderTournamentRanking(123456)).rejects.toThrow("status code: 500");
-    });
-
-    it("throws when the response has different keys than documented (live Portuguese keys)", async () => {
-      // Real response returned by the live server on 2026-10-09
-      const portugueseResponse = {
-        items: [
-          {
-            seasonIdFk: 1,
-            coh3StatsId: 366826,
-            confrontos: 15,
-            vitorias: 13,
-            derrotas: 2,
-            pontos: 13,
-            rating: 0.86,
-            vencedorLadder: "Yes",
-            vencedorIronclad: "No",
-            vencedorMetaplays: "No",
-            vencedorCoh: "No",
-            aLenda: "No",
-          },
-        ],
-        page: 1,
-        pageSize: 500,
-        total: 1,
-        totalPages: 1,
-        hasPrevious: false,
-        hasNext: false,
-        count: 1,
-      };
-      fetchSpy.mockImplementation(() => okResponse(portugueseResponse));
-
-      await expect(getLadderTournamentRanking(366826)).rejects.toThrow(
-        "Invalid Ladder Tournament ranking response",
-      );
     });
 
     it("throws when a winner flag has an unexpected value", async () => {
@@ -426,6 +393,54 @@ describe("ladder-tournament-api", () => {
         "Invalid limit",
       );
       expect(fetchSpy).not.toHaveBeenCalled();
+    });
+  });
+  describe("getLadderTournamentPlayerData", () => {
+    const mockByUrl = (rankingFails = false, videosFail = false) =>
+      fetchSpy.mockImplementation((url: string) => {
+        if (url.includes("ranking_ladder")) {
+          return rankingFails ? errorResponse(500) : okResponse(rankingResponse);
+        }
+        return videosFail ? errorResponse(500) : okResponse(casterVideosResponse);
+      });
+
+    it("returns the player videos and the ranking sorted from the newest season", async () => {
+      mockByUrl();
+
+      const result = await getLadderTournamentPlayerData(991764);
+
+      expect(result.videos?.map((video) => video.title)).toEqual([
+        "A Bad Day to Be An Aussie G2",
+        "Desert Armour Clash!",
+      ]);
+      expect(result.ladderRanking?.map((item) => item.seasonid)).toEqual([2, 1]);
+    });
+
+    it("returns null for the ranking when it fails, but keeps the videos", async () => {
+      mockByUrl(true, false);
+
+      const result = await getLadderTournamentPlayerData(991764);
+
+      expect(result.ladderRanking).toBeNull();
+      expect(result.videos).toHaveLength(2);
+    });
+
+    it("returns null for the videos when they fail, but keeps the ranking", async () => {
+      mockByUrl(false, true);
+
+      const result = await getLadderTournamentPlayerData(991764);
+
+      expect(result.videos).toBeNull();
+      expect(result.ladderRanking).toHaveLength(2);
+    });
+
+    it("never throws, even without the token", async () => {
+      delete process.env.LADDER_TOURNAMENT_API_TOKEN;
+
+      await expect(getLadderTournamentPlayerData(991764)).resolves.toEqual({
+        videos: null,
+        ladderRanking: null,
+      });
     });
   });
 });

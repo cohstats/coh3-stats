@@ -94,6 +94,7 @@ export const PLAYER_TABS = [
   "recentMatches",
   "activity",
   "nemesis",
+  "tournaments",
 ] as const;
 
 export type PlayerTab = (typeof PLAYER_TABS)[number];

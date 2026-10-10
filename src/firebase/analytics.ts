@@ -40,6 +40,10 @@ export const AnalyticsPlayerCardDetailedStatsView = (profile_id?: number | strin
   logFBEvent("player_card_detailed_stats_view", { profile_id });
 };
 
+export const AnalyticsPlayerCardTournamentsView = (profile_id?: number | string): void => {
+  logFBEvent("player_card_tournaments_view", { profile_id });
+};
+
 export const AnalyticsDesktopAppPageView = (): void => {
   logFBEvent("desktop_app_view");
 };

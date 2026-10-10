@@ -25,7 +25,8 @@
       "activity": "Player card - {{name}} - Activity",
       "nemesis": "Player card - {{name}} - Nemesis",
       "teamsStandings": "Player card - {{name}} - Teams Standings",
-      "teamDetails": "Player card - {{name}} - Team Details"
+      "teamDetails": "Player card - {{name}} - Team Details",
+      "tournaments": "Player card - {{name}} - Tournaments"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Recent Matches",
     "activity": "Activity",
     "nemesis": "Nemesis",
-    "teamsStandings": "Teams Standings"
+    "teamsStandings": "Teams Standings",
+    "tournaments": "Tournaments"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,34 @@
       "apmTooltip": "Actions Per Minute",
       "totalMatches": "Total Matches",
       "noData": "No counter data available for this game mode"
+    }
+  },
+  "tournaments": {
+    "videosTitle": "Tournament Videos",
+    "noVideos": "{{name}} hasn't appeared in any casted tournament videos yet.",
+    "title": "Tournaments",
+    "ladderTournament": {
+      "title": "Ladder Tournament",
+      "description": "Community tournament for Company of Heroes 3 players.",
+      "link": "Visit Ladder Tournament",
+      "noData": "{{name}} hasn't played in the Ladder Tournament yet.",
+      "unavailable": "Ladder Tournament data is currently unavailable.",
+      "columns": {
+        "season": "Season",
+        "matches": "Matches",
+        "winsLosses": "W / L",
+        "winRate": "Win Rate",
+        "score": "Score",
+        "titles": "Titles"
+      },
+      "season": "Season {{season}}",
+      "titles": {
+        "ladderwinner": "Ladder Winner",
+        "ironcladwinner": "Ironclad Winner",
+        "metaplayswinner": "Metaplays Winner",
+        "championsOfheroeswinner": "Champions of Heroes Winner",
+        "thelegend": "The Legend"
+      }
     }
   }
 }
