@@ -1,0 +1,32 @@
+[
+  {
+    "title": "A Bad Day to Be An Aussie G2",
+    "castedBy": "HelpingHans",
+    "publishedAt": "2026-09-07T00:00:00",
+    "stage": "FINAL",
+    "videoUrlYoutube": "https://www.youtube.com/watch?v=dbIEhEpEKoA",
+    "videoUrlTwitch": "",
+    "seasonId": 1,
+    "playerRelicId": "366826,31145,59864,487,991764"
+  },
+  {
+    "title": "Surrounded G2",
+    "castedBy": "HelpingHans",
+    "publishedAt": "2026-08-29T00:00:00",
+    "stage": "THIRD PLACE",
+    "videoUrlYoutube": "https://www.youtube.com/watch?v=5VdVd_secYk",
+    "videoUrlTwitch": "",
+    "seasonId": 1,
+    "playerRelicId": "21206,703146,32922,691"
+  },
+  {
+    "title": "Desert Armour Clash!",
+    "castedBy": "HelpingHans",
+    "publishedAt": "2026-08-13T00:00:00",
+    "stage": "SEMI-FINALS",
+    "videoUrlYoutube": "https://www.youtube.com/watch?v=_0MBJNZURwk",
+    "videoUrlTwitch": "",
+    "seasonId": 1,
+    "playerRelicId": "21206,703146,991764,487,59864"
+  }
+]
