@@ -7,6 +7,7 @@ import { getLeaderBoardRoute } from "../../../src/routes";
 import Link from "next/link";
 import { TFunction } from "next-i18next/pages";
 import FactionIcon from "../../../components/faction-icon";
+import factionSwitchClasses from "../../../components/faction-switch.module.css";
 import classes from "./top-leaderboards-section.module.css";
 
 const factions: raceType[] = ["american", "british", "german", "dak"];
@@ -54,7 +55,7 @@ const TopLeaderboardsSection = ({ initialData, t }: TopLeaderboardsSectionProps)
     >
       <Tabs
         variant="pills"
-        classNames={{ tab: classes.factionTab }}
+        classNames={{ tab: `${factionSwitchClasses.factionButton} ${classes.factionTab}` }}
         onChange={(value: string | null) => setSelectedRace(value as raceType)}
         value={selectedRace}
       >

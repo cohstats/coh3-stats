@@ -1,14 +1,6 @@
+/* The look comes from the shared faction switch - this only cancels the Mantine pills hover tint. */
 .factionTab {
-  padding: 5px;
-  border: 1px solid transparent;
-  background-color: transparent;
-
-  &[data-active] {
-    border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2));
-    background-color: transparent;
-  }
-
   &[data-active]:hover {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   }
 }

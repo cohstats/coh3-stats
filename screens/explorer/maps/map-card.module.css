@@ -1,3 +1,15 @@
+/* The whole card is the link to the map detail - same hover as the map cards in the search. */
+.card {
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}
+
 /*
  * Backdrop of the minimap thumbnail. The maps are not all square (320x320 up to 384x320), so
  * `fit="contain"` letterboxes them - this makes the bars follow the color scheme instead of always
