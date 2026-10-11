@@ -1,9 +1,14 @@
-/* Faction switch used in Explorer page headers. */
+/*
+ * Faction switch - Explorer page headers (`FactionSwitch`) and the home page top leaderboards tabs.
+ * Not selected factions are dimmed, the selected one gets a white border (a dark one in the light
+ * theme, where white would not be visible). `[data-active]` is how Mantine Tabs mark the active tab.
+ */
 .factionButton {
   padding: 4px 6px;
   line-height: 0;
   border-radius: var(--mantine-radius-md);
   border: 1px solid transparent;
+  background-color: transparent;
   opacity: 0.55;
   transition:
     opacity 100ms ease,
@@ -14,8 +19,9 @@
   opacity: 1;
 }
 
-.factionButtonActive {
+.factionButtonActive,
+.factionButton[data-active] {
   opacity: 1;
-  border-color: var(--mantine-color-orange-6);
+  border-color: light-dark(var(--mantine-color-dark-4), var(--mantine-color-white));
   background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }

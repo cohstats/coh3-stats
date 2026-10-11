@@ -54,6 +54,7 @@ const MapCard = ({ map, t }: { map: MpMapListItem; t: TFunction }) => {
       p={0}
       radius="md"
       withBorder
+      className={classes.card}
       style={{ height: "100%" }}
       data-testid={`map-card-${map.id}`}
     >

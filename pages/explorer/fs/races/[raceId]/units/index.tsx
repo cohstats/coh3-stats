@@ -31,6 +31,7 @@ import { UnitDescriptionCard } from "../../../../../../components/unit-cards/uni
 import LinkWithOutPrefetch from "../../../../../../components/LinkWithOutPrefetch";
 import { FinalStandUnitsSwitch } from "../../../../../../components/final-stand-units-switch";
 import { FactionSwitch } from "../../../../../../components/faction-switch";
+import unitListCardClasses from "../../../../../../components/unit-cards/unit-list-card.module.css";
 import {
   getExplorerFactionUnitsRoute,
   getExplorerFsUnitsRoute,
@@ -111,7 +112,12 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
                     component={LinkWithOutPrefetch}
                     href={getExplorerUnitRoute(raceToFetch, id)}
                   >
-                    <Card p={{ base: "xs", sm: "md" }} radius="md" withBorder>
+                    <Card
+                      p={{ base: "xs", sm: "md" }}
+                      radius="md"
+                      withBorder
+                      className={unitListCardClasses.card}
+                    >
                       <UnitDescriptionCard
                         faction={raceToFetch}
                         desc={{

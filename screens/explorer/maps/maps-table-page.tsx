@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import {
+  Anchor,
   Badge,
   Box,
   Button,
@@ -437,14 +438,15 @@ const MapsTablePage = ({ maps }: { maps: MpMapTableItem[] }) => {
                         {/* minWidth 0 so a long name wraps instead of stretching the column. */}
                         <Stack gap={0} style={{ minWidth: 0 }}>
                           <Group gap={6} wrap="nowrap">
-                            <Text
+                            <Anchor
+                              c="orange"
                               size="sm"
                               fw={500}
                               component={LinkWithOutPrefetch}
                               href={getExplorerMapRoute(map.id)}
                             >
                               {map.name}
-                            </Text>
+                            </Anchor>
                             {map.isCommunity && (
                               <Tooltip
                                 label={
