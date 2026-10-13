@@ -102,7 +102,7 @@
     "react-chartjs-2": "5.3.1",
     "react-dom": "19.2.8",
     "react-i18next": "15.7.4",
-    "zod": "4.4.3"
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "16.3.8",
