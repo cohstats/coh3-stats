@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DaysMapsAnalysisObjectType, MapStatsDataObject } from "../../../src/analysis-types";
 import { Button, Flex, Group, Select, Space, Stack, Text } from "@mantine/core";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import MapChartCard from "./map-chart-card";
 import { getIconsPathOnCDN } from "../../../src/utils";
 import { getExplorerMapRoute } from "../../../src/routes";
+import { TimeSeriesDisplayType } from "../../../components/charts/charts-components-utils";
 
 const DynamicMapsWinRateLineChartCard = dynamic(
   () => import("./charts/maps-win-rate-line-chart-card"),
@@ -34,6 +35,10 @@ const InnerMapStatsPage = ({
 }) => {
   const router = useRouter();
   const { query } = router;
+  // One "Display as" for all the time series charts. Weeks by default - a single map has
+  // too few games per day, the daily values jump around a lot.
+  const [displayBy, setDisplayBy] = useState<TimeSeriesDisplayType>("weeks");
+  const displayByProps = { displayBy, onDisplayByChange: setDisplayBy };
 
   const availableMaps = Object.keys(data[mode]);
   const mapFromQuery = typeof query.map === "string" ? query.map : null;
@@ -130,6 +135,7 @@ const InnerMapStatsPage = ({
           mode={mode}
           mapName={selectedMap}
           width={1400}
+          {...displayByProps}
         />
       </Flex>
       <Space h="xl" />
@@ -138,6 +144,7 @@ const InnerMapStatsPage = ({
           data={data.days as DaysMapsAnalysisObjectType}
           mode={mode}
           mapName={selectedMap}
+          {...displayByProps}
           title={`${getMapLocalizedName(selectedMap)} - Factions played ${mode}`}
           helperText={"However over the chart to see the amount of games for each faction."}
           stacked={false}
@@ -149,6 +156,7 @@ const InnerMapStatsPage = ({
           data={data.days as DaysMapsAnalysisObjectType}
           mode={mode}
           mapName={selectedMap}
+          {...displayByProps}
           title={`${getMapLocalizedName(selectedMap)} - Factions played ${mode}`}
           helperText={
             "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."

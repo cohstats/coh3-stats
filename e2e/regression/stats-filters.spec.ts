@@ -226,6 +226,147 @@ test.describe("Stats - game stats page", () => {
   });
 });
 
+/** Game stats analysis for one mode - the numbers only have to be distinct per mode. */
+const mockModeAnalysis = (matchCount: number, slotsPerTeam: number) => {
+  const results = (share: number) => ({
+    wins: Math.round(matchCount * slotsPerTeam * share),
+    losses: Math.round(matchCount * slotsPerTeam * share),
+  });
+  return {
+    german: results(0.3),
+    dak: results(0.2),
+    american: results(0.25),
+    british: results(0.25),
+    matchCount,
+    gameTime: matchCount * 1300,
+    gameTimeSpread: { "0": 1, "5": 2, "10": matchCount - 6, "20": 2, "60": 1 },
+    maps: { twin_beaches_2p_mkii: matchCount },
+    factionMatrix: {},
+  };
+};
+
+/** One day of the `days` analysis - only the faction results, no match count / maps. */
+const mockDayAnalysis = (matchCount: number, slotsPerTeam: number) => {
+  const { german, dak, american, british } = mockModeAnalysis(matchCount, slotsPerTeam);
+  return { german, dak, american, british };
+};
+
+const mockAllModesResponse = {
+  analysis: {
+    "1v1": mockModeAnalysis(1000, 1),
+    "2v2": mockModeAnalysis(2000, 2),
+    "3v3": mockModeAnalysis(3000, 3),
+    "4v4": mockModeAnalysis(4000, 4),
+    days: {
+      "1690070400": {
+        "1v1": mockDayAnalysis(10, 1),
+        "2v2": mockDayAnalysis(20, 2),
+        "3v3": mockDayAnalysis(30, 3),
+        "4v4": mockDayAnalysis(40, 4),
+      },
+      "1690156800": {
+        "1v1": mockDayAnalysis(11, 1),
+        "2v2": mockDayAnalysis(21, 2),
+        "3v3": mockDayAnalysis(31, 3),
+        "4v4": mockDayAnalysis(41, 4),
+      },
+    },
+  },
+  type: "gameStats",
+  fromTimeStampSeconds: 1690000000,
+  toTimeStampSeconds: 1690243200,
+  wasMissingData: false,
+  filters: [],
+};
+
+test.describe("Stats - game stats all modes", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route(isStatsApi, (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(mockAllModesResponse),
+      }),
+    );
+  });
+
+  test("should switch to all modes and sum the games of every mode", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate();
+    await stats.waitForStats();
+
+    await stats.modeOption("All").click();
+    await stats.expectQuery("mode", "all");
+
+    // 1000 + 2000 + 3000 + 4000
+    await expect(stats.gamesAnalyzed).toContainText(/Games analyzed 10[,.\s]?000/);
+  });
+
+  test("should render the mode comparison charts and the combined charts", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate("?mode=all");
+    await stats.waitForStats();
+
+    await expect(stats.modeControl.locator("input[value='all']")).toBeChecked();
+
+    for (const chart of [
+      "stats-games-per-mode",
+      "stats-hours-per-mode",
+      "stats-avg-game-time-per-mode",
+      "stats-faction-popularity-per-mode",
+      "stats-faction-winrate-per-mode",
+      "stats-game-length-per-mode",
+      "stats-factions-played",
+      "stats-games-results",
+      "stats-faction-winrate",
+      "stats-axis-vs-allies",
+    ]) {
+      const card = page.getByTestId(chart);
+      await expect(card).toBeVisible();
+      await expect(card.locator("svg").first()).toBeVisible();
+    }
+
+    // The time series read the combined `all` day - they would be empty without it.
+    await expect(page.getByText("Winrate over time for all modes")).toBeVisible();
+    // Team composition, maps and game time are shown only for a single mode.
+    await expect(page.getByText(/Team composition/)).toHaveCount(0);
+    await expect(page.getByTestId("stats-maps-played")).toHaveCount(0);
+    await expect(page.getByTestId("stats-game-time")).toHaveCount(0);
+    await expect(page.locator("text=Application error")).not.toBeVisible();
+  });
+
+  test("should go back to a single mode from all", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate("?mode=all");
+    await stats.waitForStats();
+    await expect(page.getByTestId("stats-games-per-mode")).toBeVisible();
+
+    await stats.modeOption("2 vs 2").click();
+    await stats.expectQuery("mode", "2v2");
+
+    await expect(stats.gamesAnalyzed).toContainText(/Games analyzed 2[,.\s]?000/);
+    await expect(page.getByTestId("stats-games-per-mode")).toHaveCount(0);
+    await expect(page.getByTestId("stats-factions-played")).toContainText("2v2");
+  });
+
+  test("should switch the display of all the time series charts together", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate("?mode=all");
+    await stats.waitForStats();
+
+    // Winrate, pick rate, stacked pick rate and popularity over time
+    const displaySelects = page.locator("input[value='Days'], input[value='Weeks']");
+    await expect(displaySelects).toHaveCount(4);
+
+    await displaySelects.nth(2).click();
+    await page.getByRole("option", { name: "Weeks" }).click();
+
+    for (let i = 0; i < 4; i++) {
+      await expect(displaySelects.nth(i)).toHaveValue("Weeks");
+    }
+  });
+});
+
 test.describe("Stats - map stats page", () => {
   test("should render the map charts and the map picker", async ({ page }) => {
     const stats = new StatsPage(page, "map");
@@ -286,6 +427,30 @@ test.describe("Stats - map stats page", () => {
       test.skip(true, "No map stats data for the default patch on the API right now");
     }
     await expect(stats.mapSelect).toHaveValue(/.+/);
+  });
+
+  test("should show the time series by weeks and switch them together", async ({ page }) => {
+    const stats = new StatsPage(page, "map");
+    await stats.navigate();
+    await stats.waitForStats();
+
+    if (await stats.noData.isVisible()) {
+      test.skip(true, "No map stats data for the default patch on the API right now");
+    }
+
+    // Winrate, factions played and stacked factions played over time
+    const displaySelects = page.locator("input[value='Days'], input[value='Weeks']");
+    await expect(displaySelects).toHaveCount(3);
+    for (let i = 0; i < 3; i++) {
+      await expect(displaySelects.nth(i)).toHaveValue("Weeks");
+    }
+
+    await displaySelects.nth(1).click();
+    await page.getByRole("option", { name: "Days" }).click();
+
+    for (let i = 0; i < 3; i++) {
+      await expect(displaySelects.nth(i)).toHaveValue("Days");
+    }
   });
 });
 

@@ -3,7 +3,10 @@ import { DaysMapsAnalysisObjectType } from "../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { leaderBoardType, raceType } from "../../../../src/coh3/coh3-types";
 import InnerWinRateLineChartCard from "../../../../components/charts/inner-wr-line-chart";
-import { chartDataObjectsForTimeSeries } from "../../../../components/charts/charts-components-utils";
+import {
+  chartDataObjectsForTimeSeries,
+  TimeSeriesDisplayType,
+} from "../../../../components/charts/charts-components-utils";
 import { getMapLocalizedName } from "../../../../src/coh3/helpers";
 
 const MapsWinRateLineChartCard = ({
@@ -11,11 +14,16 @@ const MapsWinRateLineChartCard = ({
   mode,
   mapName,
   width,
+  displayBy,
+  onDisplayByChange,
 }: {
   data: DaysMapsAnalysisObjectType;
   mode: "1v1" | "2v2" | "3v3" | "4v4";
   mapName: string;
   width: number;
+  /** Pass both to share the "Display as" with other charts, otherwise the chart keeps its own. */
+  displayBy?: TimeSeriesDisplayType;
+  onDisplayByChange?: (value: TimeSeriesDisplayType) => void;
 }) => {
   const chartDataObjects = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
@@ -39,6 +47,8 @@ const MapsWinRateLineChartCard = ({
       data={chartDataObjects}
       title={`${getMapLocalizedName(mapName)} - Winrate over time for ${mode}`}
       width={width}
+      displayBy={displayBy}
+      onDisplayByChange={onDisplayByChange}
     />
   );
 };

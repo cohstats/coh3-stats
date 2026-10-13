@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
+import { useUncontrolled } from "@mantine/hooks";
 import { generateWeeklyAverages } from "../../../../src/charts/utils";
 import {
   chartDataObjectsForTimeSeries,
   getNivoTooltipTheme,
+  TimeSeriesDisplayType,
 } from "../../../../components/charts/charts-components-utils";
-import { DaysAnalysisObjectType } from "../../../../src/analysis-types";
+import {
+  DaysWithAllAnalysisObjectType,
+  gameStatsModeType,
+  getModeLabel,
+} from "../../../../src/stats/combine-game-stats";
+import { DayAnalysisObjectType } from "../../../../src/analysis-types";
 import dayjs from "dayjs";
-import { leaderBoardType, raceType } from "../../../../src/coh3/coh3-types";
+import { raceType } from "../../../../src/coh3/coh3-types";
 import HelperIcon from "../../../../components/icon/helper";
 
 const GamesLineChartCard = ({
@@ -16,14 +23,24 @@ const GamesLineChartCard = ({
   mode,
   helperText,
   stacked,
+  displayBy: displayByProp,
+  onDisplayByChange,
 }: {
-  data: DaysAnalysisObjectType;
-  mode: "all" | "1v1" | "2v2" | "3v3" | "4v4";
+  data: DaysWithAllAnalysisObjectType;
+  mode: gameStatsModeType;
   helperText: string;
   stacked: boolean;
+  /** Pass both to share the "Display as" with other charts, otherwise the chart keeps its own. */
+  displayBy?: TimeSeriesDisplayType;
+  onDisplayByChange?: (value: TimeSeriesDisplayType) => void;
 }) => {
   const { colorScheme } = useMantineColorScheme();
-  const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
+  const [displayBy, setDisplayBy] = useUncontrolled<TimeSeriesDisplayType>({
+    value: displayByProp,
+    defaultValue: "days",
+    finalValue: "days",
+    onChange: onDisplayByChange,
+  });
 
   const chartDataObjects: {
     [key in raceType]: {
@@ -35,7 +52,7 @@ const GamesLineChartCard = ({
   } = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
   Object.entries(data).forEach(([key, value]) => {
-    const dayAnalysisObject = value[mode as leaderBoardType];
+    const dayAnalysisObject: Partial<DayAnalysisObjectType> = value[mode] || {};
 
     for (const [faction, data] of Object.entries(dayAnalysisObject)) {
       chartDataObjects[faction as raceType].data.push({
@@ -62,7 +79,7 @@ const GamesLineChartCard = ({
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Group>
-            <Title order={3}>Faction pick rate over time {mode}</Title>
+            <Title order={3}>Faction pick rate over time {getModeLabel(mode)}</Title>
             <HelperIcon width={360} text={helperText} />
           </Group>
           <Group>
@@ -71,7 +88,7 @@ const GamesLineChartCard = ({
               style={{ width: 120, marginRight: 30 }}
               // label="Display as"
               value={displayBy}
-              onChange={(value) => setDisplayBy(value as "days" | "weeks")}
+              onChange={(value) => setDisplayBy(value as TimeSeriesDisplayType)}
               withCheckIcon={false}
               data={[
                 { value: "days", label: "Days" },
