@@ -319,8 +319,7 @@ test.describe("Stats - game stats all modes", () => {
       "stats-factions-played",
       "stats-games-results",
       "stats-faction-winrate",
-      "stats-maps-played",
-      "stats-game-time",
+      "stats-axis-vs-allies",
     ]) {
       const card = page.getByTestId(chart);
       await expect(card).toBeVisible();
@@ -329,8 +328,10 @@ test.describe("Stats - game stats all modes", () => {
 
     // The time series read the combined `all` day - they would be empty without it.
     await expect(page.getByText("Winrate over time for all modes")).toBeVisible();
-    // The team composition can't be combined across modes, so it's left out.
+    // Team composition, maps and game time are shown only for a single mode.
     await expect(page.getByText(/Team composition/)).toHaveCount(0);
+    await expect(page.getByTestId("stats-maps-played")).toHaveCount(0);
+    await expect(page.getByTestId("stats-game-time")).toHaveCount(0);
     await expect(page.locator("text=Application error")).not.toBeVisible();
   });
 
@@ -346,6 +347,23 @@ test.describe("Stats - game stats all modes", () => {
     await expect(stats.gamesAnalyzed).toContainText(/Games analyzed 2[,.\s]?000/);
     await expect(page.getByTestId("stats-games-per-mode")).toHaveCount(0);
     await expect(page.getByTestId("stats-factions-played")).toContainText("2v2");
+  });
+
+  test("should switch the display of all the time series charts together", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate("?mode=all");
+    await stats.waitForStats();
+
+    // Winrate, pick rate, stacked pick rate and popularity over time
+    const displaySelects = page.locator("input[value='Days'], input[value='Weeks']");
+    await expect(displaySelects).toHaveCount(4);
+
+    await displaySelects.nth(2).click();
+    await page.getByRole("option", { name: "Weeks" }).click();
+
+    for (let i = 0; i < 4; i++) {
+      await expect(displaySelects.nth(i)).toHaveValue("Weeks");
+    }
   });
 });
 
@@ -409,6 +427,30 @@ test.describe("Stats - map stats page", () => {
       test.skip(true, "No map stats data for the default patch on the API right now");
     }
     await expect(stats.mapSelect).toHaveValue(/.+/);
+  });
+
+  test("should show the time series by weeks and switch them together", async ({ page }) => {
+    const stats = new StatsPage(page, "map");
+    await stats.navigate();
+    await stats.waitForStats();
+
+    if (await stats.noData.isVisible()) {
+      test.skip(true, "No map stats data for the default patch on the API right now");
+    }
+
+    // Winrate, factions played and stacked factions played over time
+    const displaySelects = page.locator("input[value='Days'], input[value='Weeks']");
+    await expect(displaySelects).toHaveCount(3);
+    for (let i = 0; i < 3; i++) {
+      await expect(displaySelects.nth(i)).toHaveValue("Weeks");
+    }
+
+    await displaySelects.nth(1).click();
+    await page.getByRole("option", { name: "Days" }).click();
+
+    for (let i = 0; i < 3; i++) {
+      await expect(displaySelects.nth(i)).toHaveValue("Days");
+    }
   });
 });
 

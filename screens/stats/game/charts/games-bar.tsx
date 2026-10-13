@@ -3,6 +3,7 @@ import { AnalysisObjectType } from "../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
+import { factionShortLabels } from "./modes/modes-chart-utils";
 
 interface IProps {
   data: AnalysisObjectType;
@@ -12,15 +13,15 @@ const GamesBarChart: React.FC<IProps> = ({ data }) => {
   const { colorScheme } = useMantineColorScheme();
 
   const chartData = [
-    { ...{ faction: "US Forces", ...data.american } },
-    { ...{ faction: "British", ...data.british } },
-    { ...{ faction: "Wehrmacht", ...data.german } },
-    { ...{ faction: "DAK", ...data.dak } },
+    { ...{ faction: factionShortLabels.american, ...data.american } },
+    { ...{ faction: factionShortLabels.british, ...data.british } },
+    { ...{ faction: factionShortLabels.german, ...data.german } },
+    { ...{ faction: factionShortLabels.dak, ...data.dak } },
   ];
 
   return (
     <ResponsiveBar
-      margin={{ top: 10, right: 20, bottom: 40, left: 50 }}
+      margin={{ top: 10, right: 20, bottom: 40, left: 65 }}
       // @ts-ignore
       data={chartData as data[] | undefined}
       layout={"vertical"}
@@ -64,7 +65,8 @@ const GamesBarChart: React.FC<IProps> = ({ data }) => {
         legendOffset: -40,
       }}
       axisBottom={{
-        tickRotation: -25,
+        tickSize: 5,
+        tickPadding: 5,
       }}
       // legends={[
       //   {

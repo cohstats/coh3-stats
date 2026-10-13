@@ -23,7 +23,8 @@ import {
   withCombinedDays,
 } from "../../../src/stats/combine-game-stats";
 import { leaderBoardType } from "../../../src/coh3/coh3-types";
-import { ChartCard, SectionTitle, TitleWithHelper } from "./chart-card";
+import { ChartCard, TitleWithHelper } from "./chart-card";
+import { TimeSeriesDisplayType } from "../../../components/charts/charts-components-utils";
 import AllModesComparison from "./all-modes-comparison";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
@@ -35,6 +36,9 @@ const DynamicPlayTimeHistogramChart = dynamic(() => import("./charts/playtime-hi
   ssr: false,
 });
 const DynamicMapsPlayedBarChart = dynamic(() => import("./charts/maps-played-bar"), {
+  ssr: false,
+});
+const DynamicAxisVsAlliesBar = dynamic(() => import("./charts/modes/axis-vs-allies-bar"), {
   ssr: false,
 });
 const DynamicWinRateLineChart = dynamic(() => import("./charts/win-rate-line-chart-card"), {
@@ -84,6 +88,9 @@ const InnerGameStatsPage = ({
   const [data, setData] = useState<null | getAnalysisStatsHttpResponse>(null);
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  // One "Display as" for all the time series charts - switching it on one switches all of them
+  const [displayBy, setDisplayBy] = useState<TimeSeriesDisplayType>("days");
+  const displayByProps = { displayBy, onDisplayByChange: setDisplayBy };
 
   useEffect(() => {
     (async () => {
@@ -195,12 +202,7 @@ const InnerGameStatsPage = ({
         </Flex>
         {matchCount > 0 && (
           <>
-            {isAll && (
-              <>
-                <AllModesComparison analysis={analysis} />
-                <SectionTitle>All modes combined</SectionTitle>
-              </>
-            )}
+            {isAll && <AllModesComparison analysis={analysis} />}
 
             <Flex gap={"md"} wrap="wrap" justify="space-between">
               <ChartCard
@@ -227,46 +229,67 @@ const InnerGameStatsPage = ({
                 <DynamicWinRateBarChart data={analysisData} />
               </ChartCard>
 
-              <ChartCard
-                testId="stats-maps-played"
-                title={
-                  <Group justify={"space-between"}>
-                    <Group gap={"xs"}>
-                      <Text inherit>Maps{titleSuffix}</Text>
-                    </Group>
-                    <Button
-                      component={Link}
-                      href={getMapsStatsRoute()}
-                      variant={"default"}
-                      size={"sm"}
-                    >
-                      <Group gap={4}>
-                        <IconCirclePlus size={"18"} />
-                        More
+              {isAll && (
+                <ChartCard
+                  title={
+                    <TitleWithHelper
+                      title={"Axis vs Allies"}
+                      helper={
+                        "Winrate of the Axis (Wehrmacht, DAK) and the Allies (US Forces, British). Every automatch game is Axis vs Allies. The All row counts every game once, no matter the game mode."
+                      }
+                    />
+                  }
+                  size={"md"}
+                  testId="stats-axis-vs-allies"
+                >
+                  <DynamicAxisVsAlliesBar analysis={analysis} />
+                </ChartCard>
+              )}
+
+              {/* Maps and game time don't add much on top of the per mode charts on "all" */}
+              {!isAll && (
+                <ChartCard
+                  testId="stats-maps-played"
+                  title={
+                    <Group justify={"space-between"}>
+                      <Group gap={"xs"}>
+                        <Text inherit>Maps {mode}</Text>
                       </Group>
-                    </Button>
-                  </Group>
-                }
-                size={"md"}
-              >
-                <DynamicMapsPlayedBarChart data={analysisData} />
-              </ChartCard>
+                      <Button
+                        component={Link}
+                        href={getMapsStatsRoute()}
+                        variant={"default"}
+                        size={"sm"}
+                      >
+                        <Group gap={4}>
+                          <IconCirclePlus size={"18"} />
+                          More
+                        </Group>
+                      </Button>
+                    </Group>
+                  }
+                  size={"md"}
+                >
+                  <DynamicMapsPlayedBarChart data={analysisData} />
+                </ChartCard>
+              )}
             </Flex>
 
             <Space h="xl" />
-            <Flex gap={"md"} wrap="wrap" justify={isAll ? "center" : "space-between"}>
-              {/* The faction matrix keys are different for every mode, they can't be combined */}
-              {!isAll && (
-                <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
-              )}
-              <ChartCard title={`Game Time${titleSuffix}`} size={"xl"} testId="stats-game-time">
-                <DynamicPlayTimeHistogramChart data={analysisData} />
-              </ChartCard>
-            </Flex>
-            <Space h="xl" />
+            {!isAll && (
+              <>
+                <Flex gap={"md"} wrap="wrap" justify="space-between">
+                  <FactionVsFactionCard data={analysisData} title={`Team composition ${mode}`} />
+                  <ChartCard title={`Game Time ${mode}`} size={"xl"} testId="stats-game-time">
+                    <DynamicPlayTimeHistogramChart data={analysisData} />
+                  </ChartCard>
+                </Flex>
+                <Space h="xl" />
+              </>
+            )}
 
             <Flex gap={"xl"} wrap="wrap" justify="center">
-              <DynamicWinRateLineChart data={daysData} mode={mode} />
+              <DynamicWinRateLineChart data={daysData} mode={mode} {...displayByProps} />
             </Flex>
 
             <Space h="xl" />
@@ -274,6 +297,7 @@ const InnerGameStatsPage = ({
               <DynamicGamesLineChart
                 data={daysData}
                 mode={mode}
+                {...displayByProps}
                 helperText={"However over the chart to see the amount of games for each faction."}
                 stacked={false}
               />
@@ -283,6 +307,7 @@ const InnerGameStatsPage = ({
               <DynamicGamesLineChart
                 data={daysData}
                 mode={mode}
+                {...displayByProps}
                 helperText={
                   "This is stacked area chart. It's summary for all factions. However over the chart to see the amount of games for each faction."
                 }
@@ -291,7 +316,11 @@ const InnerGameStatsPage = ({
             </Flex>
             <Space h="xl" />
             <Flex gap={"xl"} wrap="wrap" justify="center">
-              <DynamicGamesPercentageLineChartCard data={daysData} mode={mode} />
+              <DynamicGamesPercentageLineChartCard
+                data={daysData}
+                mode={mode}
+                {...displayByProps}
+              />
             </Flex>
           </>
         )}

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
+import { useUncontrolled } from "@mantine/hooks";
 import { generateWeeklyAverages } from "../../../../src/charts/utils";
 import {
   chartDataObjectsForTimeSeries,
   getNivoTooltipTheme,
+  TimeSeriesDisplayType,
 } from "../../../../components/charts/charts-components-utils";
 import {
   DaysWithAllAnalysisObjectType,
@@ -19,12 +21,22 @@ import HelperIcon from "../../../../components/icon/helper";
 const GamesPercentageLineChartCard = ({
   data,
   mode,
+  displayBy: displayByProp,
+  onDisplayByChange,
 }: {
   data: DaysWithAllAnalysisObjectType;
   mode: gameStatsModeType;
+  /** Pass both to share the "Display as" with other charts, otherwise the chart keeps its own. */
+  displayBy?: TimeSeriesDisplayType;
+  onDisplayByChange?: (value: TimeSeriesDisplayType) => void;
 }) => {
   const { colorScheme } = useMantineColorScheme();
-  const [displayBy, setDisplayBy] = useState<"days" | "weeks">("days");
+  const [displayBy, setDisplayBy] = useUncontrolled<TimeSeriesDisplayType>({
+    value: displayByProp,
+    defaultValue: "days",
+    finalValue: "days",
+    onChange: onDisplayByChange,
+  });
 
   const totalGamesForEachDay: Record<string, number> = {};
 
@@ -86,7 +98,7 @@ const GamesPercentageLineChartCard = ({
               style={{ width: 120, marginRight: 30 }}
               // label="Display as"
               value={displayBy}
-              onChange={(value) => setDisplayBy(value as "days" | "weeks")}
+              onChange={(value) => setDisplayBy(value as TimeSeriesDisplayType)}
               data={[
                 { value: "days", label: "Days" },
                 { value: "weeks", label: "Weeks" },

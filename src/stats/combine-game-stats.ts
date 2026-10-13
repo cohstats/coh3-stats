@@ -126,6 +126,41 @@ export const getFactionSlotsCount = (data: AnalysisObjectType) => {
   );
 };
 
+export type AxisAlliesWinRate = { axis: number; allies: number; games: number };
+
+/**
+ * Winrate of the Axis (Wehrmacht + DAK) and Allies (US Forces + British) sides in every mode
+ * and in all the modes together. Every automatch game is Axis vs Allies, so the axis wins are the allies losses.
+ * The faction results are counted per player, but both sides have the same amount of players,
+ * so the share of the wins is the same as per match. The `all` row is weighted by the matches,
+ * otherwise the 4v4 games would count 4 times more than the 1v1 games.
+ */
+export const getAxisAlliesWinRates = (
+  analysis: StatsDataObject,
+): Record<gameStatsModeType, AxisAlliesWinRate> => {
+  const result = {} as Record<gameStatsModeType, AxisAlliesWinRate>;
+  let axisMatchWins = 0;
+  let totalMatches = 0;
+
+  for (const mode of leaderBoardTypeArray) {
+    const modeAnalysis = analysis[mode];
+    const axisWins = safeNumber(modeAnalysis?.german?.wins) + safeNumber(modeAnalysis?.dak?.wins);
+    const alliesWins =
+      safeNumber(modeAnalysis?.american?.wins) + safeNumber(modeAnalysis?.british?.wins);
+    const games = safeNumber(modeAnalysis?.matchCount);
+    const axis = axisWins + alliesWins ? (axisWins / (axisWins + alliesWins)) * 100 : 50;
+
+    result[mode] = { axis, allies: 100 - axis, games };
+    axisMatchWins += (axis / 100) * games;
+    totalMatches += games;
+  }
+
+  const axis = totalMatches ? (axisMatchWins / totalMatches) * 100 : 50;
+  result.all = { axis, allies: 100 - axis, games: totalMatches };
+
+  return result;
+};
+
 /** The `gameTimeSpread` keys are the start of the bucket in minutes - "0", "5", "10", "20" ... "60". */
 export const getGameTimeBucketLabel = (key: string) => {
   const start = parseInt(key);

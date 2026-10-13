@@ -50,12 +50,6 @@ export const ChartCard = ({
   );
 };
 
-export const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <Title order={2} size="h3" pt="md" pb="sm">
-    {children}
-  </Title>
-);
-
 /** Chart card title with an info icon explaining the chart. */
 export const TitleWithHelper = ({ title, helper }: { title: string; helper: string }) => (
   <Group gap={6} wrap="nowrap">

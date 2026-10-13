@@ -1,6 +1,7 @@
 import {
   combineModesAnalysis,
   getAverageGameTimeMinutes,
+  getAxisAlliesWinRates,
   getFactionSlotsCount,
   getGameTimeBucketLabel,
   getModeLabel,
@@ -159,5 +160,50 @@ describe("misc helpers", () => {
   test("getModeLabel", () => {
     expect(getModeLabel("all")).toBe("all modes");
     expect(getModeLabel("2v2")).toBe("2v2");
+  });
+});
+
+describe("getAxisAlliesWinRates", () => {
+  test("splits the wins between axis and allies in every mode", () => {
+    const winRates = getAxisAlliesWinRates(statsData());
+
+    // 1v1: axis wins 1 + 5 = 6, allies wins 3 + 7 = 10
+    expect(winRates["1v1"].axis).toBeCloseTo(37.5);
+    expect(winRates["1v1"].allies).toBeCloseTo(62.5);
+    expect(winRates["1v1"].games).toBe(10);
+  });
+
+  test("weights the all row by the matches, not by the player results", () => {
+    const data = statsData();
+    // 1v1 - 100 matches, axis wins all of them
+    data["1v1"] = modeAnalysis(0, {
+      german: { wins: 100, losses: 0 },
+      dak: { wins: 100, losses: 0 },
+      american: { wins: 0, losses: 100 },
+      british: { wins: 0, losses: 100 },
+      matchCount: 100,
+    });
+    // 4v4 - 100 matches, allies win all of them, 8 results per match
+    data["4v4"] = modeAnalysis(0, {
+      german: { wins: 0, losses: 400 },
+      dak: { wins: 0, losses: 400 },
+      american: { wins: 400, losses: 0 },
+      british: { wins: 400, losses: 0 },
+      matchCount: 100,
+    });
+    data["2v2"] = modeAnalysis(0, { matchCount: 0 });
+    data["3v3"] = modeAnalysis(0, { matchCount: 0 });
+
+    const winRates = getAxisAlliesWinRates(data);
+
+    expect(winRates.all.axis).toBeCloseTo(50);
+    expect(winRates.all.games).toBe(200);
+  });
+
+  test("falls back to 50% for a mode without any games", () => {
+    const data = statsData();
+    data["2v2"] = undefined as unknown as AnalysisObjectType;
+
+    expect(getAxisAlliesWinRates(data)["2v2"]).toEqual({ axis: 50, allies: 50, games: 0 });
   });
 });

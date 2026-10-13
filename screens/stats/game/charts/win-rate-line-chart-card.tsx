@@ -8,14 +8,22 @@ import { DayAnalysisObjectType } from "../../../../src/analysis-types";
 import dayjs from "dayjs";
 import { raceType } from "../../../../src/coh3/coh3-types";
 import InnerWinRateLineChartCard from "../../../../components/charts/inner-wr-line-chart";
-import { chartDataObjectsForTimeSeries } from "../../../../components/charts/charts-components-utils";
+import {
+  chartDataObjectsForTimeSeries,
+  TimeSeriesDisplayType,
+} from "../../../../components/charts/charts-components-utils";
 
 const WinRateLineChartCard = ({
   data,
   mode,
+  displayBy,
+  onDisplayByChange,
 }: {
   data: DaysWithAllAnalysisObjectType;
   mode: gameStatsModeType;
+  /** Pass both to share the "Display as" with other charts, otherwise the chart keeps its own. */
+  displayBy?: TimeSeriesDisplayType;
+  onDisplayByChange?: (value: TimeSeriesDisplayType) => void;
 }) => {
   const chartDataObjects = JSON.parse(JSON.stringify(chartDataObjectsForTimeSeries));
 
@@ -35,6 +43,8 @@ const WinRateLineChartCard = ({
     <InnerWinRateLineChartCard
       data={chartDataObjects}
       title={`Winrate over time for ${getModeLabel(mode)}`}
+      displayBy={displayBy}
+      onDisplayByChange={onDisplayByChange}
     />
   );
 };

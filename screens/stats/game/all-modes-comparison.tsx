@@ -4,7 +4,7 @@ import { Flex, Space } from "@mantine/core";
 import { AnalysisObjectType, StatsDataObject } from "../../../src/analysis-types";
 import { leaderBoardType, leaderBoardTypeArray } from "../../../src/coh3/coh3-types";
 import { getTotalGameTimeHours } from "../../../src/stats/combine-game-stats";
-import { ChartCard, SectionTitle, TitleWithHelper } from "./chart-card";
+import { ChartCard, TitleWithHelper } from "./chart-card";
 
 const DynamicModesPieChart = dynamic(() => import("./charts/modes/modes-pie"), { ssr: false });
 const DynamicAvgGameTimePerModeBar = dynamic(
@@ -25,7 +25,7 @@ const DynamicGameLengthDistributionLine = dynamic(
 );
 
 /**
- * "Across game modes" section of the game stats page - charts comparing the 1v1 - 4v4 modes
+ * Charts on the top of the game stats page comparing the 1v1 - 4v4 modes
  * side by side. Shown only when the "all" mode is selected.
  */
 const AllModesComparison = ({ analysis }: { analysis: StatsDataObject }) => {
@@ -36,7 +36,6 @@ const AllModesComparison = ({ analysis }: { analysis: StatsDataObject }) => {
 
   return (
     <>
-      <SectionTitle>Across game modes</SectionTitle>
       <Flex gap={"md"} wrap="wrap" justify="space-between">
         <ChartCard title={"Games per mode"} size={"md"} testId="stats-games-per-mode">
           <DynamicModesPieChart

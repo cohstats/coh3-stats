@@ -4,7 +4,14 @@ import { AnalysisObjectType } from "../../../../src/analysis-types";
 import { useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { getNivoTooltipTheme } from "../../../../components/charts/charts-components-utils";
-import { raceTypeArray } from "../../../../src/coh3/coh3-types";
+import { raceType, raceTypeArray } from "../../../../src/coh3/coh3-types";
+import {
+  ChartTooltip,
+  factionColors,
+  factionLabels,
+  factionShortLabels,
+  getLabelTextColor,
+} from "./modes/modes-chart-utils";
 
 interface IProps {
   data: AnalysisObjectType;
@@ -72,41 +79,27 @@ const FactionsPlayedPie: React.FC<IProps> = ({ data }) => {
     factionPercentage[faction] = (factionGames[faction] / totalGames) * 100;
   }
 
-  const chartData = [
-    {
-      id: "USForces",
-      label: "US Forces",
-      value: factionGames["american"],
-      color: "#5f5d2c",
-      percent: factionPercentage["american"].toFixed(0),
-    },
-    {
-      id: "British",
-      label: "British",
-      value: factionGames["british"],
-      color: "#4b6a79",
-      percent: factionPercentage["british"].toFixed(0),
-    },
-    {
-      id: "DAK",
-      label: "DAK",
-      value: factionGames["dak"],
-      color: "#b7a842",
-      percent: factionPercentage["dak"].toFixed(0),
-    },
-    {
-      id: "Wehrmacht",
-      label: "Wehrmacht",
-      value: factionGames["german"],
-      color: "#652f1f",
-      percent: factionPercentage["german"].toFixed(0),
-    },
+  // Ids are used by the `fill` patterns below
+  const pieOrder: Array<{ id: string; faction: raceType }> = [
+    { id: "USForces", faction: "american" },
+    { id: "British", faction: "british" },
+    { id: "DAK", faction: "dak" },
+    { id: "Wehrmacht", faction: "german" },
   ];
+
+  const chartData = pieOrder.map(({ id, faction }) => ({
+    id,
+    // The card is small, the full name is in the tooltip
+    label: factionShortLabels[faction],
+    fullLabel: factionLabels[faction],
+    value: factionGames[faction],
+    color: factionColors[faction],
+    percent: factionPercentage[faction].toFixed(0),
+  }));
 
   return (
     <>
       <ResponsivePie
-        // @ts-ignore
         data={chartData}
         margin={{ left: 45, bottom: 15, top: 5, right: 35 }}
         innerRadius={0.4}
@@ -114,8 +107,10 @@ const FactionsPlayedPie: React.FC<IProps> = ({ data }) => {
         cornerRadius={3}
         activeOuterRadiusOffset={8}
         borderWidth={1}
-        arcLabel={(e) => `${e.value} - ${e.data.percent}%`}
-        // colors={{ datum: 'data.color' }}
+        arcLabel={(e) => `${e.data.percent}%`}
+        // Same faction colors as the rest of the stats charts
+        colors={{ datum: "data.color" }}
+        arcLabelsTextColor={(datum) => getLabelTextColor(datum.data.color)}
         arcLinkLabelsSkipAngle={10}
         arcLinkLabelsThickness={2}
         arcLabelsSkipAngle={10}
@@ -126,6 +121,12 @@ const FactionsPlayedPie: React.FC<IProps> = ({ data }) => {
         arcLinkLabelsDiagonalLength={21}
         arcLinkLabelsStraightLength={7}
         theme={getNivoTooltipTheme(colorScheme)}
+        tooltip={({ datum }) => (
+          <ChartTooltip colorScheme={colorScheme}>
+            <strong>{datum.data.fullLabel}</strong>: {datum.value.toLocaleString()} played (
+            {datum.data.percent}%)
+          </ChartTooltip>
+        )}
         legends={[
           {
             anchor: "bottom-left",
@@ -134,7 +135,7 @@ const FactionsPlayedPie: React.FC<IProps> = ({ data }) => {
             translateX: -40,
             translateY: 15,
             itemsSpacing: 3,
-            itemWidth: 70,
+            itemWidth: 50,
             itemHeight: 12,
             // itemTextColor: "#999",
             itemDirection: "left-to-right",

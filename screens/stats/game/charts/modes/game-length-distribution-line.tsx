@@ -21,7 +21,9 @@ const GameLengthDistributionLine: React.FC<IProps> = ({ analysis }) => {
     ),
   ).sort((a, b) => parseInt(a) - parseInt(b));
 
-  const chartData = leaderBoardTypeArray.map((mode) => {
+  // Nivo line lists the legend in reverse order of the series - pass them 4v4 -> 1v1
+  // so the legend reads 1v1 -> 4v4 like the other mode charts.
+  const chartData = [...leaderBoardTypeArray].reverse().map((mode) => {
     const spread = analysis[mode]?.gameTimeSpread || {};
     const total = Object.values(spread).reduce((sum, value) => sum + (value || 0), 0);
 
