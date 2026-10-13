@@ -49,6 +49,13 @@ const DynamicGamesLineChart = dynamic(() => import("./charts/games-line-chart-ca
   ssr: false,
 });
 
+const DynamicGamesAmountLineChart = dynamic(
+  () => import("./charts/games-amount-line-chart-card"),
+  {
+    ssr: false,
+  },
+);
+
 const DynamicGamesPercentageLineChartCard = dynamic(
   () => import("./charts/games-percentage-line-chart-card"),
   {
@@ -290,6 +297,11 @@ const InnerGameStatsPage = ({
 
             <Flex gap={"xl"} wrap="wrap" justify="center">
               <DynamicWinRateLineChart data={daysData} mode={mode} {...displayByProps} />
+            </Flex>
+
+            <Space h="xl" />
+            <Flex gap={"xl"} wrap="wrap" justify="center">
+              <DynamicGamesAmountLineChart data={daysData} mode={mode} {...displayByProps} />
             </Flex>
 
             <Space h="xl" />

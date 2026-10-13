@@ -2,7 +2,9 @@ import {
   combineModesAnalysis,
   getAverageGameTimeMinutes,
   getAxisAlliesWinRates,
+  getDayGamesCount,
   getFactionSlotsCount,
+  getGamesCount,
   getGameTimeBucketLabel,
   getModeLabel,
   getTotalGameTimeHours,
@@ -125,6 +127,46 @@ describe("withCombinedDays", () => {
 
   test("returns an empty object for empty days", () => {
     expect(withCombinedDays({})).toEqual({});
+  });
+});
+
+describe("getDayGamesCount", () => {
+  // 10 games in 1v1 (20 results), 5 games in 2v2 (20 results), 2 games in 4v4 (16 results)
+  const dayModes = {
+    "1v1": {
+      german: { wins: 6, losses: 4 },
+      american: { wins: 4, losses: 6 },
+      dak: { wins: 0, losses: 0 },
+      british: { wins: 0, losses: 0 },
+    },
+    "2v2": {
+      german: { wins: 5, losses: 5 },
+      american: { wins: 5, losses: 5 },
+      dak: { wins: 0, losses: 0 },
+      british: { wins: 0, losses: 0 },
+    },
+    "4v4": {
+      german: { wins: 2, losses: 2 },
+      american: { wins: 2, losses: 2 },
+      dak: { wins: 2, losses: 2 },
+      british: { wins: 2, losses: 2 },
+    },
+  };
+
+  test("divides the faction results by the amount of players in one game", () => {
+    expect(getDayGamesCount(dayModes, "1v1")).toBe(10);
+    expect(getDayGamesCount(dayModes, "2v2")).toBe(5);
+    expect(getDayGamesCount(dayModes, "4v4")).toBe(2);
+    expect(getDayGamesCount(dayModes, "3v3")).toBe(0);
+  });
+
+  test("sums the games of every mode for `all`", () => {
+    expect(getDayGamesCount(dayModes, "all")).toBe(17);
+  });
+
+  test("getGamesCount works on the faction results of a single map too", () => {
+    expect(getGamesCount(dayModes["2v2"], "2v2")).toBe(5);
+    expect(getGamesCount({ german: { wins: 3, losses: 1 } }, "1v1")).toBe(2);
   });
 });
 

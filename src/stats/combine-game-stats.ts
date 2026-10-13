@@ -119,11 +119,32 @@ export const getTotalGameTimeHours = (data: Pick<AnalysisObjectType, "gameTime">
 };
 
 /** Total faction results (wins + losses) in one mode - the amount of player slots. */
-export const getFactionSlotsCount = (data: AnalysisObjectType) => {
+export const getFactionSlotsCount = (data: Partial<DayAnalysisObjectType>) => {
   return raceTypeArray.reduce(
     (sum, faction) => sum + safeNumber(data[faction]?.wins) + safeNumber(data[faction]?.losses),
     0,
   );
+};
+
+/**
+ * Amount of games from the faction results of one mode. The days analysis has no match count,
+ * only the faction results counted per player - one NvN game adds 2N results, so we divide by that.
+ */
+export const getGamesCount = (data: Partial<DayAnalysisObjectType>, mode: leaderBoardType) => {
+  return getFactionSlotsCount(data) / (parseInt(mode) * 2);
+};
+
+/** Amount of games played on one day. For `all` every mode is divided separately and then summed. */
+export const getDayGamesCount = (
+  dayModes: DaysWithAllAnalysisObjectType[string],
+  mode: gameStatsModeType,
+): number => {
+  const modes: ReadonlyArray<leaderBoardType> = mode === "all" ? leaderBoardTypeArray : [mode];
+
+  return modes.reduce((sum: number, leaderBoard) => {
+    const dayAnalysis = dayModes?.[leaderBoard];
+    return dayAnalysis ? sum + getGamesCount(dayAnalysis, leaderBoard) : sum;
+  }, 0);
 };
 
 export type AxisAlliesWinRate = { axis: number; allies: number; games: number };
