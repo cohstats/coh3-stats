@@ -26,6 +26,13 @@ const DynamicMapsLineChartCard = dynamic(() => import("./charts/maps-line-chart-
   ssr: false,
 });
 
+const DynamicMapsGamesAmountLineChartCard = dynamic(
+  () => import("./charts/maps-games-amount-line-chart-card"),
+  {
+    ssr: false,
+  },
+);
+
 const InnerMapStatsPage = ({
   data,
   mode,
@@ -136,6 +143,16 @@ const InnerMapStatsPage = ({
           mapName={selectedMap}
           width={1400}
           {...displayByProps}
+        />
+      </Flex>
+      <Space h="xl" />
+      <Flex gap={"xl"} wrap="wrap" justify="center">
+        <DynamicMapsGamesAmountLineChartCard
+          data={data.days as DaysMapsAnalysisObjectType}
+          mode={mode}
+          mapName={selectedMap}
+          {...displayByProps}
+          title={`${getMapLocalizedName(selectedMap)} - Amount of games ${mode}`}
         />
       </Flex>
       <Space h="xl" />

@@ -354,14 +354,18 @@ test.describe("Stats - game stats all modes", () => {
     await stats.navigate("?mode=all");
     await stats.waitForStats();
 
-    // Winrate, pick rate, stacked pick rate and popularity over time
+    await expect(page.getByTestId("stats-games-amount-over-time")).toContainText(
+      "Amount of games over time all modes",
+    );
+
+    // Winrate, amount of games, pick rate, stacked pick rate and popularity over time
     const displaySelects = page.locator("input[value='Days'], input[value='Weeks']");
-    await expect(displaySelects).toHaveCount(4);
+    await expect(displaySelects).toHaveCount(5);
 
     await displaySelects.nth(2).click();
     await page.getByRole("option", { name: "Weeks" }).click();
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       await expect(displaySelects.nth(i)).toHaveValue("Weeks");
     }
   });
@@ -438,17 +442,21 @@ test.describe("Stats - map stats page", () => {
       test.skip(true, "No map stats data for the default patch on the API right now");
     }
 
-    // Winrate, factions played and stacked factions played over time
+    await expect(page.getByTestId("stats-games-amount-over-time")).toContainText(
+      "Amount of games",
+    );
+
+    // Winrate, amount of games, factions played and stacked factions played over time
     const displaySelects = page.locator("input[value='Days'], input[value='Weeks']");
-    await expect(displaySelects).toHaveCount(3);
-    for (let i = 0; i < 3; i++) {
+    await expect(displaySelects).toHaveCount(4);
+    for (let i = 0; i < 4; i++) {
       await expect(displaySelects.nth(i)).toHaveValue("Weeks");
     }
 
     await displaySelects.nth(1).click();
     await page.getByRole("option", { name: "Days" }).click();
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       await expect(displaySelects.nth(i)).toHaveValue("Days");
     }
   });
