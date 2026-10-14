@@ -25,7 +25,8 @@
       "activity": "플레이어 카드 - {{name}} - 활동",
       "nemesis": "플레이어 카드 - {{name}} - 천적",
       "teamsStandings": "플레이어 카드 - {{name}} - 팀 순위",
-      "teamDetails": "플레이어 카드 - {{name}} - 팀 상세"
+      "teamDetails": "플레이어 카드 - {{name}} - 팀 상세",
+      "tournaments": "플레이어 카드 - {{name}} - 토너먼트"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "최근 매치",
     "activity": "활동",
     "nemesis": "천적",
-    "teamsStandings": "팀 순위"
+    "teamsStandings": "팀 순위",
+    "tournaments": "토너먼트"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,50 @@
       "apmTooltip": "분당 행동 수",
       "totalMatches": "총 매치",
       "noData": "이 게임 모드의 카운터 데이터가 없습니다"
+    }
+  },
+  "tournaments": {
+    "title": "토너먼트",
+    "summary": {
+      "tournaments_one": "토너먼트 {{count}}회",
+      "tournaments_other": "토너먼트 {{count}}회",
+      "seasons_one": "{{count}} 시즌",
+      "seasons_other": "{{count}} 시즌",
+      "titles_one": "타이틀 {{count}}개",
+      "titles_other": "타이틀 {{count}}개"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} 시즌",
+      "seasons_other": "{{count}} 시즌",
+      "matches_one": "{{count}} 경기",
+      "matches_other": "{{count}} 경기",
+      "winRate": "승률 {{winRate}}"
+    },
+    "communityTournament": "커뮤니티 토너먼트",
+    "visitSite": "사이트 방문",
+    "columns": {
+      "season": "시즌",
+      "result": "결과",
+      "matches": "경기",
+      "winsLosses": "승 / 패",
+      "winRate": "승률",
+      "score": "점수",
+      "casts": "중계"
+    },
+    "season": "시즌 {{season}}",
+    "casts_one": "중계 {{count}}회",
+    "casts_other": "중계 {{count}}회",
+    "noData": "{{name}} 님은 아직 이 토너먼트에 참가하지 않았습니다.",
+    "unavailable": "현재 토너먼트 데이터를 사용할 수 없습니다.",
+    "titles": {
+      "ladderwinner": "Ladder 우승자",
+      "ironcladwinner": "Ironclad 우승자",
+      "metaplayswinner": "Metaplays 우승자",
+      "championsOfheroeswinner": "Champions of Heroes 우승자",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Ladder 토너먼트"
     }
   }
 }

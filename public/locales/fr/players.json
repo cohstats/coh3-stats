@@ -25,7 +25,8 @@
       "activity": "Fiche joueur - {{name}} - Activité",
       "nemesis": "Fiche joueur - {{name}} - Némésis",
       "teamsStandings": "Fiche joueur - {{name}} - Classements des équipes",
-      "teamDetails": "Fiche joueur - {{name}} - Détails de l'équipe"
+      "teamDetails": "Fiche joueur - {{name}} - Détails de l'équipe",
+      "tournaments": "Carte du joueur - {{name}} - Tournois"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Parties récentes",
     "activity": "Activité",
     "nemesis": "Némésis",
-    "teamsStandings": "Équipes"
+    "teamsStandings": "Équipes",
+    "tournaments": "Tournois"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,50 @@
       "apmTooltip": "Actions par minute",
       "totalMatches": "Parties au total",
       "noData": "Aucune donnée de compteur disponible pour ce mode de jeu"
+    }
+  },
+  "tournaments": {
+    "title": "Tournois",
+    "summary": {
+      "tournaments_one": "{{count}} tournoi",
+      "tournaments_other": "{{count}} tournois",
+      "seasons_one": "{{count}} saison",
+      "seasons_other": "{{count}} saisons",
+      "titles_one": "{{count}} titre",
+      "titles_other": "{{count}} titres"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} saison",
+      "seasons_other": "{{count}} saisons",
+      "matches_one": "{{count}} match",
+      "matches_other": "{{count}} matchs",
+      "winRate": "{{winRate}} de victoires"
+    },
+    "communityTournament": "Tournoi communautaire",
+    "visitSite": "Visiter le site",
+    "columns": {
+      "season": "Saison",
+      "result": "Résultat",
+      "matches": "Matchs",
+      "winsLosses": "V / D",
+      "winRate": "Taux de victoire",
+      "score": "Score",
+      "casts": "Casts"
+    },
+    "season": "Saison {{season}}",
+    "casts_one": "{{count}} cast",
+    "casts_other": "{{count}} casts",
+    "noData": "{{name}} n'a pas encore joué dans ce tournoi.",
+    "unavailable": "Les données du tournoi sont actuellement indisponibles.",
+    "titles": {
+      "ladderwinner": "Vainqueur du Ladder",
+      "ironcladwinner": "Vainqueur Ironclad",
+      "metaplayswinner": "Vainqueur Metaplays",
+      "championsOfheroeswinner": "Vainqueur Champions of Heroes",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Tournoi Ladder"
     }
   }
 }

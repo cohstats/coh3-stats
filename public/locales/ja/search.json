@@ -19,6 +19,9 @@
     "finalStandUnits": "Final Stand ユニット",
     "maps": "マップ"
   },
+  "nav": {
+    "finalStandUnits": "FSユニット"
+  },
   "errors": {
     "searchError": "検索中にエラーが発生しました"
   },

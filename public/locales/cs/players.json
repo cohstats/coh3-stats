@@ -25,7 +25,8 @@
       "activity": "Karta hráče - {{name}} - Aktivita",
       "nemesis": "Karta hráče - {{name}} - Nemesis",
       "teamsStandings": "Karta hráče - {{name}} - Týmové žebříčky",
-      "teamDetails": "Karta hráče - {{name}} - Detaily týmu"
+      "teamDetails": "Karta hráče - {{name}} - Detaily týmu",
+      "tournaments": "Karta hráče - {{name}} - Turnaje"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Nedávné zápasy",
     "activity": "Aktivita",
     "nemesis": "Nemesis",
-    "teamsStandings": "Týmové žebříčky"
+    "teamsStandings": "Týmové žebříčky",
+    "tournaments": "Turnaje"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,62 @@
       "apmTooltip": "Akcí za minutu",
       "totalMatches": "Celkem zápasů",
       "noData": "Pro tento herní režim nejsou k dispozici žádné údaje o počítadlech"
+    }
+  },
+  "tournaments": {
+    "title": "Turnaje",
+    "summary": {
+      "tournaments_one": "{{count}} turnaj",
+      "tournaments_few": "{{count}} turnaje",
+      "tournaments_many": "{{count}} turnaje",
+      "tournaments_other": "{{count}} turnajů",
+      "seasons_one": "{{count}} sezóna",
+      "seasons_few": "{{count}} sezóny",
+      "seasons_many": "{{count}} sezóny",
+      "seasons_other": "{{count}} sezón",
+      "titles_one": "{{count}} titul",
+      "titles_few": "{{count}} tituly",
+      "titles_many": "{{count}} titulu",
+      "titles_other": "{{count}} titulů"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} sezóna",
+      "seasons_few": "{{count}} sezóny",
+      "seasons_many": "{{count}} sezóny",
+      "seasons_other": "{{count}} sezón",
+      "matches_one": "{{count}} zápas",
+      "matches_few": "{{count}} zápasy",
+      "matches_many": "{{count}} zápasu",
+      "matches_other": "{{count}} zápasů",
+      "winRate": "Úspěšnost {{winRate}}"
+    },
+    "communityTournament": "Komunitní turnaj",
+    "visitSite": "Navštívit web",
+    "columns": {
+      "season": "Sezóna",
+      "result": "Výsledek",
+      "matches": "Zápasy",
+      "winsLosses": "V / P",
+      "winRate": "Úspěšnost",
+      "score": "Skóre",
+      "casts": "Přenosy"
+    },
+    "season": "Sezóna {{season}}",
+    "casts_one": "{{count}} přenos",
+    "casts_few": "{{count}} přenosy",
+    "casts_many": "{{count}} přenosu",
+    "casts_other": "{{count}} přenosů",
+    "noData": "{{name}} se tohoto turnaje zatím nezúčastnil(a).",
+    "unavailable": "Data turnajů jsou momentálně nedostupná.",
+    "titles": {
+      "ladderwinner": "Vítěz Ladder turnaje",
+      "ironcladwinner": "Vítěz Ironclad",
+      "metaplayswinner": "Vítěz Metaplays",
+      "championsOfheroeswinner": "Vítěz Champions of Heroes",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Ladder turnaj"
     }
   }
 }

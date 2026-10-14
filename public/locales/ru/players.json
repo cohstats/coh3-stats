@@ -25,7 +25,8 @@
       "activity": "Карточка игрока - {{name}} - Активность",
       "nemesis": "Карточка игрока - {{name}} - Закляты враг",
       "teamsStandings": "Карточка игрока - {{name}} - Рейтинг команд",
-      "teamDetails": "Карточка игрока - {{name}} - Детали команды"
+      "teamDetails": "Карточка игрока - {{name}} - Детали команды",
+      "tournaments": "Карточка игрока - {{name}} - Турниры"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Недавние игры",
     "activity": "Активность",
     "nemesis": "Закляты враг",
-    "teamsStandings": "Рейтинг команд"
+    "teamsStandings": "Рейтинг команд",
+    "tournaments": "Турниры"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,62 @@
       "apmTooltip": "Действий в минуту",
       "totalMatches": "Всего матчей",
       "noData": "Нет данных счетчиков для этого режима игры"
+    }
+  },
+  "tournaments": {
+    "title": "Турниры",
+    "summary": {
+      "tournaments_one": "{{count}} турнир",
+      "tournaments_few": "{{count}} турнира",
+      "tournaments_many": "{{count}} турниров",
+      "tournaments_other": "{{count}} турнира",
+      "seasons_one": "{{count}} сезон",
+      "seasons_few": "{{count}} сезона",
+      "seasons_many": "{{count}} сезонов",
+      "seasons_other": "{{count}} сезона",
+      "titles_one": "{{count}} титул",
+      "titles_few": "{{count}} титула",
+      "titles_many": "{{count}} титулов",
+      "titles_other": "{{count}} титула"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} сезон",
+      "seasons_few": "{{count}} сезона",
+      "seasons_many": "{{count}} сезонов",
+      "seasons_other": "{{count}} сезона",
+      "matches_one": "{{count}} матч",
+      "matches_few": "{{count}} матча",
+      "matches_many": "{{count}} матчей",
+      "matches_other": "{{count}} матча",
+      "winRate": "{{winRate}} побед"
+    },
+    "communityTournament": "Турнир сообщества",
+    "visitSite": "Перейти на сайт",
+    "columns": {
+      "season": "Сезон",
+      "result": "Результат",
+      "matches": "Матчи",
+      "winsLosses": "П / П",
+      "winRate": "% Побед",
+      "score": "Счёт",
+      "casts": "Трансляции"
+    },
+    "season": "Сезон {{season}}",
+    "casts_one": "{{count}} трансляция",
+    "casts_few": "{{count}} трансляции",
+    "casts_many": "{{count}} трансляций",
+    "casts_other": "{{count}} трансляции",
+    "noData": "{{name}} ещё не играл(а) в этом турнире.",
+    "unavailable": "Данные турнира сейчас недоступны.",
+    "titles": {
+      "ladderwinner": "Победитель Ladder",
+      "ironcladwinner": "Победитель Ironclad",
+      "metaplayswinner": "Победитель Metaplays",
+      "championsOfheroeswinner": "Победитель Champions of Heroes",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Турнир Ladder"
     }
   }
 }

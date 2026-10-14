@@ -25,7 +25,8 @@
       "activity": "プレイヤーカード - {{name}} - アクティビティ",
       "nemesis": "プレイヤーカード - {{name}} - 宿敵",
       "teamsStandings": "プレイヤーカード - {{name}} - チーム成績",
-      "teamDetails": "プレイヤーカード - {{name}} - チーム詳細"
+      "teamDetails": "プレイヤーカード - {{name}} - チーム詳細",
+      "tournaments": "プレイヤーカード - {{name}} - トーナメント"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "最近の試合",
     "activity": "アクティビティ",
     "nemesis": "宿敵",
-    "teamsStandings": "チーム成績"
+    "teamsStandings": "チーム成績",
+    "tournaments": "トーナメント"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,50 @@
       "apmTooltip": "1 分あたりの操作数",
       "totalMatches": "総試合数",
       "noData": "このゲームモードのカウンターデータはありません"
+    }
+  },
+  "tournaments": {
+    "title": "トーナメント",
+    "summary": {
+      "tournaments_one": "{{count}} トーナメント",
+      "tournaments_other": "{{count}} トーナメント",
+      "seasons_one": "{{count}} シーズン",
+      "seasons_other": "{{count}} シーズン",
+      "titles_one": "{{count}} タイトル",
+      "titles_other": "{{count}} タイトル"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} シーズン",
+      "seasons_other": "{{count}} シーズン",
+      "matches_one": "{{count}} 試合",
+      "matches_other": "{{count}} 試合",
+      "winRate": "勝率 {{winRate}}"
+    },
+    "communityTournament": "コミュニティトーナメント",
+    "visitSite": "サイトを見る",
+    "columns": {
+      "season": "シーズン",
+      "result": "結果",
+      "matches": "試合数",
+      "winsLosses": "勝 / 敗",
+      "winRate": "勝率",
+      "score": "スコア",
+      "casts": "配信"
+    },
+    "season": "シーズン {{season}}",
+    "casts_one": "{{count}} 配信",
+    "casts_other": "{{count}} 配信",
+    "noData": "{{name}} はまだこのトーナメントに参加していません。",
+    "unavailable": "トーナメントデータは現在利用できません。",
+    "titles": {
+      "ladderwinner": "Ladder 優勝者",
+      "ironcladwinner": "Ironclad 優勝者",
+      "metaplayswinner": "Metaplays 優勝者",
+      "championsOfheroeswinner": "Champions of Heroes 優勝者",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Ladder トーナメント"
     }
   }
 }
