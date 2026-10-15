@@ -19,6 +19,9 @@
     "finalStandUnits": "Подразделения Final Stand",
     "maps": "Карты"
   },
+  "nav": {
+    "finalStandUnits": "Юниты FS"
+  },
   "errors": {
     "searchError": "Ошибка при поиске"
   },

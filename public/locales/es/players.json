@@ -25,7 +25,8 @@
       "activity": "Tarjeta del jugador - {{name}} - Actividad",
       "nemesis": "Tarjeta del jugador - {{name}} - Nemesis",
       "teamsStandings": "Tarjeta del jugador - {{name}} - Clasificación de equipos",
-      "teamDetails": "Tarjeta del jugador - {{name}} - Detalles del equipo"
+      "teamDetails": "Tarjeta del jugador - {{name}} - Detalles del equipo",
+      "tournaments": "Tarjeta de jugador - {{name}} - Torneos"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Partidas recientes",
     "activity": "Actividad",
     "nemesis": "Nemesis",
-    "teamsStandings": "Clasificación de equipos"
+    "teamsStandings": "Clasificación de equipos",
+    "tournaments": "Torneos"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,50 @@
       "apmTooltip": "Acciones Por Minuto",
       "totalMatches": "Total de Partidas",
       "noData": "No hay datos de contadores disponibles para este modo de juego"
+    }
+  },
+  "tournaments": {
+    "title": "Torneos",
+    "summary": {
+      "tournaments_one": "{{count}} torneo",
+      "tournaments_other": "{{count}} torneos",
+      "seasons_one": "{{count}} temporada",
+      "seasons_other": "{{count}} temporadas",
+      "titles_one": "{{count}} título",
+      "titles_other": "{{count}} títulos"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} temporada",
+      "seasons_other": "{{count}} temporadas",
+      "matches_one": "{{count}} partida",
+      "matches_other": "{{count}} partidas",
+      "winRate": "{{winRate}} de victorias"
+    },
+    "communityTournament": "Torneo de la comunidad",
+    "visitSite": "Visitar sitio",
+    "columns": {
+      "season": "Temporada",
+      "result": "Resultado",
+      "matches": "Partidas",
+      "winsLosses": "V / D",
+      "winRate": "Tasa de victorias",
+      "score": "Puntuación",
+      "casts": "Retransmisiones"
+    },
+    "season": "Temporada {{season}}",
+    "casts_one": "{{count}} retransmisión",
+    "casts_other": "{{count}} retransmisiones",
+    "noData": "{{name}} aún no ha jugado en este torneo.",
+    "unavailable": "Los datos del torneo no están disponibles actualmente.",
+    "titles": {
+      "ladderwinner": "Ganador del Ladder",
+      "ironcladwinner": "Ganador de Ironclad",
+      "metaplayswinner": "Ganador de Metaplays",
+      "championsOfheroeswinner": "Ganador de Champions of Heroes",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Torneo Ladder"
     }
   }
 }

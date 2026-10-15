@@ -25,7 +25,8 @@
       "activity": "Karta gracza - {{name}} - aktywność",
       "nemesis": "Karta gracza - {{name}} - nemezis",
       "teamsStandings": "Karta gracza - {{name}} - drużyny",
-      "teamDetails": "Karta gracza - {{name}} - szczegóły drużyny"
+      "teamDetails": "Karta gracza - {{name}} - szczegóły drużyny",
+      "tournaments": "Karta gracza - {{name}} - Turnieje"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "Ostatnie mecze",
     "activity": "Aktywność",
     "nemesis": "Nemezis",
-    "teamsStandings": "Drużyny"
+    "teamsStandings": "Drużyny",
+    "tournaments": "Turnieje"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,62 @@
       "apmTooltip": "Akcje na minutę",
       "totalMatches": "Łącznie meczów",
       "noData": "Brak danych liczników dla tego trybu gry"
+    }
+  },
+  "tournaments": {
+    "title": "Turnieje",
+    "summary": {
+      "tournaments_one": "{{count}} turniej",
+      "tournaments_few": "{{count}} turnieje",
+      "tournaments_many": "{{count}} turniejów",
+      "tournaments_other": "{{count}} turnieju",
+      "seasons_one": "{{count}} sezon",
+      "seasons_few": "{{count}} sezony",
+      "seasons_many": "{{count}} sezonów",
+      "seasons_other": "{{count}} sezonu",
+      "titles_one": "{{count}} tytuł",
+      "titles_few": "{{count}} tytuły",
+      "titles_many": "{{count}} tytułów",
+      "titles_other": "{{count}} tytułu"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} sezon",
+      "seasons_few": "{{count}} sezony",
+      "seasons_many": "{{count}} sezonów",
+      "seasons_other": "{{count}} sezonu",
+      "matches_one": "{{count}} mecz",
+      "matches_few": "{{count}} mecze",
+      "matches_many": "{{count}} meczów",
+      "matches_other": "{{count}} meczu",
+      "winRate": "{{winRate}} wygranych"
+    },
+    "communityTournament": "Turniej społeczności",
+    "visitSite": "Odwiedź stronę",
+    "columns": {
+      "season": "Sezon",
+      "result": "Wynik",
+      "matches": "Mecze",
+      "winsLosses": "W / P",
+      "winRate": "% wygranych",
+      "score": "Wynik punktowy",
+      "casts": "Transmisje"
+    },
+    "season": "Sezon {{season}}",
+    "casts_one": "{{count}} transmisja",
+    "casts_few": "{{count}} transmisje",
+    "casts_many": "{{count}} transmisji",
+    "casts_other": "{{count}} transmisji",
+    "noData": "{{name}} nie grał(a) jeszcze w tym turnieju.",
+    "unavailable": "Dane turnieju są obecnie niedostępne.",
+    "titles": {
+      "ladderwinner": "Zwycięzca Ladder",
+      "ironcladwinner": "Zwycięzca Ironclad",
+      "metaplayswinner": "Zwycięzca Metaplays",
+      "championsOfheroeswinner": "Zwycięzca Champions of Heroes",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Turniej Ladder"
     }
   }
 }

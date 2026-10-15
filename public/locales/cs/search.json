@@ -19,6 +19,9 @@
     "finalStandUnits": "Final Stand jednotky",
     "maps": "Mapy"
   },
+  "nav": {
+    "finalStandUnits": "Jednotky FS"
+  },
   "errors": {
     "searchError": "Chyba při vyhledávání"
   },

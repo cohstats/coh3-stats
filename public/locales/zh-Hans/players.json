@@ -25,7 +25,8 @@
       "activity": "玩家 card - {{name}} - 活动",
       "nemesis": "玩家 card - {{name}} - 宿敌",
       "teamsStandings": "玩家 card - {{name}} - 团队排名",
-      "teamDetails": "玩家 card - {{name}} - 团队详情"
+      "teamDetails": "玩家 card - {{name}} - 团队详情",
+      "tournaments": "玩家卡片 - {{name}} - 锦标赛"
     }
   },
   "tabs": {
@@ -34,7 +35,8 @@
     "recentMatches": "最近比赛",
     "activity": "活动",
     "nemesis": "宿敌",
-    "teamsStandings": "团队排名"
+    "teamsStandings": "团队排名",
+    "tournaments": "锦标赛"
   },
   "playerInfo": {
     "bestElo": {
@@ -317,6 +319,50 @@
       "apmTooltip": "每分钟操作数",
       "totalMatches": "总场次",
       "noData": "此游戏模式没有可用的计数器数据"
+    }
+  },
+  "tournaments": {
+    "title": "锦标赛",
+    "summary": {
+      "tournaments_one": "{{count}} 场锦标赛",
+      "tournaments_other": "{{count}} 场锦标赛",
+      "seasons_one": "{{count}} 个赛季",
+      "seasons_other": "{{count}} 个赛季",
+      "titles_one": "{{count}} 个头衔",
+      "titles_other": "{{count}} 个头衔"
+    },
+    "aggregate": {
+      "seasons_one": "{{count}} 个赛季",
+      "seasons_other": "{{count}} 个赛季",
+      "matches_one": "{{count}} 场比赛",
+      "matches_other": "{{count}} 场比赛",
+      "winRate": "胜率 {{winRate}}"
+    },
+    "communityTournament": "社区锦标赛",
+    "visitSite": "访问网站",
+    "columns": {
+      "season": "赛季",
+      "result": "结果",
+      "matches": "比赛",
+      "winsLosses": "胜 / 负",
+      "winRate": "胜率",
+      "score": "比分",
+      "casts": "解说"
+    },
+    "season": "第 {{season}} 赛季",
+    "casts_one": "{{count}} 场解说",
+    "casts_other": "{{count}} 场解说",
+    "noData": "{{name}} 尚未参加过此锦标赛。",
+    "unavailable": "锦标赛数据目前不可用。",
+    "titles": {
+      "ladderwinner": "Ladder 冠军",
+      "ironcladwinner": "Ironclad 冠军",
+      "metaplayswinner": "Metaplays 冠军",
+      "championsOfheroeswinner": "Champions of Heroes 冠军",
+      "thelegend": "The Legend"
+    },
+    "ladderTournament": {
+      "title": "Ladder 锦标赛"
     }
   }
 }

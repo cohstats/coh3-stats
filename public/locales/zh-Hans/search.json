@@ -19,6 +19,9 @@
     "finalStandUnits": "Final Stand 单位",
     "maps": "地图"
   },
+  "nav": {
+    "finalStandUnits": "FS 单位"
+  },
   "errors": {
     "searchError": "搜索时出错"
   },
