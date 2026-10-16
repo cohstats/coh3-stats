@@ -1,7 +1,8 @@
 import React from "react";
 import { Badge, Card, Group, Image, Stack, Text, Tooltip } from "@mantine/core";
-import { IconRulerMeasure } from "@tabler/icons-react";
+import { IconChartBar, IconRulerMeasure } from "@tabler/icons-react";
 import { TFunction } from "next-i18next/pages";
+import config from "../../../config";
 import LinkWithOutPrefetch from "../../../components/LinkWithOutPrefetch";
 import { getExplorerMapRoute } from "../../../src/routes";
 import { getIconsPathOnCDN } from "../../../src/utils";
@@ -44,8 +45,11 @@ const ResourceIcon = ({ src, alt }: { src: string; alt: string }) => (
   />
 );
 
+/** Win rate as a percentage with one decimal, the maps are usually close to 50 / 50. */
+const formatWinRate = (winRate: number) => `${(winRate * 100).toFixed(1)}%`;
+
 const MapCard = ({ map, t }: { map: MpMapListItem; t: TFunction }) => {
-  const { pointCounts, mapSize } = map;
+  const { pointCounts, mapSize, latestPatchStats } = map;
 
   return (
     <Card
@@ -160,6 +164,23 @@ const MapCard = ({ map, t }: { map: MpMapListItem; t: TFunction }) => {
             label={t("card.mapSizeTooltip")}
             icon={<IconRulerMeasure size={STAT_ICON_SIZE} />}
           />
+
+          {latestPatchStats && (
+            <CardStat
+              value={
+                <Text span size="sm" c="dimmed">
+                  {t("card.winRates", {
+                    axis: formatWinRate(latestPatchStats.axisWinRate),
+                    allies: formatWinRate(1 - latestPatchStats.axisWinRate),
+                    count: latestPatchStats.matchCount,
+                    games: latestPatchStats.matchCount.toLocaleString(),
+                  })}
+                </Text>
+              }
+              label={t("card.winRatesTooltip", { patch: config.latestPatch })}
+              icon={<IconChartBar size={STAT_ICON_SIZE} />}
+            />
+          )}
         </Stack>
       </Group>
     </Card>

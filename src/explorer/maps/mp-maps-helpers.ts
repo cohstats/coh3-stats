@@ -8,6 +8,7 @@
 
 import { getIconsPathOnCDN } from "../../utils";
 import type { MpMap, MpMapPoint, MpMapPointKind } from "./mp-maps-types";
+import type { MapWinRateSummary } from "../../stats/latest-patch-map-stats";
 
 /** Team layouts we group / filter by, in the order they should be displayed. */
 const MP_MAP_TEAM_LAYOUTS = ["1v1", "2v2", "3v3", "4v4"] as const;
@@ -38,6 +39,8 @@ type MpMapListItem = {
   mapSize: MpMap["mapSize"];
   /** Amount of points per kind, eg. `{ fuel: 6, victory: 3 }`. */
   pointCounts: MpMap["resources"]["counts"];
+  /** Latest patch Axis win rate and game count, only on the maps we track the stats for. */
+  latestPatchStats?: MapWinRateSummary;
 };
 
 /**
