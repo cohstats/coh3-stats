@@ -457,6 +457,32 @@ test.describe("Stats - map stats page", () => {
     await expect(stats.mapSelect).toHaveValue(/.+/);
   });
 
+  test("should switch every mode after a map was picked", async ({ page }) => {
+    // A 4 player map is not in 1v1 - switching there makes the map page swap the map in the url.
+    // That swap used to write the old mode back and the mode control got stuck.
+    const stats = new StatsPage(page, "map");
+    await stats.navigate("?mode=2v2&map=rural_castle_4p");
+    await stats.expectQuery("from", /^\d{4}/);
+    await expect(stats.modeControl.locator("input[value='2v2']")).toBeChecked();
+    // "No data" is also shown for a moment before the request starts - wait for the real data.
+    const hasData = await stats.gamesAnalyzed
+      .waitFor({ timeout: 60000 })
+      .then(() => true)
+      .catch(() => false);
+    test.skip(!hasData, "No map stats data for the default patch on the API right now");
+
+    for (const [label, mode] of [
+      ["1 vs 1", "1v1"],
+      ["3 vs 3", "3v3"],
+      ["4 vs 4", "4v4"],
+      ["2 vs 2", "2v2"],
+    ]) {
+      await stats.modeOption(label).click();
+      await stats.expectQuery("mode", mode);
+      await expect(stats.modeControl.locator(`input[value='${mode}']`)).toBeChecked();
+    }
+  });
+
   test("should show the time series by weeks and switch them together", async ({ page }) => {
     const stats = new StatsPage(page, "map");
     await stats.navigate();
