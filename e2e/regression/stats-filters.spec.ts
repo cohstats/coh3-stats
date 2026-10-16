@@ -137,7 +137,8 @@ test.describe("Stats - shared filter bar", () => {
 test.describe("Stats - game stats page", () => {
   test("should render the charts for the selected mode", async ({ page }) => {
     const stats = new StatsPage(page, "game");
-    await stats.navigate();
+    // The page opens on "all" by default, the maps and game time charts are only for one mode.
+    await stats.navigate("?mode=1v1");
     await stats.waitForStats();
 
     // Either there is data for the default patch, or the page says so - both are a rendered page,
@@ -165,6 +166,8 @@ test.describe("Stats - game stats page", () => {
   test("should re-request the data when the mode changes", async ({ page }) => {
     const stats = new StatsPage(page, "game");
     await stats.navigate();
+    // Before the default dates are in the url the page still shows "no data" - wait them out.
+    await stats.expectQuery("from", /^\d{4}/);
     await stats.waitForStats();
 
     await stats.modeOption("2 vs 2").click();
@@ -292,7 +295,11 @@ test.describe("Stats - game stats all modes", () => {
 
   test("should switch to all modes and sum the games of every mode", async ({ page }) => {
     const stats = new StatsPage(page, "game");
-    await stats.navigate();
+    // Start on a single mode - "all" is the default and clicking the selected option does nothing.
+    await stats.navigate("?mode=1v1");
+    // The url is applied once the router is ready - clicking before that races it.
+    await stats.expectQuery("from", /^\d{4}/);
+    await expect(stats.modeControl.locator("input[value='1v1']")).toBeChecked();
     await stats.waitForStats();
 
     await stats.modeOption("All").click();
@@ -332,7 +339,24 @@ test.describe("Stats - game stats all modes", () => {
     await expect(page.getByText(/Team composition/)).toHaveCount(0);
     await expect(page.getByTestId("stats-maps-played")).toHaveCount(0);
     await expect(page.getByTestId("stats-game-time")).toHaveCount(0);
+    // ...the link to the maps stats is still there without the maps card.
+    await expect(page.getByTestId("stats-maps-link")).toBeVisible();
     await expect(page.locator("text=Application error")).not.toBeVisible();
+  });
+
+  test("should open on all and return to it when the mode leaves the url", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate();
+    await stats.expectQuery("from", /^\d{4}/);
+    await expect(stats.modeControl.locator("input[value='all']")).toBeChecked();
+
+    await stats.modeOption("2 vs 2").click();
+    await stats.expectQuery("mode", "2v2");
+
+    // Back to the url without a mode - the control has to follow it, not stay on 2v2.
+    await page.goBack();
+    await stats.expectQuery("mode", null);
+    await expect(stats.modeControl.locator("input[value='all']")).toBeChecked();
   });
 
   test("should go back to a single mode from all", async ({ page }) => {
