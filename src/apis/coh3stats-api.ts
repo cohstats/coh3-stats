@@ -118,7 +118,7 @@ const getStatsUrl = (
 };
 
 export const getLiveGamesSummary = async (): Promise<LiveGameSummary> => {
-  const response = await fetch(getLiveGamesSummaryUrl());
+  const response = await fetch(getLiveGamesSummaryUrl(), { credentials: "include" });
   if (response.ok) {
     return await response.json();
   } else {
@@ -142,6 +142,7 @@ export const getLiveGames = async (
 ): Promise<ResponseLiveGames> => {
   const response = await fetch(
     `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/live/games?type=${type}&orderBy=${orderBy}&start=${start}&count=${count}`,
+    { credentials: "include" },
   );
   if (response.ok) {
     return await response.json();
