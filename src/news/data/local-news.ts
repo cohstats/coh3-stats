@@ -37,8 +37,8 @@ const localNews: LocalNewsItem[] = [
 
 [p]You can sign up now for both:[/p]
 [list]
-[*][url=https://meta-plays.com/tournaments/company-of-heroes-3/coh-20th-anniv-q1/]Qualifier 1[/url]
-[*][url=https://meta-plays.com/tournaments/company-of-heroes-3/coh-20th-anniv-q2/]Qualifier 2[/url]
+[*][url=https://meta-plays.com/tournaments/company-of-heroes-3/coh-20th-anniv-q1/]Qualifier 1[/url][/*]
+[*][url=https://meta-plays.com/tournaments/company-of-heroes-3/coh-20th-anniv-q2/]Qualifier 2[/url][/*]
 [/list]
 
 [h2]Main Event[/h2]

@@ -43,7 +43,7 @@ Local news articles are site-specific posts shown alongside Steam announcements 
 },
 ```
 
-Useful BBCode tags: `[p]`, `[h2]`, `[h3]`, `[b]`, `[i]`, `[img]...[/img]`, `[url=https://...]...[/url]`, `[list]` / `[*]`.
+Useful BBCode tags: `[p]`, `[h2]`, `[h3]`, `[b]`, `[i]`, `[img]...[/img]`, `[url=https://...]...[/url]`, `[list]` / `[*]...[/*]` (always close list items with `[/*]`, otherwise the content renders outside the bullet).
 
 ### Date tip
 
