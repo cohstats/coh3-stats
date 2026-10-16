@@ -162,6 +162,7 @@ const getStatsData = async (
 ) => {
   const response = await fetch(getStatsUrl(startDate, endDate, type, ock, filters), {
     headers: headers,
+    credentials: "include",
     cache: "force-cache",
     next: { revalidate: 300 },
   });

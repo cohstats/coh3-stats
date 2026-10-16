@@ -318,6 +318,7 @@ describe("coh3stats-api", () => {
       `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/getAnalysisStatsHttp?startDate=123&endDate=now&type=gameStats&v=${GET_ANALYSIS_STATS}&ock=cache-key-4`,
       {
         headers: undefined,
+        credentials: "include",
         cache: "force-cache",
         next: { revalidate: 300 },
       },
