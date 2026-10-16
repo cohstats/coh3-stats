@@ -7,19 +7,30 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
 import { getMpMaps } from "../../../src/explorer/maps/mp-maps";
-import { getMpMapImageUrl } from "../../../src/explorer/maps/mp-maps-helpers";
+import {
+  getMpMapImageUrl,
+  getMpMapMode,
+  MP_MAP_TEAM_LAYOUTS,
+} from "../../../src/explorer/maps/mp-maps-helpers";
 import MapDetailPage from "../../../screens/explorer/maps/map-detail-page";
 import type { MpMap } from "../../../src/explorer/maps/mp-maps-types";
-import { getExplorerMapRoute } from "../../../src/routes";
+import { getExplorerMapRoute, mapStatsModeType } from "../../../src/routes";
+import { isOfficialMap } from "../../../src/coh3/coh3-data";
+import {
+  getLatestPatchMapTeamComposition,
+  MapTeamComposition,
+} from "../../../src/stats/latest-patch-map-stats";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { AnalyticsExplorerMapDetailsView } from "../../../src/firebase/analytics";
 
 interface MapDetailProps {
   map: MpMap | null;
+  teamComposition: MapTeamComposition | null;
+  latestPatch: string;
 }
 
 /** Detail page of a single map - see `MapDetailPage` for the layout. */
-const MapDetail: NextPage<MapDetailProps> = ({ map }) => {
+const MapDetail: NextPage<MapDetailProps> = ({ map, teamComposition, latestPatch }) => {
   const { t } = useTranslation(["explorer-maps"]);
 
   useEffect(() => {
@@ -50,7 +61,12 @@ const MapDetail: NextPage<MapDetailProps> = ({ map }) => {
         languageAlternates={generateLanguageAlternates(path)}
       />
       <Container size="lg" p={0}>
-        <MapDetailPage map={map} t={t} />
+        <MapDetailPage
+          map={map}
+          teamComposition={teamComposition}
+          latestPatch={latestPatch}
+          t={t}
+        />
       </Container>
     </>
   );
@@ -70,12 +86,22 @@ export const getStaticProps: GetStaticProps<MapDetailProps> = async (context) =>
     return { notFound: true, revalidate: false };
   }
 
+  // We track the map stats only for the official automatch maps, and only for the team modes.
+  const mode = map ? getMpMapMode(map) : null;
+  const teamComposition =
+    map && isOfficialMap(map.id) && MP_MAP_TEAM_LAYOUTS.includes(mode as mapStatsModeType)
+      ? await getLatestPatchMapTeamComposition(map.id, mode as mapStatsModeType)
+      : null;
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common", "explorer-maps"])),
       map,
+      teamComposition,
+      latestPatch: config.latestPatch,
     },
-    revalidate: false,
+    // The map data only changes with a deploy, but the team composition stats are updated daily.
+    revalidate: 86400,
   };
 };
 

@@ -38,6 +38,9 @@ import {
   MpMapRenderedPointKind,
 } from "../../../src/explorer/maps/mp-maps-helpers";
 import type { MpMap } from "../../../src/explorer/maps/mp-maps-types";
+import type { AnalysisObjectType } from "../../../src/analysis-types";
+import type { MapTeamComposition } from "../../../src/stats/latest-patch-map-stats";
+import { FactionVsFactionCard } from "../../../components/charts/card-factions-heatmap";
 
 /** Order the point tiers are displayed in, from the smallest to the biggest. */
 const TIER_ORDER = ["extra_low", "low", "medium", "extra_medium", "high", "default"];
@@ -88,11 +91,34 @@ const InfoRow = ({
   </Group>
 );
 
+/** Link to the full stats of the map on the map stats page. */
+const MapStatsButton = ({ href, label, ml }: { href: string; label: string; ml?: string }) => (
+  <Button
+    component={LinkWithOutPrefetch}
+    href={href}
+    variant="default"
+    leftSection={<IconChartBar size={18} />}
+    ml={ml}
+  >
+    {label}
+  </Button>
+);
+
 /**
  * Detail page of a single map - the minimap with the point layout drawn on top of it on the left, and
  * everything we know about the map on the right.
  */
-const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
+const MapDetailPage = ({
+  map,
+  teamComposition,
+  latestPatch,
+  t,
+}: {
+  map: MpMap;
+  teamComposition: MapTeamComposition | null;
+  latestPatch: string;
+  t: TFunction;
+}) => {
   const mode = getMpMapMode(map);
   // We track the map stats only for the official automatch maps, and only for the team modes.
   const statsRoute =
@@ -182,15 +208,11 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
               </Tooltip>
             )}
             {statsRoute && (
-              <Button
-                component={LinkWithOutPrefetch}
+              <MapStatsButton
                 href={statsRoute}
-                variant="default"
-                leftSection={<IconChartBar size={18} />}
+                label={t("detail.mapStats", { mode })}
                 ml="auto"
-              >
-                {t("detail.mapStats", { mode })}
-              </Button>
+              />
             )}
           </Group>
 
@@ -331,6 +353,30 @@ const MapDetailPage = ({ map, t }: { map: MpMap; t: TFunction }) => {
           )}
         </Stack>
       </Grid.Col>
+
+      {/* Full width row - team composition of the latest patch. */}
+      {statsRoute && teamComposition && (
+        <Grid.Col span={24}>
+          <Stack gap="xs">
+            <Group justify="space-between" gap="sm">
+              <Text size="sm" c="dimmed">
+                {t("detail.teamCompositionInfo", {
+                  patch: latestPatch,
+                  count: teamComposition.matchCount,
+                  games: teamComposition.matchCount.toLocaleString(),
+                })}
+              </Text>
+              <MapStatsButton href={statsRoute} label={t("detail.mapStats", { mode })} />
+            </Group>
+            <FactionVsFactionCard
+              // The card only reads the faction matrix.
+              data={teamComposition as AnalysisObjectType}
+              title={t("detail.teamComposition", { map: map.name, mode })}
+              width="100%"
+            />
+          </Stack>
+        </Grid.Col>
+      )}
     </Grid>
   );
 };
