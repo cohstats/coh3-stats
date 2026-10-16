@@ -40,7 +40,10 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
   const { push, query } = useRouter();
   const [patchSelectValue, setPatchSelectValue] = useState<string | null>(null);
 
-  const [mode, setMode] = useState<"all" | "1v1" | "2v2" | "3v3" | "4v4">("1v1");
+  // The games page opens on "all", the maps page has no "all" view so it stays on 1v1
+  const [mode, setMode] = useState<"all" | "1v1" | "2v2" | "3v3" | "4v4">(
+    statsType === "gameStats" ? "all" : "1v1",
+  );
   const [valueDatePicker, setValueDatePicker] = useState<[Date | null, Date | null]>([
     null,
     null,
