@@ -54,7 +54,10 @@
     "notInLobby": "Not in lobby",
     "notInLobbyTooltip": "This map is not selectable in the in-game lobby.",
     "mapSize": "{{width}} × {{height}}",
-    "mapSizeTooltip": "Map size"
+    "mapSizeTooltip": "Map size",
+    "winRates_one": "Axis {{axis}} · Allies {{allies}} · {{games}} game",
+    "winRates_other": "Axis {{axis}} · Allies {{allies}} · {{games}} games",
+    "winRatesTooltip": "Win rates in the latest patch {{patch}}"
   },
   "points": {
     "victory": "Victory points",
@@ -95,6 +98,9 @@
     "playableArea": "Playable area",
     "playableAreaTooltip": "Bounding box of the capture points - the part of the map the fighting happens on. Always smaller than the full map size.",
     "mapStats": "{{mode}} map statistics",
+    "teamComposition": "{{map}} - {{mode}} Team composition",
+    "teamCompositionInfo_one": "Latest patch {{patch}} · {{games}} game",
+    "teamCompositionInfo_other": "Latest patch {{patch}} · {{games}} games",
     "points": "Resource points",
     "totalCapturable": "Capturable points",
     "income": "Income per minute",
