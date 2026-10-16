@@ -5,14 +5,82 @@ import { checkFooterPresent, checkPageLoaded } from "../helpers/test-utils";
  * Regression tests for `/live-games`.
  *
  * The page is statically generated and then fetches two things client side: the summary (a card
- * plus the line chart) and the paged table of the games currently in progress. Both come from the
- * live API, so the number of games is whatever the game happens to have right now - the tests below
- * assert the structure and the filter/url behaviour rather than a row count, and intercept the API
- * when they need a specific state.
+ * plus the line chart) and the paged table of the games currently in progress. Both endpoints are
+ * mocked for every test - the live API sits behind a Cloudflare challenge which a test browser can't
+ * pass, and the data would otherwise change with whatever is being played right now. Tests that need
+ * a specific state register their own route, which takes precedence over the default mocks.
  */
 
 const isLiveGamesApi = (url: URL) => url.href.includes("/live/games");
 const isLiveSummaryApi = (url: URL) => url.href.includes("/live/summary");
+
+const mockGames = {
+  totalGames: 1,
+  unixTimeStamp: 1754600000,
+  liveGames: [
+    {
+      id: "1",
+      matchtype_id: 4,
+      mapname: "rural_castle_4p",
+      startgametime: 1754599000,
+      observertotal: 3,
+      server: "eu-west",
+      slotinfo: [],
+      players: [
+        {
+          // 137123 = Wehrmacht (axis), 129494 = US Forces (allies).
+          profile_id: 1,
+          race_id: 137123,
+          teamid: 0,
+          rank: 12,
+          player_profile: { alias: "AxisPlayer", country: "cz" },
+        },
+        {
+          profile_id: 2,
+          race_id: 129494,
+          teamid: 1,
+          rank: 34,
+          player_profile: { alias: "AlliesPlayer", country: "de" },
+        },
+      ],
+    },
+  ],
+};
+
+const summaryPoint = (ut: number) => ({
+  ut,
+  "1v1": 120,
+  "2v2": 80,
+  "3v3": 40,
+  "4v4": 60,
+  ai: 30,
+  custom: 10,
+});
+
+const mockSummary = {
+  liveGameSummary: {
+    "1v1": { games: 120, players: 240 },
+    "2v2": { games: 80, players: 320 },
+    "3v3": { games: 40, players: 240 },
+    "4v4": { games: 60, players: 480 },
+    ai: { games: 30, players: 60 },
+    custom: { games: 10, players: 40 },
+    totalAutomatch: { games: 300, players: 1280 },
+    total: { games: 340, players: 1380 },
+    unixTimeStamp: 1754600000,
+  },
+  liveGamesChart: {
+    // A few hours of points, enough for the line chart to draw.
+    timeLine: Array.from({ length: 12 }, (_, i) => summaryPoint(1754560000 + i * 3600)),
+    buffer: [],
+  },
+};
+
+const fulfillJson = (body: unknown) => ({
+  status: 200,
+  contentType: "application/json",
+  body: JSON.stringify(body),
+});
 
 const typeSelect = (page: Page) => page.getByTestId("live-games-type-select");
 const orderSelect = (page: Page) => page.getByTestId("live-games-order-select");
@@ -27,6 +95,11 @@ const waitForGames = async (page: Page) => {
 };
 
 test.describe("Live games", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route(isLiveSummaryApi, (route) => route.fulfill(fulfillJson(mockSummary)));
+    await page.route(isLiveGamesApi, (route) => route.fulfill(fulfillJson(mockGames)));
+  });
+
   test("should render the summary, the filters and the table", async ({ page }) => {
     await page.goto("/live-games");
     await checkPageLoaded(page);
@@ -60,7 +133,7 @@ test.describe("Live games", () => {
     const requested: string[] = [];
     await page.route(isLiveGamesApi, (route) => {
       requested.push(route.request().url());
-      return route.continue();
+      return route.fallback();
     });
 
     await page.goto("/live-games");
@@ -93,46 +166,6 @@ test.describe("Live games", () => {
   });
 
   test("should render the games with players, map and duration", async ({ page }) => {
-    // Pin the payload so the assertions do not depend on what is being played right now.
-    await page.route(isLiveGamesApi, (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({
-          totalGames: 1,
-          unixTimeStamp: 1754600000,
-          liveGames: [
-            {
-              id: "1",
-              matchtype_id: 4,
-              mapname: "rural_castle_4p",
-              startgametime: 1754599000,
-              observertotal: 3,
-              server: "eu-west",
-              slotinfo: [],
-              players: [
-                {
-                  // 137123 = Wehrmacht (axis), 129494 = US Forces (allies).
-                  profile_id: 1,
-                  race_id: 137123,
-                  teamid: 0,
-                  rank: 12,
-                  player_profile: { alias: "AxisPlayer", country: "cz" },
-                },
-                {
-                  profile_id: 2,
-                  race_id: 129494,
-                  teamid: 1,
-                  rank: 34,
-                  player_profile: { alias: "AlliesPlayer", country: "de" },
-                },
-              ],
-            },
-          ],
-        }),
-      }),
-    );
-
     await page.goto("/live-games?type=1v1");
     await waitForGames(page);
 
