@@ -16,6 +16,41 @@ export type LocalNewsItem = {
  */
 const localNews: LocalNewsItem[] = [
   {
+    gid: "local-meta-plays-coh-20th-anniversary-league",
+    title: "Company of Heroes 20th Anniversary League",
+    author: "Meta Plays",
+    date: 1792152559,
+    image: "/images/news/coh-20th-anniversary-league.webp",
+    url: "https://meta-plays.com/news/companyofheroes3/20th-anniversary/",
+    contents: `
+[img]/images/news/coh-20th-anniversary-league.webp[/img]
+
+[p]We're pleased to announce the Company of Heroes 20th Anniversary League sponsored by Relic![/p]
+
+[p]With [b]$4,000[/b] on the line, we will hold two qualifier events, where the top players will be invited to the main event - all that make it there will get a share of the prizes.[/p]
+
+[p]Check out our [url=https://meta-plays.com/news/companyofheroes3/20th-anniversary/]news article[/url] for more details.[/p]
+
+[h2]Qualifiers[/h2]
+
+[p]The qualifiers start [b]November 5th[/b] and [b]November 15th[/b] respectively, and will be a relaxed format where you can schedule your own matches. Live streams will happen November 15th and 29th respectively.[/p]
+
+[p]You can sign up now for both:[/p]
+[list]
+[*][url=https://meta-plays.com/tournaments/company-of-heroes-3/coh-20th-anniv-q1/]Qualifier 1[/url]
+[*][url=https://meta-plays.com/tournaments/company-of-heroes-3/coh-20th-anniv-q2/]Qualifier 2[/url]
+[/list]
+
+[h2]Main Event[/h2]
+
+[p]The main event's group stage will be played and streamed live [b]December 5th and 6th[/b], while the final stage will take place [b]December 12th and 13th[/b].[/p]
+
+[h2]Watch[/h2]
+
+[p]Follow the official Company of Heroes YouTube and Relic Twitch channels, as well as the Meta Plays Twitch and YouTube, to catch all the games. The caster line up will include Olvadi, as well as Greyshot, Turin, Shark, and of course Stormless![/p]
+`.trim(),
+  },
+  {
     gid: "local-ladder-tournament-season-2-registration",
     title: "Ladder Tournament - Season 2 Registration",
     author: "Ladder Tournament",
