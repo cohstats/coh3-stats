@@ -54,14 +54,17 @@ const InnerMapStatsPage = ({
     mapFromQuery && availableMaps.includes(mapFromQuery) ? mapFromQuery : availableMaps[0];
 
   /**
-   * Only the `map` param is ours, all the other params (mode, from, to, filters) are owned by the
-   * stats container. We read them back from the live URL instead of the `query` of this render,
-   * otherwise a param pushed by the container right before this update (eg. the mode) would be
-   * dropped from the URL.
+   * Only the `map` param is ours, the other params (from, to, filters) are owned by the stats
+   * container. We read them back from the live URL instead of the `query` of this render,
+   * otherwise a param pushed by the container right before this update would be dropped.
+   * The mode is the exception - when it's changed, this page re-renders with the new mode before
+   * the container's push reaches the URL. Writing the old mode from the URL back would switch the
+   * mode back, so we write the mode this page is rendering.
    */
   const pushMapToUrl = (value: string, method: "push" | "replace") => {
     const params = new URLSearchParams(window.location.search);
     params.set("map", value);
+    params.set("mode", mode);
 
     router[method]({ query: Object.fromEntries(params) }, undefined, { shallow: true });
   };

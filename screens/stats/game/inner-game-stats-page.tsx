@@ -25,7 +25,7 @@ import {
 import { leaderBoardType } from "../../../src/coh3/coh3-types";
 import { ChartCard, TitleWithHelper } from "./chart-card";
 import { TimeSeriesDisplayType } from "../../../components/charts/charts-components-utils";
-import AllModesComparison from "./all-modes-comparison";
+import AllModesComparison, { GamesPerModeCard } from "./all-modes-comparison";
 
 const DynamicWinRateBarChart = dynamic(() => import("./charts/win-rate-bar"), { ssr: false });
 const DynamicGamesBarChart = dynamic(() => import("./charts/games-bar"), { ssr: false });
@@ -176,6 +176,17 @@ const InnerGameStatsPage = ({
         `${title}${titleSuffix}`
       );
 
+    // In the first row for a single mode, with the per mode charts on "all"
+    const gamesResultsCard = (
+      <ChartCard
+        title={factionChartTitle("Games Results")}
+        size={"md"}
+        testId="stats-games-results"
+      >
+        <DynamicGamesBarChart data={analysisData} />
+      </ChartCard>
+    );
+
     content = (
       <>
         <Flex gap={"xl"} justify="center">
@@ -209,9 +220,10 @@ const InnerGameStatsPage = ({
         </Flex>
         {matchCount > 0 && (
           <>
-            {isAll && <AllModesComparison analysis={analysis} />}
-
+            {/* On "all" the games per mode and the axis vs allies sit next to the faction charts */}
             <Flex gap={"md"} wrap="wrap" justify="space-between">
+              {isAll && <GamesPerModeCard analysis={analysis} />}
+
               <ChartCard
                 title={factionChartTitle("Factions Played")}
                 size={"md"}
@@ -220,13 +232,7 @@ const InnerGameStatsPage = ({
                 <DynamicFactionsPlayedPieChart data={analysisData} />
               </ChartCard>
 
-              <ChartCard
-                title={factionChartTitle("Games Results")}
-                size={"md"}
-                testId="stats-games-results"
-              >
-                <DynamicGamesBarChart data={analysisData} />
-              </ChartCard>
+              {!isAll && gamesResultsCard}
 
               <ChartCard
                 title={factionChartTitle("Faction Winrate")}
@@ -283,6 +289,26 @@ const InnerGameStatsPage = ({
             </Flex>
 
             <Space h="xl" />
+            {isAll && (
+              <>
+                <AllModesComparison analysis={analysis}>{gamesResultsCard}</AllModesComparison>
+                {/* The maps card with its link is shown only for a single mode */}
+                <Flex justify="center">
+                  <Button
+                    component={Link}
+                    href={getMapsStatsRoute()}
+                    variant={"default"}
+                    data-testid="stats-maps-link"
+                  >
+                    <Group gap={4}>
+                      <IconCirclePlus size={"18"} />
+                      Maps stats
+                    </Group>
+                  </Button>
+                </Flex>
+                <Space h="xl" />
+              </>
+            )}
             {!isAll && (
               <>
                 <Flex gap={"md"} wrap="wrap" justify="space-between">

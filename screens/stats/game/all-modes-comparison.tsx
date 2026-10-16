@@ -24,45 +24,39 @@ const DynamicGameLengthDistributionLine = dynamic(
   { ssr: false },
 );
 
-/**
- * Charts on the top of the game stats page comparing the 1v1 - 4v4 modes
- * side by side. Shown only when the "all" mode is selected.
- */
-const AllModesComparison = ({ analysis }: { analysis: StatsDataObject }) => {
-  const valuesPerMode = (getValue: (modeAnalysis: AnalysisObjectType) => number) =>
-    Object.fromEntries(
-      leaderBoardTypeArray.map((mode) => [mode, analysis[mode] ? getValue(analysis[mode]) : 0]),
-    ) as Record<leaderBoardType, number>;
+const valuesPerMode = (
+  analysis: StatsDataObject,
+  getValue: (modeAnalysis: AnalysisObjectType) => number,
+) =>
+  Object.fromEntries(
+    leaderBoardTypeArray.map((mode) => [mode, analysis[mode] ? getValue(analysis[mode]) : 0]),
+  ) as Record<leaderBoardType, number>;
 
+/**
+ * Games per mode pie - shown in the first row of the "all" mode, next to the faction charts.
+ */
+export const GamesPerModeCard = ({ analysis }: { analysis: StatsDataObject }) => (
+  <ChartCard title={"Games per mode"} size={"md"} testId="stats-games-per-mode">
+    <DynamicModesPieChart
+      values={valuesPerMode(analysis, (modeAnalysis) => modeAnalysis.matchCount || 0)}
+      unit={"games"}
+    />
+  </ChartCard>
+);
+
+/**
+ * Charts comparing the 1v1 - 4v4 modes side by side, shown below the first row of the "all" mode.
+ * `children` are added at the end of the last row.
+ */
+const AllModesComparison = ({
+  analysis,
+  children,
+}: {
+  analysis: StatsDataObject;
+  children?: React.ReactNode;
+}) => {
   return (
     <>
-      <Flex gap={"md"} wrap="wrap" justify="space-between">
-        <ChartCard title={"Games per mode"} size={"md"} testId="stats-games-per-mode">
-          <DynamicModesPieChart
-            values={valuesPerMode((modeAnalysis) => modeAnalysis.matchCount || 0)}
-            unit={"games"}
-          />
-        </ChartCard>
-        <ChartCard title={"Hours played"} size={"md"} testId="stats-hours-per-mode">
-          <DynamicModesPieChart values={valuesPerMode(getTotalGameTimeHours)} unit={"hours"} />
-        </ChartCard>
-        <ChartCard title={"Avg game time"} size={"md"} testId="stats-avg-game-time-per-mode">
-          <DynamicAvgGameTimePerModeBar analysis={analysis} />
-        </ChartCard>
-        <ChartCard
-          title={
-            <TitleWithHelper
-              title={"Faction popularity"}
-              helper={"Share of the players playing each faction in the game mode."}
-            />
-          }
-          size={"md"}
-          testId="stats-faction-popularity-per-mode"
-        >
-          <DynamicFactionPopularityPerModeBar analysis={analysis} />
-        </ChartCard>
-      </Flex>
-      <Space h="xl" />
       <Flex gap={"md"} wrap="wrap" justify="space-between">
         <ChartCard
           title={
@@ -92,6 +86,31 @@ const AllModesComparison = ({ analysis }: { analysis: StatsDataObject }) => {
         >
           <DynamicGameLengthDistributionLine analysis={analysis} />
         </ChartCard>
+      </Flex>
+      <Space h="xl" />
+      <Flex gap={"md"} wrap="wrap" justify="space-between">
+        <ChartCard title={"Hours played"} size={"md"} testId="stats-hours-per-mode">
+          <DynamicModesPieChart
+            values={valuesPerMode(analysis, getTotalGameTimeHours)}
+            unit={"hours"}
+          />
+        </ChartCard>
+        <ChartCard title={"Avg game time"} size={"md"} testId="stats-avg-game-time-per-mode">
+          <DynamicAvgGameTimePerModeBar analysis={analysis} />
+        </ChartCard>
+        <ChartCard
+          title={
+            <TitleWithHelper
+              title={"Faction popularity"}
+              helper={"Share of the players playing each faction in the game mode."}
+            />
+          }
+          size={"md"}
+          testId="stats-faction-popularity-per-mode"
+        >
+          <DynamicFactionPopularityPerModeBar analysis={analysis} />
+        </ChartCard>
+        {children}
       </Flex>
       <Space h="xl" />
     </>

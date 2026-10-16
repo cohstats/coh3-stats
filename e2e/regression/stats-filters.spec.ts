@@ -137,7 +137,8 @@ test.describe("Stats - shared filter bar", () => {
 test.describe("Stats - game stats page", () => {
   test("should render the charts for the selected mode", async ({ page }) => {
     const stats = new StatsPage(page, "game");
-    await stats.navigate();
+    // The page opens on "all" by default, the maps and game time charts are only for one mode.
+    await stats.navigate("?mode=1v1");
     await stats.waitForStats();
 
     // Either there is data for the default patch, or the page says so - both are a rendered page,
@@ -165,6 +166,8 @@ test.describe("Stats - game stats page", () => {
   test("should re-request the data when the mode changes", async ({ page }) => {
     const stats = new StatsPage(page, "game");
     await stats.navigate();
+    // Before the default dates are in the url the page still shows "no data" - wait them out.
+    await stats.expectQuery("from", /^\d{4}/);
     await stats.waitForStats();
 
     await stats.modeOption("2 vs 2").click();
@@ -292,7 +295,11 @@ test.describe("Stats - game stats all modes", () => {
 
   test("should switch to all modes and sum the games of every mode", async ({ page }) => {
     const stats = new StatsPage(page, "game");
-    await stats.navigate();
+    // Start on a single mode - "all" is the default and clicking the selected option does nothing.
+    await stats.navigate("?mode=1v1");
+    // The url is applied once the router is ready - clicking before that races it.
+    await stats.expectQuery("from", /^\d{4}/);
+    await expect(stats.modeControl.locator("input[value='1v1']")).toBeChecked();
     await stats.waitForStats();
 
     await stats.modeOption("All").click();
@@ -332,7 +339,24 @@ test.describe("Stats - game stats all modes", () => {
     await expect(page.getByText(/Team composition/)).toHaveCount(0);
     await expect(page.getByTestId("stats-maps-played")).toHaveCount(0);
     await expect(page.getByTestId("stats-game-time")).toHaveCount(0);
+    // ...the link to the maps stats is still there without the maps card.
+    await expect(page.getByTestId("stats-maps-link")).toBeVisible();
     await expect(page.locator("text=Application error")).not.toBeVisible();
+  });
+
+  test("should open on all and return to it when the mode leaves the url", async ({ page }) => {
+    const stats = new StatsPage(page, "game");
+    await stats.navigate();
+    await stats.expectQuery("from", /^\d{4}/);
+    await expect(stats.modeControl.locator("input[value='all']")).toBeChecked();
+
+    await stats.modeOption("2 vs 2").click();
+    await stats.expectQuery("mode", "2v2");
+
+    // Back to the url without a mode - the control has to follow it, not stay on 2v2.
+    await page.goBack();
+    await stats.expectQuery("mode", null);
+    await expect(stats.modeControl.locator("input[value='all']")).toBeChecked();
   });
 
   test("should go back to a single mode from all", async ({ page }) => {
@@ -431,6 +455,32 @@ test.describe("Stats - map stats page", () => {
       test.skip(true, "No map stats data for the default patch on the API right now");
     }
     await expect(stats.mapSelect).toHaveValue(/.+/);
+  });
+
+  test("should switch every mode after a map was picked", async ({ page }) => {
+    // A 4 player map is not in 1v1 - switching there makes the map page swap the map in the url.
+    // That swap used to write the old mode back and the mode control got stuck.
+    const stats = new StatsPage(page, "map");
+    await stats.navigate("?mode=2v2&map=rural_castle_4p");
+    await stats.expectQuery("from", /^\d{4}/);
+    await expect(stats.modeControl.locator("input[value='2v2']")).toBeChecked();
+    // "No data" is also shown for a moment before the request starts - wait for the real data.
+    const hasData = await stats.gamesAnalyzed
+      .waitFor({ timeout: 60000 })
+      .then(() => true)
+      .catch(() => false);
+    test.skip(!hasData, "No map stats data for the default patch on the API right now");
+
+    for (const [label, mode] of [
+      ["1 vs 1", "1v1"],
+      ["3 vs 3", "3v3"],
+      ["4 vs 4", "4v4"],
+      ["2 vs 2", "2v2"],
+    ]) {
+      await stats.modeOption(label).click();
+      await stats.expectQuery("mode", mode);
+      await expect(stats.modeControl.locator(`input[value='${mode}']`)).toBeChecked();
+    }
   });
 
   test("should show the time series by weeks and switch them together", async ({ page }) => {

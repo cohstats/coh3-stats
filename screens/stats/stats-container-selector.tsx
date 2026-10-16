@@ -37,10 +37,12 @@ import { getAboutRoute } from "../../src/routes";
 const patchSelectorData = getPatchVersionAsMantineV7Groups();
 
 const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapStats" }) => {
-  const { push, query } = useRouter();
+  const { push, query, isReady } = useRouter();
   const [patchSelectValue, setPatchSelectValue] = useState<string | null>(null);
 
-  const [mode, setMode] = useState<"all" | "1v1" | "2v2" | "3v3" | "4v4">("1v1");
+  // The games page opens on "all", the maps page has no "all" view so it stays on 1v1
+  const defaultMode = statsType === "gameStats" ? "all" : "1v1";
+  const [mode, setMode] = useState<"all" | "1v1" | "2v2" | "3v3" | "4v4">(defaultMode);
   const [valueDatePicker, setValueDatePicker] = useState<[Date | null, Date | null]>([
     null,
     null,
@@ -61,25 +63,21 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
     } else {
       AnalyticsMapStatsPageView();
     }
+  }, []);
 
-    const queryParams = new URLSearchParams(window.location.search);
-    const fromQuery = queryParams.get("from")
-      ? convertFromDateString(queryParams.get("from") as string)
-      : null;
-    const toQuery = queryParams.get("to")
-      ? convertFromDateString(queryParams.get("to") as string)
-      : null;
+  useEffect(() => {
+    // The stats pages are statically generated, so until the router is ready `query` is empty.
+    // Pushing before that races the router filling in the query of a deep link (`?mode=`,
+    // `?filters=`, `?map=` - what `getMapsStatsRoute` produces) and the page can miss the dates.
+    if (!isReady) return;
 
     const defaultPatchView = config.statsPatchSelector[config.defaultStatsPatchSelector];
 
-    if (!fromQuery && !toQuery && defaultPatchView) {
-      // The stats pages are statically generated, so on mount `query` is still empty - spreading it
-      // here would drop every other param of a deep link (`?mode=`, `?filters=`, `?map=`), which is
-      // exactly what `getMapsStatsRoute` produces. Read them off the live url instead.
+    if (!query.from && !query.to && defaultPatchView) {
       push(
         {
           query: {
-            ...Object.fromEntries(queryParams),
+            ...query,
             from: defaultPatchView.from,
             to: defaultPatchView.to,
           },
@@ -90,7 +88,7 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
         },
       );
     }
-  }, []);
+  }, [isReady]);
 
   useEffect(() => {
     const fromQuery = query.from ? convertFromDateString(query.from as string) : null;
@@ -115,16 +113,18 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       setValueDatePicker([fromQuery, toQuery]);
     }
 
-    if (
-      modeQuery &&
-      modeQuery !== mode &&
-      (modeQuery === "all" ||
-        modeQuery === "1v1" ||
-        modeQuery === "2v2" ||
-        modeQuery === "3v3" ||
-        modeQuery === "4v4")
-    ) {
-      setMode(modeQuery as any);
+    // No mode in the url means the default one - eg. going back to the plain `/stats/games`
+    const urlMode =
+      modeQuery === "all" ||
+      modeQuery === "1v1" ||
+      modeQuery === "2v2" ||
+      modeQuery === "3v3" ||
+      modeQuery === "4v4"
+        ? modeQuery
+        : defaultMode;
+
+    if (urlMode !== mode) {
+      setMode(urlMode);
     }
   }, [query]);
 
@@ -134,9 +134,13 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
     const fromTimeStamp = convertToDateString(valueDatePicker[0], false);
     //  getDateTimestamp(valueDatePicker[0] || new Date() );
     const toTimeStamp = convertToDateString(valueDatePicker[1]); // getDateTimestamp(valueDatePicker[1] || new Date());
-    push({ query: { ...query, from: fromTimeStamp, to: toTimeStamp } }, undefined, {
-      shallow: true,
-    });
+    // When the dates came from the url there is nothing to push - and pushing the `query` of this
+    // render could overwrite a newer push, eg. the mode picked right after the page loaded.
+    if (query.from !== fromTimeStamp || query.to !== toTimeStamp) {
+      push({ query: { ...query, from: fromTimeStamp, to: toTimeStamp } }, undefined, {
+        shallow: true,
+      });
+    }
 
     setPatchSelectValue(findPatchVersionByToAndFrom(fromTimeStamp, toTimeStamp));
   }, [valueDatePicker]);
