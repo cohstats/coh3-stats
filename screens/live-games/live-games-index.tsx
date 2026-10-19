@@ -17,6 +17,7 @@ import {
   AnalyticsLiveGamesView,
 } from "../../src/firebase/analytics";
 import { useTranslation } from "next-i18next/pages";
+import { reloadIfBlockedByChallenge } from "../../src/cloudflare-challenge";
 
 // the chart needs to be dynamically imported
 const DynamicLiveGamesLineChart = dynamic(() => import("./live-games-line-chart"), {
@@ -52,6 +53,7 @@ const LiveGamesIndex = () => {
         const data = await getLiveGamesSummary();
         setLiveGamesSummary(data);
       } catch (e: any) {
+        if (reloadIfBlockedByChallenge(e)) return;
         console.error(`Error getting the live games summary`);
         console.error(e);
         setLiveGamesSummaryError(e);
@@ -71,6 +73,7 @@ const LiveGamesIndex = () => {
         const data = await getLiveGames(type, order, start, RECORDS_PER_PAGE);
         setLiveGames(data);
       } catch (e: any) {
+        if (reloadIfBlockedByChallenge(e)) return;
         console.error(`Error getting the live games`);
         console.error(e);
         setLiveGamesError(e);
