@@ -106,7 +106,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "16.3.8",
-    "@playwright/test": "1.63.0",
+    "@playwright/test": "1.64.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@types/jest": "29.5.14",
