@@ -22,7 +22,13 @@ test.describe("Site chrome - header (desktop)", () => {
     await expect(chrome.logoLink).toContainText("COH3 Stats");
 
     // The top level entries. `Statistics`, `Explorer` and `Other` are hover cards, not links.
-    for (const href of ["/leaderboards", "/live-games?type=4v4", "/desktop-app", "/about"]) {
+    for (const href of [
+      "/leaderboards",
+      "/live-games?type=4v4",
+      "/desktop-app",
+      "/tournaments",
+      "/about",
+    ]) {
       await expect(chrome.menuLink(href)).toBeVisible();
     }
     for (const label of ["Statistics", "Explorer", "Other"]) {
@@ -180,7 +186,13 @@ test.describe("Site chrome - mobile burger menu", () => {
     for (const label of ["Leaderboards", "Statistics", "Explorer", "Other"]) {
       await expect(chrome.drawerAccordion(label)).toBeVisible();
     }
-    for (const href of ["/live-games?type=4v4", "/desktop-app", "/about", "/news"]) {
+    for (const href of [
+      "/live-games?type=4v4",
+      "/desktop-app",
+      "/tournaments",
+      "/about",
+      "/news",
+    ]) {
       await expect(chrome.drawer.locator(`a[href="${href}"]`).first()).toBeVisible();
     }
 

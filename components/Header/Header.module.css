@@ -12,7 +12,8 @@
   );
 }
 
-@media (min-width: 64em) and (max-width: 100em) {
+/* The menu wraps to two rows up to this width, keep in sync with unit-section-nav.module.css */
+@media (min-width: 64em) and (max-width: 108em) {
   /* Add your styles for medium screens here */
   .headerRoot {
     /* Example style */

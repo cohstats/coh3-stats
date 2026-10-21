@@ -1,0 +1,34 @@
+.head {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+}
+
+.headCell {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mantine-color-dimmed);
+  white-space: nowrap;
+}
+
+.championRow {
+  background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.08));
+}
+
+.currentSeasonRow {
+  background-color: light-dark(var(--mantine-color-blue-0), rgba(34, 139, 230, 0.1));
+}
+
+.castCard {
+  flex: 0 0 220px;
+  width: 220px;
+}
+
+.championsStrip {
+  border-color: light-dark(var(--mantine-color-yellow-3), var(--mantine-color-yellow-9));
+  background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.06));
+}
+
+.seasonSelect {
+  width: 150px;
+}

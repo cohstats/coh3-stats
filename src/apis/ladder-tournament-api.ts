@@ -39,6 +39,8 @@ const rankingResponseSchema = z.object({
 });
 
 const casterVideoSchema = z.object({
+  // Documented, but not guaranteed - used only as a React key when present
+  id: z.number().optional(),
   title: z.string(),
   castedBy: z.string(),
   // ISO 8601, eg 2026-09-07T00:00:00
@@ -99,14 +101,17 @@ const getLadderTournamentRankingUrl = ({
   page,
   pageSize,
 }: {
-  relicId: number;
+  // All the players when not set
+  relicId?: number;
+  // All the seasons when not set
   seasonId?: number;
   page: number;
   pageSize: number;
 }) => {
+  const relicParam = relicId !== undefined ? `&relicid=${relicId}` : "";
   const seasonParam = seasonId !== undefined ? `&seasonid=${seasonId}` : "";
   return encodeURI(
-    `${config.LADDER_TOURNAMENT_API_BASE_URL}/ranking_ladder?page=${page}&pageSize=${pageSize}&relicid=${relicId}${seasonParam}`,
+    `${config.LADDER_TOURNAMENT_API_BASE_URL}/ranking_ladder?page=${page}&pageSize=${pageSize}${relicParam}${seasonParam}`,
   );
 };
 
@@ -144,6 +149,54 @@ const getLadderTournamentRanking = async (
       `Error getting Ladder Tournament ranking for relicId ${relicId}, status code: ${response.status}`,
     );
   }
+};
+
+// Max page size allowed by the API
+const FULL_RANKING_PAGE_SIZE = 1000;
+// Safety net against an API which keeps returning hasNext, 50k rows is way more than we expect
+const FULL_RANKING_MAX_PAGES = 50;
+
+/**
+ * Returns all ranking items, optionally for one season, following the pagination.
+ * Throws when any of the pages fails to load.
+ */
+const getLadderTournamentFullRanking = async (
+  options: { seasonId?: number } = {},
+): Promise<LadderTournamentRankingItem[]> => {
+  const { seasonId } = options;
+  const items: LadderTournamentRankingItem[] = [];
+
+  for (let page = 1; page <= FULL_RANKING_MAX_PAGES; page++) {
+    const response = await fetch(
+      getLadderTournamentRankingUrl({ seasonId, page, pageSize: FULL_RANKING_PAGE_SIZE }),
+      getLadderTournamentRequestInit(),
+    );
+
+    if (!response.ok) {
+      logger.error(
+        `Error getting Ladder Tournament full ranking page ${page}, status code: ${response.status}`,
+      );
+      throw new Error(
+        `Error getting Ladder Tournament full ranking page ${page}, status code: ${response.status}`,
+      );
+    }
+
+    const data = parseLadderTournamentResponse(
+      rankingResponseSchema,
+      await response.json(),
+      "ranking",
+    );
+    items.push(...data.items);
+
+    if (!data.hasNext) {
+      return items;
+    }
+  }
+
+  logger.error(
+    `Ladder Tournament full ranking has more than ${FULL_RANKING_MAX_PAGES} pages, returning the first ${items.length} items`,
+  );
+  return items;
 };
 
 interface CasterVideosCacheEntry {
@@ -336,6 +389,7 @@ export {
   getLadderTournamentRankingUrl,
   getLadderTournamentCasterVideosUrl,
   getLadderTournamentRanking,
+  getLadderTournamentFullRanking,
   getLadderTournamentCasterVideos,
   getLadderTournamentCasterVideosForPlayer,
   getLadderTournamentPlayerData,

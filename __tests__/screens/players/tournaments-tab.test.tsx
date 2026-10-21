@@ -100,6 +100,19 @@ describe("TournamentsTab", () => {
     expect(html).toContain('tournaments.summary.seasons {"count":2}');
   });
 
+  test("links every season to its standings page", () => {
+    const html = renderTab({
+      tournamentData: { videos: [], ladderRanking: ranking },
+      playerName: "Player",
+    });
+
+    for (const seasonId of [1, 2]) {
+      const { row } = getRow(html, `tournament-season-${seasonId}`);
+      expect(row).toContain(`href="/tournaments/ladder-tournament/season/${seasonId}"`);
+      expect(row).toContain("tournaments.seasonStandings");
+    }
+  });
+
   test("renders the empty state for a player without tournaments", () => {
     const html = renderTab({
       tournamentData: { videos: [], ladderRanking: [] },

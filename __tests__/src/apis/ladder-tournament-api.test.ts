@@ -7,6 +7,7 @@ import {
   getLadderTournamentCasterVideos,
   getLadderTournamentCasterVideosForPlayer,
   getLadderTournamentCasterVideosUrl,
+  getLadderTournamentFullRanking,
   getLadderTournamentPlayerData,
   getLadderTournamentRanking,
   getLadderTournamentRankingUrl,
@@ -69,6 +70,15 @@ describe("ladder-tournament-api", () => {
       expect(
         getLadderTournamentRankingUrl({ relicId: 123456, seasonId: 2, page: 3, pageSize: 100 }),
       ).toBe(`${BASE_URL}/ranking_ladder?page=3&pageSize=100&relicid=123456&seasonid=2`);
+    });
+
+    it("builds the ranking URL without relicid for all the players", () => {
+      expect(getLadderTournamentRankingUrl({ page: 1, pageSize: 1000 })).toBe(
+        `${BASE_URL}/ranking_ladder?page=1&pageSize=1000`,
+      );
+      expect(getLadderTournamentRankingUrl({ seasonId: 3, page: 2, pageSize: 1000 })).toBe(
+        `${BASE_URL}/ranking_ladder?page=2&pageSize=1000&seasonid=3`,
+      );
     });
 
     it("builds the caster videos URL", () => {
@@ -156,6 +166,74 @@ describe("ladder-tournament-api", () => {
         "LADDER_TOURNAMENT_API_TOKEN is not set",
       );
       expect(fetchSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("getLadderTournamentFullRanking", () => {
+    const page = (pageNumber: number, hasNext: boolean, relicid: number) => ({
+      ...rankingResponse,
+      items: [{ ...rankingResponse.items[0], relicid }],
+      page: pageNumber,
+      pageSize: 1000,
+      hasPrevious: pageNumber > 1,
+      hasNext,
+    });
+
+    it("follows hasNext across the pages and returns all the items", async () => {
+      fetchSpy
+        .mockImplementationOnce(() => okResponse(page(1, true, 1)))
+        .mockImplementationOnce(() => okResponse(page(2, true, 2)))
+        .mockImplementationOnce(() => okResponse(page(3, false, 3)));
+
+      const items = await getLadderTournamentFullRanking();
+
+      expect(items.map((item) => item.relicid)).toEqual([1, 2, 3]);
+      expect(fetchSpy).toHaveBeenCalledTimes(3);
+      expect(fetchSpy.mock.calls.map((call) => call[0])).toEqual([
+        `${BASE_URL}/ranking_ladder?page=1&pageSize=1000`,
+        `${BASE_URL}/ranking_ladder?page=2&pageSize=1000`,
+        `${BASE_URL}/ranking_ladder?page=3&pageSize=1000`,
+      ]);
+      expect(fetchSpy.mock.calls[0][1]).toEqual({
+        headers: { "X-Api-Token": "test-token" },
+        cache: "no-store",
+      });
+    });
+
+    it("passes the seasonId", async () => {
+      fetchSpy.mockImplementation(() => okResponse(page(1, false, 1)));
+
+      await getLadderTournamentFullRanking({ seasonId: 2 });
+
+      expect(fetchSpy.mock.calls[0][0]).toBe(
+        `${BASE_URL}/ranking_ladder?page=1&pageSize=1000&seasonid=2`,
+      );
+    });
+
+    it("stops at the safety cap when the API keeps returning hasNext", async () => {
+      fetchSpy.mockImplementation(() => okResponse(page(1, true, 1)));
+
+      const items = await getLadderTournamentFullRanking();
+
+      expect(fetchSpy).toHaveBeenCalledTimes(50);
+      expect(items).toHaveLength(50);
+      expect(console.error).toHaveBeenCalled();
+    });
+
+    it("throws when a page response is invalid", async () => {
+      fetchSpy
+        .mockImplementationOnce(() => okResponse(page(1, true, 1)))
+        .mockImplementationOnce(() => okResponse({ items: [] }));
+
+      await expect(getLadderTournamentFullRanking()).rejects.toThrow(
+        "Invalid Ladder Tournament ranking response",
+      );
+    });
+
+    it("throws when a page returns a non-ok response", async () => {
+      fetchSpy.mockImplementation(() => errorResponse(502));
+
+      await expect(getLadderTournamentFullRanking()).rejects.toThrow("status code: 502");
     });
   });
 
@@ -284,6 +362,17 @@ describe("ladder-tournament-api", () => {
       const result = await getLadderTournamentCasterVideos();
       expect(result).toEqual(casterVideosResponse);
       expect(fetchSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("accepts and keeps the optional video id", async () => {
+      fetchSpy.mockImplementation(() =>
+        okResponse([{ ...casterVideosResponse[0], id: 42 }, casterVideosResponse[1]]),
+      );
+
+      const videos = await getLadderTournamentCasterVideos();
+
+      expect(videos[0].id).toBe(42);
+      expect(videos[1].id).toBeUndefined();
     });
 
     it("throws on a response with unexpected keys and does not cache it", async () => {
