@@ -107,15 +107,9 @@ export const getLadderSeasonIds = (
   return [...ids].sort((a, b) => b - a);
 };
 
-const compareRankingItems = (a: LadderTournamentRankingItem, b: LadderTournamentRankingItem) =>
-  b.score - a.score ||
-  b.rating - a.rating ||
-  b.wins - a.wins ||
-  b.matches - a.matches ||
-  a.relicid - b.relicid;
-
 /**
- * Builds the standings of a single season.
+ * Builds the standings of a single season, sorted by score only.
+ * Players with the same score share the rank and keep the API order (the sort is stable).
  * @param items Ranking items of the season
  * @param videos Casts of the season
  * @param names Player names, players without a name get alias null
@@ -132,13 +126,12 @@ export const buildLadderStandings = (
     }
   }
 
-  const sorted = [...items].sort(compareRankingItems);
+  const sorted = [...items].sort((a, b) => b.score - a.score);
 
   let rank = 0;
   return sorted.map((item, index) => {
-    // Competition ranking - same score and win rate share the rank of the first of them
-    const previous = sorted[index - 1];
-    if (!previous || previous.score !== item.score || previous.rating !== item.rating) {
+    // Competition ranking - the same score shares the rank of the first of them (1, 1, 1, 4)
+    if (index === 0 || sorted[index - 1].score !== item.score) {
       rank = index + 1;
     }
 

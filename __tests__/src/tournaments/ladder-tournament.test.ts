@@ -75,20 +75,21 @@ describe("getLadderSeasonIds", () => {
 });
 
 describe("buildLadderStandings", () => {
-  test("sorts by score, then win rate, wins and matches", () => {
+  test("sorts by score only, the same score keeps the API order and shares the rank", () => {
     const rows = buildLadderStandings(
       [
         item(1, { score: 5, rating: 0.5 }),
         item(2, { score: 9, rating: 0.4 }),
-        item(3, { score: 5, rating: 0.7 }),
-        item(4, { score: 5, rating: 0.5, wins: 7 }),
-        item(5, { score: 5, rating: 0.5, wins: 7, matches: 12 }),
+        // Better win rate, but the same score - no tie-break
+        item(3, { score: 5, rating: 0.7, wins: 8 }),
+        item(4, { score: 2 }),
       ],
       [],
       {},
     );
 
-    expect(rows.map((row) => row.relicId)).toEqual([2, 3, 5, 4, 1]);
+    expect(rows.map((row) => row.relicId)).toEqual([2, 1, 3, 4]);
+    expect(rows.map((row) => row.rank)).toEqual([1, 2, 2, 4]);
   });
 
   test("uses competition ranking - three 13-2 players share rank 1, the next one is 4", () => {

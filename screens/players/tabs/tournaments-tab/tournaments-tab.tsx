@@ -53,6 +53,7 @@ const SeasonRows = ({ season }: { season: PlayerTournamentSeason }) => {
             component={Link}
             href={getLadderTournamentRoute(season.seasonId)}
             size="xs"
+            style={{ whiteSpace: "nowrap" }}
             data-testid={`tournament-season-standings-${season.seasonId}`}
           >
             {t("tournaments.seasonStandings")} →
@@ -159,7 +160,7 @@ const TournamentSection = ({
           <Table layout="fixed" verticalSpacing="sm" horizontalSpacing="lg">
             <Table.Thead className={classes.head}>
               <Table.Tr>
-                <Table.Th w="13%" className={classes.headCell}>
+                <Table.Th w="19%" className={classes.headCell}>
                   {t("tournaments.columns.season")}
                 </Table.Th>
                 <Table.Th className={classes.headCell}>

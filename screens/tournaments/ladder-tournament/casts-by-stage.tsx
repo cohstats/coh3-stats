@@ -6,7 +6,8 @@ import TournamentVideoCard from "../../../components/tournament-videos/tournamen
 import classes from "./ladder-tournament.module.css";
 
 /**
- * One horizontal row of the cast cards per stage, the stages are already in the display order.
+ * One horizontal row of the cast cards per stage, centered on the page.
+ * The stages are already in the display order.
  */
 const CastsByStage = ({ stages }: { stages: LadderStageGroup[] }) => {
   const { t } = useTranslation("tournaments");
@@ -17,7 +18,7 @@ const CastsByStage = ({ stages }: { stages: LadderStageGroup[] }) => {
     <Stack gap="lg">
       {stages.map((group) => (
         <Stack gap="xs" key={group.stage || "other"} data-testid="ladder-cast-stage">
-          <Group gap="xs" align="baseline">
+          <Group gap="xs" align="baseline" justify="center">
             <Title order={3} size="h5" tt="uppercase">
               {group.stage || t("league.casts.otherStage")}
             </Title>
@@ -26,7 +27,7 @@ const CastsByStage = ({ stages }: { stages: LadderStageGroup[] }) => {
             </Text>
           </Group>
           <ScrollArea type="auto" offsetScrollbars scrollbarSize={8}>
-            <Group gap="sm" wrap="nowrap" align="stretch">
+            <Group gap="sm" wrap="nowrap" align="stretch" className={classes.castsRow}>
               {group.videos.map((video, index) => (
                 <Box
                   className={classes.castCard}

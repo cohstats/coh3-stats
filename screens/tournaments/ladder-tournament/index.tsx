@@ -10,12 +10,19 @@ import {
   Container,
   Group,
   Paper,
-  SimpleGrid,
   Stack,
   Text,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
-import { IconExternalLink, IconTrophyFilled } from "@tabler/icons-react";
+import {
+  IconExternalLink,
+  IconPlayerPlayFilled,
+  IconStarFilled,
+  IconSwords,
+  IconTrophyFilled,
+  IconUsers,
+} from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
 import {
@@ -59,69 +66,80 @@ const ExternalLink = ({ href, children }: { href: string; children: React.ReactN
   </Anchor>
 );
 
-const SummaryTile = ({
+const SeasonStat = ({
+  icon,
   label,
   value,
   testId,
 }: {
+  icon: React.ReactNode;
   label: string;
   value: React.ReactNode;
   testId: string;
 }) => (
-  <Paper withBorder radius="md" p="md" data-testid={testId}>
-    <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
-      {label}
+  <Group gap={8} wrap="nowrap" data-testid={testId}>
+    <ThemeIcon variant="light" color="gray" size="md" radius="md">
+      {icon}
+    </ThemeIcon>
+    <Text size="sm" style={{ whiteSpace: "nowrap" }}>
+      <Text span fw={700} inherit>
+        {value}
+      </Text>{" "}
+      <Text span c="dimmed" inherit>
+        {label}
+      </Text>
     </Text>
-    <Text size="xl" fw={700} mt={4}>
-      {value}
-    </Text>
-  </Paper>
+  </Group>
 );
 
-const SeasonSummaryTiles = ({ summary }: { summary: LadderSeasonSummary }) => {
+/**
+ * One compact bar with the season numbers on the left and the champions on the right.
+ */
+const SeasonStatsBar = ({ summary }: { summary: LadderSeasonSummary }) => {
   const { t } = useTranslation("tournaments");
 
   return (
-    <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="sm">
-      <SummaryTile
-        label={t("league.tiles.players")}
-        value={summary.players}
-        testId="ladder-tile-players"
-      />
-      <SummaryTile
-        label={t("league.tiles.casts")}
-        value={summary.casts}
-        testId="ladder-tile-casts"
-      />
-      <SummaryTile
-        label={t("league.tiles.championsRecord")}
-        value={formatRecord(summary.championsRecord)}
-        testId="ladder-tile-record"
-      />
-      <SummaryTile
-        label={t("league.tiles.topScore")}
-        value={summary.topScore ?? "—"}
-        testId="ladder-tile-top-score"
-      />
-    </SimpleGrid>
-  );
-};
-
-const ChampionsStrip = ({ summary }: { summary: LadderSeasonSummary }) => {
-  const { t } = useTranslation("tournaments");
-
-  if (summary.champions.length === 0) return null;
-
-  return (
-    <Paper withBorder radius="md" p="md" className={classes.championsStrip}>
-      <Group gap="lg" wrap="wrap" data-testid="ladder-champions">
-        <Group gap={6} wrap="nowrap">
-          <IconTrophyFilled size={20} color="var(--mantine-color-yellow-6)" />
-          <Text fw={700}>{t("league.champions")}</Text>
+    <Paper withBorder radius="md" px="md" py="sm" data-testid="ladder-season-stats">
+      <Group justify="space-between" gap="md" wrap="wrap">
+        <Group gap="lg" wrap="wrap">
+          <SeasonStat
+            icon={<IconUsers size={16} />}
+            label={t("league.tiles.players")}
+            value={summary.players}
+            testId="ladder-stat-players"
+          />
+          <SeasonStat
+            icon={<IconPlayerPlayFilled size={14} />}
+            label={t("league.tiles.casts")}
+            value={summary.casts}
+            testId="ladder-stat-casts"
+          />
+          <SeasonStat
+            icon={<IconSwords size={16} />}
+            label={t("league.tiles.championsRecord")}
+            value={formatRecord(summary.championsRecord)}
+            testId="ladder-stat-record"
+          />
+          <SeasonStat
+            icon={<IconStarFilled size={14} />}
+            label={t("league.tiles.topScore")}
+            value={summary.topScore ?? "—"}
+            testId="ladder-stat-top-score"
+          />
         </Group>
-        {summary.champions.map((champion) => (
-          <LadderPlayerLink key={champion.relicId} {...champion} />
-        ))}
+        {summary.champions.length > 0 && (
+          <Group gap="sm" wrap="wrap" data-testid="ladder-champions">
+            <Group gap={6} wrap="nowrap">
+              <IconTrophyFilled size={18} color="var(--mantine-color-yellow-6)" />
+              <Text size="sm" fw={700}>
+                {t("league.champions")}
+              </Text>
+            </Group>
+            {summary.champions.map((champion) => (
+              <LadderPlayerLink key={champion.relicId} {...champion} />
+            ))}
+          </Group>
+        )}
       </Group>
     </Paper>
   );
@@ -156,8 +174,8 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
         )}
       </Breadcrumbs>
 
-      <Group justify="space-between" align="center" wrap="wrap" gap="lg">
-        <Group gap="lg" wrap="nowrap">
+      <Group justify="space-between" align="flex-start" wrap="wrap" gap="lg">
+        <Group gap="lg" wrap="nowrap" align="flex-start">
           <Avatar
             src={LADDER_TOURNAMENT.logo}
             alt={name}
@@ -169,7 +187,7 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
             {LADDER_TOURNAMENT.monogram}
           </Avatar>
           <Stack gap={6}>
-            <Title order={1} className={classes.leagueTitle}>
+            <Title order={1} lh={1.1} className={classes.leagueTitle}>
               {name}
             </Title>
             <Text c="dimmed">
@@ -265,8 +283,7 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data, isL
                 seasonIds={data.seasons.map((season) => season.seasonId)}
               />
             </Group>
-            {summary && <SeasonSummaryTiles summary={summary} />}
-            {summary && <ChampionsStrip summary={summary} />}
+            {summary && <SeasonStatsBar summary={summary} />}
           </Stack>
 
           <Stack gap="sm">
@@ -282,7 +299,7 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data, isL
             </Group>
             {data.standings.length > 0 ? (
               <Paper withBorder radius="md" style={{ overflow: "hidden" }}>
-                <StandingsTable standings={data.standings} />
+                <StandingsTable standings={data.standings} key={data.seasonId} />
               </Paper>
             ) : (
               <Text c="dimmed" data-testid="ladder-standings-not-available">

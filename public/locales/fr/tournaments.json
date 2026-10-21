@@ -56,7 +56,9 @@
     "champions": "Champions",
     "standings": {
       "title": "Standings",
-      "sortNote": "Sorted by score, then win rate",
+      "sortNote": "Sorted by score",
+      "showAll": "Show all {{count}} players",
+      "showLess": "Show top 10",
       "notAvailable": "Standings are not available yet",
       "columns": {
         "rank": "#",

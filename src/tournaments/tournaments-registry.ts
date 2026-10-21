@@ -5,6 +5,9 @@
  * This file is client safe.
  */
 
+// Imported, so the build serves it with a content hash in the name and it can be cached forever
+import ladderTournamentLogo from "../../public/images/tournaments/ladder-tournament-logo.webp";
+
 export type TournamentId = "ladderTournament" | "ironclad" | "metaplays";
 
 export type TournamentInfo = {
@@ -15,7 +18,7 @@ export type TournamentInfo = {
   descriptionKey: string;
   // Official site
   url: string;
-  // Path to the logo in /public, the monogram is used when not available
+  // URL of the imported logo, the monogram is used when not available
   logo?: string;
   monogram: string;
   // Mantine colour
@@ -29,7 +32,7 @@ export const LADDER_TOURNAMENT: TournamentInfo = {
   nameKey: "tournaments.ladderTournament.name",
   descriptionKey: "tournaments.ladderTournament.description",
   url: "https://laddertournament.com.br",
-  logo: "/images/tournaments/ladder-tournament-logo.webp",
+  logo: ladderTournamentLogo.src,
   monogram: "LT",
   color: "green",
   hasLeaguePage: true,

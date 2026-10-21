@@ -19,14 +19,20 @@
   background-color: light-dark(var(--mantine-color-blue-0), rgba(34, 139, 230, 0.1));
 }
 
+/* Hidden standings rows - still in the HTML, so the whole table is indexed */
+.collapsedRow {
+  display: none;
+}
+
+/* Centered while the cards fit, scrollable from the left edge when they don't */
+.castsRow {
+  justify-content: center;
+  min-width: max-content;
+}
+
 .castCard {
   flex: 0 0 220px;
   width: 220px;
-}
-
-.championsStrip {
-  border-color: light-dark(var(--mantine-color-yellow-3), var(--mantine-color-yellow-9));
-  background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.06));
 }
 
 /* Thumbnail only card of the intro video in the header, full width on a phone */
@@ -35,8 +41,9 @@
   flex-shrink: 0;
 }
 
+/* Close to the height of the intro video card */
 .leagueLogo {
-  --avatar-size: 80px;
+  --avatar-size: 128px;
 }
 
 /* Mantine sm breakpoint */
@@ -46,7 +53,7 @@
   }
 
   .leagueLogo {
-    --avatar-size: 56px;
+    --avatar-size: 72px;
   }
 
   .leagueTitle {

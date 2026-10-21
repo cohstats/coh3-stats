@@ -124,14 +124,43 @@ describe("LadderTournamentScreen", () => {
     expect(otherRow).toMatch(/<p[^>]*>3<\/p>/);
   });
 
-  test("renders the summary tiles and the champions strip", () => {
+  test("renders the season stats bar with the champions", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
     const html = render({ data, isLatestRoute: true });
 
     expect(html).toContain('league.season {"season":1}');
-    expect(getElement(html, "ladder-tile-players", "div")).toBeDefined();
-    expect(html).toContain("13–2");
-    expect(html).toContain('data-testid="ladder-champions"');
+    const stats = html.slice(html.indexOf('data-testid="ladder-season-stats"'));
+    expect(stats).toMatch(/data-testid="ladder-stat-players"[\s\S]*?>4<\/span>/);
+    expect(stats).toMatch(/data-testid="ladder-stat-casts"[\s\S]*?>3<\/span>/);
+    expect(stats).toMatch(/data-testid="ladder-stat-record"[\s\S]*?>13–2<\/span>/);
+    expect(stats).toMatch(/data-testid="ladder-stat-top-score"[\s\S]*?>13<\/span>/);
+    expect(stats).toContain('data-testid="ladder-champions"');
+  });
+
+  test("shows the top 10 standings with a button to show all the players", () => {
+    const manyPlayers = Array.from({ length: 12 }, (_, index) =>
+      item(index + 1, { score: 20 - index }),
+    );
+    const html = render({
+      data: buildLadderSeasonPageData(1, manyPlayers, [], {}),
+      isLatestRoute: true,
+    });
+
+    // All the rows are in the HTML, the ones after the top 10 are hidden
+    expect(count(html, /data-testid="ladder-standing-/g)).toBe(12);
+    expect(getElement(html, "ladder-standing-10")).not.toContain("collapsedRow");
+    expect(getElement(html, "ladder-standing-11")).toContain("collapsedRow");
+    expect(getElement(html, "ladder-standing-12")).toContain("collapsedRow");
+    expect(html).toContain('league.standings.showAll {"count":12}');
+    expect(html).toContain('aria-expanded="false"');
+  });
+
+  test("doesn't show the button with 10 players or less", () => {
+    const data = buildLadderSeasonPageData(1, ranking, videos, names);
+    const html = render({ data, isLatestRoute: true });
+
+    expect(html).not.toContain('data-testid="ladder-standings-toggle"');
+    expect(html).not.toContain("collapsedRow");
   });
 
   test("hides the season picker when there is only one season", () => {
