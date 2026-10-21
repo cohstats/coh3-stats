@@ -3,6 +3,7 @@ import type {
   LadderTournamentPlayerData,
   LadderTournamentRankingItem,
 } from "../apis/ladder-tournament-api";
+import { LADDER_TOURNAMENT } from "../tournaments/tournaments-registry";
 
 /**
  * Generic shape of a tournament on the player card, so more tournaments can be added later.
@@ -54,7 +55,10 @@ export type PlayerTournamentAggregate = {
   titles: number;
 };
 
-const LADDER_TOURNAMENT_TITLE_FLAGS = [
+// Win rate from the API as decimal, eg 0.86 -> 86%
+export const formatWinRate = (winRate: number) => `${Math.round(winRate * 100)}%`;
+
+export const LADDER_TOURNAMENT_TITLE_FLAGS = [
   "ladderwinner",
   "ironcladwinner",
   "metaplayswinner",
@@ -100,12 +104,12 @@ export const buildLadderTournament = (data: LadderTournamentPlayerData): PlayerT
   const seasons = [...seasonsById.values()].sort((a, b) => b.seasonId - a.seasonId);
 
   return {
-    id: "ladderTournament",
+    id: LADDER_TOURNAMENT.id,
     nameKey: "tournaments.ladderTournament.title",
-    url: "https://laddertournament.com.br",
-    logo: "/images/tournaments/ladder-tournament-logo.webp",
-    monogram: "LT",
-    color: "green",
+    url: LADDER_TOURNAMENT.url,
+    logo: LADDER_TOURNAMENT.logo,
+    monogram: LADDER_TOURNAMENT.monogram,
+    color: LADDER_TOURNAMENT.color,
     seasons,
     // The ranking is the source of the seasons and the stats, without it we can't tell if the player played
     unavailable: data.ladderRanking === null,

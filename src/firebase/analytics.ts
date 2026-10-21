@@ -44,6 +44,18 @@ export const AnalyticsPlayerCardTournamentsView = (profile_id?: number | string)
   logFBEvent("player_card_tournaments_view", { profile_id });
 };
 
+export const AnalyticsTournamentsPageView = (): void => {
+  logFBEvent("tournaments_page_view");
+};
+
+export const AnalyticsTournamentExternalClick = (tournamentId: string): void => {
+  logFBEvent("tournament_external_click", { tournament_id: tournamentId });
+};
+
+export const AnalyticsLadderTournamentSeasonView = (seasonId: number): void => {
+  logFBEvent("ladder_tournament_season_view", { season_id: seasonId });
+};
+
 export const AnalyticsDesktopAppPageView = (): void => {
   logFBEvent("desktop_app_view");
 };

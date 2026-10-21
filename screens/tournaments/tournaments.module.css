@@ -1,0 +1,18 @@
+.featuredData {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+}
+
+.externalCard {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.externalCard {
+  @mixin hover {
+    border-color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  }
+}

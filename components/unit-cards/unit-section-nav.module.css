@@ -85,7 +85,7 @@
   }
 }
 
-@media (min-width: 64em) and (max-width: 100em) {
+@media (min-width: 64em) and (max-width: 108em) {
   .nav {
     top: 100px;
   }
