@@ -5,6 +5,7 @@ import { NextSeo } from "next-seo";
 import {
   Anchor,
   Avatar,
+  Box,
   Breadcrumbs,
   Container,
   Group,
@@ -25,7 +26,9 @@ import {
 import {
   LADDER_TOURNAMENT,
   LADDER_TOURNAMENT_DISCORD_URL,
+  LADDER_TOURNAMENT_INTRO_VIDEO_URL,
 } from "../../../src/tournaments/tournaments-registry";
+import TournamentIntroVideoCard from "../../../components/tournament-videos/tournament-intro-video-card";
 import { getLadderTournamentRoute, getTournamentsRoute } from "../../../src/routes";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { AnalyticsLadderTournamentSeasonView } from "../../../src/firebase/analytics";
@@ -124,37 +127,52 @@ const ChampionsStrip = ({ summary }: { summary: LadderSeasonSummary }) => {
   );
 };
 
-const LeagueHeader = ({ data }: { data: LadderSeasonPageData | null }) => {
+/**
+ * @param seasonId Season shown in the breadcrumb, only on the season pages
+ */
+const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
   const { t } = useTranslation("tournaments");
+  const name = t(LADDER_TOURNAMENT.nameKey);
 
   return (
     <Stack gap="md">
-      <Breadcrumbs separator="/">
+      <Breadcrumbs separator="/" data-testid="ladder-breadcrumbs">
         <Anchor component={Link} href={getTournamentsRoute()} size="sm">
           {t("hub.title")}
         </Anchor>
-        <Text size="sm" c="dimmed">
-          {t(LADDER_TOURNAMENT.nameKey)}
-        </Text>
+        {seasonId === undefined ? (
+          <Text size="sm" c="dimmed">
+            {name}
+          </Text>
+        ) : (
+          <Anchor component={Link} href={getLadderTournamentRoute()} size="sm">
+            {name}
+          </Anchor>
+        )}
+        {seasonId !== undefined && (
+          <Text size="sm" c="dimmed">
+            {t("league.season", { season: seasonId })}
+          </Text>
+        )}
       </Breadcrumbs>
 
-      <Group justify="space-between" align="center" wrap="wrap" gap="md">
-        <Group gap="md" wrap="nowrap">
+      <Group justify="space-between" align="center" wrap="wrap" gap="lg">
+        <Group gap="lg" wrap="nowrap">
           <Avatar
             src={LADDER_TOURNAMENT.logo}
-            alt={t(LADDER_TOURNAMENT.nameKey)}
-            size={56}
+            alt={name}
+            className={classes.leagueLogo}
             radius="md"
             color={LADDER_TOURNAMENT.color}
             variant="light"
           >
             {LADDER_TOURNAMENT.monogram}
           </Avatar>
-          <Stack gap={2}>
-            <Title order={1} size="h2">
-              {t(LADDER_TOURNAMENT.nameKey)}
+          <Stack gap={6}>
+            <Title order={1} className={classes.leagueTitle}>
+              {name}
             </Title>
-            <Text size="sm" c="dimmed">
+            <Text c="dimmed">
               {t("league.communityLadder")}
               {" · "}
               <ExternalLink href={LADDER_TOURNAMENT.url}>{t("league.officialSite")}</ExternalLink>
@@ -165,12 +183,12 @@ const LeagueHeader = ({ data }: { data: LadderSeasonPageData | null }) => {
             </Text>
           </Stack>
         </Group>
-        {data && (
-          <SeasonPicker
-            seasonId={data.seasonId}
-            seasonIds={data.seasons.map((season) => season.seasonId)}
+        <Box className={classes.introVideo}>
+          <TournamentIntroVideoCard
+            url={LADDER_TOURNAMENT_INTRO_VIDEO_URL}
+            label={t("league.introVideo")}
           />
-        )}
+        </Box>
       </Group>
     </Stack>
   );
@@ -213,7 +231,7 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data, isL
         {seo}
         <Container size="lg" p="md" data-testid="ladder-tournament-page">
           <Stack gap="lg">
-            <LeagueHeader data={null} />
+            <LeagueHeader />
             <Paper withBorder radius="md" p="lg" data-testid="ladder-tournament-unavailable">
               <Text>{t("league.unavailable")}</Text>
               <Text size="sm" mt="xs">
@@ -235,12 +253,18 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data, isL
       {seo}
       <Container size="lg" p="md" data-testid="ladder-tournament-page">
         <Stack gap="xl">
-          <LeagueHeader data={data} />
+          <LeagueHeader seasonId={isLatestRoute ? undefined : data.seasonId} />
 
           <Stack gap="md">
-            <Title order={2} size="h3" data-testid="ladder-season-title">
-              {t("league.season", { season: data.seasonId })}
-            </Title>
+            <Group justify="space-between" align="center" gap="sm">
+              <Title order={2} size="h3" data-testid="ladder-season-title">
+                {t("league.season", { season: data.seasonId })}
+              </Title>
+              <SeasonPicker
+                seasonId={data.seasonId}
+                seasonIds={data.seasons.map((season) => season.seasonId)}
+              />
+            </Group>
             {summary && <SeasonSummaryTiles summary={summary} />}
             {summary && <ChampionsStrip summary={summary} />}
           </Stack>

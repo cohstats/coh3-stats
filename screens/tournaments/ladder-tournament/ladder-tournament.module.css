@@ -29,6 +29,31 @@
   background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.06));
 }
 
+/* Thumbnail only card of the intro video in the header, full width on a phone */
+.introVideo {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.leagueLogo {
+  --avatar-size: 80px;
+}
+
+/* Mantine sm breakpoint */
+@media (max-width: 48em) {
+  .introVideo {
+    width: 100%;
+  }
+
+  .leagueLogo {
+    --avatar-size: 56px;
+  }
+
+  .leagueTitle {
+    font-size: var(--mantine-h2-font-size);
+  }
+}
+
 .seasonSelect {
   width: 150px;
 }

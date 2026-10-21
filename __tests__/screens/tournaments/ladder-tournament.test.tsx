@@ -209,6 +209,37 @@ describe("LadderTournamentScreen", () => {
     expect(withoutCasts).not.toContain('data-testid="ladder-casts"');
   });
 
+  test("shows the season in the breadcrumb only on the season pages", () => {
+    const data = buildLadderSeasonPageData(1, ranking, videos, names);
+    // The breadcrumbs are everything between their test id and the page title
+    const getBreadcrumbs = (html: string) =>
+      html.slice(html.indexOf('data-testid="ladder-breadcrumbs"'), html.indexOf("<h1"));
+
+    const seasonPage = getBreadcrumbs(render({ data, isLatestRoute: false }));
+    expect(seasonPage).toContain('href="/tournaments"');
+    expect(seasonPage).toContain('href="/tournaments/ladder-tournament"');
+    expect(seasonPage).toContain('league.season {"season":1}');
+
+    const latestPage = getBreadcrumbs(render({ data, isLatestRoute: true }));
+    expect(latestPage).toContain('href="/tournaments"');
+    expect(latestPage).not.toContain('href="/tournaments/ladder-tournament"');
+    expect(latestPage).not.toContain("league.season");
+  });
+
+  test("renders the intro video card in the header, also when the data is unavailable", () => {
+    for (const data of [buildLadderSeasonPageData(1, ranking, videos, names), null]) {
+      const card = getElement(
+        render({ data, isLatestRoute: true }),
+        "tournament-intro-video",
+        "a",
+      );
+      expect(card).toContain('href="https://www.youtube.com/watch?v=tD6naKtPCWU"');
+      expect(card).toContain('target="_blank"');
+      expect(card).toContain('aria-label="league.introVideo"');
+      expect(card).toContain("i.ytimg.com/vi_webp/tD6naKtPCWU/hqdefault.webp");
+    }
+  });
+
   test("renders the unavailable state with the official site link", () => {
     const html = render({ data: null, isLatestRoute: true });
 

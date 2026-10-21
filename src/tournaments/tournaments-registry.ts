@@ -37,6 +37,9 @@ export const LADDER_TOURNAMENT: TournamentInfo = {
 
 export const LADDER_TOURNAMENT_DISCORD_URL = "https://discord.gg/HQxUnjcrNd";
 
+// Intro to the tournament - how it works
+export const LADDER_TOURNAMENT_INTRO_VIDEO_URL = "https://www.youtube.com/watch?v=tD6naKtPCWU";
+
 // TODO: Confirm the official URL, logo and description
 export const IRONCLAD_TOURNAMENT: TournamentInfo = {
   id: "ironclad",
