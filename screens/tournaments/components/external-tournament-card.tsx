@@ -29,7 +29,7 @@ const ExternalTournamentCard = ({ tournament }: { tournament: TournamentInfo }) 
         <Avatar
           src={tournament.logo}
           alt={t(tournament.nameKey)}
-          size={44}
+          size={72}
           radius="md"
           color={tournament.color}
           variant="light"

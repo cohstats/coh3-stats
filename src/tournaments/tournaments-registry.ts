@@ -5,8 +5,11 @@
  * This file is client safe.
  */
 
-// Imported, so the build serves it with a content hash in the name and it can be cached forever
+// Imported, so the build serves them with a content hash in the name and they can be cached forever.
+// 256x256 with a transparent background - sharp up to 128px on 2x screens.
 import ladderTournamentLogo from "../../public/images/tournaments/ladder-tournament-logo.webp";
+import ironcladLogo from "../../public/images/tournaments/ironclad-logo.webp";
+import metaplaysLogo from "../../public/images/tournaments/metaplays-logo.webp";
 
 export type TournamentId = "ladderTournament" | "ironclad" | "metaplays";
 
@@ -43,25 +46,28 @@ export const LADDER_TOURNAMENT_DISCORD_URL = "https://discord.gg/HQxUnjcrNd";
 // Intro to the tournament - how it works
 export const LADDER_TOURNAMENT_INTRO_VIDEO_URL = "https://www.youtube.com/watch?v=tD6naKtPCWU";
 
-// TODO: Confirm the official URL, logo and description
+// TODO: Confirm the description
 export const IRONCLAD_TOURNAMENT: TournamentInfo = {
   id: "ironclad",
   nameKey: "tournaments.ironclad.name",
   descriptionKey: "tournaments.ironclad.description",
-  url: "https://ironclad-tournaments.example.com",
+  url: "https://www.ironcladtournaments.com",
+  logo: ironcladLogo.src,
   monogram: "IC",
   color: "gray",
   hasLeaguePage: false,
 };
 
-// TODO: Confirm the official URL, logo and description
+// TODO: Confirm the official URL and description
 export const METAPLAYS_TOURNAMENT: TournamentInfo = {
   id: "metaplays",
   nameKey: "tournaments.metaplays.name",
   descriptionKey: "tournaments.metaplays.description",
   url: "https://meta-plays.com/tournaments/company-of-heroes-3",
+  // Only the shield of their logo, without the text
+  logo: metaplaysLogo.src,
   monogram: "MP",
-  color: "violet",
+  color: "teal",
   hasLeaguePage: false,
 };
 

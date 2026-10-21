@@ -85,7 +85,7 @@ const FeaturedTournamentCard = ({
             <Avatar
               src={tournament.logo}
               alt={t(tournament.nameKey)}
-              size={56}
+              size={96}
               radius="md"
               color={tournament.color}
               variant="light"
