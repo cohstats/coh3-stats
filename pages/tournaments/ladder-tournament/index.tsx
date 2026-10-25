@@ -1,26 +1,25 @@
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import LadderTournamentScreen, {
-  LadderTournamentPageProps,
-} from "../../../screens/tournaments/ladder-tournament";
-import { getLadderSeasonPageResult } from "../../../src/tournaments/ladder-tournament-data";
+import LadderTournamentOverviewScreen, {
+  LadderTournamentOverviewPageProps,
+} from "../../../screens/tournaments/ladder-tournament/overview";
+import { getLadderOverviewResult } from "../../../src/tournaments/ladder-tournament-data";
 
-export default LadderTournamentScreen;
+export default LadderTournamentOverviewScreen;
 
-// The latest season - the menu and the hub link here, so it always shows the current standings
-export const getStaticProps: GetStaticProps<LadderTournamentPageProps> = async ({
+// The league overview - the latest season and all the seasons, the menu and the hub link here
+export const getStaticProps: GetStaticProps<LadderTournamentOverviewPageProps> = async ({
   locale = "en",
 }) => {
   console.log(`ISR - /tournaments/ladder-tournament`);
 
-  const result = await getLadderSeasonPageResult();
+  const { data, revalidate } = await getLadderOverviewResult();
 
   return {
     props: {
-      data: result.status === "ok" ? result.data : null,
-      isLatestRoute: true,
+      data,
       ...(await serverSideTranslations(locale, ["common", "tournaments", "players"])),
     },
-    revalidate: result.revalidate,
+    revalidate,
   };
 };

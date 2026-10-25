@@ -69,6 +69,10 @@ describe("TournamentsScreen", () => {
     expect(html).toContain('href="/players/1"');
     expect(html).toContain('league.playerFallback {"id":2}');
     expect(html).toContain('href="/tournaments/ladder-tournament"');
+    // The latest season title opens the season page
+    expect(getOpeningTag(html, "featured-latest-season-link")).toContain(
+      'href="/tournaments/ladder-tournament/season/1"',
+    );
     // Single season - no seasons count
     expect(html).not.toContain("hub.seasonsCount");
     expect(html).not.toContain('data-testid="featured-unavailable"');

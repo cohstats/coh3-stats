@@ -33,7 +33,6 @@ export const getStaticProps: GetStaticProps<
   return {
     props: {
       data: result.status === "ok" ? result.data : null,
-      isLatestRoute: false,
       ...(await serverSideTranslations(locale, ["common", "tournaments", "players"])),
     },
     revalidate: result.revalidate,

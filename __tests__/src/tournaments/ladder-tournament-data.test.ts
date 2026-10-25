@@ -4,6 +4,7 @@
 
 import {
   getLadderHubResult,
+  getLadderOverviewResult,
   getLadderSeasonPageResult,
 } from "../../../src/tournaments/ladder-tournament-data";
 import {
@@ -87,6 +88,36 @@ describe("ladder-tournament-data", () => {
 
       expect(result.status).toBe("ok");
       expect(result.status === "ok" && result.data.stages).toEqual([]);
+      expect(result.revalidate).toBe(60);
+    });
+  });
+
+  describe("getLadderOverviewResult", () => {
+    test("returns all the seasons with the latest season first", async () => {
+      const result = await getLadderOverviewResult();
+
+      expect(result.data?.seasons.map((season) => season.seasonId)).toEqual([2, 1]);
+      expect(result.data?.latestStandings.length).toBeGreaterThan(0);
+      expect(result.data?.latestStandings.length).toBeLessThanOrEqual(5);
+      expect(result.revalidate).toBe(3600);
+      // The names of the top players of the latest season are looked up
+      expect(mockedNames).toHaveBeenCalledWith(
+        expect.arrayContaining(result.data?.latestStandings.map((row) => row.relicId) ?? []),
+      );
+    });
+
+    test("returns no data with a short revalidate when the ranking fails", async () => {
+      mockedRanking.mockRejectedValue(new Error("down"));
+
+      expect(await getLadderOverviewResult()).toEqual({ data: null, revalidate: 60 });
+    });
+
+    test("keeps the data with a short revalidate when the videos fail", async () => {
+      mockedVideos.mockRejectedValue(new Error("down"));
+
+      const result = await getLadderOverviewResult();
+
+      expect(result.data).not.toBeNull();
       expect(result.revalidate).toBe(60);
     });
   });

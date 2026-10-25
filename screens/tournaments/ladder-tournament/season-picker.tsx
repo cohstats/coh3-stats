@@ -1,7 +1,8 @@
 import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { ActionIcon, Group, Select } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { ActionIcon, Button, Group, Select } from "@mantine/core";
+import { IconChevronLeft, IconChevronRight, IconListDetails } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import { getLadderTournamentRoute } from "../../../src/routes";
 import classes from "./ladder-tournament.module.css";
@@ -10,15 +11,14 @@ import classes from "./ladder-tournament.module.css";
 const SEARCHABLE_FROM = 10;
 
 /**
- * Previous / next buttons around a select with all the seasons. Scales to any number of seasons.
- * Not rendered when there is only one season.
+ * Previous / next buttons around a select with all the seasons, plus the link to the overview
+ * with all the seasons. Scales to any number of seasons.
+ * With only one season there is nothing to switch to, so only the overview link is rendered.
  * @param seasonIds All the seasons sorted from the newest
  */
 const SeasonPicker = ({ seasonId, seasonIds }: { seasonId: number; seasonIds: number[] }) => {
   const { t } = useTranslation("tournaments");
   const router = useRouter();
-
-  if (seasonIds.length <= 1) return null;
 
   const index = seasonIds.indexOf(seasonId);
   // Sorted from the newest - the previous (older) season is after the current one
@@ -31,41 +31,54 @@ const SeasonPicker = ({ seasonId, seasonIds }: { seasonId: number; seasonIds: nu
   };
 
   return (
-    <Group gap={6} wrap="nowrap" data-testid="ladder-season-picker">
-      <ActionIcon
-        variant="default"
-        size="lg"
-        aria-label={t("league.previousSeason")}
-        disabled={previousSeasonId === undefined}
-        onClick={() => goToSeason(previousSeasonId)}
-        data-testid="ladder-season-previous"
+    <Group gap={6} wrap="wrap" justify="flex-end" data-testid="ladder-season-picker">
+      {seasonIds.length > 1 && (
+        <Group gap={6} wrap="nowrap" data-testid="ladder-season-switch">
+          <ActionIcon
+            variant="default"
+            size="lg"
+            aria-label={t("league.previousSeason")}
+            disabled={previousSeasonId === undefined}
+            onClick={() => goToSeason(previousSeasonId)}
+            data-testid="ladder-season-previous"
+          >
+            <IconChevronLeft size={18} />
+          </ActionIcon>
+          <Select
+            aria-label={t("league.seasonPicker")}
+            className={classes.seasonSelect}
+            data={seasonIds.map((id) => ({
+              value: `${id}`,
+              label: t("league.season", { season: id }),
+            }))}
+            value={`${seasonId}`}
+            onChange={(value) => value && goToSeason(Number(value))}
+            allowDeselect={false}
+            searchable={seasonIds.length > SEARCHABLE_FROM}
+            checkIconPosition="right"
+            data-testid="ladder-season-select"
+          />
+          <ActionIcon
+            variant="default"
+            size="lg"
+            aria-label={t("league.nextSeason")}
+            disabled={nextSeasonId === undefined}
+            onClick={() => goToSeason(nextSeasonId)}
+            data-testid="ladder-season-next"
+          >
+            <IconChevronRight size={18} />
+          </ActionIcon>
+        </Group>
+      )}
+      <Button
+        component={Link}
+        href={getLadderTournamentRoute()}
+        variant="subtle"
+        leftSection={<IconListDetails size={16} />}
+        data-testid="ladder-all-seasons-link"
       >
-        <IconChevronLeft size={18} />
-      </ActionIcon>
-      <Select
-        aria-label={t("league.seasonPicker")}
-        className={classes.seasonSelect}
-        data={seasonIds.map((id) => ({
-          value: `${id}`,
-          label: t("league.season", { season: id }),
-        }))}
-        value={`${seasonId}`}
-        onChange={(value) => value && goToSeason(Number(value))}
-        allowDeselect={false}
-        searchable={seasonIds.length > SEARCHABLE_FROM}
-        checkIconPosition="right"
-        data-testid="ladder-season-select"
-      />
-      <ActionIcon
-        variant="default"
-        size="lg"
-        aria-label={t("league.nextSeason")}
-        disabled={nextSeasonId === undefined}
-        onClick={() => goToSeason(nextSeasonId)}
-        data-testid="ladder-season-next"
-      >
-        <IconChevronRight size={18} />
-      </ActionIcon>
+        {t("league.allSeasons.title")}
+      </Button>
     </Group>
   );
 };

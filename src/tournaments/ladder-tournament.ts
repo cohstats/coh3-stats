@@ -56,11 +56,21 @@ export type LadderSeasonSummary = {
 
 export type LadderSeasonPageData = {
   seasonId: number;
-  // Sorted from the newest, for the season picker and the all seasons table
+  // Sorted from the newest, for the season picker and the season stats
   seasons: LadderSeasonSummary[];
   standings: LadderStandingRow[];
   stages: LadderStageGroup[];
 };
+
+export type LadderOverviewData = {
+  // Sorted from the newest, the first one is the latest season
+  seasons: LadderSeasonSummary[];
+  // Top of the latest season standings
+  latestStandings: LadderStandingRow[];
+};
+
+// Players of the latest season shown on the overview
+export const OVERVIEW_TOP_PLAYERS = 5;
 
 export type LadderHubSummary = {
   latest: LadderSeasonSummary;
@@ -223,6 +233,40 @@ export const buildLadderSeasonPageData = (
     ),
     stages: groupCastsByStage(seasonVideos),
   };
+};
+
+/**
+ * Relic IDs of the top players of the season, the same players as in the overview standings.
+ */
+export const getLadderTopPlayerIds = (
+  ranking: LadderTournamentRankingItem[],
+  seasonId: number,
+): number[] =>
+  ranking
+    .filter((item) => item.seasonid === seasonId)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, OVERVIEW_TOP_PLAYERS)
+    .map((item) => item.relicid);
+
+/**
+ * Builds the data of the league overview page, null when there is no data at all.
+ */
+export const buildLadderOverviewData = (
+  ranking: LadderTournamentRankingItem[],
+  videos: LadderTournamentCasterVideo[],
+  names: LadderPlayerNames,
+): LadderOverviewData | null => {
+  const seasons = buildLadderSeasonSummaries(ranking, videos, names);
+  if (seasons.length === 0) return null;
+
+  const latestSeasonId = seasons[0].seasonId;
+  const latestStandings = buildLadderStandings(
+    ranking.filter((item) => item.seasonid === latestSeasonId),
+    videos.filter((video) => video.seasonId === latestSeasonId),
+    names,
+  ).slice(0, OVERVIEW_TOP_PLAYERS);
+
+  return { seasons, latestStandings };
 };
 
 /**

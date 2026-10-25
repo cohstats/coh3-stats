@@ -47,6 +47,9 @@
     "seasonPicker": "Season",
     "previousSeason": "Previous season",
     "nextSeason": "Next season",
+    "overview": {
+      "openSeason": "Open Season {{season}}"
+    },
     "tiles": {
       "players": "Players",
       "casts": "Casted matches",

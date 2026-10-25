@@ -2,8 +2,8 @@ import { Locator } from "@playwright/test";
 import { BasePage } from "./base-page";
 
 /**
- * Page Object for the Tournaments hub (/tournaments) and the Ladder Tournament league page
- * (/tournaments/ladder-tournament[/season/N]).
+ * Page Object for the Tournaments hub (/tournaments), the Ladder Tournament overview
+ * (/tournaments/ladder-tournament) and the season pages (/tournaments/ladder-tournament/season/N).
  */
 export class TournamentsPage extends BasePage {
   // Hub
@@ -23,9 +23,26 @@ export class TournamentsPage extends BasePage {
     return this.getByTestId("featured-open-league");
   }
 
-  // League page
-  get leaguePage(): Locator {
+  // League overview
+  get overviewPage(): Locator {
+    return this.getByTestId("ladder-tournament-overview");
+  }
+
+  get openLatestSeasonButton(): Locator {
+    return this.getByTestId("ladder-open-latest-season");
+  }
+
+  // Season page
+  get seasonPage(): Locator {
     return this.getByTestId("ladder-tournament-page");
+  }
+
+  get seasonPicker(): Locator {
+    return this.getByTestId("ladder-season-picker");
+  }
+
+  get allSeasonsLink(): Locator {
+    return this.getByTestId("ladder-all-seasons-link");
   }
 
   get standingsTable(): Locator {

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import {
+  Anchor,
   Avatar,
   Badge,
   Button,
@@ -30,7 +31,15 @@ const LatestSeason = ({ summary }: { summary: LadderHubSummary }) => {
         {t("hub.latestSeason")}
       </Text>
       <Title order={3} size="h3">
-        {t("league.season", { season: latest.seasonId })}
+        <Anchor
+          component={Link}
+          href={getLadderTournamentRoute(latest.seasonId)}
+          inherit
+          c="inherit"
+          data-testid="featured-latest-season-link"
+        >
+          {t("league.season", { season: latest.seasonId })}
+        </Anchor>
       </Title>
       <Text size="sm" c="dimmed">
         {t("hub.playersCount", { count: latest.players })}

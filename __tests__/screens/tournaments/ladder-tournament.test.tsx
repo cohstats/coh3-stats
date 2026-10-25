@@ -102,7 +102,7 @@ const count = (html: string, pattern: RegExp) => (html.match(pattern) || []).len
 describe("LadderTournamentScreen", () => {
   test("renders the standings rows with the champion highlight and titles", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
-    const html = render({ data, isLatestRoute: true });
+    const html = render({ data });
 
     expect(count(html, /data-testid="ladder-standing-/g)).toBe(4);
 
@@ -131,7 +131,7 @@ describe("LadderTournamentScreen", () => {
 
   test("renders the season stats bar with the champions", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
-    const html = render({ data, isLatestRoute: true });
+    const html = render({ data });
 
     expect(html).toContain('league.season {"season":1}');
     const stats = html.slice(html.indexOf('data-testid="ladder-season-stats"'));
@@ -148,7 +148,6 @@ describe("LadderTournamentScreen", () => {
     );
     const html = render({
       data: buildLadderSeasonPageData(1, manyPlayers, [], {}),
-      isLatestRoute: true,
     });
 
     // All the rows are in the HTML, the ones after the top 10 are hidden
@@ -162,39 +161,40 @@ describe("LadderTournamentScreen", () => {
 
   test("doesn't show the button with 10 players or less", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
-    const html = render({ data, isLatestRoute: true });
+    const html = render({ data });
 
     expect(html).not.toContain('data-testid="ladder-standings-toggle"');
     expect(html).not.toContain("collapsedRow");
   });
 
-  test("hides the season picker when there is only one season", () => {
+  test("shows only the all seasons link when there is only one season", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
-    const html = render({ data, isLatestRoute: true });
+    const html = render({ data });
 
-    expect(html).not.toContain('data-testid="ladder-season-picker"');
-    expect(count(html, /data-testid="ladder-season-row-/g)).toBe(1);
+    expect(html).toContain('data-testid="ladder-season-picker"');
+    expect(html).not.toContain('data-testid="ladder-season-switch"');
+    expect(getElement(html, "ladder-all-seasons-link", "a")).toContain(
+      'href="/tournaments/ladder-tournament"',
+    );
   });
 
-  test("shows the select with prev / next buttons and all the seasons with 12 seasons", () => {
+  test("shows the select with prev / next buttons with 12 seasons", () => {
     const manySeasons = Array.from({ length: 12 }, (_, index) =>
       champion(100 + index, { seasonid: index + 1 }),
     );
     const data = buildLadderSeasonPageData(5, manySeasons, [], {});
-    const html = render({ data, isLatestRoute: false });
+    const html = render({ data });
 
-    expect(html).toContain('data-testid="ladder-season-picker"');
+    expect(html).toContain('data-testid="ladder-season-switch"');
     expect(html).toContain('aria-label="league.seasonPicker"');
     expect(html).toContain('value="league.season {"season":5}"');
     // Both directions are available in the middle of the list
     expect(getElement(html, "ladder-season-previous", "button")).not.toContain("disabled");
     expect(getElement(html, "ladder-season-next", "button")).not.toContain("disabled");
+    expect(html).toContain('data-testid="ladder-all-seasons-link"');
 
-    // All the seasons are listed, newest first, the current one is highlighted
-    const rows = [...html.matchAll(/data-testid="ladder-season-row-(\d+)"/g)].map((m) => m[1]);
-    expect(rows).toEqual(["12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"]);
-    expect(getElement(html, "ladder-season-row-5")).toContain('aria-current="page"');
-    expect(html).toContain('href="/tournaments/ladder-tournament/season/12"');
+    // The all seasons table is on the overview only
+    expect(html).not.toContain('data-testid="ladder-all-seasons-table"');
   });
 
   test("disables the buttons at the ends of the season list", () => {
@@ -202,14 +202,12 @@ describe("LadderTournamentScreen", () => {
 
     const oldest = render({
       data: buildLadderSeasonPageData(1, seasons, [], {}),
-      isLatestRoute: false,
     });
     expect(getElement(oldest, "ladder-season-previous", "button")).toContain("disabled");
     expect(getElement(oldest, "ladder-season-next", "button")).not.toContain("disabled");
 
     const newest = render({
       data: buildLadderSeasonPageData(2, seasons, [], {}),
-      isLatestRoute: true,
     });
     expect(getElement(newest, "ladder-season-previous", "button")).not.toContain("disabled");
     expect(getElement(newest, "ladder-season-next", "button")).toContain("disabled");
@@ -217,7 +215,7 @@ describe("LadderTournamentScreen", () => {
 
   test("groups the casts by stage in the stage order", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
-    const html = render({ data, isLatestRoute: true });
+    const html = render({ data });
 
     expect(count(html, /data-testid="ladder-cast-stage"/g)).toBe(3);
     const final = html.indexOf(">FINAL<");
@@ -231,42 +229,34 @@ describe("LadderTournamentScreen", () => {
   test("hides the casts without videos and shows the standings notice without ranking", () => {
     // Casts only season - the casts were published before the standings
     const data = buildLadderSeasonPageData(2, ranking, [video({ seasonId: 2 })], names);
-    const html = render({ data, isLatestRoute: false });
+    const html = render({ data });
 
     expect(html).toContain('data-testid="ladder-standings-not-available"');
     expect(html).toContain('data-testid="ladder-casts"');
 
     const withoutCasts = render({
       data: buildLadderSeasonPageData(1, ranking, [], names),
-      isLatestRoute: true,
     });
     expect(withoutCasts).not.toContain('data-testid="ladder-casts"');
   });
 
-  test("shows the season in the breadcrumb only on the season pages", () => {
+  test("shows the season in the breadcrumb with the link to the overview", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
+    const html = render({ data });
     // The breadcrumbs are everything between their test id and the page title
-    const getBreadcrumbs = (html: string) =>
-      html.slice(html.indexOf('data-testid="ladder-breadcrumbs"'), html.indexOf("<h1"));
+    const breadcrumbs = html.slice(
+      html.indexOf('data-testid="ladder-breadcrumbs"'),
+      html.indexOf("<h1"),
+    );
 
-    const seasonPage = getBreadcrumbs(render({ data, isLatestRoute: false }));
-    expect(seasonPage).toContain('href="/tournaments"');
-    expect(seasonPage).toContain('href="/tournaments/ladder-tournament"');
-    expect(seasonPage).toContain('league.season {"season":1}');
-
-    const latestPage = getBreadcrumbs(render({ data, isLatestRoute: true }));
-    expect(latestPage).toContain('href="/tournaments"');
-    expect(latestPage).not.toContain('href="/tournaments/ladder-tournament"');
-    expect(latestPage).not.toContain("league.season");
+    expect(breadcrumbs).toContain('href="/tournaments"');
+    expect(breadcrumbs).toContain('href="/tournaments/ladder-tournament"');
+    expect(breadcrumbs).toContain('league.season {"season":1}');
   });
 
   test("renders the intro video card in the header, also when the data is unavailable", () => {
     for (const data of [buildLadderSeasonPageData(1, ranking, videos, names), null]) {
-      const card = getElement(
-        render({ data, isLatestRoute: true }),
-        "tournament-intro-video",
-        "a",
-      );
+      const card = getElement(render({ data }), "tournament-intro-video", "a");
       expect(card).toContain('href="https://www.youtube.com/watch?v=tD6naKtPCWU"');
       expect(card).toContain('target="_blank"');
       expect(card).toContain('aria-label="league.introVideo"');
@@ -275,7 +265,7 @@ describe("LadderTournamentScreen", () => {
   });
 
   test("renders the unavailable state with the official site link", () => {
-    const html = render({ data: null, isLatestRoute: true });
+    const html = render({ data: null });
 
     expect(html).toContain('data-testid="ladder-tournament-unavailable"');
     expect(html).toContain("league.unavailable");

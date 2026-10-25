@@ -10,14 +10,15 @@ import classes from "./ladder-tournament.module.css";
 const Dash = () => <Text c="dimmed">—</Text>;
 
 /**
- * All the seasons, the main way to browse many seasons - the season picker is the shortcut.
+ * All the seasons on the league overview, the main way to browse many seasons.
+ * @param seasonId Season highlighted as the current page, none when not set
  */
 const AllSeasonsTable = ({
   seasons,
   seasonId,
 }: {
   seasons: LadderSeasonSummary[];
-  seasonId: number;
+  seasonId?: number;
 }) => {
   const { t } = useTranslation("tournaments");
 

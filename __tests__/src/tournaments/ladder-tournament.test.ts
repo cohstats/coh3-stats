@@ -1,10 +1,12 @@
 import {
   buildHubLadderSummary,
+  buildLadderOverviewData,
   buildLadderSeasonPageData,
   buildLadderSeasonSummaries,
   buildLadderStandings,
   getLadderChampionIds,
   getLadderSeasonIds,
+  getLadderTopPlayerIds,
   groupCastsByStage,
 } from "../../../src/tournaments/ladder-tournament";
 import type {
@@ -222,6 +224,33 @@ describe("season summaries", () => {
       seasonsCount: 3,
     });
     expect(buildHubLadderSummary([], [], {})).toBeNull();
+  });
+
+  test("builds the overview data with the top of the latest season", () => {
+    const latestRanking = [
+      ...ranking,
+      ...Array.from({ length: 7 }, (_, index) =>
+        item(100 + index, { seasonid: 3, score: index % 2 === 0 ? 10 : 20 }),
+      ),
+    ];
+
+    const data = buildLadderOverviewData(latestRanking, videos, names);
+
+    expect(data?.seasons.map((season) => season.seasonId)).toEqual([3, 2, 1]);
+    // Top 5 by score, the same score keeps the API order
+    const top = [101, 103, 105, 100, 102];
+    expect(data?.latestStandings.map((row) => row.relicId)).toEqual(top);
+    // The names are looked up for the same players
+    expect(getLadderTopPlayerIds(latestRanking, 3)).toEqual(top);
+    expect(buildLadderOverviewData([], [], {})).toBeNull();
+  });
+
+  test("builds the overview without standings for a casts only latest season", () => {
+    const data = buildLadderOverviewData(ranking, videos, names);
+
+    expect(data?.seasons[0].seasonId).toBe(3);
+    expect(data?.latestStandings).toEqual([]);
+    expect(getLadderTopPlayerIds(ranking, 3)).toEqual([]);
   });
 
   test("returns the champion ids, optionally for given seasons", () => {

@@ -7,10 +7,13 @@ import {
 import { logger } from "../logger";
 import {
   buildHubLadderSummary,
+  buildLadderOverviewData,
   buildLadderSeasonPageData,
   getLadderChampionIds,
   getLadderSeasonIds,
+  getLadderTopPlayerIds,
   LadderHubSummary,
+  LadderOverviewData,
   LadderSeasonPageData,
 } from "./ladder-tournament";
 import { getLadderPlayerNames } from "./ladder-tournament-names";
@@ -86,7 +89,7 @@ export const getLadderSeasonPageResult = async (
     return { status: "notFound", revalidate };
   }
 
-  // Everybody in the season + the champions of all seasons for the all seasons table
+  // Everybody in the season + the champions of all seasons for the season stats
   const names = await getLadderPlayerNames([
     ...ranking.filter((item) => item.seasonid === resolvedSeasonId).map((item) => item.relicid),
     ...getLadderChampionIds(ranking),
@@ -96,6 +99,32 @@ export const getLadderSeasonPageResult = async (
     status: "ok",
     data: buildLadderSeasonPageData(resolvedSeasonId, ranking, videos, names),
     revalidate,
+  };
+};
+
+export type LadderOverviewResult = {
+  // null when the data couldn't be loaded
+  data: LadderOverviewData | null;
+  revalidate: number;
+};
+
+export const getLadderOverviewResult = async (): Promise<LadderOverviewResult> => {
+  const { ranking, videos, complete } = await loadRawData();
+
+  if (ranking === null) {
+    return { data: null, revalidate: LADDER_TOURNAMENT_REVALIDATE_ON_ERROR };
+  }
+
+  // Champions of all seasons for the all seasons table + the top of the latest season
+  const latestSeasonId = getLadderSeasonIds(ranking, videos)[0];
+  const names = await getLadderPlayerNames([
+    ...getLadderChampionIds(ranking),
+    ...(latestSeasonId === undefined ? [] : getLadderTopPlayerIds(ranking, latestSeasonId)),
+  ]);
+
+  return {
+    data: buildLadderOverviewData(ranking, videos, names),
+    revalidate: complete ? LADDER_TOURNAMENT_REVALIDATE : LADDER_TOURNAMENT_REVALIDATE_ON_ERROR,
   };
 };
 
