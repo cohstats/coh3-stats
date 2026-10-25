@@ -105,6 +105,8 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
+          secrets: |
+            ladder_tournament_api_token=${{ secrets.LADDER_TOURNAMENT_API_TOKEN }}
 
       - name: Deploy to Coolify
         if: success() && github.ref_name == 'master'

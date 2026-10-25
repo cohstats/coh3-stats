@@ -29,7 +29,10 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN \
+# Server-only token for the Ladder Tournament API, needed by getStaticProps during the build.
+# Mounted as a BuildKit secret so it never ends up in an image layer.
+RUN --mount=type=secret,id=ladder_tournament_api_token \
+  export LADDER_TOURNAMENT_API_TOKEN="$(cat /run/secrets/ladder_tournament_api_token 2>/dev/null)"; \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
