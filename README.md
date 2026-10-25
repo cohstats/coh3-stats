@@ -14,10 +14,7 @@ be open source for anyone to use! We need people to get the data from the game
 
 Anyone can put a hand in building this site. Please consider joining our [Discord](https://discord.gg/jRrnwqMfkr).
 
-We have open sourced our underlying data https://coh3stats.com/other/open-data
-
-- Leaderboards, Matches << which we scrape and get from Relic API
-- Data (definitions / images ) which << which we get from the game files
+We publish open source data https://coh3stats.com/other/open-data
 
 ## Localization
 
@@ -49,17 +46,9 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-### Environment variables
-
-Public / non-secret values are committed in `.env`. Secrets must be placed in `.env.local` (git-ignored) locally and in the hosting environment settings.
-
-| Variable                      | Description                                                                                                                |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `LADDER_TOURNAMENT_API_TOKEN` | Server-only token for the [Ladder Tournament API](https://laddertournament.com.br/api/). Never prefix with `NEXT_PUBLIC_`. |
-
 Before making an MR please create an issue describing what you want to change and how you want to change it so we can have some discussion. Furthermore, it avoids multiple people working on the same thing.
 
-Feel free to create a fork and make an MR. Before PR you can test your code with `yarn build` to make sure it builds.
+Feel free to create a fork and make an PR. Before PR you can test your code with `yarn build` to make sure it builds.
 You can also run `yarn build:slim` to build the app without prerendering all the pages. This is useful for faster development.
 
 Also make sure the prettier is right `yarn fix` and `yarn test`
@@ -150,18 +139,6 @@ Example pages:
 - ...
 - Generally any page which doesn't load any data from API
 
-#### Reasons:
-
-- Because it's a public website, SSR pages will be much better read by search engines and it will provide an overall better experience.
-- All the data fetching (from DB, cloud functions and other) should happen in SSR, so that we can offer site avaliabily everywhere, as GCP services are blocked in
-  some countries ( China, Russia).
-- The SSR functions have the capability to connect to public APIs, retrieve data from Firestore, and invoke cloud functions when necessary.
-- The SSR functions should remain lightweight. For extensive data computations, utilize Cloud Functions on GCP, enabling performance control.
-- The complete source code for our Next.js frontend will be available in this repository and will be open source.
-- The BE of the CF will be closed source because, we will most likely connect to sensitive APIs.
-
-![image](https://user-images.githubusercontent.com/8086995/217599315-ff660c70-e9d6-4e99-88b9-c4ea21892433.png)
-
 ## COH3 Stats technology stack
 
 App platform:
@@ -171,7 +148,6 @@ App platform:
 Frontend:
 
 - NextJS (React) as main technology used
-- Edgio as a hosting platform
 - Mantine as a component library
 
 Backend:
@@ -186,7 +162,7 @@ Backend:
 
 - cdn.coh3stats.com - Contains all the images | hosted on Firebase hosting
 - storage.coh3stats.com - Contains matches and leaderboards | hosted on GCP Storage
-- cache.coh3stats.com - Cache for API calls
+- cache.coh3stats.com - Proxy and cache for API calls
 - data.coh3stats.com - CDN for the data files hosted at Github - coh3-data repo
 
 ### History of deployments
@@ -201,7 +177,3 @@ Backend:
   added localization support for many languages. This moved the amount of unique pages to millions and google / bing and LLM bots are keen
   on visiting them all - one day we got quite big Lambda bill from AWS.
 - Self Hosted Docker with Coolify on VPS - currently setup, flat rate
-
-### High level architecture - outdated
-
-![image](https://user-images.githubusercontent.com/8086995/217594185-93c7d83a-cb5f-4b93-a26d-bcc32d805d41.png)
