@@ -17,3 +17,4 @@ export { MapsExplorerPage, MapsTablePage, MapDetailPage } from "./explorer-maps-
 export { StatsPage } from "./stats-page";
 export { SiteChromePage } from "./site-chrome-page";
 export { DpsPage } from "./dps-page";
+export { TournamentsPage } from "./tournaments-page";

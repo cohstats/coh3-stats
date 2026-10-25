@@ -1,8 +1,8 @@
 import React from "react";
+import Link from "next/link";
 import {
   Anchor,
   Avatar,
-  Badge,
   Box,
   Container,
   Group,
@@ -14,17 +14,20 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconExternalLink, IconPlayerPlayFilled, IconTrophy } from "@tabler/icons-react";
+import { IconExternalLink, IconPlayerPlayFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import type { LadderTournamentPlayerData } from "../../../../src/apis/ladder-tournament-api";
 import {
   buildLadderTournament,
+  formatWinRate,
   getTournamentAggregate,
   PlayerTournament,
   PlayerTournamentAggregate,
   PlayerTournamentSeason,
 } from "../../../../src/players/tournaments";
 import TournamentVideoCard from "../../../../components/tournament-videos/tournament-video-card";
+import TournamentTitleBadges from "../../../../components/tournaments/tournament-title-badges";
+import { getLadderTournamentRoute } from "../../../../src/routes";
 import classes from "./tournaments-tab.module.css";
 
 const COLUMNS_COUNT = 7;
@@ -37,8 +40,6 @@ interface TournamentsTabProps {
 
 const Dash = () => <Text c="dimmed">—</Text>;
 
-const formatWinRate = (winRate: number) => `${Math.round(winRate * 100)}%`;
-
 const SeasonRows = ({ season }: { season: PlayerTournamentSeason }) => {
   const { t } = useTranslation("players");
   const { stats, titles, casts } = season;
@@ -48,24 +49,18 @@ const SeasonRows = ({ season }: { season: PlayerTournamentSeason }) => {
       <Table.Tr data-testid={`tournament-season-${season.seasonId}`}>
         <Table.Td>
           <Text fw={600}>{t("tournaments.season", { season: season.seasonId })}</Text>
+          <Anchor
+            component={Link}
+            href={getLadderTournamentRoute(season.seasonId)}
+            size="xs"
+            style={{ whiteSpace: "nowrap" }}
+            data-testid={`tournament-season-standings-${season.seasonId}`}
+          >
+            {t("tournaments.seasonStandings")} →
+          </Anchor>
         </Table.Td>
         <Table.Td>
-          {titles.length > 0 ? (
-            <Group gap={4}>
-              {titles.map((title) => (
-                <Badge
-                  key={title}
-                  color="yellow"
-                  variant="light"
-                  leftSection={<IconTrophy size={13} />}
-                >
-                  {t(`tournaments.titles.${title}`)}
-                </Badge>
-              ))}
-            </Group>
-          ) : (
-            <Dash />
-          )}
+          <TournamentTitleBadges titles={titles} />
         </Table.Td>
         <Table.Td>{stats ? stats.matches : <Dash />}</Table.Td>
         <Table.Td>
@@ -165,7 +160,7 @@ const TournamentSection = ({
           <Table layout="fixed" verticalSpacing="sm" horizontalSpacing="lg">
             <Table.Thead className={classes.head}>
               <Table.Tr>
-                <Table.Th w="13%" className={classes.headCell}>
+                <Table.Th w="19%" className={classes.headCell}>
                   {t("tournaments.columns.season")}
                 </Table.Th>
                 <Table.Th className={classes.headCell}>

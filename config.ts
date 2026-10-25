@@ -521,6 +521,25 @@ const getPatchDataLocaleUrl = (locale = "en", patch = "latest") => {
   return `https://data.coh3stats.com/cohstats/coh3-data/${dataTag}/data/locales/${locale.toLowerCase()}-locstring.json`;
 };
 
+// Links of the community tournaments on the Tournaments page.
+// Names, logos and colours are in src/tournaments/tournaments-registry.ts
+const tournaments = {
+  ladderTournament: {
+    url: "https://laddertournament.com.br",
+    discordUrl: "https://discord.gg/HQxUnjcrNd",
+    // Intro to the tournament - how it works
+    introVideoUrl: "https://www.youtube.com/watch?v=tD6naKtPCWU",
+    apiBaseUrl: "https://laddertournament.com.br:8099/api/external",
+  },
+  ironclad: {
+    url: "https://www.ironcladtournaments.com",
+  },
+  // TODO: Confirm the official URL
+  metaplays: {
+    url: "https://meta-plays.com/tournaments/company-of-heroes-3",
+  },
+};
+
 const config = {
   getFirebaseConfig,
   isDevEnv,
@@ -535,8 +554,8 @@ const config = {
   STORAGE_LINK: "https://storage.coh3stats.com",
   BASE_CLOUD_FUNCTIONS_URL: "https://us-east4-coh3-stats-prod.cloudfunctions.net",
   BASE_CLOUD_FUNCTIONS_PROXY_URL: "https://cache.coh3stats.com",
-  LADDER_TOURNAMENT_API_BASE_URL: "https://laddertournament.com.br:8099/api/external",
   RELIC_API_STATUS_LINK: "https://cohstats.instatus.com/",
+  tournaments,
   patches,
   latestPatch,
   statsPatchSelector,

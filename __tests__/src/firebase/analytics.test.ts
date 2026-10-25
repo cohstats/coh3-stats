@@ -8,6 +8,9 @@ import {
   AnalyticsPlayerCardDetailedStatsView,
   AnalyticsPlayerCardTournamentsView,
   AnalyticsTeamLeaderBoardsPageView,
+  AnalyticsTournamentsPageView,
+  AnalyticsTournamentExternalClick,
+  AnalyticsLadderTournamentSeasonView,
 } from "../../../src/firebase/analytics";
 import webFirebase from "../../../src/firebase/web-firebase";
 
@@ -83,6 +86,28 @@ describe("Firebase Analytics", () => {
 
     expect(webFirebase.logFBEvent).toHaveBeenCalledWith("player_card_detailed_stats_view", {
       profile_id: profileId,
+    });
+  });
+
+  test("AnalyticsTournamentsPageView should log correct event", () => {
+    AnalyticsTournamentsPageView();
+
+    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("tournaments_page_view");
+  });
+
+  test("AnalyticsTournamentExternalClick should log correct event", () => {
+    AnalyticsTournamentExternalClick("metaplays");
+
+    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("tournament_external_click", {
+      tournament_id: "metaplays",
+    });
+  });
+
+  test("AnalyticsLadderTournamentSeasonView should log correct event", () => {
+    AnalyticsLadderTournamentSeasonView(2);
+
+    expect(webFirebase.logFBEvent).toHaveBeenCalledWith("ladder_tournament_season_view", {
+      season_id: 2,
     });
   });
 

@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "hubTitle": "Tournaments",
+    "hubDescription": "Community tournaments for Company of Heroes 3 - Ladder Tournament standings and casted matches, IronClad Tournaments and MetaPlays.",
+    "leagueTitle": "Ladder Tournament - Standings & Casts",
+    "leagueDescription": "Standings, champions and casted matches of the Ladder Tournament, a Company of Heroes 3 community team ladder.",
+    "seasonTitle": "Ladder Tournament Season {{season}} - Standings & Casts",
+    "seasonDescription": "Standings, champions and casted matches of the Ladder Tournament Season {{season}}, a Company of Heroes 3 community team ladder."
+  },
+  "hub": {
+    "title": "Tournaments",
+    "subtitle": "Community tournaments for Company of Heroes 3",
+    "statsBadge": "Stats on COH3 Stats",
+    "openLeague": "Open league",
+    "officialSite": "Official site",
+    "visitSite": "Visit site",
+    "latestSeason": "Latest season",
+    "champions": "Champions",
+    "playersCount_one": "{{count}} player",
+    "playersCount_other": "{{count}} players",
+    "castsCount_one": "{{count}} casted match",
+    "castsCount_other": "{{count}} casted matches",
+    "seasonsCount_one": "{{count}} season on COH3 Stats",
+    "seasonsCount_other": "{{count}} seasons on COH3 Stats",
+    "unavailable": "Stats are unavailable right now",
+    "addTournament": "Reach out to us on Discord to add your tournament here"
+  },
+  "tournaments": {
+    "ladderTournament": {
+      "name": "Ladder Tournament",
+      "description": "A challenge-based team ladder organised by the Brazilian Company of Heroes 3 community. Teams climb the ladder by challenging each other and the key matches are cast by community casters."
+    },
+    "ironclad": {
+      "name": "IronClad Tournaments",
+      "description": "Community-run Company of Heroes 3 tournaments."
+    },
+    "metaplays": {
+      "name": "MetaPlays",
+      "description": "Company of Heroes 3 tournaments hosted on the MetaPlays platform."
+    }
+  },
+  "league": {
+    "communityLadder": "Community team ladder",
+    "officialSite": "Official site",
+    "discord": "Discord",
+    "introVideo": "How the Ladder Tournament works - intro video",
+    "season": "Season {{season}}",
+    "seasonPicker": "Season",
+    "previousSeason": "Previous season",
+    "nextSeason": "Next season",
+    "overview": {
+      "openSeason": "Open Season {{season}}",
+      "latestCasts": "Latest casts",
+      "showMoreCasts": "Show more"
+    },
+    "tiles": {
+      "players": "Players",
+      "casts": "Casted matches",
+      "championsRecord": "Champions' record",
+      "topScore": "Top score"
+    },
+    "champions": "Champions",
+    "standings": {
+      "title": "Standings",
+      "sortNote": "Sorted by score",
+      "showAll": "Show all {{count}} players",
+      "showLess": "Show top 10",
+      "notAvailable": "Standings are not available yet",
+      "columns": {
+        "player": "Player",
+        "matches": "Matches",
+        "winsLosses": "W / L",
+        "winRate": "Win rate",
+        "score": "Score",
+        "titles": "Titles",
+        "casts": "Casts"
+      }
+    },
+    "casts": {
+      "title": "Casted matches",
+      "otherStage": "Other"
+    },
+    "allSeasons": {
+      "title": "All seasons",
+      "columns": {
+        "season": "Season",
+        "players": "Players",
+        "casts": "Casts",
+        "champions": "Champions",
+        "record": "Champions' record"
+      }
+    },
+    "unavailable": "Ladder Tournament data is unavailable right now, try again later",
+    "playerFallback": "Player #{{id}}"
+  }
+}

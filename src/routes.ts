@@ -151,6 +151,19 @@ export const getDesktopAppRoute = () => {
   return encodeURI(`/desktop-app`);
 };
 
+export const getTournamentsRoute = () => {
+  return encodeURI(`/tournaments`);
+};
+
+/**
+ * @param seasonId Ladder Tournament season, the league page shows the latest season when not set
+ */
+export const getLadderTournamentRoute = (seasonId?: number | string) => {
+  return seasonId === undefined
+    ? encodeURI(`/tournaments/ladder-tournament`)
+    : encodeURI(`/tournaments/ladder-tournament/season/${seasonId}`);
+};
+
 export const getAboutRoute = (section?: string) => {
   if (section) {
     return encodeURI(`/about#${section}`);
@@ -161,6 +174,10 @@ export const getAboutRoute = (section?: string) => {
 
 export const getPlayerCardRoute = (playerId: string | number) => {
   return encodeURI(`/players/${playerId}`);
+};
+
+export const getPlayerCardTournamentsRoute = (playerId: string | number) => {
+  return encodeURI(`/players/${playerId}?view=tournaments`);
 };
 
 export const getSearchRoute = (searchQuery: string) => {
