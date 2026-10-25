@@ -242,7 +242,18 @@ describe("season summaries", () => {
     expect(data?.latestStandings.map((row) => row.relicId)).toEqual(top);
     // The names are looked up for the same players
     expect(getLadderTopPlayerIds(latestRanking, 3)).toEqual(top);
+    expect(data?.latestCasts).toHaveLength(3);
     expect(buildLadderOverviewData([], [], {})).toBeNull();
+  });
+
+  test("builds the overview with the 4 newest casts of all the seasons", () => {
+    const manyVideos = [1, 5, 3, 2, 4].map((day) =>
+      video({ title: `${day}`, publishedAt: `2026-09-0${day}T00:00:00`, seasonId: day % 2 }),
+    );
+
+    const data = buildLadderOverviewData(ranking, manyVideos, names);
+
+    expect(data?.latestCasts.map((cast) => cast.title)).toEqual(["5", "4", "3", "2"]);
   });
 
   test("builds the overview without standings for a casts only latest season", () => {

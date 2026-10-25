@@ -78,6 +78,15 @@ describe("TournamentsScreen", () => {
     expect(html).not.toContain('data-testid="featured-unavailable"');
   });
 
+  test("links the add your tournament note to Discord", () => {
+    const html = render({ ladderSummary: null });
+
+    const note = html.slice(html.indexOf('data-testid="tournaments-add-yours"'));
+    expect(note).toContain('href="https://discord.com/invite/4Bj2y84WAR"');
+    expect(note).toContain('target="_blank"');
+    expect(note).toContain("hub.addTournament");
+  });
+
   test("shows the seasons count with more seasons", () => {
     const html = render({ ladderSummary: { ...summary, seasonsCount: 3 } });
 

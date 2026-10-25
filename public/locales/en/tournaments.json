@@ -22,7 +22,8 @@
     "castsCount_other": "{{count}} casted matches",
     "seasonsCount_one": "{{count}} season on COH3 Stats",
     "seasonsCount_other": "{{count}} seasons on COH3 Stats",
-    "unavailable": "Stats are unavailable right now"
+    "unavailable": "Stats are unavailable right now",
+    "addTournament": "Reach out to us on Discord to add your tournament here"
   },
   "tournaments": {
     "ladderTournament": {
@@ -48,7 +49,9 @@
     "previousSeason": "Previous season",
     "nextSeason": "Next season",
     "overview": {
-      "openSeason": "Open Season {{season}}"
+      "openSeason": "Open Season {{season}}",
+      "latestCasts": "Latest casts",
+      "showMoreCasts": "Show more"
     },
     "tiles": {
       "players": "Players",

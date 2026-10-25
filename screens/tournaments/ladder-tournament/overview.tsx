@@ -2,18 +2,30 @@ import React from "react";
 import Link from "next/link";
 import { NextPage } from "next";
 import { NextSeo } from "next-seo";
-import { Anchor, Button, Container, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import {
+  Anchor,
+  Button,
+  Container,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
 import { LadderOverviewData } from "../../../src/tournaments/ladder-tournament";
 import { LADDER_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { getLadderTournamentRoute } from "../../../src/routes";
+import TournamentVideoCard from "../../../components/tournament-videos/tournament-video-card";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import LeagueHeader, { ExternalLink } from "./league-header";
 import SeasonStatsBar from "./season-stats-bar";
 import StandingsTable from "./standings-table";
 import AllSeasonsTable from "./all-seasons-table";
+import { LADDER_CASTS_ANCHOR } from "./casts-by-stage";
 
 export type LadderTournamentOverviewPageProps = {
   // null when the Ladder Tournament data couldn't be loaded
@@ -22,7 +34,8 @@ export type LadderTournamentOverviewPageProps = {
 
 /**
  * The league overview - /tournaments/ladder-tournament.
- * The latest season with its top players, then all the seasons. Every season has its own page.
+ * The latest season with its top players, all the seasons and the newest casts.
+ * Every season has its own page.
  */
 const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps> = ({
   data,
@@ -129,6 +142,34 @@ const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps
               <AllSeasonsTable seasons={data.seasons} />
             </Paper>
           </Stack>
+
+          {data.latestCasts.length > 0 && (
+            <Stack gap="sm" data-testid="ladder-latest-casts">
+              <Title order={2} size="h3">
+                {t("league.overview.latestCasts")}
+              </Title>
+              <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }} spacing="sm">
+                {data.latestCasts.map((video, index) => (
+                  <TournamentVideoCard
+                    video={video}
+                    index={index}
+                    key={video.id ?? `${video.videoUrlYoutube || video.videoUrlTwitch}-${index}`}
+                  />
+                ))}
+              </SimpleGrid>
+              <Group justify="center">
+                <Button
+                  component={Link}
+                  href={`${latestRoute}#${LADDER_CASTS_ANCHOR}`}
+                  variant="subtle"
+                  rightSection={<IconArrowRight size={16} />}
+                  data-testid="ladder-latest-casts-more"
+                >
+                  {t("league.overview.showMoreCasts")}
+                </Button>
+              </Group>
+            </Stack>
+          )}
         </Stack>
       </Container>
     </>

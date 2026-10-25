@@ -20,6 +20,10 @@ jest.mock("next-i18next/pages", () => ({
   }),
 }));
 
+jest.mock("next/router", () => ({
+  useRouter: () => ({ locale: "en" }),
+}));
+
 const item = (
   relicid: number,
   overrides: Partial<LadderTournamentRankingItem> = {},
@@ -126,6 +130,28 @@ describe("LadderTournamentOverviewScreen", () => {
 
     expect(html).toContain('league.season {"season":3}');
     expect(html).toContain('data-testid="ladder-standings-not-available"');
+  });
+
+  test("shows the 4 newest casts of all the seasons with the link to the latest season", () => {
+    const manyVideos = [1, 5, 3, 2, 4].map((day) =>
+      video({ title: `Cast ${day}`, publishedAt: `2026-09-0${day}T00:00:00`, seasonId: day % 2 }),
+    );
+    const html = render({ data: buildLadderOverviewData(ranking, manyVideos, {}) });
+    const casts = html.slice(html.indexOf('data-testid="ladder-latest-casts"'));
+
+    const titles = [...casts.matchAll(/>(Cast \d)</g)].map((m) => m[1]);
+    expect(titles).toEqual(["Cast 5", "Cast 4", "Cast 3", "Cast 2"]);
+    expect(casts).toContain('href="/tournaments/ladder-tournament/season/2#casts"');
+    // After all the seasons
+    expect(html.indexOf('data-testid="ladder-all-seasons-table"')).toBeLessThan(
+      html.indexOf('data-testid="ladder-latest-casts"'),
+    );
+  });
+
+  test("hides the latest casts without any casts", () => {
+    const html = render({ data: buildLadderOverviewData(ranking, [], {}) });
+
+    expect(html).not.toContain('data-testid="ladder-latest-casts"');
   });
 
   test("renders the unavailable state with the official site link", () => {

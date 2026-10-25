@@ -67,10 +67,14 @@ export type LadderOverviewData = {
   seasons: LadderSeasonSummary[];
   // Top of the latest season standings
   latestStandings: LadderStandingRow[];
+  // Newest casts of all the seasons
+  latestCasts: LadderTournamentCasterVideo[];
 };
 
 // Players of the latest season shown on the overview
 export const OVERVIEW_TOP_PLAYERS = 5;
+// Casts shown on the overview
+export const OVERVIEW_LATEST_CASTS = 4;
 
 export type LadderHubSummary = {
   latest: LadderSeasonSummary;
@@ -265,8 +269,9 @@ export const buildLadderOverviewData = (
     videos.filter((video) => video.seasonId === latestSeasonId),
     names,
   ).slice(0, OVERVIEW_TOP_PLAYERS);
+  const latestCasts = [...videos].sort(byNewest).slice(0, OVERVIEW_LATEST_CASTS);
 
-  return { seasons, latestStandings };
+  return { seasons, latestStandings, latestCasts };
 };
 
 /**

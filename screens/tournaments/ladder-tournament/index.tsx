@@ -13,7 +13,8 @@ import LeagueHeader, { ExternalLink } from "./league-header";
 import SeasonStatsBar from "./season-stats-bar";
 import SeasonPicker from "./season-picker";
 import StandingsTable from "./standings-table";
-import CastsByStage from "./casts-by-stage";
+import CastsByStage, { LADDER_CASTS_ANCHOR } from "./casts-by-stage";
+import classes from "./ladder-tournament.module.css";
 
 export type LadderTournamentPageProps = {
   // null when the Ladder Tournament data couldn't be loaded
@@ -118,7 +119,12 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
           </Stack>
 
           {data.stages.length > 0 && (
-            <Stack gap="sm" data-testid="ladder-casts">
+            <Stack
+              gap="sm"
+              id={LADDER_CASTS_ANCHOR}
+              className={classes.castsSection}
+              data-testid="ladder-casts"
+            >
               <Title order={2} size="h3">
                 {t("league.casts.title")}
               </Title>

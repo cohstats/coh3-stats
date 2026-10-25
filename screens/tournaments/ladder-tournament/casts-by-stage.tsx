@@ -5,6 +5,9 @@ import type { LadderStageGroup } from "../../../src/tournaments/ladder-tournamen
 import TournamentVideoCard from "../../../components/tournament-videos/tournament-video-card";
 import classes from "./ladder-tournament.module.css";
 
+// Id of the casts section on the season page, the overview links to it
+export const LADDER_CASTS_ANCHOR = "casts";
+
 /**
  * One horizontal row of the cast cards per stage, centered on the page.
  * The stages are already in the display order.
