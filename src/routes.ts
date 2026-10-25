@@ -176,6 +176,10 @@ export const getPlayerCardRoute = (playerId: string | number) => {
   return encodeURI(`/players/${playerId}`);
 };
 
+export const getPlayerCardTournamentsRoute = (playerId: string | number) => {
+  return encodeURI(`/players/${playerId}?view=tournaments`);
+};
+
 export const getSearchRoute = (searchQuery: string) => {
   return encodeURI(`/search?q=${searchQuery}`);
 };

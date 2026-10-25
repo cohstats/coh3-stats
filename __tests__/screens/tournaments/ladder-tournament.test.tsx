@@ -112,6 +112,12 @@ describe("LadderTournamentScreen", () => {
     expect(championRow).toContain('href="/players/1"');
     expect(championRow).toContain("tournaments.titles.ladderwinner");
     expect(championRow).toContain("86%");
+    // Casts open the player card tournaments tab in a new tab
+    // Casts are the last column, so the last link of the row
+    const castsLink = championRow.slice(championRow.lastIndexOf("<a"));
+    expect(castsLink).toContain('href="/players/1?view=tournaments"');
+    expect(castsLink).toContain('target="_blank"');
+    expect(castsLink).toContain("<span>3</span>");
 
     // Unknown name falls back to "Player #<id>"
     const secondChampion = getElement(html, "ladder-standing-2");
@@ -120,8 +126,7 @@ describe("LadderTournamentScreen", () => {
 
     const otherRow = getElement(html, "ladder-standing-3");
     expect(otherRow).not.toContain("data-champion");
-    // Both champions share the first rank, the next player is 3rd
-    expect(otherRow).toMatch(/<p[^>]*>3<\/p>/);
+    expect(otherRow).not.toContain("view=tournaments");
   });
 
   test("renders the season stats bar with the champions", () => {

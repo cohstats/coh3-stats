@@ -61,7 +61,6 @@
       "showLess": "Show top 10",
       "notAvailable": "Standings are not available yet",
       "columns": {
-        "rank": "#",
         "player": "Player",
         "matches": "Matches",
         "winsLosses": "W / L",

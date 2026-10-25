@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Button, Group, Progress, Table, Text } from "@mantine/core";
+import Link from "next/link";
+import { Anchor, Button, Group, Progress, Table, Text } from "@mantine/core";
 import { IconChevronDown, IconChevronUp, IconPlayerPlayFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import type { LadderStandingRow } from "../../../src/tournaments/ladder-tournament";
 import { formatWinRate } from "../../../src/players/tournaments";
+import { getPlayerCardTournamentsRoute } from "../../../src/routes";
 import TournamentTitleBadges from "../../../components/tournaments/tournament-title-badges";
 import LadderPlayerLink from "../components/ladder-player-link";
 import classes from "./ladder-tournament.module.css";
@@ -28,14 +30,11 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
         <Table verticalSpacing="xs" horizontalSpacing="md" data-testid="ladder-standings-table">
           <Table.Thead className={classes.head}>
             <Table.Tr>
-              <Table.Th w={50} className={classes.headCell}>
-                {t("league.standings.columns.rank")}
+              <Table.Th w={70} className={classes.headCell}>
+                {t("league.standings.columns.score")}
               </Table.Th>
               <Table.Th className={classes.headCell}>
                 {t("league.standings.columns.player")}
-              </Table.Th>
-              <Table.Th className={classes.headCell}>
-                {t("league.standings.columns.matches")}
               </Table.Th>
               <Table.Th className={classes.headCell}>
                 {t("league.standings.columns.winsLosses")}
@@ -44,7 +43,7 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
                 {t("league.standings.columns.winRate")}
               </Table.Th>
               <Table.Th className={classes.headCell}>
-                {t("league.standings.columns.score")}
+                {t("league.standings.columns.matches")}
               </Table.Th>
               <Table.Th className={classes.headCell}>
                 {t("league.standings.columns.titles")}
@@ -70,7 +69,7 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
                 data-champion={row.isChampion || undefined}
               >
                 <Table.Td>
-                  <Text fw={700}>{row.rank}</Text>
+                  <Text fw={700}>{row.score}</Text>
                 </Table.Td>
                 <Table.Td maw={260}>
                   <LadderPlayerLink
@@ -79,7 +78,6 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
                     country={row.country}
                   />
                 </Table.Td>
-                <Table.Td>{row.matches}</Table.Td>
                 <Table.Td style={{ whiteSpace: "nowrap" }}>
                   <Text span c="green">
                     {row.wins}
@@ -105,20 +103,26 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
                     />
                   </Group>
                 </Table.Td>
-                <Table.Td>
-                  <Text fw={600}>{row.score}</Text>
-                </Table.Td>
+                <Table.Td>{row.matches}</Table.Td>
                 <Table.Td>
                   <TournamentTitleBadges titles={row.titles} />
                 </Table.Td>
                 <Table.Td>
                   {row.castsCount > 0 ? (
-                    <Group gap={4} wrap="nowrap">
-                      <IconPlayerPlayFilled size={12} />
-                      <Text span size="sm" fw={600}>
-                        {row.castsCount}
-                      </Text>
-                    </Group>
+                    // The player card tournaments tab lists the casts of the player
+                    <Anchor
+                      component={Link}
+                      href={getPlayerCardTournamentsRoute(row.relicId)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      size="sm"
+                      fw={600}
+                    >
+                      <Group gap={4} wrap="nowrap">
+                        <IconPlayerPlayFilled size={12} />
+                        <span>{row.castsCount}</span>
+                      </Group>
+                    </Anchor>
                   ) : (
                     <Dash />
                   )}

@@ -75,7 +75,7 @@ describe("getLadderSeasonIds", () => {
 });
 
 describe("buildLadderStandings", () => {
-  test("sorts by score only, the same score keeps the API order and shares the rank", () => {
+  test("sorts by score only, the same score keeps the API order", () => {
     const rows = buildLadderStandings(
       [
         item(1, { score: 5, rating: 0.5 }),
@@ -89,17 +89,6 @@ describe("buildLadderStandings", () => {
     );
 
     expect(rows.map((row) => row.relicId)).toEqual([2, 1, 3, 4]);
-    expect(rows.map((row) => row.rank)).toEqual([1, 2, 2, 4]);
-  });
-
-  test("uses competition ranking - three 13-2 players share rank 1, the next one is 4", () => {
-    const rows = buildLadderStandings(
-      [item(10, { score: 4 }), champion(1), champion(2), champion(3), item(11, { score: 2 })],
-      [],
-      {},
-    );
-
-    expect(rows.map((row) => row.rank)).toEqual([1, 1, 1, 4, 5]);
   });
 
   test("keeps the API values, marks the champions and maps the titles", () => {

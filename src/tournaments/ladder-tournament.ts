@@ -16,8 +16,6 @@ export type LadderPlayerName = { alias: string; country: string | null };
 export type LadderPlayerNames = Record<number, LadderPlayerName>;
 
 export type LadderStandingRow = {
-  // Competition ranking: ties share a rank (1, 1, 1, 4)
-  rank: number;
   relicId: number;
   // null when we don't know the name, rendered as "Player #<relicId>"
   alias: string | null;
@@ -109,7 +107,7 @@ export const getLadderSeasonIds = (
 
 /**
  * Builds the standings of a single season, sorted by score only.
- * Players with the same score share the rank and keep the API order (the sort is stable).
+ * Players with the same score keep the API order (the sort is stable).
  * @param items Ranking items of the season
  * @param videos Casts of the season
  * @param names Player names, players without a name get alias null
@@ -128,15 +126,8 @@ export const buildLadderStandings = (
 
   const sorted = [...items].sort((a, b) => b.score - a.score);
 
-  let rank = 0;
-  return sorted.map((item, index) => {
-    // Competition ranking - the same score shares the rank of the first of them (1, 1, 1, 4)
-    if (index === 0 || sorted[index - 1].score !== item.score) {
-      rank = index + 1;
-    }
-
+  return sorted.map((item) => {
     return {
-      rank,
       relicId: item.relicid,
       alias: names[item.relicid]?.alias ?? null,
       country: names[item.relicid]?.country ?? null,
