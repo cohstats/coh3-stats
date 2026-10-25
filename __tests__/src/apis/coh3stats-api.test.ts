@@ -40,9 +40,9 @@ describe("coh3stats-api", () => {
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeData));
 
-    const result = await getPlayerCardInfo(12345, false, "fake-ip");
+    const result = await getPlayerCardInfo(12345, "fake-ip");
     expect(global.fetch).toBeCalledWith(
-      "https://us-east4-coh3-stats-prod.cloudfunctions.net/sharedAPIGen2Http/players/12345",
+      `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/players/12345`,
       {
         headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" },
         cache: "force-cache",
@@ -60,7 +60,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 500));
 
     try {
-      await getPlayerCardInfo(12345, false, "");
+      await getPlayerCardInfo(12345, "");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player card info: test error"));
     }
@@ -75,7 +75,7 @@ describe("coh3stats-api", () => {
       .mockImplementation(setupFetchStub({ error: "test error" }, false, 400));
 
     try {
-      await getPlayerCardInfo(12345, false, "");
+      await getPlayerCardInfo(12345, "");
     } catch (error) {
       expect(error).toEqual(new Error("Error getting player card info"));
     }
@@ -270,7 +270,6 @@ describe("coh3stats-api", () => {
     const response = await getTwitchStreams("fake-ip");
 
     expect(response).toEqual("fake stream data");
-    // Use a mock for the config.BASE_CLOUD_FUNCTIONS_URL
     expect(global.fetch).toBeCalledWith(
       expect.stringContaining("/sharedAPIGen2Http/utils/twitch"),
       { headers: { "X-Forwarded-For": "fake-ip", "c-edge-ip": "fake-ip" } },
