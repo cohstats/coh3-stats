@@ -111,12 +111,12 @@ const getLadderTournamentRankingUrl = ({
   const relicParam = relicId !== undefined ? `&relicid=${relicId}` : "";
   const seasonParam = seasonId !== undefined ? `&seasonid=${seasonId}` : "";
   return encodeURI(
-    `${config.LADDER_TOURNAMENT_API_BASE_URL}/ranking_ladder?page=${page}&pageSize=${pageSize}${relicParam}${seasonParam}`,
+    `${config.tournaments.ladderTournament.apiBaseUrl}/ranking_ladder?page=${page}&pageSize=${pageSize}${relicParam}${seasonParam}`,
   );
 };
 
 const getLadderTournamentCasterVideosUrl = () => {
-  return encodeURI(`${config.LADDER_TOURNAMENT_API_BASE_URL}/casted_videos_ladder`);
+  return encodeURI(`${config.tournaments.ladderTournament.apiBaseUrl}/casted_videos_ladder`);
 };
 
 /**

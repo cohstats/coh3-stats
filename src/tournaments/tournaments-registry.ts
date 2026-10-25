@@ -2,8 +2,11 @@
  * Static identity of the community tournaments shown on the Tournaments page.
  * Only what doesn't change between seasons - NO seasons, status or registration info,
  * everything about a season must come from the tournament data.
+ * The links are in config.tournaments.
  * This file is client safe.
  */
+
+import config from "../../config";
 
 // Imported, so the build serves them with a content hash in the name and they can be cached forever.
 // 256x256 with a transparent background - sharp up to 128px on 2x screens.
@@ -34,36 +37,31 @@ export const LADDER_TOURNAMENT: TournamentInfo = {
   id: "ladderTournament",
   nameKey: "tournaments.ladderTournament.name",
   descriptionKey: "tournaments.ladderTournament.description",
-  url: "https://laddertournament.com.br",
+  url: config.tournaments.ladderTournament.url,
   logo: ladderTournamentLogo.src,
   monogram: "LT",
   color: "green",
   hasLeaguePage: true,
 };
 
-export const LADDER_TOURNAMENT_DISCORD_URL = "https://discord.gg/HQxUnjcrNd";
-
-// Intro to the tournament - how it works
-export const LADDER_TOURNAMENT_INTRO_VIDEO_URL = "https://www.youtube.com/watch?v=tD6naKtPCWU";
-
 // TODO: Confirm the description
 export const IRONCLAD_TOURNAMENT: TournamentInfo = {
   id: "ironclad",
   nameKey: "tournaments.ironclad.name",
   descriptionKey: "tournaments.ironclad.description",
-  url: "https://www.ironcladtournaments.com",
+  url: config.tournaments.ironclad.url,
   logo: ironcladLogo.src,
   monogram: "IC",
   color: "gray",
   hasLeaguePage: false,
 };
 
-// TODO: Confirm the official URL and description
+// TODO: Confirm the description
 export const METAPLAYS_TOURNAMENT: TournamentInfo = {
   id: "metaplays",
   nameKey: "tournaments.metaplays.name",
   descriptionKey: "tournaments.metaplays.description",
-  url: "https://meta-plays.com/tournaments/company-of-heroes-3",
+  url: config.tournaments.metaplays.url,
   // Only the shield of their logo, without the text
   logo: metaplaysLogo.src,
   monogram: "MP",

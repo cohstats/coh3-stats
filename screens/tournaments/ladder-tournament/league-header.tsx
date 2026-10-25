@@ -3,11 +3,8 @@ import Link from "next/link";
 import { Anchor, Avatar, Box, Breadcrumbs, Group, Stack, Text, Title } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import {
-  LADDER_TOURNAMENT,
-  LADDER_TOURNAMENT_DISCORD_URL,
-  LADDER_TOURNAMENT_INTRO_VIDEO_URL,
-} from "../../../src/tournaments/tournaments-registry";
+import config from "../../../config";
+import { LADDER_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import TournamentIntroVideoCard from "../../../components/tournament-videos/tournament-intro-video-card";
 import { getLadderTournamentRoute, getTournamentsRoute } from "../../../src/routes";
 import classes from "./ladder-tournament.module.css";
@@ -76,7 +73,7 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
               {" · "}
               <ExternalLink href={LADDER_TOURNAMENT.url}>{t("league.officialSite")}</ExternalLink>
               {" · "}
-              <ExternalLink href={LADDER_TOURNAMENT_DISCORD_URL}>
+              <ExternalLink href={config.tournaments.ladderTournament.discordUrl}>
                 {t("league.discord")}
               </ExternalLink>
             </Text>
@@ -84,7 +81,7 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
         </Group>
         <Box className={classes.introVideo}>
           <TournamentIntroVideoCard
-            url={LADDER_TOURNAMENT_INTRO_VIDEO_URL}
+            url={config.tournaments.ladderTournament.introVideoUrl}
             label={t("league.introVideo")}
           />
         </Box>
