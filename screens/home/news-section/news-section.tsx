@@ -12,10 +12,11 @@ interface NewsCardProps {
   title: string;
   image: string;
   gid: string;
+  imageOnly?: boolean;
   t: TFunction;
 }
 
-const NewsCard = ({ title, image, gid, t }: NewsCardProps) => {
+const NewsCard = ({ title, image, gid, imageOnly = false, t }: NewsCardProps) => {
   const theme = useMantineTheme();
 
   return (
@@ -23,45 +24,61 @@ const NewsCard = ({ title, image, gid, t }: NewsCardProps) => {
       <Anchor
         href={getNewsRoute(gid)}
         component={LinkWithOutPrefetch}
-        style={{ textDecoration: "none" }}
+        aria-label={imageOnly ? title : undefined}
+        style={{
+          textDecoration: "none",
+          ...(imageOnly && { display: "block", height: "100%" }),
+        }}
       >
         <Paper
           shadow="md"
-          p="md"
+          p={imageOnly ? 0 : "md"}
+          // Keep carousel indicators clear of image-only artwork.
+          pb={imageOnly ? 28 : undefined}
           radius="md"
           style={{
             height: "100%",
             backgroundImage: `url('${image}')`,
-            backgroundSize: "cover",
+            backgroundSize: imageOnly ? "contain" : "cover",
+            ...(imageOnly && {
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundColor: "#111111",
+              backgroundOrigin: "content-box",
+            }),
           }}
         >
-          <Title
-            order={2}
-            style={{
-              fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-              fontWeight: 800,
-              color: "white",
-              lineHeight: 1,
-              fontSize: rem(28),
-              marginTop: 0,
-              textShadow:
-                "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
-            }}
-          >
-            {title}
-          </Title>
-          <Text
-            style={{
-              color: "white",
-              fontSize: rem(18),
-              fontWeight: 700,
-              marginTop: theme.spacing.xs,
-              textShadow:
-                "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
-            }}
-          >
-            {t("sections.news.newsLabel")}
-          </Text>
+          {!imageOnly && (
+            <>
+              <Title
+                order={2}
+                style={{
+                  fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                  fontWeight: 800,
+                  color: "white",
+                  lineHeight: 1,
+                  fontSize: rem(28),
+                  marginTop: 0,
+                  textShadow:
+                    "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
+                }}
+              >
+                {title}
+              </Title>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: rem(18),
+                  fontWeight: 700,
+                  marginTop: theme.spacing.xs,
+                  textShadow:
+                    "1px 1px 1px var(--mantine-color-dark-6), -1px -1px 1px var(--mantine-color-dark-6), 1px -1px 1px var(--mantine-color-dark-6), -1px 1px 1px var(--mantine-color-dark-6)",
+                }}
+              >
+                {t("sections.news.newsLabel")}
+              </Text>
+            </>
+          )}
         </Paper>
       </Anchor>
     </>
@@ -94,6 +111,7 @@ export const NewsSection: React.FC<NewsSectionProps> = ({ steamNewsData, t }) =>
           title={news.title}
           image={imageUrlTransform(news.image) || "/images/coh3-background-cropped.webp"}
           gid={news.gid}
+          imageOnly={news.imageOnly}
           t={t}
         />
       </Carousel.Slide>

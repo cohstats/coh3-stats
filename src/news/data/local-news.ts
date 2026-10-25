@@ -6,6 +6,8 @@ export type LocalNewsItem = {
   /** Unix timestamp in seconds. */
   date: number;
   image?: string | null;
+  /** Hide the homepage overlay and display the full image without cropping. */
+  imageOnly?: boolean;
   url?: string | null;
   contents?: string;
 };
@@ -15,6 +17,93 @@ export type LocalNewsItem = {
  * Add new posts as objects in this array.
  */
 const localNews: LocalNewsItem[] = [
+  {
+    gid: "local-ironclad-hold-the-line",
+    title: "HOLD THE LINE — Four Divisions, Up to US$280",
+    author: "IronClad Tournaments",
+    date: 1792972800, // 26 October 2026, 00:00 UTC; local review date.
+    image: "/images/news/ironclad-hold-the-line-carousel.webp",
+    imageOnly: true,
+    url: "https://www.ironcladtournaments.com/tournaments?tournament=hold-the-line&register=1",
+    contents: `
+[img]/images/news/ironclad-hold-the-line.webp[/img]
+
+[p][b]Registration is open for IronClad’s next international Company of Heroes 3 1v1 tournament, with free entry and cash prizes across four verified ELO Divisions.[/b][/p]
+
+[p]The line is forming again.[/p]
+
+[p]Following the completion of [b]THE NEW FRONT[/b], IronClad Tournaments has opened registration for [b]HOLD THE LINE[/b], its next international Company of Heroes 3 1v1 competition.[/p]
+
+[p][b][url=https://www.ironcladtournaments.com/tournaments?tournament=hold-the-line&register=1]REGISTER FOR HOLD THE LINE[/url][/b][/p]
+
+[p]Entry is free, with [b]up to US$280 in cash prizes[/b] distributed across four competitive Divisions: Academy, Challenge, Main and Pro.[/p]
+
+[p]Each Division has its own eight-player field and launches independently once eight approved competitors are ready.[/p]
+
+[h2]Compete at your level[/h2]
+
+[p]You do not need a Pro-level rating to compete for a tournament title and a cash prize.[/p]
+
+[p]HOLD THE LINE places players into the Division matching their verified 1v1 ELO, giving competitors across the CoH3 ladder a structured tournament field appropriate to their current competitive level.[/p]
+
+[list]
+[*][b]Academy[/b] — verified 1v1 ELO 0–1099 — [b]US$40 winner prize[/b][/*]
+[*][b]Challenge[/b] — verified 1v1 ELO 1100–1399 — [b]US$60 winner prize[/b][/*]
+[*][b]Main[/b] — verified 1v1 ELO 1400–1699 — [b]US$80 winner prize[/b][/*]
+[*][b]Pro[/b] — verified 1v1 ELO 1700+ — [b]US$100 winner prize[/b][/*]
+[/list]
+
+[p]Four Divisions. Four champions. A cash prize at every level.[/p]
+
+[p]Once a Division reaches eight approved players, IronClad can prepare and launch that bracket independently without waiting for every other Division to fill.[/p]
+
+[h2]The Pro Final — cast by HelpingHans[/h2]
+
+[p]The [b]HOLD THE LINE Pro Division Final will be cast by HelpingHans[/b].[/p]
+
+[p]The dedicated 1700+ field will culminate with its finalists competing for the Pro title and the [b]US$100 winner prize[/b].[/p]
+
+[h2]Create your competitive identity[/h2]
+
+[p]IronClad competition extends beyond a single tournament registration.[/p]
+
+[p]Players create their IronClad competitive profile, connect their Steam identity and verify their current Relic 1v1 ELO before competing in the Division for which they are eligible.[/p]
+
+[p]Tournament participation, match results and competitive progression then contribute to a continuing IronClad record through dashboard history and IronClad rankings.[/p]
+
+[p]Profiles, verified ELO placement, tournament registration, brackets, match reporting and replay-supported evidence all sit within the same competitive platform.[/p]
+
+[p][b]HOLD THE LINE is the next opportunity to add to that record.[/b][/p]
+
+[h2]From THE NEW FRONT to HOLD THE LINE[/h2]
+
+[p]THE NEW FRONT was the first tournament hosted directly through the new IronClad platform. The event filled [b]24 of 24 available places[/b] and completed all [b]21 scheduled matches[/b].[/p]
+
+[h2]THE NEW FRONT Champions[/h2]
+
+[p][b]Academy — DarthYukat[/b][/p]
+[p][b]Challenge — GL1TCH[/b][/p]
+[p][b]Main / Pro — Reakly[/b][/p]
+
+[p]HOLD THE LINE gives players across four Divisions the opportunity to become IronClad’s next tournament champions.[/p]
+
+[h2]How to enter[/h2]
+
+[list=1]
+[*][b]Create or sign into your IronClad account[/b] and save your competitive profile.[/*]
+[*][b]Connect your Steam account[/b], then use [b]Verify ELO[/b] on your Profile page to verify your current Relic 1v1 rating.[/*]
+[*][b]Register for your eligible HOLD THE LINE Division[/b], review the rules, complete the required agreements and submit your entry for approval.[/*]
+[*][b]Follow your approval status in the Dashboard.[/b][/*]
+[*]Once eight players are approved, IronClad prepares and launches that Division independently.[/*]
+[/list]
+
+[p]Players must be 18 or older and meet the published eligibility requirements. IronClad checks your current ELO again when you submit.[/p]
+
+[p][b]Free entry. Four Divisions. Cash prizes across the ladder.[/b][/p]
+
+[p][url=https://www.ironcladtournaments.com]https://www.ironcladtournaments.com[/url][/p]
+`.trim(),
+  },
   {
     gid: "local-meta-plays-coh-20th-anniversary-league",
     title: "Company of Heroes 20th Anniversary League",

@@ -6,6 +6,7 @@ import {
   extractImageFromContents,
   getLocalNews,
   normalizeLocalNewsItem,
+  type LocalNewsItem,
 } from "../../../src/news/get-local-news";
 
 describe("extractImageFromContents", () => {
@@ -27,6 +28,41 @@ describe("extractImageFromContents", () => {
 });
 
 describe("normalizeLocalNewsItem", () => {
+  it.each([true, false])("preserves an explicit imageOnly=%s", (imageOnly) => {
+    const item = normalizeLocalNewsItem({
+      gid: "local-poster",
+      title: "Poster article",
+      date: 100,
+      imageOnly,
+    });
+
+    expect(item).toHaveProperty("imageOnly", imageOnly);
+  });
+
+  it("does not add an undefined presentation property to existing news", () => {
+    const item = normalizeLocalNewsItem({
+      gid: "local-existing",
+      title: "Existing article",
+      date: 100,
+    });
+
+    expect(item).not.toHaveProperty("imageOnly");
+  });
+
+  it.each([undefined, null, "true", 1])(
+    "omits a non-boolean imageOnly value (%s) from the SSR payload",
+    (imageOnly) => {
+      const item = normalizeLocalNewsItem({
+        gid: "local-invalid-flag",
+        title: "Existing article",
+        date: 100,
+        imageOnly,
+      } as unknown as LocalNewsItem);
+
+      expect(item).not.toHaveProperty("imageOnly");
+    },
+  );
+
   it("sets url to null when missing or empty", () => {
     expect(
       normalizeLocalNewsItem({
@@ -94,6 +130,23 @@ describe("normalizeLocalNewsItem", () => {
 });
 
 describe("getLocalNews", () => {
+  it("opts HOLD THE LINE into image-only cards without opting existing articles in", () => {
+    const items = getLocalNews();
+    const holdTheLine = items.find((item) => item.gid === "local-ironclad-hold-the-line");
+
+    expect(holdTheLine).toBeDefined();
+    expect(holdTheLine?.imageOnly).toBe(true);
+    expect(holdTheLine?.title).toBe("HOLD THE LINE — Four Divisions, Up to US$280");
+    expect(holdTheLine?.image).toBe("/images/news/ironclad-hold-the-line-carousel.webp");
+    expect(holdTheLine?.contents).toContain(
+      "[img]/images/news/ironclad-hold-the-line.webp[/img]",
+    );
+
+    const existingArticle = items.find((item) => item.gid === "local-announce-ladder-tournament");
+    expect(existingArticle).toBeDefined();
+    expect(existingArticle).not.toHaveProperty("imageOnly");
+  });
+
   it("loads local news from the typed data module", () => {
     const items = getLocalNews();
 

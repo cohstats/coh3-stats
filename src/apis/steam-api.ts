@@ -14,6 +14,8 @@ export type NewsItem = {
   author?: string;
   contents?: string;
   image: string | null;
+  /** Display only the image on the homepage; the article title is unaffected. */
+  imageOnly?: boolean;
   date?: number;
 };
 
