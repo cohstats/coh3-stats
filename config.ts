@@ -552,7 +552,6 @@ const config = {
   GITHUB_LINK: repository.url,
   CDN_ASSETS_HOSTING: "https://cdn.coh3stats.com",
   STORAGE_LINK: "https://storage.coh3stats.com",
-  BASE_CLOUD_FUNCTIONS_URL: "https://us-east4-coh3-stats-prod.cloudfunctions.net",
   BASE_CLOUD_FUNCTIONS_PROXY_URL: "https://cache.coh3stats.com",
   RELIC_API_STATUS_LINK: "https://cohstats.instatus.com/",
   tournaments,

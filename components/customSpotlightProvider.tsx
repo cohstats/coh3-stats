@@ -26,7 +26,7 @@
 //
 //     try {
 //       const res = await fetch(
-//         `${config.BASE_CLOUD_FUNCTIONS_URL}/searchPlayersHttp?alias=${query}`,
+//         `${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/searchPlayersHttp?alias=${query}`,
 //       );
 //
 //       // Also check status code if not 200

@@ -27,20 +27,16 @@ import { getMatchURlsWithoutLeavers } from "../coh3/helpers";
 
 export const GET_ANALYSIS_STATS = "v10";
 
-const getPlayerCardInfoUrl = (playerID: string | number, cache_proxy = false) => {
+const getPlayerCardInfoUrl = (playerID: string | number) => {
   const path = `/sharedAPIGen2Http/players/${playerID}`;
 
-  return cache_proxy
-    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
-    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
-const getPlayerCardStatsUrl = (playerID: string | number, cache_proxy = true) => {
+const getPlayerCardStatsUrl = (playerID: string | number) => {
   const path = `/sharedAPIGen2Http/players/${playerID}/stats`;
 
-  return cache_proxy
-    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
-    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
 const getPlayerRecentMatchesUrl = (playerID: string | number) => {
@@ -73,12 +69,10 @@ const getSearchPOSTUrl = () => {
   return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}/sharedAPIGen2Http/search/players`);
 };
 
-const getGlobalAchievementsUrl = (cache_proxy = true) => {
+const getGlobalAchievementsUrl = () => {
   const path = `/sharedAPIGen2Http/utils/globalAchievements`;
 
-  return cache_proxy
-    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
-    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
 const getReplayUrl = (matchID: string | number) => {
@@ -206,14 +200,10 @@ const getTwitchStreams = async (XForwardedFor: string): Promise<Array<TwitchStre
   }
 };
 
-const getPlayerCardInfo = async (
-  playerID: string | number,
-  cache_proxy = false,
-  XForwardedFor: string,
-) => {
+const getPlayerCardInfo = async (playerID: string | number, XForwardedFor: string) => {
   const xff = cleanXForwardedFor(XForwardedFor);
 
-  const response = await fetch(getPlayerCardInfoUrl(playerID, cache_proxy), {
+  const response = await fetch(getPlayerCardInfoUrl(playerID), {
     headers: {
       "X-Forwarded-For": xff,
       "c-edge-ip": parseFirstIPFromString(xff),
@@ -245,7 +235,7 @@ const getPlayerCardStatsOrNull = async (
   const xff = cleanXForwardedFor(XForwardedFor);
 
   try {
-    const response = await fetch(getPlayerCardStatsUrl(playerID, true), {
+    const response = await fetch(getPlayerCardStatsUrl(playerID), {
       headers: {
         "X-Forwarded-For": xff,
         "c-edge-ip": parseFirstIPFromString(xff),
@@ -613,35 +603,26 @@ const getOldLeaderboardData = async (
   }
 };
 
-const getTeamsFullSummaryUrl = (profileID: string | number, cache_proxy = true) => {
+const getTeamsFullSummaryUrl = (profileID: string | number) => {
   const path = `/sharedAPIGen2Http/players/${profileID}/teams`;
 
-  return cache_proxy
-    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
-    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
-const getTeamDetailsUrl = (teamID: string | number, cache_proxy = true) => {
+const getTeamDetailsUrl = (teamID: string | number) => {
   const path = `/sharedAPIGen2Http/teams/${teamID}`;
 
-  return cache_proxy
-    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
-    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
-const getTeamMatchesUrl = (matchIDs: Array<string | number>, cache_proxy = true) => {
+const getTeamMatchesUrl = (matchIDs: Array<string | number>) => {
   const path = `/sharedAPIGen2Http/teams/matches?matchIDs=[${matchIDs.join(",")}]`;
 
-  return cache_proxy
-    ? encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`)
-    : encodeURI(`${config.BASE_CLOUD_FUNCTIONS_URL}${path}`);
+  return encodeURI(`${config.BASE_CLOUD_FUNCTIONS_PROXY_URL}${path}`);
 };
 
-const getTeamsFullSummary = async (
-  profileID: string | number,
-  cache_proxy = true,
-): Promise<TeamsFullSummary> => {
-  const response = await fetch(getTeamsFullSummaryUrl(profileID, cache_proxy), {
+const getTeamsFullSummary = async (profileID: string | number): Promise<TeamsFullSummary> => {
+  const response = await fetch(getTeamsFullSummaryUrl(profileID), {
     cache: "force-cache",
     next: { revalidate: 300 },
   });
@@ -657,11 +638,8 @@ const getTeamsFullSummary = async (
   }
 };
 
-const getTeamDetails = async (
-  teamID: string | number,
-  cache_proxy = true,
-): Promise<TeamDetails> => {
-  const response = await fetch(getTeamDetailsUrl(teamID, cache_proxy));
+const getTeamDetails = async (teamID: string | number): Promise<TeamDetails> => {
+  const response = await fetch(getTeamDetailsUrl(teamID));
 
   if (response.ok) {
     return await response.json();
@@ -679,13 +657,12 @@ const getTeamDetails = async (
 
 const getTeamMatches = async (
   matchIDs: Array<string | number>,
-  cache_proxy = true,
 ): Promise<Record<number, ProcessedMatch | null>> => {
   if (matchIDs.length < 1 || matchIDs.length > 10) {
     throw new Error("Must provide between 1 and 10 match IDs");
   }
 
-  const response = await fetch(getTeamMatchesUrl(matchIDs, cache_proxy));
+  const response = await fetch(getTeamMatchesUrl(matchIDs));
 
   if (response.ok) {
     const data = await response.json();
