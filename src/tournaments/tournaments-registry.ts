@@ -22,6 +22,10 @@ export type TournamentInfo = {
   nameKey: string;
   // Translation key in the tournaments namespace
   descriptionKey: string;
+  // Optional static metadata, translated in the tournaments namespace.
+  tags?: { labelKey: string; emphasized?: boolean }[];
+  // Optional CTA translation key; external cards default to hub.visitSite.
+  ctaKey?: string;
   // Official site
   url: string;
   // URL of the imported logo, the monogram is used when not available
@@ -44,15 +48,19 @@ export const LADDER_TOURNAMENT: TournamentInfo = {
   hasLeaguePage: true,
 };
 
-// TODO: Confirm the description
 export const IRONCLAD_TOURNAMENT: TournamentInfo = {
   id: "ironclad",
   nameKey: "tournaments.ironclad.name",
   descriptionKey: "tournaments.ironclad.description",
+  tags: [
+    { labelKey: "metadata.oneVsOne" },
+    { labelKey: "metadata.verifiedEloDivisions", emphasized: true },
+  ],
+  ctaKey: "hub.viewOfficialWebsite",
   url: config.tournaments.ironclad.url,
   logo: ironcladLogo.src,
   monogram: "IC",
-  color: "gray",
+  color: "orange",
   hasLeaguePage: false,
 };
 
