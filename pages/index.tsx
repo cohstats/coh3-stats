@@ -43,6 +43,7 @@ export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => 
         gid: news.gid,
         title: news.title,
         image: news.image,
+        ...(typeof news.imageOnly === "boolean" ? { imageOnly: news.imageOnly } : {}),
       };
     });
     steamNewsData = PromisedSteamNewsData;

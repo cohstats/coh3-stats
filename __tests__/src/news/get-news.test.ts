@@ -18,7 +18,7 @@ jest.mock("../../../src/news/get-local-news", () => {
 });
 
 import { getCOH3SteamNews } from "../../../src/apis/steam-api";
-import { getLocalNews } from "../../../src/news/get-local-news";
+import { getLocalNews, normalizeLocalNewsItem } from "../../../src/news/get-local-news";
 
 const mockedGetCOH3SteamNews = getCOH3SteamNews as jest.MockedFunction<typeof getCOH3SteamNews>;
 const mockedGetLocalNews = getLocalNews as jest.MockedFunction<typeof getLocalNews>;
@@ -39,6 +39,31 @@ describe("getNews", () => {
   beforeEach(() => {
     mockedGetCOH3SteamNews.mockReset();
     mockedGetLocalNews.mockReset();
+  });
+
+  it("preserves the local presentation flag through merge and slicing", async () => {
+    const steamItem: NewsItem = {
+      gid: "steam-existing",
+      title: "Existing Steam article",
+      date: 200,
+      image: null,
+    };
+    const localItem = normalizeLocalNewsItem({
+      gid: "local-poster",
+      title: "Reusable poster card",
+      date: 300,
+      image: "/images/news/poster.webp",
+      imageOnly: true,
+    });
+    mockedGetCOH3SteamNews.mockResolvedValue({ count: 1, newsitems: [steamItem] });
+    mockedGetLocalNews.mockReturnValue([localItem]);
+
+    const result = await getNews(2);
+
+    expect(result.newsitems).toEqual([localItem, steamItem]);
+    expect(result.newsitems[0]).toHaveProperty("imageOnly", true);
+    expect(result.newsitems[1]).not.toHaveProperty("imageOnly");
+    expect(result.count).toBe(2);
   });
 
   it("merges steam and local news sorted by date desc", async () => {

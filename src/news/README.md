@@ -12,15 +12,16 @@ Local news articles are site-specific posts shown alongside Steam announcements 
 
 ### Article fields
 
-| Field      | Required | Description                                                                                                                                 |
-| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `gid`      | Yes      | Unique id. **Must** start with `local-` (e.g. `local-announce-ladder-tournament`) so it does not collide with Steam news gids.              |
-| `title`    | Yes      | Article title.                                                                                                                              |
-| `author`   | No       | Displayed author name.                                                                                                                      |
-| `date`     | Yes      | Unix timestamp in **seconds** (not milliseconds). Controls sort order (newest first).                                                       |
-| `image`    | No       | Path to the thumbnail used in the home carousel (e.g. `/images/news/my-article.webp`). If omitted, the first `[img]` in `contents` is used. |
-| `url`      | No       | External link (opens from the share icon on the news page).                                                                                 |
-| `contents` | No       | Body in **BBCode** (same style as Steam news).                                                                                              |
+| Field       | Required | Description                                                                                                                                                                                                                                                    |
+| ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gid`       | Yes      | Unique id. **Must** start with `local-` (e.g. `local-announce-ladder-tournament`) so it does not collide with Steam news gids.                                                                                                                                 |
+| `title`     | Yes      | Article title.                                                                                                                                                                                                                                                 |
+| `author`    | No       | Displayed author name.                                                                                                                                                                                                                                         |
+| `date`      | Yes      | Unix timestamp in **seconds** (not milliseconds). Controls sort order (newest first).                                                                                                                                                                          |
+| `image`     | No       | Path to the thumbnail used in the home carousel (e.g. `/images/news/my-article.webp`). If omitted, the first `[img]` in `contents` is used.                                                                                                                    |
+| `imageOnly` | No       | Set to `true` for a homepage card with a centered, uncropped image and no title/News overlay. The whole card stays clickable and uses the title as its accessible label. The `/news` article is unchanged. Defaults to the existing text-overlay presentation. |
+| `url`       | No       | External link (opens from the share icon on the news page).                                                                                                                                                                                                    |
+| `contents`  | No       | Body in **BBCode** (same style as Steam news).                                                                                                                                                                                                                 |
 
 ### Example entry
 

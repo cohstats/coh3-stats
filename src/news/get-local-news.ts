@@ -27,6 +27,7 @@ const normalizeLocalNewsItem = (raw: LocalNewsItem): NewsItem => {
     image,
     url,
     contents,
+    ...(typeof raw.imageOnly === "boolean" ? { imageOnly: raw.imageOnly } : {}),
   };
 };
 
