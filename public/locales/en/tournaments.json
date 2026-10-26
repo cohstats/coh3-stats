@@ -14,6 +14,7 @@
     "openLeague": "Open league",
     "officialSite": "Official site",
     "visitSite": "Visit site",
+    "viewOfficialWebsite": "View Official Website",
     "latestSeason": "Latest season",
     "champions": "Champions",
     "playersCount_one": "{{count}} player",
@@ -25,6 +26,10 @@
     "unavailable": "Stats are unavailable right now",
     "addTournament": "Reach out to us on Discord to add your tournament here"
   },
+  "metadata": {
+    "oneVsOne": "1v1",
+    "verifiedEloDivisions": "Verified ELO Divisions"
+  },
   "tournaments": {
     "ladderTournament": {
       "name": "Ladder Tournament",
@@ -32,7 +37,7 @@
     },
     "ironclad": {
       "name": "IronClad Tournaments",
-      "description": "Community-run Company of Heroes 3 tournaments."
+      "description": "Competitive Company of Heroes 3 tournaments where players compete in verified ELO divisions and build their competitive record across events."
     },
     "metaplays": {
       "name": "MetaPlays",

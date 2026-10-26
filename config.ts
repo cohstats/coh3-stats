@@ -532,7 +532,7 @@ const tournaments = {
     apiBaseUrl: "https://laddertournament.com.br:8099/api/external",
   },
   ironclad: {
-    url: "https://www.ironcladtournaments.com",
+    url: "https://www.ironcladtournaments.com/tournaments",
   },
   // TODO: Confirm the official URL
   metaplays: {
