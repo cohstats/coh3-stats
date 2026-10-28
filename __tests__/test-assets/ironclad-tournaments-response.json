@@ -1,0 +1,1111 @@
+{
+  "schemaVersion": "ironclad.competition.v1",
+  "data": [
+    {
+      "schemaVersion": "ironclad.competition.v1",
+      "id": "d39c8d59-b133-49d8-aae5-fb0d51e24df2",
+      "slug": "hold-the-line",
+      "name": "HOLD THE LINE",
+      "divisionModelVersion": "four_division_v1",
+      "status": "in_progress",
+      "format": "1v1",
+      "game": "Company of Heroes 3",
+      "publicUrl": "https://www.ironcladtournaments.com/tournaments?tournament=hold-the-line",
+      "registration": {
+        "open": true,
+        "enabled": true,
+        "opensAt": null,
+        "closesAt": null,
+        "availability": "open"
+      },
+      "startDate": null,
+      "endDate": null,
+      "firstCompletedAt": null,
+      "approvedPlayers": 22,
+      "divisions": [
+        {
+          "id": "ab080604-eb7f-43e1-8eb2-39e37e9ca191",
+          "canonicalName": "Academy",
+          "displayName": "Academy",
+          "state": "filling",
+          "effectiveState": "filling",
+          "approvedCount": 6,
+          "capacity": 8,
+          "ready": false,
+          "capacityReached": false,
+          "bracketGenerated": false,
+          "bracketPublished": false,
+          "launchedAt": null,
+          "registrationOpen": true,
+          "eloRule": "0-1099 ELO",
+          "eloRange": {
+            "min": 0,
+            "minInclusive": true,
+            "max": 1099,
+            "maxInclusive": true
+          },
+          "participants": [
+            {
+              "registrationId": "23cb717d-9739-4f61-acae-72e3321c7a6e",
+              "eventAlias": "DarthYukat",
+              "eventElo": 1021,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/b533368a-5379-4776-82ad-372c65122129",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "eca75a0b-ede3-44a8-9636-0f4d2bd95124",
+              "eventAlias": "CartelCub",
+              "eventElo": 824,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2c8ee67d-deec-4a82-b137-05ca3104d7eb",
+              "relicProfileId": "1188298"
+            },
+            {
+              "registrationId": "9c44f2ab-cac7-4fb5-af1a-c12dda0a24e1",
+              "eventAlias": "Гетьман",
+              "eventElo": 1060,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/f7f51ff3-99c2-4e65-bb05-4207b1820f43",
+              "relicProfileId": "30253"
+            },
+            {
+              "registrationId": "7c02d723-4575-45cc-9700-e9fef0bcb57b",
+              "eventAlias": "Bendy52",
+              "eventElo": 1042,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2c1fd864-6ede-4d7e-b8c3-dd9a63238e8d",
+              "relicProfileId": "214543"
+            },
+            {
+              "registrationId": "4dd9cbfa-a80c-4d8d-b868-0d0a566816fb",
+              "eventAlias": "Anglel",
+              "eventElo": 1042,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/8f84f82e-46aa-4076-b40e-241be4a96540",
+              "relicProfileId": "1274951"
+            },
+            {
+              "registrationId": "36be5769-3763-4a65-8dc8-e299ef5bbb8e",
+              "eventAlias": "NOGG",
+              "eventElo": 964,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/6e46fd51-9ac3-40da-9090-2b580bef329f",
+              "relicProfileId": "1231212"
+            }
+          ],
+          "bracket": null
+        },
+        {
+          "id": "33e031c9-9d98-4524-97f7-444674f407c4",
+          "canonicalName": "Challenge",
+          "displayName": "Challenge",
+          "state": "filling",
+          "effectiveState": "filling",
+          "approvedCount": 4,
+          "capacity": 8,
+          "ready": false,
+          "capacityReached": false,
+          "bracketGenerated": false,
+          "bracketPublished": false,
+          "launchedAt": null,
+          "registrationOpen": true,
+          "eloRule": "1100-1399 ELO",
+          "eloRange": {
+            "min": 1100,
+            "minInclusive": true,
+            "max": 1399,
+            "maxInclusive": true
+          },
+          "participants": [
+            {
+              "registrationId": "0ab0d2aa-33e9-4d39-8389-03af093d1ad7",
+              "eventAlias": "Chef Boyardeeznuts",
+              "eventElo": 1161,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/f175dd87-5323-4088-9be2-dbb5c09acd22",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "27c539ff-c5b0-4d1b-9511-90ccc3e39821",
+              "eventAlias": "Highcammax",
+              "eventElo": 1143,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/78e11104-80ef-4929-a7b8-5d3bd01887ff",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "26ed1c1d-a3b6-4d14-9b65-1a4e6e4ff084",
+              "eventAlias": "GL1TCH",
+              "eventElo": 1344,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2e826fb8-4509-44b3-b099-068f0495d9eb",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "14742694-7806-4df8-8dac-186f32d2e62d",
+              "eventAlias": "Tomatsallad",
+              "eventElo": 1310,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/f5fbd22c-3af3-4dd2-bcd0-d4e83b04233d",
+              "relicProfileId": null
+            }
+          ],
+          "bracket": null
+        },
+        {
+          "id": "8660081e-0698-4d1e-bbfb-b8862a014a45",
+          "canonicalName": "Main",
+          "displayName": "Main",
+          "state": "filling",
+          "effectiveState": "filling",
+          "approvedCount": 4,
+          "capacity": 8,
+          "ready": false,
+          "capacityReached": false,
+          "bracketGenerated": false,
+          "bracketPublished": false,
+          "launchedAt": null,
+          "registrationOpen": true,
+          "eloRule": "1400-1699 ELO",
+          "eloRange": {
+            "min": 1400,
+            "minInclusive": true,
+            "max": 1699,
+            "maxInclusive": true
+          },
+          "participants": [
+            {
+              "registrationId": "ae77f657-7486-47b1-b0d6-426fa19f6912",
+              "eventAlias": "Perketic",
+              "eventElo": 1429,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/20339a23-41c3-4d51-8de0-91c191142a0b",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "11b7b53d-444c-400b-8e36-79c8da527db0",
+              "eventAlias": "Colonel0tto",
+              "eventElo": 1524,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/e8a8edc0-c595-4372-942c-c14db8664394",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "599395d4-039f-47ae-ad05-eeaae7878547",
+              "eventAlias": "J3x",
+              "eventElo": 1679,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/1770f611-3b8d-4d16-878c-cbc13f5ea16a",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "7f25f10f-1322-4fee-8050-7ab22abf2ea0",
+              "eventAlias": "Neuroarcanist",
+              "eventElo": 1627,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/f7c6e2de-6d87-4c5b-95bc-6e995ed05483",
+              "relicProfileId": "172999"
+            }
+          ],
+          "bracket": null
+        },
+        {
+          "id": "ef668d15-cf3e-442a-8b8a-9c8f1615fb09",
+          "canonicalName": "Pro",
+          "displayName": "Pro",
+          "state": "in_progress",
+          "effectiveState": "in_progress",
+          "approvedCount": 8,
+          "capacity": 8,
+          "ready": true,
+          "capacityReached": true,
+          "bracketGenerated": true,
+          "bracketPublished": true,
+          "launchedAt": "2026-10-27T23:08:14.824866+00:00",
+          "registrationOpen": false,
+          "eloRule": "1700+ ELO",
+          "eloRange": {
+            "min": 1700,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": true
+          },
+          "participants": [
+            {
+              "registrationId": "437bc336-7301-42bb-89e6-3d62a5e37d8e",
+              "eventAlias": "JRaptor",
+              "eventElo": 1957,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/ed308881-a5fd-42b1-ba77-85aefb8f7339",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "032e34a9-0196-48e2-8c52-69ed7af9b068",
+              "eventAlias": "Reakly",
+              "eventElo": 2026,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/72f76012-907a-4194-a942-9915ad625edc",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "5c7ffd82-25dc-4d2c-81a1-5781451d4380",
+              "eventAlias": "tushkan",
+              "eventElo": 2028,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/24a61514-1550-4f87-959b-b4e148474840",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "0b135446-f810-42f2-baa7-15e25fd939e1",
+              "eventAlias": "Theodosios",
+              "eventElo": 2038,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/cd20340d-bba7-4a1d-a417-84b3f9a6acb4",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "97847b80-2073-4bba-b0e8-e38ba0187e5a",
+              "eventAlias": "oziligath",
+              "eventElo": 1923,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/4e67a377-aed0-4db8-ba5a-db5265f2346c",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "aeeb323a-a9ca-4478-ad42-d1254623347f",
+              "eventAlias": "Nub",
+              "eventElo": 2002,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/255cf412-6c7d-4cc7-ade8-a66dbfbeaeba",
+              "relicProfileId": "5292"
+            },
+            {
+              "registrationId": "2410ef25-9e13-463c-93c2-03803b340d17",
+              "eventAlias": "tonimontana",
+              "eventElo": 1926,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2357a687-7e2c-489c-a952-a3f48065f6eb",
+              "relicProfileId": "72654"
+            },
+            {
+              "registrationId": "392b7266-7b68-42f6-9121-79a343afd0cb",
+              "eventAlias": "AlexStan",
+              "eventElo": 1853,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/4f46de74-3cca-42ba-a57c-78d43f8dca74",
+              "relicProfileId": "1088114"
+            }
+          ],
+          "bracket": {
+            "id": "e01b4c9d-a6bc-4bcd-ba1d-423f69f6eb3d",
+            "format": "single_elimination",
+            "completed": false,
+            "matches": [
+              {
+                "id": "981c1631-ec4e-414a-b918-f24f60a1047f",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "in_progress",
+                "outcomeType": null,
+                "playerOneRegistrationId": "0b135446-f810-42f2-baa7-15e25fd939e1",
+                "playerTwoRegistrationId": "392b7266-7b68-42f6-9121-79a343afd0cb",
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              },
+              {
+                "id": "e7d6116d-c28d-41d7-a2d6-d3c152398cf5",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "in_progress",
+                "outcomeType": null,
+                "playerOneRegistrationId": "437bc336-7301-42bb-89e6-3d62a5e37d8e",
+                "playerTwoRegistrationId": "aeeb323a-a9ca-4478-ad42-d1254623347f",
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              },
+              {
+                "id": "a7128c83-25fe-4cef-a92b-1abe816b2ddb",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 3,
+                "bestOf": 3,
+                "status": "in_progress",
+                "outcomeType": null,
+                "playerOneRegistrationId": "5c7ffd82-25dc-4d2c-81a1-5781451d4380",
+                "playerTwoRegistrationId": "97847b80-2073-4bba-b0e8-e38ba0187e5a",
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              },
+              {
+                "id": "9c38a959-1b20-4b72-876a-b8421010dda7",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 4,
+                "bestOf": 3,
+                "status": "in_progress",
+                "outcomeType": null,
+                "playerOneRegistrationId": "032e34a9-0196-48e2-8c52-69ed7af9b068",
+                "playerTwoRegistrationId": "2410ef25-9e13-463c-93c2-03803b340d17",
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              },
+              {
+                "id": "74517261-0955-4421-8437-b43223066f90",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "scheduled",
+                "outcomeType": null,
+                "playerOneRegistrationId": null,
+                "playerTwoRegistrationId": null,
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              },
+              {
+                "id": "9ab4d65b-c00f-49d3-b7ba-509b4050167f",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "scheduled",
+                "outcomeType": null,
+                "playerOneRegistrationId": null,
+                "playerTwoRegistrationId": null,
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              },
+              {
+                "id": "60c14e8b-a9c0-4b37-94b7-b9ff91b51fb6",
+                "roundNumber": 3,
+                "roundName": "Grand Final",
+                "matchNumber": 1,
+                "bestOf": 5,
+                "status": "scheduled",
+                "outcomeType": null,
+                "playerOneRegistrationId": null,
+                "playerTwoRegistrationId": null,
+                "playerOneScore": null,
+                "playerTwoScore": null,
+                "winnerRegistrationId": null,
+                "completed": false,
+                "played": false,
+                "decidedAt": null
+              }
+            ],
+            "placements": [],
+            "championRegistrationId": null
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ironclad.competition.v1",
+      "id": "1cb06045-0ffc-4745-a8cd-1a16b71baffc",
+      "slug": "the-new-front",
+      "name": "THE NEW FRONT",
+      "divisionModelVersion": "legacy_three_v1",
+      "status": "completed",
+      "format": "1v1",
+      "game": "Company of Heroes 3",
+      "publicUrl": "https://www.ironcladtournaments.com/tournaments?tournament=the-new-front",
+      "registration": {
+        "open": false,
+        "enabled": false,
+        "opensAt": null,
+        "closesAt": null,
+        "availability": "status_closed"
+      },
+      "startDate": null,
+      "endDate": null,
+      "firstCompletedAt": "2026-10-10T22:36:17.916027+00:00",
+      "approvedPlayers": 24,
+      "divisions": [
+        {
+          "id": "eff887ae-9f44-4669-8f9c-d8a8cb378e0c",
+          "canonicalName": "Academy",
+          "displayName": "Academy",
+          "state": "completed",
+          "effectiveState": "completed",
+          "approvedCount": 8,
+          "capacity": 8,
+          "ready": true,
+          "capacityReached": true,
+          "bracketGenerated": true,
+          "bracketPublished": true,
+          "launchedAt": "2026-09-18T23:21:59.389935+00:00",
+          "registrationOpen": false,
+          "eloRule": "Below 1100 ELO",
+          "eloRange": {
+            "min": null,
+            "minInclusive": true,
+            "max": 1100,
+            "maxInclusive": false
+          },
+          "participants": [
+            {
+              "registrationId": "d7640b04-4273-4bca-b0c9-b4d6ef5d76ac",
+              "eventAlias": "Matlock",
+              "eventElo": 977,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/310809ca-6112-45f7-93e2-7d4e9da5c46b",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "493e1933-4407-48f3-aaa6-b2f4e80b7cb2",
+              "eventAlias": "[THEITALIANS] BrutalBaSs",
+              "eventElo": 818,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/8cdf7c5b-dc4b-493c-ae12-c176cf364a97",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "5a0d3a4d-2644-4d61-8421-387c9b38d8e1",
+              "eventAlias": "CartelCub",
+              "eventElo": 791,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2c8ee67d-deec-4a82-b137-05ca3104d7eb",
+              "relicProfileId": "1188298"
+            },
+            {
+              "registrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+              "eventAlias": "Highcammax",
+              "eventElo": 1066,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/78e11104-80ef-4929-a7b8-5d3bd01887ff",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+              "eventAlias": "DarthYukat",
+              "eventElo": 1001,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/b533368a-5379-4776-82ad-372c65122129",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "c53192e1-7d9c-435e-8acb-cd29a803888a",
+              "eventAlias": "2 foot dong",
+              "eventElo": 1094,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/464dec9c-7dce-44c7-bd8e-706b1cf8f10b",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "85ebfe5d-defb-4822-aea7-3b7a811c2668",
+              "eventAlias": "Leesun",
+              "eventElo": 962,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/a8f047c6-d5a3-4e2b-acd2-71aca4b96e8d",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "e47bd154-8c36-4a99-b671-b72d3b7f462f",
+              "eventAlias": "Government Employee",
+              "eventElo": 1041,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/4120c0bf-16d2-4196-a297-0f8ec631d437",
+              "relicProfileId": null
+            }
+          ],
+          "bracket": {
+            "id": "2f69c609-b876-45e1-ba48-561717d19b4f",
+            "format": "single_elimination",
+            "completed": true,
+            "matches": [
+              {
+                "id": "5d78932d-43f4-49a3-865c-862bbf2763d4",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "493e1933-4407-48f3-aaa6-b2f4e80b7cb2",
+                "playerTwoRegistrationId": "c53192e1-7d9c-435e-8acb-cd29a803888a",
+                "playerOneScore": 0,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "c53192e1-7d9c-435e-8acb-cd29a803888a",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-21T22:27:33.817251+00:00"
+              },
+              {
+                "id": "3f0ccbe8-61ba-45ce-889e-9634ae4c952c",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+                "playerTwoRegistrationId": "85ebfe5d-defb-4822-aea7-3b7a811c2668",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-27T00:06:00.091695+00:00"
+              },
+              {
+                "id": "7efc56e7-6959-40b1-b2d9-67a792ac550c",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 3,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "e47bd154-8c36-4a99-b671-b72d3b7f462f",
+                "playerTwoRegistrationId": "d7640b04-4273-4bca-b0c9-b4d6ef5d76ac",
+                "playerOneScore": 0,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "d7640b04-4273-4bca-b0c9-b4d6ef5d76ac",
+                "completed": true,
+                "played": false,
+                "decidedAt": "2026-09-30T03:10:00.049659+00:00"
+              },
+              {
+                "id": "e23bd73e-f382-4589-8ff8-7e2193e7b684",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 4,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+                "playerTwoRegistrationId": "5a0d3a4d-2644-4d61-8421-387c9b38d8e1",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-19T03:29:48.618382+00:00"
+              },
+              {
+                "id": "fc166e5d-6fb4-4b9d-88bf-be175bcb1663",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "c53192e1-7d9c-435e-8acb-cd29a803888a",
+                "playerTwoRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+                "playerOneScore": 0,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-29T07:33:00.110996+00:00"
+              },
+              {
+                "id": "62654234-a77f-43ee-89a2-b2c6870de093",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "d7640b04-4273-4bca-b0c9-b4d6ef5d76ac",
+                "playerTwoRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+                "playerOneScore": 0,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-10-08T06:51:06.703737+00:00"
+              },
+              {
+                "id": "2fc2ee95-e423-41b4-9d4a-8a274206cad7",
+                "roundNumber": 3,
+                "roundName": "Grand Final",
+                "matchNumber": 1,
+                "bestOf": 5,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+                "playerTwoRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+                "playerOneScore": 3,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-10-10T22:44:14.623956+00:00"
+              }
+            ],
+            "placements": [],
+            "championRegistrationId": "5ec36cdc-44a0-4aa0-bb23-0b624b2193af"
+          }
+        },
+        {
+          "id": "1bd4b4bd-c2a7-4ab2-ac22-1c1956fb5ed1",
+          "canonicalName": "Challenge",
+          "displayName": "Challenge",
+          "state": "completed",
+          "effectiveState": "completed",
+          "approvedCount": 8,
+          "capacity": 8,
+          "ready": true,
+          "capacityReached": true,
+          "bracketGenerated": true,
+          "bracketPublished": true,
+          "launchedAt": "2026-09-21T12:25:02.932709+00:00",
+          "registrationOpen": false,
+          "eloRule": "1100-1399 ELO",
+          "eloRange": {
+            "min": 1100,
+            "minInclusive": true,
+            "max": 1399,
+            "maxInclusive": true
+          },
+          "participants": [
+            {
+              "registrationId": "eec7586f-75e2-4f14-bd3d-99f5a292a093",
+              "eventAlias": "Aristod",
+              "eventElo": 1289,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/3268f12d-2bd4-4600-88df-97f840569d3e",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "2d66e9fa-0b52-4861-8187-d85a3fac72d4",
+              "eventAlias": "Flekz127",
+              "eventElo": 1249,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/644d7f02-d536-413a-924c-1fae8ae46164",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "b8420457-497b-4bc5-84ea-dc9f04d27962",
+              "eventAlias": "Felcrow",
+              "eventElo": 1316,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/b0ab6a75-be59-4cdb-88f8-fb22dc2a56a2",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "8de2eebb-33e3-49e3-b509-cacc035ff45e",
+              "eventAlias": "Tomatsallad",
+              "eventElo": 1316,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/f5fbd22c-3af3-4dd2-bcd0-d4e83b04233d",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+              "eventAlias": "GL1TCH",
+              "eventElo": 1348,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2e826fb8-4509-44b3-b099-068f0495d9eb",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "79910098-533d-4c42-8b16-eaa81caa6999",
+              "eventAlias": "Рубль",
+              "eventElo": 1224,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/0761e687-e98a-4f9f-826a-260a1771020e",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "52110f94-b477-41a9-8575-fcc1f89f03ee",
+              "eventAlias": "R4",
+              "eventElo": 1102,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/884c1f20-fa4e-48fe-bb6f-272a15ed358f",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "b174e201-c7b5-4e91-be49-fb26c9d0fe58",
+              "eventAlias": "Azakura",
+              "eventElo": 1397,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/75f87804-82d3-40e3-ad7d-8e856b689c49",
+              "relicProfileId": null
+            }
+          ],
+          "bracket": {
+            "id": "e75e9587-781a-4041-bbb5-eafee5a722b9",
+            "format": "single_elimination",
+            "completed": true,
+            "matches": [
+              {
+                "id": "e041b6c4-cfdb-4f4c-8927-aa821022d836",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "b174e201-c7b5-4e91-be49-fb26c9d0fe58",
+                "playerTwoRegistrationId": "eec7586f-75e2-4f14-bd3d-99f5a292a093",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "b174e201-c7b5-4e91-be49-fb26c9d0fe58",
+                "completed": true,
+                "played": false,
+                "decidedAt": "2026-09-27T01:17:00.113251+00:00"
+              },
+              {
+                "id": "a54dcdcf-0c95-4e4b-8fd1-2217c29dba73",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "b8420457-497b-4bc5-84ea-dc9f04d27962",
+                "playerTwoRegistrationId": "2d66e9fa-0b52-4861-8187-d85a3fac72d4",
+                "playerOneScore": 0,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "2d66e9fa-0b52-4861-8187-d85a3fac72d4",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-28T19:58:15.762324+00:00"
+              },
+              {
+                "id": "4129871c-ccfb-49ee-bd43-bbe114b912d0",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 3,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+                "playerTwoRegistrationId": "8de2eebb-33e3-49e3-b509-cacc035ff45e",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-24T20:33:36.059945+00:00"
+              },
+              {
+                "id": "e687cd5f-02a7-439a-aa93-07fdf4e3cdab",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 4,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "79910098-533d-4c42-8b16-eaa81caa6999",
+                "playerTwoRegistrationId": "52110f94-b477-41a9-8575-fcc1f89f03ee",
+                "playerOneScore": 2,
+                "playerTwoScore": 1,
+                "winnerRegistrationId": "79910098-533d-4c42-8b16-eaa81caa6999",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-27T01:11:00.141145+00:00"
+              },
+              {
+                "id": "00bb33f2-4526-458e-b9ba-a9b3b7b6c613",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "b174e201-c7b5-4e91-be49-fb26c9d0fe58",
+                "playerTwoRegistrationId": "2d66e9fa-0b52-4861-8187-d85a3fac72d4",
+                "playerOneScore": 1,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "2d66e9fa-0b52-4861-8187-d85a3fac72d4",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-10-03T23:34:00.07639+00:00"
+              },
+              {
+                "id": "0a17ca90-ca41-47c2-b454-5bad1547c89c",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+                "playerTwoRegistrationId": "79910098-533d-4c42-8b16-eaa81caa6999",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+                "completed": true,
+                "played": false,
+                "decidedAt": "2026-10-03T23:57:00.157625+00:00"
+              },
+              {
+                "id": "20eb94dd-d95e-4b2e-abc3-d6787d385202",
+                "roundNumber": 3,
+                "roundName": "Grand Final",
+                "matchNumber": 1,
+                "bestOf": 5,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "2d66e9fa-0b52-4861-8187-d85a3fac72d4",
+                "playerTwoRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+                "playerOneScore": 1,
+                "playerTwoScore": 3,
+                "winnerRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-10-10T16:37:33.131428+00:00"
+              }
+            ],
+            "placements": [],
+            "championRegistrationId": "2d466b03-4ca5-4069-b4e8-9f4994aadccb"
+          }
+        },
+        {
+          "id": "f34400e9-f7c8-43ac-90dc-6c70b438a04d",
+          "canonicalName": "Main",
+          "displayName": "Main / Pro",
+          "state": "completed",
+          "effectiveState": "completed",
+          "approvedCount": 8,
+          "capacity": 8,
+          "ready": true,
+          "capacityReached": true,
+          "bracketGenerated": true,
+          "bracketPublished": true,
+          "launchedAt": "2026-09-11T12:48:20.556452+00:00",
+          "registrationOpen": false,
+          "eloRule": "1400+ ELO",
+          "eloRange": {
+            "min": 1400,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": true
+          },
+          "participants": [
+            {
+              "registrationId": "ac8075ce-595c-46d4-ab33-339b71d67a9b",
+              "eventAlias": "Nub",
+              "eventElo": 1987,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/255cf412-6c7d-4cc7-ade8-a66dbfbeaeba",
+              "relicProfileId": "5292"
+            },
+            {
+              "registrationId": "fa6bf45d-e252-466a-b575-145700ce721c",
+              "eventAlias": "tushkan",
+              "eventElo": 2060,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/24a61514-1550-4f87-959b-b4e148474840",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+              "eventAlias": "Reakly",
+              "eventElo": 2097,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/72f76012-907a-4194-a942-9915ad625edc",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "6e28fbbc-2544-449d-bf5b-964acb9c9bfc",
+              "eventAlias": "JRaptor",
+              "eventElo": 1927,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/ed308881-a5fd-42b1-ba77-85aefb8f7339",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "b33e9da5-6fc6-4df7-8268-3665a1c7fb36",
+              "eventAlias": "oziligath",
+              "eventElo": 1910,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/4e67a377-aed0-4db8-ba5a-db5265f2346c",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "87b6e48a-caa9-4965-a611-e00557e7e7ab",
+              "eventAlias": "Perketic",
+              "eventElo": 1452,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/20339a23-41c3-4d51-8de0-91c191142a0b",
+              "relicProfileId": null
+            },
+            {
+              "registrationId": "e35c019f-5caf-4a76-beea-b26fef2c3b76",
+              "eventAlias": "tonimontana",
+              "eventElo": 1873,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/2357a687-7e2c-489c-a952-a3f48065f6eb",
+              "relicProfileId": "72654"
+            },
+            {
+              "registrationId": "05ccb88c-1529-4e24-9528-5570dd6bcfd8",
+              "eventAlias": "Fractured",
+              "eventElo": 1666,
+              "registrationStatus": "approved",
+              "profileUrl": "https://www.ironcladtournaments.com/players/4d8cea8f-99d0-448d-b640-e851a3b35a54",
+              "relicProfileId": null
+            }
+          ],
+          "bracket": {
+            "id": "34b3f004-beaf-4756-a2b8-613d4d26d479",
+            "format": "single_elimination",
+            "completed": true,
+            "matches": [
+              {
+                "id": "56963588-f9ec-4f1d-8e69-425dcce6860c",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+                "playerTwoRegistrationId": "b33e9da5-6fc6-4df7-8268-3665a1c7fb36",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-20T22:10:38.732295+00:00"
+              },
+              {
+                "id": "e2cb3312-f825-43ec-a3e5-849d2e76f927",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "6e28fbbc-2544-449d-bf5b-964acb9c9bfc",
+                "playerTwoRegistrationId": "87b6e48a-caa9-4965-a611-e00557e7e7ab",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "6e28fbbc-2544-449d-bf5b-964acb9c9bfc",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-13T12:47:00.027366+00:00"
+              },
+              {
+                "id": "1a337f4b-538c-4838-ab73-643d317d04bd",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 3,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "ac8075ce-595c-46d4-ab33-339b71d67a9b",
+                "playerTwoRegistrationId": "05ccb88c-1529-4e24-9528-5570dd6bcfd8",
+                "playerOneScore": 2,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "ac8075ce-595c-46d4-ab33-339b71d67a9b",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-12T22:22:00.087262+00:00"
+              },
+              {
+                "id": "85877eaa-b0be-493a-a23d-92f88a529076",
+                "roundNumber": 1,
+                "roundName": "Quarter Finals",
+                "matchNumber": 4,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "fa6bf45d-e252-466a-b575-145700ce721c",
+                "playerTwoRegistrationId": "e35c019f-5caf-4a76-beea-b26fef2c3b76",
+                "playerOneScore": 2,
+                "playerTwoScore": 1,
+                "winnerRegistrationId": "fa6bf45d-e252-466a-b575-145700ce721c",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-14T21:47:00.072274+00:00"
+              },
+              {
+                "id": "f4fcef12-7626-44bd-9e5a-f39048615415",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 1,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+                "playerTwoRegistrationId": "6e28fbbc-2544-449d-bf5b-964acb9c9bfc",
+                "playerOneScore": 2,
+                "playerTwoScore": 1,
+                "winnerRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-09-27T15:35:50.995083+00:00"
+              },
+              {
+                "id": "a30ad9e6-a5d9-4b42-a6c2-fc61c9829d36",
+                "roundNumber": 2,
+                "roundName": "Semi Finals",
+                "matchNumber": 2,
+                "bestOf": 3,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "ac8075ce-595c-46d4-ab33-339b71d67a9b",
+                "playerTwoRegistrationId": "fa6bf45d-e252-466a-b575-145700ce721c",
+                "playerOneScore": 0,
+                "playerTwoScore": 2,
+                "winnerRegistrationId": "fa6bf45d-e252-466a-b575-145700ce721c",
+                "completed": true,
+                "played": false,
+                "decidedAt": "2026-09-22T13:21:00.039543+00:00"
+              },
+              {
+                "id": "f4eb8df8-8fae-4dd0-a98c-afcefeaa1aeb",
+                "roundNumber": 3,
+                "roundName": "Grand Final",
+                "matchNumber": 1,
+                "bestOf": 5,
+                "status": "completed",
+                "outcomeType": null,
+                "playerOneRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+                "playerTwoRegistrationId": "fa6bf45d-e252-466a-b575-145700ce721c",
+                "playerOneScore": 3,
+                "playerTwoScore": 0,
+                "winnerRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc",
+                "completed": true,
+                "played": true,
+                "decidedAt": "2026-10-04T17:34:02.059939+00:00"
+              }
+            ],
+            "placements": [],
+            "championRegistrationId": "e1452e70-1382-4cbd-b747-487a13f6aafc"
+          }
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "offset": 0,
+    "limit": 5,
+    "hasMore": false,
+    "nextOffset": null,
+    "truncated": false
+  }
+}
