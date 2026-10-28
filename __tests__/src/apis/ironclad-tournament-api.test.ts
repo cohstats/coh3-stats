@@ -34,6 +34,8 @@ const errorResponse = (status = 500, body: any = {}) =>
     json: () => Promise.resolve(body),
   } as unknown as Response);
 
+const timeoutError = () =>
+  Promise.reject(new DOMException("The operation timed out.", "TimeoutError"));
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 const tournamentsPage = (
@@ -112,6 +114,7 @@ describe("ironclad-tournament-api", () => {
       expect(fetchSpy).toHaveBeenCalledWith(`${BASE_URL}/tournaments?limit=10&offset=0`, {
         headers: { "X-Api-Token": "test-token" },
         cache: "no-store",
+        signal: expect.any(AbortSignal),
       });
       expect(tournaments.map((tournament) => tournament.slug)).toEqual([
         "hold-the-line",
@@ -268,7 +271,11 @@ describe("ironclad-tournament-api", () => {
       expect(fetchSpy).toHaveBeenCalledTimes(1);
       expect(fetchSpy).toHaveBeenCalledWith(
         `${BASE_URL}/players/1188298/tournaments?limit=10&offset=0`,
-        { headers: { "X-Api-Token": "test-token" }, cache: "no-store" },
+        {
+          headers: { "X-Api-Token": "test-token" },
+          cache: "no-store",
+          signal: expect.any(AbortSignal),
+        },
       );
       expect(history.currentIdentity?.alias).toBe("CartelCub");
       expect(history.entries).toHaveLength(2);
@@ -410,6 +417,50 @@ describe("ironclad-tournament-api", () => {
       await flushPromises();
 
       await expect(getIroncladTournamentsCached()).resolves.toHaveLength(2);
+    });
+
+    it("keeps the stale cache when the background refresh times out, then recovers", async () => {
+      fetchSpy.mockReturnValueOnce(okResponse(tournamentsResponse));
+      await getIroncladTournamentsCached();
+
+      jest.advanceTimersByTime(FIVE_MINUTES + 1000);
+      fetchSpy.mockImplementationOnce(timeoutError);
+      await expect(getIroncladTournamentsCached()).resolves.toHaveLength(2);
+      await flushPromises();
+
+      // The refresh is retried, not stuck in the updating state
+      fetchSpy.mockReturnValueOnce(
+        okResponse(
+          tournamentsPage([holdTheLine], { offset: 0, hasMore: false, nextOffset: null }),
+        ),
+      );
+      await getIroncladTournamentsCached();
+      await flushPromises();
+      await expect(getIroncladTournamentsCached()).resolves.toHaveLength(1);
+    });
+  });
+
+  describe("request timeout", () => {
+    it("rejects with a clear message when the API times out", async () => {
+      fetchSpy.mockImplementation(timeoutError);
+
+      await expect(getIroncladTournaments()).rejects.toThrow("IronClad API timed out after 30s");
+      await expect(getIroncladTournament("the-new-front")).rejects.toThrow(
+        "IronClad API timed out after 30s",
+      );
+      await expect(getIroncladPlayerTournaments("1188298")).rejects.toThrow(
+        "IronClad API timed out after 30s",
+      );
+    });
+
+    it("returns the unavailable player data when the API times out", async () => {
+      fetchSpy.mockImplementation(timeoutError);
+
+      await expect(getIroncladPlayerData("1188298")).resolves.toEqual({
+        history: null,
+        registrations: {},
+        finalRounds: {},
+      });
     });
   });
 

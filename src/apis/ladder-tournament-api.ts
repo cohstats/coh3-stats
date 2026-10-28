@@ -89,11 +89,32 @@ const requireLadderTournamentApiToken = (): string => {
   return token;
 };
 
-const getLadderTournamentRequestInit = (): RequestInit => ({
-  headers: { "X-Api-Token": requireLadderTournamentApiToken() },
-  // Don't store token protected responses in the shared Next fetch cache
-  cache: "no-store",
-});
+// Partner API request timeout, so a hanging API doesn't stall the ISR / SSR pages
+const REQUEST_TIMEOUT_MS = 30_000;
+
+const isTimeoutError = (error: unknown) => (error as { name?: string })?.name === "TimeoutError";
+
+/**
+ * fetch with the API token and the timeout, a timeout is rethrown with a clear message.
+ */
+const fetchLadderTournament = async (url: string): Promise<Response> => {
+  try {
+    return await fetch(url, {
+      headers: { "X-Api-Token": requireLadderTournamentApiToken() },
+      // Don't store token protected responses in the shared Next fetch cache
+      cache: "no-store",
+      // A new signal per request, the timeout starts with the request
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    if (isTimeoutError(error)) {
+      const message = `Ladder Tournament API timed out after ${REQUEST_TIMEOUT_MS / 1000}s`;
+      logger.error(`${message}: ${url}`);
+      throw new Error(message);
+    }
+    throw error;
+  }
+};
 
 const getLadderTournamentRankingUrl = ({
   relicId,
@@ -134,9 +155,8 @@ const getLadderTournamentRanking = async (
 
   const { seasonId, page = 1, pageSize = DEFAULT_RANKING_PAGE_SIZE } = options;
 
-  const response = await fetch(
+  const response = await fetchLadderTournament(
     getLadderTournamentRankingUrl({ relicId: parsedRelicId.data, seasonId, page, pageSize }),
-    getLadderTournamentRequestInit(),
   );
 
   if (response.ok) {
@@ -167,9 +187,8 @@ const getLadderTournamentFullRanking = async (
   const items: LadderTournamentRankingItem[] = [];
 
   for (let page = 1; page <= FULL_RANKING_MAX_PAGES; page++) {
-    const response = await fetch(
+    const response = await fetchLadderTournament(
       getLadderTournamentRankingUrl({ seasonId, page, pageSize: FULL_RANKING_PAGE_SIZE }),
-      getLadderTournamentRequestInit(),
     );
 
     if (!response.ok) {
@@ -212,10 +231,7 @@ let casterVideosCache: CasterVideosCacheEntry | null = null;
 let casterVideosInitialFetch: Promise<LadderTournamentCasterVideo[]> | null = null;
 
 const fetchCasterVideos = async (): Promise<LadderTournamentCasterVideo[]> => {
-  const response = await fetch(
-    getLadderTournamentCasterVideosUrl(),
-    getLadderTournamentRequestInit(),
-  );
+  const response = await fetchLadderTournament(getLadderTournamentCasterVideosUrl());
 
   if (response.ok) {
     return parseLadderTournamentResponse(

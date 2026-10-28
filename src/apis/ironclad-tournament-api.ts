@@ -284,11 +284,32 @@ const requireIroncladTournamentApiToken = (): string => {
   return token;
 };
 
-const getIroncladRequestInit = (): RequestInit => ({
-  headers: { "X-Api-Token": requireIroncladTournamentApiToken() },
-  // Don't store token protected responses in the shared Next fetch cache
-  cache: "no-store",
-});
+// Partner API request timeout, so a hanging API doesn't stall the ISR / SSR pages
+const REQUEST_TIMEOUT_MS = 30_000;
+
+const isTimeoutError = (error: unknown) => (error as { name?: string })?.name === "TimeoutError";
+
+/**
+ * fetch with the API token and the timeout, a timeout is rethrown with a clear message.
+ */
+const fetchIronclad = async (url: string): Promise<Response> => {
+  try {
+    return await fetch(url, {
+      headers: { "X-Api-Token": requireIroncladTournamentApiToken() },
+      // Don't store token protected responses in the shared Next fetch cache
+      cache: "no-store",
+      // A new signal per request, the timeout starts with the request
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    if (isTimeoutError(error)) {
+      const message = `IronClad API timed out after ${REQUEST_TIMEOUT_MS / 1000}s`;
+      logger.error(`${message}: ${url}`);
+      throw new Error(message);
+    }
+    throw error;
+  }
+};
 
 const getIroncladTournamentsUrl = ({
   status,
@@ -333,9 +354,8 @@ const getIroncladTournaments = async (
   let offset = 0;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const response = await fetch(
+    const response = await fetchIronclad(
       getIroncladTournamentsUrl({ status, offset, limit: PAGE_SIZE }),
-      getIroncladRequestInit(),
     );
 
     if (!response.ok) {
@@ -381,10 +401,7 @@ const getIroncladTournament = async (slug: string): Promise<IroncladTournament |
     return null;
   }
 
-  const response = await fetch(
-    getIroncladTournamentUrl(parsedSlug.data),
-    getIroncladRequestInit(),
-  );
+  const response = await fetchIronclad(getIroncladTournamentUrl(parsedSlug.data));
 
   if (response.ok) {
     return parseIroncladResponse(tournamentResponseSchema, await response.json(), "tournament")
@@ -440,9 +457,8 @@ const getIroncladPlayerTournaments = async (
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const offset = page * PAGE_SIZE;
-    const response = await fetch(
+    const response = await fetchIronclad(
       getIroncladPlayerTournamentsUrl({ relicId: parsedRelicId.data, offset, limit: PAGE_SIZE }),
-      getIroncladRequestInit(),
     );
 
     if (!response.ok) {
