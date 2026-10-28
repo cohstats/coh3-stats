@@ -25,6 +25,7 @@ import { TournamentInfo } from "../../../src/tournaments/tournaments-registry";
 import { getIroncladTournamentRoute, getIroncladTournamentsRoute } from "../../../src/routes";
 import { AnalyticsTournamentExternalClick } from "../../../src/firebase/analytics";
 import IroncladPlayerLink from "./ironclad-player-link";
+import IroncladChampions from "./ironclad-champions";
 import {
   DivisionStateBadge,
   formatIroncladDate,
@@ -85,7 +86,6 @@ const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSu
   const { t } = useTranslation("tournaments");
   const { locale = "en" } = useRouter();
   const completedAt = formatIroncladDate(tournament.firstCompletedAt, locale);
-  const divisions = tournament.divisions.filter((division) => division.champion);
 
   return (
     <Paper
@@ -113,19 +113,7 @@ const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSu
               : t("ironclad.playersCount", { count: tournament.approvedPlayers })}
           </Text>
         </Group>
-        <Group gap="lg" rowGap="xs">
-          {divisions.map((division) => (
-            <Stack gap={0} key={division.key} style={{ minWidth: 0 }}>
-              <Group gap={4} wrap="nowrap">
-                <IconTrophyFilled size={12} color="var(--mantine-color-yellow-6)" />
-                <Text size="xs" c="dimmed" truncate="end">
-                  {division.displayName}
-                </Text>
-              </Group>
-              <IroncladPlayerLink player={division.champion!} />
-            </Stack>
-          ))}
-        </Group>
+        <IroncladChampions divisions={tournament.divisions} />
       </Stack>
     </Paper>
   );

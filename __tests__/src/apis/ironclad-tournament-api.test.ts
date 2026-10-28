@@ -437,6 +437,54 @@ describe("ironclad-tournament-api", () => {
       expect(data.finalRounds).toEqual({ "2f69c609-b876-45e1-ba48-561717d19b4f": 3 });
     });
 
+    it("loads fresh the tournaments where the cached list misses the bracket", async () => {
+      // The cached list is from before THE NEW FRONT Academy bracket was generated
+      const staleNewFront = {
+        ...theNewFront,
+        divisions: theNewFront.divisions.map((division) => ({ ...division, bracket: null })),
+      };
+      fetchSpy.mockImplementation((url: string) => {
+        if (url.includes("/players/")) return okResponse(playerTournamentsResponse);
+        if (url.endsWith("/tournaments/the-new-front")) {
+          return okResponse({ schemaVersion: SCHEMA_VERSION, data: theNewFront });
+        }
+        return okResponse(
+          tournamentsPage([holdTheLine, staleNewFront], {
+            offset: 0,
+            hasMore: false,
+            nextOffset: null,
+          }),
+        );
+      });
+
+      const data = await getIroncladPlayerData("1188298");
+
+      const detailCalls = fetchSpy.mock.calls.filter(([url]) =>
+        String(url).endsWith("/tournaments/the-new-front"),
+      );
+      expect(detailCalls).toHaveLength(1);
+      expect(data.finalRounds).toEqual({ "2f69c609-b876-45e1-ba48-561717d19b4f": 3 });
+      expect(Object.keys(data.registrations)).toHaveLength(14);
+    });
+
+    it("loads the played tournaments one by one when the list fails", async () => {
+      fetchSpy.mockImplementation((url: string) => {
+        if (url.includes("/players/")) return okResponse(playerTournamentsResponse);
+        if (url.endsWith("/tournaments/the-new-front")) {
+          return okResponse({ schemaVersion: SCHEMA_VERSION, data: theNewFront });
+        }
+        if (url.endsWith("/tournaments/hold-the-line")) {
+          return okResponse({ schemaVersion: SCHEMA_VERSION, data: holdTheLine });
+        }
+        return errorResponse(500);
+      });
+
+      const data = await getIroncladPlayerData("1188298");
+
+      expect(Object.keys(data.registrations)).toHaveLength(14);
+      expect(data.finalRounds).toEqual({ "2f69c609-b876-45e1-ba48-561717d19b4f": 3 });
+    });
+
     it("returns null history when it fails, but keeps the registrations", async () => {
       mockApi(errorResponse(500), okResponse(tournamentsResponse));
 

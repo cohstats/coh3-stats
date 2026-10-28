@@ -3,6 +3,7 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import IroncladTournamentScreen, {
   IroncladTournamentPageProps,
 } from "../../../screens/tournaments/ironclad";
+import { isIroncladSlug } from "../../../src/apis/ironclad-tournament-api";
 import {
   getIroncladTournamentPageResult,
   IRONCLAD_TOURNAMENT_REVALIDATE,
@@ -16,8 +17,7 @@ export const getStaticProps: GetStaticProps<
 > = async ({ locale = "en", params }) => {
   const slug = params?.slug ?? "";
 
-  // Only lowercase slugs, so there is one URL per tournament
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+  if (!isIroncladSlug(slug)) {
     return { notFound: true, revalidate: IRONCLAD_TOURNAMENT_REVALIDATE };
   }
 

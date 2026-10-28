@@ -7,8 +7,7 @@ import {
   getDivisionKey,
   getIroncladChampionRelicIds,
   getIroncladParticipantRelicIds,
-  getRecentCompletedTournaments,
-  pickFeaturedTournament,
+  pickIroncladHubTournaments,
   sortDivisionsByTier,
   sortIroncladTournaments,
   toRelicId,
@@ -161,7 +160,7 @@ describe("ironclad-tournament", () => {
     });
   });
 
-  describe("sortIroncladTournaments / pickFeaturedTournament", () => {
+  describe("sortIroncladTournaments / pickIroncladHubTournaments", () => {
     const tournament = (slug: string, status: string, firstCompletedAt: string | null = null) =>
       ({ ...holdTheLine, id: slug, slug, status, firstCompletedAt }) as IroncladTournament;
 
@@ -186,31 +185,33 @@ describe("ironclad-tournament", () => {
     });
 
     it("takes the 2 newest completed tournaments without the featured one", () => {
-      const recent = getRecentCompletedTournaments([
+      const hub = pickIroncladHubTournaments([
         tournament("old", "completed", "2026-01-01T00:00:00Z"),
         tournament("running", "in_progress"),
         tournament("new", "completed", "2026-06-01T00:00:00Z"),
         tournament("middle", "completed", "2026-03-01T00:00:00Z"),
-      ]);
-      expect(recent.map((t) => t.slug)).toEqual(["new", "middle"]);
+      ])!;
+      expect(hub.featured.slug).toBe("running");
+      expect(hub.recent.map((t) => t.slug)).toEqual(["new", "middle"]);
 
       // Without a running tournament the newest completed is the featured one
-      const onlyCompleted = getRecentCompletedTournaments([
+      const onlyCompleted = pickIroncladHubTournaments([
         tournament("old", "completed", "2026-01-01T00:00:00Z"),
         tournament("new", "completed", "2026-06-01T00:00:00Z"),
-      ]);
-      expect(onlyCompleted.map((t) => t.slug)).toEqual(["old"]);
+      ])!;
+      expect(onlyCompleted.featured.slug).toBe("new");
+      expect(onlyCompleted.recent.map((t) => t.slug)).toEqual(["old"]);
     });
 
-    it("picks the running tournament", () => {
-      expect(pickFeaturedTournament(tournaments)?.slug).toBe("hold-the-line");
-      expect(pickFeaturedTournament([])).toBeNull();
+    it("picks the running tournament, null without tournaments", () => {
+      expect(pickIroncladHubTournaments(tournaments)?.featured.slug).toBe("hold-the-line");
+      expect(pickIroncladHubTournaments([])).toBeNull();
     });
   });
 
   describe("buildIroncladHubSummary", () => {
     it("has the featured tournament and the recent completed ones", () => {
-      const summary = buildIroncladHubSummary(tournaments, {})!;
+      const summary = buildIroncladHubSummary(pickIroncladHubTournaments(tournaments)!, {});
 
       expect(summary.featured.slug).toBe("hold-the-line");
       expect(summary.featured.registrationOpen).toBe(true);
@@ -231,14 +232,10 @@ describe("ironclad-tournament", () => {
     });
 
     it("has no recent tournaments when the featured is the only completed one", () => {
-      const summary = buildIroncladHubSummary([theNewFront], {})!;
+      const summary = buildIroncladHubSummary(pickIroncladHubTournaments([theNewFront])!, {});
 
       expect(summary.featured.slug).toBe("the-new-front");
       expect(summary.recent).toEqual([]);
-    });
-
-    it("is null without tournaments", () => {
-      expect(buildIroncladHubSummary([], {})).toBeNull();
     });
   });
 

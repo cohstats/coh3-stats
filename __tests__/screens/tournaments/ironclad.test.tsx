@@ -12,6 +12,7 @@ import {
   buildIroncladHubSummary,
   buildIroncladOverviewData,
   buildIroncladTournamentView,
+  pickIroncladHubTournaments,
 } from "../../../src/tournaments/ironclad-tournament";
 import type { IroncladTournament } from "../../../src/apis/ironclad-tournament-api";
 import tournamentsResponse from "../../test-assets/ironclad-tournaments-response.json";
@@ -55,7 +56,7 @@ describe("IronClad on the Tournaments hub", () => {
     const html = renderHtml(
       <TournamentsScreen
         ladderSummary={null}
-        ironcladSummary={buildIroncladHubSummary(tournaments, names)}
+        ironcladSummary={buildIroncladHubSummary(pickIroncladHubTournaments(tournaments)!, names)}
       />,
     );
     const card = getElement(html, "tournament-card-ironclad");
@@ -152,6 +153,17 @@ describe("IroncladTournamentScreen", () => {
     expect(html).toContain('data-testid="ironclad-bracket-not-generated"');
     expect(html).toContain("ironclad.registrationOpen");
     expect(html).not.toContain('data-testid="ironclad-bracket-champion"');
+  });
+
+  test("renders an empty slot of a decided match as a bye", () => {
+    const data = buildIroncladTournamentView(theNewFront, {});
+    const [firstMatch] = data.divisions[0].rounds![0].matches;
+    firstMatch.slots[1] = { player: null, score: null, isWinner: false };
+
+    const html = renderHtml(<IroncladTournamentScreen slug="the-new-front" data={data} />);
+
+    expect(getElement(html, `ironclad-match-${firstMatch.id}`)).toContain("ironclad.bracket.bye");
+    expect(html).not.toContain("ironclad.bracket.tbd");
   });
 
   test("renders the unavailable state", () => {

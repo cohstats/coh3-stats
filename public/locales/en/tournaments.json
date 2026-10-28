@@ -139,6 +139,7 @@
       "title": "Bracket",
       "bestOf": "Bo{{count}}",
       "tbd": "TBD",
+      "bye": "Bye",
       "forfeit": "W/O",
       "forfeitTooltip": "Walkover - the match wasn't played",
       "live": "Live",

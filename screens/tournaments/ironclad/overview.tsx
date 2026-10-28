@@ -25,7 +25,7 @@ import { getIroncladTournamentRoute, getIroncladTournamentsRoute } from "../../.
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { ExternalLink } from "../ladder-tournament/league-header";
-import IroncladPlayerLink from "../components/ironclad-player-link";
+import IroncladChampions from "../components/ironclad-champions";
 import {
   DivisionStateBadge,
   formatIroncladDate,
@@ -128,9 +128,9 @@ const IroncladOverviewScreen: NextPage<IroncladOverviewPageProps> = ({ data }) =
   const title = t("meta.ironcladTitle");
   const description = t("meta.ironcladDescription");
 
-  const champions = data?.tournaments
-    .filter((tournament) => tournament.divisions.some((division) => division.champion))
-    .slice(0, 1)[0];
+  const champions = data?.tournaments.find((tournament) =>
+    tournament.divisions.some((division) => division.champion),
+  );
 
   return (
     <>
@@ -167,18 +167,7 @@ const IroncladOverviewScreen: NextPage<IroncladOverviewPageProps> = ({ data }) =
                       <IconTrophyFilled size={16} color="var(--mantine-color-yellow-6)" />
                       <Text fw={700}>{t("hub.lastChampions", { name: champions.name })}</Text>
                     </Group>
-                    <Group gap="xl">
-                      {champions.divisions
-                        .filter((division) => division.champion)
-                        .map((division) => (
-                          <Stack gap={0} key={division.key}>
-                            <Text size="xs" c="dimmed">
-                              {division.displayName}
-                            </Text>
-                            <IroncladPlayerLink player={division.champion!} />
-                          </Stack>
-                        ))}
-                    </Group>
+                    <IroncladChampions divisions={champions.divisions} />
                   </Stack>
                 </Paper>
               )}

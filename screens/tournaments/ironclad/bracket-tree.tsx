@@ -13,7 +13,7 @@ import IroncladPlayerLink from "../components/ironclad-player-link";
 import { formatIroncladDate } from "../components/ironclad-badges";
 import classes from "./ironclad.module.css";
 
-const SlotRow = ({ slot }: { slot: IroncladBracketSlot }) => {
+const SlotRow = ({ slot, decided }: { slot: IroncladBracketSlot; decided: boolean }) => {
   const { t } = useTranslation("tournaments");
 
   return (
@@ -21,8 +21,9 @@ const SlotRow = ({ slot }: { slot: IroncladBracketSlot }) => {
       {slot.player ? (
         <IroncladPlayerLink player={slot.player} fw={slot.isWinner ? 700 : 500} />
       ) : (
+        // An empty slot of a decided match is a bye, it won't be filled anymore
         <Text size="sm" c="dimmed" fs="italic">
-          {t("ironclad.bracket.tbd")}
+          {t(decided ? "ironclad.bracket.bye" : "ironclad.bracket.tbd")}
         </Text>
       )}
       <Text
@@ -50,8 +51,8 @@ const MatchCard = ({ match }: { match: IroncladBracketMatch }) => {
       className={`${classes.match} ${live ? classes.matchLive : ""}`}
       data-testid={`ironclad-match-${match.id}`}
     >
-      <SlotRow slot={match.slots[0]} />
-      <SlotRow slot={match.slots[1]} />
+      <SlotRow slot={match.slots[0]} decided={match.completed} />
+      <SlotRow slot={match.slots[1]} decided={match.completed} />
       <div className={classes.matchFooter}>
         <Text size="xs" c="dimmed">
           {t("ironclad.bracket.bestOf", { count: match.bestOf })}

@@ -114,15 +114,17 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
 
   // The divisions are from the highest tier, the top one is open by default
   const defaultDivision = data?.divisions[0]?.key ?? null;
-  const [division, setDivision] = useState<string | null>(defaultDivision);
+  // Kept with the slug, the page component stays mounted when navigating to another tournament
+  const [selected, setSelected] = useState<{ slug: string; division: string } | null>(null);
+  const division = selected?.slug === slug ? selected.division : defaultDivision;
 
   // The query is not available on the statically generated page, it's applied after the hydration
   const queryDivision = typeof router.query.division === "string" ? router.query.division : null;
   useEffect(() => {
     if (queryDivision && data?.divisions.some((item) => item.key === queryDivision)) {
-      setDivision(queryDivision);
+      setSelected({ slug, division: queryDivision });
     }
-  }, [queryDivision, data]);
+  }, [queryDivision, data, slug]);
 
   useEffect(() => {
     AnalyticsIroncladTournamentView(slug);
@@ -130,7 +132,7 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
 
   const onDivisionChange = (value: string | null) => {
     if (!value) return;
-    setDivision(value);
+    setSelected({ slug, division: value });
     router.replace(getIroncladTournamentRoute(slug, value), undefined, {
       shallow: true,
       scroll: false,

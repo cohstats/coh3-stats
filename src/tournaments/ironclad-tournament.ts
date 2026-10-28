@@ -111,7 +111,7 @@ export type IroncladTournamentSummary = {
 };
 
 export type IroncladHubSummary = {
-  // The tournament to show on the hub, see pickFeaturedTournament
+  // The tournament to show on the hub, see pickIroncladHubTournaments
   featured: IroncladTournamentSummary;
   // Latest completed tournaments with their champions, without the featured one
   recent: IroncladTournamentSummary[];
@@ -145,28 +145,31 @@ export const sortIroncladTournaments = (tournaments: IroncladTournament[]) =>
     return a.status === "completed" ? byNewestCompleted(a, b) : 0;
   });
 
-/**
- * The tournament to show on the hub - in progress, then open for registration, then upcoming,
- * then the latest completed. null when there are no tournaments.
- */
-export const pickFeaturedTournament = (
-  tournaments: IroncladTournament[],
-): IroncladTournament | null => sortIroncladTournaments(tournaments)[0] ?? null;
-
 // Number of the completed tournaments shown on the hub below the featured one
 export const IRONCLAD_HUB_RECENT_TOURNAMENTS = 2;
 
+export type IroncladHubTournaments = {
+  // In progress, then open for registration, then upcoming, then the latest completed
+  featured: IroncladTournament;
+  // Latest completed tournaments, from the newest, without the featured one
+  recent: IroncladTournament[];
+};
+
 /**
- * Latest completed tournaments for the hub, from the newest, without the featured one.
+ * Tournaments shown on the hub. null when there are no tournaments.
  */
-export const getRecentCompletedTournaments = (
+export const pickIroncladHubTournaments = (
   tournaments: IroncladTournament[],
-): IroncladTournament[] => {
-  const featured = pickFeaturedTournament(tournaments);
-  return tournaments
-    .filter((tournament) => tournament.status === "completed" && tournament !== featured)
-    .sort(byNewestCompleted)
-    .slice(0, IRONCLAD_HUB_RECENT_TOURNAMENTS);
+): IroncladHubTournaments | null => {
+  // The completed ones are already from the newest
+  const [featured, ...rest] = sortIroncladTournaments(tournaments);
+  if (!featured) return null;
+  return {
+    featured,
+    recent: rest
+      .filter((tournament) => tournament.status === "completed")
+      .slice(0, IRONCLAD_HUB_RECENT_TOURNAMENTS),
+  };
 };
 
 // Divisions from the highest tier, the unknown ones at the end in the API order
@@ -346,22 +349,16 @@ export const buildIroncladTournamentSummary = (
 });
 
 /**
- * Summary for the Tournaments hub, null when there are no tournaments.
+ * Summary for the Tournaments hub.
+ * @param hub Tournaments picked with pickIroncladHubTournaments
  */
 export const buildIroncladHubSummary = (
-  tournaments: IroncladTournament[],
+  hub: IroncladHubTournaments,
   names: IroncladPlayerNames,
-): IroncladHubSummary | null => {
-  const featured = pickFeaturedTournament(tournaments);
-  if (!featured) return null;
-
-  return {
-    featured: buildIroncladTournamentSummary(featured, names),
-    recent: getRecentCompletedTournaments(tournaments).map((tournament) =>
-      buildIroncladTournamentSummary(tournament, names),
-    ),
-  };
-};
+): IroncladHubSummary => ({
+  featured: buildIroncladTournamentSummary(hub.featured, names),
+  recent: hub.recent.map((tournament) => buildIroncladTournamentSummary(tournament, names)),
+});
 
 export const buildIroncladOverviewData = (
   tournaments: IroncladTournament[],

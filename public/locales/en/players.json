@@ -391,7 +391,8 @@
         "lost": "L",
         "forfeit": "W/O",
         "pending": "Pending",
-        "tbd": "TBD"
+        "tbd": "TBD",
+        "bye": "Bye"
       },
       "showMatches_one": "Show {{count}} match",
       "showMatches_other": "Show {{count}} matches",

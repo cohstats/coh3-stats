@@ -107,8 +107,13 @@ const MatchRow = ({ match }: { match: PlayerIroncladMatch }) => {
           </Text>
         )
       ) : (
+        // Without an opponent a decided match is a bye
         <Text size="sm" c="dimmed" fs="italic">
-          {t("tournaments.ironclad.match.tbd")}
+          {t(
+            match.won !== null
+              ? "tournaments.ironclad.match.bye"
+              : "tournaments.ironclad.match.tbd",
+          )}
         </Text>
       )}
       {match.forfeit && (
