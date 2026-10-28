@@ -538,6 +538,7 @@ const tournaments = {
   },
   ironclad: {
     url: "https://www.ironcladtournaments.com/tournaments",
+    discordUrl: "https://discord.gg/ZQSQjBNRm3",
     apiBaseUrl: "https://www.ironcladtournaments.com/api/partners/v1",
   },
   // TODO: Confirm the official URL

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   Anchor,
   Avatar,
@@ -24,7 +25,12 @@ import { TournamentInfo } from "../../../src/tournaments/tournaments-registry";
 import { getIroncladTournamentRoute, getIroncladTournamentsRoute } from "../../../src/routes";
 import { AnalyticsTournamentExternalClick } from "../../../src/firebase/analytics";
 import IroncladPlayerLink from "./ironclad-player-link";
-import { DivisionStateBadge, RegistrationBadge, TournamentStatusBadge } from "./ironclad-badges";
+import {
+  DivisionStateBadge,
+  formatIroncladDate,
+  RegistrationBadge,
+  TournamentStatusBadge,
+} from "./ironclad-badges";
 import classes from "../tournaments.module.css";
 
 const DivisionFillRow = ({ division }: { division: IroncladDivisionSummary }) => {
@@ -72,43 +78,61 @@ const DivisionFillRow = ({ division }: { division: IroncladDivisionSummary }) =>
   );
 };
 
-const LastChampions = ({ tournament }: { tournament: IroncladTournamentSummary }) => {
+/**
+ * Completed tournament below the current one - the champions of each division.
+ */
+const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSummary }) => {
   const { t } = useTranslation("tournaments");
+  const { locale = "en" } = useRouter();
+  const completedAt = formatIroncladDate(tournament.firstCompletedAt, locale);
   const divisions = tournament.divisions.filter((division) => division.champion);
-  if (divisions.length === 0) return null;
 
   return (
-    <Stack gap={6} mt="xs" data-testid="ironclad-hub-last-champions">
-      <Group gap={6} wrap="nowrap">
-        <IconTrophyFilled size={16} color="var(--mantine-color-yellow-6)" />
-        <Text size="sm" fw={700}>
-          <Anchor
-            component={Link}
-            href={getIroncladTournamentRoute(tournament.slug)}
-            inherit
-            c="inherit"
-          >
-            {t("hub.lastChampions", { name: tournament.name })}
-          </Anchor>
-        </Text>
-      </Group>
-      <Group gap="lg">
+    <Paper
+      radius="md"
+      p="md"
+      className={classes.featuredData}
+      data-testid={`ironclad-hub-recent-${tournament.slug}`}
+    >
+      <Stack gap="xs">
+        <Group justify="space-between" gap="xs" wrap="nowrap">
+          <Text fw={700} truncate="end">
+            <Anchor
+              component={Link}
+              href={getIroncladTournamentRoute(tournament.slug)}
+              inherit
+              c="inherit"
+            >
+              {tournament.name}
+            </Anchor>
+          </Text>
+          <Text size="xs" c="dimmed" style={{ flexShrink: 0 }}>
+            {completedAt
+              ? t("ironclad.completedAt", { date: completedAt })
+              : t("ironclad.playersCount", { count: tournament.approvedPlayers })}
+          </Text>
+        </Group>
         {divisions.map((division) => (
-          <Stack gap={0} key={division.key} style={{ minWidth: 0 }}>
-            <Text size="xs" c="dimmed">
+          <Group gap="xs" wrap="nowrap" key={division.key}>
+            <IconTrophyFilled
+              size={14}
+              color="var(--mantine-color-yellow-6)"
+              style={{ flexShrink: 0 }}
+            />
+            <Text size="sm" c="dimmed" w={90} truncate="end" style={{ flexShrink: 0 }}>
               {division.displayName}
             </Text>
             <IroncladPlayerLink player={division.champion!} />
-          </Stack>
+          </Group>
         ))}
-      </Group>
-    </Stack>
+      </Stack>
+    </Paper>
   );
 };
 
 const FeaturedTournament = ({ summary }: { summary: IroncladHubSummary }) => {
   const { t } = useTranslation("tournaments");
-  const { featured, lastCompleted, tournamentsCount } = summary;
+  const { featured } = summary;
   const isCurrent = featured.status !== "completed";
 
   return (
@@ -141,19 +165,13 @@ const FeaturedTournament = ({ summary }: { summary: IroncladHubSummary }) => {
           <DivisionFillRow division={division} key={division.key} />
         ))}
       </Stack>
-      {lastCompleted && <LastChampions tournament={lastCompleted} />}
-      {tournamentsCount > 1 && (
-        <Text size="sm" c="dimmed" mt="xs">
-          {t("hub.tournamentsCount", { count: tournamentsCount })}
-        </Text>
-      )}
     </Stack>
   );
 };
 
 /**
- * IronClad with the live data from the partner API - the current tournament, its divisions
- * and the latest champions. Without the data the hub shows the organiser card instead.
+ * IronClad with the live data from the partner API - the current tournament with its divisions
+ * and the champions of the latest completed tournaments. Without the data the hub shows the organiser card instead.
  */
 const IroncladFeaturedCard = ({
   tournament,
@@ -243,6 +261,18 @@ const IroncladFeaturedCard = ({
           <FeaturedTournament summary={summary} />
         </Paper>
       </SimpleGrid>
+      {summary.recent.length > 0 && (
+        <Stack gap="xs" mt="lg" data-testid="ironclad-hub-recent">
+          <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
+            {t("hub.recentTournaments")}
+          </Text>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+            {summary.recent.map((recent) => (
+              <RecentTournamentCard tournament={recent} key={recent.slug} />
+            ))}
+          </SimpleGrid>
+        </Stack>
+      )}
     </Paper>
   );
 };

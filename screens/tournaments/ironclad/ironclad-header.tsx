@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Anchor, Avatar, Breadcrumbs, Group, Stack, Text, Title } from "@mantine/core";
 import { useTranslation } from "next-i18next/pages";
+import config from "../../../config";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { getIroncladTournamentsRoute, getTournamentsRoute } from "../../../src/routes";
 import { ExternalLink } from "../ladder-tournament/league-header";
@@ -66,6 +67,10 @@ const IroncladHeader = ({
             {tournamentName === undefined ? t("ironclad.verifiedEloDivisions") : name}
             {" · "}
             <ExternalLink href={officialUrl}>{t("ironclad.officialSite")}</ExternalLink>
+            {" · "}
+            <ExternalLink href={config.tournaments.ironclad.discordUrl}>
+              {t("league.discord")}
+            </ExternalLink>
           </Text>
           {children}
         </Stack>

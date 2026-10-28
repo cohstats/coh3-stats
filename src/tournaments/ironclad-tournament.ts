@@ -113,9 +113,8 @@ export type IroncladTournamentSummary = {
 export type IroncladHubSummary = {
   // The tournament to show on the hub, see pickFeaturedTournament
   featured: IroncladTournamentSummary;
-  // Latest completed tournament for the champions, null when it's the featured one or there is none
-  lastCompleted: IroncladTournamentSummary | null;
-  tournamentsCount: number;
+  // Latest completed tournaments with their champions, without the featured one
+  recent: IroncladTournamentSummary[];
 };
 
 export type IroncladOverviewData = {
@@ -154,12 +153,32 @@ export const pickFeaturedTournament = (
   tournaments: IroncladTournament[],
 ): IroncladTournament | null => sortIroncladTournaments(tournaments)[0] ?? null;
 
-export const getLatestCompletedTournament = (
+// Number of the completed tournaments shown on the hub below the featured one
+export const IRONCLAD_HUB_RECENT_TOURNAMENTS = 2;
+
+/**
+ * Latest completed tournaments for the hub, from the newest, without the featured one.
+ */
+export const getRecentCompletedTournaments = (
   tournaments: IroncladTournament[],
-): IroncladTournament | null =>
-  [...tournaments.filter((tournament) => tournament.status === "completed")].sort(
-    byNewestCompleted,
-  )[0] ?? null;
+): IroncladTournament[] => {
+  const featured = pickFeaturedTournament(tournaments);
+  return tournaments
+    .filter((tournament) => tournament.status === "completed" && tournament !== featured)
+    .sort(byNewestCompleted)
+    .slice(0, IRONCLAD_HUB_RECENT_TOURNAMENTS);
+};
+
+// Divisions from the highest tier, the unknown ones at the end in the API order
+const DIVISION_TIERS = ["pro", "main", "challenge", "academy"];
+
+const getDivisionTier = (division: { canonicalName: string }) => {
+  const index = DIVISION_TIERS.indexOf(division.canonicalName.toLowerCase());
+  return index === -1 ? DIVISION_TIERS.length : index;
+};
+
+export const sortDivisionsByTier = <T extends { canonicalName: string }>(divisions: T[]) =>
+  [...divisions].sort((a, b) => getDivisionTier(a) - getDivisionTier(b));
 
 // URL key of the division, eg "Main / Pro" -> "main-pro"
 export const getDivisionKey = (division: { canonicalName: string }) =>
@@ -297,7 +316,9 @@ export const buildIroncladTournamentView = (
   registrationOpen: tournament.registration.open,
   approvedPlayers: tournament.approvedPlayers,
   firstCompletedAt: tournament.firstCompletedAt,
-  divisions: tournament.divisions.map((division) => buildIroncladDivisionView(division, names)),
+  divisions: sortDivisionsByTier(tournament.divisions).map((division) =>
+    buildIroncladDivisionView(division, names),
+  ),
 });
 
 export const buildIroncladTournamentSummary = (
@@ -312,7 +333,7 @@ export const buildIroncladTournamentSummary = (
   registrationOpen: tournament.registration.open,
   approvedPlayers: tournament.approvedPlayers,
   firstCompletedAt: tournament.firstCompletedAt,
-  divisions: tournament.divisions.map((division) => ({
+  divisions: sortDivisionsByTier(tournament.divisions).map((division) => ({
     key: getDivisionKey(division),
     displayName: division.displayName,
     state: division.effectiveState,
@@ -325,19 +346,6 @@ export const buildIroncladTournamentSummary = (
 });
 
 /**
- * Division opened by default on the tournament page - the first running one,
- * then the first with a bracket, then the first one. null when there are no divisions.
- */
-export const getDefaultDivisionKey = (
-  divisions: Pick<IroncladDivisionView, "key" | "state" | "rounds">[],
-): string | null =>
-  (
-    divisions.find((division) => division.state === "in_progress") ??
-    divisions.find((division) => division.rounds !== null) ??
-    divisions[0]
-  )?.key ?? null;
-
-/**
  * Summary for the Tournaments hub, null when there are no tournaments.
  */
 export const buildIroncladHubSummary = (
@@ -346,15 +354,12 @@ export const buildIroncladHubSummary = (
 ): IroncladHubSummary | null => {
   const featured = pickFeaturedTournament(tournaments);
   if (!featured) return null;
-  const lastCompleted = getLatestCompletedTournament(tournaments);
 
   return {
     featured: buildIroncladTournamentSummary(featured, names),
-    lastCompleted:
-      lastCompleted && lastCompleted.id !== featured.id
-        ? buildIroncladTournamentSummary(lastCompleted, names)
-        : null,
-    tournamentsCount: tournaments.length,
+    recent: getRecentCompletedTournaments(tournaments).map((tournament) =>
+      buildIroncladTournamentSummary(tournament, names),
+    ),
   };
 };
 

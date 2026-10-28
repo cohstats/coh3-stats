@@ -10,7 +10,8 @@ import {
   buildIroncladTournamentView,
   getIroncladChampionRelicIds,
   getIroncladParticipantRelicIds,
-  getLatestCompletedTournament,
+  getRecentCompletedTournaments,
+  pickFeaturedTournament,
   IroncladHubSummary,
   IroncladOverviewData,
   IroncladTournamentView,
@@ -56,10 +57,13 @@ export const getIroncladHubResult = async (): Promise<IroncladHubResult> => {
     return { summary: null, revalidate: IRONCLAD_TOURNAMENT_REVALIDATE_ON_ERROR };
   }
 
-  // The hub shows only the champions of the latest completed tournament
-  const lastCompleted = getLatestCompletedTournament(tournaments);
+  // The hub shows only the champions of the featured and the recent completed tournaments
+  const featured = pickFeaturedTournament(tournaments);
   const names = await getLadderPlayerNames(
-    lastCompleted ? getIroncladChampionRelicIds([lastCompleted]) : [],
+    getIroncladChampionRelicIds([
+      ...(featured ? [featured] : []),
+      ...getRecentCompletedTournaments(tournaments),
+    ]),
   );
 
   return {

@@ -7,7 +7,6 @@ import { IconTrophyFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
 import {
-  getDefaultDivisionKey,
   IroncladDivisionView,
   IroncladTournamentView,
 } from "../../../src/tournaments/ironclad-tournament";
@@ -113,7 +112,8 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
   const router = useRouter();
   const { locale = "en" } = router;
 
-  const defaultDivision = data ? getDefaultDivisionKey(data.divisions) : null;
+  // The divisions are from the highest tier, the top one is open by default
+  const defaultDivision = data?.divisions[0]?.key ?? null;
   const [division, setDivision] = useState<string | null>(defaultDivision);
 
   // The query is not available on the statically generated page, it's applied after the hydration

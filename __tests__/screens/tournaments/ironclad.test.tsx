@@ -51,7 +51,7 @@ const getElement = (html: string, testId: string) => {
 const count = (html: string, pattern: RegExp) => (html.match(pattern) || []).length;
 
 describe("IronClad on the Tournaments hub", () => {
-  test("renders the live card with the current tournament and the last champions", () => {
+  test("renders the live card with the current tournament and the recent champions", () => {
     const html = renderHtml(
       <TournamentsScreen
         ladderSummary={null}
@@ -69,8 +69,16 @@ describe("IronClad on the Tournaments hub", () => {
       expect(card).toContain(`data-testid="ironclad-hub-division-${division}"`);
     }
     expect(card).toContain('ironclad.divisionFill {"count":6,"capacity":8}');
-    expect(card).toContain('hub.lastChampions {"name":"THE NEW FRONT"}');
-    expect(card).toContain("DarthYukat");
+    // From the highest tier
+    expect(card.indexOf("ironclad-hub-division-pro")).toBeLessThan(
+      card.indexOf("ironclad-hub-division-academy"),
+    );
+    // The champions are in their own card below the current tournament
+    const featured = getElement(card, "ironclad-hub-featured");
+    const recent = getElement(card, "ironclad-hub-recent-the-new-front");
+    expect(featured.slice(0, featured.length - recent.length)).not.toContain("DarthYukat");
+    expect(recent).toContain("DarthYukat");
+    expect(recent).toContain('href="/tournaments/ironclad/the-new-front"');
     expect(card).toContain('href="/tournaments/ironclad/hold-the-line"');
     expect(card).toContain('href="/tournaments/ironclad"');
     // Registration is open, so the external button registers
@@ -104,9 +112,16 @@ describe("IroncladTournamentScreen", () => {
     );
 
     expect(html).toContain("THE NEW FRONT");
-    for (const division of ["academy", "challenge", "main"]) {
-      expect(html).toContain(`data-testid="ironclad-division-tab-${division}"`);
-    }
+    // From the highest tier, the top one is open
+    const tabs = ["main", "challenge", "academy"].map((division) =>
+      html.indexOf(`data-testid="ironclad-division-tab-${division}"`),
+    );
+    expect(tabs.every((index) => index > -1)).toBe(true);
+    expect(tabs).toEqual([...tabs].sort((a, b) => a - b));
+    expect(getElement(html, "ironclad-division-tab-main")).toMatch(
+      /^<button[^>]*aria-selected="true"/,
+    );
+    expect(html).toContain('href="https://discord.gg/ZQSQjBNRm3"');
     // All the panels are in the HTML, so all the brackets are indexed
     expect(count(html, /data-testid="ironclad-bracket"/g)).toBeGreaterThanOrEqual(1);
     expect(html).toContain('data-testid="ironclad-bracket-champion"');
@@ -128,7 +143,7 @@ describe("IroncladTournamentScreen", () => {
       />,
     );
 
-    // The running division is open by default
+    // Pro is the top division, open by default
     expect(getElement(html, "ironclad-division-tab-pro")).toMatch(
       /^<button[^>]*aria-selected="true"/,
     );

@@ -35,8 +35,7 @@
     "currentTournament": "Current tournament",
     "latestTournament": "Latest tournament",
     "lastChampions": "Champions of {{name}}",
-    "tournamentsCount_one": "{{count}} tournament on COH3 Stats",
-    "tournamentsCount_other": "{{count}} tournaments on COH3 Stats"
+    "recentTournaments": "Recent tournaments"
   },
   "metadata": {
     "oneVsOne": "1v1",
