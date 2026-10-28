@@ -61,7 +61,7 @@ export const IRONCLAD_TOURNAMENT: TournamentInfo = {
   logo: ironcladLogo.src,
   monogram: "IC",
   color: "orange",
-  hasLeaguePage: false,
+  hasLeaguePage: true,
 };
 
 // TODO: Confirm the description

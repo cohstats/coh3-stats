@@ -56,6 +56,10 @@ export const AnalyticsLadderTournamentSeasonView = (seasonId: number): void => {
   logFBEvent("ladder_tournament_season_view", { season_id: seasonId });
 };
 
+export const AnalyticsIroncladTournamentView = (slug: string): void => {
+  logFBEvent("ironclad_tournament_view", { tournament_slug: slug });
+};
+
 export const AnalyticsDesktopAppPageView = (): void => {
   logFBEvent("desktop_app_view");
 };

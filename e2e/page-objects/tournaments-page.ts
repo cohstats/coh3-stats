@@ -3,7 +3,8 @@ import { BasePage } from "./base-page";
 
 /**
  * Page Object for the Tournaments hub (/tournaments), the Ladder Tournament overview
- * (/tournaments/ladder-tournament) and the season pages (/tournaments/ladder-tournament/season/N).
+ * (/tournaments/ladder-tournament), the season pages (/tournaments/ladder-tournament/season/N)
+ * and the IronClad pages (/tournaments/ironclad, /tournaments/ironclad/<slug>).
  */
 export class TournamentsPage extends BasePage {
   // Hub
@@ -21,6 +22,28 @@ export class TournamentsPage extends BasePage {
 
   get openLeagueButton(): Locator {
     return this.getByTestId("featured-open-league");
+  }
+
+  // IronClad card with the live data, not shown when the data is unavailable
+  get ironcladOpenTournamentButton(): Locator {
+    return this.getByTestId("ironclad-hub-open-tournament");
+  }
+
+  // IronClad pages
+  get ironcladOverviewPage(): Locator {
+    return this.getByTestId("ironclad-overview");
+  }
+
+  get ironcladTournamentPage(): Locator {
+    return this.getByTestId("ironclad-tournament");
+  }
+
+  get ironcladDivisionTabs(): Locator {
+    return this.getByTestId("ironclad-divisions");
+  }
+
+  get ironcladUnavailableNotice(): Locator {
+    return this.getByTestId("ironclad-unavailable");
   }
 
   // League overview
@@ -59,6 +82,10 @@ export class TournamentsPage extends BasePage {
 
   async navigate(): Promise<void> {
     await this.goto("/tournaments");
+  }
+
+  async navigateToIronclad(): Promise<void> {
+    await this.goto("/tournaments/ironclad");
   }
 
   async navigateToLeague(seasonId?: number): Promise<void> {

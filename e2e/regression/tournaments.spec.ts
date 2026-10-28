@@ -4,8 +4,9 @@ import { SiteChromePage, TournamentsPage } from "../page-objects";
 /**
  * Regression tests for the Tournaments hub, the Ladder Tournament overview and the season pages.
  *
- * The Ladder Tournament data needs a server side API token, which CI may not have - the league
- * pages then render the unavailable state, so the tests accept either of them.
+ * The Ladder Tournament and IronClad data need server side API tokens, which CI may not have - the
+ * pages then render the unavailable state (and the hub the IronClad organiser card), so the tests
+ * accept either of them.
  */
 
 test.describe("Tournaments - menu link", () => {
@@ -50,12 +51,32 @@ test.describe("Tournaments - hub", () => {
     await tournamentsPage.navigate();
 
     // The registry can't be imported here (it imports the logo image), so only the shape of the URL
-    for (const id of ["ironclad", "metaplays"] as const) {
+    const external = ["metaplays"] as Array<"ironclad" | "metaplays">;
+    // IronClad is an external card only when its data is unavailable
+    if (!(await tournamentsPage.ironcladOpenTournamentButton.isVisible())) {
+      external.push("ironclad");
+    }
+    for (const id of external) {
       const card = tournamentsPage.tournamentCard(id);
       await expect(card).toHaveAttribute("href", /^https:\/\/(?!coh3stats\.com)/);
       await expect(card).toHaveAttribute("target", "_blank");
       await expect(card).toHaveAttribute("rel", "noopener noreferrer");
     }
+  });
+
+  test("should open the IronClad tournament from the IronClad card", async ({ page }) => {
+    const tournamentsPage = new TournamentsPage(page);
+    await tournamentsPage.navigate();
+    test.skip(
+      !(await tournamentsPage.ironcladOpenTournamentButton.isVisible()),
+      "IronClad data is unavailable",
+    );
+
+    await tournamentsPage.ironcladOpenTournamentButton.click();
+
+    await page.waitForURL("**/tournaments/ironclad/*");
+    await expect(tournamentsPage.ironcladTournamentPage).toBeVisible();
+    await expect(tournamentsPage.ironcladDivisionTabs).toBeVisible();
   });
 
   test("should open the league overview from the featured card", async ({ page }) => {
@@ -125,5 +146,40 @@ test.describe("Tournaments - Ladder Tournament league pages", () => {
       );
       expect(hasHorizontalScroll).toBe(false);
     }
+  });
+});
+
+test.describe("Tournaments - IronClad pages", () => {
+  test("should load the overview with the tournaments or the unavailable state", async ({
+    page,
+  }) => {
+    const tournamentsPage = new TournamentsPage(page);
+    await tournamentsPage.navigateToIronclad();
+    await tournamentsPage.checkPageLoaded();
+
+    expect(await tournamentsPage.getTitle()).toContain("IronClad");
+    await expect(
+      page
+        .locator('[data-testid^="ironclad-tournament-"]')
+        .first()
+        .or(tournamentsPage.ironcladUnavailableNotice),
+    ).toBeVisible();
+  });
+
+  test("should return 404 for an invalid tournament", async ({ page }) => {
+    const response = await page.goto("/tournaments/ironclad/Not_A_Slug");
+
+    expect(response?.status()).toBe(404);
+  });
+
+  test("should not scroll horizontally on a phone", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    const tournamentsPage = new TournamentsPage(page);
+
+    await tournamentsPage.navigateToIronclad();
+    const hasHorizontalScroll = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
+    expect(hasHorizontalScroll).toBe(false);
   });
 });

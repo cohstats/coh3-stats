@@ -364,6 +364,38 @@
     },
     "ladderTournament": {
       "title": "Ladder Tournament"
+    },
+    "ironclad": {
+      "title": "IronClad Tournaments",
+      "columns": {
+        "tournament": "Tournament",
+        "division": "Division",
+        "eventElo": "Event ELO",
+        "result": "Result",
+        "winsLosses": "W / L"
+      },
+      "aggregate": {
+        "tournaments_one": "{{count}} tournament",
+        "tournaments_other": "{{count}} tournaments"
+      },
+      "result": {
+        "champion": "Champion",
+        "runnerUp": "Runner-up",
+        "eliminated": "Out in {{round}}",
+        "inProgress": "In progress",
+        "registered": "Registered"
+      },
+      "match": {
+        "vs": "vs",
+        "won": "W",
+        "lost": "L",
+        "forfeit": "W/O",
+        "pending": "Pending",
+        "tbd": "TBD"
+      },
+      "showMatches_one": "Show {{count}} match",
+      "showMatches_other": "Show {{count}} matches",
+      "hideMatches": "Hide matches"
     }
   }
 }
