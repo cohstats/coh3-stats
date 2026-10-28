@@ -90,11 +90,12 @@ const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSu
   return (
     <Paper
       radius="md"
-      p="md"
+      px="md"
+      py="sm"
       className={classes.featuredData}
       data-testid={`ironclad-hub-recent-${tournament.slug}`}
     >
-      <Stack gap="xs">
+      <Stack gap={6}>
         <Group justify="space-between" gap="xs" wrap="nowrap">
           <Text fw={700} truncate="end">
             <Anchor
@@ -112,19 +113,19 @@ const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSu
               : t("ironclad.playersCount", { count: tournament.approvedPlayers })}
           </Text>
         </Group>
-        {divisions.map((division) => (
-          <Group gap="xs" wrap="nowrap" key={division.key}>
-            <IconTrophyFilled
-              size={14}
-              color="var(--mantine-color-yellow-6)"
-              style={{ flexShrink: 0 }}
-            />
-            <Text size="sm" c="dimmed" w={90} truncate="end" style={{ flexShrink: 0 }}>
-              {division.displayName}
-            </Text>
-            <IroncladPlayerLink player={division.champion!} />
-          </Group>
-        ))}
+        <Group gap="lg" rowGap="xs">
+          {divisions.map((division) => (
+            <Stack gap={0} key={division.key} style={{ minWidth: 0 }}>
+              <Group gap={4} wrap="nowrap">
+                <IconTrophyFilled size={12} color="var(--mantine-color-yellow-6)" />
+                <Text size="xs" c="dimmed" truncate="end">
+                  {division.displayName}
+                </Text>
+              </Group>
+              <IroncladPlayerLink player={division.champion!} />
+            </Stack>
+          ))}
+        </Group>
       </Stack>
     </Paper>
   );
