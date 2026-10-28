@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "ironclad.competition.v1",
+  "data": {
+    "schemaVersion": "ironclad.competition.v1",
+    "relicProfileId": "1188298",
+    "currentIdentity": {
+      "alias": "CartelCub",
+      "profileUrl": "https://www.ironcladtournaments.com/players/2c8ee67d-deec-4a82-b137-05ca3104d7eb"
+    },
+    "entries": [
+      {
+        "registrationId": "eca75a0b-ede3-44a8-9636-0f4d2bd95124",
+        "eventAlias": "CartelCub",
+        "eventElo": 824,
+        "registrationStatus": "approved",
+        "tournament": {
+          "id": "d39c8d59-b133-49d8-aae5-fb0d51e24df2",
+          "slug": "hold-the-line",
+          "name": "HOLD THE LINE",
+          "divisionModelVersion": "four_division_v1",
+          "status": "in_progress",
+          "publicUrl": "https://www.ironcladtournaments.com/tournaments?tournament=hold-the-line"
+        },
+        "division": {
+          "id": "ab080604-eb7f-43e1-8eb2-39e37e9ca191",
+          "canonicalName": "Academy",
+          "displayName": "Academy",
+          "effectiveState": "filling"
+        },
+        "generatedBracketId": null,
+        "divisionCompleted": null,
+        "matches": [],
+        "record": {
+          "matchesPlayed": 0,
+          "wins": 0,
+          "losses": 0
+        },
+        "placement": null,
+        "champion": false
+      },
+      {
+        "registrationId": "5a0d3a4d-2644-4d61-8421-387c9b38d8e1",
+        "eventAlias": "CartelCub",
+        "eventElo": 791,
+        "registrationStatus": "approved",
+        "tournament": {
+          "id": "1cb06045-0ffc-4745-a8cd-1a16b71baffc",
+          "slug": "the-new-front",
+          "name": "THE NEW FRONT",
+          "divisionModelVersion": "legacy_three_v1",
+          "status": "completed",
+          "publicUrl": "https://www.ironcladtournaments.com/tournaments?tournament=the-new-front"
+        },
+        "division": {
+          "id": "eff887ae-9f44-4669-8f9c-d8a8cb378e0c",
+          "canonicalName": "Academy",
+          "displayName": "Academy",
+          "effectiveState": "completed"
+        },
+        "generatedBracketId": "2f69c609-b876-45e1-ba48-561717d19b4f",
+        "divisionCompleted": true,
+        "matches": [
+          {
+            "id": "e23bd73e-f382-4589-8ff8-7e2193e7b684",
+            "roundNumber": 1,
+            "roundName": "Quarter Finals",
+            "matchNumber": 4,
+            "bestOf": 3,
+            "status": "completed",
+            "outcomeType": null,
+            "playerOneRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+            "playerTwoRegistrationId": "5a0d3a4d-2644-4d61-8421-387c9b38d8e1",
+            "playerOneScore": 2,
+            "playerTwoScore": 0,
+            "winnerRegistrationId": "dac7a3b0-4b1f-4ff7-b893-0dc50d8ed097",
+            "completed": true,
+            "played": true,
+            "decidedAt": "2026-09-19T03:29:48.618382+00:00"
+          }
+        ],
+        "record": {
+          "matchesPlayed": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        "placement": null,
+        "champion": false
+      }
+    ],
+    "aggregate": {
+      "scope": "returned_entries",
+      "tournamentsEntered": 2,
+      "matchesPlayed": 1,
+      "wins": 0,
+      "losses": 1,
+      "titles": 0
+    }
+  },
+  "pagination": {
+    "limit": 10,
+    "offset": 0
+  }
+}

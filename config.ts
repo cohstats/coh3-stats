@@ -34,6 +34,11 @@ const getLadderTournamentApiToken = (): string | null => {
   return process.env.LADDER_TOURNAMENT_API_TOKEN || null;
 };
 
+// Server-only secret, available only on the server (not prefixed with NEXT_PUBLIC_)
+const getIroncladTournamentApiToken = (): string | null => {
+  return process.env.IRONCLAD_TOURNAMENT_API_TOKEN || null;
+};
+
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
 const defaultStatsPatchSelector = "2.5.6";
 
@@ -533,6 +538,7 @@ const tournaments = {
   },
   ironclad: {
     url: "https://www.ironcladtournaments.com/tournaments",
+    apiBaseUrl: "https://www.ironcladtournaments.com/api/partners/v1",
   },
   // TODO: Confirm the official URL
   metaplays: {
@@ -545,6 +551,7 @@ const config = {
   isDevEnv,
   getEdgioEnvName,
   getLadderTournamentApiToken,
+  getIroncladTournamentApiToken,
   getPatchDataUrl,
   getPatchDataLocaleUrl,
   DISCORD_INVITE_LINK: "https://discord.com/invite/4Bj2y84WAR",
