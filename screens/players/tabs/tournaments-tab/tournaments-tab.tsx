@@ -16,25 +16,27 @@ import {
 } from "@mantine/core";
 import { IconExternalLink, IconPlayerPlayFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import type { LadderTournamentPlayerData } from "../../../../src/apis/ladder-tournament-api";
 import {
+  buildIroncladTournament,
   buildLadderTournament,
   formatWinRate,
   getTournamentAggregate,
   PlayerTournament,
   PlayerTournamentAggregate,
   PlayerTournamentSeason,
+  PlayerTournamentsData,
 } from "../../../../src/players/tournaments";
 import TournamentVideoCard from "../../../../components/tournament-videos/tournament-video-card";
 import TournamentTitleBadges from "../../../../components/tournaments/tournament-title-badges";
 import { getLadderTournamentRoute } from "../../../../src/routes";
+import IroncladSection from "./ironclad-section";
 import classes from "./tournaments-tab.module.css";
 
 const COLUMNS_COUNT = 7;
 
 interface TournamentsTabProps {
   // null until the data are loaded with SSR
-  tournamentData: LadderTournamentPlayerData | null;
+  tournamentData: PlayerTournamentsData | null;
   playerName: string;
 }
 
@@ -257,21 +259,23 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
     );
   }
 
-  // More tournaments can be added here, they share the same shape
-  const tournaments = [buildLadderTournament(tournamentData)].map((tournament) => ({
+  // Season based tournaments, they share the same shape
+  const tournaments = [buildLadderTournament(tournamentData.ladder)].map((tournament) => ({
     tournament,
     aggregate: getTournamentAggregate(tournament.seasons),
   }));
+  // Tournament / division based, it has its own section
+  const ironclad = buildIroncladTournament(tournamentData.ironclad);
 
-  const playedTournamentsCount = tournaments.filter(
-    ({ aggregate }) => aggregate.seasons > 0,
-  ).length;
+  const playedTournamentsCount =
+    tournaments.filter(({ aggregate }) => aggregate.seasons > 0).length +
+    (ironclad.entries.length > 0 ? 1 : 0);
   const totals = tournaments.reduce(
     (acc, { aggregate }) => ({
       seasons: acc.seasons + aggregate.seasons,
       titles: acc.titles + aggregate.titles,
     }),
-    { seasons: 0, titles: 0 },
+    { seasons: 0, titles: ironclad.aggregate.titles },
   );
 
   return (
@@ -286,11 +290,15 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
           <Title order={1} size="h2">
             {t("tournaments.title")}
           </Title>
-          {totals.seasons > 0 && (
+          {playedTournamentsCount > 0 && (
             <Text size="sm" c="dimmed" data-testid="tournaments-summary">
               {t("tournaments.summary.tournaments", { count: playedTournamentsCount })}
-              {" · "}
-              {t("tournaments.summary.seasons", { count: totals.seasons })}
+              {totals.seasons > 0 && (
+                <>
+                  {" · "}
+                  {t("tournaments.summary.seasons", { count: totals.seasons })}
+                </>
+              )}
               {totals.titles > 0 && (
                 <>
                   {" · "}
@@ -311,6 +319,7 @@ const TournamentsTab = ({ tournamentData, playerName }: TournamentsTabProps) => 
             key={tournament.id}
           />
         ))}
+        <IroncladSection tournament={ironclad} playerName={playerName} />
       </Stack>
     </Container>
   );

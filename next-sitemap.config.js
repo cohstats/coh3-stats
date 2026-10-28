@@ -36,6 +36,7 @@ const customPaths = [
   // ISR pages with fallback: "blocking" are not picked up automatically
   "https://coh3stats.com/tournaments",
   "https://coh3stats.com/tournaments/ladder-tournament",
+  "https://coh3stats.com/tournaments/ironclad",
   "https://coh3stats.com/explorer/races/dak/units",
   "https://coh3stats.com/explorer/races/american/units",
   "https://coh3stats.com/explorer/races/british/units",

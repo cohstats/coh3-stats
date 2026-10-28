@@ -5,7 +5,11 @@
     "leagueTitle": "Ladder Tournament - Standings & Casts",
     "leagueDescription": "Standings, champions and casted matches of the Ladder Tournament, a Company of Heroes 3 community team ladder.",
     "seasonTitle": "Ladder Tournament Season {{season}} - Standings & Casts",
-    "seasonDescription": "Standings, champions and casted matches of the Ladder Tournament Season {{season}}, a Company of Heroes 3 community team ladder."
+    "seasonDescription": "Standings, champions and casted matches of the Ladder Tournament Season {{season}}, a Company of Heroes 3 community team ladder.",
+    "ironcladTitle": "IronClad Tournaments - Brackets & Champions",
+    "ironcladDescription": "Divisions, brackets and champions of the IronClad Tournaments, Company of Heroes 3 1v1 tournaments with verified ELO divisions.",
+    "ironcladTournamentTitle": "{{name}} - IronClad Tournament Brackets",
+    "ironcladTournamentDescription": "Divisions, brackets, results and participants of the IronClad tournament {{name}}, a Company of Heroes 3 1v1 tournament with verified ELO divisions."
   },
   "hub": {
     "title": "Tournaments",
@@ -24,7 +28,14 @@
     "seasonsCount_one": "{{count}} season on COH3 Stats",
     "seasonsCount_other": "{{count}} seasons on COH3 Stats",
     "unavailable": "Stats are unavailable right now",
-    "addTournament": "Reach out to us on Discord to add your tournament here"
+    "addTournament": "Reach out to us on Discord to add your tournament here",
+    "openTournament": "Open tournament",
+    "allTournaments": "All tournaments",
+    "register": "Register",
+    "currentTournament": "Current tournament",
+    "latestTournament": "Latest tournament",
+    "lastChampions": "Champions of {{name}}",
+    "recentTournaments": "Recent tournaments"
   },
   "metadata": {
     "oneVsOne": "1v1",
@@ -97,5 +108,48 @@
     },
     "unavailable": "Ladder Tournament data is unavailable right now, try again later",
     "playerFallback": "Player #{{id}}"
+  },
+  "ironclad": {
+    "verifiedEloDivisions": "1v1 tournaments with verified ELO divisions",
+    "officialSite": "Official site",
+    "status": {
+      "upcoming": "Upcoming",
+      "registration_open": "Registration open",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "unknown": "Unknown"
+    },
+    "registrationOpen": "Registration open",
+    "registrationClosed": "Registration closed",
+    "playersCount_one": "{{count}} player",
+    "playersCount_other": "{{count}} players",
+    "divisionState": {
+      "filling": "Filling",
+      "in_progress": "Bracket live",
+      "completed": "Completed",
+      "unknown": "Unknown"
+    },
+    "divisionFill": "{{count}} / {{capacity}} players",
+    "champion": "Champion",
+    "completedAt": "Completed {{date}}",
+    "tournaments": "Tournaments",
+    "noTournaments": "There are no IronClad tournaments yet",
+    "unavailable": "IronClad data is unavailable right now, try again later",
+    "bracket": {
+      "title": "Bracket",
+      "bestOf": "Bo{{count}}",
+      "tbd": "TBD",
+      "bye": "Bye",
+      "forfeit": "W/O",
+      "forfeitTooltip": "Walkover - the match wasn't played",
+      "live": "Live",
+      "notGenerated": "The bracket will be published once the division is full"
+    },
+    "participants": {
+      "title": "Participants",
+      "player": "Player",
+      "eventElo": "Event ELO",
+      "ironcladProfile": "IronClad profile"
+    }
   }
 }

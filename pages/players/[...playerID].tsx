@@ -12,10 +12,9 @@ import {
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { z } from "zod";
 import { getPlayerStatsFromRelic } from "../../src/coh3/coh3-players";
-import {
-  getLadderTournamentPlayerData,
-  LadderTournamentPlayerData,
-} from "../../src/apis/ladder-tournament-api";
+import { getLadderTournamentPlayerData } from "../../src/apis/ladder-tournament-api";
+import { getIroncladPlayerData } from "../../src/apis/ironclad-tournament-api";
+import type { PlayerTournamentsData } from "../../src/players/tournaments";
 
 const ProcessPlayerCardStatsData = (
   playerStatsData: PlayerProfileCOHStats | null,
@@ -285,7 +284,7 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
   let playerData = null;
   let playerStatsData = null;
   let error = null;
-  let tournamentData: LadderTournamentPlayerData | null = null;
+  let tournamentData: PlayerTournamentsData | null = null;
 
   // const prevPage = req.headers.referer;
   // const prevPlayerId = prevPage?.match(/.+players\/(\d+).+/)?.[1];
@@ -296,8 +295,11 @@ export const getServerSideProps: GetServerSideProps<any, { playerID: string }> =
     const PromisePlayerCardData = getPlayerStatsFromRelic(playerID);
     const PromisePlayerCardStatsData = getPlayerCardStatsOrNull(playerID, xff);
     // Never throws, failed parts are returned as null
-    const PromiseTournamentData = viewTournaments
-      ? getLadderTournamentPlayerData(playerID)
+    const PromiseTournamentData: Promise<PlayerTournamentsData | null> = viewTournaments
+      ? Promise.all([
+          getLadderTournamentPlayerData(playerID),
+          getIroncladPlayerData(playerID),
+        ]).then(([ladder, ironclad]) => ({ ladder, ironclad }))
       : Promise.resolve(null);
 
     const [playerAPIData, playerCardStatsData, playerTournamentData] = await Promise.all([

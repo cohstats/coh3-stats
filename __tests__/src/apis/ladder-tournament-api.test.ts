@@ -32,6 +32,8 @@ const errorResponse = (status = 500) =>
     json: () => Promise.resolve({}),
   } as unknown as Response);
 
+const timeoutError = () =>
+  Promise.reject(new DOMException("The operation timed out.", "TimeoutError"));
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 describe("ladder-tournament-api", () => {
@@ -95,7 +97,11 @@ describe("ladder-tournament-api", () => {
       expect(fetchSpy).toHaveBeenCalledTimes(1);
       expect(fetchSpy).toHaveBeenCalledWith(
         `${BASE_URL}/ranking_ladder?page=1&pageSize=500&relicid=123456`,
-        { headers: { "X-Api-Token": "test-token" }, cache: "no-store" },
+        {
+          headers: { "X-Api-Token": "test-token" },
+          cache: "no-store",
+          signal: expect.any(AbortSignal),
+        },
       );
     });
 
@@ -197,6 +203,7 @@ describe("ladder-tournament-api", () => {
       expect(fetchSpy.mock.calls[0][1]).toEqual({
         headers: { "X-Api-Token": "test-token" },
         cache: "no-store",
+        signal: expect.any(AbortSignal),
       });
     });
 
@@ -255,6 +262,7 @@ describe("ladder-tournament-api", () => {
       expect(fetchSpy).toHaveBeenCalledWith(`${BASE_URL}/casted_videos_ladder`, {
         headers: { "X-Api-Token": "test-token" },
         cache: "no-store",
+        signal: expect.any(AbortSignal),
       });
     });
 
@@ -314,6 +322,7 @@ describe("ladder-tournament-api", () => {
     it.each([
       ["non-ok response", () => errorResponse(503)],
       ["rejected fetch", () => Promise.reject(new Error("network down"))],
+      ["timeout", timeoutError],
     ])(
       "keeps stale data when the background refresh fails (%s) and retries later",
       async (_, failure) => {
@@ -521,6 +530,18 @@ describe("ladder-tournament-api", () => {
 
       expect(result.videos).toBeNull();
       expect(result.ladderRanking).toHaveLength(2);
+    });
+
+    it("returns null for both when the API times out", async () => {
+      fetchSpy.mockImplementation(timeoutError);
+
+      await expect(getLadderTournamentRanking(123456)).rejects.toThrow(
+        "Ladder Tournament API timed out after 30s",
+      );
+      await expect(getLadderTournamentPlayerData(991764)).resolves.toEqual({
+        videos: null,
+        ladderRanking: null,
+      });
     });
 
     it("never throws, even without the token", async () => {

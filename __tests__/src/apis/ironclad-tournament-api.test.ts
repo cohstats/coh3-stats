@@ -34,6 +34,8 @@ const errorResponse = (status = 500, body: any = {}) =>
     json: () => Promise.resolve(body),
   } as unknown as Response);
 
+const timeoutError = () =>
+  Promise.reject(new DOMException("The operation timed out.", "TimeoutError"));
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 const tournamentsPage = (
@@ -112,6 +114,7 @@ describe("ironclad-tournament-api", () => {
       expect(fetchSpy).toHaveBeenCalledWith(`${BASE_URL}/tournaments?limit=10&offset=0`, {
         headers: { "X-Api-Token": "test-token" },
         cache: "no-store",
+        signal: expect.any(AbortSignal),
       });
       expect(tournaments.map((tournament) => tournament.slug)).toEqual([
         "hold-the-line",
@@ -268,7 +271,11 @@ describe("ironclad-tournament-api", () => {
       expect(fetchSpy).toHaveBeenCalledTimes(1);
       expect(fetchSpy).toHaveBeenCalledWith(
         `${BASE_URL}/players/1188298/tournaments?limit=10&offset=0`,
-        { headers: { "X-Api-Token": "test-token" }, cache: "no-store" },
+        {
+          headers: { "X-Api-Token": "test-token" },
+          cache: "no-store",
+          signal: expect.any(AbortSignal),
+        },
       );
       expect(history.currentIdentity?.alias).toBe("CartelCub");
       expect(history.entries).toHaveLength(2);
@@ -411,6 +418,50 @@ describe("ironclad-tournament-api", () => {
 
       await expect(getIroncladTournamentsCached()).resolves.toHaveLength(2);
     });
+
+    it("keeps the stale cache when the background refresh times out, then recovers", async () => {
+      fetchSpy.mockReturnValueOnce(okResponse(tournamentsResponse));
+      await getIroncladTournamentsCached();
+
+      jest.advanceTimersByTime(FIVE_MINUTES + 1000);
+      fetchSpy.mockImplementationOnce(timeoutError);
+      await expect(getIroncladTournamentsCached()).resolves.toHaveLength(2);
+      await flushPromises();
+
+      // The refresh is retried, not stuck in the updating state
+      fetchSpy.mockReturnValueOnce(
+        okResponse(
+          tournamentsPage([holdTheLine], { offset: 0, hasMore: false, nextOffset: null }),
+        ),
+      );
+      await getIroncladTournamentsCached();
+      await flushPromises();
+      await expect(getIroncladTournamentsCached()).resolves.toHaveLength(1);
+    });
+  });
+
+  describe("request timeout", () => {
+    it("rejects with a clear message when the API times out", async () => {
+      fetchSpy.mockImplementation(timeoutError);
+
+      await expect(getIroncladTournaments()).rejects.toThrow("IronClad API timed out after 30s");
+      await expect(getIroncladTournament("the-new-front")).rejects.toThrow(
+        "IronClad API timed out after 30s",
+      );
+      await expect(getIroncladPlayerTournaments("1188298")).rejects.toThrow(
+        "IronClad API timed out after 30s",
+      );
+    });
+
+    it("returns the unavailable player data when the API times out", async () => {
+      fetchSpy.mockImplementation(timeoutError);
+
+      await expect(getIroncladPlayerData("1188298")).resolves.toEqual({
+        history: null,
+        registrations: {},
+        finalRounds: {},
+      });
+    });
   });
 
   describe("getIroncladPlayerData", () => {
@@ -434,6 +485,54 @@ describe("ironclad-tournament-api", () => {
         relicProfileId: null,
       });
       // Only THE NEW FRONT Academy has a bracket
+      expect(data.finalRounds).toEqual({ "2f69c609-b876-45e1-ba48-561717d19b4f": 3 });
+    });
+
+    it("loads fresh the tournaments where the cached list misses the bracket", async () => {
+      // The cached list is from before THE NEW FRONT Academy bracket was generated
+      const staleNewFront = {
+        ...theNewFront,
+        divisions: theNewFront.divisions.map((division) => ({ ...division, bracket: null })),
+      };
+      fetchSpy.mockImplementation((url: string) => {
+        if (url.includes("/players/")) return okResponse(playerTournamentsResponse);
+        if (url.endsWith("/tournaments/the-new-front")) {
+          return okResponse({ schemaVersion: SCHEMA_VERSION, data: theNewFront });
+        }
+        return okResponse(
+          tournamentsPage([holdTheLine, staleNewFront], {
+            offset: 0,
+            hasMore: false,
+            nextOffset: null,
+          }),
+        );
+      });
+
+      const data = await getIroncladPlayerData("1188298");
+
+      const detailCalls = fetchSpy.mock.calls.filter(([url]) =>
+        String(url).endsWith("/tournaments/the-new-front"),
+      );
+      expect(detailCalls).toHaveLength(1);
+      expect(data.finalRounds).toEqual({ "2f69c609-b876-45e1-ba48-561717d19b4f": 3 });
+      expect(Object.keys(data.registrations)).toHaveLength(14);
+    });
+
+    it("loads the played tournaments one by one when the list fails", async () => {
+      fetchSpy.mockImplementation((url: string) => {
+        if (url.includes("/players/")) return okResponse(playerTournamentsResponse);
+        if (url.endsWith("/tournaments/the-new-front")) {
+          return okResponse({ schemaVersion: SCHEMA_VERSION, data: theNewFront });
+        }
+        if (url.endsWith("/tournaments/hold-the-line")) {
+          return okResponse({ schemaVersion: SCHEMA_VERSION, data: holdTheLine });
+        }
+        return errorResponse(500);
+      });
+
+      const data = await getIroncladPlayerData("1188298");
+
+      expect(Object.keys(data.registrations)).toHaveLength(14);
       expect(data.finalRounds).toEqual({ "2f69c609-b876-45e1-ba48-561717d19b4f": 3 });
     });
 

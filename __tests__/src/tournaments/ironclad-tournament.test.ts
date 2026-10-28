@@ -4,11 +4,11 @@ import {
   buildIroncladOverviewData,
   buildIroncladPlayer,
   buildIroncladTournamentView,
-  getDefaultDivisionKey,
   getDivisionKey,
   getIroncladChampionRelicIds,
   getIroncladParticipantRelicIds,
-  pickFeaturedTournament,
+  pickIroncladHubTournaments,
+  sortDivisionsByTier,
   sortIroncladTournaments,
   toRelicId,
 } from "../../../src/tournaments/ironclad-tournament";
@@ -113,56 +113,54 @@ describe("ironclad-tournament", () => {
   });
 
   describe("buildIroncladTournamentView", () => {
-    it("builds the divisions with champions and participants by ELO", () => {
+    it("builds the divisions from the highest tier with champions and participants by ELO", () => {
       const view = buildIroncladTournamentView(theNewFront, {});
 
       expect(view.registrationOpen).toBe(false);
       expect(
         view.divisions.map((division) => [division.key, division.champion?.eventAlias]),
       ).toEqual([
-        ["academy", "DarthYukat"],
-        ["challenge", "GL1TCH"],
         ["main", "Reakly"],
+        ["challenge", "GL1TCH"],
+        ["academy", "DarthYukat"],
       ]);
-      const elos = view.divisions[0].participants.map((player) => player.eventElo ?? 0);
+      const elos = view.divisions[2].participants.map((player) => player.eventElo ?? 0);
       expect(elos).toEqual([...elos].sort((a, b) => b - a));
     });
 
     it("has no rounds for the divisions without a bracket", () => {
       const view = buildIroncladTournamentView(holdTheLine, {});
 
-      expect(view.divisions.map((division) => division.rounds === null)).toEqual([
-        true,
-        true,
-        true,
-        false,
+      expect(view.divisions.map((division) => [division.key, division.rounds === null])).toEqual([
+        ["pro", false],
+        ["main", true],
+        ["challenge", true],
+        ["academy", true],
       ]);
-      expect(view.divisions[3].champion).toBeNull();
+      expect(view.divisions[0].champion).toBeNull();
     });
   });
 
-  describe("getDefaultDivisionKey", () => {
-    it("prefers the running division", () => {
-      expect(getDefaultDivisionKey(buildIroncladTournamentView(holdTheLine, {}).divisions)).toBe(
-        "pro",
+  describe("sortDivisionsByTier", () => {
+    it("orders Pro, Main, Challenge, Academy, then the unknown ones in the API order", () => {
+      const sorted = sortDivisionsByTier(
+        ["Academy", "Veteran", "Main", "Rookie", "Pro", "Challenge"].map((canonicalName) => ({
+          canonicalName,
+        })),
       );
-    });
 
-    it("falls back to the first division with a bracket, then the first one", () => {
-      const divisions = buildIroncladTournamentView(theNewFront, {}).divisions;
-      expect(getDefaultDivisionKey(divisions)).toBe("academy");
-      expect(
-        getDefaultDivisionKey([
-          { key: "a", state: "filling", rounds: null },
-          { key: "b", state: "completed", rounds: [] },
-        ]),
-      ).toBe("b");
-      expect(getDefaultDivisionKey([{ key: "a", state: "filling", rounds: null }])).toBe("a");
-      expect(getDefaultDivisionKey([])).toBeNull();
+      expect(sorted.map((division) => division.canonicalName)).toEqual([
+        "Pro",
+        "Main",
+        "Challenge",
+        "Academy",
+        "Veteran",
+        "Rookie",
+      ]);
     });
   });
 
-  describe("sortIroncladTournaments / pickFeaturedTournament", () => {
+  describe("sortIroncladTournaments / pickIroncladHubTournaments", () => {
     const tournament = (slug: string, status: string, firstCompletedAt: string | null = null) =>
       ({ ...holdTheLine, id: slug, slug, status, firstCompletedAt }) as IroncladTournament;
 
@@ -186,44 +184,58 @@ describe("ironclad-tournament", () => {
       ]);
     });
 
-    it("picks the running tournament", () => {
-      expect(pickFeaturedTournament(tournaments)?.slug).toBe("hold-the-line");
-      expect(pickFeaturedTournament([])).toBeNull();
+    it("takes the 2 newest completed tournaments without the featured one", () => {
+      const hub = pickIroncladHubTournaments([
+        tournament("old", "completed", "2026-01-01T00:00:00Z"),
+        tournament("running", "in_progress"),
+        tournament("new", "completed", "2026-06-01T00:00:00Z"),
+        tournament("middle", "completed", "2026-03-01T00:00:00Z"),
+      ])!;
+      expect(hub.featured.slug).toBe("running");
+      expect(hub.recent.map((t) => t.slug)).toEqual(["new", "middle"]);
+
+      // Without a running tournament the newest completed is the featured one
+      const onlyCompleted = pickIroncladHubTournaments([
+        tournament("old", "completed", "2026-01-01T00:00:00Z"),
+        tournament("new", "completed", "2026-06-01T00:00:00Z"),
+      ])!;
+      expect(onlyCompleted.featured.slug).toBe("new");
+      expect(onlyCompleted.recent.map((t) => t.slug)).toEqual(["old"]);
+    });
+
+    it("picks the running tournament, null without tournaments", () => {
+      expect(pickIroncladHubTournaments(tournaments)?.featured.slug).toBe("hold-the-line");
+      expect(pickIroncladHubTournaments([])).toBeNull();
     });
   });
 
   describe("buildIroncladHubSummary", () => {
-    it("has the featured tournament and the last completed one", () => {
-      const summary = buildIroncladHubSummary(tournaments, {})!;
+    it("has the featured tournament and the recent completed ones", () => {
+      const summary = buildIroncladHubSummary(pickIroncladHubTournaments(tournaments)!, {});
 
-      expect(summary.tournamentsCount).toBe(2);
       expect(summary.featured.slug).toBe("hold-the-line");
       expect(summary.featured.registrationOpen).toBe(true);
       expect(
         summary.featured.divisions.map((d) => [d.key, d.approvedCount, d.capacity, d.state]),
       ).toEqual([
-        ["academy", 6, 8, "filling"],
-        ["challenge", 4, 8, "filling"],
-        ["main", 4, 8, "filling"],
         ["pro", 8, 8, "in_progress"],
+        ["main", 4, 8, "filling"],
+        ["challenge", 4, 8, "filling"],
+        ["academy", 6, 8, "filling"],
       ]);
-      expect(summary.lastCompleted?.slug).toBe("the-new-front");
-      expect(summary.lastCompleted?.divisions.map((d) => d.champion?.eventAlias)).toEqual([
-        "DarthYukat",
-        "GL1TCH",
+      expect(summary.recent.map((t) => t.slug)).toEqual(["the-new-front"]);
+      expect(summary.recent[0].divisions.map((d) => d.champion?.eventAlias)).toEqual([
         "Reakly",
+        "GL1TCH",
+        "DarthYukat",
       ]);
     });
 
-    it("has no separate last completed when the featured is the completed one", () => {
-      const summary = buildIroncladHubSummary([theNewFront], {})!;
+    it("has no recent tournaments when the featured is the only completed one", () => {
+      const summary = buildIroncladHubSummary(pickIroncladHubTournaments([theNewFront])!, {});
 
       expect(summary.featured.slug).toBe("the-new-front");
-      expect(summary.lastCompleted).toBeNull();
-    });
-
-    it("is null without tournaments", () => {
-      expect(buildIroncladHubSummary([], {})).toBeNull();
+      expect(summary.recent).toEqual([]);
     });
   });
 

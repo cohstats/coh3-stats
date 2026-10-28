@@ -267,6 +267,9 @@ const getIroncladErrorCode = async (response: Response): Promise<string | null> 
 const relicIdSchema = z.coerce.number().int().positive();
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
+// Only lowercase slugs, so there is one URL per tournament
+const isIroncladSlug = (slug: string) => slugSchema.safeParse(slug).success;
+
 // Max page size allowed by the API, for both the tournaments and the player tournaments
 const PAGE_SIZE = 10;
 // Safety net against an API which keeps returning more pages
@@ -281,11 +284,32 @@ const requireIroncladTournamentApiToken = (): string => {
   return token;
 };
 
-const getIroncladRequestInit = (): RequestInit => ({
-  headers: { "X-Api-Token": requireIroncladTournamentApiToken() },
-  // Don't store token protected responses in the shared Next fetch cache
-  cache: "no-store",
-});
+// Partner API request timeout, so a hanging API doesn't stall the ISR / SSR pages
+const REQUEST_TIMEOUT_MS = 30_000;
+
+const isTimeoutError = (error: unknown) => (error as { name?: string })?.name === "TimeoutError";
+
+/**
+ * fetch with the API token and the timeout, a timeout is rethrown with a clear message.
+ */
+const fetchIronclad = async (url: string): Promise<Response> => {
+  try {
+    return await fetch(url, {
+      headers: { "X-Api-Token": requireIroncladTournamentApiToken() },
+      // Don't store token protected responses in the shared Next fetch cache
+      cache: "no-store",
+      // A new signal per request, the timeout starts with the request
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    if (isTimeoutError(error)) {
+      const message = `IronClad API timed out after ${REQUEST_TIMEOUT_MS / 1000}s`;
+      logger.error(`${message}: ${url}`);
+      throw new Error(message);
+    }
+    throw error;
+  }
+};
 
 const getIroncladTournamentsUrl = ({
   status,
@@ -330,9 +354,8 @@ const getIroncladTournaments = async (
   let offset = 0;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const response = await fetch(
+    const response = await fetchIronclad(
       getIroncladTournamentsUrl({ status, offset, limit: PAGE_SIZE }),
-      getIroncladRequestInit(),
     );
 
     if (!response.ok) {
@@ -378,10 +401,7 @@ const getIroncladTournament = async (slug: string): Promise<IroncladTournament |
     return null;
   }
 
-  const response = await fetch(
-    getIroncladTournamentUrl(parsedSlug.data),
-    getIroncladRequestInit(),
-  );
+  const response = await fetchIronclad(getIroncladTournamentUrl(parsedSlug.data));
 
   if (response.ok) {
     return parseIroncladResponse(tournamentResponseSchema, await response.json(), "tournament")
@@ -437,9 +457,8 @@ const getIroncladPlayerTournaments = async (
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const offset = page * PAGE_SIZE;
-    const response = await fetch(
+    const response = await fetchIronclad(
       getIroncladPlayerTournamentsUrl({ relicId: parsedRelicId.data, offset, limit: PAGE_SIZE }),
-      getIroncladRequestInit(),
     );
 
     if (!response.ok) {
@@ -569,6 +588,29 @@ type IroncladPlayerData = {
 };
 
 /**
+ * Slugs of the tournaments in the history which are missing in the tournaments list,
+ * or where the list doesn't have the division bracket of the entry yet.
+ */
+const getStaleTournamentSlugs = (
+  history: IroncladPlayerHistory | null,
+  tournaments: IroncladTournament[],
+): string[] => {
+  const divisions = new Map(
+    tournaments
+      .flatMap((tournament) => tournament.divisions)
+      .map((division) => [division.id, division]),
+  );
+  const stale = (history?.entries ?? []).filter((entry) => {
+    const division = divisions.get(entry.division.id);
+    return (
+      !division ||
+      (entry.generatedBracketId !== null && division.bracket?.id !== entry.generatedBracketId)
+    );
+  });
+  return [...new Set(stale.map((entry) => entry.tournament.slug))];
+};
+
+/**
  * Loads all the IronClad data needed for the player card.
  * Never throws - the parts which fail to load are returned empty / as null.
  * @param relicId Relic profile ID of the player
@@ -589,7 +631,27 @@ const getIroncladPlayerData = async (relicId: number | string): Promise<Ironclad
   }
 
   const history = historyResult.status === "fulfilled" ? historyResult.value : null;
-  const tournaments = tournamentsResult.status === "fulfilled" ? tournamentsResult.value : [];
+  let tournaments = tournamentsResult.status === "fulfilled" ? tournamentsResult.value : [];
+
+  // The cached list can be older than the history (eg a bracket generated since) or missing,
+  // these tournaments are loaded fresh
+  const staleSlugs = getStaleTournamentSlugs(history, tournaments);
+  if (staleSlugs.length > 0) {
+    const freshResults = await Promise.allSettled(staleSlugs.map(getIroncladTournament));
+    const fresh: IroncladTournament[] = [];
+    freshResults.forEach((result, index) => {
+      if (result.status === "fulfilled") {
+        if (result.value) fresh.push(result.value);
+      } else {
+        logger.error(
+          `Failed getting IronClad tournament ${staleSlugs[index]} for the player card`,
+        );
+        logger.error(result.reason);
+      }
+    });
+    const freshIds = new Set(fresh.map((tournament) => tournament.id));
+    tournaments = [...tournaments.filter((tournament) => !freshIds.has(tournament.id)), ...fresh];
+  }
 
   const registrations: IroncladPlayerData["registrations"] = {};
   const finalRounds: IroncladPlayerData["finalRounds"] = {};
@@ -648,5 +710,6 @@ export {
   getIroncladPlayerTournaments,
   getIroncladTournamentsCached,
   getIroncladPlayerData,
+  isIroncladSlug,
   __resetIroncladTournamentsCache,
 };

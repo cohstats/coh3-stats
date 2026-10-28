@@ -164,6 +164,19 @@ export const getLadderTournamentRoute = (seasonId?: number | string) => {
     : encodeURI(`/tournaments/ladder-tournament/season/${seasonId}`);
 };
 
+export const getIroncladTournamentsRoute = () => {
+  return encodeURI(`/tournaments/ironclad`);
+};
+
+/**
+ * @param slug IronClad tournament slug, eg "hold-the-line"
+ * @param division Division key, eg "pro" - the page opens the default division when not set
+ */
+export const getIroncladTournamentRoute = (slug: string, division?: string) => {
+  const path = `/tournaments/ironclad/${encodeURIComponent(slug)}`;
+  return division ? `${path}?division=${encodeURIComponent(division)}` : path;
+};
+
 export const getAboutRoute = (section?: string) => {
   if (section) {
     return encodeURI(`/about#${section}`);

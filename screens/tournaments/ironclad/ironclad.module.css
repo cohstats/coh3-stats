@@ -1,0 +1,161 @@
+.head {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+}
+
+.headCell {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mantine-color-dimmed);
+  white-space: nowrap;
+}
+
+.logo {
+  --avatar-size: 96px;
+}
+
+/* Mantine sm breakpoint */
+@media (max-width: 48em) {
+  .logo {
+    --avatar-size: 64px;
+  }
+
+  .title {
+    font-size: var(--mantine-h2-font-size);
+  }
+}
+
+.championBanner {
+  background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.08));
+  border-color: light-dark(var(--mantine-color-yellow-3), rgba(250, 176, 5, 0.35));
+}
+
+/*
+ * Single elimination bracket - one column per round, every column splits the same height
+ * between its matches, so a match sits in the middle of the two matches feeding it.
+ * The connectors are drawn with pseudo elements on the match slots.
+ */
+.bracket {
+  --bracket-gap: 28px;
+  --bracket-line: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
+  display: flex;
+  align-items: stretch;
+  min-width: max-content;
+  padding-bottom: var(--mantine-spacing-xs);
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 236px;
+}
+
+.roundTitle {
+  text-align: center;
+  padding: 0 var(--bracket-gap) var(--mantine-spacing-xs);
+}
+
+.roundMatches {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 6px var(--bracket-gap);
+}
+
+/* Line out of the match to the right */
+.round:not(:last-child) .slot::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: var(--bracket-gap);
+  border-top: 2px solid var(--bracket-line);
+}
+
+/* Vertical line joining the pair of matches feeding the next round */
+.pairs .slot:nth-child(odd)::before,
+.pairs .slot:nth-child(even)::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  height: 50%;
+  border-right: 2px solid var(--bracket-line);
+}
+
+.pairs .slot:nth-child(odd)::before {
+  top: 50%;
+}
+
+.pairs .slot:nth-child(even)::before {
+  top: 0;
+}
+
+/* The last round has nothing to join */
+.round:last-child .slot::before {
+  display: none;
+}
+
+/* Line into the match from the left */
+.slotIn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: var(--bracket-gap);
+  border-top: 2px solid var(--bracket-line);
+}
+
+.match {
+  width: 100%;
+  overflow: hidden;
+}
+
+.matchLive {
+  border-color: var(--mantine-color-orange-5);
+}
+
+.matchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mantine-spacing-xs);
+  padding: 6px 10px;
+  min-height: 36px;
+}
+
+.matchRow + .matchRow {
+  border-top: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+}
+
+.winnerRow {
+  background-color: light-dark(var(--mantine-color-green-0), rgba(64, 192, 87, 0.1));
+}
+
+.score {
+  font-variant-numeric: tabular-nums;
+  min-width: 1.2em;
+  text-align: right;
+}
+
+.matchFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  border-top: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+}
+
+.championSlot {
+  width: 100%;
+  background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.08));
+  border-color: light-dark(var(--mantine-color-yellow-4), rgba(250, 176, 5, 0.45));
+}

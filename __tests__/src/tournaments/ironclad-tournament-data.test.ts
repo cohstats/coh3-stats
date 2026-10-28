@@ -51,7 +51,7 @@ describe("ironclad-tournament-data", () => {
       expect(result.revalidate).toBe(600);
     });
 
-    it("looks up the names of the last completed tournament champions only", async () => {
+    it("looks up the names of the hub tournament champions only", async () => {
       mockedTournaments.mockResolvedValue(tournaments);
 
       await getIroncladHubResult();
@@ -112,7 +112,8 @@ describe("ironclad-tournament-data", () => {
       expect(mockedTournament).toHaveBeenCalledWith("the-new-front");
       expect(result).toMatchObject({ status: "ok", revalidate: 3600 });
       if (result.status !== "ok") throw new Error("Expected ok");
-      const cartel = result.data.divisions[0].participants.find((p) => p.relicId === 1188298);
+      const academy = result.data.divisions.find((d) => d.key === "academy")!;
+      const cartel = academy.participants.find((p) => p.relicId === 1188298);
       expect(cartel?.country).toBe("us");
     });
 

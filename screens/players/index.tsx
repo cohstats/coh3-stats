@@ -30,7 +30,7 @@ import PlayerStandingsTab from "./tabs/standings-tab/player-standings-tab";
 import ActivityTab from "./tabs/activity-tab/activity-tab";
 import NemesisTab from "./tabs/nemesis-tab";
 import TournamentsTab from "./tabs/tournaments-tab/tournaments-tab";
-import type { LadderTournamentPlayerData } from "../../src/apis/ladder-tournament-api";
+import type { PlayerTournamentsData } from "../../src/players/tournaments";
 import TeamsStandingsTab from "./tabs/teams-standings-tab/teams-standings-tab";
 import TeamDetailsTab from "./tabs/team-details-tab/team-details-tab";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -82,7 +82,7 @@ const PlayerCard = ({
   error: string;
   playerStatsData: ProcessedCOHPlayerStats | undefined;
   // Loaded with SSR only for the tournaments view
-  tournamentData: LadderTournamentPlayerData | null;
+  tournamentData: PlayerTournamentsData | null;
 }) => {
   const { push, query, asPath, locale, defaultLocale } = useRouter();
   const { view } = query;
