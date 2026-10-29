@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { NextPage } from "next";
+import Head from "next/head";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next/pages";
@@ -22,6 +23,7 @@ import { NewsItem } from "../../src/apis/steam-api";
 import { AnalyticsNewsArticleView } from "../../src/firebase/analytics";
 import { getNewsRoute } from "../../src/routes";
 import { createPageSEO } from "../../src/seo-utils";
+import { getNewsArticleJsonLd, serializeJsonLd } from "../../src/news/news-structured-data";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { NewsArticleBody, NewsArticleMeta } from "./news-article";
 import classes from "./News.module.css";
@@ -99,27 +101,52 @@ const NewsArticlePage: NextPage<NewsArticlePageProps> = ({
   }, [item.gid]);
 
   const seoProps = createPageSEO(t, "news", getNewsRoute(item.gid));
+  const url = seoProps.canonical ?? `${config.SITE_URL}${getNewsRoute(item.gid)}`;
   // Local news images are site relative, Open Graph needs an absolute URL.
   const image = item.image?.startsWith("/") ? `${config.SITE_URL}${item.image}` : item.image;
+  // Posts that are only an image have no text for the description.
+  const metaDescription = description || seoProps.description || "";
+  const section = item.category ? t(`categories.${item.category}`) : undefined;
+  const publishedTime = dayjs((item.date || 0) * 1000).toISOString();
+  const jsonLd = getNewsArticleJsonLd({
+    item,
+    url,
+    description: metaDescription,
+    image,
+    section,
+    newsTitle: t("meta.title"),
+  });
 
   return (
     <>
       <NextSeo
         {...seoProps}
-        title={item.title}
-        description={description}
+        // "COH3 News" in the title too, Steam post titles rarely name the game.
+        title={`${item.title} - ${t("meta.title")}`}
+        description={metaDescription}
+        // Allows the large article image in search results and Discover.
+        robotsProps={{ maxImagePreview: "large" }}
         openGraph={{
           ...seoProps.openGraph,
           title: item.title,
-          description,
+          description: metaDescription,
           type: "article",
           article: {
-            publishedTime: dayjs((item.date || 0) * 1000).toISOString(),
-            ...(item.author ? { authors: [item.author] } : {}),
+            publishedTime,
+            modifiedTime: publishedTime,
+            ...(section ? { section } : {}),
+            tags: ["Company of Heroes 3", "COH3", ...(section ? [section] : [])],
           },
           images: image ? [{ url: image, alt: item.title }] : seoProps.openGraph?.images,
         }}
       />
+      <Head>
+        <script
+          key="news-article-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+        />
+      </Head>
       <Container size={"md"} px={0}>
         <AllNewsButton t={t} mb="sm" />
         <Card shadow="sm" padding="md" pt={"xs"} radius="md" withBorder>

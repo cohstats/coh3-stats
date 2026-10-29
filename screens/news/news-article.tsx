@@ -51,6 +51,8 @@ const preset = reactPreset.extend((tags: any) => ({
         fit: "contain",
         src: imageUrlTransform(imageUrl),
         alt: "news image",
+        // Most images are further down the page, the list shows 10 articles.
+        loading: "lazy",
       },
     };
   },
@@ -76,6 +78,7 @@ const preset = reactPreset.extend((tags: any) => ({
               src: `https://www.youtube.com/embed/${youtubeId}`,
               frameBorder: "0",
               allowFullScreen: true,
+              loading: "lazy",
             },
           },
         ],

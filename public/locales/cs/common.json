@@ -34,11 +34,11 @@
     "liveGames": "Živé hry",
     "desktopApp": "Desktopová aplikace",
     "tournaments": "Turnaje",
+    "news": "Novinky",
     "other": "Ostatní",
     "otherMenu": {
       "tiers": "Úrovně hodnocení",
       "openData": "Otevřená data",
-      "coh3News": "COH3 Novinky",
       "playerExport": "API pro export hráčů"
     },
     "about": "O nás",

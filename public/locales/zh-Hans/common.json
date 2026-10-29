@@ -34,11 +34,11 @@
     "liveGames": "实时游戏",
     "desktopApp": "桌面应用",
     "tournaments": "锦标赛",
+    "news": "新闻",
     "other": "其他",
     "otherMenu": {
       "tiers": "排名等级",
       "openData": "开放数据",
-      "coh3News": "COH3 新闻",
       "playerExport": "玩家导出 API"
     },
     "about": "关于我们",

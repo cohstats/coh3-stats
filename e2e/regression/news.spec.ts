@@ -37,8 +37,30 @@ test.describe("News page", () => {
     await expect(page.locator("h1").last()).toHaveText(title);
     expect(await page.title()).toContain(title);
 
+    // Marked up as a news article about the game, so search engines index it as such.
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      new RegExp(`${href}$`),
+    );
+    const jsonLd = JSON.parse(
+      (await page.locator('script[type="application/ld+json"]').first().textContent()) ?? "{}",
+    );
+    expect(jsonLd["@graph"][0]).toMatchObject({
+      "@type": "NewsArticle",
+      name: title,
+      about: { name: "Company of Heroes 3" },
+    });
+
     await page.getByRole("link", { name: "All news" }).first().click();
     await expect(page).toHaveURL(/\/news$/);
+  });
+
+  test("should list the articles in the news sitemap", async ({ request }) => {
+    const sitemap = await request.get("/news-sitemap.xml");
+    expect(sitemap.status()).toBe(200);
+    expect(sitemap.headers()["content-type"]).toContain("application/xml");
+    expect(await sitemap.text()).toMatch(/<loc>[^<]+\/news\/[^<]+<\/loc>/);
   });
 
   test("should return 404 for an unknown post", async ({ page }) => {

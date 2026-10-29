@@ -34,11 +34,11 @@
     "liveGames": "Live Games",
     "desktopApp": "Desktop App",
     "tournaments": "Tournaments",
+    "news": "News",
     "other": "Other",
     "otherMenu": {
       "tiers": "Ranking Tiers",
       "openData": "Open Data",
-      "coh3News": "COH3 News",
       "playerExport": "Player Export API"
     },
     "about": "About",
