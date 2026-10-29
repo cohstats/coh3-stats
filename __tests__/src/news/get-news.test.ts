@@ -94,7 +94,7 @@ describe("getNews", () => {
 
     const result = await getNews();
 
-    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(200);
+    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(300);
     expect(result.newsitems.map((i) => i.gid)).toEqual([
       "local-hot",
       "steam-1",
