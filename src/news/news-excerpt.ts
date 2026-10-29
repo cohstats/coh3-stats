@@ -10,6 +10,8 @@ const getNewsExcerpt = (contents?: string, maxLength = EXCERPT_LENGTH): string =
     .replace(/\[previewyoutube[^\]]*\][\s\S]*?\[\/previewyoutube\]/gi, " ")
     .replace(/\[[^\]]*\]/g, " ")
     .replace(/\s+/g, " ")
+    // A closing tag before punctuation, `[/url].`, must not leave `notes .`.
+    .replace(/ ([.,!?;:])/g, "$1")
     .trim();
 
   if (text.length <= maxLength) return text;

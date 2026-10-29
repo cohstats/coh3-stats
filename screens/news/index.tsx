@@ -74,7 +74,12 @@ const SingleNewsItem = ({
 
   // Switching the view collapses the articles again, a direct `#gid` link opens its article.
   useEffect(() => {
-    setExpanded(window.location.hash === `#${item.gid}`);
+    const isLinked = () => window.location.hash === `#${item.gid}`;
+    setExpanded(isLinked());
+    // The hash can also change while the page is open, e.g. a link pasted into the address bar.
+    const expandFromHash = () => isLinked() && setExpanded(true);
+    window.addEventListener("hashchange", expandFromHash);
+    return () => window.removeEventListener("hashchange", expandFromHash);
   }, [viewMode, item.gid]);
 
   // Short articles fit into the preview, they don't need "Read more".

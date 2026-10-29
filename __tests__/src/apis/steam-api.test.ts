@@ -45,6 +45,7 @@ describe("getCOH3SteamNews", () => {
     expect(global.fetch).toHaveBeenCalledWith(eventsUrl, {
       cache: "force-cache",
       next: { revalidate: 1800 },
+      signal: expect.any(AbortSignal),
     });
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
@@ -166,6 +167,26 @@ describe("getCOH3SteamNews", () => {
     expect(result.newsitems.map((n) => n.category)).toEqual(["patchNotes", "news"]);
   });
 
+  it("keeps news without event types for a minute only", async () => {
+    const fetchStub = setupFetchStub(steamNewsApiResponse);
+    const failingEventsFetch = (url: string) =>
+      url.includes("/events/") ? Promise.reject(new Error("events down")) : fetchStub(url);
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(failingEventsFetch);
+    const now = jest.spyOn(Date, "now").mockReturnValue(0);
+
+    // One news + one events request per fetch.
+    await getCOH3SteamNews(3);
+    now.mockReturnValue(30 * 1000);
+    await getCOH3SteamNews(3);
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    now.mockReturnValue(61 * 1000);
+    await getCOH3SteamNews(3);
+    expect(global.fetch).toHaveBeenCalledTimes(4);
+    now.mockRestore();
+  });
+
   it("Verify the count", async () => {
     // the fakedata Should have only 1 item in the newsitems array from steamNewsApiResponse
     const fakeData = {
@@ -202,6 +223,7 @@ describe("getCOH3SteamNews", () => {
     expect(global.fetch).toHaveBeenCalledWith(eventsUrl, {
       cache: "force-cache",
       next: { revalidate: 1800 },
+      signal: expect.any(AbortSignal),
     });
     expect(global.fetch).toHaveBeenCalledWith(
       "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=1",
