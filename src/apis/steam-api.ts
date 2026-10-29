@@ -72,8 +72,12 @@ const getCOH3SteamEventTypes = async (count: number): Promise<Map<number, number
       ),
     );
 
-    for (const { events } of responses) {
-      for (const event of events ?? []) {
+    for (const { success, events } of responses) {
+      // An error body still parses, it must not count as "no event types".
+      if (success !== 1 || !Array.isArray(events)) {
+        throw new Error(`Steam events request failed, success: ${success}`);
+      }
+      for (const event of events) {
         const postTime = event.announcement_body?.posttime;
         if (typeof postTime === "number" && typeof event.event_type === "number") {
           eventTypes.set(postTime, event.event_type);

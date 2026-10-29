@@ -13,6 +13,10 @@ describe("getNewsExcerpt", () => {
     expect(getNewsExcerpt("one two three four", 12)).toBe("one two…");
   });
 
+  it("doesn't split an emoji at the cut", () => {
+    expect(getNewsExcerpt("ab🎉cd", 4)).toBe("ab🎉…");
+  });
+
   it("returns an empty string without contents", () => {
     expect(getNewsExcerpt(undefined)).toBe("");
   });

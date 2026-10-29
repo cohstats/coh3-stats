@@ -14,9 +14,11 @@ const getNewsExcerpt = (contents?: string, maxLength = EXCERPT_LENGTH): string =
     .replace(/ ([.,!?;:])/g, "$1")
     .trim();
 
-  if (text.length <= maxLength) return text;
+  // By code point, so an emoji at the cut isn't split into half a surrogate pair.
+  const characters = Array.from(text);
+  if (characters.length <= maxLength) return text;
 
-  const cut = text.slice(0, maxLength - 1);
+  const cut = characters.slice(0, maxLength - 1).join("");
   const lastSpace = cut.lastIndexOf(" ");
   return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
 };

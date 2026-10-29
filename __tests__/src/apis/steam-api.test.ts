@@ -187,6 +187,55 @@ describe("getCOH3SteamNews", () => {
     now.mockRestore();
   });
 
+  it("treats an unsuccessful events response as failed", async () => {
+    const unsuccessfulEventsFetch = setupFetchStub(steamNewsApiResponse, { success: 0 });
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(unsuccessfulEventsFetch);
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    const now = jest.spyOn(Date, "now").mockReturnValue(0);
+
+    await getCOH3SteamNews(3);
+    // Kept for a minute only, like a request that failed.
+    now.mockReturnValue(61 * 1000);
+    await getCOH3SteamNews(3);
+    expect(global.fetch).toHaveBeenCalledTimes(4);
+    now.mockRestore();
+  });
+
+  it("loads the event types of every page", async () => {
+    const fakeData = {
+      appnews: {
+        newsitems: [
+          { gid: "new", title: "New", contents: "", date: 100 },
+          { gid: "old", title: "Old", contents: "", date: 50 },
+        ],
+        count: 2,
+      },
+    };
+    const event = (posttime: number, event_type: number) => ({
+      event_type,
+      announcement_body: { posttime },
+    });
+    const fetchStub = (url: string) =>
+      setupFetchStub(fakeData, {
+        success: 1,
+        // The older post is only on the second page.
+        events: url.includes("offset=100") ? [event(50, 14)] : [event(100, 28)],
+      })(url);
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(fetchStub);
+
+    const result = await getCOH3SteamNews(200);
+
+    const eventUrls = (global.fetch as jest.Mock).mock.calls
+      .map(([url]) => url as string)
+      .filter((url) => url.includes("/events/"));
+    expect(eventUrls).toHaveLength(2);
+    expect(eventUrls[0]).toContain("offset=0&");
+    expect(eventUrls[1]).toContain("offset=100&");
+    expect(result.newsitems.map((n) => n.category)).toEqual(["news", "patchNotes"]);
+  });
+
   it("Verify the count", async () => {
     // the fakedata Should have only 1 item in the newsitems array from steamNewsApiResponse
     const fakeData = {
