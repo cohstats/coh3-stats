@@ -33,7 +33,9 @@ test.describe("News page", () => {
     const title = await titleLink.locator("h2").innerText();
     const href = await titleLink.getAttribute("href");
 
-    await navigateAndWait(page, href!);
+    // Not `networkidle`: a whole article shows its YouTube embeds, which keep the network busy.
+    // The SEO tags are server rendered, so the HTML is enough for them.
+    await page.goto(href!, { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1").last()).toHaveText(title);
     expect(await page.title()).toContain(title);
 
