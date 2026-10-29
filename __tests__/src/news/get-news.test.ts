@@ -51,6 +51,7 @@ describe("getNews", () => {
     const localItem = normalizeLocalNewsItem({
       gid: "local-poster",
       title: "Reusable poster card",
+      category: "coh3stats",
       date: 300,
       image: "/images/news/poster.webp",
       imageOnly: true,
@@ -93,6 +94,7 @@ describe("getNews", () => {
 
     const result = await getNews();
 
+    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(200);
     expect(result.newsitems.map((i) => i.gid)).toEqual([
       "local-hot",
       "steam-1",

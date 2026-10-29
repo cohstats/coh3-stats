@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getNews } from "../src/news/get-news";
+import { isNewsCategory, NEWS_CATEGORIES, NewsCategory } from "../src/news/news-categories";
 import SteamNewsPage from "../screens/news";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
@@ -11,14 +12,28 @@ export const getServerSideProps: GetServerSideProps<any> = async ({
   query,
 }) => {
   let COH3SteamNews = null;
+  let categoryCounts: Record<NewsCategory | "all", number> | null = null;
   const pageParam = Math.max(1, parseInt(query.page as string, 10) || 1);
+  const category: NewsCategory | null = isNewsCategory(query.category) ? query.category : null;
 
-  console.log(`SSR - /news page: ${pageParam}`);
+  console.log(`SSR - /news page: ${pageParam}, category: ${category ?? "all"}`);
 
   try {
     const allNews = await getNews();
+    const filteredNews = category
+      ? allNews.newsitems.filter((item) => item.category === category)
+      : allNews.newsitems;
 
-    const totalItems = allNews.newsitems.length;
+    // Counts come from the news already loaded for the page, no extra requests.
+    categoryCounts = {
+      all: allNews.newsitems.length,
+      ...(Object.fromEntries(NEWS_CATEGORIES.map((c) => [c, 0])) as Record<NewsCategory, number>),
+    };
+    for (const item of allNews.newsitems) {
+      if (item.category) categoryCounts[item.category]++;
+    }
+
+    const totalItems = filteredNews.length;
     const totalPages = Math.ceil(totalItems / NEWS_PER_PAGE);
     const currentPage = Math.min(Math.max(pageParam, 1), totalPages || 1);
 
@@ -27,7 +42,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({
 
     COH3SteamNews = {
       ...allNews,
-      newsitems: allNews.newsitems.slice(start, end),
+      newsitems: filteredNews.slice(start, end),
       currentPage,
       totalPages,
     };
@@ -53,6 +68,8 @@ export const getServerSideProps: GetServerSideProps<any> = async ({
   return {
     props: {
       COH3SteamNews,
+      category,
+      categoryCounts,
       ...(await serverSideTranslations(locale, ["common", "news"])),
     },
   };

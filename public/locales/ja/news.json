@@ -18,5 +18,26 @@
   "steamNewsLink": "Steam ニュース",
   "postedBy": "投稿者:",
   "on": "/",
-  "findGamesOn": "すべての記事はこちらでご覧いただけます:"
+  "findGamesOn": "すべての記事はこちらでご覧いただけます:",
+  "categories": {
+    "all": "すべて",
+    "patchNotes": "パッチノート",
+    "news": "ニュース",
+    "dlcAndOffers": "DLC・セール",
+    "communityEvents": "コミュニティイベント",
+    "tournaments": "トーナメント",
+    "coh3stats": "COH3 Stats"
+  },
+  "noNewsInCategory": "このカテゴリーにはまだニュースがありません。",
+  "viewMode": {
+    "label": "表示",
+    "full": "全文",
+    "preview": "プレビュー",
+    "headlines": "見出し"
+  },
+  "readMore": "続きを読む",
+  "showLess": "閉じる",
+  "allNews": "すべてのニュース",
+  "newerArticle": "新しい記事",
+  "olderArticle": "古い記事"
 }

@@ -1,25 +1,30 @@
 import { COH3SteamNewsType, NewsItem } from "../../src/apis/steam-api";
 
-import BBCode from "@bbob/react";
-
-import reactPreset from "@bbob/preset-react";
-
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Anchor,
   Card,
   Container,
-  Image,
-  Space,
   Title,
   Text,
-  AspectRatio,
   Flex,
   Pagination,
   Group,
+  Badge,
+  Box,
+  Button,
+  Center,
+  SegmentedControl,
 } from "@mantine/core";
-import dayjs from "dayjs";
-import { IconShare3 } from "@tabler/icons-react";
+import { useLocalStorage } from "@mantine/hooks";
+import {
+  IconArticle,
+  IconChevronDown,
+  IconChevronUp,
+  IconFileDescription,
+  IconList,
+  IconShare3,
+} from "@tabler/icons-react";
 // import {AnalyticsNewsPageView} from "../../src/firebase/analytics";
 import { NextPage } from "next";
 import { NextSeo } from "next-seo";
@@ -28,161 +33,79 @@ import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
 import { useTranslation } from "next-i18next/pages";
 import { useRouter } from "next/router";
-import { imageUrlTransform } from "../../src/utils";
+import { NEWS_CATEGORIES, NewsCategory } from "../../src/news/news-categories";
+import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
+import { getNewsRoute } from "../../src/routes";
+import { getCategoryHref, NewsArticleBody, NewsArticleMeta } from "./news-article";
+// Same sticky bar and buttons as the unit and search page section nav.
+import navClasses from "../../components/unit-cards/unit-section-nav.module.css";
 
-const preset = reactPreset.extend((tags: any) => ({
-  ...tags,
-  url: (node: { attrs: NonNullable<unknown>; content: any }) => {
-    return {
-      tag: Anchor,
-      attrs: {
-        href: Object.keys(node.attrs)[0] || null,
-        target: "_blank",
-      },
-      content: node.content,
-    };
-  },
-  img: (node: { attrs: Record<string, string>; content: any }) => {
-    // bbob provides content as an array of child nodes (usually a single string URL)
-    const rawContent = Array.isArray(node.content) ? node.content.join("") : node.content;
-    const imageUrl =
-      typeof rawContent === "string" && rawContent.length > 0 ? rawContent : node.attrs?.src;
+// How much of each article is shown before "Read more".
+const NEWS_VIEW_MODES = ["full", "preview", "headlines"] as const;
+type NewsViewMode = (typeof NEWS_VIEW_MODES)[number];
+const DEFAULT_NEWS_VIEW_MODE: NewsViewMode = "preview";
 
-    return {
-      tag: Image,
-      attrs: {
-        pt: "sm",
-        pb: "sm",
-        // The radius doesn't work for some reason
-        // radius: "md",
-        // w: "auto",
-        fit: "contain",
-        src: imageUrlTransform(imageUrl),
-        alt: "news image",
-      },
-    };
-  },
-  br: () => {
-    return {
-      tag: "br",
-    };
-  },
-  previewyoutube: (node: { attrs: NonNullable<unknown> }) => {
-    try {
-      const youtubeId = Object.keys(node.attrs)[0]?.split(";")[0] || null;
+const NEWS_VIEW_MODE_ICONS: Record<NewsViewMode, typeof IconArticle> = {
+  full: IconArticle,
+  preview: IconFileDescription,
+  headlines: IconList,
+};
 
-      return {
-        tag: AspectRatio,
-        attrs: {
-          ratio: 16 / 9,
-        },
-        // bbob only renders array content; a single node object is silently dropped
-        content: [
-          {
-            tag: "iframe",
-            attrs: {
-              src: `https://www.youtube.com/embed/${youtubeId}`,
-              frameBorder: "0",
-              allowFullScreen: true,
-            },
-          },
-        ],
-      };
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
-  },
-  // Custom list handler to properly handle nested content in list items
-  list: (node: { attrs: Record<string, string>; content: any }) => {
-    const processListContent = (content: any[]): any[] => {
-      if (!Array.isArray(content)) return content;
-
-      return content.reduce((acc: any[], item: any) => {
-        // Handle [*] tags with nested content
-        if (item && typeof item === "object" && item.tag === "*") {
-          acc.push({
-            tag: "li",
-            attrs: {},
-            content: item.content || [],
-          });
-        } else {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
-    };
-
-    const type = node.attrs && Object.keys(node.attrs)[0];
-    return {
-      tag: type ? "ol" : "ul",
-      attrs: type ? { type } : {},
-      content: processListContent(node.content || []),
-    };
-  },
-  // Custom asterisk handler for list items
-  "*": (node: { content: any }) => {
-    return {
-      tag: "li",
-      attrs: {},
-      content: node.content || [],
-    };
-  },
-  // Custom handler for dynamiclink tags
-  dynamiclink: (node: { attrs: Record<string, string> }) => {
-    const href = node.attrs?.href || "";
-    return {
-      tag: Anchor,
-      attrs: {
-        href: href,
-        target: "_blank",
-      },
-      content: [href],
-    };
-  },
-}));
-
-class NewsComponentErrorBoundary extends React.Component {
-  // @ts-ignore
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: any, errorInfo: any) {
-    // You can also log the error to an error reporting service
-    console.error(error, errorInfo);
-  }
-
-  render() {
-    // @ts-ignore
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong when rendering this new.</h1>;
-    }
-
-    // @ts-ignore
-    return this.props.children;
-  }
-}
+const isNewsViewMode = (value: unknown): value is NewsViewMode =>
+  typeof value === "string" && (NEWS_VIEW_MODES as readonly string[]).includes(value);
 
 const SingleNewsItem = ({
   item,
   t,
   locale,
+  viewMode,
 }: {
   item: NewsItem;
   t: (key: string) => string;
   locale: string;
+  viewMode: NewsViewMode;
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  // Assume a long article until measured, most Steam posts are.
+  const [overflows, setOverflows] = useState(true);
+  const isCollapsed = viewMode !== "full" && !expanded;
+
+  // Switching the view collapses the articles again, a direct `#gid` link opens its article.
+  useEffect(() => {
+    setExpanded(window.location.hash === `#${item.gid}`);
+  }, [viewMode, item.gid]);
+
+  // Short articles fit into the preview, they don't need "Read more".
+  useEffect(() => {
+    const container = contentRef.current;
+    const content = container?.firstElementChild;
+    if (!container || !content || !isCollapsed) return;
+
+    const update = () => setOverflows(content.scrollHeight > container.clientHeight + 1);
+    update();
+    // Images and embeds change the height once they load.
+    const resizeObserver = new ResizeObserver(update);
+    resizeObserver.observe(content);
+    return () => resizeObserver.disconnect();
+  }, [isCollapsed]);
+
+  const collapse = () => {
+    setExpanded(false);
+    // Keep the reader at this article instead of somewhere further down the page,
+    // right below the sticky filter bar whose height depends on how it wraps.
+    const cardTop = cardRef.current?.getBoundingClientRect().top ?? 0;
+    const nav = document.querySelector('[data-testid="news-category-filter"]');
+    const navBottom = (nav?.getBoundingClientRect().bottom ?? 0) + 12;
+    if (cardTop < navBottom) {
+      window.scrollBy({ top: cardTop - navBottom });
+    }
+  };
+
   try {
     return (
-      <Card shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
+      <Card ref={cardRef} shadow="sm" padding="md" pt={"xs"} radius="md" mb={"lg"} withBorder>
         <span
           style={{
             position: "absolute",
@@ -194,7 +117,11 @@ const SingleNewsItem = ({
           id={item.gid}
         />
         <Flex justify={"space-between"}>
-          <Anchor href={`#${item.gid}`} style={{ textDecoration: "none" }}>
+          <Anchor
+            component={LinkWithOutPrefetch}
+            href={getNewsRoute(item.gid)}
+            style={{ textDecoration: "none" }}
+          >
             <Title order={2} className={classes.whiteColor}>
               {item.title}
             </Title>
@@ -205,65 +132,45 @@ const SingleNewsItem = ({
             </Anchor>
           )}
         </Flex>
-        <Text fz="lg">
-          {t("postedBy")} {item.author} {t("on")}{" "}
-          {dayjs((item.date || 0) * 1000)
-            .locale(locale)
-            .format("DD/MMM/YYYY")}
-        </Text>
-        <div>
-          <NewsComponentErrorBoundary>
-            <BBCode
-              plugins={[preset()]}
-              options={{
-                onlyAllowTags: [
-                  "img",
-                  "url",
-                  "h1",
-                  "h2",
-                  "h3",
-                  "i",
-                  "list",
-                  "*",
-                  "strike",
-                  "u",
-                  "b",
-                  "p",
-                  "hr",
-                  "code",
-                  "table",
-                  "tr",
-                  "th",
-                  "td",
-                  "br",
-                  "quote",
-                  "center",
-                  "left",
-                  "right",
-                  "justify",
-                  "color",
-                  "size",
-                  "font",
-                  "email",
-                  "link",
-                  "youtube",
-                  "video",
-                  "audio",
-                  "soundcloud",
-                  "vimeo",
-                  "twitch",
-                  "dailymotion",
-                  "spotify",
-                  "iframe",
-                  "previewyoutube",
-                  "dynamiclink",
-                ],
-              }}
+        <NewsArticleMeta item={item} t={t} locale={locale} />
+        {(viewMode !== "headlines" || expanded) && (
+          <div
+            ref={contentRef}
+            className={isCollapsed ? classes.preview : undefined}
+            data-overflows={(isCollapsed && overflows) || undefined}
+          >
+            <div>
+              <NewsArticleBody contents={item.contents} />
+            </div>
+          </div>
+        )}
+        {isCollapsed && (viewMode === "headlines" || overflows) && (
+          <Group justify="center" mt="xs">
+            <Button
+              variant="subtle"
+              size="compact-md"
+              onClick={() => setExpanded(true)}
+              rightSection={<IconChevronDown size={16} />}
+              aria-expanded={false}
             >
-              {item.contents}
-            </BBCode>
-          </NewsComponentErrorBoundary>
-        </div>
+              {t("readMore")}
+            </Button>
+          </Group>
+        )}
+        {viewMode !== "full" && expanded && (
+          <Group justify="center" mt="xs">
+            <Button
+              variant="subtle"
+              color="gray"
+              size="compact-md"
+              onClick={collapse}
+              rightSection={<IconChevronUp size={16} />}
+              aria-expanded={true}
+            >
+              {t("showLess")}
+            </Button>
+          </Group>
+        )}
       </Card>
     );
   } catch (e) {
@@ -271,17 +178,111 @@ const SingleNewsItem = ({
   }
 };
 
-const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3SteamNews }) => {
+const NewsCategoryFilter = ({
+  activeCategory,
+  counts,
+  viewMode,
+  onViewModeChange,
+  t,
+}: {
+  activeCategory: NewsCategory | null;
+  counts?: Record<NewsCategory | "all", number> | null;
+  viewMode: NewsViewMode;
+  onViewModeChange: (viewMode: NewsViewMode) => void;
+  t: (key: string) => string;
+}) => {
+  return (
+    <Box
+      component="nav"
+      className={`${navClasses.nav} ${classes.newsNav}`}
+      data-testid="news-category-filter"
+    >
+      <div className={navClasses.list}>
+        {[null, ...NEWS_CATEGORIES].map((category) => {
+          const isActive = category === activeCategory;
+          return (
+            <Button
+              key={category ?? "all"}
+              component={LinkWithOutPrefetch}
+              href={getCategoryHref(category)}
+              variant={isActive ? "light" : "subtle"}
+              color={isActive ? undefined : "gray"}
+              size="compact-md"
+              radius="md"
+              justify="flex-start"
+              classNames={{
+                root: navClasses.root,
+                label: navClasses.label,
+                section: navClasses.badge,
+              }}
+              aria-current={isActive ? "page" : undefined}
+              rightSection={
+                counts ? (
+                  <Badge size="sm" variant="default" radius="sm">
+                    {counts[category ?? "all"]}
+                  </Badge>
+                ) : undefined
+              }
+            >
+              {t(`categories.${category ?? "all"}`)}
+            </Button>
+          );
+        })}
+      </div>
+      <SegmentedControl
+        className={classes.viewSwitch}
+        value={viewMode}
+        onChange={(value) => isNewsViewMode(value) && onViewModeChange(value)}
+        aria-label={t("viewMode.label")}
+        data-testid="news-view-mode"
+        data={NEWS_VIEW_MODES.map((mode) => {
+          const Icon = NEWS_VIEW_MODE_ICONS[mode];
+          return {
+            value: mode,
+            label: (
+              <Center style={{ gap: 6 }}>
+                <Icon size={16} />
+                <span>{t(`viewMode.${mode}`)}</span>
+              </Center>
+            ),
+          };
+        })}
+      />
+    </Box>
+  );
+};
+
+const SteamNewsPage: NextPage<{
+  COH3SteamNews: COH3SteamNewsType;
+  category?: NewsCategory | null;
+  categoryCounts?: Record<NewsCategory | "all", number> | null;
+}> = ({ COH3SteamNews, category = null, categoryCounts = null }) => {
   const { t } = useTranslation("news");
   const router = useRouter();
   const { locale } = router;
+
+  // Read after hydration, the server always renders the default view.
+  const [storedViewMode, setViewMode] = useLocalStorage<NewsViewMode>({
+    key: "news-view-mode",
+    defaultValue: DEFAULT_NEWS_VIEW_MODE,
+    getInitialValueInEffect: true,
+  });
+  const viewMode = isNewsViewMode(storedViewMode) ? storedViewMode : DEFAULT_NEWS_VIEW_MODE;
 
   useEffect(() => {
     AnalyticsNewsPageView();
   }, []);
 
   const items = COH3SteamNews.newsitems.map((item) => {
-    return <SingleNewsItem item={item} key={item.date} t={t} locale={locale || "en"} />;
+    return (
+      <SingleNewsItem
+        item={item}
+        key={item.date}
+        t={t}
+        locale={locale || "en"}
+        viewMode={viewMode}
+      />
+    );
   });
   const image = COH3SteamNews.newsitems[0]?.image || "";
 
@@ -296,7 +297,11 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
   };
 
   // Create SEO props for news page, including page parameter for paginated URLs
-  const pagePath = currentPage > 1 ? `/news?page=${currentPage}` : "/news";
+  const pageQuery = [
+    category ? `category=${category}` : null,
+    currentPage > 1 ? `page=${currentPage}` : null,
+  ].filter(Boolean);
+  const pagePath = pageQuery.length > 0 ? `/news?${pageQuery.join("&")}` : "/news";
   const seoProps = createPageSEO(t, "news", pagePath);
 
   try {
@@ -320,8 +325,14 @@ const SteamNewsPage: NextPage<{ COH3SteamNews: COH3SteamNewsType }> = ({ COH3Ste
         />
         <Container size={"md"} px={0}>
           <Title>{t("pageTitle")}</Title>
-          <Space h={"lg"} />
-          {items}
+          <NewsCategoryFilter
+            activeCategory={category}
+            counts={categoryCounts}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            t={t}
+          />
+          {items.length > 0 ? items : <Text c="dimmed">{t("noNewsInCategory")}</Text>}
           {totalPages > 1 && (
             <Group justify="center" mt="md" mb="md">
               <Pagination total={totalPages} value={currentPage} onChange={handlePageChange} />

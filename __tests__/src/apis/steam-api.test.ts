@@ -2,12 +2,21 @@
  * @jest-environment node
  */
 
-import { getCOH3SteamNews } from "../../../src/apis/steam-api";
+import { clearCOH3SteamNewsCache, getCOH3SteamNews } from "../../../src/apis/steam-api";
 import steamNewsApiResponse from "../../test-assets/steam-news-api-response.json";
 
+const eventsUrl =
+  "https://store.steampowered.com/events/ajaxgetpartnereventspageable/?clan_accountid=0&appid=1677280&offset=0&count=100&l=english";
+
 describe("getCOH3SteamNews", () => {
-  const setupFetchStub = (data: any) => () =>
-    Promise.resolve({ json: () => Promise.resolve(data), ok: true });
+  // The store events endpoint returns the post type, everything else is GetNewsForApp.
+  const setupFetchStub =
+    (data: any, eventsData: any = { success: 1, events: [] }) =>
+    (url: string) =>
+      Promise.resolve({
+        json: () => Promise.resolve(url.includes("/events/") ? eventsData : data),
+        ok: true,
+      });
 
   beforeAll(() => {
     // @ts-ignore
@@ -19,6 +28,7 @@ describe("getCOH3SteamNews", () => {
   });
 
   beforeEach(() => {
+    clearCOH3SteamNewsCache();
     // @ts-ignore
     global.fetch.mockClear();
   });
@@ -32,7 +42,11 @@ describe("getCOH3SteamNews", () => {
       "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=100",
       { cache: "force-cache", next: { revalidate: 1800 } },
     );
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith(eventsUrl, {
+      cache: "force-cache",
+      next: { revalidate: 1800 },
+    });
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 
   it("returns correct news items", async () => {
@@ -62,7 +76,94 @@ describe("getCOH3SteamNews", () => {
       expect(newsItem).not.toHaveProperty("is_external_url");
       expect(newsItem).not.toHaveProperty("feed_type");
       expect(newsItem).not.toHaveProperty("appid");
+      expect(newsItem).not.toHaveProperty("tags");
     }
+  });
+
+  it("serves repeated calls from the in-memory cache", async () => {
+    const first = await getCOH3SteamNews();
+    const second = await getCOH3SteamNews();
+
+    expect(second).toBe(first);
+    // One news + one events request, only for the first call.
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not cache a failed fetch", async () => {
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(() => Promise.reject(new Error("down")));
+    expect((await getCOH3SteamNews(5)).newsitems).toHaveLength(0);
+
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(steamNewsApiResponse));
+    expect((await getCOH3SteamNews(5)).newsitems.length).toBeGreaterThan(0);
+  });
+
+  it("assigns the category from the matching Steam event type", async () => {
+    const newsItem = (gid: string, date: number, tags: string[] = []) => ({
+      gid,
+      title: gid,
+      url: "https://testurl.com",
+      author: "Test Author",
+      contents: "Test Contents",
+      date,
+      tags,
+    });
+    const fakeData = {
+      appnews: {
+        newsitems: [
+          newsItem("major", 100),
+          newsItem("sale", 200),
+          newsItem("event", 300),
+          newsItem("news", 400),
+          newsItem("unmatched-patch", 500, ["patchnotes"]),
+          newsItem("unmatched", 600),
+        ],
+        count: 6,
+      },
+    };
+    const event = (posttime: number, event_type: number) => ({
+      event_type,
+      announcement_body: { posttime },
+    });
+    const eventsData = {
+      success: 1,
+      events: [event(100, 14), event(200, 20), event(300, 35), event(400, 28)],
+    };
+
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(setupFetchStub(fakeData, eventsData));
+
+    const result = await getCOH3SteamNews(6);
+    expect(Object.fromEntries(result.newsitems.map((n) => [n.gid, n.category]))).toEqual({
+      major: "patchNotes",
+      sale: "dlcAndOffers",
+      event: "communityEvents",
+      news: "news",
+      "unmatched-patch": "patchNotes",
+      unmatched: "news",
+    });
+  });
+
+  it("falls back to the news tags when the events endpoint fails", async () => {
+    const fakeData = {
+      appnews: {
+        newsitems: [
+          { gid: "1", title: "Hot Fix", contents: "", date: 100, tags: ["patchnotes"] },
+          { gid: "2", title: "Dev Diary", contents: "", date: 200 },
+        ],
+        count: 2,
+      },
+    };
+
+    const fetchStub = setupFetchStub(fakeData);
+    const failingEventsFetch = (url: string) =>
+      url.includes("/events/") ? Promise.reject(new Error("events down")) : fetchStub(url);
+    // @ts-ignore
+    jest.spyOn(global, "fetch").mockImplementation(failingEventsFetch);
+
+    const result = await getCOH3SteamNews(2);
+    expect(result.newsitems.map((n) => n.category)).toEqual(["patchNotes", "news"]);
   });
 
   it("Verify the count", async () => {
@@ -97,7 +198,11 @@ describe("getCOH3SteamNews", () => {
     expect(result.count).toBe(1);
     expect(result.newsitems.length).toBe(1);
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledWith(eventsUrl, {
+      cache: "force-cache",
+      next: { revalidate: 1800 },
+    });
     expect(global.fetch).toHaveBeenCalledWith(
       "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1677280&feeds=steam_community_announcements&count=1",
       { cache: "force-cache", next: { revalidate: 1800 } },

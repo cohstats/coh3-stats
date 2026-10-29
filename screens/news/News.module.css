@@ -1,3 +1,35 @@
 .whiteColor {
   color: light-dark(var(--mantine-color-dark-7), var(--mantine-color-gray-4));
 }
+
+/* The view switch shares the sticky bar with the category filter, on phones it gets its own row. */
+.newsNav {
+  flex-wrap: wrap;
+}
+
+.viewSwitch {
+  flex-shrink: 0;
+}
+
+@media (max-width: 48em) {
+  .viewSwitch {
+    flex-basis: 100%;
+  }
+}
+
+/* Preview view, the start of the article fading out above "Read more". */
+.preview {
+  max-height: 520px;
+  overflow: hidden;
+}
+
+.preview[data-overflows] {
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent);
+  mask-image: linear-gradient(to bottom, black 65%, transparent);
+}
+
+@media (max-width: 48em) {
+  .preview {
+    max-height: 420px;
+  }
+}

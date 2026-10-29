@@ -18,5 +18,26 @@
   "steamNewsLink": "Steam 뉴스",
   "postedBy": "작성자:",
   "on": "·",
-  "findGamesOn": "모든 기사는 다음에서 확인할 수 있습니다:"
+  "findGamesOn": "모든 기사는 다음에서 확인할 수 있습니다:",
+  "categories": {
+    "all": "전체",
+    "patchNotes": "패치 노트",
+    "news": "뉴스",
+    "dlcAndOffers": "DLC 및 할인",
+    "communityEvents": "커뮤니티 이벤트",
+    "tournaments": "토너먼트",
+    "coh3stats": "COH3 Stats"
+  },
+  "noNewsInCategory": "이 카테고리에는 아직 뉴스가 없습니다.",
+  "viewMode": {
+    "label": "보기",
+    "full": "전체",
+    "preview": "미리보기",
+    "headlines": "제목만"
+  },
+  "readMore": "더 보기",
+  "showLess": "접기",
+  "allNews": "모든 뉴스",
+  "newerArticle": "최신 글",
+  "olderArticle": "이전 글"
 }

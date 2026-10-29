@@ -1,7 +1,9 @@
 import { logger } from "../logger";
+import { getSteamNewsCategory, NewsCategory } from "../news/news-categories";
 
 const baseUrl = "https://api.steampowered.com/";
 const baseUrlProxied = "https://steam.coh3stats.com/";
+const steamStoreBaseUrl = "https://store.steampowered.com/";
 
 const COH3_STEAM_APP_ID = 1677280;
 
@@ -17,6 +19,7 @@ export type NewsItem = {
   /** Display only the image on the homepage; the article title is unaffected. */
   imageOnly?: boolean;
   date?: number;
+  category?: NewsCategory;
 };
 
 export type COH3SteamNewsType = {
@@ -38,12 +41,58 @@ const getCOH3SteamNewsUrl = (count: number = 20) => {
   );
 };
 
-const getCOH3SteamNews = async (count = 100): Promise<COH3SteamNewsType> => {
+// Max page size of the store events endpoint, each page is ~1MB.
+const STEAM_EVENTS_PAGE_SIZE = 100;
+
+const getCOH3SteamEventsUrl = (offset: number, count: number = STEAM_EVENTS_PAGE_SIZE) => {
+  return encodeURI(
+    `${steamStoreBaseUrl}events/ajaxgetpartnereventspageable/?clan_accountid=0&appid=${COH3_STEAM_APP_ID}&offset=${offset}&count=${count}&l=english`,
+  );
+};
+
+/**
+ * GetNewsForApp doesn't return the post type, the store events endpoint does (`event_type`).
+ * The ids differ between the two, so the events are keyed by the announcement post time,
+ * which equals the news `date`.
+ */
+const getCOH3SteamEventTypes = async (count: number): Promise<Map<number, number>> => {
+  const eventTypes = new Map<number, number>();
+  const pages = Math.ceil(count / STEAM_EVENTS_PAGE_SIZE);
+
   try {
-    const response = await fetch(getCOH3SteamNewsUrl(count), {
-      cache: "force-cache",
-      next: { revalidate: 1800 },
-    });
+    const responses = await Promise.all(
+      Array.from({ length: pages }, (_, page) =>
+        fetch(getCOH3SteamEventsUrl(page * STEAM_EVENTS_PAGE_SIZE), {
+          cache: "force-cache",
+          next: { revalidate: 1800 },
+        }).then((response) => response.json()),
+      ),
+    );
+
+    for (const { events } of responses) {
+      for (const event of events ?? []) {
+        const postTime = event.announcement_body?.posttime;
+        if (typeof postTime === "number" && typeof event.event_type === "number") {
+          eventTypes.set(postTime, event.event_type);
+        }
+      }
+    }
+  } catch (e) {
+    logger.error(e);
+  }
+
+  return eventTypes;
+};
+
+const fetchCOH3SteamNews = async (count: number): Promise<COH3SteamNewsType> => {
+  try {
+    const [response, eventTypes] = await Promise.all([
+      fetch(getCOH3SteamNewsUrl(count), {
+        cache: "force-cache",
+        next: { revalidate: 1800 },
+      }),
+      getCOH3SteamEventTypes(count),
+    ]);
     const { appnews } = await response.json();
 
     delete appnews.appid;
@@ -54,6 +103,9 @@ const getCOH3SteamNews = async (count = 100): Promise<COH3SteamNewsType> => {
       delete news.feedname;
       delete news.feed_type;
       delete news.appid;
+
+      news.category = getSteamNewsCategory(eventTypes.get(news.date), news.tags);
+      delete news.tags;
 
       news.contents = news.contents.replaceAll("{STEAM_CLAN_IMAGE}", steamImagesBaseUrl);
       // console.log(JSON.stringify(news.contents))
@@ -78,4 +130,26 @@ const getCOH3SteamNews = async (count = 100): Promise<COH3SteamNewsType> => {
   }
 };
 
-export { getNumberOfOnlinePlayersSteamUrl, getCOH3SteamNews };
+// The fetch `revalidate` option is ignored in the Pages Router, so without this every
+// /news render called Steam (~2 MB of JSON). Kept per process, keyed by count.
+const STEAM_NEWS_CACHE_TTL_MS = 30 * 60 * 1000;
+const steamNewsCache = new Map<number, { expiresAt: number; news: Promise<COH3SteamNewsType> }>();
+
+const getCOH3SteamNews = (count = 100): Promise<COH3SteamNewsType> => {
+  const cached = steamNewsCache.get(count);
+  if (cached && cached.expiresAt > Date.now()) return cached.news;
+
+  // Cache the promise, so concurrent requests share one Steam fetch.
+  const news = fetchCOH3SteamNews(count).then((result) => {
+    // Don't keep a failed fetch for the whole TTL, retry on the next request.
+    if (result.newsitems.length === 0) steamNewsCache.delete(count);
+    return result;
+  });
+  steamNewsCache.set(count, { expiresAt: Date.now() + STEAM_NEWS_CACHE_TTL_MS, news });
+  return news;
+};
+
+/** For tests. */
+const clearCOH3SteamNewsCache = () => steamNewsCache.clear();
+
+export { getNumberOfOnlinePlayersSteamUrl, getCOH3SteamNews, clearCOH3SteamNewsCache };

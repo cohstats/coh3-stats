@@ -202,7 +202,7 @@ export const getRelicApiRoute = () => {
 
 export const getNewsRoute = (articleId?: string) => {
   if (articleId) {
-    return encodeURI(`/news#${articleId}`);
+    return `/news/${encodeURIComponent(articleId)}`;
   }
   return encodeURI(`/news`);
 };

@@ -16,6 +16,7 @@ Local news articles are site-specific posts shown alongside Steam announcements 
 | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `gid`       | Yes      | Unique id. **Must** start with `local-` (e.g. `local-announce-ladder-tournament`) so it does not collide with Steam news gids.                                                                                                                                 |
 | `title`     | Yes      | Article title.                                                                                                                                                                                                                                                 |
+| `category`  | Yes      | Filter category on `/news`. Use `tournaments` for tournaments or `coh3stats` for site news. Steam categories (`patchNotes`, `news`, `dlcAndOffers`, `communityEvents`) are allowed too, see [`news-categories.ts`](./news-categories.ts).                      |
 | `author`    | No       | Displayed author name.                                                                                                                                                                                                                                         |
 | `date`      | Yes      | Unix timestamp in **seconds** (not milliseconds). Controls sort order (newest first).                                                                                                                                                                          |
 | `image`     | No       | Path to the thumbnail used in the home carousel (e.g. `/images/news/my-article.webp`). If omitted, the first `[img]` in `contents` is used.                                                                                                                    |
@@ -29,6 +30,7 @@ Local news articles are site-specific posts shown alongside Steam announcements 
 {
   gid: "local-my-announcement",
   title: "My Announcement Title",
+  category: "coh3stats",
   author: "COH3 Stats",
   date: 1735689600, // unix seconds
   image: "/images/news/my-announcement.webp",
@@ -70,6 +72,7 @@ public/images/news/my-announcement.webp
 ## Checklist before opening a PR
 
 - [ ] `gid` starts with `local-` and is unique
+- [ ] `category` is set (`tournaments`, `coh3stats`, ...)
 - [ ] `date` is unix time in **seconds**
 - [ ] Images are `.webp` under `public/images/news/`
 - [ ] Article looks correct on home news carousel and `/news`

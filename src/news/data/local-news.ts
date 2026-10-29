@@ -1,7 +1,11 @@
+import { NewsCategory } from "../news-categories";
+
 export type LocalNewsItem = {
   /** Must start with "local-" to avoid Steam gid collisions. */
   gid: `local-${string}`;
   title: string;
+  /** Used to filter the /news page. Site posts are usually "tournaments" or "coh3stats". */
+  category: NewsCategory;
   author?: string;
   /** Unix timestamp in seconds. */
   date: number;
@@ -20,6 +24,7 @@ const localNews: LocalNewsItem[] = [
   {
     gid: "local-ironclad-hold-the-line",
     title: "HOLD THE LINE — Four Divisions, Up to US$280",
+    category: "tournaments",
     author: "IronClad Tournaments",
     date: 1792972800, // 26 October 2026, 00:00 UTC; local review date.
     image: "/images/news/ironclad-hold-the-line-carousel.webp",
@@ -107,6 +112,7 @@ const localNews: LocalNewsItem[] = [
   {
     gid: "local-meta-plays-coh-20th-anniversary-league",
     title: "Company of Heroes 20th Anniversary League",
+    category: "tournaments",
     author: "Meta Plays",
     date: 1792152559,
     image: "/images/news/coh-20th-anniversary-league.webp",
@@ -142,6 +148,7 @@ const localNews: LocalNewsItem[] = [
   {
     gid: "local-ladder-tournament-season-2-registration",
     title: "Ladder Tournament - Season 2 Registration",
+    category: "tournaments",
     author: "Ladder Tournament",
     date: 1791034176,
     image:
@@ -161,6 +168,7 @@ const localNews: LocalNewsItem[] = [
   {
     gid: "local-final-stand-full-coverage",
     title: "COH3 Stats - Final Stand now fully covered",
+    category: "coh3stats",
     author: "COH3 Stats",
     date: 1788163921,
     contents: `
@@ -185,6 +193,7 @@ const localNews: LocalNewsItem[] = [
   {
     gid: "local-ladder-tournament-season1-final",
     title: "Ladder Tournament Season #1 Grand Final",
+    category: "tournaments",
     author: "Ladder Tournament",
     date: 1787153270,
     image: "https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg",
@@ -219,6 +228,7 @@ const localNews: LocalNewsItem[] = [
   {
     gid: "local-announce-ladder-tournament",
     title: "New Ladder Tournament Project for COH3",
+    category: "tournaments",
     author: "Ladder Tournament",
     date: 1785604604,
     image: "https://laddertournament.com.br/assets/banner-lt-coh3stats.jpg",

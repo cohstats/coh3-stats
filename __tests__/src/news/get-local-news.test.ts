@@ -8,6 +8,7 @@ import {
   normalizeLocalNewsItem,
   type LocalNewsItem,
 } from "../../../src/news/get-local-news";
+import { isNewsCategory } from "../../../src/news/news-categories";
 
 describe("extractImageFromContents", () => {
   it("extracts classic [img] tags", () => {
@@ -32,6 +33,7 @@ describe("normalizeLocalNewsItem", () => {
     const item = normalizeLocalNewsItem({
       gid: "local-poster",
       title: "Poster article",
+      category: "coh3stats",
       date: 100,
       imageOnly,
     });
@@ -43,6 +45,7 @@ describe("normalizeLocalNewsItem", () => {
     const item = normalizeLocalNewsItem({
       gid: "local-existing",
       title: "Existing article",
+      category: "coh3stats",
       date: 100,
     });
 
@@ -55,6 +58,7 @@ describe("normalizeLocalNewsItem", () => {
       const item = normalizeLocalNewsItem({
         gid: "local-invalid-flag",
         title: "Existing article",
+        category: "coh3stats",
         date: 100,
         imageOnly,
       } as unknown as LocalNewsItem);
@@ -63,11 +67,40 @@ describe("normalizeLocalNewsItem", () => {
     },
   );
 
+  it.each(["tournaments", "coh3stats"] as const)("keeps the %s category", (category) => {
+    const item = normalizeLocalNewsItem({
+      gid: "local-category",
+      title: "Category article",
+      category,
+      date: 100,
+    });
+
+    expect(item).toHaveProperty("category", category);
+  });
+
+  it("omits an unknown category from the SSR payload", () => {
+    const item = normalizeLocalNewsItem({
+      gid: "local-unknown-category",
+      title: "Unknown category",
+      category: "majorUpdate",
+      date: 100,
+    } as unknown as LocalNewsItem);
+
+    expect(item).not.toHaveProperty("category");
+  });
+
+  it("every local news item has a valid category", () => {
+    for (const item of getLocalNews()) {
+      expect(isNewsCategory(item.category)).toBe(true);
+    }
+  });
+
   it("sets url to null when missing or empty", () => {
     expect(
       normalizeLocalNewsItem({
         gid: "local-a",
         title: "A",
+        category: "coh3stats",
         date: 100,
       }).url,
     ).toBeNull();
@@ -76,6 +109,7 @@ describe("normalizeLocalNewsItem", () => {
       normalizeLocalNewsItem({
         gid: "local-a",
         title: "A",
+        category: "coh3stats",
         date: 100,
         url: null,
       }).url,
@@ -85,6 +119,7 @@ describe("normalizeLocalNewsItem", () => {
       normalizeLocalNewsItem({
         gid: "local-a",
         title: "A",
+        category: "coh3stats",
         date: 100,
         url: "   ",
       }).url,
@@ -96,6 +131,7 @@ describe("normalizeLocalNewsItem", () => {
       normalizeLocalNewsItem({
         gid: "local-a",
         title: "A",
+        category: "coh3stats",
         date: 100,
         url: "https://example.com/news",
       }).url,
@@ -106,6 +142,7 @@ describe("normalizeLocalNewsItem", () => {
     const item = normalizeLocalNewsItem({
       gid: "local-a",
       title: "A",
+      category: "coh3stats",
       date: 100,
       image: "/images/explicit.webp",
       url: null,
@@ -120,6 +157,7 @@ describe("normalizeLocalNewsItem", () => {
     const item = normalizeLocalNewsItem({
       gid: "local-b",
       title: "B",
+      category: "coh3stats",
       date: 100,
       contents: "[img]/images/from-body.webp[/img]",
     });

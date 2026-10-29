@@ -206,6 +206,10 @@ export const AnalyticsNewsPageView = (): void => {
   logFBEvent("news_view");
 };
 
+export const AnalyticsNewsArticleView = (gid: string): void => {
+  logFBEvent("news_article_view", { gid });
+};
+
 export const AnalyticsTeamDetailsTabView = (
   profile_id?: number | string,
   team_id?: string,
