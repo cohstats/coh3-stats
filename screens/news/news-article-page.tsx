@@ -10,6 +10,7 @@ import {
   Container,
   Flex,
   Group,
+  MantineSpacing,
   SimpleGrid,
   Text,
   Title,
@@ -33,6 +34,19 @@ export type NewsArticlePageProps = {
   newerItem: NewsArticleLink | null;
   olderItem: NewsArticleLink | null;
 };
+
+// The same button above and below the article.
+const AllNewsButton = ({ t, mb }: { t: (key: string) => string; mb?: MantineSpacing }) => (
+  <Button
+    component={LinkWithOutPrefetch}
+    href={getNewsRoute()}
+    variant="light"
+    leftSection={<IconArrowLeft size={16} />}
+    mb={mb}
+  >
+    {t("allNews")}
+  </Button>
+);
 
 const NeighbourArticleCard = ({
   article,
@@ -107,16 +121,7 @@ const NewsArticlePage: NextPage<NewsArticlePageProps> = ({
         }}
       />
       <Container size={"md"} px={0}>
-        <Button
-          component={LinkWithOutPrefetch}
-          href={getNewsRoute()}
-          variant="subtle"
-          size="compact-md"
-          leftSection={<IconArrowLeft size={16} />}
-          mb="sm"
-        >
-          {t("allNews")}
-        </Button>
+        <AllNewsButton t={t} mb="sm" />
         <Card shadow="sm" padding="md" pt={"xs"} radius="md" withBorder>
           <Flex justify={"space-between"} gap="sm">
             <Title order={1} size="h2" className={classes.whiteColor}>
@@ -138,14 +143,7 @@ const NewsArticlePage: NextPage<NewsArticlePageProps> = ({
           </SimpleGrid>
         )}
         <Group justify="center" mt="lg" mb="md">
-          <Button
-            component={LinkWithOutPrefetch}
-            href={getNewsRoute()}
-            variant="light"
-            leftSection={<IconArrowLeft size={16} />}
-          >
-            {t("allNews")}
-          </Button>
+          <AllNewsButton t={t} />
         </Group>
       </Container>
     </>
