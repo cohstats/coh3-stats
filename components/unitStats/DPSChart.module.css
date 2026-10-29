@@ -7,3 +7,9 @@
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
   text-align: left;
 }
+
+/* Reserve the chart size before chart.js measures the canvas to avoid layout shift */
+.chartCanvas {
+  position: relative;
+  aspect-ratio: 2 / 1;
+}

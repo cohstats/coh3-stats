@@ -18,7 +18,6 @@ import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { Center, Loader } from "@mantine/core";
 import { NextSeo } from "next-seo";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
@@ -123,14 +122,8 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   return (
     <>
       <NextSeo {...seoProps} />
-      <div>
-        {isLoading && (
-          <Center maw={400} h={250} mx="auto">
-            <Loader />
-          </Center>
-        )}
-        {!isLoading && <DpsPageComponent {...dbpsData} />}
-      </div>
+      {/* Render the full layout right away (instead of a small loader) to avoid layout shift */}
+      <DpsPageComponent {...dbpsData} isLoading={isLoading} />
     </>
   );
 };

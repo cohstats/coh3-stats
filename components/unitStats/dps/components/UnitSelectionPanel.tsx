@@ -10,6 +10,7 @@ interface UnitSelectionPanelProps {
   patchList: string[];
   defaultPatch: string;
   position: number;
+  disabled?: boolean;
   selectedUnitId?: string;
   onFilterToggle: (
     filterValue: string,
@@ -60,6 +61,7 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
   patchList,
   defaultPatch,
   position,
+  disabled,
   selectedUnitId,
   onFilterToggle,
   onPatchChange,
@@ -86,6 +88,7 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
                   defaultValue={defaultPatch}
                   withCheckIcon={false}
                   allowDeselect={false}
+                  disabled={disabled}
                 />
               </Tooltip>
             </Group>
@@ -99,6 +102,7 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
         onSelect={onUnitSelect}
         value={selectedUnitId ?? null}
         position={position === 1 ? 0 : 1}
+        disabled={disabled}
         testId={`dps-unit-search-${position}`}
       />
     </>
