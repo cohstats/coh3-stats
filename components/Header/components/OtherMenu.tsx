@@ -32,8 +32,10 @@ const OtherMenu = ({
   classes,
   close,
   t,
+  view,
 }: {
   classes: Record<string, string>;
+  view: "mobile" | "desktop";
   close?: () => void;
   t: (key: string) => string;
 }) => {
@@ -148,12 +150,7 @@ const OtherMenu = ({
     </div>
   );
 
-  return (
-    <>
-      {mobileView}
-      {desktopView}
-    </>
-  );
+  return view === "mobile" ? mobileView : desktopView;
 };
 
 export default OtherMenu;

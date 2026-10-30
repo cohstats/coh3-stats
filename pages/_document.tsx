@@ -12,7 +12,9 @@ export default class _Document extends Document {
     return (
       <Html {...htmlProps}>
         <Head>
-          <ColorSchemeScript defaultColorScheme="dark" />
+          {/* Same key as localStorageColorSchemeManager in _app.tsx, otherwise the saved scheme
+              is applied only after hydration */}
+          <ColorSchemeScript defaultColorScheme="dark" localStorageKey="mantine-color-scheme" />
           {/* Add no-js fallback CSS with noscript tag */}
           <noscript>
             <link rel="stylesheet" href="/no-js-fallback.css" />

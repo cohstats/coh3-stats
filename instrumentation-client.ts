@@ -8,15 +8,6 @@ import { sentryDataCollection } from "./src/sentry/data-collection";
 Sentry.init({
   dsn: "https://963a73a12146449490c37b42cfc1419f@o4504995920543744.ingest.us.sentry.io/4504995924344832",
 
-  // Add optional integrations for additional features
-  integrations: [
-    Sentry.replayIntegration({
-      maskAllText: false,
-      maskAllInputs: false,
-      blockAllMedia: false,
-    }),
-  ],
-
   // Keep the v10 (sendDefaultPii: false) data collection behaviour
   dataCollection: sentryDataCollection,
 
@@ -55,5 +46,38 @@ Sentry.init({
     "FirebaseError: Installations: Firebase Installation is not registered.",
   ],
 });
+
+// Replay is lazy loaded from the Sentry CDN after the page has loaded and the browser is idle,
+// so loading it and recording don't compete with page load and early interactions (INP).
+const loadReplay = async () => {
+  try {
+    const replayIntegration = await Sentry.lazyLoadIntegration("replayIntegration");
+    Sentry.addIntegration(
+      replayIntegration({
+        maskAllText: false,
+        maskAllInputs: false,
+        blockAllMedia: false,
+      }),
+    );
+  } catch {
+    // Loading from the Sentry CDN can fail (ad-blockers, offline); replays are optional.
+  }
+};
+
+if (typeof window !== "undefined") {
+  const scheduleReplay = () => {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(() => loadReplay(), { timeout: 10000 });
+    } else {
+      setTimeout(loadReplay, 5000);
+    }
+  };
+
+  if (document.readyState === "complete") {
+    scheduleReplay();
+  } else {
+    window.addEventListener("load", scheduleReplay, { once: true });
+  }
+}
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

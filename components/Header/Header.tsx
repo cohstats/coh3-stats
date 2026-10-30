@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Burger,
   Container,
@@ -75,9 +75,9 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
             </Group>
             <LeaderboardsMenuMobile classes={classes} close={close} t={t} />
 
-            <StatisticsMenu classes={classes} close={close} t={t} />
+            <StatisticsMenu classes={classes} close={close} t={t} view="mobile" />
 
-            <ExplorerMenu close={close} classes={classes} t={t} />
+            <ExplorerMenu close={close} classes={classes} t={t} view="mobile" />
 
             <Anchor
               component={Link}
@@ -115,7 +115,7 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
               {t("mainMenu.news")}
             </Anchor>
 
-            <OtherMenu close={close} classes={classes} t={t} />
+            <OtherMenu close={close} classes={classes} t={t} view="mobile" />
 
             <Anchor
               component={Link}
@@ -174,8 +174,8 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
             <LeaderboardsMenu t={t} />
           </HoverCard.Dropdown>
         </HoverCard>
-        <StatisticsMenu classes={classes} t={t} />
-        <ExplorerMenu classes={classes} close={() => null} t={t} />
+        <StatisticsMenu classes={classes} t={t} view="desktop" />
+        <ExplorerMenu classes={classes} close={() => null} t={t} view="desktop" />
         <Anchor
           component={LinkWithOutPrefetch}
           href={getLiveGamesRoute()}
@@ -192,7 +192,7 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
         <Anchor component={Link} href={getNewsRoute()} className={classes.link}>
           {t("mainMenu.news")}
         </Anchor>
-        <OtherMenu classes={classes} close={() => null} t={t} />
+        <OtherMenu classes={classes} close={() => null} t={t} view="desktop" />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
           {t("mainMenu.about")}
         </Anchor>
@@ -219,8 +219,31 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
   );
 };
 
+// Same breakpoint as .hiddenMobile in Header.module.css
+const MOBILE_MEDIA_QUERY = "(max-width: 64em)";
+
+/**
+ * Returns undefined until mounted, so SSR and hydration render both views (CSS hides
+ * the other one). After mount only the matching view stays in the tree, which keeps
+ * the hidden view's components out of the mobile interactions (INP).
+ */
+const useIsMobile = (): boolean | undefined => {
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(MOBILE_MEDIA_QUERY);
+    setIsMobile(mediaQuery.matches);
+    const onChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    mediaQuery.addEventListener("change", onChange);
+    return () => mediaQuery.removeEventListener("change", onChange);
+  }, []);
+
+  return isMobile;
+};
+
 export const Header: React.FC<HeaderProps> = () => {
   const { t } = useTranslation("common");
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -241,8 +264,8 @@ export const Header: React.FC<HeaderProps> = () => {
               </Title>
             </Group>
           </Anchor>
-          <DesktopView t={t} />
-          <MobileView t={t} />
+          {isMobile !== true && <DesktopView t={t} />}
+          {isMobile !== false && <MobileView t={t} />}
         </Container>
       </header>
     </>

@@ -19,12 +19,13 @@ import {
 } from "@tabler/icons-react";
 
 interface StatisticsMenuProps {
+  view: "mobile" | "desktop";
   classes: Record<string, string>;
   close?: () => void;
   t: (key: string) => string;
 }
 
-const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) => {
+const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t, view }) => {
   const mobileView = (
     <div className={classes.hiddenDesktop}>
       <Accordion chevronPosition="right">
@@ -137,12 +138,7 @@ const StatisticsMenu: React.FC<StatisticsMenuProps> = ({ classes, close, t }) =>
     </div>
   );
 
-  return (
-    <>
-      {mobileView}
-      {desktopView}
-    </>
-  );
+  return view === "mobile" ? mobileView : desktopView;
 };
 
 export default StatisticsMenu;
