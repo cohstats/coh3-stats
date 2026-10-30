@@ -6,7 +6,12 @@ import { useUncontrolled } from "@mantine/hooks";
 import { raceType } from "../../src/coh3/coh3-types";
 import { generateWeeklyAverages } from "../../src/charts/utils";
 import HelperIcon from "../icon/helper";
-import { getNivoTooltipTheme, TimeSeriesDisplayType } from "./charts-components-utils";
+import {
+  getNivoTooltipTheme,
+  offscreenChartCardStyle,
+  showLinePoints,
+  TimeSeriesDisplayType,
+} from "./charts-components-utils";
 
 const InnerWinRateLineChartCard = ({
   data,
@@ -49,7 +54,13 @@ const InnerWinRateLineChartCard = ({
   });
 
   return (
-    <Card p="md" shadow="sm" w={width} withBorder style={{ overflow: "visible" }}>
+    <Card
+      p="md"
+      shadow="sm"
+      w={width}
+      withBorder
+      style={{ overflow: "visible", ...offscreenChartCardStyle }}
+    >
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Group>
@@ -126,7 +137,7 @@ const InnerWinRateLineChartCard = ({
           curve="monotoneX"
           colors={{ datum: "color" }}
           //colors={{ scheme: "category10" }}
-          enablePoints={true}
+          enablePoints={showLinePoints(chartData)}
           pointSize={8}
           // pointColor={{ theme: "background" }}
           // pointBorderWidth={2}

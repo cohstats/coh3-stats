@@ -4,6 +4,22 @@ import { raceType } from "../../src/coh3/coh3-types";
 /** "Display as" of the time series charts. */
 export type TimeSeriesDisplayType = "days" | "weeks";
 
+/**
+ * Points of the line charts are SVG circles, with a long date range there are thousands of them
+ * and every re-render gets slow. The mesh still shows the tooltip on hover without them.
+ */
+export const showLinePoints = (series: Array<{ data: Array<unknown> }>) =>
+  series.every((serie) => serie.data.length <= 40);
+
+/**
+ * The big time series cards are below the fold, the browser skips their layout and paint
+ * until they get close to the viewport. The height is the one of the rendered card.
+ */
+export const offscreenChartCardStyle = {
+  contentVisibility: "auto",
+  containIntrinsicSize: "auto 450px",
+} as const;
+
 export const getNivoTooltipTheme = (colorScheme: "dark" | "light" | "auto") => {
   if (colorScheme === "dark") {
     return {

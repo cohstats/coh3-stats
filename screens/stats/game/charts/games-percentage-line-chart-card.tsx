@@ -6,6 +6,7 @@ import { generateWeeklyAverages } from "../../../../src/charts/utils";
 import {
   chartDataObjectsForTimeSeries,
   getNivoTooltipTheme,
+  offscreenChartCardStyle,
   TimeSeriesDisplayType,
 } from "../../../../components/charts/charts-components-utils";
 import {
@@ -82,7 +83,13 @@ const GamesPercentageLineChartCard = ({
   });
 
   return (
-    <Card p="md" shadow="sm" w={1270} withBorder style={{ overflow: "visible" }}>
+    <Card
+      p="md"
+      shadow="sm"
+      w={1270}
+      withBorder
+      style={{ overflow: "visible", ...offscreenChartCardStyle }}
+    >
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Group>

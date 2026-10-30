@@ -6,6 +6,8 @@ import { generateWeeklyAverages } from "../../../../src/charts/utils";
 import {
   chartDataObjectsForTimeSeries,
   getNivoTooltipTheme,
+  offscreenChartCardStyle,
+  showLinePoints,
   TimeSeriesDisplayType,
 } from "../../../../components/charts/charts-components-utils";
 import {
@@ -75,7 +77,13 @@ const GamesLineChartCard = ({
   });
 
   return (
-    <Card p="md" shadow="sm" w={1270} withBorder style={{ overflow: "visible" }}>
+    <Card
+      p="md"
+      shadow="sm"
+      w={1270}
+      withBorder
+      style={{ overflow: "visible", ...offscreenChartCardStyle }}
+    >
       <Card.Section withBorder inheritPadding py="xs">
         <Group justify={"space-between"}>
           <Group>
@@ -146,7 +154,7 @@ const GamesLineChartCard = ({
           curve="monotoneX"
           colors={{ datum: "color" }}
           //colors={{ scheme: "category10" }}
-          enablePoints={true}
+          enablePoints={showLinePoints(chartData)}
           pointSize={8}
           // pointColor={{ theme: "background" }}
           // pointBorderWidth={2}

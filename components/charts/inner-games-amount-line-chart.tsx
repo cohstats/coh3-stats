@@ -3,7 +3,12 @@ import { ResponsiveLine } from "@nivo/line";
 import { Card, Group, Select, Title, useMantineColorScheme, Text } from "@mantine/core";
 import { useUncontrolled } from "@mantine/hooks";
 import { generateWeeklyAverages } from "../../src/charts/utils";
-import { getNivoTooltipTheme, TimeSeriesDisplayType } from "./charts-components-utils";
+import {
+  getNivoTooltipTheme,
+  offscreenChartCardStyle,
+  showLinePoints,
+  TimeSeriesDisplayType,
+} from "./charts-components-utils";
 import HelperIcon from "../icon/helper";
 
 const lineColor = "#4C9BE8";
@@ -46,7 +51,7 @@ const InnerGamesAmountLineChartCard = ({
       shadow="sm"
       w={1270}
       withBorder
-      style={{ overflow: "visible" }}
+      style={{ overflow: "visible", ...offscreenChartCardStyle }}
       data-testid="stats-games-amount-over-time"
     >
       <Card.Section withBorder inheritPadding py="xs">
@@ -111,7 +116,7 @@ const InnerGamesAmountLineChartCard = ({
           }}
           curve="monotoneX"
           colors={{ datum: "color" }}
-          enablePoints={true}
+          enablePoints={showLinePoints(chartData)}
           pointSize={8}
           pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
