@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { Container, Title, Text, Space, Anchor, List } from "@mantine/core";
 import React, { useEffect } from "react";
 import { generateKeywordsString } from "../../src/seo-utils";
@@ -12,17 +13,20 @@ const PrivacyPolicy: NextPage = () => {
 
   return (
     <div>
-      <NextSeo
-        title="Privacy Policy - COH3 Stats"
-        description="Privacy Policy for COH Stats - Learn how we collect and use information on coh3stats.com and the COH3 Stats Desktop App."
-        canonical={`${config.SITE_URL}/legal/privacy`}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: generateKeywordsString(["privacy policy", "data protection", "gdpr"]),
-          },
-        ]}
-      />
+      <Head>
+        {generateNextSeo({
+          title: "Privacy Policy",
+          description:
+            "Privacy Policy for COH Stats - Learn how we collect and use information on coh3stats.com and the COH3 Stats Desktop App.",
+          canonical: `${config.SITE_URL}/legal/privacy`,
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: generateKeywordsString(["privacy policy", "data protection", "gdpr"]),
+            },
+          ],
+        })}
+      </Head>
       <Container size="md" py="xl">
         <Title order={1} mb="xl">
           COH Stats — Privacy Policy

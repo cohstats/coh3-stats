@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import Error from "next/error";
 import { useEffect } from "react";
 import { Container } from "@mantine/core";
@@ -42,24 +43,26 @@ const MapDetail: NextPage<MapDetailProps> = ({ map, teamComposition, latestPatch
   }
 
   const path = getExplorerMapRoute(map.id);
-  const title = `${map.name} - COH3 Map | COH3 Stats`;
+  const title = `${map.name} - COH3 Map`;
   // The descriptions carry escaped newlines from the data file, those have no place in a meta tag.
   const description = (map.description ?? t("meta.description")).replace(/\\n/g, " ").trim();
 
   return (
     <>
-      <NextSeo
-        title={title}
-        description={description.slice(0, 160)}
-        canonical={`${config.SITE_URL}${path}`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title,
           description: description.slice(0, 160),
-          url: `${config.SITE_URL}${path}`,
-          images: [{ url: getMpMapImageUrl(map.id), alt: map.name }],
-        }}
-        languageAlternates={generateLanguageAlternates(path)}
-      />
+          canonical: `${config.SITE_URL}${path}`,
+          openGraph: {
+            title,
+            description: description.slice(0, 160),
+            url: `${config.SITE_URL}${path}`,
+            images: [{ url: getMpMapImageUrl(map.id), alt: map.name }],
+          },
+          languageAlternates: generateLanguageAlternates(path),
+        })}
+      </Head>
       <Container size="lg" p={0}>
         <MapDetailPage
           map={map}

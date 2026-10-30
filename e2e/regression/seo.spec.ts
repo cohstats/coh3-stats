@@ -73,8 +73,12 @@ test.describe("SEO - indexability", () => {
   test("should keep the search page out of the index", async ({ page }) => {
     await page.goto("/search");
 
-    // NextSeo emits its default `index,follow` first, the page's own override second.
-    await expect(page.locator('meta[name="robots"][content*="nofollow"]')).toHaveCount(1);
+    // `nofollow: true` turns the one robots tag into `index,nofollow` (no second override tag).
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "index,nofollow",
+    );
   });
 
   test("should let the content pages be indexed", async ({ page }) => {

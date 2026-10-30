@@ -1,4 +1,5 @@
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { NextPage } from "next";
 import {
   Anchor,
@@ -90,7 +91,7 @@ const Explorer: NextPage = () => {
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <Container size="md">
         <Stack mb={24}>
           <Title order={1}>{t("explorer.title")}</Title>

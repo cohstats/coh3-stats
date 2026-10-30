@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import config from "../../config";
@@ -55,7 +56,7 @@ const ApiReferenceReact = dynamic(
 const RelicApiDocs: NextPage = () => {
   const { asPath } = useRouter();
 
-  const pageTitle = "COH3 Stats - Relic API Documentation";
+  const pageTitle = "Relic API Documentation";
   const description = "Unofficial documentation for the Relic Company of Heroes 3 Community API.";
   const keywords = generateKeywordsString([
     "coh3 api",
@@ -71,18 +72,20 @@ const RelicApiDocs: NextPage = () => {
 
   return (
     <div>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}${asPath}`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}${asPath}`,
-          type: "website",
-        }}
-        additionalMetaTags={[{ name: "keywords", content: keywords }]}
-      />
+          description,
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}${asPath}`,
+            type: "website",
+          },
+          additionalMetaTags: [{ name: "keywords", content: keywords }],
+        })}
+      </Head>
       <div
         style={{
           minHeight: "600px",

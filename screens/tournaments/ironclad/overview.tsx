@@ -2,7 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import {
   Anchor,
   Button,
@@ -134,13 +135,15 @@ const IroncladOverviewScreen: NextPage<IroncladOverviewPageProps> = ({ data }) =
 
   return (
     <>
-      <NextSeo
-        title={title}
-        description={description}
-        canonical={`${config.SITE_URL}${path}`}
-        openGraph={{ title, description, url: `${config.SITE_URL}${path}`, type: "website" }}
-        languageAlternates={generateLanguageAlternates(path)}
-      />
+      <Head>
+        {generateNextSeo({
+          title,
+          description,
+          canonical: `${config.SITE_URL}${path}`,
+          openGraph: { title, description, url: `${config.SITE_URL}${path}`, type: "website" },
+          languageAlternates: generateLanguageAlternates(path),
+        })}
+      </Head>
       <Container size="lg" p="md" data-testid="ironclad-overview">
         <Stack gap="xl">
           <IroncladHeader />

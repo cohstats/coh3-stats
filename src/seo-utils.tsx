@@ -1,6 +1,5 @@
-import { NextSeoProps } from "next-seo";
+import { NextSeoProps } from "next-seo/pages";
 import { TFunction } from "next-i18next/pages";
-import React from "react";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
 import { localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
@@ -29,35 +28,9 @@ export const generateKeywordsString = (keywords: string[] = []) => {
 const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 
 /**
- * Generates alternate language link elements for SEO (legacy Head component)
+ * Generates the `languageAlternates` for `generateNextSeo`
  * @param currentPath - The current path (usually from Next.js router's asPath)
- * @returns Array of alternate language link elements
- */
-export const generateAlternateLanguageLinks = (currentPath: string): React.ReactNode => {
-  return (
-    <>
-      {SUPPORTED_LANGUAGES.map((lang: string) => (
-        <link
-          key={lang}
-          rel="alternate"
-          hrefLang={lang}
-          href={`${config.SITE_URL}${lang === nextI18NextConfig.i18n.defaultLocale ? "" : `/${lang}`}${currentPath}`}
-        />
-      ))}
-      <link
-        key="x-default"
-        rel="alternate"
-        hrefLang="x-default"
-        href={`${config.SITE_URL}${currentPath}`}
-      />
-    </>
-  );
-};
-
-/**
- * Generates language alternates for next-seo format
- * @param currentPath - The current path (usually from Next.js router's asPath)
- * @returns Array of language alternate objects for next-seo
+ * @returns Array of language alternate objects, including x-default
  */
 export const generateLanguageAlternates = (currentPath: string) => {
   const alternates = SUPPORTED_LANGUAGES.map((lang: string) => ({
@@ -173,6 +146,8 @@ export const createPlayerSEO = (
     title,
     description,
     canonical,
+    // Renders a single `index,nofollow` robots tag
+    nofollow: true,
     openGraph: {
       title,
       description,
@@ -183,10 +158,6 @@ export const createPlayerSEO = (
       {
         name: "keywords",
         content: generateKeywordsString(keywords),
-      },
-      {
-        name: "robots",
-        content: "nofollow",
       },
     ],
     languageAlternates: generateLanguageAlternates(`/players/${profileId}`),

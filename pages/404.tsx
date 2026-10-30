@@ -1,5 +1,6 @@
 import { Stack } from "@mantine/core";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
 
@@ -8,12 +9,14 @@ export default function Custom404() {
 
   return (
     <>
-      <NextSeo
-        title="Page Not Found"
-        description="The page you are looking for could not be found."
-        noindex={true}
-        nofollow={true}
-      />
+      <Head>
+        {generateNextSeo({
+          title: "Page Not Found",
+          description: "The page you are looking for could not be found.",
+          noindex: true,
+          nofollow: true,
+        })}
+      </Head>
       <Stack align="center" justify="center" style={{ minHeight: "20vh" }}>
         <h1>{t("errors.404.title")}</h1>
         <h3>{t("errors.404.message")}</h3>

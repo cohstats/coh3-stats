@@ -1,5 +1,6 @@
-/** @type {import("next-seo").DefaultSeoProps} */
-const defaultSEO = {
+import type { DefaultSeoProps } from "next-seo/pages";
+
+const defaultSEO: DefaultSeoProps = {
   titleTemplate: "%s | COH3 Stats",
   defaultTitle: "COH3 Stats - Company of Heroes 3 Statistics",
   description: "Company of Heroes 3 statistics, leaderboards, player profiles, and game data.",
@@ -114,4 +115,4 @@ const defaultSEO = {
   ],
 };
 
-module.exports = defaultSEO;
+export default defaultSEO;

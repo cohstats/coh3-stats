@@ -29,7 +29,7 @@ import { UserConfig } from "next-i18next/pages";
 import nextI18NextConfig from "../next-i18next.config";
 import { useRouter } from "next/router";
 import { getCookie } from "../src/utils";
-import { DefaultSeo } from "next-seo";
+import { generateDefaultSeo } from "next-seo/pages";
 import defaultSEO from "../next-seo.config";
 
 // Keep the Mantine 8.x look after the 9.x upgrade (default radius was "sm" in 8.x)
@@ -151,9 +151,10 @@ function App(props: AppProps) {
 
   return (
     <>
-      <DefaultSeo {...defaultSEO} />
       <Head>
-        {/* Keep only the opensearch link as it's not covered by next-seo */}
+        {/* Sitewide defaults, must be generated before the page sets its own SEO tags */}
+        {generateDefaultSeo(defaultSEO)}
+        {/* The opensearch link is not covered by next-seo */}
         <link
           type="application/opensearchdescription+xml"
           rel="search"

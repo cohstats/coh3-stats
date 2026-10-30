@@ -1,5 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import {
   Accordion,
   Card,
@@ -41,7 +42,7 @@ interface ChallengesProps {
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
   const { asPath } = useRouter();
 
-  const pageTitle = "COH3 Stats - Challenges";
+  const pageTitle = "Challenges";
   const description =
     "CoH 3 Challenges. Browser through all the challenges and checkout requirements for completion.";
   const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
@@ -57,24 +58,26 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
 
   return (
     <>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}${asPath}`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}${asPath}`,
-          type: "website",
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: keywords,
+          description,
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}${asPath}`,
+            type: "website",
           },
-        ]}
-        languageAlternates={generateLanguageAlternates(asPath)}
-      />
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: keywords,
+            },
+          ],
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
+      </Head>
       <Container size={"lg"} p={0}>
         <Grid>
           <Grid.Col span={{ md: 12, lg: 6 }}>

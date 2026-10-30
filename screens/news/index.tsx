@@ -27,7 +27,8 @@ import {
 } from "@tabler/icons-react";
 // import {AnalyticsNewsPageView} from "../../src/firebase/analytics";
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { createPageSEO } from "../../src/seo-utils";
 import classes from "./News.module.css";
 import { AnalyticsNewsPageView } from "../../src/firebase/analytics";
@@ -312,22 +313,24 @@ const SteamNewsPage: NextPage<{
   try {
     return (
       <>
-        <NextSeo
-          {...seoProps}
-          openGraph={{
-            ...seoProps.openGraph,
-            images: image
-              ? [
-                  {
-                    url: image,
-                    width: 800,
-                    height: 600,
-                    alt: "COH3 News Image",
-                  },
-                ]
-              : seoProps.openGraph?.images,
-          }}
-        />
+        <Head>
+          {generateNextSeo({
+            ...seoProps,
+            openGraph: {
+              ...seoProps.openGraph,
+              images: image
+                ? [
+                    {
+                      url: image,
+                      width: 800,
+                      height: 600,
+                      alt: "COH3 News Image",
+                    },
+                  ]
+                : seoProps.openGraph?.images,
+            },
+          })}
+        </Head>
         <Container size={"md"} px={0}>
           <Title>{t("pageTitle")}</Title>
           <NewsCategoryFilter

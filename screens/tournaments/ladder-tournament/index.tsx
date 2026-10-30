@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { Container, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
@@ -44,13 +45,15 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
       : t("meta.seasonDescription", { season: seasonId });
 
   const seo = (
-    <NextSeo
-      title={title}
-      description={description}
-      canonical={`${config.SITE_URL}${path}`}
-      openGraph={{ title, description, url: `${config.SITE_URL}${path}`, type: "website" }}
-      languageAlternates={generateLanguageAlternates(path)}
-    />
+    <Head>
+      {generateNextSeo({
+        title,
+        description,
+        canonical: `${config.SITE_URL}${path}`,
+        openGraph: { title, description, url: `${config.SITE_URL}${path}`, type: "website" },
+        languageAlternates: generateLanguageAlternates(path),
+      })}
+    </Head>
   );
 
   if (!data) {

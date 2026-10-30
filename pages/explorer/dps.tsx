@@ -18,7 +18,8 @@ import React, { useEffect } from "react";
 import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
 
@@ -91,7 +92,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   const description = t("dps.meta.description");
   const keywords = t("dps.meta.keywords", { returnObjects: true }) as string[];
 
-  const seoProps = {
+  const seoProps: NextSeoProps = {
     title,
     description,
     canonical: `${config.SITE_URL}/explorer/dps`,
@@ -99,7 +100,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
       title,
       description,
       url: `${config.SITE_URL}/explorer/dps`,
-      type: "website" as const,
+      type: "website",
       images: [
         {
           url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
@@ -121,7 +122,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       {/* Render the full layout right away (instead of a small loader) to avoid layout shift */}
       <DpsPageComponent {...dbpsData} isLoading={isLoading} />
     </>

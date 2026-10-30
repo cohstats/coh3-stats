@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import Error from "next/error";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useRouter } from "next/router";
@@ -421,7 +422,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
   const metaDescription = createMetaDescription();
   const metaKeywords = createEnhancedKeywords();
   const finalStandName = t("unitMeta.finalStandName");
-  // The <title> tag goes through the sitewide "%s | COH3 Stats" template (see `next-seo.config.js`),
+  // The <title> tag goes through the sitewide "%s | COH3 Stats" template (see `next-seo.config.ts`),
   // so it must NOT repeat the suffix itself - only `openGraph.title` (which bypasses the template).
   const pageTitle = isFinalStand
     ? `${resolvedSquad.ui.screenName} - ${finalStandName} ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")}`
@@ -430,53 +431,55 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
 
   return (
     <>
-      <NextSeo
-        title={pageTitle}
-        description={metaDescription}
-        canonical={`${config.SITE_URL}${asPath}`}
-        // Final Stand units are DLC only content, we don't want them in the search results.
-        noindex={isFinalStand}
-        openGraph={{
-          title: ogTitle,
+      <Head>
+        {generateNextSeo({
+          title: pageTitle,
           description: metaDescription,
-          url: `${config.SITE_URL}${asPath}`,
-          siteName: "COH3 Stats",
-          locale: locale,
-          // Flag the DLC in Open Graph, so link previews / crawlers know where the unit comes from.
-          ...(isFinalStand
-            ? {
-                type: "article",
-                article: {
-                  section: finalStandName,
-                  tags: [finalStandName, "Company of Heroes 3", "DLC"],
-                },
-              }
-            : {}),
-          images: [
+          canonical: `${config.SITE_URL}${asPath}`,
+          // Final Stand units are DLC only content, we don't want them in the search results.
+          noindex: isFinalStand,
+          openGraph: {
+            title: ogTitle,
+            description: metaDescription,
+            url: `${config.SITE_URL}${asPath}`,
+            siteName: "COH3 Stats",
+            locale,
+            // Flag the DLC in Open Graph, so link previews / crawlers know where the unit comes from.
+            ...(isFinalStand
+              ? {
+                  type: "article",
+                  article: {
+                    section: finalStandName,
+                    tags: [finalStandName, "Company of Heroes 3", "DLC"],
+                  },
+                }
+              : {}),
+            images: [
+              {
+                url: getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`),
+                width: 256,
+                height: 256,
+                alt: `${resolvedSquad.ui.screenName} unit icon`,
+              },
+            ],
+          },
+          twitter: {
+            cardType: "summary",
+          },
+          additionalMetaTags: [
             {
-              url: getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`),
-              width: 256,
-              height: 256,
-              alt: `${resolvedSquad.ui.screenName} unit icon`,
+              name: "keywords",
+              content: metaKeywords,
             },
+            {
+              name: "author",
+              content: "COH3 Stats",
+            },
+            // The `robots` tag is rendered by generateNextSeo itself (see the `noindex` prop above).
           ],
-        }}
-        twitter={{
-          cardType: "summary",
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: metaKeywords,
-          },
-          {
-            name: "author",
-            content: "COH3 Stats",
-          },
-          // The `robots` tag is rendered by NextSeo itself (see the `noindex` prop above).
-        ]}
-        languageAlternates={generateLanguageAlternates(asPath)}
-      />
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
+      </Head>
       <Container fluid pl={0} pr={0} pt={"md"} data-testid="unit-detail-container">
         <Grid columns={3} grow>
           <Grid.Col span={3}>

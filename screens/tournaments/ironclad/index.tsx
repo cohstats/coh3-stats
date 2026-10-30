@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { Box, Container, Group, Paper, Progress, Stack, Tabs, Text, Title } from "@mantine/core";
 import { IconTrophyFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
@@ -145,13 +146,15 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
   const description = t("meta.ironcladTournamentDescription", { name });
 
   const seo = (
-    <NextSeo
-      title={title}
-      description={description}
-      canonical={`${config.SITE_URL}${path}`}
-      openGraph={{ title, description, url: `${config.SITE_URL}${path}`, type: "website" }}
-      languageAlternates={generateLanguageAlternates(path)}
-    />
+    <Head>
+      {generateNextSeo({
+        title,
+        description,
+        canonical: `${config.SITE_URL}${path}`,
+        openGraph: { title, description, url: `${config.SITE_URL}${path}`, type: "website" },
+        languageAlternates: generateLanguageAlternates(path),
+      })}
+    </Head>
   );
 
   if (!data) {
