@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { startTransition, useEffect, useState } from "react";
 import {
   AnalyticsGameStatsModeSelection,
   AnalyticsGameStatsPageView,
@@ -124,7 +124,8 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
         : defaultMode;
 
     if (urlMode !== mode) {
-      setMode(urlMode);
+      // Same as in selectMode - an urgent update here would render all the charts in one go
+      startTransition(() => setMode(urlMode));
     }
   }, [query]);
 
@@ -186,7 +187,8 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       AnalyticsMapStatsModeSelection(value);
     }
 
-    setMode(value);
+    // Switching the mode re-renders every chart, as a transition it doesn't block the click
+    startTransition(() => setMode(value));
     push({ query: { ...query, mode: value } }, undefined, {
       shallow: true,
     });

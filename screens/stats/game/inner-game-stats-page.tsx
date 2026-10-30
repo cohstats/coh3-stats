@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { startTransition, useEffect, useMemo, useState } from "react";
 import { getStatsData } from "../../../src/apis/coh3stats-api";
 import {
   analysisFilterType,
@@ -97,7 +97,10 @@ const InnerGameStatsPage = ({
   const [loading, setLoading] = useState<boolean>(false);
   // One "Display as" for all the time series charts - switching it on one switches all of them
   const [displayBy, setDisplayBy] = useState<TimeSeriesDisplayType>("days");
-  const displayByProps = { displayBy, onDisplayByChange: setDisplayBy };
+  // Re-rendering all the time series charts is heavy, as a transition the select closes right away
+  const onDisplayByChange = (value: TimeSeriesDisplayType) =>
+    startTransition(() => setDisplayBy(value));
+  const displayByProps = { displayBy, onDisplayByChange };
 
   useEffect(() => {
     (async () => {
