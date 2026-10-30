@@ -1,6 +1,10 @@
 import { COH3SteamNewsType, getCOH3SteamNews, NewsItem } from "../apis/steam-api";
 import { getLocalNews } from "./get-local-news";
 
+// Covers the whole COH3 Steam history (201 posts in Oct 2026), so /news/[id] finds every post.
+// Raise it when Steam gets close. The result is cached in memory.
+const ALL_STEAM_NEWS_COUNT = 300;
+
 const sortNewsByDateDesc = (items: NewsItem[]): NewsItem[] => {
   return [...items].sort((a, b) => (b.date || 0) - (a.date || 0));
 };
@@ -12,7 +16,7 @@ const sortNewsByDateDesc = (items: NewsItem[]): NewsItem[] => {
 const getNews = async (count?: number): Promise<COH3SteamNewsType> => {
   // Fetch enough Steam items so merge+slice can still fill `count` with local mix.
   // Full feed when no count (news page pagination handles its own slice).
-  const steamNews = await getCOH3SteamNews(count ?? 100);
+  const steamNews = await getCOH3SteamNews(count ?? ALL_STEAM_NEWS_COUNT);
   const localNews = getLocalNews();
 
   const merged = sortNewsByDateDesc([...steamNews.newsitems, ...localNews]);

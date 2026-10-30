@@ -34,11 +34,11 @@
     "liveGames": "ライブゲーム",
     "desktopApp": "デスクトップアプリ",
     "tournaments": "トーナメント",
+    "news": "ニュース",
     "other": "その他",
     "otherMenu": {
       "tiers": "ランクティア",
       "openData": "オープンデータ",
-      "coh3News": "COH3 ニュース",
       "playerExport": "プレイヤーエクスポート API"
     },
     "about": "このサイトについて",

@@ -34,11 +34,11 @@
     "liveGames": "Активные игры",
     "desktopApp": "Приложение",
     "tournaments": "Турниры",
+    "news": "Новости",
     "other": "Другое",
     "otherMenu": {
       "tiers": "Система рангов",
       "openData": "Открытые данные",
-      "coh3News": "Новости COH3",
       "playerExport": "Экспорт API игрока"
     },
     "about": "О нас",

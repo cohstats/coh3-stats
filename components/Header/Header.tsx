@@ -90,15 +90,6 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
 
             <Anchor
               component={Link}
-              href={getNewsRoute()}
-              className={classes.link}
-              onClick={() => close()}
-            >
-              {t("mainMenu.otherMenu.coh3News")}{" "}
-            </Anchor>
-
-            <Anchor
-              component={Link}
               href={getDesktopAppRoute()}
               className={classes.link}
               onClick={() => close()}
@@ -113,6 +104,15 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
               onClick={() => close()}
             >
               {t("mainMenu.tournaments")}
+            </Anchor>
+
+            <Anchor
+              component={Link}
+              href={getNewsRoute()}
+              className={classes.link}
+              onClick={() => close()}
+            >
+              {t("mainMenu.news")}
             </Anchor>
 
             <OtherMenu close={close} classes={classes} t={t} />
@@ -188,6 +188,9 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
         </Anchor>
         <Anchor component={Link} href={getTournamentsRoute()} className={classes.link}>
           {t("mainMenu.tournaments")}
+        </Anchor>
+        <Anchor component={Link} href={getNewsRoute()} className={classes.link}>
+          {t("mainMenu.news")}
         </Anchor>
         <OtherMenu classes={classes} close={() => null} t={t} />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>

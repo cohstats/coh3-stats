@@ -18,5 +18,26 @@
   "steamNewsLink": "Steam新闻",
   "postedBy": "发布者",
   "on": "于",
-  "findGamesOn": "您可以在此找到所有文章"
+  "findGamesOn": "您可以在此找到所有文章",
+  "categories": {
+    "all": "全部",
+    "patchNotes": "补丁说明",
+    "news": "新闻",
+    "dlcAndOffers": "DLC 与优惠",
+    "communityEvents": "社区活动",
+    "tournaments": "锦标赛",
+    "coh3stats": "COH3 Stats"
+  },
+  "noNewsInCategory": "此类别暂无新闻。",
+  "viewMode": {
+    "label": "视图",
+    "full": "全文",
+    "preview": "预览",
+    "headlines": "仅标题"
+  },
+  "readMore": "阅读更多",
+  "showLess": "收起",
+  "allNews": "全部新闻",
+  "newerArticle": "较新",
+  "olderArticle": "较旧"
 }

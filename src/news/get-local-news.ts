@@ -1,5 +1,6 @@
 import { NewsItem } from "../apis/steam-api";
 import localNews, { LocalNewsItem } from "./data/local-news";
+import { isNewsCategory } from "./news-categories";
 
 const extractImageFromContents = (contents?: string): string | null => {
   if (!contents) return null;
@@ -28,6 +29,8 @@ const normalizeLocalNewsItem = (raw: LocalNewsItem): NewsItem => {
     url,
     contents,
     ...(typeof raw.imageOnly === "boolean" ? { imageOnly: raw.imageOnly } : {}),
+    // Unknown categories are dropped, undefined is not serializable in SSR props.
+    ...(isNewsCategory(raw.category) ? { category: raw.category } : {}),
   };
 };
 

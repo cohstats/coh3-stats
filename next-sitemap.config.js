@@ -4,7 +4,8 @@ module.exports = {
   // generateRobotsTxt: true, // already generated
   sitemapSize: 10000,
   generateIndexSitemap: false, // we don't need multiple files
-  exclude: ["/tests/*", "/admin/*"],
+  // The news sitemap is its own file, listed in robots.txt.
+  exclude: ["/tests/*", "/admin/*", "/news-sitemap.xml"],
   changefreq: "weekly",
   additionalPaths: async (config) => {
     const result = [];

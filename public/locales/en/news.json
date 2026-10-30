@@ -18,5 +18,26 @@
   "steamNewsLink": "Steam news",
   "postedBy": "Posted by",
   "on": "on",
-  "findGamesOn": "You can find all the articles on"
+  "findGamesOn": "You can find all the articles on",
+  "categories": {
+    "all": "All",
+    "patchNotes": "Patch Notes",
+    "news": "News",
+    "dlcAndOffers": "DLC & Offers",
+    "communityEvents": "Community Events",
+    "tournaments": "Tournaments",
+    "coh3stats": "COH3 Stats"
+  },
+  "noNewsInCategory": "No news in this category yet.",
+  "viewMode": {
+    "label": "View",
+    "full": "Full",
+    "preview": "Preview",
+    "headlines": "Headlines"
+  },
+  "readMore": "Read more",
+  "showLess": "Show less",
+  "allNews": "All news",
+  "newerArticle": "Newer",
+  "olderArticle": "Older"
 }

@@ -10,7 +10,6 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import {
-  getNewsRoute,
   getOpenDataRoute,
   getPlayerExportRoute,
   getRankingTiersRoute,
@@ -26,7 +25,6 @@ import {
   IconAward,
   IconUsers,
   IconVideo,
-  IconNews,
 } from "@tabler/icons-react";
 import config from "../../../config";
 
@@ -101,12 +99,6 @@ const OtherMenu = ({
               <IconAward size={16} />
               <Anchor component={Link} href={getRankingTiersRoute()}>
                 {t("mainMenu.otherMenu.tiers")}
-              </Anchor>
-            </Group>
-            <Group gap={"xs"}>
-              <IconNews size={16} />
-              <Anchor component={Link} href={getNewsRoute()}>
-                {t("mainMenu.otherMenu.coh3News")}
               </Anchor>
             </Group>
             <Group gap={"xs"}>

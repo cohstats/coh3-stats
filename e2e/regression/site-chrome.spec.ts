@@ -27,6 +27,7 @@ test.describe("Site chrome - header (desktop)", () => {
       "/live-games?type=4v4",
       "/desktop-app",
       "/tournaments",
+      "/news",
       "/about",
     ]) {
       await expect(chrome.menuLink(href)).toBeVisible();
@@ -82,12 +83,7 @@ test.describe("Site chrome - header (desktop)", () => {
 
     await chrome.navMenu("Other").hover();
 
-    for (const href of [
-      "/other/ranking-tiers",
-      "/other/open-data",
-      "/other/relic-api",
-      "/news",
-    ]) {
+    for (const href of ["/other/ranking-tiers", "/other/open-data", "/other/relic-api"]) {
       await expect(chrome.menuLink(href)).toBeVisible();
     }
   });

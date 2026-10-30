@@ -113,7 +113,7 @@ describe("homepage static news projection", () => {
 
     expect(headings).toEqual(["Existing Steam article"]);
     expect(html.match(/>News<\/p>/g)).toHaveLength(1);
-    expect(html).toContain('href="/news#local-ironclad-hold-the-line"');
+    expect(html).toContain('href="/news/local-ironclad-hold-the-line"');
     expect(html).toContain('aria-label="' + holdTheLine.title + '"');
   });
 });

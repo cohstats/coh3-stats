@@ -18,5 +18,26 @@
   "steamNewsLink": "Новостях Steam",
   "postedBy": "Опубликована",
   "on": "",
-  "findGamesOn": "Вы можете найти все статьи на"
+  "findGamesOn": "Вы можете найти все статьи на",
+  "categories": {
+    "all": "Все",
+    "patchNotes": "Список изменений",
+    "news": "Новости",
+    "dlcAndOffers": "DLC и предложения",
+    "communityEvents": "События сообщества",
+    "tournaments": "Турниры",
+    "coh3stats": "COH3 Stats"
+  },
+  "noNewsInCategory": "В этой категории пока нет новостей.",
+  "viewMode": {
+    "label": "Вид",
+    "full": "Полностью",
+    "preview": "Превью",
+    "headlines": "Заголовки"
+  },
+  "readMore": "Читать далее",
+  "showLess": "Свернуть",
+  "allNews": "Все новости",
+  "newerArticle": "Новее",
+  "olderArticle": "Старее"
 }

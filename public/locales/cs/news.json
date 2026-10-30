@@ -18,5 +18,26 @@
   "steamNewsLink": "Steam novinky",
   "postedBy": "Zveřejnil",
   "on": "dne",
-  "findGamesOn": "Všechny články najdete na"
+  "findGamesOn": "Všechny články najdete na",
+  "categories": {
+    "all": "Vše",
+    "patchNotes": "Poznámky k aktualizacím",
+    "news": "Novinky",
+    "dlcAndOffers": "DLC a nabídky",
+    "communityEvents": "Komunitní události",
+    "tournaments": "Turnaje",
+    "coh3stats": "COH3 Stats"
+  },
+  "noNewsInCategory": "V této kategorii zatím nejsou žádné novinky.",
+  "viewMode": {
+    "label": "Zobrazení",
+    "full": "Celé",
+    "preview": "Náhled",
+    "headlines": "Titulky"
+  },
+  "readMore": "Číst dál",
+  "showLess": "Zobrazit méně",
+  "allNews": "Všechny novinky",
+  "newerArticle": "Novější",
+  "olderArticle": "Starší"
 }

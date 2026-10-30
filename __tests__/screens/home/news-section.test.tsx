@@ -61,7 +61,7 @@ describe("NewsSection presentation", () => {
 
       expect(getHeadings(html)).toContain("Existing Steam article");
       expect(html).toContain(">News</p>");
-      expect(html).toContain('href="/news#steam-existing"');
+      expect(html).toContain('href="/news/steam-existing"');
       expect(getCardOpeningTag(html)).toContain("background-size:cover");
       expect(getCardOpeningTag(html)).not.toContain("background-repeat:no-repeat");
     },
@@ -80,7 +80,7 @@ describe("NewsSection presentation", () => {
     expect(getHeadings(html)).toEqual([]);
     expect(html).not.toContain(">News</p>");
     expect(html).toContain('aria-label="Another poster article"');
-    expect(html).toContain('href="/news#local-another-poster"');
+    expect(html).toContain('href="/news/local-another-poster"');
     expect(getCardOpeningTag(html)).toContain("background-size:contain");
     expect(getCardOpeningTag(html)).toContain("background-position:center");
     expect(getCardOpeningTag(html)).toContain("background-repeat:no-repeat");
@@ -90,7 +90,7 @@ describe("NewsSection presentation", () => {
     const item = getHoldTheLine();
     const html = renderHome([item]);
 
-    expect(html).toContain('href="/news#local-ironclad-hold-the-line"');
+    expect(html).toContain('href="/news/local-ironclad-hold-the-line"');
     expect(html).toContain('aria-label="' + item.title + '"');
     expect(getHeadings(html)).toEqual([]);
     expect(html).not.toContain(">News</p>");

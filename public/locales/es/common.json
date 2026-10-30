@@ -34,11 +34,11 @@
     "liveGames": "Juegos en vivo",
     "desktopApp": "App de Escritorio",
     "tournaments": "Torneos",
+    "news": "Noticias",
     "other": "Otros",
     "otherMenu": {
       "tiers": "Rangos de clasificación",
       "openData": "Datos Abiertos",
-      "coh3News": "Noticias del COH3",
       "playerExport": "API para exportar"
     },
     "about": "Acerca de",
