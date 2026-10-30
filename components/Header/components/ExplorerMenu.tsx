@@ -40,6 +40,7 @@ import { getIconsPathOnCDN, internalSlash } from "../../../src/utils";
 import LinkWithOutPrefetch from "../../LinkWithOutPrefetch";
 
 interface ExplorerMenuProps {
+  view: "mobile" | "desktop";
   classes: Record<string, string>;
   close: () => void;
   t: (key: string) => string;
@@ -276,7 +277,7 @@ const MapsTableLink = ({ close, t }: { close?: () => void; t: (key: string) => s
   );
 };
 
-const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
+const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t, view }) => {
   const mobileView = (
     <Group className={classes.hiddenDesktop} grow>
       <Accordion chevronPosition="right">
@@ -346,12 +347,7 @@ const ExplorerMenu: React.FC<ExplorerMenuProps> = ({ classes, close, t }) => {
     </Group>
   );
 
-  return (
-    <>
-      {desktopView}
-      {mobileView}
-    </>
-  );
+  return view === "mobile" ? mobileView : desktopView;
 };
 
 export default ExplorerMenu;
