@@ -67,6 +67,8 @@ ChartJS.register(
 // Line Chart Options
 export const options = {
   responsive: true,
+  // The chart box reserves the 2:1 size via CSS, so the canvas does not resize after mount.
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       position: "top",
@@ -190,6 +192,8 @@ interface IDPSProps {
   ebpsData: EbpsType[];
   upgradesData: UpgradesType[];
   abilitiesData: AbilitiesType[];
+  /** The squad data is still being fetched - the layout is rendered with disabled inputs. */
+  isLoading?: boolean;
 }
 
 export const init = (props: IDPSProps) => {
@@ -249,10 +253,11 @@ export const DpsPageComponent = (props: IDPSProps) => {
     }
   };
 
-  // We must init ONCE, otherwise the default will override any change.
+  // We must init ONCE (per loaded data), otherwise the default will override any change.
+  // The page renders this component before the squad data is loaded, so init again once it arrives.
   useEffect(() => {
     init(props);
-  }, []);
+  }, [props.sbpsData]);
 
   // The selected units are kept in the URL (`?unit1=...&unit2=...`), so the page can be linked to.
   // State, not a ref, so the URL is written only after the preselected units are rendered.
@@ -261,7 +266,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
   const selectedUnit2 = activeData[1]?.id;
 
   useEffect(() => {
-    if (!router.isReady || urlUnitsApplied) return;
+    if (!router.isReady || urlUnitsApplied || props.sbpsData.length == 0) return;
     // The lists are built during render, which ran before `init`.
     if (unitSelectionList1.length == 0)
       unitSelectionList1 = mapUnitSelection(props.sbpsData, units1, unitFilter1, showFinalStand);
@@ -271,7 +276,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
     if (typeof unit1 === "string") onSelectionChange(unit1, 0);
     if (typeof unit2 === "string") onSelectionChange(unit2, 1);
     setUrlUnitsApplied(true);
-  }, [router.isReady]);
+  }, [router.isReady, props.sbpsData]);
 
   useEffect(() => {
     if (!urlUnitsApplied) return;
@@ -535,6 +540,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 patchList={patchList}
                 defaultPatch={config.latestPatch}
                 position={1}
+                disabled={props.isLoading}
                 selectedUnitId={selectedUnit1}
                 onFilterToggle={toggleFilter}
                 onPatchChange={onPatchUnitChange}
@@ -559,6 +565,7 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 patchList={patchList}
                 defaultPatch={config.latestPatch}
                 position={2}
+                disabled={props.isLoading}
                 selectedUnitId={selectedUnit2}
                 onFilterToggle={toggleFilter}
                 onPatchChange={onPatchUnitChange}
@@ -580,7 +587,11 @@ export const DpsPageComponent = (props: IDPSProps) => {
       </Container>
 
       <Space h="sm" />
-      <ChartPanel chartData={chartData} chartOptions={options} isLoading={patchChangeIndex > 0} />
+      <ChartPanel
+        chartData={chartData}
+        chartOptions={options}
+        isLoading={!!props.isLoading || patchChangeIndex > 0}
+      />
     </>
   );
 };

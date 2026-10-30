@@ -25,7 +25,9 @@ export const ChartPanel: React.FC<ChartPanelProps> = ({ chartData, chartOptions,
     <Container size="md">
       <LoadingOverlay visible={isLoading} />
       <Box className={classes.chartBox} data-testid="dps-chart">
-        <Line ref={chartRef as any} options={chartOptions as any} data={chartData as any} />
+        <div className={classes.chartCanvas}>
+          <Line ref={chartRef as any} options={chartOptions as any} data={chartData as any} />
+        </div>
       </Box>
       <Space h="sm" />
       <Text c="dimmed" pl={5} fs="italic">
