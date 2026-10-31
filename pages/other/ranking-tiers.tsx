@@ -1,7 +1,8 @@
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AnalyticsRankingTiersPageView } from "../../src/firebase/analytics";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { Container, Text, Title } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
@@ -34,32 +35,33 @@ const RankingTiers: NextPage = () => {
 
   return (
     <div>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}${asPath}`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}${asPath}`,
-          type: "website",
-          images: [
+          description,
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}${asPath}`,
+            images: [
+              {
+                url: PlayerRanks.CHALLENGER_1.url,
+                width: 64,
+                height: 64,
+                alt: "Challenger rank icon",
+              },
+            ],
+          },
+          additionalMetaTags: [
             {
-              url: PlayerRanks.CHALLENGER_1.url,
-              width: 64,
-              height: 64,
-              alt: "Challenger rank icon",
+              name: "keywords",
+              content: keywords,
             },
           ],
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: keywords,
-          },
-        ]}
-        languageAlternates={generateLanguageAlternates(asPath)}
-      />
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
+      </Head>
       <>
         <Container size={"sm"}>
           <Title order={1} pb="md">

@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { useRouter } from "next/router";
 import { Card, Flex, Stack, Text, Title, Container } from "@mantine/core";
 import { localizedNames } from "../../../src/coh3/coh3-data";
@@ -104,31 +105,33 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
 
   return (
     <>
-      <NextSeo
-        title={seoTitle}
-        description={seoDescription}
-        canonical={`${config.SITE_URL}${asPath}`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: seoTitle,
           description: seoDescription,
-          url: `${config.SITE_URL}${asPath}`,
-          images: [
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: seoTitle,
+            description: seoDescription,
+            url: `${config.SITE_URL}${asPath}`,
+            images: [
+              {
+                url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+                width: 64,
+                height: 64,
+                alt: `${localizedRace} faction icon`,
+              },
+            ],
+          },
+          additionalMetaTags: [
             {
-              url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
-              width: 64,
-              height: 64,
-              alt: `${localizedRace} faction icon`,
+              name: "keywords",
+              content: generateKeywordsString(seoKeywords),
             },
           ],
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: generateKeywordsString(seoKeywords),
-          },
-        ]}
-        languageAlternates={generateLanguageAlternates(asPath)}
-      />
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
+      </Head>
       <Container fluid p={0}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">

@@ -14,7 +14,8 @@ import {
 } from "@mantine/core";
 import { IconCheck, IconMinus, IconBrandWindows, IconDownload } from "@tabler/icons-react";
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import config from "../../config";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "next-i18next/pages";
@@ -116,20 +117,22 @@ const DesktopAppPage: NextPage = ({
 
   return (
     <>
-      <NextSeo
-        {...seoProps}
-        openGraph={{
-          ...seoProps.openGraph,
-          images: [
-            {
-              url: `${config.SITE_URL}/desktop-app/desktop-app-v2.webp`,
-              width: 600,
-              height: 336,
-              alt: "Grenadier - COH3 Companion",
-            },
-          ],
-        }}
-      />
+      <Head>
+        {generateNextSeo({
+          ...seoProps,
+          openGraph: {
+            ...seoProps.openGraph,
+            images: [
+              {
+                url: `${config.SITE_URL}/desktop-app/desktop-app-v2.webp`,
+                width: 600,
+                height: 336,
+                alt: "Grenadier - COH3 Companion",
+              },
+            ],
+          },
+        })}
+      </Head>
       <Container size={"lg"}>
         <Title>{t("title")}</Title>
         <Title order={2}>{t("subtitle")}</Title>

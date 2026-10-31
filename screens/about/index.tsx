@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 
 import {
   Container,
@@ -377,24 +378,27 @@ const About: NextPage = () => {
 
   return (
     <div>
-      <NextSeo
-        title="About COH3 Stats"
-        description="COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions."
-        canonical="https://coh3stats.com/about"
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: generateKeywordsString([
-              "about coh3stats",
-              "faq",
-              "data sources",
-              "team statistics",
-              "elo tracking",
-              "arranged teams",
-            ]),
-          },
-        ]}
-      />
+      <Head>
+        {generateNextSeo({
+          title: "About COH3 Stats",
+          description:
+            "COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions.",
+          canonical: "https://coh3stats.com/about",
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: generateKeywordsString([
+                "about coh3stats",
+                "faq",
+                "data sources",
+                "team statistics",
+                "elo tracking",
+                "arranged teams",
+              ]),
+            },
+          ],
+        })}
+      </Head>
       <>
         <Center>
           <Title order={1} size="h1" pt="md" mb="md">

@@ -1,6 +1,5 @@
-import { NextSeoProps } from "next-seo";
+import { NextSeoProps } from "next-seo/pages";
 import { TFunction } from "next-i18next/pages";
-import React from "react";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
 import { localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
@@ -29,35 +28,9 @@ export const generateKeywordsString = (keywords: string[] = []) => {
 const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 
 /**
- * Generates alternate language link elements for SEO (legacy Head component)
+ * Generates the `languageAlternates` for `generateNextSeo`
  * @param currentPath - The current path (usually from Next.js router's asPath)
- * @returns Array of alternate language link elements
- */
-export const generateAlternateLanguageLinks = (currentPath: string): React.ReactNode => {
-  return (
-    <>
-      {SUPPORTED_LANGUAGES.map((lang: string) => (
-        <link
-          key={lang}
-          rel="alternate"
-          hrefLang={lang}
-          href={`${config.SITE_URL}${lang === nextI18NextConfig.i18n.defaultLocale ? "" : `/${lang}`}${currentPath}`}
-        />
-      ))}
-      <link
-        key="x-default"
-        rel="alternate"
-        hrefLang="x-default"
-        href={`${config.SITE_URL}${currentPath}`}
-      />
-    </>
-  );
-};
-
-/**
- * Generates language alternates for next-seo format
- * @param currentPath - The current path (usually from Next.js router's asPath)
- * @returns Array of language alternate objects for next-seo
+ * @returns Array of language alternate objects, including x-default
  */
 export const generateLanguageAlternates = (currentPath: string) => {
   const alternates = SUPPORTED_LANGUAGES.map((lang: string) => ({
@@ -72,6 +45,22 @@ export const generateLanguageAlternates = (currentPath: string) => {
   });
 
   return alternates;
+};
+
+/**
+ * Open Graph locale (language_TERRITORY) for an app locale, e.g. de -> de_DE, zh-Hant -> zh_TW
+ * @param locale - The current locale (usually from Next.js router's locale)
+ * @returns The og:locale value, the default locale's one for an unsupported locale
+ */
+export const getOpenGraphLocale = (locale?: string) => {
+  const supportedLocale =
+    locale && SUPPORTED_LANGUAGES.includes(locale)
+      ? locale
+      : nextI18NextConfig.i18n.defaultLocale;
+  // The locales don't carry the territory, maximize() adds the likely one (de -> de-Latn-DE)
+  const { language, region } = new Intl.Locale(supportedLocale).maximize();
+
+  return region ? `${language}_${region}` : language;
 };
 
 // Export default keywords for backward compatibility
@@ -118,15 +107,6 @@ export const createPageSEO = (
       title,
       description,
       url: canonical,
-      type: "website",
-      images: [
-        {
-          url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-          width: 92,
-          height: 92,
-          alt: "COH3 Stats logo",
-        },
-      ],
     },
     additionalMetaTags: [
       {
@@ -173,6 +153,8 @@ export const createPlayerSEO = (
     title,
     description,
     canonical,
+    // Renders a single `index,nofollow` robots tag
+    nofollow: true,
     openGraph: {
       title,
       description,
@@ -183,10 +165,6 @@ export const createPlayerSEO = (
       {
         name: "keywords",
         content: generateKeywordsString(keywords),
-      },
-      {
-        name: "robots",
-        content: "nofollow",
       },
     ],
     languageAlternates: generateLanguageAlternates(`/players/${profileId}`),
@@ -256,7 +234,6 @@ export const createLeaderboardSEO = (
       title,
       description,
       url: canonical,
-      type: "website",
       images: [
         {
           url: `${config.SITE_URL}/icons/general/${faction}.webp`,

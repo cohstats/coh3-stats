@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
+import { generateNextSeo } from "next-seo/pages";
 import {
   Anchor,
   Button,
@@ -58,13 +59,15 @@ const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps
   const description = t("meta.leagueDescription");
 
   const seo = (
-    <NextSeo
-      title={title}
-      description={description}
-      canonical={`${config.SITE_URL}${path}`}
-      openGraph={{ title, description, url: `${config.SITE_URL}${path}`, type: "website" }}
-      languageAlternates={generateLanguageAlternates(path)}
-    />
+    <Head>
+      {generateNextSeo({
+        title,
+        description,
+        canonical: `${config.SITE_URL}${path}`,
+        openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+        languageAlternates: generateLanguageAlternates(path),
+      })}
+    </Head>
   );
 
   if (!data) {

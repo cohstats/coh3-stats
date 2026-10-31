@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { SearchScreen } from "../screens/search";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
@@ -21,16 +22,12 @@ const Search: NextPage = () => {
 
   return (
     <>
-      <NextSeo
-        {...seoProps}
-        additionalMetaTags={[
-          ...(seoProps.additionalMetaTags || []),
-          {
-            name: "robots",
-            content: "nofollow",
-          },
-        ]}
-      />
+      <Head>
+        {generateNextSeo({
+          ...seoProps,
+          nofollow: true,
+        })}
+      </Head>
       <SearchScreen />
     </>
   );

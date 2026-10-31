@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { NextSeo } from "next-seo";
+import { generateNextSeo } from "next-seo/pages";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next/pages";
 import {
@@ -119,28 +119,28 @@ const NewsArticlePage: NextPage<NewsArticlePageProps> = ({
 
   return (
     <>
-      <NextSeo
-        {...seoProps}
-        // "COH3 News" in the title too, Steam post titles rarely name the game.
-        title={`${item.title} - ${t("meta.title")}`}
-        description={metaDescription}
-        // Allows the large article image in search results and Discover.
-        robotsProps={{ maxImagePreview: "large" }}
-        openGraph={{
-          ...seoProps.openGraph,
-          title: item.title,
-          description: metaDescription,
-          type: "article",
-          article: {
-            publishedTime,
-            modifiedTime: publishedTime,
-            ...(section ? { section } : {}),
-            tags: ["Company of Heroes 3", "COH3", ...(section ? [section] : [])],
-          },
-          images: image ? [{ url: image, alt: item.title }] : seoProps.openGraph?.images,
-        }}
-      />
       <Head>
+        {generateNextSeo({
+          ...seoProps,
+          // "COH3 News" in the title too, Steam post titles rarely name the game.
+          title: `${item.title} - ${t("meta.title")}`,
+          description: metaDescription,
+          // Allows the large article image in search results and Discover.
+          robotsProps: { maxImagePreview: "large" },
+          openGraph: {
+            ...seoProps.openGraph,
+            title: item.title,
+            description: metaDescription,
+            type: "article",
+            article: {
+              publishedTime,
+              modifiedTime: publishedTime,
+              ...(section ? { section } : {}),
+              tags: ["Company of Heroes 3", "COH3", ...(section ? [section] : [])],
+            },
+            images: image ? [{ url: image, alt: item.title }] : seoProps.openGraph?.images,
+          },
+        })}
         <script
           key="news-article-jsonld"
           type="application/ld+json"

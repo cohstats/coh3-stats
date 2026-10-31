@@ -1,4 +1,5 @@
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { NextPage } from "next";
 import { Container, Stack, Text, Title } from "@mantine/core";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
@@ -14,7 +15,7 @@ const FinalStandExplorer: NextPage = () => {
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <Container size="md">
         <Stack mb={24}>
           <Title order={1}>{t("explorer-fs:page.title")}</Title>

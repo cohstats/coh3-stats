@@ -13,7 +13,8 @@ import {
   AnalyticsPlayerCardView,
 } from "../../src/firebase/analytics";
 import { Anchor, Avatar, Container, Group, Space, Stack, Tabs, Title } from "@mantine/core";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { createPlayerSEO } from "../../src/seo-utils";
 import Link from "next/link";
 import { Steam } from "../../components/icon/steam";
@@ -190,7 +191,12 @@ const PlayerCard = ({
 
   return (
     <>
-      <NextSeo {...seoProps} title={pageTitle} />
+      <Head>
+        {generateNextSeo({
+          ...seoProps,
+          title: pageTitle,
+        })}
+      </Head>
       <Container fluid p={0} data-testid="player-card">
         <Container
           fluid

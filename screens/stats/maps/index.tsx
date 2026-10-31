@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { generateKeywordsString } from "../../../src/seo-utils";
 import { useTranslation } from "next-i18next/pages";
 import StatsContainerSelector from "../stats-container-selector";
@@ -25,23 +26,24 @@ const MapStats: NextPage = () => {
 
   return (
     <div>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}/stats/maps`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}/stats/maps`,
-          type: "website",
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: generateKeywordsString(keywords),
+          description,
+          canonical: `${config.SITE_URL}/stats/maps`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}/stats/maps`,
           },
-        ]}
-      />
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: generateKeywordsString(keywords),
+            },
+          ],
+        })}
+      </Head>
       <>
         <StatsContainerSelector statsType={"mapStats"} />
       </>

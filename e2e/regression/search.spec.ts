@@ -45,10 +45,12 @@ test.describe("Search Page - interface", () => {
     await searchPage.navigate();
 
     await expect(page).toHaveTitle(/Search/i);
-    // The page emits two robots tags - NextSeo's default `index,follow` plus the page's own
-    // `nofollow` override - so assert that the nofollow one is present rather than picking an
-    // arbitrary index.
-    await expect(page.locator('meta[name="robots"][content*="nofollow"]')).toHaveCount(1);
+    // A single robots tag, `index,nofollow`.
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "index,nofollow",
+    );
   });
 });
 

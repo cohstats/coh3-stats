@@ -11,7 +11,8 @@ import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
 import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../src/coh3/coh3-data";
 import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import FactionIcon from "../../components/faction-icon";
 import { useTranslation } from "next-i18next/pages";
 import { createLeaderboardSEO } from "../../src/seo-utils";
@@ -203,7 +204,7 @@ const Leaderboards = ({
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <Container size={"lg"} p={0}>
         <Container fluid pl={0} pr={0}>
           <Group justify={"space-between"}>

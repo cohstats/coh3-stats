@@ -19,7 +19,8 @@ import { getMappings } from "../../src/unitStats/mappings";
 import { AnalyticsDPSComparePageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
 
@@ -87,7 +88,7 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   const description = t("dpsCompare.meta.description");
   const keywords = t("dpsCompare.meta.keywords", { returnObjects: true }) as string[];
 
-  const seoProps = {
+  const seoProps: NextSeoProps = {
     title,
     description,
     canonical: `${config.SITE_URL}/explorer/dps-compare`,
@@ -95,15 +96,6 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
       title,
       description,
       url: `${config.SITE_URL}/explorer/dps-compare`,
-      type: "website" as const,
-      images: [
-        {
-          url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-          width: 192,
-          height: 192,
-          alt: "COH3 Stats logo",
-        },
-      ],
     },
     additionalMetaTags: [
       {
@@ -117,7 +109,7 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <div>
         {isLoading && (
           <Center maw={400} h={250} mx="auto">

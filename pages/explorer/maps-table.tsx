@@ -1,5 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { useEffect } from "react";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
@@ -26,7 +27,7 @@ const MapsTable: NextPage<MapsTableProps> = ({ maps }) => {
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <MapsTablePage maps={maps} />
     </>
   );

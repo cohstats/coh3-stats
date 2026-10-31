@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 
 import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
 
@@ -131,7 +132,7 @@ interface ProcessedMatchHistoryItem {
 const OpenData: NextPage = () => {
   const { asPath } = useRouter();
 
-  const pageTitle = "COH3 Stats - Open Data";
+  const pageTitle = "Open Data";
   const description =
     "COH3 Stats are open sourcing a leaderboards and match data. Find more details on the page how to download them.";
   const keywords = generateKeywordsString([
@@ -148,24 +149,25 @@ const OpenData: NextPage = () => {
 
   return (
     <div>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}${asPath}`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}${asPath}`,
-          type: "website",
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: keywords,
+          description,
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}${asPath}`,
           },
-        ]}
-        languageAlternates={generateLanguageAlternates(asPath)}
-      />
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: keywords,
+            },
+          ],
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
+      </Head>
       <>
         <Container size={"md"}>
           <Title order={1} pt="md">
