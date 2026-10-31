@@ -91,6 +91,44 @@ describe("IronClad on the Tournaments hub", () => {
     expect(count(html, /data-testid="tournament-card-/g)).toBe(3);
   });
 
+  test("renders a full division waiting for its bracket as ready", () => {
+    const withReadyDivision: IroncladTournament[] = [
+      {
+        ...holdTheLine,
+        divisions: holdTheLine.divisions.map((division) =>
+          division.canonicalName === "Challenge"
+            ? {
+                ...division,
+                state: "ready",
+                effectiveState: "ready",
+                ready: true,
+                approvedCount: 8,
+              }
+            : division,
+        ),
+      },
+      ...tournaments.slice(1),
+    ];
+    const html = renderHtml(
+      <TournamentsScreen
+        ladderSummary={null}
+        ironcladSummary={buildIroncladHubSummary(
+          pickIroncladHubTournaments(withReadyDivision)!,
+          names,
+        )}
+      />,
+    );
+    const challenge = getElement(html, "ironclad-hub-division-challenge");
+    const challengeRow = challenge.slice(
+      0,
+      challenge.length - getElement(challenge, "ironclad-hub-division-academy").length,
+    );
+
+    expect(challengeRow).toContain("ironclad.divisionState.ready");
+    expect(challengeRow).not.toContain("ironclad.divisionState.unknown");
+    expect(challengeRow).toContain("teal");
+  });
+
   test("falls back to the organiser card without the data", () => {
     const html = renderHtml(<TournamentsScreen ladderSummary={null} ironcladSummary={null} />);
 
