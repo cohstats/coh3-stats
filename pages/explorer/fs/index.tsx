@@ -7,6 +7,7 @@ import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../../src/seo-utils";
 import { getExplorerFsRoute } from "../../../src/routes";
 import FinalStandSection from "../../../screens/explorer/final-stand-section";
+import ExplorerJsonLd from "../../../components/explorer-json-ld";
 
 const FinalStandExplorer: NextPage = () => {
   const { t } = useTranslation(["explorer-fs", "explorer"]);
@@ -16,6 +17,12 @@ const FinalStandExplorer: NextPage = () => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <ExplorerJsonLd
+        path={getExplorerFsRoute()}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.explMenu.finalStand")}
+      />
       <Container size="md">
         <Stack mb={24}>
           <Title order={1}>{t("explorer-fs:page.title")}</Title>

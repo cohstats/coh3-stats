@@ -15,7 +15,7 @@ import {
 } from "../../../src/explorer/maps/mp-maps-helpers";
 import MapDetailPage from "../../../screens/explorer/maps/map-detail-page";
 import type { MpMap } from "../../../src/explorer/maps/mp-maps-types";
-import { getExplorerMapRoute, mapStatsModeType } from "../../../src/routes";
+import { getExplorerMapRoute, getExplorerMapsRoute, mapStatsModeType } from "../../../src/routes";
 import { isOfficialMap } from "../../../src/coh3/coh3-data";
 import {
   getLatestPatchMapTeamComposition,
@@ -23,6 +23,7 @@ import {
 } from "../../../src/stats/latest-patch-map-stats";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { AnalyticsExplorerMapDetailsView } from "../../../src/firebase/analytics";
+import ExplorerJsonLd from "../../../components/explorer-json-ld";
 
 interface MapDetailProps {
   map: MpMap | null;
@@ -46,23 +47,34 @@ const MapDetail: NextPage<MapDetailProps> = ({ map, teamComposition, latestPatch
   const title = `${map.name} - COH3 Map`;
   // The descriptions carry escaped newlines from the data file, those have no place in a meta tag.
   const description = (map.description ?? t("meta.description")).replace(/\\n/g, " ").trim();
+  const metaDescription = description.slice(0, 160);
+  const image = getMpMapImageUrl(map.id);
 
   return (
     <>
       <Head>
         {generateNextSeo({
           title,
-          description: description.slice(0, 160),
+          description: metaDescription,
           canonical: `${config.SITE_URL}${path}`,
           openGraph: {
             title,
-            description: description.slice(0, 160),
+            description: metaDescription,
             url: `${config.SITE_URL}${path}`,
-            images: [{ url: getMpMapImageUrl(map.id), alt: map.name }],
+            images: [{ url: image, alt: map.name }],
           },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <ExplorerJsonLd
+        path={path}
+        name={title}
+        description={metaDescription}
+        breadcrumbName={map.name}
+        trail={[{ name: t("common:mainMenu.explMenu.maps"), path: getExplorerMapsRoute() }]}
+        image={image}
+      />
+
       <Container size="lg" p={0}>
         <MapDetailPage
           map={map}

@@ -21,8 +21,9 @@ import ImageWithFallback, { iconPlaceholder } from "../../components/placeholder
 import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
 import config from "../../config";
+import { getChallengesRoute } from "../../src/routes";
+import ExplorerJsonLd from "../../components/explorer-json-ld";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -40,7 +41,7 @@ interface ChallengesProps {
 }
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
-  const { asPath } = useRouter();
+  const path = getChallengesRoute();
 
   const pageTitle = "Challenges";
   const description =
@@ -62,11 +63,11 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: `${config.SITE_URL}${path}`,
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: `${config.SITE_URL}${path}`,
           },
           additionalMetaTags: [
             {
@@ -74,9 +75,10 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
               content: keywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <ExplorerJsonLd path={path} name={pageTitle} description={description} />
       <Container size={"lg"} p={0}>
         <Grid>
           <Grid.Col span={{ md: 12, lg: 6 }}>

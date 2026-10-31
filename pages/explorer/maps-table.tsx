@@ -10,6 +10,7 @@ import { MpMapTableItem, toMpMapTableItem } from "../../src/explorer/maps/mp-map
 import { createPageSEO } from "../../src/seo-utils";
 import { getExplorerMapsTableRoute } from "../../src/routes";
 import { AnalyticsExplorerMapsTableView } from "../../src/firebase/analytics";
+import ExplorerJsonLd from "../../components/explorer-json-ld";
 
 interface MapsTableProps {
   maps: MpMapTableItem[];
@@ -28,6 +29,12 @@ const MapsTable: NextPage<MapsTableProps> = ({ maps }) => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <ExplorerJsonLd
+        path={getExplorerMapsTableRoute()}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.explMenu.mapsTable")}
+      />
       <MapsTablePage maps={maps} />
     </>
   );

@@ -9,8 +9,9 @@ import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
 import { WeaponTable, WeaponTableRow } from "../../components/unitStats/weaponTable";
 import { getScatterArea, getWeaponRpm } from "../../src/unitStats";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
 import config from "../../config";
+import { getWeaponsRoute } from "../../src/routes";
+import ExplorerJsonLd from "../../components/explorer-json-ld";
 
 interface WeaponsProps {
   tableData: WeaponTableRow[];
@@ -21,7 +22,7 @@ const description = "CoH 3 Weapons list. Browser through all the weapons in-game
 const keywords = generateKeywordsString(["coh3 weapons", "weapons"]);
 
 const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
-  const { asPath } = useRouter();
+  const path = getWeaponsRoute();
 
   useEffect(() => {
     AnalyticsExplorerWeaponsView();
@@ -33,11 +34,11 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: `${config.SITE_URL}${path}`,
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: `${config.SITE_URL}${path}`,
           },
           additionalMetaTags: [
             {
@@ -45,9 +46,10 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
               content: keywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <ExplorerJsonLd path={path} name={pageTitle} description={description} />
       <div>
         <WeaponTable inputData={tableData} />
       </div>

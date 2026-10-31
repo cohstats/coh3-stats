@@ -6,13 +6,19 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import { useTranslation } from "next-i18next/pages";
 import MapsExplorerPage from "../../../screens/explorer/maps/maps-explorer-page";
 import { getMpMaps } from "../../../src/explorer/maps/mp-maps";
-import { MpMapListItem, toMpMapListItem } from "../../../src/explorer/maps/mp-maps-helpers";
+import {
+  filterMpMaps,
+  groupMpMapsByMode,
+  MpMapListItem,
+  toMpMapListItem,
+} from "../../../src/explorer/maps/mp-maps-helpers";
 import { getLatestPatchMapWinRates } from "../../../src/stats/latest-patch-map-stats";
 import { isOfficialMap } from "../../../src/coh3/coh3-data";
 import type { mapStatsModeType } from "../../../src/routes";
 import { createPageSEO } from "../../../src/seo-utils";
-import { getExplorerMapsRoute } from "../../../src/routes";
+import { getExplorerMapRoute, getExplorerMapsRoute } from "../../../src/routes";
 import { AnalyticsExplorerMapsListView } from "../../../src/firebase/analytics";
+import ExplorerJsonLd from "../../../components/explorer-json-ld";
 
 interface MapsPageProps {
   maps: MpMapListItem[];
@@ -26,10 +32,21 @@ const Maps: NextPage<MapsPageProps> = ({ maps }) => {
   }, []);
 
   const seoProps = createPageSEO(t, "explorer-maps", getExplorerMapsRoute());
+  // The maps the page lists with the default filters, in the same order - see `MapsExplorerPage`.
+  const listedMaps = groupMpMapsByMode(
+    filterMpMaps(maps, { search: "", modes: [], lobbyOnly: true }),
+  ).flatMap(([, modeMaps]) => modeMaps);
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <ExplorerJsonLd
+        path={getExplorerMapsRoute()}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.explMenu.maps")}
+        items={listedMaps.map((map) => ({ name: map.name, path: getExplorerMapRoute(map.id) }))}
+      />
       <MapsExplorerPage maps={maps} />
     </>
   );

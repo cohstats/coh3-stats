@@ -73,7 +73,15 @@ import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descr
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../../../config";
-import { getDPSCalculatorRoute, getExplorerFactionRoute } from "../../../../../src/routes";
+import {
+  getDPSCalculatorRoute,
+  getExplorerFactionRoute,
+  getExplorerFactionUnitsRoute,
+  getExplorerFsRoute,
+  getExplorerFsUnitsRoute,
+  getExplorerUnitRoute,
+} from "../../../../../src/routes";
+import ExplorerJsonLd from "../../../../../components/explorer-json-ld";
 import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
 
@@ -147,7 +155,7 @@ const UnitCostGroup = ({
 };
 
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
-  const { query, asPath } = useRouter();
+  const { query } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
   const unitId = query.unitId as string;
@@ -427,6 +435,22 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
     ? `${resolvedSquad.ui.screenName} - ${finalStandName} ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")}`
     : `${resolvedSquad.ui.screenName} - ${localizedRace} ${resolvedSquad.unitType.replace(/_/g, " ")}`;
   const ogTitle = `${pageTitle} | COH3 Stats`;
+  // Not the `asPath`, that has the query string on the client.
+  const path = getExplorerUnitRoute(raceId, unitId);
+  const unitIcon = getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`);
+  // The way to the unit in the Explorer, Final Stand units are listed on their own page.
+  const breadcrumbTrail = isFinalStand
+    ? [
+        { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+        {
+          name: t("finalStandUnitsPage.meta.title", { faction: localizedRace }),
+          path: getExplorerFsUnitsRoute(raceId),
+        },
+      ]
+    : [
+        { name: localizedRace, path: getExplorerFactionRoute(raceId) },
+        { name: t("common:mainMenu.explMenu.units"), path: getExplorerFactionUnitsRoute(raceId) },
+      ];
 
   return (
     <>
@@ -434,13 +458,13 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
         {generateNextSeo({
           title: pageTitle,
           description: metaDescription,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: `${config.SITE_URL}${path}`,
           // Final Stand units are DLC only content, we don't want them in the search results.
           noindex: isFinalStand,
           openGraph: {
             title: ogTitle,
             description: metaDescription,
-            url: `${config.SITE_URL}${asPath}`,
+            url: `${config.SITE_URL}${path}`,
             // Flag the DLC in Open Graph, so link previews / crawlers know where the unit comes from.
             ...(isFinalStand
               ? {
@@ -453,7 +477,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
               : {}),
             images: [
               {
-                url: getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`),
+                url: unitIcon,
                 width: 256,
                 height: 256,
                 alt: `${resolvedSquad.ui.screenName} unit icon`,
@@ -474,9 +498,17 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
             },
             // The `robots` tag is rendered by generateNextSeo itself (see the `noindex` prop above).
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <ExplorerJsonLd
+        path={path}
+        name={pageTitle}
+        description={metaDescription}
+        breadcrumbName={resolvedSquad.ui.screenName}
+        trail={breadcrumbTrail}
+        image={unitIcon}
+      />
       <Container fluid pl={0} pr={0} pt={"md"} data-testid="unit-detail-container">
         <Grid columns={3} grow>
           <Grid.Col span={3}>

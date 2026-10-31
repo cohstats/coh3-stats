@@ -26,6 +26,7 @@ import {
   getExplorerFactionUnitsRoute,
   getExplorerMapsRoute,
   getExplorerMapsTableRoute,
+  getExplorerRoute,
   getUnitBrowserRoute,
   getWeaponsRoute,
 } from "../../src/routes";
@@ -34,6 +35,7 @@ import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../src/seo-utils";
 import { getIconsPathOnCDN } from "../../src/utils";
 import FinalStandSection from "../../screens/explorer/final-stand-section";
+import ExplorerJsonLd from "../../components/explorer-json-ld";
 
 // Reusable InfoCard component for tool links
 const InfoCard = ({
@@ -87,11 +89,16 @@ const Explorer: NextPage = () => {
   const { t } = useTranslation(["explorer"]);
 
   // Create SEO props for explorer page
-  const seoProps = createPageSEO(t, "explorer", "/explorer");
+  const seoProps = createPageSEO(t, "explorer", getExplorerRoute());
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <ExplorerJsonLd
+        path={getExplorerRoute()}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+      />
       <Container size="md">
         <Stack mb={24}>
           <Title order={1}>{t("explorer.title")}</Title>
