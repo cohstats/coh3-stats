@@ -91,6 +91,32 @@ describe("createPageSEO with generateNextSeo", () => {
   });
 });
 
+describe("sitewide defaults with generateNextSeo", () => {
+  test("should apply the titleTemplate from the default SEO to the page title", () => {
+    // The defaults are module state in next-seo, a fresh copy keeps the template out of the other tests
+    jest.isolateModules(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const nextSeo = require("next-seo/pages") as typeof import("next-seo/pages");
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const defaultSEO = require("../../next-seo.config").default;
+
+      // Same order as `_app`: the defaults are generated before the page tags
+      nextSeo.generateDefaultSeo(defaultSEO);
+      const tags = nextSeo.generateNextSeo(
+        createPageSEO(t, "search", "/search"),
+      ) as HeadElement[];
+
+      expect(findTags(tags, "title", {})[0].props.children).toBe(
+        "search:meta.title | COH3 Stats",
+      );
+      // Open Graph keeps the plain title, the template is only for <title>
+      expect(findTags(tags, "meta", { property: "og:title" })[0].props.content).toBe(
+        "search:meta.title",
+      );
+    });
+  });
+});
+
 describe("createPlayerSEO with generateNextSeo", () => {
   const playerData = {
     info: { relicID: 26631, name: "Thomas" },
