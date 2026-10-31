@@ -9,8 +9,9 @@ import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import config from "../../config";
-import { getUnitBrowserRoute } from "../../src/routes";
-import ExplorerJsonLd from "../../components/explorer-json-ld";
+import { getExplorerRoute, getUnitBrowserRoute } from "../../src/routes";
+import { useTranslation } from "next-i18next/pages";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface SquadProps {
   tableData: CustomizableUnit[];
@@ -19,6 +20,7 @@ interface SquadProps {
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
 const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
+  const { t } = useTranslation("common");
   const path = getUnitBrowserRoute();
 
   useEffect(() => {
@@ -66,7 +68,12 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd path={path} name={pageTitle} description={description} />
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={description}
+        trail={[{ name: t("mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <div>
         <UnitTable inputData={tableData} />
       </div>

@@ -22,8 +22,9 @@ import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import config from "../../config";
-import { getChallengesRoute } from "../../src/routes";
-import ExplorerJsonLd from "../../components/explorer-json-ld";
+import { getExplorerRoute, getChallengesRoute } from "../../src/routes";
+import { useTranslation } from "next-i18next/pages";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -41,6 +42,7 @@ interface ChallengesProps {
 }
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
+  const { t } = useTranslation("common");
   const path = getChallengesRoute();
 
   const pageTitle = "Challenges";
@@ -78,7 +80,12 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd path={path} name={pageTitle} description={description} />
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={description}
+        trail={[{ name: t("mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <Container size={"lg"} p={0}>
         <Grid>
           <Grid.Col span={{ md: 12, lg: 6 }}>

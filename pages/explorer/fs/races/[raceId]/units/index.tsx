@@ -38,9 +38,10 @@ import {
   getExplorerFsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
+  getExplorerRoute,
 } from "../../../../../../src/routes";
 import { getUnitListLinks } from "../../../../../../src/structured-data";
-import ExplorerJsonLd from "../../../../../../components/explorer-json-ld";
+import PageJsonLd from "../../../../../../components/page-json-ld";
 import { useEffect, useState } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
@@ -178,11 +179,14 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={path}
         name={pageTitle}
         description={metaDescription}
-        trail={[{ name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() }]}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+        ]}
         image={factionIcon}
         items={getUnitListLinks(units, raceToFetch)}
       />

@@ -16,9 +16,9 @@ import { getLatestPatchMapWinRates } from "../../../src/stats/latest-patch-map-s
 import { isOfficialMap } from "../../../src/coh3/coh3-data";
 import type { mapStatsModeType } from "../../../src/routes";
 import { createPageSEO } from "../../../src/seo-utils";
-import { getExplorerMapRoute, getExplorerMapsRoute } from "../../../src/routes";
+import { getExplorerRoute, getExplorerMapRoute, getExplorerMapsRoute } from "../../../src/routes";
 import { AnalyticsExplorerMapsListView } from "../../../src/firebase/analytics";
-import ExplorerJsonLd from "../../../components/explorer-json-ld";
+import PageJsonLd from "../../../components/page-json-ld";
 
 interface MapsPageProps {
   maps: MpMapListItem[];
@@ -40,12 +40,13 @@ const Maps: NextPage<MapsPageProps> = ({ maps }) => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={getExplorerMapsRoute()}
         name={seoProps.title ?? ""}
         description={seoProps.description}
         breadcrumbName={t("common:mainMenu.explMenu.maps")}
         items={listedMaps.map((map) => ({ name: map.name, path: getExplorerMapRoute(map.id) }))}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       <MapsExplorerPage maps={maps} />
     </>

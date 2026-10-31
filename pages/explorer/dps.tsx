@@ -22,8 +22,8 @@ import Head from "next/head";
 import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
-import { getDPSCalculatorRoute } from "../../src/routes";
-import ExplorerJsonLd from "../../components/explorer-json-ld";
+import { getExplorerRoute, getDPSCalculatorRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface DpsProps {
   weaponData: WeaponType[];
@@ -116,11 +116,12 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={getDPSCalculatorRoute()}
         name={title}
         description={description}
         breadcrumbName={t("common:mainMenu.explMenu.dpsCalculator")}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       {/* Render the full layout right away (instead of a small loader) to avoid layout shift */}
       <DpsPageComponent {...dbpsData} isLoading={isLoading} />

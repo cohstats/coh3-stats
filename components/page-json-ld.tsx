@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next/pages";
 import { BreadcrumbJsonLd, JsonLdScript } from "next-seo";
-import { getExplorerRoute } from "../src/routes";
 import { getBreadcrumbItems, getWebPageJsonLd, StructuredDataLink } from "../src/structured-data";
 
-interface ExplorerJsonLdProps {
+interface PageJsonLdProps {
   /** Site relative path of the page, the same as its canonical url, e.g. `/explorer/maps`. */
   path: string;
   /** SEO title of the page (without the " | COH3 Stats" suffix). */
@@ -13,7 +11,10 @@ interface ExplorerJsonLdProps {
   description?: string;
   /** Short name of the page in the breadcrumb trail, `name` by default. */
   breadcrumbName?: string;
-  /** Pages between the Explorer and this page in the breadcrumb trail, e.g. the faction of a unit. */
+  /**
+   * Pages between the home page and this page in the breadcrumb trail, the way a user gets here,
+   * e.g. Explorer > US Forces for a unit.
+   */
   trail?: StructuredDataLink[];
   /** Absolute url of the main image of the page. */
   image?: string;
@@ -22,11 +23,10 @@ interface ExplorerJsonLdProps {
 }
 
 /**
- * Structured data (JSON-LD) of an Explorer page: the breadcrumb trail Home > Explorer > ... > page
- * and the WebPage about the game. Render it in the page body, next/head can't render the next-seo
- * JSON-LD components.
+ * Structured data (JSON-LD) of a page: the breadcrumb trail Home > ... > page and the WebPage about
+ * the game. Render it in the page body, next/head can't render the next-seo JSON-LD components.
  */
-const ExplorerJsonLd = ({
+const PageJsonLd = ({
   path,
   name,
   description,
@@ -34,22 +34,15 @@ const ExplorerJsonLd = ({
   trail = [],
   image,
   items,
-}: ExplorerJsonLdProps) => {
-  const { t } = useTranslation("common");
+}: PageJsonLdProps) => {
   const { locale = "en" } = useRouter();
-
-  const explorerName = t("mainMenu.explorer");
-  const breadcrumbItems =
-    path === getExplorerRoute()
-      ? getBreadcrumbItems([], explorerName)
-      : getBreadcrumbItems(
-          [{ name: explorerName, path: getExplorerRoute() }, ...trail],
-          breadcrumbName ?? name,
-        );
 
   return (
     <>
-      <BreadcrumbJsonLd items={breadcrumbItems} />
+      {/* A trail needs at least two items, the home page has none */}
+      {path !== "/" && (
+        <BreadcrumbJsonLd items={getBreadcrumbItems(trail, breadcrumbName ?? name)} />
+      )}
       <JsonLdScript
         data={getWebPageJsonLd({ path, name, description, locale, image, items })}
         scriptKey="webpage-jsonld"
@@ -58,4 +51,4 @@ const ExplorerJsonLd = ({
   );
 };
 
-export default ExplorerJsonLd;
+export default PageJsonLd;

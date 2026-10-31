@@ -31,9 +31,10 @@ import {
   getExplorerFactionUnitsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
+  getExplorerRoute,
 } from "../../../../../src/routes";
 import { getUnitListLinks } from "../../../../../src/structured-data";
-import ExplorerJsonLd from "../../../../../components/explorer-json-ld";
+import PageJsonLd from "../../../../../components/page-json-ld";
 import { useEffect, useState } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
@@ -166,12 +167,15 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={path}
         name={pageTitle}
         description={pageTitle}
         breadcrumbName={tCommon("mainMenu.explMenu.units")}
-        trail={[{ name: localizedRace, path: getExplorerFactionRoute(raceToFetch) }]}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: localizedRace, path: getExplorerFactionRoute(raceToFetch) },
+        ]}
         image={factionIcon}
         // What the page lists without a search, the Final Stand units have their own page.
         items={getUnitListLinks(

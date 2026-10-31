@@ -4,16 +4,10 @@
 
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import ExplorerJsonLd from "../../components/explorer-json-ld";
+import PageJsonLd from "../../components/page-json-ld";
 
 jest.mock("next/router", () => ({
   useRouter: () => ({ locale: "de" }),
-}));
-
-jest.mock("next-i18next/pages", () => ({
-  useTranslation: () => ({
-    t: (key: string) => (key === "mainMenu.explorer" ? "Erkunden" : key),
-  }),
 }));
 
 /** The JSON-LD scripts of the rendered markup, parsed. */
@@ -26,15 +20,18 @@ const renderJsonLd = (element: React.ReactElement) => {
   return scripts.map(([, json]) => JSON.parse(json));
 };
 
-describe("ExplorerJsonLd", () => {
-  it("renders the breadcrumb trail through the Explorer and the WebPage", () => {
+describe("PageJsonLd", () => {
+  it("renders the breadcrumb trail from the home page and the WebPage", () => {
     const [breadcrumbs, webPage] = renderJsonLd(
-      <ExplorerJsonLd
+      <PageJsonLd
         path="/explorer/races/american/units/riflemen_us"
         name="Riflemen - US Forces infantry"
         description="Riflemen of the US Forces."
         breadcrumbName="Riflemen"
-        trail={[{ name: "US Forces", path: "/explorer/races/american" }]}
+        trail={[
+          { name: "Erkunden", path: "/explorer" },
+          { name: "US Forces", path: "/explorer/races/american" },
+        ]}
         image="https://cdn.coh3stats.com/riflemen.png"
       />,
     );
@@ -70,14 +67,21 @@ describe("ExplorerJsonLd", () => {
     });
   });
 
-  it("ends the trail at the Explorer on the Explorer page itself", () => {
+  it("ends the trail at the page under the home page without a trail", () => {
     const [breadcrumbs] = renderJsonLd(
-      <ExplorerJsonLd path="/explorer" name="COH3 Explorer" breadcrumbName="Ignored" />,
+      <PageJsonLd path="/tournaments" name="Tournaments" breadcrumbName="Turniere" />,
     );
 
     expect(breadcrumbs.itemListElement).toEqual([
       { "@type": "ListItem", position: 1, name: "COH3 Stats", item: "https://coh3stats.com" },
-      { "@type": "ListItem", position: 2, name: "Erkunden" },
+      { "@type": "ListItem", position: 2, name: "Turniere" },
     ]);
+  });
+
+  it("leaves the breadcrumb trail out on the home page", () => {
+    const jsonLd = renderJsonLd(<PageJsonLd path="/" name="COH3 Stats" />);
+
+    expect(jsonLd).toHaveLength(1);
+    expect(jsonLd[0]["@type"]).toBe("WebPage");
   });
 });

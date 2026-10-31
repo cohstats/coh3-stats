@@ -5,9 +5,9 @@ import { Container, Stack, Text, Title } from "@mantine/core";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../../src/seo-utils";
-import { getExplorerFsRoute } from "../../../src/routes";
+import { getExplorerRoute, getExplorerFsRoute } from "../../../src/routes";
 import FinalStandSection from "../../../screens/explorer/final-stand-section";
-import ExplorerJsonLd from "../../../components/explorer-json-ld";
+import PageJsonLd from "../../../components/page-json-ld";
 
 const FinalStandExplorer: NextPage = () => {
   const { t } = useTranslation(["explorer-fs", "explorer"]);
@@ -17,11 +17,12 @@ const FinalStandExplorer: NextPage = () => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={getExplorerFsRoute()}
         name={seoProps.title ?? ""}
         description={seoProps.description}
         breadcrumbName={t("common:mainMenu.explMenu.finalStand")}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       <Container size="md">
         <Stack mb={24}>

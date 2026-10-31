@@ -80,8 +80,9 @@ import {
   getExplorerFsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
+  getExplorerRoute,
 } from "../../../../../src/routes";
-import ExplorerJsonLd from "../../../../../components/explorer-json-ld";
+import PageJsonLd from "../../../../../components/page-json-ld";
 import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
 
@@ -439,18 +440,24 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
   const path = getExplorerUnitRoute(raceId, unitId);
   const unitIcon = getIconsPathOnCDN(`/icons/${resolvedSquad.ui.iconName}.png`);
   // The way to the unit in the Explorer, Final Stand units are listed on their own page.
-  const breadcrumbTrail = isFinalStand
-    ? [
-        { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
-        {
-          name: t("finalStandUnitsPage.meta.title", { faction: localizedRace }),
-          path: getExplorerFsUnitsRoute(raceId),
-        },
-      ]
-    : [
-        { name: localizedRace, path: getExplorerFactionRoute(raceId) },
-        { name: t("common:mainMenu.explMenu.units"), path: getExplorerFactionUnitsRoute(raceId) },
-      ];
+  const breadcrumbTrail = [
+    { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+    ...(isFinalStand
+      ? [
+          { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+          {
+            name: t("finalStandUnitsPage.meta.title", { faction: localizedRace }),
+            path: getExplorerFsUnitsRoute(raceId),
+          },
+        ]
+      : [
+          { name: localizedRace, path: getExplorerFactionRoute(raceId) },
+          {
+            name: t("common:mainMenu.explMenu.units"),
+            path: getExplorerFactionUnitsRoute(raceId),
+          },
+        ]),
+  ];
 
   return (
     <>
@@ -501,7 +508,7 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={path}
         name={pageTitle}
         description={metaDescription}

@@ -35,7 +35,7 @@ import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../src/seo-utils";
 import { getIconsPathOnCDN } from "../../src/utils";
 import FinalStandSection from "../../screens/explorer/final-stand-section";
-import ExplorerJsonLd from "../../components/explorer-json-ld";
+import PageJsonLd from "../../components/page-json-ld";
 
 // Reusable InfoCard component for tool links
 const InfoCard = ({
@@ -94,10 +94,11 @@ const Explorer: NextPage = () => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={getExplorerRoute()}
         name={seoProps.title ?? ""}
         description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.explorer")}
       />
       <Container size="md">
         <Stack mb={24}>

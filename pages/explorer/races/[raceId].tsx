@@ -28,7 +28,7 @@ import {
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import { generateKeywordsString, generateLanguageAlternates } from "../../../src/seo-utils";
-import { getExplorerFactionRoute } from "../../../src/routes";
+import { getExplorerRoute, getExplorerFactionRoute } from "../../../src/routes";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
@@ -37,7 +37,7 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import { useTranslation } from "next-i18next/pages";
 import nextI18NextConfig from "../../../next-i18next.config";
 import config from "../../../config";
-import ExplorerJsonLd from "../../../components/explorer-json-ld";
+import PageJsonLd from "../../../components/page-json-ld";
 
 // New interface for pre-calculated building data
 interface PreCalculatedBuilding {
@@ -136,12 +136,13 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={path}
         name={seoTitle}
         description={seoDescription}
         breadcrumbName={localizedRace}
         image={factionIcon}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       <Container fluid p={0}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">

@@ -10,9 +10,13 @@ import { getFsPerksRace } from "../../../../../src/explorer/fs-perks/fs-perks-he
 import type { FsPerksRace } from "../../../../../src/explorer/fs-perks/fs-perks-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { raceTypeArray, type raceType } from "../../../../../src/coh3/coh3-types";
-import { getExplorerFsRoute, getExplorerFsPerksRoute } from "../../../../../src/routes";
+import {
+  getExplorerRoute,
+  getExplorerFsRoute,
+  getExplorerFsPerksRoute,
+} from "../../../../../src/routes";
 import { createPageSEO } from "../../../../../src/seo-utils";
-import ExplorerJsonLd from "../../../../../components/explorer-json-ld";
+import PageJsonLd from "../../../../../components/page-json-ld";
 import FsPerksPage from "../../../../../screens/explorer/fs-perks/fs-perks-page";
 
 interface FsPerksProps {
@@ -36,12 +40,15 @@ const FsPerks: NextPage<FsPerksProps> = ({ race, availableRaces, raceId }) => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={path}
         name={seoProps.title ?? ""}
         description={seoProps.description}
         breadcrumbName={t("page.title", { faction: race?.name ?? localizedNames[raceId] })}
-        trail={[{ name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() }]}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+        ]}
       />
       {race ? (
         <FsPerksPage race={race} availableRaces={availableRaces} t={t} />

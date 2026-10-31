@@ -8,9 +8,9 @@ import MapsTablePage from "../../screens/explorer/maps/maps-table-page";
 import { getMpMaps } from "../../src/explorer/maps/mp-maps";
 import { MpMapTableItem, toMpMapTableItem } from "../../src/explorer/maps/mp-maps-helpers";
 import { createPageSEO } from "../../src/seo-utils";
-import { getExplorerMapsTableRoute } from "../../src/routes";
+import { getExplorerRoute, getExplorerMapsTableRoute } from "../../src/routes";
 import { AnalyticsExplorerMapsTableView } from "../../src/firebase/analytics";
-import ExplorerJsonLd from "../../components/explorer-json-ld";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface MapsTableProps {
   maps: MpMapTableItem[];
@@ -29,11 +29,12 @@ const MapsTable: NextPage<MapsTableProps> = ({ maps }) => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={getExplorerMapsTableRoute()}
         name={seoProps.title ?? ""}
         description={seoProps.description}
         breadcrumbName={t("common:mainMenu.explMenu.mapsTable")}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       <MapsTablePage maps={maps} />
     </>

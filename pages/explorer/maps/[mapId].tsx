@@ -15,7 +15,12 @@ import {
 } from "../../../src/explorer/maps/mp-maps-helpers";
 import MapDetailPage from "../../../screens/explorer/maps/map-detail-page";
 import type { MpMap } from "../../../src/explorer/maps/mp-maps-types";
-import { getExplorerMapRoute, getExplorerMapsRoute, mapStatsModeType } from "../../../src/routes";
+import {
+  getExplorerRoute,
+  getExplorerMapRoute,
+  getExplorerMapsRoute,
+  mapStatsModeType,
+} from "../../../src/routes";
 import { isOfficialMap } from "../../../src/coh3/coh3-data";
 import {
   getLatestPatchMapTeamComposition,
@@ -23,7 +28,7 @@ import {
 } from "../../../src/stats/latest-patch-map-stats";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { AnalyticsExplorerMapDetailsView } from "../../../src/firebase/analytics";
-import ExplorerJsonLd from "../../../components/explorer-json-ld";
+import PageJsonLd from "../../../components/page-json-ld";
 
 interface MapDetailProps {
   map: MpMap | null;
@@ -66,12 +71,15 @@ const MapDetail: NextPage<MapDetailProps> = ({ map, teamComposition, latestPatch
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
-      <ExplorerJsonLd
+      <PageJsonLd
         path={path}
         name={title}
         description={metaDescription}
         breadcrumbName={map.name}
-        trail={[{ name: t("common:mainMenu.explMenu.maps"), path: getExplorerMapsRoute() }]}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: t("common:mainMenu.explMenu.maps"), path: getExplorerMapsRoute() },
+        ]}
         image={image}
       />
 
