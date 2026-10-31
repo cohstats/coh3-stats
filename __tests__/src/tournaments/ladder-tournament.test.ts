@@ -319,6 +319,16 @@ describe("season summaries", () => {
     expect(summary?.recent.map((recent) => recent.seasonId)).toEqual([3, 2]);
   });
 
+  test("keeps the finished seasons newer than the featured one in the recent seasons", () => {
+    // Season 1 is stuck in Draft, so it's featured, the newer seasons are finished
+    const seasons = [season(1, { status: "Draft" }), season(2), season(3)];
+
+    const summary = buildHubLadderSummary(ranking, videos, names, seasons);
+
+    expect(summary?.featured.seasonId).toBe(1);
+    expect(summary?.recent.map((recent) => recent.seasonId)).toEqual([3, 2]);
+  });
+
   test("builds the overview data with the top of the latest season", () => {
     const latestRanking = [
       ...ranking,

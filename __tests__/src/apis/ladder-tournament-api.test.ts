@@ -465,6 +465,20 @@ describe("ladder-tournament-api", () => {
       );
     });
 
+    it.each([0, -1, 2.5])("throws on the season id %s, which has no season page", async (id) => {
+      fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], id }]));
+
+      await expect(getLadderTournamentSeasons()).rejects.toThrow(
+        "Invalid Ladder Tournament seasons response",
+      );
+    });
+
+    it("throws on a malformed date", async () => {
+      fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], ladderStart: "soon" }]));
+
+      await expect(getLadderTournamentSeasons()).rejects.toThrow("Invalid ISO 8601 date");
+    });
+
     it("throws when the API returns a non-ok response", async () => {
       fetchSpy.mockReturnValue(errorResponse(503));
 

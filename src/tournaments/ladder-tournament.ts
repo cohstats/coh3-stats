@@ -419,10 +419,11 @@ export const buildHubLadderSummary = (
 
   return {
     featured,
-    // Summaries are from the newest, so these are the latest past seasons
+    // Summaries are from the newest, so these are the latest past seasons. A past season can
+    // be newer than the featured one, eg when an older season is stuck in Draft
     recent: summaries
       .filter(
-        (summary) => summary.seasonId < featured.seasonId && !isLadderSeasonCurrent(summary),
+        (summary) => summary.seasonId !== featured.seasonId && !isLadderSeasonCurrent(summary),
       )
       .slice(0, HUB_RECENT_SEASONS),
   };

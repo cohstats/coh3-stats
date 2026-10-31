@@ -57,20 +57,26 @@ const casterVideoSchema = z.object({
 
 const casterVideosResponseSchema = z.array(casterVideoSchema);
 
+// Parseable ISO 8601 date, a malformed one would render as an empty date range
+const isoDateSchema = z.string().refine((value) => !Number.isNaN(Date.parse(value)), {
+  message: "Invalid ISO 8601 date",
+});
+
 // The docs say PascalCase keys, the API sends camelCase.
 // The registration fee and the rules text are not used, so they are not part of the contract.
 const seasonSchema = z.object({
-  // Same value as seasonid in the ranking and seasonId in the caster videos
-  id: z.number(),
+  // Same value as seasonid in the ranking and seasonId in the caster videos,
+  // a positive integer as the season page URL accepts only those
+  id: z.number().int().positive(),
   // Eg "BloodAndSteel" or "Season#1"
   name: z.string(),
   // Values are not documented - seen "Draft" and "Finished", the docs example has "Active"
   status: z.string(),
   // ISO 8601 without the offset, UTC by the docs, eg 2026-11-03T10:00:00
-  registrationStart: z.string(),
-  registrationEnd: z.string(),
-  ladderStart: z.string(),
-  ladderEnd: z.string(),
+  registrationStart: isoDateSchema,
+  registrationEnd: isoDateSchema,
+  ladderStart: isoDateSchema,
+  ladderEnd: isoDateSchema,
   // How many positions above its own a team can challenge
   maxChallengePositions: z.number(),
   challengeResponseHours: z.number(),

@@ -222,6 +222,24 @@ describe("LadderTournamentScreen", () => {
     );
   });
 
+  test.each(["Paused", "constructor", "__proto__"])(
+    "renders the unknown status %s as it is in gray",
+    (status) => {
+      const seasons = (seasonsResponse as LadderTournamentSeason[]).map((season) => ({
+        ...season,
+        status,
+      }));
+      const html = render({
+        data: buildLadderSeasonPageData(1, ranking, videos, names, seasons),
+      });
+      const badge = getElement(html, "ladder-season-status", "div");
+
+      expect(badge).toContain(`>${status}<`);
+      expect(badge).toContain("gray");
+      expect(badge).not.toContain("league.status.");
+    },
+  );
+
   test("renders a finished season with the stats and the info", () => {
     // Bo5 final, so the full format
     const seasons = (seasonsResponse as LadderTournamentSeason[]).map((season) => ({

@@ -42,11 +42,12 @@ export const LadderSeasonStatusBadge = ({
 }: { status: string } & Omit<BadgeProps, "children" | "color">) => {
   const { t } = useTranslation("tournaments");
   const key = status.trim().toLowerCase();
-  const known = key in SEASON_STATUS_COLORS;
+  // Own keys only, "constructor" or "__proto__" must not resolve to a color
+  const known = Object.prototype.hasOwnProperty.call(SEASON_STATUS_COLORS, key);
 
   return (
     <Badge
-      color={SEASON_STATUS_COLORS[key] ?? "gray"}
+      color={known ? SEASON_STATUS_COLORS[key] : "gray"}
       variant="light"
       data-testid="ladder-season-status"
       {...props}
