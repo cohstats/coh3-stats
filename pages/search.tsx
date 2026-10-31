@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import PageJsonLd from "../components/page-json-ld";
 import { SearchScreen } from "../screens/search";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
@@ -28,6 +29,7 @@ const Search: NextPage = () => {
           nofollow: true,
         })}
       </Head>
+      <PageJsonLd path="/search" name={seoProps.title ?? ""} description={seoProps.description} />
       <SearchScreen />
     </>
   );

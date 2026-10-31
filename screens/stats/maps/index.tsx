@@ -2,6 +2,8 @@ import { NextPage } from "next";
 import React from "react";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getMapsStatsRoute } from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
 import { generateKeywordsString } from "../../../src/seo-utils";
 import { useTranslation } from "next-i18next/pages";
 import StatsContainerSelector from "../stats-container-selector";
@@ -44,6 +46,12 @@ const MapStats: NextPage = () => {
           ],
         })}
       </Head>
+      <PageJsonLd
+        path={getMapsStatsRoute()}
+        name={pageTitle}
+        description={description}
+        breadcrumbName={t("common:mainMenu.statsMenu.maps")}
+      />
       <>
         <StatsContainerSelector statsType={"mapStats"} />
       </>

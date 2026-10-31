@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import PageJsonLd from "../../components/page-json-ld";
 import React, { useEffect, useState, useMemo } from "react";
 import { Container, Group, Select, Stack, Title } from "@mantine/core";
 import { createPageSEO } from "../../src/seo-utils";
@@ -139,6 +140,12 @@ const LiveGamesIndex = () => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path="/live-games"
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.liveGames")}
+      />
       <Container size={"fluid"} p={0}>
         <div style={{ textAlign: "center", paddingBottom: 5 }}>
           <Title order={1}>{t("pageTitle")}</Title>

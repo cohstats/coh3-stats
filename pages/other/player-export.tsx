@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { AnalyticsPlayerExportPageView } from "../../src/firebase/analytics";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getPlayerExportRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import { Anchor, Code, Container, Space, Text, Title } from "@mantine/core";
 import { generateKeywordsString } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
@@ -31,11 +33,11 @@ const PlayerExport: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}/other/player-export`,
+          canonical: `${config.SITE_URL}${getPlayerExportRoute()}`,
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}/other/player-export`,
+            url: `${config.SITE_URL}${getPlayerExportRoute()}`,
           },
           additionalMetaTags: [
             {
@@ -45,6 +47,7 @@ const PlayerExport: NextPage = () => {
           ],
         })}
       </Head>
+      <PageJsonLd path={getPlayerExportRoute()} name={pageTitle} description={description} />
       <>
         <Container size={"md"}>
           <Title order={1} pt="md">

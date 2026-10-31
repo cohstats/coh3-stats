@@ -13,9 +13,11 @@ import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../sr
 import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import PageJsonLd from "../../components/page-json-ld";
+import config from "../../config";
 import FactionIcon from "../../components/faction-icon";
 import { useTranslation } from "next-i18next/pages";
-import { createLeaderboardSEO } from "../../src/seo-utils";
+import { createLeaderboardSEO, getLeaderboardCanonicalPath } from "../../src/seo-utils";
 
 const RECORD_PER_PAGE = 100;
 
@@ -205,6 +207,17 @@ const Leaderboards = ({
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={getLeaderboardCanonicalPath(
+          raceToFetch,
+          localizedType,
+          platformToFetch,
+          regionToFetch,
+        )}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        image={`${config.SITE_URL}/icons/general/${raceToFetch}.webp`}
+      />
       <Container size={"lg"} p={0}>
         <Container fluid pl={0} pr={0}>
           <Group justify={"space-between"}>

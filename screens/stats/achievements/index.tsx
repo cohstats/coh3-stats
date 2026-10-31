@@ -2,6 +2,8 @@ import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
 import { generateKeywordsString } from "../../../src/seo-utils";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getGlobalAchievementsStatsRoute } from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
 import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
@@ -55,6 +57,12 @@ const GlobalAchievements = ({
           ],
         })}
       </Head>
+      <PageJsonLd
+        path={getGlobalAchievementsStatsRoute()}
+        name={pageTitle}
+        description={description}
+        breadcrumbName={t("common:mainMenu.statsMenu.achievements")}
+      />
 
       <Container size={"md"}>
         <Flex justify="space-between" align={"center"}>

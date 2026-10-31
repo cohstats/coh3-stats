@@ -186,6 +186,25 @@ export const createPlayerSEO = (
 };
 
 /**
+ * Canonical path of a leaderboard page, with the query of the leaderboard.
+ */
+export const getLeaderboardCanonicalPath = (
+  faction: string,
+  mode: string,
+  platform: string = "steam",
+  region?: string,
+) => {
+  const queryParams = new URLSearchParams({
+    race: faction,
+    type: mode,
+    platform,
+    ...(region && { region }),
+  });
+
+  return `/leaderboards?${queryParams.toString()}`;
+};
+
+/**
  * Creates SEO props for leaderboard pages with dynamic faction/mode data
  * @param t - Translation function
  * @param faction - Raw faction name (german, american, dak, british)
@@ -217,14 +236,7 @@ export const createLeaderboardSEO = (
     keywords = ["leaderboards", "rankings"];
   }
 
-  // Build canonical URL with query parameters
-  const queryParams = new URLSearchParams({
-    race: faction,
-    type: mode,
-    platform,
-    ...(region && { region }),
-  });
-  const canonical = `${config.SITE_URL}/leaderboards?${queryParams.toString()}`;
+  const canonical = `${config.SITE_URL}${getLeaderboardCanonicalPath(faction, mode, platform, region)}`;
 
   return {
     title,

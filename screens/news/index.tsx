@@ -37,6 +37,7 @@ import { useRouter } from "next/router";
 import { NEWS_CATEGORIES, NewsCategory } from "../../src/news/news-categories";
 import LinkWithOutPrefetch from "../../components/LinkWithOutPrefetch";
 import { getNewsRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import { getCategoryHref, NewsArticleBody, NewsArticleMeta } from "./news-article";
 // Same sticky bar and buttons as the unit and search page section nav.
 import navClasses from "../../components/unit-cards/unit-section-nav.module.css";
@@ -329,6 +330,16 @@ const SteamNewsPage: NextPage<{
             },
           })}
         </Head>
+        <PageJsonLd
+          path={pagePath}
+          name={seoProps.title ?? ""}
+          description={seoProps.description}
+          breadcrumbName={t("common:mainMenu.news")}
+          items={COH3SteamNews.newsitems.map((item) => ({
+            name: item.title,
+            path: getNewsRoute(item.gid),
+          }))}
+        />
         <Container size={"md"} px={0}>
           <Title>{t("pageTitle")}</Title>
           <NewsCategoryFilter

@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
-import { TEST_MAP, TEST_UNIT } from "../fixtures/test-data";
+import { test, expect, Page } from "@playwright/test";
+import { TEST_MAP, TEST_MATCH, TEST_PLAYER, TEST_UNIT } from "../fixtures/test-data";
 
 /**
  * SEO sweep - §2.16 of the e2e coverage report.
@@ -72,10 +72,16 @@ test.describe("SEO - page tags", () => {
 
 /**
  * Pages with the JSON-LD (`PageJsonLd`), with how many links their breadcrumb trail has before the
- * page itself. Every Explorer route, and the tournaments pages that render the same with and without
- * the tournament data (the season page shows the league without it).
+ * page itself and their WebPage type (WebPage by default). Every page with SEO tags except the home
+ * page (checked on its own) and the news article (its own NewsArticle markup). The tournaments
+ * pages are the ones that render the same with and without the tournament data.
  */
-const STRUCTURED_DATA_PAGES: Array<{ path: string; parents: number; list?: boolean }> = [
+const STRUCTURED_DATA_PAGES: Array<{
+  path: string;
+  parents: number;
+  list?: boolean;
+  type?: string;
+}> = [
   { path: "/explorer", parents: 1 },
   { path: "/explorer/races/american", parents: 2 },
   { path: "/explorer/races/american/units", parents: 3, list: true },
@@ -95,26 +101,47 @@ const STRUCTURED_DATA_PAGES: Array<{ path: string; parents: number; list?: boole
   { path: "/tournaments", parents: 1, list: true },
   { path: "/tournaments/ladder-tournament", parents: 2 },
   { path: "/tournaments/ironclad", parents: 2 },
+  { path: "/leaderboards", parents: 1 },
+  { path: "/leaderboards-teams", parents: 1 },
+  { path: `/players/${TEST_PLAYER.profileId}`, parents: 1, type: "ProfilePage" },
+  { path: `/matches/${TEST_MATCH.matchId}`, parents: 1 },
+  { path: "/stats/games", parents: 1 },
+  { path: "/stats/maps", parents: 1 },
+  { path: "/stats/players", parents: 1 },
+  { path: "/stats/leaderboards", parents: 1 },
+  { path: "/stats/achievements", parents: 1 },
+  { path: "/live-games", parents: 1 },
+  { path: "/news", parents: 1, list: true },
+  { path: "/search", parents: 1 },
+  { path: "/desktop-app", parents: 1 },
+  { path: "/about", parents: 1, type: "AboutPage" },
+  { path: "/legal/privacy", parents: 1 },
+  { path: "/other/ranking-tiers", parents: 1 },
+  { path: "/other/open-data", parents: 1 },
+  { path: "/other/player-export", parents: 1 },
+  { path: "/other/relic-api", parents: 1 },
 ];
+
+/** The JSON-LD scripts of the page, parsed. */
+const getJsonLd = async (page: Page) =>
+  Promise.all(
+    (await page.locator('script[type="application/ld+json"]').all()).map(async (script) =>
+      JSON.parse((await script.textContent()) ?? "{}"),
+    ),
+  );
 
 test.describe("SEO - structured data", () => {
   test.describe.configure({ timeout: 60_000 });
 
-  for (const { path, parents, list } of STRUCTURED_DATA_PAGES) {
+  for (const { path, parents, list, type } of STRUCTURED_DATA_PAGES) {
     test(`should mark up ${path} with JSON-LD`, async ({ page }) => {
       // The JSON-LD is server rendered, the HTML is enough.
       const response = await page.goto(path, { waitUntil: "domcontentloaded" });
       expect(response?.status(), `${path} did not respond with 2xx`).toBeLessThan(400);
 
-      const jsonLd = await Promise.all(
-        (await page.locator('script[type="application/ld+json"]').all()).map(async (script) =>
-          JSON.parse((await script.textContent()) ?? "{}"),
-        ),
-      );
+      const jsonLd = await getJsonLd(page);
       const breadcrumbs = jsonLd.filter((data) => data["@type"] === "BreadcrumbList");
-      const webPages = jsonLd.filter((data) =>
-        ["WebPage", "CollectionPage"].includes(data["@type"]),
-      );
+      const webPages = jsonLd.filter((data) => data["@type"]?.endsWith("Page"));
       expect(breadcrumbs).toHaveLength(1);
       expect(webPages).toHaveLength(1);
 
@@ -125,9 +152,9 @@ test.describe("SEO - structured data", () => {
       expect(trail.at(-1).item).toBeUndefined();
       for (const item of trail) expect(item.name).toBeTruthy();
 
-      // Same page as the canonical and the meta tags say.
+      // Same page as the canonical and the meta tags say, some canonicals have the default query.
       const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
-      expect(canonical).toMatch(new RegExp(`${path}$`));
+      expect(new URL(canonical ?? "").pathname).toBe(path);
       const [webPage] = webPages;
       expect(webPage).toMatchObject({
         "@context": "https://schema.org",
@@ -136,12 +163,32 @@ test.describe("SEO - structured data", () => {
         about: { "@type": "VideoGame", name: "Company of Heroes 3" },
       });
       expect(webPage.name).toBeTruthy();
+      if (type) expect(webPage["@type"]).toBe(type);
       if (list) {
         expect(webPage["@type"]).toBe("CollectionPage");
         expect(webPage.mainEntity.itemListElement.length).toBeGreaterThan(0);
       }
     });
   }
+});
+
+test.describe("SEO - home page structured data", () => {
+  test("should describe the site and the home page", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const jsonLd = await getJsonLd(page);
+
+    // No breadcrumb trail on the home page, it would have a single item.
+    expect(jsonLd.filter((data) => data["@type"] === "BreadcrumbList")).toHaveLength(0);
+    const site = jsonLd.find((data) => data["@graph"]);
+    expect(site["@graph"].map((node: { "@type": string }) => node["@type"])).toEqual([
+      "WebSite",
+      "Organization",
+    ]);
+
+    const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+    const webPage = jsonLd.find((data) => data["@type"] === "WebPage");
+    expect(webPage).toMatchObject({ "@id": canonical, url: canonical });
+  });
 });
 
 test.describe("SEO - sitewide defaults", () => {

@@ -1,6 +1,8 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getAboutRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 import {
   Container,
@@ -372,6 +374,10 @@ const sections = [
 ];
 
 const About: NextPage = () => {
+  const title = "About COH3 Stats";
+  const description =
+    "COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions.";
+
   useEffect(() => {
     AnalyticsAboutAppPageView();
   }, []);
@@ -380,10 +386,9 @@ const About: NextPage = () => {
     <div>
       <Head>
         {generateNextSeo({
-          title: "About COH3 Stats",
-          description:
-            "COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions.",
-          canonical: "https://coh3stats.com/about",
+          title,
+          description,
+          canonical: `${config.SITE_URL}${getAboutRoute()}`,
           additionalMetaTags: [
             {
               name: "keywords",
@@ -399,6 +404,13 @@ const About: NextPage = () => {
           ],
         })}
       </Head>
+      <PageJsonLd
+        path={getAboutRoute()}
+        name={title}
+        description={description}
+        breadcrumbName="About"
+        type="AboutPage"
+      />
       <>
         <Center>
           <Title order={1} size="h1" pt="md" mb="md">

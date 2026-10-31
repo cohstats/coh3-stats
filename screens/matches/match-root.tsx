@@ -8,6 +8,7 @@ import Head from "next/head";
 import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { Center, Loader } from "@mantine/core";
 import { createMatchSEO } from "../../src/seo-utils";
+import PageJsonLd from "../../components/page-json-ld";
 import MatchDetail from "./match-detail";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
@@ -101,6 +102,11 @@ const MatchDetailRoot: NextPage = () => {
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={`/matches/${matchId}`}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+      />
       <div style={{ minHeight: 900 }}>{content}</div>
     </>
   );

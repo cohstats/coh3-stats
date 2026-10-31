@@ -4,6 +4,8 @@ import React, { useEffect } from "react";
 import ErrorCard from "../../components/error-card";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getPlayersStatsRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 import { GetServerSideProps } from "next";
 import { generateKeywordsString } from "../../src/seo-utils";
@@ -86,6 +88,12 @@ const PlayerStats = ({
           },
         })}
       </Head>
+      <PageJsonLd
+        path={getPlayersStatsRoute()}
+        name={pageTitle}
+        description={description}
+        breadcrumbName={t("common:mainMenu.statsMenu.players")}
+      />
       <Container size={"md"} p={0}>
         {error ? (
           <ErrorCard title={t("stats:errors.gettingPlayerStats")} body={JSON.stringify(error)} />

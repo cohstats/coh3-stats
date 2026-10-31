@@ -4,6 +4,8 @@ import React, { useEffect } from "react";
 import ErrorCard from "../../components/error-card";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getLeaderBoardStatsRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 import { GetServerSideProps } from "next";
 import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leaderboards/stats";
@@ -61,6 +63,12 @@ const Leaderboards = ({
           ],
         })}
       </Head>
+      <PageJsonLd
+        path={getLeaderBoardStatsRoute()}
+        name={pageTitle}
+        description={description}
+        breadcrumbName={t("common:mainMenu.statsMenu.leaderboards")}
+      />
       <Container size={"md"} p={0}>
         {error ? (
           <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />
