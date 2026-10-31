@@ -473,11 +473,23 @@ describe("ladder-tournament-api", () => {
       );
     });
 
-    it("throws on a malformed date", async () => {
-      fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], ladderStart: "soon" }]));
+    it.each(["soon", "Nov 3 2026", "2026-02-30T00:00:00", "2026-13-01", "2026-11-03T25:00:00"])(
+      "throws on a malformed date %s",
+      async (ladderStart) => {
+        fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], ladderStart }]));
 
-      await expect(getLadderTournamentSeasons()).rejects.toThrow("Invalid ISO 8601 date");
-    });
+        await expect(getLadderTournamentSeasons()).rejects.toThrow("Invalid ISO 8601 date");
+      },
+    );
+
+    it.each(["2026-11-03", "2026-11-03T10:00:00Z", "2026-11-03T10:00:00.123-03:00"])(
+      "accepts the ISO 8601 date %s",
+      async (ladderStart) => {
+        fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], ladderStart }]));
+
+        await expect(getLadderTournamentSeasons()).resolves.toHaveLength(1);
+      },
+    );
 
     it("throws when the API returns a non-ok response", async () => {
       fetchSpy.mockReturnValue(errorResponse(503));

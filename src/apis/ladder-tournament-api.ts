@@ -57,8 +57,25 @@ const casterVideoSchema = z.object({
 
 const casterVideosResponseSchema = z.array(casterVideoSchema);
 
-// Parseable ISO 8601 date, a malformed one would render as an empty date range
-const isoDateSchema = z.string().refine((value) => !Number.isNaN(Date.parse(value)), {
+// eg "2026-10-02T15:00:00", the time and the offset are optional
+const ISO_DATE_PATTERN =
+  /^(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?)?$/;
+
+const isValidIsoDate = (value: string) => {
+  const match = ISO_DATE_PATTERN.exec(value);
+  if (!match || Number.isNaN(Date.parse(value))) return false;
+  // Date.parse rolls the overflowed days over (2026-02-30 is 2 Mar), the date must stay the same
+  const [year, month, day] = match.slice(1, 4).map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+};
+
+// ISO 8601 date, a malformed one would render as an empty or a wrong date range
+const isoDateSchema = z.string().refine(isValidIsoDate, {
   message: "Invalid ISO 8601 date",
 });
 
