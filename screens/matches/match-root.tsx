@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { getMatch } from "../../src/apis/coh3stats-api";
 import { ProcessedMatch } from "../../src/coh3/coh3-types";
 import ErrorCard from "../../components/error-card";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { Center, Loader } from "@mantine/core";
 import { createMatchSEO } from "../../src/seo-utils";
 import MatchDetail from "./match-detail";
@@ -79,7 +80,7 @@ const MatchDetailRoot: NextPage = () => {
   }
 
   // Create SEO props based on match data availability
-  let seoProps;
+  let seoProps: NextSeoProps;
   if (matchData) {
     seoProps = createMatchSEO(t, matchData);
   } else {
@@ -99,7 +100,7 @@ const MatchDetailRoot: NextPage = () => {
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <div style={{ minHeight: 900 }}>{content}</div>
     </>
   );

@@ -4,7 +4,8 @@ import { Container, Grid, Paper } from "@mantine/core";
 import { DPSCalculatorCard, ExplorerCard } from "./info-cards";
 import React, { useEffect, useRef, useState } from "react";
 import TwitchContainer from "./twitch-panel";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
 import { RedditPostType } from "../../src/apis/reddit-api";
 import RedditPanel from "./reddit-panel";
@@ -53,7 +54,7 @@ const Home: NextPage<Props> = ({
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       <Container fluid p={{ base: 0 }}>
         <Grid>
           <Grid.Col span={{ sm: 7 }}>

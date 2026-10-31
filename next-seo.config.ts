@@ -1,19 +1,20 @@
-/** @type {import("next-seo").DefaultSeoProps} */
-const defaultSEO = {
+import type { DefaultSeoProps } from "next-seo/pages";
+
+const defaultSEO: DefaultSeoProps = {
   titleTemplate: "%s | COH3 Stats",
   defaultTitle: "COH3 Stats - Company of Heroes 3 Statistics",
   description: "Company of Heroes 3 statistics, leaderboards, player profiles, and game data.",
   canonical: "https://coh3stats.com",
   openGraph: {
     type: "website",
-    locale: "en_US",
+    // og:locale is set per request in `_app`, see `getOpenGraphLocale` in `src/seo-utils.tsx`
     url: "https://coh3stats.com",
     siteName: "COH3 Stats",
+    // Used by every page without its own image. No width / height on purpose, next/head dedupes
+    // by tag key, so a page image without a size (maps, news) would inherit the logo's size.
     images: [
       {
         url: "https://coh3stats.com/logo/android-icon-192x192.png",
-        width: 192,
-        height: 192,
         alt: "COH3 Stats logo",
       },
     ],
@@ -114,4 +115,4 @@ const defaultSEO = {
   ],
 };
 
-module.exports = defaultSEO;
+export default defaultSEO;

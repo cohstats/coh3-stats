@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { IconSearch } from "@tabler/icons-react";
 import {
   Anchor,
@@ -146,33 +147,33 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
 
   return (
     <>
-      <NextSeo
-        title={pageTitle}
-        description={metaDescription}
-        canonical={canonical}
-        openGraph={{
-          title: `${pageTitle} | COH3 Stats`,
+      <Head>
+        {generateNextSeo({
+          title: pageTitle,
           description: metaDescription,
-          url: canonical,
-          type: "website",
-          siteName: "COH3 Stats",
-          images: [
+          canonical,
+          openGraph: {
+            title: `${pageTitle} | COH3 Stats`,
+            description: metaDescription,
+            url: canonical,
+            images: [
+              {
+                url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+                width: 64,
+                height: 64,
+                alt: `${localizedRace} faction icon`,
+              },
+            ],
+          },
+          additionalMetaTags: [
             {
-              url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
-              width: 64,
-              height: 64,
-              alt: `${localizedRace} faction icon`,
+              name: "keywords",
+              content: metaKeywords,
             },
           ],
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: metaKeywords,
-          },
-        ]}
-        languageAlternates={generateLanguageAlternates(asPath)}
-      />
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
+      </Head>
       <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">

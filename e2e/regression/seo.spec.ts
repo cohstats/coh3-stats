@@ -69,12 +69,31 @@ test.describe("SEO - page tags", () => {
   }
 });
 
+test.describe("SEO - sitewide defaults", () => {
+  test("should apply the defaults generated in _app to the page tags", async ({ page }) => {
+    await page.goto("/live-games");
+
+    // `titleTemplate` from `next-seo.config.ts`, the page itself only sets "Live Games - ..."
+    await expect(page).toHaveTitle(/^Live Games.* \| COH3 Stats$/);
+    // Only `_app` sets these, the page doesn't
+    await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+      "content",
+      "COH3 Stats",
+    );
+    await expect(page.locator('link[rel="search"]')).toHaveAttribute("href", /opensearch\.xml$/);
+  });
+});
+
 test.describe("SEO - indexability", () => {
   test("should keep the search page out of the index", async ({ page }) => {
     await page.goto("/search");
 
-    // NextSeo emits its default `index,follow` first, the page's own override second.
-    await expect(page.locator('meta[name="robots"][content*="nofollow"]')).toHaveCount(1);
+    // `nofollow: true` turns the one robots tag into `index,nofollow` (no second override tag).
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "index,nofollow",
+    );
   });
 
   test("should let the content pages be indexed", async ({ page }) => {

@@ -1,6 +1,7 @@
 import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
 import { generateKeywordsString } from "../../../src/seo-utils";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
@@ -36,23 +37,24 @@ const GlobalAchievements = ({
 
   return (
     <>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}/stats/achievements`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}/stats/achievements`,
-          type: "website",
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: generateKeywordsString(keywords),
+          description,
+          canonical: `${config.SITE_URL}/stats/achievements`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}/stats/achievements`,
           },
-        ]}
-      />
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: generateKeywordsString(keywords),
+            },
+          ],
+        })}
+      </Head>
 
       <Container size={"md"}>
         <Flex justify="space-between" align={"center"}>

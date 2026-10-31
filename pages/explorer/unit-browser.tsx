@@ -1,13 +1,15 @@
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import React, { useEffect } from "react";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
+import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { UnitTable } from "../../components/unitStats/unitTable";
 import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
+import config from "../../config";
 
 interface SquadProps {
   tableData: CustomizableUnit[];
@@ -22,6 +24,9 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
     AnalyticsExplorerUnitBrowserView();
   }, []);
 
+  const pageTitle = "Unit Browser";
+  const description =
+    "CoH 3 Unit Browser. Browser through all the game units in the game and see their stats in a table.";
   const keywords = generateKeywordsString([
     "coh3 units",
     "unit browser",
@@ -41,16 +46,24 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
   return (
     <>
       <Head>
-        <title>COH3 Stats - Unit Browser</title>
-        <meta
-          name="description"
-          content={
-            "CoH 3 Unit Browser. Browser through all the game units in the game and see their stats in a table."
-          }
-        />
-        <meta name="keywords" content={keywords} />
-        {generateAlternateLanguageLinks(asPath)}
-        {/*<meta property="og:image" content={"We might prepare a nice image for a preview for this page"} />*/}
+        {generateNextSeo({
+          title: pageTitle,
+          description,
+          canonical: `${config.SITE_URL}${asPath}`,
+          // We might prepare a nice image for a preview for this page, until then the default logo is used
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}${asPath}`,
+          },
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: keywords,
+            },
+          ],
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
       </Head>
       <div>
         <UnitTable inputData={tableData} />

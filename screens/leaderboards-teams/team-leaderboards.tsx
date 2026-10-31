@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next/pages";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import config from "../../config";
 import {
   Container,
@@ -205,39 +206,41 @@ const TeamLeaderboards: React.FC = () => {
 
   return (
     <>
-      <NextSeo
-        title={pageTitle}
-        description={t("leaderboards:teams.metaDescription", {
-          side: sideDisplayName,
-          type: typeDisplayName,
-        })}
-        canonical={`${config.SITE_URL}/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: `coh3, coh3 team leaderboards, coh3 ${side} teams, coh3 ${type} teams, coh3 stats, arranged teams`,
-          },
-        ]}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
           description: t("leaderboards:teams.metaDescription", {
             side: sideDisplayName,
             type: typeDisplayName,
           }),
-          url: `${config.SITE_URL}/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`,
-          images: [
+          canonical: `${config.SITE_URL}/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`,
+          additionalMetaTags: [
             {
-              url:
-                side === "axis"
-                  ? `${config.SITE_URL}/icons/general/german.webp`
-                  : `${config.SITE_URL}/icons/general/american.webp`,
-              width: 64,
-              height: 64,
-              alt: `${sideDisplayName} faction icon`,
+              name: "keywords",
+              content: `coh3, coh3 team leaderboards, coh3 ${side} teams, coh3 ${type} teams, coh3 stats, arranged teams`,
             },
           ],
-        }}
-      />
+          openGraph: {
+            title: pageTitle,
+            description: t("leaderboards:teams.metaDescription", {
+              side: sideDisplayName,
+              type: typeDisplayName,
+            }),
+            url: `${config.SITE_URL}/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`,
+            images: [
+              {
+                url:
+                  side === "axis"
+                    ? `${config.SITE_URL}/icons/general/german.webp`
+                    : `${config.SITE_URL}/icons/general/american.webp`,
+                width: 64,
+                height: 64,
+                alt: `${sideDisplayName} faction icon`,
+              },
+            ],
+          },
+        })}
+      </Head>
 
       <Container size="lg" p={0}>
         <Container fluid pl={0} pr={0}>

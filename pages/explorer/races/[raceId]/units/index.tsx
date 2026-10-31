@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { IconBarrierBlock, IconSearch } from "@tabler/icons-react";
 import {
   Anchor,
@@ -15,10 +16,7 @@ import {
 } from "@mantine/core";
 
 import { raceType, raceTypeArray } from "../../../../../src/coh3/coh3-types";
-import {
-  generateAlternateLanguageLinks,
-  generateKeywordsString,
-} from "../../../../../src/seo-utils";
+import { generateLanguageAlternates, generateKeywordsString } from "../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
@@ -59,6 +57,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
     AnalyticsExplorerFactionUnitsView(raceToFetch);
   }, []);
 
+  const pageTitle = `${localizedRace} Units - COH3 Explorer`;
   const metaKeywords = generateKeywordsString([
     `${localizedRace} coh3`,
     `Unit List ${localizedRace}`,
@@ -138,11 +137,31 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
   return (
     <>
       <Head>
-        <title>{`${localizedRace} Units - COH3 Explorer`}</title>
-        <meta name="description" content={`${localizedRace} Units - COH3 Explorer`} />
-        <meta name="keywords" content={metaKeywords} />
-        <meta property="og:image" content={`/icons/general/${raceToFetch}.webp`} />
-        {generateAlternateLanguageLinks(asPath)}
+        {generateNextSeo({
+          title: pageTitle,
+          description: pageTitle,
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: pageTitle,
+            description: pageTitle,
+            url: `${config.SITE_URL}${asPath}`,
+            images: [
+              {
+                url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+                width: 64,
+                height: 64,
+                alt: `${localizedRace} faction icon`,
+              },
+            ],
+          },
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: metaKeywords,
+            },
+          ],
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
       </Head>
       <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">

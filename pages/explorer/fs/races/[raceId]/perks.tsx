@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 import { Container, Stack, Text, Title } from "@mantine/core";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
@@ -33,7 +34,7 @@ const FsPerks: NextPage<FsPerksProps> = ({ race, availableRaces, raceId }) => {
 
   return (
     <>
-      <NextSeo {...seoProps} />
+      <Head>{generateNextSeo(seoProps)}</Head>
       {race ? (
         <FsPerksPage race={race} availableRaces={availableRaces} t={t} />
       ) : (

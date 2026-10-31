@@ -1,20 +1,24 @@
 import { useEffect } from "react";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateAlternateLanguageLinks, generateKeywordsString } from "../../src/seo-utils";
+import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
 import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
 import { WeaponTable, WeaponTableRow } from "../../components/unitStats/weaponTable";
 import { getScatterArea, getWeaponRpm } from "../../src/unitStats";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useRouter } from "next/router";
+import config from "../../config";
 
 interface WeaponsProps {
   tableData: WeaponTableRow[];
 }
 
-const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
+const pageTitle = "Weapons";
+const description = "CoH 3 Weapons list. Browser through all the weapons in-game.";
+const keywords = generateKeywordsString(["coh3 weapons", "weapons"]);
 
 const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
   const { asPath } = useRouter();
@@ -26,15 +30,23 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
   return (
     <>
       <Head>
-        <title>COH3 Stats - Weapons</title>
-        <meta
-          name="description"
-          content={"CoH 3 Weapons list. Browser through all the weapons in-game."}
-        />
-        <meta name="keywords" content={keywords} />
-        {/*we might prepare better image*/}
-        <meta property="og:image" content={`/logo/android-icon-192x192.png`} />
-        {generateAlternateLanguageLinks(asPath)}
+        {generateNextSeo({
+          title: pageTitle,
+          description,
+          canonical: `${config.SITE_URL}${asPath}`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}${asPath}`,
+          },
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: keywords,
+            },
+          ],
+          languageAlternates: generateLanguageAlternates(asPath),
+        })}
       </Head>
       <div>
         <WeaponTable inputData={tableData} />

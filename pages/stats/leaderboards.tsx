@@ -2,7 +2,8 @@ import { Container, Space, Title, Text } from "@mantine/core";
 
 import React, { useEffect } from "react";
 import ErrorCard from "../../components/error-card";
-import { NextSeo } from "next-seo";
+import Head from "next/head";
+import { generateNextSeo } from "next-seo/pages";
 
 import { GetServerSideProps } from "next";
 import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leaderboards/stats";
@@ -42,23 +43,24 @@ const Leaderboards = ({
 
   return (
     <>
-      <NextSeo
-        title={pageTitle}
-        description={description}
-        canonical={`${config.SITE_URL}/stats/leaderboards`}
-        openGraph={{
+      <Head>
+        {generateNextSeo({
           title: pageTitle,
-          description: description,
-          url: `${config.SITE_URL}/stats/leaderboards`,
-          type: "website",
-        }}
-        additionalMetaTags={[
-          {
-            name: "keywords",
-            content: generateKeywordsString(keywords),
+          description,
+          canonical: `${config.SITE_URL}/stats/leaderboards`,
+          openGraph: {
+            title: pageTitle,
+            description,
+            url: `${config.SITE_URL}/stats/leaderboards`,
           },
-        ]}
-      />
+          additionalMetaTags: [
+            {
+              name: "keywords",
+              content: generateKeywordsString(keywords),
+            },
+          ],
+        })}
+      </Head>
       <Container size={"md"} p={0}>
         {error ? (
           <ErrorCard title={"Error getting the leaderboards"} body={JSON.stringify(error)} />
