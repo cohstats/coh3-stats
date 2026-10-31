@@ -47,6 +47,22 @@ export const generateLanguageAlternates = (currentPath: string) => {
   return alternates;
 };
 
+/**
+ * Open Graph locale (language_TERRITORY) for an app locale, e.g. de -> de_DE, zh-Hant -> zh_TW
+ * @param locale - The current locale (usually from Next.js router's locale)
+ * @returns The og:locale value, the default locale's one for an unsupported locale
+ */
+export const getOpenGraphLocale = (locale?: string) => {
+  const supportedLocale =
+    locale && SUPPORTED_LANGUAGES.includes(locale)
+      ? locale
+      : nextI18NextConfig.i18n.defaultLocale;
+  // The locales don't carry the territory, maximize() adds the likely one (de -> de-Latn-DE)
+  const { language, region } = new Intl.Locale(supportedLocale).maximize();
+
+  return region ? `${language}_${region}` : language;
+};
+
 // Export default keywords for backward compatibility
 export { _defaultKeywords };
 

@@ -4,6 +4,7 @@ import { generateNextSeo } from "next-seo/pages";
 import {
   createPageSEO,
   createPlayerSEO,
+  getOpenGraphLocale,
   generateKeywordsString,
   generateLanguageAlternates,
   _defaultKeywords,
@@ -11,7 +12,7 @@ import {
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { PlayerSummaryType } from "../../src/players/utils";
 import config from "../../config";
-import { getOpenGraphLocale } from "../../next-seo.config";
+import nextI18NextConfig from "../../next-i18next.config";
 
 // Returns the key itself, or a keywords array for `returnObjects`
 const t = ((key: string, options?: { returnObjects?: boolean }) =>
@@ -121,8 +122,17 @@ describe("sitewide defaults with generateNextSeo", () => {
 describe("getOpenGraphLocale", () => {
   test("should map the app locales to the Open Graph format", () => {
     expect(getOpenGraphLocale("en")).toBe("en_US");
+    expect(getOpenGraphLocale("de")).toBe("de_DE");
     expect(getOpenGraphLocale("pt-BR")).toBe("pt_BR");
+    expect(getOpenGraphLocale("uk-UA")).toBe("uk_UA");
+    expect(getOpenGraphLocale("zh-Hans")).toBe("zh_CN");
     expect(getOpenGraphLocale("zh-Hant")).toBe("zh_TW");
+  });
+
+  test("should give every supported locale a language_TERRITORY value", () => {
+    for (const locale of nextI18NextConfig.i18n.locales) {
+      expect(getOpenGraphLocale(locale)).toMatch(/^[a-z]{2}_[A-Z]{2}$/);
+    }
   });
 
   test("should fall back to en_US", () => {
