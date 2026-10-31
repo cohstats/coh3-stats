@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Badge, BadgeProps, Group, Paper, SimpleGrid, Stack, Text } from "@mantine/core";
+import { Badge, BadgeProps, Paper, SimpleGrid, Stack, Text } from "@mantine/core";
 import { TFunction, useTranslation } from "next-i18next/pages";
 import type {
   LadderSeasonInfo,
@@ -96,29 +96,7 @@ const useSeasonInfoItems = (info: LadderSeasonInfo) => {
 };
 
 /**
- * Calendar, playoffs and match format as compact rows, for the hub.
- */
-export const LadderSeasonInfoRows = ({ info }: { info: LadderSeasonInfo }) => {
-  const items = useSeasonInfoItems(info);
-
-  return (
-    <Stack gap={6} data-testid="ladder-season-info-rows">
-      {items.map((item) => (
-        <Group key={item.key} justify="space-between" gap="xs" wrap="nowrap">
-          <Text size="sm" fw={700} style={{ flexShrink: 0 }}>
-            {item.label}
-          </Text>
-          <Text size="sm" c="dimmed" ta="right">
-            {item.value}
-          </Text>
-        </Group>
-      ))}
-    </Stack>
-  );
-};
-
-/**
- * Calendar, playoffs, match format and the challenge rules, for the league pages.
+ * Calendar, playoffs, match format and the challenge rules.
  */
 export const LadderSeasonInfoCard = ({ info }: { info: LadderSeasonInfo }) => {
   const { t } = useTranslation("tournaments");

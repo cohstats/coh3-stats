@@ -29,7 +29,6 @@ import LadderPlayerLink from "./ladder-player-link";
 import {
   formatLadderDateRange,
   getLadderSeasonTitle,
-  LadderSeasonInfoRows,
   LadderSeasonStatusBadge,
 } from "./ladder-season";
 import classes from "../tournaments.module.css";
@@ -96,15 +95,13 @@ const FeaturedSeason = ({ season }: { season: LadderSeasonSummary }) => {
   const { locale = "en" } = useRouter();
   const isCurrent = isLadderSeasonCurrent(season);
   const hasResults = season.players > 0 || season.casts > 0;
-  // The info rows of the current season have the dates already
-  const showInfoRows = isCurrent && season.info !== null;
 
   return (
-    <Stack gap="xs" data-testid="featured-latest-season">
+    <Stack gap={6} data-testid="featured-latest-season">
       <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
         {t(isCurrent ? "hub.currentSeason" : "hub.latestSeason")}
       </Text>
-      <Title order={3} size="h3">
+      <Title order={3} size="h4">
         <Anchor
           component={Link}
           href={getLadderTournamentRoute(season.seasonId)}
@@ -124,7 +121,8 @@ const FeaturedSeason = ({ season }: { season: LadderSeasonSummary }) => {
             {t("hub.castsCount", { count: season.casts })}
           </Text>
         )}
-        {!hasResults && season.info && !showInfoRows && (
+        {/* The ladder dates for the current season, or a past one without results */}
+        {season.info && (isCurrent || !hasResults) && (
           <Text size="sm" c="dimmed">
             {t("hub.ladderDates", {
               dates: formatLadderDateRange(
@@ -139,11 +137,6 @@ const FeaturedSeason = ({ season }: { season: LadderSeasonSummary }) => {
       {season.champions.length > 0 && (
         <Box mt="xs">
           <SeasonChampions season={season} />
-        </Box>
-      )}
-      {showInfoRows && season.info && (
-        <Box mt="xs">
-          <LadderSeasonInfoRows info={season.info} />
         </Box>
       )}
     </Stack>
@@ -222,28 +215,28 @@ const FeaturedTournamentCard = ({
             </Button>
           </Group>
         </Stack>
-        <Paper radius="md" p="md" className={classes.featuredData}>
-          {summary ? (
-            <FeaturedSeason season={summary.featured} />
-          ) : (
-            <Text c="dimmed" data-testid="featured-unavailable">
-              {t("hub.unavailable")}
-            </Text>
+        <Stack gap="md">
+          <Paper radius="md" p="md" className={classes.featuredData}>
+            {summary ? (
+              <FeaturedSeason season={summary.featured} />
+            ) : (
+              <Text c="dimmed" data-testid="featured-unavailable">
+                {t("hub.unavailable")}
+              </Text>
+            )}
+          </Paper>
+          {summary && summary.recent.length > 0 && (
+            <Stack gap="xs" data-testid="ladder-hub-recent">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
+                {t("hub.recentSeasons")}
+              </Text>
+              {summary.recent.map((season) => (
+                <RecentSeasonCard season={season} key={season.seasonId} />
+              ))}
+            </Stack>
           )}
-        </Paper>
-      </SimpleGrid>
-      {summary && summary.recent.length > 0 && (
-        <Stack gap="xs" mt="lg" data-testid="ladder-hub-recent">
-          <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
-            {t("hub.recentSeasons")}
-          </Text>
-          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-            {summary.recent.map((season) => (
-              <RecentSeasonCard season={season} key={season.seasonId} />
-            ))}
-          </SimpleGrid>
         </Stack>
-      )}
+      </SimpleGrid>
     </Paper>
   );
 };

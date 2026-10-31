@@ -186,11 +186,10 @@ describe("TournamentsScreen", () => {
     expect(html).toContain("Current season");
     expect(html).toContain('league.seasonWithName {"season":2,"name":"Blood and Steel"}');
     expect(html).toContain("Upcoming");
-    // The dates are in the info rows, not repeated next to the status
-    expect(html).not.toContain("hub.ladderDates");
-    expect(html).toContain('data-testid="ladder-season-info-rows"');
-    expect(html).toContain("3 Nov 2026 – 30 Jan 2027");
-    expect(html).toContain("2 Oct 2026 – 18 Oct 2026");
+    // Only the ladder dates next to the status, the rest of the season info is on the season page
+    expect(html).toContain('hub.ladderDates {"dates":"3 Nov 2026 – 30 Jan 2027"}');
+    expect(html).not.toContain("2 Oct 2026 – 18 Oct 2026");
+    expect(html).not.toContain("league.info.");
     expect(getOpeningTag(html, "featured-open-season")).toContain(
       'href="/tournaments/ladder-tournament/season/2"',
     );
