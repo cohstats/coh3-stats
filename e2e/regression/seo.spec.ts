@@ -69,6 +69,21 @@ test.describe("SEO - page tags", () => {
   }
 });
 
+test.describe("SEO - sitewide defaults", () => {
+  test("should apply the defaults generated in _app to the page tags", async ({ page }) => {
+    await page.goto("/live-games");
+
+    // `titleTemplate` from `next-seo.config.ts`, the page itself only sets "Live Games - ..."
+    await expect(page).toHaveTitle(/^Live Games.* \| COH3 Stats$/);
+    // Only `_app` sets these, the page doesn't
+    await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+      "content",
+      "COH3 Stats",
+    );
+    await expect(page.locator('link[rel="search"]')).toHaveAttribute("href", /opensearch\.xml$/);
+  });
+});
+
 test.describe("SEO - indexability", () => {
   test("should keep the search page out of the index", async ({ page }) => {
     await page.goto("/search");
