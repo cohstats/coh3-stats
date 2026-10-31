@@ -2,8 +2,14 @@ import { NextSeoProps } from "next-seo/pages";
 import { TFunction } from "next-i18next/pages";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
-import { localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
-import { raceType, PlayerCardDataType, platformType, ProcessedMatch } from "./coh3/coh3-types";
+import { localizedGameTypes, localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
+import {
+  raceType,
+  leaderBoardType,
+  PlayerCardDataType,
+  platformType,
+  ProcessedMatch,
+} from "./coh3/coh3-types";
 import { PlayerSummaryType } from "./players/utils";
 import { getMapLocalizedName } from "./coh3/helpers";
 
@@ -28,6 +34,14 @@ export const generateKeywordsString = (keywords: string[] = []) => {
 const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 
 /**
+ * Absolute url of a page in a locale, the default locale has no prefix
+ * @param path - Site relative path, e.g. `/explorer/maps`, empty for the home page
+ * @param locale - The locale (usually from Next.js router's locale)
+ */
+export const getLocalizedUrl = (path: string, locale: string) =>
+  `${config.SITE_URL}${locale === nextI18NextConfig.i18n.defaultLocale ? "" : `/${locale}`}${path}`;
+
+/**
  * Generates the `languageAlternates` for `generateNextSeo`
  * @param currentPath - The current path (usually from Next.js router's asPath)
  * @returns Array of language alternate objects, including x-default
@@ -35,7 +49,7 @@ const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 export const generateLanguageAlternates = (currentPath: string) => {
   const alternates = SUPPORTED_LANGUAGES.map((lang: string) => ({
     hrefLang: lang,
-    href: `${config.SITE_URL}${lang === nextI18NextConfig.i18n.defaultLocale ? "" : `/${lang}`}${currentPath}`,
+    href: getLocalizedUrl(currentPath, lang),
   }));
 
   // Add x-default
@@ -187,6 +201,7 @@ export const createPlayerSEO = (
 
 /**
  * Canonical path of a leaderboard page, with the query of the leaderboard.
+ * @param mode - Raw game mode (1v1, 2v2, 3v3, 4v4), the page only accepts these
  */
 export const getLeaderboardCanonicalPath = (
   faction: string,
@@ -208,7 +223,7 @@ export const getLeaderboardCanonicalPath = (
  * Creates SEO props for leaderboard pages with dynamic faction/mode data
  * @param t - Translation function
  * @param faction - Raw faction name (german, american, dak, british)
- * @param mode - Game mode
+ * @param mode - Raw game mode (1v1, 2v2, 3v3, 4v4)
  * @param platform - Platform
  * @param region - Region (optional)
  */
@@ -219,11 +234,15 @@ export const createLeaderboardSEO = (
   platform: string = "steam",
   region?: string,
 ): NextSeoProps => {
-  // Get localized faction name for display
+  // Get localized faction and mode names for display, the canonical takes the raw ones
   const localizedFaction = localizedNames[faction as raceType] || faction;
+  const localizedMode = localizedGameTypes[mode as leaderBoardType] || mode;
 
-  const title = t("leaderboards:meta.title", { faction: localizedFaction, mode });
-  const description = t("leaderboards:meta.description", { faction: localizedFaction, mode });
+  const title = t("leaderboards:meta.title", { faction: localizedFaction, mode: localizedMode });
+  const description = t("leaderboards:meta.description", {
+    faction: localizedFaction,
+    mode: localizedMode,
+  });
 
   // Get keywords from translation
   let keywords: string[] = [];

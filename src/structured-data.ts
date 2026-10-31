@@ -10,6 +10,7 @@ import config from "../config";
 import type { raceType } from "./coh3/coh3-types";
 import type { SbpsType } from "./unitStats";
 import { getExplorerUnitRoute } from "./routes";
+import { getLocalizedUrl } from "./seo-utils";
 
 // The game every page is about, so search engines connect the pages to it.
 const COMPANY_OF_HEROES_3 = {
@@ -50,24 +51,23 @@ type StructuredDataLink = {
   path: string;
 };
 
-const toAbsoluteUrl = (path: string) => `${config.SITE_URL}${path}`;
-
 /**
  * Breadcrumb trail for the `BreadcrumbJsonLd` component: the home page, the given trail and
  * the current page last. The current page has no url, Google takes the url of the page for it.
+ * The urls are the ones of the locale, like the translated names.
  * @param trail Pages between the home page and the current page, e.g. Explorer > US Forces
  * @param name Name of the current page in the trail
  */
-const getBreadcrumbItems = (trail: StructuredDataLink[], name: string) => [
-  { name: "COH3 Stats", item: config.SITE_URL },
-  ...trail.map((link) => ({ name: link.name, item: toAbsoluteUrl(link.path) })),
+const getBreadcrumbItems = (trail: StructuredDataLink[], name: string, locale: string) => [
+  { name: "COH3 Stats", item: getLocalizedUrl("", locale) },
+  ...trail.map((link) => ({ name: link.name, item: getLocalizedUrl(link.path, locale) })),
   { name },
 ];
 
 /**
  * schema.org WebPage of a page about the game, for the `JsonLdScript` component.
  * The `name`, `description` and `path` should be the same as the page's SEO title, description
- * and canonical url.
+ * and canonical url. The urls get the locale prefix, so they match `inLanguage`.
  * @param items Links listed on the page, e.g. the units of a faction. Turns the page into
  * a CollectionPage with the links as its main entity.
  * @param type A more specific WebPage type, e.g. `AboutPage` or `ProfilePage`.
@@ -93,7 +93,7 @@ const getWebPageJsonLd = ({
   type?: WebPageType;
   mainEntity?: Record<string, unknown>;
 }) => {
-  const url = toAbsoluteUrl(path);
+  const url = getLocalizedUrl(path, locale);
   const hasItems = !!items && items.length > 0;
 
   return {
@@ -117,7 +117,7 @@ const getWebPageJsonLd = ({
               "@type": "ListItem",
               position: index + 1,
               name: item.name,
-              url: toAbsoluteUrl(item.path),
+              url: getLocalizedUrl(item.path, locale),
             })),
           },
         }

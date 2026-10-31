@@ -19,6 +19,7 @@ describe("getBreadcrumbItems", () => {
           { name: "US Forces", path: "/explorer/races/american" },
         ],
         "Units",
+        "en",
       ),
     ).toEqual([
       { name: "COH3 Stats", item: "https://coh3stats.com" },
@@ -26,6 +27,16 @@ describe("getBreadcrumbItems", () => {
       { name: "US Forces", item: "https://coh3stats.com/explorer/races/american" },
       { name: "Units" },
     ]);
+  });
+
+  it("links the pages of the locale", () => {
+    expect(getBreadcrumbItems([{ name: "Erkunden", path: "/explorer" }], "Waffen", "de")).toEqual(
+      [
+        { name: "COH3 Stats", item: "https://coh3stats.com/de" },
+        { name: "Erkunden", item: "https://coh3stats.com/de/explorer" },
+        { name: "Waffen" },
+      ],
+    );
   });
 });
 
@@ -41,8 +52,9 @@ describe("getWebPageJsonLd", () => {
     expect(jsonLd).toEqual({
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://coh3stats.com/explorer/weapons",
-      url: "https://coh3stats.com/explorer/weapons",
+      // The url of the locale, the same page `inLanguage` describes
+      "@id": "https://coh3stats.com/de/explorer/weapons",
+      url: "https://coh3stats.com/de/explorer/weapons",
       name: "Weapons",
       description: "All the weapons in the game.",
       inLanguage: "de",

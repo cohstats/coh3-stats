@@ -9,8 +9,8 @@ import { Anchor, Container, Group, Select, Space, Text, Title } from "@mantine/c
 import Link from "next/link";
 import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
-import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../src/coh3/coh3-data";
-import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
+import { leaderboardRegions, localizedNames } from "../../src/coh3/coh3-data";
+import { raceType } from "../../src/coh3/coh3-types";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import PageJsonLd from "../../components/page-json-ld";
@@ -193,13 +193,12 @@ const Leaderboards = ({
   })();
 
   const localizedRace = localizedNames[raceToFetch as raceType];
-  const localizedType = localizedGameTypes[typeToFetch as leaderBoardType];
 
   // Create SEO props for leaderboard page
   const seoProps = createLeaderboardSEO(
     t,
     raceToFetch,
-    localizedType,
+    typeToFetch,
     platformToFetch,
     regionToFetch,
   );
@@ -210,7 +209,7 @@ const Leaderboards = ({
       <PageJsonLd
         path={getLeaderboardCanonicalPath(
           raceToFetch,
-          localizedType,
+          typeToFetch,
           platformToFetch,
           regionToFetch,
         )}

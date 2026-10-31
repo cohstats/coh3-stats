@@ -40,25 +40,30 @@ describe("PageJsonLd", () => {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "COH3 Stats", item: "https://coh3stats.com" },
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "COH3 Stats",
+          item: "https://coh3stats.com/de",
+        },
         {
           "@type": "ListItem",
           position: 2,
           name: "Erkunden",
-          item: "https://coh3stats.com/explorer",
+          item: "https://coh3stats.com/de/explorer",
         },
         {
           "@type": "ListItem",
           position: 3,
           name: "US Forces",
-          item: "https://coh3stats.com/explorer/races/american",
+          item: "https://coh3stats.com/de/explorer/races/american",
         },
         { "@type": "ListItem", position: 4, name: "Riflemen" },
       ],
     });
     expect(webPage).toMatchObject({
       "@type": "WebPage",
-      "@id": "https://coh3stats.com/explorer/races/american/units/riflemen_us",
+      "@id": "https://coh3stats.com/de/explorer/races/american/units/riflemen_us",
       name: "Riflemen - US Forces infantry",
       description: "Riflemen of the US Forces.",
       inLanguage: "de",
@@ -73,20 +78,27 @@ describe("PageJsonLd", () => {
     );
 
     expect(breadcrumbs.itemListElement).toEqual([
-      { "@type": "ListItem", position: 1, name: "COH3 Stats", item: "https://coh3stats.com" },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "COH3 Stats",
+        item: "https://coh3stats.com/de",
+      },
       { "@type": "ListItem", position: 2, name: "Turniere" },
     ]);
   });
 
   it("has the site instead of the breadcrumb trail on the home page", () => {
-    const [site, webPage, ...rest] = renderJsonLd(<PageJsonLd path="/" name="COH3 Stats" />);
+    const [site, webPage, ...rest] = renderJsonLd(<PageJsonLd path="" name="COH3 Stats" />);
 
     expect(rest).toHaveLength(0);
     expect(site["@graph"].map((node: { "@type": string }) => node["@type"])).toEqual([
       "WebSite",
       "Organization",
     ]);
-    expect(webPage).toMatchObject({ "@type": "WebPage", "@id": "https://coh3stats.com/" });
+    // The site is the same for every locale, the page is the one of the locale
+    expect(site["@graph"][0].url).toBe("https://coh3stats.com");
+    expect(webPage).toMatchObject({ "@type": "WebPage", "@id": "https://coh3stats.com/de" });
   });
 
   it("renders a ProfilePage of the player", () => {

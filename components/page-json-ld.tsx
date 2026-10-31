@@ -61,7 +61,7 @@ const PageJsonLd = ({
       {isHomePage ? (
         <JsonLdScript data={getSiteJsonLd()} scriptKey="site-jsonld" />
       ) : (
-        <BreadcrumbJsonLd items={getBreadcrumbItems(trail, breadcrumbName ?? name)} />
+        <BreadcrumbJsonLd items={getBreadcrumbItems(trail, breadcrumbName ?? name, locale)} />
       )}
       <JsonLdScript
         data={getWebPageJsonLd({
