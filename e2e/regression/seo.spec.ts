@@ -70,8 +70,12 @@ test.describe("SEO - page tags", () => {
   }
 });
 
-/** Every Explorer route, with how many links its breadcrumb trail has before the page itself. */
-const EXPLORER_PAGES: Array<{ path: string; parents: number; list?: boolean }> = [
+/**
+ * Pages with the JSON-LD (`PageJsonLd`), with how many links their breadcrumb trail has before the
+ * page itself. Every Explorer route, and the tournaments pages that render the same with and without
+ * the tournament data (the season page shows the league without it).
+ */
+const STRUCTURED_DATA_PAGES: Array<{ path: string; parents: number; list?: boolean }> = [
   { path: "/explorer", parents: 1 },
   { path: "/explorer/races/american", parents: 2 },
   { path: "/explorer/races/american/units", parents: 3, list: true },
@@ -88,12 +92,15 @@ const EXPLORER_PAGES: Array<{ path: string; parents: number; list?: boolean }> =
   { path: "/explorer/fs/races/american/perks", parents: 3 },
   { path: "/explorer/fs/races/american/tech", parents: 3 },
   { path: "/explorer/fs/races/american/units", parents: 3, list: true },
+  { path: "/tournaments", parents: 1, list: true },
+  { path: "/tournaments/ladder-tournament", parents: 2 },
+  { path: "/tournaments/ironclad", parents: 2 },
 ];
 
-test.describe("SEO - Explorer structured data", () => {
+test.describe("SEO - structured data", () => {
   test.describe.configure({ timeout: 60_000 });
 
-  for (const { path, parents, list } of EXPLORER_PAGES) {
+  for (const { path, parents, list } of STRUCTURED_DATA_PAGES) {
     test(`should mark up ${path} with JSON-LD`, async ({ page }) => {
       // The JSON-LD is server rendered, the HTML is enough.
       const response = await page.goto(path, { waitUntil: "domcontentloaded" });
@@ -111,7 +118,7 @@ test.describe("SEO - Explorer structured data", () => {
       expect(breadcrumbs).toHaveLength(1);
       expect(webPages).toHaveLength(1);
 
-      // Home > Explorer > ... > the page, which has no url (Google takes the page url).
+      // Home > ... > the page, which has no url (Google takes the page url).
       const trail = breadcrumbs[0].itemListElement;
       expect(trail).toHaveLength(parents + 1);
       expect(trail[0]).toMatchObject({ position: 1, item: expect.stringMatching(/^https:\/\//) });

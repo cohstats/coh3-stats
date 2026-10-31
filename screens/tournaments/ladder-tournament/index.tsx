@@ -7,7 +7,8 @@ import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
 import { LadderSeasonPageData } from "../../../src/tournaments/ladder-tournament";
 import { LADDER_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
-import { getLadderTournamentRoute } from "../../../src/routes";
+import { getLadderTournamentRoute, getTournamentsRoute } from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { AnalyticsLadderTournamentSeasonView } from "../../../src/firebase/analytics";
 import LeagueHeader, { ExternalLink } from "./league-header";
@@ -44,16 +45,34 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
       ? t("meta.leagueDescription")
       : t("meta.seasonDescription", { season: seasonId });
 
+  // Without the data this is the league page
+  const leagueName = t(LADDER_TOURNAMENT.nameKey);
+  const breadcrumbTrail = [
+    { name: t("common:mainMenu.tournaments"), path: getTournamentsRoute() },
+    ...(seasonId === undefined ? [] : [{ name: leagueName, path: getLadderTournamentRoute() }]),
+  ];
+
   const seo = (
-    <Head>
-      {generateNextSeo({
-        title,
-        description,
-        canonical: `${config.SITE_URL}${path}`,
-        openGraph: { title, description, url: `${config.SITE_URL}${path}` },
-        languageAlternates: generateLanguageAlternates(path),
-      })}
-    </Head>
+    <>
+      <Head>
+        {generateNextSeo({
+          title,
+          description,
+          canonical: `${config.SITE_URL}${path}`,
+          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          languageAlternates: generateLanguageAlternates(path),
+        })}
+      </Head>
+      <PageJsonLd
+        path={path}
+        name={title}
+        description={description}
+        breadcrumbName={
+          seasonId === undefined ? leagueName : t("league.season", { season: seasonId })
+        }
+        trail={breadcrumbTrail}
+      />
+    </>
   );
 
   if (!data) {
