@@ -41,6 +41,9 @@ const COH3_STATS_WEBSITE = {
   url: config.SITE_URL,
 };
 
+/** Types of a WebPage we use, a page with a list is a CollectionPage on its own. */
+type WebPageType = "WebPage" | "CollectionPage" | "AboutPage" | "ProfilePage";
+
 /** A page we link to from the structured data, `path` is site relative, e.g. `/explorer/maps`. */
 type StructuredDataLink = {
   name: string;
@@ -67,6 +70,8 @@ const getBreadcrumbItems = (trail: StructuredDataLink[], name: string) => [
  * and canonical url.
  * @param items Links listed on the page, e.g. the units of a faction. Turns the page into
  * a CollectionPage with the links as its main entity.
+ * @param type A more specific WebPage type, e.g. `AboutPage` or `ProfilePage`.
+ * @param mainEntity What the page is about, e.g. the Person of a profile page - see `getPlayerJsonLd`.
  */
 const getWebPageJsonLd = ({
   path,
@@ -75,6 +80,8 @@ const getWebPageJsonLd = ({
   locale,
   image,
   items,
+  type,
+  mainEntity,
 }: {
   path: string;
   name: string;
@@ -83,13 +90,15 @@ const getWebPageJsonLd = ({
   /** Absolute url of the main image of the page. */
   image?: string;
   items?: StructuredDataLink[];
+  type?: WebPageType;
+  mainEntity?: Record<string, unknown>;
 }) => {
   const url = toAbsoluteUrl(path);
   const hasItems = !!items && items.length > 0;
 
   return {
     "@context": "https://schema.org",
-    "@type": hasItems ? "CollectionPage" : "WebPage",
+    "@type": type ?? (hasItems ? "CollectionPage" : "WebPage"),
     "@id": url,
     url,
     name,
@@ -113,8 +122,48 @@ const getWebPageJsonLd = ({
           },
         }
       : {}),
+    ...(mainEntity ? { mainEntity } : {}),
   };
 };
+
+/**
+ * The site and its publisher, for the home page. Google takes the site name shown in the search
+ * results from the WebSite, and the logo from the Organization.
+ */
+const getSiteJsonLd = () => ({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      ...COH3_STATS_WEBSITE,
+      alternateName: ["COH3Stats", "coh3stats.com"],
+      about: COMPANY_OF_HEROES_3,
+      publisher: COH3_STATS,
+    },
+    { ...COH3_STATS, sameAs: [config.DISCORD_INVITE_LINK, config.GITHUB_LINK] },
+  ],
+});
+
+/**
+ * The Person of a player profile page, the main entity of its ProfilePage.
+ * @param steamProfileUrl Steam profile of the player, only when the page links to it
+ */
+const getPlayerJsonLd = ({
+  name,
+  relicId,
+  image,
+  steamProfileUrl,
+}: {
+  name: string;
+  relicId: number | string;
+  image?: string | null;
+  steamProfileUrl?: string;
+}) => ({
+  "@type": "Person",
+  name,
+  identifier: `${relicId}`,
+  ...(image ? { image } : {}),
+  ...(steamProfileUrl ? { sameAs: [steamProfileUrl] } : {}),
+});
 
 // Unit types in the order the unit list pages show them, other types are not listed.
 const LISTED_UNIT_TYPES = ["infantry", "team_weapons", "vehicles", "emplacements"];
@@ -127,11 +176,13 @@ const getUnitListLinks = (units: SbpsType[], race: raceType): StructuredDataLink
       .map((unit) => ({ name: unit.ui.screenName, path: getExplorerUnitRoute(race, unit.id) })),
   );
 
-export type { StructuredDataLink };
+export type { StructuredDataLink, WebPageType };
 export {
   COMPANY_OF_HEROES_3,
   COH3_STATS,
   getBreadcrumbItems,
   getWebPageJsonLd,
+  getSiteJsonLd,
+  getPlayerJsonLd,
   getUnitListLinks,
 };

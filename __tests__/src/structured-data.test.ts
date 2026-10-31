@@ -1,5 +1,7 @@
 import {
   getBreadcrumbItems,
+  getPlayerJsonLd,
+  getSiteJsonLd,
   getUnitListLinks,
   getWebPageJsonLd,
 } from "../../src/structured-data";
@@ -107,6 +109,62 @@ describe("getWebPageJsonLd", () => {
 
     expect(jsonLd["@type"]).toBe("WebPage");
     expect(jsonLd).not.toHaveProperty("mainEntity");
+  });
+
+  it("takes a more specific page type and main entity", () => {
+    const jsonLd = getWebPageJsonLd({
+      path: "/players/26631",
+      name: "Thomas",
+      locale: "en",
+      type: "ProfilePage",
+      mainEntity: { "@type": "Person", name: "Thomas" },
+    });
+
+    expect(jsonLd["@type"]).toBe("ProfilePage");
+    expect(jsonLd.mainEntity).toEqual({ "@type": "Person", name: "Thomas" });
+  });
+});
+
+describe("getSiteJsonLd", () => {
+  it("describes the site and its publisher", () => {
+    const [website, organization] = getSiteJsonLd()["@graph"];
+
+    expect(website).toMatchObject({
+      "@type": "WebSite",
+      "@id": "https://coh3stats.com/#website",
+      name: "COH3 Stats",
+      url: "https://coh3stats.com",
+      publisher: { "@type": "Organization", name: "COH3 Stats" },
+    });
+    expect(organization).toMatchObject({
+      "@type": "Organization",
+      logo: { url: expect.stringContaining("https://coh3stats.com/") },
+      sameAs: expect.arrayContaining(["https://github.com/cohstats/coh3-stats"]),
+    });
+  });
+});
+
+describe("getPlayerJsonLd", () => {
+  it("describes the player with the Steam profile and avatar when there are", () => {
+    expect(
+      getPlayerJsonLd({
+        name: "Thomas",
+        relicId: 26631,
+        image: "https://avatars.steamstatic.com/thomas.jpg",
+        steamProfileUrl: "https://steamcommunity.com/profiles/76561198000000000",
+      }),
+    ).toEqual({
+      "@type": "Person",
+      name: "Thomas",
+      identifier: "26631",
+      image: "https://avatars.steamstatic.com/thomas.jpg",
+      sameAs: ["https://steamcommunity.com/profiles/76561198000000000"],
+    });
+    expect(getPlayerJsonLd({ name: "Thomas", relicId: 26631, image: null })).toEqual({
+      "@type": "Person",
+      name: "Thomas",
+      identifier: "26631",
+    });
   });
 });
 

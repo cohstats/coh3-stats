@@ -78,10 +78,30 @@ describe("PageJsonLd", () => {
     ]);
   });
 
-  it("leaves the breadcrumb trail out on the home page", () => {
-    const jsonLd = renderJsonLd(<PageJsonLd path="/" name="COH3 Stats" />);
+  it("has the site instead of the breadcrumb trail on the home page", () => {
+    const [site, webPage, ...rest] = renderJsonLd(<PageJsonLd path="/" name="COH3 Stats" />);
 
-    expect(jsonLd).toHaveLength(1);
-    expect(jsonLd[0]["@type"]).toBe("WebPage");
+    expect(rest).toHaveLength(0);
+    expect(site["@graph"].map((node: { "@type": string }) => node["@type"])).toEqual([
+      "WebSite",
+      "Organization",
+    ]);
+    expect(webPage).toMatchObject({ "@type": "WebPage", "@id": "https://coh3stats.com/" });
+  });
+
+  it("renders a ProfilePage of the player", () => {
+    const [, webPage] = renderJsonLd(
+      <PageJsonLd
+        path="/players/26631"
+        name="Thomas - Player Card"
+        type="ProfilePage"
+        mainEntity={{ "@type": "Person", name: "Thomas" }}
+      />,
+    );
+
+    expect(webPage).toMatchObject({
+      "@type": "ProfilePage",
+      mainEntity: { "@type": "Person", name: "Thomas" },
+    });
   });
 });
