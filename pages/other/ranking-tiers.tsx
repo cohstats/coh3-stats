@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AnalyticsRankingTiersPageView } from "../../src/firebase/analytics";
@@ -9,12 +10,16 @@ import { Container, Text, Title } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
-import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../config";
 
 const RankingTiers: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("ranking-tiers");
   const path = getRankingTiersRoute();
 
@@ -40,11 +45,11 @@ const RankingTiers: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
                 url: PlayerRanks.CHALLENGER_1.url,

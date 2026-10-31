@@ -4,6 +4,7 @@ import { useTranslation } from "next-i18next/pages";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import config from "../../config";
+import { getLocalizedUrl } from "../../src/seo-utils";
 import {
   Container,
   Title,
@@ -40,6 +41,7 @@ import FactionIcon from "../../components/faction-icon";
 
 const TeamLeaderboards: React.FC = () => {
   const router = useRouter();
+  const { locale = "en" } = router;
   const { t } = useTranslation(["common", "leaderboards"]);
 
   // Get query parameters with defaults
@@ -224,7 +226,7 @@ const TeamLeaderboards: React.FC = () => {
         {generateNextSeo({
           title: pageTitle,
           description: description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           additionalMetaTags: [
             {
               name: "keywords",
@@ -234,7 +236,7 @@ const TeamLeaderboards: React.FC = () => {
           openGraph: {
             title: pageTitle,
             description: description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
                 url: sideIcon,

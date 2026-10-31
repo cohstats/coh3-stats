@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -18,8 +19,9 @@ import { createPageSEO } from "../src/seo-utils";
 const Search: NextPage = () => {
   const { t } = useTranslation(["search"]);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for search page
-  const seoProps = createPageSEO(t, "search", "/search");
+  const seoProps = createPageSEO(t, "search", "/search", locale);
 
   return (
     <>

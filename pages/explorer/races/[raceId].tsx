@@ -27,7 +27,11 @@ import {
   ResourceValues,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-import { generateKeywordsString, generateLanguageAlternates } from "../../../src/seo-utils";
+import {
+  generateKeywordsString,
+  generateLanguageAlternates,
+  getLocalizedUrl,
+} from "../../../src/seo-utils";
 import { getExplorerRoute, getExplorerFactionRoute } from "../../../src/routes";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
@@ -85,7 +89,7 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   preCalculatedBuildings,
 }) => {
   // The `query` contains the `raceId`, which is the filename as route slug.
-  const { query } = useRouter();
+  const { query, locale = "en" } = useRouter();
 
   const { t } = useTranslation(["explorer"]);
 
@@ -113,11 +117,11 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         {generateNextSeo({
           title: seoTitle,
           description: seoDescription,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: seoTitle,
             description: seoDescription,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
                 url: factionIcon,

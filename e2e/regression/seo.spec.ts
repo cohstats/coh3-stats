@@ -231,6 +231,27 @@ test.describe("SEO - home page structured data", () => {
   });
 });
 
+test.describe("SEO - translated page structured data", () => {
+  // A translated page is its own canonical, the same url as its JSON-LD
+  for (const path of ["/de/explorer/races/american", "/de/leaderboards"]) {
+    test(`should mark up ${path} with its localized url`, async ({ page }) => {
+      // The slim build (FULL_BUILD=false) has only the English pages
+      const response = await page.request.get(path);
+      test.skip(response.status() === 404, "The build has no translated pages");
+
+      const { jsonLd, canonical } = await getServerSeo(page, path);
+      expect(pathnameOf(canonical)).toBe(path);
+      const webPage = jsonLd.find((data) => data["@type"]?.endsWith("Page"));
+      expect(webPage).toMatchObject({ "@id": canonical, url: canonical, inLanguage: "de" });
+
+      const breadcrumbs = jsonLd.find((data) => data["@type"] === "BreadcrumbList");
+      for (const { item } of breadcrumbs.itemListElement.slice(0, -1)) {
+        expect(pathnameOf(item)).toMatch(/^\/de(\/|$)/);
+      }
+    });
+  }
+});
+
 test.describe("SEO - sitewide defaults", () => {
   test("should apply the defaults generated in _app to the page tags", async ({ page }) => {
     await page.goto("/live-games");

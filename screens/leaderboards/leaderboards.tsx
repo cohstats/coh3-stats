@@ -31,7 +31,7 @@ const Leaderboards = ({
   typeToFetch,
   regionToFetch,
 }: any) => {
-  const { push, query } = useRouter();
+  const { push, query, locale = "en" } = useRouter();
   const { t } = useTranslation(["common", "leaderboards"]);
 
   useEffect(() => {
@@ -201,6 +201,7 @@ const Leaderboards = ({
     typeToFetch,
     platformToFetch,
     regionToFetch,
+    locale,
   );
 
   return (

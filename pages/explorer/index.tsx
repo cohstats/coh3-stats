@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import { NextPage } from "next";
@@ -88,8 +89,9 @@ const InfoCard = ({
 const Explorer: NextPage = () => {
   const { t } = useTranslation(["explorer"]);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for explorer page
-  const seoProps = createPageSEO(t, "explorer", getExplorerRoute());
+  const seoProps = createPageSEO(t, "explorer", getExplorerRoute(), locale);
 
   return (
     <>

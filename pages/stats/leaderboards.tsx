@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Container, Space, Title, Text } from "@mantine/core";
 
 import React, { useEffect } from "react";
@@ -9,12 +10,11 @@ import PageJsonLd from "../../components/page-json-ld";
 
 import { GetServerSideProps } from "next";
 import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leaderboards/stats";
-import { generateKeywordsString } from "../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
 import { AnalyticsStatsLeaderboardsPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../config";
 
 const Leaderboards = ({
   error,
@@ -23,6 +23,7 @@ const Leaderboards = ({
   error: string;
   leaderBoardStats: LeaderboardStatsType;
 }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation(["common", "stats"]);
 
   const pageTitle = t("stats:leaderboards.meta.title");
@@ -49,11 +50,11 @@ const Leaderboards = ({
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}/stats/leaderboards`,
+          canonical: getLocalizedUrl("/stats/leaderboards", locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}/stats/leaderboards`,
+            url: getLocalizedUrl("/stats/leaderboards", locale),
           },
           additionalMetaTags: [
             {

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
   Anchor,
   Badge,
@@ -41,8 +42,9 @@ const DesktopAppPage: NextPage = ({
     AnalyticsDesktopAppPageView();
   }, []);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for desktop app page
-  const seoProps = createPageSEO(t, "desktopapp", "/desktop-app", { version });
+  const seoProps = createPageSEO(t, "desktopapp", "/desktop-app", locale, { version });
 
   // Carousel images
   const carouselImages = [

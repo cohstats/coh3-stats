@@ -183,13 +183,15 @@ const PlayerCard = ({
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
   // Create SEO props for player page
-  const seoProps = createPlayerSEO(t, playerData, playerSummary, platform);
+  const seoProps = createPlayerSEO(t, playerData, playerSummary, platform, locale);
 
-  // The Steam profile and avatar are shown only for the Steam players
+  // The Steam profile and avatar are shown only for the Steam players with a Steam id
   const steamProfileUrl =
     platform === "steam"
       ? playerData.steamData?.profileurl ||
-        `https://steamcommunity.com/profiles/${playerData.info.steamID}`
+        (playerData.info.steamID
+          ? `https://steamcommunity.com/profiles/${playerData.info.steamID}`
+          : undefined)
       : undefined;
 
   // Override title based on current view

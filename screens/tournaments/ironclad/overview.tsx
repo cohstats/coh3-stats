@@ -17,7 +17,6 @@ import {
 } from "@mantine/core";
 import { IconArrowRight, IconTrophyFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../config";
 import type {
   IroncladOverviewData,
   IroncladTournamentSummary,
@@ -28,7 +27,7 @@ import {
   getTournamentsRoute,
 } from "../../../src/routes";
 import PageJsonLd from "../../../components/page-json-ld";
-import { generateLanguageAlternates } from "../../../src/seo-utils";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../../src/seo-utils";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { ExternalLink } from "../ladder-tournament/league-header";
 import IroncladChampions from "../components/ironclad-champions";
@@ -128,6 +127,7 @@ const TournamentCard = ({ tournament }: { tournament: IroncladTournamentSummary 
  * All the IronClad tournaments - /tournaments/ironclad.
  */
 const IroncladOverviewScreen: NextPage<IroncladOverviewPageProps> = ({ data }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("tournaments");
 
   const path = getIroncladTournamentsRoute();
@@ -144,8 +144,8 @@ const IroncladOverviewScreen: NextPage<IroncladOverviewPageProps> = ({ data }) =
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${path}`,
-          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>

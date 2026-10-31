@@ -6,7 +6,6 @@ import { generateNextSeo } from "next-seo/pages";
 import { Box, Container, Group, Paper, Progress, Stack, Tabs, Text, Title } from "@mantine/core";
 import { IconTrophyFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../config";
 import {
   IroncladDivisionView,
   IroncladTournamentView,
@@ -17,7 +16,7 @@ import {
   getTournamentsRoute,
 } from "../../../src/routes";
 import PageJsonLd from "../../../components/page-json-ld";
-import { generateLanguageAlternates } from "../../../src/seo-utils";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../../src/seo-utils";
 import { AnalyticsIroncladTournamentView } from "../../../src/firebase/analytics";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { ExternalLink } from "../ladder-tournament/league-header";
@@ -156,8 +155,8 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${path}`,
-          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>

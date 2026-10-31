@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -24,7 +25,9 @@ const MapsTable: NextPage<MapsTableProps> = ({ maps }) => {
     AnalyticsExplorerMapsTableView();
   }, []);
 
-  const seoProps = createPageSEO(t, "explorer-maps-table", getExplorerMapsTableRoute());
+  const { locale = "en" } = useRouter();
+
+  const seoProps = createPageSEO(t, "explorer-maps-table", getExplorerMapsTableRoute(), locale);
 
   return (
     <>

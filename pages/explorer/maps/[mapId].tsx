@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -26,7 +27,7 @@ import {
   getLatestPatchMapTeamComposition,
   MapTeamComposition,
 } from "../../../src/stats/latest-patch-map-stats";
-import { generateLanguageAlternates } from "../../../src/seo-utils";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../../src/seo-utils";
 import { AnalyticsExplorerMapDetailsView } from "../../../src/firebase/analytics";
 import PageJsonLd from "../../../components/page-json-ld";
 
@@ -38,6 +39,7 @@ interface MapDetailProps {
 
 /** Detail page of a single map - see `MapDetailPage` for the layout. */
 const MapDetail: NextPage<MapDetailProps> = ({ map, teamComposition, latestPatch }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer-maps"]);
 
   useEffect(() => {
@@ -61,11 +63,11 @@ const MapDetail: NextPage<MapDetailProps> = ({ map, teamComposition, latestPatch
         {generateNextSeo({
           title,
           description: metaDescription,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title,
             description: metaDescription,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
             images: [{ url: image, alt: map.name }],
           },
           languageAlternates: generateLanguageAlternates(path),

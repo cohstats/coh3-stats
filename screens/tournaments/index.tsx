@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -17,7 +18,7 @@ import {
   getLadderTournamentRoute,
   getTournamentsRoute,
 } from "../../src/routes";
-import { generateLanguageAlternates } from "../../src/seo-utils";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../src/seo-utils";
 import { AnalyticsTournamentsPageView } from "../../src/firebase/analytics";
 import PageJsonLd from "../../components/page-json-ld";
 import FeaturedTournamentCard from "./components/featured-tournament-card";
@@ -37,6 +38,7 @@ const TournamentsScreen: NextPage<TournamentsPageProps> = ({
   ladderSummary,
   ironcladSummary = null,
 }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("tournaments");
 
   useEffect(() => {
@@ -53,8 +55,8 @@ const TournamentsScreen: NextPage<TournamentsPageProps> = ({
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${path}`,
-          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>

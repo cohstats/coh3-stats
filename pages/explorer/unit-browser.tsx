@@ -1,14 +1,18 @@
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import React, { useEffect } from "react";
-import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { getMappings } from "../../src/unitStats/mappings";
 import { UnitTable } from "../../components/unitStats/unitTable";
 import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import config from "../../config";
 import { getExplorerRoute, getUnitBrowserRoute } from "../../src/routes";
 import { useTranslation } from "next-i18next/pages";
 import PageJsonLd from "../../components/page-json-ld";
@@ -20,6 +24,7 @@ interface SquadProps {
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
 const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("common");
   const path = getUnitBrowserRoute();
 
@@ -52,12 +57,12 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           // We might prepare a nice image for a preview for this page, until then the default logo is used
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [
             {

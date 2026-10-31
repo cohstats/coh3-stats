@@ -7,15 +7,15 @@ import ErrorCard from "../../components/error-card";
 import Head from "next/head";
 import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { Center, Loader } from "@mantine/core";
-import { createMatchSEO } from "../../src/seo-utils";
+import { createMatchSEO, getLocalizedUrl } from "../../src/seo-utils";
 import PageJsonLd from "../../components/page-json-ld";
 import MatchDetail from "./match-detail";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../config";
 
 const MatchDetailRoot: NextPage = () => {
   const { t } = useTranslation(["common"]);
   const router = useRouter();
+  const { locale = "en" } = router;
   const { matchId, profileIDs } = router.query;
   const [matchData, setMatchData] = useState<ProcessedMatch | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -83,13 +83,13 @@ const MatchDetailRoot: NextPage = () => {
   // Create SEO props based on match data availability
   let seoProps: NextSeoProps;
   if (matchData) {
-    seoProps = createMatchSEO(t, matchData);
+    seoProps = createMatchSEO(t, matchData, locale);
   } else {
     // Default SEO for loading/error states
     seoProps = {
       title: "COH3 Match Details",
       description: "Company of Heroes 3 match details and replay information.",
-      canonical: `${config.SITE_URL}/matches/${matchId}`,
+      canonical: getLocalizedUrl(`/matches/${matchId}`, locale),
       additionalMetaTags: [
         {
           name: "keywords",

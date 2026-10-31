@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -18,7 +19,7 @@ import {
 } from "@mantine/core";
 import React, { useEffect } from "react";
 import { AnalyticsAboutAppPageView } from "../../src/firebase/analytics";
-import { generateKeywordsString } from "../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 import AboutUs from "./AboutUs";
 import DonateSection from "./DonateSection";
 import Link from "next/link";
@@ -374,6 +375,7 @@ const sections = [
 ];
 
 const About: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const title = "About COH3 Stats";
   const description =
     "COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions.";
@@ -388,7 +390,7 @@ const About: NextPage = () => {
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${getAboutRoute()}`,
+          canonical: getLocalizedUrl(getAboutRoute(), locale),
           additionalMetaTags: [
             {
               name: "keywords",

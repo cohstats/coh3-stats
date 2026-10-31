@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -38,7 +39,8 @@ const FsTech: NextPage<FsTechProps> = ({ race, meta, availableRaces, raceId }) =
   const { t } = useTranslation(["explorer-fs-tech"]);
 
   const path = getExplorerFsTechRoute(raceId);
-  const seoProps = createPageSEO(t, "explorer-fs-tech", path, {
+  const { locale = "en" } = useRouter();
+  const seoProps = createPageSEO(t, "explorer-fs-tech", path, locale, {
     faction: race?.name ?? localizedNames[raceId],
   });
 

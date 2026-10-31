@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Top1v1LeaderboardsData, TwitchStream, YouTubeVideo } from "../../src/coh3/coh3-types";
 import { NextPage } from "next";
 import { Container, Grid, Paper } from "@mantine/core";
@@ -50,8 +51,9 @@ const Home: NextPage<Props> = ({
     }
   }, [entry, hasRendered]);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for home page
-  const seoProps = createPageSEO(t, "home", "");
+  const seoProps = createPageSEO(t, "home", "", locale);
 
   return (
     <>

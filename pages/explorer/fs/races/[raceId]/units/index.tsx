@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -19,6 +20,7 @@ import { raceType, raceTypeArray } from "../../../../../../src/coh3/coh3-types";
 import {
   generateKeywordsString,
   generateLanguageAlternates,
+  getLocalizedUrl,
 } from "../../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../../src/unitStats/mappings";
@@ -55,6 +57,7 @@ interface FsUnitsProps {
 }
 
 const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("explorer");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
@@ -76,7 +79,7 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
   const metaDescription = t("finalStandUnitsPage.meta.description", { faction: localizedRace });
   // Not the `asPath`, that has the query string on the client.
   const path = getExplorerFsUnitsRoute(raceToFetch);
-  const canonical = `${config.SITE_URL}${path}`;
+  const canonical = getLocalizedUrl(path, locale);
   const factionIcon = `${config.SITE_URL}/icons/general/${raceToFetch}.webp`;
 
   const filteredUnits = units.filter((unit) => {

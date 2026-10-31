@@ -1,15 +1,15 @@
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import { Container, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../config";
 import { LadderSeasonPageData } from "../../../src/tournaments/ladder-tournament";
 import { LADDER_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { getLadderTournamentRoute, getTournamentsRoute } from "../../../src/routes";
 import PageJsonLd from "../../../components/page-json-ld";
-import { generateLanguageAlternates } from "../../../src/seo-utils";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../../src/seo-utils";
 import { AnalyticsLadderTournamentSeasonView } from "../../../src/firebase/analytics";
 import LeagueHeader, { ExternalLink } from "./league-header";
 import SeasonStatsBar from "./season-stats-bar";
@@ -28,6 +28,7 @@ export type LadderTournamentPageProps = {
  * The overview with all the seasons is LadderTournamentOverviewScreen.
  */
 const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("tournaments");
   const seasonId = data?.seasonId;
 
@@ -58,8 +59,8 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${path}`,
-          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>

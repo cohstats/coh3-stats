@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -14,14 +15,17 @@ import {
   Title,
 } from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
 import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import config from "../../config";
 import { getExplorerRoute, getChallengesRoute } from "../../src/routes";
 import { useTranslation } from "next-i18next/pages";
 import PageJsonLd from "../../components/page-json-ld";
@@ -42,6 +46,7 @@ interface ChallengesProps {
 }
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("common");
   const path = getChallengesRoute();
 
@@ -65,11 +70,11 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [
             {

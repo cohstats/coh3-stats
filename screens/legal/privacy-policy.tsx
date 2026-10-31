@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -5,10 +6,10 @@ import { getPrivacyPolicyRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 import { Container, Title, Text, Space, Anchor, List } from "@mantine/core";
 import React, { useEffect } from "react";
-import { generateKeywordsString } from "../../src/seo-utils";
-import config from "../../config";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 
 const PrivacyPolicy: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const title = "Privacy Policy";
   const description =
     "Privacy Policy for COH Stats - Learn how we collect and use information on coh3stats.com and the COH3 Stats Desktop App.";
@@ -22,7 +23,7 @@ const PrivacyPolicy: NextPage = () => {
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${getPrivacyPolicyRoute()}`,
+          canonical: getLocalizedUrl(getPrivacyPolicyRoute(), locale),
           additionalMetaTags: [
             {
               name: "keywords",

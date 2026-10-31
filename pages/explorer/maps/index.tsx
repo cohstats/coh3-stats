@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -31,7 +32,9 @@ const Maps: NextPage<MapsPageProps> = ({ maps }) => {
     AnalyticsExplorerMapsListView();
   }, []);
 
-  const seoProps = createPageSEO(t, "explorer-maps", getExplorerMapsRoute());
+  const { locale = "en" } = useRouter();
+
+  const seoProps = createPageSEO(t, "explorer-maps", getExplorerMapsRoute(), locale);
   // The maps the page lists with the default filters, in the same order - see `MapsExplorerPage`.
   const listedMaps = groupMpMapsByMode(
     filterMpMaps(maps, { search: "", modes: [], lobbyOnly: true }),

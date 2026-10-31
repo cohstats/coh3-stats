@@ -309,7 +309,7 @@ const SteamNewsPage: NextPage<{
     currentPage > 1 ? `page=${currentPage}` : null,
   ].filter(Boolean);
   const pagePath = pageQuery.length > 0 ? `/news?${pageQuery.join("&")}` : "/news";
-  const seoProps = createPageSEO(t, "news", pagePath);
+  const seoProps = createPageSEO(t, "news", pagePath, locale);
 
   try {
     return (

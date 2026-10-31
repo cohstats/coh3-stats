@@ -1,15 +1,19 @@
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { AnalyticsExplorerWeaponsView } from "../../src/firebase/analytics";
 import { WeaponTable, WeaponTableRow } from "../../components/unitStats/weaponTable";
 import { getScatterArea, getWeaponRpm } from "../../src/unitStats";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import config from "../../config";
 import { getExplorerRoute, getWeaponsRoute } from "../../src/routes";
 import { useTranslation } from "next-i18next/pages";
 import PageJsonLd from "../../components/page-json-ld";
@@ -23,6 +27,7 @@ const description = "CoH 3 Weapons list. Browser through all the weapons in-game
 const keywords = generateKeywordsString(["coh3 weapons", "weapons"]);
 
 const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("common");
   const path = getWeaponsRoute();
 
@@ -36,11 +41,11 @@ const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [
             {

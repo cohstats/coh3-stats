@@ -1,15 +1,16 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import React from "react";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import { getMapsStatsRoute } from "../../../src/routes";
 import PageJsonLd from "../../../components/page-json-ld";
-import { generateKeywordsString } from "../../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../../src/seo-utils";
 import { useTranslation } from "next-i18next/pages";
 import StatsContainerSelector from "../stats-container-selector";
-import config from "../../../config";
 
 const MapStats: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation(["common", "stats"]);
 
   const pageTitle = t("stats:maps.meta.title");
@@ -32,11 +33,11 @@ const MapStats: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}/stats/maps`,
+          canonical: getLocalizedUrl("/stats/maps", locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}/stats/maps`,
+            url: getLocalizedUrl("/stats/maps", locale),
           },
           additionalMetaTags: [
             {

@@ -93,6 +93,26 @@ describe("createLeaderboardSEO", () => {
       faction: "Wehrmacht",
       mode: "2 vs 2",
     });
+    expect(seo.title).toBe("leaderboards:meta.title");
+  });
+
+  test("should keep the leaderboard query in the localized canonical and the alternates", () => {
+    const seo = createLeaderboardSEO(t, "german", "2v2", "steam", "europe", "de");
+    const path = getLeaderboardCanonicalPath("german", "2v2", "steam", "europe");
+
+    expect(seo.canonical).toBe(`${config.SITE_URL}/de${path}`);
+    expect(seo.openGraph?.url).toBe(seo.canonical);
+    expect(seo.languageAlternates).toEqual(generateLanguageAlternates(path));
+  });
+});
+
+describe("createPageSEO", () => {
+  test("should make a translated page its own canonical", () => {
+    const seo = createPageSEO(t, "search", "/search", "de");
+
+    expect(seo.canonical).toBe(`${config.SITE_URL}/de/search`);
+    expect(seo.openGraph?.url).toBe(seo.canonical);
+    expect(createPageSEO(t, "home", "", "de").canonical).toBe(`${config.SITE_URL}/de`);
   });
 });
 

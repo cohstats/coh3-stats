@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import { NextPage } from "next";
@@ -12,7 +13,9 @@ import PageJsonLd from "../../../components/page-json-ld";
 const FinalStandExplorer: NextPage = () => {
   const { t } = useTranslation(["explorer-fs", "explorer"]);
 
-  const seoProps = createPageSEO(t, "explorer-fs", getExplorerFsRoute());
+  const { locale = "en" } = useRouter();
+
+  const seoProps = createPageSEO(t, "explorer-fs", getExplorerFsRoute(), locale);
 
   return (
     <>

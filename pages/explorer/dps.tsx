@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { DpsPageComponent } from "../../components/unitStats/dps/dpsPageComponent";
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
@@ -21,7 +22,7 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import Head from "next/head";
 import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../config";
+import { getLocalizedUrl } from "../../src/seo-utils";
 import { getExplorerRoute, getDPSCalculatorRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 
@@ -35,6 +36,7 @@ interface DpsProps {
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
 const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
   useEffect(() => {
@@ -97,11 +99,11 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
   const seoProps: NextSeoProps = {
     title,
     description,
-    canonical: `${config.SITE_URL}/explorer/dps`,
+    canonical: getLocalizedUrl("/explorer/dps", locale),
     openGraph: {
       title,
       description,
-      url: `${config.SITE_URL}/explorer/dps`,
+      url: getLocalizedUrl("/explorer/dps", locale),
     },
     additionalMetaTags: [
       {

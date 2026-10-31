@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -5,8 +6,7 @@ import { getRelicApiRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
-import config from "../../config";
-import { generateKeywordsString } from "../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 import { AnalyticsRelicApiPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import "@scalar/api-reference-react/style.css";
@@ -55,6 +55,7 @@ const ApiReferenceReact = dynamic(
 );
 
 const RelicApiDocs: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const path = getRelicApiRoute();
 
   const pageTitle = "Relic API Documentation";
@@ -77,11 +78,11 @@ const RelicApiDocs: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [{ name: "keywords", content: keywords }],
         })}

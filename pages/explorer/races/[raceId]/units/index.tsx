@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -16,7 +17,11 @@ import {
 } from "@mantine/core";
 
 import { raceType, raceTypeArray } from "../../../../../src/coh3/coh3-types";
-import { generateLanguageAlternates, generateKeywordsString } from "../../../../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
@@ -50,6 +55,7 @@ interface UnitDetailProps {
 }
 
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("explorer");
   const { t: tCommon } = useTranslation("common");
   const localizedRace = localizedNames[raceToFetch];
@@ -144,11 +150,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         {generateNextSeo({
           title: pageTitle,
           description: pageTitle,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description: pageTitle,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
                 url: factionIcon,

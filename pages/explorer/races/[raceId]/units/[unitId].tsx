@@ -59,7 +59,11 @@ import {
   unitSectionClassName,
 } from "../../../../../components/unit-cards/unit-section-nav";
 import { getIconsPathOnCDN, roundToDecimals } from "../../../../../src/utils";
-import { generateKeywordsString, generateLanguageAlternates } from "../../../../../src/seo-utils";
+import {
+  generateKeywordsString,
+  generateLanguageAlternates,
+  getLocalizedUrl,
+} from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import {
   getSbpsWeapons,
@@ -156,7 +160,7 @@ const UnitCostGroup = ({
 };
 
 const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
-  const { query } = useRouter();
+  const { query, locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
   const unitId = query.unitId as string;
@@ -465,13 +469,13 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
         {generateNextSeo({
           title: pageTitle,
           description: metaDescription,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           // Final Stand units are DLC only content, we don't want them in the search results.
           noindex: isFinalStand,
           openGraph: {
             title: ogTitle,
             description: metaDescription,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
             // Flag the DLC in Open Graph, so link previews / crawlers know where the unit comes from.
             ...(isFinalStand
               ? {

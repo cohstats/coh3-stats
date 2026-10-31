@@ -8,7 +8,7 @@ import { getPlayersStatsRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 
 import { GetServerSideProps } from "next";
-import { generateKeywordsString } from "../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import dynamic from "next/dynamic";
@@ -16,7 +16,6 @@ import { IconUser } from "@tabler/icons-react";
 import HelperIcon from "../../components/icon/helper";
 import dayjs from "dayjs";
 import { AnalyticsStatsPlayerStatsPageView } from "../../src/firebase/analytics";
-import config from "../../config";
 import { generateExpireTimeStamps } from "../../src/utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
@@ -74,7 +73,7 @@ const PlayerStats = ({
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}/stats/players`,
+          canonical: getLocalizedUrl("/stats/players", locale),
           additionalMetaTags: [
             {
               name: "keywords",
@@ -84,7 +83,7 @@ const PlayerStats = ({
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}/stats/players`,
+            url: getLocalizedUrl("/stats/players", locale),
           },
         })}
       </Head>

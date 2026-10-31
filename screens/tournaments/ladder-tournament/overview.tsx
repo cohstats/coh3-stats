@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import Link from "next/link";
 import { NextPage } from "next";
@@ -16,13 +17,12 @@ import {
 } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../config";
 import { LadderOverviewData } from "../../../src/tournaments/ladder-tournament";
 import { LADDER_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { getLadderTournamentRoute, getTournamentsRoute } from "../../../src/routes";
 import PageJsonLd from "../../../components/page-json-ld";
 import TournamentVideoCard from "../../../components/tournament-videos/tournament-video-card";
-import { generateLanguageAlternates } from "../../../src/seo-utils";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../../src/seo-utils";
 import LeagueHeader, { ExternalLink } from "./league-header";
 import SeasonStatsBar from "./season-stats-bar";
 import StandingsTable from "./standings-table";
@@ -42,6 +42,7 @@ export type LadderTournamentOverviewPageProps = {
 const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps> = ({
   data,
 }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("tournaments");
 
   const path = getLadderTournamentRoute();
@@ -54,8 +55,8 @@ const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${path}`,
-          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>

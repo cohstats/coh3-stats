@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -9,7 +10,11 @@ import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
 import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
-import { generateKeywordsString, generateLanguageAlternates } from "../../src/seo-utils";
+import {
+  generateKeywordsString,
+  generateLanguageAlternates,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json
@@ -131,6 +136,7 @@ interface ProcessedMatchHistoryItem {
  * @constructor
  */
 const OpenData: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const path = getOpenDataRoute();
 
   const pageTitle = "Open Data";
@@ -154,11 +160,11 @@ const OpenData: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${path}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${path}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [
             {

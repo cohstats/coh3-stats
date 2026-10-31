@@ -30,11 +30,11 @@ const RECORDS_PER_PAGE = 25;
 
 const LiveGamesIndex = () => {
   const { t } = useTranslation("live-games");
-  const { push, query } = useRouter();
+  const { push, query, locale = "en" } = useRouter();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   // Create SEO props for live games page
-  const seoProps = createPageSEO(t, "live-games", "/live-games");
+  const seoProps = createPageSEO(t, "live-games", "/live-games", locale);
 
   const [type, setType] = useState<TypeOfLiveGame | null>(null);
   const [order, setOrder] = useState<"rank" | "observers" | "startgametime">("rank");
