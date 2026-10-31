@@ -35,13 +35,16 @@ import { FactionSwitch } from "../../../../../../components/faction-switch";
 import unitListCardClasses from "../../../../../../components/unit-cards/unit-list-card.module.css";
 import {
   getExplorerFactionUnitsRoute,
+  getExplorerFsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
+  getExplorerRoute,
 } from "../../../../../../src/routes";
+import { getUnitListLinks } from "../../../../../../src/structured-data";
+import PageJsonLd from "../../../../../../components/page-json-ld";
 import { useEffect, useState } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../../next-i18next.config";
 import config from "../../../../../../config";
 import { useTranslation } from "next-i18next/pages";
@@ -52,7 +55,6 @@ interface FsUnitsProps {
 }
 
 const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
-  const { asPath } = useRouter();
   const { t } = useTranslation("explorer");
   const localizedRace = localizedNames[raceToFetch];
   const [searchValue, setSearchValue] = useState("");
@@ -72,7 +74,10 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
   // front, so link previews and search results are never confused with the multiplayer roster.
   const pageTitle = t("finalStandUnitsPage.meta.title", { faction: localizedRace });
   const metaDescription = t("finalStandUnitsPage.meta.description", { faction: localizedRace });
-  const canonical = `${config.SITE_URL}${asPath}`;
+  // Not the `asPath`, that has the query string on the client.
+  const path = getExplorerFsUnitsRoute(raceToFetch);
+  const canonical = `${config.SITE_URL}${path}`;
+  const factionIcon = `${config.SITE_URL}/icons/general/${raceToFetch}.webp`;
 
   const filteredUnits = units.filter((unit) => {
     if (!searchValue) return true;
@@ -158,7 +163,7 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
             url: canonical,
             images: [
               {
-                url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+                url: factionIcon,
                 width: 64,
                 height: 64,
                 alt: `${localizedRace} faction icon`,
@@ -171,9 +176,20 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
               content: metaKeywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={metaDescription}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+        ]}
+        image={factionIcon}
+        items={getUnitListLinks(units, raceToFetch)}
+      />
       <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">

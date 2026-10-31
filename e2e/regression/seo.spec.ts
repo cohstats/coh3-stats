@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { TEST_MAP, TEST_UNIT } from "../fixtures/test-data";
 
 /**
  * SEO sweep - §2.16 of the e2e coverage report.
@@ -65,6 +66,80 @@ test.describe("SEO - page tags", () => {
       // OpenGraph - what the Discord / social previews are built from.
       const ogTitle = page.locator('meta[property="og:title"]').first();
       await expect(ogTitle).toHaveAttribute("content", /.+/);
+    });
+  }
+});
+
+/**
+ * Pages with the JSON-LD (`PageJsonLd`), with how many links their breadcrumb trail has before the
+ * page itself. Every Explorer route, and the tournaments pages that render the same with and without
+ * the tournament data (the season page shows the league without it).
+ */
+const STRUCTURED_DATA_PAGES: Array<{ path: string; parents: number; list?: boolean }> = [
+  { path: "/explorer", parents: 1 },
+  { path: "/explorer/races/american", parents: 2 },
+  { path: "/explorer/races/american/units", parents: 3, list: true },
+  { path: `/explorer/races/${TEST_UNIT.race}/units/${TEST_UNIT.unitId}`, parents: 4 },
+  { path: "/explorer/maps", parents: 2, list: true },
+  { path: "/explorer/maps-table", parents: 2 },
+  { path: `/explorer/maps/${TEST_MAP.mapId}`, parents: 3 },
+  { path: "/explorer/dps", parents: 2 },
+  { path: "/explorer/dps-compare", parents: 2 },
+  { path: "/explorer/unit-browser", parents: 2 },
+  { path: "/explorer/weapons", parents: 2 },
+  { path: "/explorer/challenges", parents: 2 },
+  { path: "/explorer/fs", parents: 2 },
+  { path: "/explorer/fs/races/american/perks", parents: 3 },
+  { path: "/explorer/fs/races/american/tech", parents: 3 },
+  { path: "/explorer/fs/races/american/units", parents: 3, list: true },
+  { path: "/tournaments", parents: 1, list: true },
+  { path: "/tournaments/ladder-tournament", parents: 2 },
+  { path: "/tournaments/ironclad", parents: 2 },
+];
+
+test.describe("SEO - structured data", () => {
+  test.describe.configure({ timeout: 60_000 });
+
+  for (const { path, parents, list } of STRUCTURED_DATA_PAGES) {
+    test(`should mark up ${path} with JSON-LD`, async ({ page }) => {
+      // The JSON-LD is server rendered, the HTML is enough.
+      const response = await page.goto(path, { waitUntil: "domcontentloaded" });
+      expect(response?.status(), `${path} did not respond with 2xx`).toBeLessThan(400);
+
+      const jsonLd = await Promise.all(
+        (await page.locator('script[type="application/ld+json"]').all()).map(async (script) =>
+          JSON.parse((await script.textContent()) ?? "{}"),
+        ),
+      );
+      const breadcrumbs = jsonLd.filter((data) => data["@type"] === "BreadcrumbList");
+      const webPages = jsonLd.filter((data) =>
+        ["WebPage", "CollectionPage"].includes(data["@type"]),
+      );
+      expect(breadcrumbs).toHaveLength(1);
+      expect(webPages).toHaveLength(1);
+
+      // Home > ... > the page, which has no url (Google takes the page url).
+      const trail = breadcrumbs[0].itemListElement;
+      expect(trail).toHaveLength(parents + 1);
+      expect(trail[0]).toMatchObject({ position: 1, item: expect.stringMatching(/^https:\/\//) });
+      expect(trail.at(-1).item).toBeUndefined();
+      for (const item of trail) expect(item.name).toBeTruthy();
+
+      // Same page as the canonical and the meta tags say.
+      const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+      expect(canonical).toMatch(new RegExp(`${path}$`));
+      const [webPage] = webPages;
+      expect(webPage).toMatchObject({
+        "@context": "https://schema.org",
+        "@id": canonical,
+        url: canonical,
+        about: { "@type": "VideoGame", name: "Company of Heroes 3" },
+      });
+      expect(webPage.name).toBeTruthy();
+      if (list) {
+        expect(webPage["@type"]).toBe("CollectionPage");
+        expect(webPage.mainEntity.itemListElement.length).toBeGreaterThan(0);
+      }
     });
   }
 });

@@ -23,6 +23,8 @@ import Head from "next/head";
 import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../config";
+import { getExplorerRoute, getDPSCompareRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface DpsCompareProps {
   weaponData: WeaponType[];
@@ -110,6 +112,12 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={getDPSCompareRoute()}
+        name={title}
+        description={description}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <div>
         {isLoading && (
           <Center maw={400} h={250} mx="auto">

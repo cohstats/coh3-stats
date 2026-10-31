@@ -22,7 +22,12 @@ import type {
   IroncladOverviewData,
   IroncladTournamentSummary,
 } from "../../../src/tournaments/ironclad-tournament";
-import { getIroncladTournamentRoute, getIroncladTournamentsRoute } from "../../../src/routes";
+import {
+  getIroncladTournamentRoute,
+  getIroncladTournamentsRoute,
+  getTournamentsRoute,
+} from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { ExternalLink } from "../ladder-tournament/league-header";
@@ -144,6 +149,17 @@ const IroncladOverviewScreen: NextPage<IroncladOverviewPageProps> = ({ data }) =
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={title}
+        description={description}
+        breadcrumbName={t(IRONCLAD_TOURNAMENT.nameKey)}
+        trail={[{ name: t("common:mainMenu.tournaments"), path: getTournamentsRoute() }]}
+        items={data?.tournaments.map((tournament) => ({
+          name: tournament.name,
+          path: getIroncladTournamentRoute(tournament.slug),
+        }))}
+      />
       <Container size="lg" p="md" data-testid="ironclad-overview">
         <Stack gap="xl">
           <IroncladHeader />

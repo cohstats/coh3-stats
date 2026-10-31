@@ -11,7 +11,12 @@ import {
   IroncladDivisionView,
   IroncladTournamentView,
 } from "../../../src/tournaments/ironclad-tournament";
-import { getIroncladTournamentRoute } from "../../../src/routes";
+import {
+  getIroncladTournamentRoute,
+  getIroncladTournamentsRoute,
+  getTournamentsRoute,
+} from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
 import { generateLanguageAlternates } from "../../../src/seo-utils";
 import { AnalyticsIroncladTournamentView } from "../../../src/firebase/analytics";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
@@ -146,15 +151,27 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
   const description = t("meta.ironcladTournamentDescription", { name });
 
   const seo = (
-    <Head>
-      {generateNextSeo({
-        title,
-        description,
-        canonical: `${config.SITE_URL}${path}`,
-        openGraph: { title, description, url: `${config.SITE_URL}${path}` },
-        languageAlternates: generateLanguageAlternates(path),
-      })}
-    </Head>
+    <>
+      <Head>
+        {generateNextSeo({
+          title,
+          description,
+          canonical: `${config.SITE_URL}${path}`,
+          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          languageAlternates: generateLanguageAlternates(path),
+        })}
+      </Head>
+      <PageJsonLd
+        path={path}
+        name={title}
+        description={description}
+        breadcrumbName={name}
+        trail={[
+          { name: t("common:mainMenu.tournaments"), path: getTournamentsRoute() },
+          { name: t(IRONCLAD_TOURNAMENT.nameKey), path: getIroncladTournamentsRoute() },
+        ]}
+      />
+    </>
   );
 
   if (!data) {

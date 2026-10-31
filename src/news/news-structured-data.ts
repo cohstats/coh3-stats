@@ -1,28 +1,6 @@
 import config from "../../config";
 import { NewsItem } from "../apis/steam-api";
-
-// The game every news post is about, so search engines connect the article to it.
-const COMPANY_OF_HEROES_3 = {
-  "@type": "VideoGame",
-  name: "Company of Heroes 3",
-  alternateName: "COH3",
-  url: "https://www.companyofheroes.com/",
-  sameAs: ["https://store.steampowered.com/app/1677280/"],
-  genre: "Real-time strategy",
-  gamePlatform: ["PC", "PlayStation 5", "Xbox Series X|S"],
-  author: { "@type": "Organization", name: "Relic Entertainment" },
-  publisher: { "@type": "Organization", name: "SEGA" },
-};
-
-const COH3_STATS = {
-  "@type": "Organization",
-  name: "COH3 Stats",
-  url: config.SITE_URL,
-  logo: {
-    "@type": "ImageObject",
-    url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-  },
-};
+import { COH3_STATS, COMPANY_OF_HEROES_3 } from "../structured-data";
 
 // Google shows at most 110 characters of the headline.
 const MAX_HEADLINE_LENGTH = 110;

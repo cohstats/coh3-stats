@@ -8,8 +8,10 @@ import { UnitTable } from "../../components/unitStats/unitTable";
 import { AnalyticsExplorerUnitBrowserView } from "../../src/firebase/analytics";
 import { CustomizableUnit, mapCustomizableUnit } from "../../src/unitStats/dpsCommon";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
 import config from "../../config";
+import { getExplorerRoute, getUnitBrowserRoute } from "../../src/routes";
+import { useTranslation } from "next-i18next/pages";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface SquadProps {
   tableData: CustomizableUnit[];
@@ -18,7 +20,8 @@ interface SquadProps {
 // Parameter in Curly brackets is destructuring for
 // accessing attributes of Props Structure directly
 const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
-  const { asPath } = useRouter();
+  const { t } = useTranslation("common");
+  const path = getUnitBrowserRoute();
 
   useEffect(() => {
     AnalyticsExplorerUnitBrowserView();
@@ -49,12 +52,12 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: `${config.SITE_URL}${path}`,
           // We might prepare a nice image for a preview for this page, until then the default logo is used
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: `${config.SITE_URL}${path}`,
           },
           additionalMetaTags: [
             {
@@ -62,9 +65,15 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
               content: keywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={description}
+        trail={[{ name: t("mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <div>
         <UnitTable inputData={tableData} />
       </div>

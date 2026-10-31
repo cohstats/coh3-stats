@@ -12,9 +12,14 @@ import {
   LADDER_TOURNAMENT,
   METAPLAYS_TOURNAMENT,
 } from "../../src/tournaments/tournaments-registry";
-import { getTournamentsRoute } from "../../src/routes";
+import {
+  getIroncladTournamentsRoute,
+  getLadderTournamentRoute,
+  getTournamentsRoute,
+} from "../../src/routes";
 import { generateLanguageAlternates } from "../../src/seo-utils";
 import { AnalyticsTournamentsPageView } from "../../src/firebase/analytics";
+import PageJsonLd from "../../components/page-json-ld";
 import FeaturedTournamentCard from "./components/featured-tournament-card";
 import ExternalTournamentCard from "./components/external-tournament-card";
 import IroncladFeaturedCard from "./components/ironclad-featured-card";
@@ -53,6 +58,19 @@ const TournamentsScreen: NextPage<TournamentsPageProps> = ({
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={title}
+        description={description}
+        breadcrumbName={t("common:mainMenu.tournaments")}
+        // The tournaments with their own page here, IronClad only with the data
+        items={[
+          { name: t(LADDER_TOURNAMENT.nameKey), path: getLadderTournamentRoute() },
+          ...(ironcladSummary
+            ? [{ name: t(IRONCLAD_TOURNAMENT.nameKey), path: getIroncladTournamentsRoute() }]
+            : []),
+        ]}
+      />
       <Container size="lg" p="md" data-testid="tournaments-page">
         <Stack gap="lg">
           <Stack gap={4}>
