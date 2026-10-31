@@ -1,10 +1,16 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Anchor, Group, Table, Text } from "@mantine/core";
 import { useTranslation } from "next-i18next/pages";
 import { formatRecord, LadderSeasonSummary } from "../../../src/tournaments/ladder-tournament";
 import { getLadderTournamentRoute } from "../../../src/routes";
 import LadderPlayerLink from "../components/ladder-player-link";
+import {
+  formatLadderDateRange,
+  getLadderSeasonTitle,
+  LadderSeasonStatusBadge,
+} from "../components/ladder-season";
 import classes from "./ladder-tournament.module.css";
 
 const Dash = () => <Text c="dimmed">—</Text>;
@@ -21,14 +27,21 @@ const AllSeasonsTable = ({
   seasonId?: number;
 }) => {
   const { t } = useTranslation("tournaments");
+  const { locale = "en" } = useRouter();
 
   return (
-    <Table.ScrollContainer minWidth={640} type="native">
+    <Table.ScrollContainer minWidth={820} type="native">
       <Table verticalSpacing="xs" horizontalSpacing="md" data-testid="ladder-all-seasons-table">
         <Table.Thead className={classes.head}>
           <Table.Tr>
             <Table.Th className={classes.headCell}>
               {t("league.allSeasons.columns.season")}
+            </Table.Th>
+            <Table.Th className={classes.headCell}>
+              {t("league.allSeasons.columns.status")}
+            </Table.Th>
+            <Table.Th className={classes.headCell}>
+              {t("league.allSeasons.columns.ladder")}
             </Table.Th>
             <Table.Th className={classes.headCell}>
               {t("league.allSeasons.columns.players")}
@@ -61,8 +74,22 @@ const AllSeasonsTable = ({
                     fw={isCurrent ? 700 : 500}
                     size="sm"
                   >
-                    {t("league.season", { season: season.seasonId })}
+                    {getLadderSeasonTitle(t, season)}
                   </Anchor>
+                </Table.Td>
+                <Table.Td>
+                  {season.info ? (
+                    <LadderSeasonStatusBadge status={season.info.status} miw="max-content" />
+                  ) : (
+                    <Dash />
+                  )}
+                </Table.Td>
+                <Table.Td style={{ whiteSpace: "nowrap" }}>
+                  {season.info ? (
+                    formatLadderDateRange(season.info.ladderStart, season.info.ladderEnd, locale)
+                  ) : (
+                    <Dash />
+                  )}
                 </Table.Td>
                 <Table.Td>{season.players}</Table.Td>
                 <Table.Td>{season.casts}</Table.Td>

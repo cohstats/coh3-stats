@@ -4,14 +4,18 @@ import {
   buildLadderSeasonPageData,
   buildLadderSeasonSummaries,
   buildLadderStandings,
+  formatLadderSeasonName,
   getLadderChampionIds,
   getLadderSeasonIds,
   getLadderTopPlayerIds,
   groupCastsByStage,
+  isLadderSeasonCurrent,
+  pickLadderFeaturedSeasonId,
 } from "../../../src/tournaments/ladder-tournament";
 import type {
   LadderTournamentCasterVideo,
   LadderTournamentRankingItem,
+  LadderTournamentSeason,
 } from "../../../src/apis/ladder-tournament-api";
 
 const item = (
@@ -58,6 +62,66 @@ const video = (
   ...overrides,
 });
 
+const season = (
+  id: number,
+  overrides: Partial<LadderTournamentSeason> = {},
+): LadderTournamentSeason => ({
+  id,
+  name: `Season#${id}`,
+  status: "Finished",
+  registrationStart: "2026-08-22T01:54:00",
+  registrationEnd: "2026-09-03T01:54:00",
+  ladderStart: "2026-09-08T13:51:00",
+  ladderEnd: "2026-10-03T16:18:00",
+  maxChallengePositions: 3,
+  challengeResponseHours: 48,
+  matchDeadlineDays: 5,
+  inactivityDays: 20,
+  rematchDays: 14,
+  rematchOtherMatches: 2,
+  playoffCut: 8,
+  semifinalCut: 4,
+  ladderBestOf: 3,
+  funnelBestOf: 3,
+  semifinalBestOf: 3,
+  finalBestOf: 3,
+  ...overrides,
+});
+
+describe("formatLadderSeasonName", () => {
+  test("splits the camel case and keeps the small words lowercase", () => {
+    expect(formatLadderSeasonName("BloodAndSteel")).toBe("Blood and Steel");
+    expect(formatLadderSeasonName("Band_Of_Brothers")).toBe("Band of Brothers");
+    expect(formatLadderSeasonName("Winter Of The Wolf")).toBe("Winter of the Wolf");
+  });
+
+  test("keeps the names which are already readable", () => {
+    expect(formatLadderSeasonName("The Long Road")).toBe("The Long Road");
+    expect(formatLadderSeasonName("HOLD THE LINE")).toBe("HOLD THE LINE");
+  });
+
+  test("returns null for the generic and the empty names", () => {
+    expect(formatLadderSeasonName("Season#1")).toBeNull();
+    expect(formatLadderSeasonName("Season 12")).toBeNull();
+    expect(formatLadderSeasonName("  ")).toBeNull();
+  });
+});
+
+describe("pickLadderFeaturedSeasonId", () => {
+  test("picks the oldest season which is not finished", () => {
+    const seasons = [season(1), season(2, { status: "Active" }), season(3, { status: "Draft" })];
+
+    expect(pickLadderFeaturedSeasonId([3, 2, 1], seasons)).toBe(2);
+    expect(pickLadderFeaturedSeasonId([3, 2, 1], seasons.slice(0, 1).concat(seasons[2]))).toBe(3);
+  });
+
+  test("picks the latest season when all are finished or unknown", () => {
+    expect(pickLadderFeaturedSeasonId([2, 1], [season(1), season(2)])).toBe(2);
+    expect(pickLadderFeaturedSeasonId([2, 1], [])).toBe(2);
+    expect(pickLadderFeaturedSeasonId([], [])).toBeUndefined();
+  });
+});
+
 describe("getLadderSeasonIds", () => {
   test("returns distinct seasons from the ranking and the casts, newest first", () => {
     const ranking = [
@@ -69,6 +133,14 @@ describe("getLadderSeasonIds", () => {
     const videos = [video({ seasonId: 3 }), video({ seasonId: 1 })];
 
     expect(getLadderSeasonIds(ranking, videos)).toEqual([3, 2, 1]);
+  });
+
+  test("adds the seasons without standings and casts from the seasons endpoint", () => {
+    const ranking = [item(1, { seasonid: 1 })];
+
+    expect(getLadderSeasonIds(ranking, [], [season(2, { status: "Draft" }), season(1)])).toEqual([
+      2, 1,
+    ]);
   });
 
   test("returns an empty array without data", () => {
@@ -193,6 +265,7 @@ describe("season summaries", () => {
     expect(summaries.map((summary) => summary.seasonId)).toEqual([3, 2, 1]);
     expect(summaries[2]).toEqual({
       seasonId: 1,
+      info: null,
       players: 3,
       casts: 2,
       champions: [
@@ -218,12 +291,52 @@ describe("season summaries", () => {
     expect(data.stages[0].videos).toHaveLength(2);
   });
 
-  test("builds the hub summary from the latest season", () => {
-    expect(buildHubLadderSummary(ranking, videos, names)).toMatchObject({
-      latest: { seasonId: 3 },
-      seasonsCount: 3,
-    });
+  test("builds the hub summary from the latest season without the season info", () => {
+    const summary = buildHubLadderSummary(ranking, videos, names);
+
+    expect(summary?.featured.seasonId).toBe(3);
+    expect(summary?.recent.map((recent) => recent.seasonId)).toEqual([2, 1]);
     expect(buildHubLadderSummary([], [], {})).toBeNull();
+  });
+
+  test("features the upcoming season on the hub and keeps the finished ones as recent", () => {
+    const seasons = [
+      season(1),
+      season(2),
+      season(3),
+      season(4, { name: "BloodAndSteel", status: "Draft" }),
+    ];
+
+    const summary = buildHubLadderSummary(ranking, videos, names, seasons);
+
+    expect(summary?.featured).toMatchObject({
+      seasonId: 4,
+      players: 0,
+      info: { name: "Blood and Steel", status: "Draft" },
+    });
+    expect(isLadderSeasonCurrent(summary!.featured)).toBe(true);
+    // Only the 2 newest past seasons
+    expect(summary?.recent.map((recent) => recent.seasonId)).toEqual([3, 2]);
+  });
+
+  test("keeps the finished seasons newer than the featured one in the recent seasons", () => {
+    // Season 1 is stuck in Draft, so it's featured, the newer seasons are finished
+    const seasons = [season(1, { status: "Draft" }), season(2), season(3)];
+
+    const summary = buildHubLadderSummary(ranking, videos, names, seasons);
+
+    expect(summary?.featured.seasonId).toBe(1);
+    expect(summary?.recent.map((recent) => recent.seasonId)).toEqual([3, 2]);
+  });
+
+  test("excludes current seasons from recent seasons", () => {
+    // The Active season is featured, the newer Draft one is current too, so it's not recent
+    const seasons = [season(1), season(2, { status: "Active" }), season(3, { status: "Draft" })];
+
+    const summary = buildHubLadderSummary(ranking, videos, names, seasons);
+
+    expect(summary?.featured.seasonId).toBe(2);
+    expect(summary?.recent.map((recent) => recent.seasonId)).toEqual([1]);
   });
 
   test("builds the overview data with the top of the latest season", () => {
@@ -239,7 +352,8 @@ describe("season summaries", () => {
     expect(data?.seasons.map((season) => season.seasonId)).toEqual([3, 2, 1]);
     // Top 5 by score, the same score keeps the API order
     const top = [101, 103, 105, 100, 102];
-    expect(data?.latestStandings.map((row) => row.relicId)).toEqual(top);
+    expect(data?.featured.seasonId).toBe(3);
+    expect(data?.featuredStandings.map((row) => row.relicId)).toEqual(top);
     // The names are looked up for the same players
     expect(getLadderTopPlayerIds(latestRanking, 3)).toEqual(top);
     expect(data?.latestCasts).toHaveLength(3);
@@ -259,9 +373,30 @@ describe("season summaries", () => {
   test("builds the overview without standings for a casts only latest season", () => {
     const data = buildLadderOverviewData(ranking, videos, names);
 
-    expect(data?.seasons[0].seasonId).toBe(3);
-    expect(data?.latestStandings).toEqual([]);
+    expect(data?.featured.seasonId).toBe(3);
+    expect(data?.featuredStandings).toEqual([]);
     expect(getLadderTopPlayerIds(ranking, 3)).toEqual([]);
+  });
+
+  test("builds the overview of the current season with the season info", () => {
+    const seasons = [season(1), season(2, { status: "Active", ladderBestOf: 1, playoffCut: 6 })];
+
+    const data = buildLadderOverviewData(ranking, videos, names, seasons);
+
+    // Season 3 is only in the casts, season 2 is the current one
+    expect(data?.seasons.map((summary) => summary.seasonId)).toEqual([3, 2, 1]);
+    expect(data?.featured).toMatchObject({
+      seasonId: 2,
+      info: {
+        name: null,
+        status: "Active",
+        ladderStart: "2026-09-08T13:51:00",
+        playoffCut: 6,
+        bestOf: { ladder: 1, funnel: 3, semifinal: 3, final: 3 },
+        challenge: { maxPositions: 3, responseHours: 48, matchDeadlineDays: 5 },
+      },
+    });
+    expect(data?.featuredStandings.map((row) => row.relicId)).toEqual([4]);
   });
 
   test("returns the champion ids, optionally for given seasons", () => {

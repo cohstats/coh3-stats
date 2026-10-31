@@ -19,7 +19,7 @@ import { ExternalLink } from "../ladder-tournament/league-header";
 import IroncladPlayerLink from "../components/ironclad-player-link";
 import {
   DivisionStateBadge,
-  formatIroncladDate,
+  formatTournamentDate,
   RegistrationBadge,
   TournamentStatusBadge,
 } from "../components/ironclad-badges";
@@ -178,7 +178,7 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
     );
   }
 
-  const completedAt = formatIroncladDate(data.firstCompletedAt, locale);
+  const completedAt = formatTournamentDate(data.firstCompletedAt, locale);
 
   return (
     <>

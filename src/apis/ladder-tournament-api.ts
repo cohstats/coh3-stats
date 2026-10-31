@@ -57,10 +57,67 @@ const casterVideoSchema = z.object({
 
 const casterVideosResponseSchema = z.array(casterVideoSchema);
 
+// eg "2026-10-02T15:00:00", the time and the offset are optional
+const ISO_DATE_PATTERN =
+  /^(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?)?$/;
+
+const isValidIsoDate = (value: string) => {
+  const match = ISO_DATE_PATTERN.exec(value);
+  if (!match || Number.isNaN(Date.parse(value))) return false;
+  // Date.parse rolls the overflowed days over (2026-02-30 is 2 Mar), the date must stay the same
+  const [year, month, day] = match.slice(1, 4).map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+};
+
+// ISO 8601 date, a malformed one would render as an empty or a wrong date range
+const isoDateSchema = z.string().refine(isValidIsoDate, {
+  message: "Invalid ISO 8601 date",
+});
+
+// The docs say PascalCase keys, the API sends camelCase.
+// The registration fee and the rules text are not used, so they are not part of the contract.
+const seasonSchema = z.object({
+  // Same value as seasonid in the ranking and seasonId in the caster videos,
+  // a positive integer as the season page URL accepts only those
+  id: z.number().int().positive(),
+  // Eg "BloodAndSteel" or "Season#1"
+  name: z.string(),
+  // Values are not documented - seen "Draft" and "Finished", the docs example has "Active"
+  status: z.string(),
+  // ISO 8601 without the offset, UTC by the docs, eg 2026-11-03T10:00:00
+  registrationStart: isoDateSchema,
+  registrationEnd: isoDateSchema,
+  ladderStart: isoDateSchema,
+  ladderEnd: isoDateSchema,
+  // How many positions above its own a team can challenge
+  maxChallengePositions: z.number(),
+  challengeResponseHours: z.number(),
+  matchDeadlineDays: z.number(),
+  inactivityDays: z.number(),
+  rematchDays: z.number(),
+  rematchOtherMatches: z.number(),
+  // Number of the top teams going to the playoffs / the semifinals
+  playoffCut: z.number(),
+  semifinalCut: z.number(),
+  // Games per match, eg 3 = best of 3
+  ladderBestOf: z.number(),
+  funnelBestOf: z.number(),
+  semifinalBestOf: z.number(),
+  finalBestOf: z.number(),
+});
+
+const seasonsResponseSchema = z.array(seasonSchema);
+
 type LadderTournamentYesNo = z.infer<typeof yesNoSchema>;
 type LadderTournamentRankingItem = z.infer<typeof rankingItemSchema>;
 type LadderTournamentRankingResponse = z.infer<typeof rankingResponseSchema>;
 type LadderTournamentCasterVideo = z.infer<typeof casterVideoSchema>;
+type LadderTournamentSeason = z.infer<typeof seasonSchema>;
 
 const parseLadderTournamentResponse = <T>(
   schema: z.ZodType<T>,
@@ -138,6 +195,24 @@ const getLadderTournamentRankingUrl = ({
 
 const getLadderTournamentCasterVideosUrl = () => {
   return encodeURI(`${config.tournaments.ladderTournament.apiBaseUrl}/casted_videos_ladder`);
+};
+
+const getLadderTournamentSeasonsUrl = () => {
+  return encodeURI(`${config.tournaments.ladderTournament.apiBaseUrl}/seasons`);
+};
+
+/**
+ * Returns all the Ladder Tournament seasons with their calendar, rules and match format.
+ */
+const getLadderTournamentSeasons = async (): Promise<LadderTournamentSeason[]> => {
+  const response = await fetchLadderTournament(getLadderTournamentSeasonsUrl());
+
+  if (response.ok) {
+    return parseLadderTournamentResponse(seasonsResponseSchema, await response.json(), "seasons");
+  } else {
+    logger.error(`Error getting Ladder Tournament seasons, status code: ${response.status}`);
+    throw new Error(`Error getting Ladder Tournament seasons, status code: ${response.status}`);
+  }
 };
 
 /**
@@ -400,10 +475,13 @@ export type {
   LadderTournamentRankingResponse,
   LadderTournamentCasterVideo,
   LadderTournamentPlayerData,
+  LadderTournamentSeason,
 };
 export {
   getLadderTournamentRankingUrl,
   getLadderTournamentCasterVideosUrl,
+  getLadderTournamentSeasonsUrl,
+  getLadderTournamentSeasons,
   getLadderTournamentRanking,
   getLadderTournamentFullRanking,
   getLadderTournamentCasterVideos,

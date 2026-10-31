@@ -24,9 +24,16 @@ export const ExternalLink = ({ href, children }: { href: string; children: React
 
 /**
  * Breadcrumbs, logo, links and the intro video, shared by the overview and the season pages.
- * @param seasonId Season shown in the breadcrumb, only on the season pages
+ * @param seasonTitle Season shown in the breadcrumb and as the title, only on the season pages
+ * @param children Status line below the links
  */
-const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
+const LeagueHeader = ({
+  seasonTitle,
+  children,
+}: {
+  seasonTitle?: string;
+  children?: React.ReactNode;
+}) => {
   const { t } = useTranslation("tournaments");
   const name = t(LADDER_TOURNAMENT.nameKey);
 
@@ -36,18 +43,23 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
         <Anchor component={Link} href={getTournamentsRoute()} size="sm">
           {t("hub.title")}
         </Anchor>
-        {seasonId === undefined ? (
+        {seasonTitle === undefined ? (
           <Text size="sm" c="dimmed">
             {name}
           </Text>
         ) : (
-          <Anchor component={Link} href={getLadderTournamentRoute()} size="sm">
+          <Anchor
+            component={Link}
+            href={getLadderTournamentRoute()}
+            size="sm"
+            data-testid="ladder-breadcrumb-league"
+          >
             {name}
           </Anchor>
         )}
-        {seasonId !== undefined && (
+        {seasonTitle !== undefined && (
           <Text size="sm" c="dimmed">
-            {t("league.season", { season: seasonId })}
+            {seasonTitle}
           </Text>
         )}
       </Breadcrumbs>
@@ -65,8 +77,13 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
             {LADDER_TOURNAMENT.monogram}
           </Avatar>
           <Stack gap={6}>
-            <Title order={1} lh={1.1} className={classes.leagueTitle}>
-              {name}
+            <Title
+              order={1}
+              lh={1.1}
+              className={classes.leagueTitle}
+              data-testid="ladder-league-title"
+            >
+              {seasonTitle ?? name}
             </Title>
             <Text c="dimmed">
               {t("league.communityLadder")}
@@ -77,6 +94,7 @@ const LeagueHeader = ({ seasonId }: { seasonId?: number }) => {
                 {t("league.discord")}
               </ExternalLink>
             </Text>
+            {children}
           </Stack>
         </Group>
         <Box className={classes.introVideo}>

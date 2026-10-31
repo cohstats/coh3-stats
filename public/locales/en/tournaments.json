@@ -15,7 +15,6 @@
     "title": "Tournaments",
     "subtitle": "Community tournaments for Company of Heroes 3",
     "statsBadge": "Stats on COH3 Stats",
-    "openLeague": "Open league",
     "officialSite": "Official site",
     "visitSite": "Visit site",
     "viewOfficialWebsite": "View Official Website",
@@ -25,8 +24,6 @@
     "playersCount_other": "{{count}} players",
     "castsCount_one": "{{count}} casted match",
     "castsCount_other": "{{count}} casted matches",
-    "seasonsCount_one": "{{count}} season on COH3 Stats",
-    "seasonsCount_other": "{{count}} seasons on COH3 Stats",
     "unavailable": "Stats are unavailable right now",
     "addTournament": "Reach out to us on Discord to add your tournament here",
     "openTournament": "Open tournament",
@@ -35,7 +32,12 @@
     "currentTournament": "Current tournament",
     "latestTournament": "Latest tournament",
     "lastChampions": "Champions of {{name}}",
-    "recentTournaments": "Recent tournaments"
+    "recentTournaments": "Recent tournaments",
+    "currentSeason": "Current season",
+    "recentSeasons": "Recent seasons",
+    "openSeason": "Open season",
+    "allSeasons": "All seasons",
+    "ladderDates": "Ladder {{dates}}"
   },
   "metadata": {
     "oneVsOne": "1v1",
@@ -61,11 +63,7 @@
     "discord": "Discord",
     "introVideo": "How the Ladder Tournament works - intro video",
     "season": "Season {{season}}",
-    "seasonPicker": "Season",
-    "previousSeason": "Previous season",
-    "nextSeason": "Next season",
     "overview": {
-      "openSeason": "Open Season {{season}}",
       "latestCasts": "Latest casts",
       "showMoreCasts": "Show more"
     },
@@ -103,11 +101,30 @@
         "players": "Players",
         "casts": "Casts",
         "champions": "Champions",
-        "record": "Champions' record"
+        "record": "Champions' record",
+        "status": "Status",
+        "ladder": "Ladder phase"
       }
     },
     "unavailable": "Ladder Tournament data is unavailable right now, try again later",
-    "playerFallback": "Player #{{id}}"
+    "playerFallback": "Player #{{id}}",
+    "seasonWithName": "Season {{season}} · {{name}}",
+    "status": {
+      "draft": "Upcoming",
+      "active": "In progress",
+      "finished": "Finished"
+    },
+    "info": {
+      "registration": "Registration",
+      "ladder": "Ladder phase",
+      "playoffs": "Playoffs",
+      "playoffsValue": "Top {{playoffCut}} · semifinals top {{semifinalCut}}",
+      "format": "Match format",
+      "formatValue": "Ladder Bo{{ladder}} · playoffs Bo{{funnel}} · semifinals Bo{{semifinal}} · final Bo{{final}}",
+      "challenge": "Teams can challenge up to {{positions}} positions above, have {{hours}} hours to respond and {{days}} days to play the match.",
+      "rematch": "A rematch is possible after {{days}} days or {{matches}} other matches, a team is inactive after {{inactivity}} days without a match.",
+      "formatShortValue": "Ladder Bo{{ladder}} · playoffs Bo{{playoffs}}"
+    }
   },
   "ironclad": {
     "verifiedEloDivisions": "1v1 tournaments with verified ELO divisions",
