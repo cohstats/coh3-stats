@@ -142,6 +142,7 @@
     "playersCount_other": "{{count}} players",
     "divisionState": {
       "filling": "Filling",
+      "ready": "Ready",
       "in_progress": "Bracket live",
       "completed": "Completed",
       "unknown": "Unknown"

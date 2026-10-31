@@ -12,9 +12,19 @@ const TOURNAMENT_STATUS_COLORS: Record<string, string> = {
 
 const DIVISION_STATE_COLORS: Record<string, string> = {
   filling: "blue",
+  // Full, waiting for the bracket
+  ready: "teal",
   in_progress: "orange",
   completed: "gray",
 };
+
+/**
+ * Color of the division state, the unknown states are blue like the filling divisions.
+ */
+export const getDivisionStateColor = (state: string) =>
+  Object.prototype.hasOwnProperty.call(DIVISION_STATE_COLORS, state)
+    ? DIVISION_STATE_COLORS[state]
+    : "blue";
 
 /**
  * Formats an API date (ISO 8601 in UTC), eg "10 Oct 2026".
