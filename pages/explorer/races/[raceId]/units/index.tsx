@@ -145,7 +145,6 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
             title: pageTitle,
             description: pageTitle,
             url: `${config.SITE_URL}${asPath}`,
-            type: "website",
             images: [
               {
                 url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,

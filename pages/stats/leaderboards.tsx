@@ -52,7 +52,6 @@ const Leaderboards = ({
             title: pageTitle,
             description,
             url: `${config.SITE_URL}/stats/leaderboards`,
-            type: "website",
           },
           additionalMetaTags: [
             {

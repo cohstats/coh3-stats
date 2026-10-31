@@ -83,14 +83,6 @@ const PlayerStats = ({
             title: pageTitle,
             description,
             url: `${config.SITE_URL}/stats/players`,
-            images: [
-              {
-                url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-                width: 192,
-                height: 192,
-                alt: "COH3 Stats logo",
-              },
-            ],
           },
         })}
       </Head>

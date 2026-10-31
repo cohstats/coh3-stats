@@ -156,8 +156,6 @@ const FsUnits: NextPage<FsUnitsProps> = ({ units, raceToFetch }) => {
             title: `${pageTitle} | COH3 Stats`,
             description: metaDescription,
             url: canonical,
-            type: "website",
-            siteName: "COH3 Stats",
             images: [
               {
                 url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,

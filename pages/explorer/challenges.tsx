@@ -67,7 +67,6 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}${asPath}`,
-            type: "website",
           },
           additionalMetaTags: [
             {

@@ -35,7 +35,6 @@ const MapStats: NextPage = () => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}/stats/maps`,
-            type: "website",
           },
           additionalMetaTags: [
             {

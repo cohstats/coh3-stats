@@ -55,7 +55,6 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}${asPath}`,
-            type: "website",
           },
           additionalMetaTags: [
             {

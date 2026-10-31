@@ -158,7 +158,6 @@ const OpenData: NextPage = () => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}${asPath}`,
-            type: "website",
           },
           additionalMetaTags: [
             {

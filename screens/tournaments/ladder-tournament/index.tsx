@@ -50,7 +50,7 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
         title,
         description,
         canonical: `${config.SITE_URL}${path}`,
-        openGraph: { title, description, url: `${config.SITE_URL}${path}`, type: "website" },
+        openGraph: { title, description, url: `${config.SITE_URL}${path}` },
         languageAlternates: generateLanguageAlternates(path),
       })}
     </Head>

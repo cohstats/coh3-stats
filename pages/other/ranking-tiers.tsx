@@ -44,7 +44,6 @@ const RankingTiers: NextPage = () => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}${asPath}`,
-            type: "website",
             images: [
               {
                 url: PlayerRanks.CHALLENGER_1.url,

@@ -114,7 +114,6 @@ interface UnitDetailProps {
       icon?: string;
     } | null;
   };
-  locale: string;
   descriptions: Record<string, Record<string, string | null>>;
 }
 
@@ -147,7 +146,7 @@ const UnitCostGroup = ({
   );
 };
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, locale }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
   const { query, asPath } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
@@ -442,8 +441,6 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions, l
             title: ogTitle,
             description: metaDescription,
             url: `${config.SITE_URL}${asPath}`,
-            siteName: "COH3 Stats",
-            locale,
             // Flag the DLC in Open Graph, so link previews / crawlers know where the unit comes from.
             ...(isFinalStand
               ? {
@@ -1499,7 +1496,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
         { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
         unitId,
       ),
-      locale,
       descriptions: getUnitStatsCOH3Descriptions(locale),
     },
     revalidate: false,

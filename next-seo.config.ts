@@ -7,14 +7,14 @@ const defaultSEO: DefaultSeoProps = {
   canonical: "https://coh3stats.com",
   openGraph: {
     type: "website",
-    locale: "en_US",
+    // og:locale is set per request in `_app`, see `getOpenGraphLocale`
     url: "https://coh3stats.com",
     siteName: "COH3 Stats",
+    // Used by every page without its own image. No width / height on purpose, next/head dedupes
+    // by tag key, so a page image without a size (maps, news) would inherit the logo's size.
     images: [
       {
         url: "https://coh3stats.com/logo/android-icon-192x192.png",
-        width: 192,
-        height: 192,
         alt: "COH3 Stats logo",
       },
     ],
@@ -114,5 +114,27 @@ const defaultSEO: DefaultSeoProps = {
     },
   ],
 };
+
+// Open Graph wants language_TERRITORY, the app locales are BCP 47 tags
+const openGraphLocales: Record<string, string> = {
+  en: "en_US",
+  cs: "cs_CZ",
+  de: "de_DE",
+  es: "es_ES",
+  fr: "fr_FR",
+  it: "it_IT",
+  ja: "ja_JP",
+  ko: "ko_KR",
+  pl: "pl_PL",
+  "pt-BR": "pt_BR",
+  ru: "ru_RU",
+  tr: "tr_TR",
+  "uk-UA": "uk_UA",
+  "zh-Hans": "zh_CN",
+  "zh-Hant": "zh_TW",
+};
+
+export const getOpenGraphLocale = (locale?: string) =>
+  (locale && openGraphLocales[locale]) || "en_US";
 
 export default defaultSEO;

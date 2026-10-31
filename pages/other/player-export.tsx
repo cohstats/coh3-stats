@@ -36,7 +36,6 @@ const PlayerExport: NextPage = () => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}/other/player-export`,
-            type: "website",
           },
           additionalMetaTags: [
             {

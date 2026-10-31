@@ -322,8 +322,6 @@ const SteamNewsPage: NextPage<{
                 ? [
                     {
                       url: image,
-                      width: 800,
-                      height: 600,
                       alt: "COH3 News Image",
                     },
                   ]

@@ -46,7 +46,6 @@ const GlobalAchievements = ({
             title: pageTitle,
             description,
             url: `${config.SITE_URL}/stats/achievements`,
-            type: "website",
           },
           additionalMetaTags: [
             {

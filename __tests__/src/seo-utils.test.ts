@@ -11,6 +11,7 @@ import {
 import { PlayerCardDataType } from "../../src/coh3/coh3-types";
 import { PlayerSummaryType } from "../../src/players/utils";
 import config from "../../config";
+import { getOpenGraphLocale } from "../../next-seo.config";
 
 // Returns the key itself, or a keywords array for `returnObjects`
 const t = ((key: string, options?: { returnObjects?: boolean }) =>
@@ -114,6 +115,19 @@ describe("sitewide defaults with generateNextSeo", () => {
         "search:meta.title",
       );
     });
+  });
+});
+
+describe("getOpenGraphLocale", () => {
+  test("should map the app locales to the Open Graph format", () => {
+    expect(getOpenGraphLocale("en")).toBe("en_US");
+    expect(getOpenGraphLocale("pt-BR")).toBe("pt_BR");
+    expect(getOpenGraphLocale("zh-Hant")).toBe("zh_TW");
+  });
+
+  test("should fall back to en_US", () => {
+    expect(getOpenGraphLocale(undefined)).toBe("en_US");
+    expect(getOpenGraphLocale("xx")).toBe("en_US");
   });
 });
 

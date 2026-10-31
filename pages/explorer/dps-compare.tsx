@@ -96,15 +96,6 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
       title,
       description,
       url: `${config.SITE_URL}/explorer/dps-compare`,
-      type: "website",
-      images: [
-        {
-          url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-          width: 192,
-          height: 192,
-          alt: "COH3 Stats logo",
-        },
-      ],
     },
     additionalMetaTags: [
       {

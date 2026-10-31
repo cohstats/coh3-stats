@@ -35,7 +35,6 @@ const GameStats: NextPage = () => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}/stats/games`,
-            type: "website",
           },
           additionalMetaTags: [
             {

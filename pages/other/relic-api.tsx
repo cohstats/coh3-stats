@@ -81,7 +81,6 @@ const RelicApiDocs: NextPage = () => {
             title: pageTitle,
             description,
             url: `${config.SITE_URL}${asPath}`,
-            type: "website",
           },
           additionalMetaTags: [{ name: "keywords", content: keywords }],
         })}

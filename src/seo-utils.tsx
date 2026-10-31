@@ -91,15 +91,6 @@ export const createPageSEO = (
       title,
       description,
       url: canonical,
-      type: "website",
-      images: [
-        {
-          url: `${config.SITE_URL}/logo/android-icon-192x192.png`,
-          width: 92,
-          height: 92,
-          alt: "COH3 Stats logo",
-        },
-      ],
     },
     additionalMetaTags: [
       {
@@ -227,7 +218,6 @@ export const createLeaderboardSEO = (
       title,
       description,
       url: canonical,
-      type: "website",
       images: [
         {
           url: `${config.SITE_URL}/icons/general/${faction}.webp`,
