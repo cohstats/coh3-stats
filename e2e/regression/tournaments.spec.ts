@@ -118,7 +118,7 @@ test.describe("Tournaments - Ladder Tournament league pages", () => {
 
     await page.waitForURL("**/tournaments/ladder-tournament/season/*");
     await expect(tournamentsPage.seasonPage).toBeVisible();
-    await expect(tournamentsPage.seasonPicker).toBeVisible();
+    await expect(tournamentsPage.seasonTitle).toContainText("Season");
     await expect(tournamentsPage.allSeasonsTable).toHaveCount(0);
 
     await tournamentsPage.allSeasonsLink.click();

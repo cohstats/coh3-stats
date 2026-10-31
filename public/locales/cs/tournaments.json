@@ -47,9 +47,6 @@
     "discord": "Discord",
     "introVideo": "How the Ladder Tournament works - intro video",
     "season": "Season {{season}}",
-    "seasonPicker": "Season",
-    "previousSeason": "Previous season",
-    "nextSeason": "Next season",
     "overview": {
       "latestCasts": "Latest casts",
       "showMoreCasts": "Show more"

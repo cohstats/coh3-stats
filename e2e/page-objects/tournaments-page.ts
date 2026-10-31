@@ -60,12 +60,14 @@ export class TournamentsPage extends BasePage {
     return this.getByTestId("ladder-tournament-page");
   }
 
-  get seasonPicker(): Locator {
-    return this.getByTestId("ladder-season-picker");
+  // The season is the page title on the season pages
+  get seasonTitle(): Locator {
+    return this.getByTestId("ladder-league-title");
   }
 
+  // Breadcrumb back to the overview with all the seasons
   get allSeasonsLink(): Locator {
-    return this.getByTestId("ladder-all-seasons-link");
+    return this.getByTestId("ladder-breadcrumb-league");
   }
 
   get standingsTable(): Locator {
