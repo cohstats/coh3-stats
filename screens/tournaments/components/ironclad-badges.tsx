@@ -20,7 +20,7 @@ const DIVISION_STATE_COLORS: Record<string, string> = {
  * Formats an API date (ISO 8601 in UTC), eg "10 Oct 2026".
  * Only the UTC date part is used, so the SSR and the client output are the same (no hydration mismatch).
  */
-export const formatIroncladDate = (isoDate: string | null, locale: string) => {
+export const formatTournamentDate = (isoDate: string | null, locale: string) => {
   if (!isoDate) return "";
   const date = dayjs(isoDate.slice(0, 10));
   if (!date.isValid()) return "";

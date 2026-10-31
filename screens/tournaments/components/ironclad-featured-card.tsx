@@ -28,7 +28,7 @@ import IroncladPlayerLink from "./ironclad-player-link";
 import IroncladChampions from "./ironclad-champions";
 import {
   DivisionStateBadge,
-  formatIroncladDate,
+  formatTournamentDate,
   RegistrationBadge,
   TournamentStatusBadge,
 } from "./ironclad-badges";
@@ -85,7 +85,7 @@ const DivisionFillRow = ({ division }: { division: IroncladDivisionSummary }) =>
 const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSummary }) => {
   const { t } = useTranslation("tournaments");
   const { locale = "en" } = useRouter();
-  const completedAt = formatIroncladDate(tournament.firstCompletedAt, locale);
+  const completedAt = formatTournamentDate(tournament.firstCompletedAt, locale);
 
   return (
     <Paper

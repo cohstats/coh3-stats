@@ -79,11 +79,13 @@ test.describe("Tournaments - hub", () => {
     await expect(tournamentsPage.ironcladDivisionTabs).toBeVisible();
   });
 
-  test("should open the league overview from the featured card", async ({ page }) => {
+  test("should open the league overview with all the seasons from the featured card", async ({
+    page,
+  }) => {
     const tournamentsPage = new TournamentsPage(page);
     await tournamentsPage.navigate();
 
-    await tournamentsPage.openLeagueButton.click();
+    await tournamentsPage.allSeasonsButton.click();
 
     await page.waitForURL("**/tournaments/ladder-tournament");
     await expect(tournamentsPage.overviewPage).toBeVisible();
@@ -116,7 +118,7 @@ test.describe("Tournaments - Ladder Tournament league pages", () => {
 
     await page.waitForURL("**/tournaments/ladder-tournament/season/*");
     await expect(tournamentsPage.seasonPage).toBeVisible();
-    await expect(tournamentsPage.seasonPicker).toBeVisible();
+    await expect(tournamentsPage.seasonTitle).toContainText("Season");
     await expect(tournamentsPage.allSeasonsTable).toHaveCount(0);
 
     await tournamentsPage.allSeasonsLink.click();
