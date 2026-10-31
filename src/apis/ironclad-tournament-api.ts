@@ -22,7 +22,7 @@ const tournamentStatusSchema = knownValues([
   "in_progress",
   "completed",
 ]);
-const divisionStateSchema = knownValues(["filling", "in_progress", "completed"]);
+const divisionStateSchema = knownValues(["filling", "ready", "in_progress", "completed"]);
 const matchStatusSchema = knownValues(["scheduled", "in_progress", "completed"]);
 
 const registrationSchema = z.object({

@@ -29,6 +29,7 @@ import IroncladChampions from "./ironclad-champions";
 import {
   DivisionStateBadge,
   formatIroncladDate,
+  getDivisionStateColor,
   RegistrationBadge,
   TournamentStatusBadge,
 } from "./ironclad-badges";
@@ -71,7 +72,7 @@ const DivisionFillRow = ({ division }: { division: IroncladDivisionSummary }) =>
           value={fill}
           size="sm"
           radius="xl"
-          color={division.state === "in_progress" ? "orange" : "blue"}
+          color={getDivisionStateColor(division.state)}
           aria-label={division.displayName}
         />
       )}
