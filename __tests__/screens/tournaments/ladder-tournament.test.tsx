@@ -10,7 +10,9 @@ import { buildLadderSeasonPageData } from "../../../src/tournaments/ladder-tourn
 import type {
   LadderTournamentCasterVideo,
   LadderTournamentRankingItem,
+  LadderTournamentSeason,
 } from "../../../src/apis/ladder-tournament-api";
+import seasonsResponse from "../../test-assets/ladder-tournament-seasons-response.json";
 
 // Returns the key with the interpolation values, so we can assert on them
 jest.mock("next-i18next/pages", () => ({
@@ -224,6 +226,45 @@ describe("LadderTournamentScreen", () => {
     expect(final).toBeGreaterThan(-1);
     expect(final).toBeLessThan(semi);
     expect(semi).toBeLessThan(other);
+  });
+
+  test("renders the upcoming season with its name, status and info, without the stats", () => {
+    // Season 2 "BloodAndSteel" is Draft and only in the seasons endpoint
+    const seasons = seasonsResponse as LadderTournamentSeason[];
+    const html = render({ data: buildLadderSeasonPageData(2, ranking, videos, names, seasons) });
+
+    expect(html).toContain('league.seasonWithName {"season":2,"name":"Blood and Steel"}');
+    expect(html).toContain("league.status.draft");
+    expect(html).not.toContain('data-testid="ladder-season-stats"');
+    expect(html).toContain('data-testid="ladder-standings-not-available"');
+
+    const info = html.slice(html.indexOf('data-testid="ladder-season-info"'));
+    expect(info).toContain("2 Oct 2026 – 18 Oct 2026");
+    expect(info).toContain("3 Nov 2026 – 30 Jan 2027");
+    expect(info).toContain('league.info.playoffsValue {"playoffCut":8,"semifinalCut":4}');
+    // All the playoff stages are Bo3, so the short format
+    expect(info).toContain('league.info.formatShortValue {"ladder":1,"playoffs":3}');
+    expect(info).toContain('league.info.challenge {"positions":3,"hours":48,"days":5}');
+    // The picker has the names, season 1 has the generic name
+    expect(html).toContain('data-testid="ladder-season-switch"');
+  });
+
+  test("renders a finished season with the stats and the info", () => {
+    // Bo5 final, so the full format
+    const seasons = (seasonsResponse as LadderTournamentSeason[]).map((season) => ({
+      ...season,
+      finalBestOf: 5,
+    }));
+    const html = render({ data: buildLadderSeasonPageData(1, ranking, videos, names, seasons) });
+
+    expect(html).toContain(
+      'league.info.formatValue {"ladder":3,"funnel":3,"semifinal":3,"final":5}',
+    );
+
+    expect(html).toContain('league.season {"season":1}');
+    expect(html).toContain("league.status.finished");
+    expect(html).toContain('data-testid="ladder-season-stats"');
+    expect(html).toContain('data-testid="ladder-season-info"');
   });
 
   test("hides the casts without videos and shows the standings notice without ranking", () => {

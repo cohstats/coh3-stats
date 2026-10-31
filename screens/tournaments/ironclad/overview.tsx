@@ -28,7 +28,7 @@ import { ExternalLink } from "../ladder-tournament/league-header";
 import IroncladChampions from "../components/ironclad-champions";
 import {
   DivisionStateBadge,
-  formatIroncladDate,
+  formatTournamentDate,
   RegistrationBadge,
   TournamentStatusBadge,
 } from "../components/ironclad-badges";
@@ -43,7 +43,7 @@ const TournamentCard = ({ tournament }: { tournament: IroncladTournamentSummary 
   const { t } = useTranslation("tournaments");
   const { locale = "en" } = useRouter();
   const route = getIroncladTournamentRoute(tournament.slug);
-  const completedAt = formatIroncladDate(tournament.firstCompletedAt, locale);
+  const completedAt = formatTournamentDate(tournament.firstCompletedAt, locale);
 
   return (
     <Paper withBorder radius="md" p="lg" data-testid={`ironclad-tournament-${tournament.slug}`}>

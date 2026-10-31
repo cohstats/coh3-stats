@@ -5,6 +5,8 @@ import { ActionIcon, Button, Group, Select } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight, IconListDetails } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import { getLadderTournamentRoute } from "../../../src/routes";
+import type { LadderSeasonSummary } from "../../../src/tournaments/ladder-tournament";
+import { getLadderSeasonTitle } from "../components/ladder-season";
 import classes from "./ladder-tournament.module.css";
 
 // Above this the select gets the search, so a long list of seasons stays usable
@@ -14,11 +16,18 @@ const SEARCHABLE_FROM = 10;
  * Previous / next buttons around a select with all the seasons, plus the link to the overview
  * with all the seasons. Scales to any number of seasons.
  * With only one season there is nothing to switch to, so only the overview link is rendered.
- * @param seasonIds All the seasons sorted from the newest
+ * @param seasons All the seasons sorted from the newest
  */
-const SeasonPicker = ({ seasonId, seasonIds }: { seasonId: number; seasonIds: number[] }) => {
+const SeasonPicker = ({
+  seasonId,
+  seasons,
+}: {
+  seasonId: number;
+  seasons: LadderSeasonSummary[];
+}) => {
   const { t } = useTranslation("tournaments");
   const router = useRouter();
+  const seasonIds = seasons.map((season) => season.seasonId);
 
   const index = seasonIds.indexOf(seasonId);
   // Sorted from the newest - the previous (older) season is after the current one
@@ -47,9 +56,9 @@ const SeasonPicker = ({ seasonId, seasonIds }: { seasonId: number; seasonIds: nu
           <Select
             aria-label={t("league.seasonPicker")}
             className={classes.seasonSelect}
-            data={seasonIds.map((id) => ({
-              value: `${id}`,
-              label: t("league.season", { season: id }),
+            data={seasons.map((season) => ({
+              value: `${season.seasonId}`,
+              label: getLadderSeasonTitle(t, season),
             }))}
             value={`${seasonId}`}
             onChange={(value) => value && goToSeason(Number(value))}

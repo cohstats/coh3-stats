@@ -10,7 +10,9 @@ import { buildLadderOverviewData } from "../../../src/tournaments/ladder-tournam
 import type {
   LadderTournamentCasterVideo,
   LadderTournamentRankingItem,
+  LadderTournamentSeason,
 } from "../../../src/apis/ladder-tournament-api";
+import seasonsResponse from "../../test-assets/ladder-tournament-seasons-response.json";
 
 // Returns the key with the interpolation values, so we can assert on them
 jest.mock("next-i18next/pages", () => ({
@@ -89,7 +91,8 @@ describe("LadderTournamentOverviewScreen", () => {
     const rows = [...html.matchAll(/data-testid="ladder-standing-(\d+)"/g)].map((m) => m[1]);
     expect(rows).toEqual(["100", "101", "102", "103", "104"]);
 
-    expect(html).toContain('league.overview.openSeason {"season":2}');
+    expect(html).toContain("hub.latestSeason");
+    expect(html).toContain("hub.openSeason");
     expect(html).toContain('league.standings.showAll {"count":8}');
     // Title, open button, full standings button and the all seasons row
     expect(count(html, /href="\/tournaments\/ladder-tournament\/season\/2"/g)).toBe(4);
@@ -132,7 +135,31 @@ describe("LadderTournamentOverviewScreen", () => {
     expect(html).toContain('data-testid="ladder-standings-not-available"');
   });
 
-  test("shows the 4 newest casts of all the seasons with the link to the latest season", () => {
+  test("shows the upcoming season with its info instead of the standings", () => {
+    // Season 2 "BloodAndSteel" is Draft without standings, season 1 is Finished
+    const seasons = seasonsResponse as LadderTournamentSeason[];
+    const html = render({
+      data: buildLadderOverviewData(ranking.slice(0, 2), [video()], {}, seasons),
+    });
+
+    expect(html).toContain("hub.currentSeason");
+    expect(html).toContain('league.seasonWithName {"season":2,"name":"Blood and Steel"}');
+    expect(html).toContain("league.status.draft");
+    // The dates are in the season info card, not repeated next to the status
+    expect(html).not.toContain("hub.ladderDates");
+    expect(html.slice(html.indexOf('data-testid="ladder-season-info"'))).toContain(
+      "3 Nov 2026 – 30 Jan 2027",
+    );
+    expect(html).toContain('data-testid="ladder-standings-not-available"');
+    expect(html).not.toContain('data-testid="ladder-season-stats"');
+    // The all seasons table has the status of both seasons
+    expect(count(html, /data-testid="ladder-season-status"/g)).toBe(3);
+    expect(html).toContain("league.status.finished");
+    // The casts are from season 1, so "Show more" opens season 1
+    expect(html).toContain('href="/tournaments/ladder-tournament/season/1#casts"');
+  });
+
+  test("shows the 4 newest casts of all the seasons with the link to the season of the newest", () => {
     const manyVideos = [1, 5, 3, 2, 4].map((day) =>
       video({ title: `Cast ${day}`, publishedAt: `2026-09-0${day}T00:00:00`, seasonId: day % 2 }),
     );
@@ -141,7 +168,8 @@ describe("LadderTournamentOverviewScreen", () => {
 
     const titles = [...casts.matchAll(/>(Cast \d)</g)].map((m) => m[1]);
     expect(titles).toEqual(["Cast 5", "Cast 4", "Cast 3", "Cast 2"]);
-    expect(casts).toContain('href="/tournaments/ladder-tournament/season/2#casts"');
+    // The newest cast "Cast 5" is from season 1
+    expect(casts).toContain('href="/tournaments/ladder-tournament/season/1#casts"');
     // After all the seasons
     expect(html.indexOf('data-testid="ladder-all-seasons-table"')).toBeLessThan(
       html.indexOf('data-testid="ladder-latest-casts"'),

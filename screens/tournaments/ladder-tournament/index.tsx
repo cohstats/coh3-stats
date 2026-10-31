@@ -14,6 +14,11 @@ import SeasonStatsBar from "./season-stats-bar";
 import SeasonPicker from "./season-picker";
 import StandingsTable from "./standings-table";
 import CastsByStage, { LADDER_CASTS_ANCHOR } from "./casts-by-stage";
+import {
+  getLadderSeasonTitle,
+  LadderSeasonInfoCard,
+  LadderSeasonStatusBadge,
+} from "../components/ladder-season";
 import classes from "./ladder-tournament.module.css";
 
 export type LadderTournamentPageProps = {
@@ -75,6 +80,7 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
   }
 
   const summary = data.seasons.find((season) => season.seasonId === data.seasonId);
+  const info = summary?.info ?? null;
 
   return (
     <>
@@ -85,15 +91,19 @@ const LadderTournamentScreen: NextPage<LadderTournamentPageProps> = ({ data }) =
 
           <Stack gap="md">
             <Group justify="space-between" align="center" gap="sm">
-              <Title order={2} size="h3" data-testid="ladder-season-title">
-                {t("league.season", { season: data.seasonId })}
-              </Title>
-              <SeasonPicker
-                seasonId={data.seasonId}
-                seasonIds={data.seasons.map((season) => season.seasonId)}
-              />
+              <Group gap="sm">
+                <Title order={2} size="h3" data-testid="ladder-season-title">
+                  {getLadderSeasonTitle(t, { seasonId: data.seasonId, info })}
+                </Title>
+                {info && <LadderSeasonStatusBadge status={info.status} />}
+              </Group>
+              <SeasonPicker seasonId={data.seasonId} seasons={data.seasons} />
             </Group>
-            {summary && <SeasonStatsBar summary={summary} />}
+            {/* An upcoming season has nothing to count yet */}
+            {summary && (summary.players > 0 || summary.casts > 0) && (
+              <SeasonStatsBar summary={summary} />
+            )}
+            {info && <LadderSeasonInfoCard info={info} />}
           </Stack>
 
           <Stack gap="sm">

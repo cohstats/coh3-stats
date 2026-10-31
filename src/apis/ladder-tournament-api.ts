@@ -57,10 +57,44 @@ const casterVideoSchema = z.object({
 
 const casterVideosResponseSchema = z.array(casterVideoSchema);
 
+// The docs say PascalCase keys, the API sends camelCase.
+// The registration fee and the rules text are not used, so they are not part of the contract.
+const seasonSchema = z.object({
+  // Same value as seasonid in the ranking and seasonId in the caster videos
+  id: z.number(),
+  // Eg "BloodAndSteel" or "Season#1"
+  name: z.string(),
+  // Values are not documented - seen "Draft" and "Finished", the docs example has "Active"
+  status: z.string(),
+  // ISO 8601 without the offset, UTC by the docs, eg 2026-11-03T10:00:00
+  registrationStart: z.string(),
+  registrationEnd: z.string(),
+  ladderStart: z.string(),
+  ladderEnd: z.string(),
+  // How many positions above its own a team can challenge
+  maxChallengePositions: z.number(),
+  challengeResponseHours: z.number(),
+  matchDeadlineDays: z.number(),
+  inactivityDays: z.number(),
+  rematchDays: z.number(),
+  rematchOtherMatches: z.number(),
+  // Number of the top teams going to the playoffs / the semifinals
+  playoffCut: z.number(),
+  semifinalCut: z.number(),
+  // Games per match, eg 3 = best of 3
+  ladderBestOf: z.number(),
+  funnelBestOf: z.number(),
+  semifinalBestOf: z.number(),
+  finalBestOf: z.number(),
+});
+
+const seasonsResponseSchema = z.array(seasonSchema);
+
 type LadderTournamentYesNo = z.infer<typeof yesNoSchema>;
 type LadderTournamentRankingItem = z.infer<typeof rankingItemSchema>;
 type LadderTournamentRankingResponse = z.infer<typeof rankingResponseSchema>;
 type LadderTournamentCasterVideo = z.infer<typeof casterVideoSchema>;
+type LadderTournamentSeason = z.infer<typeof seasonSchema>;
 
 const parseLadderTournamentResponse = <T>(
   schema: z.ZodType<T>,
@@ -138,6 +172,24 @@ const getLadderTournamentRankingUrl = ({
 
 const getLadderTournamentCasterVideosUrl = () => {
   return encodeURI(`${config.tournaments.ladderTournament.apiBaseUrl}/casted_videos_ladder`);
+};
+
+const getLadderTournamentSeasonsUrl = () => {
+  return encodeURI(`${config.tournaments.ladderTournament.apiBaseUrl}/seasons`);
+};
+
+/**
+ * Returns all the Ladder Tournament seasons with their calendar, rules and match format.
+ */
+const getLadderTournamentSeasons = async (): Promise<LadderTournamentSeason[]> => {
+  const response = await fetchLadderTournament(getLadderTournamentSeasonsUrl());
+
+  if (response.ok) {
+    return parseLadderTournamentResponse(seasonsResponseSchema, await response.json(), "seasons");
+  } else {
+    logger.error(`Error getting Ladder Tournament seasons, status code: ${response.status}`);
+    throw new Error(`Error getting Ladder Tournament seasons, status code: ${response.status}`);
+  }
 };
 
 /**
@@ -400,10 +452,13 @@ export type {
   LadderTournamentRankingResponse,
   LadderTournamentCasterVideo,
   LadderTournamentPlayerData,
+  LadderTournamentSeason,
 };
 export {
   getLadderTournamentRankingUrl,
   getLadderTournamentCasterVideosUrl,
+  getLadderTournamentSeasonsUrl,
+  getLadderTournamentSeasons,
   getLadderTournamentRanking,
   getLadderTournamentFullRanking,
   getLadderTournamentCasterVideos,

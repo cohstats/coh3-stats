@@ -20,8 +20,8 @@ export class TournamentsPage extends BasePage {
     return this.getByTestId(`tournament-card-${id}`);
   }
 
-  get openLeagueButton(): Locator {
-    return this.getByTestId("featured-open-league");
+  get allSeasonsButton(): Locator {
+    return this.getByTestId("featured-all-seasons");
   }
 
   // IronClad card with the live data, not shown when the data is unavailable

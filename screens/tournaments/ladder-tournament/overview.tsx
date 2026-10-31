@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 import {
   Anchor,
@@ -16,7 +17,10 @@ import {
 import { IconArrowRight } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import config from "../../../config";
-import { LadderOverviewData } from "../../../src/tournaments/ladder-tournament";
+import {
+  isLadderSeasonCurrent,
+  LadderOverviewData,
+} from "../../../src/tournaments/ladder-tournament";
 import { LADDER_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { getLadderTournamentRoute } from "../../../src/routes";
 import TournamentVideoCard from "../../../components/tournament-videos/tournament-video-card";
@@ -26,6 +30,12 @@ import SeasonStatsBar from "./season-stats-bar";
 import StandingsTable from "./standings-table";
 import AllSeasonsTable from "./all-seasons-table";
 import { LADDER_CASTS_ANCHOR } from "./casts-by-stage";
+import {
+  formatLadderDateRange,
+  getLadderSeasonTitle,
+  LadderSeasonInfoCard,
+  LadderSeasonStatusBadge,
+} from "../components/ladder-season";
 
 export type LadderTournamentOverviewPageProps = {
   // null when the Ladder Tournament data couldn't be loaded
@@ -34,13 +44,14 @@ export type LadderTournamentOverviewPageProps = {
 
 /**
  * The league overview - /tournaments/ladder-tournament.
- * The latest season with its top players, all the seasons and the newest casts.
+ * The current (or the latest) season with its top players, all the seasons and the newest casts.
  * Every season has its own page.
  */
 const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps> = ({
   data,
 }) => {
   const { t } = useTranslation("tournaments");
+  const { locale = "en" } = useRouter();
 
   const path = getLadderTournamentRoute();
   const title = t("meta.leagueTitle");
@@ -77,8 +88,12 @@ const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps
     );
   }
 
-  const latest = data.seasons[0];
-  const latestRoute = getLadderTournamentRoute(latest.seasonId);
+  const { featured } = data;
+  const featuredRoute = getLadderTournamentRoute(featured.seasonId);
+  const isCurrent = isLadderSeasonCurrent(featured);
+  const hasStandings = data.featuredStandings.length > 0;
+  // "Show more" opens the season of the newest cast, the featured season may have no casts yet
+  const castsRoute = getLadderTournamentRoute(data.latestCasts[0]?.seasonId ?? featured.seasonId);
 
   return (
     <>
@@ -88,49 +103,71 @@ const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps
           <LeagueHeader />
 
           <Stack gap="md" data-testid="ladder-latest-season">
-            <Group justify="space-between" align="center" gap="sm">
-              <Stack gap={0}>
+            <Group justify="space-between" align="flex-start" gap="sm">
+              <Stack gap={6}>
                 <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
-                  {t("hub.latestSeason")}
+                  {t(isCurrent ? "hub.currentSeason" : "hub.latestSeason")}
                 </Text>
                 <Title order={2} size="h3" data-testid="ladder-latest-season-title">
-                  <Anchor component={Link} href={latestRoute} inherit c="inherit">
-                    {t("league.season", { season: latest.seasonId })}
+                  <Anchor component={Link} href={featuredRoute} inherit c="inherit">
+                    {getLadderSeasonTitle(t, featured)}
                   </Anchor>
                 </Title>
+                {featured.info && (
+                  <Group gap={6}>
+                    <LadderSeasonStatusBadge status={featured.info.status} />
+                    {/* Without the standings the season info card below has the dates */}
+                    {hasStandings && (
+                      <Text size="sm" c="dimmed">
+                        {t("hub.ladderDates", {
+                          dates: formatLadderDateRange(
+                            featured.info.ladderStart,
+                            featured.info.ladderEnd,
+                            locale,
+                          ),
+                        })}
+                      </Text>
+                    )}
+                  </Group>
+                )}
               </Stack>
               <Button
                 component={Link}
-                href={latestRoute}
+                href={featuredRoute}
                 rightSection={<IconArrowRight size={16} />}
                 data-testid="ladder-open-latest-season"
               >
-                {t("league.overview.openSeason", { season: latest.seasonId })}
+                {t("hub.openSeason")}
               </Button>
             </Group>
-            <SeasonStatsBar summary={latest} />
-            {data.latestStandings.length > 0 ? (
-              <Paper withBorder radius="md" style={{ overflow: "hidden" }}>
-                <StandingsTable standings={data.latestStandings} />
-                {latest.players > data.latestStandings.length && (
-                  <Group justify="center" py="xs">
-                    <Button
-                      component={Link}
-                      href={latestRoute}
-                      variant="subtle"
-                      size="sm"
-                      rightSection={<IconArrowRight size={16} />}
-                      data-testid="ladder-latest-full-standings"
-                    >
-                      {t("league.standings.showAll", { count: latest.players })}
-                    </Button>
-                  </Group>
-                )}
-              </Paper>
+            {hasStandings ? (
+              <>
+                <SeasonStatsBar summary={featured} />
+                <Paper withBorder radius="md" style={{ overflow: "hidden" }}>
+                  <StandingsTable standings={data.featuredStandings} />
+                  {featured.players > data.featuredStandings.length && (
+                    <Group justify="center" py="xs">
+                      <Button
+                        component={Link}
+                        href={featuredRoute}
+                        variant="subtle"
+                        size="sm"
+                        rightSection={<IconArrowRight size={16} />}
+                        data-testid="ladder-latest-full-standings"
+                      >
+                        {t("league.standings.showAll", { count: featured.players })}
+                      </Button>
+                    </Group>
+                  )}
+                </Paper>
+              </>
             ) : (
-              <Text c="dimmed" data-testid="ladder-standings-not-available">
-                {t("league.standings.notAvailable")}
-              </Text>
+              <>
+                {featured.info && <LadderSeasonInfoCard info={featured.info} />}
+                <Text c="dimmed" data-testid="ladder-standings-not-available">
+                  {t("league.standings.notAvailable")}
+                </Text>
+              </>
             )}
           </Stack>
 
@@ -160,7 +197,7 @@ const LadderTournamentOverviewScreen: NextPage<LadderTournamentOverviewPageProps
               <Group justify="center">
                 <Button
                   component={Link}
-                  href={`${latestRoute}#${LADDER_CASTS_ANCHOR}`}
+                  href={`${castsRoute}#${LADDER_CASTS_ANCHOR}`}
                   variant="subtle"
                   rightSection={<IconArrowRight size={16} />}
                   data-testid="ladder-latest-casts-more"
