@@ -1,9 +1,11 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   Anchor,
   Avatar,
   Badge,
+  Box,
   Button,
   Group,
   Paper,
@@ -14,67 +16,136 @@ import {
 } from "@mantine/core";
 import { IconArrowRight, IconExternalLink, IconTrophyFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import { formatRecord, LadderHubSummary } from "../../../src/tournaments/ladder-tournament";
+import {
+  formatRecord,
+  isLadderSeasonCurrent,
+  LadderHubSummary,
+  LadderSeasonSummary,
+} from "../../../src/tournaments/ladder-tournament";
 import { TournamentInfo } from "../../../src/tournaments/tournaments-registry";
 import { getLadderTournamentRoute } from "../../../src/routes";
 import { AnalyticsTournamentExternalClick } from "../../../src/firebase/analytics";
 import LadderPlayerLink from "./ladder-player-link";
+import {
+  formatLadderDateRange,
+  getLadderSeasonTitle,
+  LadderSeasonStatusBadge,
+} from "./ladder-season";
 import classes from "../tournaments.module.css";
 
-const LatestSeason = ({ summary }: { summary: LadderHubSummary }) => {
+const SeasonChampions = ({ season }: { season: LadderSeasonSummary }) => {
   const { t } = useTranslation("tournaments");
-  const { latest, seasonsCount } = summary;
 
   return (
-    <Stack gap="xs" data-testid="featured-latest-season">
+    <Group gap="sm" data-testid="featured-champions">
+      <Group gap={6} wrap="nowrap">
+        <IconTrophyFilled size={16} color="var(--mantine-color-yellow-6)" />
+        <Text size="sm" fw={700}>
+          {t("hub.champions")}
+        </Text>
+        <Text size="sm" c="dimmed">
+          {formatRecord(season.championsRecord)}
+        </Text>
+      </Group>
+      {season.champions.map((champion) => (
+        <LadderPlayerLink key={champion.relicId} {...champion} />
+      ))}
+    </Group>
+  );
+};
+
+/**
+ * Past season below the featured one - the champions of the season.
+ */
+const RecentSeasonCard = ({ season }: { season: LadderSeasonSummary }) => {
+  const { t } = useTranslation("tournaments");
+
+  return (
+    <Paper
+      radius="md"
+      px="md"
+      py="sm"
+      className={classes.featuredData}
+      data-testid={`ladder-hub-recent-${season.seasonId}`}
+    >
+      <Stack gap={6}>
+        <Group justify="space-between" gap="xs" wrap="nowrap">
+          <Text fw={700} truncate="end">
+            <Anchor
+              component={Link}
+              href={getLadderTournamentRoute(season.seasonId)}
+              inherit
+              c="inherit"
+            >
+              {getLadderSeasonTitle(t, season)}
+            </Anchor>
+          </Text>
+          <Text size="xs" c="dimmed" style={{ flexShrink: 0 }}>
+            {t("hub.playersCount", { count: season.players })}
+          </Text>
+        </Group>
+        {season.champions.length > 0 && <SeasonChampions season={season} />}
+      </Stack>
+    </Paper>
+  );
+};
+
+const FeaturedSeason = ({ season }: { season: LadderSeasonSummary }) => {
+  const { t } = useTranslation("tournaments");
+  const { locale = "en" } = useRouter();
+  const isCurrent = isLadderSeasonCurrent(season);
+  const hasResults = season.players > 0 || season.casts > 0;
+
+  return (
+    <Stack gap={6} data-testid="featured-latest-season">
       <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
-        {t("hub.latestSeason")}
+        {t(isCurrent ? "hub.currentSeason" : "hub.latestSeason")}
       </Text>
-      <Title order={3} size="h3">
+      <Title order={3} size="h4">
         <Anchor
           component={Link}
-          href={getLadderTournamentRoute(latest.seasonId)}
+          href={getLadderTournamentRoute(season.seasonId)}
           inherit
           c="inherit"
           data-testid="featured-latest-season-link"
         >
-          {t("league.season", { season: latest.seasonId })}
+          {getLadderSeasonTitle(t, season)}
         </Anchor>
       </Title>
-      <Text size="sm" c="dimmed">
-        {t("hub.playersCount", { count: latest.players })}
-        {" · "}
-        {t("hub.castsCount", { count: latest.casts })}
-      </Text>
-      {latest.champions.length > 0 && (
-        <Stack gap={6} mt="xs" data-testid="featured-champions">
-          <Group gap={6} wrap="nowrap">
-            <IconTrophyFilled size={16} color="var(--mantine-color-yellow-6)" />
-            <Text size="sm" fw={700}>
-              {t("hub.champions")}
-            </Text>
-            <Text size="sm" c="dimmed">
-              {formatRecord(latest.championsRecord)}
-            </Text>
-          </Group>
-          <Group gap="md">
-            {latest.champions.map((champion) => (
-              <LadderPlayerLink key={champion.relicId} {...champion} />
-            ))}
-          </Group>
-        </Stack>
-      )}
-      {seasonsCount > 1 && (
-        <Text size="sm" c="dimmed" mt="xs">
-          {t("hub.seasonsCount", { count: seasonsCount })}
-        </Text>
+      <Group gap={6}>
+        {season.info && <LadderSeasonStatusBadge status={season.info.status} />}
+        {(hasResults || !season.info) && (
+          <Text size="sm" c="dimmed">
+            {t("hub.playersCount", { count: season.players })}
+            {" · "}
+            {t("hub.castsCount", { count: season.casts })}
+          </Text>
+        )}
+        {/* The ladder dates for the current season, or a past one without results */}
+        {season.info && (isCurrent || !hasResults) && (
+          <Text size="sm" c="dimmed">
+            {t("hub.ladderDates", {
+              dates: formatLadderDateRange(
+                season.info.ladderStart,
+                season.info.ladderEnd,
+                locale,
+              ),
+            })}
+          </Text>
+        )}
+      </Group>
+      {season.champions.length > 0 && (
+        <Box mt="xs">
+          <SeasonChampions season={season} />
+        </Box>
       )}
     </Stack>
   );
 };
 
 /**
- * Tournament with its own league page on COH3 Stats, with the latest season from the data.
+ * Tournament with its own league page on COH3 Stats - the current season (or the latest one)
+ * and the champions of the recent seasons.
  * @param summary null when the data couldn't be loaded
  */
 const FeaturedTournamentCard = ({
@@ -112,36 +183,59 @@ const FeaturedTournamentCard = ({
           </Group>
           <Text size="sm">{t(tournament.descriptionKey)}</Text>
           <Group gap="sm">
+            {summary && (
+              <Button
+                component={Link}
+                href={getLadderTournamentRoute(summary.featured.seasonId)}
+                rightSection={<IconArrowRight size={16} />}
+                data-testid="featured-open-season"
+              >
+                {t("hub.openSeason")}
+              </Button>
+            )}
             <Button
               component={Link}
               href={getLadderTournamentRoute()}
-              rightSection={<IconArrowRight size={16} />}
-              data-testid="featured-open-league"
+              variant={summary ? "default" : "filled"}
+              data-testid="featured-all-seasons"
             >
-              {t("hub.openLeague")}
+              {t("hub.allSeasons")}
             </Button>
             <Button
               component="a"
               href={tournament.url}
               target="_blank"
               rel="noopener noreferrer"
-              variant="default"
+              variant="subtle"
               rightSection={<IconExternalLink size={16} />}
               onClick={() => AnalyticsTournamentExternalClick(tournament.id)}
+              data-testid="featured-external"
             >
               {t("hub.officialSite")}
             </Button>
           </Group>
         </Stack>
-        <Paper radius="md" p="md" className={classes.featuredData}>
-          {summary ? (
-            <LatestSeason summary={summary} />
-          ) : (
-            <Text c="dimmed" data-testid="featured-unavailable">
-              {t("hub.unavailable")}
-            </Text>
+        <Stack gap="md">
+          <Paper radius="md" p="md" className={classes.featuredData}>
+            {summary ? (
+              <FeaturedSeason season={summary.featured} />
+            ) : (
+              <Text c="dimmed" data-testid="featured-unavailable">
+                {t("hub.unavailable")}
+              </Text>
+            )}
+          </Paper>
+          {summary && summary.recent.length > 0 && (
+            <Stack gap="xs" data-testid="ladder-hub-recent">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600} lts="0.06em">
+                {t("hub.recentSeasons")}
+              </Text>
+              {summary.recent.map((season) => (
+                <RecentSeasonCard season={season} key={season.seasonId} />
+              ))}
+            </Stack>
           )}
-        </Paper>
+        </Stack>
       </SimpleGrid>
     </Paper>
   );

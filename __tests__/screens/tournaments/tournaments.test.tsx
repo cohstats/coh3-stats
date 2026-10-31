@@ -12,7 +12,11 @@ import {
   METAPLAYS_TOURNAMENT,
 } from "../../../src/tournaments/tournaments-registry";
 import { AnalyticsTournamentExternalClick } from "../../../src/firebase/analytics";
-import type { LadderHubSummary } from "../../../src/tournaments/ladder-tournament";
+import type {
+  LadderHubSummary,
+  LadderSeasonInfo,
+  LadderSeasonSummary,
+} from "../../../src/tournaments/ladder-tournament";
 
 // Render the actual English copy; keep interpolated keys visible for the Ladder assertions.
 jest.mock("next-i18next/pages", () => ({
@@ -78,19 +82,52 @@ const getCard = (testId: string) =>
 const findText = (element: HTMLElement, text: string) =>
   Array.from(element.querySelectorAll("*")).find((node) => node.textContent === text);
 
-const summary: LadderHubSummary = {
-  latest: {
-    seasonId: 1,
-    players: 31,
-    casts: 12,
-    champions: [
-      { relicId: 1, alias: "lem22", country: "br" },
-      { relicId: 2, alias: null, country: null },
-    ],
-    championsRecord: { wins: 13, losses: 2 },
-    topScore: 13,
+const finishedSeason: LadderSeasonSummary = {
+  seasonId: 1,
+  info: null,
+  players: 31,
+  casts: 12,
+  champions: [
+    { relicId: 1, alias: "lem22", country: "br" },
+    { relicId: 2, alias: null, country: null },
+  ],
+  championsRecord: { wins: 13, losses: 2 },
+  topScore: 13,
+};
+
+const summary: LadderHubSummary = { featured: finishedSeason, recent: [] };
+
+const upcomingInfo: LadderSeasonInfo = {
+  name: "Blood and Steel",
+  status: "Draft",
+  registrationStart: "2026-10-02T15:00:00",
+  registrationEnd: "2026-10-18T00:00:00",
+  ladderStart: "2026-11-03T10:00:00",
+  ladderEnd: "2027-01-30T15:00:00",
+  playoffCut: 8,
+  semifinalCut: 4,
+  bestOf: { ladder: 1, funnel: 3, semifinal: 3, final: 3 },
+  challenge: {
+    maxPositions: 3,
+    responseHours: 48,
+    matchDeadlineDays: 5,
+    inactivityDays: 20,
+    rematchDays: 14,
+    rematchOtherMatches: 2,
   },
-  seasonsCount: 1,
+};
+
+const upcomingSummary: LadderHubSummary = {
+  featured: {
+    seasonId: 2,
+    info: upcomingInfo,
+    players: 0,
+    casts: 0,
+    champions: [],
+    championsRecord: null,
+    topScore: null,
+  },
+  recent: [finishedSeason],
 };
 
 const render = (props: React.ComponentProps<typeof TournamentsScreen>) =>
@@ -117,13 +154,20 @@ describe("TournamentsScreen", () => {
     expect(html).toContain("13–2");
     expect(html).toContain('href="/players/1"');
     expect(html).toContain('league.playerFallback {"id":2}');
-    expect(html).toContain('href="/tournaments/ladder-tournament"');
-    // The latest season title opens the season page
+    expect(html).toContain("Latest season");
+    // The latest season title and the open season button open the season page
     expect(getOpeningTag(html, "featured-latest-season-link")).toContain(
       'href="/tournaments/ladder-tournament/season/1"',
     );
-    // Single season - no seasons count
-    expect(html).not.toContain("hub.seasonsCount");
+    expect(getOpeningTag(html, "featured-open-season")).toContain(
+      'href="/tournaments/ladder-tournament/season/1"',
+    );
+    expect(getOpeningTag(html, "featured-all-seasons")).toContain(
+      'href="/tournaments/ladder-tournament"',
+    );
+    // Without the season info there is no status
+    expect(html).not.toContain('data-testid="ladder-season-status"');
+    expect(html).not.toContain('data-testid="ladder-hub-recent"');
     expect(html).not.toContain('data-testid="featured-unavailable"');
   });
 
@@ -136,10 +180,24 @@ describe("TournamentsScreen", () => {
     expect(note).toContain("Reach out to us on Discord to add your tournament here");
   });
 
-  test("shows the seasons count with more seasons", () => {
-    const html = render({ ladderSummary: { ...summary, seasonsCount: 3 } });
+  test("renders the upcoming season with its calendar and the recent seasons", () => {
+    const html = render({ ladderSummary: upcomingSummary });
 
-    expect(html).toContain('hub.seasonsCount {"count":3}');
+    expect(html).toContain("Current season");
+    expect(html).toContain('league.seasonWithName {"season":2,"name":"Blood and Steel"}');
+    expect(html).toContain("Upcoming");
+    // Only the ladder dates next to the status, the rest of the season info is on the season page
+    expect(html).toContain('hub.ladderDates {"dates":"3 Nov 2026 – 30 Jan 2027"}');
+    expect(html).not.toContain("2 Oct 2026 – 18 Oct 2026");
+    expect(html).not.toContain("league.info.");
+    expect(getOpeningTag(html, "featured-open-season")).toContain(
+      'href="/tournaments/ladder-tournament/season/2"',
+    );
+    // The finished season below with its champions
+    const recent = html.slice(html.indexOf('data-testid="ladder-hub-recent-1"'));
+    expect(recent).toContain('href="/tournaments/ladder-tournament/season/1"');
+    expect(recent).toContain('href="/players/1"');
+    expect(recent).toContain("13–2");
   });
 
   test("renders the unavailable state, but keeps the official site link", () => {

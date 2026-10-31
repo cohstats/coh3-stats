@@ -28,7 +28,8 @@ import IroncladPlayerLink from "./ironclad-player-link";
 import IroncladChampions from "./ironclad-champions";
 import {
   DivisionStateBadge,
-  formatIroncladDate,
+  formatTournamentDate,
+  getDivisionStateColor,
   RegistrationBadge,
   TournamentStatusBadge,
 } from "./ironclad-badges";
@@ -71,7 +72,7 @@ const DivisionFillRow = ({ division }: { division: IroncladDivisionSummary }) =>
           value={fill}
           size="sm"
           radius="xl"
-          color={division.state === "in_progress" ? "orange" : "blue"}
+          color={getDivisionStateColor(division.state)}
           aria-label={division.displayName}
         />
       )}
@@ -85,7 +86,7 @@ const DivisionFillRow = ({ division }: { division: IroncladDivisionSummary }) =>
 const RecentTournamentCard = ({ tournament }: { tournament: IroncladTournamentSummary }) => {
   const { t } = useTranslation("tournaments");
   const { locale = "en" } = useRouter();
-  const completedAt = formatIroncladDate(tournament.firstCompletedAt, locale);
+  const completedAt = formatTournamentDate(tournament.firstCompletedAt, locale);
 
   return (
     <Paper

@@ -10,7 +10,7 @@ import type {
   IroncladPlayer,
 } from "../../../src/tournaments/ironclad-tournament";
 import IroncladPlayerLink from "../components/ironclad-player-link";
-import { formatIroncladDate } from "../components/ironclad-badges";
+import { formatTournamentDate } from "../components/ironclad-badges";
 import classes from "./ironclad.module.css";
 
 const SlotRow = ({ slot, decided }: { slot: IroncladBracketSlot; decided: boolean }) => {
@@ -42,7 +42,7 @@ const MatchCard = ({ match }: { match: IroncladBracketMatch }) => {
   const { t } = useTranslation("tournaments");
   const { locale = "en" } = useRouter();
   const live = match.status === "in_progress";
-  const decidedAt = formatIroncladDate(match.decidedAt, locale);
+  const decidedAt = formatTournamentDate(match.decidedAt, locale);
 
   return (
     <Paper

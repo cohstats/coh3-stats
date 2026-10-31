@@ -11,9 +11,12 @@ import {
   getLadderTournamentPlayerData,
   getLadderTournamentRanking,
   getLadderTournamentRankingUrl,
+  getLadderTournamentSeasons,
+  getLadderTournamentSeasonsUrl,
 } from "../../../src/apis/ladder-tournament-api";
 import rankingResponse from "../../test-assets/ladder-tournament-ranking-response.json";
 import casterVideosResponse from "../../test-assets/ladder-tournament-caster-videos-response.json";
+import seasonsResponse from "../../test-assets/ladder-tournament-seasons-response.json";
 
 const BASE_URL = "https://laddertournament.com.br:8099/api/external";
 const TWO_HOURS = 2 * 60 * 60 * 1000;
@@ -85,6 +88,10 @@ describe("ladder-tournament-api", () => {
 
     it("builds the caster videos URL", () => {
       expect(getLadderTournamentCasterVideosUrl()).toBe(`${BASE_URL}/casted_videos_ladder`);
+    });
+
+    it("builds the seasons URL", () => {
+      expect(getLadderTournamentSeasonsUrl()).toBe(`${BASE_URL}/seasons`);
     });
   });
 
@@ -415,6 +422,85 @@ describe("ladder-tournament-api", () => {
       delete process.env.LADDER_TOURNAMENT_API_TOKEN;
 
       await expect(getLadderTournamentCasterVideos()).rejects.toThrow(
+        "LADDER_TOURNAMENT_API_TOKEN is not set",
+      );
+      expect(fetchSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("getLadderTournamentSeasons", () => {
+    it("calls the API with the token header", async () => {
+      fetchSpy.mockReturnValue(okResponse(seasonsResponse));
+
+      await getLadderTournamentSeasons();
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${BASE_URL}/seasons`,
+        expect.objectContaining({ headers: { "X-Api-Token": "test-token" } }),
+      );
+    });
+
+    it("returns the seasons without the unused fields", async () => {
+      fetchSpy.mockReturnValue(okResponse(seasonsResponse));
+
+      const seasons = await getLadderTournamentSeasons();
+
+      expect(seasons.map((season) => season.id)).toEqual([2, 1]);
+      expect(seasons[0]).toMatchObject({
+        name: "BloodAndSteel",
+        status: "Draft",
+        ladderStart: "2026-11-03T10:00:00",
+        playoffCut: 8,
+        ladderBestOf: 1,
+      });
+      expect(seasons[0]).not.toHaveProperty("registrationFee");
+      expect(seasons[0]).not.toHaveProperty("rules");
+    });
+
+    it("throws on the PascalCase keys from the docs", async () => {
+      fetchSpy.mockReturnValue(okResponse([{ Id: 1, Name: "Season 1", Status: "Active" }]));
+
+      await expect(getLadderTournamentSeasons()).rejects.toThrow(
+        "Invalid Ladder Tournament seasons response",
+      );
+    });
+
+    it.each([0, -1, 2.5])("throws on the season id %s, which has no season page", async (id) => {
+      fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], id }]));
+
+      await expect(getLadderTournamentSeasons()).rejects.toThrow(
+        "Invalid Ladder Tournament seasons response",
+      );
+    });
+
+    it.each(["soon", "Nov 3 2026", "2026-02-30T00:00:00", "2026-13-01", "2026-11-03T25:00:00"])(
+      "throws on a malformed date %s",
+      async (ladderStart) => {
+        fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], ladderStart }]));
+
+        await expect(getLadderTournamentSeasons()).rejects.toThrow("Invalid ISO 8601 date");
+      },
+    );
+
+    it.each(["2026-11-03", "2026-11-03T10:00:00Z", "2026-11-03T10:00:00.123-03:00"])(
+      "accepts the ISO 8601 date %s",
+      async (ladderStart) => {
+        fetchSpy.mockReturnValue(okResponse([{ ...seasonsResponse[0], ladderStart }]));
+
+        await expect(getLadderTournamentSeasons()).resolves.toHaveLength(1);
+      },
+    );
+
+    it("throws when the API returns a non-ok response", async () => {
+      fetchSpy.mockReturnValue(errorResponse(503));
+
+      await expect(getLadderTournamentSeasons()).rejects.toThrow("status code: 503");
+    });
+
+    it("throws when the token is not set without calling fetch", async () => {
+      delete process.env.LADDER_TOURNAMENT_API_TOKEN;
+
+      await expect(getLadderTournamentSeasons()).rejects.toThrow(
         "LADDER_TOURNAMENT_API_TOKEN is not set",
       );
       expect(fetchSpy).not.toHaveBeenCalled();
