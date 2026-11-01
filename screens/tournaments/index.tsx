@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -12,9 +13,14 @@ import {
   LADDER_TOURNAMENT,
   METAPLAYS_TOURNAMENT,
 } from "../../src/tournaments/tournaments-registry";
-import { getTournamentsRoute } from "../../src/routes";
-import { generateLanguageAlternates } from "../../src/seo-utils";
+import {
+  getIroncladTournamentsRoute,
+  getLadderTournamentRoute,
+  getTournamentsRoute,
+} from "../../src/routes";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../src/seo-utils";
 import { AnalyticsTournamentsPageView } from "../../src/firebase/analytics";
+import PageJsonLd from "../../components/page-json-ld";
 import FeaturedTournamentCard from "./components/featured-tournament-card";
 import ExternalTournamentCard from "./components/external-tournament-card";
 import IroncladFeaturedCard from "./components/ironclad-featured-card";
@@ -32,6 +38,7 @@ const TournamentsScreen: NextPage<TournamentsPageProps> = ({
   ladderSummary,
   ironcladSummary = null,
 }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("tournaments");
 
   useEffect(() => {
@@ -48,11 +55,24 @@ const TournamentsScreen: NextPage<TournamentsPageProps> = ({
         {generateNextSeo({
           title,
           description,
-          canonical: `${config.SITE_URL}${path}`,
-          openGraph: { title, description, url: `${config.SITE_URL}${path}` },
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
           languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={title}
+        description={description}
+        breadcrumbName={t("common:mainMenu.tournaments")}
+        // The tournaments with their own page here, IronClad only with the data
+        items={[
+          { name: t(LADDER_TOURNAMENT.nameKey), path: getLadderTournamentRoute() },
+          ...(ironcladSummary
+            ? [{ name: t(IRONCLAD_TOURNAMENT.nameKey), path: getIroncladTournamentsRoute() }]
+            : []),
+        ]}
+      />
       <Container size="lg" p="md" data-testid="tournaments-page">
         <Stack gap="lg">
           <Stack gap={4}>

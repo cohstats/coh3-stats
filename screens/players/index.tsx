@@ -36,8 +36,9 @@ import TeamsStandingsTab from "./tabs/teams-standings-tab/teams-standings-tab";
 import TeamDetailsTab from "./tabs/team-details-tab/team-details-tab";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import config from "../../config";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getPlayerCardRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
+import { getPlayerJsonLd } from "../../src/structured-data";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createPlayerHeadDescription = (
@@ -182,7 +183,16 @@ const PlayerCard = ({
   const playerSummary = calculatePlayerSummary(playerData.standings);
 
   // Create SEO props for player page
-  const seoProps = createPlayerSEO(t, playerData, playerSummary, platform);
+  const seoProps = createPlayerSEO(t, playerData, playerSummary, platform, locale);
+
+  // The Steam profile and avatar are shown only for the Steam players with a Steam id
+  const steamProfileUrl =
+    platform === "steam"
+      ? playerData.steamData?.profileurl ||
+        (playerData.info.steamID
+          ? `https://steamcommunity.com/profiles/${playerData.info.steamID}`
+          : undefined)
+      : undefined;
 
   // Override title based on current view
   const pageTitle = t(viewTitleKeys[view as keyof typeof viewTitleKeys] || "card.title", {
@@ -197,6 +207,19 @@ const PlayerCard = ({
           title: pageTitle,
         })}
       </Head>
+      <PageJsonLd
+        path={getPlayerCardRoute(playerData.info.relicID)}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={playerData.info.name}
+        type="ProfilePage"
+        mainEntity={getPlayerJsonLd({
+          name: playerData.info.name,
+          relicId: playerData.info.relicID,
+          image: platform === "steam" ? playerData.steamData?.avatarmedium : undefined,
+          steamProfileUrl,
+        })}
+      />
       <Container fluid p={0} data-testid="player-card">
         <Container
           fluid

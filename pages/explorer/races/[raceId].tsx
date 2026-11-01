@@ -27,8 +27,12 @@ import {
   ResourceValues,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
-import { generateKeywordsString, generateLanguageAlternates } from "../../../src/seo-utils";
-import { getExplorerFactionRoute } from "../../../src/routes";
+import {
+  generateKeywordsString,
+  generateLanguageAlternates,
+  getLocalizedUrl,
+} from "../../../src/seo-utils";
+import { getExplorerRoute, getExplorerFactionRoute } from "../../../src/routes";
 import { getMappings } from "../../../src/unitStats/mappings";
 import { useEffect } from "react";
 import { AnalyticsExplorerFactionView } from "../../../src/firebase/analytics";
@@ -37,6 +41,7 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 import { useTranslation } from "next-i18next/pages";
 import nextI18NextConfig from "../../../next-i18next.config";
 import config from "../../../config";
+import PageJsonLd from "../../../components/page-json-ld";
 
 // New interface for pre-calculated building data
 interface PreCalculatedBuilding {
@@ -84,12 +89,15 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
   preCalculatedBuildings,
 }) => {
   // The `query` contains the `raceId`, which is the filename as route slug.
-  const { query, asPath } = useRouter();
+  const { query, locale = "en" } = useRouter();
 
   const { t } = useTranslation(["explorer"]);
 
   const raceToFetch = (query.raceId as raceType) || "american";
   const localizedRace = localizedNames[raceToFetch];
+  // Not the `asPath`, that has the query string on the client.
+  const path = getExplorerFactionRoute(raceToFetch);
+  const factionIcon = `${config.SITE_URL}/icons/general/${raceToFetch}.webp`;
 
   useEffect(() => {
     AnalyticsExplorerFactionView(raceToFetch);
@@ -109,14 +117,14 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
         {generateNextSeo({
           title: seoTitle,
           description: seoDescription,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: seoTitle,
             description: seoDescription,
-            url: `${config.SITE_URL}${asPath}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
-                url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+                url: factionIcon,
                 width: 64,
                 height: 64,
                 alt: `${localizedRace} faction icon`,
@@ -129,9 +137,17 @@ const RaceDetail: NextPage<RaceDetailProps> = ({
               content: generateKeywordsString(seoKeywords),
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={seoTitle}
+        description={seoDescription}
+        breadcrumbName={localizedRace}
+        image={factionIcon}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <Container fluid p={0}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">

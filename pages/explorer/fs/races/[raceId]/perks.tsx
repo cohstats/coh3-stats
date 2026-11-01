@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -10,8 +11,13 @@ import { getFsPerksRace } from "../../../../../src/explorer/fs-perks/fs-perks-he
 import type { FsPerksRace } from "../../../../../src/explorer/fs-perks/fs-perks-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { raceTypeArray, type raceType } from "../../../../../src/coh3/coh3-types";
-import { getExplorerFsPerksRoute } from "../../../../../src/routes";
+import {
+  getExplorerRoute,
+  getExplorerFsRoute,
+  getExplorerFsPerksRoute,
+} from "../../../../../src/routes";
 import { createPageSEO } from "../../../../../src/seo-utils";
+import PageJsonLd from "../../../../../components/page-json-ld";
 import FsPerksPage from "../../../../../screens/explorer/fs-perks/fs-perks-page";
 
 interface FsPerksProps {
@@ -28,13 +34,24 @@ const FsPerks: NextPage<FsPerksProps> = ({ race, availableRaces, raceId }) => {
   const { t } = useTranslation(["explorer-fs-perks"]);
 
   const path = getExplorerFsPerksRoute(raceId);
-  const seoProps = createPageSEO(t, "explorer-fs-perks", path, {
+  const { locale = "en" } = useRouter();
+  const seoProps = createPageSEO(t, "explorer-fs-perks", path, locale, {
     faction: race?.name ?? localizedNames[raceId],
   });
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={path}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("page.title", { faction: race?.name ?? localizedNames[raceId] })}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+        ]}
+      />
       {race ? (
         <FsPerksPage race={race} availableRaces={availableRaces} t={t} />
       ) : (

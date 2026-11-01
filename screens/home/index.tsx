@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Top1v1LeaderboardsData, TwitchStream, YouTubeVideo } from "../../src/coh3/coh3-types";
 import { NextPage } from "next";
 import { Container, Grid, Paper } from "@mantine/core";
@@ -6,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import TwitchContainer from "./twitch-panel";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import PageJsonLd from "../../components/page-json-ld";
 import TopLeaderboardsSection from "./leaderboards-section/top-leaderboards-section";
 import { RedditPostType } from "../../src/apis/reddit-api";
 import RedditPanel from "./reddit-panel";
@@ -49,12 +51,14 @@ const Home: NextPage<Props> = ({
     }
   }, [entry, hasRendered]);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for home page
-  const seoProps = createPageSEO(t, "home", "");
+  const seoProps = createPageSEO(t, "home", "", locale);
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd path="" name={seoProps.title ?? ""} description={seoProps.description} />
       <Container fluid p={{ base: 0 }}>
         <Grid>
           <Grid.Col span={{ sm: 7 }}>

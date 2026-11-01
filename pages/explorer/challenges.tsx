@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -14,15 +15,20 @@ import {
   Title,
 } from "@mantine/core";
 import { getMappings } from "../../src/unitStats/mappings";
-import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
 import React, { useEffect } from "react";
 import { AnalyticsExplorerChallengesView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
-import config from "../../config";
+import { getExplorerRoute, getChallengesRoute } from "../../src/routes";
+import { useTranslation } from "next-i18next/pages";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface ResolvedChallenge {
   challenge: Pick<ChallengesType, "name" | "id" | "reward" | "description">;
@@ -40,7 +46,9 @@ interface ChallengesProps {
 }
 
 const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
-  const { asPath } = useRouter();
+  const { locale = "en" } = useRouter();
+  const { t } = useTranslation("common");
+  const path = getChallengesRoute();
 
   const pageTitle = "Challenges";
   const description =
@@ -62,11 +70,11 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [
             {
@@ -74,9 +82,15 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
               content: keywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={description}
+        trail={[{ name: t("mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <Container size={"lg"} p={0}>
         <Grid>
           <Grid.Col span={{ md: 12, lg: 6 }}>

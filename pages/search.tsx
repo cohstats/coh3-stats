@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import PageJsonLd from "../components/page-json-ld";
 import { SearchScreen } from "../screens/search";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
@@ -17,8 +19,9 @@ import { createPageSEO } from "../src/seo-utils";
 const Search: NextPage = () => {
   const { t } = useTranslation(["search"]);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for search page
-  const seoProps = createPageSEO(t, "search", "/search");
+  const seoProps = createPageSEO(t, "search", "/search", locale);
 
   return (
     <>
@@ -28,6 +31,7 @@ const Search: NextPage = () => {
           nofollow: true,
         })}
       </Head>
+      <PageJsonLd path="/search" name={seoProps.title ?? ""} description={seoProps.description} />
       <SearchScreen />
     </>
   );

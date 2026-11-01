@@ -100,7 +100,7 @@ const NewsArticlePage: NextPage<NewsArticlePageProps> = ({
     AnalyticsNewsArticleView(item.gid);
   }, [item.gid]);
 
-  const seoProps = createPageSEO(t, "news", getNewsRoute(item.gid));
+  const seoProps = createPageSEO(t, "news", getNewsRoute(item.gid), locale);
   const url = seoProps.canonical ?? `${config.SITE_URL}${getNewsRoute(item.gid)}`;
   // Local news images are site relative, Open Graph needs an absolute URL.
   const image = item.image?.startsWith("/") ? `${config.SITE_URL}${item.image}` : item.image;

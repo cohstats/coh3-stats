@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
+import { TEST_MAP, TEST_MATCH, TEST_PLAYER, TEST_UNIT } from "../fixtures/test-data";
 
 /**
  * SEO sweep - §2.16 of the e2e coverage report.
@@ -65,6 +66,188 @@ test.describe("SEO - page tags", () => {
       // OpenGraph - what the Discord / social previews are built from.
       const ogTitle = page.locator('meta[property="og:title"]').first();
       await expect(ogTitle).toHaveAttribute("content", /.+/);
+    });
+  }
+});
+
+/** The way to a unit in the Explorer, through its faction and its units. */
+const UNIT_ANCESTORS = (race: string) => [
+  "/explorer",
+  `/explorer/races/${race}`,
+  `/explorer/races/${race}/units`,
+];
+
+/**
+ * Pages with the JSON-LD (`PageJsonLd`), with the links of their breadcrumb trail between the home
+ * page and the page itself, and their WebPage type (WebPage by default). Every page with SEO tags
+ * except the home page (checked on its own) and the news article (its own NewsArticle markup). The
+ * tournaments pages are the ones that render the same with and without the tournament data.
+ */
+const STRUCTURED_DATA_PAGES: Array<{
+  path: string;
+  ancestors: string[];
+  list?: boolean;
+  type?: string;
+}> = [
+  { path: "/explorer", ancestors: [] },
+  { path: "/explorer/races/american", ancestors: ["/explorer"] },
+  {
+    path: "/explorer/races/american/units",
+    ancestors: ["/explorer", "/explorer/races/american"],
+    list: true,
+  },
+  {
+    path: `/explorer/races/${TEST_UNIT.race}/units/${TEST_UNIT.unitId}`,
+    ancestors: UNIT_ANCESTORS(TEST_UNIT.race),
+  },
+  { path: "/explorer/maps", ancestors: ["/explorer"], list: true },
+  { path: "/explorer/maps-table", ancestors: ["/explorer"] },
+  { path: `/explorer/maps/${TEST_MAP.mapId}`, ancestors: ["/explorer", "/explorer/maps"] },
+  { path: "/explorer/dps", ancestors: ["/explorer"] },
+  { path: "/explorer/dps-compare", ancestors: ["/explorer"] },
+  { path: "/explorer/unit-browser", ancestors: ["/explorer"] },
+  { path: "/explorer/weapons", ancestors: ["/explorer"] },
+  { path: "/explorer/challenges", ancestors: ["/explorer"] },
+  { path: "/explorer/fs", ancestors: ["/explorer"] },
+  { path: "/explorer/fs/races/american/perks", ancestors: ["/explorer", "/explorer/fs"] },
+  { path: "/explorer/fs/races/american/tech", ancestors: ["/explorer", "/explorer/fs"] },
+  {
+    path: "/explorer/fs/races/american/units",
+    ancestors: ["/explorer", "/explorer/fs"],
+    list: true,
+  },
+  { path: "/tournaments", ancestors: [], list: true },
+  { path: "/tournaments/ladder-tournament", ancestors: ["/tournaments"] },
+  { path: "/tournaments/ironclad", ancestors: ["/tournaments"] },
+  { path: "/leaderboards", ancestors: [] },
+  { path: "/leaderboards-teams", ancestors: [] },
+  { path: `/players/${TEST_PLAYER.profileId}`, ancestors: [], type: "ProfilePage" },
+  { path: `/matches/${TEST_MATCH.matchId}`, ancestors: [] },
+  { path: "/stats/games", ancestors: [] },
+  { path: "/stats/maps", ancestors: [] },
+  { path: "/stats/players", ancestors: [] },
+  { path: "/stats/leaderboards", ancestors: [] },
+  { path: "/stats/achievements", ancestors: [] },
+  { path: "/live-games", ancestors: [] },
+  { path: "/news", ancestors: [], list: true },
+  { path: "/search", ancestors: [] },
+  { path: "/desktop-app", ancestors: [] },
+  { path: "/about", ancestors: [], type: "AboutPage" },
+  { path: "/legal/privacy", ancestors: [] },
+  { path: "/other/ranking-tiers", ancestors: [] },
+  { path: "/other/open-data", ancestors: [] },
+  { path: "/other/player-export", ancestors: [] },
+  { path: "/other/relic-api", ancestors: [] },
+];
+
+/** Path of an absolute or a site relative url. */
+const pathnameOf = (url: string) => new URL(url, "https://coh3stats.com").pathname;
+
+/**
+ * The JSON-LD, the canonical and the link paths of the server rendered HTML of a page. The JSON-LD
+ * is server rendered, and reading the HTML keeps the check away from what the page does after the
+ * load - e.g. the live games page reloads itself when its API answers with a Cloudflare challenge.
+ */
+const getServerSeo = async (page: Page, path: string) => {
+  const response = await page.request.get(path);
+  expect(response.status(), `${path} did not respond with 2xx`).toBeLessThan(400);
+  const html = await response.text();
+
+  // DOMParser runs no scripts and decodes the attributes (`&amp;` in the canonical queries).
+  const { jsonLd, canonical, links } = await page.evaluate((source) => {
+    const doc = new DOMParser().parseFromString(source, "text/html");
+    return {
+      jsonLd: [...doc.querySelectorAll('script[type="application/ld+json"]')].map(
+        (script) => script.textContent ?? "{}",
+      ),
+      canonical: doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? "",
+      links: [...doc.querySelectorAll("a[href]")].map((link) => link.getAttribute("href") ?? ""),
+    };
+  }, html);
+
+  return {
+    jsonLd: jsonLd.map((json) => JSON.parse(json)),
+    canonical,
+    linkPaths: new Set(links.map(pathnameOf)),
+  };
+};
+
+test.describe("SEO - structured data", () => {
+  test.describe.configure({ timeout: 60_000 });
+
+  for (const { path, ancestors, list, type } of STRUCTURED_DATA_PAGES) {
+    test(`should mark up ${path} with JSON-LD`, async ({ page }) => {
+      const { jsonLd, canonical, linkPaths } = await getServerSeo(page, path);
+      const breadcrumbs = jsonLd.filter((data) => data["@type"] === "BreadcrumbList");
+      const webPages = jsonLd.filter((data) => data["@type"]?.endsWith("Page"));
+      expect(breadcrumbs).toHaveLength(1);
+      expect(webPages).toHaveLength(1);
+
+      // Home > ... > the page, which has no url (Google takes the page url).
+      const trail = breadcrumbs[0].itemListElement;
+      expect(trail[0]).toMatchObject({ position: 1, item: expect.stringMatching(/^https:\/\//) });
+      expect(trail.slice(1, -1).map((item: { item: string }) => pathnameOf(item.item))).toEqual(
+        ancestors,
+      );
+      expect(trail.at(-1).item).toBeUndefined();
+      for (const item of trail) expect(item.name).toBeTruthy();
+
+      // Same page as the canonical and the meta tags say, some canonicals have the default query.
+      expect(pathnameOf(canonical)).toBe(path);
+      const [webPage] = webPages;
+      expect(webPage).toMatchObject({
+        "@context": "https://schema.org",
+        "@id": canonical,
+        url: canonical,
+        about: { "@type": "VideoGame", name: "Company of Heroes 3" },
+      });
+      expect(webPage.name).toBeTruthy();
+      if (type) expect(webPage["@type"]).toBe(type);
+      if (list) {
+        // The listed items are links the page shows.
+        expect(webPage["@type"]).toBe("CollectionPage");
+        const items: Array<{ url: string }> = webPage.mainEntity.itemListElement;
+        expect(items.length).toBeGreaterThan(0);
+        for (const item of items) expect(linkPaths).toContain(pathnameOf(item.url));
+      }
+    });
+  }
+});
+
+test.describe("SEO - home page structured data", () => {
+  test("should describe the site and the home page", async ({ page }) => {
+    const { jsonLd, canonical } = await getServerSeo(page, "/");
+
+    // No breadcrumb trail on the home page, it would have a single item.
+    expect(jsonLd.filter((data) => data["@type"] === "BreadcrumbList")).toHaveLength(0);
+    const site = jsonLd.find((data) => data["@graph"]);
+    expect(site["@graph"].map((node: { "@type": string }) => node["@type"])).toEqual([
+      "WebSite",
+      "Organization",
+    ]);
+
+    const webPage = jsonLd.find((data) => data["@type"] === "WebPage");
+    expect(webPage).toMatchObject({ "@id": canonical, url: canonical });
+  });
+});
+
+test.describe("SEO - translated page structured data", () => {
+  // A translated page is its own canonical, the same url as its JSON-LD
+  for (const path of ["/de/explorer/races/american", "/de/leaderboards"]) {
+    test(`should mark up ${path} with its localized url`, async ({ page }) => {
+      // The slim build (FULL_BUILD=false) has only the English pages
+      const response = await page.request.get(path);
+      test.skip(response.status() === 404, "The build has no translated pages");
+
+      const { jsonLd, canonical } = await getServerSeo(page, path);
+      expect(pathnameOf(canonical)).toBe(path);
+      const webPage = jsonLd.find((data) => data["@type"]?.endsWith("Page"));
+      expect(webPage).toMatchObject({ "@id": canonical, url: canonical, inLanguage: "de" });
+
+      const breadcrumbs = jsonLd.find((data) => data["@type"] === "BreadcrumbList");
+      for (const { item } of breadcrumbs.itemListElement.slice(0, -1)) {
+        expect(pathnameOf(item)).toMatch(/^\/de(\/|$)/);
+      }
     });
   }
 });

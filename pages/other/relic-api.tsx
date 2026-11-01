@@ -1,11 +1,12 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getRelicApiRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
-import config from "../../config";
-import { generateKeywordsString } from "../../src/seo-utils";
-import { useRouter } from "next/router";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 import { AnalyticsRelicApiPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import "@scalar/api-reference-react/style.css";
@@ -54,7 +55,8 @@ const ApiReferenceReact = dynamic(
 );
 
 const RelicApiDocs: NextPage = () => {
-  const { asPath } = useRouter();
+  const { locale = "en" } = useRouter();
+  const path = getRelicApiRoute();
 
   const pageTitle = "Relic API Documentation";
   const description = "Unofficial documentation for the Relic Company of Heroes 3 Community API.";
@@ -76,15 +78,16 @@ const RelicApiDocs: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [{ name: "keywords", content: keywords }],
         })}
       </Head>
+      <PageJsonLd path={path} name={pageTitle} description={description} />
       <div
         style={{
           minHeight: "600px",

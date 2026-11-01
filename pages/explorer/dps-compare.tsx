@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { DpsComparePageComponent } from "../../components/unitStats/dps/dpsComparePageComponent";
 import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
@@ -22,7 +23,9 @@ import { Center, Loader } from "@mantine/core";
 import Head from "next/head";
 import { generateNextSeo, NextSeoProps } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../config";
+import { getLocalizedUrl } from "../../src/seo-utils";
+import { getExplorerRoute, getDPSCompareRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 interface DpsCompareProps {
   weaponData: WeaponType[];
@@ -30,6 +33,7 @@ interface DpsCompareProps {
 }
 
 const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
   useEffect(() => {
@@ -91,11 +95,11 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   const seoProps: NextSeoProps = {
     title,
     description,
-    canonical: `${config.SITE_URL}/explorer/dps-compare`,
+    canonical: getLocalizedUrl("/explorer/dps-compare", locale),
     openGraph: {
       title,
       description,
-      url: `${config.SITE_URL}/explorer/dps-compare`,
+      url: getLocalizedUrl("/explorer/dps-compare", locale),
     },
     additionalMetaTags: [
       {
@@ -110,6 +114,12 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={getDPSCompareRoute()}
+        name={title}
+        description={description}
+        trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
+      />
       <div>
         {isLoading && (
           <Center maw={400} h={250} mx="auto">

@@ -4,6 +4,7 @@ import { useTranslation } from "next-i18next/pages";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import config from "../../config";
+import { getLocalizedUrl } from "../../src/seo-utils";
 import {
   Container,
   Title,
@@ -29,12 +30,18 @@ import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
 import Link from "next/link";
 import { Anchor } from "@mantine/core";
-import { getPlayerCardRoute, getTeamDetailsRoute } from "../../src/routes";
+import {
+  getPlayerCardRoute,
+  getTeamDetailsRoute,
+  getTeamLeaderboardsRoute,
+} from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import HelperIcon from "../../components/icon/helper";
 import FactionIcon from "../../components/faction-icon";
 
 const TeamLeaderboards: React.FC = () => {
   const router = useRouter();
+  const { locale = "en" } = router;
   const { t } = useTranslation(["common", "leaderboards"]);
 
   // Get query parameters with defaults
@@ -203,17 +210,23 @@ const TeamLeaderboards: React.FC = () => {
   const sideDisplayName = side === "axis" ? "Axis" : "Allies";
   const typeDisplayName = localizedGameTypes[type as leaderBoardType];
   const pageTitle = `${t("leaderboards:teams.title")} for ${sideDisplayName} ${typeDisplayName}`;
+  const description = t("leaderboards:teams.metaDescription", {
+    side: sideDisplayName,
+    type: typeDisplayName,
+  });
+  const path = getTeamLeaderboardsRoute(side, type, orderBy);
+  const sideIcon =
+    side === "axis"
+      ? `${config.SITE_URL}/icons/general/german.webp`
+      : `${config.SITE_URL}/icons/general/american.webp`;
 
   return (
     <>
       <Head>
         {generateNextSeo({
           title: pageTitle,
-          description: t("leaderboards:teams.metaDescription", {
-            side: sideDisplayName,
-            type: typeDisplayName,
-          }),
-          canonical: `${config.SITE_URL}/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`,
+          description: description,
+          canonical: getLocalizedUrl(path, locale),
           additionalMetaTags: [
             {
               name: "keywords",
@@ -222,17 +235,11 @@ const TeamLeaderboards: React.FC = () => {
           ],
           openGraph: {
             title: pageTitle,
-            description: t("leaderboards:teams.metaDescription", {
-              side: sideDisplayName,
-              type: typeDisplayName,
-            }),
-            url: `${config.SITE_URL}/leaderboards-teams?side=${side}&type=${type}&orderBy=${orderBy}`,
+            description: description,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
-                url:
-                  side === "axis"
-                    ? `${config.SITE_URL}/icons/general/german.webp`
-                    : `${config.SITE_URL}/icons/general/american.webp`,
+                url: sideIcon,
                 width: 64,
                 height: 64,
                 alt: `${sideDisplayName} faction icon`,
@@ -241,6 +248,7 @@ const TeamLeaderboards: React.FC = () => {
           },
         })}
       </Head>
+      <PageJsonLd path={path} name={pageTitle} description={description} image={sideIcon} />
 
       <Container size="lg" p={0}>
         <Container fluid pl={0} pr={0}>

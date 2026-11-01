@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import { NextPage } from "next";
@@ -26,6 +27,7 @@ import {
   getExplorerFactionUnitsRoute,
   getExplorerMapsRoute,
   getExplorerMapsTableRoute,
+  getExplorerRoute,
   getUnitBrowserRoute,
   getWeaponsRoute,
 } from "../../src/routes";
@@ -34,6 +36,7 @@ import { useTranslation } from "next-i18next/pages";
 import { createPageSEO } from "../../src/seo-utils";
 import { getIconsPathOnCDN } from "../../src/utils";
 import FinalStandSection from "../../screens/explorer/final-stand-section";
+import PageJsonLd from "../../components/page-json-ld";
 
 // Reusable InfoCard component for tool links
 const InfoCard = ({
@@ -86,12 +89,19 @@ const InfoCard = ({
 const Explorer: NextPage = () => {
   const { t } = useTranslation(["explorer"]);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for explorer page
-  const seoProps = createPageSEO(t, "explorer", "/explorer");
+  const seoProps = createPageSEO(t, "explorer", getExplorerRoute(), locale);
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={getExplorerRoute()}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.explorer")}
+      />
       <Container size="md">
         <Stack mb={24}>
           <Title order={1}>{t("explorer.title")}</Title>

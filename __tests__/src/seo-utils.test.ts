@@ -2,8 +2,11 @@ import { ReactElement } from "react";
 import { TFunction } from "next-i18next/pages";
 import { generateNextSeo } from "next-seo/pages";
 import {
+  createLeaderboardSEO,
   createPageSEO,
   createPlayerSEO,
+  getLeaderboardCanonicalPath,
+  getLocalizedUrl,
   getOpenGraphLocale,
   generateKeywordsString,
   generateLanguageAlternates,
@@ -63,6 +66,53 @@ describe("generateLanguageAlternates", () => {
       if (hrefLang === "en" || hrefLang === "x-default") continue;
       expect(href).toBe(`${config.SITE_URL}/${hrefLang}/explorer/maps`);
     }
+  });
+});
+
+describe("getLocalizedUrl", () => {
+  test("should prefix every locale except the default one", () => {
+    expect(getLocalizedUrl("/explorer/maps", "en")).toBe(`${config.SITE_URL}/explorer/maps`);
+    expect(getLocalizedUrl("/explorer/maps", "de")).toBe(`${config.SITE_URL}/de/explorer/maps`);
+    expect(getLocalizedUrl("", "de")).toBe(`${config.SITE_URL}/de`);
+  });
+});
+
+describe("createLeaderboardSEO", () => {
+  test("should use the raw mode in the canonical and the localized one in the title", () => {
+    const tWithOptions = jest.fn((key: string) => key) as unknown as TFunction;
+    const seo = createLeaderboardSEO(tWithOptions, "german", "2v2", "steam", "europe");
+
+    // The page only accepts the raw mode, `type=2+vs+2` answers with 400
+    expect(seo.canonical).toBe(
+      `${config.SITE_URL}/leaderboards?race=german&type=2v2&platform=steam&region=europe`,
+    );
+    expect(seo.canonical).toBe(
+      `${config.SITE_URL}${getLeaderboardCanonicalPath("german", "2v2", "steam", "europe")}`,
+    );
+    expect(tWithOptions).toHaveBeenCalledWith("leaderboards:meta.title", {
+      faction: "Wehrmacht",
+      mode: "2 vs 2",
+    });
+    expect(seo.title).toBe("leaderboards:meta.title");
+  });
+
+  test("should keep the leaderboard query in the localized canonical and the alternates", () => {
+    const seo = createLeaderboardSEO(t, "german", "2v2", "steam", "europe", "de");
+    const path = getLeaderboardCanonicalPath("german", "2v2", "steam", "europe");
+
+    expect(seo.canonical).toBe(`${config.SITE_URL}/de${path}`);
+    expect(seo.openGraph?.url).toBe(seo.canonical);
+    expect(seo.languageAlternates).toEqual(generateLanguageAlternates(path));
+  });
+});
+
+describe("createPageSEO", () => {
+  test("should make a translated page its own canonical", () => {
+    const seo = createPageSEO(t, "search", "/search", "de");
+
+    expect(seo.canonical).toBe(`${config.SITE_URL}/de/search`);
+    expect(seo.openGraph?.url).toBe(seo.canonical);
+    expect(createPageSEO(t, "home", "", "de").canonical).toBe(`${config.SITE_URL}/de`);
   });
 });
 

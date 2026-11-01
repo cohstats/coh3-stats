@@ -1,15 +1,21 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getOpenDataRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 
 import { Container, Text, Title, Anchor, Code, Spoiler } from "@mantine/core";
 
 import React, { useEffect } from "react";
 import config from "../../config";
 import { AnalyticsOpenDataPageView } from "../../src/firebase/analytics";
-import { generateKeywordsString, generateLanguageAlternates } from "../../src/seo-utils";
+import {
+  generateKeywordsString,
+  generateLanguageAlternates,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
 
 const codeForLeaderboards = `https://storage.coh3stats.com/leaderboards/{unixTimeStamp}/{unixTimeStamp}_{mode}_{faction}.json
 
@@ -130,7 +136,8 @@ interface ProcessedMatchHistoryItem {
  * @constructor
  */
 const OpenData: NextPage = () => {
-  const { asPath } = useRouter();
+  const { locale = "en" } = useRouter();
+  const path = getOpenDataRoute();
 
   const pageTitle = "Open Data";
   const description =
@@ -153,11 +160,11 @@ const OpenData: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: getLocalizedUrl(path, locale),
           },
           additionalMetaTags: [
             {
@@ -165,9 +172,10 @@ const OpenData: NextPage = () => {
               content: keywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd path={path} name={pageTitle} description={description} />
       <>
         <Container size={"md"}>
           <Title order={1} pt="md">

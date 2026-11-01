@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -16,7 +17,11 @@ import {
 } from "@mantine/core";
 
 import { raceType, raceTypeArray } from "../../../../../src/coh3/coh3-types";
-import { generateLanguageAlternates, generateKeywordsString } from "../../../../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
 import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
@@ -27,15 +32,18 @@ import { FinalStandUnitsSwitch } from "../../../../../components/final-stand-uni
 import { FactionSwitch } from "../../../../../components/faction-switch";
 import unitListCardClasses from "../../../../../components/unit-cards/unit-list-card.module.css";
 import {
+  getExplorerFactionRoute,
   getExplorerFactionUnitsRoute,
   getExplorerFsUnitsRoute,
   getExplorerUnitRoute,
+  getExplorerRoute,
 } from "../../../../../src/routes";
+import { getUnitListLinks } from "../../../../../src/structured-data";
+import PageJsonLd from "../../../../../components/page-json-ld";
 import { useEffect, useState } from "react";
 import { AnalyticsExplorerFactionUnitsView } from "../../../../../src/firebase/analytics";
 import { getUnitStatsCOH3Descriptions } from "../../../../../src/unitStats/descriptions";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
-import { useRouter } from "next/router";
 import nextI18NextConfig from "../../../../../next-i18next.config";
 import config from "../../../../../config";
 import { useTranslation } from "next-i18next/pages";
@@ -47,7 +55,7 @@ interface UnitDetailProps {
 }
 
 const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descriptions }) => {
-  const { asPath } = useRouter();
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("explorer");
   const { t: tCommon } = useTranslation("common");
   const localizedRace = localizedNames[raceToFetch];
@@ -58,6 +66,8 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
   }, []);
 
   const pageTitle = `${localizedRace} Units - COH3 Explorer`;
+  const path = getExplorerFactionUnitsRoute(raceToFetch);
+  const factionIcon = `${config.SITE_URL}/icons/general/${raceToFetch}.webp`;
   const metaKeywords = generateKeywordsString([
     `${localizedRace} coh3`,
     `Unit List ${localizedRace}`,
@@ -140,14 +150,14 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
         {generateNextSeo({
           title: pageTitle,
           description: pageTitle,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description: pageTitle,
-            url: `${config.SITE_URL}${asPath}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
-                url: `${config.SITE_URL}/icons/general/${raceToFetch}.webp`,
+                url: factionIcon,
                 width: 64,
                 height: 64,
                 alt: `${localizedRace} faction icon`,
@@ -160,9 +170,25 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
               content: metaKeywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={pageTitle}
+        breadcrumbName={tCommon("mainMenu.explMenu.units")}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: localizedRace, path: getExplorerFactionRoute(raceToFetch) },
+        ]}
+        image={factionIcon}
+        // What the page lists without a search, the Final Stand units have their own page.
+        items={getUnitListLinks(
+          units.filter((unit) => !isFinalStandUnit(unit)),
+          raceToFetch,
+        )}
+      />
       <Container fluid p={0} mih={"80vh"}>
         <Flex direction="row" align="flex-start" justify="space-between" gap="md" wrap="wrap">
           <Flex direction="row" align="center" gap="md">

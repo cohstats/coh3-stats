@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
   Anchor,
   Badge,
@@ -16,6 +17,8 @@ import { IconCheck, IconMinus, IconBrandWindows, IconDownload } from "@tabler/ic
 import { NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getDesktopAppRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import config from "../../config";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "next-i18next/pages";
@@ -39,8 +42,9 @@ const DesktopAppPage: NextPage = ({
     AnalyticsDesktopAppPageView();
   }, []);
 
+  const { locale = "en" } = useRouter();
   // Create SEO props for desktop app page
-  const seoProps = createPageSEO(t, "desktopapp", "/desktop-app", { version });
+  const seoProps = createPageSEO(t, "desktopapp", "/desktop-app", locale, { version });
 
   // Carousel images
   const carouselImages = [
@@ -133,6 +137,13 @@ const DesktopAppPage: NextPage = ({
           },
         })}
       </Head>
+      <PageJsonLd
+        path={getDesktopAppRoute()}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("common:mainMenu.desktopApp")}
+        image={`${config.SITE_URL}/desktop-app/desktop-app-v2.webp`}
+      />
       <Container size={"lg"}>
         <Title>{t("title")}</Title>
         <Title order={2}>{t("subtitle")}</Title>

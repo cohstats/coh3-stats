@@ -1,7 +1,9 @@
 import { GlobalAchievementsData } from "../../../src/coh3/coh3-types";
-import { generateKeywordsString } from "../../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../../src/seo-utils";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getGlobalAchievementsStatsRoute } from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
 import { Container, Flex, Text, Title } from "@mantine/core";
 import React from "react";
 import ErrorCard from "../../../components/error-card";
@@ -9,7 +11,6 @@ import Achievement from "./achievement";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../config";
 
 const GlobalAchievements = ({
   globalAchievements,
@@ -18,7 +19,7 @@ const GlobalAchievements = ({
   globalAchievements: GlobalAchievementsData | null;
   error: string | null;
 }) => {
-  const { locale } = useRouter();
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation(["common", "stats"]);
 
   const pageTitle = t("stats:achievements.meta.title");
@@ -41,11 +42,11 @@ const GlobalAchievements = ({
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}/stats/achievements`,
+          canonical: getLocalizedUrl("/stats/achievements", locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}/stats/achievements`,
+            url: getLocalizedUrl("/stats/achievements", locale),
           },
           additionalMetaTags: [
             {
@@ -55,6 +56,12 @@ const GlobalAchievements = ({
           ],
         })}
       </Head>
+      <PageJsonLd
+        path={getGlobalAchievementsStatsRoute()}
+        name={pageTitle}
+        description={description}
+        breadcrumbName={t("common:mainMenu.statsMenu.achievements")}
+      />
 
       <Container size={"md"}>
         <Flex justify="space-between" align={"center"}>

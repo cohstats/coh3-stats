@@ -9,13 +9,15 @@ import { Anchor, Container, Group, Select, Space, Text, Title } from "@mantine/c
 import Link from "next/link";
 import CountryFlag from "../../components/country-flag";
 import DynamicTimeAgo from "../../components/other/dynamic-timeago";
-import { leaderboardRegions, localizedGameTypes, localizedNames } from "../../src/coh3/coh3-data";
-import { leaderBoardType, raceType } from "../../src/coh3/coh3-types";
+import { leaderboardRegions, localizedNames } from "../../src/coh3/coh3-data";
+import { raceType } from "../../src/coh3/coh3-types";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import PageJsonLd from "../../components/page-json-ld";
+import config from "../../config";
 import FactionIcon from "../../components/faction-icon";
 import { useTranslation } from "next-i18next/pages";
-import { createLeaderboardSEO } from "../../src/seo-utils";
+import { createLeaderboardSEO, getLeaderboardCanonicalPath } from "../../src/seo-utils";
 
 const RECORD_PER_PAGE = 100;
 
@@ -29,7 +31,7 @@ const Leaderboards = ({
   typeToFetch,
   regionToFetch,
 }: any) => {
-  const { push, query } = useRouter();
+  const { push, query, locale = "en" } = useRouter();
   const { t } = useTranslation(["common", "leaderboards"]);
 
   useEffect(() => {
@@ -191,20 +193,31 @@ const Leaderboards = ({
   })();
 
   const localizedRace = localizedNames[raceToFetch as raceType];
-  const localizedType = localizedGameTypes[typeToFetch as leaderBoardType];
 
   // Create SEO props for leaderboard page
   const seoProps = createLeaderboardSEO(
     t,
     raceToFetch,
-    localizedType,
+    typeToFetch,
     platformToFetch,
     regionToFetch,
+    locale,
   );
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={getLeaderboardCanonicalPath(
+          raceToFetch,
+          typeToFetch,
+          platformToFetch,
+          regionToFetch,
+        )}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        image={`${config.SITE_URL}/icons/general/${raceToFetch}.webp`}
+      />
       <Container size={"lg"} p={0}>
         <Container fluid pl={0} pr={0}>
           <Group justify={"space-between"}>

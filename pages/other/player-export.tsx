@@ -1,10 +1,13 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AnalyticsPlayerExportPageView } from "../../src/firebase/analytics";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getPlayerExportRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import { Anchor, Code, Container, Space, Text, Title } from "@mantine/core";
-import { generateKeywordsString } from "../../src/seo-utils";
+import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import config from "../../config";
 
@@ -17,6 +20,7 @@ elpern,61495,76561198019498694,1681,1717,-1,1681,139,-1,1699,178,-1,1611,100,-1,
 IncaUna,1287,76561198152399446,1557,1691,-1,1557,24,-1,1218,5,-1,1510,46,-1,1691,157`;
 
 const PlayerExport: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const pageTitle = "Player Export in CSV";
   const description = "COH3 Stats player export - export player leaderboards in CSV format.";
   const keywords = generateKeywordsString(["coh3 players", "export", "csv"]);
@@ -31,11 +35,11 @@ const PlayerExport: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}/other/player-export`,
+          canonical: getLocalizedUrl(getPlayerExportRoute(), locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}/other/player-export`,
+            url: getLocalizedUrl(getPlayerExportRoute(), locale),
           },
           additionalMetaTags: [
             {
@@ -45,6 +49,7 @@ const PlayerExport: NextPage = () => {
           ],
         })}
       </Head>
+      <PageJsonLd path={getPlayerExportRoute()} name={pageTitle} description={description} />
       <>
         <Container size={"md"}>
           <Title order={1} pt="md">

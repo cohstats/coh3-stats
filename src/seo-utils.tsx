@@ -2,8 +2,14 @@ import { NextSeoProps } from "next-seo/pages";
 import { TFunction } from "next-i18next/pages";
 import nextI18NextConfig from "../next-i18next.config";
 import config from "../config";
-import { localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
-import { raceType, PlayerCardDataType, platformType, ProcessedMatch } from "./coh3/coh3-types";
+import { localizedGameTypes, localizedNames, matchTypesAsObject } from "./coh3/coh3-data";
+import {
+  raceType,
+  leaderBoardType,
+  PlayerCardDataType,
+  platformType,
+  ProcessedMatch,
+} from "./coh3/coh3-types";
 import { PlayerSummaryType } from "./players/utils";
 import { getMapLocalizedName } from "./coh3/helpers";
 
@@ -28,6 +34,15 @@ export const generateKeywordsString = (keywords: string[] = []) => {
 const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 
 /**
+ * Absolute url of a page in a locale, the default locale has no prefix. It's the canonical url of
+ * the page, a translated page is its own canonical, the same as its JSON-LD `@id`.
+ * @param path - Site relative path, e.g. `/explorer/maps`, empty for the home page
+ * @param locale - The locale (usually from Next.js router's locale)
+ */
+export const getLocalizedUrl = (path: string, locale: string) =>
+  `${config.SITE_URL}${locale === nextI18NextConfig.i18n.defaultLocale ? "" : `/${locale}`}${path}`;
+
+/**
  * Generates the `languageAlternates` for `generateNextSeo`
  * @param currentPath - The current path (usually from Next.js router's asPath)
  * @returns Array of language alternate objects, including x-default
@@ -35,7 +50,7 @@ const SUPPORTED_LANGUAGES = nextI18NextConfig.i18n.locales;
 export const generateLanguageAlternates = (currentPath: string) => {
   const alternates = SUPPORTED_LANGUAGES.map((lang: string) => ({
     hrefLang: lang,
-    href: `${config.SITE_URL}${lang === nextI18NextConfig.i18n.defaultLocale ? "" : `/${lang}`}${currentPath}`,
+    href: getLocalizedUrl(currentPath, lang),
   }));
 
   // Add x-default
@@ -71,12 +86,14 @@ export { _defaultKeywords };
  * @param t - Translation function
  * @param namespace - Translation namespace (e.g., 'home', 'search')
  * @param path - Current page path for canonical URL and language alternates
+ * @param locale - The current locale (usually from Next.js router's locale)
  * @param dynamicData - Optional dynamic data for interpolation
  */
 export const createPageSEO = (
   t: TFunction,
   namespace: string,
   path: string = "",
+  locale: string = nextI18NextConfig.i18n.defaultLocale,
   dynamicData?: Record<string, string>,
 ): NextSeoProps => {
   const title = t(`${namespace}:meta.title`, dynamicData || {});
@@ -97,7 +114,7 @@ export const createPageSEO = (
     keywords = [];
   }
 
-  const canonical = `${config.SITE_URL}${path}`;
+  const canonical = getLocalizedUrl(path, locale);
 
   return {
     title,
@@ -124,19 +141,21 @@ export const createPageSEO = (
  * @param playerData - Player data object
  * @param playerSummary - Player summary statistics
  * @param platform - Player platform (steam, xbox, psn)
+ * @param locale - The current locale (usually from Next.js router's locale)
  */
 export const createPlayerSEO = (
   t: TFunction,
   playerData: PlayerCardDataType,
   playerSummary: PlayerSummaryType,
   platform: platformType,
+  locale: string = nextI18NextConfig.i18n.defaultLocale,
 ): NextSeoProps => {
   const playerName = playerData.info.name;
   const profileId = playerData.info.relicID;
 
   const title = t("players:meta.title", { name: playerName });
   const description = createPlayerDescription(playerData, playerSummary, t);
-  const canonical = `${config.SITE_URL}/players/${profileId}`;
+  const canonical = getLocalizedUrl(`/players/${profileId}`, locale);
 
   // Get keywords from translation
   let keywords: string[] = [];
@@ -186,12 +205,33 @@ export const createPlayerSEO = (
 };
 
 /**
+ * Canonical path of a leaderboard page, with the query of the leaderboard.
+ * @param mode - Raw game mode (1v1, 2v2, 3v3, 4v4), the page only accepts these
+ */
+export const getLeaderboardCanonicalPath = (
+  faction: string,
+  mode: string,
+  platform: string = "steam",
+  region?: string,
+) => {
+  const queryParams = new URLSearchParams({
+    race: faction,
+    type: mode,
+    platform,
+    ...(region && { region }),
+  });
+
+  return `/leaderboards?${queryParams.toString()}`;
+};
+
+/**
  * Creates SEO props for leaderboard pages with dynamic faction/mode data
  * @param t - Translation function
  * @param faction - Raw faction name (german, american, dak, british)
- * @param mode - Game mode
+ * @param mode - Raw game mode (1v1, 2v2, 3v3, 4v4)
  * @param platform - Platform
  * @param region - Region (optional)
+ * @param locale - The current locale (usually from Next.js router's locale)
  */
 export const createLeaderboardSEO = (
   t: TFunction,
@@ -199,12 +239,17 @@ export const createLeaderboardSEO = (
   mode: string,
   platform: string = "steam",
   region?: string,
+  locale: string = nextI18NextConfig.i18n.defaultLocale,
 ): NextSeoProps => {
-  // Get localized faction name for display
+  // Get localized faction and mode names for display, the canonical takes the raw ones
   const localizedFaction = localizedNames[faction as raceType] || faction;
+  const localizedMode = localizedGameTypes[mode as leaderBoardType] || mode;
 
-  const title = t("leaderboards:meta.title", { faction: localizedFaction, mode });
-  const description = t("leaderboards:meta.description", { faction: localizedFaction, mode });
+  const title = t("leaderboards:meta.title", { faction: localizedFaction, mode: localizedMode });
+  const description = t("leaderboards:meta.description", {
+    faction: localizedFaction,
+    mode: localizedMode,
+  });
 
   // Get keywords from translation
   let keywords: string[] = [];
@@ -217,14 +262,8 @@ export const createLeaderboardSEO = (
     keywords = ["leaderboards", "rankings"];
   }
 
-  // Build canonical URL with query parameters
-  const queryParams = new URLSearchParams({
-    race: faction,
-    type: mode,
-    platform,
-    ...(region && { region }),
-  });
-  const canonical = `${config.SITE_URL}/leaderboards?${queryParams.toString()}`;
+  const path = getLeaderboardCanonicalPath(faction, mode, platform, region);
+  const canonical = getLocalizedUrl(path, locale);
 
   return {
     title,
@@ -249,7 +288,7 @@ export const createLeaderboardSEO = (
         content: generateKeywordsString(keywords),
       },
     ],
-    languageAlternates: generateLanguageAlternates("/leaderboards"),
+    languageAlternates: generateLanguageAlternates(path),
   };
 };
 
@@ -257,8 +296,13 @@ export const createLeaderboardSEO = (
  * Creates SEO props for match detail pages
  * @param t - Translation function
  * @param matchData - Match data object
+ * @param locale - The current locale (usually from Next.js router's locale)
  */
-export const createMatchSEO = (t: TFunction, matchData: ProcessedMatch): NextSeoProps => {
+export const createMatchSEO = (
+  t: TFunction,
+  matchData: ProcessedMatch,
+  locale: string = nextI18NextConfig.i18n.defaultLocale,
+): NextSeoProps => {
   const matchId = matchData.id;
   const mapName = getMapLocalizedName(matchData.mapname);
   const mode =
@@ -268,7 +312,7 @@ export const createMatchSEO = (t: TFunction, matchData: ProcessedMatch): NextSeo
 
   const title = t("matches:meta.title", { matchId, map: mapName, mode });
   const description = t("matches:meta.description", { matchId, map: mapName, mode });
-  const canonical = `${config.SITE_URL}/matches/${matchId}`;
+  const canonical = getLocalizedUrl(`/matches/${matchId}`, locale);
 
   return {
     title,

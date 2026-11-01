@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
@@ -13,8 +14,13 @@ import type {
 } from "../../../../../src/explorer/fs-technologies/fs-technologies-types";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { raceTypeArray, type raceType } from "../../../../../src/coh3/coh3-types";
-import { getExplorerFsTechRoute } from "../../../../../src/routes";
+import {
+  getExplorerRoute,
+  getExplorerFsRoute,
+  getExplorerFsTechRoute,
+} from "../../../../../src/routes";
 import { createPageSEO } from "../../../../../src/seo-utils";
+import PageJsonLd from "../../../../../components/page-json-ld";
 import FsTechPage from "../../../../../screens/explorer/fs-tech/fs-tech-page";
 
 interface FsTechProps {
@@ -33,13 +39,24 @@ const FsTech: NextPage<FsTechProps> = ({ race, meta, availableRaces, raceId }) =
   const { t } = useTranslation(["explorer-fs-tech"]);
 
   const path = getExplorerFsTechRoute(raceId);
-  const seoProps = createPageSEO(t, "explorer-fs-tech", path, {
+  const { locale = "en" } = useRouter();
+  const seoProps = createPageSEO(t, "explorer-fs-tech", path, locale, {
     faction: race?.name ?? localizedNames[raceId],
   });
 
   return (
     <>
       <Head>{generateNextSeo(seoProps)}</Head>
+      <PageJsonLd
+        path={path}
+        name={seoProps.title ?? ""}
+        description={seoProps.description}
+        breadcrumbName={t("page.title", { faction: race?.name ?? localizedNames[raceId] })}
+        trail={[
+          { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
+          { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },
+        ]}
+      />
       {race && meta ? (
         <FsTechPage race={race} meta={meta} availableRaces={availableRaces} t={t} />
       ) : (

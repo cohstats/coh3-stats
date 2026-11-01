@@ -1,21 +1,27 @@
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AnalyticsRankingTiersPageView } from "../../src/firebase/analytics";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
+import { getRankingTiersRoute } from "../../src/routes";
+import PageJsonLd from "../../components/page-json-ld";
 import { Container, Text, Title } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { PlayerRanks } from "../../src/coh3/coh3-data";
 import Image from "next/image";
-import { generateLanguageAlternates, generateKeywordsString } from "../../src/seo-utils";
+import {
+  generateLanguageAlternates,
+  generateKeywordsString,
+  getLocalizedUrl,
+} from "../../src/seo-utils";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { useTranslation } from "next-i18next/pages";
-import { useRouter } from "next/router";
-import config from "../../config";
 
 const RankingTiers: NextPage = () => {
+  const { locale = "en" } = useRouter();
   const { t } = useTranslation("ranking-tiers");
-  const { asPath } = useRouter();
+  const path = getRankingTiersRoute();
 
   useEffect(() => {
     AnalyticsRankingTiersPageView();
@@ -39,11 +45,11 @@ const RankingTiers: NextPage = () => {
         {generateNextSeo({
           title: pageTitle,
           description,
-          canonical: `${config.SITE_URL}${asPath}`,
+          canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
             description,
-            url: `${config.SITE_URL}${asPath}`,
+            url: getLocalizedUrl(path, locale),
             images: [
               {
                 url: PlayerRanks.CHALLENGER_1.url,
@@ -59,9 +65,15 @@ const RankingTiers: NextPage = () => {
               content: keywords,
             },
           ],
-          languageAlternates: generateLanguageAlternates(asPath),
+          languageAlternates: generateLanguageAlternates(path),
         })}
       </Head>
+      <PageJsonLd
+        path={path}
+        name={pageTitle}
+        description={description}
+        breadcrumbName={t("common:mainMenu.otherMenu.tiers")}
+      />
       <>
         <Container size={"sm"}>
           <Title order={1} pb="md">

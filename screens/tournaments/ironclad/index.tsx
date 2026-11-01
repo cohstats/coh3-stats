@@ -6,13 +6,17 @@ import { generateNextSeo } from "next-seo/pages";
 import { Box, Container, Group, Paper, Progress, Stack, Tabs, Text, Title } from "@mantine/core";
 import { IconTrophyFilled } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import config from "../../../config";
 import {
   IroncladDivisionView,
   IroncladTournamentView,
 } from "../../../src/tournaments/ironclad-tournament";
-import { getIroncladTournamentRoute } from "../../../src/routes";
-import { generateLanguageAlternates } from "../../../src/seo-utils";
+import {
+  getIroncladTournamentRoute,
+  getIroncladTournamentsRoute,
+  getTournamentsRoute,
+} from "../../../src/routes";
+import PageJsonLd from "../../../components/page-json-ld";
+import { generateLanguageAlternates, getLocalizedUrl } from "../../../src/seo-utils";
 import { AnalyticsIroncladTournamentView } from "../../../src/firebase/analytics";
 import { IRONCLAD_TOURNAMENT } from "../../../src/tournaments/tournaments-registry";
 import { ExternalLink } from "../ladder-tournament/league-header";
@@ -146,15 +150,27 @@ const IroncladTournamentScreen: NextPage<IroncladTournamentPageProps> = ({ slug,
   const description = t("meta.ironcladTournamentDescription", { name });
 
   const seo = (
-    <Head>
-      {generateNextSeo({
-        title,
-        description,
-        canonical: `${config.SITE_URL}${path}`,
-        openGraph: { title, description, url: `${config.SITE_URL}${path}` },
-        languageAlternates: generateLanguageAlternates(path),
-      })}
-    </Head>
+    <>
+      <Head>
+        {generateNextSeo({
+          title,
+          description,
+          canonical: getLocalizedUrl(path, locale),
+          openGraph: { title, description, url: getLocalizedUrl(path, locale) },
+          languageAlternates: generateLanguageAlternates(path),
+        })}
+      </Head>
+      <PageJsonLd
+        path={path}
+        name={title}
+        description={description}
+        breadcrumbName={name}
+        trail={[
+          { name: t("common:mainMenu.tournaments"), path: getTournamentsRoute() },
+          { name: t(IRONCLAD_TOURNAMENT.nameKey), path: getIroncladTournamentsRoute() },
+        ]}
+      />
+    </>
   );
 
   if (!data) {
