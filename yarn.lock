@@ -2115,15 +2115,15 @@
     "@lezer/highlight" "^1.0.0"
     "@lezer/lr" "^1.4.0"
 
-"@mantine/carousel@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-9.7.3.tgz#01b03fa4ae719ae4e11774b6f6481e6e9addd9da"
-  integrity sha512-EtcWgyPUhssTEY1PDv4XBGk3piVZ9y57SZT5v/Mq2NTUjXa0vOZ7Pf1VXE9KY5MyunGWX5LtmyEyaJ3vCmlp1g==
+"@mantine/carousel@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-9.7.4.tgz#562cdba069a76c0cbd0da89ebdb54c36b88ba5b3"
+  integrity sha512-UAEaIl5sQvqRB30nzPXgNFsCu8m+4I5wCZKemUBEtPxFECF03HEvekBWO8yMUFp6jyjJSEguqr/y5tJm2wgpUw==
 
-"@mantine/core@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-9.7.3.tgz#9a6daf98e305d0aa70ca0accd6067ce446019b2e"
-  integrity sha512-wYJ9Bd82a7HqwJ+hubFqUIocBGMuw6txzdPnnleHvv1h0NlnkESevK/WHTRh4FtOw33B5N2ADT34s3x1/8d8jg==
+"@mantine/core@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-9.7.4.tgz#9831760ffedf4f07adeb7dd164c30187c0a5ec1c"
+  integrity sha512-c7aTGELNn74CxG9i5/tq9BHGh0lKdKmGGz+9iDF+gR7Ipt4U1TMM286lAmLpRrKL2bR+UEaN4blZ8UJmOuGJ4Q==
   dependencies:
     "@floating-ui/react" "^0.27.20"
     clsx "^2.1.1"
@@ -2131,37 +2131,37 @@
     react-remove-scroll "^2.7.2"
     type-fest "^5.10.0"
 
-"@mantine/dates@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-9.7.3.tgz#2dd33e72a5cd1abe28ac441ae57f6ec8351d68ca"
-  integrity sha512-Ea7coqQp3iNs+1XTEjbcoPLP5M9DG5jcxWuEmJC21KUwpBmZKq+RyT0ovxoS8PrWBqvtu/bss8qbjE97wxyqrw==
+"@mantine/dates@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-9.7.4.tgz#78352bf7c5336be7a44695974a2755aba8efbe3d"
+  integrity sha512-qNrE1j8TzhBUU2k+JG1fT2phZsid0an919edpKJumwCZroe5U584Hd1i9O2u+sWdBGURhusVcAsQEvmi1jDuSg==
   dependencies:
     clsx "^2.1.1"
 
-"@mantine/hooks@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-9.7.3.tgz#cdec77a3e912ba8949e8035e3e884911d8e9c426"
-  integrity sha512-GMHoMS1qul1dBLIHd/N9ef2Pr8UKYYHfuM+g2ej3gYqU0kH4sTiR9FNHksoTQi0PzATRoaNlUYjjMe9rbDRw5A==
+"@mantine/hooks@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-9.7.4.tgz#e93edfdd26b2560e637b1eea1a3255086c6cc2ef"
+  integrity sha512-j6Xf9Sc1fhhGEKXg6BZA2geyP/Czqvo6Rsi0IduOCWgwl/MAAJbKRjRc7xe2+9vePLdfqLZqRIAOY5rta88uNA==
 
-"@mantine/notifications@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-9.7.3.tgz#98388998b5d0c9109099cf021d7698da99cc4651"
-  integrity sha512-ebsyKnA9oYYOtRwPD8uO2mQvHsJC3nlOt0hJsciFV+zMaS9OIoONDVN8nD5HvuAVe0UWTxxZ3i8jw7QEs4rxEA==
+"@mantine/notifications@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-9.7.4.tgz#7e313924856c7a6b2e7cbce8e376d1c59b002386"
+  integrity sha512-LabOPnE/YtdpXHn49ZJjiJJBYnYXUMi6SFuzxje7XxpoxImZ+wdGh4R/+l89NnWTxKwGoQL51iUTL8PSgu2A1Q==
   dependencies:
-    "@mantine/store" "9.7.3"
+    "@mantine/store" "9.7.4"
     react-transition-group "4.4.5"
 
-"@mantine/spotlight@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-9.7.3.tgz#1edec7cd4527b0e29f614f0426e4785274e36596"
-  integrity sha512-vJbZDAG3LG+VTWsTtbpZBUV2O6RuBi7oI25H+WtijD/lekqYCAVJ2XWx7woyZeYOZYe3+wPGpGULrsD1xGBHfg==
+"@mantine/spotlight@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-9.7.4.tgz#669687a29ef41cd5b9e802f47d4cd812b394f283"
+  integrity sha512-BZ/kizwjAFiw4LxyW6a1MmdbuO3PKmx0V5q7jkWpXWEL0DbD/V9tBxBN5ZIXlMzB0GpMU5uANUazoBqznfsIKw==
   dependencies:
-    "@mantine/store" "9.7.3"
+    "@mantine/store" "9.7.4"
 
-"@mantine/store@9.7.3":
-  version "9.7.3"
-  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-9.7.3.tgz#23011c44ae50a655663b4674a8308d9f75586153"
-  integrity sha512-Z8BD1cw4LxSrH7l0zzVeFntzcYzO4vTP/I5aezizKdar6nbeladQKQnsBV2aReamp05vlVybZG3IKQdRBfXrOg==
+"@mantine/store@9.7.4":
+  version "9.7.4"
+  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-9.7.4.tgz#9ca0f9ea9aced64b1dac546fe6c1267e47355b6b"
+  integrity sha512-tICEOzsaV2eiV4QAegdErRLtfd0da02DKqsEIzJLa+8T5dWDnBMCqlWxHfBMnaL7HBAmpx41koad0zUZPGw7pg==
 
 "@mantine/utils@6.0.22":
   version "6.0.22"
