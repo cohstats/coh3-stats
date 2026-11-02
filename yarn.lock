@@ -9792,10 +9792,10 @@ neverpanic@0.0.5:
   resolved "https://registry.yarnpkg.com/neverpanic/-/neverpanic-0.0.5.tgz#5b4e4191100541aa37c41d1d865fab1bd08de7a8"
   integrity sha512-daO+ijOQG8g2BXaAwpETa0GUvlIAfqC+1/CUdLp2Ga8qwDaUyHIieX/SM0yZoPBf7k92deq4DO7tZOWWeL063Q==
 
-next-i18next@16.4.3:
-  version "16.4.3"
-  resolved "https://registry.yarnpkg.com/next-i18next/-/next-i18next-16.4.3.tgz#7242c95c129ebf3eb5cd49f5fc63adf40cadf9a9"
-  integrity sha512-eYSjAw25ndsKuvfc5Cyjs/Nb9ZrYG6Hm6g9YGm+pm3C0sBVFUwpCqZv87MrWPG8PW/tpopmUM5o8M3KpbaMIrw==
+next-i18next@16.4.4:
+  version "16.4.4"
+  resolved "https://registry.yarnpkg.com/next-i18next/-/next-i18next-16.4.4.tgz#6cd86d438300b3d99953fe46fc92f7331c21f1ce"
+  integrity sha512-JnlP+PivGFTwq95yjTDwrwcXPpPz2j39RViVMPRLqVnyM7r733CGUohfH5Lo/tm2ydrpFIhkpTs+LgRtI0Y1Ng==
   dependencies:
     "@types/hoist-non-react-statics" "^3.3.7"
     hoist-non-react-statics "^3.3.2"

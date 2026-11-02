@@ -94,7 +94,7 @@
     "lodash": "4.18.1",
     "mantine-datatable": "9.4.0",
     "next": "16.4.3",
-    "next-i18next": "16.4.3",
+    "next-i18next": "16.4.4",
     "next-seo": "7.3.0",
     "nprogress": "0.2.0",
     "octokit": "4.1.4",
