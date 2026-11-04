@@ -51,18 +51,30 @@ type StructuredDataLink = {
   path: string;
 };
 
+/** Links with a name, Google rejects a list item without one (e.g. a unit without a screen name). */
+const withNames = (links: StructuredDataLink[]) => links.filter((link) => link.name?.trim());
+
 /**
  * Breadcrumb trail for the `BreadcrumbJsonLd` component: the home page, the given trail and
  * the current page last. The current page has no url, Google takes the url of the page for it.
  * The urls are the ones of the locale, like the translated names.
+ * Every item needs a name, so the trail skips links without one and there is no trail at all
+ * (null) when the current page has no name.
  * @param trail Pages between the home page and the current page, e.g. Explorer > US Forces
  * @param name Name of the current page in the trail
  */
-const getBreadcrumbItems = (trail: StructuredDataLink[], name: string, locale: string) => [
-  { name: "COH3 Stats", item: getLocalizedUrl("", locale) },
-  ...trail.map((link) => ({ name: link.name, item: getLocalizedUrl(link.path, locale) })),
-  { name },
-];
+const getBreadcrumbItems = (trail: StructuredDataLink[], name: string, locale: string) => {
+  if (!name?.trim()) return null;
+
+  return [
+    { name: "COH3 Stats", item: getLocalizedUrl("", locale) },
+    ...withNames(trail).map((link) => ({
+      name: link.name,
+      item: getLocalizedUrl(link.path, locale),
+    })),
+    { name },
+  ];
+};
 
 /**
  * schema.org WebPage of a page about the game, for the `JsonLdScript` component.
@@ -94,7 +106,8 @@ const getWebPageJsonLd = ({
   mainEntity?: Record<string, unknown>;
 }) => {
   const url = getLocalizedUrl(path, locale);
-  const hasItems = !!items && items.length > 0;
+  const namedItems = withNames(items ?? []);
+  const hasItems = namedItems.length > 0;
 
   return {
     "@context": "https://schema.org",
@@ -112,8 +125,8 @@ const getWebPageJsonLd = ({
       ? {
           mainEntity: {
             "@type": "ItemList",
-            numberOfItems: items.length,
-            itemListElement: items.map((item, index) => ({
+            numberOfItems: namedItems.length,
+            itemListElement: namedItems.map((item, index) => ({
               "@type": "ListItem",
               position: index + 1,
               name: item.name,
