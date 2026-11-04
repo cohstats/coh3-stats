@@ -88,6 +88,25 @@ describe("PageJsonLd", () => {
     ]);
   });
 
+  it("names the last item after the page when the breadcrumb name is empty", () => {
+    const [breadcrumbs] = renderJsonLd(
+      <PageJsonLd path="/explorer/races/american/units/x" name="Unit X" breadcrumbName="" />,
+    );
+
+    expect(breadcrumbs.itemListElement[1]).toEqual({
+      "@type": "ListItem",
+      position: 2,
+      name: "Unit X",
+    });
+  });
+
+  it("has no breadcrumb trail when the page has no name", () => {
+    const [webPage, ...rest] = renderJsonLd(<PageJsonLd path="/matches/1" name="" />);
+
+    expect(rest).toHaveLength(0);
+    expect(webPage["@type"]).toBe("WebPage");
+  });
+
   it("has the site instead of the breadcrumb trail on the home page", () => {
     const [site, webPage, ...rest] = renderJsonLd(<PageJsonLd path="" name="COH3 Stats" />);
 

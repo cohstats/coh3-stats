@@ -38,6 +38,16 @@ describe("getBreadcrumbItems", () => {
       ],
     );
   });
+
+  it("skips the links without a name, Google requires a name for every item", () => {
+    expect(
+      getBreadcrumbItems([{ name: "", path: "/explorer" }], "Riflemen", "en")?.map((i) => i.name),
+    ).toEqual(["COH3 Stats", "Riflemen"]);
+  });
+
+  it("has no trail when the current page has no name", () => {
+    expect(getBreadcrumbItems([{ name: "Explorer", path: "/explorer" }], " ", "en")).toBeNull();
+  });
 });
 
 describe("getWebPageJsonLd", () => {

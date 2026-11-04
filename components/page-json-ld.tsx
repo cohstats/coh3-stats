@@ -54,6 +54,8 @@ const PageJsonLd = ({
   const { locale = "en" } = useRouter();
   // The home page canonical is the site url, without the trailing slash
   const isHomePage = path === "" || path === "/";
+  // An empty breadcrumb name (e.g. a unit without a screen name) falls back to the page name
+  const breadcrumbItems = getBreadcrumbItems(trail, breadcrumbName?.trim() || name, locale);
 
   return (
     <>
@@ -61,7 +63,7 @@ const PageJsonLd = ({
       {isHomePage ? (
         <JsonLdScript data={getSiteJsonLd()} scriptKey="site-jsonld" />
       ) : (
-        <BreadcrumbJsonLd items={getBreadcrumbItems(trail, breadcrumbName ?? name, locale)} />
+        breadcrumbItems && <BreadcrumbJsonLd items={breadcrumbItems} />
       )}
       <JsonLdScript
         data={getWebPageJsonLd({
