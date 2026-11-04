@@ -78,9 +78,10 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          # Only runs on push to master: master, master-<sha>, latest, development
           tags: |
             type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable=${{ github.ref_name == 'master' }}
             type=raw,value=development,enable=${{ github.ref_name == 'master' }}
@@ -102,10 +103,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          # Push a single image manifest. With attestations enabled, each build also pushes
-          # an attestation manifest + image index, which show up in GHCR as untagged sha256 versions.
-          provenance: false
-          sbom: false
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
           secrets: |
             ladder_tournament_api_token=${{ secrets.LADDER_TOURNAMENT_API_TOKEN }}
             ironclad_tournament_api_token=${{ secrets.IRONCLAD_TOURNAMENT_API_TOKEN }}
