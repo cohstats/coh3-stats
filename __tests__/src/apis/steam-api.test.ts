@@ -90,6 +90,25 @@ describe("getCOH3SteamNews", () => {
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 
+  it("refreshes the cached news on request, at most once a minute", async () => {
+    const now = jest.spyOn(Date, "now").mockReturnValue(0);
+
+    // One news + one events request per fetch.
+    await getCOH3SteamNews(3);
+    now.mockReturnValue(30 * 1000);
+    await getCOH3SteamNews(3, true);
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    now.mockReturnValue(61 * 1000);
+    await getCOH3SteamNews(3, true);
+    expect(global.fetch).toHaveBeenCalledTimes(4);
+
+    // The refreshed news is cached again.
+    await getCOH3SteamNews(3);
+    expect(global.fetch).toHaveBeenCalledTimes(4);
+    now.mockRestore();
+  });
+
   it("does not cache a failed fetch", async () => {
     // @ts-ignore
     jest.spyOn(global, "fetch").mockImplementation(() => Promise.reject(new Error("down")));

@@ -94,7 +94,7 @@ describe("getNews", () => {
 
     const result = await getNews();
 
-    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(300);
+    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(300, false);
     expect(result.newsitems.map((i) => i.gid)).toEqual([
       "local-hot",
       "steam-1",
@@ -128,6 +128,6 @@ describe("getNews", () => {
     expect(result.newsitems.map((i) => i.gid)).toEqual(["local-top", "steam-1", "steam-2"]);
     expect(result.newsitems).toHaveLength(3);
     expect(result.count).toBe(4);
-    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(3);
+    expect(mockedGetCOH3SteamNews).toHaveBeenCalledWith(3, false);
   });
 });
