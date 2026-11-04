@@ -62,6 +62,7 @@ const getProps = async (id: string) => {
 
 describe("/news/[id]", () => {
   beforeEach(() => {
+    mockedGetNews.mockReset();
     mockedGetNews.mockResolvedValue({ count: newsitems.length, newsitems });
     jest.spyOn(console, "log").mockImplementation(() => {});
   });
@@ -89,6 +90,27 @@ describe("/news/[id]", () => {
 
     expect(result).toEqual({ notFound: true });
     expect(setHeader).not.toHaveBeenCalled();
+    expect(mockedGetNews).toHaveBeenLastCalledWith(undefined, true);
+  });
+
+  it("reloads the news for a post newer than the cached list", async () => {
+    const fresh: NewsItem = { gid: "fresh", title: "Fresh", date: 500, image: null };
+    mockedGetNews.mockImplementation(async (_count, refresh) =>
+      refresh
+        ? { count: newsitems.length + 1, newsitems: [fresh, ...newsitems] }
+        : { count: newsitems.length, newsitems },
+    );
+
+    const props = await getProps("fresh");
+
+    expect(props.item.title).toBe("Fresh");
+    expect(props.olderItem).toEqual({ gid: "patch", title: "Hot Fix" });
+  });
+
+  it("doesn't reload the news for a cached article", async () => {
+    await getProps("patch");
+
+    expect(mockedGetNews).toHaveBeenCalledTimes(1);
   });
 
   it("renders links back to all news and to the neighbours", async () => {

@@ -149,14 +149,30 @@ const fetchCOH3SteamNews = async (count: number): Promise<FetchedCOH3SteamNews> 
 const STEAM_NEWS_CACHE_TTL_MS = 30 * 60 * 1000;
 // News with fallback categories is kept briefly, so the categories come back soon.
 const STEAM_NEWS_WITHOUT_EVENT_TYPES_TTL_MS = 60 * 1000;
-const steamNewsCache = new Map<number, { expiresAt: number; news: Promise<COH3SteamNewsType> }>();
+// A forced refresh reuses news fetched within this window, so unknown article ids can't flood Steam.
+const STEAM_NEWS_MIN_REFRESH_AGE_MS = 60 * 1000;
+const steamNewsCache = new Map<
+  number,
+  { fetchedAt: number; expiresAt: number; news: Promise<COH3SteamNewsType> }
+>();
 
-const getCOH3SteamNews = (count = 100): Promise<COH3SteamNewsType> => {
+/**
+ * @param refresh Skip the cached news unless it's under a minute old. For a new post
+ * which is already on the home page, but not yet in this process's cached list.
+ */
+const getCOH3SteamNews = (count = 100, refresh = false): Promise<COH3SteamNewsType> => {
   const cached = steamNewsCache.get(count);
-  if (cached && cached.expiresAt > Date.now()) return cached.news;
+  if (
+    cached &&
+    cached.expiresAt > Date.now() &&
+    !(refresh && Date.now() - cached.fetchedAt >= STEAM_NEWS_MIN_REFRESH_AGE_MS)
+  ) {
+    return cached.news;
+  }
 
   // Cache the promise, so concurrent requests share one Steam fetch.
   const entry = {
+    fetchedAt: Date.now(),
     expiresAt: Date.now() + STEAM_NEWS_CACHE_TTL_MS,
     news: fetchCOH3SteamNews(count).then(({ news, hasEventTypes }) => {
       // A newer fetch may have replaced this entry in the meantime.
