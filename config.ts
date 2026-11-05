@@ -62,7 +62,7 @@ const statsPatchSelector: Record<
   },
   "2.5.6": {
     from: "2026-07-29",
-    to: "2026-11-4",
+    to: "2026-11-04",
     value: "2.5.6",
     label: "2.5.0 - 2.5.6",
     group: "2.5.x",
