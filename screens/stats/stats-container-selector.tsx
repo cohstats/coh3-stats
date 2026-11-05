@@ -104,12 +104,10 @@ const StatsContainerSelector = ({ statsType }: { statsType: "gameStats" | "mapSt
       }
     }
 
-    if (
-      !(
-        valueDatePicker[0]?.getTime() === fromQuery?.getTime() &&
-        valueDatePicker[1]?.getTime() === toQuery?.getTime()
-      )
-    ) {
+    if (!(
+      valueDatePicker[0]?.getTime() === fromQuery?.getTime() &&
+      valueDatePicker[1]?.getTime() === toQuery?.getTime()
+    )) {
       setValueDatePicker([fromQuery, toQuery]);
     }
 
