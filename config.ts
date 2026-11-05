@@ -53,9 +53,16 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
+  "3.0.0": {
+    from: "2026-11-5",
+    to: "now",
+    value: "3.0.0",
+    label: "3.0",
+    group: "3.x",
+  },
   "2.5.6": {
     from: "2026-07-29",
-    to: "now",
+    to: "2026-11-04",
     value: "2.5.6",
     label: "2.5.0 - 2.5.6",
     group: "2.5.x",
@@ -259,11 +266,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "2.5.6";
+const latestPatch = "3.0.0";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "3.0.0": {
+      dataTag: "v3.0.0-1",
+      dataTime: "05/Nov/2026",
+    },
     "2.5.6": {
       dataTag: "v2.5.3-3", // 2.5.6 has no data changes from 2.5.3
       dataTime: "31/July/2026",
