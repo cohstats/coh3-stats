@@ -2,21 +2,21 @@
   {
     "id": "hoff_player_fighting_position_halftrack_us",
     "icon": "races/american/buildings/fighting_position_us",
-    "name": "",
+    "name": "Fighting Position",
     "faction": "american",
     "symbol": "common/units/symbols/building_west_german_sandbags_symbol"
   },
   {
     "id": "hoff_player_fighting_position_us",
     "icon": "races/american/buildings/fighting_position_us",
-    "name": "",
+    "name": "Fighting Position",
     "faction": "american",
     "symbol": "common/units/symbols/building_west_german_sandbags_symbol"
   },
   {
     "id": "hoff_player_french_fighting_position_us",
     "icon": "races/american/buildings/fighting_position_us",
-    "name": "",
+    "name": "Fighting Position",
     "faction": "american",
     "symbol": "common/units/symbols/building_west_german_sandbags_symbol"
   },
@@ -49,11 +49,11 @@
     "symbol": "races/common/symbols/engineer"
   },
   {
-    "id": "hoff_enemy_paratrooper_us",
-    "icon": "races/american/infantry/paratrooper_us",
-    "name": "Paratrooper Squad",
+    "id": "hoff_enemy_french_infantry_us",
+    "icon": "races/american/infantry/french_infantry_us",
+    "name": "French Rifle Section",
     "faction": "american",
-    "symbol": "races/american/symbols/paratrooper_us"
+    "symbol": "races/american/symbols/french_infantry_us"
   },
   {
     "id": "hoff_enemy_ranger_us",
@@ -89,6 +89,13 @@
     "name": "Sniper",
     "faction": "american",
     "symbol": "races/common/symbols/sniper"
+  },
+  {
+    "id": "hoff_enemy_ssf_commandos_us",
+    "icon": "races/american/infantry/ssf_commandos_us",
+    "name": "SSF Commando Squad",
+    "faction": "american",
+    "symbol": "races/american/symbols/ssf_commandos_us"
   },
   {
     "id": "hoff_player_assault_engineer_us",
@@ -173,6 +180,13 @@
     "name": "Riflemen Squad",
     "faction": "american",
     "symbol": "races/american/symbols/riflemen_us"
+  },
+  {
+    "id": "hoff_player_saboteurs_battlegroup_partisan_us",
+    "icon": "races/american/infantry/partisan_sabotour",
+    "name": "Saboteur Squad",
+    "faction": "american",
+    "symbol": "races/american/symbols/partisan_saboteur"
   },
   {
     "id": "hoff_player_scout_us",
@@ -273,6 +287,13 @@
     "symbol": "races/american/symbols/chaffee"
   },
   {
+    "id": "hoff_enemy_char_b1_us",
+    "icon": "races/american/vehicles/char_b1_us",
+    "name": "Char B1 Heavy Tank",
+    "faction": "american",
+    "symbol": "races/american/symbols/char_b1_us"
+  },
+  {
     "id": "hoff_enemy_greyhound_us",
     "icon": "races/american/vehicles/greyhound_us",
     "name": "M8 Greyhound Armored Car",
@@ -322,6 +343,13 @@
     "symbol": "races/american/symbols/sherman_m4a3_bulldozer_us"
   },
   {
+    "id": "hoff_enemy_sherman_easy_8_us",
+    "icon": "races/american/vehicles/sherman_easy_8_us",
+    "name": "M4A3E8 Sherman Easy Eight",
+    "faction": "american",
+    "symbol": "races/american/symbols/sherman_easy_8_us"
+  },
+  {
     "id": "hoff_enemy_sherman_us",
     "icon": "races/american/vehicles/sherman_us",
     "name": "M4A1 Sherman Medium Tank",
@@ -364,6 +392,13 @@
     "symbol": "races/american/symbols/m3_m75_gmc"
   },
   {
+    "id": "hoff_player_halftrack_assault_us",
+    "icon": "races/american/vehicles/halftrack_assault_us",
+    "name": "M3 Assault Carrier",
+    "faction": "american",
+    "symbol": "races/american/symbols/halftrack_assault_us"
+  },
+  {
     "id": "hoff_player_halftrack_quad_us",
     "icon": "races/american/vehicles/halftrack_quad_us",
     "name": "M16 Multiple Gun Motor Carriage",
@@ -390,6 +425,13 @@
     "name": "M26 Pershing Heavy Tank",
     "faction": "american",
     "symbol": "races/american/symbols/pershing_us"
+  },
+  {
+    "id": "hoff_player_m29_weasal_us",
+    "icon": "races/american/vehicles/m_29_weassel",
+    "name": "M29 Weasel Recon Vehicle",
+    "faction": "american",
+    "symbol": "races/american/symbols/weasel"
   },
   {
     "id": "hoff_player_pershing_us",
@@ -446,6 +488,20 @@
     "name": "1⁄4-ton 4x4 Truck",
     "faction": "american",
     "symbol": "races/american/symbols/truck_4x4_us"
+  },
+  {
+    "id": "goon_gun_pit_us",
+    "icon": "races/american/buildings/mortar_pit_us",
+    "name": "!Goon Gun Pit",
+    "faction": "american",
+    "symbol": "common/units/symbols/unit_german_m1938_120mm_mortar_symbol"
+  },
+  {
+    "id": "hmg_50cal_fighting_position_us",
+    "icon": "races/american/buildings/base_defense_us",
+    "name": "!HMG .50cal Fighting Position",
+    "faction": "american",
+    "symbol": "races/common/symbols/hmg_50_cal"
   },
   {
     "id": "hmg_fighting_position_us",
@@ -516,6 +572,27 @@
     "name": "Bazooka Squad",
     "faction": "american",
     "symbol": "races/american/symbols/bazooka_team_us"
+  },
+  {
+    "id": "brazilian_infantry_us",
+    "icon": "races/american/infantry/french_infantry_us",
+    "name": "!Brazilian Infantry",
+    "faction": "american",
+    "symbol": "races/american/symbols/french_infantry_us"
+  },
+  {
+    "id": "brazilian_lieutenant_us",
+    "icon": "talking_heads/captain_mackay",
+    "name": "!Brazilian Lieutenant Retinue",
+    "faction": "american",
+    "symbol": "races/american/symbols/captain_us"
+  },
+  {
+    "id": "captain_torch",
+    "icon": "races/american/infantry/captain_us",
+    "name": "Major George Russo",
+    "faction": "american",
+    "symbol": "races/american/symbols/captain_us"
   },
   {
     "id": "captain_us",
@@ -595,7 +672,21 @@
     "symbol": "races/common/symbols/sniper"
   },
   {
+    "id": "ssb_sniper_africa_us",
+    "icon": "races/british/infantry/sniper_uk",
+    "name": "SSB Sniper",
+    "faction": "american",
+    "symbol": "races/british/symbols/sniper_uk"
+  },
+  {
     "id": "ssf_commandos_us",
+    "icon": "races/american/infantry/ssf_commandos_us",
+    "name": "SSF Commando Squad",
+    "faction": "american",
+    "symbol": "races/american/symbols/ssf_commandos_us"
+  },
+  {
+    "id": "stealth_ssf_commandos_torch",
     "icon": "races/american/infantry/ssf_commandos_us",
     "name": "SSF Commando Squad",
     "faction": "american",
@@ -749,6 +840,20 @@
     "symbol": "races/american/symbols/pershing_us"
   },
   {
+    "id": "priest_kangaroo_us",
+    "icon": "races/american/vehicles/priest_kangaroo_us",
+    "name": "!Priest Kangaroo Carrier",
+    "faction": "american",
+    "symbol": "races/american/symbols/priest_kangaroo_us"
+  },
+  {
+    "id": "priest_us",
+    "icon": "races/american/vehicles/priest_us",
+    "name": "M7 Priest SPG",
+    "faction": "american",
+    "symbol": "races/american/symbols/priest_us"
+  },
+  {
     "id": "recovery_vehicle_us",
     "icon": "races/american/vehicles/recovery_vehicle_us",
     "name": "M31 Recovery Vehicle",
@@ -764,6 +869,13 @@
   },
   {
     "id": "sherman_76mm_us",
+    "icon": "races/american/vehicles/sherman_76mm_us",
+    "name": "M4A1(76) Sherman Medium Tank",
+    "faction": "american",
+    "symbol": "races/american/symbols/sherman_m4a3_us"
+  },
+  {
+    "id": "sherman_76mm_whizbang_jettisoned_us",
     "icon": "races/american/vehicles/sherman_76mm_us",
     "name": "M4A1(76) Sherman Medium Tank",
     "faction": "american",
@@ -791,11 +903,25 @@
     "symbol": "races/american/symbols/sherman_m4a3_us"
   },
   {
+    "id": "sherman_whizbang_jettisoned_us",
+    "icon": "races/american/vehicles/sherman_us",
+    "name": "M4A1 Sherman Medium Tank",
+    "faction": "american",
+    "symbol": "races/american/symbols/sherman_m4a3_us"
+  },
+  {
     "id": "sherman_whizbang_us",
     "icon": "races/american/vehicles/sherman_whizbang_us",
     "name": "M4A1 Sherman Whizbang",
     "faction": "american",
     "symbol": "common/units/symbols/vehicle_aef_calliope_symbol"
+  },
+  {
+    "id": "stuart_blade_us",
+    "icon": "races/american/vehicles/stuart_us",
+    "name": "M3 Stuart Light Tank",
+    "faction": "american",
+    "symbol": "races/british/symbols/stuart_uk"
   },
   {
     "id": "truck_4x4_us",
@@ -840,6 +966,13 @@
     "symbol": "races/british/symbols/australian_light_infantry_africa_uk"
   },
   {
+    "id": "hoff_enemy_canadian_heavy_infantry_africa_uk",
+    "icon": "races/british/infantry/heavy_infantry_canadian_uk",
+    "name": "Canadian Shock Section",
+    "faction": "british",
+    "symbol": "races/british/symbols/canadian_heavy_infantry_uk"
+  },
+  {
     "id": "hoff_enemy_commando_africa_uk",
     "icon": "races/british/infantry/commando_uk",
     "name": "Commando Section",
@@ -866,6 +999,13 @@
     "name": "Royal Engineer Section",
     "faction": "british",
     "symbol": "races/british/symbols/sapper_uk"
+  },
+  {
+    "id": "hoff_enemy_ssb_sniper_africa_uk",
+    "icon": "races/british/infantry/sniper_uk",
+    "name": "SSB Sniper",
+    "faction": "british",
+    "symbol": "races/british/symbols/sniper_uk"
   },
   {
     "id": "hoff_enemy_tommy_africa_uk",
@@ -1015,6 +1155,13 @@
     "symbol": "races/common/symbols/mortar"
   },
   {
+    "id": "hoff_player_mortar_heavy_4_2_africa_uk",
+    "icon": "races/british/team_weapons/mortar_heavy_4_2_africa_uk",
+    "name": "ML 4.2-inch Heavy Mortar Team",
+    "faction": "british",
+    "symbol": "common/units/symbols/unit_german_m1938_120mm_mortar_symbol"
+  },
+  {
     "id": "hoff_player_pack_howitzer_75mm_africa_uk",
     "icon": "races/british/team_weapons/pack_howitzer_75mm_africa_uk",
     "name": "M1 Pack Howitzer Team",
@@ -1027,6 +1174,13 @@
     "name": "Archer Tank Destroyer",
     "faction": "british",
     "symbol": "races/british/symbols/archer_tank_destroyer"
+  },
+  {
+    "id": "hoff_enemy_bishop_africa_uk",
+    "icon": "races/british/vehicles/bishop_africa_uk",
+    "name": "Bishop Self-propelled Artillery",
+    "faction": "british",
+    "symbol": "races/british/symbols/bishop_spg"
   },
   {
     "id": "hoff_enemy_centaur_africa_uk",
@@ -1092,6 +1246,13 @@
     "symbol": "races/british/symbols/matilda_uk"
   },
   {
+    "id": "hoff_enemy_sherman_firefly_africa_uk",
+    "icon": "races/british/vehicles/sherman_firefly_polish_uk",
+    "name": "Sherman VC Firefly Tank Destroyer",
+    "faction": "british",
+    "symbol": "races/british/symbols/sherman_firefly_uk"
+  },
+  {
     "id": "hoff_enemy_stuart_africa_uk",
     "icon": "races/british/vehicles/stuart_africa_uk",
     "name": "M3 Stuart Light Tank",
@@ -1128,7 +1289,7 @@
   },
   {
     "id": "hoff_player_churchill_black_prince_africa_uk",
-    "icon": "races/british/vehicles/churchill_black_prince_africa_uk",
+    "icon": "races/british/vehicles/churchill_black_prince_armor_africa_uk",
     "name": "Churchill Black Prince Heavy Tank",
     "faction": "british",
     "symbol": "races/british/symbols/churchill_black_prince"
@@ -1139,6 +1300,13 @@
     "name": "Churchill Crocodile Heavy Tank",
     "faction": "british",
     "symbol": "races/british/symbols/churchill_crocodile_uk"
+  },
+  {
+    "id": "hoff_player_crusader_aa_africa_uk",
+    "icon": "races/british/vehicles/crusader_aa_africa_uk",
+    "name": "Crusader AA Medium Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/crusader_aa"
   },
   {
     "id": "hoff_player_crusader_africa_uk",
@@ -1216,6 +1384,13 @@
     "name": "M3 Stuart Light Tank",
     "faction": "british",
     "symbol": "races/british/symbols/stuart_uk"
+  },
+  {
+    "id": "hoff_player_valentine_command_uk",
+    "icon": "races/british/vehicles/valentine_uk",
+    "name": "Valentine II Medium Command Tank",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_british_valentine_symbol"
   },
   {
     "id": "at_gun_17pdr_pheasant_emplacement_uk",
@@ -1428,8 +1603,22 @@
     "symbol": "races/british/symbols/churchill_uk"
   },
   {
+    "id": "churchill_arv_africa_uk",
+    "icon": "races/british/vehicles/churchill_arv_africa_uk",
+    "name": "!Churchill ARV",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_arv_africa_uk"
+  },
+  {
+    "id": "churchill_avre_africa_uk",
+    "icon": "races/british/vehicles/churchill_avre_africa_uk",
+    "name": "Churchill AVRE Heavy Tank",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_avre_africa_uk"
+  },
+  {
     "id": "churchill_black_prince_africa_uk",
-    "icon": "races/british/vehicles/churchill_black_prince_africa_uk",
+    "icon": "races/british/vehicles/churchill_black_prince_armor_africa_uk",
     "name": "Churchill Black Prince Heavy Tank",
     "faction": "british",
     "symbol": "races/british/symbols/churchill_black_prince"
@@ -1440,6 +1629,13 @@
     "name": "Churchill Crocodile Heavy Tank",
     "faction": "british",
     "symbol": "races/british/symbols/churchill_crocodile_uk"
+  },
+  {
+    "id": "churchill_na75_75mm_africa_uk",
+    "icon": "races/british/vehicles/churchill_na75_75mm_africa_uk",
+    "name": "",
+    "faction": "british",
+    "symbol": "races/british/symbols/churchill_na75_75mm_africa_uk"
   },
   {
     "id": "crusader_57mm_africa_uk",
@@ -1540,6 +1736,13 @@
     "symbol": "races/british/symbols/at_gun_17pdr_mobile_uk"
   },
   {
+    "id": "priest_africa_uk",
+    "icon": "common/units/icons/vehicle_british_sexton",
+    "name": "M7B1 Priest Self-propelled Artillery",
+    "faction": "british",
+    "symbol": "common/units/symbols/vehicle_british_sexton_symbol"
+  },
+  {
     "id": "sherman_africa_uk",
     "icon": "races/british/vehicles/sherman_africa_uk",
     "name": "M4A1 Sherman Medium Tank",
@@ -1573,6 +1776,13 @@
     "name": "Siege Camp",
     "faction": "german",
     "symbol": "races/common/symbols/mortar_emplacement"
+  },
+  {
+    "id": "hoff_player_aa_gun_20mm_emplacement_ger",
+    "icon": "races/german/team_weapons/tw_20mm_emplacement_ger",
+    "name": "Flak 38 Anti-air Emplacement",
+    "faction": "german",
+    "symbol": "races/german/symbols/tw_20mm_emplacement_ger"
   },
   {
     "id": "hoff_player_at_gun_88mm_emplacement_ger",
@@ -1610,6 +1820,13 @@
     "symbol": "races/common/symbols/hmg_emplacement"
   },
   {
+    "id": "hoff_player_howitzer_obice_210_ger",
+    "icon": "races/german/team_weapons/tw_howitzer_obice_210_ger",
+    "name": "Obice da 210/22 Artillery Emplacement",
+    "faction": "german",
+    "symbol": "races/german/symbols/obice21022_wicd_dec"
+  },
+  {
     "id": "hoff_player_medical_bunker_ger",
     "icon": "races/german/buildings/bunker_medical_ger",
     "name": "Medical Bunker",
@@ -1638,11 +1855,18 @@
     "symbol": "races/common/symbols/engineer"
   },
   {
-    "id": "hoff_enemy_fallschirmjagers_ger",
-    "icon": "races/german/infantry/fallschirmjagers_ger",
-    "name": "Fallschirmjäger Squad",
+    "id": "hoff_enemy_assault_grenadier_ger",
+    "icon": "races/german/infantry/grenadier_ger",
+    "name": "Grenadier Squad",
     "faction": "german",
-    "symbol": "races/german/symbols/fallshirmjagers_ger"
+    "symbol": "races/german/symbols/grenadier_ger"
+  },
+  {
+    "id": "hoff_enemy_coastal_reserves_ger",
+    "icon": "races/german/infantry/coastal_reserves_squad_wicd",
+    "name": "Coastal Reserves Squad",
+    "faction": "german",
+    "symbol": "races/german/symbols/coastal_reserves_squad_dec"
   },
   {
     "id": "hoff_enemy_grenadier_ger",
@@ -1862,6 +2086,13 @@
     "symbol": "races/german/symbols/kettenkrad"
   },
   {
+    "id": "hoff_enemy_l6_40_flame_ger",
+    "icon": "races/afrika_corps/vehicles/l6_40_flame_ak",
+    "name": "L6/40 Light Flame Tank",
+    "faction": "german",
+    "symbol": "races/afrika_corps/symbols/l6_40_ak"
+  },
+  {
     "id": "hoff_enemy_marder_iii_ger",
     "icon": "races/german/vehicles/marder_iii_german",
     "name": "Marder III M Tank Destroyer",
@@ -1888,6 +2119,13 @@
     "name": "Tiger Heavy Tank",
     "faction": "german",
     "symbol": "common/units/symbols/vehicle_german_tiger_symbol"
+  },
+  {
+    "id": "hoff_enemy_wespe_ger",
+    "icon": "races/german/vehicles/wespe_german",
+    "name": "Wespe Self-propelled Artillery",
+    "faction": "german",
+    "symbol": "races/german/symbols/wespe_spg"
   },
   {
     "id": "hoff_enemy_wirbelwind_ger",
@@ -2063,6 +2301,13 @@
     "name": "Pantherturm Emplacement",
     "faction": "german",
     "symbol": "races/german/symbols/pantherturm"
+  },
+  {
+    "id": "torch_artillery_obice_210_ger",
+    "icon": "races/german/team_weapons/tw_howitzer_obice_210_ger",
+    "name": "Obice da 210/22 Artillery Emplacement",
+    "faction": "german",
+    "symbol": "races/german/symbols/obice21022_wicd_dec"
   },
   {
     "id": "assault_grenadier_ger",
@@ -2268,6 +2513,13 @@
     "symbol": "races/german/symbols/halftrack_stummel_ger"
   },
   {
+    "id": "hummel_ger",
+    "icon": "races/german/vehicles/hummel_german",
+    "name": "!Hummel Self-Propelled Artillery",
+    "faction": "german",
+    "symbol": "races/german/symbols/wespe_spg"
+  },
+  {
     "id": "jagdpanzer_iv_sdkfz_162_ger",
     "icon": "races/german/vehicles/stug_iii_german",
     "name": "StuG III G Assault Gun",
@@ -2317,6 +2569,27 @@
     "symbol": "races/german/symbols/panzer_iv_ger"
   },
   {
+    "id": "royal_engineers_armored_car_ger",
+    "icon": "races/german/vehicles/armored_car_german",
+    "name": "221 Scout Car",
+    "faction": "german",
+    "symbol": "races/german/symbols/armored_car_221_ger"
+  },
+  {
+    "id": "royal_engineers_tiger_ger",
+    "icon": "races/german/vehicles/tiger_german",
+    "name": "Tiger Heavy Tank",
+    "faction": "german",
+    "symbol": "common/units/symbols/vehicle_german_tiger_symbol"
+  },
+  {
+    "id": "royal_engineers_wirbelwind_ger",
+    "icon": "races/german/vehicles/wirbelwind_german",
+    "name": "Wirbelwind Flakpanzer",
+    "faction": "german",
+    "symbol": "races/german/symbols/wirblewind"
+  },
+  {
     "id": "stug_iii_d_ger",
     "icon": "races/german/vehicles/stug_iii_d_german",
     "name": "StuG III D Assault Gun",
@@ -2338,6 +2611,13 @@
     "symbol": "races/german/symbols/sturmtiger_ger"
   },
   {
+    "id": "tiger_boss_ger",
+    "icon": "races/afrika_corps/vehicles/tiger_ace_ak",
+    "name": "Tiger Heavy Tank",
+    "faction": "german",
+    "symbol": "common/units/symbols/vehicle_german_tiger_symbol"
+  },
+  {
     "id": "tiger_ger",
     "icon": "races/german/vehicles/tiger_german",
     "name": "Tiger Heavy Tank",
@@ -2355,6 +2635,13 @@
     "id": "truck_2_5_ger",
     "icon": "races/german/vehicles/2_5_truck_german",
     "name": "2.5-tonne Utility Truck",
+    "faction": "german",
+    "symbol": "races/german/symbols/2_5_truck_ger"
+  },
+  {
+    "id": "truck_2_5_logistics_ger",
+    "icon": "races/german/vehicles/2_5_truck_german",
+    "name": "!2.5-tonne Logistics Truck",
     "faction": "german",
     "symbol": "races/german/symbols/2_5_truck_ger"
   },
@@ -2392,6 +2679,20 @@
     "name": "Bersaglieri Squad",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/bersaglieri"
+  },
+  {
+    "id": "hoff_enemy_guastatori_ak",
+    "icon": "races/afrika_corps/infantry/guastatori_ak",
+    "name": "Guastatori Squad",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/guastatori"
+  },
+  {
+    "id": "hoff_enemy_kriegsmarine_infantry_ak",
+    "icon": "races/afrika_corps/infantry/kriegsmarine_ak",
+    "name": "Kriegsmariner Squad",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/kriegsmarine"
   },
   {
     "id": "hoff_enemy_panzergrenadier_ak",
@@ -2520,6 +2821,13 @@
     "symbol": "races/german/symbols/armored_car_222_ger"
   },
   {
+    "id": "hoff_enemy_armored_car_8_rad_ak",
+    "icon": "races/afrika_corps/vehicles/armored_car_8_rad_ak",
+    "name": "8 Rad Armored Car",
+    "faction": "dak",
+    "symbol": "races/german/symbols/armored_car_8_rad_ger"
+  },
+  {
     "id": "hoff_enemy_halftrack_250_ak",
     "icon": "races/afrika_corps/vehicles/halftrack_250_ak",
     "name": "250 Light Carrier",
@@ -2597,6 +2905,13 @@
     "symbol": "races/german/symbols/panzer_iii_flame_ger"
   },
   {
+    "id": "hoff_enemy_semovente_75_18_ak",
+    "icon": "races/afrika_corps/vehicles/semovente_75_18_ak",
+    "name": "Semovente da 75/18 Assault Gun",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/semovente"
+  },
+  {
     "id": "hoff_enemy_stug_iii_ak",
     "icon": "races/afrika_corps/vehicles/stug_iii_ak",
     "name": "StuG III G Assault Gun",
@@ -2651,6 +2966,13 @@
     "name": "Mortar Half-track",
     "faction": "dak",
     "symbol": "races/german/symbols/halftrack_250_mortar_ger"
+  },
+  {
+    "id": "hoff_player_halftrack_250_vampire_ak",
+    "icon": "races/afrika_corps/vehicles/vampire_ht_ak_icon",
+    "name": "250/3 Funkpanzerwagen",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/vampire_ht_ak_dec"
   },
   {
     "id": "hoff_player_halftrack_251_stuka_ak",
@@ -2723,6 +3045,13 @@
     "symbol": "races/german/symbols/panzer_iii_flame_ger"
   },
   {
+    "id": "hoff_player_panzer_iv_command_ak",
+    "icon": "races/afrika_corps/vehicles/panzer_iv_command_stubby_ak",
+    "name": "Command Panzer IV Medium Tank",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/panzer_iv_command_ak"
+  },
+  {
     "id": "hoff_player_semovente_75_18_ak",
     "icon": "races/afrika_corps/vehicles/semovente_75_18_ak",
     "name": "Semovente da 75/18 Assault Gun",
@@ -2751,6 +3080,13 @@
     "symbol": "races/german/symbols/tiger_ger"
   },
   {
+    "id": "hoff_player_truck_2_5_medical_ak",
+    "icon": "races/afrika_corps/vehicles/2_5_truck_medical_ak",
+    "name": "2.5-tonne Medical Truck",
+    "faction": "dak",
+    "symbol": "races/german/symbols/2_5_truck_medical_ger"
+  },
+  {
     "id": "hmg_bunker_ak",
     "icon": "races/afrika_corps/buildings/base_defense_ak",
     "name": "HMG Nest",
@@ -2777,6 +3113,13 @@
     "name": "Bersaglieri Squad",
     "faction": "dak",
     "symbol": "races/afrika_corps/symbols/bersaglieri"
+  },
+  {
+    "id": "folgore_paratroopers_ak",
+    "icon": "common/units/icons/unit_german_panzer_grenadier",
+    "name": "Folgore Paratrooper Squad",
+    "faction": "dak",
+    "symbol": "common/units/symbols/panzergrenadier_ger"
   },
   {
     "id": "guastatori_ak",
@@ -2989,6 +3332,13 @@
     "symbol": "races/afrika_corps/symbols/marder_iii_ak"
   },
   {
+    "id": "p26_40_ak",
+    "icon": "races/afrika_corps/vehicles/p26_40_ak",
+    "name": "!P26/40 Medium Tank",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/p26_40_ak"
+  },
+  {
     "id": "panzer_iii_50mm_long_ak",
     "icon": "races/afrika_corps/vehicles/panzer_iii_ak",
     "name": "Panzer III L Medium Tank",
@@ -3046,6 +3396,13 @@
   },
   {
     "id": "tiger_ace_ak",
+    "icon": "races/afrika_corps/vehicles/tiger_ace_ak",
+    "name": "Tiger Ace Heavy Tank",
+    "faction": "dak",
+    "symbol": "races/afrika_corps/symbols/tiger_ace_ak"
+  },
+  {
+    "id": "tiger_ace_torch",
     "icon": "races/afrika_corps/vehicles/tiger_ace_ak",
     "name": "Tiger Ace Heavy Tank",
     "faction": "dak",
