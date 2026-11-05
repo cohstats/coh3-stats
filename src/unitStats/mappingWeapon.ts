@@ -19,10 +19,7 @@ type WeaponProjectileType = "none" | "direct" | "trajectory" | "artillery";
 type ProjectileTrajectoryType = "none" | "projectile_trajectory";
 
 type ProjectileFiringAngleType =
-  | "low_angle"
-  | "high_angle"
-  | "lowest_non_collide_angle"
-  | "unknown";
+  "low_angle" | "high_angle" | "lowest_non_collide_angle" | "unknown";
 
 type ProjectileData = {
   id: string;
