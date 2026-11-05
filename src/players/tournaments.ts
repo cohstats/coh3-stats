@@ -154,11 +154,7 @@ export type PlayerTournamentsData = {
 };
 
 export type PlayerIroncladResult =
-  | "champion"
-  | "runnerUp"
-  | "eliminated"
-  | "inProgress"
-  | "registered";
+  "champion" | "runnerUp" | "eliminated" | "inProgress" | "registered";
 
 export type PlayerIroncladMatch = {
   id: string;
