@@ -632,6 +632,15 @@ const OfficialMapKeys = [
   /* ---------- 2.5.0 Maps ---------- */
   "butcher_and_bolt_2p",
   "across_the_rhine_6p",
+  /* ---------- 3.0.0 Maps ---------- */
+  "ancona_railyard_2p",
+  "foggia_airfield_winter_6p",
+  "langres_winter_2p",
+  "mammut_8p",
+  "mignano_6p_redux",
+  "rapido_river_8p_redux",
+  "turin_8p",
+  "vire_river_valley_4p",
   /* ---------- Final Stand (Hold Off) Maps ---------- */
   "hoff_desert",
   "hoff_forest",
@@ -926,6 +935,39 @@ export const maps: Record<(typeof OfficialMapKeys)[number], OfficialMapValue> = 
   butcher_and_bolt_2p: {
     name: "Butcher & Bolt",
     url: "/butcher_and_bolt_2p/butcher_and_bolt_2p.webp",
+  },
+  /* ------------------ 3.0.0 Maps ------------------ */
+  ancona_railyard_2p: {
+    name: "Ancona Railyard",
+    url: "/ancona_railyard_2p/ancona_railyard_2p.webp",
+  },
+  foggia_airfield_winter_6p: {
+    name: "Foggia Airfield",
+    url: "/foggia_airfield_winter_6p/foggia_airfield_winter_6p.webp",
+  },
+  langres_winter_2p: {
+    name: "Langres Winter",
+    url: "/langres_winter_2p/langres_winter_2p.webp",
+  },
+  mammut_8p: {
+    name: "Radarstation Mammut",
+    url: "/mammut_8p/mammut_8p.webp",
+  },
+  mignano_6p_redux: {
+    name: "Mignano Summit",
+    url: "/mignano_6p_redux/mignano_6p_redux.webp",
+  },
+  rapido_river_8p_redux: {
+    name: "Rapido River Crossing",
+    url: "/rapido_river_8p_redux/rapido_river_8p_redux.webp",
+  },
+  turin_8p: {
+    name: "Turin Steelworks",
+    url: "/turin_8p/turin_8p.webp",
+  },
+  vire_river_valley_4p: {
+    name: "Vire River Valley",
+    url: "/vire_river_valley_4p/vire_river_valley_4p.webp",
   },
   /* ------------------ Final Stand (Hold Off) Maps ------------------ */
   // The CDN has only the marked variant of the minimaps for the Final Stand maps
