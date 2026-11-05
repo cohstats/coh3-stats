@@ -232,7 +232,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
 
   const selectedVet = Math.max(
     0,
-    Math.min(getMaxDpsVeterancyLevel(unit), Number(unit?.veterancyLevel ?? 0)),
+    Math.min(getMaxDpsVeterancyLevel(unit), Math.floor(Number(unit?.veterancyLevel ?? 0) || 0)),
   );
   const vet = getDpsVeterancyEffects(unit);
   const ranks = [
@@ -242,7 +242,14 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     unit?.sbps?.veterancyInfo?.four,
   ];
   const rawBonuses = ranks.slice(0, selectedVet).flatMap((rank) => rank?.modifiers ?? []);
-  const remainingBonuses = rawBonuses.filter((entry) => !inlineVetModifierIds.has(entry.id));
+  const remainingBonuses = rawBonuses.filter(
+    (entry) => !inlineVetModifierIds.has(entry.id.toUpperCase()),
+  );
+  // Preserve the exact contributing property IDs in the attack-speed badge.
+  const attackSpeedSources = [
+    "WEAPON_OVERALL_ATTACK_SPEED",
+    "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
+  ].filter((id) => rawBonuses.some((entry) => entry.id.toUpperCase() === id));
 
   // Automatic effects are read-only; manual values stay separate to avoid double-counting.
   // Burst rate uses the existing Rounds per Burst row in the interface, but is
@@ -273,7 +280,12 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       ? [{ id: "WEAPON_PENETRATION_MODIFIER", value: formatPercent(vet.penetrationMultiplier) }]
       : [],
     overallAttackSpeed: !approxEqual(vet.attackTimeMultiplier, 1)
-      ? [{ id: "WEAPON_OVERALL_ATTACK_SPEED", value: formatMultiplier(vet.attackTimeMultiplier) }]
+      ? [
+          {
+            id: attackSpeedSources.join(" + ") || "WEAPON_OVERALL_ATTACK_SPEED",
+            value: formatMultiplier(vet.attackTimeMultiplier),
+          },
+        ]
       : [],
     burstLength: !approxEqual(vet.burstDurationMultiplier, 1)
       ? [

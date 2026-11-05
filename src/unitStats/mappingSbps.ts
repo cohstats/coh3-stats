@@ -201,6 +201,7 @@ const getVeterancyRequirementIds = (requirements?: any[]) => {
 // custom_properties.custom_pbgid_properties[].custom_pbgid_property.pbg.
 // Our extracted veterancy.json starts *inside* the veterancy folder, so
 // remove that prefix before walking the JSON object.
+/** Resolve per-rank custom-property references against the extracted data. */
 const getVeterancyRankModifiers = (rank: any, veterancyRoot?: any): VeterancyModifierData[] => {
   if (!veterancyRoot) return [];
 
@@ -458,6 +459,7 @@ const BanishedRequirements = ["mass_production", "campaign"];
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
+/** Load SBPS records and enrich current-patch ranks when optional vet data exists. */
 const getSbpsStats = async (patch = "latest", locale = "en") => {
   if (patch == config.latestPatch) patch = "latest";
 
@@ -470,16 +472,23 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
     `sbps.json for patch ${patch}, locale ${locale}`,
   );
 
-  // Test the newly extracted veterancy data only for the latest patch in
-  // development. Older patches and production keep the existing card behavior
-  // until veterancy.json is published for those versions too.
-  const veterancyRoot =
-    process.env.NODE_ENV === "development" && patch === "latest"
-      ? await fetchJsonWithLogging(
-          config.getPatchDataUrl("veterancy.json", patch),
-          `veterancy.json for patch ${patch}`,
-        )
-      : undefined;
+  // The veterancy file is optional: older datasets may not contain it yet.
+  // Always retain the normal SBPS data when the additional request fails.
+  // When a latest-patch file is published, production can use it too.
+  let veterancyRoot: any = undefined;
+  if (patch === "latest") {
+    try {
+      veterancyRoot = await fetchJsonWithLogging(
+        config.getPatchDataUrl("veterancy.json", patch),
+        `veterancy.json for patch ${patch}`,
+      );
+    } catch (error) {
+      console.warn(
+        "Optional veterancy data unavailable; continuing without rank modifiers",
+        error,
+      );
+    }
+  }
 
   const sbpsSetAll: SbpsType[] = [];
 

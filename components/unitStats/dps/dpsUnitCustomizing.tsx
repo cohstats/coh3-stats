@@ -130,7 +130,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   const maxVeterancy = getMaxDpsVeterancyLevel(props.unit);
   const selectedVeterancy = Math.max(
     0,
-    Math.min(maxVeterancy, Number(props.unit.veterancyLevel ?? 0)),
+    Math.min(maxVeterancy, Math.floor(Number(props.unit.veterancyLevel ?? 0) || 0)),
   );
   function onVeterancyChange(level: number) {
     props.unit.veterancyLevel = selectedVeterancy === level ? 0 : level;

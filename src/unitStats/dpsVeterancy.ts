@@ -57,29 +57,53 @@ const neutral = (): DpsVeterancyEffects => ({
 
 const levelKeys = ["one", "two", "three", "four"] as const;
 
+// Keep this list in sync with the modifier switch in getDpsVeterancyEffects.
+// A rank containing only unsupported properties should not enable a DPS selector.
+const supportedModifierIds = new Set([
+  "WEAPON_ACCURACY_MODIFIER",
+  "WEAPON_MOVING_ACCURACY_MODIFIER",
+  "WEAPON_DAMAGE_MODIFIER",
+  "WEAPON_DAMAGE_ADDITION_MODIFIER",
+  "RECEIVED_ACCURACY_MODIFIER",
+  "RECEIVED_DAMAGE_MODIFIER",
+  "WEAPON_PENETRATION_MODIFIER",
+  "WEAPON_OVERALL_ATTACK_SPEED",
+  "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
+  "WEAPON_BURST_DURATION_MODIFIER",
+  "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
+  "HEALTH_MODIFIER_ADDITION",
+  "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
+  "WEAPON_RANGE_MODIFIER",
+]);
+
+const isSupportedModifier = (modifier: VetModifier): boolean =>
+  supportedModifierIds.has(modifier.id.toUpperCase());
+
+/** Return the highest rank containing a DPS-supported modifier. */
 export const getMaxDpsVeterancyLevel = (unit?: VeterancyCarrier): number => {
   const ranks = unit?.sbps?.veterancyInfo;
   if (!ranks) return 0;
   // The older online patches do not have imported modifier data yet.
   // Do not offer buttons that appear to work but have no calculation effect.
-  if (!levelKeys.some((key) => ranks[key]?.modifiers?.length)) return 0;
   let max = 0;
   for (const [index, key] of levelKeys.entries()) {
-    const rank = ranks[key];
-    if (rank && (rank.exp || rank.screenName || rank.modifiers?.length)) {
+    if (ranks[key]?.modifiers?.some(isSupportedModifier)) {
       max = index + 1;
     }
   }
   return max;
 };
 
+/** Combine the supported modifiers from rank 1 through the selected rank. */
 export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEffects => {
   const result = neutral();
   const info = unit?.sbps?.veterancyInfo;
   if (!info) return result;
 
   const requested = Math.floor(Number(unit?.veterancyLevel ?? 0));
-  const level = Math.max(0, Math.min(requested, getMaxDpsVeterancyLevel(unit)));
+  const level = Number.isFinite(requested)
+    ? Math.max(0, Math.min(requested, getMaxDpsVeterancyLevel(unit)))
+    : 0;
 
   // MULT_ADD modifiers add together across ranks, then multiply with other
   // attack-time modifiers. E.g. -0.2 and -0.4 combine to 1 - 0.6 = 0.4,
@@ -92,7 +116,8 @@ export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEff
       const value = modifier.value;
       if (!Number.isFinite(value)) continue;
 
-      switch (modifier.id) {
+      // IDs are case-insensitive in the extracted custom-property data.
+      switch (modifier.id.toUpperCase()) {
         case "WEAPON_ACCURACY_MODIFIER":
           result.accuracyMultiplier *= value;
           break;
@@ -144,6 +169,8 @@ export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEff
 
   // Normal attack-time multipliers combine multiplicatively with the single
   // multiplier formed from the sum of all MULT_ADD values.
-  result.attackTimeMultiplier *= 1 + attackSpeedMultAddTotal;
+  // Avoid negative or zero attack durations on extreme/inconsistent data.
+  // This is a numerical safety floor, not a statement about in-game caps.
+  result.attackTimeMultiplier *= Math.max(0.01, 1 + attackSpeedMultAddTotal);
   return result;
 };
