@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 //import { LevelContext } from './LevelContext.js';
-
 import {
   Avatar,
   Group,
@@ -15,6 +14,7 @@ import {
   Card,
   HoverCard,
   Space,
+  UnstyledButton,
 } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import { WeaponSearch } from "./weaponSearch";
@@ -32,11 +32,15 @@ import {
   createDefaultCustomModifiers,
   getModifiedHitpoints,
 } from "../../../src/unitStats/dpsCommon";
+import { getMaxDpsVeterancyLevel } from "../../../src/unitStats/dpsVeterancy";
 import { CustomConfigModal } from "./CustomConfigModal";
 import Link from "next/link";
 import { UnitSquadCard } from "../../unit-cards/unit-squad-card";
 import { UnitCostCard } from "../../unit-cards/unit-cost-card";
 import { HitpointCard } from "../../unit-cards/hitpoints-card";
+
+const vetStarIconPath = "/icons/hud/decorators/vet_star.png";
+const vetStarEmptyIconPath = "/icons/hud/decorators/vet_star_empty.png";
 
 interface IUnitProps {
   unit: CustomizableUnit;
@@ -58,26 +62,22 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     const weaponUpgrades = props.allowAllWeapons
       ? props.weapons.map((weapon) => mapWeaponMember(props.unit.sbps, props.ebps[0], weapon))
       : getSbpsUpgrades(props.unit.sbps, props.ebps, props.weapons);
-
     for (const weaponUpgrade of weaponUpgrades) {
       // check if weapon is already available
       if (sbpsWeapons.find((member) => member.weapon_id == weaponUpgrade.weapon_id)) continue;
       sbpsWeapons.push(weaponUpgrade);
     }
-
     setWeaponList(sbpsWeapons);
-  }, [props.ebps, props.unit.sbps, props.weapons]);
+  }, [props.ebps, props.unit.sbps, props.weapons, props.allowAllWeapons]);
 
   function onAddWeapon(selectionItem: WeaponMember) {
     // check if weapon have already been added
     if (props.unit.weapon_member.find((weapon) => weapon.weapon_id == selectionItem.weapon_id))
       return;
-
     // Clone Weapon so we can configure it localy
     // clone only when creating an instance. Not when changing.
     const clone = { ...selectionItem };
     if (!clone.num) clone.num = 1;
-
     //for (const weapon of selectionItem) {
     props.unit.weapon_member.push(clone);
     props.onChange(props.unit);
@@ -123,6 +123,18 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
       props.unit.custom_modifiers = createDefaultCustomModifiers();
     }
     setCustomConfigOpened(true);
+  }
+
+  // Match the unit veterancy card: lit / empty game-star images, only smaller.
+  // Clicking the currently selected level returns the unit to Vet 0.
+  const maxVeterancy = getMaxDpsVeterancyLevel(props.unit);
+  const selectedVeterancy = Math.max(
+    0,
+    Math.min(maxVeterancy, Number(props.unit.veterancyLevel ?? 0)),
+  );
+  function onVeterancyChange(level: number) {
+    props.unit.veterancyLevel = selectedVeterancy === level ? 0 : level;
+    props.onChange(props.unit);
   }
 
   const components: any[] = [];
@@ -181,9 +193,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                     <Stack>
                       <UnitSquadCard
                         id={props.unit.id}
-                        ui={{
-                          armorIcon: props.unit.sbps.ui.armorIcon,
-                        }}
+                        ui={{ armorIcon: props.unit.sbps.ui.armorIcon }}
                         health={{
                           armor: props.unit.ebps_default.health.armorLayout.armor,
                           frontal: props.unit.ebps_default.health.armorLayout.frontArmor,
@@ -224,7 +234,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Flex align="center">
                 <HoverCard width={400} position="left" offset={80}>
                   <HoverCard.Target>
-                    <Image src="\icons\general\health.png" alt="Health" w={32} h={32} />
+                    <Image src="/icons/general/health.png" alt="Health" w={32} h={32} />
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
                     <Card p="sm" radius="md">
@@ -247,19 +257,17 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               <Tooltip label="Moving">
                 <ActionIcon
                   size="lg"
-                  onChange={onMovingChange}
                   onClick={onMovingChange}
                   variant={props.unit.is_moving ? "default" : "transparent"}
                 >
                   <Image
-                    src="\icons\common\abilities\tactical_movement_riflemen_us.png"
+                    src="/icons/common/abilities/tactical_movement_riflemen_us.png"
                     alt="Moving"
                     h={27}
                     w={27}
                   />
                 </ActionIcon>
               </Tooltip>
-
               <Tooltip label="Heavy Cover">
                 <ActionIcon
                   size="lg"
@@ -269,7 +277,6 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   <Image src="/icons/common/cover/heavy.png" alt="Heavy Cover" h={32} w={32} />
                 </ActionIcon>
               </Tooltip>
-
               <Tooltip label="Light Cover">
                 <ActionIcon
                   size="lg"
@@ -279,7 +286,6 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   <Image src="/icons/common/cover/light.png" alt="Light Cover" h={32} w={32} />
                 </ActionIcon>
               </Tooltip>
-
               <Tooltip label="Negative Cover">
                 <ActionIcon
                   size="lg"
@@ -294,14 +300,13 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   />
                 </ActionIcon>
               </Tooltip>
-
               <Tooltip label="Garrison">
                 <ActionIcon
                   size="lg"
                   variant={props.unit.cover == "garrison" ? "default" : "transparent"}
                   onClick={() => onCoverChange("garrison")}
                 >
-                  <Image src="/icons/common/units/garrisoned.png" alt="Garrision" h={31} w={27} />
+                  <Image src="/icons/common/units/garrisoned.png" alt="Garrison" h={31} w={27} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Custom Configuration">
@@ -310,8 +315,9 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                   onClick={onCustomConfigOpen}
                   color="gray"
                   variant={
-                    props.unit.custom_modifiers &&
-                    Object.values(props.unit.custom_modifiers).some((mod) => mod.enabled)
+                    selectedVeterancy > 0 ||
+                    (props.unit.custom_modifiers &&
+                      Object.values(props.unit.custom_modifiers).some((mod) => mod.enabled))
                       ? "default"
                       : "transparent"
                   }
@@ -322,18 +328,44 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
             </Flex>
           </Grid.Col>
         </Grid>
-
+        {maxVeterancy > 0 && (
+          <Group gap={2} wrap="nowrap" justify="flex-start" data-testid="dps-veterancy-control">
+            {Array.from({ length: maxVeterancy }, (_, index) => {
+              const level = index + 1;
+              const active = level <= selectedVeterancy;
+              return (
+                <UnstyledButton
+                  key={level}
+                  type="button"
+                  onClick={() => onVeterancyChange(level)}
+                  aria-label={`★ ${active && level === selectedVeterancy ? 0 : level}`}
+                  aria-pressed={level === selectedVeterancy}
+                  style={{ display: "inline-flex", alignItems: "center", padding: 2 }}
+                >
+                  <Image
+                    src={active ? vetStarIconPath : vetStarEmptyIconPath}
+                    alt=""
+                    aria-hidden
+                    w={19}
+                    h={19}
+                    fit="contain"
+                  />
+                </UnstyledButton>
+              );
+            })}
+          </Group>
+        )}
         <WeaponSearch searchData={weaponList} onSelect={onAddWeapon} />
 
         <Group gap="xs">{components}</Group>
       </Stack>
       {/* </Box> */}
-
       <CustomConfigModal
         opened={customConfigOpened}
         onClose={() => setCustomConfigOpened(false)}
         customModifiers={props.unit.custom_modifiers || createDefaultCustomModifiers()}
         onModifiersChange={onCustomConfigChange}
+        unit={props.unit}
         unitName={
           props.unit.screen_name !== "No text found" ? props.unit.screen_name : props.unit.id
         }

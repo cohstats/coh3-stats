@@ -1,5 +1,6 @@
 import { CustomizableUnit, getCoverMultiplier, WeaponMember, CustomModifier } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
+import { getDpsVeterancyEffects } from "./dpsVeterancy";
 
 export const TICK_DURATION = 0.125;
 const tickRate = 1 / TICK_DURATION;
@@ -75,6 +76,8 @@ const getSingleWeaponDPS = (
   if (qty <= 0) return 0;
 
   const weapon_bag = weapon_member.weapon.weapon_bag;
+  const attackingVeterancy = getDpsVeterancyEffects(attacking_unit);
+  const targetVeterancy = getDpsVeterancyEffects(target_unit);
 
   if (!weapon_bag.moving_can_fire_while_moving && isMoving) return 0;
 
@@ -134,7 +137,9 @@ const getSingleWeaponDPS = (
       weapon_bag.penetration_near,
       weapon_bag.penetration_mid,
       weapon_bag.penetration_far,
-    ) * targetModifiers.penetration_multiplier;
+    ) *
+    targetModifiers.penetration_multiplier *
+    attackingVeterancy.penetrationMultiplier;
 
   const penetrationChance = Math.min(penetration / armor, 1);
 
@@ -156,7 +161,7 @@ const getSingleWeaponDPS = (
     cover.accuracy_multiplier *
     targetModifiers.accuracy_multiplier;
 
-  accuracy = Math.min(accuracy * targetSize, 1);
+  accuracy *= targetSize; // Clamp after custom + veterancy accuracy effects below.
   if (weapon_bag.projectile_is_artillery) accuracy = 0;
 
   /* Scatter Hitchance
@@ -309,7 +314,10 @@ const getSingleWeaponDPS = (
   */
   let finalAccuracy = accuracy;
   let finalDamage =
-    (avgDamage + targetModifiers.base_damage_modifier) * targetModifiers.damage_multiplier;
+    (avgDamage + targetModifiers.base_damage_modifier + attackingVeterancy.damageAddition) *
+    targetModifiers.damage_multiplier *
+    attackingVeterancy.damageMultiplier *
+    targetVeterancy.receivedDamageMultiplier;
   let finalPenetrationChance = penetrationChance;
   const finalRpm = rpm;
   const finalArmor = armor; // Armor is already modified if target has custom modifiers
@@ -324,7 +332,7 @@ const getSingleWeaponDPS = (
       } else {
         finalAccuracy = modifiers.accuracy.value;
       }
-      finalAccuracy = Math.min(Math.max(finalAccuracy, 0), 1); // Clamp between 0 and 1
+      // Clamp after the veterancy effects have also been applied.
     }
 
     // Apply damage modifier
@@ -363,6 +371,17 @@ const getSingleWeaponDPS = (
   if (attacking_unit?.custom_modifiers?.penetration.enabled !== true) {
     finalPenetrationChance = Math.min(penetration / finalArmor, 1);
   }
+  // Combine attacker accuracy with defender's received-accuracy modifier, then cap.
+  finalAccuracy = Math.min(
+    Math.max(
+      finalAccuracy *
+        attackingVeterancy.accuracyMultiplier *
+        (isMoving ? attackingVeterancy.movingAccuracyMultiplier : 1) *
+        targetVeterancy.receivedAccuracyMultiplier,
+      0,
+    ),
+    1,
+  );
   //autobounce is at 3%, any pen below that automatically fails
   const AUTOBOUNCE_THRESHOLD = 0.03;
   if (finalPenetrationChance < AUTOBOUNCE_THRESHOLD) {
@@ -436,6 +455,12 @@ export const getWeaponTiming = (
     }
   }
 
+  // Apply automatic veterancy timing modifiers before 1/8-second tick rounding.
+  const vetAttackTime = getDpsVeterancyEffects(attacking_unit).attackTimeMultiplier;
+  aimMod *= vetAttackTime;
+  windMod *= vetAttackTime;
+  cooldownMod *= vetAttackTime;
+  reloadMod *= vetAttackTime;
   const [aimTimeMin, aimTimeMax] = _getInterpolationByDistanceMinMax(
     distance,
     weapon_bag.range,
@@ -529,8 +554,9 @@ export const getWeaponTiming = (
       weapon_bag.burst_duration_multiplier_far,
     );
 
-    burstTimeMin *= movingBurstMp;
-    burstTimeMax *= movingBurstMp;
+    const vetBurstDuration = getDpsVeterancyEffects(attacking_unit).burstDurationMultiplier;
+    burstTimeMin *= movingBurstMp * vetBurstDuration;
+    burstTimeMax *= movingBurstMp * vetBurstDuration;
 
     if (attacking_unit?.custom_modifiers?.burstLength.enabled) {
       if (attacking_unit.custom_modifiers.burstLength.type === "percentage") {
@@ -547,7 +573,7 @@ export const getWeaponTiming = (
       burstTime = _averageRoundedBurstDuration(burstTimeMin, burstTimeMax);
     }
 
-    const [burstRateMin, burstRateMax] = _getInterpolationByDistanceMinMax(
+    let [burstRateMin, burstRateMax] = _getInterpolationByDistanceMinMax(
       distance,
       weapon_bag.range,
       weapon_bag.burst_rate_of_fire_min,
@@ -557,6 +583,9 @@ export const getWeaponTiming = (
       weapon_bag.burst_rate_of_fire_multiplier_far,
     );
 
+    const vetBurstRate = getDpsVeterancyEffects(attacking_unit).burstRateMultiplier;
+    burstRateMin *= vetBurstRate;
+    burstRateMax *= vetBurstRate;
     let burstShots = 1;
 
     if (attacking_unit?.custom_modifiers?.burstShots.enabled) {

@@ -5,6 +5,7 @@ import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS, applyCustomModifier } from "./weaponLib";
+import { getDpsVeterancyEffects } from "./dpsVeterancy";
 import { getUpgradeStateTreeWeapons } from "./workarounds";
 import type { UpgradesType } from "./mappingUpgrades";
 import type { AbilitiesType } from "./mappingAbilities";
@@ -159,6 +160,7 @@ type CustomizableUnit = {
   capture_revert: number;
   speed: number;
   custom_modifiers?: CustomModifiers; // Custom stat modifiers
+  veterancyLevel?: number; // 0 = none; all preceding ranks apply cumulatively
 };
 
 export const createDefaultCustomModifiers = (): CustomModifiers => ({
@@ -261,6 +263,7 @@ export const mapCustomizableUnit = (
     dps_f: 0,
     speed: 0,
     custom_modifiers: createDefaultCustomModifiers(),
+    veterancyLevel: 0,
   };
 
   if (sbpsSelected.ui.symbolIconName != "")
@@ -1098,9 +1101,10 @@ export const getCompareDpsData = (
 // Helper function to get modified hitpoints per entity
 export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
   const modifier = unit.custom_modifiers?.hitpoints;
+  const vetHealthAddition = getDpsVeterancyEffects(unit).healthAddition;
 
   if (!modifier?.enabled) {
-    return Math.max(unit.hitpoints, 1);
+    return Math.max(unit.hitpoints + vetHealthAddition, 1);
   }
 
   let modifiedHitpoints = unit.hitpoints;
@@ -1113,7 +1117,7 @@ export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
     modifiedHitpoints = unit.hitpoints + modifier.value;
   }
 
-  return Math.max(modifiedHitpoints, 1);
+  return Math.max(modifiedHitpoints + vetHealthAddition, 1);
 };
 
 export const updateHealth = (unit: CustomizableUnit) => {
@@ -1151,7 +1155,9 @@ const getUnitModifiedRangeInfo = (unit: CustomizableUnit) => {
     };
   }
 
-  const modifiedMaxRange = applyCustomModifier(baseMaxRange, unit.custom_modifiers?.range, {
+  const veterancy = getDpsVeterancyEffects(unit);
+  const vetRange = baseMaxRange * veterancy.rangeMultiplier + veterancy.rangeAddition;
+  const modifiedMaxRange = applyCustomModifier(vetRange, unit.custom_modifiers?.range, {
     percentMode: "normal",
     min: 1,
   });
