@@ -40,7 +40,7 @@ const getIroncladTournamentApiToken = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "2.5.6";
+const defaultStatsPatchSelector = "3.0.0";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
