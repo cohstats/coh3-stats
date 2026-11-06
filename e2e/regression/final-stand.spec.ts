@@ -69,7 +69,7 @@ test.describe("Final Stand units", () => {
   });
 
   test("unit detail page marks a Final Stand enemy unit", async ({ page }) => {
-    await navigateAndWait(page, "/explorer/races/german/units/hoff_enemy_fallschirmjagers_ger");
+    await navigateAndWait(page, "/explorer/races/german/units/hoff_enemy_grenadier_ger");
 
     await expect(page.getByTestId("final-stand-badge")).toBeVisible();
     await expect(page.getByTestId("final-stand-enemy-badge")).toBeVisible();
@@ -83,7 +83,7 @@ test.describe("Final Stand units", () => {
   });
 
   test("unit detail page is not indexable and flags the DLC in Open Graph", async ({ page }) => {
-    await navigateAndWait(page, "/explorer/races/german/units/hoff_enemy_fallschirmjagers_ger");
+    await navigateAndWait(page, "/explorer/races/german/units/hoff_enemy_grenadier_ger");
 
     await expect(page.locator('head > meta[name="robots"]')).toHaveAttribute(
       "content",
