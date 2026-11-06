@@ -19,6 +19,10 @@ type VeterancyRankData = {
   exp: number;
   screenName: string;
   requirementIds: string[];
+  /** Found at `veterancy_rank/custom_properties/custom_pbgid_properties` (id `VETERANCY_PBG_1`).
+   * Instance reference into veterancy.json, resolve it with `getVeterancyByRef`.
+   * eg. custom_property_container/veterancy/american/infantry/riflemen/veterancy_1_riflemen */
+  veterancyRef: string;
 };
 // need to be extended by all required fields
 type SbpsType = {
@@ -153,9 +157,9 @@ const mapSbpsData = (
       },
     },
     veterancyInfo: {
-      one: { exp: 0, screenName: "", requirementIds: [] },
-      two: { exp: 0, screenName: "", requirementIds: [] },
-      three: { exp: 0, screenName: "", requirementIds: [] },
+      one: { exp: 0, screenName: "", requirementIds: [], veterancyRef: "" },
+      two: { exp: 0, screenName: "", requirementIds: [], veterancyRef: "" },
+      three: { exp: 0, screenName: "", requirementIds: [], veterancyRef: "" },
     },
     reinforce: {
       cost_percentage: 0,
@@ -200,7 +204,17 @@ const mapVeterancyRank = (rankInfo: any, locale: string): VeterancyRankData => {
       resolveLocstring(rank?.brief_text, locale) ||
       "",
     requirementIds: getVeterancyRequirementIds(rank?.requirements),
+    veterancyRef: getVeterancyRef(rank?.custom_properties),
   };
+};
+
+const getVeterancyRef = (customProperties?: any): string => {
+  const pbgidProperties: any[] = customProperties?.custom_pbgid_properties || [];
+  const vetProperty = pbgidProperties.find(
+    (item) => item?.custom_pbgid_property?.id === "VETERANCY_PBG_1",
+  );
+
+  return vetProperty?.custom_pbgid_property?.pbg?.instance_reference || "";
 };
 
 const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {

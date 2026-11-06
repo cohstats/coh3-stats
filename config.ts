@@ -54,7 +54,7 @@ const statsPatchSelector: Record<
   }
 > = {
   "3.0.0": {
-    from: "2026-11-5",
+    from: "2026-11-05",
     to: "now",
     value: "3.0.0",
     label: "3.0",
@@ -272,8 +272,8 @@ const latestPatch = "3.0.0";
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
     "3.0.0": {
-      dataTag: "v3.0.0-2",
-      dataTime: "05/Nov/2026",
+      dataTag: "v3.0.0-3",
+      dataTime: "06/Nov/2026",
     },
     "2.5.6": {
       dataTag: "v2.5.3-3", // 2.5.6 has no data changes from 2.5.3
