@@ -19,29 +19,34 @@ import {
   CustomModifiers,
   CustomModifier,
   CustomModifierType,
+  CustomizableUnit,
 } from "../../../src/unitStats/dpsCommon";
+import {
+  getDpsVeterancyEffects,
+  getMaxDpsVeterancyLevel,
+} from "../../../src/unitStats/dpsVeterancy";
+import {
+  humanizeVeterancyModifierId,
+  formatVeterancyAttackSpeed,
+} from "./veterancyModifierDisplay";
 
 interface CustomConfigModalProps {
   opened: boolean;
   onClose: () => void;
   customModifiers: CustomModifiers;
   onModifiersChange: (modifiers: CustomModifiers) => void;
+  unit?: CustomizableUnit; // Used only to display read-only, automatically applied vet effects.
   unitName?: string;
   unitColor?: string;
 }
 
 type PercentStackMode = "normal" | "inverse";
-
 const combinePercentageModifiers = (values: number[], mode: PercentStackMode): number => {
   const finalMultiplier = values.reduce((current, value) => {
     const decimal = value / 100;
     return mode === "inverse" ? current * (1 - decimal) : current * (1 + decimal);
   }, 1);
-
-  const finalPercent =
-    mode === "inverse" ? (1 - finalMultiplier) * 100 : (finalMultiplier - 1) * 100;
-
-  return finalPercent;
+  return mode === "inverse" ? (1 - finalMultiplier) * 100 : (finalMultiplier - 1) * 100;
 };
 
 interface StatConfig {
@@ -49,41 +54,31 @@ interface StatConfig {
   label: string;
   description: string;
   unit: string;
-
   percentStackMode: PercentStackMode;
   percentMin: number;
   percentMax: number;
   percentStep: number;
-
   absoluteMin: number;
   absoluteMax?: number;
   absoluteStep: number;
-
   supportsAdditive?: boolean;
   additiveMin?: number;
   additiveMax?: number;
   additiveStep?: number;
 }
-
 const normalPercentConfig = {
   percentStackMode: "normal" as const,
   percentMin: -100,
   percentMax: 500,
   percentStep: 5,
 };
-
 const inversePercentConfig = {
   percentStackMode: "inverse" as const,
   percentMin: -500,
   percentMax: 100,
   percentStep: 5,
 };
-
-const defaultAbsoluteConfig = {
-  absoluteMin: 0,
-  absoluteStep: 0.1,
-};
-
+const defaultAbsoluteConfig = { absoluteMin: 0, absoluteStep: 0.1 };
 const statConfigs: StatConfig[] = [
   {
     key: "accuracy",
@@ -188,11 +183,85 @@ const statConfigs: StatConfig[] = [
   },
 ];
 
+const approxEqual = (a: number, b: number) => Math.abs(a - b) < 0.0000001;
+const formatNumber = (value: number) => Number(value.toFixed(3)).toString();
+const formatPercent = (multiplier: number) => {
+  const percent = (multiplier - 1) * 100;
+  return `${percent > 0 ? "+" : ""}${formatNumber(percent)}%`;
+};
+const formatDelta = (value: number) => `${value > 0 ? "+" : ""}${formatNumber(value)}`;
+const formatMultiplier = (value: number) => `×${formatNumber(value)}`;
+
+type VetBadge = { id: string; value: string };
+
+// Combine identical properties across the selected ranks before showing badges.
+// Ordinary modifiers multiply, while flat additions and MULT_ADD values add.
+// This is display-only: the DPS calculator still handles the effects separately.
+const additiveVetIds = new Set([
+  "WEAPON_DAMAGE_ADDITION_MODIFIER",
+  "HEALTH_MODIFIER_ADDITION",
+  "WEAPON_RANGE_MODIFIER",
+  "UNIT_SIGHT_MODIFIER",
+  "DETECTION_VISION_MODIFIER",
+  "DETECTION_VISION_MODIFIER_SQUAD",
+  "REINFORCE_RADIUS_MODIFIER",
+  "HORIZONTAL_TRAVERSE_RADIUS_MODIFIER",
+  "WEAPON_HORIZONTAL_TRAVERSE_MODIFIER",
+]);
+
+const combineVetBonuses = (bonuses: VetBadgeValue[]): VetBadgeValue[] => {
+  const combined = new Map<string, number>();
+  for (const { id, value } of bonuses) {
+    if (!Number.isFinite(value)) continue;
+    const propertyId = id.toUpperCase();
+    const previous = combined.get(propertyId);
+    if (previous === undefined) {
+      combined.set(propertyId, value);
+    } else {
+      const isAdditive =
+        additiveVetIds.has(propertyId) ||
+        propertyId.includes("ADDITION") ||
+        propertyId.includes("ADDITIVE") ||
+        propertyId.endsWith("_MULT_ADD");
+      combined.set(propertyId, isAdditive ? previous + value : previous * value);
+    }
+  }
+  return Array.from(combined, ([id, value]) => ({ id, value }));
+};
+
+// Avoid exposing floating-point artifacts after combining e.g. 0.9 × 0.85.
+const formatRawVetValue = (value: number) => Number(value.toPrecision(12)).toString();
+type VetBadgeValue = { id: string; value: number };
+
+// These raw IDs are displayed by their existing editable controls.
+// IDs without a matching control remain visible with their full property names.
+const inlineVetModifierIds = new Set([
+  "WEAPON_ACCURACY_MODIFIER",
+  "WEAPON_MOVING_ACCURACY_MODIFIER",
+  "WEAPON_DAMAGE_MODIFIER",
+  "WEAPON_DAMAGE_ADDITION_MODIFIER",
+  "WEAPON_PENETRATION_MODIFIER",
+  "WEAPON_OVERALL_ATTACK_SPEED",
+  "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
+  "WEAPON_BURST_DURATION_MODIFIER",
+  "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
+  "HEALTH_MODIFIER_ADDITION",
+  "FRONT_ARMOR_ADDITION",
+  "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
+  "WEAPON_RANGE_MODIFIER",
+]);
+const simulatedVetModifierIds = new Set([
+  ...inlineVetModifierIds,
+  "RECEIVED_ACCURACY_MODIFIER",
+  "RECEIVED_DAMAGE_MODIFIER",
+]);
+
 export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   opened,
   onClose,
   customModifiers,
   onModifiersChange,
+  unit,
   unitName,
   unitColor,
 }) => {
@@ -205,6 +274,102 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     setLocalModifiers(customModifiers);
   }, [customModifiers]);
 
+  const selectedVet = Math.max(
+    0,
+    Math.min(getMaxDpsVeterancyLevel(unit), Math.floor(Number(unit?.veterancyLevel ?? 0) || 0)),
+  );
+  const vet = getDpsVeterancyEffects(unit);
+  const ranks = [
+    unit?.sbps?.veterancyInfo?.one,
+    unit?.sbps?.veterancyInfo?.two,
+    unit?.sbps?.veterancyInfo?.three,
+    unit?.sbps?.veterancyInfo?.four,
+  ];
+  const rawBonuses = ranks.slice(0, selectedVet).flatMap((rank) => rank?.modifiers ?? []);
+  const remainingBonuses = combineVetBonuses(
+    rawBonuses.filter((entry) => !inlineVetModifierIds.has(entry.id.toUpperCase())),
+  );
+  // Preserve the exact contributing property IDs in the attack-speed badge.
+  const attackSpeedSources = [
+    "WEAPON_OVERALL_ATTACK_SPEED",
+    "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
+  ].filter((id) => rawBonuses.some((entry) => entry.id.toUpperCase() === id));
+
+  // Automatic effects are read-only; manual values stay separate to avoid double-counting.
+  // Burst rate uses the existing Rounds per Burst row in the interface, but is
+  // still applied as a rate modifier by the calculator.
+  const vetLabels: Partial<Record<keyof CustomModifiers, VetBadge[]>> = {
+    accuracy: [
+      ...(!approxEqual(vet.accuracyMultiplier, 1)
+        ? [{ id: "WEAPON_ACCURACY_MODIFIER", value: formatPercent(vet.accuracyMultiplier) }]
+        : []),
+      ...(!approxEqual(vet.movingAccuracyMultiplier, 1)
+        ? [
+            {
+              id: "WEAPON_MOVING_ACCURACY_MODIFIER",
+              value: formatPercent(vet.movingAccuracyMultiplier),
+            },
+          ]
+        : []),
+    ],
+    damage: [
+      ...(!approxEqual(vet.damageMultiplier, 1)
+        ? [{ id: "WEAPON_DAMAGE_MODIFIER", value: formatPercent(vet.damageMultiplier) }]
+        : []),
+      ...(vet.damageAddition !== 0
+        ? [{ id: "WEAPON_DAMAGE_ADDITION_MODIFIER", value: formatDelta(vet.damageAddition) }]
+        : []),
+    ],
+    penetration: !approxEqual(vet.penetrationMultiplier, 1)
+      ? [{ id: "WEAPON_PENETRATION_MODIFIER", value: formatPercent(vet.penetrationMultiplier) }]
+      : [],
+    overallAttackSpeed: !approxEqual(vet.attackTimeMultiplier, 1)
+      ? [
+          {
+            id: attackSpeedSources.join(" + ") || "WEAPON_OVERALL_ATTACK_SPEED",
+            value: formatVeterancyAttackSpeed(vet.attackTimeMultiplier),
+          },
+        ]
+      : [],
+    burstLength: !approxEqual(vet.burstDurationMultiplier, 1)
+      ? [
+          {
+            id: "WEAPON_BURST_DURATION_MODIFIER",
+            value: formatMultiplier(vet.burstDurationMultiplier),
+          },
+        ]
+      : [],
+    burstShots: !approxEqual(vet.burstRateMultiplier, 1)
+      ? [
+          {
+            id: "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
+            value: formatPercent(vet.burstRateMultiplier),
+          },
+        ]
+      : [],
+    range: [
+      ...(!approxEqual(vet.rangeMultiplier, 1)
+        ? [
+            {
+              id: "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
+              value: formatMultiplier(vet.rangeMultiplier),
+            },
+          ]
+        : []),
+      ...(vet.rangeAddition !== 0
+        ? [{ id: "WEAPON_RANGE_MODIFIER", value: formatDelta(vet.rangeAddition) }]
+        : []),
+    ],
+    armor:
+      vet.frontArmorAddition !== 0
+        ? [{ id: "FRONT_ARMOR_ADDITION", value: formatDelta(vet.frontArmorAddition) }]
+        : [],
+    hitpoints:
+      vet.healthAddition !== 0
+        ? [{ id: "HEALTH_MODIFIER_ADDITION", value: formatDelta(vet.healthAddition) }]
+        : [],
+  };
+
   const handleModifierChange = (
     statKey: keyof CustomModifiers,
     field: keyof CustomModifier,
@@ -212,10 +377,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   ) => {
     const newModifiers = {
       ...localModifiers,
-      [statKey]: {
-        ...localModifiers[statKey],
-        [field]: value,
-      },
+      [statKey]: { ...localModifiers[statKey], [field]: value },
     };
     setLocalModifiers(newModifiers);
     onModifiersChange(newModifiers);
@@ -239,48 +401,31 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     onModifiersChange(resetModifiers);
   };
 
-  const getDisplayValue = (modifier: CustomModifier, config: StatConfig) => {
-    if (!modifier.enabled) return "Default";
-
-    if (modifier.type === "percentage") {
-      const percentageValues = getPercentageValues(modifier);
-      const collapsedValue = combinePercentageModifiers(
-        percentageValues,
-        config.percentStackMode,
-      );
-
-      return `${collapsedValue >= 0 ? "+" : ""}${Math.round(collapsedValue * 100) / 100}%`;
-    }
-
-    if (modifier.type === "additive") {
-      return `${modifier.value >= 0 ? "+" : ""}${modifier.value}`;
-    }
-
-    return `${modifier.value}`;
+  const getPercentageValues = (modifier: CustomModifier): number[] => {
+    if (Array.isArray(modifier.percentageValues)) return modifier.percentageValues;
+    // Backwards compatibility with old saved/current modifiers.
+    if (modifier.type === "percentage" && modifier.value !== 0) return [modifier.value];
+    return [];
   };
 
-  const getPercentageValues = (modifier: CustomModifier): number[] => {
-    if (Array.isArray(modifier.percentageValues)) {
-      return modifier.percentageValues;
+  const getDisplayValue = (modifier: CustomModifier, config: StatConfig) => {
+    if (!modifier.enabled) return "Default";
+    if (modifier.type === "percentage") {
+      const collapsedValue = combinePercentageModifiers(
+        getPercentageValues(modifier),
+        config.percentStackMode,
+      );
+      return `${collapsedValue >= 0 ? "+" : ""}${Math.round(collapsedValue * 100) / 100}%`;
     }
-
-    // Backwards compatibility with old saved/current modifiers.
-    if (modifier.type === "percentage" && modifier.value !== 0) {
-      return [modifier.value];
-    }
-
-    return [];
+    if (modifier.type === "additive") return `${modifier.value >= 0 ? "+" : ""}${modifier.value}`;
+    return `${modifier.value}`;
   };
 
   const patchModifier = (statKey: keyof CustomModifiers, patch: Partial<CustomModifier>) => {
     const newModifiers = {
       ...localModifiers,
-      [statKey]: {
-        ...localModifiers[statKey],
-        ...patch,
-      },
+      [statKey]: { ...localModifiers[statKey], ...patch },
     };
-
     setLocalModifiers(newModifiers);
     onModifiersChange(newModifiers);
   };
@@ -291,24 +436,14 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     rawValue: string | number,
   ) => {
     const modifier = localModifiers[config.key];
-    const currentValues = getPercentageValues(modifier);
-    const nextValues = [...currentValues];
-
+    const nextValues = [...getPercentageValues(modifier)];
     // Emptying an existing box removes that entry.
-    if (rawValue === "") {
-      nextValues.splice(index, 1);
-    } else if (typeof rawValue === "number" && Number.isFinite(rawValue)) {
+    if (rawValue === "") nextValues.splice(index, 1);
+    else if (typeof rawValue === "number" && Number.isFinite(rawValue))
       nextValues[index] = rawValue;
-    } else {
-      return;
-    }
-
+    else return;
     const collapsedValue = combinePercentageModifiers(nextValues, config.percentStackMode);
-
-    patchModifier(config.key, {
-      percentageValues: nextValues,
-      value: collapsedValue,
-    });
+    patchModifier(config.key, { percentageValues: nextValues, value: collapsedValue });
   };
 
   const handleTypeChange = (config: StatConfig, type: CustomModifierType) => {
@@ -336,7 +471,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
         <Group gap="sm">
           <IconSettings size={20} />
           <h3 style={{ margin: 0, fontWeight: 600 }}>Custom Configuration</h3>
-          <Badge size={"lg"} variant="light" color={unitColor}>
+          <Badge size="lg" variant="light" color={unitColor}>
             {displayUnitName}
           </Badge>
         </Group>
@@ -346,27 +481,73 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     >
       <Stack gap="md">
         <Text size="sm" c="dimmed">
-          Apply custom modifiers to unit stats. These modifiers affect all weapons in the unit's
-          loadout and work in combination with cover, movement, and distance-based modifiers.
+          Apply custom modifiers to unit stats. These modifiers affect all weapons in the
+          unit&apos;s loadout and work in combination with cover, movement, and distance-based
+          modifiers.
         </Text>
-
+        {selectedVet > 0 && remainingBonuses.length > 0 && (
+          <Group gap={6} wrap="wrap">
+            {remainingBonuses.map(({ id, value }) => (
+              <Badge
+                key={id}
+                size="sm"
+                color={simulatedVetModifierIds.has(id.toUpperCase()) ? "yellow" : "gray"}
+                variant="outline"
+                style={{
+                  height: "auto",
+                  maxWidth: "100%",
+                  padding: "0px 5px",
+                  textTransform: "none",
+                }}
+                styles={{
+                  label: {
+                    whiteSpace: "normal",
+                    overflowWrap: "anywhere",
+                    overflow: "visible",
+                    textOverflow: "clip",
+                    textAlign: "left",
+                  },
+                }}
+              >
+                ★ {humanizeVeterancyModifierId(id)}: {formatRawVetValue(value)}
+              </Badge>
+            ))}
+          </Group>
+        )}
         <Divider />
-
         {statConfigs.map((config) => {
           const modifier = localModifiers[config.key];
           const percentageValues = getPercentageValues(modifier);
+          const vetTags = vetLabels[config.key] ?? [];
           return (
             <Card key={config.key} p="sm" withBorder>
               <Grid align="center">
                 {/* First row: Label */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
-                  <Tooltip label={config.description} multiline w={250}>
-                    <Text fw={500} style={{ cursor: "pointer" }}>
-                      {config.label}
-                    </Text>
-                  </Tooltip>
+                  <Stack gap={4}>
+                    <Tooltip label={config.description} multiline w={250}>
+                      <Text fw={500} style={{ cursor: "pointer" }}>
+                        {config.label}
+                      </Text>
+                    </Tooltip>
+                    {selectedVet > 0 && vetTags.length > 0 && (
+                      <Group gap={4} wrap="wrap">
+                        {vetTags.map(({ id, value }, index) => (
+                          <Tooltip key={`${id}-${index}`} label={humanizeVeterancyModifierId(id)}>
+                            <Badge
+                              size="xs"
+                              color="yellow"
+                              variant="light"
+                              style={{ textTransform: "none" }}
+                            >
+                              ★ {value}
+                            </Badge>
+                          </Tooltip>
+                        ))}
+                      </Group>
+                    )}
+                  </Stack>
                 </Grid.Col>
-
                 {/* First row: Badge and Toggle */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
                   <Group gap="xs" align="center" justify="flex-end">
@@ -384,7 +565,6 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                     </Tooltip>
                   </Group>
                 </Grid.Col>
-
                 {/* Second row on mobile: Type Select */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
                   <Select
@@ -402,18 +582,13 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                     allowDeselect={false}
                   />
                 </Grid.Col>
-
                 {/* Second row on mobile: Number Input */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
                   {modifier.type === "percentage" ? (
                     <Group
                       gap={4}
                       wrap="nowrap"
-                      style={{
-                        overflowX: "auto",
-                        maxWidth: "100%",
-                        paddingBottom: 4,
-                      }}
+                      style={{ overflowX: "auto", maxWidth: "100%", paddingBottom: 4 }}
                     >
                       {[...percentageValues, undefined].map((entryValue, index) => (
                         <NumberInput
@@ -429,9 +604,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                           hideControls
                           w={48}
                           styles={{
-                            root: {
-                              flex: "0 0 36px",
-                            },
+                            root: { flex: "0 0 36px" },
                             input: {
                               paddingInline: 1,
                               textAlign: "center",
@@ -477,19 +650,14 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
             </Card>
           );
         })}
-
         <Divider />
-
         <Group justify="space-between">
           <Button variant="default" leftSection={<IconRefresh size={16} />} onClick={handleReset}>
-            Reset to Default
+            Reset custom values
           </Button>
-
-          <Group>
-            <Button variant="default" onClick={onClose}>
-              Close
-            </Button>
-          </Group>
+          <Button variant="default" onClick={onClose}>
+            Close
+          </Button>
         </Group>
       </Stack>
     </Modal>
