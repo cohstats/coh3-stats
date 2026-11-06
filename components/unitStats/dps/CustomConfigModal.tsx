@@ -25,6 +25,10 @@ import {
   getDpsVeterancyEffects,
   getMaxDpsVeterancyLevel,
 } from "../../../src/unitStats/dpsVeterancy";
+import {
+  humanizeVeterancyModifierId,
+  formatVeterancyAttackSpeed,
+} from "./veterancyModifierDisplay";
 
 interface CustomConfigModalProps {
   opened: boolean;
@@ -190,8 +194,47 @@ const formatMultiplier = (value: number) => `×${formatNumber(value)}`;
 
 type VetBadge = { id: string; value: string };
 
+// Combine identical properties across the selected ranks before showing badges.
+// Ordinary modifiers multiply, while flat additions and MULT_ADD values add.
+// This is display-only: the DPS calculator still handles the effects separately.
+const additiveVetIds = new Set([
+  "WEAPON_DAMAGE_ADDITION_MODIFIER",
+  "HEALTH_MODIFIER_ADDITION",
+  "WEAPON_RANGE_MODIFIER",
+  "UNIT_SIGHT_MODIFIER",
+  "DETECTION_VISION_MODIFIER",
+  "DETECTION_VISION_MODIFIER_SQUAD",
+  "REINFORCE_RADIUS_MODIFIER",
+  "HORIZONTAL_TRAVERSE_RADIUS_MODIFIER",
+  "WEAPON_HORIZONTAL_TRAVERSE_MODIFIER",
+]);
+
+const combineVetBonuses = (bonuses: VetBadgeValue[]): VetBadgeValue[] => {
+  const combined = new Map<string, number>();
+  for (const { id, value } of bonuses) {
+    if (!Number.isFinite(value)) continue;
+    const propertyId = id.toUpperCase();
+    const previous = combined.get(propertyId);
+    if (previous === undefined) {
+      combined.set(propertyId, value);
+    } else {
+      const isAdditive =
+        additiveVetIds.has(propertyId) ||
+        propertyId.includes("ADDITION") ||
+        propertyId.includes("ADDITIVE") ||
+        propertyId.endsWith("_MULT_ADD");
+      combined.set(propertyId, isAdditive ? previous + value : previous * value);
+    }
+  }
+  return Array.from(combined, ([id, value]) => ({ id, value }));
+};
+
+// Avoid exposing floating-point artifacts after combining e.g. 0.9 × 0.85.
+const formatRawVetValue = (value: number) => Number(value.toPrecision(12)).toString();
+type VetBadgeValue = { id: string; value: number };
+
 // These raw IDs are displayed by their existing editable controls.
-// IDs without a matching control remain visible as hoverable numeric badges.
+// IDs without a matching control remain visible with their full property names.
 const inlineVetModifierIds = new Set([
   "WEAPON_ACCURACY_MODIFIER",
   "WEAPON_MOVING_ACCURACY_MODIFIER",
@@ -203,6 +246,7 @@ const inlineVetModifierIds = new Set([
   "WEAPON_BURST_DURATION_MODIFIER",
   "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
   "HEALTH_MODIFIER_ADDITION",
+  "FRONT_ARMOR_ADDITION",
   "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
   "WEAPON_RANGE_MODIFIER",
 ]);
@@ -242,8 +286,8 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     unit?.sbps?.veterancyInfo?.four,
   ];
   const rawBonuses = ranks.slice(0, selectedVet).flatMap((rank) => rank?.modifiers ?? []);
-  const remainingBonuses = rawBonuses.filter(
-    (entry) => !inlineVetModifierIds.has(entry.id.toUpperCase()),
+  const remainingBonuses = combineVetBonuses(
+    rawBonuses.filter((entry) => !inlineVetModifierIds.has(entry.id.toUpperCase())),
   );
   // Preserve the exact contributing property IDs in the attack-speed badge.
   const attackSpeedSources = [
@@ -283,7 +327,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       ? [
           {
             id: attackSpeedSources.join(" + ") || "WEAPON_OVERALL_ATTACK_SPEED",
-            value: formatMultiplier(vet.attackTimeMultiplier),
+            value: formatVeterancyAttackSpeed(vet.attackTimeMultiplier),
           },
         ]
       : [],
@@ -316,6 +360,10 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
         ? [{ id: "WEAPON_RANGE_MODIFIER", value: formatDelta(vet.rangeAddition) }]
         : []),
     ],
+    armor:
+      vet.frontArmorAddition !== 0
+        ? [{ id: "FRONT_ARMOR_ADDITION", value: formatDelta(vet.frontArmorAddition) }]
+        : [],
     hitpoints:
       vet.healthAddition !== 0
         ? [{ id: "HEALTH_MODIFIER_ADDITION", value: formatDelta(vet.healthAddition) }]
@@ -438,18 +486,31 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
           modifiers.
         </Text>
         {selectedVet > 0 && remainingBonuses.length > 0 && (
-          <Group gap={4} wrap="wrap">
-            {remainingBonuses.map(({ id, value }, index) => (
-              <Tooltip key={`${id}-${index}`} label={id}>
-                <Badge
-                  size="xs"
-                  color={simulatedVetModifierIds.has(id) ? "yellow" : "gray"}
-                  variant="outline"
-                  style={{ textTransform: "none" }}
-                >
-                  ★ {formatNumber(value)}
-                </Badge>
-              </Tooltip>
+          <Group gap={6} wrap="wrap">
+            {remainingBonuses.map(({ id, value }) => (
+              <Badge
+                key={id}
+                size="sm"
+                color={simulatedVetModifierIds.has(id.toUpperCase()) ? "yellow" : "gray"}
+                variant="outline"
+                style={{
+                  height: "auto",
+                  maxWidth: "100%",
+                  padding: "0px 5px",
+                  textTransform: "none",
+                }}
+                styles={{
+                  label: {
+                    whiteSpace: "normal",
+                    overflowWrap: "anywhere",
+                    overflow: "visible",
+                    textOverflow: "clip",
+                    textAlign: "left",
+                  },
+                }}
+              >
+                ★ {humanizeVeterancyModifierId(id)}: {formatRawVetValue(value)}
+              </Badge>
             ))}
           </Group>
         )}
@@ -472,7 +533,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                     {selectedVet > 0 && vetTags.length > 0 && (
                       <Group gap={4} wrap="wrap">
                         {vetTags.map(({ id, value }, index) => (
-                          <Tooltip key={`${id}-${index}`} label={id}>
+                          <Tooltip key={`${id}-${index}`} label={humanizeVeterancyModifierId(id)}>
                             <Badge
                               size="xs"
                               color="yellow"

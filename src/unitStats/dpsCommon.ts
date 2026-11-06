@@ -1193,6 +1193,7 @@ const getUnitDpsAtBaseDistance = (
   baseDistance: number,
   unit1: CustomizableUnit,
   unit2?: CustomizableUnit,
+  displayedDistance = baseDistance,
 ): number => {
   let totalDps = 0;
 
@@ -1210,14 +1211,12 @@ const getUnitDpsAtBaseDistance = (
       0,
       baseMaxRange * veterancy.rangeMultiplier + veterancy.rangeAddition,
     );
-    // Flat additions shift minimum range by the same absolute distance as max.
-    const range_min = Math.max(
-      0,
-      weapon_member.weapon.weapon_bag.range_min * veterancy.rangeMultiplier +
-        veterancy.rangeAddition,
-    );
+    // Minimum range stays fixed, even with veterancy or manual range modifiers.
+    // Use the displayed distance because baseDistance accounts for manual range
+    // scaling/shifting, which should affect breakpoints but not minimum range.
+    const range_min = weapon_member.weapon.weapon_bag.range_min;
 
-    if (baseDistance < range_min || baseDistance > range_max) {
+    if (displayedDistance < range_min || baseDistance > range_max) {
       return;
     }
 
@@ -1251,7 +1250,7 @@ export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) 
   for (let displayedDistance = 0; displayedDistance <= modifiedMaxRange; displayedDistance++) {
     const baseDistance = (displayedDistance - rangeShift) / rangeScale;
 
-    const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2);
+    const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2, displayedDistance);
 
     dpsTotal.push({
       x: displayedDistance,
@@ -1267,7 +1266,7 @@ const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: Customi
 
   const baseDistance = (distance - rangeShift) / rangeScale;
 
-  const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2);
+  const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2, distance);
 
   return Math.floor(dps);
 };

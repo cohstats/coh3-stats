@@ -35,6 +35,7 @@ export type DpsVeterancyEffects = {
   burstDurationMultiplier: number;
   burstRateMultiplier: number;
   healthAddition: number;
+  frontArmorAddition: number;
   rangeMultiplier: number;
   rangeAddition: number;
 };
@@ -51,50 +52,29 @@ const neutral = (): DpsVeterancyEffects => ({
   burstDurationMultiplier: 1,
   burstRateMultiplier: 1,
   healthAddition: 0,
+  frontArmorAddition: 0,
   rangeMultiplier: 1,
   rangeAddition: 0,
 });
 
 const levelKeys = ["one", "two", "three", "four"] as const;
 
-// Keep this list in sync with the modifier switch in getDpsVeterancyEffects.
-// A rank containing only unsupported properties should not enable a DPS selector.
-const supportedModifierIds = new Set([
-  "WEAPON_ACCURACY_MODIFIER",
-  "WEAPON_MOVING_ACCURACY_MODIFIER",
-  "WEAPON_DAMAGE_MODIFIER",
-  "WEAPON_DAMAGE_ADDITION_MODIFIER",
-  "RECEIVED_ACCURACY_MODIFIER",
-  "RECEIVED_DAMAGE_MODIFIER",
-  "WEAPON_PENETRATION_MODIFIER",
-  "WEAPON_OVERALL_ATTACK_SPEED",
-  "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
-  "WEAPON_BURST_DURATION_MODIFIER",
-  "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
-  "HEALTH_MODIFIER_ADDITION",
-  "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
-  "WEAPON_RANGE_MODIFIER",
-]);
-
-const isSupportedModifier = (modifier: VetModifier): boolean =>
-  supportedModifierIds.has(modifier.id.toUpperCase());
-
-/** Return the highest rank containing a DPS-supported modifier. */
 export const getMaxDpsVeterancyLevel = (unit?: VeterancyCarrier): number => {
   const ranks = unit?.sbps?.veterancyInfo;
   if (!ranks) return 0;
   // The older online patches do not have imported modifier data yet.
   // Do not offer buttons that appear to work but have no calculation effect.
+  if (!levelKeys.some((key) => ranks[key]?.modifiers?.length)) return 0;
   let max = 0;
   for (const [index, key] of levelKeys.entries()) {
-    if (ranks[key]?.modifiers?.some(isSupportedModifier)) {
+    const rank = ranks[key];
+    if (rank && (rank.exp || rank.screenName || rank.modifiers?.length)) {
       max = index + 1;
     }
   }
   return max;
 };
 
-/** Combine the supported modifiers from rank 1 through the selected rank. */
 export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEffects => {
   const result = neutral();
   const info = unit?.sbps?.veterancyInfo;
@@ -156,6 +136,9 @@ export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEff
           break;
         case "HEALTH_MODIFIER_ADDITION":
           result.healthAddition += value;
+          break;
+        case "FRONT_ARMOR_ADDITION":
+          result.frontArmorAddition += value;
           break;
         case "WEAPON_RANGE_MULTIPLICATION_MODIFIER":
           result.rangeMultiplier *= value;

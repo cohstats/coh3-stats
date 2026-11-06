@@ -33,6 +33,7 @@ import {
   getModifiedHitpoints,
 } from "../../../src/unitStats/dpsCommon";
 import { getMaxDpsVeterancyLevel } from "../../../src/unitStats/dpsVeterancy";
+import { humanizeVeterancyModifierId } from "./veterancyModifierDisplay";
 import { CustomConfigModal } from "./CustomConfigModal";
 import Link from "next/link";
 import { UnitSquadCard } from "../../unit-cards/unit-squad-card";
@@ -136,6 +137,12 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     props.unit.veterancyLevel = selectedVeterancy === level ? 0 : level;
     props.onChange(props.unit);
   }
+  const veterancyRanks = [
+    props.unit.sbps.veterancyInfo?.one,
+    props.unit.sbps.veterancyInfo?.two,
+    props.unit.sbps.veterancyInfo?.three,
+    props.unit.sbps.veterancyInfo?.four,
+  ];
 
   const components: any[] = [];
   // create weapon member
@@ -333,24 +340,54 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
             {Array.from({ length: maxVeterancy }, (_, index) => {
               const level = index + 1;
               const active = level <= selectedVeterancy;
+              // Hover shows this rank's raw modifier values; selecting it applies every preceding rank.
+              const rankModifiers = veterancyRanks[index]?.modifiers ?? [];
               return (
-                <UnstyledButton
+                <Tooltip
                   key={level}
-                  type="button"
-                  onClick={() => onVeterancyChange(level)}
-                  aria-label={`★ ${active && level === selectedVeterancy ? 0 : level}`}
-                  aria-pressed={level === selectedVeterancy}
-                  style={{ display: "inline-flex", alignItems: "center", padding: 2 }}
+                  disabled={rankModifiers.length === 0}
+                  position="top"
+                  withArrow
+                  multiline
+                  w={320}
+                  events={{ hover: true, focus: true, touch: true }}
+                  label={
+                    <Stack gap={4}>
+                      {rankModifiers.map(({ id, value }, modifierIndex) => (
+                        <Group
+                          key={`${id}-${modifierIndex}`}
+                          gap="sm"
+                          wrap="nowrap"
+                          justify="space-between"
+                        >
+                          <Text size="xs" style={{ overflowWrap: "anywhere" }}>
+                            {humanizeVeterancyModifierId(id)}
+                          </Text>
+                          <Text size="xs" fw={600} style={{ flexShrink: 0 }}>
+                            {value}
+                          </Text>
+                        </Group>
+                      ))}
+                    </Stack>
+                  }
                 >
-                  <Image
-                    src={active ? vetStarIconPath : vetStarEmptyIconPath}
-                    alt=""
-                    aria-hidden
-                    w={19}
-                    h={19}
-                    fit="contain"
-                  />
-                </UnstyledButton>
+                  <UnstyledButton
+                    type="button"
+                    onClick={() => onVeterancyChange(level)}
+                    aria-label={`★ ${active && level === selectedVeterancy ? 0 : level}`}
+                    aria-pressed={level === selectedVeterancy}
+                    style={{ display: "inline-flex", alignItems: "center", padding: 2 }}
+                  >
+                    <Image
+                      src={active ? vetStarIconPath : vetStarEmptyIconPath}
+                      alt=""
+                      aria-hidden
+                      w={19}
+                      h={19}
+                      fit="contain"
+                    />
+                  </UnstyledButton>
+                </Tooltip>
               );
             })}
           </Group>

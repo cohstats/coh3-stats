@@ -13,8 +13,8 @@ interface ApplyCustomModifierOptions {
   max?: number;
 }
 
-// Percentage range bonuses scale each breakpoint; flat additions shift each
-// breakpoint by the same distance. Do not scale flat additions by max range.
+// Percentage range bonuses scale near/mid/far/max; flat additions shift them.
+// Minimum range remains unchanged by either type of modifier.
 const getVeterancyAdjustedRange = (
   range: RangeType,
   veterancy: ReturnType<typeof getDpsVeterancyEffects>,
@@ -30,7 +30,7 @@ const getVeterancyAdjustedRange = (
     near: adjust(near),
     mid: adjust(mid),
     far: adjust(far),
-    min: adjust(range.min),
+    min: range.min,
     max: adjust(range.max),
   };
 };
@@ -117,7 +117,9 @@ const getSingleWeaponDPS = (
   if (target_unit) {
     cover = getCoverMultiplier(target_unit.cover, weapon_member.weapon.weapon_bag);
     targetSize = target_unit.target_size;
-    armor = target_unit.armor;
+    // Front armor is the default facing in the DPS calculator. Veterancy
+    // adds to that base before manual modifiers (including absolute overrides).
+    armor = target_unit.armor + targetVeterancy.frontArmorAddition;
 
     // Apply armor modifier from target unit early (affects all armor calculations)
     armor = applyCustomModifier(armor, target_unit.custom_modifiers?.armor, {
