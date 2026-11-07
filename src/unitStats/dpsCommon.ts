@@ -5,6 +5,7 @@ import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
 import { getSingleWeaponDPS, applyCustomModifier } from "./weaponLib";
+import { getDpsVeterancyEffects } from "./dpsVeterancy";
 import { getUpgradeStateTreeWeapons } from "./workarounds";
 import type { UpgradesType } from "./mappingUpgrades";
 import type { AbilitiesType } from "./mappingAbilities";
@@ -159,6 +160,7 @@ type CustomizableUnit = {
   capture_revert: number;
   speed: number;
   custom_modifiers?: CustomModifiers; // Custom stat modifiers
+  veterancyLevel?: number; // 0 = none; all preceding ranks apply cumulatively
 };
 
 export const createDefaultCustomModifiers = (): CustomModifiers => ({
@@ -261,6 +263,7 @@ export const mapCustomizableUnit = (
     dps_f: 0,
     speed: 0,
     custom_modifiers: createDefaultCustomModifiers(),
+    veterancyLevel: 0,
   };
 
   if (sbpsSelected.ui.symbolIconName != "")
@@ -1098,19 +1101,23 @@ export const getCompareDpsData = (
 // Helper function to get modified hitpoints per entity
 export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
   const modifier = unit.custom_modifiers?.hitpoints;
+  const vetHealthAddition = getDpsVeterancyEffects(unit).healthAddition;
 
   if (!modifier?.enabled) {
-    return Math.max(unit.hitpoints, 1);
+    return Math.max(unit.hitpoints + vetHealthAddition, 1);
   }
 
-  let modifiedHitpoints = unit.hitpoints;
+  // Percent/additive changes use the veterancy-adjusted base.
+  // Absolute manual values override it instead of gaining extra veterancy HP.
+  const baseHitpoints = unit.hitpoints + vetHealthAddition;
+  let modifiedHitpoints = baseHitpoints;
 
   if (modifier.type === "percentage") {
-    modifiedHitpoints = unit.hitpoints * (1 + modifier.value / 100);
+    modifiedHitpoints = baseHitpoints * (1 + modifier.value / 100);
   } else if (modifier.type === "absolute") {
     modifiedHitpoints = modifier.value;
   } else if (modifier.type === "additive") {
-    modifiedHitpoints = unit.hitpoints + modifier.value;
+    modifiedHitpoints = baseHitpoints + modifier.value;
   }
 
   return Math.max(modifiedHitpoints, 1);
@@ -1148,18 +1155,37 @@ const getUnitModifiedRangeInfo = (unit: CustomizableUnit) => {
       baseMaxRange: 0,
       modifiedMaxRange: 0,
       rangeScale: 1,
+      rangeShift: 0,
     };
   }
 
-  const modifiedMaxRange = applyCustomModifier(baseMaxRange, unit.custom_modifiers?.range, {
+  const veterancy = getDpsVeterancyEffects(unit);
+  // Percentage veterancy bonuses scale breakpoints; flat additions shift them.
+  // Find the new maximum across enabled weapons, respecting both bonus types.
+  const vetRange = Math.max(
+    1,
+    ...unit.weapon_member
+      .filter((member) => member.num > 0)
+      .map(
+        (member) =>
+          member.weapon.weapon_bag.range_max * veterancy.rangeMultiplier +
+          veterancy.rangeAddition,
+      ),
+  );
+  const modifiedMaxRange = applyCustomModifier(vetRange, unit.custom_modifiers?.range, {
     percentMode: "normal",
     min: 1,
   });
 
+  // Manual additive range also shifts the whole range profile; percentage
+  // modifiers (and absolute max overrides) scale it instead.
+  const isAdditiveRange =
+    unit.custom_modifiers?.range?.enabled && unit.custom_modifiers.range.type === "additive";
   return {
     baseMaxRange,
     modifiedMaxRange,
-    rangeScale: modifiedMaxRange / baseMaxRange,
+    rangeScale: isAdditiveRange ? 1 : modifiedMaxRange / vetRange,
+    rangeShift: isAdditiveRange ? modifiedMaxRange - vetRange : 0,
   };
 };
 
@@ -1167,6 +1193,7 @@ const getUnitDpsAtBaseDistance = (
   baseDistance: number,
   unit1: CustomizableUnit,
   unit2?: CustomizableUnit,
+  displayedDistance = baseDistance,
 ): number => {
   let totalDps = 0;
 
@@ -1177,10 +1204,19 @@ const getUnitDpsAtBaseDistance = (
       return;
     }
 
+    const veterancy = getDpsVeterancyEffects(unit1);
+    const baseMaxRange = weapon_member.weapon.weapon_bag.range_max;
+    // Apply range bonuses per weapon, not just to the squad's longest-ranged weapon.
+    const range_max = Math.max(
+      0,
+      baseMaxRange * veterancy.rangeMultiplier + veterancy.rangeAddition,
+    );
+    // Minimum range stays fixed, even with veterancy or manual range modifiers.
+    // Use the displayed distance because baseDistance accounts for manual range
+    // scaling/shifting, which should affect breakpoints but not minimum range.
     const range_min = weapon_member.weapon.weapon_bag.range_min;
-    const range_max = weapon_member.weapon.weapon_bag.range_max;
 
-    if (baseDistance < range_min || baseDistance > range_max) {
+    if (displayedDistance < range_min || baseDistance > range_max) {
       return;
     }
 
@@ -1209,12 +1245,12 @@ export const getDpsVsHealth = (
 export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
   const dpsTotal: CoordinatesDPS[] = [];
 
-  const { modifiedMaxRange, rangeScale } = getUnitModifiedRangeInfo(unit1);
+  const { modifiedMaxRange, rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit1);
 
   for (let displayedDistance = 0; displayedDistance <= modifiedMaxRange; displayedDistance++) {
-    const baseDistance = displayedDistance / rangeScale;
+    const baseDistance = (displayedDistance - rangeShift) / rangeScale;
 
-    const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2);
+    const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2, displayedDistance);
 
     dpsTotal.push({
       x: displayedDistance,
@@ -1226,11 +1262,11 @@ export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) 
 };
 
 const getDpsByDistance = (distance = 0, unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
-  const { rangeScale } = getUnitModifiedRangeInfo(unit1);
+  const { rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit1);
 
-  const baseDistance = distance / rangeScale;
+  const baseDistance = (distance - rangeShift) / rangeScale;
 
-  const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2);
+  const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2, distance);
 
   return Math.floor(dps);
 };

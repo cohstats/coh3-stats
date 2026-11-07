@@ -15,14 +15,16 @@ type SpawnWeaponData = {
   replacesNormalWeapon: boolean;
 };
 
+type VeterancyModifierData = {
+  id: string;
+  value: number;
+};
+
 type VeterancyRankData = {
   exp: number;
   screenName: string;
   requirementIds: string[];
-  /** Found at `veterancy_rank/custom_properties/custom_pbgid_properties` (id `VETERANCY_PBG_1`).
-   * Instance reference into veterancy.json, resolve it with `getVeterancyByRef`.
-   * eg. custom_property_container/veterancy/american/infantry/riflemen/veterancy_1_riflemen */
-  veterancyRef: string;
+  modifiers: VeterancyModifierData[];
 };
 // need to be extended by all required fields
 type SbpsType = {
@@ -126,6 +128,7 @@ const mapSbpsData = (
   jsonPath: string,
   parent: string,
   locale: string,
+  veterancyRoot?: any,
 ) => {
   const sbpsEntity: SbpsType = {
     // default values
@@ -157,9 +160,9 @@ const mapSbpsData = (
       },
     },
     veterancyInfo: {
-      one: { exp: 0, screenName: "", requirementIds: [], veterancyRef: "" },
-      two: { exp: 0, screenName: "", requirementIds: [], veterancyRef: "" },
-      three: { exp: 0, screenName: "", requirementIds: [], veterancyRef: "" },
+      one: { exp: 0, screenName: "", requirementIds: [], modifiers: [] },
+      two: { exp: 0, screenName: "", requirementIds: [], modifiers: [] },
+      three: { exp: 0, screenName: "", requirementIds: [], modifiers: [] },
     },
     reinforce: {
       cost_percentage: 0,
@@ -172,7 +175,7 @@ const mapSbpsData = (
     construction: [],
   };
 
-  mapExtensions(subtree, sbpsEntity, locale);
+  mapExtensions(subtree, sbpsEntity, locale, veterancyRoot);
 
   // compute load out
 
@@ -194,7 +197,53 @@ const getVeterancyRequirementIds = (requirements?: any[]) => {
     .filter(Boolean);
 };
 
-const mapVeterancyRank = (rankInfo: any, locale: string): VeterancyRankData => {
+// A rank refers to a custom_property_container/veterancy/... record via
+// custom_properties.custom_pbgid_properties[].custom_pbgid_property.pbg.
+// Our extracted veterancy.json starts *inside* the veterancy folder, so
+// remove that prefix before walking the JSON object.
+/** Resolve per-rank custom-property references against the extracted data. */
+const getVeterancyRankModifiers = (rank: any, veterancyRoot?: any): VeterancyModifierData[] => {
+  if (!veterancyRoot) return [];
+
+  const modifiers: VeterancyModifierData[] = [];
+  const refs = rank?.custom_properties?.custom_pbgid_properties ?? [];
+  const prefix = "custom_property_container/veterancy/";
+
+  for (const item of refs) {
+    const ref = item?.custom_pbgid_property?.pbg?.instance_reference;
+    if (typeof ref !== "string") continue;
+
+    const normalizedRef = ref.replace(/\\/g, "/");
+    if (!normalizedRef.startsWith(prefix)) continue;
+
+    const pathParts = normalizedRef.slice(prefix.length).split("/").filter(Boolean);
+    const entry = pathParts.reduce((node: any, key: string) => node?.[key], veterancyRoot);
+    const bag = entry?.custom_property_bag;
+
+    for (const floatEntry of bag?.custom_float_properties ?? []) {
+      const property = floatEntry?.custom_float_property;
+      if (typeof property?.id === "string" && typeof property.value === "number") {
+        modifiers.push({ id: property.id, value: property.value });
+      }
+    }
+
+    // These exist in a few of the records as well.
+    for (const intEntry of bag?.custom_int32_properties ?? []) {
+      const property = intEntry?.custom_int32_property;
+      if (typeof property?.id === "string" && typeof property.value === "number") {
+        modifiers.push({ id: property.id, value: property.value });
+      }
+    }
+  }
+
+  return modifiers;
+};
+
+const mapVeterancyRank = (
+  rankInfo: any,
+  locale: string,
+  veterancyRoot?: any,
+): VeterancyRankData => {
   const rank = rankInfo?.veterancy_rank;
 
   return {
@@ -204,20 +253,11 @@ const mapVeterancyRank = (rankInfo: any, locale: string): VeterancyRankData => {
       resolveLocstring(rank?.brief_text, locale) ||
       "",
     requirementIds: getVeterancyRequirementIds(rank?.requirements),
-    veterancyRef: getVeterancyRef(rank?.custom_properties),
+    modifiers: getVeterancyRankModifiers(rank, veterancyRoot),
   };
 };
 
-const getVeterancyRef = (customProperties?: any): string => {
-  const pbgidProperties: any[] = customProperties?.custom_pbgid_properties || [];
-  const vetProperty = pbgidProperties.find(
-    (item) => item?.custom_pbgid_property?.id === "VETERANCY_PBG_1",
-  );
-
-  return vetProperty?.custom_pbgid_property?.pbg?.instance_reference || "";
-};
-
-const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
+const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en", veterancyRoot?: any) => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
     const extName = extension.template_reference.value.split("\\")[1];
@@ -315,12 +355,12 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en") => {
             extension.race_list[0].race_data.info.veterancy_rank_info || [];
           // Technically the first one is vet 1, second is vet 2 and third is vet 3.
 
-          sbps.veterancyInfo.one = mapVeterancyRank(vetExtInfo[0], locale);
-          sbps.veterancyInfo.two = mapVeterancyRank(vetExtInfo[1], locale);
-          sbps.veterancyInfo.three = mapVeterancyRank(vetExtInfo[2], locale);
+          sbps.veterancyInfo.one = mapVeterancyRank(vetExtInfo[0], locale, veterancyRoot);
+          sbps.veterancyInfo.two = mapVeterancyRank(vetExtInfo[1], locale, veterancyRoot);
+          sbps.veterancyInfo.three = mapVeterancyRank(vetExtInfo[2], locale, veterancyRoot);
 
           if (vetExtInfo[3]) {
-            sbps.veterancyInfo.four = mapVeterancyRank(vetExtInfo[3], locale);
+            sbps.veterancyInfo.four = mapVeterancyRank(vetExtInfo[3], locale, veterancyRoot);
           }
         }
         break;
@@ -419,6 +459,7 @@ const BanishedRequirements = ["mass_production", "campaign"];
 // puts the result array into the exported SbpsData variable.
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
+/** Load SBPS records and enrich current-patch ranks when optional vet data exists. */
 const getSbpsStats = async (patch = "latest", locale = "en") => {
   if (patch == config.latestPatch) patch = "latest";
 
@@ -431,6 +472,24 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
     `sbps.json for patch ${patch}, locale ${locale}`,
   );
 
+  // The veterancy file is optional: older datasets may not contain it yet.
+  // Always retain the normal SBPS data when the additional request fails.
+  // When a latest-patch file is published, production can use it too.
+  let veterancyRoot: any = undefined;
+  if (patch === "latest") {
+    try {
+      veterancyRoot = await fetchJsonWithLogging(
+        config.getPatchDataUrl("veterancy.json", patch),
+        `veterancy.json for patch ${patch}`,
+      );
+    } catch (error) {
+      console.warn(
+        "Optional veterancy data unavailable; continuing without rank modifiers",
+        error,
+      );
+    }
+  }
+
   const sbpsSetAll: SbpsType[] = [];
 
   // Extract from JSON
@@ -440,7 +499,7 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
       root[obj],
       isExtensionContainer,
       (filename: string, subtree: any, jsonPath: string, parent: string) =>
-        mapSbpsData(filename, subtree, jsonPath, parent, locale),
+        mapSbpsData(filename, subtree, jsonPath, parent, locale, veterancyRoot),
       obj,
       obj,
     );
