@@ -214,8 +214,8 @@ test.describe("Search Page - section nav", () => {
 
   test("should hide the FS Units button when no Final Stand unit matches", async ({ page }) => {
     const searchPage = new SearchPage(page);
-    // Only a regular unit is named "Wespe", there is no Final Stand variant.
-    await searchPage.navigate("Wespe");
+    // Only a regular unit is named "King Tiger", there is no Final Stand variant.
+    await searchPage.navigate("King Tiger");
     await expect(searchPage.unitsResults).toBeVisible({ timeout: 30000 });
 
     await expect(searchPage.sectionNav).toBeVisible();
@@ -232,7 +232,7 @@ test.describe("Search Page - section nav", () => {
     await searchPage.sectionNavButton("units").click();
     await expect(page).toHaveURL(/#units$/);
 
-    await searchPage.searchInput.fill("Wespe");
+    await searchPage.searchInput.fill("King Tiger");
     await expect(page).not.toHaveURL(/#/);
   });
 });

@@ -154,6 +154,13 @@
     "isCommunity": true
   },
   {
+    "id": "foggia_airfield_winter_6p",
+    "name": "(6) Foggia Airfield",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
     "id": "gabes_gap_6p",
     "name": "(6) Gabès Gap",
     "mode": "3v3",
@@ -189,66 +196,45 @@
     "isCommunity": false
   },
   {
-    "id": "hoff_city",
-    "name": "hoff_city",
-    "mode": "fs",
-    "maxPlayers": 4,
-    "isCommunity": false
-  },
-  {
     "id": "hoff_dam",
-    "name": "hoff_dam",
+    "name": "Dam Busters",
     "mode": "fs",
-    "maxPlayers": 4,
+    "maxPlayers": 5,
     "isCommunity": false
   },
   {
     "id": "hoff_desert",
     "name": "Qattara Depression",
     "mode": "fs",
-    "maxPlayers": 4,
-    "isCommunity": false
-  },
-  {
-    "id": "hoff_elst_outskirts_4p",
-    "name": "hoff_elst_outskirts_4p",
-    "mode": "fs",
-    "maxPlayers": 4,
+    "maxPlayers": 5,
     "isCommunity": false
   },
   {
     "id": "hoff_forest",
     "name": "The Alpine Wall",
     "mode": "fs",
-    "maxPlayers": 4,
-    "isCommunity": false
-  },
-  {
-    "id": "hoff_forest_2",
-    "name": "hoff_forest_2",
-    "mode": "fs",
-    "maxPlayers": 6,
+    "maxPlayers": 5,
     "isCommunity": false
   },
   {
     "id": "hoff_gela_outskirts",
     "name": "Gela Beachhead",
     "mode": "fs",
-    "maxPlayers": 6,
+    "maxPlayers": 5,
     "isCommunity": false
   },
   {
     "id": "hoff_sousse_wetlands",
     "name": "Fall of Sousse",
     "mode": "fs",
-    "maxPlayers": 4,
+    "maxPlayers": 5,
     "isCommunity": false
   },
   {
     "id": "hoff_torrente",
     "name": "Torrente Ruins",
     "mode": "fs",
-    "maxPlayers": 4,
+    "maxPlayers": 5,
     "isCommunity": false
   },
   {
@@ -261,6 +247,13 @@
   {
     "id": "langres_2p",
     "name": "(2) Langres",
+    "mode": "1v1",
+    "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "langres_winter_2p",
+    "name": "(2) Langres Winter",
     "mode": "1v1",
     "maxPlayers": 2,
     "isCommunity": false
@@ -280,7 +273,21 @@
     "isCommunity": true
   },
   {
+    "id": "mammut_8p",
+    "name": "(8) Radarstation Mammut",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": true
+  },
+  {
     "id": "mignano_6p",
+    "name": "(6) Mignano Summit",
+    "mode": "3v3",
+    "maxPlayers": 6,
+    "isCommunity": false
+  },
+  {
+    "id": "mignano_6p_redux",
     "name": "(6) Mignano Summit",
     "mode": "3v3",
     "maxPlayers": 6,
@@ -336,13 +343,6 @@
     "isCommunity": false
   },
   {
-    "id": "pisa_central_4p",
-    "name": "(4) Pisa Centrale",
-    "mode": "2v2",
-    "maxPlayers": 4,
-    "isCommunity": false
-  },
-  {
     "id": "pisa_centrale_4p",
     "name": "(4) Pisa Centrale",
     "mode": "2v2",
@@ -385,6 +385,13 @@
     "isCommunity": false
   },
   {
+    "id": "rapido_river_8p_redux",
+    "name": "(8) Rapido River Crossing",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
     "id": "red_ball_express_8p",
     "name": "(8) Red Ball Express",
     "mode": "4v4",
@@ -394,6 +401,13 @@
   {
     "id": "rural_castle_4p",
     "name": "(4) Aere Perennius",
+    "mode": "2v2",
+    "maxPlayers": 4,
+    "isCommunity": false
+  },
+  {
+    "id": "rural_castle_winter_4p",
+    "name": "(4) Aere Perennius Winter Test",
     "mode": "2v2",
     "maxPlayers": 4,
     "isCommunity": false
@@ -469,6 +483,13 @@
     "isCommunity": false
   },
   {
+    "id": "turin_8p",
+    "name": "(8) Turin Steelworks",
+    "mode": "4v4",
+    "maxPlayers": 8,
+    "isCommunity": false
+  },
+  {
     "id": "tuscan_vineyard_2p",
     "name": "(2) Tuscan Vineyards",
     "mode": "1v1",
@@ -487,6 +508,13 @@
     "name": "(2) Villa Fiore",
     "mode": "1v1",
     "maxPlayers": 2,
+    "isCommunity": false
+  },
+  {
+    "id": "vire_river_valley_4p",
+    "name": "(4) Vire River Valley",
+    "mode": "2v2",
+    "maxPlayers": 4,
     "isCommunity": false
   },
   {

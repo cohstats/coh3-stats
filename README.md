@@ -110,7 +110,7 @@ For more info see readme at https://www.npmjs.com/package/next-sitemap
 
 We have a special script for that.
 
-1. You need Node 19+
+1. You need Node 24.12+
 2. Run
 
 ```

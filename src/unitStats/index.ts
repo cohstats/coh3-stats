@@ -9,6 +9,7 @@ export * from "./mappingChallenges";
 export * from "./mappingEbps";
 export * from "./mappingSbps";
 export * from "./mappingUpgrades";
+export * from "./mappingVeterancy";
 export * from "./mappingWeapon";
 export * from "./unitStatsLib";
 export * from "./weaponLib";

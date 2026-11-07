@@ -28,6 +28,7 @@ const DATA_FILES = [
   "battlegroup.json",
   "daily_challenges_store_release.json",
   "weekly_challenges_store_release.json",
+  "veterancy.json",
   "fs-perks.json",
   "fs-technologies.json",
   "mp-maps.json",

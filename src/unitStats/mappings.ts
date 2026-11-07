@@ -7,6 +7,7 @@ import { getAbilitiesStats } from "./mappingAbilities";
 import { getBattlegroupStats } from "./mappingBattlegroups";
 import { ebpsWorkarounds } from "./workarounds";
 import { getDailyChallengeStats, getWeeklyChallengeStats } from "./mappingChallenges";
+import { getVeterancyStats } from "./mappingVeterancy";
 
 const getMappings = async (locale = "en") => {
   // Locstring needs to be fetched first because it's used by the other mappings.
@@ -22,6 +23,7 @@ const getMappings = async (locale = "en") => {
     battlegroupData,
     dailyChallengesData,
     weeklyChallengesData,
+    veterancyData,
   ] = await Promise.all([
     getWeaponStats("latest", locale),
     getEbpsStats("latest", locale),
@@ -31,6 +33,7 @@ const getMappings = async (locale = "en") => {
     getBattlegroupStats(locale),
     getDailyChallengeStats(locale),
     getWeeklyChallengeStats(locale),
+    getVeterancyStats("latest"),
   ]);
 
   for (const ebpsItem of ebpsData) {
@@ -55,6 +58,7 @@ const getMappings = async (locale = "en") => {
     battlegroupData,
     dailyChallengesData,
     weeklyChallengesData,
+    veterancyData,
   };
 };
 
