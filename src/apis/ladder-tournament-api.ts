@@ -18,7 +18,8 @@ const rankingItemSchema = z.object({
   wins: z.number(),
   losses: z.number(),
   score: z.number(),
-  // Win rate as decimal, eg 0.86
+  // Average points per completed match, NOT a percentage / win rate.
+  // rating = total points earned / number of completed matches, eg 3, 2, 0 points -> 1.67
   rating: z.number(),
   ladderwinner: yesNoSchema,
   ironcladwinner: yesNoSchema,

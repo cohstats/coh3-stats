@@ -64,6 +64,13 @@ export type PlayerTournamentAggregate = {
 // Win rate from the API as decimal, eg 0.86 -> 86%
 export const formatWinRate = (winRate: number) => `${Math.round(winRate * 100)}%`;
 
+/**
+ * Win rate of a Ladder Tournament ranking item as decimal, eg 0.86.
+ * Computed from wins / matches - the API `rating` is the average points per match, not a win rate.
+ */
+export const getLadderWinRate = (item: Pick<LadderTournamentRankingItem, "matches" | "wins">) =>
+  item.matches > 0 ? item.wins / item.matches : 0;
+
 export const LADDER_TOURNAMENT_TITLE_FLAGS = [
   "ladderwinner",
   "ironcladwinner",
@@ -90,7 +97,7 @@ export const buildLadderTournament = (data: LadderTournamentPlayerData): PlayerT
         matches: item.matches,
         wins: item.wins,
         losses: item.losses,
-        winRate: item.rating,
+        winRate: getLadderWinRate(item),
         score: item.score,
       },
       titles: LADDER_TOURNAMENT_TITLE_FLAGS.filter((flag) => item[flag] === "Yes"),

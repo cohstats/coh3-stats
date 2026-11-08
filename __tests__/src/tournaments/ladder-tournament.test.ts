@@ -149,6 +149,16 @@ describe("getLadderSeasonIds", () => {
 });
 
 describe("buildLadderStandings", () => {
+  test("returns 0 win rate for a player without matches", () => {
+    const [row] = buildLadderStandings(
+      [item(1, { matches: 0, wins: 0, losses: 0, rating: 0 })],
+      [],
+      {},
+    );
+
+    expect(row.winRate).toBe(0);
+  });
+
   test("sorts by score only, the same score keeps the API order", () => {
     const rows = buildLadderStandings(
       [
@@ -166,9 +176,10 @@ describe("buildLadderStandings", () => {
   });
 
   test("keeps the API values, marks the champions and maps the titles", () => {
-    // wins + losses doesn't have to equal matches in the API data
+    // wins + losses doesn't have to equal matches in the API data,
+    // rating is the average points per match - the win rate is wins / matches
     const [row] = buildLadderStandings(
-      [champion(1, { matches: 15, wins: 10, losses: 4, rating: 0.71, thelegend: "Yes" })],
+      [champion(1, { matches: 15, wins: 10, losses: 4, rating: 2.4, thelegend: "Yes" })],
       [],
       {},
     );
@@ -177,7 +188,7 @@ describe("buildLadderStandings", () => {
       matches: 15,
       wins: 10,
       losses: 4,
-      winRate: 0.71,
+      winRate: 10 / 15,
       score: 13,
       isChampion: true,
       titles: ["ladderwinner", "thelegend"],

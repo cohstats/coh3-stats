@@ -113,7 +113,8 @@ describe("LadderTournamentScreen", () => {
     expect(championRow).toContain("lem22");
     expect(championRow).toContain('href="/players/1"');
     expect(championRow).toContain("tournaments.titles.ladderwinner");
-    expect(championRow).toContain("86%");
+    // Win rate is wins / matches (13 / 15), not the API rating
+    expect(championRow).toContain("87%");
     // Casts open the player card tournaments tab in a new tab
     // Casts are the last column, so the last link of the row
     const castsLink = championRow.slice(championRow.lastIndexOf("<a"));
