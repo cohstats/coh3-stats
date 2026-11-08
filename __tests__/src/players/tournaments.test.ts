@@ -18,7 +18,7 @@ describe("buildLadderTournament", () => {
       matches: ranking[0].matches,
       wins: ranking[0].wins,
       losses: ranking[0].losses,
-      winRate: ranking[0].rating,
+      winRate: ranking[0].wins / ranking[0].matches,
       score: ranking[0].score,
     });
     expect(tournament.unavailable).toBe(false);
@@ -78,7 +78,7 @@ describe("getTournamentAggregate", () => {
           matches: 15,
           wins: 13,
           losses: 2,
-          rating: 0.86,
+          rating: 2.4,
           ladderwinner: "Yes",
         },
         {
@@ -87,7 +87,7 @@ describe("getTournamentAggregate", () => {
           matches: 9,
           wins: 6,
           losses: 3,
-          rating: 0.67,
+          rating: 1.67,
           ladderwinner: "No",
         },
       ],
@@ -98,7 +98,7 @@ describe("getTournamentAggregate", () => {
       matches: 24,
       wins: 19,
       losses: 5,
-      winRate: (0.86 * 15 + 0.67 * 9) / 24,
+      winRate: 19 / 24,
       titles: 1,
     });
   });
@@ -106,10 +106,11 @@ describe("getTournamentAggregate", () => {
   test("equals the season win rate for a single season", () => {
     const tournament = buildLadderTournament({
       videos: [],
-      ladderRanking: [{ ...ranking[0], matches: 15, wins: 13, losses: 2, rating: 0.86 }],
+      // rating is the average points per match, it must not be used as the win rate
+      ladderRanking: [{ ...ranking[0], matches: 15, wins: 13, losses: 2, rating: 2.4 }],
     });
 
-    expect(getTournamentAggregate(tournament.seasons).winRate).toBe(0.86);
+    expect(getTournamentAggregate(tournament.seasons).winRate).toBe(13 / 15);
   });
 
   test("returns null win rate when there are no matches", () => {

@@ -3,7 +3,7 @@ import type {
   LadderTournamentRankingItem,
   LadderTournamentSeason,
 } from "../apis/ladder-tournament-api";
-import { LADDER_TOURNAMENT_TITLE_FLAGS } from "../players/tournaments";
+import { getLadderWinRate, LADDER_TOURNAMENT_TITLE_FLAGS } from "../players/tournaments";
 
 /**
  * View model of the Ladder Tournament league pages and the Tournaments hub.
@@ -24,7 +24,7 @@ export type LadderStandingRow = {
   matches: number;
   wins: number;
   losses: number;
-  // Win rate as decimal from the API, eg 0.86 - never recomputed
+  // Win rate as decimal, eg 0.86 - computed as wins / matches (the API rating is not a win rate)
   winRate: number;
   score: number;
   // Keys of won titles, translated with players:tournaments.titles.<key>
@@ -261,7 +261,7 @@ export const buildLadderStandings = (
       matches: item.matches,
       wins: item.wins,
       losses: item.losses,
-      winRate: item.rating,
+      winRate: getLadderWinRate(item),
       score: item.score,
       titles: LADDER_TOURNAMENT_TITLE_FLAGS.filter((flag) => item[flag] === "Yes"),
       isChampion: item.ladderwinner === "Yes",
