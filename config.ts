@@ -40,7 +40,7 @@ const getIroncladTournamentApiToken = (): string | null => {
 };
 
 // This controls the default patch selector in the stats page // this needs to be key statsPatchSelector object
-const defaultStatsPatchSelector = "3.0.0";
+const defaultStatsPatchSelector = "3.0.1";
 
 // This controls the patch selector in the stats page
 const statsPatchSelector: Record<
@@ -53,11 +53,11 @@ const statsPatchSelector: Record<
     group: string;
   }
 > = {
-  "3.0.0": {
+  "3.0.1": {
     from: "2026-11-05",
     to: "now",
-    value: "3.0.0",
-    label: "3.0",
+    value: "3.0.1",
+    label: "3.0.0 - 3.0.1",
     group: "3.x",
   },
   "2.5.6": {
@@ -266,11 +266,15 @@ const statsPatchSelector: Record<
 };
 
 // Latest patch needs to be a key to patches object
-const latestPatch = "3.0.0";
+const latestPatch = "3.0.1";
 
 // Get patchTimeSeconds here https://www.unixtimestamp.com/
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
+    "3.0.1": {
+      dataTag: "v3.0.1-1",
+      dataTime: "10/Nov/2026",
+    },
     "3.0.0": {
       dataTag: "v3.0.0-3",
       dataTime: "06/Nov/2026",
