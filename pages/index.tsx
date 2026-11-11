@@ -1,33 +1,25 @@
 import { getTwitchStreams, getYouTubeVideosHttp } from "../src/apis/coh3stats-api";
-import { Top1v1LeaderboardsData, TwitchStream, YouTubeVideo } from "../src/coh3/coh3-types";
 import Home from "../screens/home";
 import { getTop1v1LeaderBoards } from "../src/leaderboards/top-leaderboards";
-import { getLatestCOH3RedditPosts, RedditPostType } from "../src/apis/reddit-api";
+import { getLatestCOH3RedditPosts } from "../src/apis/reddit-api";
 import { GetStaticProps } from "next";
-import { COH3SteamNewsType, NewsItem } from "../src/apis/steam-api";
+import { NewsItem } from "../src/apis/steam-api";
 import { getNews } from "../src/news/get-news";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 
 export default Home;
 
-export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => {
-  let error: Error | null = null;
-  let twitchStreams: TwitchStream[] | null = null;
-  let topLeaderBoardsData: Top1v1LeaderboardsData | null = null;
-  let redditPostsData: RedditPostType[] | null = null;
-  let steamNewsData: COH3SteamNewsType | null = null;
-  let youtubeData: YouTubeVideo[] | null = null;
+// Normal ISR interval (matching s-maxage from headers)
+const REVALIDATE_OK = 600;
+// When any section failed, regenerate quickly so the broken state is short-lived
+const REVALIDATE_ON_FAILURE = 30;
 
+export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => {
   console.log(`ISR - /, locale: ${locale}`);
 
-  try {
-    const [
-      PromisedTwitchStreams,
-      PromisedTopLeaderBoardsData,
-      PromisedRedditPostsData,
-      PromisedSteamNewsData,
-      PromisedYoutubeData,
-    ] = await Promise.all([
+  // Each source is fetched independently - one failing must not affect the others
+  const [twitchResult, leaderboardsResult, redditResult, newsResult, youtubeResult] =
+    await Promise.allSettled([
       getTwitchStreams(""),
       getTop1v1LeaderBoards("american"),
       getLatestCOH3RedditPosts(),
@@ -35,23 +27,44 @@ export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => 
       getYouTubeVideosHttp(),
     ]);
 
-    twitchStreams = PromisedTwitchStreams;
-    topLeaderBoardsData = PromisedTopLeaderBoardsData;
-    redditPostsData = PromisedRedditPostsData;
-    PromisedSteamNewsData.newsitems = PromisedSteamNewsData.newsitems.map((news: NewsItem) => {
-      return {
-        gid: news.gid,
-        title: news.title,
-        image: news.image,
-        ...(typeof news.imageOnly === "boolean" ? { imageOnly: news.imageOnly } : {}),
-      };
-    });
-    steamNewsData = PromisedSteamNewsData;
-    youtubeData = PromisedYoutubeData;
-  } catch (e: any) {
-    console.error(`Failed getting data for home page`);
-    console.error(e);
-    error = e.message;
+  const failures: string[] = [];
+  const valueOrNull = <T,>(name: string, result: PromiseSettledResult<T>): T | null => {
+    if (result.status === "fulfilled") return result.value;
+    console.error(`Failed getting ${name} data for home page`);
+    console.error(result.reason);
+    failures.push(name);
+    return null;
+  };
+
+  const twitchStreams = valueOrNull("twitch", twitchResult);
+  const topLeaderBoardsData = valueOrNull("leaderboards", leaderboardsResult);
+  const redditPostsData = valueOrNull("reddit", redditResult);
+  const steamNewsRaw = valueOrNull("news", newsResult);
+  const youtubeData = valueOrNull("youtube", youtubeResult);
+
+  // Reddit and YouTube swallow their errors and return [] - treat empty as a failure
+  if (redditPostsData && redditPostsData.length === 0) failures.push("reddit");
+  if (youtubeData && youtubeData.length === 0) failures.push("youtube");
+
+  const steamNewsData = steamNewsRaw
+    ? {
+        ...steamNewsRaw,
+        newsitems: steamNewsRaw.newsitems.map((news: NewsItem) => ({
+          gid: news.gid,
+          title: news.title,
+          image: news.image,
+          ...(typeof news.imageOnly === "boolean" ? { imageOnly: news.imageOnly } : {}),
+        })),
+      }
+    : null;
+
+  const error =
+    twitchResult.status === "rejected" ? (twitchResult.reason?.message ?? "Unknown error") : null;
+
+  if (failures.length > 0) {
+    console.warn(
+      `Home page generated with failed sections: ${failures.join(", ")} - revalidating in ${REVALIDATE_ON_FAILURE}s`,
+    );
   }
 
   return {
@@ -64,6 +77,6 @@ export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => 
       youtubeData,
       ...(await serverSideTranslations(locale, ["common", "home"])),
     },
-    revalidate: 600, // Revalidate every 10 minutes (matching s-maxage from headers)
+    revalidate: failures.length > 0 ? REVALIDATE_ON_FAILURE : REVALIDATE_OK,
   };
 };
