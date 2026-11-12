@@ -33,8 +33,9 @@ type VeterancyType = {
   pbgRefs: Record<string, string>;
 };
 
-// It's in format PATCH : DATA
-const veterancyPatchData: Record<string, VeterancyType[]> = {};
+// It's in format PATCH : DATA. The promise is cached, so concurrent callers
+// (eg. getMappings + getSbpsStats) share a single fetch of veterancy.json.
+const veterancyPatchData: Record<string, Promise<VeterancyType[]>> = {};
 
 const mapCustomProperties = (propertyBag: any, veterancy: VeterancyType) => {
   if (!propertyBag) return;
@@ -90,11 +91,21 @@ const isVeterancyContainer = (key: string, obj: any) => {
  * The veterancy.json doesn't contain any locstrings, so there is no locale.
  * @param patch Note: the veterancy.json is available only since data tag v3.0.0-3.
  */
-const getVeterancyStats = async (patch = "latest") => {
+const getVeterancyStats = async (patch = "latest"): Promise<VeterancyType[]> => {
   if (patch == config.latestPatch) patch = "latest";
 
-  if (veterancyPatchData[patch]) return veterancyPatchData[patch];
+  if (!veterancyPatchData[patch]) {
+    veterancyPatchData[patch] = loadVeterancyStats(patch).catch((error) => {
+      // Don't cache failures, allow a retry.
+      delete veterancyPatchData[patch];
+      throw error;
+    });
+  }
 
+  return veterancyPatchData[patch];
+};
+
+const loadVeterancyStats = async (patch: string) => {
   const veterancyUrl = config.getPatchDataUrl("veterancy.json", patch);
   const root = await fetchJsonWithLogging(veterancyUrl, `veterancy.json for patch ${patch}`);
 
@@ -120,8 +131,6 @@ const getVeterancyStats = async (patch = "latest") => {
       veterancySetAll.push(item);
     });
   }
-
-  veterancyPatchData[patch] = veterancySetAll;
 
   return veterancySetAll;
 };
