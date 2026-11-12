@@ -378,13 +378,6 @@
     "isCommunity": false
   },
   {
-    "id": "rapido_river_8p",
-    "name": "(8) Rapido River Crossing",
-    "mode": "4v4",
-    "maxPlayers": 8,
-    "isCommunity": false
-  },
-  {
     "id": "rapido_river_8p_redux",
     "name": "(8) Rapido River Crossing",
     "mode": "4v4",
