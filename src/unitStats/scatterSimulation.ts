@@ -105,14 +105,14 @@ export const getScatterBand = (
   const angleWidth =
     (Math.max(0, weapon.scatter_angle_scatter * movingAngle * fogAngle * vetScatter) * Math.PI) /
     180;
+  // FOW scales distance scatter before the weapon's maximum-distance cap.
   const scatterSpan = Math.max(
     0,
     Math.min(
       weapon.scatter_distance_scatter_max,
-      distance * weapon.scatter_distance_scatter_ratio,
+      distance * weapon.scatter_distance_scatter_ratio * fogDistance,
     ) *
       movingDistance *
-      fogDistance *
       vetScatter,
   );
   const offset = weapon.scatter_distance_scatter_offset;

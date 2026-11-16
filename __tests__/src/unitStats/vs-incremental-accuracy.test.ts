@@ -491,6 +491,41 @@ describe("VS incremental accuracy assumes all other defender models are in the a
   });
 });
 
+describe("fog-of-war scatter distance cap", () => {
+  const weapon = {
+    ...baseBag,
+    scatter_distance_scatter_ratio: 0.5,
+    scatter_distance_scatter_max: 4,
+    scatter_distance_scatter_offset: 0,
+    scatter_angle_scatter: 10,
+    scatter_fow_distance_multiplier: 1.5,
+    scatter_fow_angle_multiplier: 1.25,
+    scatter_moving_scatter_distance_multiplier: 2,
+    scatter_moving_scatter_angle_multiplier: 1,
+  };
+
+  it.each([
+    [4, 2, 3],
+    [6, 3, 4],
+    [12, 4, 4],
+  ])("applies fog before the cap at %s metres", (distance, normalSpan, fogSpan) => {
+    const normal = getScatterBand(weapon, distance);
+    const fog = getScatterBand(weapon, distance, false, 1, true);
+    expect(normal.minRange).toBeCloseTo(distance - normalSpan);
+    expect(normal.maxRange).toBeCloseTo(distance + normalSpan);
+    expect(fog.minRange).toBeCloseTo(distance - fogSpan);
+    expect(fog.maxRange).toBeCloseTo(distance + fogSpan);
+    expect(fog.angleWidth).toBeCloseTo(normal.angleWidth * 1.25);
+  });
+
+  it("retains the existing movement and veterancy scaling after the fog-adjusted cap", () => {
+    const fog = getScatterBand(weapon, 12, true, 0.75, true);
+    expect(fog.minRange).toBeCloseTo(6);
+    expect(fog.maxRange).toBeCloseTo(18);
+    expect(fog.angleWidth).toBeCloseTo(10 * 1.25 * 0.75 * Math.PI / 180);
+  });
+});
+
 describe("manual scatter accuracy and defensive modifiers", () => {
   const scatter = {
     models: [{ id: 1, x: 0, y: 0, enabled: true }],
