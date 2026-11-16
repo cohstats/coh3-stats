@@ -313,7 +313,8 @@ describe("anti-vehicle veterancy follows EBPS target tags", () => {
     ["vehicles", ["vehicles"], false],
     ["vehicles", ["Vehicle"], false],
   ] as const)("checks tags for %s with %j", (type, tags, matches) => {
-    const attacker = unit(1), target = unit(1);
+    const attacker = unit(1),
+      target = unit(1);
     target.unit_type = type;
     target.ebps_default.unitTypes = [...tags];
     const weapon = attacker.weapon_member[0];
@@ -328,25 +329,42 @@ describe("anti-vehicle veterancy follows EBPS target tags", () => {
       aoe_damage_near: 1,
       aoe_damage_mid: 1,
       aoe_damage_far: 1,
-      target_type_table: [{
-        unit_type: "vehicle", dmg_modifier: 0, damage_multiplier: 1.5,
-        accuracy_multiplier: 1, penetration_multiplier: 1,
-      }],
+      target_type_table: [
+        {
+          unit_type: "vehicle",
+          dmg_modifier: 0,
+          damage_multiplier: 1.5,
+          accuracy_multiplier: 1,
+          penetration_multiplier: 1,
+        },
+      ],
     };
-    attacker.sbps = { veterancyInfo: { one: { modifiers: [
-      { id: "WEAPON_DAMAGE_VS_VEHICLES_ADDITION", value: 5 },
-      { id: "WEAPON_DAMAGE_VS_VEHICLES_MULTIPLIER", value: 2 },
-    ] } } } as any;
+    attacker.sbps = {
+      veterancyInfo: {
+        one: {
+          modifiers: [
+            { id: "WEAPON_DAMAGE_VS_VEHICLES_ADDITION", value: 5 },
+            { id: "WEAPON_DAMAGE_VS_VEHICLES_MULTIPLIER", value: 2 },
+          ],
+        },
+      },
+    } as any;
     const scatter = {
       models: [{ id: 1, x: 0, y: 0, enabled: true }],
-      targetModelId: 1, gunnerAngleDeg: 270, samplesPerShot: 144,
+      targetModelId: 1,
+      gunnerAngleDeg: 270,
+      samplesPerShot: 144,
     };
     const ordinary = getSingleWeaponDPS(weapon, 20, false, target, attacker);
     const geometric = getSingleWeaponScatterDPS(weapon, 20, scatter, false, target, attacker);
     attacker.veterancyLevel = 1;
     const multiplier = matches ? 3 : 1;
-    expect(getSingleWeaponDPS(weapon, 20, false, target, attacker)).toBeCloseTo(ordinary * multiplier);
-    expect(getSingleWeaponScatterDPS(weapon, 20, scatter, false, target, attacker)).toBeCloseTo(geometric * multiplier);
+    expect(getSingleWeaponDPS(weapon, 20, false, target, attacker)).toBeCloseTo(
+      ordinary * multiplier,
+    );
+    expect(getSingleWeaponScatterDPS(weapon, 20, scatter, false, target, attacker)).toBeCloseTo(
+      geometric * multiplier,
+    );
     const shot = getSingleWeaponScatterShotInputs(weapon, 20, scatter, false, target, attacker)!;
     expect(shot.directFullDamage).toBe(matches ? 45 : 10);
     expect(shot.splashDamage).toBe(matches ? 45 : 10);
@@ -522,7 +540,7 @@ describe("fog-of-war scatter distance cap", () => {
     const fog = getScatterBand(weapon, 12, true, 0.75, true);
     expect(fog.minRange).toBeCloseTo(6);
     expect(fog.maxRange).toBeCloseTo(18);
-    expect(fog.angleWidth).toBeCloseTo(10 * 1.25 * 0.75 * Math.PI / 180);
+    expect(fog.angleWidth).toBeCloseTo((10 * 1.25 * 0.75 * Math.PI) / 180);
   });
 });
 
