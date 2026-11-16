@@ -18,7 +18,7 @@ jest.mock("../../../../src/unitStats/dpsData", () => ({
 }));
 
 jest.mock("next/router", () => ({
-  useRouter: () => ({ locale: "en", isReady: false, query: {}, push: jest.fn() }),
+  useRouter: () => mockRouter,
 }));
 
 jest.mock("next-i18next/pages", () => ({
@@ -65,18 +65,31 @@ jest.mock("../../../../components/unitStats/dps/dpsUnitCustomizing", () => ({
 }));
 
 const fetchData = jest.mocked(fetchDpsData);
+const mockRouter = {
+  locale: "en",
+  isReady: false,
+  query: {} as Record<string, string>,
+  pathname: "/explorer/dps",
+  push: jest.fn(),
+  replace: jest.fn(),
+};
 const [olderPatch, failedPatch] = Object.keys(config.patches).filter(
   (patch) => patch !== config.latestPatch,
 );
 
 const dataset = (patch = config.latestPatch): DpsData => {
-  const sbpsData = ["attacker", "panzergrenadier_ak"].map(
+  const sbpsData = [
+    "attacker",
+    "panzergrenadier_ak",
+    "halftrack_250_ak",
+    "hoff_player_riflemen_us",
+  ].map(
     (id) =>
       ({
         id,
-        path: `american/infantry/${id}`,
+        path: `${id.startsWith("hoff_") ? "hoff/" : ""}american/infantry/${id}`,
         faction: "american",
-        unitType: "infantry",
+        unitType: id === "halftrack_250_ak" ? "vehicles" : "infantry",
         ui: {
           screenName: `${id} ${patch}`,
           helpText: "",
@@ -104,10 +117,10 @@ const dataset = (patch = config.latestPatch): DpsData => {
       image: "unit",
       type_icon: "symbol",
       icon_name: "unit",
-      unit_type: "infantry",
+      unit_type: squad.unitType,
       faction: "american",
       hasWeapons: true,
-      infantryTarget: true,
+      infantryTarget: squad.unitType === "infantry",
     })),
   };
 };
@@ -184,6 +197,9 @@ beforeAll(() => {
 
 beforeEach(() => {
   fetchData.mockReset();
+  mockRouter.isReady = false;
+  mockRouter.query = {};
+  mockRouter.replace.mockClear();
   jest.spyOn(console, "error").mockImplementation(() => {});
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -307,4 +323,44 @@ it("keeps Compare's selector, attackers, and defender on the loaded patch after 
   expect(getByTestId("loaded-unit-0")).toHaveTextContent(
     `${failedPatch}:panzergrenadier_ak ${failedPatch}`,
   );
+});
+
+it("applies a downloaded patch to edits made while the download was pending", async () => {
+  await renderTool(<DpsComparePageComponent {...dataset()} />);
+  await choose(getByTestId("dps-compare-add-search"), `attacker ${config.latestPatch}`);
+  await click(getByTestId("dps-compare-add-button"));
+  const download = deferred<DpsData>();
+  fetchData.mockReturnValueOnce(download.promise);
+  await choose(patchInputs()[0], olderPatch);
+
+  await click(
+    getByTestId("dps-compare-target-type").querySelector<HTMLInputElement>(
+      'input[value="other"]',
+    )!,
+  );
+  await click(getByTestId("dps-attacker-0").querySelector("button")!);
+  await choose(getByTestId("dps-compare-add-search"), `panzergrenadier_ak ${config.latestPatch}`);
+  await click(getByTestId("dps-compare-add-button"));
+  await act(async () => download.resolve(dataset(olderPatch)));
+
+  expect(
+    getByTestId("dps-compare-target-type").querySelector('input[value="other"]'),
+  ).toBeChecked();
+  expect(getByTestId("loaded-unit-0")).toHaveTextContent(
+    `${olderPatch}:halftrack_250_ak ${olderPatch}`,
+  );
+  expect(getByTestId("dps-attacker-0")).toHaveTextContent(`panzergrenadier_ak ${olderPatch}`);
+  expect(container.querySelectorAll('[data-testid^="dps-attacker-"]')).toHaveLength(1);
+});
+
+it("restores shared Final Stand units and exposes their selection without rewriting the URL", async () => {
+  mockRouter.isReady = true;
+  mockRouter.query = { unit1: "hoff_player_riflemen_us", unit2: "attacker" };
+  await renderTool(<DpsPageComponent {...dataset()} />);
+  expect(getByTestId("dps-unit-search-1")).toHaveValue(
+    `hoff_player_riflemen_us ${config.latestPatch}`,
+  );
+  expect(getByTestId("dps-unit-search-2")).toHaveValue(`attacker ${config.latestPatch}`);
+  expect(getByTestId("loaded-unit-0")).toHaveTextContent("hoff_player_riflemen_us");
+  expect(mockRouter.replace).not.toHaveBeenCalled();
 });

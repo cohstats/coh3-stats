@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useId, useRef, useState } from "react";
 import { useMergedRef, useResizeObserver } from "@mantine/hooks";
 import {
   Box,
@@ -176,6 +176,7 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
 }) => {
   // Keep dragging responsive without recalculating every DPS curve on each pointer move.
   const { t } = useTranslation("explorer");
+  const keyboardHelpId = useId();
   const [previewAngle, setPreviewAngle] = useState<number | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [resizeRef, canvasBounds] = useResizeObserver<HTMLDivElement>();
@@ -333,6 +334,31 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
     onChange({ ...value, targetModelId: null, groundTarget: { x, y } });
   };
 
+  const handleGroundKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // Let model buttons and other child controls handle their own keys.
+    if (event.target !== event.currentTarget || event.ctrlKey || event.altKey || event.metaKey)
+      return;
+    const directions: Record<string, Point> = {
+      ArrowLeft: { x: -1, y: 0 },
+      ArrowRight: { x: 1, y: 0 },
+      ArrowUp: { x: 0, y: 1 },
+      ArrowDown: { x: 0, y: -1 },
+    };
+    const direction = directions[event.key];
+    if (!direction && event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    const step = event.shiftKey ? 0.1 : 1;
+    const origin = aimPoint ?? { x: 0, y: 0 };
+    onChange({
+      ...value,
+      targetModelId: null,
+      groundTarget: {
+        x: Number((origin.x + (direction?.x ?? 0) * step).toFixed(3)),
+        y: Number((origin.y + (direction?.y ?? 0) * step).toFixed(3)),
+      },
+    });
+  };
+
   return (
     <Card withBorder radius="md" p="md" mt="md" data-testid="scatter-formation-editor">
       <Stack gap="sm">
@@ -426,8 +452,11 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
                 pos="relative"
                 ref={measuredCanvasRef}
                 role="group"
+                tabIndex={0}
                 aria-label={t("dpsCompareUi.formation.canvas")}
+                aria-describedby={keyboardHelpId}
                 onClick={handleGroundClick}
+                onKeyDown={handleGroundKeyDown}
                 style={{
                   width: "100%",
                   maxWidth: 440,
@@ -688,9 +717,10 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
                       <Box
                         component="button"
                         type="button"
-                        aria-label={t("dpsCompareUi.formation.modelAria", {
+                        aria-label={`${t("dpsCompareUi.formation.modelAria", {
                           number: model.id,
-                        })}
+                        })}; ${t("dpsCompareUi.formation.modelKeyboardHint")}`}
+                        aria-keyshortcuts="Delete Backspace"
                         aria-pressed={isTarget}
                         data-testid={`scatter-model-${model.id}`}
                         onPointerDown={(event) => event.stopPropagation()}
@@ -891,6 +921,8 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
         <Group justify="space-between" align="flex-start" gap="sm">
           <Text size="xs" c="dimmed" style={{ flex: 1 }}>
             {t("dpsCompareUi.formation.help")}
+            <br />
+            <span id={keyboardHelpId}>{t("dpsCompareUi.formation.groundKeyboardHelp")}</span>
           </Text>
           <Button
             variant="subtle"

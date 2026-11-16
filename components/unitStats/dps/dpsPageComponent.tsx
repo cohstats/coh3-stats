@@ -37,6 +37,7 @@ import {
   updateHealth,
 } from "../../../src/unitStats/dpsCommon";
 import config from "../../../config";
+import { isFinalStandUnit } from "../../../src/unitStats/finalStand";
 import {
   AnalyticsDPSExplorerPatchSelection,
   AnalyticsDPSExplorerSquadSelection,
@@ -206,8 +207,8 @@ export const DpsPageComponent = (props: IDPSProps) => {
   useEffect(() => {
     if (!router.isReady || urlUnitsApplied || props.sbpsData.length == 0) return;
     const { unit1, unit2 } = router.query;
-    if (typeof unit1 === "string") onSelectionChange(unit1, 0);
-    if (typeof unit2 === "string") onSelectionChange(unit2, 1);
+    if (typeof unit1 === "string") onSelectionChange(unit1, 0, true);
+    if (typeof unit2 === "string") onSelectionChange(unit2, 1, true);
     setUrlUnitsApplied(true);
   }, [router.isReady, props.sbpsData]);
 
@@ -241,7 +242,11 @@ export const DpsPageComponent = (props: IDPSProps) => {
   };
 
   // synchronize selection field with presented units
-  const onSelectionChange = (selection: string | null, index: number) => {
+  const onSelectionChange = (
+    selection: string | null,
+    index: number,
+    restoringFromUrl = false,
+  ) => {
     if (!selection) {
       // @ts-ignore Because we can not pass an empty object, otherwise we would
       // need to put `.?` safe accessor everywhere.
@@ -257,13 +262,18 @@ export const DpsPageComponent = (props: IDPSProps) => {
 
     // get blueprint
     const catalog = catalogs[index];
-    const options = index === 0 ? unitSelectionList1 : unitSelectionList2;
+    const options = restoringFromUrl
+      ? filterDpsUnitOptions(catalog.unitOptions, [], true)
+      : index === 0
+        ? unitSelectionList1
+        : unitSelectionList2;
     const unitBp = options.some((unit) => unit.id === selection)
       ? catalog.createUnit(selection)
       : undefined;
 
     // add unit
     if (unitBp) {
+      if (restoringFromUrl && isFinalStandUnit(unitBp)) setShowFinalStand(true);
       activeData[index] = unitBp;
       setRerender((previous) => !previous);
     }

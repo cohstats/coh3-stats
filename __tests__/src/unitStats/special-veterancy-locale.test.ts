@@ -27,6 +27,26 @@ it("requires an accuracy amount and a matching payload", () => {
   expect(extractSpecialVeterancyModifiers("turret_accuracy", "+20% accuracy")).toEqual([]);
 });
 
+it.each(["\n", "\r\n", "\\n", "<br>", "<br />"])(
+  "keeps unrelated bonuses in separate clauses across %j",
+  (separator) => {
+    expect(
+      extractSpecialVeterancyModifiers(
+        "main_gun_accuracy",
+        `+15% main gun accuracy${separator}+20% rotation rate`,
+      ),
+    ).toEqual([{ id: "WEAPON_MAIN_GUN_ACCURACY_MODIFIER", value: 1.15 }]);
+  },
+);
+
+it.each([
+  ["+40 damage vs. vehicles", "WEAPON_DAMAGE_VS_VEHICLES_ADDITION", 40],
+  ["+40% damage vs. vehicles", "WEAPON_DAMAGE_VS_VEHICLES_MULTIPLIER", 1.4],
+  ["+20% rotation rate. +40 damage vs. vehicles", "WEAPON_DAMAGE_VS_VEHICLES_ADDITION", 40],
+] as const)("extracts the supported vehicle abbreviation from %s", (text, id, value) => {
+  expect(extractSpecialVeterancyModifiers("", text)).toEqual([{ id, value }]);
+});
+
 const reference = (value: string) => ({ locstring: { name: "", value } });
 const rank = (tree: string, text: string, formatter?: any) => ({
   veterancy_rank: {
@@ -137,4 +157,33 @@ it("extracts bonuses from canonical English metadata while keeping translated de
   expect(
     fetchJson.mock.calls.filter(([url]) => url === config.getPatchDataLocaleUrl("en")),
   ).toHaveLength(1);
+});
+
+it("does not cache incomplete squads after an English metadata failure", async () => {
+  const patch = "3.0.0";
+  let metadataAvailable = false;
+  const fetchJson = jest.mocked(fetchJsonWithLogging);
+  fetchJson.mockImplementation(async (url) => {
+    if (url === config.getPatchDataUrl("sbps.json", patch)) return root;
+    if (url === config.getPatchDataLocaleUrl("en", patch)) {
+      if (!metadataAvailable) throw new Error("Temporary metadata failure");
+      return english;
+    }
+    throw new Error(`Unexpected request: ${url}`);
+  });
+
+  const incomplete = await getSbpsStats(patch);
+  expect(
+    incomplete.find(({ id }) => id === "sherman_fixture")!.veterancyInfo.one.modifiers,
+  ).toEqual([]);
+  await expect(getSbpsStats(patch, "en", { requireCompleteMetadata: true })).rejects.toThrow(
+    "Temporary metadata failure",
+  );
+
+  metadataAvailable = true;
+  const recovered = await getSbpsStats(patch, "en", { requireCompleteMetadata: true });
+  expect(
+    recovered.find(({ id }) => id === "sherman_fixture")!.veterancyInfo.one.modifiers,
+  ).toEqual([{ id: "WEAPON_MAIN_GUN_ACCURACY_MODIFIER", value: 1.15 }]);
+  expect(await getSbpsStats(patch)).toBe(recovered);
 });

@@ -295,29 +295,25 @@ type VetBadgeValue = { id: string; value: number };
 
 // These raw IDs are displayed by their existing editable controls.
 // IDs without a matching control remain visible with their full property names.
-const inlineVetModifierIds = new Set([
-  "WEAPON_ACCURACY_MODIFIER",
-  "WEAPON_SCATTER",
-  "WEAPON_MOVING_ACCURACY_MODIFIER",
-  "WEAPON_DAMAGE_MODIFIER",
-  "WEAPON_DAMAGE_ADDITION_MODIFIER",
-  "WEAPON_PENETRATION_MODIFIER",
-  "WEAPON_OVERALL_ATTACK_SPEED",
-  "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
-  "WEAPON_BURST_DURATION_MODIFIER",
-  "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
-  "HEALTH_MODIFIER_ADDITION",
-  "RECEIVED_ACCURACY_MODIFIER",
-  "RECEIVED_DAMAGE_MODIFIER",
-  "FRONT_ARMOR_ADDITION",
-  "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
-  "WEAPON_RANGE_MODIFIER",
+const inlineVetModifierIds = new Map<string, keyof CustomModifiers>([
+  ["WEAPON_ACCURACY_MODIFIER", "accuracy"],
+  ["WEAPON_SCATTER", "scatterAccuracy"],
+  ["WEAPON_MOVING_ACCURACY_MODIFIER", "accuracy"],
+  ["WEAPON_DAMAGE_MODIFIER", "damage"],
+  ["WEAPON_DAMAGE_ADDITION_MODIFIER", "damage"],
+  ["WEAPON_PENETRATION_MODIFIER", "penetration"],
+  ["WEAPON_OVERALL_ATTACK_SPEED", "overallAttackSpeed"],
+  ["WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD", "overallAttackSpeed"],
+  ["WEAPON_BURST_DURATION_MODIFIER", "burstLength"],
+  ["WEAPON_BURST_RATE_OF_FIRE_MODIFIER", "burstShots"],
+  ["HEALTH_MODIFIER_ADDITION", "hitpoints"],
+  ["RECEIVED_ACCURACY_MODIFIER", "receivedAccuracy"],
+  ["RECEIVED_DAMAGE_MODIFIER", "receivedDamage"],
+  ["FRONT_ARMOR_ADDITION", "armor"],
+  ["WEAPON_RANGE_MULTIPLICATION_MODIFIER", "range"],
+  ["WEAPON_RANGE_MODIFIER", "range"],
 ]);
-const simulatedVetModifierIds = new Set([
-  ...inlineVetModifierIds,
-  "RECEIVED_ACCURACY_MODIFIER",
-  "RECEIVED_DAMAGE_MODIFIER",
-]);
+const simulatedVetModifierIds = new Set(inlineVetModifierIds.keys());
 
 export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   opened,
@@ -354,8 +350,13 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     unit?.sbps?.veterancyInfo?.four,
   ];
   const rawBonuses = ranks.slice(0, selectedVet).flatMap((rank) => rank?.modifiers ?? []);
+  const visibleStatConfigs = filterStatConfigs(modifierScope);
+  const visibleModifierKeys = new Set(visibleStatConfigs.map(({ key }) => key));
   const remainingBonuses = combineVetBonuses(
-    rawBonuses.filter((entry) => !inlineVetModifierIds.has(entry.id.toUpperCase())),
+    rawBonuses.filter((entry) => {
+      const key = inlineVetModifierIds.get(entry.id.toUpperCase());
+      return !key || !visibleModifierKeys.has(key);
+    }),
   );
   // Preserve the exact contributing property IDs in the attack-speed badge.
   const attackSpeedSources = [
@@ -586,7 +587,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
           </Group>
         )}
         <Divider />
-        {filterStatConfigs(modifierScope).map((config) => {
+        {visibleStatConfigs.map((config) => {
           const modifier = localModifiers[config.key];
           const percentageValues = getPercentageValues(modifier);
           const vetTags = vetLabels[config.key] ?? [];

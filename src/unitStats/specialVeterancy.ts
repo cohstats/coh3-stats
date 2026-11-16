@@ -16,10 +16,12 @@ const numericToken = /([+\-−]?\d+(?:[.,]\d+)?)\s*(%|percent\b)?/gi;
 
 const sanitize = (text: string) =>
   text
+    .replace(/<br\s*\/?\s*>/gi, "\n")
     .replace(/<[^>]*>/g, " ")
+    .replace(/\\r\\n|\\[nr]/g, "\n")
     .replace(/&nbsp;|\u00a0/g, " ")
     .replace(/[−–]/g, "-")
-    .replace(/\s+/g, " ")
+    .replace(/[^\S\r\n]+/g, " ")
     .trim();
 
 /**
@@ -33,7 +35,9 @@ const numberNearestTo = (
   requirePercent: boolean,
 ): NumberNearLabel | undefined => {
   // Sentences and UI list entries can contain other, unrelated bonuses.
-  const clauses = text.split(/[,;\n\r\u2022]|[.!](?=\s|$)/);
+  const clauses = text
+    .replace(/\bvs\.(?=\s+vehicles\b)/gi, "vs")
+    .split(/[,;\n\r\u2022]|[.!](?=\s|$)/);
   for (const clause of clauses) {
     const labelMatch = label.exec(clause);
     label.lastIndex = 0;

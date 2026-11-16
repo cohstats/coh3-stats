@@ -85,7 +85,7 @@ export const fetchMappingsWithLogs = async (
       console.error(`[Axios Error] ${errorMsg}`);
       console.error(`[Axios Exception Details]`, error);
 
-      throw new Error(errorMsg);
+      throw new Error(errorMsg, { cause: error });
     }
 
     // Handle other errors (network, timeout, interrupted transfer after status 200, etc.)
@@ -102,6 +102,7 @@ export const fetchMappingsWithLogs = async (
 
     throw new Error(
       `Failed to fetch ${context}. URL: ${url}, Error: ${errorCode}${errorMessage}`,
+      { cause: error },
     );
   }
 };
@@ -143,6 +144,6 @@ export const fetchJsonWithLogging = async (url: string, context: string): Promis
   } catch (error) {
     const errorMsg = `Failed to parse JSON for ${context}. URL: ${url}, Error: ${error instanceof Error ? error.message : String(error)}`;
     console.error(`[Axios Parse Error] ${errorMsg}`);
-    throw new Error(errorMsg);
+    throw new Error(errorMsg, { cause: error });
   }
 };

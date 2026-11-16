@@ -1,5 +1,6 @@
 import config from "../../config";
 import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
+import { isMissingMappingFile } from "./mappingFileErrors";
 
 export type FormationGroup = "core" | "scout" | "left" | "right";
 export type FormationCounts = Record<FormationGroup, number>;
@@ -124,8 +125,10 @@ export const getFormationData = (patch = "latest"): Promise<FormationData> => {
             ),
           ]);
           return mapFormationData(squads, formations);
-        } catch {
-          return {};
+        } catch (error) {
+          if (isMissingMappingFile(error)) return {};
+          cache.delete(key);
+          throw error;
         }
       })(),
     );

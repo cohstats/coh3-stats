@@ -347,6 +347,8 @@
       "canvas": "Infantry formation and aiming",
       "model": "Model {{number}}",
       "modelAria": "Aim at model {{number}}; right-click to toggle",
+      "modelKeyboardHint": "Delete or Backspace to toggle",
+      "groundKeyboardHelp": "Focus the diagram and press Enter to aim at the ground. Arrow keys move the aim by 1 m; hold Shift for 0.1 m steps.",
       "targeted": "targeted",
       "active": "active",
       "disabled": "disabled",

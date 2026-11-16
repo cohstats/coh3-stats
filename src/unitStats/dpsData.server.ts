@@ -55,7 +55,7 @@ export const getDpsData = (patch = "latest"): Promise<DpsData> => {
         await Promise.all([
           getWeaponStats(key),
           getEbpsStats(key),
-          getSbpsStats(key),
+          getSbpsStats(key, "en", { requireCompleteMetadata: true }),
           getUpgradesStats(),
           getAbilitiesStats(key),
           getFormationData(key),

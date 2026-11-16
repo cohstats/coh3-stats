@@ -15,6 +15,7 @@ import { getStateTreeSpawnMapping } from "./workarounds";
 import { unitToBeIgnored } from "./coh3-unit-configs";
 import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
 import { extractSpecialVeterancyModifiers } from "./specialVeterancy";
+import { isMissingMappingFile } from "./mappingFileErrors";
 
 type SpawnWeaponData = {
   pbg: string;
@@ -516,7 +517,11 @@ const BanishedRequirements = ["mass_production", "campaign"];
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
 /** Load SBPS records and enrich current-patch ranks when optional vet data exists. */
-const getSbpsStats = async (patch = "latest", locale = "en") => {
+const getSbpsStats = async (
+  patch = "latest",
+  locale = "en",
+  options: { requireCompleteMetadata?: boolean } = {},
+) => {
   if (patch == config.latestPatch) patch = "latest";
 
   const cacheKey = `${patch}-${locale}`;
@@ -525,8 +530,12 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
   const sbpsUrl = config.getPatchDataUrl("sbps.json", patch);
   const [root, englishMetadata] = await Promise.all([
     fetchJsonWithLogging(sbpsUrl, `sbps.json for patch ${patch}, locale ${locale}`),
-    fetchEnglishMetadataLocstring(patch).catch(() => undefined),
+    fetchEnglishMetadataLocstring(patch).catch((error) => {
+      if (options.requireCompleteMetadata) throw error;
+      return undefined;
+    }),
   ]);
+  let completeMetadata = englishMetadata !== undefined;
 
   // The veterancy file is optional: older datasets may not contain it yet.
   // Always retain the normal SBPS data when the additional request fails.
@@ -538,8 +547,12 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
         config.getPatchDataUrl("veterancy.json", patch),
         `veterancy.json for patch ${patch}`,
       );
-    } catch {
-      // Missing optional data is expected; retain the SBPS ranks.
+    } catch (error) {
+      // A missing optional file is expected. Temporary failures must be retryable.
+      if (!isMissingMappingFile(error)) {
+        if (options.requireCompleteMetadata) throw error;
+        completeMetadata = false;
+      }
     }
   }
 
@@ -580,7 +593,7 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
 
   // sbpsStats = sbpsSetAll;
   if (!sbpsPatchData) sbpsPatchData = {};
-  sbpsPatchData[cacheKey] = sbpsSetAll;
+  if (completeMetadata) sbpsPatchData[cacheKey] = sbpsSetAll;
 
   // Set singleton
   if (patch == "latest") sbpsStats = sbpsSetAll;

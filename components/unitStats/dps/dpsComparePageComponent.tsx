@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useMediaQuery } from "@mantine/hooks";
+import { useIsomorphicEffect, useMediaQuery } from "@mantine/hooks";
 
 import {
   Chart as ChartJS,
@@ -179,6 +179,10 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
   // Stable instance IDs distinguish e.g. two Shermans with different upgrades/veterancy.
   // Keep these aligned with attackingUnits, including when removing or reloading a unit.
   const [attackerPreviewIds, setAttackerPreviewIds] = useState<number[]>([]);
+  const latestSelections = useRef({ targetType, targetUnit, attackingUnits, attackerPreviewIds });
+  useIsomorphicEffect(() => {
+    latestSelections.current = { targetType, targetUnit, attackingUnits, attackerPreviewIds };
+  }, [targetType, targetUnit, attackingUnits, attackerPreviewIds]);
   const nextAttackerPreviewId = useRef(0);
   const [selectedPreviewWeaponId, setSelectedPreviewWeaponId] = useState<string | null>(null);
   // The preview has its own range, independent from the DPS graph. Reset to max
@@ -247,26 +251,28 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
       const data = await fetchDpsData(value);
       if (request !== patchRequest.current) return;
       const nextCatalog = createDpsUnitCatalog(data);
+      // Selections can change while the download is pending.
+      const current = latestSelections.current;
       setCatalog(nextCatalog);
       setFormationData(data.formationData);
 
       // Re-select the current defender or restore the real default if that unit is unavailable.
       const newTarget =
-        (targetUnit ? nextCatalog.createUnit(targetUnit.id) : undefined) ??
-        getDefaultTarget(nextCatalog, targetType);
+        (current.targetUnit ? nextCatalog.createUnit(current.targetUnit.id) : undefined) ??
+        getDefaultTarget(nextCatalog, current.targetType);
       setTargetUnit(
-        newTarget && isInfantryTarget(newTarget) === (targetType === "infantry")
+        newTarget && isInfantryTarget(newTarget) === (current.targetType === "infantry")
           ? newTarget
-          : getDefaultTarget(nextCatalog, targetType),
+          : getDefaultTarget(nextCatalog, current.targetType),
       );
 
-      const refreshedAttackers = attackingUnits
+      const refreshedAttackers = current.attackingUnits
         .map((attacker, index) => {
           const newAttacker = nextCatalog.createUnit(attacker.id);
           return newAttacker
             ? {
                 unit: newAttacker,
-                previewId: attackerPreviewIds[index] ?? ++nextAttackerPreviewId.current,
+                previewId: current.attackerPreviewIds[index] ?? ++nextAttackerPreviewId.current,
               }
             : undefined;
         })
