@@ -8,7 +8,7 @@ import { generateNextSeo } from "next-seo/pages";
 import { getLeaderBoardStatsRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import { calculateLeaderboardStats, LeaderboardStatsType } from "../../src/leaderboards/stats";
 import { generateKeywordsString, getLocalizedUrl } from "../../src/seo-utils";
 import LeaderBoardStats from "../../components/leaderboards/leaderboard-stats";
@@ -90,19 +90,20 @@ const Leaderboards = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en" }) => {
+// Every regeneration makes 32 Relic API calls (4 factions x 4 modes x 2 pages),
+// so regenerate at most once per hour per locale
+const REVALIDATE_OK = 3600;
+// Retry sooner when the Relic API failed, so an error page is not cached for an hour
+const REVALIDATE_ON_FAILURE = 60;
+
+export const getStaticProps: GetStaticProps = async ({ locale = "en" }) => {
   let error = null;
   let leaderBoardStats = null;
 
-  console.log(`SSR - /stats/leaderboards`);
+  console.log(`ISR - /stats/leaderboards`);
 
   try {
     leaderBoardStats = await calculateLeaderboardStats();
-
-    res.setHeader(
-      "Cache-Control",
-      "public, max-age=600, s-maxage=3600, stale-while-revalidate=172800",
-    );
   } catch (e: any) {
     console.error(`Error calculating all the leaderboard stats`);
     console.error(e);
@@ -115,6 +116,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, locale = "en
       leaderBoardStats,
       ...(await serverSideTranslations(locale, ["common"])),
     },
+    revalidate: error ? REVALIDATE_ON_FAILURE : REVALIDATE_OK,
   };
 };
 
