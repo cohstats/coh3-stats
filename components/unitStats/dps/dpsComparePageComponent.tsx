@@ -32,12 +32,13 @@ import { useRouter } from "next/router";
 import { getDPSCalculatorRoute } from "../../../src/routes";
 import { IconPlus } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
-import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
-import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
-import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
 import { isFinalStandEnemyUnit, isFinalStandUnit } from "../../../src/unitStats/finalStand";
-import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
-import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
+import {
+  createDpsUnitCatalog,
+  fetchDpsData,
+  filterDpsUnitOptions,
+} from "../../../src/unitStats/dpsData";
+import type { DpsData, DpsUnitCatalog } from "../../../src/unitStats/dpsData";
 import {
   hasScatterAoe,
   simulateScatterShotDetails,
@@ -50,15 +51,13 @@ import {
 import {
   CustomizableUnit,
   getCompareDpsData,
-  mapCustomizableUnit,
   updateHealth,
   getUnitModelCount,
-  createDefaultCustomModifiers,
   getDisplayedWeaponMaxRange,
   getBaseDistanceForDisplayedRange,
 } from "../../../src/unitStats/dpsCommon";
 import config from "../../../config";
-import { getFormationData, type FormationData } from "../../../src/unitStats/mappingFormations";
+import type { FormationData } from "../../../src/unitStats/mappingFormations";
 import {
   getSquadWeaponEntity,
   resolveSquadFormation,
@@ -116,69 +115,13 @@ const isInfantryTarget = (unit: CustomizableUnit): boolean =>
     unit.sbps.loadout.some(({ type }) => /(?:^|[\\/])infantry[\\/]/.test(type)));
 
 /** A real squad/vehicle supplies the default defender stats and formation. */
-const getDefaultTarget = (type: CompareTargetType): CustomizableUnit | undefined =>
-  cachedUnits.find(
+const getDefaultTarget = (catalog: DpsUnitCatalog, type: CompareTargetType) => {
+  const option = catalog.unitOptions.find(
     (unit) =>
       unit.id === DEFAULT_COMPARE_TARGET_IDS[type] &&
-      isInfantryTarget(unit) === (type === "infantry"),
+      unit.infantryTarget === (type === "infantry"),
   );
-
-interface IDPSCompareProps {
-  formationData?: FormationData;
-  weaponData: WeaponType[];
-  sbpsData: SbpsType[];
-  ebpsData: EbpsType[];
-  upgradesData: UpgradesType[];
-  abilitiesData: AbilitiesType[];
-}
-
-// Module-level state for data caching
-let cachedUnits: CustomizableUnit[] = [];
-let cachedEbps: EbpsType[] = [];
-let cachedSbps: SbpsType[] = [];
-let cachedWeapons: WeaponType[] = [];
-
-const initCompareData = (props: IDPSCompareProps) => {
-  cachedEbps = props.ebpsData;
-  cachedSbps = props.sbpsData;
-  cachedWeapons = props.weaponData;
-  cachedUnits = [];
-  for (const sbps of props.sbpsData) {
-    cachedUnits.push(
-      mapCustomizableUnit(
-        sbps,
-        props.ebpsData,
-        props.weaponData,
-        props.upgradesData,
-        props.abilitiesData,
-      ),
-    );
-  }
-};
-
-const mapUnitSelection = (
-  sbps: SbpsType[],
-  units: CustomizableUnit[],
-  unitFilter: string[] = [],
-  showFinalStand = false,
-  requireWeapons = true,
-) => {
-  const selectionFields: CustomizableUnit[] = [];
-  for (const squad of sbps) {
-    if (
-      squad.ui.symbolIconName !== "" &&
-      squad.faction !== "british" &&
-      // Final Stand (DLC / co-op vs AI) units are opt-in.
-      (showFinalStand || !isFinalStandUnit(squad)) &&
-      (unitFilter.length === 0 || unitFilter.includes(squad.faction))
-    ) {
-      const custUnit = units.find((u) => u.id === squad.id);
-      if (custUnit && (!requireWeapons || custUnit.weapon_member.length > 0)) {
-        selectionFields.push(custUnit);
-      }
-    }
-  }
-  return selectionFields;
+  return option ? catalog.createUnit(option.id) : undefined;
 };
 
 const setScreenOptions = (isLargeScreen: boolean) => {
@@ -193,7 +136,7 @@ const setScreenOptions = (isLargeScreen: boolean) => {
   }
 };
 
-export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
+export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
   const theme = useMantineTheme();
   const { t } = useTranslation("explorer");
   const router = useRouter();
@@ -206,7 +149,6 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   };
 
   // Shared state
-  const [patchVersion, setPatchVersion] = useState(config.latestPatch);
   const [factionFilter, setFactionFilter] = useState<string[]>([]);
   const [allowAllWeapons, setAllowAllWeapons] = useState(false);
   // Final Stand (DLC / co-op vs AI) units are opt-in.
@@ -221,6 +163,10 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const [scatterFogOfWar, setScatterFogOfWar] = useState(false);
   const [rerender, setRerender] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [catalog, setCatalog] = useState(() => createDpsUnitCatalog(props));
+  const patchVersion = catalog.data.patch;
+  const patchRequest = useRef(0);
+  const { ebpsData: cachedEbps, weaponData: cachedWeapons } = catalog.data;
 
   // Target mode controls the defender search separately from the attacker search.
   const [targetType, setTargetType] = useState<CompareTargetType>("infantry");
@@ -246,44 +192,36 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const [selectedUnitToAdd, setSelectedUnitToAdd] = useState<string | null>(null);
 
   // Unit selection list
-  const [unitSelectionList, setUnitSelectionList] = useState<CustomizableUnit[]>([]);
+  const unitSelectionList = useMemo(
+    () => filterDpsUnitOptions(catalog.unitOptions, factionFilter, showFinalStand),
+    [catalog, factionFilter, showFinalStand],
+  );
 
   // Initialize data
   useEffect(() => {
-    initCompareData(props);
     restoreDefaultTarget("infantry");
-    setUnitSelectionList(
-      mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
-    );
   }, []);
-
-  // Update selection list when the filters change
-  useEffect(() => {
-    setUnitSelectionList(
-      mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
-    );
-  }, [factionFilter, showFinalStand]);
 
   // Unlike attackers, targets need not have weapons (e.g. an unarmed vehicle or bunker).
   // Preserve the current selection when the attacker faction filter changes.
   const targetSelectionList = useMemo(() => {
-    const matches = mapUnitSelection(
-      cachedSbps,
-      cachedUnits,
+    const matches = filterDpsUnitOptions(
+      catalog.unitOptions,
       factionFilter,
       showFinalStand,
       false,
-    ).filter((unit) => isInfantryTarget(unit) === (targetType === "infantry"));
+    ).filter((unit) => unit.infantryTarget === (targetType === "infantry"));
     if (
       targetUnit &&
       isInfantryTarget(targetUnit) === (targetType === "infantry") &&
       !matches.some((unit) => unit.id === targetUnit.id)
     ) {
-      matches.push(targetUnit);
+      const option = catalog.unitOptions.find((unit) => unit.id === targetUnit.id);
+      if (option) matches.push(option);
     }
     return matches;
     // The attacker list changes after initial data load, patch changes, and faction changes.
-  }, [unitSelectionList, targetType, targetUnit]);
+  }, [catalog, unitSelectionList, targetType, targetUnit]);
 
   useEffect(() => {
     setScatterFormation((previous) => ({
@@ -301,47 +239,33 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
 
   // Handle patch change
   const handlePatchChange = async (value: string) => {
+    const request = ++patchRequest.current;
     AnalyticsDPSExplorerPatchSelection(value);
-    setPatchVersion(value);
     setIsLoading(true);
 
     try {
-      const [newSbps, newEbps, newWeapons, newAbilities, newFormations] = await Promise.all([
-        getSbpsStats(value),
-        getEbpsStats(value),
-        getWeaponStats(value),
-        getAbilitiesStats(value),
-        getFormationData(value),
-      ]);
-
-      setFormationData(newFormations);
-      cachedSbps = newSbps;
-      cachedEbps = newEbps;
-      cachedWeapons = newWeapons;
-      cachedUnits = [];
-      for (const sbps of newSbps) {
-        cachedUnits.push(
-          mapCustomizableUnit(sbps, newEbps, newWeapons, props.upgradesData, newAbilities),
-        );
-      }
-      setUnitSelectionList(
-        mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
-      );
+      const data = await fetchDpsData(value);
+      if (request !== patchRequest.current) return;
+      const nextCatalog = createDpsUnitCatalog(data);
+      setCatalog(nextCatalog);
+      setFormationData(data.formationData);
 
       // Re-select the current defender or restore the real default if that unit is unavailable.
       const newTarget =
-        cachedUnits.find(
-          (unit) =>
-            unit.id === targetUnit?.id && isInfantryTarget(unit) === (targetType === "infantry"),
-        ) ?? getDefaultTarget(targetType);
-      setTargetUnit(newTarget ? cloneUnit(newTarget) : undefined);
+        (targetUnit ? nextCatalog.createUnit(targetUnit.id) : undefined) ??
+        getDefaultTarget(nextCatalog, targetType);
+      setTargetUnit(
+        newTarget && isInfantryTarget(newTarget) === (targetType === "infantry")
+          ? newTarget
+          : getDefaultTarget(nextCatalog, targetType),
+      );
 
       const refreshedAttackers = attackingUnits
         .map((attacker, index) => {
-          const newAttacker = cachedUnits.find((u) => u.id === attacker.id);
+          const newAttacker = nextCatalog.createUnit(attacker.id);
           return newAttacker
             ? {
-                unit: cloneUnit(newAttacker),
+                unit: newAttacker,
                 previewId: attackerPreviewIds[index] ?? ++nextAttackerPreviewId.current,
               }
             : undefined;
@@ -351,24 +275,18 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
         );
       setAttackingUnits(refreshedAttackers.map((entry) => entry.unit));
       setAttackerPreviewIds(refreshedAttackers.map((entry) => entry.previewId));
+    } catch (error) {
+      console.error("Failed to load DPS patch:", error);
     } finally {
-      setIsLoading(false);
+      if (request === patchRequest.current) setIsLoading(false);
     }
   };
 
-  // Clone a unit for selection
-  const cloneUnit = (unit: CustomizableUnit): CustomizableUnit => {
-    const cloned = { ...unit };
-    cloned.weapon_member = unit.weapon_member.map((w) => ({ ...w }));
-    cloned.custom_modifiers = createDefaultCustomModifiers();
-    return cloned;
-  };
-
   const restoreDefaultTarget = (type: CompareTargetType) => {
-    const fallback = getDefaultTarget(type);
+    const fallback = getDefaultTarget(catalog, type);
     // Clearing an already selected default must also restore the Select's search text.
     setTargetResetVersion((version) => version + 1);
-    setTargetUnit(fallback ? cloneUnit(fallback) : undefined);
+    setTargetUnit(fallback);
     setScatterFormation((previous) => ({
       ...previous,
       disabledModelIds: [],
@@ -399,11 +317,13 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
       restoreDefaultTarget(targetType);
       return;
     }
-    const unitBp = targetSelectionList.find((u) => u.id === selection);
+    const unitBp = targetSelectionList.some((unit) => unit.id === selection)
+      ? catalog.createUnit(selection)
+      : undefined;
     // Search and selection use the same strict category filter.
     if (unitBp && isInfantryTarget(unitBp) === (targetType === "infantry")) {
       AnalyticsDPSExplorerSquadSelection(selection);
-      setTargetUnit(cloneUnit(unitBp));
+      setTargetUnit(unitBp);
     }
   };
 
@@ -412,10 +332,12 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     if (!selectedUnitToAdd || attackingUnits.length >= 6) return;
 
     AnalyticsDPSExplorerSquadSelection(selectedUnitToAdd);
-    const unitBp = unitSelectionList.find((u) => u.id === selectedUnitToAdd);
+    const unitBp = unitSelectionList.some((unit) => unit.id === selectedUnitToAdd)
+      ? catalog.createUnit(selectedUnitToAdd)
+      : undefined;
     if (unitBp) {
       const previewId = ++nextAttackerPreviewId.current;
-      setAttackingUnits([...attackingUnits, cloneUnit(unitBp)]);
+      setAttackingUnits([...attackingUnits, unitBp]);
       setAttackerPreviewIds((previous) => [...previous, previewId]);
       setSelectedUnitToAdd(null);
     }
@@ -733,7 +655,8 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
           </Flex>
           <PatchSelector
             patchList={patchList}
-            defaultPatch={config.latestPatch}
+            patchVersion={patchVersion}
+            disabled={isLoading}
             onPatchChange={handlePatchChange}
           />
         </Flex>
@@ -744,6 +667,8 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
             <UnitSearch
               key={`add-unit-search-${attackingUnits.length}`}
               searchData={unitSelectionList}
+              getUnit={catalog.getUnit}
+              ebpsData={cachedEbps}
               onSelect={(selection) => setSelectedUnitToAdd(selection)}
               position={-1}
               disabled={attackingUnits.length >= 6}
@@ -822,6 +747,8 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
           <UnitSearch
             key={`target-search-${targetType}-${targetResetVersion}`}
             searchData={targetSelectionList}
+            getUnit={catalog.getUnit}
+            ebpsData={cachedEbps}
             value={targetUnit?.id ?? null}
             onSelect={handleTargetSelect}
             position={0}

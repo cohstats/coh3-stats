@@ -272,8 +272,8 @@ const latestPatch = "3.0.1";
 const patches: Record<string, { dataTag: string; dataTime: string; patchTimeSeconds?: number }> =
   {
     "3.0.1": {
-      dataTag: "v3.0.1-1",
-      dataTime: "10/Nov/2026",
+      dataTag: "v3.0.1-2",
+      dataTime: "16/Nov/2026",
     },
     "3.0.0": {
       dataTag: "v3.0.0-3",

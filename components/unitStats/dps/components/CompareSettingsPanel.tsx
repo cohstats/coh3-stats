@@ -156,13 +156,15 @@ export const FactionFilter: React.FC<FactionFilterProps> = ({
 
 interface PatchSelectorProps {
   patchList: string[];
-  defaultPatch: string;
+  patchVersion: string;
+  disabled?: boolean;
   onPatchChange: (value: string) => void;
 }
 
 export const PatchSelector: React.FC<PatchSelectorProps> = ({
   patchList,
-  defaultPatch,
+  patchVersion,
+  disabled,
   onPatchChange,
 }) => {
   return (
@@ -170,9 +172,12 @@ export const PatchSelector: React.FC<PatchSelectorProps> = ({
       <Select
         styles={{ wrapper: { width: 90 } }}
         placeholder="Patch"
-        onChange={(value) => onPatchChange(value as string)}
+        onChange={(value) => {
+          if (value) onPatchChange(value);
+        }}
         data={patchList}
-        defaultValue={defaultPatch}
+        value={patchVersion}
+        disabled={disabled}
         withCheckIcon={false}
         allowDeselect={false}
       />

@@ -1,22 +1,9 @@
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { DpsComparePageComponent } from "../../components/unitStats/dps/dpsComparePageComponent";
-import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
-import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
-import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import {
-  getUpgradesStats,
-  setUpgradesStats,
-  UpgradesType,
-} from "../../src/unitStats/mappingUpgrades";
-import {
-  AbilitiesType,
-  getAbilitiesStats,
-  setAbilitiesStats,
-} from "../../src/unitStats/mappingAbilities";
-import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
-import React, { useEffect } from "react";
-import { getMappings } from "../../src/unitStats/mappings";
+import { useEffect } from "react";
+import { useDpsData } from "../../components/unitStats/dps/useDpsData";
+import { DpsDataError } from "../../components/unitStats/dps/components/DpsDataError";
 import { AnalyticsDPSComparePageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import { Center, Loader } from "@mantine/core";
@@ -27,14 +14,7 @@ import { getLocalizedUrl } from "../../src/seo-utils";
 import { getExplorerRoute, getDPSCompareRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 
-import { getFormationData, type FormationData } from "../../src/unitStats/mappingFormations";
-
-interface DpsCompareProps {
-  weaponData: WeaponType[];
-  locstring: Record<string, string | null>;
-}
-
-const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) => {
+const DpsComparePage: NextPage = () => {
   const { locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
@@ -42,56 +22,7 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
     AnalyticsDPSComparePageView();
   }, []);
 
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
-  const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
-  const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
-  const [formationData, setFormationData] = React.useState<FormationData>({});
-  const [abilitiesData, setAbilitiesDataState] = React.useState<AbilitiesType[]>([]);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
-        if (!unitStatsLocString()) setLocstring(locstring);
-        setWeaponStats(weaponData);
-
-        const [ebpsData, sbpsData, upgradesData, abilitiesData, formations] = await Promise.all([
-          getEbpsStats("latest"),
-          getSbpsStats("latest"),
-          getUpgradesStats(),
-          getAbilitiesStats(),
-          getFormationData(),
-        ]);
-
-        setFormationData(formations);
-        setEbpsStats(ebpsData);
-        setSbpsStats(sbpsData);
-        setUpgradesStats(upgradesData);
-        setAbilitiesStats(abilitiesData);
-
-        setEbpsDataState(ebpsData);
-        setSbpsDataState(sbpsData);
-        setUpgradesDataState(upgradesData);
-        setAbilitiesDataState(abilitiesData);
-      } catch (error) {
-        console.error("Failed to load data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
-
-  const dpsData = {
-    formationData,
-    weaponData,
-    sbpsData,
-    ebpsData,
-    upgradesData,
-    abilitiesData,
-  };
+  const { data: dpsData, error, isLoading, retry } = useDpsData();
 
   // Create SEO props for DPS Compare page
   const title = t("dpsCompare.meta.title");
@@ -129,24 +60,21 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
         trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       <div>
+        {error && <DpsDataError onRetry={retry} />}
         {isLoading && (
           <Center maw={400} h={250} mx="auto">
             <Loader />
           </Center>
         )}
-        {!isLoading && <DpsComparePageComponent {...dpsData} />}
+        {dpsData && <DpsComparePageComponent {...dpsData} />}
       </div>
     </>
   );
 };
 
 export const getStaticProps = async ({ locale = "en" }) => {
-  const { weaponData, locstring } = await getMappings();
-
   return {
     props: {
-      weaponData: weaponData,
-      locstring: locstring,
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
   };

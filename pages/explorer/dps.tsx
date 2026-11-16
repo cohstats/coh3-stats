@@ -1,22 +1,10 @@
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { DpsPageComponent } from "../../components/unitStats/dps/dpsPageComponent";
-import { EbpsType, getEbpsStats, setEbpsStats } from "../../src/unitStats/mappingEbps";
-import { getSbpsStats, SbpsType, setSbpsStats } from "../../src/unitStats/mappingSbps";
-import { setWeaponStats, WeaponType } from "../../src/unitStats/mappingWeapon";
-import {
-  getUpgradesStats,
-  setUpgradesStats,
-  UpgradesType,
-} from "../../src/unitStats/mappingUpgrades";
-import {
-  AbilitiesType,
-  getAbilitiesStats,
-  setAbilitiesStats,
-} from "../../src/unitStats/mappingAbilities";
-import { setLocstring, unitStatsLocString } from "../../src/unitStats/locstring";
-import React, { useEffect } from "react";
-import { getMappings } from "../../src/unitStats/mappings";
+import { useEffect } from "react";
+import { useDpsData } from "../../components/unitStats/dps/useDpsData";
+import { DpsDataError } from "../../components/unitStats/dps/components/DpsDataError";
+import { EMPTY_DPS_DATA } from "../../src/unitStats/dpsData";
 import { AnalyticsDPSExplorerPageView } from "../../src/firebase/analytics";
 import { serverSideTranslations } from "next-i18next/pages/serverSideTranslations";
 import Head from "next/head";
@@ -26,16 +14,7 @@ import { getLocalizedUrl } from "../../src/seo-utils";
 import { getExplorerRoute, getDPSCalculatorRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 
-interface DpsProps {
-  weaponData: WeaponType[];
-  // sbpsData: SbpsType[];
-  // ebpsData: EbpsType[];
-  locstring: Record<string, string | null>;
-}
-
-// Parameter in Curly brackets is destructuring for
-// accessing attributes of Props Structure directly
-const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
+const DpsPage: NextPage = () => {
   const { locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
@@ -43,53 +22,7 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
     AnalyticsDPSExplorerPageView();
   }, []);
 
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
-  const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
-  const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
-  const [abilitiesData, setAbilitiesDataState] = React.useState<AbilitiesType[]>([]);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
-        if (!unitStatsLocString()) setLocstring(locstring);
-        setWeaponStats(weaponData);
-
-        const [ebpsData, sbpsData, upgradesData, abilitiesData] = await Promise.all([
-          getEbpsStats("latest"),
-          getSbpsStats("latest"),
-          getUpgradesStats(),
-          getAbilitiesStats(),
-        ]);
-
-        setEbpsStats(ebpsData);
-        setSbpsStats(sbpsData);
-        setUpgradesStats(upgradesData);
-        setAbilitiesStats(abilitiesData);
-
-        setEbpsDataState(ebpsData);
-        setSbpsDataState(sbpsData);
-        setUpgradesDataState(upgradesData);
-        setAbilitiesDataState(abilitiesData);
-        // Save data again in global variable for clientMode
-      } catch (error) {
-        console.error("Failed to load data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
-
-  const dbpsData = {
-    weaponData,
-    sbpsData,
-    ebpsData,
-    upgradesData,
-    abilitiesData,
-  };
+  const { data: dpsData, error, isLoading, retry } = useDpsData();
 
   // Create SEO props for DPS calculator page
   const title = t("dps.meta.title");
@@ -126,19 +59,22 @@ const DpsPage: NextPage<DpsProps> = ({ weaponData, locstring }) => {
         trail={[{ name: t("common:mainMenu.explorer"), path: getExplorerRoute() }]}
       />
       {/* Render the full layout right away (instead of a small loader) to avoid layout shift */}
-      <DpsPageComponent {...dbpsData} isLoading={isLoading} />
+      {error ? (
+        <DpsDataError onRetry={retry} />
+      ) : (
+        <DpsPageComponent
+          key={dpsData ? dpsData.patch : "loading"}
+          {...(dpsData ?? EMPTY_DPS_DATA)}
+          isLoading={isLoading}
+        />
+      )}
     </>
   );
 };
 
 export const getStaticProps = async ({ locale = "en" }) => {
-  // map Data at built time
-  const { weaponData, locstring } = await getMappings();
-
   return {
     props: {
-      weaponData: weaponData,
-      locstring: locstring,
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
     },
   };

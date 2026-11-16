@@ -23,7 +23,7 @@ import { WeaponSearch } from "./weaponSearch";
 import { getIconsPathOnCDN } from "../../../src/utils";
 import { WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
-import { ebpsStats, EbpsType, getSquadTotalCost } from "../../../src/unitStats";
+import { EbpsType, getSquadTotalCost } from "../../../src/unitStats";
 import {
   CustomizableUnit,
   getSbpsUpgrades,
@@ -280,7 +280,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                     <Card p="sm" radius="md">
                       {HitpointCard({
                         squad: props.unit.sbps,
-                        entities: ebpsStats,
+                        entities: props.ebps,
                         modifiedHitpoints: getModifiedHitpoints(props.unit),
                         modelCount: getUnitModelCount(props.unit),
                       })}
