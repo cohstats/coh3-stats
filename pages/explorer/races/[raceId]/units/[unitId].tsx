@@ -1451,10 +1451,6 @@ const createdCalculateValuesForUnits = (
     weaponData,
   );
 
-  const rawAbilities = Object.values(
-    getResolvedAbilities(resolvedSquad.abilities, abilitiesData),
-  );
-
   const buildables = Object.values(getResolvedConstruction(resolvedSquad.construction, ebpsData));
 
   const resolvedEntities: EbpsType[] = [];
@@ -1466,6 +1462,16 @@ const createdCalculateValuesForUnits = (
       resolvedEntities.push(foundEntity);
     }
   }
+
+  // SBPS and EBPS abilities have the same in-game presentation, so resolve them together.
+  // A squad can have multiple entity types in its loadout, and an ability may occur in both places.
+  const abilityIds = [
+    ...resolvedSquad.abilities,
+    ...resolvedEntities.flatMap((entity) => entity.abilities ?? []),
+  ];
+  const rawAbilities = Object.values(
+    getResolvedAbilities([...new Set(abilityIds)], abilitiesData),
+  );
 
   // Some abilities are duplicated, they have different IDs but the name and description is the same.
   // IF the UI is completely the same, we can remove the duplicates.

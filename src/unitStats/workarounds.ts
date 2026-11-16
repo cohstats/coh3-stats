@@ -497,6 +497,7 @@ export const UpgradeStateTreeToWeaponMap: Record<string, UpgradeStateTreeWeapon[
   mg42_panzer_ger: [{ weaponId: "mg42_panzer_iv_ger", count: 1 }],
   mg42_stug_ger: [{ weaponId: "mg42_stug_iii_ger", count: 1 }],
   mg42_tiger_ger: [{ weaponId: "mg34_tiger_ger", count: 1 }],
+  "30cal_weasal_us": [{ weaponId: "30cal_weasal_us", count: 1 }],
 };
 
 export const getUpgradeStateTreeWeapons = (stateTree?: string): UpgradeStateTreeWeapon[] => {
@@ -526,7 +527,13 @@ export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
     ],
   },
   add_bazooka_bazooka_team_us: {
-    upgrades: ["bazooka_bazooka_team_us"],
+    weapons: [
+      {
+        pbg: "ebps/races/american/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_bazooka_bazooka_team_us",
+        count: 2,
+        replacesNormalWeapon: true,
+      },
+    ],
   },
   toggle_lmg_bazooka_ssf_spawn: {
     upgrades: ["m1941_lmg_special_operations_us"],
@@ -543,7 +550,7 @@ export const StateTreeToSpawnMap: Record<string, StateTreeSpawnMapping> = {
   add_bazooka_guards_uk: {
     weapons: [
       {
-        pbg: "ebps/races/american/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_bazooka_guards_africa_uk",
+        pbg: "ebps/races/british/weapons/ballistic_weapon/infantry_anti_tank_weapon/w_bazooka_guards_africa_uk",
         count: 2,
         replacesNormalWeapon: true,
       },
@@ -796,6 +803,12 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     stateTree: "veterancy_1b_delayed_fuze_mortar_81mm_us",
     weaponIds: ["81mm_mortar_delayed_fuze_us"],
     numShots: 5,
+  },
+  {
+    abilityId: "armor_piercing_at_gun_57mm_us",
+    stateTreePath: ["ability_bag", "entity_tree"],
+    stateTree: "armor_piercing_at_gun_57mm_us",
+    weaponIds: ["57mm_at_gun_armor_piercing_us"],
   },
   {
     abilityId: "barrage_75mm_pack_howitzer_uk",
@@ -1243,12 +1256,12 @@ export type AbilityCostMapping = {
 };
 
 export const AbilityCostMappings: AbilityCostMapping[] = [
-  {
-    abilityId: "australian_defense_australian_light_infantry_uk",
-    cost: {
-      manpower: 280,
-    },
-  },
+  //{
+  //  abilityId: "australian_defense_australian_light_infantry_uk",
+  //  cost: {
+  //    manpower: 280,
+  //  },
+  //},
 ];
 
 export const getAbilityCostMappings = (abilityId: string) =>

@@ -1,0 +1,401 @@
+{
+  "source": "CoH3 3.0.1 default/open-ground examples plus Riflemen heavy-cover formation. Group coordinates include exported scales; distribution rows are for 1 through 6 people.",
+  "presets": {
+    "riflemen_us": {
+      "distribution": [
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 1,
+          "right": 0
+        },
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        },
+        {
+          "core": 2,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        },
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 2,
+          "right": 2
+        },
+        {
+          "core": 2,
+          "scout": 0,
+          "left": 2,
+          "right": 2
+        }
+      ],
+      "groups": {
+        "core": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": -4.5
+          },
+          {
+            "x": 5,
+            "y": -2
+          },
+          {
+            "x": -5,
+            "y": -2
+          },
+          {
+            "x": 0,
+            "y": -6
+          }
+        ],
+        "scout": [
+          {
+            "x": 0,
+            "y": 4.5
+          },
+          {
+            "x": 1,
+            "y": 4.5
+          },
+          {
+            "x": -1,
+            "y": 4.5
+          }
+        ],
+        "left": [
+          {
+            "x": -4,
+            "y": -0.5
+          },
+          {
+            "x": -5,
+            "y": -5.5
+          }
+        ],
+        "right": [
+          {
+            "x": 4,
+            "y": -0.5
+          },
+          {
+            "x": 5,
+            "y": -5.5
+          }
+        ]
+      }
+    },
+    "panzergrenadier_ak": {
+      "distribution": [
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 1,
+          "scout": 1,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 3,
+          "scout": 0,
+          "left": 1,
+          "right": 0
+        },
+        {
+          "core": 4,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 3,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        },
+        {
+          "core": 4,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        }
+      ],
+      "groups": {
+        "core": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": -4.8,
+            "y": 0
+          },
+          {
+            "x": -2.4,
+            "y": -5.4
+          },
+          {
+            "x": 0,
+            "y": -5.4
+          }
+        ],
+        "scout": [
+          {
+            "x": 7.2,
+            "y": 0
+          },
+          {
+            "x": 8.2,
+            "y": 0
+          },
+          {
+            "x": 6.2,
+            "y": 0
+          }
+        ],
+        "left": [
+          {
+            "x": -7.2,
+            "y": -2.4
+          },
+          {
+            "x": -8.2,
+            "y": -2.4
+          }
+        ],
+        "right": [
+          {
+            "x": 2.4,
+            "y": -2.4
+          },
+          {
+            "x": 3.4,
+            "y": -2.4
+          }
+        ]
+      }
+    },
+    "ranger_us": {
+      "distribution": [
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 2,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 3,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 3,
+          "scout": 1,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 3,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        },
+        {
+          "core": 3,
+          "scout": 1,
+          "left": 1,
+          "right": 1
+        }
+      ],
+      "groups": {
+        "core": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 6,
+            "y": -4.5
+          },
+          {
+            "x": -6,
+            "y": -4.5
+          },
+          {
+            "x": 10.8,
+            "y": -8.7
+          },
+          {
+            "x": -10.8,
+            "y": -8.7
+          }
+        ],
+        "scout": [
+          {
+            "x": 0,
+            "y": -5.4
+          },
+          {
+            "x": 1,
+            "y": -5.4
+          },
+          {
+            "x": -1,
+            "y": -5.4
+          }
+        ],
+        "left": [
+          {
+            "x": -3.6,
+            "y": -1.5
+          },
+          {
+            "x": -4.6,
+            "y": -1.5
+          }
+        ],
+        "right": [
+          {
+            "x": 3.6,
+            "y": -1.5
+          },
+          {
+            "x": 4.6,
+            "y": -1.5
+          }
+        ]
+      }
+    },
+    "riflemen_cover": {
+      "distribution": [
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 1,
+          "right": 0
+        },
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        },
+        {
+          "core": 2,
+          "scout": 0,
+          "left": 1,
+          "right": 1
+        },
+        {
+          "core": 1,
+          "scout": 0,
+          "left": 2,
+          "right": 2
+        },
+        {
+          "core": 2,
+          "scout": 0,
+          "left": 2,
+          "right": 2
+        }
+      ],
+      "groups": {
+        "core": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": -3,
+            "y": 0
+          },
+          {
+            "x": 1.5,
+            "y": -1.5
+          },
+          {
+            "x": -1.5,
+            "y": -1.5
+          },
+          {
+            "x": 6,
+            "y": 0
+          },
+          {
+            "x": -6,
+            "y": 0
+          }
+        ],
+        "scout": [
+          {
+            "x": 0,
+            "y": 0.5
+          },
+          {
+            "x": 1,
+            "y": 0.5
+          },
+          {
+            "x": -1,
+            "y": 0.5
+          }
+        ],
+        "left": [
+          {
+            "x": -1,
+            "y": 0
+          },
+          {
+            "x": -2,
+            "y": 0
+          }
+        ],
+        "right": [
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          }
+        ]
+      }
+    }
+  }
+}

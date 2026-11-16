@@ -167,8 +167,9 @@ export function filterMultiplayerBuildings(buildings: EbpsType[], race: raceType
  * squads that conforms those call-ins.
  */
 export const HalfTrackDeploymentUnitsAfrikaKorps = {
-  halftrack_deployment_panzerjager_inf_1_ak: ["halftrack_250_ak", "panzerjaeger_inf_ak"],
+  halftrack_deployment_panzerpioneer_1_ak: ["halftrack_250_ak", "panzerpioneer_ak"],
   halftrack_deployment_assault_grenadier_1_ak: ["halftrack_250_ak", "assault_panzergrenadier_ak"],
+  halftrack_deployment_hmg_1_ak: ["halftrack_250_ak", "hmg_mg34_ak"],
   halftrack_deployment_at_gun_1_ak: ["halftrack_250_ak", "at_gun_50mm_pak_38_ak"],
   halftrack_deployment_leig_1_ak: ["halftrack_250_ak", "leig_75mm_ak"],
   halftrack_deployment_piv_tank_hunter_group_ak: ["panzer_iv_ak", "panzerjaeger_inf_ak"],
@@ -187,6 +188,7 @@ const generateAfrikaKorpsCallInsBuilding = (): EbpsType => {
     faction: "afrika_corps",
     unitType: "production",
     unitTypes: ["halftrack_deployment"],
+    abilities: [],
     spawner_ext: { spawn_items: {} },
     crew_size: 0, // Chrida: crewsize added / was missing.
     cost: {

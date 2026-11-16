@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 //import { LevelContext } from './LevelContext.js';
 import {
   Avatar,
+  Button,
   Group,
   Image,
   ActionIcon,
@@ -17,7 +18,9 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
+import { useTranslation } from "next-i18next/pages";
 import { WeaponSearch } from "./weaponSearch";
+import { getIconsPathOnCDN } from "../../../src/utils";
 import { WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { DpsWeaponCard } from "./dpsWeaponCard";
 import { ebpsStats, EbpsType, getSquadTotalCost } from "../../../src/unitStats";
@@ -31,10 +34,13 @@ import {
   CustomModifiers,
   createDefaultCustomModifiers,
   getModifiedHitpoints,
+  getUnitModelCount,
+  setUnitVeterancyLevel,
 } from "../../../src/unitStats/dpsCommon";
 import { getMaxDpsVeterancyLevel } from "../../../src/unitStats/dpsVeterancy";
+import { hasScatterAoe } from "../../../src/unitStats/scatterSimulation";
 import { humanizeVeterancyModifierId } from "./veterancyModifierDisplay";
-import { CustomConfigModal } from "./CustomConfigModal";
+import { CustomConfigModal, type CustomModifierScope } from "./CustomConfigModal";
 import Link from "next/link";
 import { UnitSquadCard } from "../../unit-cards/unit-squad-card";
 import { UnitCostCard } from "../../unit-cards/unit-cost-card";
@@ -50,9 +56,14 @@ interface IUnitProps {
   ebps: EbpsType[];
   weapons: WeaponType[];
   allowAllWeapons: boolean;
+  /** Limit editable modifiers by unit role in Compare Mode; VS Mode defaults to all. */
+  modifierScope?: CustomModifierScope;
+  fogOfWar?: boolean;
+  onFogOfWarChange?: (checked: boolean) => void;
 }
 
 export const DpsUnitCustomizing = (props: IUnitProps) => {
+  const { t } = useTranslation("explorer");
   const [weaponList, setWeaponList] = useState<WeaponMember[]>([]);
   const [customConfigOpened, setCustomConfigOpened] = useState(false);
 
@@ -105,7 +116,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   // Weapon card deleted
   function onDelete(member: WeaponMember) {
     props.unit.weapon_member.forEach((ldout) => {
-      if (ldout.weapon_id == member.weapon_id) {
+      if (ldout === member) {
         const index = props.unit.weapon_member.indexOf(ldout);
         props.unit.weapon_member.splice(index, 1);
       }
@@ -134,7 +145,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     Math.min(maxVeterancy, Math.floor(Number(props.unit.veterancyLevel ?? 0) || 0)),
   );
   function onVeterancyChange(level: number) {
-    props.unit.veterancyLevel = selectedVeterancy === level ? 0 : level;
+    setUnitVeterancyLevel(props.unit, selectedVeterancy === level ? 0 : level);
     props.onChange(props.unit);
   }
   const veterancyRanks = [
@@ -150,13 +161,35 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     components.push(
       <DpsWeaponCard
         weapon_member={member}
-        key={member.weapon_id + props.index + member.num}
+        key={`${member.weapon_id}.${member.hardpointIndex ?? "manual"}.${props.index}.${member.num}`}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
       />,
     );
   }
   const totalCost = getSquadTotalCost(props.unit.sbps, props.ebps);
+  // These upgrades belong to individual attacker instances, not the global
+  // comparison. "Allow All Weapons" also allows captured/foreign vehicles.
+  const compareVehicle =
+    props.modifierScope === "offensive" && props.unit.unit_type === "vehicles";
+  const hasVehicleMg = props.unit.weapon_member.some(
+    (member) => member.num > 0 && !hasScatterAoe(member.weapon.weapon_bag),
+  );
+  const hasCoaxOrHull = props.unit.weapon_member.some(
+    (member) => member.num > 0 && (member.hardpointIndex === 1 || member.hardpointIndex === 2),
+  );
+  // In normal mode, avoid showing upgrades on vehicles with no affected gun.
+  // Allow All Weapons deliberately exposes both switches on every vehicle.
+  const showHeavyBarrels =
+    compareVehicle &&
+    (props.allowAllWeapons || (props.unit.faction === "american" && hasVehicleMg));
+  const showDakCoax =
+    compareVehicle &&
+    (props.allowAllWeapons || (props.unit.faction === "afrika_korps" && hasCoaxOrHull));
+  const onVehicleUpgradeToggle = (upgrade: "heavyBarrelsEnabled" | "dakCoaxUpgradeEnabled") => {
+    props.unit[upgrade] = !props.unit[upgrade];
+    props.onChange(props.unit);
+  };
 
   return (
     <>
@@ -249,6 +282,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
                         squad: props.unit.sbps,
                         entities: ebpsStats,
                         modifiedHitpoints: getModifiedHitpoints(props.unit),
+                        modelCount: getUnitModelCount(props.unit),
                       })}
                     </Card>
                   </HoverCard.Dropdown>
@@ -261,20 +295,42 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
           <Grid.Col span={7}>
             <Flex gap="4" justify="flex-end" align="center" direction="row" wrap="wrap">
               {/* <Rating defaultValue={0} size="sm" count={3} /> */}
-              <Tooltip label="Moving">
-                <ActionIcon
-                  size="lg"
-                  onClick={onMovingChange}
-                  variant={props.unit.is_moving ? "default" : "transparent"}
-                >
-                  <Image
-                    src="/icons/common/abilities/tactical_movement_riflemen_us.png"
-                    alt="Moving"
-                    h={27}
-                    w={27}
-                  />
-                </ActionIcon>
-              </Tooltip>
+              {props.modifierScope === "defensive" ? (
+                props.onFogOfWarChange && (
+                  <Tooltip label={t("dpsCompareUi.target.fogOfWar")}>
+                    <ActionIcon
+                      size="lg"
+                      variant={props.fogOfWar ? "default" : "transparent"}
+                      aria-label={t("dpsCompareUi.target.fogOfWar")}
+                      aria-pressed={Boolean(props.fogOfWar)}
+                      data-testid="scatter-fog-of-war-toggle"
+                      onClick={() => props.onFogOfWarChange?.(!props.fogOfWar)}
+                    >
+                      <Image
+                        src={getIconsPathOnCDN("icons/common/hide_password.png")}
+                        alt=""
+                        h={27}
+                        w={27}
+                      />
+                    </ActionIcon>
+                  </Tooltip>
+                )
+              ) : (
+                <Tooltip label="Moving">
+                  <ActionIcon
+                    size="lg"
+                    onClick={onMovingChange}
+                    variant={props.unit.is_moving ? "default" : "transparent"}
+                  >
+                    <Image
+                      src="/icons/common/abilities/tactical_movement_riflemen_us.png"
+                      alt="Moving"
+                      h={27}
+                      w={27}
+                    />
+                  </ActionIcon>
+                </Tooltip>
+              )}
               <Tooltip label="Heavy Cover">
                 <ActionIcon
                   size="lg"
@@ -392,6 +448,38 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
             })}
           </Group>
         )}
+        {(showHeavyBarrels || showDakCoax) && (
+          <Group gap="xs" wrap="wrap" data-testid="vehicle-mg-upgrades">
+            {showHeavyBarrels && (
+              <Tooltip label={t("dpsCompareUi.upgrades.heavyBarrelsTip")}>
+                <Button
+                  size="compact-xs"
+                  variant={props.unit.heavyBarrelsEnabled ? "filled" : "default"}
+                  color="blue"
+                  aria-pressed={Boolean(props.unit.heavyBarrelsEnabled)}
+                  data-testid="vehicle-heavy-barrels"
+                  onClick={() => onVehicleUpgradeToggle("heavyBarrelsEnabled")}
+                >
+                  {t("dpsCompareUi.upgrades.heavyBarrels")}
+                </Button>
+              </Tooltip>
+            )}
+            {showDakCoax && (
+              <Tooltip label={t("dpsCompareUi.upgrades.armoredSupportTip")}>
+                <Button
+                  size="compact-xs"
+                  variant={props.unit.dakCoaxUpgradeEnabled ? "filled" : "default"}
+                  color="blue"
+                  aria-pressed={Boolean(props.unit.dakCoaxUpgradeEnabled)}
+                  data-testid="vehicle-dak-coax-upgrade"
+                  onClick={() => onVehicleUpgradeToggle("dakCoaxUpgradeEnabled")}
+                >
+                  {t("dpsCompareUi.upgrades.armoredSupport")}
+                </Button>
+              </Tooltip>
+            )}
+          </Group>
+        )}
         <WeaponSearch searchData={weaponList} onSelect={onAddWeapon} />
 
         <Group gap="xs">{components}</Group>
@@ -403,6 +491,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
         customModifiers={props.unit.custom_modifiers || createDefaultCustomModifiers()}
         onModifiersChange={onCustomConfigChange}
         unit={props.unit}
+        modifierScope={props.modifierScope}
         unitName={
           props.unit.screen_name !== "No text found" ? props.unit.screen_name : props.unit.id
         }

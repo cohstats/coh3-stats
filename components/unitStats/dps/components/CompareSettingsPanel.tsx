@@ -14,10 +14,16 @@ import {
 } from "@mantine/core";
 import { IconAdjustments } from "@tabler/icons-react";
 import { getFactionIcon } from "../../../../src/unitStats";
+import { useTranslation } from "next-i18next/pages";
 
 interface CompareSettingsPanelProps {
   allowAllWeapons: boolean;
   showFinalStand: boolean;
+  scatterEnabled: boolean;
+  scatterAvailable: boolean;
+  scatterSamples: number;
+  onScatterSamplesChange: (value: number) => void;
+  onScatterEnabledChange: (checked: boolean) => void;
   onAllowAllWeaponsChange: (checked: boolean) => void;
   onShowFinalStandChange: (checked: boolean) => void;
   onResetUnits: () => void;
@@ -26,10 +32,16 @@ interface CompareSettingsPanelProps {
 export const CompareSettingsPanel: React.FC<CompareSettingsPanelProps> = ({
   allowAllWeapons,
   showFinalStand,
+  scatterEnabled,
+  scatterAvailable,
+  scatterSamples,
+  onScatterSamplesChange,
+  onScatterEnabledChange,
   onAllowAllWeaponsChange,
   onShowFinalStandChange,
   onResetUnits,
 }) => {
+  const { t } = useTranslation("explorer");
   const handleAllowAllWeaponsChange = (checked: boolean) => {
     onAllowAllWeaponsChange(checked);
     if (checked) {
@@ -47,6 +59,35 @@ export const CompareSettingsPanel: React.FC<CompareSettingsPanelProps> = ({
       <HoverCard.Dropdown>
         <Stack>
           <Text size="md">Advanced Options</Text>
+          {scatterAvailable && (
+            <Switch
+              label={
+                <Stack gap="0">
+                  <>{t("dpsCompareUi.settings.scatter")}</>
+                </Stack>
+              }
+              checked={scatterEnabled}
+              onChange={(event) => onScatterEnabledChange(event.currentTarget.checked)}
+              data-testid="scatter-simulation-toggle"
+            />
+          )}
+
+          {scatterAvailable && scatterEnabled && (
+            <Select
+              label={t("dpsCompareUi.settings.samples")}
+              data={[
+                { value: "144", label: `144 — 12×12 (${t("dpsCompareUi.settings.fast")})` },
+                { value: "576", label: `576 — 24×24 (${t("dpsCompareUi.settings.balanced")})` },
+                { value: "2025", label: `2,025 — 45×45 (${t("dpsCompareUi.settings.precise")})` },
+              ]}
+              value={String(scatterSamples)}
+              allowDeselect={false}
+              onChange={(value) => {
+                if (value) onScatterSamplesChange(Number(value));
+              }}
+              data-testid="scatter-sample-count"
+            />
+          )}
           <Switch
             label={
               <Stack gap="0">

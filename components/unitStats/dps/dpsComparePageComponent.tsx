@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
 import {
@@ -31,6 +31,7 @@ import {
 import { useRouter } from "next/router";
 import { getDPSCalculatorRoute } from "../../../src/routes";
 import { IconPlus } from "@tabler/icons-react";
+import { useTranslation } from "next-i18next/pages";
 import { EbpsType, getEbpsStats } from "../../../src/unitStats/mappingEbps";
 import { getWeaponStats, WeaponType } from "../../../src/unitStats/mappingWeapon";
 import { getSbpsStats, SbpsType } from "../../../src/unitStats/mappingSbps";
@@ -38,13 +39,30 @@ import { isFinalStandEnemyUnit, isFinalStandUnit } from "../../../src/unitStats/
 import { UpgradesType } from "../../../src/unitStats/mappingUpgrades";
 import { AbilitiesType, getAbilitiesStats } from "../../../src/unitStats/mappingAbilities";
 import {
+  hasScatterAoe,
+  simulateScatterShotDetails,
+  simulateExpectedScatterShot,
+} from "../../../src/unitStats/scatterSimulation";
+import {
+  getSingleWeaponScatterShotInputs,
+  getWeaponScatterMultiplier,
+} from "../../../src/unitStats/weaponLib";
+import {
   CustomizableUnit,
   getCompareDpsData,
   mapCustomizableUnit,
   updateHealth,
+  getUnitModelCount,
   createDefaultCustomModifiers,
+  getDisplayedWeaponMaxRange,
+  getBaseDistanceForDisplayedRange,
 } from "../../../src/unitStats/dpsCommon";
 import config from "../../../config";
+import { getFormationData, type FormationData } from "../../../src/unitStats/mappingFormations";
+import {
+  getSquadWeaponEntity,
+  resolveSquadFormation,
+} from "../../../src/unitStats/squadFormations";
 import {
   AnalyticsDPSExplorerPatchSelection,
   AnalyticsDPSExplorerSquadSelection,
@@ -56,6 +74,12 @@ import {
   PatchSelector,
 } from "./components/CompareSettingsPanel";
 import { UnitCustomizationPanel } from "./components/UnitCustomizationPanel";
+import {
+  DEFAULT_SCATTER_FORMATION,
+  ScatterFormationEditor,
+  type ScatterFormationState,
+  getScatterFormationModels,
+} from "./components/ScatterFormationEditor";
 import { ChartPanel } from "./components/ChartPanel";
 import { UnitSearch } from "./unitSearch";
 import { FinalStandBadge } from "../../final-stand-badge";
@@ -77,7 +101,30 @@ ChartJS.register(
 // Chart colors for up to 6 attackers
 const ATTACKER_COLORS = ["blue", "red", "green", "orange", "violet", "cyan"] as const;
 
+type CompareTargetType = "infantry" | "other";
+
+// Change these IDs to swap the initial/reset defenders. The unit picker remains freely editable.
+const DEFAULT_COMPARE_TARGET_IDS: Record<CompareTargetType, string> = {
+  infantry: "panzergrenadier_ak",
+  other: "halftrack_250_ak",
+};
+
+/** Crewed team weapons are infantry targets even though their SBPS folder is team_weapons. */
+const isInfantryTarget = (unit: CustomizableUnit): boolean =>
+  unit.unit_type === "infantry" ||
+  (unit.unit_type === "team_weapons" &&
+    unit.sbps.loadout.some(({ type }) => /(?:^|[\\/])infantry[\\/]/.test(type)));
+
+/** A real squad/vehicle supplies the default defender stats and formation. */
+const getDefaultTarget = (type: CompareTargetType): CustomizableUnit | undefined =>
+  cachedUnits.find(
+    (unit) =>
+      unit.id === DEFAULT_COMPARE_TARGET_IDS[type] &&
+      isInfantryTarget(unit) === (type === "infantry"),
+  );
+
 interface IDPSCompareProps {
+  formationData?: FormationData;
   weaponData: WeaponType[];
   sbpsData: SbpsType[];
   ebpsData: EbpsType[];
@@ -114,6 +161,7 @@ const mapUnitSelection = (
   units: CustomizableUnit[],
   unitFilter: string[] = [],
   showFinalStand = false,
+  requireWeapons = true,
 ) => {
   const selectionFields: CustomizableUnit[] = [];
   for (const squad of sbps) {
@@ -125,7 +173,7 @@ const mapUnitSelection = (
       (unitFilter.length === 0 || unitFilter.includes(squad.faction))
     ) {
       const custUnit = units.find((u) => u.id === squad.id);
-      if (custUnit && custUnit.weapon_member.length > 0) {
+      if (custUnit && (!requireWeapons || custUnit.weapon_member.length > 0)) {
         selectionFields.push(custUnit);
       }
     }
@@ -147,6 +195,7 @@ const setScreenOptions = (isLargeScreen: boolean) => {
 
 export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const theme = useMantineTheme();
+  const { t } = useTranslation("explorer");
   const router = useRouter();
   const isLargeScreen = useMediaQuery("(min-width: 56.25em)");
 
@@ -162,14 +211,36 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const [allowAllWeapons, setAllowAllWeapons] = useState(false);
   // Final Stand (DLC / co-op vs AI) units are opt-in.
   const [showFinalStand, setShowFinalStand] = useState(false);
+  // Scatter starts enabled and requires a selected infantry defender.
+  const [scatterFormation, setScatterFormation] = useState<ScatterFormationState>({
+    ...DEFAULT_SCATTER_FORMATION,
+    disabledModelIds: [],
+  });
+  const [formationData, setFormationData] = useState<FormationData>(props.formationData ?? {});
+  const [scatterSamples, setScatterSamples] = useState(576);
+  const [scatterFogOfWar, setScatterFogOfWar] = useState(false);
   const [rerender, setRerender] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Target unit
+  // Target mode controls the defender search separately from the attacker search.
+  const [targetType, setTargetType] = useState<CompareTargetType>("infantry");
+  // Undefined means no matching defender is available; it never creates a generic target.
   const [targetUnit, setTargetUnit] = useState<CustomizableUnit | undefined>();
+  const [targetResetVersion, setTargetResetVersion] = useState(0);
 
   // Attacking units (dynamic array, max 6)
   const [attackingUnits, setAttackingUnits] = useState<CustomizableUnit[]>([]);
+  // Stable instance IDs distinguish e.g. two Shermans with different upgrades/veterancy.
+  // Keep these aligned with attackingUnits, including when removing or reloading a unit.
+  const [attackerPreviewIds, setAttackerPreviewIds] = useState<number[]>([]);
+  const nextAttackerPreviewId = useRef(0);
+  const [selectedPreviewWeaponId, setSelectedPreviewWeaponId] = useState<string | null>(null);
+  // The preview has its own range, independent from the DPS graph. Reset to max
+  // when the selected weapon changes or its previous range is no longer valid.
+  const [previewRangeSelection, setPreviewRangeSelection] = useState<{
+    weaponId: string;
+    range: number;
+  } | null>(null);
 
   // Selected unit in the dropdown (for adding)
   const [selectedUnitToAdd, setSelectedUnitToAdd] = useState<string | null>(null);
@@ -180,6 +251,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   // Initialize data
   useEffect(() => {
     initCompareData(props);
+    restoreDefaultTarget("infantry");
     setUnitSelectionList(
       mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
     );
@@ -191,6 +263,36 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
       mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
     );
   }, [factionFilter, showFinalStand]);
+
+  // Unlike attackers, targets need not have weapons (e.g. an unarmed vehicle or bunker).
+  // Preserve the current selection when the attacker faction filter changes.
+  const targetSelectionList = useMemo(() => {
+    const matches = mapUnitSelection(
+      cachedSbps,
+      cachedUnits,
+      factionFilter,
+      showFinalStand,
+      false,
+    ).filter((unit) => isInfantryTarget(unit) === (targetType === "infantry"));
+    if (
+      targetUnit &&
+      isInfantryTarget(targetUnit) === (targetType === "infantry") &&
+      !matches.some((unit) => unit.id === targetUnit.id)
+    ) {
+      matches.push(targetUnit);
+    }
+    return matches;
+    // The attacker list changes after initial data load, patch changes, and faction changes.
+  }, [unitSelectionList, targetType, targetUnit]);
+
+  useEffect(() => {
+    setScatterFormation((previous) => ({
+      ...previous,
+      disabledModelIds: [],
+      targetModelId: 1,
+      groundTarget: null,
+    }));
+  }, [targetUnit?.path, targetUnit?.id, patchVersion]);
 
   // Patch list
   const patchList = Object.keys(config.patches);
@@ -204,13 +306,15 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     setIsLoading(true);
 
     try {
-      const [newSbps, newEbps, newWeapons, newAbilities] = await Promise.all([
+      const [newSbps, newEbps, newWeapons, newAbilities, newFormations] = await Promise.all([
         getSbpsStats(value),
         getEbpsStats(value),
         getWeaponStats(value),
         getAbilitiesStats(value),
+        getFormationData(value),
       ]);
 
+      setFormationData(newFormations);
       cachedSbps = newSbps;
       cachedEbps = newEbps;
       cachedWeapons = newWeapons;
@@ -224,21 +328,29 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
         mapUnitSelection(cachedSbps, cachedUnits, factionFilter, showFinalStand),
       );
 
-      // Re-select units with new patch data
-      if (targetUnit) {
-        const newTarget = cachedUnits.find((u) => u.id === targetUnit.id);
-        if (newTarget) {
-          setTargetUnit(cloneUnit(newTarget));
-        }
-      }
+      // Re-select the current defender or restore the real default if that unit is unavailable.
+      const newTarget =
+        cachedUnits.find(
+          (unit) =>
+            unit.id === targetUnit?.id && isInfantryTarget(unit) === (targetType === "infantry"),
+        ) ?? getDefaultTarget(targetType);
+      setTargetUnit(newTarget ? cloneUnit(newTarget) : undefined);
 
-      const newAttackers = attackingUnits
-        .map((attacker) => {
+      const refreshedAttackers = attackingUnits
+        .map((attacker, index) => {
           const newAttacker = cachedUnits.find((u) => u.id === attacker.id);
-          return newAttacker ? cloneUnit(newAttacker) : undefined;
+          return newAttacker
+            ? {
+                unit: cloneUnit(newAttacker),
+                previewId: attackerPreviewIds[index] ?? ++nextAttackerPreviewId.current,
+              }
+            : undefined;
         })
-        .filter((u): u is CustomizableUnit => u !== undefined);
-      setAttackingUnits(newAttackers);
+        .filter(
+          (entry): entry is { unit: CustomizableUnit; previewId: number } => entry !== undefined,
+        );
+      setAttackingUnits(refreshedAttackers.map((entry) => entry.unit));
+      setAttackerPreviewIds(refreshedAttackers.map((entry) => entry.previewId));
     } finally {
       setIsLoading(false);
     }
@@ -252,6 +364,26 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     return cloned;
   };
 
+  const restoreDefaultTarget = (type: CompareTargetType) => {
+    const fallback = getDefaultTarget(type);
+    // Clearing an already selected default must also restore the Select's search text.
+    setTargetResetVersion((version) => version + 1);
+    setTargetUnit(fallback ? cloneUnit(fallback) : undefined);
+    setScatterFormation((previous) => ({
+      ...previous,
+      disabledModelIds: [],
+      targetModelId: 1,
+      groundTarget: null,
+    }));
+  };
+
+  const handleTargetTypeChange = (nextType: string) => {
+    if (nextType !== "infantry" && nextType !== "other") return;
+    setTargetType(nextType);
+    // Each category starts with its configured real defender.
+    restoreDefaultTarget(nextType);
+  };
+
   // Handle filter toggle
   const handleFilterToggle = (faction: string) => {
     const newFilter = factionFilter.includes(faction)
@@ -263,12 +395,14 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   // Handle target unit selection
   const handleTargetSelect = (selection: string | null) => {
     if (!selection) {
-      setTargetUnit(undefined);
+      // Clearing the search restores this category's configured defender.
+      restoreDefaultTarget(targetType);
       return;
     }
-    AnalyticsDPSExplorerSquadSelection(selection);
-    const unitBp = unitSelectionList.find((u) => u.id === selection);
-    if (unitBp) {
+    const unitBp = targetSelectionList.find((u) => u.id === selection);
+    // Search and selection use the same strict category filter.
+    if (unitBp && isInfantryTarget(unitBp) === (targetType === "infantry")) {
+      AnalyticsDPSExplorerSquadSelection(selection);
       setTargetUnit(cloneUnit(unitBp));
     }
   };
@@ -280,7 +414,9 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     AnalyticsDPSExplorerSquadSelection(selectedUnitToAdd);
     const unitBp = unitSelectionList.find((u) => u.id === selectedUnitToAdd);
     if (unitBp) {
+      const previewId = ++nextAttackerPreviewId.current;
       setAttackingUnits([...attackingUnits, cloneUnit(unitBp)]);
+      setAttackerPreviewIds((previous) => [...previous, previewId]);
       setSelectedUnitToAdd(null);
     }
   };
@@ -289,6 +425,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
   const handleRemoveAttacker = (index: number) => {
     const newAttackers = attackingUnits.filter((_, i) => i !== index);
     setAttackingUnits(newAttackers);
+    setAttackerPreviewIds((previous) => previous.filter((_, i) => i !== index));
   };
 
   // Handle squad config change
@@ -298,8 +435,9 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
 
   // Reset all units
   const handleResetUnits = () => {
-    setTargetUnit(undefined);
+    restoreDefaultTarget(targetType);
     setAttackingUnits([]);
+    setAttackerPreviewIds([]);
     setSelectedUnitToAdd(null);
   };
 
@@ -320,7 +458,201 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
     ...attackingUnits,
     ...Array(6 - attackingUnits.length).fill(undefined),
   ];
-  const dpsLines = getCompareDpsData(paddedAttackers, targetUnit);
+  const scatterCompatibleTarget =
+    targetType === "infantry" && !!targetUnit && isInfantryTarget(targetUnit);
+  const humanCount = targetUnit ? Math.max(0, Math.floor(getUnitModelCount(targetUnit))) : 0;
+  const squadLayout = useMemo(
+    () =>
+      targetUnit && scatterCompatibleTarget && humanCount > 0
+        ? resolveSquadFormation(
+            targetUnit.sbps,
+            formationData,
+            humanCount,
+            targetUnit.cover,
+            targetUnit.is_moving,
+            getSquadWeaponEntity(targetUnit.sbps, cachedEbps),
+          )
+        : undefined,
+    // Unit customizers mutate cover/movement in place.
+
+    [targetUnit, formationData, humanCount, scatterCompatibleTarget, rerender],
+  );
+  const formationModels = useMemo(
+    () =>
+      (squadLayout?.models ?? getScatterFormationModels(scatterFormation, humanCount)).map(
+        (model) => ({
+          ...model,
+          // Exported formations face +Y; face south toward the default gunner (-Y).
+          x: -model.x,
+          y: -model.y,
+          enabled: !scatterFormation.disabledModelIds.includes(model.id),
+        }),
+      ),
+    [squadLayout, scatterFormation, humanCount],
+  );
+  const effectiveFormation = {
+    ...scatterFormation,
+    targetModelId:
+      scatterFormation.targetModelId === null
+        ? null
+        : formationModels.some((model) => model.id === scatterFormation.targetModelId)
+          ? scatterFormation.targetModelId
+          : (formationModels[0]?.id ?? null),
+  };
+  const weaponMarker = squadLayout?.weapon
+    ? { x: -squadLayout.weapon.x, y: -squadLayout.weapon.y }
+    : undefined;
+  const scatterOptions = useMemo(
+    () =>
+      scatterFormation.enabled && scatterCompatibleTarget
+        ? {
+            models: formationModels,
+            targetModelId: effectiveFormation.targetModelId,
+            groundTarget: scatterFormation.groundTarget,
+            gunnerAngleDeg: scatterFormation.gunnerAngleDeg,
+            samplesPerShot: scatterSamples,
+            inFogOfWar: scatterFogOfWar,
+          }
+        : undefined,
+    [
+      scatterFormation,
+      formationModels,
+      effectiveFormation.targetModelId,
+      scatterSamples,
+      scatterFogOfWar,
+      scatterCompatibleTarget,
+    ],
+  );
+  // Compare-mode scatter uses the same weapon fire timing and range as standard DPS.
+  const dpsLines = useMemo(
+    () =>
+      !targetUnit
+        ? // An unavailable defender must never silently use generic infantry stats.
+          paddedAttackers.map(() => [])
+        : getCompareDpsData(paddedAttackers, targetUnit, scatterOptions),
+    // Customizing a unit can mutate its members in place, so rerender is a dependency.
+
+    [attackingUnits, targetUnit, targetType, scatterOptions, rerender, patchVersion],
+  );
+
+  // Offer every enabled AoE weapon from every attacker, in comparison order.
+  // Store the attacker *instance* ID in the option key so duplicate units don't
+  // share a selection, and removing an earlier attacker doesn't change the key.
+  const previewWeaponCandidates = useMemo(
+    () =>
+      attackingUnits.flatMap((attacker, index) =>
+        attacker.weapon_member
+          .filter((member) => member.num > 0 && hasScatterAoe(member.weapon.weapon_bag))
+          .map((member) => ({
+            value: `${attackerPreviewIds[index]}:${member.weapon_id}`,
+            label: `${attacker.screen_name || attacker.id} (#${index + 1}) — ${member.weapon.ui_name || member.weapon.id}`,
+            weaponName: member.weapon.ui_name || member.weapon.id,
+            attackerName: `${attacker.screen_name || attacker.id} (#${index + 1})`,
+            color: ATTACKER_COLORS[index],
+            attacker,
+            member,
+          })),
+      ),
+    // Unit customizers can mutate an attacker's weapon list in place.
+
+    [attackingUnits, attackerPreviewIds, rerender, patchVersion],
+  );
+
+  // Default to the first AoE weapon; if the selected one disappears or becomes
+  // disabled, the visible selection immediately falls back to the first remaining.
+  const selectedPreviewCandidate =
+    previewWeaponCandidates.find((candidate) => candidate.value === selectedPreviewWeaponId) ??
+    previewWeaponCandidates[0];
+
+  const previewMaxRange = selectedPreviewCandidate
+    ? getDisplayedWeaponMaxRange(
+        selectedPreviewCandidate.attacker,
+        selectedPreviewCandidate.member,
+      )
+    : 0;
+  // Minimum firing range is not scaled/shifted by unit range modifiers.
+  const previewMinRange = selectedPreviewCandidate
+    ? Math.min(previewMaxRange, selectedPreviewCandidate.member.weapon.weapon_bag.range_min)
+    : 0;
+  const previewRange =
+    selectedPreviewCandidate && previewRangeSelection?.weaponId === selectedPreviewCandidate.value
+      ? Math.max(previewMinRange, Math.min(previewMaxRange, previewRangeSelection.range))
+      : previewMaxRange;
+
+  // Compare every weapon at the same range, aim point and formation. Only the
+  // selected weapon needs per-model details; other rows use the cheaper total.
+  const previewWeaponResults = useMemo(
+    () =>
+      previewWeaponCandidates.map((candidate) => {
+        const { attacker, member } = candidate;
+        const maxRange = getDisplayedWeaponMaxRange(attacker, member);
+        const inRange =
+          previewRange >= member.weapon.weapon_bag.range_min && previewRange <= maxRange;
+        const shot =
+          inRange && scatterOptions
+            ? getSingleWeaponScatterShotInputs(
+                member,
+                getBaseDistanceForDisplayedRange(attacker, previewRange),
+                scatterOptions,
+                attacker.is_moving,
+                targetUnit,
+                attacker,
+                previewRange,
+              )
+            : null;
+        const details =
+          shot && candidate.value === selectedPreviewCandidate?.value
+            ? simulateScatterShotDetails(shot)
+            : undefined;
+        return {
+          ...candidate,
+          averageDamage: inRange
+            ? (details?.totalExpectedDamage ?? (shot ? simulateExpectedScatterShot(shot) : 0))
+            : null,
+          modelStats: details?.models,
+        };
+      }),
+    [
+      previewWeaponCandidates,
+      selectedPreviewCandidate,
+      previewRange,
+      scatterOptions,
+      targetUnit,
+      rerender,
+    ],
+  );
+
+  // Hover stats and the scatter envelope use the chosen preview range.
+  // This value never enters scatterOptions or the DPS chart calculation.
+  const scatterPreview = useMemo(() => {
+    if (!selectedPreviewCandidate) return undefined;
+    const { attacker, member } = selectedPreviewCandidate;
+    return {
+      weapon: member.weapon.weapon_bag,
+      label: selectedPreviewCandidate.label,
+      range: previewRange,
+      minRange: previewMinRange,
+      maxRange: previewMaxRange,
+      isMoving: attacker.is_moving,
+      scatterMultiplier: getWeaponScatterMultiplier(attacker),
+      inFogOfWar: scatterFogOfWar,
+      modelStats: previewWeaponResults.find(
+        ({ value }) => value === selectedPreviewCandidate.value,
+      )?.modelStats,
+    };
+    // Unit customizers mutate members in place; rerender forces recalculation.
+  }, [
+    selectedPreviewCandidate,
+    previewWeaponResults,
+    previewRange,
+    previewMinRange,
+    previewMaxRange,
+    targetUnit,
+    scatterOptions,
+    scatterFogOfWar,
+    rerender,
+    patchVersion,
+  ]);
 
   // Build chart data
   const chartData = { datasets: [] as ReturnType<typeof mapChartData>[] };
@@ -349,13 +681,13 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
       <Container size={"md"}>
         <Group justify="space-between" wrap="wrap">
           <Flex align="center" gap="md" wrap="wrap">
-            <Title order={2}>Company of Heroes 3 DPS Benchmark Tool</Title>
+            <Title order={2}>{t("dpsCompareUi.compare.title")}</Title>
             <SegmentedControl
               value="compare"
               onChange={handleModeChange}
               data={[
-                { label: "VS Mode", value: "vs" },
-                { label: "Compare Mode", value: "compare" },
+                { label: t("dpsCompareUi.compare.vs"), value: "vs" },
+                { label: t("dpsCompareUi.compare.compare"), value: "compare" },
               ]}
               data-testid="dps-mode-control"
             />
@@ -363,7 +695,29 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
           <CompareSettingsPanel
             allowAllWeapons={allowAllWeapons}
             showFinalStand={showFinalStand}
-            onAllowAllWeaponsChange={setAllowAllWeapons}
+            scatterEnabled={scatterFormation.enabled}
+            scatterAvailable={targetType === "infantry" && !!targetUnit}
+            scatterSamples={scatterSamples}
+            onScatterSamplesChange={setScatterSamples}
+            onScatterEnabledChange={(enabled) =>
+              setScatterFormation((previous) => ({ ...previous, enabled }))
+            }
+            onAllowAllWeaponsChange={(checked) => {
+              setAllowAllWeapons(checked);
+              if (!checked) {
+                // Do not leave hidden cross-faction upgrade bonuses active.
+                setAttackingUnits((previous) =>
+                  previous.map((attacker) => ({
+                    ...attacker,
+                    heavyBarrelsEnabled:
+                      attacker.faction === "american" && attacker.heavyBarrelsEnabled,
+                    dakCoaxUpgradeEnabled:
+                      attacker.faction === "afrika_korps" && attacker.dakCoaxUpgradeEnabled,
+                  })),
+                );
+                setRerender((previous) => !previous);
+              }
+            }}
             onShowFinalStandChange={handleShowFinalStandChange}
             onResetUnits={handleResetUnits}
           />
@@ -374,7 +728,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
         {/* Attacking Units Section */}
         <Flex justify="space-between" align="center" mb="sm" wrap="wrap" gap="sm">
           <Flex align="center" gap="md">
-            <Title order={4}>Attacking Units</Title>
+            <Title order={4}>{t("dpsCompare.attackingUnits")}</Title>
             <FactionFilter factionFilter={factionFilter} onFilterToggle={handleFilterToggle} />
           </Flex>
           <PatchSelector
@@ -402,7 +756,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
             disabled={!selectedUnitToAdd || attackingUnits.length >= 6}
             data-testid="dps-compare-add-button"
           >
-            Add Unit
+            {t("dpsCompareUi.compare.addUnit")}
           </Button>
         </Flex>
 
@@ -442,6 +796,7 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
                   ebps={cachedEbps}
                   weapons={cachedWeapons}
                   allowAllWeapons={allowAllWeapons}
+                  modifierScope="offensive"
                 />
               </Box>
             </Grid.Col>
@@ -450,21 +805,33 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
 
         <Space h="md" />
 
-        {/* Target Unit Section - Optional */}
+        {/* Defender selection */}
         <div>
-          <Stack gap={0} mb="sm">
-            <Title order={4}>Target Unit - Optional</Title>
-            <Text c="dimmed" fs="italic">
-              When comparing vehicles dmg - you need to select target unit (vehicle).
-            </Text>
+          <Stack gap="xs" mb="sm">
+            <Title order={4}>{t("dpsCompare.targetUnit")}</Title>
+            <SegmentedControl
+              value={targetType}
+              onChange={handleTargetTypeChange}
+              data={[
+                { label: t("dpsCompareUi.target.infantry"), value: "infantry" },
+                { label: t("dpsCompareUi.target.other"), value: "other" },
+              ]}
+              data-testid="dps-compare-target-type"
+            />
           </Stack>
           <UnitSearch
-            key="target-search"
-            searchData={unitSelectionList}
+            key={`target-search-${targetType}-${targetResetVersion}`}
+            searchData={targetSelectionList}
+            value={targetUnit?.id ?? null}
             onSelect={handleTargetSelect}
             position={0}
             testId="dps-compare-target-search"
           />
+          {!targetUnit && (
+            <Text size="sm" c="red" mt="xs">
+              {t("dpsCompareUi.target.noTarget")}
+            </Text>
+          )}
           {targetUnit && (
             <UnitCustomizationPanel
               unit={targetUnit}
@@ -475,9 +842,62 @@ export const DpsComparePageComponent: React.FC<IDPSCompareProps> = (props) => {
               allowAllWeapons={allowAllWeapons}
               onSquadConfigChange={onSquadConfigChange}
               borderColor="gray"
+              modifierScope="defensive"
+              fogOfWar={
+                targetType === "infantry" && scatterFormation.enabled
+                  ? scatterFogOfWar
+                  : undefined
+              }
+              onFogOfWarChange={
+                targetType === "infantry" && scatterFormation.enabled
+                  ? setScatterFogOfWar
+                  : undefined
+              }
             />
           )}
         </div>
+        {scatterFormation.enabled && scatterCompatibleTarget && (
+          <>
+            <ScatterFormationEditor
+              value={effectiveFormation}
+              models={formationModels}
+              unitFormation={
+                targetUnit
+                  ? {
+                      available: !!squadLayout,
+                      approximateCrew: squadLayout?.approximateCrew ?? false,
+                      weapon: weaponMarker,
+                    }
+                  : undefined
+              }
+              onChange={setScatterFormation}
+              previewWeapon={scatterPreview}
+              previewWeaponOptions={previewWeaponResults.map(
+                ({ value, label, weaponName, attackerName, averageDamage, color }) => ({
+                  value,
+                  label,
+                  weaponName,
+                  attackerName,
+                  averageDamage,
+                  color,
+                }),
+              )}
+              selectedPreviewWeaponId={selectedPreviewCandidate?.value ?? null}
+              onPreviewWeaponChange={(weaponId) => {
+                setSelectedPreviewWeaponId(weaponId);
+                setPreviewRangeSelection({ weaponId, range: previewRange });
+              }}
+              onPreviewRangeChange={(range) => {
+                if (selectedPreviewCandidate) {
+                  setPreviewRangeSelection({
+                    weaponId: selectedPreviewCandidate.value,
+                    range,
+                  });
+                }
+              }}
+            />
+          </>
+        )}
       </Container>
 
       <Space h="md" />

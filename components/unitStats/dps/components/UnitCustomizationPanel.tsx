@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Center, Text, Space, useMantineTheme, MantineColor } from "@mantine/core";
 import { DpsUnitCustomizing } from "../dpsUnitCustomizing";
+import type { CustomModifierScope } from "../CustomConfigModal";
 import { CustomizableUnit } from "../../../../src/unitStats/dpsCommon";
 import { EbpsType } from "../../../../src/unitStats/mappingEbps";
 import { WeaponType } from "../../../../src/unitStats/mappingWeapon";
@@ -14,6 +15,9 @@ interface UnitCustomizationPanelProps {
   allowAllWeapons: boolean;
   onSquadConfigChange: () => void;
   borderColor: MantineColor;
+  modifierScope?: CustomModifierScope;
+  fogOfWar?: boolean;
+  onFogOfWarChange?: (checked: boolean) => void;
 }
 
 export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
@@ -25,6 +29,9 @@ export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
   allowAllWeapons,
   onSquadConfigChange,
   borderColor,
+  modifierScope,
+  fogOfWar,
+  onFogOfWarChange,
 }) => {
   const theme = useMantineTheme();
 
@@ -57,6 +64,9 @@ export const UnitCustomizationPanel: React.FC<UnitCustomizationPanelProps> = ({
               ebps={ebpsData}
               weapons={weaponData}
               allowAllWeapons={allowAllWeapons}
+              modifierScope={modifierScope}
+              fogOfWar={fogOfWar}
+              onFogOfWarChange={onFogOfWarChange}
             />
           </Box>
         )}

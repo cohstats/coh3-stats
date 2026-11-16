@@ -71,13 +71,18 @@ type EbpsType = {
   /** Found at `upgrade_ext.standard_upgrades`. List of instance references.
    * Applies to buildings only. */
   upgradeRefs: string[];
+  /** Found at `ability_ext`. This contains entity ability references. */
+  abilities: string[];
   /** Found at `combat_ext`. */
   weaponRef: combatExt[];
   // weapon_ext.weapon
   weaponId: string; // Id of weapon template
 
-  // crew size to use the weapon
-  /** Found at `recrewable_ext`. */
+  teamWeapon?: { type: string; requiredCrew: number };
+
+  /** People occupied by the weapon. Team weapons include both operator and assistant;
+   * other entities retain the `recrewable_ext` minimum capture crew.
+   */
   crew_size: number;
 };
 
@@ -120,6 +125,8 @@ type armorLayoutOption = {
 
 // Extensions -> combat_ext -> hardpoints -> Weapon
 type combatExt = {
+  /** Zero-based index in combat_ext.hardpoints, used by hardpoint-specific upgrades. */
+  hardpointIndex: number;
   type: string;
   ebp: string;
   initializeWeaponsOnCreation: boolean;
@@ -180,6 +187,7 @@ const mapEbpsData = (
       },
     },
     upgradeRefs: [],
+    abilities: [],
     weaponRef: [],
     weaponId: "",
     crew_size: 0,
@@ -214,6 +222,10 @@ const mapEbpsData = (
   // clearUndefined(ebpsEntity);
   mapExtensions(subtree, ebpsEntity, locale);
 
+  // The operator and assistant cannot fire personal weapons, even when one person
+  // can capture the weapon. Apply after all extensions so their order is irrelevant.
+  if (ebpsEntity.teamWeapon) ebpsEntity.crew_size = 2;
+
   return ebpsEntity;
 };
 
@@ -247,6 +259,19 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
                 },
               };
             }
+          }
+        }
+        break;
+      case "ability_ext":
+        // Entity abilities are displayed alongside squad abilities on the unit page.
+        if (!extension.abilities?.length) break;
+        for (const abi of extension.abilities) {
+          const abilityReference = abi.ability?.instance_reference;
+          if (!abilityReference) continue;
+
+          const abilityId = abilityReference.replace(/\\/g, "/").split("/").filter(Boolean).pop();
+          if (abilityId && !ebps.abilities.includes(abilityId)) {
+            ebps.abilities.push(abilityId);
           }
         }
         break;
@@ -334,6 +359,7 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
               const weapon = hardpoint.weapon_table[weapon_i];
 
               const weapon_ref: combatExt = {
+                hardpointIndex: Number(index),
                 type: weapon.weapon.type || "",
                 ebp:
                   weapon.weapon.weapon_entity_attachment?.entity_attach_data.ebp
@@ -350,6 +376,14 @@ const mapExtensions = (root: any, ebps: EbpsType, locale: string) => {
             }
           }
         }
+        break;
+      case "team_weapon_ext":
+        ebps.teamWeapon = {
+          type: extension.team_weapon_type,
+          requiredCrew: (extension.role_list ?? []).filter((entry: any) =>
+            relicBoolean(entry.role?.required),
+          ).length,
+        };
         break;
       case "weapon_ext": {
         const weaponReference = extension.weapon?.instance_reference || "";

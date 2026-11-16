@@ -203,6 +203,9 @@ export type WeaponStatsType = {
   scatter_distance_object_min: number;
   scatter_moving_scatter_angle_multiplier: number;
   scatter_moving_scatter_distance_multiplier: number;
+  /** Fog-of-war multipliers live in the weapon's scatter extension. */
+  scatter_fow_angle_multiplier: number;
+  scatter_fow_distance_multiplier: number;
 
   setup_time: number;
   setup_requires_aim_elevation: boolean;
@@ -607,6 +610,8 @@ const mapWeaponData = (
         weapon_bag.scatter?.movement_scatter_angle_multiplier ?? 1,
       scatter_moving_scatter_distance_multiplier:
         weapon_bag.scatter?.movement_scatter_distance_multiplier ?? 1,
+      scatter_fow_angle_multiplier: weapon_bag.scatter?.fow_angle_multiplier ?? 1,
+      scatter_fow_distance_multiplier: weapon_bag.scatter?.fow_distance_multiplier ?? 1,
 
       setup_time: weapon_bag.setup?.duration || 0,
       setup_requires_aim_elevation: relicBoolean(weapon_bag.setup?.requires_aim_elevation, false),

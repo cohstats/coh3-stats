@@ -27,6 +27,8 @@ import { getLocalizedUrl } from "../../src/seo-utils";
 import { getExplorerRoute, getDPSCompareRoute } from "../../src/routes";
 import PageJsonLd from "../../components/page-json-ld";
 
+import { getFormationData, type FormationData } from "../../src/unitStats/mappingFormations";
+
 interface DpsCompareProps {
   weaponData: WeaponType[];
   locstring: Record<string, string | null>;
@@ -44,6 +46,7 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   const [sbpsData, setSbpsDataState] = React.useState<SbpsType[]>([]);
   const [ebpsData, setEbpsDataState] = React.useState<EbpsType[]>([]);
   const [upgradesData, setUpgradesDataState] = React.useState<UpgradesType[]>([]);
+  const [formationData, setFormationData] = React.useState<FormationData>({});
   const [abilitiesData, setAbilitiesDataState] = React.useState<AbilitiesType[]>([]);
 
   useEffect(() => {
@@ -53,13 +56,15 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
         if (!unitStatsLocString()) setLocstring(locstring);
         setWeaponStats(weaponData);
 
-        const [ebpsData, sbpsData, upgradesData, abilitiesData] = await Promise.all([
+        const [ebpsData, sbpsData, upgradesData, abilitiesData, formations] = await Promise.all([
           getEbpsStats("latest"),
           getSbpsStats("latest"),
           getUpgradesStats(),
           getAbilitiesStats(),
+          getFormationData(),
         ]);
 
+        setFormationData(formations);
         setEbpsStats(ebpsData);
         setSbpsStats(sbpsData);
         setUpgradesStats(upgradesData);
@@ -80,6 +85,7 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   }, []);
 
   const dpsData = {
+    formationData,
     weaponData,
     sbpsData,
     ebpsData,
@@ -90,7 +96,9 @@ const DpsComparePage: NextPage<DpsCompareProps> = ({ weaponData, locstring }) =>
   // Create SEO props for DPS Compare page
   const title = t("dpsCompare.meta.title");
   const description = t("dpsCompare.meta.description");
-  const keywords = t("dpsCompare.meta.keywords", { returnObjects: true }) as string[];
+  const keywords = t("dpsCompare.meta.keywords", {
+    returnObjects: true,
+  }) as string[];
 
   const seoProps: NextSeoProps = {
     title,

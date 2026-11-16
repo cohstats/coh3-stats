@@ -1,5 +1,6 @@
 import {
   updateHealth,
+  getUnitModelCount,
   createDefaultCustomModifiers,
   getModifiedHitpoints,
 } from "../../../src/unitStats/dpsCommon";
@@ -65,6 +66,29 @@ describe("Hit Points Modifier", () => {
 
     // Infantry: hitpoints * num * crew_size = 80 * 4 * 1 = 320
     expect(unit.health).toBe(320);
+  });
+
+  it("shares live weapon and operator counts with the formation preview", () => {
+    const unit = createMockUnit(80);
+    const member = unit.weapon_member[0];
+    unit.weapon_member = [
+      { ...member, num: 1, crew_size: 2 },
+      { ...member, num: 3, crew_size: 0 },
+      { ...member, num: 0, crew_size: 2 },
+    ];
+    expect(getUnitModelCount(unit)).toBe(5);
+    updateHealth(unit);
+    expect(unit.health).toBe(400);
+
+    unit.weapon_member[1].num = 1;
+    expect(getUnitModelCount(unit)).toBe(3);
+    updateHealth(unit);
+    expect(unit.health).toBe(240);
+
+    unit.custom_modifiers!.hitpoints = { type: "percentage", value: 50, enabled: true };
+    expect(getUnitModelCount(unit)).toBe(3);
+    updateHealth(unit);
+    expect(unit.health).toBe(360);
   });
 
   it("should apply percentage hit points modifier", () => {

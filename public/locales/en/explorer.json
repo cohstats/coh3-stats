@@ -295,10 +295,86 @@
         "defensiveStructure": "defensive structure",
         "fortification": "fortification"
       },
-      "common": {
-        "units": "{{raceId}} units",
-        "army": "{{raceId}} army"
-      }
+      "common": { "units": "{{raceId}} units", "army": "{{raceId}} army" }
+    }
+  },
+  "dpsCompareUi": {
+    "compare": {
+      "title": "CoH3 DPS Calculator",
+      "vs": "VS Mode",
+      "compare": "Compare Mode",
+      "addUnit": "Add Unit",
+      "estimate": "DPS is an estimate; terrain and in-game variance can change results."
+    },
+    "target": {
+      "infantry": "Infantry",
+      "other": "Other",
+      "fowShort": "FoW",
+      "fogOfWar": "Target in fog of war",
+      "noTarget": "Select a target unit."
+    },
+    "modifiers": {
+      "receivedAccuracy": "Received Accuracy",
+      "receivedDamage": "Damage Reduction",
+      "scatterAccuracy": "Scatter Accuracy",
+      "scatterAccuracyHelp": "Reduces scatter angle and distance."
+    },
+    "settings": {
+      "scatter": "Scatter",
+      "samples": "Scatter samples",
+      "fast": "Fast",
+      "balanced": "Balanced",
+      "precise": "Precise"
+    },
+    "upgrades": {
+      "heavyBarrels": "Heavy Barrels",
+      "heavyBarrelsTip": "+25% MG burst RoF, +5m MG range",
+      "armoredSupport": "Superior Fire Drills",
+      "armoredSupportTip": "+50% damage, hardpoints 1 and 2"
+    },
+    "formation": {
+      "title": "Infantry formation",
+      "previewWeapon": "Preview weapon",
+      "previewRange": "Preview range",
+      "noWeapon": "No AoE weapon",
+      "outOfRange": "Out of range",
+      "presets": {
+        "riflemen_us": "Riflemen",
+        "panzergrenadier_ak": "DAK Panzergrenadiers",
+        "ranger_us": "Rangers",
+        "riflemen_cover": "Cover"
+      },
+      "canvas": "Infantry formation and aiming",
+      "model": "Model {{number}}",
+      "modelAria": "Aim at model {{number}}; right-click to toggle",
+      "targeted": "targeted",
+      "active": "active",
+      "disabled": "disabled",
+      "hit": "Hit chance",
+      "avgDamage": "Average damage / shot",
+      "kill": "Kill chance / shot",
+      "dragGunner": "Drag to change direction",
+      "gunnerAngleAria": "Gunner direction: {{angle}}° from the unit's front",
+      "gunnerDirection": "Gunner direction",
+      "directionHelp": "Relative to the unit, which faces down in the preview.",
+      "front": "Front",
+      "rightFlank": "Right flank",
+      "behind": "Behind",
+      "leftFlank": "Left flank",
+      "right": "Right",
+      "up": "Up",
+      "left": "Left",
+      "down": "Down",
+      "help": "Click model to aim · right-click to toggle · click ground to attack ground · drag gunner to rotate",
+      "restore": "Restore all",
+      "groundAim": "Ground aim point",
+      "unavailable": "Formation data unavailable; using the {{unit}} example layout.",
+      "approximateCrew": "Gun-handler positions are approximate.",
+      "crewWeapon": "Crew weapon",
+      "operator": "Gun handler",
+      "activeModels": "{{active}} / {{total}} models",
+      "operatorAria": "Aim at gun handler; right-click to toggle",
+      "metreGrid": "{{distance}}m grid"
     }
   }
 }
