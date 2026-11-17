@@ -567,7 +567,7 @@ const getSingleWeaponDPS = (
       applyCustomModifier(
         finalAccuracy * targetVeterancy.receivedAccuracyMultiplier,
         target_unit?.custom_modifiers?.receivedAccuracy,
-        { min: 0 },
+        { percentMode: "inverse", min: 0 },
       ),
       0,
     ),
@@ -736,6 +736,7 @@ export const getSingleWeaponScatterShotInputs = (
   // respect the defender's received-accuracy modifier.
   accuracy *= targetVet.receivedAccuracyMultiplier;
   accuracy = applyCustomModifier(accuracy, target_unit?.custom_modifiers?.receivedAccuracy, {
+    percentMode: "inverse",
     min: 0,
   });
   // An artillery projectile scatters even when its nominal accuracy is high.

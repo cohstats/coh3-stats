@@ -315,8 +315,10 @@
       "noTarget": "Select a target unit."
     },
     "modifiers": {
-      "receivedAccuracy": "Received Accuracy",
+      "receivedAccuracy": "Harder to hit",
+      "receivedAccuracyHelp": "Positive values reduce incoming accuracy.",
       "receivedDamage": "Damage Reduction",
+      "receivedDamageHelp": "Positive values reduce incoming damage.",
       "scatterAccuracy": "Scatter Accuracy",
       "scatterAccuracyHelp": "Reduces scatter angle and distance."
     },

@@ -397,15 +397,14 @@ it("applies a downloaded patch to edits made while the download was pending", as
 it("restores shared Final Stand units and exposes their selection without rewriting the URL", async () => {
   mockRouter.isReady = true;
   mockRouter.query = { unit1: "hoff_player_riflemen_us", unit2: "attacker" };
+  const shareWrites = mockRouter.replace.mock.calls.length;
   await renderTool(<DpsPageComponent {...dataset()} />);
   expect(getByTestId("dps-unit-search-1")).toHaveValue(
     `hoff_player_riflemen_us ${config.latestPatch}`,
   );
   expect(getByTestId("dps-unit-search-2")).toHaveValue(`attacker ${config.latestPatch}`);
   expect(getByTestId("loaded-unit-0")).toHaveTextContent("hoff_player_riflemen_us");
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-  });
+  await flushShare(shareWrites);
   expect(mockRouter.replace.mock.calls.at(-1)![0].query).toEqual({});
   const current = await lastSetup();
   expect(current.mode).toBe("vs");
@@ -420,11 +419,68 @@ const lastSetup = async () => {
   const hash = mockRouter.replace.mock.calls.at(-1)![0].hash as string;
   return (await decodeSharedDpsSetup(new URLSearchParams(hash).get("setup")!))!;
 };
-const flushShare = async () => {
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 220));
-  });
+const flushShare = async (previousCallCount: number, { expectWrite = true } = {}) => {
+  const deadline = Date.now() + 2000;
+  while (Date.now() < deadline) {
+    if (mockRouter.replace.mock.calls.length > previousCallCount) {
+      if (!expectWrite) throw new Error("Unexpected shared DPS URL rewrite");
+      return;
+    }
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    });
+  }
+  if (expectWrite) throw new Error("Shared DPS URL was not written within 2000 ms");
 };
+
+it.each([
+  ["VS", "/explorer/dps", DpsPageComponent],
+  ["Compare", "/explorer/dps-compare", DpsComparePageComponent],
+])("keeps a fresh %s page URL free of a setup hash", async (_mode, path, Component) => {
+  mockRouter.isReady = true;
+  mockRouter.pathname = path;
+  mockRouter.asPath = path;
+  const shareWrites = mockRouter.replace.mock.calls.length;
+  await renderTool(<Component {...dataset()} />);
+  await flushShare(shareWrites, { expectWrite: false });
+  expect(mockRouter.replace).not.toHaveBeenCalled();
+});
+
+it("clears an existing default-only Compare link after restoring its default defender", async () => {
+  mockRouter.isReady = true;
+  mockRouter.pathname = "/explorer/dps-compare";
+  mockRouter.asPath = `/explorer/dps-compare#setup=${await encodeSharedDpsSetup({
+    v: 1,
+    mode: "compare",
+    patch: config.latestPatch,
+    attackers: [],
+    target: { id: "panzergrenadier_ak", cover: "" },
+    targetType: "infantry",
+    filter: [],
+    allowAllWeapons: false,
+    showFinalStand: false,
+    scatter: {
+      enabled: true,
+      preset: "panzergrenadier_ak",
+      formation: "default",
+      directionalCover: false,
+      disabledModelIds: [],
+      targetModelId: 1,
+      groundTarget: null,
+      gunnerAngleDeg: 270,
+    },
+    samples: 576,
+    fogOfWar: false,
+    preview: null,
+  })}`;
+  const shareWrites = mockRouter.replace.mock.calls.length;
+  await renderTool(<DpsComparePageComponent {...dataset()} />);
+  await flushShare(shareWrites);
+  expect(getByTestId("dps-compare-target-search")).toHaveValue(
+    `panzergrenadier_ak ${config.latestPatch}`,
+  );
+  expect(mockRouter.replace.mock.calls.at(-1)![0].hash).toBe("");
+});
 
 it("loads both VS patches, settings, and modifiers from the URL and records later edits", async () => {
   mockRouter.isReady = true;
@@ -458,12 +514,13 @@ it("loads both VS patches, settings, and modifiers from the URL and records late
   expect(JSON.parse(getByTestId("loaded-unit-0").getAttribute("data-unit")!)).toMatchObject(
     saved.slots[0].unit!,
   );
+  const shareWrites = mockRouter.replace.mock.calls.length;
   await click(
     Array.from(container.querySelectorAll("button")).find(
       (button) => button.textContent === "Adjust damage 0",
     )!,
   );
-  await flushShare();
+  await flushShare(shareWrites);
   const current = await lastSetup();
   expect(current.mode).toBe("vs");
   if (current.mode !== "vs") throw new Error("Expected VS setup");
@@ -502,13 +559,14 @@ it("loads and preserves the comparison's target, formation, aiming and display s
   };
   mockRouter.asPath = `/explorer/dps-compare#setup=${await encodeSharedDpsSetup(saved)}`;
   fetchData.mockResolvedValueOnce(dataset(olderPatch));
+  const shareWrites = mockRouter.replace.mock.calls.length;
   await renderTool(<DpsComparePageComponent {...dataset()} />);
   expect(patchInputs()[0]).toHaveValue(olderPatch);
   expect(getByTestId("dps-attacker-0")).toHaveTextContent(`attacker ${olderPatch}`);
   expect(getByTestId("dps-compare-target-search")).toHaveValue(
     `panzergrenadier_ak ${olderPatch}`,
   );
-  await flushShare();
+  await flushShare(shareWrites);
   const current = await lastSetup();
   expect(current).toMatchObject({
     mode: "compare",
@@ -539,8 +597,10 @@ it("keeps a shared setup retryable when its saved patch cannot initially downloa
   fetchData
     .mockRejectedValueOnce(new Error("Offline"))
     .mockResolvedValueOnce(dataset(olderPatch));
+  const shareWrites = mockRouter.replace.mock.calls.length;
   await renderTool(<DpsPageComponent {...dataset()} />);
   expect(alert()).toBeInTheDocument();
+  await flushShare(shareWrites, { expectWrite: false });
   expect(mockRouter.replace).not.toHaveBeenCalled();
   await click(retryButton()!);
   await settleSharedSetup();

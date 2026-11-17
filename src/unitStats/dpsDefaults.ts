@@ -39,3 +39,9 @@ export const DEFAULT_COMPARE_SETTINGS = {
   samples: 576,
   fogOfWar: false,
 };
+
+// Shared by the initial/reset defender and the URL defaults.
+export const DEFAULT_COMPARE_TARGET_IDS = {
+  infantry: "panzergrenadier_ak",
+  other: "halftrack_250_ak",
+};

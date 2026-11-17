@@ -91,6 +91,7 @@ import { useSharedDpsUrl } from "./useSharedDpsUrl";
 import {
   DEFAULT_DPS_SETTINGS,
   DEFAULT_COMPARE_SETTINGS,
+  DEFAULT_COMPARE_TARGET_IDS,
 } from "../../../src/unitStats/dpsDefaults";
 import {
   hasSharedDpsSetup,
@@ -115,12 +116,6 @@ ChartJS.register(
 const ATTACKER_COLORS = ["blue", "red", "green", "orange", "violet", "cyan"] as const;
 
 type CompareTargetType = "infantry" | "other";
-
-// Change these IDs to swap the initial/reset defenders. The unit picker remains freely editable.
-const DEFAULT_COMPARE_TARGET_IDS: Record<CompareTargetType, string> = {
-  infantry: "panzergrenadier_ak",
-  other: "halftrack_250_ak",
-};
 
 /** Crewed team weapons are infantry targets even though their SBPS folder is team_weapons. */
 const isInfantryTarget = (unit: CustomizableUnit): boolean =>

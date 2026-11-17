@@ -16,6 +16,7 @@ import axios from "axios";
 import config from "../config";
 import { getCachePath } from "../src/unitStats/data-file-cache.server";
 import { resolvePatchLocstringLocale } from "../src/explorer/patch-locstring";
+import { prepareDpsDataPackage } from "../src/unitStats/dpsDataPackage.server";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { i18n } = require("../next-i18next.config");
 
@@ -124,6 +125,11 @@ const prefetchData = async () => {
     console.error(`[Prefetch] Failed to prefetch ${failed.length} files:\n${failed.join("\n")}`);
     process.exit(1);
   }
+  await prepareDpsDataPackage();
+  console.log(`[Prefetch] Prepared compressed DPS data for patch ${config.latestPatch}`);
 };
 
-prefetchData();
+prefetchData().catch((error) => {
+  console.error("[Prefetch] Failed to prepare data:", error);
+  process.exitCode = 1;
+});

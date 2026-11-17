@@ -6,11 +6,15 @@ import type { DpsUnitCatalog } from "./dpsData";
 import {
   DEFAULT_DPS_SETTINGS,
   DEFAULT_COMPARE_SETTINGS,
+  DEFAULT_COMPARE_TARGET_IDS,
   DEFAULT_SCATTER_FORMATION,
 } from "./dpsDefaults";
 
 const id = z.string().min(1).max(240);
-const patch = z.string().refine((value) => Object.hasOwn(config.patches, value));
+const patch = z
+  .string()
+  .refine((value) => Object.hasOwn(config.patches, value))
+  .default(config.latestPatch);
 const finite = z.number().finite();
 const modifier = z.object({
   type: z.enum(["percentage", "absolute", "additive"]),
@@ -75,12 +79,17 @@ const common = {
   allowAllWeapons: z.boolean().default(DEFAULT_DPS_SETTINGS.allowAllWeapons),
   showFinalStand: z.boolean().default(DEFAULT_DPS_SETTINGS.showFinalStand),
 };
-const slot = z.object({ patch, unit: unit.nullable() });
+const defaultSlot = () => ({ patch: config.latestPatch, unit: null });
+const slot = z.object({ patch, unit: unit.nullable().default(null) });
+const defaultSlots = (): [z.infer<typeof slot>, z.infer<typeof slot>] => [
+  defaultSlot(),
+  defaultSlot(),
+];
 const schema = z.discriminatedUnion("mode", [
   z.object({
     ...common,
     mode: z.literal("vs"),
-    slots: z.tuple([slot, slot]),
+    slots: z.tuple([slot, slot]).default(defaultSlots),
     filters: z.tuple([factions, factions]).default([[], []]),
     showDpsHealth: z.boolean().default(DEFAULT_DPS_SETTINGS.showDpsHealth),
   }),
@@ -88,8 +97,11 @@ const schema = z.discriminatedUnion("mode", [
     ...common,
     mode: z.literal("compare"),
     patch,
-    attackers: z.array(unit).max(6),
-    target: unit.nullable(),
+    attackers: z.array(unit).max(6).default([]),
+    target: unit
+      .extend({ id: id.default(DEFAULT_COMPARE_TARGET_IDS.infantry) })
+      .nullable()
+      .default(() => ({ id: DEFAULT_COMPARE_TARGET_IDS.infantry })),
     targetType: z.enum(["infantry", "other"]).default(DEFAULT_COMPARE_SETTINGS.targetType),
     filter: factions.default([]),
     scatter: scatter.default(() => scatter.parse({})),
@@ -356,16 +368,21 @@ const omitDefaults = (value: unknown, baseline: unknown): unknown => {
 };
 
 const setupDefaults = (mode: SharedDpsSetup["mode"]) => ({
+  v: 1,
+  mode,
   ...DEFAULT_DPS_SETTINGS,
   ...(mode === "compare"
     ? {
         ...DEFAULT_COMPARE_SETTINGS,
+        patch: config.latestPatch,
+        attackers: [],
+        target: { id: DEFAULT_COMPARE_TARGET_IDS.infantry },
         filter: [],
         scatter: DEFAULT_SCATTER_FORMATION,
         pendingAttacker: null,
         preview: null,
       }
-    : { filters: [[], []] }),
+    : { slots: defaultSlots(), filters: [[], []] }),
 });
 
 const MAX_SETUP_BYTES = 112_500;
@@ -415,7 +432,14 @@ const transformBytes = async (bytes: Uint8Array<ArrayBuffer>, decompress: boolea
 
 /** A fragment keeps even large loadouts out of server requests and cache keys. */
 export const encodeSharedDpsSetup = async (setup: SharedDpsSetup): Promise<string> => {
-  const compact = mapWireKeys(omitDefaults(setup, setupDefaults(setup.mode)), true);
+  const changes = omitDefaults(setup, setupDefaults(setup.mode)) as
+    Record<string, unknown> | undefined;
+  // A fresh calculator is already represented by its page URL.
+  if (!changes) return "";
+  if (setup.mode === "vs" && changes.slots) {
+    changes.slots = setup.slots.map((slot) => omitDefaults(slot, defaultSlot()) ?? {});
+  }
+  const compact = mapWireKeys({ v: setup.v, mode: setup.mode, ...changes }, true);
   const bytes = new TextEncoder().encode(JSON.stringify(compact));
   const plain = toBase64Url(bytes);
   // The same compact format can be written without compression when necessary.

@@ -14,6 +14,101 @@ import {
 } from "../../../src/unitStats/sharedDpsSetup";
 import type { DpsUnitCatalog } from "../../../src/unitStats/dpsData";
 import type { CustomizableUnit } from "../../../src/unitStats/dpsCommon";
+import {
+  DEFAULT_DPS_SETTINGS,
+  DEFAULT_COMPARE_SETTINGS,
+  DEFAULT_COMPARE_TARGET_IDS,
+  DEFAULT_SCATTER_FORMATION,
+} from "../../../src/unitStats/dpsDefaults";
+
+const initialSetup = (mode: SharedDpsSetup["mode"]): SharedDpsSetup =>
+  mode === "vs"
+    ? {
+        v: 1,
+        mode,
+        ...DEFAULT_DPS_SETTINGS,
+        filters: [[], []],
+        slots: [
+          { patch: config.latestPatch, unit: null },
+          { patch: config.latestPatch, unit: null },
+        ],
+      }
+    : {
+        v: 1,
+        mode,
+        allowAllWeapons: DEFAULT_DPS_SETTINGS.allowAllWeapons,
+        showFinalStand: DEFAULT_DPS_SETTINGS.showFinalStand,
+        ...DEFAULT_COMPARE_SETTINGS,
+        samples: DEFAULT_COMPARE_SETTINGS.samples as 576,
+        patch: config.latestPatch,
+        attackers: [],
+        target: { id: DEFAULT_COMPARE_TARGET_IDS.infantry },
+        filter: [],
+        scatter: {
+          ...DEFAULT_SCATTER_FORMATION,
+          formation: "default",
+          directionalCover: false,
+          groundTarget: null,
+        },
+        preview: null,
+      };
+
+it.each(["vs", "compare"] as const)(
+  "needs no shared payload for a fresh %s calculator",
+  async (mode) => {
+    expect(await encodeSharedDpsSetup(initialSetup(mode))).toBe("");
+  },
+);
+
+it("recognizes the default-only comparison link reported by the user", async () => {
+  const encoded =
+    "eyIwIjoxLCIxIjoiY29tcGFyZSIsIjIiOiIzLjAuMSIsIjUiOltdLCI2Ijp7ImwiOiJwYW56ZXJncmVuYWRpZXJfYWsifX0";
+  const decoded = await decodeSharedDpsSetup(encoded);
+  expect(decoded).toBeDefined();
+  // Its patch is explicit; use today's default when checking whether a payload is necessary.
+  expect(
+    await encodeSharedDpsSetup({ ...decoded!, patch: config.latestPatch } as SharedDpsSetup),
+  ).toBe("");
+});
+
+it.each(["vs", "compare"] as const)(
+  "omits default units and patch metadata from changed %s settings",
+  async (mode) => {
+    const original = { ...initialSetup(mode), showFinalStand: true };
+    const encoded = await encodeSharedDpsSetup(original);
+    const payload = encoded.startsWith("z.")
+      ? inflateSync(Buffer.from(encoded.slice(2), "base64url")).toString()
+      : Buffer.from(encoded, "base64url").toString();
+    expect(payload).not.toContain(config.latestPatch);
+    expect(payload).not.toContain(DEFAULT_COMPARE_TARGET_IDS.infantry);
+    // The payload contains only the format, mode, and one changed setting.
+    expect(Object.keys(JSON.parse(payload))).toHaveLength(3);
+    const decoded = await decodeSharedDpsSetup(encoded);
+    expect(decoded).toMatchObject(original);
+  },
+);
+
+it("stores only a selected VS unit without repeating default slot patches", async () => {
+  const original = initialSetup("vs");
+  if (original.mode !== "vs") throw new Error("Expected VS setup");
+  original.slots[1].unit = { id: "riflemen_us" };
+  const encoded = await encodeSharedDpsSetup(original);
+  const payload = encoded.startsWith("z.")
+    ? inflateSync(Buffer.from(encoded.slice(2), "base64url")).toString()
+    : Buffer.from(encoded, "base64url").toString();
+  expect(payload).not.toContain(config.latestPatch);
+  expect(await decodeSharedDpsSetup(encoded)).toEqual(original);
+});
+
+it.each([null, { id: DEFAULT_COMPARE_TARGET_IDS.infantry, cover: "heavy", vet: 2 }] as const)(
+  "preserves an empty or customized default Compare defender: %j",
+  async (target) => {
+    const original = initialSetup("compare");
+    if (original.mode !== "compare") throw new Error("Expected Compare setup");
+    original.target = target;
+    expect(await decodeSharedDpsSetup(await encodeSharedDpsSetup(original))).toEqual(original);
+  },
+);
 
 const namedMember = (id: string, count: number, hardpoint?: number) => {
   const member = calculatorMember();
@@ -273,6 +368,9 @@ it("omits default view settings while preserving disabled scatter and zero aimin
 });
 
 it("round trips separate VS patch selections and chart/filter settings", async () => {
+  const defender = savedUnit();
+  defender.custom_modifiers!.receivedAccuracy = { type: "percentage", value: 20, enabled: true };
+  defender.custom_modifiers!.receivedDamage = { type: "percentage", value: 30, enabled: true };
   const original: SharedDpsSetup = {
     v: 1,
     mode: "vs",
@@ -281,11 +379,16 @@ it("round trips separate VS patch selections and chart/filter settings", async (
     showDpsHealth: true,
     filters: [["american"], ["german"]],
     slots: [
-      { patch: config.latestPatch, unit: snapshotDpsUnit(savedUnit()) },
+      { patch: config.latestPatch, unit: snapshotDpsUnit(defender) },
       { patch: Object.keys(config.patches)[1], unit: null },
     ],
   };
-  expect(await decodeSharedDpsSetup(await encodeSharedDpsSetup(original))).toEqual(original);
+  const decoded = await decodeSharedDpsSetup(await encodeSharedDpsSetup(original));
+  expect(decoded).toEqual(original);
+  if (decoded?.mode !== "vs") throw new Error("Expected VS setup");
+  const restored = restoreDpsUnit(decoded.slots[0].unit, catalogFor(defender))!;
+  expect(restored.custom_modifiers!.receivedAccuracy.value).toBe(20);
+  expect(restored.custom_modifiers!.receivedDamage.value).toBe(30);
 });
 
 it("compresses the full comparison to less than half its previous URL length", async () => {

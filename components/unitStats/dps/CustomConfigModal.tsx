@@ -32,7 +32,7 @@ import {
   formatVeterancyAttackSpeed,
 } from "./veterancyModifierDisplay";
 
-/** Compare Mode only shows modifiers relevant to the unit's role; VS Mode shows all. */
+/** Compare shows modifiers relevant to the unit's role; VS shows both roles. */
 export type CustomModifierScope = "all" | "offensive" | "defensive";
 
 interface CustomConfigModalProps {
@@ -195,10 +195,9 @@ const statConfigs: StatConfig[] = [
     label: "",
     description: "",
     unit: "%",
-    ...normalPercentConfig,
+    ...inversePercentConfig,
     ...defaultAbsoluteConfig,
     percentageOnly: true,
-    lowerIsBetter: true,
     localized: true,
   },
   {
@@ -230,11 +229,7 @@ const defensiveModifierKeys = new Set<keyof CustomModifiers>([
   "receivedAccuracy",
   "receivedDamage",
 ]);
-const compareOnlyModifierKeys = new Set<keyof CustomModifiers>([
-  "receivedAccuracy",
-  "receivedDamage",
-  "scatterAccuracy",
-]);
+const compareOnlyModifierKeys = new Set<keyof CustomModifiers>(["scatterAccuracy"]);
 
 const filterStatConfigs = (scope: CustomModifierScope): StatConfig[] => {
   if (scope === "all") return statConfigs.filter(({ key }) => !compareOnlyModifierKeys.has(key));
@@ -445,7 +440,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       ? [
           {
             id: "RECEIVED_ACCURACY_MODIFIER",
-            value: formatPercent(vet.receivedAccuracyMultiplier),
+            value: formatPercent(vet.receivedAccuracyMultiplier, true),
           },
         ]
       : [],

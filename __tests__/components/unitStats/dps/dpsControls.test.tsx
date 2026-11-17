@@ -61,7 +61,17 @@ afterEach(() => {
 });
 
 const render = async (element: React.ReactNode) => {
-  await act(async () => root.render(<MantineProvider env="test">{element}</MantineProvider>));
+  await act(async () =>
+    root.render(
+      <MantineProvider
+        env="test"
+        // These tests exercise badges and controls, not floating layout for closed dropdowns.
+        theme={{ components: { Combobox: { defaultProps: { keepMounted: false } } } }}
+      >
+        {element}
+      </MantineProvider>,
+    ),
+  );
 };
 
 const models = [
@@ -105,6 +115,12 @@ const key = async (element: HTMLElement, name: string, shiftKey = false) => {
     element.dispatchEvent(
       new KeyboardEvent("keydown", { key: name, shiftKey, bubbles: true, cancelable: true }),
     );
+  });
+};
+const changeInput = async (input: HTMLInputElement, value: string) => {
+  await act(async () => {
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!.call(input, value);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
   });
 };
 
@@ -196,19 +212,57 @@ it.each(["all", "offensive", "defensive"] as CustomModifierScope[])(
       />,
     );
     const badges = Array.from(document.querySelectorAll(".mantine-Badge-root"));
+    const inline = scope !== "offensive";
     for (const [name, value] of [
-      ["Received Accuracy Modifier", scope === "defensive" ? "-15%" : "0.85"],
-      ["Received Damage Modifier", scope === "defensive" ? "+10%" : "0.9"],
+      ["Received Accuracy Modifier", inline ? "+15%" : "0.85"],
+      ["Received Damage Modifier", inline ? "+10%" : "0.9"],
     ]) {
       const matching = badges.filter((badge) =>
-        scope === "defensive"
-          ? badge.textContent?.trim() === `★ ${value}`
-          : badge.textContent?.includes(name),
+        inline ? badge.textContent?.trim() === `★ ${value}` : badge.textContent?.includes(name),
       );
       expect(matching).toHaveLength(1);
       expect(matching[0]).toHaveTextContent(value);
-      if (scope === "defensive")
-        expect(badges.some((badge) => badge.textContent?.includes(name))).toBe(false);
+      if (inline) expect(badges.some((badge) => badge.textContent?.includes(name))).toBe(false);
     }
+  },
+);
+
+it.each(["all", "defensive"] as CustomModifierScope[])(
+  "edits harder-to-hit and damage-reduction bonuses in %s scope",
+  async (scope) => {
+    const onChange = jest.fn();
+    await render(
+      <CustomConfigModal
+        opened
+        onClose={() => {}}
+        customModifiers={createDefaultCustomModifiers()}
+        onModifiersChange={onChange}
+        modifierScope={scope}
+      />,
+    );
+    for (const [label, modifierKey] of [
+      ["Harder to hit", "receivedAccuracy"],
+      ["Damage Reduction", "receivedDamage"],
+    ]) {
+      const row = Array.from(document.querySelectorAll(".mantine-Card-root")).find((card) =>
+        card.textContent?.includes(label),
+      )!;
+      expect(row).toBeInTheDocument();
+      await act(async () =>
+        row.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click(),
+      );
+      await changeInput(row.querySelector<HTMLInputElement>('input[placeholder="+%"]')!, "20");
+      expect(onChange.mock.calls.at(-1)![0][modifierKey]).toMatchObject({
+        enabled: true,
+        type: "percentage",
+        percentageValues: [20],
+      });
+      expect(onChange.mock.calls.at(-1)![0][modifierKey].value).toBeCloseTo(20);
+      expect(row).toHaveTextContent("+20%");
+      await changeInput(row.querySelector<HTMLInputElement>('input[placeholder="+%"]')!, "20");
+      expect(onChange.mock.calls.at(-1)![0][modifierKey].value).toBeCloseTo(36);
+      expect(row).toHaveTextContent("+36%");
+    }
+    expect(document.body).not.toHaveTextContent("Received Accuracy");
   },
 );

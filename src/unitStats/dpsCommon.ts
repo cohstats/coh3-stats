@@ -123,6 +123,7 @@ type CustomModifiers = {
   range: CustomModifier;
   armor: CustomModifier;
   hitpoints: CustomModifier;
+  /** Harder to hit: positive percentages reduce incoming accuracy. */
   receivedAccuracy: CustomModifier;
   /** Damage reduction: positive percentages reduce incoming damage. */
   receivedDamage: CustomModifier;

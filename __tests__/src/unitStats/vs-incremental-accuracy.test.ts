@@ -594,16 +594,41 @@ describe("manual scatter accuracy and defensive modifiers", () => {
     },
   );
 
-  it("keeps negative received accuracy beneficial and combines it with damage reduction", () => {
+  it("combines positive harder-to-hit and damage-reduction bonuses", () => {
     const attacker = unit(1),
       target = unit(1);
     const original = getSingleWeaponDPS(attacker.weapon_member[0], 20, false, target, attacker);
-    target.custom_modifiers!.receivedAccuracy = { type: "percentage", value: -20, enabled: true };
+    target.custom_modifiers!.receivedAccuracy = { type: "percentage", value: 20, enabled: true };
     target.custom_modifiers!.receivedDamage = { type: "percentage", value: 20, enabled: true };
     expect(
       getSingleWeaponDPS(attacker.weapon_member[0], 20, false, target, attacker),
     ).toBeCloseTo(original * 0.8 * 0.8);
   });
+
+  it.each([20, -20, 100])(
+    "applies %s%% harder to hit with veterancy to ordinary and scatter accuracy",
+    (value) => {
+      const attacker = unit(1),
+        aoe = aoeAttacker(),
+        target = unit(1);
+      target.sbps = {
+        veterancyInfo: {
+          one: { modifiers: [{ id: "RECEIVED_ACCURACY_MODIFIER", value: 0.85 }] },
+        },
+      } as any;
+      target.veterancyLevel = 1;
+      const original = getSingleWeaponDPS(attacker.weapon_member[0], 20, false, target, attacker);
+      const shot = () =>
+        getSingleWeaponScatterShotInputs(aoe.weapon_member[0], 20, scatter, false, target, aoe)!;
+      const originalAccuracy = shot().directHitChance;
+      target.custom_modifiers!.receivedAccuracy = { type: "percentage", value, enabled: true };
+      const multiplier = 1 - value / 100;
+      expect(
+        getSingleWeaponDPS(attacker.weapon_member[0], 20, false, target, attacker),
+      ).toBeCloseTo(original * multiplier);
+      expect(shot().directHitChance).toBeCloseTo(originalAccuracy * multiplier);
+    },
+  );
 
   it("combines manual scatter accuracy with veterancy for the solver and preview geometry", () => {
     const attacker = aoeAttacker();

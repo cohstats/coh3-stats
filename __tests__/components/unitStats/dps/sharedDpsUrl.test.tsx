@@ -45,6 +45,7 @@ beforeAll(() => {
 beforeEach(() => {
   jest.useFakeTimers();
   encode.mockReset().mockResolvedValue("current");
+  mockRouter.asPath = "/explorer/dps";
   mockRouter.replace.mockClear();
   container = document.createElement("div");
   root = createRoot(container);
@@ -100,4 +101,77 @@ it("compresses only the latest setup after rapid edits", async () => {
   await advance(150);
   expect(encode).toHaveBeenCalledTimes(1);
   expect(encode).toHaveBeenCalledWith(setup(true));
+});
+
+it("leaves a fresh calculator URL bare", async () => {
+  encode.mockResolvedValue("");
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).not.toHaveBeenCalled();
+});
+
+it("removes an existing default-only setup hash", async () => {
+  encode.mockResolvedValue("");
+  mockRouter.asPath = "/explorer/dps#setup=defaults";
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+  expect(mockRouter.replace.mock.calls[0][0].hash).toBe("");
+});
+
+it("clears the hash when all settings return to defaults", async () => {
+  encode.mockResolvedValueOnce("edited").mockResolvedValueOnce("");
+  await render(setup(true));
+  await advance(150);
+  mockRouter.asPath = "/explorer/dps#setup=edited";
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+  expect(mockRouter.replace.mock.calls[1][0].hash).toBe("");
+});
+
+it("records an already-matching URL so edits can return to a previously written setup", async () => {
+  encode
+    .mockResolvedValueOnce("first")
+    .mockResolvedValueOnce("current")
+    .mockResolvedValueOnce("first");
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+
+  mockRouter.asPath = "/explorer/dps#setup=current";
+  await render(setup(true));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+  expect(mockRouter.replace.mock.calls[1][0].hash).toBe("setup=first");
+});
+
+it("does not record a matching URL from a cancelled compression", async () => {
+  let finishOld!: (value: string) => void;
+  encode
+    .mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishOld = resolve;
+      }),
+    )
+    .mockResolvedValueOnce("current")
+    .mockResolvedValueOnce("stale");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+
+  mockRouter.asPath = "/explorer/dps#setup=stale";
+  await act(async () => finishOld("stale"));
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+
+  mockRouter.asPath = "/explorer/dps#setup=current";
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+  expect(mockRouter.replace.mock.calls[1][0].hash).toBe("setup=stale");
 });
