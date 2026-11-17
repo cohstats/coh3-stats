@@ -11,6 +11,7 @@ import { getUpgradedVehicleWeaponBag } from "./vehicleUpgradeEffects";
 import { getUpgradeStateTreeWeapons } from "./workarounds";
 import type { UpgradesType } from "./mappingUpgrades";
 import type { AbilitiesType } from "./mappingAbilities";
+import { RANGER_FIRE_ON_MOVE_ABILITY } from "./passiveCombatEffects";
 
 type CoordinatesDPS = { x: number; y: number };
 
@@ -173,6 +174,8 @@ type CustomizableUnit = {
   /** Per-attacker vehicle upgrades. Distinct attackers have independent toggles. */
   heavyBarrelsEnabled?: boolean;
   dakCoaxUpgradeEnabled?: boolean;
+  /** Validated entity/squad passive, separate from manual modifiers and veterancy. */
+  rangerFireOnMove?: boolean;
 };
 
 export const createDefaultCustomModifiers = (): CustomModifiers => ({
@@ -286,6 +289,21 @@ export const mapCustomizableUnit = (
     heavyBarrelsEnabled: false,
     dakCoaxUpgradeEnabled: false,
   };
+
+  const rangerPassive = abilities.some(
+    (ability) =>
+      ability.id === RANGER_FIRE_ON_MOVE_ABILITY &&
+      ability.entityTree === RANGER_FIRE_ON_MOVE_ABILITY,
+  );
+  custUnit.rangerFireOnMove =
+    rangerPassive &&
+    (sbpsSelected.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY) ||
+      sbpsSelected.loadout.some((member) => {
+        const entityId = member.type.replace(/\\/g, "/").split("/").pop();
+        return ebps
+          .find((entity) => entity.id === entityId)
+          ?.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY);
+      }));
 
   if (sbpsSelected.ui.symbolIconName != "")
     custUnit.type_icon = getIconsPathOnCDN("icons/" + sbpsSelected.ui.symbolIconName);
@@ -1311,6 +1329,7 @@ const getUnitDpsAtBaseDistance = (
           unit1,
           undefined,
           assumeAllDefendersInArea,
+          displayedDistance,
         );
   });
 

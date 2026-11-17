@@ -372,6 +372,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       ? [{ id: "WEAPON_SCATTER", value: formatPercent(vet.scatterMultiplier, true) }]
       : [],
     accuracy: [
+      ...(unit?.rangerFireOnMove ? [{ id: "RANGER_FIRE_ON_MOVE_PASSIVE", value: "+20%" }] : []),
       ...(!approxEqual(vet.accuracyMultiplier, 1)
         ? [{ id: "WEAPON_ACCURACY_MODIFIER", value: formatPercent(vet.accuracyMultiplier) }]
         : []),
@@ -614,7 +615,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                           : config.label}
                       </Text>
                     </Tooltip>
-                    {selectedVet > 0 && vetTags.length > 0 && (
+                    {vetTags.length > 0 && (
                       <Group gap={4} wrap="wrap">
                         {vetTags.map(({ id, value }, index) => (
                           <Tooltip key={`${id}-${index}`} label={humanizeVeterancyModifierId(id)}>

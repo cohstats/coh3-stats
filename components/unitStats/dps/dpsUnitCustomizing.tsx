@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 //import { LevelContext } from './LevelContext.js';
 import {
   Avatar,
+  Badge,
   Button,
   Group,
   Image,
@@ -194,6 +195,11 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
   return (
     <>
       <Stack align="left" justify="flex-start" gap="xs">
+        {props.unit.rangerFireOnMove && (
+          <Badge color="cyan" variant="light" style={{ height: "auto", whiteSpace: "normal" }}>
+            {t("dpsCompareUi.rangerPassive")}
+          </Badge>
+        )}
         <Grid gap="xs">
           <Grid.Col span={5}>
             <Group wrap="nowrap">

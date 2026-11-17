@@ -299,6 +299,7 @@
     }
   },
   "dpsCompareUi": {
+    "rangerPassive": "Ranger passive: +20% accuracy · Fire on the move",
     "compare": {
       "title": "CoH3 DPS Calculator",
       "vs": "VS Mode",
@@ -333,6 +334,9 @@
       "armoredSupportTip": "+50% damage, hardpoints 1 and 2"
     },
     "formation": {
+      "modes": { "default": "Default", "cover": "Cover", "bunched": "Bunched" },
+      "directionalCover": "Directional cover",
+      "directionalCoverNote": "The cover line applies cover modifiers only. It has no hitbox and does not block or absorb shots.",
       "title": "Infantry formation",
       "previewWeapon": "Preview weapon",
       "previewRange": "Preview range",
@@ -348,7 +352,9 @@
       "model": "Model {{number}}",
       "modelAria": "Aim at model {{number}}; right-click to toggle",
       "modelKeyboardHint": "Delete or Backspace to toggle",
-      "groundKeyboardHelp": "Focus the diagram and press Enter to aim at the ground. Arrow keys move the aim by 1 m; hold Shift for 0.1 m steps.",
+      "keyboardControls": "Keyboard controls",
+      "keyboardModelHelp": "Tab to a model and press Enter or Space to aim at it. Press Delete or Backspace to enable or disable it.",
+      "groundKeyboardHelp": "Focus the diagram and press Enter to aim at the ground. Arrow keys move the aim by 1m; hold Shift for 0.1m steps.",
       "targeted": "targeted",
       "active": "active",
       "disabled": "disabled",
@@ -367,7 +373,7 @@
       "up": "Up",
       "left": "Left",
       "down": "Down",
-      "help": "Click model to aim · right-click to toggle · click ground to attack ground · drag gunner to rotate",
+      "help": "Click model to aim · right-click to toggle model · click ground to attack ground · drag gunner to rotate",
       "restore": "Restore all",
       "groundAim": "Ground aim point",
       "unavailable": "Formation data unavailable; using the {{unit}} example layout.",

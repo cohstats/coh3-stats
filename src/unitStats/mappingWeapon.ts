@@ -63,6 +63,8 @@ export type WeaponStatsType = {
   aoe_damage_far: number;
   aoe_damage_mid: number;
   aoe_damage_near: number;
+  /** Garrison occupants outside the normal AoE receive its FAR damage. */
+  aoe_damage_all_in_hold?: boolean;
 
   aoe_damage_friendly_far: number;
   aoe_damage_friendly_mid: number;
@@ -93,6 +95,7 @@ export type WeaponStatsType = {
   ready_aim_time_max: number;
 
   behaviour_enable_auto_target_search: boolean;
+  behaviour_point_blank?: boolean;
 
   burst_can_burst: boolean;
   burst_duration_min: number;
@@ -421,9 +424,9 @@ const mapWeaponData = (
         false,
       ),
 
-      aoe_accuracy_far: weapon_bag.area_effect?.accuracy?.far || 1,
-      aoe_accuracy_mid: weapon_bag.area_effect?.accuracy?.mid || 1,
-      aoe_accuracy_near: weapon_bag.area_effect?.accuracy?.near || 1,
+      aoe_accuracy_far: weapon_bag.area_effect?.accuracy?.far ?? 1,
+      aoe_accuracy_mid: weapon_bag.area_effect?.accuracy?.mid ?? 1,
+      aoe_accuracy_near: weapon_bag.area_effect?.accuracy?.near ?? 1,
 
       aoe_penetration_far: weapon_bag.area_effect?.aoe_penetration?.far || 0,
       aoe_penetration_mid: weapon_bag.area_effect?.aoe_penetration?.mid || 0,
@@ -440,9 +443,10 @@ const mapWeaponData = (
       aoe_outer_length: weapon_bag.area_effect?.area_info?.outer_length || 0,
       aoe_width: weapon_bag.area_effect?.area_info?.width || 0,
 
-      aoe_damage_far: weapon_bag.area_effect?.damage?.far || 1,
-      aoe_damage_mid: weapon_bag.area_effect?.damage?.mid || 1,
-      aoe_damage_near: weapon_bag.area_effect?.damage?.near || 1,
+      aoe_damage_far: weapon_bag.area_effect?.damage?.far ?? 1,
+      aoe_damage_mid: weapon_bag.area_effect?.damage?.mid ?? 1,
+      aoe_damage_near: weapon_bag.area_effect?.damage?.near ?? 1,
+      aoe_damage_all_in_hold: relicBoolean(weapon_bag.area_effect?.damage_all_in_hold, false),
 
       aoe_damage_friendly_far: weapon_bag.area_effect?.damage_friendly?.far ?? 0,
       aoe_damage_friendly_mid: weapon_bag.area_effect?.damage_friendly?.mid ?? 0,
@@ -470,6 +474,7 @@ const mapWeaponData = (
 
       behaviour_enable_auto_target_search:
         weapon_bag.behaviour?.enable_auto_target_search !== "False", //default to true
+      behaviour_point_blank: relicBoolean(weapon_bag.behaviour?.point_blank, false),
 
       burst_can_burst: weapon_bag.burst?.can_burst == "True" ? true : false,
       burst_duration_min: weapon_bag.burst?.duration?.min || 0,

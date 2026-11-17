@@ -48,6 +48,16 @@ import { SettingsPanel } from "./components/SettingsPanel";
 import { UnitSelectionPanel } from "./components/UnitSelectionPanel";
 import { UnitCustomizationPanel } from "./components/UnitCustomizationPanel";
 import { ChartPanel } from "./components/ChartPanel";
+import { DpsDataError } from "./components/DpsDataError";
+import { useSharedDpsUrl } from "./useSharedDpsUrl";
+import { DEFAULT_DPS_SETTINGS } from "../../../src/unitStats/dpsDefaults";
+import {
+  hasSharedDpsSetup,
+  readSharedDpsSetup,
+  restoreDpsUnit,
+  snapshotDpsUnit,
+  type SharedDpsSetup,
+} from "../../../src/unitStats/sharedDpsSetup";
 
 ChartJS.register(
   CategoryScale,
@@ -175,10 +185,10 @@ export const DpsPageComponent = (props: IDPSProps) => {
   const [rerender, setRerender] = useState(false);
   // const [isStaircase, setStaircase] = useState(false);
   const [isStaircase] = useState(false);
-  const [showDpsHealth, setShowDpsHealth] = useState(false);
-  const [allowAllWeapons, setAllowAllWeapons] = useState(false);
+  const [showDpsHealth, setShowDpsHealth] = useState(DEFAULT_DPS_SETTINGS.showDpsHealth);
+  const [allowAllWeapons, setAllowAllWeapons] = useState(DEFAULT_DPS_SETTINGS.allowAllWeapons);
   // Final Stand (DLC / co-op vs AI) units are opt-in.
-  const [showFinalStand, setShowFinalStand] = useState(false);
+  const [showFinalStand, setShowFinalStand] = useState(DEFAULT_DPS_SETTINGS.showFinalStand);
 
   // const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -198,31 +208,82 @@ export const DpsPageComponent = (props: IDPSProps) => {
     [catalog2, unitFilter2, showFinalStand],
   );
 
-  // The selected units are kept in the URL (`?unit1=...&unit2=...`), so the page can be linked to.
+  // Restore the full shared setup, with support for older unit-only links.
   // State, not a ref, so the URL is written only after the preselected units are rendered.
   const [urlUnitsApplied, setUrlUnitsApplied] = useState(false);
+  const [restoreError, setRestoreError] = useState(false);
+  const [restoreAttempt, setRestoreAttempt] = useState(0);
   const selectedUnit1 = activeData[0]?.id;
   const selectedUnit2 = activeData[1]?.id;
 
   useEffect(() => {
     if (!router.isReady || urlUnitsApplied || props.sbpsData.length == 0) return;
-    const { unit1, unit2 } = router.query;
-    if (typeof unit1 === "string") onSelectionChange(unit1, 0, true);
-    if (typeof unit2 === "string") onSelectionChange(unit2, 1, true);
-    setUrlUnitsApplied(true);
-  }, [router.isReady, props.sbpsData]);
-
-  useEffect(() => {
-    if (!urlUnitsApplied) return;
-    if (router.query.unit1 === selectedUnit1 && router.query.unit2 === selectedUnit2) return;
-    const query: Record<string, string> = {};
-    if (selectedUnit1) query.unit1 = selectedUnit1;
-    if (selectedUnit2) query.unit2 = selectedUnit2;
-    router.replace({ pathname: router.pathname, query }, undefined, {
-      shallow: true,
-      scroll: false,
+    let active = true;
+    setRestoreError(false);
+    void (async () => {
+      const saved = await readSharedDpsSetup(router.asPath, "vs");
+      if (!active) return;
+      if (saved?.mode === "vs") {
+        const loaded = await Promise.all(
+          saved.slots.map(async (slot) =>
+            createDpsUnitCatalog(
+              slot.patch === props.patch ? props : await fetchDpsData(slot.patch),
+            ),
+          ),
+        );
+        if (!active) return;
+        const next: [DpsUnitCatalog, DpsUnitCatalog] = [loaded[0], loaded[1]];
+        setCatalogs(next);
+        for (const index of [0, 1]) {
+          const restored = restoreDpsUnit(saved.slots[index].unit, next[index]);
+          if (restored) activeData[index] = restored;
+          else delete activeData[index];
+        }
+        setFilter1(saved.filters[0]);
+        setFilter2(saved.filters[1]);
+        setShowDpsHealth(saved.showDpsHealth);
+        setAllowAllWeapons(saved.allowAllWeapons);
+        setShowFinalStand(
+          saved.showFinalStand || activeData.some((unit) => isFinalStandUnit(unit)),
+        );
+        setUrlUnitsApplied(true);
+        return;
+      }
+      const { unit1, unit2 } = router.query;
+      if (typeof unit1 === "string") onSelectionChange(unit1, 0, true);
+      if (typeof unit2 === "string") onSelectionChange(unit2, 1, true);
+      setUrlUnitsApplied(true);
+    })().catch((error) => {
+      if (!active) return;
+      console.error("Failed to restore shared DPS setup:", error);
+      setRestoreError(true);
     });
-  }, [urlUnitsApplied, selectedUnit1, selectedUnit2]);
+    return () => {
+      active = false;
+    };
+  }, [router.isReady, props.sbpsData, restoreAttempt]);
+
+  // Customizers mutate units in place, so include their render signal in the snapshot.
+  const sharedUnits = useMemo(
+    () =>
+      [0, 1].map((index) => {
+        const unit = activeData[index];
+        return snapshotDpsUnit(unit, unit ? catalogs[index].getUnit(unit.id) : undefined);
+      }),
+    [activeData, catalogs, rerender, urlUnitsApplied],
+  );
+  useSharedDpsUrl(urlUnitsApplied && !loadingPatches.some(Boolean) && !props.isLoading, {
+    v: 1,
+    mode: "vs",
+    allowAllWeapons,
+    showFinalStand,
+    showDpsHealth,
+    filters: [unitFilter1, unitFilter2],
+    slots: [
+      { patch: patchUnit1, unit: sharedUnits[0] },
+      { patch: patchUnit2, unit: sharedUnits[1] },
+    ],
+  } as SharedDpsSetup);
 
   // if(config.isDevEnv())
   const patchList = [];
@@ -372,6 +433,11 @@ export const DpsPageComponent = (props: IDPSProps) => {
   options.scales.y.suggestedMax = maxY;
   options.scales.x.suggestedMax = maxX;
 
+  if (restoreError)
+    return <DpsDataError onRetry={() => setRestoreAttempt((attempt) => attempt + 1)} />;
+  if (!urlUnitsApplied && hasSharedDpsSetup(router.asPath))
+    return <Container role="status">Loading shared setup…</Container>;
+
   return (
     <>
       <Container>
@@ -423,7 +489,11 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 patchList={patchList}
                 patchVersion={patchUnit1}
                 position={1}
-                disabled={props.isLoading || loadingPatches[0]}
+                disabled={
+                  props.isLoading ||
+                  loadingPatches[0] ||
+                  (!urlUnitsApplied && hasSharedDpsSetup(router.asPath))
+                }
                 selectedUnitId={selectedUnit1}
                 onFilterToggle={toggleFilter}
                 onPatchChange={onPatchUnitChange}
@@ -450,7 +520,11 @@ export const DpsPageComponent = (props: IDPSProps) => {
                 patchList={patchList}
                 patchVersion={patchUnit2}
                 position={2}
-                disabled={props.isLoading || loadingPatches[1]}
+                disabled={
+                  props.isLoading ||
+                  loadingPatches[1] ||
+                  (!urlUnitsApplied && hasSharedDpsSetup(router.asPath))
+                }
                 selectedUnitId={selectedUnit2}
                 onFilterToggle={toggleFilter}
                 onPatchChange={onPatchUnitChange}

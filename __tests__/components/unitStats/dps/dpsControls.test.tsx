@@ -14,6 +14,7 @@ import {
   createDefaultCustomModifiers,
   type CustomizableUnit,
 } from "../../../../src/unitStats/dpsCommon";
+import { getDirectionalCoverLine } from "../../../../src/unitStats/squadFormations";
 
 jest.mock("next-i18next/pages", () => {
   const translations = jest.requireActual("../../../../public/locales/en/explorer.json");
@@ -81,6 +82,11 @@ const Formation = () => {
           ...model,
           enabled: !value.disabledModelIds.includes(model.id),
         }))}
+        coverLine={
+          value.formation === "cover" && value.directionalCover
+            ? getDirectionalCoverLine(models)
+            : undefined
+        }
         onChange={setValue}
         previewWeaponOptions={[]}
         selectedPreviewWeaponId={null}
@@ -108,9 +114,7 @@ it("enters ground attack from the keyboard and moves the aim in coarse and fine 
     '[role="group"][aria-label="Infantry formation and aiming"]',
   )!;
   expect(diagram).toHaveAttribute("tabindex", "0");
-  expect(document.getElementById(diagram.getAttribute("aria-describedby")!)).toHaveTextContent(
-    "Arrow keys",
-  );
+  expect(diagram).toHaveAccessibleDescription(/Arrow keys/);
   await key(diagram, "Enter");
   expect(state()).toMatchObject({ targetModelId: null, groundTarget: { x: 2, y: 3 } });
   await key(diagram, "ArrowRight");
@@ -131,6 +135,36 @@ it("keeps model selection and keyboard toggles independent from ground-target sh
   expect(state()).toMatchObject({ targetModelId: 2, groundTarget: null, disabledModelIds: [2] });
   await key(model, "Backspace");
   expect(state().disabledModelIds).toEqual([]);
+});
+
+it("offers Default, Cover and Bunched formations with directional cover only in Cover mode", async () => {
+  await render(<Formation />);
+  const button = (name: string) =>
+    Array.from(container.querySelectorAll("button")).find((item) => item.textContent === name)!;
+  expect(button("Default")).toHaveAttribute("aria-pressed", "true");
+  expect(button("Directional cover")).toBeUndefined();
+  await act(async () => button("Cover").click());
+  await act(async () => button("Directional cover").click());
+  expect(state()).toMatchObject({ formation: "cover", directionalCover: true });
+  expect(container.querySelector('[data-testid="scatter-cover-line"]')).toBeInTheDocument();
+  await act(async () => button("Bunched").click());
+  expect(state().formation).toBe("bunched");
+  expect(container.querySelector('[data-testid="scatter-cover-line"]')).not.toBeInTheDocument();
+});
+
+it("shows the automatic Ranger accuracy bonus without requiring a veterancy rank", async () => {
+  const unit = { id: "ranger", rangerFireOnMove: true, veterancyLevel: 0 } as CustomizableUnit;
+  await render(
+    <CustomConfigModal
+      opened
+      onClose={() => {}}
+      unit={unit}
+      customModifiers={createDefaultCustomModifiers()}
+      onModifiersChange={() => {}}
+    />,
+  );
+  const badges = Array.from(document.querySelectorAll(".mantine-Badge-root"));
+  expect(badges.filter((badge) => badge.textContent?.trim() === "★ +20%")).toHaveLength(1);
 });
 
 it.each(["all", "offensive", "defensive"] as CustomModifierScope[])(

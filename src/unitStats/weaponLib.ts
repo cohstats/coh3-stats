@@ -8,12 +8,21 @@ import {
 } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 import { getDpsVeterancyEffects } from "./dpsVeterancy";
+import { canFireOnMove, getPassiveAccuracyMultiplier } from "./passiveCombatEffects";
+import {
+  getEffectiveCoverType,
+  getShooterPosition,
+  isLightOrHeavyCover,
+  isProtectedByDirectionalCover,
+  usesProjectileImpactCover,
+} from "./combatCover";
 import {
   getUpgradedVehicleWeaponBag,
   getVehicleWeaponUpgradeEffects,
 } from "./vehicleUpgradeEffects";
 import {
   getIncrementalTargetAccuracyMultiplier,
+  getAoeDamageChance,
   hasScatterAoe,
   simulateExpectedScatterShot,
   type ScatterDpsOptions,
@@ -186,6 +195,7 @@ const getSingleWeaponDPS = (
   attacking_unit?: CustomizableUnit,
   scatter?: ScatterDpsOptions,
   assumeAllDefendersInArea = false,
+  displayedDistance = distance,
 ) => {
   //Formular: Hitchance * RateOfFire * Damage * ChanceToDamage(E.g. penetration)
   // since we assume it is an endless engagement we also encounter reload time
@@ -211,7 +221,7 @@ const getSingleWeaponDPS = (
     weapon_member.weapon.weapon_cat,
   );
 
-  if (!weapon_bag.moving_can_fire_while_moving && isMoving) return 0;
+  if (!canFireOnMove(weapon_bag, attacking_unit) && isMoving) return 0;
 
   let cover = {
     accuracy_multiplier: 1, // opponent cover penalty
@@ -229,7 +239,27 @@ const getSingleWeaponDPS = (
 
   const targetModifiers = getTargetTypeModifiers(weapon_bag.target_type_table, targetUnitTypes);
   if (target_unit) {
-    cover = getCoverMultiplier(target_unit.cover, weapon_member.weapon.weapon_bag);
+    const coverType = getEffectiveCoverType(target_unit.cover, weapon_bag, displayedDistance);
+    cover = getCoverMultiplier(coverType, weapon_bag);
+    const selected = scatter?.models.find((model) => model.id === scatter.targetModelId);
+    if (
+      isLightOrHeavyCover(coverType) &&
+      scatter?.directionalCover &&
+      selected &&
+      !isProtectedByDirectionalCover(
+        scatter.directionalCover,
+        getShooterPosition(selected, displayedDistance, scatter.gunnerAngleDeg),
+        selected,
+      )
+    ) {
+      cover = getCoverMultiplier("", weapon_bag);
+    }
+    if (
+      isLightOrHeavyCover(coverType) &&
+      hasScatterAoe(weapon_bag) &&
+      usesProjectileImpactCover(weapon_bag)
+    )
+      cover.damage_multiplier = 1;
     targetSize = target_unit.target_size;
     // Front armor is the default facing in the DPS calculator. Veterancy
     // adds to that base before manual modifiers (including absolute overrides).
@@ -256,8 +286,7 @@ const getSingleWeaponDPS = (
   /*   Damage per Shot *
     --------------------------------------------------
   */
-  const avgDamage =
-    ((weapon_bag.damage_max + weapon_bag.damage_min) * cover.damage_multiplier) / 2;
+  const avgDamage = (weapon_bag.damage_max + weapon_bag.damage_min) / 2;
 
   /*  Hitchance
       --------------------------------------------------
@@ -448,14 +477,15 @@ const getSingleWeaponDPS = (
   let finalAccuracy =
     accuracy *
     attackingVeterancy.accuracyMultiplier *
+    getPassiveAccuracyMultiplier(attacking_unit) *
     specialVet.accuracy *
     (isMoving ? attackingVeterancy.movingAccuracyMultiplier : 1);
   let finalDamage =
     (avgDamage +
       targetModifiers.base_damage_modifier +
       specialVet.flatVehicleDamage +
-      (attackingVeterancy.damageAddition + specialVet.flatFlamethrowerDamage) *
-        cover.damage_multiplier) *
+      attackingVeterancy.damageAddition +
+      specialVet.flatFlamethrowerDamage) *
     targetModifiers.damage_multiplier *
     attackingVeterancy.damageMultiplier *
     specialVet.damage *
@@ -510,7 +540,7 @@ const getSingleWeaponDPS = (
 
   // Apply received-damage mitigation after manual damage customization,
   // including absolute damage overrides.
-  finalDamage *= targetVeterancy.receivedDamageMultiplier;
+  finalDamage *= cover.damage_multiplier * targetVeterancy.receivedDamageMultiplier;
   finalDamage = applyCustomModifier(finalDamage, target_unit?.custom_modifiers?.receivedDamage, {
     percentMode: "inverse",
     min: 0,
@@ -572,12 +602,31 @@ const getSingleWeaponDPS = (
     -------------------------------------------------
   */
   const effectiveHitDamageMultiplier = finalAccuracy * penetrationDamageMultiplier;
-  // Keep the original calculation exactly unchanged outside the formation mode.
+  // Without a formation, only the aimed-at model is resolved spatially. A hit
+  // on a garrison still applies FAR AoE damage to every other occupant.
+  const otherGarrisonDamage =
+    target_unit?.cover === "garrison" &&
+    weapon_bag.aoe_damage_all_in_hold &&
+    hasScatterAoe(weapon_bag)
+      ? Math.max(0, Math.floor(getUnitModelCount(target_unit)) - 1) *
+        Math.min(
+          getModifiedHitpoints(target_unit),
+          Math.max(0, finalDamage * weapon_bag.aoe_damage_far),
+        ) *
+        getAoeDamageChance(
+          weapon_bag.aoe_accuracy_far,
+          weapon_bag.aoe_penetration_far,
+          finalArmor,
+          targetModifiers.penetration_multiplier * attackingVeterancy.penetrationMultiplier,
+          attacking_unit?.custom_modifiers?.penetration,
+        )
+      : 0;
   const dps =
     (finalRpm / 60) *
-    (damageOnHit === undefined
+    ((damageOnHit === undefined
       ? effectiveHitDamageMultiplier * finalDamage
-      : finalAccuracy * damageOnHit);
+      : finalAccuracy * damageOnHit) +
+      finalAccuracy * otherGarrisonDamage);
 
   return dps * weapon_member.num;
 };
@@ -599,7 +648,7 @@ export const getSingleWeaponScatterShotInputs = (
   const armyUpgrade = getVehicleWeaponUpgradeEffects(weapon_member, attacking_unit);
   if (
     weapon_member.num <= 0 ||
-    (isMoving && !bag.moving_can_fire_while_moving) ||
+    (isMoving && !canFireOnMove(bag, attacking_unit)) ||
     !hasScatterAoe(bag) ||
     !(scatter.targetModelId === null
       ? scatter.groundTarget !== undefined && scatter.groundTarget !== null
@@ -616,13 +665,27 @@ export const getSingleWeaponScatterShotInputs = (
     target_unit,
     weapon_member.weapon.weapon_cat,
   );
+  const coverType = getEffectiveCoverType(target_unit?.cover ?? "", bag, displayedDistance);
   const cover = target_unit
-    ? getCoverMultiplier(target_unit.cover, bag)
+    ? getCoverMultiplier(coverType, bag)
     : {
         accuracy_multiplier: 1,
         damage_multiplier: 1,
         penetration_multiplier: 1,
       };
+  const selected = scatter.models.find((model) => model.id === scatter.targetModelId);
+  if (
+    isLightOrHeavyCover(coverType) &&
+    scatter.directionalCover &&
+    selected &&
+    !isProtectedByDirectionalCover(
+      scatter.directionalCover,
+      getShooterPosition(selected, displayedDistance, scatter.gunnerAngleDeg),
+      selected,
+    )
+  ) {
+    cover.accuracy_multiplier = getCoverMultiplier("", bag).accuracy_multiplier;
+  }
   const types = target_unit ? (target_unit.ebps_default?.unitTypes ?? []) : ["infantry"];
   const typeMods = getTargetTypeModifiers(bag.target_type_table, types);
   const targetSize = target_unit?.target_size ?? 1;
@@ -655,6 +718,7 @@ export const getSingleWeaponScatterShotInputs = (
     typeMods.accuracy_multiplier *
     targetSize *
     vet.accuracyMultiplier *
+    getPassiveAccuracyMultiplier(attacking_unit) *
     specialVet.accuracy *
     (isMoving ? vet.movingAccuracyMultiplier : 1);
   const manualAccuracy = attacking_unit?.custom_modifiers?.accuracy;
@@ -679,21 +743,27 @@ export const getSingleWeaponScatterShotInputs = (
   accuracy = Math.min(1, Math.max(0, accuracy));
 
   const baseDamage = (bag.damage_min + bag.damage_max) / 2;
-  let damage =
-    (baseDamage * cover.damage_multiplier +
-      typeMods.base_damage_modifier +
-      (vet.damageAddition + specialVet.flatFlamethrowerDamage) * cover.damage_multiplier +
-      specialVet.flatVehicleDamage) *
-    typeMods.damage_multiplier *
-    vet.damageMultiplier *
-    specialVet.damage *
-    armyUpgrade.damageMultiplier;
-  damage = applyCustomModifier(damage, attacking_unit?.custom_modifiers?.damage, { min: 0 });
-  damage *= targetVet.receivedDamageMultiplier;
-  damage = applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
-    percentMode: "inverse",
-    min: 0,
-  });
+  const calculateDamage = (coverDamage: number) => {
+    let damage =
+      (baseDamage +
+        typeMods.base_damage_modifier +
+        vet.damageAddition +
+        specialVet.flatFlamethrowerDamage +
+        specialVet.flatVehicleDamage) *
+      typeMods.damage_multiplier *
+      vet.damageMultiplier *
+      specialVet.damage *
+      armyUpgrade.damageMultiplier;
+    damage = applyCustomModifier(damage, attacking_unit?.custom_modifiers?.damage, { min: 0 });
+    damage *= coverDamage * targetVet.receivedDamageMultiplier;
+    damage = applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
+      percentMode: "inverse",
+      min: 0,
+    });
+    return damage;
+  };
+  const damage = calculateDamage(cover.damage_multiplier);
+  const impactBasedCover = isLightOrHeavyCover(coverType) && usesProjectileImpactCover(bag);
 
   let penetration =
     getInterpolationByDistance(
@@ -744,6 +814,12 @@ export const getSingleWeaponScatterShotInputs = (
       ? bag.deflection_damage_multiplier
       : 0,
     splashDamage: damage,
+    impactBasedCover,
+    uncoveredDamage:
+      isLightOrHeavyCover(coverType) && (impactBasedCover || scatter.directionalCover)
+        ? calculateDamage(1)
+        : undefined,
+    targetInGarrison: target_unit?.cover === "garrison",
     targetArmor: armor,
     splashPenetrationMultiplier: typeMods.penetration_multiplier * vet.penetrationMultiplier,
     // Apply manual penetration after AoE's own penetration falloff, just as
@@ -766,7 +842,7 @@ export const getSingleWeaponScatterDPS = (
   const qty = weapon_member.num;
   if (qty <= 0) return 0;
   const bag = getUpgradedVehicleWeaponBag(weapon_member, attacking_unit);
-  if (isMoving && !bag.moving_can_fire_while_moving) return 0;
+  if (isMoving && !canFireOnMove(bag, attacking_unit)) return 0;
 
   const selected = scatter.models.find((model) => model.id === scatter.targetModelId);
   if (scatter.targetModelId !== null && !selected) return 0;
@@ -783,6 +859,8 @@ export const getSingleWeaponScatterDPS = (
           target_unit,
           attacking_unit,
           scatter,
+          false,
+          displayedDistance,
         )
       : 0;
   }
@@ -932,7 +1010,7 @@ export const getWeaponTiming = (
   let shotsPerClip = avgClipSize;
 
   if (weapon_bag.burst_can_burst) {
-    if (isMoving && !weapon_bag.moving_can_fire_while_moving) {
+    if (isMoving && !canFireOnMove(weapon_bag, attacking_unit)) {
       return {
         rpm: 0,
         burstDuration: 0,

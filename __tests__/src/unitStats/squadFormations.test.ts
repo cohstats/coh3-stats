@@ -10,6 +10,9 @@ import {
   rotateFormationModels,
   getInfantryFormationExample,
   INFANTRY_FORMATION_PRESETS,
+  getCalculatorFormation,
+  getMinimumFormationSpacing,
+  getDirectionalCoverLine,
 } from "../../../src/unitStats/squadFormations";
 import type { SbpsType } from "../../../src/unitStats/mappingSbps";
 import type { EbpsType } from "../../../src/unitStats/mappingEbps";
@@ -25,6 +28,24 @@ const positions = (id: keyof typeof fixture.squads, count: number) =>
   resolveSquadFormation(squad(id), data, count)!.models;
 const find = (models: ReturnType<typeof positions>, slot: string) =>
   models.find((model) => model.slot === slot)!;
+
+it("selects formation geometry independently and bunches the default without changing its shape", () => {
+  const normal = getCalculatorFormation(squad("panzergrenadier_ak"), data, 2, "default");
+  const covered = getCalculatorFormation(squad("panzergrenadier_ak"), data, 2, "cover");
+  const bunched = getCalculatorFormation(squad("panzergrenadier_ak"), data, 2, "bunched");
+  expect(normal.models).toEqual(positions("panzergrenadier_ak", 2));
+  expect(bunched.models.map(({ id }) => id)).toEqual(normal.models.map(({ id }) => id));
+  expect(bunched.models[0]).toEqual(normal.models[0]);
+  expect(getMinimumFormationSpacing(bunched.models)).toBeCloseTo(
+    getMinimumFormationSpacing(covered.models),
+  );
+  expect(getMinimumFormationSpacing(bunched.models)).toBeLessThan(
+    getMinimumFormationSpacing(normal.models),
+  );
+  const displayed = covered.models.map((model) => ({ ...model, x: -model.x, y: -model.y }));
+  const line = getDirectionalCoverLine(displayed)!;
+  expect(displayed.every((model) => model.y > line.y)).toBe(true);
+});
 
 describe("formation observations from in-game validation", () => {
   it.each(INFANTRY_FORMATION_PRESETS)(

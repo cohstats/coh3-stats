@@ -1,5 +1,10 @@
 import type { WeaponStatsType } from "./mappingWeapon";
 import type { CustomModifier } from "./dpsCommon";
+import {
+  getShooterPosition,
+  isProtectedByDirectionalCover,
+  type DirectionalCoverLine,
+} from "./combatCover";
 
 /** Generic formation coordinates are provisional metres until the game's squad layouts are parsed. */
 export type ScatterModel = { id: number; x: number; y: number; enabled: boolean };
@@ -15,6 +20,7 @@ export type ScatterDpsOptions = {
   samplesPerShot: number;
   /** Target is in fog of war: use this weapon's FOW scatter multipliers. */
   inFogOfWar?: boolean;
+  directionalCover?: DirectionalCoverLine;
 };
 
 export const SCATTER_SAMPLE_COUNTS = [144, 576, 2025] as const;
@@ -158,6 +164,10 @@ export type ScatterShotInputs = ScatterDpsOptions & {
   directDeflectionMultiplier?: number;
   /** Damage before AoE falloff/penetration, including applicable modifiers. */
   splashDamage: number;
+  /** Light/heavy cover is tested at each impact; garrison never uses this exception. */
+  impactBasedCover?: boolean;
+  uncoveredDamage?: number;
+  targetInGarrison?: boolean;
   targetArmor: number;
   splashPenetrationMultiplier: number;
   /** Manual attacker penetration adjustment; applied to AoE penetration per model. */
@@ -167,6 +177,25 @@ export type ScatterShotInputs = ScatterDpsOptions & {
 };
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+
+/** Shared by spatial AoE hits and the FAR damage applied to other garrison occupants. */
+export const getAoeDamageChance = (
+  accuracy: number,
+  penetration: number,
+  targetArmor: number,
+  penetrationMultiplier = 1,
+  modifier?: CustomModifier,
+): number => {
+  let adjustedPenetration = penetration * penetrationMultiplier;
+  if (modifier?.enabled) {
+    const value = Number.isFinite(modifier.value) ? modifier.value : 0;
+    if (modifier.type === "percentage") adjustedPenetration *= 1 + value / 100;
+    else if (modifier.type === "absolute") adjustedPenetration = value;
+    else if (modifier.type === "additive") adjustedPenetration += value;
+  }
+  const chance = Math.max(0, adjustedPenetration) / Math.max(0.001, targetArmor);
+  return clamp01(accuracy) * (chance < 0.03 ? 0 : clamp01(chance));
+};
 
 /** The game's near/mid/far multipliers, interpolated by impact distance. */
 const interpolateFalloff = (
@@ -286,6 +315,15 @@ const calculateScatterShot = (
   const forwardY = -Math.sin(gunnerAngle);
   const perpendicularX = -forwardY;
   const perpendicularY = forwardX;
+  const shooter = getShooterPosition(aim, distance, input.gunnerAngleDeg);
+  const bypassesCover = (model: ScatterModel, impact: Point, accuracyHit: boolean) => {
+    if (input.uncoveredDamage === undefined) return false;
+    if (input.directionalCover) {
+      const origin = input.impactBasedCover ? impact : shooter;
+      return !isProtectedByDirectionalCover(input.directionalCover, origin, model);
+    }
+    return Boolean(input.impactBasedCover && accuracyHit);
+  };
 
   let expectedDamage = 0;
   const observe = (id: number, outcomeWeight: number, damage: number, damageChance: number) => {
@@ -309,12 +347,13 @@ const calculateScatterShot = (
     skipId?: number,
     scatterCos = 1,
     scatterSin = 0,
+    accuracyHit = false,
   ) => {
     if (!hasSplash || cap <= 0 || weight <= 0) return;
     const radiusSq = weapon.aoe_outer_radius * weapon.aoe_outer_radius;
     const shotX = forwardX * scatterCos + perpendicularX * scatterSin;
     const shotY = forwardY * scatterCos + perpendicularY * scatterSin;
-    const hits: Array<{ distanceSq: number; id: number }> = [];
+    const hits: Array<{ distanceSq: number; model: ScatterModel }> = [];
     for (const model of active) {
       if (model.id === skipId) continue;
       const dx = model.x - x;
@@ -328,17 +367,41 @@ const calculateScatterShot = (
           forwardDistance <= weapon.aoe_outer_length + 1e-9 &&
           Math.abs(sidewaysDistance) <= weapon.aoe_width / 2 + 1e-9
         ) {
-          hits.push({ distanceSq, id: model.id });
+          hits.push({ distanceSq, model });
         }
       } else if (distanceSq <= radiusSq) {
-        hits.push({ distanceSq, id: model.id });
+        hits.push({ distanceSq, model });
       }
     }
-    hits.sort((a, b) => a.distanceSq - b.distanceSq || a.id - b.id);
+    hits.sort((a, b) => a.distanceSq - b.distanceSq || a.model.id - b.model.id);
     // A *living* direct-hit target consumes one cap slot. Disabled targets
     // are not part of the formation, so they never consume a damage slot.
     const available = Math.max(0, cap - (skipId === undefined ? 0 : 1));
-    for (let i = 0; i < Math.min(available, hits.length); i++) {
+    const hitCount = Math.min(available, hits.length);
+    const damageModel = (
+      model: ScatterModel,
+      falloff: number,
+      accuracy: number,
+      penetration: number,
+    ) => {
+      const damage = bypassesCover(model, { x, y }, accuracyHit)
+        ? (input.uncoveredDamage ?? input.splashDamage)
+        : input.splashDamage;
+      const onHit = Math.min(modelHitpoints, Math.max(0, damage * falloff));
+      observe(
+        model.id,
+        weight,
+        onHit,
+        getAoeDamageChance(
+          accuracy,
+          penetration,
+          armor,
+          input.splashPenetrationMultiplier,
+          input.splashPenetrationModifier,
+        ),
+      );
+    };
+    for (let i = 0; i < hitCount; i++) {
       const radius = Math.sqrt(hits[i].distanceSq);
       const falloff = isRectangle
         ? weapon.aoe_damage_near
@@ -358,28 +421,35 @@ const calculateScatterShot = (
             weapon.aoe_accuracy_mid,
             weapon.aoe_accuracy_far,
           );
-      let aoePenetration =
-        (isRectangle
-          ? weapon.aoe_penetration_near
-          : interpolateFalloff(
-              radius,
-              weapon,
-              weapon.aoe_penetration_near,
-              weapon.aoe_penetration_mid,
-              weapon.aoe_penetration_far,
-            )) * input.splashPenetrationMultiplier;
-      const modifier = input.splashPenetrationModifier;
-      if (modifier?.enabled) {
-        const value = Number.isFinite(modifier.value) ? modifier.value : 0;
-        if (modifier.type === "percentage") aoePenetration *= 1 + value / 100;
-        else if (modifier.type === "absolute") aoePenetration = value;
-        else if (modifier.type === "additive") aoePenetration += value;
+      const aoePenetration = isRectangle
+        ? weapon.aoe_penetration_near
+        : interpolateFalloff(
+            radius,
+            weapon,
+            weapon.aoe_penetration_near,
+            weapon.aoe_penetration_mid,
+            weapon.aoe_penetration_far,
+          );
+      damageModel(hits[i].model, falloff, aoeAccuracy, aoePenetration);
+    }
+    // Once a direct hit or blast reaches this garrison, remaining occupants get
+    // FAR damage, even beyond the outer radius or the normal per-squad hit cap.
+    if (
+      input.targetInGarrison &&
+      weapon.aoe_damage_all_in_hold &&
+      (skipId !== undefined || hits.length > 0)
+    ) {
+      const affected = new Set(hits.slice(0, hitCount).map(({ model }) => model.id));
+      if (skipId !== undefined) affected.add(skipId);
+      for (const model of active) {
+        if (!affected.has(model.id))
+          damageModel(
+            model,
+            weapon.aoe_damage_far,
+            weapon.aoe_accuracy_far,
+            weapon.aoe_penetration_far,
+          );
       }
-      aoePenetration = Math.max(0, aoePenetration);
-      const penetrationChance =
-        aoePenetration / armor < 0.03 ? 0 : clamp01(aoePenetration / armor);
-      const splashOnHit = Math.min(modelHitpoints, Math.max(0, input.splashDamage * falloff));
-      observe(hits[i].id, weight, splashOnHit, clamp01(aoeAccuracy) * penetrationChance);
     }
   };
 
@@ -388,19 +458,16 @@ const calculateScatterShot = (
   // but cannot register direct HP damage against that absent model.
   if (accuracy > 0) {
     if (selected?.enabled) {
+      const bypassCover = bypassesCover(selected, aim, true);
+      const directFullDamage = bypassCover
+        ? (input.uncoveredDamage ?? input.directFullDamage ?? input.directDamage)
+        : (input.directFullDamage ?? input.directDamage);
       if (input.directPenetrationChance !== undefined) {
         const pen = clamp01(input.directPenetrationChance);
-        const full = Math.min(
-          modelHitpoints,
-          Math.max(0, input.directFullDamage ?? input.directDamage),
-        );
+        const full = Math.min(modelHitpoints, Math.max(0, directFullDamage));
         const deflect = Math.min(
           modelHitpoints,
-          Math.max(
-            0,
-            (input.directFullDamage ?? input.directDamage) *
-              (input.directDeflectionMultiplier ?? 0),
-          ),
+          Math.max(0, directFullDamage * (input.directDeflectionMultiplier ?? 0)),
         );
         observe(selected.id, accuracy, full, pen);
         observe(selected.id, accuracy, deflect, 1 - pen);
@@ -408,12 +475,18 @@ const calculateScatterShot = (
         observe(
           selected.id,
           accuracy,
-          Math.min(modelHitpoints, Math.max(0, input.directDamage)),
+          Math.min(
+            modelHitpoints,
+            Math.max(
+              0,
+              bypassCover ? (input.uncoveredDamage ?? input.directDamage) : input.directDamage,
+            ),
+          ),
           1,
         );
       }
     }
-    splashAt(aim.x, aim.y, accuracy, selected?.enabled ? selected.id : undefined);
+    splashAt(aim.x, aim.y, accuracy, selected?.enabled ? selected.id : undefined, 1, 0, true);
   }
 
   if (!hasSplash || accuracy >= 1) return finish(expectedDamage);

@@ -1,4 +1,6 @@
 import React, { act } from "react";
+import { TextEncoder, TextDecoder } from "node:util";
+import { CompressionStream, DecompressionStream } from "node:stream/web";
 import { createRoot, Root } from "react-dom/client";
 import "@testing-library/jest-dom";
 import { MantineProvider } from "@mantine/core";
@@ -11,6 +13,12 @@ import { EMPTY_DPS_DATA, fetchDpsData } from "../../../../src/unitStats/dpsData"
 import type { DpsData } from "../../../../src/unitStats/dpsData";
 import type { SbpsType } from "../../../../src/unitStats/mappingSbps";
 import type { CustomizableUnit } from "../../../../src/unitStats/dpsCommon";
+import {
+  snapshotDpsUnit,
+  encodeSharedDpsSetup,
+  decodeSharedDpsSetup,
+  type SharedDpsSetup,
+} from "../../../../src/unitStats/sharedDpsSetup";
 
 jest.mock("../../../../src/unitStats/dpsData", () => ({
   ...jest.requireActual("../../../../src/unitStats/dpsData"),
@@ -50,14 +58,29 @@ jest.mock("../../../../components/unitStats/dps/components/UnitCustomizationPane
     unit,
     position,
     patchVersion,
+    onSquadConfigChange,
   }: {
     unit?: CustomizableUnit;
     position: number;
     patchVersion: string;
+    onSquadConfigChange?: () => void;
   }) => (
-    <output
-      data-testid={`loaded-unit-${position}`}
-    >{`${patchVersion}:${unit?.screen_name ?? ""}`}</output>
+    <>
+      <output
+        data-testid={`loaded-unit-${position}`}
+        data-unit={JSON.stringify(snapshotDpsUnit(unit))}
+      >{`${patchVersion}:${unit?.screen_name ?? ""}`}</output>
+      {unit && (
+        <button
+          onClick={() => {
+            unit.custom_modifiers!.damage = { type: "additive", value: 25, enabled: true };
+            onSquadConfigChange?.();
+          }}
+        >
+          Adjust damage {position}
+        </button>
+      )}
+    </>
   ),
 }));
 jest.mock("../../../../components/unitStats/dps/dpsUnitCustomizing", () => ({
@@ -70,6 +93,7 @@ const mockRouter = {
   isReady: false,
   query: {} as Record<string, string>,
   pathname: "/explorer/dps",
+  asPath: "/explorer/dps",
   push: jest.fn(),
   replace: jest.fn(),
 };
@@ -140,6 +164,17 @@ let root: Root;
 
 const renderTool = async (element: React.ReactNode) => {
   await act(async () => root.render(<MantineProvider env="test">{element}</MantineProvider>));
+  await settleSharedSetup();
+};
+
+const settleSharedSetup = async () => {
+  const deadline = Date.now() + 2000;
+  while (container.querySelector('[role="status"]')?.textContent === "Loading shared setup…") {
+    if (Date.now() > deadline) throw new Error("Shared setup did not finish loading");
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    });
+  }
 };
 
 const getByTestId = (id: string) => {
@@ -179,6 +214,10 @@ const choose = async (input: HTMLElement, label: string) => {
 
 beforeAll(() => {
   Object.assign(globalThis, {
+    TextEncoder,
+    TextDecoder,
+    CompressionStream,
+    DecompressionStream,
     IS_REACT_ACT_ENVIRONMENT: true,
     ResizeObserver: class {
       observe() {}
@@ -199,6 +238,8 @@ beforeEach(() => {
   fetchData.mockReset();
   mockRouter.isReady = false;
   mockRouter.query = {};
+  mockRouter.pathname = "/explorer/dps";
+  mockRouter.asPath = "/explorer/dps";
   mockRouter.replace.mockClear();
   jest.spyOn(console, "error").mockImplementation(() => {});
   container = document.createElement("div");
@@ -362,5 +403,147 @@ it("restores shared Final Stand units and exposes their selection without rewrit
   );
   expect(getByTestId("dps-unit-search-2")).toHaveValue(`attacker ${config.latestPatch}`);
   expect(getByTestId("loaded-unit-0")).toHaveTextContent("hoff_player_riflemen_us");
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  });
+  expect(mockRouter.replace.mock.calls.at(-1)![0].query).toEqual({});
+  const current = await lastSetup();
+  expect(current.mode).toBe("vs");
+  if (current.mode !== "vs") throw new Error("Expected VS setup");
+  expect(current.slots.map(({ unit }) => unit?.id)).toEqual([
+    "hoff_player_riflemen_us",
+    "attacker",
+  ]);
+});
+
+const lastSetup = async () => {
+  const hash = mockRouter.replace.mock.calls.at(-1)![0].hash as string;
+  return (await decodeSharedDpsSetup(new URLSearchParams(hash).get("setup")!))!;
+};
+const flushShare = async () => {
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 220));
+  });
+};
+
+it("loads both VS patches, settings, and modifiers from the URL and records later edits", async () => {
+  mockRouter.isReady = true;
+  const saved: SharedDpsSetup = {
+    v: 1,
+    mode: "vs",
+    allowAllWeapons: true,
+    showFinalStand: true,
+    showDpsHealth: true,
+    filters: [["american"], []],
+    slots: [
+      {
+        patch: olderPatch,
+        unit: {
+          id: "hoff_player_riflemen_us",
+          weapons: [],
+          cover: "heavy",
+          moving: true,
+          modifiers: { damage: { type: "additive", value: 10, enabled: true } },
+        },
+      },
+      { patch: config.latestPatch, unit: { id: "attacker", weapons: [], vet: 2 } },
+    ],
+  };
+  mockRouter.asPath = `/explorer/dps#setup=${await encodeSharedDpsSetup(saved)}`;
+  fetchData.mockResolvedValueOnce(dataset(olderPatch));
+  await renderTool(<DpsPageComponent {...dataset()} />);
+  expect(fetchData).toHaveBeenCalledWith(olderPatch);
+  expect(patchInputs().map((input) => input.value)).toEqual([olderPatch, config.latestPatch]);
+  expect(getByTestId("dps-unit-search-1")).toHaveValue(`hoff_player_riflemen_us ${olderPatch}`);
+  expect(JSON.parse(getByTestId("loaded-unit-0").getAttribute("data-unit")!)).toMatchObject(
+    saved.slots[0].unit!,
+  );
+  await click(
+    Array.from(container.querySelectorAll("button")).find(
+      (button) => button.textContent === "Adjust damage 0",
+    )!,
+  );
+  await flushShare();
+  const current = await lastSetup();
+  expect(current.mode).toBe("vs");
+  if (current.mode !== "vs") throw new Error("Expected VS setup");
+  expect(current.slots[0].unit?.modifiers?.damage.value).toBe(25);
+  expect(current.slots[1].unit?.vet).toBe(2);
+  expect(current.showDpsHealth).toBe(true);
+  expect(current.allowAllWeapons).toBe(true);
+});
+
+it("loads and preserves the comparison's target, formation, aiming and display settings", async () => {
+  mockRouter.isReady = true;
+  mockRouter.pathname = "/explorer/dps-compare";
+  const saved: SharedDpsSetup = {
+    v: 1,
+    mode: "compare",
+    patch: olderPatch,
+    attackers: [{ id: "attacker", weapons: [], moving: true }],
+    target: { id: "panzergrenadier_ak", weapons: [], cover: "heavy" },
+    targetType: "infantry",
+    filter: ["american"],
+    allowAllWeapons: true,
+    showFinalStand: true,
+    scatter: {
+      enabled: true,
+      preset: "panzergrenadier_ak",
+      formation: "cover",
+      directionalCover: true,
+      disabledModelIds: [2],
+      targetModelId: null,
+      groundTarget: { x: -2, y: 3 },
+      gunnerAngleDeg: 180,
+    },
+    samples: 2025,
+    fogOfWar: true,
+    preview: null,
+  };
+  mockRouter.asPath = `/explorer/dps-compare#setup=${await encodeSharedDpsSetup(saved)}`;
+  fetchData.mockResolvedValueOnce(dataset(olderPatch));
+  await renderTool(<DpsComparePageComponent {...dataset()} />);
+  expect(patchInputs()[0]).toHaveValue(olderPatch);
+  expect(getByTestId("dps-attacker-0")).toHaveTextContent(`attacker ${olderPatch}`);
+  expect(getByTestId("dps-compare-target-search")).toHaveValue(
+    `panzergrenadier_ak ${olderPatch}`,
+  );
+  await flushShare();
+  const current = await lastSetup();
+  expect(current).toMatchObject({
+    mode: "compare",
+    patch: olderPatch,
+    scatter: saved.scatter,
+    samples: 2025,
+    fogOfWar: true,
+    allowAllWeapons: true,
+    showFinalStand: true,
+  });
+});
+
+it("keeps a shared setup retryable when its saved patch cannot initially download", async () => {
+  mockRouter.isReady = true;
+  const saved: SharedDpsSetup = {
+    v: 1,
+    mode: "vs",
+    allowAllWeapons: false,
+    showFinalStand: false,
+    filters: [[], []],
+    showDpsHealth: false,
+    slots: [
+      { patch: olderPatch, unit: { id: "attacker", weapons: [] } },
+      { patch: config.latestPatch, unit: null },
+    ],
+  };
+  mockRouter.asPath = `/explorer/dps#setup=${await encodeSharedDpsSetup(saved)}`;
+  fetchData
+    .mockRejectedValueOnce(new Error("Offline"))
+    .mockResolvedValueOnce(dataset(olderPatch));
+  await renderTool(<DpsPageComponent {...dataset()} />);
+  expect(alert()).toBeInTheDocument();
   expect(mockRouter.replace).not.toHaveBeenCalled();
+  await click(retryButton()!);
+  await settleSharedSetup();
+  expect(alert()).not.toBeInTheDocument();
+  expect(getByTestId("dps-unit-search-1")).toHaveValue(`attacker ${olderPatch}`);
 });

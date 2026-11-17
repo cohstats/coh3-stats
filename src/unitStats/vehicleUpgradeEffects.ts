@@ -54,13 +54,15 @@ export const getUpgradedVehicleWeaponBag = (
 ): WeaponStatsType => {
   const bag = member.weapon.weapon_bag;
   const { burstRateMultiplier, rangeAddition } = getVehicleWeaponUpgradeEffects(member, attacker);
-  if (burstRateMultiplier === 1 && rangeAddition === 0) return bag;
+  const forceFireOnMove = Boolean(attacker?.rangerFireOnMove);
+  if (burstRateMultiplier === 1 && rangeAddition === 0 && !forceFireOnMove) return bag;
 
   // Additive range shifts the near/mid/far distance profile and maximum, but
   // never the minimum range or any of the scatter parameters.
   const shifted = (value: number) => (value < 0 ? value : value + rangeAddition);
   return {
     ...bag,
+    moving_can_fire_while_moving: bag.moving_can_fire_while_moving || forceFireOnMove,
     burst_rate_of_fire_min: bag.burst_rate_of_fire_min * burstRateMultiplier,
     burst_rate_of_fire_max: bag.burst_rate_of_fire_max * burstRateMultiplier,
     range_min: bag.range_min,

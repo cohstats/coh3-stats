@@ -60,7 +60,8 @@ import config from "../../../config";
 import type { FormationData } from "../../../src/unitStats/mappingFormations";
 import {
   getSquadWeaponEntity,
-  resolveSquadFormation,
+  getCalculatorFormation,
+  getDirectionalCoverLine,
 } from "../../../src/unitStats/squadFormations";
 import {
   AnalyticsDPSExplorerPatchSelection,
@@ -85,6 +86,19 @@ import { FinalStandBadge } from "../../final-stand-badge";
 import { FinalStandEnemyBadge } from "../../final-stand-enemy-badge";
 import { mapChartData, options } from "./dpsPageComponent";
 import { DpsUnitCustomizing } from "./dpsUnitCustomizing";
+import { DpsDataError } from "./components/DpsDataError";
+import { useSharedDpsUrl } from "./useSharedDpsUrl";
+import {
+  DEFAULT_DPS_SETTINGS,
+  DEFAULT_COMPARE_SETTINGS,
+} from "../../../src/unitStats/dpsDefaults";
+import {
+  hasSharedDpsSetup,
+  readSharedDpsSetup,
+  restoreDpsUnit,
+  snapshotDpsUnit,
+  type SharedDpsSetup,
+} from "../../../src/unitStats/sharedDpsSetup";
 
 ChartJS.register(
   CategoryScale,
@@ -150,26 +164,32 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
 
   // Shared state
   const [factionFilter, setFactionFilter] = useState<string[]>([]);
-  const [allowAllWeapons, setAllowAllWeapons] = useState(false);
+  const [allowAllWeapons, setAllowAllWeapons] = useState(DEFAULT_DPS_SETTINGS.allowAllWeapons);
   // Final Stand (DLC / co-op vs AI) units are opt-in.
-  const [showFinalStand, setShowFinalStand] = useState(false);
+  const [showFinalStand, setShowFinalStand] = useState(DEFAULT_DPS_SETTINGS.showFinalStand);
   // Scatter starts enabled and requires a selected infantry defender.
   const [scatterFormation, setScatterFormation] = useState<ScatterFormationState>({
     ...DEFAULT_SCATTER_FORMATION,
     disabledModelIds: [],
   });
   const [formationData, setFormationData] = useState<FormationData>(props.formationData ?? {});
-  const [scatterSamples, setScatterSamples] = useState(576);
-  const [scatterFogOfWar, setScatterFogOfWar] = useState(false);
+  const [scatterSamples, setScatterSamples] = useState(DEFAULT_COMPARE_SETTINGS.samples);
+  const [scatterFogOfWar, setScatterFogOfWar] = useState(DEFAULT_COMPARE_SETTINGS.fogOfWar);
   const [rerender, setRerender] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [urlReady, setUrlReady] = useState(false);
+  const [restoreError, setRestoreError] = useState(false);
+  const [restoreAttempt, setRestoreAttempt] = useState(0);
+  const restoredScatterTarget = useRef<string | undefined>(undefined);
   const [catalog, setCatalog] = useState(() => createDpsUnitCatalog(props));
   const patchVersion = catalog.data.patch;
   const patchRequest = useRef(0);
   const { ebpsData: cachedEbps, weaponData: cachedWeapons } = catalog.data;
 
   // Target mode controls the defender search separately from the attacker search.
-  const [targetType, setTargetType] = useState<CompareTargetType>("infantry");
+  const [targetType, setTargetType] = useState<CompareTargetType>(
+    DEFAULT_COMPARE_SETTINGS.targetType,
+  );
   // Undefined means no matching defender is available; it never creates a generic target.
   const [targetUnit, setTargetUnit] = useState<CustomizableUnit | undefined>();
   const [targetResetVersion, setTargetResetVersion] = useState(0);
@@ -228,13 +248,18 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
   }, [catalog, unitSelectionList, targetType, targetUnit]);
 
   useEffect(() => {
+    const key = `${patchVersion}:${targetUnit?.id ?? ""}`;
+    if (restoredScatterTarget.current === key) {
+      restoredScatterTarget.current = undefined;
+      return;
+    }
     setScatterFormation((previous) => ({
       ...previous,
       disabledModelIds: [],
       targetModelId: 1,
       groundTarget: null,
     }));
-  }, [targetUnit?.path, targetUnit?.id, patchVersion]);
+  }, [targetUnit?.path, targetUnit?.id, patchVersion, urlReady]);
 
   // Patch list
   const patchList = Object.keys(config.patches);
@@ -375,6 +400,71 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
     setShowFinalStand(checked);
   };
 
+  useEffect(() => {
+    if (!router.isReady || urlReady) return;
+    let active = true;
+    setIsLoading(true);
+    setRestoreError(false);
+    (async () => {
+      try {
+        const saved = await readSharedDpsSetup(router.asPath, "compare");
+        if (!active) return;
+        if (saved?.mode !== "compare") {
+          setUrlReady(true);
+          return;
+        }
+        const loaded = saved.patch === props.patch ? props : await fetchDpsData(saved.patch);
+        if (!active) return;
+        const nextCatalog = createDpsUnitCatalog(loaded);
+        const attackers = saved.attackers.flatMap((unit, index) => {
+          const restored = restoreDpsUnit(unit, nextCatalog);
+          return restored ? [{ unit: restored, previewId: index + 1 }] : [];
+        });
+        const target = restoreDpsUnit(saved.target, nextCatalog);
+        const defender =
+          target && isInfantryTarget(target) !== (saved.targetType === "infantry")
+            ? getDefaultTarget(nextCatalog, saved.targetType)
+            : target;
+        restoredScatterTarget.current = `${loaded.patch}:${defender?.id ?? ""}`;
+        setCatalog(nextCatalog);
+        setFormationData(loaded.formationData);
+        setAttackingUnits(attackers.map(({ unit }) => unit));
+        setAttackerPreviewIds(attackers.map(({ previewId }) => previewId));
+        nextAttackerPreviewId.current = saved.attackers.length;
+        setTargetType(saved.targetType);
+        setTargetUnit(defender);
+        setFactionFilter(saved.filter);
+        setAllowAllWeapons(saved.allowAllWeapons);
+        setShowFinalStand(
+          saved.showFinalStand ||
+            attackers.some(({ unit }) => isFinalStandUnit(unit)) ||
+            Boolean(defender && isFinalStandUnit(defender)),
+        );
+        setScatterFormation({ ...DEFAULT_SCATTER_FORMATION, ...saved.scatter });
+        setScatterSamples(saved.samples);
+        setScatterFogOfWar(saved.fogOfWar);
+        setSelectedUnitToAdd(saved.pendingAttacker ?? null);
+        const previewId = saved.preview
+          ? `${saved.preview.attacker + 1}:${saved.preview.weapon}`
+          : null;
+        setSelectedPreviewWeaponId(previewId);
+        setPreviewRangeSelection(
+          saved.preview && previewId ? { weaponId: previewId, range: saved.preview.range } : null,
+        );
+        setUrlReady(true);
+      } catch (error) {
+        if (!active) return;
+        console.error("Failed to restore shared DPS comparison:", error);
+        setRestoreError(true);
+      } finally {
+        if (active) setIsLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [router.isReady, restoreAttempt]);
+
   // Update health for all units
   if (targetUnit) updateHealth(targetUnit);
   attackingUnits.forEach((unit) => {
@@ -392,18 +482,26 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
   const squadLayout = useMemo(
     () =>
       targetUnit && scatterCompatibleTarget && humanCount > 0
-        ? resolveSquadFormation(
+        ? getCalculatorFormation(
             targetUnit.sbps,
             formationData,
             humanCount,
-            targetUnit.cover,
-            targetUnit.is_moving,
+            scatterFormation.formation ?? "default",
+            scatterFormation.preset,
             getSquadWeaponEntity(targetUnit.sbps, cachedEbps),
           )
         : undefined,
     // Unit customizers mutate cover/movement in place.
 
-    [targetUnit, formationData, humanCount, scatterCompatibleTarget, rerender],
+    [
+      targetUnit,
+      formationData,
+      humanCount,
+      scatterCompatibleTarget,
+      scatterFormation.formation,
+      scatterFormation.preset,
+      rerender,
+    ],
   );
   const formationModels = useMemo(
     () =>
@@ -427,6 +525,10 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
           ? scatterFormation.targetModelId
           : (formationModels[0]?.id ?? null),
   };
+  const coverLine =
+    scatterFormation.formation === "cover" && scatterFormation.directionalCover
+      ? getDirectionalCoverLine(formationModels)
+      : undefined;
   const weaponMarker = squadLayout?.weapon
     ? { x: -squadLayout.weapon.x, y: -squadLayout.weapon.y }
     : undefined;
@@ -440,6 +542,7 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
             gunnerAngleDeg: scatterFormation.gunnerAngleDeg,
             samplesPerShot: scatterSamples,
             inFogOfWar: scatterFogOfWar,
+            directionalCover: coverLine,
           }
         : undefined,
     [
@@ -473,6 +576,7 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
           .filter((member) => member.num > 0 && hasScatterAoe(member.weapon.weapon_bag))
           .map((member) => ({
             value: `${attackerPreviewIds[index]}:${member.weapon_id}`,
+            attackerIndex: index,
             label: `${attacker.screen_name || attacker.id} (#${index + 1}) — ${member.weapon.ui_name || member.weapon.id}`,
             weaponName: member.weapon.ui_name || member.weapon.id,
             attackerName: `${attacker.screen_name || attacker.id} (#${index + 1})`,
@@ -506,6 +610,41 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
     selectedPreviewCandidate && previewRangeSelection?.weaponId === selectedPreviewCandidate.value
       ? Math.max(previewMinRange, Math.min(previewMaxRange, previewRangeSelection.range))
       : previewMaxRange;
+
+  // Customizers mutate units in place, so include their render signal in the snapshots.
+  const sharedAttackers = useMemo(
+    () => attackingUnits.map((unit) => snapshotDpsUnit(unit, catalog.getUnit(unit.id))!),
+    [attackingUnits, catalog, rerender],
+  );
+  const sharedTarget = useMemo(
+    () => snapshotDpsUnit(targetUnit, targetUnit ? catalog.getUnit(targetUnit.id) : undefined),
+    [targetUnit, catalog, rerender],
+  );
+  useSharedDpsUrl(urlReady && !isLoading, {
+    v: 1,
+    mode: "compare",
+    patch: patchVersion,
+    attackers: sharedAttackers,
+    target: sharedTarget,
+    targetType,
+    filter: factionFilter,
+    allowAllWeapons,
+    showFinalStand,
+    scatter: scatterFormation,
+    samples: scatterSamples,
+    fogOfWar: scatterFogOfWar,
+    pendingAttacker: selectedUnitToAdd,
+    preview:
+      selectedPreviewCandidate &&
+      (selectedPreviewCandidate !== previewWeaponCandidates[0] ||
+        previewRange !== previewMaxRange)
+        ? {
+            attacker: selectedPreviewCandidate.attackerIndex,
+            weapon: selectedPreviewCandidate.member.weapon_id,
+            range: previewRange,
+          }
+        : null,
+  } as SharedDpsSetup);
 
   // Compare every weapon at the same range, aim point and formation. Only the
   // selected weapon needs per-model details; other rows use the cheaper total.
@@ -603,6 +742,11 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
   options.scales.y.suggestedMax = maxY;
   options.scales.x.suggestedMax = maxX;
   options.scales.y.title.text = "Damage Per Second (DPS)";
+
+  if (restoreError)
+    return <DpsDataError onRetry={() => setRestoreAttempt((attempt) => attempt + 1)} />;
+  if (!urlReady && hasSharedDpsSetup(router.asPath))
+    return <Container role="status">Loading shared setup…</Container>;
 
   return (
     <>
@@ -794,11 +938,13 @@ export const DpsComparePageComponent: React.FC<DpsData> = (props) => {
             <ScatterFormationEditor
               value={effectiveFormation}
               models={formationModels}
+              coverLine={coverLine}
               unitFormation={
                 targetUnit
                   ? {
-                      available: !!squadLayout,
+                      available: Boolean(squadLayout?.available),
                       approximateCrew: squadLayout?.approximateCrew ?? false,
+                      examplePreset: squadLayout?.examplePreset,
                       weapon: weaponMarker,
                     }
                   : undefined

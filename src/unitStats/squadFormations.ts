@@ -1,6 +1,7 @@
 import type { SbpsType } from "./mappingSbps";
 import type { EbpsType } from "./mappingEbps";
 import infantryFormationPresets from "./infantry-formation-presets.json";
+import type { DirectionalCoverLine } from "./combatCover";
 import {
   FORMATION_GROUPS,
   type FormationCounts,
@@ -258,3 +259,72 @@ export const getInfantryFormationExample = (
   }
   return models;
 };
+
+export type CalculatorFormationMode = "default" | "cover" | "bunched";
+
+export const getMinimumFormationSpacing = (models: readonly SquadFormationModel[]): number => {
+  let closest = Infinity;
+  for (let i = 0; i < models.length; i++)
+    for (let j = i + 1; j < models.length; j++) {
+      const distance = Math.hypot(models[i].x - models[j].x, models[i].y - models[j].y);
+      if (distance > 1e-6) closest = Math.min(closest, distance);
+    }
+  return closest;
+};
+
+export const bunchFormation = (
+  models: SquadFormationModel[],
+  coverModels: SquadFormationModel[],
+) => {
+  const original = getMinimumFormationSpacing(models);
+  const closestCover = getMinimumFormationSpacing(coverModels);
+  const scale =
+    Number.isFinite(original) && Number.isFinite(closestCover)
+      ? Math.min(1, closestCover / original)
+      : 1;
+  const origin = models[0] ?? { x: 0, y: 0 };
+  return models.map((model) => ({
+    ...model,
+    x: origin.x + (model.x - origin.x) * scale,
+    y: origin.y + (model.y - origin.y) * scale,
+  }));
+};
+
+/** Formation geometry is selected independently from the defender's cover bonuses. */
+export const getCalculatorFormation = (
+  squad: SbpsType,
+  data: FormationData,
+  count: number,
+  mode: CalculatorFormationMode = "default",
+  fallback: InfantryFormationPreset = DEFAULT_INFANTRY_FORMATION_PRESET,
+  weapon?: EbpsType,
+) => {
+  const normal = resolveSquadFormation(squad, data, count, "", false, weapon);
+  const covered = resolveSquadFormation(squad, data, count, "heavy", false, weapon);
+  const actualCover = covered && covered.reference !== normal?.reference ? covered : undefined;
+  const defaultModels = normal?.models ?? getInfantryFormationExample(fallback, count);
+  const coverModels = actualCover?.models ?? getInfantryFormationExample("riflemen_cover", count);
+  return {
+    models:
+      mode === "cover"
+        ? coverModels
+        : mode === "bunched"
+          ? bunchFormation(defaultModels, coverModels)
+          : defaultModels,
+    weapon: (mode === "cover" ? actualCover : normal)?.weapon,
+    approximateCrew: Boolean((mode === "cover" ? actualCover : normal)?.approximateCrew),
+    available: Boolean(mode === "cover" ? actualCover : normal),
+    examplePreset: mode === "cover" ? ("riflemen_cover" as const) : fallback,
+  };
+};
+
+export const getDirectionalCoverLine = (
+  models: readonly SquadFormationModel[],
+): DirectionalCoverLine | undefined =>
+  models.length
+    ? {
+        minX: Math.min(...models.map((model) => model.x)) - 1,
+        maxX: Math.max(...models.map((model) => model.x)) + 1,
+        y: Math.min(...models.map((model) => model.y)) - 0.5,
+      }
+    : undefined;

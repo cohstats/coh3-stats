@@ -6,7 +6,6 @@ import {
   Card,
   Group,
   Grid,
-  SimpleGrid,
   Slider,
   Stack,
   Text,
@@ -20,7 +19,15 @@ import {
   INFANTRY_FORMATION_PRESETS,
   type InfantryFormationPreset,
   type SquadFormationModel,
+  bunchFormation,
 } from "../../../../src/unitStats/squadFormations";
+import type { DirectionalCoverLine } from "../../../../src/unitStats/combatCover";
+import {
+  DEFAULT_SCATTER_FORMATION,
+  type ScatterFormationState,
+} from "../../../../src/unitStats/dpsDefaults";
+export { DEFAULT_SCATTER_FORMATION };
+export type { ScatterFormationState };
 import { IconTargetArrow } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import type { WeaponStatsType } from "../../../../src/unitStats/mappingWeapon";
@@ -31,39 +38,26 @@ import {
   getRectangularAoeCorners,
 } from "../../../../src/unitStats/scatterSimulation";
 
-/** Keep this state at the calculator level so it can later feed the scatter solver. */
-export type ScatterFormationState = {
-  enabled: boolean;
-  preset: InfantryFormationPreset;
-  disabledModelIds: number[];
-  /** An infantry aim point. Disabled models can still be used as markers. Null = ground attack. */
-  targetModelId: number | null;
-  /** Arbitrary aim point in provisional metres, used when targetModelId is null. */
-  groundTarget?: { x: number; y: number } | null;
-  /** Internal mathematical angle: 0° right, 90° up. The UI measures clockwise from the unit's front. */
-  gunnerAngleDeg: number;
-};
-
 export type ScatterFormationModel = SquadFormationModel;
-
-export const DEFAULT_SCATTER_FORMATION: ScatterFormationState = {
-  enabled: true,
-  preset: DEFAULT_INFANTRY_FORMATION_PRESET,
-  disabledModelIds: [],
-  targetModelId: 1,
-  groundTarget: null,
-  gunnerAngleDeg: 270,
-};
 
 /** Shared fallback for the diagram and solver when the selected squad has no usable layout. */
 export const getScatterFormationModels = (
   state: ScatterFormationState,
   count = 6,
-): ScatterFormationModel[] =>
-  getInfantryFormationExample(state.preset, count).map((model) => ({
+): ScatterFormationModel[] => {
+  const normal = getInfantryFormationExample(state.preset, count);
+  const covered = getInfantryFormationExample("riflemen_cover", count);
+  return (
+    state.formation === "cover"
+      ? covered
+      : state.formation === "bunched"
+        ? bunchFormation(normal, covered)
+        : normal
+  ).map((model) => ({
     ...model,
     enabled: !state.disabledModelIds.includes(model.id),
   }));
+};
 
 /** Gunner bearing around the aimed-at model. Physical range comes from the DPS chart. */
 export const getScatterGunnerDirection = (state: ScatterFormationState) => {
@@ -142,9 +136,11 @@ const buildScatterPreview = (preview: PreviewWeapon, target: Point, gunnerAngleD
 interface ScatterFormationEditorProps {
   value: ScatterFormationState;
   models?: ScatterFormationModel[];
+  coverLine?: DirectionalCoverLine;
   unitFormation?: {
     available: boolean;
     approximateCrew: boolean;
+    examplePreset?: InfantryFormationPreset;
     weapon?: Point;
   };
   onChange: (value: ScatterFormationState) => void;
@@ -166,6 +162,7 @@ interface ScatterFormationEditorProps {
 export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
   value,
   models: suppliedModels,
+  coverLine,
   unitFormation,
   onChange,
   previewWeapon,
@@ -212,6 +209,13 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
   // and scatter envelope fit without stretching circular AoE.
   // The gunner's ring remains a symbolic direction selector; it is not physical range.
   let maxExtent = 3.8;
+  if (coverLine)
+    maxExtent = Math.max(
+      maxExtent,
+      Math.abs(coverLine.minX - viewOrigin.x),
+      Math.abs(coverLine.maxX - viewOrigin.x),
+      Math.abs(coverLine.y - viewOrigin.y),
+    );
   for (const model of models) {
     maxExtent = Math.max(
       maxExtent,
@@ -416,29 +420,48 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
                 />
               </Stack>
 
-              {!unitFormation?.available && (
-                <SimpleGrid
-                  cols={{ base: 1, sm: 2 }}
-                  spacing="xs"
-                  data-testid="scatter-example-presets"
-                >
-                  {INFANTRY_FORMATION_PRESETS.map((preset) => (
+              <Group justify="space-between" gap="lg">
+                <Group gap="xs" wrap="nowrap" data-testid="scatter-formation-selector">
+                  {(["default", "cover", "bunched"] as const).map((formation) => (
                     <Button
-                      key={preset}
+                      key={formation}
                       size="compact-sm"
-                      variant={selectedPreset === preset ? "filled" : "default"}
-                      onClick={() => onChange({ ...value, preset })}
-                      aria-pressed={selectedPreset === preset}
+                      variant={
+                        (value.formation ?? "default") === formation ? "filled" : "default"
+                      }
+                      onClick={() => onChange({ ...value, formation })}
+                      aria-pressed={(value.formation ?? "default") === formation}
                     >
-                      {t(`dpsCompareUi.formation.presets.${preset}`)}
+                      {t(`dpsCompareUi.formation.modes.${formation}`)}
                     </Button>
                   ))}
-                </SimpleGrid>
+                </Group>
+                {value.formation === "cover" && (
+                  <Button
+                    size="compact-sm"
+                    color="green"
+                    ml="auto"
+                    variant={value.directionalCover ? "filled" : "default"}
+                    aria-pressed={Boolean(value.directionalCover)}
+                    onClick={() =>
+                      onChange({ ...value, directionalCover: !value.directionalCover })
+                    }
+                  >
+                    {t("dpsCompareUi.formation.directionalCover")}
+                  </Button>
+                )}
+              </Group>
+              {value.formation === "cover" && value.directionalCover && (
+                <Text size="xs" c="dimmed">
+                  {t("dpsCompareUi.formation.directionalCoverNote")}
+                </Text>
               )}
               {!unitFormation?.available && (
                 <Text size="xs" c="dimmed">
                   {t("dpsCompareUi.formation.unavailable", {
-                    unit: t(`dpsCompareUi.formation.presets.${selectedPreset}`),
+                    unit: t(
+                      `dpsCompareUi.formation.presets.${unitFormation?.examplePreset ?? (value.formation === "cover" ? "riflemen_cover" : selectedPreset)}`,
+                    ),
                   })}
                 </Text>
               )}
@@ -484,6 +507,17 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
                     color: "var(--mantine-color-text)",
                   }}
                 >
+                  {coverLine && (
+                    <line
+                      data-testid="scatter-cover-line"
+                      x1={toX(coverLine.minX)}
+                      x2={toX(coverLine.maxX)}
+                      y1={toY(coverLine.y)}
+                      y2={toY(coverLine.y)}
+                      stroke="var(--mantine-color-green-6)"
+                      strokeWidth="0.8"
+                    />
+                  )}
                   {minorGridOpacity > 0 && (
                     <path
                       d={gridPath(1, true)}
@@ -919,11 +953,28 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
           </Grid.Col>
         </Grid>
         <Group justify="space-between" align="flex-start" gap="sm">
-          <Text size="xs" c="dimmed" style={{ flex: 1 }}>
-            {t("dpsCompareUi.formation.help")}
-            <br />
-            <span id={keyboardHelpId}>{t("dpsCompareUi.formation.groundKeyboardHelp")}</span>
-          </Text>
+          <Stack gap={4} style={{ flex: 1 }}>
+            <Text size="sm">{t("dpsCompareUi.formation.help")}</Text>
+            <Box component="details">
+              <summary
+                style={{
+                  cursor: "pointer",
+                  fontSize: "var(--mantine-font-size-xs)",
+                  color: "var(--mantine-color-dimmed)",
+                }}
+              >
+                {t("dpsCompareUi.formation.keyboardControls")}
+              </summary>
+              <Stack id={keyboardHelpId} gap={4} mt={4}>
+                <Text size="xs" c="dimmed">
+                  {t("dpsCompareUi.formation.keyboardModelHelp")}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {t("dpsCompareUi.formation.groundKeyboardHelp")}
+                </Text>
+              </Stack>
+            </Box>
+          </Stack>
           <Button
             variant="subtle"
             size="compact-sm"
