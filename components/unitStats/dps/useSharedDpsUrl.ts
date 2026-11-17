@@ -29,10 +29,17 @@ export const useSharedDpsUrl = (ready: boolean, setup: SharedDpsSetup) => {
         delete query.unit2;
         attemptedWrite = { hash };
         lastWritten.current = attemptedWrite;
-        await router.replace({ pathname: router.pathname, query, hash }, undefined, {
-          shallow: true,
-          scroll: false,
-        });
+        const completed = await router.replace(
+          { pathname: router.pathname, query, hash },
+          undefined,
+          {
+            shallow: true,
+            scroll: false,
+          },
+        );
+        if (completed === false && lastWritten.current === attemptedWrite) {
+          lastWritten.current = undefined;
+        }
       })().catch(() => {
         // A cancelled effect can still own a failed write; later writes own different markers.
         if (attemptedWrite && lastWritten.current === attemptedWrite) {

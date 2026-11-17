@@ -63,12 +63,70 @@ const advance = async (ms: number) => {
   });
 };
 const pendingNavigation = () => {
+  let resolve!: (result: boolean) => void;
   let reject!: (reason: Error) => void;
-  const promise = new Promise<boolean>((_resolve, rejectPromise) => {
+  const promise = new Promise<boolean>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
     reject = rejectPromise;
   });
-  return { promise, reject };
+  return { promise, resolve, reject };
 };
+
+it.each(["current", ""])(
+  "retries a write of %j when its cancelled navigation resolves false",
+  async (hash) => {
+    const navigation = pendingNavigation();
+    mockRouter.replace.mockReturnValueOnce(navigation.promise);
+    mockRouter.asPath = "/explorer/dps#setup=older";
+    encode.mockResolvedValue(hash);
+    await render(setup(false));
+    await advance(150);
+
+    await render(setup(true));
+    await act(async () => navigation.resolve(false));
+    await render(setup(false));
+    await advance(150);
+    expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+    expect(mockRouter.replace.mock.calls[1][0].hash).toBe(hash ? `setup=${hash}` : "");
+  },
+);
+
+it("preserves a newer write when an older navigation resolves false", async () => {
+  const navigation = pendingNavigation();
+  mockRouter.replace.mockReturnValueOnce(navigation.promise);
+  encode.mockResolvedValueOnce("first").mockResolvedValue("newer");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+
+  await act(async () => navigation.resolve(false));
+  await render(setup(false));
+  await render(setup(true));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+});
+
+it("preserves a newer write of the same hash when the original navigation resolves false", async () => {
+  const navigation = pendingNavigation();
+  mockRouter.replace.mockReturnValueOnce(navigation.promise);
+  encode
+    .mockResolvedValueOnce("first")
+    .mockResolvedValueOnce("second")
+    .mockResolvedValue("first");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+  await render(setup(false));
+  await advance(150);
+
+  await act(async () => navigation.resolve(false));
+  await render(setup(true));
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(3);
+});
 
 it.each(["current", ""])(
   "retries a failed write of %j after its effect was cancelled",
