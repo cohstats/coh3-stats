@@ -10,7 +10,7 @@ import config from "../../../../config";
 jest.mock("../../../../src/unitStats/sharedDpsSetup", () => ({
   encodeSharedDpsSetup: jest.fn(),
 }));
-jest.mock("next/router", () => ({ useRouter: () => mockRouter }));
+jest.mock("next/router", () => ({ useRouter: () => ({ ...mockRouter }) }));
 
 const mockRouter = {
   isReady: true,
@@ -46,7 +46,10 @@ beforeEach(() => {
   jest.useFakeTimers();
   encode.mockReset().mockResolvedValue("current");
   mockRouter.asPath = "/explorer/dps";
-  mockRouter.replace.mockReset().mockResolvedValue(true);
+  mockRouter.replace.mockReset().mockImplementation(async ({ hash }: { hash: string }) => {
+    mockRouter.asPath = `/explorer/dps${hash ? `#${hash}` : ""}`;
+    return true;
+  });
   container = document.createElement("div");
   root = createRoot(container);
 });
@@ -72,6 +75,100 @@ const pendingNavigation = () => {
   return { promise, resolve, reject };
 };
 
+it.each(["first", ""])(
+  "restores %j when an older pending write replaces the matching URL",
+  async (latest) => {
+    const navigation = pendingNavigation();
+    const latestPath = `/explorer/dps${latest ? `#setup=${latest}` : ""}`;
+    mockRouter.asPath = latestPath;
+    mockRouter.replace
+      .mockReturnValueOnce(navigation.promise)
+      .mockImplementation(async ({ hash }: { hash: string }) => {
+        mockRouter.asPath = `/explorer/dps${hash ? `#${hash}` : ""}`;
+        return true;
+      });
+    encode.mockResolvedValueOnce("second").mockResolvedValue(latest);
+    await render(setup(true));
+    await advance(150);
+    await render(setup(false));
+    await advance(150);
+    expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      mockRouter.asPath = "/explorer/dps#setup=second";
+      navigation.resolve(true);
+    });
+    expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+    expect(mockRouter.asPath).toBe(latestPath);
+  },
+);
+
+it("uses the settled URL when the latest compression finishes after a pending navigation", async () => {
+  const navigation = pendingNavigation();
+  let finishLatest!: (value: string) => void;
+  mockRouter.asPath = "/explorer/dps#setup=first";
+  mockRouter.replace
+    .mockReturnValueOnce(navigation.promise)
+    .mockImplementation(async ({ hash }: { hash: string }) => {
+      mockRouter.asPath = `/explorer/dps${hash ? `#${hash}` : ""}`;
+      return true;
+    });
+  encode.mockResolvedValueOnce("second").mockReturnValueOnce(
+    new Promise((resolve) => {
+      finishLatest = resolve;
+    }),
+  );
+  await render(setup(true));
+  await advance(150);
+  await render(setup(false));
+  await advance(150);
+  await act(async () => {
+    mockRouter.asPath = "/explorer/dps#setup=second";
+    navigation.resolve(true);
+  });
+  await act(async () => finishLatest("first"));
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+  expect(mockRouter.asPath).toBe("/explorer/dps#setup=first");
+});
+
+it("coalesces edits made during a pending replacement into the latest setup", async () => {
+  const navigation = pendingNavigation();
+  mockRouter.replace.mockReturnValueOnce(navigation.promise);
+  encode
+    .mockResolvedValueOnce("first")
+    .mockResolvedValueOnce("intermediate")
+    .mockResolvedValueOnce("latest");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+  await render({ ...setup(true), allowAllWeapons: true });
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+
+  await act(async () => {
+    mockRouter.asPath = "/explorer/dps#setup=first";
+    navigation.resolve(true);
+  });
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+  expect(mockRouter.replace.mock.calls[1][0].hash).toBe("setup=latest");
+  expect(mockRouter.asPath).toBe("/explorer/dps#setup=latest");
+});
+
+it("does not apply a queued setup after leaving the calculator", async () => {
+  const navigation = pendingNavigation();
+  mockRouter.replace.mockReturnValueOnce(navigation.promise);
+  encode.mockResolvedValueOnce("first").mockResolvedValueOnce("queued");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+  await act(async () => root.render(null));
+  await act(async () => navigation.resolve(true));
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
+});
+
 it.each(["current", ""])(
   "retries a write of %j when its cancelled navigation resolves false",
   async (hash) => {
@@ -91,7 +188,7 @@ it.each(["current", ""])(
   },
 );
 
-it("preserves a newer write when an older navigation resolves false", async () => {
+it("writes the latest setup after an older navigation resolves false", async () => {
   const navigation = pendingNavigation();
   mockRouter.replace.mockReturnValueOnce(navigation.promise);
   encode.mockResolvedValueOnce("first").mockResolvedValue("newer");
@@ -107,7 +204,7 @@ it("preserves a newer write when an older navigation resolves false", async () =
   expect(mockRouter.replace).toHaveBeenCalledTimes(2);
 });
 
-it("preserves a newer write of the same hash when the original navigation resolves false", async () => {
+it("retries the latest setup when it returns to the cancelled navigation's hash", async () => {
   const navigation = pendingNavigation();
   mockRouter.replace.mockReturnValueOnce(navigation.promise);
   encode
@@ -125,7 +222,7 @@ it("preserves a newer write of the same hash when the original navigation resolv
   await render(setup(true));
   await render(setup(false));
   await advance(150);
-  expect(mockRouter.replace).toHaveBeenCalledTimes(3);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
 });
 
 it.each(["current", ""])(
@@ -147,7 +244,7 @@ it.each(["current", ""])(
   },
 );
 
-it("preserves a newer write's marker when an older navigation fails", async () => {
+it("writes the latest setup after an older navigation rejects", async () => {
   const navigation = pendingNavigation();
   mockRouter.replace.mockReturnValueOnce(navigation.promise);
   encode.mockResolvedValueOnce("first").mockResolvedValue("newer");
@@ -155,7 +252,7 @@ it("preserves a newer write's marker when an older navigation fails", async () =
   await advance(150);
   await render(setup(true));
   await advance(150);
-  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
 
   await act(async () => navigation.reject(new Error("Old navigation failed")));
   await render(setup(false));
@@ -164,7 +261,7 @@ it("preserves a newer write's marker when an older navigation fails", async () =
   expect(mockRouter.replace).toHaveBeenCalledTimes(2);
 });
 
-it("preserves a newer write of the same hash when the original navigation fails", async () => {
+it("retries the latest setup when it returns to the rejected navigation's hash", async () => {
   const navigation = pendingNavigation();
   mockRouter.replace.mockReturnValueOnce(navigation.promise);
   encode
@@ -177,13 +274,13 @@ it("preserves a newer write of the same hash when the original navigation fails"
   await advance(150);
   await render(setup(false));
   await advance(150);
-  expect(mockRouter.replace).toHaveBeenCalledTimes(3);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(1);
 
   await act(async () => navigation.reject(new Error("Original navigation failed")));
   await render(setup(true));
   await render(setup(false));
   await advance(150);
-  expect(mockRouter.replace).toHaveBeenCalledTimes(3);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
 });
 
 it("does not let a slow compression overwrite a newer setup", async () => {
