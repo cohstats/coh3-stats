@@ -46,7 +46,7 @@ beforeEach(() => {
   jest.useFakeTimers();
   encode.mockReset().mockResolvedValue("current");
   mockRouter.asPath = "/explorer/dps";
-  mockRouter.replace.mockClear();
+  mockRouter.replace.mockReset().mockResolvedValue(true);
   container = document.createElement("div");
   root = createRoot(container);
 });
@@ -62,6 +62,71 @@ const advance = async (ms: number) => {
     jest.advanceTimersByTime(ms);
   });
 };
+const pendingNavigation = () => {
+  let reject!: (reason: Error) => void;
+  const promise = new Promise<boolean>((_resolve, rejectPromise) => {
+    reject = rejectPromise;
+  });
+  return { promise, reject };
+};
+
+it.each(["current", ""])(
+  "retries a failed write of %j after its effect was cancelled",
+  async (hash) => {
+    const navigation = pendingNavigation();
+    mockRouter.replace.mockReturnValueOnce(navigation.promise);
+    mockRouter.asPath = "/explorer/dps#setup=older";
+    encode.mockResolvedValue(hash);
+    await render(setup(false));
+    await advance(150);
+
+    await render(setup(true));
+    await act(async () => navigation.reject(new Error("Navigation failed")));
+    await render(setup(false));
+    await advance(150);
+    expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+    expect(mockRouter.replace.mock.calls[1][0].hash).toBe(hash ? `setup=${hash}` : "");
+  },
+);
+
+it("preserves a newer write's marker when an older navigation fails", async () => {
+  const navigation = pendingNavigation();
+  mockRouter.replace.mockReturnValueOnce(navigation.promise);
+  encode.mockResolvedValueOnce("first").mockResolvedValue("newer");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+
+  await act(async () => navigation.reject(new Error("Old navigation failed")));
+  await render(setup(false));
+  await render(setup(true));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(2);
+});
+
+it("preserves a newer write of the same hash when the original navigation fails", async () => {
+  const navigation = pendingNavigation();
+  mockRouter.replace.mockReturnValueOnce(navigation.promise);
+  encode
+    .mockResolvedValueOnce("first")
+    .mockResolvedValueOnce("second")
+    .mockResolvedValue("first");
+  await render(setup(false));
+  await advance(150);
+  await render(setup(true));
+  await advance(150);
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(3);
+
+  await act(async () => navigation.reject(new Error("Original navigation failed")));
+  await render(setup(true));
+  await render(setup(false));
+  await advance(150);
+  expect(mockRouter.replace).toHaveBeenCalledTimes(3);
+});
 
 it("does not let a slow compression overwrite a newer setup", async () => {
   let finishOld!: (value: string) => void;

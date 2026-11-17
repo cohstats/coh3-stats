@@ -6,6 +6,7 @@ import {
   Card,
   Group,
   Grid,
+  Image,
   Slider,
   Stack,
   Text,
@@ -32,6 +33,7 @@ import { IconTargetArrow } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next/pages";
 import type { WeaponStatsType } from "../../../../src/unitStats/mappingWeapon";
 import type { ScatterModelShotStats } from "../../../../src/unitStats/scatterSimulation";
+import { getIconsPathOnCDN } from "../../../../src/utils";
 import {
   getScatterBand,
   getScatterImpactOffset,
@@ -844,7 +846,17 @@ export const ScatterFormationEditor: React.FC<ScatterFormationEditorProps> = ({
                       userSelect: "none",
                     }}
                   >
-                    <IconTargetArrow size={21} />
+                    <Image
+                      src={getIconsPathOnCDN(
+                        "icons/common/units/symbols/aa_gun_flak_38_20mm_ger.png",
+                      )}
+                      alt=""
+                      w={28}
+                      h={28}
+                      fit="contain"
+                      draggable={false}
+                      style={{ pointerEvents: "none" }}
+                    />
                   </Box>
                 </Tooltip>
               </Box>

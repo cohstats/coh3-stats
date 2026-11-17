@@ -63,6 +63,8 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# The prebuild creates this package outside Next's traced server files.
+COPY --from=builder --chown=nextjs:nodejs /app/.next/cache/dps-data ./.next/cache/dps-data
 
 USER nextjs
 

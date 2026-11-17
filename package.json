@@ -25,7 +25,7 @@
     "lint": "next lint",
     "lint:eslint": "eslint **/*.{ts,tsx,js}",
     "lint:prettier": "prettier --check \"**/*.{js,ts,jsx,tsx,yml,md,css}\"",
-    "next:build": "next build",
+    "next:build": "yarn prefetch-data && next build",
     "next:dev": "next dev",
     "prepare": "husky",
     "prefetch-data": "npx --yes ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/prefetch-data.ts",
