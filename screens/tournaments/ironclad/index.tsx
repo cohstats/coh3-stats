@@ -101,7 +101,7 @@ const DivisionPanel = ({ division }: { division: IroncladDivisionView }) => {
           {t("ironclad.participants.title")}
         </Title>
         <Paper withBorder radius="md" style={{ overflow: "hidden" }}>
-          <ParticipantsTable participants={division.participants} />
+          <ParticipantsTable participants={division.participants} rounds={division.rounds} />
         </Paper>
       </Stack>
     </Stack>

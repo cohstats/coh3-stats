@@ -6,7 +6,6 @@ import { useTranslation } from "next-i18next/pages";
 import type { LadderStandingRow } from "../../../src/tournaments/ladder-tournament";
 import { formatWinRate } from "../../../src/players/tournaments";
 import { getPlayerCardTournamentsRoute } from "../../../src/routes";
-import TournamentTitleBadges from "../../../components/tournaments/tournament-title-badges";
 import LadderPlayerLink from "../components/ladder-player-link";
 import classes from "./ladder-tournament.module.css";
 
@@ -26,7 +25,7 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
 
   return (
     <>
-      <Table.ScrollContainer minWidth={820} type="native">
+      <Table.ScrollContainer minWidth={720} type="native">
         <Table verticalSpacing="xs" horizontalSpacing="md" data-testid="ladder-standings-table">
           <Table.Thead className={classes.head}>
             <Table.Tr>
@@ -44,9 +43,6 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
               </Table.Th>
               <Table.Th className={classes.headCell}>
                 {t("league.standings.columns.matches")}
-              </Table.Th>
-              <Table.Th className={classes.headCell}>
-                {t("league.standings.columns.titles")}
               </Table.Th>
               <Table.Th className={classes.headCell}>
                 {t("league.standings.columns.casts")}
@@ -104,9 +100,6 @@ const StandingsTable = ({ standings }: { standings: LadderStandingRow[] }) => {
                   </Group>
                 </Table.Td>
                 <Table.Td>{row.matches}</Table.Td>
-                <Table.Td>
-                  <TournamentTitleBadges titles={row.titles} />
-                </Table.Td>
                 <Table.Td>
                   {row.castsCount > 0 ? (
                     // The player card tournaments tab lists the casts of the player

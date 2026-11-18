@@ -237,7 +237,7 @@ describe("TournamentsScreen", () => {
     ).toBeTruthy();
     expect(findText(card, "1v1")).toBeTruthy();
     expect(findText(card, "Verified ELO Divisions")).toBeTruthy();
-    expect(findText(card, "View Official Website")).toBeTruthy();
+    expect(findText(card, "Official site")).toBeTruthy();
     expect(findText(card, "Visit site")).toBeUndefined();
   });
 
@@ -253,7 +253,7 @@ describe("TournamentsScreen", () => {
     expect(findText(card, "Visit site")).toBeTruthy();
     expect(findText(card, "1v1")).toBeUndefined();
     expect(findText(card, "Verified ELO Divisions")).toBeUndefined();
-    expect(findText(card, "View Official Website")).toBeUndefined();
+    expect(findText(card, "Official site")).toBeUndefined();
   });
 
   test.each([IRONCLAD_TOURNAMENT, METAPLAYS_TOURNAMENT])(
@@ -286,7 +286,7 @@ describe("TournamentsScreen", () => {
     expect(card.querySelector("h2")?.textContent).toBe("MetaPlays");
     expect(findText(card, "1v1")).toBeTruthy();
     expect(findText(card, "Verified ELO Divisions")).toBeTruthy();
-    expect(findText(card, "View Official Website")).toBeTruthy();
+    expect(findText(card, "Official site")).toBeTruthy();
     expect(card.getAttribute("href")).toBe(METAPLAYS_TOURNAMENT.url);
   });
 });

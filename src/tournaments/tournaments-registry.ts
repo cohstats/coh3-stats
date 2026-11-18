@@ -56,7 +56,7 @@ export const IRONCLAD_TOURNAMENT: TournamentInfo = {
     { labelKey: "metadata.oneVsOne" },
     { labelKey: "metadata.verifiedEloDivisions", emphasized: true },
   ],
-  ctaKey: "hub.viewOfficialWebsite",
+  ctaKey: "hub.officialSite",
   url: config.tournaments.ironclad.url,
   logo: ironcladLogo.src,
   monogram: "IC",
