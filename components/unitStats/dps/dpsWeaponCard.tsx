@@ -74,6 +74,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
   const accuracy = props.unit.custom_modifiers?.accuracy;
   const weaponCardContext = {
     timingAtRange: preview?.timingAtRange,
+    baseFarAccuracy: props.weapon_member.weapon.weapon_bag.accuracy_far,
     hasAbsoluteAccuracy: accuracy?.enabled && accuracy.type === "absolute",
   };
   const isOptionalUpgradeWeapon = props.weapon_member.source === "optional_upgrade";

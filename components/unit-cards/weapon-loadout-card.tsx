@@ -290,11 +290,11 @@ export const WeaponLoadoutCard = (
   const showShotDelay = !isBurstWeapon && hasReloadFrequency;
   const showTimeBetweenBursts = isBurstWeapon;
   const showReloadCycle = hasReloadFrequency;
+  const baseFarAccuracy = context.baseFarAccuracy ?? weapon_bag.accuracy_far;
   const usesAccuracy =
     !weapon_bag.projectile_is_artillery &&
     (weapon_bag.accuracy_near > 0 || weapon_bag.accuracy_mid > 0 || weapon_bag.accuracy_far > 0);
-  const showTankAccuracy =
-    usesAccuracy && weapon_bag.accuracy_far > 0 && weapon_bag.accuracy_far < 0.08;
+  const showTankAccuracy = usesAccuracy && baseFarAccuracy < 0.08;
   // The calculator applies absolute accuracy after target-size scaling.
   const tankAccuracyMultiplier = context.hasAbsoluteAccuracy ? 1 : 20;
 

@@ -18,6 +18,7 @@ export type WeaponCardInput = {
 export type WeaponCardContext = {
   source?: "loadout" | "upgrade" | "ability";
   abilityNumShots?: number | null;
+  baseFarAccuracy?: number;
   hasAbsoluteAccuracy?: boolean;
   timingAtRange?: (distance: number) => WeaponTiming;
 };
