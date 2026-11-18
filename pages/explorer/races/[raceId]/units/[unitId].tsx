@@ -28,6 +28,7 @@ import {
   isFinalStandEnemyUnit,
   getSquadTotalCost,
   getSquadTotalUpkeepCost,
+  omitSquadFormation,
   ResourceValues,
   SbpsType,
   UpgradesType,
@@ -50,6 +51,7 @@ import {
 } from "../../../../../components/unit-cards/unit-upgrade-card";
 import type { UnitUpgradeDisplayRequirement } from "../../../../../components/unit-cards/unit-upgrade-card";
 import { VeterancyCard } from "../../../../../components/unit-cards/veterancy-card";
+import { FormationCard } from "../../../../../components/unit-cards/formation-card";
 import { WeaponLoadoutCardView } from "../../../../../components/unit-cards/weapon-loadout-card";
 import { HitpointCard } from "../../../../../components/unit-cards/hitpoints-card";
 import { UnitSquadCard } from "../../../../../components/unit-cards/unit-squad-card";
@@ -65,6 +67,11 @@ import {
   getLocalizedUrl,
 } from "../../../../../src/seo-utils";
 import { getMappings } from "../../../../../src/unitStats/mappings";
+import { getFormationData } from "../../../../../src/unitStats/mappingFormations";
+import {
+  getSquadFormationPreview,
+  type SquadFormationPreview,
+} from "../../../../../src/unitStats/formationPreview";
 import {
   getSbpsWeapons,
   getUpgradeWeaponLoadouts,
@@ -128,6 +135,8 @@ interface UnitDetailProps {
     } | null;
   };
   descriptions: Record<string, Record<string, string | null>>;
+  /** Null when the unit has no formation data. */
+  formationPreview: SquadFormationPreview | null;
 }
 
 const UnitCostGroup = ({
@@ -159,7 +168,11 @@ const UnitCostGroup = ({
   );
 };
 
-const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions }) => {
+const UnitDetail: NextPage<UnitDetailProps> = ({
+  calculatedData,
+  descriptions,
+  formationPreview,
+}) => {
   const { query, locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
 
@@ -656,6 +669,12 @@ const UnitDetail: NextPage<UnitDetailProps> = ({ calculatedData, descriptions })
                   title={t("unitPage.veterancy")}
                 />
               </Card>
+              {formationPreview && (
+                <Card p="md" radius="md" withBorder data-testid="formation-card">
+                  {/* Keyed by the unit, so the squad size / situation reset on unit navigation */}
+                  <FormationCard key={`${raceId}-${unitId}`} preview={formationPreview} />
+                </Card>
+              )}
             </Stack>
           </Grid.Col>
         </Grid>
@@ -1416,13 +1435,17 @@ const createdCalculateValuesForUnits = (
   unitId: string,
 ) => {
   const { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData } = data;
-  const resolvedSquad = sbpsData.find((x) => x.id === unitId);
+  const foundSquad = sbpsData.find((x) => x.id === unitId);
 
-  if (!resolvedSquad) {
+  if (!foundSquad) {
     return {
       error: "Squad not found",
     };
   }
+
+  // The squad is copied into the props several times (weapons, loadouts). The formation card gets
+  // its own trimmed preview, so don't send the raw formation tables.
+  const resolvedSquad = omitSquadFormation(foundSquad);
 
   // Obtain the total cost of the squad by looking at the loadout.
   const totalCost = getSquadTotalCost(resolvedSquad, ebpsData);
@@ -1538,6 +1561,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // const raceId = params?.raceId as string;
   const unitId = params?.unitId as string;
 
+  const squad = sbpsData.find((x) => x.id === unitId);
+  // Only the precomputed positions go to the client.
+  let formationPreview: SquadFormationPreview | null = null;
+  if (squad?.formation) {
+    try {
+      formationPreview = getSquadFormationPreview(squad, ebpsData, await getFormationData());
+    } catch (error) {
+      // The formation card is optional, don't fail the whole unit page because of it.
+      console.warn(`Formation data unavailable for unit ${unitId}`, error);
+    }
+  }
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
@@ -1546,6 +1581,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         unitId,
       ),
       descriptions: getUnitStatsCOH3Descriptions(locale),
+      formationPreview,
     },
     revalidate: false,
   };

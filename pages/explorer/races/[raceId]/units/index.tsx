@@ -24,7 +24,7 @@ import {
 } from "../../../../../src/seo-utils";
 import { localizedNames } from "../../../../../src/coh3/coh3-data";
 import { getMappings } from "../../../../../src/unitStats/mappings";
-import { isFinalStandUnit, SbpsType } from "../../../../../src/unitStats";
+import { isFinalStandUnit, omitSquadFormation, SbpsType } from "../../../../../src/unitStats";
 import FactionIcon from "../../../../../components/faction-icon";
 import { UnitDescriptionCard } from "../../../../../components/unit-cards/unit-description-card";
 import LinkWithOutPrefetch from "../../../../../components/LinkWithOutPrefetch";
@@ -268,7 +268,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const faction = factionMap[raceToFetch] ?? raceToFetch;
 
-  const units = sbpsData.filter((squad: SbpsType) => squad.faction.includes(faction));
+  const units = sbpsData
+    .filter((squad: SbpsType) => squad.faction.includes(faction))
+    .map(omitSquadFormation);
 
   return {
     props: {

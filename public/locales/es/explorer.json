@@ -86,6 +86,33 @@
     "empty": "No se encontraron unidades de Final Stand para {{faction}}."
   },
   "unitPage": {
+    "formation": {
+      "title": "Formación",
+      "situation": "Situación",
+      "squadSize": "Tamaño del escuadrón",
+      "front": "Frente",
+      "note": "Posiciones ideales de los datos del juego; el juego las adapta al terreno. La cuadrícula es de 1 m.",
+      "elements": {
+        "core": "Núcleo",
+        "leftFlank": "Flanco izquierdo",
+        "rightFlank": "Flanco derecho",
+        "scout": "Explorador",
+        "crew": "Dotación (aproximada)",
+        "weapon": "Arma"
+      },
+      "cover": {
+        "tp_defcover": "Sin cobertura",
+        "tp_heavy_cover": "Cobertura pesada",
+        "tp_light_cover": "Cobertura ligera",
+        "tp_negative_cover": "Cobertura negativa",
+        "tp_water_cover": "Agua",
+        "tp_smoke_cover": "Humo",
+        "tp_garrison_cover": "Guarnición",
+        "tp_trench_cover": "Trinchera",
+        "tp_road_light_cover": "Carretera (cobertura ligera)",
+        "tp_road_heavy_cover": "Carretera (cobertura pesada)"
+      }
+    },
     "stats": "Estadísticas",
     "abilities": "Habilidades",
     "loadout": "Equipamiento",

@@ -86,6 +86,33 @@
     "empty": "Keine Final Stand Einheiten für {{faction}} gefunden."
   },
   "unitPage": {
+    "formation": {
+      "title": "Formation",
+      "situation": "Situation",
+      "squadSize": "Truppgröße",
+      "front": "Vorne",
+      "note": "Ideale Positionen aus den Spieldaten, das Spiel passt sie an das Gelände an. Raster ist 1 m.",
+      "elements": {
+        "core": "Kern",
+        "leftFlank": "Linke Flanke",
+        "rightFlank": "Rechte Flanke",
+        "scout": "Späher",
+        "crew": "Besatzung (ungefähr)",
+        "weapon": "Waffe"
+      },
+      "cover": {
+        "tp_defcover": "Keine Deckung",
+        "tp_heavy_cover": "Schwere Deckung",
+        "tp_light_cover": "Leichte Deckung",
+        "tp_negative_cover": "Negative Deckung",
+        "tp_water_cover": "Wasser",
+        "tp_smoke_cover": "Rauch",
+        "tp_garrison_cover": "Besetztes Gebäude",
+        "tp_trench_cover": "Graben",
+        "tp_road_light_cover": "Straße (leichte Deckung)",
+        "tp_road_heavy_cover": "Straße (schwere Deckung)"
+      }
+    },
     "stats": "Werte",
     "abilities": "Fähigkeiten",
     "loadout": "Ausrüstung",

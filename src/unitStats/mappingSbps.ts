@@ -616,5 +616,18 @@ const setSbpsStats = (stats: SbpsType[]) => {
   }
 };
 
-export { sbpsStats, setSbpsStats, getSbpsStats, sbpsPatchData };
+/**
+ * A copy of the squad without the raw formation tables, for page props.
+ * They are only used server side (formation card preview) and by the DPS tool through its own API,
+ * but would add ~1.6 KB per squad to every page sending squads to the client.
+ */
+const omitSquadFormation = <T extends { formation?: unknown }>(
+  squad: T,
+): Omit<T, "formation"> => {
+  const copy = { ...squad };
+  delete copy.formation;
+  return copy;
+};
+
+export { sbpsStats, setSbpsStats, getSbpsStats, sbpsPatchData, omitSquadFormation };
 export type { SbpsType };

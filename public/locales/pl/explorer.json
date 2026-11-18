@@ -86,6 +86,33 @@
     "empty": "Nie znaleziono jednostek Final Stand dla frakcji {{faction}}."
   },
   "unitPage": {
+    "formation": {
+      "title": "Formacja",
+      "situation": "Sytuacja",
+      "squadSize": "Liczebność oddziału",
+      "front": "Przód",
+      "note": "Idealne pozycje z danych gry, gra dopasowuje je do terenu. Siatka to 1 m.",
+      "elements": {
+        "core": "Rdzeń",
+        "leftFlank": "Lewa flanka",
+        "rightFlank": "Prawa flanka",
+        "scout": "Zwiadowca",
+        "crew": "Obsługa (przybliżona)",
+        "weapon": "Broń"
+      },
+      "cover": {
+        "tp_defcover": "Brak osłony",
+        "tp_heavy_cover": "Ciężka osłona",
+        "tp_light_cover": "Lekka osłona",
+        "tp_negative_cover": "Negatywna osłona",
+        "tp_water_cover": "Woda",
+        "tp_smoke_cover": "Dym",
+        "tp_garrison_cover": "Garnizon",
+        "tp_trench_cover": "Okop",
+        "tp_road_light_cover": "Droga (lekka osłona)",
+        "tp_road_heavy_cover": "Droga (ciężka osłona)"
+      }
+    },
     "stats": "Statystyki",
     "abilities": "Umiejętności",
     "loadout": "Wyposażenie",

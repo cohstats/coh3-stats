@@ -86,6 +86,33 @@
     "empty": "No Final Stand units found for {{faction}}."
   },
   "unitPage": {
+    "formation": {
+      "title": "Formation",
+      "situation": "Situation",
+      "squadSize": "Squad size",
+      "front": "Front",
+      "note": "Ideal positions from the game data, the game adapts them to the terrain. Grid is 1 m.",
+      "elements": {
+        "core": "Core",
+        "leftFlank": "Left flank",
+        "rightFlank": "Right flank",
+        "scout": "Scout",
+        "crew": "Crew (approximate)",
+        "weapon": "Weapon"
+      },
+      "cover": {
+        "tp_defcover": "No cover",
+        "tp_heavy_cover": "Heavy cover",
+        "tp_light_cover": "Light cover",
+        "tp_negative_cover": "Negative cover",
+        "tp_water_cover": "Water",
+        "tp_smoke_cover": "Smoke",
+        "tp_garrison_cover": "Garrison",
+        "tp_trench_cover": "Trench",
+        "tp_road_light_cover": "Road (light cover)",
+        "tp_road_heavy_cover": "Road (heavy cover)"
+      }
+    },
     "stats": "Stats",
     "abilities": "Abilities",
     "loadout": "Loadout",

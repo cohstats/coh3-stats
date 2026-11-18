@@ -27,6 +27,7 @@ import { getMappings } from "../../../../../../src/unitStats/mappings";
 import {
   isFinalStandEnemyUnit,
   isFinalStandUnit,
+  omitSquadFormation,
   SbpsType,
 } from "../../../../../../src/unitStats";
 import FactionIcon from "../../../../../../components/faction-icon";
@@ -280,9 +281,9 @@ export const getStaticProps: GetStaticProps<FsUnitsProps> = async (context) => {
 
   const faction = factionMap[raceToFetch] ?? raceToFetch;
 
-  const units = sbpsData.filter(
-    (squad: SbpsType) => squad.faction.includes(faction) && isFinalStandUnit(squad),
-  );
+  const units = sbpsData
+    .filter((squad: SbpsType) => squad.faction.includes(faction) && isFinalStandUnit(squad))
+    .map(omitSquadFormation);
 
   return {
     props: {

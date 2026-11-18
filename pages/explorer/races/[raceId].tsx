@@ -25,6 +25,7 @@ import {
   resolveBattlegroupBranches,
   BattlegroupResolvedType,
   ResourceValues,
+  omitSquadFormation,
 } from "../../../src/unitStats";
 import { BattlegroupCard } from "../../../components/unit-cards/battlegroup-card";
 import {
@@ -381,8 +382,10 @@ export const getStaticPaths: GetStaticPaths<{ raceId: string }> = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const locale = context.locale || "en";
   const params = await context.params;
-  const { sbpsData, ebpsData, upgradesData, abilitiesData, battlegroupData } =
-    await getMappings(locale);
+  const mappings = await getMappings(locale);
+  const { ebpsData, upgradesData, abilitiesData, battlegroupData } = mappings;
+  // The resolved squads go to the client, they don't need the raw formation tables.
+  const sbpsData = mappings.sbpsData.map(omitSquadFormation);
 
   const raceId = params?.raceId as raceType;
 

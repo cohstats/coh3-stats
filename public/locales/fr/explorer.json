@@ -86,6 +86,33 @@
     "empty": "Aucune unité Final Stand trouvée pour {{faction}}."
   },
   "unitPage": {
+    "formation": {
+      "title": "Formation",
+      "situation": "Situation",
+      "squadSize": "Taille de l'escouade",
+      "front": "Avant",
+      "note": "Positions idéales issues des données du jeu, le jeu les adapte au terrain. La grille est de 1 m.",
+      "elements": {
+        "core": "Noyau",
+        "leftFlank": "Flanc gauche",
+        "rightFlank": "Flanc droit",
+        "scout": "Éclaireur",
+        "crew": "Servants (approximatif)",
+        "weapon": "Arme"
+      },
+      "cover": {
+        "tp_defcover": "Sans couverture",
+        "tp_heavy_cover": "Couverture lourde",
+        "tp_light_cover": "Couverture légère",
+        "tp_negative_cover": "Couverture négative",
+        "tp_water_cover": "Eau",
+        "tp_smoke_cover": "Fumée",
+        "tp_garrison_cover": "Garnison",
+        "tp_trench_cover": "Tranchée",
+        "tp_road_light_cover": "Route (couverture légère)",
+        "tp_road_heavy_cover": "Route (couverture lourde)"
+      }
+    },
     "stats": "Statistiques",
     "abilities": "Capacités",
     "loadout": "Équipement",

@@ -86,6 +86,33 @@
     "empty": "{{faction}} の Final Stand ユニットは見つかりませんでした。"
   },
   "unitPage": {
+    "formation": {
+      "title": "隊形",
+      "situation": "状況",
+      "squadSize": "分隊の人数",
+      "front": "前方",
+      "note": "ゲームデータの理想的な位置です。実際は地形に合わせて調整されます。グリッドは1 mです。",
+      "elements": {
+        "core": "中央",
+        "leftFlank": "左翼",
+        "rightFlank": "右翼",
+        "scout": "斥候",
+        "crew": "操作員（概算）",
+        "weapon": "武器"
+      },
+      "cover": {
+        "tp_defcover": "遮蔽なし",
+        "tp_heavy_cover": "重遮蔽",
+        "tp_light_cover": "軽遮蔽",
+        "tp_negative_cover": "負の遮蔽",
+        "tp_water_cover": "水",
+        "tp_smoke_cover": "煙",
+        "tp_garrison_cover": "駐屯",
+        "tp_trench_cover": "塹壕",
+        "tp_road_light_cover": "道路（軽遮蔽）",
+        "tp_road_heavy_cover": "道路（重遮蔽）"
+      }
+    },
     "stats": "性能",
     "abilities": "アビリティ",
     "loadout": "装備",

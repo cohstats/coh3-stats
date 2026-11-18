@@ -20,7 +20,7 @@ import {
   generateKeywordsString,
   getLocalizedUrl,
 } from "../../src/seo-utils";
-import { ChallengesType, SbpsType, UpgradesType } from "../../src/unitStats";
+import { ChallengesType, omitSquadFormation, SbpsType, UpgradesType } from "../../src/unitStats";
 import { IconMedal } from "@tabler/icons-react";
 import ImageWithFallback, { iconPlaceholder } from "../../components/placeholders";
 import React, { useEffect } from "react";
@@ -443,7 +443,8 @@ export const getStaticProps: GetStaticProps = async ({ locale = "en" }) => {
       calculatedData: createCalculateValuesForChallenges({
         dailyChallengesData,
         weeklyChallengesData,
-        sbpsData,
+        // The resolved squads go to the client, they don't need the raw formation tables.
+        sbpsData: sbpsData.map(omitSquadFormation),
         upgradesData,
       }),
     },
