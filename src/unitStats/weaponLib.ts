@@ -5,6 +5,7 @@ import {
   getUnitModelCount,
   WeaponMember,
   CustomModifier,
+  getDisplayedDistanceForBaseRange,
 } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 import { getDpsVeterancyEffects } from "./dpsVeterancy";
@@ -137,6 +138,115 @@ const getSpecialWeaponDamageMultipliers = (
     flatFlamethrowerDamage: isFlamethrower ? vet.flamethrowerDamageAddition : 0,
     // Anti-vehicle flat damage is *only* on AoE/main guns, never their MGs.
     flatVehicleDamage: mainGun && isVehicleTarget(target) ? vet.damageVsVehiclesAddition : 0,
+  };
+};
+
+/** Intrinsic offensive stats for a single unit's hover; never modifies shared weapon data. */
+export const getEffectiveWeaponStats = (
+  member: WeaponMember,
+  unit: CustomizableUnit,
+): WeaponStatsType => {
+  const bag = getUpgradedVehicleWeaponBag(member, unit);
+  const vet = getDpsVeterancyEffects(unit);
+  const special = getSpecialWeaponDamageMultipliers(
+    bag,
+    vet,
+    undefined,
+    member.weapon.weapon_cat,
+  );
+  const upgrade = getVehicleWeaponUpgradeEffects(member, unit);
+  const modifiers = unit.custom_modifiers;
+  const accuracy = (base: number) =>
+    applyCustomModifier(
+      base *
+        vet.accuracyMultiplier *
+        getPassiveAccuracyMultiplier(unit) *
+        special.accuracy *
+        (unit.is_moving ? bag.moving_accuracy_multiplier * vet.movingAccuracyMultiplier : 1),
+      modifiers?.accuracy,
+      { min: 0 },
+    );
+  const damage = (base: number) =>
+    applyCustomModifier(
+      (base + vet.damageAddition + special.flatFlamethrowerDamage) *
+        vet.damageMultiplier *
+        special.damage *
+        upgrade.damageMultiplier,
+      modifiers?.damage,
+      { min: 0 },
+    );
+  const penetration = (base: number) =>
+    applyCustomModifier(base * vet.penetrationMultiplier, modifiers?.penetration, { min: 0 });
+  const range = getVeterancyAdjustedRange(bag.range, vet);
+  const distance = (base: number) => Math.max(0, getDisplayedDistanceForBaseRange(unit, base));
+  const scatter = getWeaponScatterMultiplier(unit);
+  const angle =
+    scatter * (unit.is_moving ? (bag.scatter_moving_scatter_angle_multiplier ?? 1) : 1);
+  const spread =
+    scatter * (unit.is_moving ? (bag.scatter_moving_scatter_distance_multiplier ?? 1) : 1);
+  const attackTime =
+    vet.attackTimeMultiplier *
+    applyCustomModifier(1, modifiers?.overallAttackSpeed, {
+      percentMode: "inverse",
+      min: 0,
+    });
+  const targetTypes = bag.target_type_table.map((entry) => ({ ...entry }));
+  if (
+    isMainGunWeapon(bag) &&
+    (vet.damageVsVehiclesAddition !== 0 || vet.damageVsVehiclesMultiplier !== 1)
+  ) {
+    targetTypes.push({
+      unit_type: "vehicle",
+      dmg_modifier: vet.damageVsVehiclesAddition,
+      accuracy_multiplier: 1,
+      penetration_multiplier: 1,
+      damage_multiplier: vet.damageVsVehiclesMultiplier,
+    });
+  }
+  for (const entry of targetTypes) {
+    if (modifiers?.damage.enabled && modifiers.damage.type === "absolute") {
+      entry.dmg_modifier = 0;
+      entry.damage_multiplier = 1;
+    }
+    if (modifiers?.accuracy.enabled && modifiers.accuracy.type === "absolute")
+      entry.accuracy_multiplier = 1;
+    if (modifiers?.penetration.enabled && modifiers.penetration.type === "absolute")
+      entry.penetration_multiplier = 1;
+  }
+  return {
+    ...bag,
+    accuracy_near: accuracy(bag.accuracy_near),
+    accuracy_mid: accuracy(bag.accuracy_mid),
+    accuracy_far: accuracy(bag.accuracy_far),
+    damage_min: damage(bag.damage_min),
+    damage_max: damage(bag.damage_max),
+    penetration_near: penetration(bag.penetration_near),
+    penetration_mid: penetration(bag.penetration_mid),
+    penetration_far: penetration(bag.penetration_far),
+    range: {
+      near: distance(range.near),
+      mid: distance(range.mid),
+      far: distance(range.far),
+      min: bag.range_min,
+      max: distance(range.max),
+    },
+    range_distance_near: distance(range.near),
+    range_distance_mid: distance(range.mid),
+    range_distance_far: distance(range.far),
+    range_min: bag.range_min,
+    range_max: distance(range.max),
+    scatter_angle_scatter: bag.scatter_angle_scatter * angle,
+    scatter_distance_scatter_ratio: bag.scatter_distance_scatter_ratio * spread,
+    scatter_distance_scatter_max: bag.scatter_distance_scatter_max * spread,
+    aoe_damage_max_member:
+      bag.aoe_damage_max_member > 0
+        ? Math.max(1, bag.aoe_damage_max_member + vet.aoeMaxMemberHitAddition)
+        : bag.aoe_damage_max_member,
+    ready_aim_time_min: (bag.ready_aim_time_min ?? 0) * attackTime,
+    ready_aim_time_max: (bag.ready_aim_time_max ?? 0) * attackTime,
+    fire_wind_up: bag.fire_wind_up * attackTime,
+    fire_wind_down: bag.fire_wind_down * attackTime,
+    target_type_table: targetTypes,
   };
 };
 

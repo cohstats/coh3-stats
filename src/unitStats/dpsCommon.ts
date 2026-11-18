@@ -1266,6 +1266,15 @@ export const getBaseDistanceForDisplayedRange = (
   return (displayedDistance - rangeShift) / rangeScale;
 };
 
+/** The forward mapping used by the calculator's weapon-stat hover. */
+export const getDisplayedDistanceForBaseRange = (
+  unit: CustomizableUnit,
+  baseDistance: number,
+): number => {
+  const { rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit);
+  return baseDistance * rangeScale + rangeShift;
+};
+
 /** Displayed maximum range for one active weapon, including the same range scaling as the graph. */
 export const getDisplayedWeaponMaxRange = (
   unit: CustomizableUnit,

@@ -162,6 +162,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     components.push(
       <DpsWeaponCard
         weapon_member={member}
+        unit={props.unit}
         key={`${member.weapon_id}.${member.hardpointIndex ?? "manual"}.${props.index}.${member.num}`}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
