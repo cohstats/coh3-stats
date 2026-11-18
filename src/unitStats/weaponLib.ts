@@ -1019,7 +1019,7 @@ export const getWeaponTiming = (
         0,
       );
     } else {
-      attackSpeedMod = attacking_unit.custom_modifiers.overallAttackSpeed.value;
+      attackSpeedMod = Math.max(0, attacking_unit.custom_modifiers.overallAttackSpeed.value);
     }
 
     aimMod *= attackSpeedMod;

@@ -164,12 +164,16 @@ it("shows combined percentage totals while leaving the saved manual modifiers un
   expect(onChange).not.toHaveBeenCalled();
 });
 
-it.each([0, 1])(
-  "shows the effective absolute armor and timing factor at rank %i",
-  async (rank) => {
+it.each([
+  { rank: 0, armor: 200, speed: 0.5, totalArmor: "200", totalSpeed: "0.5" },
+  { rank: 1, armor: 200, speed: 0.5, totalArmor: "210", totalSpeed: "0.4" },
+  { rank: 1, armor: -5, speed: -0.5, totalArmor: "10", totalSpeed: "0" },
+])(
+  "shows effective absolute armor $totalArmor and timing factor $totalSpeed at rank $rank",
+  async ({ rank, armor, speed, totalArmor, totalSpeed }) => {
     const modifiers = createDefaultCustomModifiers();
-    modifiers.armor = { type: "absolute", value: 200, enabled: true };
-    modifiers.overallAttackSpeed = { type: "absolute", value: 0.5, enabled: true };
+    modifiers.armor = { type: "absolute", value: armor, enabled: true };
+    modifiers.overallAttackSpeed = { type: "absolute", value: speed, enabled: true };
     const unit = {
       veterancyLevel: rank,
       sbps: {
@@ -194,12 +198,12 @@ it.each([0, 1])(
       />,
     );
     expect(document.querySelector('[data-testid="dps-modifier-total-armor"]')!.textContent).toBe(
-      rank ? "210" : "200",
+      totalArmor,
     );
     expect(
       document.querySelector('[data-testid="dps-modifier-total-overallAttackSpeed"]')!
         .textContent,
-    ).toBe(rank ? "0.4" : "0.5");
+    ).toBe(totalSpeed);
   },
 );
 

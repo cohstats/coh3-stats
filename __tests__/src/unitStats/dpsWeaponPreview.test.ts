@@ -154,6 +154,14 @@ it("includes Ranger's passive and vehicle upgrades only on the affected weapon",
   expect(getEffectiveWeaponStats(pintle, tank).damage_max).toBe(100);
 });
 
+it("treats a restored negative absolute attack-time factor as zero throughout the firing cycle", () => {
+  const { member, unit } = veteran();
+  unit.custom_modifiers!.overallAttackSpeed = { type: "absolute", enabled: true, value: -0.5 };
+  const timing = getWeaponTiming(member.weapon.weapon_bag, 20, false, unit);
+  unit.custom_modifiers!.overallAttackSpeed.value = 0;
+  expect(timing).toEqual(getWeaponTiming(member.weapon.weapon_bag, 20, false, unit));
+});
+
 it("keeps the preview curve bounded for very large custom ranges", () => {
   const member = calculatorMember();
   const unit = calculatorUnit({ weapon_member: [member] });

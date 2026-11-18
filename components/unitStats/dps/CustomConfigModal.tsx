@@ -506,10 +506,9 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   const getTotalModifier = (modifier: CustomModifier, config: StatConfig): CustomModifier => {
     const { multiplier = 1, addition = 0 } = automaticTotals[config.key] ?? {};
     if (modifier.enabled && modifier.type === "absolute") {
-      if (config.key === "overallAttackSpeed")
-        return { ...modifier, value: modifier.value * multiplier };
-      if (config.key === "armor")
-        return { ...modifier, value: Math.max(0, modifier.value + addition) };
+      const base = Math.max(0, modifier.value);
+      if (config.key === "overallAttackSpeed") return { ...modifier, value: base * multiplier };
+      if (config.key === "armor") return { ...modifier, value: Math.max(0, base + addition) };
       return modifier;
     }
     if (modifier.enabled && modifier.type === "additive") {
