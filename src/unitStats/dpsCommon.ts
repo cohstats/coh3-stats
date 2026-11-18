@@ -4,15 +4,20 @@ import { SbpsType } from "./mappingSbps";
 import { WeaponStatsType, WeaponType } from "./mappingWeapon";
 import { getSquadTotalCost, getSquadTotalUpkeepCost } from "./squadTotalCost";
 import { getFactionIcon } from "./unitStatsLib";
-import { getSingleWeaponDPS, applyCustomModifier } from "./weaponLib";
-import { getDpsVeterancyEffects } from "./dpsVeterancy";
+import { getSingleWeaponDPS, getSingleWeaponScatterDPS, applyCustomModifier } from "./weaponLib";
+import type { ScatterDpsOptions } from "./scatterSimulation";
+import { getDpsVeterancyEffects, getMaxDpsVeterancyLevel } from "./dpsVeterancy";
+import { getUpgradedVehicleWeaponBag } from "./vehicleUpgradeEffects";
 import { getUpgradeStateTreeWeapons } from "./workarounds";
 import type { UpgradesType } from "./mappingUpgrades";
 import type { AbilitiesType } from "./mappingAbilities";
+import { RANGER_FIRE_ON_MOVE_ABILITY } from "./passiveCombatEffects";
 
 type CoordinatesDPS = { x: number; y: number };
 
 type WeaponMember = {
+  /** Original entity hardpoint; absent for manually added/infantry weapons. */
+  hardpointIndex?: number;
   /** Weapon ID. */
   weapon_id: string;
   num: number;
@@ -106,6 +111,8 @@ type CustomModifier = {
 
 type CustomModifiers = {
   accuracy: CustomModifier;
+  /** Positive percentages reduce scatter angle and distance. */
+  scatterAccuracy: CustomModifier;
   damage: CustomModifier;
   penetration: CustomModifier;
   reload: CustomModifier;
@@ -116,6 +123,10 @@ type CustomModifiers = {
   range: CustomModifier;
   armor: CustomModifier;
   hitpoints: CustomModifier;
+  /** Harder to hit: positive percentages reduce incoming accuracy. */
+  receivedAccuracy: CustomModifier;
+  /** Damage reduction: positive percentages reduce incoming damage. */
+  receivedDamage: CustomModifier;
 };
 
 type CustomizableUnit = {
@@ -161,10 +172,16 @@ type CustomizableUnit = {
   speed: number;
   custom_modifiers?: CustomModifiers; // Custom stat modifiers
   veterancyLevel?: number; // 0 = none; all preceding ranks apply cumulatively
+  /** Per-attacker vehicle upgrades. Distinct attackers have independent toggles. */
+  heavyBarrelsEnabled?: boolean;
+  dakCoaxUpgradeEnabled?: boolean;
+  /** Validated entity/squad passive, separate from manual modifiers and veterancy. */
+  rangerFireOnMove?: boolean;
 };
 
 export const createDefaultCustomModifiers = (): CustomModifiers => ({
   accuracy: { type: "percentage", value: 0, enabled: false },
+  scatterAccuracy: { type: "percentage", value: 0, enabled: false },
   damage: { type: "percentage", value: 0, enabled: false },
   penetration: { type: "percentage", value: 0, enabled: false },
   reload: { type: "percentage", value: 0, enabled: false },
@@ -175,6 +192,8 @@ export const createDefaultCustomModifiers = (): CustomModifiers => ({
   range: { type: "percentage", value: 0, enabled: false },
   armor: { type: "percentage", value: 0, enabled: false },
   hitpoints: { type: "percentage", value: 0, enabled: false },
+  receivedAccuracy: { type: "percentage", value: 0, enabled: false },
+  receivedDamage: { type: "percentage", value: 0, enabled: false },
 });
 
 export type { CustomModifier, CustomModifiers, CustomModifierType };
@@ -183,7 +202,11 @@ const mergeWeaponMembers = (weaponMembers: WeaponMember[]): WeaponMember[] => {
   const merged: WeaponMember[] = [];
 
   for (const weaponMember of weaponMembers) {
-    const existing = merged.find((item) => item.weapon_id === weaponMember.weapon_id);
+    const existing = merged.find(
+      (item) =>
+        item.weapon_id === weaponMember.weapon_id &&
+        item.hardpointIndex === weaponMember.hardpointIndex,
+    );
 
     if (!existing) {
       merged.push({ ...weaponMember });
@@ -264,7 +287,24 @@ export const mapCustomizableUnit = (
     speed: 0,
     custom_modifiers: createDefaultCustomModifiers(),
     veterancyLevel: 0,
+    heavyBarrelsEnabled: false,
+    dakCoaxUpgradeEnabled: false,
   };
+
+  const rangerPassive = abilities.some(
+    (ability) =>
+      ability.id === RANGER_FIRE_ON_MOVE_ABILITY &&
+      ability.entityTree === RANGER_FIRE_ON_MOVE_ABILITY,
+  );
+  custUnit.rangerFireOnMove =
+    rangerPassive &&
+    (sbpsSelected.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY) ||
+      sbpsSelected.loadout.some((member) => {
+        const entityId = member.type.replace(/\\/g, "/").split("/").pop();
+        return ebps
+          .find((entity) => entity.id === entityId)
+          ?.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY);
+      }));
 
   if (sbpsSelected.ui.symbolIconName != "")
     custUnit.type_icon = getIconsPathOnCDN("icons/" + sbpsSelected.ui.symbolIconName);
@@ -927,6 +967,7 @@ export const getSbpsWeapons = (
       if (adjustedNum <= 0) continue;
 
       const weaponMember = mapWeaponMember(sbps, unit_ebps, weapon, adjustedNum);
+      weaponMember.hardpointIndex = weaponRef.hardpointIndex;
       loadoutUnit.push(weaponMember);
     }
 
@@ -999,17 +1040,19 @@ export const getCoverMultiplier = (coverType: string, weaponBag: WeaponStatsType
   const accuracy_mp = (weaponBag as any)[
     "cover_table_tp_" + coverType + "_cover_accuracy_multiplier"
   ];
-  if (accuracy_mp) cover.accuracy_multiplier = accuracy_mp;
+  // A zero multiplier is valid, and a missing property must not overwrite
+  // the default (especially not with undefined).
+  if (Number.isFinite(accuracy_mp)) cover.accuracy_multiplier = accuracy_mp;
 
   const damage_mp = (weaponBag as any)[
     "cover_table_tp_" + coverType + "_cover_damage_multiplier"
   ];
-  if (accuracy_mp) cover.damage_multiplier = damage_mp;
+  if (Number.isFinite(damage_mp)) cover.damage_multiplier = damage_mp;
 
   const penetration_mp = (weaponBag as any)[
     "cover_table_tp_" + coverType + "_cover_penetration_multiplier"
   ];
-  if (penetration_mp) cover.penetration_multiplier = penetration_mp;
+  if (Number.isFinite(penetration_mp)) cover.penetration_multiplier = penetration_mp;
 
   return cover;
 };
@@ -1067,9 +1110,9 @@ export const getWeaponDPSData = (units: CustomizableUnit[]) => {
   if (units.length == 0) return dpsSet;
 
   // we only have two units so we keep it simple -> No generic loop stuff
-  if (units[0]) dpsSet[0] = getCombatDps(units[0], units[1]);
+  if (units[0]) dpsSet[0] = getCombatDps(units[0], units[1], undefined, true);
 
-  if (units[1]) dpsSet[1] = getCombatDps(units[1], units[0]);
+  if (units[1]) dpsSet[1] = getCombatDps(units[1], units[0], undefined, true);
 
   return dpsSet;
 };
@@ -1084,12 +1127,13 @@ export const getWeaponDPSData = (units: CustomizableUnit[]) => {
 export const getCompareDpsData = (
   attackingUnits: (CustomizableUnit | undefined)[],
   targetUnit?: CustomizableUnit,
+  scatter?: ScatterDpsOptions,
 ): CoordinatesDPS[][] => {
   const dpsSet: CoordinatesDPS[][] = [];
 
   for (const attacker of attackingUnits) {
     if (attacker) {
-      dpsSet.push(getCombatDps(attacker, targetUnit));
+      dpsSet.push(getCombatDps(attacker, targetUnit, scatter));
     } else {
       dpsSet.push([]);
     }
@@ -1123,27 +1167,49 @@ export const getModifiedHitpoints = (unit: CustomizableUnit): number => {
   return Math.max(modifiedHitpoints, 1);
 };
 
-export const updateHealth = (unit: CustomizableUnit) => {
-  // Apply hit points modifier to base hitpoints
-  const modifiedHitpoints = getModifiedHitpoints(unit);
-
-  let health = 0;
-  if (unit.unit_type != "vehicles")
-    for (const member of unit.weapon_member) {
-      health += modifiedHitpoints * member.num * Math.max(member.crew_size, 1);
+/** COUNT changes the editable loadout itself, so its extra member contributes a
+ * normal weapon, HP and a formation slot. Apply only the difference between ranks
+ * to preserve manual weapon choices and avoid adding the member twice.
+ */
+export const setUnitVeterancyLevel = (unit: CustomizableUnit, level: number): void => {
+  const previousCount = Math.trunc(getDpsVeterancyEffects(unit).squadCountAddition);
+  unit.veterancyLevel = Math.max(0, Math.min(getMaxDpsVeterancyLevel(unit), Math.floor(level)));
+  const countChange = Math.trunc(getDpsVeterancyEffects(unit).squadCountAddition) - previousCount;
+  if (countChange && ["infantry", "team_weapons"].includes(unit.unit_type)) {
+    const normalWeapon = unit.def_weapon_member.find(
+      (member) => member.ebps.id === unit.def_member && member.crew_size <= 1,
+    );
+    if (normalWeapon) {
+      const current = unit.weapon_member.find(
+        (member) =>
+          member.weapon_id === normalWeapon.weapon_id &&
+          member.hardpointIndex === normalWeapon.hardpointIndex,
+      );
+      if (current) current.num = Math.max(0, current.num + countChange);
+      else if (countChange > 0) unit.weapon_member.push({ ...normalWeapon, num: countChange });
     }
-  // is vehicle
-  else {
-    health += modifiedHitpoints;
   }
-  unit.health = health;
+  updateHealth(unit);
+};
+
+/** Model count shared by squad HP and the formation preview, including weapon operators. */
+export const getUnitModelCount = (unit: CustomizableUnit): number =>
+  unit.unit_type === "infantry" || unit.unit_type === "team_weapons"
+    ? unit.weapon_member.reduce(
+        (count, member) => count + member.num * Math.max(member.crew_size, 1),
+        0,
+      )
+    : 1;
+
+export const updateHealth = (unit: CustomizableUnit) => {
+  unit.health = getModifiedHitpoints(unit) * getUnitModelCount(unit);
 };
 
 const getUnitBaseMaxRange = (unit: CustomizableUnit): number => {
   return unit.weapon_member.reduce((maxRange, ldout) => {
     if (ldout.num <= 0) return maxRange;
 
-    return Math.max(maxRange, ldout.weapon.weapon_bag.range_max ?? 0);
+    return Math.max(maxRange, getUpgradedVehicleWeaponBag(ldout, unit).range_max ?? 0);
   }, 0);
 };
 
@@ -1168,7 +1234,7 @@ const getUnitModifiedRangeInfo = (unit: CustomizableUnit) => {
       .filter((member) => member.num > 0)
       .map(
         (member) =>
-          member.weapon.weapon_bag.range_max * veterancy.rangeMultiplier +
+          getUpgradedVehicleWeaponBag(member, unit).range_max * veterancy.rangeMultiplier +
           veterancy.rangeAddition,
       ),
   );
@@ -1189,11 +1255,36 @@ const getUnitModifiedRangeInfo = (unit: CustomizableUnit) => {
   };
 };
 
+/** Convert a displayed chart distance back to the distance used for weapon stat interpolation.
+ * This keeps scatter previews in sync with the graph's manual range scaling/shift.
+ */
+export const getBaseDistanceForDisplayedRange = (
+  unit: CustomizableUnit,
+  displayedDistance: number,
+): number => {
+  const { rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit);
+  return (displayedDistance - rangeShift) / rangeScale;
+};
+
+/** Displayed maximum range for one active weapon, including the same range scaling as the graph. */
+export const getDisplayedWeaponMaxRange = (
+  unit: CustomizableUnit,
+  member: WeaponMember,
+): number => {
+  const vet = getDpsVeterancyEffects(unit);
+  const { rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit);
+  const vetMaxRange =
+    getUpgradedVehicleWeaponBag(member, unit).range_max * vet.rangeMultiplier + vet.rangeAddition;
+  return Math.max(0, vetMaxRange * rangeScale + rangeShift);
+};
+
 const getUnitDpsAtBaseDistance = (
   baseDistance: number,
   unit1: CustomizableUnit,
   unit2?: CustomizableUnit,
   displayedDistance = baseDistance,
+  scatter?: ScatterDpsOptions,
+  assumeAllDefendersInArea = false,
 ): number => {
   let totalDps = 0;
 
@@ -1205,7 +1296,8 @@ const getUnitDpsAtBaseDistance = (
     }
 
     const veterancy = getDpsVeterancyEffects(unit1);
-    const baseMaxRange = weapon_member.weapon.weapon_bag.range_max;
+    const activeBag = getUpgradedVehicleWeaponBag(weapon_member, unit1);
+    const baseMaxRange = activeBag.range_max;
     // Apply range bonuses per weapon, not just to the squad's longest-ranged weapon.
     const range_max = Math.max(
       0,
@@ -1214,13 +1306,32 @@ const getUnitDpsAtBaseDistance = (
     // Minimum range stays fixed, even with veterancy or manual range modifiers.
     // Use the displayed distance because baseDistance accounts for manual range
     // scaling/shifting, which should affect breakpoints but not minimum range.
-    const range_min = weapon_member.weapon.weapon_bag.range_min;
+    const range_min = activeBag.range_min;
 
     if (displayedDistance < range_min || baseDistance > range_max) {
       return;
     }
 
-    totalDps += getSingleWeaponDPS(weapon_member, baseDistance, unit1.is_moving, unit2, unit1);
+    totalDps += scatter
+      ? getSingleWeaponScatterDPS(
+          weapon_member,
+          baseDistance,
+          scatter,
+          unit1.is_moving,
+          unit2,
+          unit1,
+          displayedDistance,
+        )
+      : getSingleWeaponDPS(
+          weapon_member,
+          baseDistance,
+          unit1.is_moving,
+          unit2,
+          unit1,
+          undefined,
+          assumeAllDefendersInArea,
+          displayedDistance,
+        );
   });
 
   return totalDps;
@@ -1231,7 +1342,7 @@ export const getDpsVsHealth = (
   unit1: CustomizableUnit,
   unit2?: CustomizableUnit,
 ) => {
-  const dpsData: CoordinatesDPS[] = getCombatDps(unit1, unit2);
+  const dpsData: CoordinatesDPS[] = getCombatDps(unit1, unit2, undefined, true);
   let health = unit1.health;
 
   // compute opponents health
@@ -1242,7 +1353,12 @@ export const getDpsVsHealth = (
   return dpsData;
 };
 
-export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) => {
+export const getCombatDps = (
+  unit1: CustomizableUnit,
+  unit2?: CustomizableUnit,
+  scatter?: ScatterDpsOptions,
+  assumeAllDefendersInArea = false,
+) => {
   const dpsTotal: CoordinatesDPS[] = [];
 
   const { modifiedMaxRange, rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit1);
@@ -1250,7 +1366,14 @@ export const getCombatDps = (unit1: CustomizableUnit, unit2?: CustomizableUnit) 
   for (let displayedDistance = 0; displayedDistance <= modifiedMaxRange; displayedDistance++) {
     const baseDistance = (displayedDistance - rangeShift) / rangeScale;
 
-    const dps = getUnitDpsAtBaseDistance(baseDistance, unit1, unit2, displayedDistance);
+    const dps = getUnitDpsAtBaseDistance(
+      baseDistance,
+      unit1,
+      unit2,
+      displayedDistance,
+      scatter,
+      assumeAllDefendersInArea,
+    );
 
     dpsTotal.push({
       x: displayedDistance,

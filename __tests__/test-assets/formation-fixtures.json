@@ -1,0 +1,3947 @@
+{
+  "squads": {
+    "riflemen_us": {
+      "id": "riflemen_us",
+      "faction": "american",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/american/infantry/rifleman_squad_leader_us",
+          "id": "rifleman_squad_leader_us",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 5,
+          "type": "ebps/races/american/infantry/rifleman_us",
+          "id": "rifleman_us",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 10,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_riflemen"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "True",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "scout_us": {
+      "id": "scout_us",
+      "faction": "american",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/american/infantry/scout_leader_radio_us",
+          "id": "scout_leader_radio_us",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 2,
+          "type": "ebps/races/american/infantry/scout_us",
+          "id": "scout_us",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 6,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 10,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/diamond4man"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "ranger_us": {
+      "id": "ranger_us",
+      "faction": "american",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 6,
+          "type": "ebps/races/american/infantry/ranger_us",
+          "id": "ranger_us",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 1
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 1
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 10,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "engineer_us": {
+      "id": "engineer_us",
+      "faction": "american",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 4,
+          "type": "ebps/races/american/infantry/engineer_us",
+          "id": "engineer_us",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 1
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 1
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 1
+          },
+          "07_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 1
+          },
+          "09_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 3,
+            "units_in_right_flank": 3,
+            "units_in_scout": 1
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 3,
+            "units_in_right_flank": 3,
+            "units_in_scout": 0
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_engineer"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "saboteurs_battlegroup_partisan": {
+      "id": "saboteurs_battlegroup_partisan",
+      "faction": "american",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 2,
+          "type": "ebps/races/american/infantry/saboteurs_battlegroup_partisan",
+          "id": "saboteurs_battlegroup_partisan",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 5,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 5,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 1
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 1
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/blob"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "panzergrenadier_ger": {
+      "id": "panzergrenadier_ger",
+      "faction": "german",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 5,
+          "type": "ebps/races/german/infantry/panzergrenadier_ger",
+          "id": "panzergrenadier_ger",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "squad_distribution_table": {
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 1
+          },
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 10,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          }
+        },
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          }
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "pioneer_ger": {
+      "id": "pioneer_ger",
+      "faction": "german",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 3,
+          "type": "ebps/races/german/infantry/pioneer_ger",
+          "id": "pioneer_ger",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 5,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 6,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_pioneer"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "jaeger_ger": {
+      "id": "jaeger_ger",
+      "faction": "german",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/german/infantry/jaeger_support_ger",
+          "id": "jaeger_support_ger",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 4,
+          "type": "ebps/races/german/infantry/jaeger_ger",
+          "id": "jaeger_ger",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 10,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/line_staggered"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "guastatori_ak": {
+      "id": "guastatori_ak",
+      "faction": "afrika_korps",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 6,
+          "type": "ebps/races/afrika_korps/infantry/guastatori_ak",
+          "id": "guastatori_ak",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 1
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/wedge"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "panzergrenadier_ak": {
+      "id": "panzergrenadier_ak",
+      "faction": "afrika_korps",
+      "unitType": "infantry",
+      "loadout": [
+        {
+          "num": 5,
+          "type": "ebps/races/afrika_korps/infantry/panzergrenadier_ak",
+          "id": "panzergrenadier_ak",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 1
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 7,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 8,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "09_soldiers": {
+            "units_in_core": 9,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "10_soldiers": {
+            "units_in_core": 10,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_infantry_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/u_panzer_grenadier"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "False",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "at_gun_50mm_pak_38_ak": {
+      "id": "at_gun_50mm_pak_38_ak",
+      "faction": "afrika_korps",
+      "unitType": "team_weapons",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/afrika_korps/team_weapons/tw_pak_38_ak",
+          "id": "tw_pak_38_ak",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 5,
+          "type": "ebps/races/afrika_korps/infantry/crew_pak_38_ak",
+          "id": "crew_pak_38_ak",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 1
+          },
+          "09_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_wide_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "True",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "leig_75mm_ak": {
+      "id": "leig_75mm_ak",
+      "faction": "afrika_korps",
+      "unitType": "team_weapons",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/afrika_korps/team_weapons/tw_howitzer_75mm_leig_ak",
+          "id": "tw_howitzer_75mm_leig_ak",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 5,
+          "type": "ebps/races/afrika_korps/infantry/crew_leig_base_ak",
+          "id": "crew_leig_base_ak",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 1
+          },
+          "09_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_wide_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "True",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "hmg_mg42_ger": {
+      "id": "hmg_mg42_ger",
+      "faction": "german",
+      "unitType": "team_weapons",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/german/weapons/small_arms/machine_gun/heavy_machine_gun/w_mg42_hmg_ger",
+          "id": "w_mg42_hmg_ger",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 4,
+          "type": "ebps/races/german/infantry/crew_hmg_ger",
+          "id": "crew_hmg_ger",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 1,
+        "move_dest_cover_search_radius": 1,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 1
+          },
+          "09_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_wide_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "True",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    },
+    "mortar_81mm_ger": {
+      "id": "mortar_81mm_ger",
+      "faction": "german",
+      "unitType": "team_weapons",
+      "loadout": [
+        {
+          "num": 1,
+          "type": "ebps/races/german/weapons/explosive_weapons/mortar/w_81mm_mortar_ger",
+          "id": "w_81mm_mortar_ger",
+          "isDefaultUnit": true
+        },
+        {
+          "num": 4,
+          "type": "ebps/races/german/infantry/crew_mortar_ger",
+          "id": "crew_mortar_ger",
+          "isDefaultUnit": true
+        }
+      ],
+      "rawFormation": {
+        "template_reference": {
+          "name": "squadexts",
+          "value": "sbpextensions\\squad_formation_ext"
+        },
+        "combat_follower_cover_search_radius": 2,
+        "move_dest_cover_search_radius": 3,
+        "squad_distribution_table": {
+          "01_soldiers": {
+            "units_in_core": 1,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "02_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "03_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 0,
+            "units_in_right_flank": 0,
+            "units_in_scout": 0
+          },
+          "04_soldiers": {
+            "units_in_core": 2,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "05_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 1,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "06_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 1,
+            "units_in_scout": 0
+          },
+          "07_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 0
+          },
+          "08_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 1
+          },
+          "09_soldiers": {
+            "units_in_core": 3,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          },
+          "10_soldiers": {
+            "units_in_core": 4,
+            "units_in_left_flank": 2,
+            "units_in_right_flank": 2,
+            "units_in_scout": 2
+          }
+        },
+        "support_weapons_to_flanks": "True",
+        "formation_overrides": [
+          {
+            "formation_override_entry": {
+              "formation": {
+                "instance_reference": "squad_formations/frontend/fe_wide_v"
+              },
+              "squad_formation_override": "fe_formation"
+            }
+          }
+        ],
+        "cover_formation_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "moving_cover_formation_override_table": {
+          "tp_defcover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_negative_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_water_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_smoke_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_garrison_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_trench_cover": {
+            "instance_reference": "squad_formations/common/team_weapon_cover"
+          },
+          "tp_road_light_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          },
+          "tp_road_heavy_cover": {
+            "instance_reference": "squad_formations/common/team_weapon"
+          }
+        },
+        "desired_protection_level_in_formation": 1,
+        "restrict_sight_leadership_to_core_element": "True",
+        "allow_leader_reassignment": "False",
+        "squad_formation_footprint_expansion": {
+          "width": 0,
+          "length": 0
+        }
+      }
+    }
+  },
+  "squadFormations": {
+    "common": {
+      "u_riflemen": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/u_riflemen_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/u_riflemen_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/u_riflemen_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/u_riflemen_formation"
+          }
+        },
+        "pbgid": 2105530
+      },
+      "cover": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/cover_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 4,
+          "follower_drift_rate": 0.25,
+          "squad_formation": {
+            "instance_reference": "formations/common/cover_squad_formation"
+          }
+        },
+        "pbgid": 172254
+      },
+      "diamond4man": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/diamond_4man_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/diamond_4man_formation"
+          }
+        },
+        "pbgid": 2104681
+      },
+      "wedge": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/wedge_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/wedge_formation"
+          }
+        },
+        "pbgid": 2104841
+      },
+      "u_engineer": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/u_engineer_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/u_engineer_formation"
+          }
+        },
+        "pbgid": 2105527
+      },
+      "blob": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/blob_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 10,
+          "follower_drift_rate": 2,
+          "squad_formation": {
+            "instance_reference": "formations/common/blob_formation"
+          }
+        },
+        "pbgid": 2104572
+      },
+      "u_panzer_grenadier": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/u_panzer_grenadier_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/u_panzer_grenadier_formation"
+          }
+        },
+        "pbgid": 2105518
+      },
+      "u_pioneer": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/u_pioneer_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/u_pioneer_formation"
+          }
+        },
+        "pbgid": 2105536
+      },
+      "line_staggered": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/line_staggered_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/line_staggered_formation"
+          }
+        },
+        "pbgid": 2105524
+      },
+      "team_weapon": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/team_weapon_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/team_weapon_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/team_weapon_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/team_weapon_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/team_weapon_formation"
+          }
+        },
+        "pbgid": 185664
+      },
+      "team_weapon_cover": {
+        "squad_formation_bag": {
+          "element_core_formation": {
+            "instance_reference": "formations/common/team_weapon_cover_core"
+          },
+          "element_left_flank_formation": {
+            "instance_reference": "formations/common/common_left"
+          },
+          "element_right_flank_formation": {
+            "instance_reference": "formations/common/common_right"
+          },
+          "element_scout_formation": {
+            "instance_reference": "formations/common/common_scout"
+          },
+          "follower_drift_cap": 0,
+          "follower_drift_rate": 0,
+          "squad_formation": {
+            "instance_reference": "formations/common/team_weapon_cover_formation"
+          }
+        },
+        "pbgid": 2104863
+      }
+    }
+  },
+  "formations": {
+    "common": {
+      "u_riflemen_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -4.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 5,
+                "pos_y": -2
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -5,
+                "pos_y": -2
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -6
+              }
+            }
+          ]
+        },
+        "pbgid": 2105531
+      },
+      "u_riflemen_left": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1,
+                "pos_y": -5
+              }
+            }
+          ]
+        },
+        "pbgid": 2150131
+      },
+      "u_riflemen_right": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 1,
+                "pos_y": -5
+              }
+            }
+          ]
+        },
+        "pbgid": 2150132
+      },
+      "common_scout": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 1,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 129957
+      },
+      "u_riflemen_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 4.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -4,
+                "pos_y": -0.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 4,
+                "pos_y": -0.5
+              }
+            }
+          ]
+        },
+        "pbgid": 2105532
+      },
+      "cover_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 1.5,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1.5,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0.75,
+                "pos_y": -0.75
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -0.75,
+                "pos_y": -0.75
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 172256
+      },
+      "common_left": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2104685
+      },
+      "common_right": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 1,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2104684
+      },
+      "cover_squad_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 1,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 172255
+      },
+      "diamond_4man_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -6
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 5,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -5,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2104683
+      },
+      "diamond_4man_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 5,
+                "pos_y": 4
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -4.75,
+                "pos_y": -1
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 4,
+                "pos_y": -4
+              }
+            }
+          ]
+        },
+        "pbgid": 2104682
+      },
+      "wedge_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 5,
+                "pos_y": -3.75
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -5,
+                "pos_y": -3.75
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 9,
+                "pos_y": -7.25
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -9,
+                "pos_y": -7.25
+              }
+            }
+          ]
+        },
+        "pbgid": 2104842
+      },
+      "wedge_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -4.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3,
+                "pos_y": -1.25
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": -1.25
+              }
+            }
+          ]
+        },
+        "pbgid": 2104843
+      },
+      "u_engineer_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 4,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2,
+                "pos_y": -4
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 6,
+                "pos_y": -4
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2,
+                "pos_y": -4
+              }
+            }
+          ]
+        },
+        "pbgid": 2105528
+      },
+      "u_engineer_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 6,
+                "pos_y": -3
+              }
+            }
+          ]
+        },
+        "pbgid": 2105529
+      },
+      "blob_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 3,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.5,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1.75,
+                "pos_y": -1.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 1,
+                "pos_y": -0.65
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0.4,
+                "pos_y": -0.95
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -0.9,
+                "pos_y": -0.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1.95,
+                "pos_y": -0.05
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3.25,
+                "pos_y": -1.15
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2.75,
+                "pos_y": -0.95
+              }
+            }
+          ]
+        },
+        "pbgid": 2104574
+      },
+      "blob_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 3,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -0.9,
+                "pos_y": -0.6
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -4,
+                "pos_y": -0.75
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3.15,
+                "pos_y": -2
+              }
+            }
+          ]
+        },
+        "pbgid": 2104573
+      },
+      "u_panzer_grenadier_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -4,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2,
+                "pos_y": -4.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -4.5
+              }
+            }
+          ]
+        },
+        "pbgid": 2105520
+      },
+      "u_panzer_grenadier_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 6,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -6,
+                "pos_y": -2
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2,
+                "pos_y": -2
+              }
+            }
+          ]
+        },
+        "pbgid": 2105519
+      },
+      "u_pioneer_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.4,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3.5,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -3.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -6,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2105537
+      },
+      "u_pioneer_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.4,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": 3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3.25,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0.5,
+                "pos_y": -3.15
+              }
+            }
+          ]
+        },
+        "pbgid": 2105538
+      },
+      "line_staggered_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 4,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -4,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 6.5,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -6.5,
+                "pos_y": -3
+              }
+            }
+          ]
+        },
+        "pbgid": 2105526
+      },
+      "line_staggered_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.2,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": 3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2.5,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2.5,
+                "pos_y": -3
+              }
+            }
+          ]
+        },
+        "pbgid": 2105525
+      },
+      "team_weapon_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.6,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2.75,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2.75,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -2
+              }
+            }
+          ]
+        },
+        "pbgid": 185665
+      },
+      "team_weapon_left": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3.5,
+                "pos_y": -1
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3,
+                "pos_y": -2
+              }
+            }
+          ]
+        },
+        "pbgid": 2173227
+      },
+      "team_weapon_right": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3.5,
+                "pos_y": -1
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": -2
+              }
+            }
+          ]
+        },
+        "pbgid": 2173228
+      },
+      "team_weapon_scout": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 1,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1,
+                "pos_y": -3
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -1,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2173229
+      },
+      "team_weapon_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1.6,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": -2
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2.2,
+                "pos_y": -1
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2.2,
+                "pos_y": -1
+              }
+            }
+          ]
+        },
+        "pbgid": 2104869
+      },
+      "team_weapon_cover_core": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -2.5,
+                "pos_y": -0.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 2.5,
+                "pos_y": -0.5
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -4,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2104865
+      },
+      "team_weapon_cover_formation": {
+        "formation_bag": {
+          "chance_to_use_facing_angle": 0,
+          "clockwise_facing_angle": 0,
+          "facing_angle_attention_weight": 0,
+          "follower_move_slop": 0,
+          "look_ahead_time": 4,
+          "rotation_rate": 60,
+          "rotation_time_max": 1,
+          "scale": 1,
+          "time_to_hold_facing_angle": 0,
+          "spots": [
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 0,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -0.5,
+                "pos_y": 1
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": -3.5,
+                "pos_y": 0
+              }
+            },
+            {
+              "spot": {
+                "facing": 0,
+                "pos_x": 3.5,
+                "pos_y": 0
+              }
+            }
+          ]
+        },
+        "pbgid": 2104864
+      }
+    }
+  }
+}

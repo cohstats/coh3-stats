@@ -124,7 +124,9 @@ test.describe("DPS compare", () => {
     await dps.checkPageLoaded();
     await expect(dps.title).toBeVisible();
     await expect(page.getByText("Attacking Units")).toBeVisible();
-    await expect(page.getByText("Target Unit - Optional")).toBeVisible();
+    await expect(page.getByText("Target Unit", { exact: true })).toBeVisible();
+    await expect(dps.targetSearch).toHaveValue(/panzergrenadier/i);
+    await expect(dps.unitCard(0)).toBeVisible();
 
     await expect(dps.addUnitSearch).toBeVisible();
     // Nothing picked yet, so there is nothing to add.
@@ -175,11 +177,11 @@ test.describe("DPS compare", () => {
     await dps.selectUnit(dps.addUnitSearch, UNIT_A);
     await dps.addUnitButton.click();
     await expect(dps.attackerCards).toHaveCount(1);
-    const withoutTarget = await dps.chartSnapshot();
+    const defaultTarget = await dps.chartSnapshot();
 
     await dps.selectUnit(dps.targetSearch, UNIT_B);
 
-    await expect.poll(() => dps.chartSnapshot(), { timeout: 15000 }).not.toBe(withoutTarget);
+    await expect.poll(() => dps.chartSnapshot(), { timeout: 15000 }).not.toBe(defaultTarget);
   });
 
   test("should switch back to the VS mode", async ({ page }) => {

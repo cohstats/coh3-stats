@@ -16,6 +16,7 @@ import axios from "axios";
 import config from "../config";
 import { getCachePath } from "../src/unitStats/data-file-cache.server";
 import { resolvePatchLocstringLocale } from "../src/explorer/patch-locstring";
+import { prepareDpsDataPackage } from "../src/unitStats/dpsDataPackage.server";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { i18n } = require("../next-i18next.config");
 
@@ -29,6 +30,8 @@ const DATA_FILES = [
   "daily_challenges_store_release.json",
   "weekly_challenges_store_release.json",
   "veterancy.json",
+  "formations.json",
+  "squad_formations.json",
   "fs-perks.json",
   "fs-technologies.json",
   "mp-maps.json",
@@ -122,6 +125,11 @@ const prefetchData = async () => {
     console.error(`[Prefetch] Failed to prefetch ${failed.length} files:\n${failed.join("\n")}`);
     process.exit(1);
   }
+  await prepareDpsDataPackage();
+  console.log(`[Prefetch] Prepared compressed DPS data for patch ${config.latestPatch}`);
 };
 
-prefetchData();
+prefetchData().catch((error) => {
+  console.error("[Prefetch] Failed to prepare data:", error);
+  process.exitCode = 1;
+});

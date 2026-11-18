@@ -1,0 +1,65 @@
+import { createDefaultCustomModifiers } from "../../src/unitStats/dpsCommon";
+import type { CustomizableUnit, WeaponMember } from "../../src/unitStats/dpsCommon";
+import type { WeaponStatsType } from "../../src/unitStats/mappingWeapon";
+
+export const calculatorBag = (overrides: Partial<WeaponStatsType> = {}): WeaponStatsType => ({
+  accuracy_near: 1, accuracy_mid: 1, accuracy_far: 1,
+  damage_min: 100, damage_max: 100,
+  penetration_near: 100, penetration_mid: 100, penetration_far: 100,
+  range_distance_near: 10, range_distance_mid: 20, range_distance_far: 30,
+  range_min: 0, range_max: 40, range: { min: 0, near: 10, mid: 20, far: 30, max: 40 },
+  aoe_shape: "circle", aoe_outer_radius: 10,
+  aoe_distance_near: 1, aoe_distance_mid: 5, aoe_distance_far: 10,
+  aoe_accuracy_near: 1, aoe_accuracy_mid: 1, aoe_accuracy_far: 1,
+  aoe_damage_near: 1, aoe_damage_mid: 1, aoe_damage_far: 1,
+  aoe_penetration_near: 100, aoe_penetration_mid: 100, aoe_penetration_far: 100,
+  aoe_damage_max_member: -1,
+  projectile_type: "direct", projectile_is_artillery: false,
+  always_calculate_cover_from_shooting_position: false,
+  scatter_angle_scatter: 0, scatter_distance_scatter_ratio: 0.1,
+  scatter_distance_scatter_max: 100, scatter_distance_scatter_offset: 1,
+  cover_table_tp_defcover_accuracy_multiplier: 1,
+  cover_table_tp_defcover_damage_multiplier: 1,
+  cover_table_tp_defcover_penetration_multiplier: 1,
+  cover_table_tp_heavy_cover_accuracy_multiplier: 1,
+  cover_table_tp_heavy_cover_damage_multiplier: 0.5,
+  cover_table_tp_heavy_cover_penetration_multiplier: 1,
+  cover_table_tp_light_cover_accuracy_multiplier: 1,
+  cover_table_tp_light_cover_damage_multiplier: 0.75,
+  cover_table_tp_light_cover_penetration_multiplier: 1,
+  cover_table_tp_garrison_cover_accuracy_multiplier: 1,
+  cover_table_tp_garrison_cover_damage_multiplier: 0.25,
+  cover_table_tp_garrison_cover_penetration_multiplier: 1,
+  fire_aim_time_min: 1, fire_aim_time_max: 1,
+  aim_time_multiplier_near: 1, aim_time_multiplier_mid: 1, aim_time_multiplier_far: 1,
+  cooldown_duration_min: 1, cooldown_duration_max: 1,
+  cooldown_duration_multiplier_near: 1, cooldown_duration_multiplier_mid: 1, cooldown_duration_multiplier_far: 1,
+  fire_wind_up: 0, fire_wind_down: 0,
+  reload_duration_min: 1, reload_duration_max: 1,
+  reload_duration_multiplier_near: 1, reload_duration_multiplier_mid: 1, reload_duration_multiplier_far: 1,
+  reload_frequency_min: 1, reload_frequency_max: 1,
+  moving_can_fire_while_moving: true, moving_accuracy_multiplier: 1,
+  moving_cooldown_multiplier: 1, moving_burst_multiplier: 1,
+  burst_can_burst: false,
+  target_type_table: [],
+  ...overrides,
+} as WeaponStatsType);
+
+export const calculatorMember = (overrides: Partial<WeaponStatsType> = {}): WeaponMember => ({
+  weapon_id: "gun", num: 1, crew_size: 1,
+  ebps: { id: "soldier", crew_size: 1, abilities: [] },
+  weapon: { id: "gun", path: "american/ballistic_weapon/gun", parent: "ballistic_weapon",
+    weapon_cat: "ballistic", icon_name: "", description: "Gun", weapon_bag: calculatorBag(overrides) },
+} as unknown as WeaponMember);
+
+export const calculatorUnit = (overrides: Partial<CustomizableUnit> = {}): CustomizableUnit => ({
+  id: "squad", path: "american/infantry/squad", faction: "american", unit_type: "infantry",
+  cover: "heavy", is_moving: false, hitpoints: 1000, armor: 1, target_size: 1,
+  weapon_member: [calculatorMember()], def_weapon_member: [calculatorMember()],
+  ebps_default: { id: "soldier", unitTypes: ["infantry"] },
+  sbps: { id: "squad", path: "american/infantry/squad", faction: "american", unitType: "infantry",
+    abilities: [], loadout: [], ui: { screenName: "Squad", helpText: "", iconName: "", symbolIconName: "" },
+    populationExt: { personnel_pop: 0, upkeep_per_pop: { fuel: 0, manpower: 0, munition: 0 } } },
+  custom_modifiers: createDefaultCustomModifiers(),
+  ...overrides,
+} as CustomizableUnit);

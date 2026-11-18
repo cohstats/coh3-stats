@@ -1,14 +1,18 @@
 import React from "react";
 import { Grid, Group, Flex, Tooltip, ActionIcon, Image, Select, Space } from "@mantine/core";
 import { UnitSearch } from "../unitSearch";
-import { CustomizableUnit } from "../../../../src/unitStats/dpsCommon";
+import type { CustomizableUnit } from "../../../../src/unitStats/dpsCommon";
+import type { DpsUnitOption } from "../../../../src/unitStats/dpsData";
+import type { EbpsType } from "../../../../src/unitStats/mappingEbps";
 import { getFactionIcon } from "../../../../src/unitStats";
 
 interface UnitSelectionPanelProps {
   unitFilter: string[];
-  unitSelectionList: CustomizableUnit[];
+  unitSelectionList: DpsUnitOption[];
+  getUnit: (id: string) => CustomizableUnit | undefined;
+  ebpsData: EbpsType[];
   patchList: string[];
-  defaultPatch: string;
+  patchVersion: string;
   position: number;
   disabled?: boolean;
   selectedUnitId?: string;
@@ -16,7 +20,7 @@ interface UnitSelectionPanelProps {
     filterValue: string,
     unitIndex: number,
     unitFilter: string[],
-    unitSelectionList: CustomizableUnit[],
+    unitSelectionList: DpsUnitOption[],
   ) => void;
   onPatchChange: (value: string, index: number) => void;
   onUnitSelect: (selection: string | null, index: number) => void;
@@ -28,10 +32,10 @@ const generateFilterButtons = (
     filterValue: string,
     unitIndex: number,
     unitFilter: string[],
-    unitSelectionList: CustomizableUnit[],
+    unitSelectionList: DpsUnitOption[],
   ) => void,
   index: number,
-  unitSelectionList: CustomizableUnit[],
+  unitSelectionList: DpsUnitOption[],
 ) => {
   const factions = ["afrika_korps", "american", "british_africa", "german"];
   const filterButtons: React.ReactElement[] = [];
@@ -58,8 +62,10 @@ const generateFilterButtons = (
 export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
   unitFilter,
   unitSelectionList,
+  getUnit,
+  ebpsData,
   patchList,
-  defaultPatch,
+  patchVersion,
   position,
   disabled,
   selectedUnitId,
@@ -83,9 +89,11 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
                 <Select
                   styles={{ wrapper: { width: 90 } }}
                   placeholder="Patch"
-                  onChange={(value) => onPatchChange(value as string, position)}
+                  onChange={(value) => {
+                    if (value) onPatchChange(value, position);
+                  }}
                   data={patchList}
-                  defaultValue={defaultPatch}
+                  value={patchVersion}
                   withCheckIcon={false}
                   allowDeselect={false}
                   disabled={disabled}
@@ -99,6 +107,8 @@ export const UnitSelectionPanel: React.FC<UnitSelectionPanelProps> = ({
       <UnitSearch
         key={`Search${position}`}
         searchData={unitSelectionList}
+        getUnit={getUnit}
+        ebpsData={ebpsData}
         onSelect={onUnitSelect}
         value={selectedUnitId ?? null}
         position={position === 1 ? 0 : 1}

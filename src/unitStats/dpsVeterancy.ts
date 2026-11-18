@@ -26,6 +26,15 @@ type VeterancyCarrier = {
 export type DpsVeterancyEffects = {
   accuracyMultiplier: number;
   movingAccuracyMultiplier: number;
+  /** Multiplies both scatter angle and distance (cumulative veterancy). */
+  scatterMultiplier: number;
+  /** Special state-tree bonuses apply to only one weapon group. */
+  mainGunAccuracyMultiplier: number;
+  mgDamageMultiplier: number;
+  flamethrowerDamageAddition: number;
+  /** Text-derived anti-vehicle bonus, applied only to AoE/main weapons. */
+  damageVsVehiclesAddition: number;
+  damageVsVehiclesMultiplier: number;
   damageMultiplier: number;
   damageAddition: number;
   receivedAccuracyMultiplier: number;
@@ -35,6 +44,8 @@ export type DpsVeterancyEffects = {
   burstDurationMultiplier: number;
   burstRateMultiplier: number;
   healthAddition: number;
+  squadCountAddition: number;
+  aoeMaxMemberHitAddition: number;
   frontArmorAddition: number;
   rangeMultiplier: number;
   rangeAddition: number;
@@ -43,6 +54,12 @@ export type DpsVeterancyEffects = {
 const neutral = (): DpsVeterancyEffects => ({
   accuracyMultiplier: 1,
   movingAccuracyMultiplier: 1,
+  scatterMultiplier: 1,
+  mainGunAccuracyMultiplier: 1,
+  mgDamageMultiplier: 1,
+  flamethrowerDamageAddition: 0,
+  damageVsVehiclesAddition: 0,
+  damageVsVehiclesMultiplier: 1,
   damageMultiplier: 1,
   damageAddition: 0,
   receivedAccuracyMultiplier: 1,
@@ -52,6 +69,8 @@ const neutral = (): DpsVeterancyEffects => ({
   burstDurationMultiplier: 1,
   burstRateMultiplier: 1,
   healthAddition: 0,
+  squadCountAddition: 0,
+  aoeMaxMemberHitAddition: 0,
   frontArmorAddition: 0,
   rangeMultiplier: 1,
   rangeAddition: 0,
@@ -104,6 +123,25 @@ export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEff
         case "WEAPON_MOVING_ACCURACY_MODIFIER":
           result.movingAccuracyMultiplier *= value;
           break;
+        case "WEAPON_SCATTER":
+          // The game multiplies both angular and longitudinal scatter.
+          result.scatterMultiplier *= value;
+          break;
+        case "WEAPON_MAIN_GUN_ACCURACY_MODIFIER":
+          result.mainGunAccuracyMultiplier *= value;
+          break;
+        case "WEAPON_MG_DAMAGE_MODIFIER":
+          result.mgDamageMultiplier *= value;
+          break;
+        case "WEAPON_FLAMETHROWER_DAMAGE_ADDITION":
+          result.flamethrowerDamageAddition += value;
+          break;
+        case "WEAPON_DAMAGE_VS_VEHICLES_ADDITION":
+          result.damageVsVehiclesAddition += value;
+          break;
+        case "WEAPON_DAMAGE_VS_VEHICLES_MULTIPLIER":
+          result.damageVsVehiclesMultiplier *= value;
+          break;
         case "WEAPON_DAMAGE_MODIFIER":
           result.damageMultiplier *= value;
           break;
@@ -136,6 +174,12 @@ export const getDpsVeterancyEffects = (unit?: VeterancyCarrier): DpsVeterancyEff
           break;
         case "HEALTH_MODIFIER_ADDITION":
           result.healthAddition += value;
+          break;
+        case "COUNT":
+          result.squadCountAddition += value;
+          break;
+        case "WEAPON_AOE_MAX_MEMBER_HIT_MODIFIER":
+          result.aoeMaxMemberHitAddition += value;
           break;
         case "FRONT_ARMOR_ADDITION":
           result.frontArmorAddition += value;

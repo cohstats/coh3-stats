@@ -1,45 +1,17 @@
 import { Group, Text, Image, Select, HoverCard, Stack, SelectProps } from "@mantine/core";
+import { useState } from "react";
 import { UnitCostCard } from "../../unit-cards/unit-cost-card";
-import { CustomizableUnit } from "../../../src/unitStats/dpsCommon";
-import {
-  ebpsStats,
-  getSquadTotalCost,
-  isFinalStandEnemyUnitId,
-  isFinalStandUnitId,
-} from "../../../src/unitStats";
+import type { CustomizableUnit } from "../../../src/unitStats/dpsCommon";
+import type { DpsUnitOption } from "../../../src/unitStats/dpsData";
+import type { EbpsType } from "../../../src/unitStats/mappingEbps";
+import { getSquadTotalCost } from "../../../src/unitStats/squadTotalCost";
+import { isFinalStandEnemyUnitId, isFinalStandUnitId } from "../../../src/unitStats/finalStand";
 import { Line } from "react-chartjs-2";
 import { FinalStandBadge } from "../../final-stand-badge";
 import { FinalStandEnemyBadge } from "../../final-stand-enemy-badge";
 
-// interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
-//   image: string;
-//   label: string;
-//   description: string;
-//   type_icon: string;
-// }
-// const labels = [1, 2, 3, 4, 5, 67];
-const data = {
-  // labels: labels,
-  datasets: [
-    {
-      label: "My First Dataset",
-      data: [
-        { x: 0, y: 10 },
-        { x: 10, y: 8 },
-        { x: 20, y: 6 },
-        { x: 35, y: 4 },
-      ],
-      fill: false,
-      borderColor: "rgb(75, 192, 192)",
-      tension: 0.1,
-      pointRadius: 0,
-    },
-  ],
-};
-
 const config = {
   type: "line",
-  data: data,
   plugins: {
     legend: {
       position: "top",
@@ -63,15 +35,22 @@ const config = {
   },
 };
 
-const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
-  // @ts-ignore
+interface UnitOptionProps {
+  option: DpsUnitOption;
+  getUnit: (id: string) => CustomizableUnit | undefined;
+  ebpsData: EbpsType[];
+}
+
+const UnitOption = ({ option, getUnit, ebpsData }: UnitOptionProps) => {
+  const [opened, setOpened] = useState(false);
+  const unit = opened ? getUnit(option.id) : undefined;
   const { image, label, description, type_icon } = option;
 
   const lineData = {
     datasets: [
       {
         label: "DMG Chart",
-        data: (option as CustomizableUnit).dps_preview,
+        data: unit?.dps_preview ?? [],
         fill: false,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
@@ -84,41 +63,44 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
     <div>
       <Group wrap="nowrap" gap={0}>
         <Image w={60} h={40} src={image} fit="contain" alt="Faction" />
-        <HoverCard shadow={"lg"} offset={60}>
+        <HoverCard
+          shadow={"lg"}
+          offset={60}
+          onOpen={() => setOpened(true)}
+          onClose={() => setOpened(false)}
+        >
           <HoverCard.Target>
             <Image w={60} h={40} src={type_icon} fit="contain" alt="type" />
           </HoverCard.Target>
           <HoverCard.Dropdown>
-            <Stack>
-              <Image
-                style={{ width: 60, height: 40 }}
-                src={(option as CustomizableUnit).icon_name}
-                fit="contain"
-                alt="Type icon"
-              />
-              {(option as CustomizableUnit).sbps.ui.screenName}
-              {UnitCostCard(getSquadTotalCost((option as CustomizableUnit).sbps, ebpsStats))}
-              <Line
-                key={label}
-                data={lineData}
-                options={config as any}
-                height={100}
-                width={200}
-                redraw
-              />
-            </Stack>
+            {unit && (
+              <Stack>
+                <Image
+                  style={{ width: 60, height: 40 }}
+                  src={unit.icon_name}
+                  fit="contain"
+                  alt="Type icon"
+                />
+                {unit.sbps.ui.screenName}
+                {UnitCostCard(getSquadTotalCost(unit.sbps, ebpsData))}
+                <Line
+                  key={label}
+                  data={lineData}
+                  options={config as any}
+                  height={100}
+                  width={200}
+                  redraw
+                />
+              </Stack>
+            )}
           </HoverCard.Dropdown>
         </HoverCard>
 
         <div>
           <Group gap="xs" wrap="nowrap">
             <Text size="sm">{label}</Text>
-            {isFinalStandUnitId((option as CustomizableUnit).id) && (
-              <FinalStandBadge size="xs" withTooltip={false} />
-            )}
-            {isFinalStandEnemyUnitId((option as CustomizableUnit).id) && (
-              <FinalStandEnemyBadge size="xs" />
-            )}
+            {isFinalStandUnitId(option.id) && <FinalStandBadge size="xs" withTooltip={false} />}
+            {isFinalStandEnemyUnitId(option.id) && <FinalStandEnemyBadge size="xs" />}
           </Group>
           <Text size="xs" opacity={0.65}>
             {description}
@@ -130,7 +112,9 @@ const renderSelectOption: SelectProps["renderOption"] = ({ option }) => {
 };
 
 interface ISearchProps {
-  searchData: CustomizableUnit[];
+  searchData: DpsUnitOption[];
+  getUnit: (id: string) => CustomizableUnit | undefined;
+  ebpsData: EbpsType[];
   onSelect(selection: string | null, position: number): any;
   position: number;
   disabled?: boolean;
@@ -148,8 +132,7 @@ export const UnitSearch = (props: ISearchProps) => {
   const customFilter: SelectProps["filter"] = ({ options, search }) => {
     const searchValue = search.toLowerCase().trim();
     return options.filter((option) => {
-      // Get the actual CustomizableUnit from the option
-      const unit = option as unknown as CustomizableUnit;
+      const unit = option as unknown as DpsUnitOption;
       const matchesId = unit.id.toLowerCase().includes(searchValue);
       const matchesName = unit.screen_name.toLowerCase().includes(searchValue);
       return matchesId || matchesName;
@@ -160,7 +143,14 @@ export const UnitSearch = (props: ISearchProps) => {
     <Select
       placeholder="Choose unit"
       clearable
-      renderOption={renderSelectOption}
+      renderOption={({ option }) => (
+        <UnitOption
+          option={option as DpsUnitOption}
+          getUnit={props.getUnit}
+          ebpsData={props.ebpsData}
+        />
+      )}
+      comboboxProps={{ keepMounted: false }}
       data={props.searchData}
       {...(props.value !== undefined ? { value: props.value } : { defaultValue: null })}
       searchable

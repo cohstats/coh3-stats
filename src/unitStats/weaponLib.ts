@@ -1,6 +1,33 @@
-import { CustomizableUnit, getCoverMultiplier, WeaponMember, CustomModifier } from "./dpsCommon";
+import {
+  CustomizableUnit,
+  getCoverMultiplier,
+  getModifiedHitpoints,
+  getUnitModelCount,
+  WeaponMember,
+  CustomModifier,
+} from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 import { getDpsVeterancyEffects } from "./dpsVeterancy";
+import { canFireOnMove, getPassiveAccuracyMultiplier } from "./passiveCombatEffects";
+import {
+  getEffectiveCoverType,
+  getShooterPosition,
+  isLightOrHeavyCover,
+  isProtectedByDirectionalCover,
+  usesProjectileImpactCover,
+} from "./combatCover";
+import {
+  getUpgradedVehicleWeaponBag,
+  getVehicleWeaponUpgradeEffects,
+} from "./vehicleUpgradeEffects";
+import {
+  getIncrementalTargetAccuracyMultiplier,
+  getAoeDamageChance,
+  hasScatterAoe,
+  simulateExpectedScatterShot,
+  type ScatterDpsOptions,
+  type ScatterShotInputs,
+} from "./scatterSimulation";
 
 export const TICK_DURATION = 0.125;
 const tickRate = 1 / TICK_DURATION;
@@ -77,12 +104,98 @@ export const applyCustomModifier = (
   return result;
 };
 
+/** Shared by the scatter solver and preview; positive accuracy reduces scatter. */
+export const getWeaponScatterMultiplier = (unit?: CustomizableUnit): number =>
+  applyCustomModifier(
+    getDpsVeterancyEffects(unit).scatterMultiplier,
+    unit?.custom_modifiers?.scatterAccuracy,
+    { percentMode: "inverse", min: 0 },
+  );
+
+/** Use the weapon's near/mid/far range interpolation for incremental target radius. */
+/** Same AoE/non-AoE split used by the formation scatter calculator. */
+const isMainGunWeapon = (weapon: WeaponStatsType): boolean => hasScatterAoe(weapon);
+
+/** Match the exact EBPS tag, just as weapon target-table entries do. */
+const isVehicleTarget = (unit?: CustomizableUnit): boolean =>
+  unit?.ebps_default?.unitTypes?.includes("vehicle") ?? false;
+
+const getSpecialWeaponDamageMultipliers = (
+  weapon: WeaponStatsType,
+  vet: ReturnType<typeof getDpsVeterancyEffects>,
+  target?: CustomizableUnit,
+  weaponCategory?: string,
+) => {
+  const mainGun = isMainGunWeapon(weapon);
+  const isFlamethrower = weaponCategory === "flame_throwers";
+  return {
+    accuracy: mainGun ? vet.mainGunAccuracyMultiplier : 1,
+    damage:
+      (mainGun ? 1 : vet.mgDamageMultiplier) *
+      (mainGun && isVehicleTarget(target) ? vet.damageVsVehiclesMultiplier : 1),
+    // Crocodile veterancy adds a flat amount to the flamethrower's base damage.
+    flatFlamethrowerDamage: isFlamethrower ? vet.flamethrowerDamageAddition : 0,
+    // Anti-vehicle flat damage is *only* on AoE/main guns, never their MGs.
+    flatVehicleDamage: mainGun && isVehicleTarget(target) ? vet.damageVsVehiclesAddition : 0,
+  };
+};
+
+/** VS uses the configured human count; a crew weapon contributes its operators, not an extra gun model. */
+const getPackedDefenderModelCount = (target?: CustomizableUnit): number => {
+  if (!target || !["infantry", "team_weapons"].includes(target.unit_type)) return 1;
+  return Math.max(
+    1,
+    Math.floor(
+      (target.weapon_member ?? []).reduce(
+        (sum, member) => sum + Math.max(0, member.num) * Math.max(1, member.crew_size || 1),
+        0,
+      ),
+    ),
+  );
+};
+
+const getIncrementalAccuracyMultiplier = (
+  weapon: WeaponStatsType,
+  distance: number,
+  range: RangeType,
+  scatter?: ScatterDpsOptions,
+  assumedTargetModels?: number,
+): number => {
+  const perModel = weapon.burst_incremental_target_table_accuracy_multiplier;
+  if (!weapon.burst_can_burst || !Number.isFinite(perModel) || perModel <= 0) return 1;
+  // VS deliberately assumes every OTHER defender model is inside the incremental area.
+  // Do not create a scatter context: that would also change AoE and per-model damage capping.
+  if (!scatter)
+    return assumedTargetModels === undefined
+      ? 1
+      : Math.pow(perModel, Math.max(0, assumedTargetModels - 1));
+
+  const radius = getInterpolationByDistance(
+    distance,
+    range,
+    1,
+    1,
+    weapon.burst_incremental_target_table_search_radius_near,
+    weapon.burst_incremental_target_table_search_radius_mid,
+    weapon.burst_incremental_target_table_search_radius_far,
+  );
+  return getIncrementalTargetAccuracyMultiplier(
+    weapon,
+    radius,
+    scatter.models,
+    scatter.targetModelId,
+  );
+};
+
 const getSingleWeaponDPS = (
   weapon_member: WeaponMember,
   distance = 0,
   isMoving = false,
   target_unit?: CustomizableUnit,
   attacking_unit?: CustomizableUnit,
+  scatter?: ScatterDpsOptions,
+  assumeAllDefendersInArea = false,
+  displayedDistance = distance,
 ) => {
   //Formular: Hitchance * RateOfFire * Damage * ChanceToDamage(E.g. penetration)
   // since we assume it is an endless engagement we also encounter reload time
@@ -97,11 +210,18 @@ const getSingleWeaponDPS = (
 
   if (qty <= 0) return 0;
 
-  const weapon_bag = weapon_member.weapon.weapon_bag;
+  const weapon_bag = getUpgradedVehicleWeaponBag(weapon_member, attacking_unit);
+  const armyUpgrade = getVehicleWeaponUpgradeEffects(weapon_member, attacking_unit);
   const attackingVeterancy = getDpsVeterancyEffects(attacking_unit);
   const targetVeterancy = getDpsVeterancyEffects(target_unit);
+  const specialVet = getSpecialWeaponDamageMultipliers(
+    weapon_bag,
+    attackingVeterancy,
+    target_unit,
+    weapon_member.weapon.weapon_cat,
+  );
 
-  if (!weapon_bag.moving_can_fire_while_moving && isMoving) return 0;
+  if (!canFireOnMove(weapon_bag, attacking_unit) && isMoving) return 0;
 
   let cover = {
     accuracy_multiplier: 1, // opponent cover penalty
@@ -111,11 +231,35 @@ const getSingleWeaponDPS = (
   let targetSize = 1;
   let armor = 1;
 
-  const targetUnitTypes = target_unit?.ebps_default?.unitTypes ?? [];
+  // Without a selected defender we already assume target size 1, i.e. infantry.
+  // Apply infantry target-type modifiers in that same default case.
+  const targetUnitTypes = target_unit
+    ? (target_unit.ebps_default?.unitTypes ?? [])
+    : ["infantry"];
 
   const targetModifiers = getTargetTypeModifiers(weapon_bag.target_type_table, targetUnitTypes);
   if (target_unit) {
-    cover = getCoverMultiplier(target_unit.cover, weapon_member.weapon.weapon_bag);
+    const coverType = getEffectiveCoverType(target_unit.cover, weapon_bag, displayedDistance);
+    cover = getCoverMultiplier(coverType, weapon_bag);
+    const selected = scatter?.models.find((model) => model.id === scatter.targetModelId);
+    if (
+      isLightOrHeavyCover(coverType) &&
+      scatter?.directionalCover &&
+      selected &&
+      !isProtectedByDirectionalCover(
+        scatter.directionalCover,
+        getShooterPosition(selected, displayedDistance, scatter.gunnerAngleDeg),
+        selected,
+      )
+    ) {
+      cover = getCoverMultiplier("", weapon_bag);
+    }
+    if (
+      isLightOrHeavyCover(coverType) &&
+      hasScatterAoe(weapon_bag) &&
+      usesProjectileImpactCover(weapon_bag)
+    )
+      cover.damage_multiplier = 1;
     targetSize = target_unit.target_size;
     // Front armor is the default facing in the DPS calculator. Veterancy
     // adds to that base before manual modifiers (including absolute overrides).
@@ -142,8 +286,7 @@ const getSingleWeaponDPS = (
   /*   Damage per Shot *
     --------------------------------------------------
   */
-  const avgDamage =
-    ((weapon_bag.damage_max + weapon_bag.damage_min) * cover.damage_multiplier) / 2;
+  const avgDamage = (weapon_bag.damage_max + weapon_bag.damage_min) / 2;
 
   /*  Hitchance
       --------------------------------------------------
@@ -200,15 +343,9 @@ const getSingleWeaponDPS = (
     length = targetSize / 3;
   }
   */
-  // count units
-  let units = 1;
-  if (target_unit?.weapon_member) {
-    units = 0;
-    for (const target_member of target_unit.weapon_member) {
-      units += target_member.num;
-    }
-    if (units == 0) return 0;
-  }
+  // Empty infantry squads have no targets; vehicles and emplacements still
+  // exist and take damage even when they have no active weapons.
+  if (target_unit && getUnitModelCount(target_unit) <= 0) return 0;
 
   /*let scatter_acc = 0;
 
@@ -340,13 +477,19 @@ const getSingleWeaponDPS = (
   let finalAccuracy =
     accuracy *
     attackingVeterancy.accuracyMultiplier *
+    getPassiveAccuracyMultiplier(attacking_unit) *
+    specialVet.accuracy *
     (isMoving ? attackingVeterancy.movingAccuracyMultiplier : 1);
   let finalDamage =
     (avgDamage +
       targetModifiers.base_damage_modifier +
-      attackingVeterancy.damageAddition * cover.damage_multiplier) *
+      specialVet.flatVehicleDamage +
+      attackingVeterancy.damageAddition +
+      specialVet.flatFlamethrowerDamage) *
     targetModifiers.damage_multiplier *
-    attackingVeterancy.damageMultiplier;
+    attackingVeterancy.damageMultiplier *
+    specialVet.damage *
+    armyUpgrade.damageMultiplier;
   let finalPenetrationChance = penetrationChance;
   const finalRpm = rpm;
   const finalArmor = armor; // Armor is already modified if target has custom modifiers
@@ -397,17 +540,37 @@ const getSingleWeaponDPS = (
 
   // Apply received-damage mitigation after manual damage customization,
   // including absolute damage overrides.
-  finalDamage *= targetVeterancy.receivedDamageMultiplier;
+  finalDamage *= cover.damage_multiplier * targetVeterancy.receivedDamageMultiplier;
+  finalDamage = applyCustomModifier(finalDamage, target_unit?.custom_modifiers?.receivedDamage, {
+    percentMode: "inverse",
+    min: 0,
+  });
 
   // Recalculate hit chance with modified values
   // If no penetration modifier was applied, recalculate with modified armor
   if (attacking_unit?.custom_modifiers?.penetration.enabled !== true) {
     finalPenetrationChance = Math.min(penetration / finalArmor, 1);
   }
+  // In Compare scatter mode, account for extra nearby infantry even for
+  // non-AoE weapons (which still use this established direct-DPS path).
+  finalAccuracy *= getIncrementalAccuracyMultiplier(
+    weapon_bag,
+    distance,
+    range,
+    scatter,
+    assumeAllDefendersInArea ? getPackedDefenderModelCount(target_unit) : undefined,
+  );
   // Attacker veterancy has already been applied; combine with defender's
   // received-accuracy modifier, then cap hit chance.
   finalAccuracy = Math.min(
-    Math.max(finalAccuracy * targetVeterancy.receivedAccuracyMultiplier, 0),
+    Math.max(
+      applyCustomModifier(
+        finalAccuracy * targetVeterancy.receivedAccuracyMultiplier,
+        target_unit?.custom_modifiers?.receivedAccuracy,
+        { percentMode: "inverse", min: 0 },
+      ),
+      0,
+    ),
     1,
   );
   //autobounce is at 3%, any pen below that automatically fails
@@ -422,14 +585,299 @@ const getSingleWeaponDPS = (
       ? weapon_bag.deflection_damage_multiplier * (1 - finalPenetrationChance)
       : 0);
 
-  const effectiveHitDamageMultiplier = finalAccuracy * penetrationDamageMultiplier;
+  // Only the formation-aware Compare calculation has individual model HP.
+  // Cap each actual hit/deflection AFTER damage and defender HP modifiers,
+  // but BEFORE averaging penetration outcomes. Generic/no-target DPS stays uncapped.
+  const modelHitpoints = scatter && target_unit ? getModifiedHitpoints(target_unit) : undefined;
+  const damageOnHit =
+    modelHitpoints === undefined
+      ? undefined
+      : Math.min(finalDamage, modelHitpoints) * finalPenetrationChance +
+        (weapon_bag.deflection_has_deflection_damage
+          ? Math.min(finalDamage * weapon_bag.deflection_damage_multiplier, modelHitpoints) *
+            (1 - finalPenetrationChance)
+          : 0);
 
   /*   Damage per Second *
     -------------------------------------------------
   */
-  const dps = (finalRpm / 60) * (effectiveHitDamageMultiplier * finalDamage);
+  const effectiveHitDamageMultiplier = finalAccuracy * penetrationDamageMultiplier;
+  // Without a formation, only the aimed-at model is resolved spatially. A hit
+  // on a garrison still applies FAR AoE damage to every other occupant.
+  const otherGarrisonDamage =
+    target_unit?.cover === "garrison" &&
+    weapon_bag.aoe_damage_all_in_hold &&
+    hasScatterAoe(weapon_bag)
+      ? Math.max(0, Math.floor(getUnitModelCount(target_unit)) - 1) *
+        Math.min(
+          getModifiedHitpoints(target_unit),
+          Math.max(0, finalDamage * weapon_bag.aoe_damage_far),
+        ) *
+        getAoeDamageChance(
+          weapon_bag.aoe_accuracy_far,
+          weapon_bag.aoe_penetration_far,
+          finalArmor,
+          targetModifiers.penetration_multiplier * attackingVeterancy.penetrationMultiplier,
+          attacking_unit?.custom_modifiers?.penetration,
+        )
+      : 0;
+  const dps =
+    (finalRpm / 60) *
+    ((damageOnHit === undefined
+      ? effectiveHitDamageMultiplier * finalDamage
+      : finalAccuracy * damageOnHit) +
+      finalAccuracy * otherGarrisonDamage);
 
   return dps * weapon_member.num;
+};
+
+/**
+ * One shared shot-input calculation for both the DPS curve and its per-model
+ * hover preview. This keeps shooter/defender modifiers exactly in sync.
+ */
+export const getSingleWeaponScatterShotInputs = (
+  weapon_member: WeaponMember,
+  distance: number,
+  scatter: ScatterDpsOptions,
+  isMoving = false,
+  target_unit?: CustomizableUnit,
+  attacking_unit?: CustomizableUnit,
+  displayedDistance = distance,
+): ScatterShotInputs | null => {
+  const bag = getUpgradedVehicleWeaponBag(weapon_member, attacking_unit);
+  const armyUpgrade = getVehicleWeaponUpgradeEffects(weapon_member, attacking_unit);
+  if (
+    weapon_member.num <= 0 ||
+    (isMoving && !canFireOnMove(bag, attacking_unit)) ||
+    !hasScatterAoe(bag) ||
+    !(scatter.targetModelId === null
+      ? scatter.groundTarget !== undefined && scatter.groundTarget !== null
+      : scatter.models.some((model) => model.id === scatter.targetModelId))
+  ) {
+    return null;
+  }
+
+  const vet = getDpsVeterancyEffects(attacking_unit);
+  const targetVet = getDpsVeterancyEffects(target_unit);
+  const specialVet = getSpecialWeaponDamageMultipliers(
+    bag,
+    vet,
+    target_unit,
+    weapon_member.weapon.weapon_cat,
+  );
+  const coverType = getEffectiveCoverType(target_unit?.cover ?? "", bag, displayedDistance);
+  const cover = target_unit
+    ? getCoverMultiplier(coverType, bag)
+    : {
+        accuracy_multiplier: 1,
+        damage_multiplier: 1,
+        penetration_multiplier: 1,
+      };
+  const selected = scatter.models.find((model) => model.id === scatter.targetModelId);
+  if (
+    isLightOrHeavyCover(coverType) &&
+    scatter.directionalCover &&
+    selected &&
+    !isProtectedByDirectionalCover(
+      scatter.directionalCover,
+      getShooterPosition(selected, displayedDistance, scatter.gunnerAngleDeg),
+      selected,
+    )
+  ) {
+    cover.accuracy_multiplier = getCoverMultiplier("", bag).accuracy_multiplier;
+  }
+  const types = target_unit ? (target_unit.ebps_default?.unitTypes ?? []) : ["infantry"];
+  const typeMods = getTargetTypeModifiers(bag.target_type_table, types);
+  const targetSize = target_unit?.target_size ?? 1;
+  let armor = (target_unit?.armor ?? 1) + targetVet.frontArmorAddition;
+  armor = applyCustomModifier(armor, target_unit?.custom_modifiers?.armor, { min: 0.001 });
+  const range = getVeterancyAdjustedRange(
+    {
+      near: bag.range_distance_near,
+      mid: bag.range_distance_mid,
+      far: bag.range_distance_far,
+      min: bag.range_min,
+      max: bag.range_max,
+    },
+    vet,
+  );
+
+  const accuracyBase = getInterpolationByDistance(
+    distance,
+    range,
+    1,
+    1,
+    bag.accuracy_near,
+    bag.accuracy_mid,
+    bag.accuracy_far,
+  );
+  let accuracy =
+    accuracyBase *
+    (isMoving ? bag.moving_accuracy_multiplier : 1) *
+    cover.accuracy_multiplier *
+    typeMods.accuracy_multiplier *
+    targetSize *
+    vet.accuracyMultiplier *
+    getPassiveAccuracyMultiplier(attacking_unit) *
+    specialVet.accuracy *
+    (isMoving ? vet.movingAccuracyMultiplier : 1);
+  const manualAccuracy = attacking_unit?.custom_modifiers?.accuracy;
+  if (manualAccuracy?.enabled) {
+    accuracy =
+      manualAccuracy.type === "percentage"
+        ? accuracy * (1 + manualAccuracy.value / 100)
+        : manualAccuracy.value;
+  }
+  // Each additional active model close to the selected target increases the
+  // chance of a direct hit; it does not change the scatter envelope itself.
+  // Apply after manual accuracy overrides, before defender received accuracy.
+  accuracy *= getIncrementalAccuracyMultiplier(bag, distance, range, scatter);
+  // Match standard DPS: even an absolute attacker accuracy override must still
+  // respect the defender's received-accuracy modifier.
+  accuracy *= targetVet.receivedAccuracyMultiplier;
+  accuracy = applyCustomModifier(accuracy, target_unit?.custom_modifiers?.receivedAccuracy, {
+    percentMode: "inverse",
+    min: 0,
+  });
+  // An artillery projectile scatters even when its nominal accuracy is high.
+  if (bag.projectile_is_artillery || scatter.targetModelId === null) accuracy = 0;
+  accuracy = Math.min(1, Math.max(0, accuracy));
+
+  const baseDamage = (bag.damage_min + bag.damage_max) / 2;
+  const calculateDamage = (coverDamage: number) => {
+    let damage =
+      (baseDamage +
+        typeMods.base_damage_modifier +
+        vet.damageAddition +
+        specialVet.flatFlamethrowerDamage +
+        specialVet.flatVehicleDamage) *
+      typeMods.damage_multiplier *
+      vet.damageMultiplier *
+      specialVet.damage *
+      armyUpgrade.damageMultiplier;
+    damage = applyCustomModifier(damage, attacking_unit?.custom_modifiers?.damage, { min: 0 });
+    damage *= coverDamage * targetVet.receivedDamageMultiplier;
+    damage = applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
+      percentMode: "inverse",
+      min: 0,
+    });
+    return damage;
+  };
+  const damage = calculateDamage(cover.damage_multiplier);
+  const impactBasedCover = isLightOrHeavyCover(coverType) && usesProjectileImpactCover(bag);
+
+  let penetration =
+    getInterpolationByDistance(
+      distance,
+      range,
+      1,
+      1,
+      bag.penetration_near,
+      bag.penetration_mid,
+      bag.penetration_far,
+    ) *
+    typeMods.penetration_multiplier *
+    vet.penetrationMultiplier;
+  penetration = applyCustomModifier(penetration, attacking_unit?.custom_modifiers?.penetration, {
+    min: 0,
+  });
+  const directPenChance = penetration / armor < 0.03 ? 0 : Math.min(1, penetration / armor);
+  const directDamageMultiplier =
+    directPenChance +
+    (bag.deflection_has_deflection_damage
+      ? bag.deflection_damage_multiplier * (1 - directPenChance)
+      : 0);
+  return {
+    ...scatter,
+    // Non-positive caps mean unlimited. Keep that sentinel, and never mutate a
+    // weapon bag shared with another attacker or an unvetted preview.
+    weapon:
+      bag.aoe_damage_max_member > 0 && vet.aoeMaxMemberHitAddition !== 0
+        ? {
+            ...bag,
+            aoe_damage_max_member: Math.max(
+              1,
+              bag.aoe_damage_max_member + vet.aoeMaxMemberHitAddition,
+            ),
+          }
+        : bag,
+    // The chart's x-coordinate is the true firing range, even with manual range scaling.
+    distance: displayedDistance,
+    isMoving,
+    directHitChance: accuracy,
+    directDamage: damage * directDamageMultiplier,
+    // When a specific defender is selected, cap damage on each model per
+    // actual outcome (penetration/deflection), not after averaging outcomes.
+    modelHitpoints: target_unit ? getModifiedHitpoints(target_unit) : undefined,
+    directFullDamage: damage,
+    directPenetrationChance: directPenChance,
+    directDeflectionMultiplier: bag.deflection_has_deflection_damage
+      ? bag.deflection_damage_multiplier
+      : 0,
+    splashDamage: damage,
+    impactBasedCover,
+    uncoveredDamage:
+      isLightOrHeavyCover(coverType) && (impactBasedCover || scatter.directionalCover)
+        ? calculateDamage(1)
+        : undefined,
+    targetInGarrison: target_unit?.cover === "garrison",
+    targetArmor: armor,
+    splashPenetrationMultiplier: typeMods.penetration_multiplier * vet.penetrationMultiplier,
+    // Apply manual penetration after AoE's own penetration falloff, just as
+    // the direct-hit path applies it after ordinary ranged penetration.
+    splashPenetrationModifier: attacking_unit?.custom_modifiers?.penetration,
+    scatterMultiplier: getWeaponScatterMultiplier(attacking_unit),
+  };
+};
+
+/** Expected squad HP DPS with direct hits and a sampled projectile scatter/AoE model. */
+export const getSingleWeaponScatterDPS = (
+  weapon_member: WeaponMember,
+  distance: number,
+  scatter: ScatterDpsOptions,
+  isMoving = false,
+  target_unit?: CustomizableUnit,
+  attacking_unit?: CustomizableUnit,
+  displayedDistance = distance,
+): number => {
+  const qty = weapon_member.num;
+  if (qty <= 0) return 0;
+  const bag = getUpgradedVehicleWeaponBag(weapon_member, attacking_unit);
+  if (isMoving && !canFireOnMove(bag, attacking_unit)) return 0;
+
+  const selected = scatter.models.find((model) => model.id === scatter.targetModelId);
+  if (scatter.targetModelId !== null && !selected) return 0;
+  if (scatter.targetModelId === null && !scatter.groundTarget) return 0;
+
+  // No-AoE weapons cannot damage ground targets or disabled models. Regular
+  // targeted fire still uses the existing direct-fire DPS implementation.
+  if (!hasScatterAoe(bag)) {
+    return selected?.enabled
+      ? getSingleWeaponDPS(
+          weapon_member,
+          distance,
+          isMoving,
+          target_unit,
+          attacking_unit,
+          scatter,
+          false,
+          displayedDistance,
+        )
+      : 0;
+  }
+
+  const inputs = getSingleWeaponScatterShotInputs(
+    weapon_member,
+    distance,
+    scatter,
+    isMoving,
+    target_unit,
+    attacking_unit,
+    displayedDistance,
+  );
+  if (!inputs) return 0;
+  const rpm = getWeaponRpm(bag, distance, isMoving, attacking_unit);
+  return rpm > 0 ? ((simulateExpectedScatterShot(inputs) * rpm) / 60) * qty : 0;
 };
 
 export type WeaponTiming = {
@@ -563,7 +1011,7 @@ export const getWeaponTiming = (
   let shotsPerClip = avgClipSize;
 
   if (weapon_bag.burst_can_burst) {
-    if (isMoving && !weapon_bag.moving_can_fire_while_moving) {
+    if (isMoving && !canFireOnMove(weapon_bag, attacking_unit)) {
       return {
         rpm: 0,
         burstDuration: 0,

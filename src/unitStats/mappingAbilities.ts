@@ -127,6 +127,8 @@ type AbilitiesType = {
   ui: AbilitiesUiData;
   /** Ability activation type, e.g. targeted, timed, toggle. */
   activation: string;
+  /** Entity state tree activated by this ability. */
+  entityTree?: string;
   /** Recharge time when casted the ability. */
   rechargeTime: number;
   /** Duration from channeling.channeling_time_second. Null when not present. */
@@ -267,6 +269,7 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
     resolveTextFormatterLocstring(abilityBag.ui_info?.extra_text_formatter, locale) || "";
 
   ability.activation = abilityBag.activation || "";
+  ability.entityTree = typeof abilityBag.entity_tree === "string" ? abilityBag.entity_tree : "";
   /* --------- COST SECTION --------- */
   ability.cost.fuel = abilityBag.cost_to_player?.fuel || 0;
   ability.cost.munition = abilityBag.cost_to_player?.munition || 0;

@@ -7,6 +7,7 @@ type HitpointsCardInput = {
   entities: EbpsType[];
   title?: string;
   modifiedHitpoints?: number; // Optional modified hitpoints per entity
+  modelCount?: number; // Live DPS loadout count, including veterancy additions
 };
 
 const squadIcon = "/icons/common/squad/squad.png";
@@ -18,6 +19,7 @@ export const HitpointCard = ({
   entities,
   title,
   modifiedHitpoints,
+  modelCount,
 }: HitpointsCardInput) => {
   title = title || "Hitpoints";
 
@@ -59,6 +61,14 @@ export const HitpointCard = ({
         }
       }
     }
+  }
+
+  // The DPS loadout can differ from the blueprint through veterancy or manual edits.
+  if (modelCount !== undefined && modifiedHitpoints !== undefined) {
+    squadHitPoints.length = 0;
+    for (let i = 0; i < Math.max(0, Math.floor(modelCount)); i++)
+      squadHitPoints.push(modifiedHitpoints);
+    totalHitPoints = squadHitPoints.length * modifiedHitpoints;
   }
 
   // Display the first team weapon entity symbol as icon.

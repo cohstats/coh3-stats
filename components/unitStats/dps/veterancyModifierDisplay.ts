@@ -28,6 +28,8 @@ const multiplierIds = new Set([
 ]);
 
 const additionIds = new Set([
+  "COUNT",
+  "WEAPON_AOE_MAX_MEMBER_HIT_MODIFIER",
   "WEAPON_DAMAGE_ADDITION_MODIFIER",
   "HEALTH_MODIFIER_ADDITION",
   "WEAPON_RANGE_MODIFIER",

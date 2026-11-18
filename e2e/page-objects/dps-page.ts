@@ -17,7 +17,10 @@ export class DpsPage extends BasePage {
   }
 
   get title(): Locator {
-    return this.page.locator("h2", { hasText: "DPS Benchmark Tool" });
+    return this.page.getByRole("heading", {
+      level: 2,
+      name: /DPS Benchmark Tool|CoH3 DPS Calculator/,
+    });
   }
 
   get modeControl(): Locator {

@@ -15,11 +15,13 @@ import {
   Card,
 } from "@mantine/core";
 import { IconSettings, IconRefresh } from "@tabler/icons-react";
+import { useTranslation } from "next-i18next/pages";
 import {
   CustomModifiers,
   CustomModifier,
   CustomModifierType,
   CustomizableUnit,
+  createDefaultCustomModifiers,
 } from "../../../src/unitStats/dpsCommon";
 import {
   getDpsVeterancyEffects,
@@ -30,6 +32,9 @@ import {
   formatVeterancyAttackSpeed,
 } from "./veterancyModifierDisplay";
 
+/** Compare shows modifiers relevant to the unit's role; VS shows both roles. */
+export type CustomModifierScope = "all" | "offensive" | "defensive";
+
 interface CustomConfigModalProps {
   opened: boolean;
   onClose: () => void;
@@ -38,6 +43,7 @@ interface CustomConfigModalProps {
   unit?: CustomizableUnit; // Used only to display read-only, automatically applied vet effects.
   unitName?: string;
   unitColor?: string;
+  modifierScope?: CustomModifierScope;
 }
 
 type PercentStackMode = "normal" | "inverse";
@@ -61,6 +67,9 @@ interface StatConfig {
   absoluteMin: number;
   absoluteMax?: number;
   absoluteStep: number;
+  percentageOnly?: boolean;
+  lowerIsBetter?: boolean;
+  localized?: boolean;
   supportsAdditive?: boolean;
   additiveMin?: number;
   additiveMax?: number;
@@ -181,12 +190,58 @@ const statConfigs: StatConfig[] = [
     supportsAdditive: true,
     additiveStep: 5,
   },
+  {
+    key: "receivedAccuracy",
+    label: "",
+    description: "",
+    unit: "%",
+    ...inversePercentConfig,
+    ...defaultAbsoluteConfig,
+    percentageOnly: true,
+    localized: true,
+  },
+  {
+    key: "receivedDamage",
+    label: "",
+    description: "",
+    unit: "%",
+    ...inversePercentConfig,
+    ...defaultAbsoluteConfig,
+    percentageOnly: true,
+    localized: true,
+  },
+  {
+    key: "scatterAccuracy",
+    label: "",
+    description: "",
+    unit: "%",
+    ...inversePercentConfig,
+    ...defaultAbsoluteConfig,
+    percentageOnly: true,
+    localized: true,
+  },
 ];
+
+/** The current manual defensive controls. Everything else adjusts the shooting weapon. */
+const defensiveModifierKeys = new Set<keyof CustomModifiers>([
+  "armor",
+  "hitpoints",
+  "receivedAccuracy",
+  "receivedDamage",
+]);
+const compareOnlyModifierKeys = new Set<keyof CustomModifiers>(["scatterAccuracy"]);
+
+const filterStatConfigs = (scope: CustomModifierScope): StatConfig[] => {
+  if (scope === "all") return statConfigs.filter(({ key }) => !compareOnlyModifierKeys.has(key));
+  return statConfigs.filter(({ key }) =>
+    scope === "defensive" ? defensiveModifierKeys.has(key) : !defensiveModifierKeys.has(key),
+  );
+};
 
 const approxEqual = (a: number, b: number) => Math.abs(a - b) < 0.0000001;
 const formatNumber = (value: number) => Number(value.toFixed(3)).toString();
-const formatPercent = (multiplier: number) => {
-  const percent = (multiplier - 1) * 100;
+const formatPercent = (multiplier: number, reduction = false) => {
+  const percent = (multiplier - 1) * 100 * (reduction ? -1 : 1);
   return `${percent > 0 ? "+" : ""}${formatNumber(percent)}%`;
 };
 const formatDelta = (value: number) => `${value > 0 ? "+" : ""}${formatNumber(value)}`;
@@ -235,26 +290,25 @@ type VetBadgeValue = { id: string; value: number };
 
 // These raw IDs are displayed by their existing editable controls.
 // IDs without a matching control remain visible with their full property names.
-const inlineVetModifierIds = new Set([
-  "WEAPON_ACCURACY_MODIFIER",
-  "WEAPON_MOVING_ACCURACY_MODIFIER",
-  "WEAPON_DAMAGE_MODIFIER",
-  "WEAPON_DAMAGE_ADDITION_MODIFIER",
-  "WEAPON_PENETRATION_MODIFIER",
-  "WEAPON_OVERALL_ATTACK_SPEED",
-  "WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD",
-  "WEAPON_BURST_DURATION_MODIFIER",
-  "WEAPON_BURST_RATE_OF_FIRE_MODIFIER",
-  "HEALTH_MODIFIER_ADDITION",
-  "FRONT_ARMOR_ADDITION",
-  "WEAPON_RANGE_MULTIPLICATION_MODIFIER",
-  "WEAPON_RANGE_MODIFIER",
+const inlineVetModifierIds = new Map<string, keyof CustomModifiers>([
+  ["WEAPON_ACCURACY_MODIFIER", "accuracy"],
+  ["WEAPON_SCATTER", "scatterAccuracy"],
+  ["WEAPON_MOVING_ACCURACY_MODIFIER", "accuracy"],
+  ["WEAPON_DAMAGE_MODIFIER", "damage"],
+  ["WEAPON_DAMAGE_ADDITION_MODIFIER", "damage"],
+  ["WEAPON_PENETRATION_MODIFIER", "penetration"],
+  ["WEAPON_OVERALL_ATTACK_SPEED", "overallAttackSpeed"],
+  ["WEAPON_OVERALL_ATTACK_SPEED_MULT_ADD", "overallAttackSpeed"],
+  ["WEAPON_BURST_DURATION_MODIFIER", "burstLength"],
+  ["WEAPON_BURST_RATE_OF_FIRE_MODIFIER", "burstShots"],
+  ["HEALTH_MODIFIER_ADDITION", "hitpoints"],
+  ["RECEIVED_ACCURACY_MODIFIER", "receivedAccuracy"],
+  ["RECEIVED_DAMAGE_MODIFIER", "receivedDamage"],
+  ["FRONT_ARMOR_ADDITION", "armor"],
+  ["WEAPON_RANGE_MULTIPLICATION_MODIFIER", "range"],
+  ["WEAPON_RANGE_MODIFIER", "range"],
 ]);
-const simulatedVetModifierIds = new Set([
-  ...inlineVetModifierIds,
-  "RECEIVED_ACCURACY_MODIFIER",
-  "RECEIVED_DAMAGE_MODIFIER",
-]);
+const simulatedVetModifierIds = new Set(inlineVetModifierIds.keys());
 
 export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   opened,
@@ -264,14 +318,19 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   unit,
   unitName,
   unitColor,
+  modifierScope = "all",
 }) => {
-  const [localModifiers, setLocalModifiers] = useState<CustomModifiers>(customModifiers);
+  const { t } = useTranslation("explorer");
+  const [localModifiers, setLocalModifiers] = useState<CustomModifiers>(() => ({
+    ...createDefaultCustomModifiers(),
+    ...customModifiers,
+  }));
 
   // Clean up unit name display
   const displayUnitName = unitName && unitName !== "No text found" ? unitName : "Unit";
 
   useEffect(() => {
-    setLocalModifiers(customModifiers);
+    setLocalModifiers({ ...createDefaultCustomModifiers(), ...customModifiers });
   }, [customModifiers]);
 
   const selectedVet = Math.max(
@@ -286,8 +345,13 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     unit?.sbps?.veterancyInfo?.four,
   ];
   const rawBonuses = ranks.slice(0, selectedVet).flatMap((rank) => rank?.modifiers ?? []);
+  const visibleStatConfigs = filterStatConfigs(modifierScope);
+  const visibleModifierKeys = new Set(visibleStatConfigs.map(({ key }) => key));
   const remainingBonuses = combineVetBonuses(
-    rawBonuses.filter((entry) => !inlineVetModifierIds.has(entry.id.toUpperCase())),
+    rawBonuses.filter((entry) => {
+      const key = inlineVetModifierIds.get(entry.id.toUpperCase());
+      return !key || !visibleModifierKeys.has(key);
+    }),
   );
   // Preserve the exact contributing property IDs in the attack-speed badge.
   const attackSpeedSources = [
@@ -299,7 +363,11 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   // Burst rate uses the existing Rounds per Burst row in the interface, but is
   // still applied as a rate modifier by the calculator.
   const vetLabels: Partial<Record<keyof CustomModifiers, VetBadge[]>> = {
+    scatterAccuracy: !approxEqual(vet.scatterMultiplier, 1)
+      ? [{ id: "WEAPON_SCATTER", value: formatPercent(vet.scatterMultiplier, true) }]
+      : [],
     accuracy: [
+      ...(unit?.rangerFireOnMove ? [{ id: "RANGER_FIRE_ON_MOVE_PASSIVE", value: "+20%" }] : []),
       ...(!approxEqual(vet.accuracyMultiplier, 1)
         ? [{ id: "WEAPON_ACCURACY_MODIFIER", value: formatPercent(vet.accuracyMultiplier) }]
         : []),
@@ -368,6 +436,22 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       vet.healthAddition !== 0
         ? [{ id: "HEALTH_MODIFIER_ADDITION", value: formatDelta(vet.healthAddition) }]
         : [],
+    receivedAccuracy: !approxEqual(vet.receivedAccuracyMultiplier, 1)
+      ? [
+          {
+            id: "RECEIVED_ACCURACY_MODIFIER",
+            value: formatPercent(vet.receivedAccuracyMultiplier, true),
+          },
+        ]
+      : [],
+    receivedDamage: !approxEqual(vet.receivedDamageMultiplier, 1)
+      ? [
+          {
+            id: "RECEIVED_DAMAGE_MODIFIER",
+            value: formatPercent(vet.receivedDamageMultiplier, true),
+          },
+        ]
+      : [],
   };
 
   const handleModifierChange = (
@@ -384,19 +468,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
   };
 
   const handleReset = () => {
-    const resetModifiers: CustomModifiers = {
-      accuracy: { type: "percentage", value: 0, enabled: false },
-      damage: { type: "percentage", value: 0, enabled: false },
-      penetration: { type: "percentage", value: 0, enabled: false },
-      reload: { type: "percentage", value: 0, enabled: false },
-      cooldownReload: { type: "percentage", value: 0, enabled: false },
-      overallAttackSpeed: { type: "percentage", value: 0, enabled: false },
-      burstLength: { type: "percentage", value: 0, enabled: false },
-      burstShots: { type: "percentage", value: 0, enabled: false },
-      range: { type: "percentage", value: 0, enabled: false },
-      armor: { type: "percentage", value: 0, enabled: false },
-      hitpoints: { type: "percentage", value: 0, enabled: false },
-    };
+    const resetModifiers = createDefaultCustomModifiers();
     setLocalModifiers(resetModifiers);
     onModifiersChange(resetModifiers);
   };
@@ -454,11 +526,12 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     });
   };
 
-  const getValueColor = (modifier: CustomModifier) => {
+  const getValueColor = (modifier: CustomModifier, config: StatConfig) => {
     if (!modifier.enabled) return "gray";
     if (modifier.type === "percentage") {
-      if (modifier.value > 0) return "green";
-      if (modifier.value < 0) return "red";
+      const benefit = config.lowerIsBetter ? -modifier.value : modifier.value;
+      if (benefit > 0) return "green";
+      if (benefit < 0) return "red";
     }
     return "blue";
   };
@@ -480,11 +553,6 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       centered
     >
       <Stack gap="md">
-        <Text size="sm" c="dimmed">
-          Apply custom modifiers to unit stats. These modifiers affect all weapons in the
-          unit&apos;s loadout and work in combination with cover, movement, and distance-based
-          modifiers.
-        </Text>
         {selectedVet > 0 && remainingBonuses.length > 0 && (
           <Group gap={6} wrap="wrap">
             {remainingBonuses.map(({ id, value }) => (
@@ -515,7 +583,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
           </Group>
         )}
         <Divider />
-        {statConfigs.map((config) => {
+        {visibleStatConfigs.map((config) => {
           const modifier = localModifiers[config.key];
           const percentageValues = getPercentageValues(modifier);
           const vetTags = vetLabels[config.key] ?? [];
@@ -525,12 +593,24 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                 {/* First row: Label */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
                   <Stack gap={4}>
-                    <Tooltip label={config.description} multiline w={250}>
+                    <Tooltip
+                      label={
+                        config.localized
+                          ? t(`dpsCompareUi.modifiers.${config.key}Help`, {
+                              defaultValue: t(`dpsCompareUi.modifiers.${config.key}`),
+                            })
+                          : config.description
+                      }
+                      multiline
+                      w={250}
+                    >
                       <Text fw={500} style={{ cursor: "pointer" }}>
-                        {config.label}
+                        {config.localized
+                          ? t(`dpsCompareUi.modifiers.${config.key}`)
+                          : config.label}
                       </Text>
                     </Tooltip>
-                    {selectedVet > 0 && vetTags.length > 0 && (
+                    {vetTags.length > 0 && (
                       <Group gap={4} wrap="wrap">
                         {vetTags.map(({ id, value }, index) => (
                           <Tooltip key={`${id}-${index}`} label={humanizeVeterancyModifierId(id)}>
@@ -551,7 +631,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                 {/* First row: Badge and Toggle */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
                   <Group gap="xs" align="center" justify="flex-end">
-                    <Badge size="md" variant="light" color={getValueColor(modifier)}>
+                    <Badge size="md" variant="light" color={getValueColor(modifier, config)}>
                       {getDisplayValue(modifier, config)}
                     </Badge>
                     <Tooltip label={modifier.enabled ? "Disable modifier" : "Enable modifier"}>
@@ -565,25 +645,27 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                     </Tooltip>
                   </Group>
                 </Grid.Col>
-                {/* Second row on mobile: Type Select */}
-                <Grid.Col span={{ base: 6, sm: 3 }}>
-                  <Select
-                    value={modifier.type}
-                    onChange={(value) => handleTypeChange(config, value as CustomModifierType)}
-                    data={[
-                      { value: "percentage", label: "Percentage" },
-                      { value: "absolute", label: "Absolute" },
-                      ...(config.supportsAdditive
-                        ? [{ value: "additive", label: "Add/Subtract" }]
-                        : []),
-                    ]}
-                    disabled={!modifier.enabled}
-                    size="sm"
-                    allowDeselect={false}
-                  />
-                </Grid.Col>
+                {/* New defensive modifiers only use percentage stacking. */}
+                {!config.percentageOnly && (
+                  <Grid.Col span={{ base: 6, sm: 3 }}>
+                    <Select
+                      value={modifier.type}
+                      onChange={(value) => handleTypeChange(config, value as CustomModifierType)}
+                      data={[
+                        { value: "percentage", label: "Percentage" },
+                        { value: "absolute", label: "Absolute" },
+                        ...(config.supportsAdditive
+                          ? [{ value: "additive", label: "Add/Subtract" }]
+                          : []),
+                      ]}
+                      disabled={!modifier.enabled}
+                      size="sm"
+                      allowDeselect={false}
+                    />
+                  </Grid.Col>
+                )}
                 {/* Second row on mobile: Number Input */}
-                <Grid.Col span={{ base: 6, sm: 3 }}>
+                <Grid.Col span={{ base: 6, sm: config.percentageOnly ? 6 : 3 }}>
                   {modifier.type === "percentage" ? (
                     <Group
                       gap={4}

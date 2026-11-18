@@ -42,8 +42,9 @@ export const TargetModifierSection = ({
         </Grid.Col>
       </Grid>
 
-      {rows.map((entry) => (
-        <Grid key={entry.unit_type} gap="xs">
+      {/* Target types can repeat in the exported table; retain every source row. */}
+      {rows.map((entry, index) => (
+        <Grid key={`${entry.unit_type}-${index}`} gap="xs">
           <Grid.Col span={{ base: 4, md: 4 }}>
             <Text>{formatUnitType(entry.unit_type)}</Text>
           </Grid.Col>

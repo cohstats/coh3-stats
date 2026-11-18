@@ -1,6 +1,12 @@
 // type description of mapped data
 
-import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
+import { mapSquadFormationReferences, type SquadFormationReferences } from "./mappingFormations";
+import {
+  resolveLocstring,
+  resolveTextFormatterLocstring,
+  fetchEnglishMetadataLocstring,
+  type LocstringTable,
+} from "./locstring";
 import { isBaseFaction, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
@@ -8,6 +14,8 @@ import { extractRequirements } from "./requirement-utils";
 import { getStateTreeSpawnMapping } from "./workarounds";
 import { unitToBeIgnored } from "./coh3-unit-configs";
 import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
+import { extractSpecialVeterancyModifiers } from "./specialVeterancy";
+import { isMissingMappingFile } from "./mappingFileErrors";
 
 type SpawnWeaponData = {
   pbg: string;
@@ -25,9 +33,12 @@ type VeterancyRankData = {
   screenName: string;
   requirementIds: string[];
   modifiers: VeterancyModifierData[];
+  /** The implementing payload, kept for debugging descriptions that may change. */
+  squadEntityActionTree?: string;
 };
 // need to be extended by all required fields
 type SbpsType = {
+  formation?: SquadFormationReferences;
   id: string; // filename  -> eg. panzergrenadier_ak
   screenName: string; // sbpextensions\squad_ui_ext\race_list\race_data\info\screen_name
   path: string; // path to object
@@ -129,6 +140,7 @@ const mapSbpsData = (
   parent: string,
   locale: string,
   veterancyRoot?: any,
+  englishMetadata?: LocstringTable,
 ) => {
   const sbpsEntity: SbpsType = {
     // default values
@@ -175,7 +187,7 @@ const mapSbpsData = (
     construction: [],
   };
 
-  mapExtensions(subtree, sbpsEntity, locale, veterancyRoot);
+  mapExtensions(subtree, sbpsEntity, locale, veterancyRoot, englishMetadata);
 
   // compute load out
 
@@ -243,25 +255,50 @@ const mapVeterancyRank = (
   rankInfo: any,
   locale: string,
   veterancyRoot?: any,
+  englishMetadata?: LocstringTable,
 ): VeterancyRankData => {
   const rank = rankInfo?.veterancy_rank;
 
+  const screenName =
+    resolveTextFormatterLocstring(rank?.brief_text_formatter, locale) ||
+    resolveLocstring(rank?.brief_text, locale) ||
+    "";
+  const squadEntityActionTree =
+    rank?.state_tree_references?.squad_entity_action_tree?.ActionTree_OpeningBranch ?? "";
+  const englishDescription = englishMetadata
+    ? resolveTextFormatterLocstring(rank?.brief_text_formatter, "en", englishMetadata) ||
+      resolveLocstring(rank?.brief_text, "en", englishMetadata) ||
+      ""
+    : "";
+
   return {
     exp: rank?.veterancy_value || 0,
-    screenName:
-      resolveTextFormatterLocstring(rank?.brief_text_formatter, locale) ||
-      resolveLocstring(rank?.brief_text, locale) ||
-      "",
+    screenName,
     requirementIds: getVeterancyRequirementIds(rank?.requirements),
-    modifiers: getVeterancyRankModifiers(rank, veterancyRoot),
+    squadEntityActionTree,
+    modifiers: [
+      ...getVeterancyRankModifiers(rank, veterancyRoot),
+      ...(englishMetadata
+        ? extractSpecialVeterancyModifiers(squadEntityActionTree, englishDescription)
+        : []),
+    ],
   };
 };
 
-const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en", veterancyRoot?: any) => {
+const mapExtensions = (
+  root: any,
+  sbps: SbpsType,
+  locale: string = "en",
+  veterancyRoot?: any,
+  englishMetadata?: LocstringTable,
+) => {
   for (const squadext in root.extensions) {
     const extension = root.extensions[squadext].squadexts;
     const extName = extension.template_reference.value.split("\\")[1];
     switch (extName) {
+      case "squad_formation_ext":
+        sbps.formation = mapSquadFormationReferences(extension);
+        break;
       case "squad_loadout_ext":
         for (const unit in extension.unit_list) {
           // The serializer will transform the missing field as "undefined". For
@@ -355,12 +392,32 @@ const mapExtensions = (root: any, sbps: SbpsType, locale: string = "en", veteran
             extension.race_list[0].race_data.info.veterancy_rank_info || [];
           // Technically the first one is vet 1, second is vet 2 and third is vet 3.
 
-          sbps.veterancyInfo.one = mapVeterancyRank(vetExtInfo[0], locale, veterancyRoot);
-          sbps.veterancyInfo.two = mapVeterancyRank(vetExtInfo[1], locale, veterancyRoot);
-          sbps.veterancyInfo.three = mapVeterancyRank(vetExtInfo[2], locale, veterancyRoot);
+          sbps.veterancyInfo.one = mapVeterancyRank(
+            vetExtInfo[0],
+            locale,
+            veterancyRoot,
+            englishMetadata,
+          );
+          sbps.veterancyInfo.two = mapVeterancyRank(
+            vetExtInfo[1],
+            locale,
+            veterancyRoot,
+            englishMetadata,
+          );
+          sbps.veterancyInfo.three = mapVeterancyRank(
+            vetExtInfo[2],
+            locale,
+            veterancyRoot,
+            englishMetadata,
+          );
 
           if (vetExtInfo[3]) {
-            sbps.veterancyInfo.four = mapVeterancyRank(vetExtInfo[3], locale, veterancyRoot);
+            sbps.veterancyInfo.four = mapVeterancyRank(
+              vetExtInfo[3],
+              locale,
+              veterancyRoot,
+              englishMetadata,
+            );
           }
         }
         break;
@@ -460,17 +517,25 @@ const BanishedRequirements = ["mass_production", "campaign"];
 // This variable can be imported everywhere.
 // this method is called after loading the JSON at build time.
 /** Load SBPS records and enrich current-patch ranks when optional vet data exists. */
-const getSbpsStats = async (patch = "latest", locale = "en") => {
+const getSbpsStats = async (
+  patch = "latest",
+  locale = "en",
+  options: { requireCompleteMetadata?: boolean } = {},
+) => {
   if (patch == config.latestPatch) patch = "latest";
 
   const cacheKey = `${patch}-${locale}`;
   if (sbpsPatchData && sbpsPatchData[cacheKey]) return sbpsPatchData[cacheKey];
 
   const sbpsUrl = config.getPatchDataUrl("sbps.json", patch);
-  const root = await fetchJsonWithLogging(
-    sbpsUrl,
-    `sbps.json for patch ${patch}, locale ${locale}`,
-  );
+  const [root, englishMetadata] = await Promise.all([
+    fetchJsonWithLogging(sbpsUrl, `sbps.json for patch ${patch}, locale ${locale}`),
+    fetchEnglishMetadataLocstring(patch).catch((error) => {
+      if (options.requireCompleteMetadata) throw error;
+      return undefined;
+    }),
+  ]);
+  let completeMetadata = englishMetadata !== undefined;
 
   // The veterancy file is optional: older datasets may not contain it yet.
   // Always retain the normal SBPS data when the additional request fails.
@@ -483,10 +548,11 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
         `veterancy.json for patch ${patch}`,
       );
     } catch (error) {
-      console.warn(
-        "Optional veterancy data unavailable; continuing without rank modifiers",
-        error,
-      );
+      // A missing optional file is expected. Temporary failures must be retryable.
+      if (!isMissingMappingFile(error)) {
+        if (options.requireCompleteMetadata) throw error;
+        completeMetadata = false;
+      }
     }
   }
 
@@ -499,7 +565,7 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
       root[obj],
       isExtensionContainer,
       (filename: string, subtree: any, jsonPath: string, parent: string) =>
-        mapSbpsData(filename, subtree, jsonPath, parent, locale, veterancyRoot),
+        mapSbpsData(filename, subtree, jsonPath, parent, locale, veterancyRoot, englishMetadata),
       obj,
       obj,
     );
@@ -527,7 +593,7 @@ const getSbpsStats = async (patch = "latest", locale = "en") => {
 
   // sbpsStats = sbpsSetAll;
   if (!sbpsPatchData) sbpsPatchData = {};
-  sbpsPatchData[cacheKey] = sbpsSetAll;
+  if (completeMetadata) sbpsPatchData[cacheKey] = sbpsSetAll;
 
   // Set singleton
   if (patch == "latest") sbpsStats = sbpsSetAll;
