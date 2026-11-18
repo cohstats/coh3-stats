@@ -81,6 +81,33 @@
     "empty": "{{faction}}의 Final Stand 유닛을 찾을 수 없습니다."
   },
   "unitPage": {
+    "formation": {
+      "title": "대형",
+      "situation": "상황",
+      "squadSize": "분대 인원",
+      "front": "전방",
+      "note": "게임 데이터의 이상적인 위치이며, 실제로는 지형에 맞게 조정됩니다. 격자는 1 m입니다.",
+      "elements": {
+        "core": "중앙",
+        "leftFlank": "좌측 측면",
+        "rightFlank": "우측 측면",
+        "scout": "정찰",
+        "crew": "운용병 (근사치)",
+        "weapon": "무기"
+      },
+      "cover": {
+        "tp_defcover": "엄폐 없음",
+        "tp_heavy_cover": "중엄폐",
+        "tp_light_cover": "경엄폐",
+        "tp_negative_cover": "음엄폐",
+        "tp_water_cover": "물",
+        "tp_smoke_cover": "연막",
+        "tp_garrison_cover": "주둔",
+        "tp_trench_cover": "참호",
+        "tp_road_light_cover": "도로 (경엄폐)",
+        "tp_road_heavy_cover": "도로 (중엄폐)"
+      }
+    },
     "stats": "능력치",
     "abilities": "능력",
     "loadout": "무장",

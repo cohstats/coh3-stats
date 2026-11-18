@@ -86,6 +86,33 @@
     "empty": "Pro frakci {{faction}} nebyly nalezeny žádné Final Stand jednotky."
   },
   "unitPage": {
+    "formation": {
+      "title": "Formace",
+      "situation": "Situace",
+      "squadSize": "Velikost jednotky",
+      "front": "Vpřed",
+      "note": "Ideální pozice z herních dat, hra je přizpůsobuje terénu. Mřížka je 1 m.",
+      "elements": {
+        "core": "Jádro",
+        "leftFlank": "Levé křídlo",
+        "rightFlank": "Pravé křídlo",
+        "scout": "Průzkumník",
+        "crew": "Obsluha (přibližně)",
+        "weapon": "Zbraň"
+      },
+      "cover": {
+        "tp_defcover": "Bez krytu",
+        "tp_heavy_cover": "Těžký kryt",
+        "tp_light_cover": "Lehký kryt",
+        "tp_negative_cover": "Negativní kryt",
+        "tp_water_cover": "Voda",
+        "tp_smoke_cover": "Kouř",
+        "tp_garrison_cover": "Obsazená budova",
+        "tp_trench_cover": "Zákop",
+        "tp_road_light_cover": "Cesta (lehký kryt)",
+        "tp_road_heavy_cover": "Cesta (těžký kryt)"
+      }
+    },
     "stats": "Statistiky",
     "abilities": "Schopnosti",
     "loadout": "Výbava",

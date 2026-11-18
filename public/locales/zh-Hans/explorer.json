@@ -81,6 +81,33 @@
     "empty": "未找到 {{faction}} 的 Final Stand 单位。"
   },
   "unitPage": {
+    "formation": {
+      "title": "队形",
+      "situation": "情况",
+      "squadSize": "小队人数",
+      "front": "前方",
+      "note": "游戏数据中的理想位置，游戏会根据地形进行调整。网格为 1 米。",
+      "elements": {
+        "core": "核心",
+        "leftFlank": "左翼",
+        "rightFlank": "右翼",
+        "scout": "侦察",
+        "crew": "操作人员（近似）",
+        "weapon": "武器"
+      },
+      "cover": {
+        "tp_defcover": "无掩体",
+        "tp_heavy_cover": "重型掩体",
+        "tp_light_cover": "轻型掩体",
+        "tp_negative_cover": "负面掩体",
+        "tp_water_cover": "水域",
+        "tp_smoke_cover": "烟雾",
+        "tp_garrison_cover": "驻守",
+        "tp_trench_cover": "战壕",
+        "tp_road_light_cover": "道路（轻型掩体）",
+        "tp_road_heavy_cover": "道路（重型掩体）"
+      }
+    },
     "stats": "统计",
     "abilities": "技能",
     "loadout": "装备",

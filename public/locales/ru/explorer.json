@@ -86,6 +86,33 @@
     "empty": "Подразделения Final Stand для фракции {{faction}} не найдены."
   },
   "unitPage": {
+    "formation": {
+      "title": "Построение",
+      "situation": "Ситуация",
+      "squadSize": "Численность отряда",
+      "front": "Фронт",
+      "note": "Идеальные позиции из игровых данных, игра подстраивает их под местность. Сетка — 1 м.",
+      "elements": {
+        "core": "Ядро",
+        "leftFlank": "Левый фланг",
+        "rightFlank": "Правый фланг",
+        "scout": "Разведчик",
+        "crew": "Расчёт (приблизительно)",
+        "weapon": "Орудие"
+      },
+      "cover": {
+        "tp_defcover": "Без укрытия",
+        "tp_heavy_cover": "Тяжёлое укрытие",
+        "tp_light_cover": "Лёгкое укрытие",
+        "tp_negative_cover": "Отрицательное укрытие",
+        "tp_water_cover": "Вода",
+        "tp_smoke_cover": "Дым",
+        "tp_garrison_cover": "Гарнизон",
+        "tp_trench_cover": "Траншея",
+        "tp_road_light_cover": "Дорога (лёгкое укрытие)",
+        "tp_road_heavy_cover": "Дорога (тяжёлое укрытие)"
+      }
+    },
     "stats": "Характеристики",
     "abilities": "Способности",
     "loadout": "Вооружение",
