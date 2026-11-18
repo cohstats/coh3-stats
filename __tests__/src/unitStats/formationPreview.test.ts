@@ -65,6 +65,38 @@ describe("getSquadFormationPreview", () => {
     expect(full.weapon).not.toBeNull();
   });
 
+  it("converts the mobile gun crew and the weapon position", () => {
+    const pak = squad("at_gun_50mm_pak_38_ak");
+    const weapon = {
+      id: "tw_pak_38_ak",
+      teamWeapon: { type: "tp_mobile", requiredCrew: 2 },
+    } as EbpsType;
+    const preview = getSquadFormationPreview(pak, [weapon], data)!;
+
+    expect(preview.squadSize).toBe(5);
+    preview.options[0].layouts.forEach((layout, index) => {
+      const expected = resolveSquadFormation(pak, data, index + 1, "", false, weapon);
+      if (!expected) {
+        expect(layout).toBeNull();
+        return;
+      }
+      expect(layout?.models.map(({ element }) => element)).toEqual(
+        expected.models.map((model) => (model.operator ? "crew" : model.group)),
+      );
+      layout?.models.forEach((model, modelIndex) => {
+        expect(model.x).toBeCloseTo(expected.models[modelIndex].x, 2);
+        expect(model.y).toBeCloseTo(expected.models[modelIndex].y, 2);
+      });
+      expect(layout?.weapon?.x).toBeCloseTo(expected.weapon!.x, 2);
+      expect(layout?.weapon?.y).toBeCloseTo(expected.weapon!.y, 2);
+    });
+
+    // The full crew: the 2 approximate handlers at the gun plus the observed spare crew slots.
+    const full = preview.options[0].layouts[4]!;
+    expect(full.models.filter(({ element }) => element === "crew")).toHaveLength(2);
+    expect(full.models).toHaveLength(5);
+  });
+
   it("returns null when there is nothing to draw", () => {
     const riflemen = squad("riflemen_us");
     expect(getSquadFormationPreview({ ...riflemen, formation: undefined }, [], data)).toBeNull();
