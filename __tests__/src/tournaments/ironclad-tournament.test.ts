@@ -7,10 +7,16 @@ import {
   getDivisionKey,
   getIroncladChampionRelicIds,
   getIroncladParticipantRelicIds,
+  getIroncladPlayerRecords,
   pickIroncladHubTournaments,
   sortDivisionsByTier,
   sortIroncladTournaments,
   toRelicId,
+} from "../../../src/tournaments/ironclad-tournament";
+import type {
+  IroncladBracketMatch,
+  IroncladBracketSlot,
+  IroncladPlayer,
 } from "../../../src/tournaments/ironclad-tournament";
 import type { IroncladTournament } from "../../../src/apis/ironclad-tournament-api";
 import tournamentsResponse from "../../test-assets/ironclad-tournaments-response.json";
@@ -109,6 +115,73 @@ describe("ironclad-tournament", () => {
         { player: null, score: null, isWinner: false },
         { player: null, score: null, isWinner: false },
       ]);
+    });
+  });
+
+  describe("getIroncladPlayerRecords", () => {
+    const player = (registrationId: string): IroncladPlayer => ({
+      registrationId,
+      eventAlias: registrationId,
+      eventElo: null,
+      relicId: null,
+      alias: null,
+      country: null,
+      profileUrl: null,
+    });
+    const slot = (
+      id: string | null,
+      score: number | null,
+      isWinner = false,
+    ): IroncladBracketSlot => ({
+      player: id ? player(id) : null,
+      score,
+      isWinner,
+    });
+    const match = (
+      slots: [IroncladBracketSlot, IroncladBracketSlot],
+      overrides: Partial<IroncladBracketMatch> = {},
+    ): IroncladBracketMatch => ({
+      id: Math.random().toString(),
+      matchNumber: 1,
+      bestOf: 3,
+      status: "completed",
+      completed: true,
+      forfeit: false,
+      decidedAt: null,
+      slots,
+      ...overrides,
+    });
+
+    it("counts the played matches and games, skipping walkovers, byes and open matches", () => {
+      const records = getIroncladPlayerRecords([
+        {
+          roundNumber: 1,
+          roundName: "Semifinals",
+          matches: [
+            match([slot("a", 2, true), slot("b", 1)]),
+            match([slot("c", 0), slot("d", null, true)], { forfeit: true }),
+            match([slot("e", null, true), slot(null, null)]),
+          ],
+        },
+        {
+          roundNumber: 2,
+          roundName: "Final",
+          matches: [
+            match([slot("a", 0), slot("d", 2, true)]),
+            match([slot("a", 1), slot("b", 1)], { completed: false }),
+          ],
+        },
+      ]);
+
+      expect(records.get("a")).toEqual({ wins: 1, losses: 1, gamesWon: 2, gamesLost: 3 });
+      expect(records.get("b")).toEqual({ wins: 0, losses: 1, gamesWon: 1, gamesLost: 2 });
+      expect(records.get("d")).toEqual({ wins: 1, losses: 0, gamesWon: 2, gamesLost: 0 });
+      expect(records.has("c")).toBe(false);
+      expect(records.has("e")).toBe(false);
+    });
+
+    it("returns an empty record without a bracket", () => {
+      expect(getIroncladPlayerRecords(null).size).toBe(0);
     });
   });
 

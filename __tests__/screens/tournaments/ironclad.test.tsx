@@ -172,6 +172,24 @@ describe("IroncladTournamentScreen", () => {
     expect(html).toContain('href="/players/1188298"');
     expect(html).toContain('href="https://www.ironcladtournaments.com/players/');
     expect(html).not.toContain("ironclad.registrationOpen");
+
+    // Participants record from the bracket - the Main champion won all 3 matches 7 games to 1
+    const champion = getElement(
+      html,
+      "ironclad-participant-e1452e70-1382-4cbd-b747-487a13f6aafc",
+    );
+    const championRow = champion.slice(0, champion.indexOf("</tr>"));
+    expect(championRow).toMatch(/>3<\/span>.*> \/ <\/span>.*>0<\/span>/);
+    expect(championRow).toContain("100%");
+    expect(championRow).toContain("7 - 1");
+    // Walkovers don't count, the Main semifinal loser by walkover has only the played match
+    const walkover = getElement(
+      html,
+      "ironclad-participant-ac8075ce-595c-46d4-ab33-339b71d67a9b",
+    );
+    const walkoverRow = walkover.slice(0, walkover.indexOf("</tr>"));
+    expect(walkoverRow).toMatch(/>1<\/span>.*> \/ <\/span>.*>0<\/span>/);
+    expect(walkoverRow).toContain("2 - 0");
   });
 
   test("renders the running tournament with TBD slots and the not generated brackets", () => {

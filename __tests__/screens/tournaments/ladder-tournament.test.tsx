@@ -102,7 +102,7 @@ const getElement = (html: string, testId: string, tag = "tr") => {
 const count = (html: string, pattern: RegExp) => (html.match(pattern) || []).length;
 
 describe("LadderTournamentScreen", () => {
-  test("renders the standings rows with the champion highlight and titles", () => {
+  test("renders the standings rows with the champion highlight", () => {
     const data = buildLadderSeasonPageData(1, ranking, videos, names);
     const html = render({ data });
 
@@ -112,7 +112,8 @@ describe("LadderTournamentScreen", () => {
     expect(championRow).toContain('data-champion="true"');
     expect(championRow).toContain("lem22");
     expect(championRow).toContain('href="/players/1"');
-    expect(championRow).toContain("tournaments.titles.ladderwinner");
+    // The titles column was removed from the standings
+    expect(championRow).not.toContain("tournaments.titles.ladderwinner");
     // Win rate is wins / matches (13 / 15), not the API rating
     expect(championRow).toContain("87%");
     // Casts open the player card tournaments tab in a new tab
@@ -125,7 +126,7 @@ describe("LadderTournamentScreen", () => {
     // Unknown name falls back to "Player #<id>"
     const secondChampion = getElement(html, "ladder-standing-2");
     expect(secondChampion).toContain('league.playerFallback {"id":2}');
-    expect(secondChampion).toContain("tournaments.titles.metaplayswinner");
+    expect(secondChampion).not.toContain("tournaments.titles.metaplayswinner");
 
     const otherRow = getElement(html, "ladder-standing-3");
     expect(otherRow).not.toContain("data-champion");

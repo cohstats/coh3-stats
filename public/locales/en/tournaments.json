@@ -17,7 +17,6 @@
     "statsBadge": "Stats on COH3 Stats",
     "officialSite": "Official site",
     "visitSite": "Visit site",
-    "viewOfficialWebsite": "View Official Website",
     "latestSeason": "Latest season",
     "champions": "Champions",
     "playersCount_one": "{{count}} player",
@@ -167,6 +166,10 @@
       "title": "Participants",
       "player": "Player",
       "eventElo": "Event ELO",
+      "winsLosses": "W / L",
+      "winRate": "Win rate",
+      "games": "Games",
+      "gamesTooltip": "Games won / lost across all the played matches",
       "ironcladProfile": "IronClad profile"
     }
   }

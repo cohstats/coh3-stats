@@ -393,3 +393,53 @@ export const getIroncladChampionRelicIds = (tournaments: IroncladTournament[]): 
       .filter((id): id is number => id !== null),
   ),
 ];
+
+export type IroncladPlayerRecord = {
+  // Decided bracket matches (series), walkovers excluded
+  wins: number;
+  losses: number;
+  // Individual games of those series, summed from the match scores
+  gamesWon: number;
+  gamesLost: number;
+};
+
+/**
+ * Bracket record of every player of the division, keyed by the registration ID.
+ * Only completed matches between two players count, walkovers and byes weren't played.
+ */
+export const getIroncladPlayerRecords = (
+  rounds: IroncladBracketRound[] | null,
+): Map<string, IroncladPlayerRecord> => {
+  const records = new Map<string, IroncladPlayerRecord>();
+  const getRecord = (registrationId: string) => {
+    let record = records.get(registrationId);
+    if (!record) {
+      record = { wins: 0, losses: 0, gamesWon: 0, gamesLost: 0 };
+      records.set(registrationId, record);
+    }
+    return record;
+  };
+
+  for (const round of rounds ?? []) {
+    for (const match of round.matches) {
+      if (!match.completed || match.forfeit) continue;
+      const [one, two] = match.slots;
+      if (!one.player || !two.player) continue;
+      // Without a winner the match is not decided, skip it
+      if (!one.isWinner && !two.isWinner) continue;
+
+      for (const [slot, opponent] of [
+        [one, two],
+        [two, one],
+      ] as const) {
+        const record = getRecord(slot.player!.registrationId);
+        if (slot.isWinner) record.wins += 1;
+        else record.losses += 1;
+        record.gamesWon += slot.score ?? 0;
+        record.gamesLost += opponent.score ?? 0;
+      }
+    }
+  }
+
+  return records;
+};
