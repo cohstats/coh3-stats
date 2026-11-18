@@ -164,6 +164,45 @@ it("shows combined percentage totals while leaving the saved manual modifiers un
   expect(onChange).not.toHaveBeenCalled();
 });
 
+it.each([0, 1])(
+  "shows the effective absolute armor and timing factor at rank %i",
+  async (rank) => {
+    const modifiers = createDefaultCustomModifiers();
+    modifiers.armor = { type: "absolute", value: 200, enabled: true };
+    modifiers.overallAttackSpeed = { type: "absolute", value: 0.5, enabled: true };
+    const unit = {
+      veterancyLevel: rank,
+      sbps: {
+        veterancyInfo: {
+          one: {
+            exp: 100,
+            modifiers: [
+              { id: "WEAPON_OVERALL_ATTACK_SPEED", value: 0.8 },
+              { id: "FRONT_ARMOR_ADDITION", value: 10 },
+            ],
+          },
+        },
+      },
+    } as unknown as CustomizableUnit;
+    await render(
+      <CustomConfigModal
+        opened
+        onClose={() => {}}
+        customModifiers={modifiers}
+        unit={unit}
+        onModifiersChange={() => {}}
+      />,
+    );
+    expect(document.querySelector('[data-testid="dps-modifier-total-armor"]')!.textContent).toBe(
+      rank ? "210" : "200",
+    );
+    expect(
+      document.querySelector('[data-testid="dps-modifier-total-overallAttackSpeed"]')!
+        .textContent,
+    ).toBe(rank ? "0.4" : "0.5");
+  },
+);
+
 it.each(["additive", "absolute"] as const)(
   "keeps a %s total separate from multiplicative veterancy",
   async (type) => {

@@ -295,6 +295,8 @@ export const WeaponLoadoutCard = (
     (weapon_bag.accuracy_near > 0 || weapon_bag.accuracy_mid > 0 || weapon_bag.accuracy_far > 0);
   const showTankAccuracy =
     usesAccuracy && weapon_bag.accuracy_far > 0 && weapon_bag.accuracy_far < 0.08;
+  // The calculator applies absolute accuracy after target-size scaling.
+  const tankAccuracyMultiplier = context.hasAbsoluteAccuracy ? 1 : 20;
 
   const showDamageDistribution =
     weapon_bag.projectile_type === "none" &&
@@ -683,9 +685,9 @@ export const WeaponLoadoutCard = (
               show: showTankAccuracy,
               label: t("weaponCard.accuracyVsTanks"),
               tooltip: t("weaponCard.accuracyVsTanksTooltip"),
-              near: formatPercent(weapon_bag.accuracy_near * 20),
-              mid: formatPercent(weapon_bag.accuracy_mid * 20),
-              far: formatPercent(weapon_bag.accuracy_far * 20),
+              near: formatPercent(weapon_bag.accuracy_near * tankAccuracyMultiplier),
+              mid: formatPercent(weapon_bag.accuracy_mid * tankAccuracyMultiplier),
+              far: formatPercent(weapon_bag.accuracy_far * tankAccuracyMultiplier),
             },
             {
               show: !usesAccuracy && weapon_bag.projectile_type !== "none",

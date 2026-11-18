@@ -480,12 +480,12 @@ const isOptionalDpsAbilityWeapon = (ability: AbilitiesType) => {
     return true;
   }
 
-  const hasValidNumShots =
-    typeof ability.numShots === "number" &&
-    Number.isInteger(ability.numShots) &&
-    ability.numShots > 0;
+  const { numShots } = ability;
+  if (typeof numShots === "number" && Number.isInteger(numShots) && numShots > 0) {
+    return numShots >= 3;
+  }
 
-  return !hasValidNumShots && (ability.activation === "timed" || ability.activation === "toggle");
+  return ability.activation === "timed" || ability.activation === "toggle";
 };
 
 const findAbilityByReference = (abilities: AbilitiesType[], reference: unknown) => {

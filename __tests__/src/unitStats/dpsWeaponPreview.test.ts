@@ -1,7 +1,9 @@
 import { calculatorMember, calculatorUnit } from "../../test-assets/calculator-fixtures";
 import { getDpsWeaponPreview } from "../../../src/unitStats/dpsWeaponPreview";
+import { getProjectileTravelTime } from "../../../components/unit-cards/weapon-loadout/projectile-calculations";
 import {
   getEffectiveWeaponStats,
+  getScatterDimensions,
   getSingleWeaponScatterShotInputs,
   getWeaponTiming,
 } from "../../../src/unitStats/weaponLib";
@@ -85,6 +87,36 @@ it("matches the solver's direct accuracy, damage, and timing at every displayed 
       getWeaponTiming(member.weapon.weapon_bag, base, false, unit),
     );
   }
+});
+
+it("keeps firing-cycle timing at the signed breakpoint while scatter and flight use physical distance", () => {
+  const member = calculatorMember({
+    cooldown_duration_multiplier_mid: 3,
+    projectile_type: "artillery",
+    scatter_angle_scatter: 10,
+  });
+  const unit = calculatorUnit({ weapon_member: [member] });
+  unit.custom_modifiers!.range = { type: "additive", value: -15, enabled: true };
+  const preview = getDpsWeaponPreview(member, unit);
+  const bag = preview.weapon.weapon_bag;
+  expect(bag.range).toEqual({ min: 0, near: -5, mid: 5, far: 15, max: 25 });
+  const nearTiming = preview.timingAtRange(bag.range_distance_near);
+  expect(nearTiming).toEqual(getWeaponTiming(member.weapon.weapon_bag, 10));
+  expect(nearTiming.rpm).not.toBe(preview.timingAtRange(0).rpm);
+  expect(preview.curve[0].x).toBe(0);
+  expect(getScatterDimensions(bag.range.near, bag)).toMatchObject({
+    width: 0,
+    length: 0,
+    offset: 0,
+  });
+  expect(getProjectileTravelTime(bag.range_distance_near, bag)).toBeNull();
+  expect(
+    getProjectileTravelTime(bag.range_distance_near, {
+      ...bag,
+      projectile_trajectory_type: "projectile_trajectory",
+      projectile_trajectory_time_seconds: 2,
+    }),
+  ).toBe(2);
 });
 
 it("honors absolute and additive overrides in the display and mini graph", () => {

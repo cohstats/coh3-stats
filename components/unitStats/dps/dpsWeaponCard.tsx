@@ -71,6 +71,11 @@ export const DpsWeaponCard = (props: IDPSProps) => {
     () => (opened ? getDpsWeaponPreview(props.weapon_member, props.unit) : undefined),
     [opened, props.weapon_member, props.unit, settings],
   );
+  const accuracy = props.unit.custom_modifiers?.accuracy;
+  const weaponCardContext = {
+    timingAtRange: preview?.timingAtRange,
+    hasAbsoluteAccuracy: accuracy?.enabled && accuracy.type === "absolute",
+  };
   const isOptionalUpgradeWeapon = props.weapon_member.source === "optional_upgrade";
   const isOptionalAbilityWeapon = props.weapon_member.source === "optional_ability";
   const isOptionalSourceWeapon = isOptionalUpgradeWeapon || isOptionalAbilityWeapon;
@@ -238,7 +243,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                                 : (props.weapon_member.upgradeCount ?? 1)
                             }
                             context={{
-                              timingAtRange: preview.timingAtRange,
+                              ...weaponCardContext,
                               ...(isOptionalAbilityWeapon
                                 ? {
                                     source: "ability" as const,
@@ -255,7 +260,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                       <WeaponLoadoutCardView
                         weapon={preview.weapon}
                         count={1}
-                        context={{ timingAtRange: preview.timingAtRange }}
+                        context={weaponCardContext}
                       />
                     </Card>
                   )}

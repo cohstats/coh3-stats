@@ -105,6 +105,14 @@ export const applyCustomModifier = (
   return result;
 };
 
+// The front-facing veterancy bonus is added to the customized armor value.
+const getFrontArmor = (target: CustomizableUnit | undefined, frontArmorAddition: number) => {
+  const armor = applyCustomModifier(target?.armor ?? 1, target?.custom_modifiers?.armor, {
+    min: 0,
+  });
+  return Math.max(0, armor + frontArmorAddition);
+};
+
 /** Shared by the scatter solver and preview; positive accuracy reduces scatter. */
 export const getWeaponScatterMultiplier = (unit?: CustomizableUnit): number =>
   applyCustomModifier(
@@ -178,7 +186,14 @@ export const getEffectiveWeaponStats = (
   const penetration = (base: number) =>
     applyCustomModifier(base * vet.penetrationMultiplier, modifiers?.penetration, { min: 0 });
   const range = getVeterancyAdjustedRange(bag.range, vet);
-  const distance = (base: number) => Math.max(0, getDisplayedDistanceForBaseRange(unit, base));
+  // Keep shifted breakpoints signed so the hover can map them back to the original firing cycle.
+  const displayedRange = {
+    near: getDisplayedDistanceForBaseRange(unit, range.near),
+    mid: getDisplayedDistanceForBaseRange(unit, range.mid),
+    far: getDisplayedDistanceForBaseRange(unit, range.far),
+    min: bag.range_min,
+    max: Math.max(0, getDisplayedDistanceForBaseRange(unit, range.max)),
+  };
   const scatter = getWeaponScatterMultiplier(unit);
   const angle =
     scatter * (unit.is_moving ? (bag.scatter_moving_scatter_angle_multiplier ?? 1) : 1);
@@ -223,18 +238,12 @@ export const getEffectiveWeaponStats = (
     penetration_near: penetration(bag.penetration_near),
     penetration_mid: penetration(bag.penetration_mid),
     penetration_far: penetration(bag.penetration_far),
-    range: {
-      near: distance(range.near),
-      mid: distance(range.mid),
-      far: distance(range.far),
-      min: bag.range_min,
-      max: distance(range.max),
-    },
-    range_distance_near: distance(range.near),
-    range_distance_mid: distance(range.mid),
-    range_distance_far: distance(range.far),
+    range: displayedRange,
+    range_distance_near: displayedRange.near,
+    range_distance_mid: displayedRange.mid,
+    range_distance_far: displayedRange.far,
     range_min: bag.range_min,
-    range_max: distance(range.max),
+    range_max: displayedRange.max,
     scatter_angle_scatter: bag.scatter_angle_scatter * angle,
     scatter_distance_scatter_ratio: bag.scatter_distance_scatter_ratio * spread,
     scatter_distance_scatter_max: bag.scatter_distance_scatter_max * spread,
@@ -371,15 +380,7 @@ const getSingleWeaponDPS = (
     )
       cover.damage_multiplier = 1;
     targetSize = target_unit.target_size;
-    // Front armor is the default facing in the DPS calculator. Veterancy
-    // adds to that base before manual modifiers (including absolute overrides).
-    armor = target_unit.armor + targetVeterancy.frontArmorAddition;
-
-    // Apply armor modifier from target unit early (affects all armor calculations)
-    armor = applyCustomModifier(armor, target_unit.custom_modifiers?.armor, {
-      percentMode: "normal",
-      min: 0,
-    });
+    armor = getFrontArmor(target_unit, targetVeterancy.frontArmorAddition);
   }
 
   const range = getVeterancyAdjustedRange(
@@ -799,8 +800,7 @@ export const getSingleWeaponScatterShotInputs = (
   const types = target_unit ? (target_unit.ebps_default?.unitTypes ?? []) : ["infantry"];
   const typeMods = getTargetTypeModifiers(bag.target_type_table, types);
   const targetSize = target_unit?.target_size ?? 1;
-  let armor = (target_unit?.armor ?? 1) + targetVet.frontArmorAddition;
-  armor = applyCustomModifier(armor, target_unit?.custom_modifiers?.armor, { min: 0.001 });
+  const armor = Math.max(0.001, getFrontArmor(target_unit, targetVet.frontArmorAddition));
   const range = getVeterancyAdjustedRange(
     {
       near: bag.range_distance_near,
@@ -1357,6 +1357,7 @@ const getScatterArea = (distance = 0, weapon_bag: WeaponStatsType) => {
 };
 
 const getScatterDimensions = (distance = 0, weapon_bag: WeaponStatsType) => {
+  if (distance <= 0) return { width: 0, length: 0, offset: 0, range_min: 0, range_max: 0 };
   const scatter_offset = weapon_bag.scatter_distance_scatter_offset;
   const distance_scatter_max = weapon_bag.scatter_distance_scatter_max;
   const scatter_angle = weapon_bag.scatter_angle_scatter;

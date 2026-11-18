@@ -505,9 +505,15 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
 
   const getTotalModifier = (modifier: CustomModifier, config: StatConfig): CustomModifier => {
     const { multiplier = 1, addition = 0 } = automaticTotals[config.key] ?? {};
-    // Absolute values stand alone; never mix percentages into additive entries.
-    if (modifier.enabled && modifier.type !== "percentage") {
-      return modifier.type === "additive" && approxEqual(multiplier, 1)
+    if (modifier.enabled && modifier.type === "absolute") {
+      if (config.key === "overallAttackSpeed")
+        return { ...modifier, value: modifier.value * multiplier };
+      if (config.key === "armor")
+        return { ...modifier, value: Math.max(0, modifier.value + addition) };
+      return modifier;
+    }
+    if (modifier.enabled && modifier.type === "additive") {
+      return approxEqual(multiplier, 1)
         ? { ...modifier, value: modifier.value + addition }
         : modifier;
     }
@@ -534,7 +540,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
       return `${modifier.value >= 0 ? "+" : ""}${Math.round(modifier.value * 100) / 100}%`;
     }
     if (modifier.type === "additive") return `${modifier.value >= 0 ? "+" : ""}${modifier.value}`;
-    return `${modifier.value}`;
+    return formatRawVetValue(modifier.value);
   };
 
   const patchModifier = (statKey: keyof CustomModifiers, patch: Partial<CustomModifier>) => {
