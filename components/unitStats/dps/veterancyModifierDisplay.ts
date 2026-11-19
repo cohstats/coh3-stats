@@ -9,8 +9,9 @@ export const humanizeVeterancyModifierId = (id: string): string =>
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
 const formatNumber = (value: number): string => Number(value.toFixed(3)).toString();
-const formatSigned = (value: number): string => `${value > 0 ? "+" : ""}${formatNumber(value)}`;
-const formatPercent = (percent: number): string =>
+export const formatSigned = (value: number): string =>
+  `${value > 0 ? "+" : ""}${formatNumber(value)}`;
+export const formatPercent = (percent: number): string =>
   `${percent > 0 ? "+" : ""}${formatNumber(percent)}%`;
 
 // These IDs are known to be multiplicative (1 = no change).

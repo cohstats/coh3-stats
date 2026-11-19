@@ -137,7 +137,11 @@ it("honors absolute and additive overrides in the display and mini graph", () =>
 });
 
 it("includes Ranger's passive and vehicle upgrades only on the affected weapon", () => {
-  const member = calculatorMember({ aoe_outer_radius: 0, moving_can_fire_while_moving: false });
+  const member = calculatorMember({
+    aoe_outer_radius: 0,
+    moving_can_fire_while_moving: false,
+    burst_rate_of_fire_min: 10,
+  });
   member.hardpointIndex = 1;
   const ranger = calculatorUnit({ weapon_member: [member], rangerFireOnMove: true });
   expect(getEffectiveWeaponStats(member, ranger).accuracy_near).toBeCloseTo(1.2);
@@ -148,8 +152,18 @@ it("includes Ranger's passive and vehicle upgrades only on the affected weapon",
     heavyBarrelsEnabled: true,
     dakCoaxUpgradeEnabled: true,
   });
-  expect(getEffectiveWeaponStats(member, tank).damage_max).toBe(150);
-  expect(getEffectiveWeaponStats(member, tank).range_max).toBe(45);
+  expect(getEffectiveWeaponStats(member, tank)).toMatchObject({
+    damage_max: 100,
+    range_max: 40,
+    burst_rate_of_fire_min: 10,
+  });
+  tank.heavyBarrels = { burstRateMultiplier: 1.4, rangeAddition: 7 };
+  tank.superiorFireDrillsDamageMultiplier = 1.8;
+  expect(getEffectiveWeaponStats(member, tank)).toMatchObject({
+    damage_max: 180,
+    range_max: 47,
+    burst_rate_of_fire_min: 14,
+  });
   const pintle = { ...member, hardpointIndex: 3 };
   expect(getEffectiveWeaponStats(pintle, tank).damage_max).toBe(100);
 });

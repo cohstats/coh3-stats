@@ -1,13 +1,16 @@
 // type description of mapped data
 
 import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
-import { traverseTree } from "./unitStatsLib";
+import { getCustomFloat, traverseTree } from "./unitStatsLib";
 import config from "../../config";
 import { internalSlash } from "../utils";
 import { getReferenceString } from "./dpsCommon";
 import { extractDisplayRequirements } from "./requirement-utils";
 import type { DisplayRequirement } from "./requirement-utils";
 import { fetchJsonWithLogging } from "./fetch-mappings-withLogs";
+import { isMissingMappingFile } from "./mappingFileErrors";
+
+const HEAVY_BARRELS_ID = "improved_vehicle_machine_guns_us";
 
 // Need to be extended by all required fields
 type UpgradesType = {
@@ -34,6 +37,7 @@ type UpgradesType = {
 
   /** Found at `upgrade_bag.state_tree_references.on_action_tree.ActionTree_OpeningBranch`. */
   actionTreeOpeningBranch: string;
+  heavyBarrels?: { burstRateMultiplier: number; rangeAddition: number };
 };
 
 /**
@@ -200,6 +204,17 @@ const mapUpgradeCustomProperties = (root: any, upgrade: UpgradesType) => {
 
   if (!customProperties) return;
 
+  if (
+    upgrade.id === HEAVY_BARRELS_ID &&
+    upgrade.actionTreeOpeningBranch === "vehicle_mg_field_modifications_us"
+  ) {
+    const burst = getCustomFloat(customProperties, "WEAPON_BURST_RATE_OF_FIRE_MODIFIER");
+    const range = getCustomFloat(customProperties, "WEAPON_RANGE_MODIFIER");
+    if (burst !== undefined || range !== undefined) {
+      upgrade.heavyBarrels = { burstRateMultiplier: burst ?? 1, rangeAddition: range ?? 0 };
+    }
+  }
+
   const customInt32Properties = customProperties.custom_int32_properties;
   if (Array.isArray(customInt32Properties)) {
     customInt32Properties.forEach((item: any) => {
@@ -229,42 +244,36 @@ const mapUpgradeCustomProperties = (root: any, upgrade: UpgradesType) => {
   }
 };
 
-// Calls the mapping for each entity and puts the result array into the exported
-// SbpsData variable. This variable can be imported everywhere. this method is
-// called after loading the JSON at build time.
-const getUpgradesStats = async (locale: string = "en") => {
-  const cacheKey = `latest-${locale}`;
-  if (upgradesPatchData && upgradesPatchData[cacheKey]) return upgradesPatchData[cacheKey];
-
-  const upgradeUrl = config.getPatchDataUrl("upgrade.json");
-  const root = await fetchJsonWithLogging(upgradeUrl, `upgrade.json for locale ${locale}`);
-
-  const upgradesSetAll: UpgradesType[] = [];
-
-  // Extract from JSON
+const loadUpgrades = async (patch: string, locale: string, onlyId?: string) => {
+  const upgradeUrl = config.getPatchDataUrl("upgrade.json", patch);
+  const root = await fetchJsonWithLogging(
+    upgradeUrl,
+    `upgrade.json for patch ${patch}, locale ${locale}`,
+  );
+  const upgrades: UpgradesType[] = [];
   for (const obj in root) {
-    const upgradesSet = traverseTree(
+    traverseTree(
       root[obj],
       isUpgradeBagContainer,
-      (filename: string, subtree: any, jsonPath: string, parent: string) =>
-        mapUpgradesData(filename, subtree, jsonPath, parent, locale),
+      (filename: string, subtree: any, jsonPath: string, parent: string) => {
+        if (onlyId === undefined || filename === onlyId) {
+          upgrades.push(mapUpgradesData(filename, subtree, jsonPath, parent, locale));
+        }
+      },
       obj,
       obj,
     );
-
-    // Filter relevant objects
-    upgradesSet.forEach((item: UpgradesType) => {
-      upgradesSetAll.push(item);
-    });
   }
+  return upgrades;
+};
 
-  // Store in cache
+const getUpgradesStats = async (locale = "en") => {
+  const cacheKey = `latest-${locale}`;
+  if (upgradesPatchData?.[cacheKey]) return upgradesPatchData[cacheKey];
+  const upgradesSetAll = await loadUpgrades("latest", locale);
   if (!upgradesPatchData) upgradesPatchData = {};
   upgradesPatchData[cacheKey] = upgradesSetAll;
-
-  // Set singleton for latest
   setUpgradesStats(upgradesSetAll);
-
   return upgradesSetAll;
 };
 
@@ -280,3 +289,14 @@ const setUpgradesStats = (stats: UpgradesType[]) => {
 
 export { upgradesStats, setUpgradesStats, getUpgradesStats };
 export type { UpgradesType };
+
+/** The DPS tool uses latest optional weapon definitions. Only Heavy Barrels is patch-specific. */
+export const getDpsUpgrades = async (patch: string) => {
+  const latest = await getUpgradesStats();
+  if (patch === "latest" || patch === config.latestPatch) return latest;
+  const historical = await loadUpgrades(patch, "en", HEAVY_BARRELS_ID).catch((error) => {
+    if (isMissingMappingFile(error)) return [];
+    throw error;
+  });
+  return [...latest.filter((upgrade) => upgrade.id !== HEAVY_BARRELS_ID), ...historical];
+};

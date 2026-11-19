@@ -651,7 +651,10 @@ const getSingleWeaponDPS = (
 
   // Apply received-damage mitigation after manual damage customization,
   // including absolute damage overrides.
-  finalDamage *= cover.damage_multiplier * targetVeterancy.receivedDamageMultiplier;
+  finalDamage *=
+    cover.damage_multiplier *
+    targetVeterancy.receivedDamageMultiplier *
+    (target_unit?.passiveReceivedDamageMultiplier ?? 1);
   finalDamage = applyCustomModifier(finalDamage, target_unit?.custom_modifiers?.receivedDamage, {
     percentMode: "inverse",
     min: 0,
@@ -866,7 +869,10 @@ export const getSingleWeaponScatterShotInputs = (
       specialVet.damage *
       armyUpgrade.damageMultiplier;
     damage = applyCustomModifier(damage, attacking_unit?.custom_modifiers?.damage, { min: 0 });
-    damage *= coverDamage * targetVet.receivedDamageMultiplier;
+    damage *=
+      coverDamage *
+      targetVet.receivedDamageMultiplier *
+      (target_unit?.passiveReceivedDamageMultiplier ?? 1);
     damage = applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
       percentMode: "inverse",
       min: 0,

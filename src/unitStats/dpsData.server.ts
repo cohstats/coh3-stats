@@ -2,7 +2,7 @@ import { fetchLocstring } from "./locstring";
 import { getWeaponStats } from "./mappingWeapon";
 import { getEbpsStats } from "./mappingEbps";
 import { getSbpsStats } from "./mappingSbps";
-import { getUpgradesStats } from "./mappingUpgrades";
+import { getDpsUpgrades } from "./mappingUpgrades";
 import { getAbilitiesStats } from "./mappingAbilities";
 import { getFormationData } from "./mappingFormations";
 import { mapCustomizableUnit } from "./dpsCommon";
@@ -48,7 +48,7 @@ export const getDpsData = (patch = "latest"): Promise<DpsData> => {
   let request = requests.get(key);
   if (!request) {
     request = pending.then(async () => {
-      // Keep the calculator's existing English game text and latest upgrade definitions.
+      // Keep the calculator's existing English game text.
       // Other pages' EBPS display workarounds are intentionally not applied here.
       await fetchLocstring("en");
       const [weaponData, ebpsData, sbpsData, upgradesData, abilitiesData, formationData] =
@@ -56,7 +56,7 @@ export const getDpsData = (patch = "latest"): Promise<DpsData> => {
           getWeaponStats(key),
           getEbpsStats(key),
           getSbpsStats(key, "en", { requireCompleteMetadata: true }),
-          getUpgradesStats(),
+          getDpsUpgrades(key),
           getAbilitiesStats(key),
           getFormationData(key),
         ]);

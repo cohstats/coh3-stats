@@ -337,9 +337,9 @@
     },
     "upgrades": {
       "heavyBarrels": "Heavy Barrels",
-      "heavyBarrelsTip": "+25% MG burst RoF, +5m MG range",
+      "heavyBarrelsTip": "{{rate}} MG burst RoF, {{range}}m MG range",
       "armoredSupport": "Superior Fire Drills",
-      "armoredSupportTip": "+50% damage, hardpoints 1 and 2"
+      "armoredSupportTip": "{{damage}} damage, hardpoints 1 and 2"
     },
     "formation": {
       "modes": { "default": "Default", "cover": "Cover", "bunched": "Bunched" },

@@ -339,6 +339,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     Math.min(getMaxDpsVeterancyLevel(unit), Math.floor(Number(unit?.veterancyLevel ?? 0) || 0)),
   );
   const vet = getDpsVeterancyEffects(unit);
+  const passiveReceivedDamage = unit?.passiveReceivedDamageMultiplier ?? 1;
   const ranks = [
     unit?.sbps?.veterancyInfo?.one,
     unit?.sbps?.veterancyInfo?.two,
@@ -445,14 +446,19 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
           },
         ]
       : [],
-    receivedDamage: !approxEqual(vet.receivedDamageMultiplier, 1)
-      ? [
-          {
-            id: "RECEIVED_DAMAGE_MODIFIER",
-            value: formatPercent(vet.receivedDamageMultiplier, true),
-          },
-        ]
-      : [],
+    receivedDamage: [
+      ...(!approxEqual(passiveReceivedDamage, 1)
+        ? [{ id: "PASSIVE_DAMAGE_REDUCTION", value: formatPercent(passiveReceivedDamage, true) }]
+        : []),
+      ...(!approxEqual(vet.receivedDamageMultiplier, 1)
+        ? [
+            {
+              id: "RECEIVED_DAMAGE_MODIFIER",
+              value: formatPercent(vet.receivedDamageMultiplier, true),
+            },
+          ]
+        : []),
+    ],
   };
 
   const handleModifierChange = (
@@ -500,7 +506,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     armor: { addition: vet.frontArmorAddition },
     hitpoints: { addition: vet.healthAddition },
     receivedAccuracy: { multiplier: vet.receivedAccuracyMultiplier },
-    receivedDamage: { multiplier: vet.receivedDamageMultiplier },
+    receivedDamage: { multiplier: passiveReceivedDamage * vet.receivedDamageMultiplier },
   };
 
   const getTotalModifier = (modifier: CustomModifier, config: StatConfig): CustomModifier => {

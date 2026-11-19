@@ -102,6 +102,10 @@ export const fetchDpsData = (patch = "latest"): Promise<DpsData> => {
 };
 
 export const createDpsUnitCatalog = (data: DpsData) => {
+  const heavyBarrels = data.upgradesData.find((upgrade) => upgrade.heavyBarrels)?.heavyBarrels;
+  const superiorFireDrills = data.abilitiesData.find(
+    (ability) => ability.superiorFireDrillsDamageMultiplier !== undefined,
+  )?.superiorFireDrillsDamageMultiplier;
   const squads = new Map<string, SbpsType>();
   for (const squad of data.sbpsData) {
     // Preserve Array.find's first-match behavior if a dataset contains duplicate IDs.
@@ -121,6 +125,10 @@ export const createDpsUnitCatalog = (data: DpsData) => {
         data.upgradesData,
         data.abilitiesData,
       );
+      if (unit.unit_type === "vehicles") {
+        unit.heavyBarrels = heavyBarrels;
+        unit.superiorFireDrillsDamageMultiplier = superiorFireDrills;
+      }
       units.set(id, unit);
     }
     return unit;

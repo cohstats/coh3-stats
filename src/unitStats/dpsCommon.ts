@@ -175,8 +175,11 @@ type CustomizableUnit = {
   /** Per-attacker vehicle upgrades. Distinct attackers have independent toggles. */
   heavyBarrelsEnabled?: boolean;
   dakCoaxUpgradeEnabled?: boolean;
+  heavyBarrels?: UpgradesType["heavyBarrels"];
+  superiorFireDrillsDamageMultiplier?: number;
   /** Validated entity/squad passive, separate from manual modifiers and veterancy. */
   rangerFireOnMove?: boolean;
+  passiveReceivedDamageMultiplier?: number;
 };
 
 export const createDefaultCustomModifiers = (): CustomModifiers => ({
@@ -289,22 +292,28 @@ export const mapCustomizableUnit = (
     veterancyLevel: 0,
     heavyBarrelsEnabled: false,
     dakCoaxUpgradeEnabled: false,
+    rangerFireOnMove: false,
   };
 
-  const rangerPassive = abilities.some(
-    (ability) =>
+  const unitAbilityIds = new Set(sbpsSelected.abilities);
+  for (const member of sbpsSelected.loadout) {
+    const entity = findEbpsByReference(ebps, member.type);
+    for (const id of entity?.abilities ?? []) unitAbilityIds.add(id);
+  }
+  for (const ability of abilities) {
+    if (!unitAbilityIds.has(ability.id)) continue;
+    if (
       ability.id === RANGER_FIRE_ON_MOVE_ABILITY &&
-      ability.entityTree === RANGER_FIRE_ON_MOVE_ABILITY,
-  );
-  custUnit.rangerFireOnMove =
-    rangerPassive &&
-    (sbpsSelected.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY) ||
-      sbpsSelected.loadout.some((member) => {
-        const entityId = member.type.replace(/\\/g, "/").split("/").pop();
-        return ebps
-          .find((entity) => entity.id === entityId)
-          ?.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY);
-      }));
+      ability.entityTree === RANGER_FIRE_ON_MOVE_ABILITY
+    ) {
+      custUnit.rangerFireOnMove = true;
+    }
+    if (ability.passiveReceivedDamageMultiplier !== undefined) {
+      custUnit.passiveReceivedDamageMultiplier =
+        (custUnit.passiveReceivedDamageMultiplier ?? 1) * ability.passiveReceivedDamageMultiplier;
+      unitAbilityIds.delete(ability.id);
+    }
+  }
 
   if (sbpsSelected.ui.symbolIconName != "")
     custUnit.type_icon = getIconsPathOnCDN("icons/" + sbpsSelected.ui.symbolIconName);
