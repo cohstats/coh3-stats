@@ -124,6 +124,153 @@ const changeInput = async (input: HTMLInputElement, value: string) => {
   });
 };
 
+it("shows combined percentage totals while leaving the saved manual modifiers unchanged", async () => {
+  const modifiers = createDefaultCustomModifiers();
+  for (const key of ["accuracy", "damage", "overallAttackSpeed", "receivedAccuracy"] as const)
+    modifiers[key] = { type: "percentage", value: 20, enabled: true };
+  const unit = {
+    veterancyLevel: 1,
+    sbps: {
+      veterancyInfo: {
+        one: {
+          exp: 100,
+          modifiers: [
+            { id: "WEAPON_ACCURACY_MODIFIER", value: 1.2 },
+            { id: "WEAPON_DAMAGE_MODIFIER", value: 1.2 },
+            { id: "WEAPON_OVERALL_ATTACK_SPEED", value: 0.8 },
+            { id: "RECEIVED_ACCURACY_MODIFIER", value: 0.8 },
+          ],
+        },
+      },
+    },
+  } as unknown as CustomizableUnit;
+  const onChange = jest.fn();
+  await render(
+    <CustomConfigModal
+      opened
+      onClose={() => {}}
+      customModifiers={modifiers}
+      unit={unit}
+      onModifiersChange={onChange}
+    />,
+  );
+  const total = (key: string) =>
+    document.querySelector(`[data-testid="dps-modifier-total-${key}"]`);
+  expect(total("accuracy")).toHaveTextContent("+44%");
+  expect(total("damage")).toHaveTextContent("+44%");
+  expect(total("overallAttackSpeed")).toHaveTextContent("+36%");
+  expect(total("receivedAccuracy")).toHaveTextContent("+36%");
+  expect(modifiers.damage.value).toBe(20);
+  expect(onChange).not.toHaveBeenCalled();
+});
+
+it.each([
+  { rank: 0, armor: 200, speed: 0.5, totalArmor: "200", totalSpeed: "0.5" },
+  { rank: 1, armor: 200, speed: 0.5, totalArmor: "210", totalSpeed: "0.4" },
+  { rank: 1, armor: -5, speed: -0.5, totalArmor: "10", totalSpeed: "0" },
+])(
+  "shows effective absolute armor $totalArmor and timing factor $totalSpeed at rank $rank",
+  async ({ rank, armor, speed, totalArmor, totalSpeed }) => {
+    const modifiers = createDefaultCustomModifiers();
+    modifiers.armor = { type: "absolute", value: armor, enabled: true };
+    modifiers.overallAttackSpeed = { type: "absolute", value: speed, enabled: true };
+    const unit = {
+      veterancyLevel: rank,
+      sbps: {
+        veterancyInfo: {
+          one: {
+            exp: 100,
+            modifiers: [
+              { id: "WEAPON_OVERALL_ATTACK_SPEED", value: 0.8 },
+              { id: "FRONT_ARMOR_ADDITION", value: 10 },
+            ],
+          },
+        },
+      },
+    } as unknown as CustomizableUnit;
+    await render(
+      <CustomConfigModal
+        opened
+        onClose={() => {}}
+        customModifiers={modifiers}
+        unit={unit}
+        onModifiersChange={() => {}}
+      />,
+    );
+    expect(document.querySelector('[data-testid="dps-modifier-total-armor"]')!.textContent).toBe(
+      totalArmor,
+    );
+    expect(
+      document.querySelector('[data-testid="dps-modifier-total-overallAttackSpeed"]')!
+        .textContent,
+    ).toBe(totalSpeed);
+  },
+);
+
+it.each(["additive", "absolute"] as const)(
+  "keeps a %s total separate from multiplicative veterancy",
+  async (type) => {
+    const modifiers = createDefaultCustomModifiers();
+    modifiers.damage = { type, value: 10, enabled: true };
+    const unit = {
+      veterancyLevel: 1,
+      sbps: {
+        veterancyInfo: {
+          one: { exp: 100, modifiers: [{ id: "WEAPON_DAMAGE_MODIFIER", value: 1.2 }] },
+        },
+      },
+    } as unknown as CustomizableUnit;
+    await render(
+      <CustomConfigModal
+        opened
+        onClose={() => {}}
+        customModifiers={modifiers}
+        unit={unit}
+        onModifiersChange={() => {}}
+      />,
+    );
+    expect(document.querySelector('[data-testid="dps-modifier-total-damage"]')).toHaveTextContent(
+      type === "additive" ? "+10" : "10",
+    );
+  },
+);
+
+it("shows automatic bonuses with manual controls off and combines compatible flat bonuses", async () => {
+  const modifiers = createDefaultCustomModifiers();
+  modifiers.armor = { type: "additive", value: 5, enabled: true };
+  const unit = {
+    rangerFireOnMove: true,
+    veterancyLevel: 1,
+    sbps: {
+      veterancyInfo: {
+        one: {
+          exp: 100,
+          modifiers: [
+            { id: "WEAPON_ACCURACY_MODIFIER", value: 1.2 },
+            { id: "FRONT_ARMOR_ADDITION", value: 10 },
+          ],
+        },
+      },
+    },
+  } as unknown as CustomizableUnit;
+  await render(
+    <CustomConfigModal
+      opened
+      onClose={() => {}}
+      customModifiers={modifiers}
+      unit={unit}
+      onModifiersChange={() => {}}
+    />,
+  );
+  expect(document.querySelector('[data-testid="dps-modifier-total-accuracy"]')).toHaveTextContent(
+    "+44%",
+  );
+  expect(document.querySelector('[data-testid="dps-modifier-total-armor"]')).toHaveTextContent(
+    "+15",
+  );
+  expect(modifiers.accuracy.enabled).toBe(false);
+});
+
 it("enters ground attack from the keyboard and moves the aim in coarse and fine steps", async () => {
   await render(<Formation />);
   const diagram = container.querySelector<HTMLElement>(

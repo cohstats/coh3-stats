@@ -153,7 +153,11 @@
   },
   "weaponCard": {
     "accuracy": "Accuracy",
-    "accuracyTooltip": "Chance to guarantee a hit, if it fails, scatter instead. Multiplied by target's \"target size\".",
+    "accuracyTooltip": "Base chance to guarantee a hit, if it fails, scatter instead. Multiplied by target's \"target size\".",
+    "accuracyVsInfantry": "Accuracy vs Infantry",
+    "accuracyVsInfantryTooltip": "Base chance to guarantee a hit, if it fails, scatter instead. Multiplied by target's \"target size\".",
+    "accuracyVsTanks": "Accuracy vs Tanks",
+    "accuracyVsTanksTooltip": "Chance to guarantee a hit on a medium tank, if it fails, scatter instead. Target size 20.",
     "arc": "Arc",
     "arcTooltip": "The weapon's horizontal firing arc before the unit must turn, reposition or set up again",
     "burstDuration": "Burst Duration",
@@ -342,6 +346,8 @@
       "noTarget": "Select a target unit."
     },
     "modifiers": {
+      "effectiveWeaponStats": "Includes this unit's modifiers and veterancy.",
+      "effectiveMovingWeaponStats": "Includes this unit's modifiers and veterancy while moving.",
       "receivedAccuracy": "Harder to hit",
       "receivedAccuracyHelp": "Positive values reduce incoming accuracy.",
       "receivedDamage": "Damage Reduction",
@@ -358,9 +364,9 @@
     },
     "upgrades": {
       "heavyBarrels": "Heavy Barrels",
-      "heavyBarrelsTip": "+25% MG burst RoF, +5m MG range",
+      "heavyBarrelsTip": "{{rate}} MG burst RoF, {{range}}m MG range",
       "armoredSupport": "Superior Fire Drills",
-      "armoredSupportTip": "+50% damage, hardpoints 1 and 2"
+      "armoredSupportTip": "{{damage}} damage, hardpoints 1 and 2"
     },
     "formation": {
       "modes": { "default": "Default", "cover": "Cover", "bunched": "Bunched" },

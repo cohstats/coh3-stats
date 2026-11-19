@@ -1,4 +1,5 @@
 import { WeaponStatsType } from "../../../src/unitStats";
+import type { WeaponTiming } from "../../../src/unitStats/weaponLib";
 
 // ============================================================================
 // Types
@@ -17,6 +18,9 @@ export type WeaponCardInput = {
 export type WeaponCardContext = {
   source?: "loadout" | "upgrade" | "ability";
   abilityNumShots?: number | null;
+  baseFarAccuracy?: number;
+  hasAbsoluteAccuracy?: boolean;
+  timingAtRange?: (distance: number) => WeaponTiming;
 };
 
 export type TargetType = WeaponStatsType["target_type_table"][number];

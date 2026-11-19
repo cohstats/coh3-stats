@@ -9,13 +9,17 @@ import {
   Card,
   Stack,
 } from "@mantine/core";
-import { WeaponMember } from "../../../src/unitStats/dpsCommon";
-import { WeaponLoadoutCard } from "../../unit-cards/weapon-loadout-card";
+import { useMemo, useState } from "react";
+import { useTranslation } from "next-i18next/pages";
+import type { CustomizableUnit, WeaponMember } from "../../../src/unitStats/dpsCommon";
+import { getDpsWeaponPreview } from "../../../src/unitStats/dpsWeaponPreview";
+import { WeaponLoadoutCardView } from "../../unit-cards/weapon-loadout-card";
 import { UnitUpgradeCard } from "../../unit-cards/unit-upgrade-card";
 import { Line } from "react-chartjs-2";
 
 interface IDPSProps {
   weapon_member: WeaponMember;
+  unit: CustomizableUnit;
   onNumberChange: any;
   onDeleteMember: any;
 }
@@ -47,9 +51,32 @@ const config = {
 };
 
 export const DpsWeaponCard = (props: IDPSProps) => {
-  // const weaponMember =
-
-  //const [activeData] = useState(props.weapon_member);
+  const { t } = useTranslation("explorer");
+  const [opened, setOpened] = useState(false);
+  // Customizers mutate units in place, so object identity alone cannot invalidate the hover.
+  const settings = JSON.stringify([
+    props.unit.custom_modifiers,
+    props.unit.veterancyLevel,
+    props.unit.is_moving,
+    props.unit.rangerFireOnMove,
+    props.unit.heavyBarrelsEnabled,
+    props.unit.dakCoaxUpgradeEnabled,
+    props.unit.weapon_member.map(({ weapon_id, num, hardpointIndex }) => [
+      weapon_id,
+      num,
+      hardpointIndex,
+    ]),
+  ]);
+  const preview = useMemo(
+    () => (opened ? getDpsWeaponPreview(props.weapon_member, props.unit) : undefined),
+    [opened, props.weapon_member, props.unit, settings],
+  );
+  const accuracy = props.unit.custom_modifiers?.accuracy;
+  const weaponCardContext = {
+    timingAtRange: preview?.timingAtRange,
+    baseFarAccuracy: props.weapon_member.weapon.weapon_bag.accuracy_far,
+    hasAbsoluteAccuracy: accuracy?.enabled && accuracy.type === "absolute",
+  };
   const isOptionalUpgradeWeapon = props.weapon_member.source === "optional_upgrade";
   const isOptionalAbilityWeapon = props.weapon_member.source === "optional_ability";
   const isOptionalSourceWeapon = isOptionalUpgradeWeapon || isOptionalAbilityWeapon;
@@ -92,7 +119,7 @@ export const DpsWeaponCard = (props: IDPSProps) => {
     datasets: [
       {
         label: "My First Dataset",
-        data: props.weapon_member.dps_default,
+        data: preview?.curve ?? [],
         fill: false,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
@@ -139,7 +166,14 @@ export const DpsWeaponCard = (props: IDPSProps) => {
         )}
 
         <Group>
-          <HoverCard shadow="md" width={580} position="left" offset={50}>
+          <HoverCard
+            shadow="md"
+            width={580}
+            position="left"
+            offset={50}
+            onOpen={() => setOpened(true)}
+            onClose={() => setOpened(false)}
+          >
             <HoverCard.Target>
               <Group gap={"xs"}>
                 <img
@@ -164,62 +198,82 @@ export const DpsWeaponCard = (props: IDPSProps) => {
                 overflowX: "hidden",
               }}
             >
-              {isOptionalSourceWeapon && sourceInfo ? (
-                <Card
-                  p="md"
-                  radius="md"
-                  withBorder
-                  c="gray.0"
-                  style={{
-                    background: sourceStyle.background,
-                    borderColor: sourceStyle.borderColor,
-                    boxShadow: sourceStyle.boxShadow,
-                    color: "var(--mantine-color-gray-0)",
-                  }}
-                >
-                  <Stack gap="sm">
-                    <UnitUpgradeCard
-                      id={sourceInfo.id}
-                      desc={{
-                        screen_name: sourceInfo.ui.screenName,
-                        help_text: sourceInfo.ui.helpText,
-                        extra_text: sourceInfo.ui.extraText,
-                        brief_text: sourceInfo.ui.briefText,
-                        icon_name: sourceInfo.ui.iconName,
-                        extra_text_formatter: sourceInfo.ui.extraTextFormatter,
-                        brief_text_formatter: sourceInfo.ui.briefTextFormatter,
+              {preview && (
+                <>
+                  <Text size="xs" c="dimmed" mb="xs">
+                    {t(
+                      props.unit.is_moving
+                        ? "dpsCompareUi.modifiers.effectiveMovingWeaponStats"
+                        : "dpsCompareUi.modifiers.effectiveWeaponStats",
+                    )}
+                  </Text>
+                  {isOptionalSourceWeapon && sourceInfo ? (
+                    <Card
+                      p="md"
+                      radius="md"
+                      withBorder
+                      c="gray.0"
+                      style={{
+                        background: sourceStyle.background,
+                        borderColor: sourceStyle.borderColor,
+                        boxShadow: sourceStyle.boxShadow,
+                        color: "var(--mantine-color-gray-0)",
                       }}
-                      time_cost={sourceInfo.cost}
-                    />
+                    >
+                      <Stack gap="sm">
+                        <UnitUpgradeCard
+                          id={sourceInfo.id}
+                          desc={{
+                            screen_name: sourceInfo.ui.screenName,
+                            help_text: sourceInfo.ui.helpText,
+                            extra_text: sourceInfo.ui.extraText,
+                            brief_text: sourceInfo.ui.briefText,
+                            icon_name: sourceInfo.ui.iconName,
+                            extra_text_formatter: sourceInfo.ui.extraTextFormatter,
+                            brief_text_formatter: sourceInfo.ui.briefTextFormatter,
+                          }}
+                          time_cost={sourceInfo.cost}
+                        />
 
-                    <Card p="lg" radius="md" withBorder>
-                      {WeaponLoadoutCard(
-                        props.weapon_member.weapon,
-                        isOptionalAbilityWeapon
-                          ? (props.weapon_member.abilityCount ?? 1)
-                          : (props.weapon_member.upgradeCount ?? 1),
-                        isOptionalAbilityWeapon
-                          ? {
-                              source: "ability",
-                              abilityNumShots: props.weapon_member.abilityNumShots ?? null,
+                        <Card p="lg" radius="md" withBorder>
+                          <WeaponLoadoutCardView
+                            weapon={preview.weapon}
+                            count={
+                              isOptionalAbilityWeapon
+                                ? (props.weapon_member.abilityCount ?? 1)
+                                : (props.weapon_member.upgradeCount ?? 1)
                             }
-                          : {},
-                      )}
+                            context={{
+                              ...weaponCardContext,
+                              ...(isOptionalAbilityWeapon
+                                ? {
+                                    source: "ability" as const,
+                                    abilityNumShots: props.weapon_member.abilityNumShots ?? null,
+                                  }
+                                : {}),
+                            }}
+                          />
+                        </Card>
+                      </Stack>
                     </Card>
-                  </Stack>
-                </Card>
-              ) : (
-                <Card p="lg" radius="md">
-                  {WeaponLoadoutCard(props.weapon_member.weapon, 1)}
-                </Card>
-              )}
+                  ) : (
+                    <Card p="lg" radius="md">
+                      <WeaponLoadoutCardView
+                        weapon={preview.weapon}
+                        count={1}
+                        context={weaponCardContext}
+                      />
+                    </Card>
+                  )}
 
-              <Line
-                key={props.weapon_member.weapon_id}
-                data={lineData}
-                options={config as any}
-                redraw
-              />
+                  <Line
+                    key={props.weapon_member.weapon_id}
+                    data={lineData}
+                    options={config as any}
+                    redraw
+                  />
+                </>
+              )}
               {/* <Stack mb={12}>
                 <Space></Space>
 

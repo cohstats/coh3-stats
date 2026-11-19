@@ -5,6 +5,7 @@ import {
   getUnitModelCount,
   WeaponMember,
   CustomModifier,
+  getDisplayedDistanceForBaseRange,
 } from "./dpsCommon";
 import { RangeType, WeaponStatsType } from "./mappingWeapon";
 import { getDpsVeterancyEffects } from "./dpsVeterancy";
@@ -104,6 +105,14 @@ export const applyCustomModifier = (
   return result;
 };
 
+// The front-facing veterancy bonus is added to the customized armor value.
+const getFrontArmor = (target: CustomizableUnit | undefined, frontArmorAddition: number) => {
+  const armor = applyCustomModifier(target?.armor ?? 1, target?.custom_modifiers?.armor, {
+    min: 0,
+  });
+  return Math.max(0, armor + frontArmorAddition);
+};
+
 /** Shared by the scatter solver and preview; positive accuracy reduces scatter. */
 export const getWeaponScatterMultiplier = (unit?: CustomizableUnit): number =>
   applyCustomModifier(
@@ -137,6 +146,136 @@ const getSpecialWeaponDamageMultipliers = (
     flatFlamethrowerDamage: isFlamethrower ? vet.flamethrowerDamageAddition : 0,
     // Anti-vehicle flat damage is *only* on AoE/main guns, never their MGs.
     flatVehicleDamage: mainGun && isVehicleTarget(target) ? vet.damageVsVehiclesAddition : 0,
+  };
+};
+
+const getWeaponDamage = (
+  base: number,
+  vet: ReturnType<typeof getDpsVeterancyEffects>,
+  special: ReturnType<typeof getSpecialWeaponDamageMultipliers>,
+  upgradeMultiplier: number,
+  manual?: CustomModifier,
+  target?: AppliedTargetModifiers,
+) => {
+  const damage = applyCustomModifier(
+    base +
+      vet.damageAddition +
+      special.flatFlamethrowerDamage +
+      special.flatVehicleDamage +
+      (target?.base_damage_modifier ?? 0),
+    manual,
+    { min: 0 },
+  );
+  if (manual?.enabled && manual.type === "absolute") return damage;
+  return (
+    damage *
+    vet.damageMultiplier *
+    special.damage *
+    upgradeMultiplier *
+    (target?.damage_multiplier ?? 1)
+  );
+};
+
+/** Intrinsic offensive stats for a single unit's hover; never modifies shared weapon data. */
+export const getEffectiveWeaponStats = (
+  member: WeaponMember,
+  unit: CustomizableUnit,
+): WeaponStatsType => {
+  const bag = getUpgradedVehicleWeaponBag(member, unit);
+  const vet = getDpsVeterancyEffects(unit);
+  const special = getSpecialWeaponDamageMultipliers(
+    bag,
+    vet,
+    undefined,
+    member.weapon.weapon_cat,
+  );
+  const upgrade = getVehicleWeaponUpgradeEffects(member, unit);
+  const modifiers = unit.custom_modifiers;
+  const accuracy = (base: number) =>
+    applyCustomModifier(
+      base *
+        vet.accuracyMultiplier *
+        getPassiveAccuracyMultiplier(unit) *
+        special.accuracy *
+        (unit.is_moving ? bag.moving_accuracy_multiplier * vet.movingAccuracyMultiplier : 1),
+      modifiers?.accuracy,
+      { min: 0 },
+    );
+  const damage = (base: number) =>
+    getWeaponDamage(base, vet, special, upgrade.damageMultiplier, modifiers?.damage);
+  const penetration = (base: number) =>
+    applyCustomModifier(base * vet.penetrationMultiplier, modifiers?.penetration, { min: 0 });
+  const range = getVeterancyAdjustedRange(bag.range, vet);
+  // Keep shifted breakpoints signed so the hover can map them back to the original firing cycle.
+  const displayedRange = {
+    near: getDisplayedDistanceForBaseRange(unit, range.near),
+    mid: getDisplayedDistanceForBaseRange(unit, range.mid),
+    far: getDisplayedDistanceForBaseRange(unit, range.far),
+    min: bag.range_min,
+    max: Math.max(0, getDisplayedDistanceForBaseRange(unit, range.max)),
+  };
+  const scatter = getWeaponScatterMultiplier(unit);
+  const angle =
+    scatter * (unit.is_moving ? (bag.scatter_moving_scatter_angle_multiplier ?? 1) : 1);
+  const spread =
+    scatter * (unit.is_moving ? (bag.scatter_moving_scatter_distance_multiplier ?? 1) : 1);
+  const attackTime =
+    vet.attackTimeMultiplier *
+    applyCustomModifier(1, modifiers?.overallAttackSpeed, {
+      percentMode: "inverse",
+      min: 0,
+    });
+  const targetTypes = bag.target_type_table.map((entry) => ({ ...entry }));
+  if (
+    isMainGunWeapon(bag) &&
+    (vet.damageVsVehiclesAddition !== 0 || vet.damageVsVehiclesMultiplier !== 1)
+  ) {
+    targetTypes.push({
+      unit_type: "vehicle",
+      dmg_modifier: vet.damageVsVehiclesAddition,
+      accuracy_multiplier: 1,
+      penetration_multiplier: 1,
+      damage_multiplier: vet.damageVsVehiclesMultiplier,
+    });
+  }
+  for (const entry of targetTypes) {
+    if (modifiers?.damage.enabled && modifiers.damage.type === "absolute") {
+      entry.dmg_modifier = 0;
+      entry.damage_multiplier = 1;
+    }
+    if (modifiers?.accuracy.enabled && modifiers.accuracy.type === "absolute")
+      entry.accuracy_multiplier = 1;
+    if (modifiers?.penetration.enabled && modifiers.penetration.type === "absolute")
+      entry.penetration_multiplier = 1;
+  }
+  return {
+    ...bag,
+    accuracy_near: accuracy(bag.accuracy_near),
+    accuracy_mid: accuracy(bag.accuracy_mid),
+    accuracy_far: accuracy(bag.accuracy_far),
+    damage_min: damage(bag.damage_min),
+    damage_max: damage(bag.damage_max),
+    penetration_near: penetration(bag.penetration_near),
+    penetration_mid: penetration(bag.penetration_mid),
+    penetration_far: penetration(bag.penetration_far),
+    range: displayedRange,
+    range_distance_near: displayedRange.near,
+    range_distance_mid: displayedRange.mid,
+    range_distance_far: displayedRange.far,
+    range_min: bag.range_min,
+    range_max: displayedRange.max,
+    scatter_angle_scatter: bag.scatter_angle_scatter * angle,
+    scatter_distance_scatter_ratio: bag.scatter_distance_scatter_ratio * spread,
+    scatter_distance_scatter_max: bag.scatter_distance_scatter_max * spread,
+    aoe_damage_max_member:
+      bag.aoe_damage_max_member > 0
+        ? Math.max(1, bag.aoe_damage_max_member + vet.aoeMaxMemberHitAddition)
+        : bag.aoe_damage_max_member,
+    ready_aim_time_min: (bag.ready_aim_time_min ?? 0) * attackTime,
+    ready_aim_time_max: (bag.ready_aim_time_max ?? 0) * attackTime,
+    fire_wind_up: bag.fire_wind_up * attackTime,
+    fire_wind_down: bag.fire_wind_down * attackTime,
+    target_type_table: targetTypes,
   };
 };
 
@@ -261,15 +400,7 @@ const getSingleWeaponDPS = (
     )
       cover.damage_multiplier = 1;
     targetSize = target_unit.target_size;
-    // Front armor is the default facing in the DPS calculator. Veterancy
-    // adds to that base before manual modifiers (including absolute overrides).
-    armor = target_unit.armor + targetVeterancy.frontArmorAddition;
-
-    // Apply armor modifier from target unit early (affects all armor calculations)
-    armor = applyCustomModifier(armor, target_unit.custom_modifiers?.armor, {
-      percentMode: "normal",
-      min: 0,
-    });
+    armor = getFrontArmor(target_unit, targetVeterancy.frontArmorAddition);
   }
 
   const range = getVeterancyAdjustedRange(
@@ -480,16 +611,14 @@ const getSingleWeaponDPS = (
     getPassiveAccuracyMultiplier(attacking_unit) *
     specialVet.accuracy *
     (isMoving ? attackingVeterancy.movingAccuracyMultiplier : 1);
-  let finalDamage =
-    (avgDamage +
-      targetModifiers.base_damage_modifier +
-      specialVet.flatVehicleDamage +
-      attackingVeterancy.damageAddition +
-      specialVet.flatFlamethrowerDamage) *
-    targetModifiers.damage_multiplier *
-    attackingVeterancy.damageMultiplier *
-    specialVet.damage *
-    armyUpgrade.damageMultiplier;
+  let finalDamage = getWeaponDamage(
+    avgDamage,
+    attackingVeterancy,
+    specialVet,
+    armyUpgrade.damageMultiplier,
+    attacking_unit?.custom_modifiers?.damage,
+    targetModifiers,
+  );
   let finalPenetrationChance = penetrationChance;
   const finalRpm = rpm;
   const finalArmor = armor; // Armor is already modified if target has custom modifiers
@@ -506,12 +635,6 @@ const getSingleWeaponDPS = (
       }
       // Clamp after the target's received-accuracy effects have also been applied.
     }
-
-    // Apply damage modifier
-    finalDamage = applyCustomModifier(finalDamage, modifiers?.damage, {
-      percentMode: "normal",
-      min: 0,
-    });
 
     // Apply penetration modifier
     if (modifiers.penetration.enabled) {
@@ -540,7 +663,10 @@ const getSingleWeaponDPS = (
 
   // Apply received-damage mitigation after manual damage customization,
   // including absolute damage overrides.
-  finalDamage *= cover.damage_multiplier * targetVeterancy.receivedDamageMultiplier;
+  finalDamage *=
+    cover.damage_multiplier *
+    targetVeterancy.receivedDamageMultiplier *
+    (target_unit?.passiveReceivedDamageMultiplier ?? 1);
   finalDamage = applyCustomModifier(finalDamage, target_unit?.custom_modifiers?.receivedDamage, {
     percentMode: "inverse",
     min: 0,
@@ -689,8 +815,7 @@ export const getSingleWeaponScatterShotInputs = (
   const types = target_unit ? (target_unit.ebps_default?.unitTypes ?? []) : ["infantry"];
   const typeMods = getTargetTypeModifiers(bag.target_type_table, types);
   const targetSize = target_unit?.target_size ?? 1;
-  let armor = (target_unit?.armor ?? 1) + targetVet.frontArmorAddition;
-  armor = applyCustomModifier(armor, target_unit?.custom_modifiers?.armor, { min: 0.001 });
+  const armor = Math.max(0.001, getFrontArmor(target_unit, targetVet.frontArmorAddition));
   const range = getVeterancyAdjustedRange(
     {
       near: bag.range_distance_near,
@@ -744,24 +869,24 @@ export const getSingleWeaponScatterShotInputs = (
   accuracy = Math.min(1, Math.max(0, accuracy));
 
   const baseDamage = (bag.damage_min + bag.damage_max) / 2;
+  const weaponDamage = getWeaponDamage(
+    baseDamage,
+    vet,
+    specialVet,
+    armyUpgrade.damageMultiplier,
+    attacking_unit?.custom_modifiers?.damage,
+    typeMods,
+  );
   const calculateDamage = (coverDamage: number) => {
-    let damage =
-      (baseDamage +
-        typeMods.base_damage_modifier +
-        vet.damageAddition +
-        specialVet.flatFlamethrowerDamage +
-        specialVet.flatVehicleDamage) *
-      typeMods.damage_multiplier *
-      vet.damageMultiplier *
-      specialVet.damage *
-      armyUpgrade.damageMultiplier;
-    damage = applyCustomModifier(damage, attacking_unit?.custom_modifiers?.damage, { min: 0 });
-    damage *= coverDamage * targetVet.receivedDamageMultiplier;
-    damage = applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
+    const damage =
+      weaponDamage *
+      coverDamage *
+      targetVet.receivedDamageMultiplier *
+      (target_unit?.passiveReceivedDamageMultiplier ?? 1);
+    return applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
       percentMode: "inverse",
       min: 0,
     });
-    return damage;
   };
   const damage = calculateDamage(cover.damage_multiplier);
   const impactBasedCover = isLightOrHeavyCover(coverType) && usesProjectileImpactCover(bag);
@@ -909,7 +1034,7 @@ export const getWeaponTiming = (
         0,
       );
     } else {
-      attackSpeedMod = attacking_unit.custom_modifiers.overallAttackSpeed.value;
+      attackSpeedMod = Math.max(0, attacking_unit.custom_modifiers.overallAttackSpeed.value);
     }
 
     aimMod *= attackSpeedMod;
@@ -1247,6 +1372,7 @@ const getScatterArea = (distance = 0, weapon_bag: WeaponStatsType) => {
 };
 
 const getScatterDimensions = (distance = 0, weapon_bag: WeaponStatsType) => {
+  if (distance <= 0) return { width: 0, length: 0, offset: 0, range_min: 0, range_max: 0 };
   const scatter_offset = weapon_bag.scatter_distance_scatter_offset;
   const distance_scatter_max = weapon_bag.scatter_distance_scatter_max;
   const scatter_angle = weapon_bag.scatter_angle_scatter;

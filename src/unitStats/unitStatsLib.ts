@@ -1,5 +1,18 @@
 import { internalSlash } from "../utils";
 
+type CustomFloatEntry = { custom_float_property?: { id: string; value: number } };
+
+export const getCustomFloat = (
+  properties: { custom_float_properties?: CustomFloatEntry[] } | undefined,
+  id: string,
+): number | undefined => {
+  const entries = properties?.custom_float_properties;
+  if (!Array.isArray(entries)) return undefined;
+  const value = entries.find((entry) => entry?.custom_float_property?.id === id)
+    ?.custom_float_property?.value;
+  return Number.isFinite(value) ? value : undefined;
+};
+
 export const traverseTree = (
   entity: any,
   checkRelevant: any,

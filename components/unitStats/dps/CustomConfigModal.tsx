@@ -31,6 +31,7 @@ import {
   humanizeVeterancyModifierId,
   formatVeterancyAttackSpeed,
 } from "./veterancyModifierDisplay";
+import { getPassiveAccuracyMultiplier } from "../../../src/unitStats/passiveCombatEffects";
 
 /** Compare shows modifiers relevant to the unit's role; VS shows both roles. */
 export type CustomModifierScope = "all" | "offensive" | "defensive";
@@ -338,6 +339,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     Math.min(getMaxDpsVeterancyLevel(unit), Math.floor(Number(unit?.veterancyLevel ?? 0) || 0)),
   );
   const vet = getDpsVeterancyEffects(unit);
+  const passiveReceivedDamage = unit?.passiveReceivedDamageMultiplier ?? 1;
   const ranks = [
     unit?.sbps?.veterancyInfo?.one,
     unit?.sbps?.veterancyInfo?.two,
@@ -444,14 +446,19 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
           },
         ]
       : [],
-    receivedDamage: !approxEqual(vet.receivedDamageMultiplier, 1)
-      ? [
-          {
-            id: "RECEIVED_DAMAGE_MODIFIER",
-            value: formatPercent(vet.receivedDamageMultiplier, true),
-          },
-        ]
-      : [],
+    receivedDamage: [
+      ...(!approxEqual(passiveReceivedDamage, 1)
+        ? [{ id: "PASSIVE_DAMAGE_REDUCTION", value: formatPercent(passiveReceivedDamage, true) }]
+        : []),
+      ...(!approxEqual(vet.receivedDamageMultiplier, 1)
+        ? [
+            {
+              id: "RECEIVED_DAMAGE_MODIFIER",
+              value: formatPercent(vet.receivedDamageMultiplier, true),
+            },
+          ]
+        : []),
+    ],
   };
 
   const handleModifierChange = (
@@ -480,17 +487,65 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
     return [];
   };
 
-  const getDisplayValue = (modifier: CustomModifier, config: StatConfig) => {
+  const automaticTotals: Partial<
+    Record<keyof CustomModifiers, { multiplier?: number; addition?: number }>
+  > = {
+    accuracy: {
+      multiplier:
+        vet.accuracyMultiplier *
+        getPassiveAccuracyMultiplier(unit) *
+        (unit?.is_moving ? vet.movingAccuracyMultiplier : 1),
+    },
+    scatterAccuracy: { multiplier: vet.scatterMultiplier },
+    damage: { multiplier: vet.damageMultiplier, addition: vet.damageAddition },
+    penetration: { multiplier: vet.penetrationMultiplier },
+    overallAttackSpeed: { multiplier: vet.attackTimeMultiplier },
+    burstLength: { multiplier: vet.burstDurationMultiplier },
+    burstShots: { multiplier: vet.burstRateMultiplier },
+    range: { multiplier: vet.rangeMultiplier, addition: vet.rangeAddition },
+    armor: { addition: vet.frontArmorAddition },
+    hitpoints: { addition: vet.healthAddition },
+    receivedAccuracy: { multiplier: vet.receivedAccuracyMultiplier },
+    receivedDamage: { multiplier: passiveReceivedDamage * vet.receivedDamageMultiplier },
+  };
+
+  const getTotalModifier = (modifier: CustomModifier, config: StatConfig): CustomModifier => {
+    const { multiplier = 1, addition = 0 } = automaticTotals[config.key] ?? {};
+    if (modifier.enabled && modifier.type === "absolute") {
+      const base = Math.max(0, modifier.value);
+      if (config.key === "overallAttackSpeed") return { ...modifier, value: base * multiplier };
+      if (config.key === "armor") return { ...modifier, value: Math.max(0, base + addition) };
+      return modifier;
+    }
+    if (modifier.enabled && modifier.type === "additive") {
+      return approxEqual(multiplier, 1)
+        ? { ...modifier, value: modifier.value + addition }
+        : modifier;
+    }
+    if (!modifier.enabled && approxEqual(multiplier, 1)) {
+      return addition !== 0
+        ? { type: "additive", value: addition, enabled: true }
+        : { ...modifier, enabled: false };
+    }
+    const manual = modifier.enabled
+      ? combinePercentageModifiers(getPercentageValues(modifier), config.percentStackMode)
+      : 0;
+    const inverse = config.percentStackMode === "inverse";
+    const combined = multiplier * (1 + (inverse ? -manual : manual) / 100);
+    return {
+      type: "percentage",
+      value: (combined - 1) * (inverse ? -100 : 100),
+      enabled: true,
+    };
+  };
+
+  const getDisplayValue = (modifier: CustomModifier) => {
     if (!modifier.enabled) return "Default";
     if (modifier.type === "percentage") {
-      const collapsedValue = combinePercentageModifiers(
-        getPercentageValues(modifier),
-        config.percentStackMode,
-      );
-      return `${collapsedValue >= 0 ? "+" : ""}${Math.round(collapsedValue * 100) / 100}%`;
+      return `${modifier.value >= 0 ? "+" : ""}${Math.round(modifier.value * 100) / 100}%`;
     }
     if (modifier.type === "additive") return `${modifier.value >= 0 ? "+" : ""}${modifier.value}`;
-    return `${modifier.value}`;
+    return formatRawVetValue(modifier.value);
   };
 
   const patchModifier = (statKey: keyof CustomModifiers, patch: Partial<CustomModifier>) => {
@@ -585,6 +640,7 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
         <Divider />
         {visibleStatConfigs.map((config) => {
           const modifier = localModifiers[config.key];
+          const totalModifier = getTotalModifier(modifier, config);
           const percentageValues = getPercentageValues(modifier);
           const vetTags = vetLabels[config.key] ?? [];
           return (
@@ -631,8 +687,13 @@ export const CustomConfigModal: React.FC<CustomConfigModalProps> = ({
                 {/* First row: Badge and Toggle */}
                 <Grid.Col span={{ base: 6, sm: 3 }}>
                   <Group gap="xs" align="center" justify="flex-end">
-                    <Badge size="md" variant="light" color={getValueColor(modifier, config)}>
-                      {getDisplayValue(modifier, config)}
+                    <Badge
+                      size="md"
+                      variant="light"
+                      color={getValueColor(totalModifier, config)}
+                      data-testid={`dps-modifier-total-${config.key}`}
+                    >
+                      {getDisplayValue(totalModifier)}
                     </Badge>
                     <Tooltip label={modifier.enabled ? "Disable modifier" : "Enable modifier"}>
                       <Switch

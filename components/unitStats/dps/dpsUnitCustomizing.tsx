@@ -40,7 +40,11 @@ import {
 } from "../../../src/unitStats/dpsCommon";
 import { getMaxDpsVeterancyLevel } from "../../../src/unitStats/dpsVeterancy";
 import { hasScatterAoe } from "../../../src/unitStats/scatterSimulation";
-import { humanizeVeterancyModifierId } from "./veterancyModifierDisplay";
+import {
+  formatPercent,
+  formatSigned,
+  humanizeVeterancyModifierId,
+} from "./veterancyModifierDisplay";
 import { CustomConfigModal, type CustomModifierScope } from "./CustomConfigModal";
 import Link from "next/link";
 import { UnitSquadCard } from "../../unit-cards/unit-squad-card";
@@ -162,6 +166,7 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     components.push(
       <DpsWeaponCard
         weapon_member={member}
+        unit={props.unit}
         key={`${member.weapon_id}.${member.hardpointIndex ?? "manual"}.${props.index}.${member.num}`}
         onDeleteMember={onDelete}
         onNumberChange={onWeaponNumberChange}
@@ -180,12 +185,15 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
     (member) => member.num > 0 && (member.hardpointIndex === 1 || member.hardpointIndex === 2),
   );
   // In normal mode, avoid showing upgrades on vehicles with no affected gun.
-  // Allow All Weapons deliberately exposes both switches on every vehicle.
+  // Allow All Weapons exposes the available upgrades on captured/foreign vehicles too.
+  const { heavyBarrels, superiorFireDrillsDamageMultiplier } = props.unit;
   const showHeavyBarrels =
     compareVehicle &&
+    heavyBarrels !== undefined &&
     (props.allowAllWeapons || (props.unit.faction === "american" && hasVehicleMg));
   const showDakCoax =
     compareVehicle &&
+    superiorFireDrillsDamageMultiplier !== undefined &&
     (props.allowAllWeapons || (props.unit.faction === "afrika_korps" && hasCoaxOrHull));
   const onVehicleUpgradeToggle = (upgrade: "heavyBarrelsEnabled" | "dakCoaxUpgradeEnabled") => {
     props.unit[upgrade] = !props.unit[upgrade];
@@ -457,7 +465,12 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
         {(showHeavyBarrels || showDakCoax) && (
           <Group gap="xs" wrap="wrap" data-testid="vehicle-mg-upgrades">
             {showHeavyBarrels && (
-              <Tooltip label={t("dpsCompareUi.upgrades.heavyBarrelsTip")}>
+              <Tooltip
+                label={t("dpsCompareUi.upgrades.heavyBarrelsTip", {
+                  rate: formatPercent((heavyBarrels.burstRateMultiplier - 1) * 100),
+                  range: formatSigned(heavyBarrels.rangeAddition),
+                })}
+              >
                 <Button
                   size="compact-xs"
                   variant={props.unit.heavyBarrelsEnabled ? "filled" : "default"}
@@ -471,7 +484,11 @@ export const DpsUnitCustomizing = (props: IUnitProps) => {
               </Tooltip>
             )}
             {showDakCoax && (
-              <Tooltip label={t("dpsCompareUi.upgrades.armoredSupportTip")}>
+              <Tooltip
+                label={t("dpsCompareUi.upgrades.armoredSupportTip", {
+                  damage: formatPercent((superiorFireDrillsDamageMultiplier - 1) * 100),
+                })}
+              >
                 <Button
                   size="compact-xs"
                   variant={props.unit.dakCoaxUpgradeEnabled ? "filled" : "default"}

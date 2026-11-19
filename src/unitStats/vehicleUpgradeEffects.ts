@@ -2,20 +2,6 @@ import type { CustomizableUnit, WeaponMember } from "./dpsCommon";
 import type { WeaponStatsType } from "./mappingWeapon";
 import { hasScatterAoe } from "./scatterSimulation";
 
-/**
- * Per-attacker Compare Mode upgrade toggles. Values currently come from the
- * upgrade definitions supplied by Emma
- *
- * Heavy Barrels (improved_vehicle_machine_guns_us): 25% burst RoF, +5m range.
- * DAK Armored Support (armored_support_coax_upgrade_ak): +50% damage on
- * entity combat_ext hardpoints 1 and 2 (0-based). Pintles are not included.
- */
-export const VEHICLE_MG_UPGRADE_VALUES = {
-  heavyBarrelsBurstRateMultiplier: 1.25,
-  heavyBarrelsRangeAddition: 5,
-  dakCoaxHullDamageMultiplier: 1.5,
-} as const;
-
 export type VehicleWeaponUpgradeEffects = {
   burstRateMultiplier: number;
   rangeAddition: number;
@@ -32,18 +18,16 @@ export const getVehicleWeaponUpgradeEffects = (
 
   // The DPS tool's agreed simple grouping: AoE = main gun, non-AoE = MG.
   const isMg = !hasScatterAoe(member.weapon.weapon_bag);
-  const heavyBarrels = Boolean(attacker.heavyBarrelsEnabled && isMg);
+  const heavyBarrels = attacker.heavyBarrelsEnabled && isMg ? attacker.heavyBarrels : undefined;
   const dakCoaxHull = Boolean(
     attacker.dakCoaxUpgradeEnabled &&
     (member.hardpointIndex === 1 || member.hardpointIndex === 2),
   );
 
   return {
-    burstRateMultiplier: heavyBarrels
-      ? VEHICLE_MG_UPGRADE_VALUES.heavyBarrelsBurstRateMultiplier
-      : 1,
-    rangeAddition: heavyBarrels ? VEHICLE_MG_UPGRADE_VALUES.heavyBarrelsRangeAddition : 0,
-    damageMultiplier: dakCoaxHull ? VEHICLE_MG_UPGRADE_VALUES.dakCoaxHullDamageMultiplier : 1,
+    burstRateMultiplier: heavyBarrels?.burstRateMultiplier ?? 1,
+    rangeAddition: heavyBarrels?.rangeAddition ?? 0,
+    damageMultiplier: dakCoaxHull ? (attacker.superiorFireDrillsDamageMultiplier ?? 1) : 1,
   };
 };
 

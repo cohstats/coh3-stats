@@ -24,6 +24,34 @@ const scatter: ScatterDpsOptions = {
 const shot = (member = calculatorMember(), target = calculatorUnit(), options = scatter) =>
   getSingleWeaponScatterShotInputs(member, 20, options, false, target)!;
 
+it.each([
+  ["percentage", 20, 130],
+  ["absolute", 200, 210],
+  ["additive", 20, 130],
+] as const)(
+  "applies frontal veterancy after %s armor in both DPS paths",
+  (type, value, expectedArmor) => {
+    const target = calculatorUnit({ armor: 100, cover: "", veterancyLevel: 1 });
+    target.sbps.veterancyInfo = {
+      one: { exp: 100, modifiers: [{ id: "FRONT_ARMOR_ADDITION", value: 10 }] },
+    } as typeof target.sbps.veterancyInfo;
+    target.custom_modifiers!.armor = { type, value, enabled: true };
+    const member = calculatorMember();
+    const inputs = shot(member, target);
+    expect(inputs.targetArmor).toBe(expectedArmor);
+    expect(inputs.directPenetrationChance).toBeCloseTo(100 / expectedArmor);
+    const baseDps = getSingleWeaponDPS(
+      member,
+      20,
+      false,
+      calculatorUnit({ cover: "", armor: 1 }),
+    );
+    expect(getSingleWeaponDPS(member, 20, false, target)).toBeCloseTo(
+      (baseDps * 100) / expectedArmor,
+    );
+  },
+);
+
 it.each(["light", "heavy"])(
   "bypasses %s cover damage on projectile accuracy hits in both paths",
   (cover) => {

@@ -175,8 +175,11 @@ type CustomizableUnit = {
   /** Per-attacker vehicle upgrades. Distinct attackers have independent toggles. */
   heavyBarrelsEnabled?: boolean;
   dakCoaxUpgradeEnabled?: boolean;
+  heavyBarrels?: UpgradesType["heavyBarrels"];
+  superiorFireDrillsDamageMultiplier?: number;
   /** Validated entity/squad passive, separate from manual modifiers and veterancy. */
   rangerFireOnMove?: boolean;
+  passiveReceivedDamageMultiplier?: number;
 };
 
 export const createDefaultCustomModifiers = (): CustomModifiers => ({
@@ -289,22 +292,28 @@ export const mapCustomizableUnit = (
     veterancyLevel: 0,
     heavyBarrelsEnabled: false,
     dakCoaxUpgradeEnabled: false,
+    rangerFireOnMove: false,
   };
 
-  const rangerPassive = abilities.some(
-    (ability) =>
+  const unitAbilityIds = new Set(sbpsSelected.abilities);
+  for (const member of sbpsSelected.loadout) {
+    const entity = findEbpsByReference(ebps, member.type);
+    for (const id of entity?.abilities ?? []) unitAbilityIds.add(id);
+  }
+  for (const ability of abilities) {
+    if (!unitAbilityIds.has(ability.id)) continue;
+    if (
       ability.id === RANGER_FIRE_ON_MOVE_ABILITY &&
-      ability.entityTree === RANGER_FIRE_ON_MOVE_ABILITY,
-  );
-  custUnit.rangerFireOnMove =
-    rangerPassive &&
-    (sbpsSelected.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY) ||
-      sbpsSelected.loadout.some((member) => {
-        const entityId = member.type.replace(/\\/g, "/").split("/").pop();
-        return ebps
-          .find((entity) => entity.id === entityId)
-          ?.abilities?.includes(RANGER_FIRE_ON_MOVE_ABILITY);
-      }));
+      ability.entityTree === RANGER_FIRE_ON_MOVE_ABILITY
+    ) {
+      custUnit.rangerFireOnMove = true;
+    }
+    if (ability.passiveReceivedDamageMultiplier !== undefined) {
+      custUnit.passiveReceivedDamageMultiplier =
+        (custUnit.passiveReceivedDamageMultiplier ?? 1) * ability.passiveReceivedDamageMultiplier;
+      unitAbilityIds.delete(ability.id);
+    }
+  }
 
   if (sbpsSelected.ui.symbolIconName != "")
     custUnit.type_icon = getIconsPathOnCDN("icons/" + sbpsSelected.ui.symbolIconName);
@@ -480,12 +489,12 @@ const isOptionalDpsAbilityWeapon = (ability: AbilitiesType) => {
     return true;
   }
 
-  const hasValidNumShots =
-    typeof ability.numShots === "number" &&
-    Number.isInteger(ability.numShots) &&
-    ability.numShots > 0;
+  const { numShots } = ability;
+  if (typeof numShots === "number" && Number.isInteger(numShots) && numShots > 0) {
+    return numShots >= 3;
+  }
 
-  return !hasValidNumShots && (ability.activation === "timed" || ability.activation === "toggle");
+  return ability.activation === "timed" || ability.activation === "toggle";
 };
 
 const findAbilityByReference = (abilities: AbilitiesType[], reference: unknown) => {
@@ -1264,6 +1273,15 @@ export const getBaseDistanceForDisplayedRange = (
 ): number => {
   const { rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit);
   return (displayedDistance - rangeShift) / rangeScale;
+};
+
+/** The forward mapping used by the calculator's weapon-stat hover. */
+export const getDisplayedDistanceForBaseRange = (
+  unit: CustomizableUnit,
+  baseDistance: number,
+): number => {
+  const { rangeScale, rangeShift } = getUnitModifiedRangeInfo(unit);
+  return baseDistance * rangeScale + rangeShift;
 };
 
 /** Displayed maximum range for one active weapon, including the same range scaling as the graph. */

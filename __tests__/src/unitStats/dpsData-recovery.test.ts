@@ -10,7 +10,7 @@ jest.mock("../../../src/unitStats/fetch-mappings-withLogs", () => ({
 }));
 jest.mock("../../../src/unitStats/mappingWeapon", () => ({ getWeaponStats: async () => [] }));
 jest.mock("../../../src/unitStats/mappingEbps", () => ({ getEbpsStats: async () => [] }));
-jest.mock("../../../src/unitStats/mappingUpgrades", () => ({ getUpgradesStats: async () => [] }));
+jest.mock("../../../src/unitStats/mappingUpgrades", () => ({ getDpsUpgrades: async () => [] }));
 jest.mock("../../../src/unitStats/mappingAbilities", () => ({
   getAbilitiesStats: async () => [],
 }));

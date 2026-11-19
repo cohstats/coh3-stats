@@ -1,5 +1,4 @@
 import { Box, Divider, Flex, Grid, Stack, Text, Title, useMantineTheme } from "@mantine/core";
-import { getWeaponRpm } from "../../src/unitStats";
 import { getDefaultWeaponIcon } from "../../src/unitStats/dpsCommon";
 import { getWeaponTiming, TICK_DURATION } from "../../src/unitStats/weaponLib";
 import ImageWithFallback, { symbolPlaceholder } from "../placeholders";
@@ -238,9 +237,11 @@ export const WeaponLoadoutCard = (
     weapon_cat == "flame_throwers" ||
     weapon_cat == "small_arms";
 
-  const timingNear = getWeaponTiming(weapon_bag, weapon_bag.range_distance_near);
-  const timingMid = getWeaponTiming(weapon_bag, weapon_bag.range_distance_mid);
-  const timingFar = getWeaponTiming(weapon_bag, weapon_bag.range_distance_far);
+  const timingAtRange =
+    context.timingAtRange ?? ((distance: number) => getWeaponTiming(weapon_bag, distance));
+  const timingNear = timingAtRange(weapon_bag.range_distance_near);
+  const timingMid = timingAtRange(weapon_bag.range_distance_mid);
+  const timingFar = timingAtRange(weapon_bag.range_distance_far);
 
   const rpmNear = roundValue(timingNear.rpm);
   const rpmMid = roundValue(timingMid.rpm);
@@ -289,9 +290,13 @@ export const WeaponLoadoutCard = (
   const showShotDelay = !isBurstWeapon && hasReloadFrequency;
   const showTimeBetweenBursts = isBurstWeapon;
   const showReloadCycle = hasReloadFrequency;
+  const baseFarAccuracy = context.baseFarAccuracy ?? weapon_bag.accuracy_far;
   const usesAccuracy =
     !weapon_bag.projectile_is_artillery &&
     (weapon_bag.accuracy_near > 0 || weapon_bag.accuracy_mid > 0 || weapon_bag.accuracy_far > 0);
+  const showTankAccuracy = usesAccuracy && baseFarAccuracy < 0.08;
+  // The calculator applies absolute accuracy after target-size scaling.
+  const tankAccuracyMultiplier = context.hasAbsoluteAccuracy ? 1 : 20;
 
   const showDamageDistribution =
     weapon_bag.projectile_type === "none" &&
@@ -323,9 +328,7 @@ export const WeaponLoadoutCard = (
     if (suppressionMultiplier === null) return null;
 
     return roundValue(
-      ((getWeaponRpm(weapon_bag, distance) *
-        weapon_bag.suppression_amount *
-        suppressionMultiplier) /
+      ((timingAtRange(distance).rpm * weapon_bag.suppression_amount * suppressionMultiplier) /
         60) *
         100,
     );
@@ -365,8 +368,8 @@ export const WeaponLoadoutCard = (
 
   const damageDisplay =
     weapon_bag.damage_min === weapon_bag.damage_max
-      ? weapon_bag.damage_max
-      : `${weapon_bag.damage_min} - ${weapon_bag.damage_max}`;
+      ? roundValue(weapon_bag.damage_max)
+      : `${roundValue(weapon_bag.damage_min)} - ${roundValue(weapon_bag.damage_max)}`;
 
   const aoeDisplayValue =
     weapon_bag.aoe_shape === "rectangle" && weapon_bag.aoe_width > 0
@@ -379,8 +382,8 @@ export const WeaponLoadoutCard = (
 
   const rangeDisplay =
     weapon_bag.range.min > 0
-      ? `${weapon_bag.range.min} - ${weapon_bag.range.max}`
-      : weapon_bag.range.max;
+      ? `${roundValue(weapon_bag.range.min)} - ${roundValue(weapon_bag.range.max)}`
+      : roundValue(weapon_bag.range.max);
 
   const projectileTravelTimeNear = getProjectileTravelTime(
     weapon_bag.range_distance_near,
@@ -666,11 +669,25 @@ export const WeaponLoadoutCard = (
           rows={[
             {
               show: usesAccuracy,
-              label: t("weaponCard.accuracy"),
-              tooltip: t("weaponCard.accuracyTooltip"),
+              label: t(
+                showTankAccuracy ? "weaponCard.accuracyVsInfantry" : "weaponCard.accuracy",
+              ),
+              tooltip: t(
+                showTankAccuracy
+                  ? "weaponCard.accuracyVsInfantryTooltip"
+                  : "weaponCard.accuracyTooltip",
+              ),
               near: formatPercent(weapon_bag.accuracy_near),
               mid: formatPercent(weapon_bag.accuracy_mid),
               far: formatPercent(weapon_bag.accuracy_far),
+            },
+            {
+              show: showTankAccuracy,
+              label: t("weaponCard.accuracyVsTanks"),
+              tooltip: t("weaponCard.accuracyVsTanksTooltip"),
+              near: formatPercent(weapon_bag.accuracy_near * tankAccuracyMultiplier),
+              mid: formatPercent(weapon_bag.accuracy_mid * tankAccuracyMultiplier),
+              far: formatPercent(weapon_bag.accuracy_far * tankAccuracyMultiplier),
             },
             {
               show: !usesAccuracy && weapon_bag.projectile_type !== "none",
@@ -699,9 +716,9 @@ export const WeaponLoadoutCard = (
             {
               label: t("weaponCard.penetration"),
               tooltip: t("weaponCard.penetrationTooltip"),
-              near: weapon_bag.penetration_near,
-              mid: weapon_bag.penetration_mid,
-              far: weapon_bag.penetration_far,
+              near: roundValue(weapon_bag.penetration_near),
+              mid: roundValue(weapon_bag.penetration_mid),
+              far: roundValue(weapon_bag.penetration_far),
             },
           ]}
         />

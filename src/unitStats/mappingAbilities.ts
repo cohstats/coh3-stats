@@ -3,7 +3,7 @@
 import config from "../../config";
 import { internalSlash } from "../utils";
 import { resolveLocstring, resolveTextFormatterLocstring } from "./locstring";
-import { traverseTree } from "./unitStatsLib";
+import { getCustomFloat, traverseTree } from "./unitStatsLib";
 import { getAbilityStateTreeWeaponMappings, getAbilityCostMappings } from "./workarounds";
 import { extractDisplayRequirements } from "./requirement-utils";
 import type { DisplayRequirement } from "./requirement-utils";
@@ -129,6 +129,9 @@ type AbilitiesType = {
   activation: string;
   /** Entity state tree activated by this ability. */
   entityTree?: string;
+  /** RECEIVED_DAMAGE_MODIFIER on always-on damage reduction abilities. */
+  passiveReceivedDamageMultiplier?: number;
+  superiorFireDrillsDamageMultiplier?: number;
   /** Recharge time when casted the ability. */
   rechargeTime: number;
   /** Duration from channeling.channeling_time_second. Null when not present. */
@@ -303,6 +306,21 @@ const mapAbilityBag = (root: any, ability: AbilitiesType, locale: string = "en")
 
   /* --------- CUSTOM PROPERTY SECTION --------- */
   const customProperties = root.custom_properties;
+
+  if (
+    ability.activation === "always_on" &&
+    /^damage_reduction_.+_percent(?:_|$)/i.test(ability.id)
+  ) {
+    const multiplier = getCustomFloat(customProperties, "RECEIVED_DAMAGE_MODIFIER");
+    if (multiplier !== undefined && multiplier >= 0) {
+      ability.passiveReceivedDamageMultiplier = multiplier;
+    }
+  }
+
+  if (ability.id === "armored_support_coax_upgrade_ak" && abilityBag.global_tree === ability.id) {
+    const damage = getCustomFloat(customProperties, "WEAPON_DAMAGE_MODIFIER");
+    if (damage !== undefined) ability.superiorFireDrillsDamageMultiplier = damage;
+  }
 
   if (Array.isArray(customProperties?.custom_pbgid_properties)) {
     for (const item of customProperties.custom_pbgid_properties as AbilityCustomPbgidPropertyItem[]) {
