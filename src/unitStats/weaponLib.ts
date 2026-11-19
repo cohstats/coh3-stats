@@ -149,6 +149,33 @@ const getSpecialWeaponDamageMultipliers = (
   };
 };
 
+const getWeaponDamage = (
+  base: number,
+  vet: ReturnType<typeof getDpsVeterancyEffects>,
+  special: ReturnType<typeof getSpecialWeaponDamageMultipliers>,
+  upgradeMultiplier: number,
+  manual?: CustomModifier,
+  target?: AppliedTargetModifiers,
+) => {
+  const damage = applyCustomModifier(
+    base +
+      vet.damageAddition +
+      special.flatFlamethrowerDamage +
+      special.flatVehicleDamage +
+      (target?.base_damage_modifier ?? 0),
+    manual,
+    { min: 0 },
+  );
+  if (manual?.enabled && manual.type === "absolute") return damage;
+  return (
+    damage *
+    vet.damageMultiplier *
+    special.damage *
+    upgradeMultiplier *
+    (target?.damage_multiplier ?? 1)
+  );
+};
+
 /** Intrinsic offensive stats for a single unit's hover; never modifies shared weapon data. */
 export const getEffectiveWeaponStats = (
   member: WeaponMember,
@@ -175,14 +202,7 @@ export const getEffectiveWeaponStats = (
       { min: 0 },
     );
   const damage = (base: number) =>
-    applyCustomModifier(
-      (base + vet.damageAddition + special.flatFlamethrowerDamage) *
-        vet.damageMultiplier *
-        special.damage *
-        upgrade.damageMultiplier,
-      modifiers?.damage,
-      { min: 0 },
-    );
+    getWeaponDamage(base, vet, special, upgrade.damageMultiplier, modifiers?.damage);
   const penetration = (base: number) =>
     applyCustomModifier(base * vet.penetrationMultiplier, modifiers?.penetration, { min: 0 });
   const range = getVeterancyAdjustedRange(bag.range, vet);
@@ -591,16 +611,14 @@ const getSingleWeaponDPS = (
     getPassiveAccuracyMultiplier(attacking_unit) *
     specialVet.accuracy *
     (isMoving ? attackingVeterancy.movingAccuracyMultiplier : 1);
-  let finalDamage =
-    (avgDamage +
-      targetModifiers.base_damage_modifier +
-      specialVet.flatVehicleDamage +
-      attackingVeterancy.damageAddition +
-      specialVet.flatFlamethrowerDamage) *
-    targetModifiers.damage_multiplier *
-    attackingVeterancy.damageMultiplier *
-    specialVet.damage *
-    armyUpgrade.damageMultiplier;
+  let finalDamage = getWeaponDamage(
+    avgDamage,
+    attackingVeterancy,
+    specialVet,
+    armyUpgrade.damageMultiplier,
+    attacking_unit?.custom_modifiers?.damage,
+    targetModifiers,
+  );
   let finalPenetrationChance = penetrationChance;
   const finalRpm = rpm;
   const finalArmor = armor; // Armor is already modified if target has custom modifiers
@@ -617,12 +635,6 @@ const getSingleWeaponDPS = (
       }
       // Clamp after the target's received-accuracy effects have also been applied.
     }
-
-    // Apply damage modifier
-    finalDamage = applyCustomModifier(finalDamage, modifiers?.damage, {
-      percentMode: "normal",
-      min: 0,
-    });
 
     // Apply penetration modifier
     if (modifiers.penetration.enabled) {
@@ -857,27 +869,24 @@ export const getSingleWeaponScatterShotInputs = (
   accuracy = Math.min(1, Math.max(0, accuracy));
 
   const baseDamage = (bag.damage_min + bag.damage_max) / 2;
+  const weaponDamage = getWeaponDamage(
+    baseDamage,
+    vet,
+    specialVet,
+    armyUpgrade.damageMultiplier,
+    attacking_unit?.custom_modifiers?.damage,
+    typeMods,
+  );
   const calculateDamage = (coverDamage: number) => {
-    let damage =
-      (baseDamage +
-        typeMods.base_damage_modifier +
-        vet.damageAddition +
-        specialVet.flatFlamethrowerDamage +
-        specialVet.flatVehicleDamage) *
-      typeMods.damage_multiplier *
-      vet.damageMultiplier *
-      specialVet.damage *
-      armyUpgrade.damageMultiplier;
-    damage = applyCustomModifier(damage, attacking_unit?.custom_modifiers?.damage, { min: 0 });
-    damage *=
+    const damage =
+      weaponDamage *
       coverDamage *
       targetVet.receivedDamageMultiplier *
       (target_unit?.passiveReceivedDamageMultiplier ?? 1);
-    damage = applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
+    return applyCustomModifier(damage, target_unit?.custom_modifiers?.receivedDamage, {
       percentMode: "inverse",
       min: 0,
     });
-    return damage;
   };
   const damage = calculateDamage(cover.damage_multiplier);
   const impactBasedCover = isLightOrHeavyCover(coverType) && usesProjectileImpactCover(bag);

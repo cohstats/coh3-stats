@@ -4,6 +4,7 @@ import { getProjectileTravelTime } from "../../../components/unit-cards/weapon-l
 import {
   getEffectiveWeaponStats,
   getScatterDimensions,
+  getSingleWeaponDPS,
   getSingleWeaponScatterShotInputs,
   getWeaponTiming,
 } from "../../../src/unitStats/weaponLib";
@@ -119,6 +120,51 @@ it("keeps firing-cycle timing at the signed breakpoint while scatter and flight 
   ).toBe(2);
 });
 
+it("adds flat damage before the infantry multiplier in combat and the preview curve", () => {
+  const member = calculatorMember({
+    damage_min: 50,
+    damage_max: 50,
+    target_type_table: [
+      {
+        unit_type: "infantry",
+        dmg_modifier: 0,
+        damage_multiplier: 0.5,
+        accuracy_multiplier: 1,
+        penetration_multiplier: 1,
+      },
+    ],
+  });
+  const attacker = calculatorUnit();
+  attacker.custom_modifiers!.damage = { type: "additive", value: 10, enabled: true };
+  const target = calculatorUnit({ cover: "" });
+  const preview = getDpsWeaponPreview(member, attacker);
+  const shotsPerSecond = preview.timingAtRange(20).rpm / 60;
+  expect(shotsPerSecond).toBeGreaterThan(0);
+  expect(preview.weapon.weapon_bag).toMatchObject({ damage_min: 60, damage_max: 60 });
+  expect(preview.weapon.weapon_bag.target_type_table).toEqual(
+    member.weapon.weapon_bag.target_type_table,
+  );
+  expect(preview.curve.find(({ x }) => x === 20)!.y).toBeCloseTo(30 * shotsPerSecond);
+  expect(getSingleWeaponDPS(member, 20, false, target, attacker)).toBeCloseTo(
+    30 * shotsPerSecond,
+  );
+  const shot = getSingleWeaponScatterShotInputs(
+    member,
+    20,
+    {
+      models: [{ id: 1, x: 0, y: 0, enabled: true }],
+      targetModelId: 1,
+      gunnerAngleDeg: 270,
+      samplesPerShot: 1,
+    },
+    false,
+    target,
+    attacker,
+  )!;
+  expect(shot.directDamage).toBe(30);
+  expect(shot.splashDamage).toBe(30);
+});
+
 it("honors absolute and additive overrides in the display and mini graph", () => {
   const { member, unit } = veteran();
   unit.custom_modifiers!.accuracy = { type: "absolute", value: 0.25, enabled: true };
@@ -133,7 +179,7 @@ it("honors absolute and additive overrides in the display and mini graph", () =>
     baseline.curve.find((p) => p.x > 10)!.y,
   );
   unit.custom_modifiers!.damage = { type: "additive", value: 10, enabled: true };
-  expect(getEffectiveWeaponStats(member, unit).damage_max).toBeCloseTo(130);
+  expect(getEffectiveWeaponStats(member, unit).damage_max).toBeCloseTo(132);
 });
 
 it("includes Ranger's passive and vehicle upgrades only on the affected weapon", () => {
