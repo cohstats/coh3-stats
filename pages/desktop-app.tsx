@@ -6,10 +6,30 @@ import { serverSideTranslations } from "next-i18next/pages/serverSideTranslation
 
 export default DesktopAppPage;
 
-export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => {
-  const octokit = new Octokit();
+type DesktopAppReleaseData = {
+  downloadURL: string;
+  downloadCount: number;
+  totalDownloadCount: number;
+  version: string;
+};
 
-  console.log(`ISR - /desktop-app`);
+// getStaticProps runs once per locale, so share a single GitHub request between them.
+// We cache the promise (not the result) so concurrent locale builds also reuse the in-flight request.
+const RELEASES_CACHE_TTL_MS = 5 * 60 * 1000;
+let releasesCache: { promise: Promise<DesktopAppReleaseData>; timestamp: number } | null = null;
+
+const getReleaseData = (): Promise<DesktopAppReleaseData> => {
+  if (releasesCache && Date.now() - releasesCache.timestamp < RELEASES_CACHE_TTL_MS) {
+    return releasesCache.promise;
+  }
+
+  const promise = fetchReleaseData();
+  releasesCache = { promise, timestamp: Date.now() };
+  return promise;
+};
+
+const fetchReleaseData = async (): Promise<DesktopAppReleaseData> => {
+  const octokit = new Octokit();
 
   let downloadURL = "https://github.com/cohstats/coh3-stats-desktop-app/releases/latest"; // fallback in case request fails
   let downloadCount = 0;
@@ -86,9 +106,19 @@ export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => 
     }
   } catch (error) {
     console.error("Failed to fetch releases:", error);
+    // Don't keep the fallback values cached, so the next locale / revalidation retries
+    releasesCache = null;
     // If fetching releases fails, use fallback values
     totalDownloadCount = 0;
   }
+
+  return { downloadURL, downloadCount, totalDownloadCount, version };
+};
+
+export const getStaticProps: GetStaticProps<any> = async ({ locale = "en" }) => {
+  console.log(`ISR - /desktop-app`);
+
+  const { downloadURL, downloadCount, totalDownloadCount, version } = await getReleaseData();
 
   return {
     props: {
