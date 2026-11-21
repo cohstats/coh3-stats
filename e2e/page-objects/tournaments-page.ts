@@ -16,7 +16,7 @@ export class TournamentsPage extends BasePage {
     return this.page.locator('[data-testid^="tournament-card-"]');
   }
 
-  tournamentCard(id: "ladderTournament" | "ironclad" | "metaplays"): Locator {
+  tournamentCard(id: "ladderTournament" | "ironclad" | "metaplays" | "neverSurrender"): Locator {
     return this.getByTestId(`tournament-card-${id}`);
   }
 

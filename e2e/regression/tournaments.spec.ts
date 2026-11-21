@@ -42,7 +42,7 @@ test.describe("Tournaments - hub", () => {
     await tournamentsPage.checkPageLoaded();
 
     expect(await tournamentsPage.getTitle()).toContain("Tournaments");
-    await expect(tournamentsPage.tournamentCards).toHaveCount(3);
+    await expect(tournamentsPage.tournamentCards).toHaveCount(4);
     await expect(tournamentsPage.tournamentCard("ladderTournament")).toBeVisible();
   });
 
@@ -51,7 +51,9 @@ test.describe("Tournaments - hub", () => {
     await tournamentsPage.navigate();
 
     // The registry can't be imported here (it imports the logo image), so only the shape of the URL
-    const external = ["metaplays"] as Array<"ironclad" | "metaplays">;
+    const external = ["metaplays", "neverSurrender"] as Array<
+      "ironclad" | "metaplays" | "neverSurrender"
+    >;
     // IronClad is an external card only when its data is unavailable
     if (!(await tournamentsPage.ironcladOpenTournamentButton.isVisible())) {
       external.push("ironclad");

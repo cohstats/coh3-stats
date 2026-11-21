@@ -22,6 +22,63 @@ export type LocalNewsItem = {
  */
 const localNews: LocalNewsItem[] = [
   {
+    gid: "local-never-surrender-open-for-all",
+    title: "Never Surrender: Open for All — 2v2 for the German-speaking community",
+    category: "tournaments",
+    author: "Never Surrender",
+    date: 1795219200, // 21 November 2026, 00:00 UTC
+    image: "/images/news/never-surrender-open-for-all.webp",
+    url: "https://play.toornament.com/de/tournaments/2590730281796325375/",
+    contents: `
+[img]/images/news/never-surrender-open-for-all.webp[/img]
+
+[p][b]Never Surrender is back! The next 2v2 tournament for the German-speaking Company of Heroes 3 community is "Open for All" — for the first time without a team Elo cap.[/b][/p]
+
+[p]Grab your teammate and sign up. Teams are split into Elo brackets, so you'll play against teams around your own level, and most of the matches will be streamed live on Twitch or cast later on YouTube by [b]Olvadi[/b].[/p]
+
+[p][b][url=https://play.toornament.com/de/tournaments/2590730281796325375/]REGISTER ON TOORNAMENT[/url][/b][/p]
+
+[h2]What does "Open for All" mean?[/h2]
+
+[p]All previous Never Surrender 2v2 tournaments had a [b]team Elo cap[/b]. This time there is none — any team can join, no matter how high its rating.[/p]
+
+[p]The tournament is still meant for the [b]German-speaking community[/b], so make sure you and your teammate speak German.[/p]
+
+[list]
+[*][b]Format:[/b] 2v2, split into Elo brackets[/*]
+[*][b]Team Elo cap:[/b] none[/*]
+[*][b]Who can join:[/b] German-speaking players[/*]
+[*][b]Casts:[/b] live on Twitch or later on YouTube by Olvadi[/*]
+[/list]
+
+[h2]Hall of fame[/h2]
+
+[p]The previous Never Surrender 2v2 tournaments on toornament.com were team Elo capped. Here are the teams that made it to the top.[/p]
+
+[h3][url=https://play.toornament.com/de/tournaments/2431975761602869247/]Never Surrender 3.0[/url] — May 2026[/h3]
+[list]
+[*][b]1st:[/b] [url=https://coh3stats.com/players/2556/OlvadiOperationDummschwtzer]Olvadi[/url] & [url=https://coh3stats.com/players/27210/LuftWaffel]LuftWaffel[/url][/*]
+[*][b]2nd:[/b] [url=https://coh3stats.com/players/1416439/GeniusMalignus]GeniusMalignus[/url] & [url=https://coh3stats.com/players/1126295/GoDIIHelljumperGJumper221]GoDII Helljumper[/url][/*]
+[/list]
+
+[h3][url=https://play.toornament.com/de/tournaments/2250825297995220991/]Never Surrender — Winter Edition[/url] — November 2025[/h3]
+[list]
+[*][b]1st:[/b] [url=https://coh3stats.com/players/1416439/GeniusMalignus]GeniusMalignus[/url] & [url=https://coh3stats.com/players/144009/xxxDerOzelotxxx]xxxDerOzelotxxx[/url][/*]
+[*][b]2nd:[/b] [url=https://coh3stats.com/players/79447/Valieriumborn]Valieriumborn[/url] & [url=https://coh3stats.com/players/329281/Ceruman]Ceruman[/url][/*]
+[/list]
+
+[p]GeniusMalignus has made the top two in both editions — with the Elo cap gone, who will stop them this time?[/p]
+
+[p]Even older 1v1 and 2v2 tournaments of the community were run on Challonge.[/p]
+
+[h2]Join the community[/h2]
+
+[p]Questions, team search and all tournament updates are on the [url=https://discord.gg/FwaBXFZTXe]Never Surrender Discord[/url].[/p]
+
+[p][i]Ein 2v2-Turnier für die deutschsprachige Community, aufgeteilt in Elo-Brackets — diesmal ohne Team-Elo-Cap. Anmeldung auf [url=https://play.toornament.com/de/tournaments/2590730281796325375/]Toornament[/url], alle Infos auf [url=https://discord.gg/FwaBXFZTXe]Discord[/url].[/i][/p]
+`.trim(),
+  },
+  {
     gid: "local-ironclad-hold-the-line",
     title: "HOLD THE LINE — Four Divisions, Up to US$280",
     category: "tournaments",
