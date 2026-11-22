@@ -10,6 +10,7 @@ import ExternalTournamentCard from "../../../screens/tournaments/components/exte
 import {
   IRONCLAD_TOURNAMENT,
   METAPLAYS_TOURNAMENT,
+  NEVER_SURRENDER_TOURNAMENT,
 } from "../../../src/tournaments/tournaments-registry";
 import { AnalyticsTournamentExternalClick } from "../../../src/firebase/analytics";
 import type {
@@ -212,7 +213,11 @@ describe("TournamentsScreen", () => {
   test("renders the whole external cards as secure new-tab links", () => {
     render({ ladderSummary: summary });
 
-    for (const tournament of [IRONCLAD_TOURNAMENT, METAPLAYS_TOURNAMENT]) {
+    for (const tournament of [
+      IRONCLAD_TOURNAMENT,
+      METAPLAYS_TOURNAMENT,
+      NEVER_SURRENDER_TOURNAMENT,
+    ]) {
       const card = getCard(`tournament-card-${tournament.id}`);
       expect(card.tagName).toBe("A");
       expect(card.getAttribute("href")).toBe(tournament.url);
@@ -256,7 +261,25 @@ describe("TournamentsScreen", () => {
     expect(findText(card, "Official site")).toBeUndefined();
   });
 
-  test.each([IRONCLAD_TOURNAMENT, METAPLAYS_TOURNAMENT])(
+  test("renders the Never Surrender card with its logo, name and description only", () => {
+    render({ ladderSummary: summary });
+    const card = getCard("tournament-card-neverSurrender");
+
+    expect(card.getAttribute("href")).toBe(
+      "https://play.toornament.com/de/tournaments/2590730281796325375/",
+    );
+    expect(card.querySelector("h2")?.textContent).toBe("Never Surrender");
+    expect(
+      findText(
+        card,
+        "2v2 tournaments for the German-speaking Company of Heroes 3 community, split into Elo brackets. Most matches are streamed live on Twitch or cast later on YouTube by Olvadi.",
+      ),
+    ).toBeTruthy();
+    expect(card.querySelector("img")?.getAttribute("src")).toBe(NEVER_SURRENDER_TOURNAMENT.logo);
+    expect(card.querySelectorAll(".mantine-Badge-root")).toHaveLength(0);
+  });
+
+  test.each([IRONCLAD_TOURNAMENT, METAPLAYS_TOURNAMENT, NEVER_SURRENDER_TOURNAMENT])(
     "tracks clicks from inside the $id card",
     (tournament) => {
       render({ ladderSummary: summary });

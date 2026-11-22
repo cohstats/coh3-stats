@@ -13,8 +13,9 @@ import config from "../../config";
 import ladderTournamentLogo from "../../public/images/tournaments/ladder-tournament-logo.webp";
 import ironcladLogo from "../../public/images/tournaments/ironclad-logo.webp";
 import metaplaysLogo from "../../public/images/tournaments/metaplays-logo.webp";
+import neverSurrenderLogo from "../../public/images/tournaments/coh3-tournaments-de-logo.webp";
 
-export type TournamentId = "ladderTournament" | "ironclad" | "metaplays";
+export type TournamentId = "ladderTournament" | "ironclad" | "metaplays" | "neverSurrender";
 
 export type TournamentInfo = {
   id: TournamentId;
@@ -77,8 +78,21 @@ export const METAPLAYS_TOURNAMENT: TournamentInfo = {
   hasLeaguePage: false,
 };
 
+// 2v2 tournaments of the German-speaking community, cast by Olvadi
+export const NEVER_SURRENDER_TOURNAMENT: TournamentInfo = {
+  id: "neverSurrender",
+  nameKey: "tournaments.neverSurrender.name",
+  descriptionKey: "tournaments.neverSurrender.description",
+  url: config.tournaments.neverSurrender.url,
+  logo: neverSurrenderLogo.src,
+  monogram: "NS",
+  color: "yellow",
+  hasLeaguePage: false,
+};
+
 export const TOURNAMENTS: TournamentInfo[] = [
   LADDER_TOURNAMENT,
   IRONCLAD_TOURNAMENT,
   METAPLAYS_TOURNAMENT,
+  NEVER_SURRENDER_TOURNAMENT,
 ];

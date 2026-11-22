@@ -564,6 +564,10 @@ const tournaments = {
   metaplays: {
     url: "https://meta-plays.com/tournaments/company-of-heroes-3",
   },
+  neverSurrender: {
+    url: "https://play.toornament.com/de/tournaments/2590730281796325375/",
+    discordUrl: "https://discord.gg/FwaBXFZTXe",
+  },
 };
 
 const config = {

@@ -12,6 +12,7 @@ import {
   IRONCLAD_TOURNAMENT,
   LADDER_TOURNAMENT,
   METAPLAYS_TOURNAMENT,
+  NEVER_SURRENDER_TOURNAMENT,
 } from "../../src/tournaments/tournaments-registry";
 import {
   getIroncladTournamentsRoute,
@@ -32,7 +33,7 @@ export type TournamentsPageProps = {
   ironcladSummary?: IroncladHubSummary | null;
 };
 
-const EXTERNAL_TOURNAMENTS = [METAPLAYS_TOURNAMENT];
+const EXTERNAL_TOURNAMENTS = [METAPLAYS_TOURNAMENT, NEVER_SURRENDER_TOURNAMENT];
 
 const TournamentsScreen: NextPage<TournamentsPageProps> = ({
   ladderSummary,

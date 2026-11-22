@@ -87,8 +87,8 @@ describe("IronClad on the Tournaments hub", () => {
     expect(card).toContain(
       'href="https://www.ironcladtournaments.com/tournaments?tournament=hold-the-line"',
     );
-    // Only MetaPlays stays as an external card
-    expect(count(html, /data-testid="tournament-card-/g)).toBe(3);
+    // Only MetaPlays and Never Surrender stay as external cards
+    expect(count(html, /data-testid="tournament-card-/g)).toBe(4);
   });
 
   test("renders a full division waiting for its bracket as ready", () => {

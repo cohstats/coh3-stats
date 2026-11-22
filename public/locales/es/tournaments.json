@@ -1,7 +1,7 @@
 {
   "meta": {
     "hubTitle": "Tournaments",
-    "hubDescription": "Community tournaments for Company of Heroes 3 - Ladder Tournament standings and casted matches, IronClad Tournaments and MetaPlays.",
+    "hubDescription": "Community tournaments for Company of Heroes 3 - Ladder Tournament standings and casted matches, IronClad Tournaments, MetaPlays and Never Surrender.",
     "leagueTitle": "Ladder Tournament - Standings & Casts",
     "leagueDescription": "Standings, champions and casted matches of the Ladder Tournament, a Company of Heroes 3 community team ladder.",
     "seasonTitle": "Ladder Tournament Season {{season}} - Standings & Casts",
@@ -39,6 +39,10 @@
     "metaplays": {
       "name": "MetaPlays",
       "description": "Company of Heroes 3 tournaments hosted on the MetaPlays platform."
+    },
+    "neverSurrender": {
+      "name": "Never Surrender",
+      "description": "2v2 tournaments for the German-speaking Company of Heroes 3 community, split into Elo brackets. Most matches are streamed live on Twitch or cast later on YouTube by Olvadi."
     }
   },
   "league": {
