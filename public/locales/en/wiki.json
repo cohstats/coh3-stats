@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "title": "COH3 Wiki - Company of Heroes 3 mechanics explained",
+    "description": "In-depth articles about Company of Heroes 3 game mechanics: rate of fire, attack speed, accuracy, scatter, veterancy and more.",
+    "keywords": [
+      "coh3 wiki",
+      "coh3 mechanics",
+      "company of heroes 3 guide",
+      "coh3 accuracy",
+      "coh3 veterancy"
+    ]
+  },
+  "title": "COH3 Wiki",
+  "home": "Wiki",
+  "siteHome": "Home",
+  "browse": "Browse",
+  "overview": "Overview",
+  "onThisPage": "On this page",
+  "intro": "In-depth explanations of how Company of Heroes 3 works under the hood. How weapons fire, hit and miss, how units gain veterancy and more, written by the people behind COH3 Stats.",
+  "categories": "Categories",
+  "articleCount_one": "{{count}} article",
+  "articleCount_other": "{{count}} articles",
+  "minutesRead": "{{count}} min read",
+  "part": "Part {{part}}",
+  "partOf": "Part {{part}} of {{total}}",
+  "series": "Series",
+  "latest": "Start reading",
+  "by": "By",
+  "updated": "Updated",
+  "previous": "Previous",
+  "next": "Next",
+  "allArticlesIn": "All articles in {{category}}",
+  "feedback": "Found a mistake or want to write an article? Let us know on Discord or GitHub."
+}

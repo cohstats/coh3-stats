@@ -1,0 +1,138 @@
+import fs from "fs";
+import path from "path";
+import { WIKI_ARTICLES } from "../../../src/wiki/data";
+import { getWikiCategory, getWikiSeries } from "../../../src/wiki/wiki-categories";
+import {
+  extractHeadings,
+  getReadingMinutes,
+  getWikiArticle,
+  getWikiArticleImage,
+  getWikiNavigation,
+  getWikiNeighbours,
+  getWikiSeriesInfo,
+  slugifyHeading,
+} from "../../../src/wiki/get-wiki";
+
+const publicDir = path.join(__dirname, "../../../public");
+
+describe("wiki data", () => {
+  it("has unique article slugs", () => {
+    const slugs = WIKI_ARTICLES.map((article) => article.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it.each(WIKI_ARTICLES.map((article) => [article.slug, article] as const))(
+    "%s is valid",
+    (_slug, article) => {
+      expect(article.slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      const category = getWikiCategory(article.category);
+      expect(category).toBeDefined();
+      if (article.group) {
+        expect(category?.groups?.map((group) => group.id)).toContain(article.group);
+      }
+      if (article.series) {
+        expect(getWikiSeries(article.series.id)).toBeDefined();
+      }
+      expect(article.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(article.summary.length).toBeGreaterThan(40);
+      expect(article.summary.length).toBeLessThanOrEqual(200);
+
+      // List items must be closed, otherwise the text renders outside the bullet.
+      const items = (article.contents.match(/\[\*\]/g) || []).length;
+      const closed = (article.contents.match(/\[\/\*\]/g) || []).length;
+      expect(closed).toBe(items);
+
+      // The TOC links need unique heading ids.
+      const ids = extractHeadings(article.contents).map((heading) => heading.id);
+      expect(new Set(ids).size).toBe(ids.length);
+
+      // Every local image exists.
+      const images = Array.from(
+        article.contents.matchAll(/\[img[^\]]*\]([\s\S]*?)\[\/img\]/g),
+      ).map((match) => match[1].trim());
+      for (const image of images.filter((src) => src.startsWith("/"))) {
+        expect(fs.existsSync(path.join(publicDir, image))).toBe(true);
+      }
+
+      // Internal links point to existing wiki articles.
+      for (const match of Array.from(
+        article.contents.matchAll(/\[url=\/wiki\/([^/\]]+)\/([^\]]+)\]/g),
+      )) {
+        expect(getWikiArticle(match[1], match[2])).toBeDefined();
+      }
+    },
+  );
+
+  it("numbers series parts 1..n without gaps", () => {
+    const bySeries = new Map<string, number[]>();
+    for (const article of WIKI_ARTICLES) {
+      if (!article.series) continue;
+      bySeries.set(article.series.id, [
+        ...(bySeries.get(article.series.id) ?? []),
+        article.series.part,
+      ]);
+    }
+    bySeries.forEach((parts) => {
+      expect([...parts].sort((a, b) => a - b)).toEqual(parts.map((_, index) => index + 1));
+    });
+  });
+});
+
+describe("wiki helpers", () => {
+  it("slugifies headings", () => {
+    expect(slugifyHeading("Scatter offset and overshooting")).toBe(
+      "scatter-offset-and-overshooting",
+    );
+    expect(slugifyHeading("Terrain, elevation & real fences!")).toBe(
+      "terrain-elevation-and-real-fences",
+    );
+    expect(slugifyHeading("Catch up bonus (3.0)")).toBe("catch-up-bonus-3-0");
+  });
+
+  it("extracts h2 and h3 headings without inner tags", () => {
+    expect(extractHeadings("[h2]Aim [i]time[/i][/h2] text [h3]Wind up[/h3] [h1]No[/h1]")).toEqual(
+      [
+        { id: "aim-time", label: "Aim time", level: 2 },
+        { id: "wind-up", label: "Wind up", level: 3 },
+      ],
+    );
+  });
+
+  it("calculates the reading time from the text", () => {
+    expect(getReadingMinutes("word ".repeat(10))).toBe(1);
+    expect(getReadingMinutes(`[img]/a.webp[/img] ${"word ".repeat(1000)}`)).toBe(5);
+  });
+
+  it("uses the first image of the contents as the article image", () => {
+    const article = { ...WIKI_ARTICLES[0], image: undefined, contents: "a [img]/b.webp[/img]" };
+    expect(getWikiArticleImage(article)).toBe("/b.webp");
+  });
+
+  it("builds the navigation with groups in order and hides empty categories", () => {
+    const navigation = getWikiNavigation();
+    expect(navigation.map((category) => category.slug)).toEqual(["combat", "veterancy"]);
+
+    const combat = navigation.find((category) => category.slug === "combat");
+    expect(combat?.groups.map((group) => group.id)).toEqual(["firing", "accuracy"]);
+    expect(combat?.groups[0].articles.map((article) => article.slug)).toEqual([
+      "weapon-firing-cycle",
+      "rate-of-fire-vs-attack-speed",
+      "attack-speed-buff-examples",
+    ]);
+  });
+
+  it("links series parts in order", () => {
+    const middle = getWikiArticle("combat", "rate-of-fire-vs-attack-speed")!;
+    expect(getWikiSeriesInfo(middle)?.parts.map((part) => part.slug)).toEqual([
+      "weapon-firing-cycle",
+      "rate-of-fire-vs-attack-speed",
+      "attack-speed-buff-examples",
+    ]);
+    const { previous, next } = getWikiNeighbours(middle);
+    expect(previous?.slug).toBe("weapon-firing-cycle");
+    expect(next?.slug).toBe("attack-speed-buff-examples");
+
+    const first = getWikiArticle("combat", "weapon-firing-cycle")!;
+    expect(getWikiNeighbours(first).previous).toBeNull();
+  });
+});

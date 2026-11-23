@@ -266,3 +266,12 @@ export const getTeamDetailsRoute = (profileId: string | number, teamId: string |
 export const getPrivacyPolicyRoute = () => {
   return encodeURI(`/legal/privacy`);
 };
+
+/** /wiki, /wiki/<category> or /wiki/<category>/<article> */
+export const getWikiRoute = (category?: string, articleSlug?: string) => {
+  if (category && articleSlug) {
+    return `/wiki/${encodeURIComponent(category)}/${encodeURIComponent(articleSlug)}`;
+  }
+  if (category) return `/wiki/${encodeURIComponent(category)}`;
+  return "/wiki";
+};
