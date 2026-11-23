@@ -23,6 +23,7 @@ const ELEMENT_COLORS = Object.fromEntries(
   ELEMENTS.map(({ element, color }) => [element, color]),
 ) as Record<FormationPreviewElement, string>;
 const WEAPON_COLOR = "var(--mantine-color-gray-6)";
+const NO_COVER = "tp_defcover";
 
 // All in metres
 const MODEL_RADIUS = 0.35;
@@ -59,9 +60,13 @@ export const FormationCard = ({ preview, title }: FormationCardProps) => {
   const coverLabel = (coverType: string) =>
     t(`unitPage.formation.cover.${coverType}`, { defaultValue: coverType });
 
+  // The default (no cover) formation also covers many fallback situations (water, smoke, ...),
+  // listing them all makes the label too long, so show just "No cover".
   const selectData = preview.options.map((item, index) => ({
     value: String(index),
-    label: item.coverTypes.map(coverLabel).join(", "),
+    label: item.coverTypes.includes(NO_COVER)
+      ? coverLabel(NO_COVER)
+      : item.coverTypes.map(coverLabel).join(", "),
   }));
 
   // Fit the view around the models. SVG y goes down, the formation y (front) goes up.
