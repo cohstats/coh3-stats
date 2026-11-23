@@ -17,6 +17,8 @@
   "overview": "Overview",
   "onThisPage": "On this page",
   "intro": "In-depth explanations of how Company of Heroes 3 works under the hood. How weapons fire, hit and miss, how units gain veterancy and more, written by the people behind COH3 Stats.",
+  "explorerHint": "Looking for unit stats, battlegroups, weapons or maps? All the game data lives in the COH3 Explorer.",
+  "explorerLink": "Open the Explorer",
   "categories": "Categories",
   "articleCount_one": "{{count}} article",
   "articleCount_other": "{{count}} articles",

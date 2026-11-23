@@ -13,7 +13,7 @@ const article: WikiArticle = {
   contents: `
 Experience is fairly straightforward, but since Relic made some changes in 3.0, here it is written down for posterity.
 
-[img alt="Summary of experience gains for the attacker and the defender" caption="Everything on one card: the attacker gets 1.5x the value for damage, kills and wipes, the defender 0.5x for damage taken."]/images/wiki/unit-experience-gains/experience-summary.webp[/img]
+[img alt="Summary of experience gains for the attacker and the defender" caption="Everything on one card: the attacker gets 1.5x the value for damage, kills and squad wipes, the defender 0.5x for damage taken."]/images/wiki/unit-experience-gains/experience-summary.webp[/img]
 
 [h2]Unit value[/h2]
 A unit's value is made of its manpower and fuel cost:

@@ -1,13 +1,43 @@
 import React from "react";
 import Link from "next/link";
-import { NavLink, Stack, Text, ThemeIcon } from "@mantine/core";
-import { IconBooks } from "@tabler/icons-react";
-import { WikiNavCategory } from "../../../src/wiki/get-wiki";
+import { Badge, NavLink, Stack, ThemeIcon } from "@mantine/core";
+import { IconBooks, IconFileText, IconLayoutGrid } from "@tabler/icons-react";
+import { WikiArticleLink, WikiNavCategory } from "../../../src/wiki/get-wiki";
 import { getWikiRoute } from "../../../src/routes";
 import { WikiCategoryIcon } from "./wiki-category-icon";
 import classes from "../Wiki.module.css";
 
-/** Category -> group -> article tree, the current category is open. */
+const ArticleLink = ({
+  article,
+  active,
+  onNavigate,
+}: {
+  article: WikiArticleLink;
+  active: boolean;
+  onNavigate?: () => void;
+}) => (
+  <NavLink
+    component={Link}
+    href={getWikiRoute(article.category, article.slug)}
+    label={article.title}
+    leftSection={
+      article.seriesPart ? (
+        <span className={classes.navPart}>{article.seriesPart}</span>
+      ) : (
+        <IconFileText size={16} stroke={1.6} className={classes.navArticleIcon} />
+      )
+    }
+    active={active}
+    onClick={onNavigate}
+    className={classes.navArticle}
+    data-testid={`wiki-sidebar-article-${article.slug}`}
+  />
+);
+
+/**
+ * Category -> group -> article tree. Every level sits on its own guide line, groups are
+ * collapsible and series articles show their part number.
+ */
 export const WikiSidebar = ({
   navigation,
   currentCategory,
@@ -25,7 +55,7 @@ export const WikiSidebar = ({
   onNavigate?: () => void;
 }) => {
   return (
-    <Stack gap={2} component="nav" aria-label={homeLabel} data-testid="wiki-sidebar">
+    <Stack gap={4} component="nav" aria-label={homeLabel} data-testid="wiki-sidebar">
       <NavLink
         component={Link}
         href={getWikiRoute()}
@@ -48,44 +78,61 @@ export const WikiSidebar = ({
             }
             defaultOpened={isCurrent || !currentCategory}
             childrenOffset={0}
-            fw={500}
+            className={classes.navCategory}
             data-testid={`wiki-sidebar-category-${category.slug}`}
           >
-            <NavLink
-              component={Link}
-              href={getWikiRoute(category.slug)}
-              label={overviewLabel}
-              active={isCurrent && !currentArticle}
-              onClick={onNavigate}
-              pl={28}
-            />
-            {category.groups.map((group) => (
-              <React.Fragment key={group.id ?? "ungrouped"}>
-                {group.title && (
-                  <Text
-                    size="xs"
-                    c="dimmed"
-                    fw={700}
-                    tt="uppercase"
-                    className={classes.groupLabel}
-                  >
-                    {group.title}
-                  </Text>
-                )}
-                {group.articles.map((article) => (
+            <div className={classes.navTree}>
+              <NavLink
+                component={Link}
+                href={getWikiRoute(category.slug)}
+                label={overviewLabel}
+                leftSection={
+                  <IconLayoutGrid size={16} stroke={1.6} className={classes.navArticleIcon} />
+                }
+                active={isCurrent && !currentArticle}
+                onClick={onNavigate}
+                className={classes.navArticle}
+              />
+              {category.groups.map((group) =>
+                group.title ? (
                   <NavLink
-                    key={article.slug}
-                    component={Link}
-                    href={getWikiRoute(article.category, article.slug)}
-                    label={article.title}
-                    active={isCurrent && article.slug === currentArticle}
-                    onClick={onNavigate}
-                    pl={28}
-                    data-testid={`wiki-sidebar-article-${article.slug}`}
-                  />
-                ))}
-              </React.Fragment>
-            ))}
+                    key={group.id}
+                    label={
+                      <span className={classes.navGroupLabel}>
+                        {group.title}
+                        <Badge size="xs" variant="light" color={category.color} circle>
+                          {group.articles.length}
+                        </Badge>
+                      </span>
+                    }
+                    defaultOpened
+                    childrenOffset={0}
+                    className={classes.navGroup}
+                    data-testid={`wiki-sidebar-group-${group.id}`}
+                  >
+                    <div className={classes.navTree}>
+                      {group.articles.map((article) => (
+                        <ArticleLink
+                          key={article.slug}
+                          article={article}
+                          active={isCurrent && article.slug === currentArticle}
+                          onNavigate={onNavigate}
+                        />
+                      ))}
+                    </div>
+                  </NavLink>
+                ) : (
+                  group.articles.map((article) => (
+                    <ArticleLink
+                      key={article.slug}
+                      article={article}
+                      active={isCurrent && article.slug === currentArticle}
+                      onNavigate={onNavigate}
+                    />
+                  ))
+                ),
+              )}
+            </div>
           </NavLink>
         );
       })}

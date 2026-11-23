@@ -5,9 +5,21 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { generateNextSeo } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
-import { Anchor, Card, Group, SimpleGrid, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import {
+  Anchor,
+  Button,
+  Card,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import { IconArrowRight, IconCompass } from "@tabler/icons-react";
 import { WikiArticleLink, WikiNavCategory } from "../../src/wiki/get-wiki";
-import { getWikiRoute } from "../../src/routes";
+import { getExplorerRoute, getWikiRoute } from "../../src/routes";
 import { createPageSEO } from "../../src/seo-utils";
 import { WikiLayout } from "./components/wiki-layout";
 import { WikiCategoryIcon } from "./components/wiki-category-icon";
@@ -40,6 +52,32 @@ const WikiHome: NextPage<WikiHomeProps> = ({ navigation, featured }) => {
             <Text c="dimmed" mt="xs" maw={760}>
               {t("intro")}
             </Text>
+            <Paper
+              withBorder
+              radius="md"
+              p="sm"
+              mt="md"
+              maw={760}
+              data-testid="wiki-explorer-hint"
+            >
+              <Group gap="sm">
+                <ThemeIcon size="lg" variant="light" color="blue">
+                  <IconCompass size={20} stroke={1.7} />
+                </ThemeIcon>
+                <Text size="sm" style={{ flex: "1 1 220px" }}>
+                  {t("explorerHint")}
+                </Text>
+                <Button
+                  component={Link}
+                  href={getExplorerRoute()}
+                  variant="light"
+                  size="xs"
+                  rightSection={<IconArrowRight size={14} />}
+                >
+                  {t("explorerLink")}
+                </Button>
+              </Group>
+            </Paper>
           </div>
 
           <div>
