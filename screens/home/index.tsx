@@ -57,7 +57,11 @@ const Home: NextPage<Props> = ({
 
   return (
     <>
-      <Head>{generateNextSeo(seoProps)}</Head>
+      <Head>
+        {/* The home title already contains the site name, so it skips the "%s | COH3 Stats" template */}
+        {generateNextSeo({ ...seoProps, title: undefined })}
+        <title key="title">{seoProps.title}</title>
+      </Head>
       <PageJsonLd path="" name={seoProps.title ?? ""} description={seoProps.description} />
       <Container fluid p={{ base: 0 }}>
         <Grid>

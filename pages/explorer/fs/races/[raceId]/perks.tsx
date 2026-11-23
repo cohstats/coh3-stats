@@ -36,7 +36,7 @@ const FsPerks: NextPage<FsPerksProps> = ({ race, availableRaces, raceId }) => {
   const path = getExplorerFsPerksRoute(raceId);
   const { locale = "en" } = useRouter();
   const seoProps = createPageSEO(t, "explorer-fs-perks", path, locale, {
-    faction: race?.name ?? localizedNames[raceId],
+    faction: localizedNames[raceId] ?? race?.name,
   });
 
   return (
@@ -46,7 +46,7 @@ const FsPerks: NextPage<FsPerksProps> = ({ race, availableRaces, raceId }) => {
         path={path}
         name={seoProps.title ?? ""}
         description={seoProps.description}
-        breadcrumbName={t("page.title", { faction: race?.name ?? localizedNames[raceId] })}
+        breadcrumbName={t("page.title", { faction: localizedNames[raceId] ?? race?.name })}
         trail={[
           { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
           { name: t("common:mainMenu.explMenu.finalStand"), path: getExplorerFsRoute() },

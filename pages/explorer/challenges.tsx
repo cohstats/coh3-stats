@@ -50,9 +50,9 @@ const Challenges: NextPage<ChallengesProps> = ({ calculatedData }) => {
   const { t } = useTranslation("common");
   const path = getChallengesRoute();
 
-  const pageTitle = "Challenges";
+  const pageTitle = "COH3 Challenges - Requirements & Rewards";
   const description =
-    "CoH 3 Challenges. Browser through all the challenges and checkout requirements for completion.";
+    "All Company of Heroes 3 challenges. Browse every challenge and check the requirements for completing it.";
   const keywords = generateKeywordsString(["coh3 challenges", "challenges"]);
 
   useEffect(() => {

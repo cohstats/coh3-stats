@@ -1,7 +1,7 @@
 {
   "leaderboards": {
     "meta": {
-      "title": "Global Leaderboards Stats",
+      "title": "COH3 Leaderboard Stats - Global Ladder Overview",
       "description": "Overall information about all leaderboards in Company of Heroes 3",
       "keywords": [
         "coh3 leaderboards",
@@ -15,7 +15,7 @@
   },
   "games": {
     "meta": {
-      "title": "Game Stats & Charts",
+      "title": "COH3 Game Stats - Faction Winrates & Charts",
       "description": "Game Stats for Company of Heroes 3. See winrate of each faction / mode and much more.",
       "keywords": [
         "coh3 winrate",
@@ -28,7 +28,7 @@
   },
   "maps": {
     "meta": {
-      "title": "Map Statistics",
+      "title": "COH3 Map Stats - Winrates & Popularity",
       "description": "Comprehensive map statistics for Company of Heroes 3 including winrates, popularity, and performance data.",
       "keywords": [
         "coh3 maps",
@@ -41,7 +41,7 @@
   },
   "achievements": {
     "meta": {
-      "title": "Achievement Statistics",
+      "title": "COH3 Achievement Stats - Completion Rates",
       "description": "Company of Heroes 3 achievement statistics and completion rates across all players.",
       "keywords": [
         "coh3 achievements",

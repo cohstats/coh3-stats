@@ -26,10 +26,13 @@ const Search: NextPage = () => {
   return (
     <>
       <Head>
+        {/* The search title already contains the site name, so it skips the "%s | COH3 Stats" template */}
         {generateNextSeo({
           ...seoProps,
+          title: undefined,
           nofollow: true,
         })}
+        <title key="title">{seoProps.title}</title>
       </Head>
       <PageJsonLd path="/search" name={seoProps.title ?? ""} description={seoProps.description} />
       <SearchScreen />

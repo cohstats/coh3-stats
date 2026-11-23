@@ -144,6 +144,20 @@ describe("createPageSEO with generateNextSeo", () => {
 });
 
 describe("sitewide defaults with generateNextSeo", () => {
+  test("should not set a sitewide canonical or og:url", () => {
+    // A default would point every page without its own canonical (404, error pages) to the homepage
+    jest.isolateModules(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const nextSeo = require("next-seo/pages") as typeof import("next-seo/pages");
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const defaultSEO = require("../../next-seo.config").default;
+
+      const tags = nextSeo.generateDefaultSeo(defaultSEO) as HeadElement[];
+      expect(findTags(tags, "link", { rel: "canonical" })).toHaveLength(0);
+      expect(findTags(tags, "meta", { property: "og:url" })).toHaveLength(0);
+    });
+  });
+
   test("should apply the titleTemplate from the default SEO to the page title", () => {
     // The defaults are module state in next-seo, a fresh copy keeps the template out of the other tests
     jest.isolateModules(() => {

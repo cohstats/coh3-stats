@@ -32,9 +32,9 @@ const UnitBrowser: NextPage<SquadProps> = ({ tableData }) => {
     AnalyticsExplorerUnitBrowserView();
   }, []);
 
-  const pageTitle = "Unit Browser";
+  const pageTitle = "COH3 Unit Browser - All Unit Stats";
   const description =
-    "CoH 3 Unit Browser. Browser through all the game units in the game and see their stats in a table.";
+    "Company of Heroes 3 unit browser. Browse all units of every faction and compare their stats in one table.";
   const keywords = generateKeywordsString([
     "coh3 units",
     "unit browser",

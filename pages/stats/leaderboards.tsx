@@ -114,7 +114,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = "en" }) => {
     props: {
       error,
       leaderBoardStats,
-      ...(await serverSideTranslations(locale, ["common"])),
+      ...(await serverSideTranslations(locale, ["common", "stats"])),
     },
     revalidate: error ? REVALIDATE_ON_FAILURE : REVALIDATE_OK,
   };
