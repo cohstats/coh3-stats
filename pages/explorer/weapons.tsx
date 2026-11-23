@@ -22,8 +22,9 @@ interface WeaponsProps {
   tableData: WeaponTableRow[];
 }
 
-const pageTitle = "Weapons";
-const description = "CoH 3 Weapons list. Browser through all the weapons in-game.";
+const pageTitle = "COH3 Weapons - All Weapon Stats";
+const description =
+  "Every Company of Heroes 3 weapon in one table. Browse and compare the stats of all in-game weapons.";
 const keywords = generateKeywordsString(["coh3 weapons", "weapons"]);
 
 const Weapons: NextPage<WeaponsProps> = ({ tableData }) => {

@@ -31,9 +31,9 @@ const PAGES: Array<{ path: string; title: RegExp; canonical?: RegExp }> = [
   { path: "/explorer/weapons", title: /Weapon/i },
   { path: "/explorer/challenges", title: /Challenge/i },
   { path: "/stats/games", title: /Stats|Games/i, canonical: /\/stats\/games$/ },
-  { path: "/stats/maps", title: /Map Statistics/i, canonical: /\/stats\/maps$/ },
+  { path: "/stats/maps", title: /Map Stat/i, canonical: /\/stats\/maps$/ },
   { path: "/stats/players", title: /Player/i, canonical: /\/stats\/players$/ },
-  { path: "/stats/leaderboards", title: /Leaderboards/i, canonical: /\/stats\/leaderboards$/ },
+  { path: "/stats/leaderboards", title: /Leaderboard/i, canonical: /\/stats\/leaderboards$/ },
   { path: "/stats/achievements", title: /Achievement/i, canonical: /\/stats\/achievements$/ },
   { path: "/other/ranking-tiers", title: /Tiers|Ranking/i, canonical: /\/other\/ranking-tiers$/ },
   { path: "/other/open-data", title: /Data/i, canonical: /\/other\/open-data$/ },
@@ -51,6 +51,16 @@ test.describe("SEO - page tags", () => {
       expect(response?.status(), `${path} did not respond with 2xx`).toBeLessThan(400);
 
       await expect(page).toHaveTitle(title);
+      const pageTitle = await page.title();
+      // A missing translation namespace renders the raw key (e.g. "leaderboards.meta.title")
+      expect(pageTitle, `${path} renders a translation key as its title`).not.toMatch(
+        /\w\.meta\.\w/,
+      );
+      // The site name comes from the titleTemplate, a title that already has it must skip the template
+      expect(
+        pageTitle.match(/COH3 Stats/gi)?.length ?? 0,
+        `${path} repeats the site name in its title`,
+      ).toBeLessThanOrEqual(1);
 
       const description = page.locator('meta[name="description"]').first();
       await expect(description).toHaveCount(1);
@@ -58,6 +68,13 @@ test.describe("SEO - page tags", () => {
       expect(descriptionText?.length, `${path} has an empty meta description`).toBeGreaterThan(
         20,
       );
+      expect(descriptionText, `${path} renders a translation key as its description`).not.toMatch(
+        /\w\.meta\.\w/,
+      );
+
+      // Keywords are built from translated arrays, a missing `returnObjects` leaks the i18next error
+      const keywords = await page.locator('meta[name="keywords"]').last().getAttribute("content");
+      expect(keywords, `${path} has broken keywords`).not.toMatch(/returned an object/);
 
       if (canonical) {
         await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", canonical);

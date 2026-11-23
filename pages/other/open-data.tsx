@@ -139,9 +139,9 @@ const OpenData: NextPage = () => {
   const { locale = "en" } = useRouter();
   const path = getOpenDataRoute();
 
-  const pageTitle = "Open Data";
+  const pageTitle = "COH3 Open Data - Leaderboards & Match Dumps";
   const description =
-    "COH3 Stats are open sourcing a leaderboards and match data. Find more details on the page how to download them.";
+    "COH3 Stats open sources Company of Heroes 3 leaderboards and match data. Learn how to download the daily data dumps.";
   const keywords = generateKeywordsString([
     "coh3 data",
     "coh3 matches",

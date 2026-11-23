@@ -61,7 +61,10 @@ const PlayerStats = ({
   const description = t("stats:players.meta.description", {
     count: playerStats?.count || 0,
   });
-  const keywords = generateKeywordsString(t("stats:players.meta.keywords").split(", "));
+  const translatedKeywords = t("stats:players.meta.keywords", { returnObjects: true });
+  const keywords = generateKeywordsString(
+    Array.isArray(translatedKeywords) ? (translatedKeywords as string[]) : [],
+  );
 
   useEffect(() => {
     AnalyticsStatsPlayerStatsPageView();

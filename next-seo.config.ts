@@ -4,11 +4,11 @@ const defaultSEO: DefaultSeoProps = {
   titleTemplate: "%s | COH3 Stats",
   defaultTitle: "COH3 Stats - Company of Heroes 3 Statistics",
   description: "Company of Heroes 3 statistics, leaderboards, player profiles, and game data.",
-  canonical: "https://coh3stats.com",
+  // No sitewide canonical / og:url on purpose. Every page sets its own (see `getLocalizedUrl` in
+  // `src/seo-utils.tsx`), a default would point pages without one (404, error pages) to the homepage.
   openGraph: {
     type: "website",
     // og:locale is set per request in `_app`, see `getOpenGraphLocale` in `src/seo-utils.tsx`
-    url: "https://coh3stats.com",
     siteName: "COH3 Stats",
     // Used by every page without its own image. No width / height on purpose, next/head dedupes
     // by tag key, so a page image without a size (maps, news) would inherit the logo's size.

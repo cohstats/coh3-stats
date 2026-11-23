@@ -376,7 +376,8 @@ const sections = [
 
 const About: NextPage = () => {
   const { locale = "en" } = useRouter();
-  const title = "About COH3 Stats";
+  // The "| COH3 Stats" site name is added by the titleTemplate
+  const title = "About Us - FAQ, Data Sources & ELO";
   const description =
     "COH3 Stats - learn more about our page, data sources, team statistics, ELO tracking, and frequently asked questions.";
 

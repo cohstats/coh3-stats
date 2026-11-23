@@ -66,6 +66,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
   }, []);
 
   const pageTitle = `${localizedRace} Units - COH3 Explorer`;
+  const pageDescription = `Browse all ${localizedRace} units in Company of Heroes 3 and see their stats, costs and weapons.`;
   const path = getExplorerFactionUnitsRoute(raceToFetch);
   const factionIcon = `${config.SITE_URL}/icons/general/${raceToFetch}.webp`;
   const metaKeywords = generateKeywordsString([
@@ -149,11 +150,11 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
       <Head>
         {generateNextSeo({
           title: pageTitle,
-          description: pageTitle,
+          description: pageDescription,
           canonical: getLocalizedUrl(path, locale),
           openGraph: {
             title: pageTitle,
-            description: pageTitle,
+            description: pageDescription,
             url: getLocalizedUrl(path, locale),
             images: [
               {
@@ -176,7 +177,7 @@ const ExplorerUnits: NextPage<UnitDetailProps> = ({ units, raceToFetch, descript
       <PageJsonLd
         path={path}
         name={pageTitle}
-        description={pageTitle}
+        description={pageDescription}
         breadcrumbName={tCommon("mainMenu.explMenu.units")}
         trail={[
           { name: t("common:mainMenu.explorer"), path: getExplorerRoute() },
