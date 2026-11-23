@@ -75,7 +75,41 @@ const _fetchAllLeaderboardsData = async () => {
   return result;
 };
 
-const calculateLeaderboardStats = async () => {
+// The stats page is generated once per locale. Share one result across all of them
+// for a few minutes so we don't hit the Relic API with 32 calls per locale.
+const STATS_CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+
+let statsCache: { promise: Promise<LeaderboardStatsType>; timestamp: number } | null = null;
+
+const _resetLeaderboardStatsCache = () => {
+  statsCache = null;
+};
+
+/**
+ * Returns leaderboard stats, cached in memory for STATS_CACHE_DURATION_MS.
+ * The promise itself is cached, so locales generated in parallel share one in-flight fetch.
+ * Failed fetches are not cached.
+ */
+const calculateLeaderboardStats = async (): Promise<LeaderboardStatsType> => {
+  if (statsCache && Date.now() - statsCache.timestamp < STATS_CACHE_DURATION_MS) {
+    return statsCache.promise;
+  }
+
+  const entry = { promise: _calculateLeaderboardStats(), timestamp: Date.now() };
+  statsCache = entry;
+
+  try {
+    return await entry.promise;
+  } catch (e) {
+    // Don't keep a failed result around; only clear it if nothing newer replaced it
+    if (statsCache === entry) {
+      statsCache = null;
+    }
+    throw e;
+  }
+};
+
+const _calculateLeaderboardStats = async (): Promise<LeaderboardStatsType> => {
   const allLeaderboardsData = await _fetchAllLeaderboardsData();
 
   const result = {} as LeaderboardStatsType;
@@ -123,4 +157,4 @@ const calculateLeaderboardStats = async () => {
   return result;
 };
 
-export { calculateLeaderboardStats, _fetchAllLeaderboardsData };
+export { calculateLeaderboardStats, _fetchAllLeaderboardsData, _resetLeaderboardStatsCache };
