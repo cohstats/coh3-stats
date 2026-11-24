@@ -8,7 +8,7 @@ const article: WikiArticle = {
   summary:
     "Accuracy is a single roll multiplied by the target size, and a successful roll always hits. How accuracy modifiers stack and how incremental accuracy makes machine guns shred blobs.",
   author: "Tsuyara",
-  date: "2026-11-23",
+  date: "2026-07-05",
   tags: ["accuracy", "target size", "incremental accuracy", "modifiers", "cover"],
   order: 1,
   series: { id: "accuracy-scatter", part: 1 },

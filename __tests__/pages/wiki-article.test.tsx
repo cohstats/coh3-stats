@@ -72,5 +72,20 @@ describe("/wiki/[category]/[slug]", () => {
     expect(html).toContain("<tbody><tr>");
     expect(html).toContain("<p>For example, a Crusader");
     expect(html).not.toContain("reddit.com");
+    expect(html).toContain(`data-testid="wiki-article-date"`);
+    expect(html).not.toContain(`data-testid="wiki-article-updated"`);
+  });
+
+  it("shows the updated date next to the written date", async () => {
+    const props = await getProps("combat", "attack-speed-buff-examples");
+    const html = renderToStaticMarkup(
+      <MantineProvider>
+        <WikiArticlePage {...props} />
+      </MantineProvider>,
+    );
+
+    expect(html).toContain(`data-testid="wiki-article-date"`);
+    expect(html).toContain(`data-testid="wiki-article-updated"`);
+    expect(html).not.toContain("A small plea to Relic");
   });
 });

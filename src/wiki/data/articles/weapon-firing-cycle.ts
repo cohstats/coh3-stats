@@ -8,7 +8,7 @@ const article: WikiArticle = {
   summary:
     "Every shot in CoH3 goes through aim time, wind up, burst, wind down and cooldown or reload. Here is what each step does and why the 8 ticks per second matter.",
   author: "Tsuyara",
-  date: "2026-11-23",
+  date: "2026-06-01",
   tags: ["rate of fire", "aim time", "cooldown", "reload", "dps"],
   order: 1,
   series: { id: "firing-cycles", part: 1 },

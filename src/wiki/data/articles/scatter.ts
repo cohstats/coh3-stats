@@ -8,7 +8,7 @@ const article: WikiArticle = {
   summary:
     "What happens when a projectile misses: the scatter area, its cap, the offset behind the target, and why you should ground attack in front of the spot you want to hit.",
   author: "Tsuyara",
-  date: "2026-11-23",
+  date: "2026-07-05",
   tags: ["scatter", "artillery", "ground attack", "offset", "modifiers"],
   order: 3,
   series: { id: "accuracy-scatter", part: 3 },

@@ -7,7 +7,7 @@ const article: WikiArticle = {
   summary:
     "Quick maths on veterancy: unit value, experience from damage, kills and squad wipes, the veterancy and catch up bonuses, and experience from taking damage.",
   author: "Tsuyara",
-  date: "2026-11-23",
+  date: "2026-11-11",
   tags: ["veterancy", "experience", "xp", "unit value"],
   order: 1,
   contents: `

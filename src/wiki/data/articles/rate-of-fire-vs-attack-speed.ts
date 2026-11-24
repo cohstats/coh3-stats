@@ -8,7 +8,7 @@ const article: WikiArticle = {
   summary:
     "CoH3 has two different modifiers that are both called rate of fire. One only shortens cooldown and reload, the other almost the whole firing cycle, and neither touches the burst.",
   author: "Tsuyara",
-  date: "2026-11-23",
+  date: "2026-06-01",
   tags: ["rate of fire", "attack speed", "veterancy", "machine guns", "dps"],
   order: 2,
   series: { id: "firing-cycles", part: 2 },

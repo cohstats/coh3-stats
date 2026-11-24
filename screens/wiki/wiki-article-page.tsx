@@ -11,6 +11,7 @@ import {
   IconArrowRight,
   IconCalendar,
   IconClock,
+  IconRefresh,
   IconUser,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -177,13 +178,20 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
                   {t("by")} {article.author}
                 </Text>
               </Group>
-              <Group gap={4}>
+              <Group gap={4} data-testid="wiki-article-date">
                 <IconCalendar size={15} />
                 <Text size="sm">
-                  {formatDate(article.date)}
-                  {article.updated && ` · ${t("updated")} ${formatDate(article.updated)}`}
+                  {t("written")} {formatDate(article.date)}
                 </Text>
               </Group>
+              {article.updated && (
+                <Group gap={4} data-testid="wiki-article-updated">
+                  <IconRefresh size={15} />
+                  <Text size="sm">
+                    {t("updated")} {formatDate(article.updated)}
+                  </Text>
+                </Group>
+              )}
               <Group gap={4}>
                 <IconClock size={15} />
                 <Text size="sm">{t("minutesRead", { count: readingMinutes })}</Text>

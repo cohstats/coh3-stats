@@ -8,7 +8,7 @@ const article: WikiArticle = {
   summary:
     "Accurate shots don't always hit centre mass, armour facing is based on arcs rather than the hitbox, and SMGs and HMGs spread their damage over the whole squad.",
   author: "Tsuyara",
-  date: "2026-11-23",
+  date: "2026-07-05",
   tags: ["armour", "rear armour", "hitbox", "damage distribution", "machine guns"],
   order: 2,
   series: { id: "accuracy-scatter", part: 2 },
