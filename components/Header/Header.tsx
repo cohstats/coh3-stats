@@ -28,6 +28,7 @@ import {
   getLiveGamesRoute,
   getNewsRoute,
   getTournamentsRoute,
+  getWikiRoute,
 } from "../../src/routes";
 import StatisticsMenu from "./components/StatisticsMenu";
 import OtherMenu from "./components/OtherMenu";
@@ -115,6 +116,15 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
               {t("mainMenu.news")}
             </Anchor>
 
+            <Anchor
+              component={Link}
+              href={getWikiRoute()}
+              className={classes.link}
+              onClick={() => close()}
+            >
+              {t("mainMenu.wiki")}
+            </Anchor>
+
             <OtherMenu close={close} classes={classes} t={t} view="mobile" />
 
             <Anchor
@@ -191,6 +201,9 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
         </Anchor>
         <Anchor component={Link} href={getNewsRoute()} className={classes.link}>
           {t("mainMenu.news")}
+        </Anchor>
+        <Anchor component={Link} href={getWikiRoute()} className={classes.link}>
+          {t("mainMenu.wiki")}
         </Anchor>
         <OtherMenu classes={classes} close={() => null} t={t} view="desktop" />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>
