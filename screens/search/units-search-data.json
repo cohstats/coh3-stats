@@ -841,10 +841,10 @@
   },
   {
     "id": "priest_kangaroo_us",
-    "icon": "races/american/vehicles/priest_kangaroo_us",
+    "icon": "races/american/vehicles/priest_us",
     "name": "!Priest Kangaroo Carrier",
     "faction": "american",
-    "symbol": "races/american/symbols/priest_kangaroo_us"
+    "symbol": "races/american/symbols/priest_us"
   },
   {
     "id": "priest_us",
@@ -1604,10 +1604,10 @@
   },
   {
     "id": "churchill_arv_africa_uk",
-    "icon": "races/british/vehicles/churchill_arv_africa_uk",
+    "icon": "races/british/vehicles/churchill_africa_uk",
     "name": "!Churchill ARV",
     "faction": "british",
-    "symbol": "races/british/symbols/churchill_arv_africa_uk"
+    "symbol": "races/british/symbols/churchill_uk"
   },
   {
     "id": "churchill_avre_africa_uk",
@@ -2514,7 +2514,7 @@
   },
   {
     "id": "hummel_ger",
-    "icon": "races/german/vehicles/hummel_german",
+    "icon": "races/german/vehicles/wespe_german",
     "name": "!Hummel Self-Propelled Artillery",
     "faction": "german",
     "symbol": "races/german/symbols/wespe_spg"
@@ -3333,10 +3333,10 @@
   },
   {
     "id": "p26_40_ak",
-    "icon": "races/afrika_corps/vehicles/p26_40_ak",
+    "icon": "races/afrika_corps/vehicles/m13_40_ak",
     "name": "!P26/40 Medium Tank",
     "faction": "dak",
-    "symbol": "races/afrika_corps/symbols/p26_40_ak"
+    "symbol": "races/german/symbols/m13_40_ger"
   },
   {
     "id": "panzer_iii_50mm_long_ak",
