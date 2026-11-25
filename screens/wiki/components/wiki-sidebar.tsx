@@ -67,10 +67,12 @@ export const WikiSidebar = ({
     currentGroupKey ? [currentGroupKey] : [],
   );
 
+  // Runs on every article change, not only when the group changes: a reader can close the group
+  // and then follow a series link to another article in the same group.
   useEffect(() => {
     if (!currentGroupKey) return;
     setOpenGroups((open) => (open.includes(currentGroupKey) ? open : [...open, currentGroupKey]));
-  }, [currentGroupKey]);
+  }, [currentGroupKey, currentArticle]);
 
   const toggleGroup = (key: string, opened: boolean) =>
     setOpenGroups((open) =>
