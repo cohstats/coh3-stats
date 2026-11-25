@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Badge, NavLink, Stack, ThemeIcon } from "@mantine/core";
 import { IconBooks, IconFileText, IconLayoutGrid } from "@tabler/icons-react";
@@ -36,7 +36,7 @@ const ArticleLink = ({
 
 /**
  * Category -> group -> article tree. Every level sits on its own guide line, groups are
- * collapsible and series articles show their part number.
+ * collapsed unless they hold the current article, and series articles show their part number.
  */
 export const WikiSidebar = ({
   navigation,
@@ -54,6 +54,31 @@ export const WikiSidebar = ({
   /** Closes the mobile drawer. */
   onNavigate?: () => void;
 }) => {
+  // The sidebar stays mounted between articles, so the group of the current article is opened
+  // on every navigation. Groups the reader opened or closed by hand keep their state.
+  const currentGroupKey = (() => {
+    const category = navigation.find((item) => item.slug === currentCategory);
+    const group = category?.groups.find((item) =>
+      item.articles.some((article) => article.slug === currentArticle),
+    );
+    return category && group ? `${category.slug}/${group.id}` : null;
+  })();
+  const [openGroups, setOpenGroups] = useState<string[]>(
+    currentGroupKey ? [currentGroupKey] : [],
+  );
+
+  // Runs on every article change, not only when the group changes: a reader can close the group
+  // and then follow a series link to another article in the same group.
+  useEffect(() => {
+    if (!currentGroupKey) return;
+    setOpenGroups((open) => (open.includes(currentGroupKey) ? open : [...open, currentGroupKey]));
+  }, [currentGroupKey, currentArticle]);
+
+  const toggleGroup = (key: string, opened: boolean) =>
+    setOpenGroups((open) =>
+      opened ? [...open, key] : open.filter((openKey) => openKey !== key),
+    );
+
   return (
     <Stack gap={4} component="nav" aria-label={homeLabel} data-testid="wiki-sidebar">
       <NavLink
@@ -105,7 +130,8 @@ export const WikiSidebar = ({
                         </Badge>
                       </span>
                     }
-                    defaultOpened
+                    opened={openGroups.includes(`${category.slug}/${group.id}`)}
+                    onChange={(opened) => toggleGroup(`${category.slug}/${group.id}`, opened)}
                     childrenOffset={0}
                     className={classes.navGroup}
                     data-testid={`wiki-sidebar-group-${group.id}`}

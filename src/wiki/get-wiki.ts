@@ -1,3 +1,4 @@
+import config from "../../config";
 import { getNewsExcerpt } from "../news/news-excerpt";
 import { WIKI_ARTICLES } from "./data";
 import { getWikiCategory, getWikiSeries, WIKI_CATEGORIES } from "./wiki-categories";
@@ -167,4 +168,52 @@ export const getWikiNeighbours = (
     previous: index > 0 ? list[index - 1] : null,
     next: index >= 0 && index < list.length - 1 ? list[index + 1] : null,
   };
+};
+
+const MONTHS = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dec",
+];
+
+/** Turns the config `dataTime`, like "18/Nov/2026" or "27/February/2024", into "2026-11-18". */
+export const parsePatchDataTime = (dataTime: string): string | null => {
+  const [day, month, year] = dataTime.split("/");
+  const monthIndex = MONTHS.indexOf((month ?? "").slice(0, 3).toLowerCase());
+  if (!day || !year || monthIndex < 0) return null;
+  return `${year}-${String(monthIndex + 1).padStart(2, "0")}-${day.padStart(2, "0")}`;
+};
+
+/**
+ * The game patch an article is about: its own `patch`, otherwise the newest patch out on its
+ * `updated` (or `date`) day, by the `dataTime` of the patches in the config.
+ */
+export const getWikiArticlePatch = (
+  article: Pick<WikiArticle, "date" | "updated" | "patch">,
+  patches: Record<string, { dataTime: string }> = config.patches,
+): string | null => {
+  if (article.patch) return article.patch;
+  const day = article.updated ?? article.date;
+  let best: { patch: string; date: string } | null = null;
+  for (const [patch, { dataTime }] of Object.entries(patches)) {
+    const date = parsePatchDataTime(dataTime);
+    if (!date || date > day) continue;
+    if (
+      !best ||
+      date > best.date ||
+      (date === best.date && patch.localeCompare(best.patch, undefined, { numeric: true }) > 0)
+    ) {
+      best = { patch, date };
+    }
+  }
+  return best?.patch ?? null;
 };

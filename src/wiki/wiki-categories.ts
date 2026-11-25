@@ -13,10 +13,11 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
     slug: "combat",
     title: "Combat Mechanics",
     description:
-      "How weapons actually fire, hit and miss. Firing cycles, attack speed, accuracy, scatter and projectiles.",
+      "How weapons actually fire, hit and miss. Firing cycles, attack speed, accuracy, scatter, projectiles and cover.",
     icon: "crosshair",
     color: "red",
     groups: [
+      { id: "cover", title: "Cover" },
       { id: "firing", title: "Firing & Attack Speed" },
       { id: "accuracy", title: "Accuracy & Scatter" },
     ],
@@ -47,6 +48,7 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
 export const WIKI_SERIES: WikiSeries[] = [
   { id: "firing-cycles", title: "Rate of fire & attack speed deep dive" },
   { id: "accuracy-scatter", title: "Accuracy & scatter explained" },
+  { id: "cover", title: "How cover works" },
 ];
 
 export const isWikiCategory = (value: unknown): value is WikiCategorySlug =>

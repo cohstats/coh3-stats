@@ -38,7 +38,11 @@ export const getWikiArticleJsonLd = ({
         ...(image ? { image: [image] } : {}),
         articleSection: categoryTitle,
         keywords: ["Company of Heroes 3", "COH3", ...article.tags].join(", "),
-        author: { "@type": "Person", name: article.author },
+        author: article.authors.map((author) => ({
+          "@type": "Person",
+          name: author.name,
+          ...(author.url ? { url: author.url } : {}),
+        })),
         publisher: COH3_STATS,
         about: COMPANY_OF_HEROES_3,
       },

@@ -12,7 +12,8 @@ test.describe("News page", () => {
     await navigateAndWait(page, "/news");
     await checkPageLoaded(page);
 
-    await expect(page.locator("h1").last()).toContainText(/News/i);
+    // Not `h1.last()`: Steam posts can carry their own [h1] headings in the body.
+    await expect(page.locator("h1").filter({ hasText: /News/i }).first()).toBeVisible();
 
     // One card per post, each with a title and a "posted by <author> on <date>" line.
     const posts = page.locator(".mantine-Card-root");
@@ -36,7 +37,7 @@ test.describe("News page", () => {
     // Not `networkidle`: a whole article shows its YouTube embeds, which keep the network busy.
     // The SEO tags are server rendered, so the HTML is enough for them.
     await page.goto(href!, { waitUntil: "domcontentloaded" });
-    await expect(page.locator("h1").last()).toHaveText(title);
+    await expect(page.locator("h1").filter({ hasText: title }).first()).toHaveText(title);
     expect(await page.title()).toContain(title);
 
     // Marked up as a news article about the game, so search engines index it as such.

@@ -7,7 +7,7 @@ const article: WikiArticle = {
   title: "Attack Speed in Practice: Buffs That Changed",
   summary:
     "War Cry, Infantry Section and Bersaglieri veterancy and the Semovente were moved from rate of fire to attack speed. DPS charts of what that actually did, and why it matters.",
-  author: "Tsuyara",
+  authors: [{ name: "Tsuyara" }],
   date: "2026-06-01",
   updated: "2026-11-24",
   tags: ["attack speed", "rate of fire", "veterancy", "balance"],

@@ -11,6 +11,7 @@ import {
   IconArrowRight,
   IconCalendar,
   IconClock,
+  IconDeviceGamepad2,
   IconRefresh,
   IconUser,
 } from "@tabler/icons-react";
@@ -32,6 +33,8 @@ export type WikiArticlePageProps = {
   article: WikiArticle;
   headings: WikiHeading[];
   readingMinutes: number;
+  /** The game patch the article applies to. */
+  patch: string | null;
   image: string | null;
   categoryTitle: string;
   groupTitle: string | null;
@@ -82,6 +85,7 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
   article,
   headings,
   readingMinutes,
+  patch,
   image,
   categoryTitle,
   groupTitle,
@@ -175,7 +179,25 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
               <Group gap={4}>
                 <IconUser size={15} />
                 <Text size="sm">
-                  {t("by")} {article.author}
+                  {t("by")}{" "}
+                  {article.authors.map((author, index) => (
+                    <React.Fragment key={author.name}>
+                      {index > 0 && (index === article.authors.length - 1 ? " & " : ", ")}
+                      {author.url ? (
+                        <Anchor
+                          href={author.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          inherit
+                          data-testid="wiki-article-author-link"
+                        >
+                          {author.name}
+                        </Anchor>
+                      ) : (
+                        author.name
+                      )}
+                    </React.Fragment>
+                  ))}
                 </Text>
               </Group>
               <Group gap={4} data-testid="wiki-article-date">
@@ -190,6 +212,12 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
                   <Text size="sm">
                     {t("updated")} {formatDate(article.updated)}
                   </Text>
+                </Group>
+              )}
+              {patch && (
+                <Group gap={4} data-testid="wiki-article-patch">
+                  <IconDeviceGamepad2 size={15} />
+                  <Text size="sm">{t("patch", { patch })}</Text>
                 </Group>
               )}
               <Group gap={4}>

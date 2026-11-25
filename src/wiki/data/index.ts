@@ -7,6 +7,11 @@ import shotPlacementArmourAndDamageSpread from "./articles/shot-placement-armour
 import scatter from "./articles/scatter";
 import terrainAndProjectileFlight from "./articles/terrain-and-projectile-flight";
 import unitExperienceGains from "./articles/unit-experience-gains";
+import coverBasics from "./articles/cover-basics";
+import coverVsWeaponTypes from "./articles/cover-vs-weapon-types";
+import suppressionAndCover from "./articles/suppression-and-cover";
+import garrisonCover from "./articles/garrison-cover";
+import coverMicroTips from "./articles/cover-micro-tips";
 
 /** Every wiki article, register new ones here. The order doesn't matter, `order` does. */
 export const WIKI_ARTICLES: WikiArticle[] = [
@@ -18,4 +23,9 @@ export const WIKI_ARTICLES: WikiArticle[] = [
   scatter,
   terrainAndProjectileFlight,
   unitExperienceGains,
+  coverBasics,
+  coverVsWeaponTypes,
+  suppressionAndCover,
+  garrisonCover,
+  coverMicroTips,
 ];

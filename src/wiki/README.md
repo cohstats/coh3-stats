@@ -24,9 +24,11 @@ const article: WikiArticle = {
   group: "accuracy", // optional, one of the category's groups
   title: "My Article",
   summary: "One or two sentences, shown on the cards and as the meta description.",
-  author: "Your name",
+  // one or more authors, `url` is optional and makes the name a link (new tab)
+  authors: [{ name: "Your name", url: "https://www.youtube.com/@channel" }],
   date: "2026-11-23",
   // updated: "2026-12-01", // when the content changes
+  // patch: "3.0.2", // the game patch, picked from updated / date and config.patches when empty
   tags: ["accuracy"],
   order: 1, // the order inside the group / category
   // series: { id: "accuracy-scatter", part: 5 }, // for multi part articles
