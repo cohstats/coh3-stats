@@ -42,6 +42,8 @@ export type WikiArticle = {
   date: string;
   /** Last real content change, YYYY-MM-DD */
   updated?: string;
+  /** Game patch the content applies to, e.g. "3.0.2". Picked from the `updated` / `date` when empty. */
+  patch?: string;
   tags: string[];
   /** Sort order inside the group / category, lower first. */
   order: number;

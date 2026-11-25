@@ -82,6 +82,15 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
 
             <Anchor
               component={Link}
+              href={getWikiRoute()}
+              className={classes.link}
+              onClick={() => close()}
+            >
+              {t("mainMenu.wiki")}
+            </Anchor>
+
+            <Anchor
+              component={Link}
               href={getLiveGamesRoute()}
               className={classes.link}
               onClick={() => close()}
@@ -114,15 +123,6 @@ const MobileView: React.FC<MobileViewProps> = ({ t }) => {
               onClick={() => close()}
             >
               {t("mainMenu.news")}
-            </Anchor>
-
-            <Anchor
-              component={Link}
-              href={getWikiRoute()}
-              className={classes.link}
-              onClick={() => close()}
-            >
-              {t("mainMenu.wiki")}
             </Anchor>
 
             <OtherMenu close={close} classes={classes} t={t} view="mobile" />
@@ -186,6 +186,9 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
         </HoverCard>
         <StatisticsMenu classes={classes} t={t} view="desktop" />
         <ExplorerMenu classes={classes} close={() => null} t={t} view="desktop" />
+        <Anchor component={Link} href={getWikiRoute()} className={classes.link}>
+          {t("mainMenu.wiki")}
+        </Anchor>
         <Anchor
           component={LinkWithOutPrefetch}
           href={getLiveGamesRoute()}
@@ -201,9 +204,6 @@ const DesktopView: React.FC<DesktopViewProps> = ({ t }) => {
         </Anchor>
         <Anchor component={Link} href={getNewsRoute()} className={classes.link}>
           {t("mainMenu.news")}
-        </Anchor>
-        <Anchor component={Link} href={getWikiRoute()} className={classes.link}>
-          {t("mainMenu.wiki")}
         </Anchor>
         <OtherMenu classes={classes} close={() => null} t={t} view="desktop" />
         <Anchor component={Link} href={getAboutRoute()} className={classes.link}>

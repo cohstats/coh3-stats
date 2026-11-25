@@ -7,9 +7,11 @@ import {
   getReadingMinutes,
   getWikiArticle,
   getWikiArticleImage,
+  getWikiArticlePatch,
   getWikiNavigation,
   getWikiNeighbours,
   getWikiSeriesInfo,
+  parsePatchDataTime,
   slugifyHeading,
 } from "../../../src/wiki/get-wiki";
 
@@ -113,12 +115,42 @@ describe("wiki helpers", () => {
     expect(navigation.map((category) => category.slug)).toEqual(["combat", "veterancy"]);
 
     const combat = navigation.find((category) => category.slug === "combat");
-    expect(combat?.groups.map((group) => group.id)).toEqual(["firing", "accuracy"]);
-    expect(combat?.groups[0].articles.map((article) => article.slug)).toEqual([
+    expect(combat?.groups.map((group) => group.id)).toEqual(["cover", "firing", "accuracy"]);
+    expect(
+      combat?.groups
+        .find((group) => group.id === "firing")
+        ?.articles.map((article) => article.slug),
+    ).toEqual([
       "weapon-firing-cycle",
       "rate-of-fire-vs-attack-speed",
       "attack-speed-buff-examples",
     ]);
+  });
+
+  it("parses the patch data times of the config", () => {
+    expect(parsePatchDataTime("18/Nov/2026")).toBe("2026-11-18");
+    expect(parsePatchDataTime("3/March/2024")).toBe("2024-03-03");
+    expect(parsePatchDataTime("nonsense")).toBeNull();
+  });
+
+  it("picks the patch out on the updated or written day", () => {
+    const patches = {
+      "3.0.2": { dataTime: "18/Nov/2026" },
+      "3.0.1": { dataTime: "16/Nov/2026" },
+      "2.3.1": { dataTime: "01/Apr/2026" },
+      "2.3.0": { dataTime: "01/Apr/2026" },
+    };
+    expect(getWikiArticlePatch({ date: "2026-03-14", updated: "2026-11-17" }, patches)).toBe(
+      "3.0.1",
+    );
+    expect(getWikiArticlePatch({ date: "2026-11-18" }, patches)).toBe("3.0.2");
+    expect(getWikiArticlePatch({ date: "2026-04-01" }, patches)).toBe("2.3.1");
+    expect(getWikiArticlePatch({ date: "2020-01-01" }, patches)).toBeNull();
+    expect(getWikiArticlePatch({ date: "2026-11-25", patch: "2.5.6" }, patches)).toBe("2.5.6");
+    // Every article gets a patch from the real config.
+    for (const article of WIKI_ARTICLES) {
+      expect(getWikiArticlePatch(article)).not.toBeNull();
+    }
   });
 
   it("links series parts in order", () => {

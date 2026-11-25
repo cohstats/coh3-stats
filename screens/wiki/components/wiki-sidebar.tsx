@@ -36,7 +36,7 @@ const ArticleLink = ({
 
 /**
  * Category -> group -> article tree. Every level sits on its own guide line, groups are
- * collapsible and series articles show their part number.
+ * collapsed unless they hold the current article, and series articles show their part number.
  */
 export const WikiSidebar = ({
   navigation,
@@ -105,7 +105,10 @@ export const WikiSidebar = ({
                         </Badge>
                       </span>
                     }
-                    defaultOpened
+                    defaultOpened={
+                      isCurrent &&
+                      group.articles.some((article) => article.slug === currentArticle)
+                    }
                     childrenOffset={0}
                     className={classes.navGroup}
                     data-testid={`wiki-sidebar-group-${group.id}`}
