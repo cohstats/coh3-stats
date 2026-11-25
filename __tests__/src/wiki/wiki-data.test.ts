@@ -36,8 +36,10 @@ describe("wiki data", () => {
         expect(getWikiSeries(article.series.id)).toBeDefined();
       }
       expect(article.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      if (article.authorUrl) {
-        expect(article.authorUrl).toMatch(/^https:\/\//);
+      expect(article.authors.length).toBeGreaterThan(0);
+      for (const author of article.authors) {
+        expect(author.name.trim()).not.toBe("");
+        if (author.url) expect(author.url).toMatch(/^https:\/\//);
       }
       expect(article.summary.length).toBeGreaterThan(40);
       expect(article.summary.length).toBeLessThanOrEqual(200);

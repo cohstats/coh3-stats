@@ -107,4 +107,27 @@ describe("/wiki/[category]/[slug]", () => {
     expect(plain).not.toContain(`data-testid="wiki-article-author-link"`);
     expect(plain).toContain("Tsuyara");
   });
+
+  it("lists multiple authors, each linked only when it has a url", async () => {
+    const props = await getProps("combat", "cover-basics");
+    const html = renderToStaticMarkup(
+      <MantineProvider>
+        <WikiArticlePage
+          {...props}
+          article={{
+            ...props.article,
+            authors: [
+              { name: "tightrope", url: "https://www.youtube.com/@tightropegaming" },
+              { name: "Tsuyara" },
+              { name: "Third", url: "https://example.com/third" },
+            ],
+          }}
+        />
+      </MantineProvider>,
+    );
+
+    expect(html.match(/data-testid="wiki-article-author-link"/g)).toHaveLength(2);
+    expect(html).toContain(`href="https://example.com/third"`);
+    expect(html).toMatch(/tightrope<\/a>, Tsuyara &amp; <a[^>]*>Third<\/a>/);
+  });
 });

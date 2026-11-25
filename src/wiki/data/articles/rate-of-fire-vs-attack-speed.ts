@@ -7,7 +7,7 @@ const article: WikiArticle = {
   title: "Rate of Fire vs Overall Attack Speed",
   summary:
     "CoH3 has two different modifiers that are both called rate of fire. One only shortens cooldown and reload, the other almost the whole firing cycle, and neither touches the burst.",
-  author: "Tsuyara",
+  authors: [{ name: "Tsuyara" }],
   date: "2026-06-01",
   tags: ["rate of fire", "attack speed", "veterancy", "machine guns", "dps"],
   order: 2,

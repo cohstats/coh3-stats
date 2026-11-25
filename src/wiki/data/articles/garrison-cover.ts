@@ -7,8 +7,7 @@ const article: WikiArticle = {
   title: "Garrison Cover & Damage All In Hold",
   summary:
     "How garrison cover differs from light and heavy cover, where to aim at a building, the damage all in hold mechanic and the fortified position bonus.",
-  author: "tightrope",
-  authorUrl: "https://www.youtube.com/@tightropegaming",
+  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "garrison", "buildings", "bunkers", "damage all in hold", "flamethrowers"],

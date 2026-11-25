@@ -7,7 +7,7 @@ const article: WikiArticle = {
   title: "The Weapon Firing Cycle",
   summary:
     "Every shot in CoH3 goes through aim time, wind up, burst, wind down and cooldown or reload. Here is what each step does and why the 8 ticks per second matter.",
-  author: "Tsuyara",
+  authors: [{ name: "Tsuyara" }],
   date: "2026-06-01",
   tags: ["rate of fire", "aim time", "cooldown", "reload", "dps"],
   order: 1,

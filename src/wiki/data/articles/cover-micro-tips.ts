@@ -7,8 +7,7 @@ const article: WikiArticle = {
   title: "Cover Micro Tips & the Problem with Cover",
   summary:
     "Capturing from cover, spreading out fast, chasing retreating units, cover for vehicles, and why cover loses relevance in late game team games.",
-  author: "tightrope",
-  authorUrl: "https://www.youtube.com/@tightropegaming",
+  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "micro", "retreat", "capture", "team games"],

@@ -7,8 +7,7 @@ const article: WikiArticle = {
   title: "Cover vs Weapon Types: Multipliers & Counters",
   summary:
     "The cover multipliers for every weapon type, from small arms to mines, and which weapons are the best and worst against light, heavy and garrison cover.",
-  author: "tightrope",
-  authorUrl: "https://www.youtube.com/@tightropegaming",
+  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: [

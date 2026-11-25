@@ -28,6 +28,12 @@ export type WikiSeries = {
   title: string;
 };
 
+export type WikiAuthor = {
+  name: string;
+  /** Optional link for the name, like the author's YouTube channel. Opens in a new tab. */
+  url?: string;
+};
+
 export type WikiArticle = {
   /** URL part, unique within the whole wiki: /wiki/<category>/<slug> */
   slug: string;
@@ -37,9 +43,8 @@ export type WikiArticle = {
   title: string;
   /** One or two sentences, used on the cards and as the meta description. */
   summary: string;
-  author: string;
-  /** Optional link for the author name, like their YouTube channel. */
-  authorUrl?: string;
+  /** One or more authors, in the order they are shown. */
+  authors: WikiAuthor[];
   /** Publish date, YYYY-MM-DD */
   date: string;
   /** Last real content change, YYYY-MM-DD */

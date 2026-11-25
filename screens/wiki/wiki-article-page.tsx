@@ -180,19 +180,24 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
                 <IconUser size={15} />
                 <Text size="sm">
                   {t("by")}{" "}
-                  {article.authorUrl ? (
-                    <Anchor
-                      href={article.authorUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      inherit
-                      data-testid="wiki-article-author-link"
-                    >
-                      {article.author}
-                    </Anchor>
-                  ) : (
-                    article.author
-                  )}
+                  {article.authors.map((author, index) => (
+                    <React.Fragment key={author.name}>
+                      {index > 0 && (index === article.authors.length - 1 ? " & " : ", ")}
+                      {author.url ? (
+                        <Anchor
+                          href={author.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          inherit
+                          data-testid="wiki-article-author-link"
+                        >
+                          {author.name}
+                        </Anchor>
+                      ) : (
+                        author.name
+                      )}
+                    </React.Fragment>
+                  ))}
                 </Text>
               </Group>
               <Group gap={4} data-testid="wiki-article-date">
