@@ -38,6 +38,8 @@ export type WikiArticle = {
   /** One or two sentences, used on the cards and as the meta description. */
   summary: string;
   author: string;
+  /** Optional link for the author name, like their YouTube channel. */
+  authorUrl?: string;
   /** Publish date, YYYY-MM-DD */
   date: string;
   /** Last real content change, YYYY-MM-DD */

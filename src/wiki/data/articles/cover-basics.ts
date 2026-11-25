@@ -8,6 +8,7 @@ const article: WikiArticle = {
   summary:
     "How cover works in COH3: the cover shield, the half of the squad rule, directional cover, and what open ground, light cover and heavy cover actually do.",
   author: "tightrope",
+  authorUrl: "https://www.youtube.com/@tightropegaming",
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "light cover", "heavy cover", "open ground", "aoe"],

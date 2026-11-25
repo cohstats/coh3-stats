@@ -25,6 +25,7 @@ const article: WikiArticle = {
   title: "My Article",
   summary: "One or two sentences, shown on the cards and as the meta description.",
   author: "Your name",
+  // authorUrl: "https://www.youtube.com/@channel", // optional, makes the author name a link
   date: "2026-11-23",
   // updated: "2026-12-01", // when the content changes
   // patch: "3.0.2", // the game patch, picked from updated / date and config.patches when empty

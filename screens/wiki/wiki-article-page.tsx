@@ -179,7 +179,20 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
               <Group gap={4}>
                 <IconUser size={15} />
                 <Text size="sm">
-                  {t("by")} {article.author}
+                  {t("by")}{" "}
+                  {article.authorUrl ? (
+                    <Anchor
+                      href={article.authorUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      inherit
+                      data-testid="wiki-article-author-link"
+                    >
+                      {article.author}
+                    </Anchor>
+                  ) : (
+                    article.author
+                  )}
                 </Text>
               </Group>
               <Group gap={4} data-testid="wiki-article-date">

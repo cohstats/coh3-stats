@@ -8,6 +8,7 @@ const article: WikiArticle = {
   summary:
     "How light, heavy and garrison cover reduce incoming suppression and speed up recovery, and how to use a nearby building to shake off suppression.",
   author: "tightrope",
+  authorUrl: "https://www.youtube.com/@tightropegaming",
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "suppression", "machine guns", "garrison", "micro"],

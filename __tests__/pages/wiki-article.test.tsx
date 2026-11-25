@@ -88,4 +88,23 @@ describe("/wiki/[category]/[slug]", () => {
     expect(html).toContain(`data-testid="wiki-article-updated"`);
     expect(html).not.toContain("A small plea to Relic");
   });
+
+  it("links the author name only when the article has an author url", async () => {
+    const render = async (category: string, slug: string) => {
+      const props = await getProps(category, slug);
+      return renderToStaticMarkup(
+        <MantineProvider>
+          <WikiArticlePage {...props} />
+        </MantineProvider>,
+      );
+    };
+
+    const linked = await render("combat", "cover-basics");
+    expect(linked).toContain(`data-testid="wiki-article-author-link"`);
+    expect(linked).toContain(`href="https://www.youtube.com/@tightropegaming"`);
+
+    const plain = await render("combat", "scatter");
+    expect(plain).not.toContain(`data-testid="wiki-article-author-link"`);
+    expect(plain).toContain("Tsuyara");
+  });
 });
