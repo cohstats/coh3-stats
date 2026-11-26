@@ -49,7 +49,7 @@ const nextConfig = {
     return [
       {
         source: "/other/ranking-tiers",
-        destination: "/wiki/ranked/ranking-tiers",
+        destination: "/wiki/multiplayer/ranking-tiers",
         permanent: true,
       },
     ];

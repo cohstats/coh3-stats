@@ -38,9 +38,10 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
     groups: [{ id: "territory", title: "Territory" }],
   },
   {
-    slug: "ranked",
-    title: "Ranked Play",
-    description: "How the ranked ladder works: leagues, tiers, ELO and the rules around them.",
+    slug: "multiplayer",
+    title: "Multiplayer",
+    description:
+      "Playing against other players: ranked play, leagues and tiers, ELO and the leaderboards.",
     icon: "trophy",
     color: "orange",
   },

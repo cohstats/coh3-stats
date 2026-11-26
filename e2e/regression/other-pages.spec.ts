@@ -13,7 +13,7 @@ import { navigateAndWait, checkPageLoaded, checkFooterPresent } from "../helpers
 test.describe("Other pages", () => {
   test("should redirect the old ranking tiers page to the wiki", async ({ page }) => {
     await navigateAndWait(page, "/other/ranking-tiers");
-    await page.waitForURL("**/wiki/ranked/ranking-tiers");
+    await page.waitForURL("**/wiki/multiplayer/ranking-tiers");
     await checkPageLoaded(page);
 
     // The tier table with the ELO ranges is part of the wiki article now.

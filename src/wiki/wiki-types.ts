@@ -5,7 +5,7 @@ export const WIKI_CATEGORY_SLUGS = [
   "combat",
   "veterancy",
   "economy",
-  "ranked",
+  "multiplayer",
   "site",
 ] as const;
 

@@ -55,8 +55,8 @@ describe("wiki data", () => {
 
       // Every local image exists.
       const images = Array.from(
-        article.contents.matchAll(/\[img[^\]]*\]([\s\S]*?)\[\/img\]/g),
-      ).map((match) => match[1].trim());
+        article.contents.matchAll(/\[(img|icon)[^\]]*\]([\s\S]*?)\[\/\1\]/g),
+      ).map((match) => match[2].trim());
       for (const image of images.filter((src) => src.startsWith("/"))) {
         expect(fs.existsSync(path.join(publicDir, image))).toBe(true);
       }
@@ -121,7 +121,7 @@ describe("wiki helpers", () => {
       "combat",
       "veterancy",
       "economy",
-      "ranked",
+      "multiplayer",
     ]);
 
     const combat = navigation.find((category) => category.slug === "combat");
