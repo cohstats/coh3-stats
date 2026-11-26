@@ -160,9 +160,11 @@ describe("getIngameTips", () => {
     expect(fetchJson).not.toHaveBeenCalled();
   });
 
-  test("returns null for an unexpected file content", async () => {
-    fetchJson.mockResolvedValue({ something: "else" });
+  test("returns null for an unexpected file content and retries later", async () => {
+    fetchJson.mockResolvedValueOnce({ something: "else" }).mockResolvedValue(rawFile);
     expect(await getIngameTips()).toBeNull();
+    expect((await getIngameTips())?.tips).toHaveLength(3);
+    expect(fetchJson).toHaveBeenCalledTimes(2);
   });
 });
 

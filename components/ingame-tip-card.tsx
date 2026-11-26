@@ -76,7 +76,15 @@ const IngameTipCard = ({ tips, seed, mt = 0, mb = "md" }: IngameTipCardProps) =>
           </Tooltip>
         )}
       </Group>
-      <Text size="md" mt="sm" style={{ whiteSpace: "pre-line" }} data-testid="ingame-tip-text">
+      {/* Live region - announces the new tip while the focus stays on the Next button. */}
+      <Text
+        size="md"
+        mt="sm"
+        style={{ whiteSpace: "pre-line" }}
+        aria-live="polite"
+        aria-atomic="true"
+        data-testid="ingame-tip-text"
+      >
         {tip.text}
       </Text>
     </Paper>

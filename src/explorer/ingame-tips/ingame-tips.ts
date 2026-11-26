@@ -90,10 +90,10 @@ const getRawIngameTipsFile = (patch: string): Promise<RawIngameTipsFile | null> 
         );
 
         if (!rawFile || typeof rawFile !== "object" || !Array.isArray(rawFile.tips)) {
-          console.warn(
+          // Thrown (not cached as null) - a faulty response must not hide the tips until restart.
+          throw new Error(
             `[ingame-tips] Unexpected content of ${INGAME_TIPS_DATA_FILE} for patch ${patch}.`,
           );
-          return null;
         }
 
         return rawFile as RawIngameTipsFile;
