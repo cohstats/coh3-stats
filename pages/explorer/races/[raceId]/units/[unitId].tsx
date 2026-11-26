@@ -96,6 +96,12 @@ import {
 import PageJsonLd from "../../../../../components/page-json-ld";
 import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
+import IngameTipCard, { IngameTipCardTip } from "../../../../../components/ingame-tip-card";
+import { getIngameTips } from "../../../../../src/explorer/ingame-tips/ingame-tips";
+import {
+  filterIngameTipsForUnit,
+  isEngineerUnit,
+} from "../../../../../src/explorer/ingame-tips/ingame-tips-units";
 
 type AbilityWeaponLoadout = {
   ability: AbilitiesType;
@@ -137,6 +143,10 @@ interface UnitDetailProps {
   descriptions: Record<string, Record<string, string | null>>;
   /** Null when the unit has no formation data. */
   formationPreview: SquadFormationPreview | null;
+  /** Game tips relevant for the kind of unit (infantry, vehicles, ...). Empty when none. */
+  ingameTips: IngameTipCardTip[];
+  /** Picks the first tip shown - generated in getStaticProps, so hydration matches. */
+  ingameTipSeed: number;
 }
 
 const UnitCostGroup = ({
@@ -172,6 +182,8 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
   calculatedData,
   descriptions,
   formationPreview,
+  ingameTips,
+  ingameTipSeed,
 }) => {
   const { query, locale = "en" } = useRouter();
   const { t } = useTranslation(["explorer"]);
@@ -674,6 +686,12 @@ const UnitDetail: NextPage<UnitDetailProps> = ({
                   {/* Keyed by the unit, so the squad size / situation reset on unit navigation */}
                   <FormationCard key={`${raceId}-${unitId}`} preview={formationPreview} />
                 </Card>
+              )}
+              {/* Desktop only - on phones this column is above the stats, too prominent for a tip */}
+              {ingameTips?.length > 0 && (
+                <Box visibleFrom="md">
+                  <IngameTipCard tips={ingameTips} seed={ingameTipSeed ?? 0} mb={0} />
+                </Box>
               )}
             </Stack>
           </Grid.Col>
@@ -1573,13 +1591,31 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
   }
 
+  const calculatedData = createdCalculateValuesForUnits(
+    { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
+    unitId,
+  );
+
+  // Only the tips for this kind of unit (infantry, vehicles, ...), and only their id + text.
+  // getIngameTips never throws - null when the data tag has no tips file.
+  const ingameTips =
+    "resolvedSquad" in calculatedData && calculatedData.resolvedSquad
+      ? filterIngameTipsForUnit((await getIngameTips({ locale }))?.tips ?? [], {
+          unitType: calculatedData.resolvedSquad.unitType,
+          isEngineer: isEngineerUnit(
+            calculatedData.resolvedSquad.unitType,
+            calculatedData.abilities.map((ability) => ability.id),
+          ),
+        }).map(({ id, text }) => ({ id, text }))
+      : [];
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common", "explorer"])),
-      calculatedData: createdCalculateValuesForUnits(
-        { abilitiesData, sbpsData, ebpsData, weaponData, upgradesData },
-        unitId,
-      ),
+      calculatedData,
+      ingameTips,
+      // The page is never revalidated, so the tip is picked once per build.
+      ingameTipSeed: Math.floor(Math.random() * 1_000_000),
       descriptions: getUnitStatsCOH3Descriptions(locale),
       formationPreview,
     },

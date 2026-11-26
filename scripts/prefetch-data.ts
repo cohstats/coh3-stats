@@ -35,6 +35,8 @@ const DATA_FILES = [
   "fs-perks.json",
   "fs-technologies.json",
   "mp-maps.json",
+  // Missing in data tags older than its introduction - a 404 is logged as "missing", not a failure.
+  "ingame-tips.json",
 ];
 
 const CONCURRENCY = 3;

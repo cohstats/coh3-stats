@@ -93,5 +93,9 @@
   },
   "loading": "Ładowanie...",
   "error": "Błąd",
-  "notFound": "Nie znaleziono"
+  "notFound": "Nie znaleziono",
+  "ingameTips": {
+    "title": "Porada",
+    "next": "Następna porada"
+  }
 }
