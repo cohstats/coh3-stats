@@ -18,7 +18,16 @@ export class StatsPage extends BasePage {
     super(page);
   }
 
+  /** The analysis response of the last `navigate()`, see `hasStatsData`. */
+  private statsResponse: Promise<unknown> = Promise.resolve();
+
   async navigate(query = ""): Promise<void> {
+    // Armed before the navigation - the request can be done before the test gets to wait for it.
+    this.statsResponse = this.page
+      .waitForResponse((response) => response.url().includes("getAnalysisStatsHttp"), {
+        timeout: 60000,
+      })
+      .catch(() => null);
     await this.goto(`/stats/${this.kind === "game" ? "games" : "maps"}${query}`);
   }
 
@@ -106,6 +115,18 @@ export class StatsPage extends BasePage {
     await expect(this.gamesAnalyzed.or(this.noData).or(this.errorCard).first()).toBeVisible({
       timeout: 60000,
     });
+  }
+
+  /**
+   * Wait for the analysis request of the last `navigate()` to settle and tell whether the page has
+   * data to show. The "no data" state is also rendered for a moment before the request starts, so
+   * `waitForStats` alone cannot tell an empty period from a page which has not asked yet. A freshly
+   * added patch has no games for a while - the tests needing real data skip on `false`.
+   */
+  async hasStatsData(): Promise<boolean> {
+    await this.statsResponse;
+    await this.waitForStats();
+    return this.gamesAnalyzed.isVisible();
   }
 
   /** Wait for a query param to reach the url. */
