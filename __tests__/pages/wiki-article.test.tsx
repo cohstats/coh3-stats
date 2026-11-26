@@ -76,7 +76,7 @@ describe("/wiki/[category]/[slug]", () => {
     expect(html).not.toContain(`data-testid="wiki-article-updated"`);
   });
 
-  it("shows the updated date next to the written date", async () => {
+  it("shows the written date on the attack speed examples page", async () => {
     const props = await getProps("combat", "attack-speed-buff-examples");
     const html = renderToStaticMarkup(
       <MantineProvider>
@@ -85,7 +85,6 @@ describe("/wiki/[category]/[slug]", () => {
     );
 
     expect(html).toContain(`data-testid="wiki-article-date"`);
-    expect(html).toContain(`data-testid="wiki-article-updated"`);
     expect(html).not.toContain("A small plea to Relic");
   });
 

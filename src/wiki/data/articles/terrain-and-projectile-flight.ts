@@ -9,6 +9,7 @@ const article: WikiArticle = {
     "Hills don't stop shots but tiny fences do. How angle first, speed first and constant time projectiles fly, and the speed increment staircase.",
   authors: [{ name: "Tsuyara" }],
   date: "2026-07-05",
+  patch: "3.0.3",
   tags: ["terrain", "shot blockers", "artillery", "mortars", "projectiles"],
   order: 4,
   series: { id: "accuracy-scatter", part: 4 },

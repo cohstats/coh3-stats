@@ -4,17 +4,20 @@ const article: WikiArticle = {
   slug: "cover-micro-tips",
   category: "combat",
   group: "cover",
-  title: "Cover Micro Tips & the Problem with Cover",
+  title: "Cover Micro Tips",
   summary:
-    "Capturing from cover, spreading out fast, chasing retreating units, cover for vehicles, and why cover loses relevance in late game team games.",
-  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
+    "Capturing from cover, spreading out fast, chasing retreating units, cover for vehicles.",
+  authors: [
+    { name: "tightrope", url: "https://www.youtube.com/@tightropegaming" },
+    { name: "Tsuyara" },
+  ],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "micro", "retreat", "capture", "team games"],
   order: 5,
   series: { id: "cover", part: 5 },
   contents: `
-A set of practical cover tricks, and tightrope's view on how cover holds up in COH3.
+A set of practical cover tricks.
 
 [h2]Capture in cover[/h2]
 When capturing a point, you can sometimes send the squad partly into cover outside the capture circle. Depending on the squad's formation and the cover, this can work right away.
@@ -54,16 +57,6 @@ Vehicles and emplacements can't get the defensive multipliers from cover. But wo
 
 [img alt="Sandbags blocking an anti-tank shot aimed at a vehicle" caption="Sandbags blocked a scatter shot from landing on a 4x4."]/images/wiki/cover-micro-tips/vehicle-scatter-block.webp[/img]
 
-[h2]The problem with cover in COH3[/h2]
-This series has shown many times that units are often better spread out in the open than in cover. That is usually possible in 1v1. In team games, once the late game hits, the density of artillery fire covers most of the map with light cover craters, which makes spreading out hard.
-
-On top of that, heavy cover is worse against many more weapon types than in COH2, because cover now depends on the direction of the explosion, not the attacker. tightrope thinks this is a big reason for more blobbing in COH3: sitting in heavy cover in the late game is often a liability instead of a bonus.
-
-[img alt="A graph of cover relevance dropping over time" caption="Cover relevance over the course of a team game."]/images/wiki/cover-micro-tips/cover-relevance.webp[/img]
-
-Relic may be trying to fix this with the recent buffs to constructed defences (see [url=/wiki/combat/garrison-cover]Garrison cover[/url]). But that mostly helps the Wehrmacht, who have two good options. The USF fighting position is expensive for how flimsy it is, and the British don't have one at all. So at the time of the video, the cover system, one of the big selling points of Company of Heroes, lost much of its relevance after about 20 minutes in 4v4, the most popular mode.
-
-[note title="Patch 2.5.0" color="blue"]Relic's 2.5.0 balance update targeted exactly this: more durable cover that light vehicles can't crush, heavy cover that now works against tank guns and autocannons, longer cooldowns on late game off-map artillery, and tighter formations that make the open more dangerous. How much this fixes late game team games is still up for debate.[/note]
 `.trim(),
 };
 

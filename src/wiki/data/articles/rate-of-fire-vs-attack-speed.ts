@@ -9,6 +9,7 @@ const article: WikiArticle = {
     "CoH3 has two different modifiers that are both called rate of fire. One only shortens cooldown and reload, the other almost the whole firing cycle, and neither touches the burst.",
   authors: [{ name: "Tsuyara" }],
   date: "2026-06-01",
+  patch: "3.0.3",
   tags: ["rate of fire", "attack speed", "veterancy", "machine guns", "dps"],
   order: 2,
   series: { id: "firing-cycles", part: 2 },
@@ -27,7 +28,7 @@ It is solid on tank guns, which generally have a short 0-0.125s aim and a 0.875s
 [h2]Overall attack speed[/h2]
 The new modifier, introduced in patch 2.2. It modifies [b]fire aim time (not ready aim time), wind up, wind down, cooldown AND reload[/b]. So nearly the whole firing cycle.
 
-Sadly, it is ALSO often called "+rate of fire" in game, to make things confusing. Generally any unit reworked or added since 2.2 should use this one instead of the old one (for example the generalist medium tanks were reworked and now use attack speed). Except then they add something like the Siege Camp, which uses the old one for some reason, and is therefore useless on the Nebelwerfer: it has 0 cooldown and reload, its rate of fire is entirely wind up and wind down.
+Sadly, it is ALSO often called "+rate of fire" in game, to make things confusing. Generally any unit reworked or added since 2.2 should use this one instead of the old one. Except then they add something like the Siege Camp, which used the old one for some reason, and was therefore useless on the Nebelwerfer: it has 0 cooldown and reload, its rate of fire is entirely wind up and wind down.
 
 [h3]It doesn't affect the burst[/h3]
 Attack speed does [b]not[/b] affect the burst duration. It reduces the time between bursts, but the more time a unit already spends bursting, the less it helps. Machine guns in particular shoot for a long time with short breaks, so even +50% attack speed is only about [b]+17% DPS for a Vickers[/b].
@@ -37,17 +38,17 @@ Even +100% attack speed would give a Vickers only about +46% DPS. That is the ca
 [h3]+50% means half the time[/h3]
 Attack speed works the same way as rate of fire by reducing those durations, so +50% attack speed halves the time between shots or bursts. It still doesn't affect the static 1 tick waits, so a tiny bit less. That is more like [b]+100% DPS[/b] than +50%.
 
-A tip on the naming trap: because attack speed is really a [i]time[/i] modifier, a debuff of "-33% attack speed" stored as a 0.67 multiplier actually makes the unit shoot [i]faster[/i]. Even the developers have fallen into that one.
+A tip on the naming trap: because attack speed is really a [i]time[/i] modifier, a debuff of "-33% attack speed" stored as a 0.67 multiplier actually makes the unit shoot [i]faster[/i]. Even the developers have fallen into that one a few times now.
 
 [h2]Same wording, wildly different results[/h2]
 [h3]Example A: rate of fire often barely matters[/h3]
-Gurkha veterancy gives +25% and +15% rate of fire. Old style rate of fire on a rifle squad does very little:
+Gurkha veterancy gave +25% and +15% rate of fire. Old style rate of fire on a rifle squad does very little:
 
 [img alt="Gurkha DPS at vet 0 and with +25% +15% rate of fire" caption="Gurkha Rifles DPS by distance, vet 0 vs +25% and +15% rate of fire."]/images/wiki/rate-of-fire-vs-attack-speed/gurkha-veterancy-rate-of-fire.webp[/img]
 
-The same with a hypothetical +20% and +15% attack speed (they love to take 5% off):
+The same with its new +25% +15% attack speed:
 
-[img alt="Gurkha DPS with rate of fire vs a hypothetical attack speed buff" caption="+36% rate of fire vs a hypothetical +32% attack speed on Gurkha Rifles."]/images/wiki/rate-of-fire-vs-attack-speed/gurkha-veterancy-attack-speed.webp[/img]
+[img alt="Gurkha DPS with their old rate of fire vs their new attack speed buff" caption="old +36% rate of fire vs new +36% attack speed on Gurkha Rifles."]/images/wiki/rate-of-fire-vs-attack-speed/gurkha-veterancy-attack-speed.webp[/img]
 
 [h3]Example B: burst weapons scale poorly even with attack speed[/h3]
 [img alt="Vickers DPS with +50% attack speed" caption="Vickers machine gun team with +50% attack speed. For the Vickers +50% rate of fire is identical."]/images/wiki/rate-of-fire-vs-attack-speed/vickers-attack-speed.webp[/img]

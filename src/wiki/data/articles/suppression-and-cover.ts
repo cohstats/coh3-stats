@@ -6,8 +6,11 @@ const article: WikiArticle = {
   group: "cover",
   title: "Suppression and Cover",
   summary:
-    "How light, heavy and garrison cover reduce incoming suppression and speed up recovery, and how to use a nearby building to shake off suppression.",
-  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
+    "How light, heavy and garrison cover reduce incoming suppression, and how to use a nearby building to shake off suppression.",
+  authors: [
+    { name: "tightrope", url: "https://www.youtube.com/@tightropegaming" },
+    { name: "Tsuyara" },
+  ],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "suppression", "machine guns", "garrison", "micro"],
@@ -20,10 +23,11 @@ Most suppression comes from small arms fire, so cover has a big effect on how qu
 [table]
 [tr][th][/th][th]Light cover[/th][th]Heavy cover[/th][th]Garrison[/th][/tr]
 [tr][td]Incoming suppression[/td][td]0.5[/td][td]0.1[/td][td]0 (immune)[/td][/tr]
-[tr][td]Recovery rate[/td][td]2.5x[/td][td]5x[/td][td]500x[/td][/tr]
+[tr][td]Recovery rate[/td][td]1x[/td][td]1x*[/td][td]500x[/td][/tr]
 [/table]
+[note title="" color="blue"]*This is configured to be 5x but does not work as of 3.0.3.[/note]
 
-Light cover halves the suppression a unit receives and heavy cover reduces it by 90%. These reductions apply to [b]every weapon type that deals suppression[/b], including the few autocannons that have it. Since patch 2.5.0, direct-fire projectile weapons also have their suppression reduced by cover whenever the cover is between the target and the firing unit.
+Light cover halves the suppression a unit receives and heavy cover reduces it by 90%. These reductions apply to [b]every weapon type that deals suppression[/b], including the few autocannons that have it.
 
 [h2]Direction and the half of the squad rule[/h2]
 Like damage and accuracy, the cover must be [b]between the squad and the source of suppression[/b].
@@ -37,16 +41,10 @@ Unlike damage, only [b]half or more[/b] of the models need to be in cover, and t
 This is the other major difference from COH2, where a single model out of cover let the whole squad get suppressed easily.
 
 [h2]Recovery rate[/h2]
-All infantry have a suppression recovery rate of [b]0.008[/b]. It is multiplied by 2.5 in light cover and by 5 in heavy cover.
+All infantry have a suppression recovery rate of [b]0.008[/b].
 
-[img alt="Suppression recovery rate demonstration" caption="The default recovery rate is 0.008, light cover multiplies it by 2.5."]/images/wiki/suppression-and-cover/recovery-rate.webp[/img]
-
-The reduced incoming suppression together with the faster recovery is what lets a unit in heavy cover avoid getting suppressed by a single machine gun, or slows down the step from suppressed to pinned in light cover.
-
-[img alt="A squad behind heavy cover under machine gun fire" caption="Heavy cover: 90% less suppression and 5x the recovery."]/images/wiki/suppression-and-cover/heavy-cover-suppression.webp[/img]
-
-[h3]The biggest recovery bonuses[/h3]
-The cover multipliers are small next to two other bonuses. These are the cases where units become unsuppressed almost immediately:
+[h3]Recovery bonuses[/h3]
+These are the cases where units become unsuppressed almost immediately:
 [list]
 [*][b]Not being shot at[/b] for 10 seconds: a 50x recovery bonus.[/*]
 [*][b]Being inside a garrison[/b]: a 500x recovery multiplier, and garrisoned units are immune to suppression.[/*]
@@ -62,7 +60,7 @@ If a squad is suppressed and close to an empty building, right click it to go in
 [img alt="A suppressed squad entering a building" caption="Inside a garrison the recovery multiplier is 500x."]/images/wiki/suppression-and-cover/garrison-recovery.webp[/img]
 
 [h2]Point-blank range[/h2]
-Small arms, infantry LMGs and scoped rifles ignore the defensive bonuses of cover when the target is [b]10 range or closer[/b]. This is the point-blank mechanic, tightrope covers it in a separate video.
+Small arms, infantry LMGs and scoped rifles ignore the defensive bonuses of cover when the target is [b]10 range or closer[/b].
 `.trim(),
 };
 
