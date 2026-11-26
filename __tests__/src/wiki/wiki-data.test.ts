@@ -117,7 +117,11 @@ describe("wiki helpers", () => {
 
   it("builds the navigation with groups in order and hides empty categories", () => {
     const navigation = getWikiNavigation();
-    expect(navigation.map((category) => category.slug)).toEqual(["combat", "veterancy"]);
+    expect(navigation.map((category) => category.slug)).toEqual([
+      "combat",
+      "veterancy",
+      "economy",
+    ]);
 
     const combat = navigation.find((category) => category.slug === "combat");
     expect(combat?.groups.map((group) => group.id)).toEqual(["cover", "firing", "accuracy"]);
@@ -129,6 +133,14 @@ describe("wiki helpers", () => {
       "weapon-firing-cycle",
       "rate-of-fire-vs-attack-speed",
       "attack-speed-buff-examples",
+    ]);
+
+    const economy = navigation.find((category) => category.slug === "economy");
+    expect(economy?.groups.map((group) => group.id)).toEqual(["territory"]);
+    expect(economy?.groups[0].articles.map((article) => article.slug)).toEqual([
+      "territory-capture-rates",
+      "territory-capture-tactics",
+      "territory-capture-micro-tips",
     ]);
   });
 
