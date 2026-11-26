@@ -139,13 +139,10 @@ test.describe("Stats - game stats page", () => {
     const stats = new StatsPage(page, "game");
     // The page opens on "all" by default, the maps and game time charts are only for one mode.
     await stats.navigate("?mode=1v1");
-    await stats.waitForStats();
-
-    // Either there is data for the default patch, or the page says so - both are a rendered page,
-    // a blank one is not.
-    if (await stats.noData.isVisible()) {
-      test.skip(true, "No stats data for the default patch on the API right now");
-    }
+    test.skip(
+      !(await stats.hasStatsData()),
+      "No stats data for the default patch on the API right now",
+    );
 
     await expect(stats.gamesAnalyzed).toContainText(/Games analyzed [\d,.]+/);
 
@@ -168,11 +165,16 @@ test.describe("Stats - game stats page", () => {
     await stats.navigate();
     // Before the default dates are in the url the page still shows "no data" - wait them out.
     await stats.expectQuery("from", /^\d{4}/);
-    await stats.waitForStats();
+    // "All modes" renders its charts even for a period without games, a single mode does not.
+    const hasData = await stats.hasStatsData();
 
     await stats.modeOption("2 vs 2").click();
     await stats.expectQuery("mode", "2v2");
     await stats.waitForStats();
+    test.skip(
+      !hasData || (await stats.noData.isVisible()),
+      "No stats data for the default patch on the API right now",
+    );
 
     // The mode is applied client side on the already loaded analysis - what has to change is the
     // rendered chart titles.
@@ -399,11 +401,10 @@ test.describe("Stats - map stats page", () => {
   test("should render the map charts and the map picker", async ({ page }) => {
     const stats = new StatsPage(page, "map");
     await stats.navigate();
-    await stats.waitForStats();
-
-    if (await stats.noData.isVisible()) {
-      test.skip(true, "No map stats data for the default patch on the API right now");
-    }
+    test.skip(
+      !(await stats.hasStatsData()),
+      "No map stats data for the default patch on the API right now",
+    );
 
     await expect(stats.gamesAnalyzed).toContainText(/Games analyzed [\d,.]+/);
 
@@ -424,11 +425,10 @@ test.describe("Stats - map stats page", () => {
   test("should put the picked map into the url", async ({ page }) => {
     const stats = new StatsPage(page, "map");
     await stats.navigate();
-    await stats.waitForStats();
-
-    if (await stats.noData.isVisible()) {
-      test.skip(true, "No map stats data for the default patch on the API right now");
-    }
+    test.skip(
+      !(await stats.hasStatsData()),
+      "No map stats data for the default patch on the API right now",
+    );
 
     await stats.mapSelect.click();
     const option = stats.openOptions.nth(1);
@@ -445,15 +445,13 @@ test.describe("Stats - map stats page", () => {
     // on mount, which used to wipe every other param off a statically generated page.
     const stats = new StatsPage(page, "map");
     await stats.navigate("?mode=2v2&map=rural_castle_4p");
-    await stats.waitForStats();
+    const hasData = await stats.hasStatsData();
 
     await expect(stats.modeControl.locator("input[value='2v2']")).toBeChecked();
     await stats.expectQuery("mode", "2v2");
     await stats.expectQuery("map", "rural_castle_4p");
 
-    if (await stats.noData.isVisible()) {
-      test.skip(true, "No map stats data for the default patch on the API right now");
-    }
+    test.skip(!hasData, "No map stats data for the default patch on the API right now");
     await expect(stats.mapSelect).toHaveValue(/.+/);
   });
 
@@ -464,12 +462,10 @@ test.describe("Stats - map stats page", () => {
     await stats.navigate("?mode=2v2&map=rural_castle_4p");
     await stats.expectQuery("from", /^\d{4}/);
     await expect(stats.modeControl.locator("input[value='2v2']")).toBeChecked();
-    // "No data" is also shown for a moment before the request starts - wait for the real data.
-    const hasData = await stats.gamesAnalyzed
-      .waitFor({ timeout: 60000 })
-      .then(() => true)
-      .catch(() => false);
-    test.skip(!hasData, "No map stats data for the default patch on the API right now");
+    test.skip(
+      !(await stats.hasStatsData()),
+      "No map stats data for the default patch on the API right now",
+    );
 
     for (const [label, mode] of [
       ["1 vs 1", "1v1"],
@@ -486,11 +482,10 @@ test.describe("Stats - map stats page", () => {
   test("should show the time series by weeks and switch them together", async ({ page }) => {
     const stats = new StatsPage(page, "map");
     await stats.navigate();
-    await stats.waitForStats();
-
-    if (await stats.noData.isVisible()) {
-      test.skip(true, "No map stats data for the default patch on the API right now");
-    }
+    test.skip(
+      !(await stats.hasStatsData()),
+      "No map stats data for the default patch on the API right now",
+    );
 
     await expect(page.getByTestId("stats-games-amount-over-time")).toContainText(
       "Amount of games",
