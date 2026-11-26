@@ -1,11 +1,18 @@
 // Types of the wiki, see `src/wiki/README.md` for how to add an article.
 
-export const WIKI_CATEGORY_SLUGS = ["basics", "combat", "veterancy", "economy", "site"] as const;
+export const WIKI_CATEGORY_SLUGS = [
+  "basics",
+  "combat",
+  "veterancy",
+  "economy",
+  "ranked",
+  "site",
+] as const;
 
 export type WikiCategorySlug = (typeof WIKI_CATEGORY_SLUGS)[number];
 
 /** Icons are picked in `screens/wiki/components/wiki-category-icon.tsx`, src stays React free. */
-export type WikiCategoryIcon = "book" | "crosshair" | "medal" | "coins" | "chart";
+export type WikiCategoryIcon = "book" | "crosshair" | "medal" | "coins" | "trophy" | "chart";
 
 export type WikiGroup = {
   id: string;

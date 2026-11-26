@@ -37,7 +37,6 @@
     "news": "Noticias",
     "other": "Otros",
     "otherMenu": {
-      "tiers": "Rangos de clasificación",
       "openData": "Datos Abiertos",
       "playerExport": "API para exportar"
     },

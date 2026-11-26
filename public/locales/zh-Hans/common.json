@@ -37,7 +37,6 @@
     "news": "新闻",
     "other": "其他",
     "otherMenu": {
-      "tiers": "排名等级",
       "openData": "开放数据",
       "playerExport": "玩家导出 API"
     },

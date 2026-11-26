@@ -121,6 +121,7 @@ describe("wiki helpers", () => {
       "combat",
       "veterancy",
       "economy",
+      "ranked",
     ]);
 
     const combat = navigation.find((category) => category.slug === "combat");

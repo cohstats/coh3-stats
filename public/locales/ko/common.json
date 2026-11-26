@@ -37,7 +37,6 @@
     "news": "뉴스",
     "other": "기타",
     "otherMenu": {
-      "tiers": "랭킹 티어",
       "openData": "오픈 데이터",
       "playerExport": "플레이어 내보내기 API"
     },

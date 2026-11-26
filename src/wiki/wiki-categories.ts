@@ -38,6 +38,13 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
     groups: [{ id: "territory", title: "Territory" }],
   },
   {
+    slug: "ranked",
+    title: "Ranked Play",
+    description: "How the ranked ladder works: leagues, tiers, ELO and the rules around them.",
+    icon: "trophy",
+    color: "orange",
+  },
+  {
     slug: "site",
     title: "Using COH3 Stats",
     description: "How the numbers on this site are calculated.",

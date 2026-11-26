@@ -9,12 +9,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
-import {
-  getOpenDataRoute,
-  getPlayerExportRoute,
-  getRankingTiersRoute,
-  getRelicApiRoute,
-} from "../../../src/routes";
+import { getOpenDataRoute, getPlayerExportRoute, getRelicApiRoute } from "../../../src/routes";
 import React from "react";
 import {
   IconActivity,
@@ -22,7 +17,6 @@ import {
   IconBarrierBlock,
   IconChevronDown,
   IconDatabaseShare,
-  IconAward,
   IconUsers,
   IconVideo,
 } from "@tabler/icons-react";
@@ -48,12 +42,6 @@ const OtherMenu = ({
           </Accordion.Control>
           <Accordion.Panel>
             <Stack>
-              <Group gap={"xs"}>
-                <IconAward size={16} />
-                <Anchor component={Link} href={getRankingTiersRoute()} onClick={close}>
-                  {t("mainMenu.otherMenu.tiers")}
-                </Anchor>
-              </Group>
               <Group gap={"xs"}>
                 <IconDatabaseShare size={16} />
                 <Anchor component={Link} href={getOpenDataRoute()} onClick={close}>
@@ -97,12 +85,6 @@ const OtherMenu = ({
         </HoverCard.Target>
         <HoverCard.Dropdown style={{ textAlign: "left", overflow: "hidden" }}>
           <Stack gap={"xs"}>
-            <Group gap={"xs"}>
-              <IconAward size={16} />
-              <Anchor component={Link} href={getRankingTiersRoute()}>
-                {t("mainMenu.otherMenu.tiers")}
-              </Anchor>
-            </Group>
             <Group gap={"xs"}>
               <IconVideo size={16} />
               <Anchor component={Link} href={"https://cohdb.com"} target={"_blank"}>

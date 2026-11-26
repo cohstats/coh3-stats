@@ -37,7 +37,6 @@
     "news": "Actualités",
     "other": "Autres",
     "otherMenu": {
-      "tiers": "Paliers de classement",
       "openData": "Données ouvertes",
       "playerExport": "API d'export des joueurs"
     },
