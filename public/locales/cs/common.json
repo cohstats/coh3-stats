@@ -93,5 +93,9 @@
   },
   "loading": "Načítání...",
   "error": "Chyba",
-  "notFound": "Nenalezeno"
+  "notFound": "Nenalezeno",
+  "ingameTips": {
+    "title": "Herní tip",
+    "next": "Další tip"
+  }
 }

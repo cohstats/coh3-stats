@@ -93,5 +93,9 @@
   },
   "loading": "Chargement...",
   "error": "Erreur",
-  "notFound": "Introuvable"
+  "notFound": "Introuvable",
+  "ingameTips": {
+    "title": "Astuce de jeu",
+    "next": "Astuce suivante"
+  }
 }
