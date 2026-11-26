@@ -936,6 +936,12 @@ export const AbilityStateTreeWeaponMappings: AbilityStateTreeWeaponMapping[] = [
     numShots: 1,
   },
   {
+    abilityId: "plunging_fire_uk",
+    stateTreePath: ["ability_bag", "squad_tree"],
+    stateTree: "vickers_plunging_fire_uk",
+    weaponIds: ["30cal_hmg_plunging_fire_uk"],
+  },
+  {
     abilityId: "barrage_81mm_mortar_uk",
     stateTreePath: [
       "ability_bag",

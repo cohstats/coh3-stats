@@ -9,6 +9,7 @@ const article: WikiArticle = {
     "Every shot in CoH3 goes through aim time, wind up, burst, wind down and cooldown or reload. Here is what each step does and why the 8 ticks per second matter.",
   authors: [{ name: "Tsuyara" }],
   date: "2026-06-01",
+  patch: "3.0.3",
   tags: ["rate of fire", "aim time", "cooldown", "reload", "dps"],
   order: 1,
   series: { id: "firing-cycles", part: 1 },
@@ -19,7 +20,8 @@ Rate of fire and all its chaos, explained for those insane enough to survive its
 [list]
 [*]A unit's firing cycle is made up of [b]aim time → wind up → burst → wind down → cooldown/reload[/b].[/*]
 [*][b]+Rate of fire[/b] modifies only cooldown and reload.[/*]
-[*][b]Attack speed[/b] modifies aim time (not the first shot one), wind up, wind down, cooldown and reload.[/*]
+[*][b]Attack speed[/b] modifies repeat aim time (not the first shot one), wind up, wind down, cooldown and reload.[/*]
+[*]Attack speed is universally strong on single shot weapons, but does little for weapons with long [b]bursts[/b].[/*]
 [*]Attack speed is sometimes called attack speed and sometimes called rate of fire, to make everything confusing.[/*]
 [*]Because of all this, "+50% rate of fire" can mean anything from "barely noticeable" to "nearly double DPS".[/*]
 [/list]
@@ -61,10 +63,10 @@ The game runs at [b]8 ticks per second[/b] and most things only happen on a tick
 
 Case in point, the [b]Crusader AA[/b]: it has 0 aim, wind up and wind down, and a 0.25s cooldown. That would in theory give it 4 shots a second, but because of the 1 tick wait and the 1 tick of shooting, a cycle takes 0.5s, so 2 shots per second. That is how it is balanced, but it is good to know when doing the maths!
 
-Because the cooldown is so short, its veterancy +20% rate of fire doesn't change the time between shots at all. It only reduces the cooldown to 0.2s, which is not enough to save a tick. It still affects its reload as normal though.
+Because the cooldown is so short, its old veterancy +20% rate of fire didn't change the time between shots at all. It only reduced the cooldown to 0.2s, which is not enough to save a tick. It still affected its reload as normal though.
 
 [h2]One more cursed detail: idle animations[/h2]
-Infantry will often play random animations while waiting for the cooldown and similar. These can delay their next shot a lot. They don't leave cover, but they play a look around (or similar) animation, probably to make combat more fun to watch. Team weapons and vehicles are not affected. There is no good way to account for this in DPS calculations, so keep it in mind when the real fight looks slower than the numbers.
+Infantry will often play random animations while waiting for the cooldown and similar. These can delay their next shot a lot. They don't leave cover, but they play a look around (or similar) animation, probably to make combat more fun to watch. Team weapons and vehicles are not affected. Working on a way for the dps calculator to account for this.
 
 Next: how the two "rate of fire" modifiers change this cycle.
 `.trim(),

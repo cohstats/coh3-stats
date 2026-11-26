@@ -8,6 +8,7 @@ const article: WikiArticle = {
     "Quick maths on veterancy: unit value, experience from damage, kills and squad wipes, the veterancy and catch up bonuses, and experience from taking damage.",
   authors: [{ name: "Tsuyara" }],
   date: "2026-11-11",
+  patch: "3.0.3",
   tags: ["veterancy", "experience", "xp", "unit value"],
   order: 1,
   contents: `
@@ -65,11 +66,11 @@ Team weapons are a hot mess, but generally use [b]50 MP per crew member[/b]. So 
 [h2]Experience from taking damage[/h2]
 Taking damage gives a third of what the attacker gets for doing the damage, [b]without[/b] the kill bonus. It uses the defender's value:
 [code]experience = (damage / max HP) × value × 0.5[/code]
-A sniper killing an AT gun crew member gets its 150 experience, while the team weapon receives 25. Not a lot, really.
+A sniper killing an AT gun crew member gets its 150 experience, while the team weapon receives 25.
 
 Relic supposedly changed the received damage modifier from 0.75 to 0.9. That did nothing, the modifier seems to be entirely unused.
 
-And that's basically how veterancy works. Glorp.
+And that's basically how veterancy works. [b]Glorp.[/b]
 `.trim(),
 };
 

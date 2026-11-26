@@ -7,7 +7,10 @@ const article: WikiArticle = {
   title: "Garrison Cover & Damage All In Hold",
   summary:
     "How garrison cover differs from light and heavy cover, where to aim at a building, the damage all in hold mechanic and the fortified position bonus.",
-  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
+  authors: [
+    { name: "tightrope", url: "https://www.youtube.com/@tightropegaming" },
+    { name: "Tsuyara" },
+  ],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "garrison", "buildings", "bunkers", "damage all in hold", "flamethrowers"],
@@ -25,7 +28,8 @@ The full table for every weapon type is in [url=/wiki/combat/cover-vs-weapon-typ
 [*][b]Autocannons:[/b] get full accuracy against garrisons, but garrisons still protect far better than heavy cover. Probably because garrison cover reduces the damage of accuracy hits, and the models are spread out more.[/*]
 [*][b]Artillery:[/b] damage is only reduced by 25%.[/*]
 [*][b]Grenades:[/b] no damage reduction at all.[/*]
-[*][b]Grenade launchers and flamethrowers:[/b] a 50% damage bonus.[/*]
+[*][b]Grenade launchers:[/b] a 33% damage bonus.[/*]
+[*][b]Flamethrowers:[/b] a 50% damage bonus.[/*]
 [*][b]Mines:[/b] damage is reduced by 50%.[/*]
 [/list]
 

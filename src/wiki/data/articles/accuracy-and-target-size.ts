@@ -9,6 +9,7 @@ const article: WikiArticle = {
     "Accuracy is a single roll multiplied by the target size, and a successful roll always hits. How accuracy modifiers stack and how incremental accuracy makes machine guns shred blobs.",
   authors: [{ name: "Tsuyara" }],
   date: "2026-07-05",
+  patch: "3.0.3",
   tags: ["accuracy", "target size", "incremental accuracy", "modifiers", "cover"],
   order: 1,
   series: { id: "accuracy-scatter", part: 1 },
@@ -37,7 +38,7 @@ Artillery does not use accuracy. Weapons that have the artillery flag never trac
 [h2]Accuracy modifiers[/h2]
 Modifiers are also very simple. They are all [b]multiplicative[/b], either 1+x or 1-x:
 [code]+20% and +20% accuracy  → 1.2 × 1.2 = 1.44 → +44% accuracy
--20% and -20% received accuracy → 0.8 × 0.8 = 0.64 → -36% accuracy[/code]
++20% and +20% harder to hit → 0.8 × 0.8 = 0.64 → -36% accuracy[/code]
 
 For infantry, ignoring edge cases of going over a 100% chance to hit (which is worthless), this means that +20% accuracy from any source translates to roughly [b]+20% more DPS[/b] than you had before the buff, regardless of any other modifiers you already have. In the same way, -50% from shooting into cover is roughly -50% DPS no matter what accuracy you started with, unless it was above 100%.
 
@@ -56,7 +57,7 @@ It looks for every model around the target within the [b]incremental target area
 
 [note title="Don't forget the -1" color="yellow"]When doing the maths, subtract 1 from the number of models. Two Grenadier squads are 12 models, but the initial target does not count for incremental accuracy, so the BAR gets 1.02^11.[/note]
 
-Next: where an accurate shot actually lands on a vehicle, how armour facing works, and weapons that spread their damage.
+Next: Weapons that spread their damage.
 `.trim(),
 };
 

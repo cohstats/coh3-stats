@@ -7,7 +7,10 @@ const article: WikiArticle = {
   title: "Cover Basics: Open Ground, Light & Heavy Cover",
   summary:
     "How cover works in COH3: the cover shield, the half of the squad rule, directional cover, and what open ground, light cover and heavy cover actually do.",
-  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
+  authors: [
+    { name: "tightrope", url: "https://www.youtube.com/@tightropegaming" },
+    { name: "Tsuyara" },
+  ],
   date: "2026-03-14",
   updated: "2026-11-25",
   tags: ["cover", "light cover", "heavy cover", "open ground", "aoe"],
@@ -16,12 +19,12 @@ const article: WikiArticle = {
   contents: `
 [previewyoutube=5dIMu3ww2DA;full][/previewyoutube]
 
-This series is a written version of tightrope's video [url=https://www.youtube.com/watch?v=5dIMu3ww2DA]How cover works in COH3 and the best counters to it[/url]. It explains the mechanics behind cover, the three cover types, which weapons perform best and worst against cover, and a set of micro tricks to use and counter it.
+This series is a written version of tightrope's video [url=https://www.youtube.com/watch?v=5dIMu3ww2DA]How cover works in COH3 and the best counters to it[/url]. Edited and updated by Tsuyara. It explains the mechanics behind cover, the three cover types, which weapons perform best and worst against cover, and a set of micro tricks to use and counter it.
 
 [note title="TL;DR"]
 [list]
 [*]Half or more of a squad's models must be in cover for the shield to show, but only the models actually in cover are protected.[/*]
-[*]Against explosives like grenades and artillery, cover only works if it is between the unit and the [b]explosion[/b]. Since patch 2.5.0, direct-fire guns check the shooter instead.[/*]
+[*]Against arcing explosives like grenades and artillery, cover only works if it is between the unit and the [b]explosion[/b].[/*]
 [*]Light cover makes infantry harder to hit and resist suppression, but does nothing against AoE.[/*]
 [*]Heavy cover adds a 50% damage reduction on top.[/*]
 [*]Against AoE weapons, spread out in the open is often better than clumped in cover.[/*]
@@ -51,16 +54,16 @@ Most cover is [b]directional[/b]: it has to be between your unit and the source 
 
 Some light cover is [b]omnidirectional[/b] and protects no matter where the attack comes from, like the craters left by heavy artillery. There is no known omnidirectional heavy cover in COH3.
 
-[h2]Explosion position, not shooter position[/h2]
-If an explosive, like a grenade, is thrown over cover and explodes on your side, the cover offers no protection because it is not between the explosion and the squad.
+[h2]When does cover count?[/h2]
+If an arcing explosive, like a grenade, is thrown over cover and explodes on your side, the cover offers no protection because it is not between the explosion and the squad. Direct fire explosives, like tank guns, instead calculate it from the shooter position.
 
-[img alt="A soldier behind sandbags with the cover marked between him and the explosion" caption="The cover has to sit between the explosion and the model."]/images/wiki/cover-basics/cover-needed-here.webp[/img]
+[img alt="A soldier behind sandbags with the cover marked between him and the explosion" caption="Against grenades, the cover has to sit between the explosion and the model."]/images/wiki/cover-basics/cover-needed-here.webp[/img]
 
 This is the main difference from COH2, where cover was based on the position of the unit that launched the attack, not the explosion itself.
 
-[note title="Patch 2.5.0" color="blue"]Direct-fire projectile weapons (tank guns, autocannons, AA guns, anti-tank rifles) now use the position of the [b]firing unit[/b]: if the cover is between the target and the shooter, its damage reduction applies even when the shell explodes behind the cover. Grenades, mortars, artillery and other lobbed weapons still use the explosion position.[/note]
+[note title="Before Patch 2.5.0" color="blue"]Direct-fire projectile weapons (tank guns, autocannons, AA guns, anti-tank rifles) used to use the position of the [b]explosion[/b]: if the cover is between the target and the shooter, its damage reduction did not apply when the shell exploded behind the cover. Grenades, mortars, artillery and other lobbed weapons still use the explosion position.[/note]
 
-[img alt="COH2 tooltip comparison showing unit position versus explosion position" caption="In COH2 the attacker's position decided the cover, in COH3 it is the explosion."]/images/wiki/cover-basics/explosion-position.webp[/img]
+[img alt="COH2 tooltip comparison showing unit position versus explosion position" caption="In COH2 the attacker's position decided the cover, in COH3 it sometimes is the explosion"]/images/wiki/cover-basics/explosion-position.webp[/img]
 
 [h2]Open ground[/h2]
 Open ground is the absence of cover. All weapon types do [b]100% damage[/b] to units in the open.
@@ -71,8 +74,6 @@ The advantage of open ground is that the squad stays in its default formation wi
 
 This is why open ground is often [b]better than cover against AoE weapons[/b].
 
-[note title="Patch 2.5.0" color="blue"]Most squad formations were tightened by 0.5 to 1 metre, and small arms now focus on the closest model in front of them. Squads in the open are a bit more vulnerable to AoE and lose models faster, so open ground is less of a safe default than before.[/note]
-
 [h2]Light cover[/h2]
 Light cover comes from vegetation, wooden objects like fences and crates, and craters, both the ones that start on the map and those made by artillery during the match.
 
@@ -82,8 +83,6 @@ Light cover makes infantry [b]harder to hit[/b] and [b]resistant to suppression[
 Heavy cover comes from rocks and rubble, concrete or stone walls, vehicles and wrecks, and player built defences like sandbags and tank traps.
 
 Heavy cover gives the same harder to hit bonus as light cover, a higher suppression resistance, and a [b]50% damage reduction[/b].
-
-Since patch 2.5.0 cover is also harder to destroy: heavy cover objects have 35 armour (up from 25) and standardised health, light cover has a minimum of 200 health, most light vehicles only have light crush, and flattened building ruins more consistently give heavy cover.
 
 [img alt="Light cover and heavy cover tooltips side by side" caption="Heavy cover adds the damage reduction and more suppression resistance."]/images/wiki/cover-basics/light-vs-heavy-tooltip.webp[/img]
 

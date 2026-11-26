@@ -9,6 +9,7 @@ const article: WikiArticle = {
     "What happens when a projectile misses: the scatter area, its cap, the offset behind the target, and why you should ground attack in front of the spot you want to hit.",
   authors: [{ name: "Tsuyara" }],
   date: "2026-07-05",
+  patch: "3.0.3",
   tags: ["scatter", "artillery", "ground attack", "offset", "modifiers"],
   order: 3,
   series: { id: "accuracy-scatter", part: 3 },
@@ -25,14 +26,12 @@ Notably, scatter is not centred on the middle of the hitbox. It often scatters a
 [img alt="Scatter area next to a tank" caption="The scatter area is placed around the side of the target facing the shooter."]/images/wiki/scatter/scatter-facing-side.webp[/img]
 
 [h2]Scatter modifiers[/h2]
-Just like accuracy, every scatter modifier is multiplicative with everything else. Because of the cap, they often only affect the side to side scatter, since the forward/back scatter hits the cap regardless.
-
-[note title="Patch 2.5"]Since 2.5, scatter modifiers can also affect the forward/backward scatter.[/note]
+Just like accuracy, every scatter modifier is multiplicative with everything else. Because of the cap, fog of war multipliers specifically often only affect the side to side scatter, since the forward/back scatter hits the cap regardless.
 
 [img alt="Scatter area around a tank" caption="Scatter area of shots at a tank."]/images/wiki/scatter/scatter-area.webp[/img]
 
 [h2]Scatter offset and overshooting[/h2]
-A lot of scatter has an [b]offset[/b]: instead of being centred on the target the weapon picked, it is centred [b]behind[/b] it. This helps more shots hit vehicles, because vehicles have hitboxes. It is also why you will often want to ground attack behind targets rather than on them.
+A lot of scatter has an [b]offset[/b]: instead of being centred on the target the weapon picked, it is centred [b]behind[/b] it. This helps more shots hit vehicles, because vehicles have hitboxes. It is also why you will often want to ground attack behind vehicles rather than on them.
 
 Against infantry this usually lowers your damage. It can help hit targets moving away from you, but hurts against stationary ones or ones moving towards you.
 
