@@ -35,6 +35,7 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
     description: "Manpower, munitions, fuel and how income works.",
     icon: "coins",
     color: "green",
+    groups: [{ id: "territory", title: "Territory" }],
   },
   {
     slug: "site",
@@ -49,6 +50,7 @@ export const WIKI_SERIES: WikiSeries[] = [
   { id: "firing-cycles", title: "Rate of fire & attack speed deep dive" },
   { id: "accuracy-scatter", title: "Accuracy & scatter explained" },
   { id: "cover", title: "How cover works" },
+  { id: "territory-capture", title: "Capturing territory like a pro" },
 ];
 
 export const isWikiCategory = (value: unknown): value is WikiCategorySlug =>
