@@ -7,6 +7,7 @@ import { useTranslation } from "next-i18next/pages";
 import { Group, SimpleGrid, Stack, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconBulb } from "@tabler/icons-react";
 import { WikiNavCategory } from "../../src/wiki/get-wiki";
+import { WIKI_TIPS_CATEGORY } from "../../src/wiki/tips/wiki-tips";
 import { getWikiRoute } from "../../src/routes";
 import { createPageSEO } from "../../src/seo-utils";
 import { WikiLayout } from "./components/wiki-layout";
@@ -30,6 +31,9 @@ const WikiCategoryPage: NextPage<WikiCategoryPageProps> = ({
   const { locale = "en" } = useRouter();
   const category = navigation.find((c) => c.slug === categorySlug);
   if (!category) return null;
+  // The tip pages show their tip count. Their reading time would only cover the intro, so
+  // without the counts (the tips data couldn't be downloaded) they show nothing.
+  const isTipsCategory = category.slug === WIKI_TIPS_CATEGORY;
 
   const seoProps = createPageSEO(t, "wiki", getWikiRoute(category.slug), locale);
   const title = `${category.title} - ${t("title")}`;
@@ -81,11 +85,13 @@ const WikiCategoryPage: NextPage<WikiCategoryPageProps> = ({
                     key={article.slug}
                     article={article}
                     minutesLabel={
-                      tipCounts
-                        ? t("tipCount", { count: tipCounts[article.slug] ?? 0 })
+                      isTipsCategory
+                        ? tipCounts
+                          ? t("tipCount", { count: tipCounts[article.slug] ?? 0 })
+                          : undefined
                         : t("minutesRead", { count: article.readingMinutes })
                     }
-                    metaIcon={tipCounts ? <IconBulb size={14} /> : undefined}
+                    metaIcon={isTipsCategory ? <IconBulb size={14} /> : undefined}
                     partLabel={
                       article.seriesPart ? t("part", { part: article.seriesPart }) : undefined
                     }

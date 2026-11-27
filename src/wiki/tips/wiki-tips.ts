@@ -206,7 +206,13 @@ export const getWikiTipCategoryLabel = (category: string): string =>
 export const WIKI_TIPS_MORE_LABEL = "More Tips";
 const WIKI_TIPS_MORE_ID = "more-tips";
 
-export type WikiTip = Pick<IngameTip, "id" | "text">;
+export type WikiTip = Pick<IngameTip, "id" | "text"> & {
+  /**
+   * Ids of the tips left out for having the same text, so their links (`getWikiTipHref`) still
+   * land on this tip. Only set when there are some.
+   */
+  aliases?: string[];
+};
 
 export type WikiTipSection = {
   /** The heading id, also used by the "On this page" list. */
@@ -230,18 +236,24 @@ const toSectionId = (label: string) =>
  * The tips of a page, split into sections by their `category`. The biggest sections go first, the
  * categories with a single tip are put together in "More Tips" at the end. Inside a section the
  * tips keep the numbering of the game (`tipcover2` before `tipcover10`). A tip with the same text
- * as one before it (the game has a few) is left out.
+ * as one before it (the game has a few) is left out, its id is kept as an alias of that tip.
  */
 export const buildWikiTipSections = (tips: IngameTip[], pageSlug: string): WikiTipSection[] => {
-  const seenTexts = new Set<string>();
+  const tipByText = new Map<string, IngameTip>();
+  const aliases = new Map<string, string[]>();
   const byCategory = new Map<string, IngameTip[]>();
 
   for (const tip of tips) {
     if (tip.gameMode !== null && tip.gameMode !== FINAL_STAND_TIPS_GAME_MODE) continue;
     if (getWikiTipPageSlug(tip) !== pageSlug) continue;
     const text = tip.text.trim();
-    if (!text || seenTexts.has(text)) continue;
-    seenTexts.add(text);
+    if (!text) continue;
+    const kept = tipByText.get(text);
+    if (kept) {
+      aliases.set(kept.id, [...(aliases.get(kept.id) ?? []), tip.id]);
+      continue;
+    }
+    tipByText.set(text, tip);
 
     const label = getWikiTipCategoryLabel(tip.category);
     if (!byCategory.has(label)) byCategory.set(label, []);
@@ -249,7 +261,11 @@ export const buildWikiTipSections = (tips: IngameTip[], pageSlug: string): WikiT
   }
 
   const toWikiTips = (list: IngameTip[]): WikiTip[] =>
-    [...list].sort((a, b) => naturalCompare(a.id, b.id)).map(({ id, text }) => ({ id, text }));
+    [...list]
+      .sort((a, b) => naturalCompare(a.id, b.id))
+      .map(({ id, text }) =>
+        aliases.has(id) ? { id, text, aliases: aliases.get(id) } : { id, text },
+      );
 
   const sections: WikiTipSection[] = [];
   const singles: IngameTip[] = [];

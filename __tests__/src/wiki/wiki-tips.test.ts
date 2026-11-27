@@ -118,6 +118,12 @@ describe("wiki tips", () => {
       ["command-groups", 2],
       ["command-card", 2],
     ]);
+    // The link of the left out tip still has a target on the page.
+    expect(sections[1].tips).toContainEqual({
+      id: "tipcommandcard1",
+      text: "Same",
+      aliases: ["tipcommandcard3"],
+    });
   });
 
   it("counts the tips of every page", () => {

@@ -19,6 +19,14 @@ export const WikiTipsList = ({ sections }: { sections: WikiTipSection[] }) => (
               className={classes.tip}
               data-testid="wiki-tip"
             >
+              {/* The links to the tips left out for the same text land here too. */}
+              {tip.aliases?.map((alias) => (
+                <span
+                  key={alias}
+                  id={getWikiTipAnchor({ id: alias })}
+                  className={classes.tipAlias}
+                />
+              ))}
               <IconBulb size={18} stroke={1.75} className={classes.tipIcon} aria-hidden />
               <span>{tip.text}</span>
             </li>

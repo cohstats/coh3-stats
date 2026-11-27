@@ -324,8 +324,21 @@ h3.heading {
   }
 }
 
-.tip:target {
+.tip:target,
+.tip:has(.tipAlias:target) {
   background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.12));
+}
+
+/* An empty anchor at the top of a tip, for the ids of the tips with the same text. */
+.tipAlias {
+  width: 0;
+  scroll-margin-top: 80px;
+}
+
+@media (min-width: 64em) and (max-width: 108em) {
+  .tipAlias {
+    scroll-margin-top: 120px;
+  }
 }
 
 .tipIcon {
