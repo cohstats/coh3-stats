@@ -118,11 +118,17 @@ describe("wiki helpers", () => {
   it("builds the navigation with groups in order and hides empty categories", () => {
     const navigation = getWikiNavigation();
     expect(navigation.map((category) => category.slug)).toEqual([
+      "tips",
       "combat",
       "veterancy",
       "economy",
       "multiplayer",
     ]);
+
+    // Only the tips start closed in the sidebar of the wiki home.
+    expect(
+      navigation.filter((category) => category.collapsed).map((category) => category.slug),
+    ).toEqual(["tips"]);
 
     const combat = navigation.find((category) => category.slug === "combat");
     expect(combat?.groups.map((group) => group.id)).toEqual(["cover", "firing", "accuracy"]);

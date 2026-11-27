@@ -67,6 +67,19 @@ test.describe("Wiki", () => {
     await expect(page.locator("#constant-time")).toBeInViewport();
   });
 
+  test("should list the game tips by topic", async ({ page }) => {
+    await navigateAndWait(page, "/wiki/tips");
+
+    await expect(page.locator("h1").last()).toHaveText("Game Tips");
+    await page.getByTestId("wiki-article-card-combat").click();
+
+    await expect(page).toHaveURL(/\/wiki\/tips\/combat$/);
+    await expect(page.locator("h1").last()).toHaveText("Combat Tips");
+    await expect(page.getByTestId("wiki-tips-section-cover")).toBeVisible();
+    expect(await page.getByTestId("wiki-tip").count()).toBeGreaterThan(10);
+    await expect(page.getByTestId("wiki-tips-unavailable")).toHaveCount(0);
+  });
+
   test("should be reachable from the main menu", async ({ page }) => {
     await page.setViewportSize({ width: 1600, height: 900 });
     await navigateAndWait(page, "/");

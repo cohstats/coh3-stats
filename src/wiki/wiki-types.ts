@@ -2,6 +2,7 @@
 
 export const WIKI_CATEGORY_SLUGS = [
   "basics",
+  "tips",
   "combat",
   "veterancy",
   "economy",
@@ -12,7 +13,8 @@ export const WIKI_CATEGORY_SLUGS = [
 export type WikiCategorySlug = (typeof WIKI_CATEGORY_SLUGS)[number];
 
 /** Icons are picked in `screens/wiki/components/wiki-category-icon.tsx`, src stays React free. */
-export type WikiCategoryIcon = "book" | "crosshair" | "medal" | "coins" | "trophy" | "chart";
+export type WikiCategoryIcon =
+  "book" | "bulb" | "crosshair" | "medal" | "coins" | "trophy" | "chart";
 
 export type WikiGroup = {
   id: string;
@@ -27,6 +29,8 @@ export type WikiCategory = {
   color: string;
   /** Sub-groups shown in the sidebar, in this order. Articles without a group go last. */
   groups?: WikiGroup[];
+  /** Closed in the sidebar of the wiki home, the other categories start open there. */
+  collapsed?: boolean;
 };
 
 /** Articles split from one long post, shown as "Part x of y" with prev/next links. */

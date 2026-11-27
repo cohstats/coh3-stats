@@ -10,12 +10,15 @@ export const WikiArticleCard = ({
   article,
   minutesLabel,
   partLabel,
+  metaIcon = <IconClock size={14} />,
 }: {
   article: WikiArticleLink;
-  /** "5 min read" */
-  minutesLabel: string;
+  /** "5 min read", nothing is shown without it. */
+  minutesLabel?: string;
   /** "Part 2" when the article belongs to a series. */
   partLabel?: string;
+  /** The icon before `minutesLabel`, a clock by default. */
+  metaIcon?: React.ReactNode;
 }) => (
   <Card
     component={Link}
@@ -37,10 +40,12 @@ export const WikiArticleCard = ({
           {partLabel}
         </Badge>
       )}
-      <Group gap={4} c="dimmed">
-        <IconClock size={14} />
-        <Text size="xs">{minutesLabel}</Text>
-      </Group>
+      {minutesLabel && (
+        <Group gap={4} c="dimmed">
+          {metaIcon}
+          <Text size="xs">{minutesLabel}</Text>
+        </Group>
+      )}
     </Group>
     <Text fw={700} className={classes.whiteColor}>
       {article.title}

@@ -5,10 +5,22 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { generateNextSeo } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
-import { Anchor, Badge, Card, Group, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import {
+  Alert,
+  Anchor,
+  Badge,
+  Card,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import {
   IconArrowLeft,
   IconArrowRight,
+  IconBulb,
   IconCalendar,
   IconClock,
   IconDeviceGamepad2,
@@ -19,6 +31,7 @@ import dayjs from "dayjs";
 import config from "../../config";
 import { WikiArticleLink, WikiNavCategory, WikiSeriesInfo } from "../../src/wiki/get-wiki";
 import { WikiArticle, WikiHeading } from "../../src/wiki/wiki-types";
+import { WikiTipSection } from "../../src/wiki/tips/wiki-tips";
 import { getWikiArticleJsonLd } from "../../src/wiki/wiki-structured-data";
 import { serializeJsonLd } from "../../src/news/news-structured-data";
 import { getWikiRoute } from "../../src/routes";
@@ -26,6 +39,7 @@ import { createPageSEO } from "../../src/seo-utils";
 import { WikiLayout } from "./components/wiki-layout";
 import { WikiArticleBody } from "./components/wiki-article-body";
 import { WikiTocMobile } from "./components/wiki-toc";
+import { WikiTipsList } from "./components/wiki-tips-list";
 import classes from "./Wiki.module.css";
 
 export type WikiArticlePageProps = {
@@ -41,6 +55,8 @@ export type WikiArticlePageProps = {
   series: WikiSeriesInfo | null;
   previous: WikiArticleLink | null;
   next: WikiArticleLink | null;
+  /** Only on the "Game Tips" pages: the tips of the latest patch, in the page language. */
+  tips?: { sections: WikiTipSection[]; count: number } | null;
 };
 
 const NeighbourCard = ({
@@ -92,6 +108,7 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
   series,
   previous,
   next,
+  tips = null,
 }) => {
   const { t } = useTranslation("wiki");
   const { locale = "en" } = useRouter();
@@ -106,6 +123,8 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
     image: absoluteImage,
     categoryTitle,
     wikiTitle: t("title"),
+    // The tips are in the language of the page, the articles are English only.
+    inLanguage: tips ? locale : "en",
   });
   const formatDate = (date: string) => dayjs(date).locale(locale).format("D MMM YYYY");
 
@@ -176,36 +195,46 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
               {article.summary}
             </Text>
             <Group gap="md" c="dimmed" mt={4}>
-              <Group gap={4}>
-                <IconUser size={15} />
-                <Text size="sm">
-                  {t("by")}{" "}
-                  {article.authors.map((author, index) => (
-                    <React.Fragment key={author.name}>
-                      {index > 0 && (index === article.authors.length - 1 ? " & " : ", ")}
-                      {author.url ? (
-                        <Anchor
-                          href={author.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          inherit
-                          data-testid="wiki-article-author-link"
-                        >
-                          {author.name}
-                        </Anchor>
-                      ) : (
-                        author.name
-                      )}
-                    </React.Fragment>
-                  ))}
-                </Text>
-              </Group>
-              <Group gap={4} data-testid="wiki-article-date">
-                <IconCalendar size={15} />
-                <Text size="sm">
-                  {t("written")} {formatDate(article.date)}
-                </Text>
-              </Group>
+              {tips && (
+                <Group gap={4} data-testid="wiki-tips-count">
+                  <IconBulb size={15} />
+                  <Text size="sm">{t("tipCount", { count: tips.count })}</Text>
+                </Group>
+              )}
+              {!tips && (
+                <Group gap={4}>
+                  <IconUser size={15} />
+                  <Text size="sm">
+                    {t("by")}{" "}
+                    {article.authors.map((author, index) => (
+                      <React.Fragment key={author.name}>
+                        {index > 0 && (index === article.authors.length - 1 ? " & " : ", ")}
+                        {author.url ? (
+                          <Anchor
+                            href={author.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            inherit
+                            data-testid="wiki-article-author-link"
+                          >
+                            {author.name}
+                          </Anchor>
+                        ) : (
+                          author.name
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </Text>
+                </Group>
+              )}
+              {!tips && (
+                <Group gap={4} data-testid="wiki-article-date">
+                  <IconCalendar size={15} />
+                  <Text size="sm">
+                    {t("written")} {formatDate(article.date)}
+                  </Text>
+                </Group>
+              )}
               {article.updated && (
                 <Group gap={4} data-testid="wiki-article-updated">
                   <IconRefresh size={15} />
@@ -220,10 +249,12 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
                   <Text size="sm">{t("patch", { patch })}</Text>
                 </Group>
               )}
-              <Group gap={4}>
-                <IconClock size={15} />
-                <Text size="sm">{t("minutesRead", { count: readingMinutes })}</Text>
-              </Group>
+              {!tips && (
+                <Group gap={4}>
+                  <IconClock size={15} />
+                  <Text size="sm">{t("minutesRead", { count: readingMinutes })}</Text>
+                </Group>
+              )}
             </Group>
           </Stack>
 
@@ -256,6 +287,15 @@ const WikiArticlePage: NextPage<WikiArticlePageProps> = ({
           <WikiTocMobile headings={headings} title={t("onThisPage")} />
 
           <WikiArticleBody contents={article.contents} />
+
+          {tips &&
+            (tips.sections.length > 0 ? (
+              <WikiTipsList sections={tips.sections} />
+            ) : (
+              <Alert variant="light" color="yellow" data-testid="wiki-tips-unavailable">
+                {t("tipsUnavailable")}
+              </Alert>
+            ))}
         </article>
 
         {(previous || next) && (

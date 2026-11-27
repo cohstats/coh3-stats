@@ -5,7 +5,9 @@ import { useRouter } from "next/router";
 import { generateNextSeo } from "next-seo/pages";
 import { useTranslation } from "next-i18next/pages";
 import { Group, SimpleGrid, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import { IconBulb } from "@tabler/icons-react";
 import { WikiNavCategory } from "../../src/wiki/get-wiki";
+import { WIKI_TIPS_CATEGORY } from "../../src/wiki/tips/wiki-tips";
 import { getWikiRoute } from "../../src/routes";
 import { createPageSEO } from "../../src/seo-utils";
 import { WikiLayout } from "./components/wiki-layout";
@@ -16,13 +18,22 @@ import classes from "./Wiki.module.css";
 export type WikiCategoryPageProps = {
   navigation: WikiNavCategory[];
   categorySlug: string;
+  /** Only in the "Game Tips" category: the number of tips of each page, by its slug. */
+  tipCounts?: Record<string, number> | null;
 };
 
-const WikiCategoryPage: NextPage<WikiCategoryPageProps> = ({ navigation, categorySlug }) => {
+const WikiCategoryPage: NextPage<WikiCategoryPageProps> = ({
+  navigation,
+  categorySlug,
+  tipCounts = null,
+}) => {
   const { t } = useTranslation("wiki");
   const { locale = "en" } = useRouter();
   const category = navigation.find((c) => c.slug === categorySlug);
   if (!category) return null;
+  // The tip pages show their tip count. Their reading time would only cover the intro, so
+  // without the counts (the tips data couldn't be downloaded) they show nothing.
+  const isTipsCategory = category.slug === WIKI_TIPS_CATEGORY;
 
   const seoProps = createPageSEO(t, "wiki", getWikiRoute(category.slug), locale);
   const title = `${category.title} - ${t("title")}`;
@@ -73,7 +84,14 @@ const WikiCategoryPage: NextPage<WikiCategoryPageProps> = ({ navigation, categor
                   <WikiArticleCard
                     key={article.slug}
                     article={article}
-                    minutesLabel={t("minutesRead", { count: article.readingMinutes })}
+                    minutesLabel={
+                      isTipsCategory
+                        ? tipCounts
+                          ? t("tipCount", { count: tipCounts[article.slug] ?? 0 })
+                          : undefined
+                        : t("minutesRead", { count: article.readingMinutes })
+                    }
+                    metaIcon={isTipsCategory ? <IconBulb size={14} /> : undefined}
                     partLabel={
                       article.seriesPart ? t("part", { part: article.seriesPart }) : undefined
                     }

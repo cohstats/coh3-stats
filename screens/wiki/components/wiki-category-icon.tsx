@@ -1,5 +1,6 @@
 import {
   IconBook,
+  IconBulb,
   IconChartBar,
   IconCoins,
   IconCrosshair,
@@ -10,6 +11,7 @@ import { WikiCategoryIcon as WikiCategoryIconName } from "../../../src/wiki/wiki
 
 const ICONS = {
   book: IconBook,
+  bulb: IconBulb,
   crosshair: IconCrosshair,
   medal: IconMedal,
   coins: IconCoins,

@@ -67,6 +67,14 @@ Close list items with `[/*]`. Blocks (`[h2]`, `[img]`, `[list]`, `[note]`, `[cod
 
 `public/images/wiki/<article-slug>/<name>.webp`. The same rules as for the news: `.webp` only, under ~300 KB. The first image of an article is used for its card and for Open Graph, unless `image` is set.
 
+## Game Tips
+
+The `tips` category (`/wiki/tips/<topic>`) lists the loading screen tips of the game, see `tips/wiki-tips.ts`. The pages are registered as articles, so they show up in the sidebar and the cards like any other, but their tips come from the in-game tips data of the latest patch (`src/explorer/ingame-tips`) when the page is built, in the language of the page.
+
+- A page lists the tips of one or more data `topic`s, Final Stand takes every tip of the mode. A new topic lands on the Controls page until it gets a page.
+- The tips are split into sections by their `category`, named in `TIP_CATEGORY_LABELS` (a new category gets its id in title case). Categories with a single tip go to "More Tips".
+- Every tip has an anchor, `/wiki/tips/combat#tip-tipcover1` (`getWikiTipHref`), the tip card on the unit pages links there.
+
 ## Translations
 
 The UI texts are in `public/locales/en/wiki.json`. The articles themselves are English only.

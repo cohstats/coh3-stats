@@ -1,5 +1,7 @@
+import Link from "next/link";
 import {
   ActionIcon,
+  Anchor,
   Group,
   MantineSpacing,
   Paper,
@@ -14,7 +16,10 @@ import { pickIngameTip } from "../src/explorer/ingame-tips/ingame-tips-helpers";
 import type { IngameTip } from "../src/explorer/ingame-tips/ingame-tips-types";
 
 /** The part of a tip the card renders - keeps the page props small. */
-type IngameTipCardTip = Pick<IngameTip, "id" | "text">;
+type IngameTipCardTip = Pick<IngameTip, "id" | "text"> & {
+  /** Link to the tip in the "Game Tips" wiki, see `getWikiTipHref`. No link when missing. */
+  href?: string | null;
+};
 
 type IngameTipCardProps = {
   tips: IngameTipCardTip[];
@@ -87,6 +92,18 @@ const IngameTipCard = ({ tips, seed, mt = 0, mb = "md" }: IngameTipCardProps) =>
       >
         {tip.text}
       </Text>
+      {tip.href && (
+        <Anchor
+          component={Link}
+          href={tip.href}
+          size="sm"
+          mt="xs"
+          display="inline-block"
+          data-testid="ingame-tip-wiki-link"
+        >
+          {t("ingameTips.seeAll")}
+        </Anchor>
+      )}
     </Paper>
   );
 };

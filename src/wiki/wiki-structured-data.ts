@@ -10,6 +10,7 @@ export const getWikiArticleJsonLd = ({
   image,
   categoryTitle,
   wikiTitle,
+  inLanguage = "en",
 }: {
   article: WikiArticle;
   /** Absolute canonical URL of the article. */
@@ -18,6 +19,8 @@ export const getWikiArticleJsonLd = ({
   image: string | null;
   categoryTitle: string;
   wikiTitle: string;
+  /** The language of the page, the articles are English only, the tip pages are translated. */
+  inLanguage?: string;
 }) => {
   const published = new Date(`${article.date}T00:00:00Z`).toISOString();
   const modified = new Date(`${article.updated ?? article.date}T00:00:00Z`).toISOString();
@@ -34,7 +37,7 @@ export const getWikiArticleJsonLd = ({
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         datePublished: published,
         dateModified: modified,
-        inLanguage: "en",
+        inLanguage,
         ...(image ? { image: [image] } : {}),
         articleSection: categoryTitle,
         keywords: ["Company of Heroes 3", "COH3", ...article.tags].join(", "),
