@@ -37,7 +37,6 @@
     "news": "ニュース",
     "other": "その他",
     "otherMenu": {
-      "tiers": "ランクティア",
       "openData": "オープンデータ",
       "playerExport": "プレイヤーエクスポート API"
     },

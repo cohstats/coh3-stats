@@ -11,12 +11,13 @@ import { navigateAndWait, checkPageLoaded, checkFooterPresent } from "../helpers
  */
 
 test.describe("Other pages", () => {
-  test("should render the ranking tiers table", async ({ page }) => {
+  test("should redirect the old ranking tiers page to the wiki", async ({ page }) => {
     await navigateAndWait(page, "/other/ranking-tiers");
+    await page.waitForURL("**/wiki/multiplayer/ranking-tiers");
     await checkPageLoaded(page);
 
-    // One row per rank tier, each with its ELO range.
-    const rows = page.locator("tbody tr");
+    // The tier table with the ELO ranges is part of the wiki article now.
+    const rows = page.locator("[data-testid='wiki-article-body'] tr");
     expect(await rows.count()).toBeGreaterThan(5);
     await expect(page.locator("body")).toContainText(/Challenger|Gold|Silver|Bronze/i);
     await checkFooterPresent(page);

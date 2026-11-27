@@ -68,10 +68,6 @@ export const AnalyticsAboutAppPageView = (): void => {
   logFBEvent("about_app_view");
 };
 
-export const AnalyticsRankingTiersPageView = (): void => {
-  logFBEvent("ranking-tiers_view");
-};
-
 export const AnalyticsOpenDataPageView = (): void => {
   logFBEvent("open_data_view");
 };

@@ -38,7 +38,6 @@
     "wiki": "Wiki",
     "other": "Other",
     "otherMenu": {
-      "tiers": "Ranking Tiers",
       "openData": "Open Data",
       "playerExport": "Player Export API"
     },

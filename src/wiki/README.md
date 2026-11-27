@@ -57,6 +57,8 @@ On top of the [news tags](../news/README.md):
 | `[note title="TL;DR" color="yellow"]...[/note]`           | A callout box, `color` is any Mantine color, blue by default     |
 | `[code]...[/code]`                                        | A block for formulas, keeps the line breaks                      |
 | `[table][tr][th]..[/th][/tr][tr][td]..[/td][/tr][/table]` | A table                                                          |
+| `[table align="center"]...[/table]`                       | A table with the cells centred                                   |
+| `[icon alt="..."]/icons/...[/icon]`                       | A small 28px image inline with the text, e.g. in a table cell    |
 | `[url=/wiki/...]` / `[url=https://...]`                   | Site links stay in the tab, external ones open a new tab         |
 
 Close list items with `[/*]`. Blocks (`[h2]`, `[img]`, `[list]`, `[note]`, `[code]`, `[table]`) must start on their own line.

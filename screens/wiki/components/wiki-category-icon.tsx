@@ -1,4 +1,11 @@
-import { IconBook, IconChartBar, IconCoins, IconCrosshair, IconMedal } from "@tabler/icons-react";
+import {
+  IconBook,
+  IconChartBar,
+  IconCoins,
+  IconCrosshair,
+  IconMedal,
+  IconTrophy,
+} from "@tabler/icons-react";
 import { WikiCategoryIcon as WikiCategoryIconName } from "../../../src/wiki/wiki-types";
 
 const ICONS = {
@@ -6,6 +13,7 @@ const ICONS = {
   crosshair: IconCrosshair,
   medal: IconMedal,
   coins: IconCoins,
+  trophy: IconTrophy,
   chart: IconChartBar,
 };
 

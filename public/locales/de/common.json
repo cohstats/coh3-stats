@@ -37,7 +37,6 @@
     "news": "News",
     "other": "Anderes",
     "otherMenu": {
-      "tiers": "Ranglisten-Stufen",
       "openData": "Open Data",
       "playerExport": "Spieler Export API"
     },

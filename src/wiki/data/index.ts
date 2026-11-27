@@ -15,6 +15,7 @@ import coverMicroTips from "./articles/cover-micro-tips";
 import territoryCaptureRates from "./articles/territory-capture-rates";
 import territoryCaptureTactics from "./articles/territory-capture-tactics";
 import territoryCaptureMicroTips from "./articles/territory-capture-micro-tips";
+import rankingTiers from "./articles/ranking-tiers";
 
 /** Every wiki article, register new ones here. The order doesn't matter, `order` does. */
 export const WIKI_ARTICLES: WikiArticle[] = [
@@ -34,4 +35,5 @@ export const WIKI_ARTICLES: WikiArticle[] = [
   territoryCaptureRates,
   territoryCaptureTactics,
   territoryCaptureMicroTips,
+  rankingTiers,
 ];

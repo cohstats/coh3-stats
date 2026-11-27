@@ -85,13 +85,33 @@ const wikiPreset = createBBCodePreset({
     attrs: { className: classes.code },
     content: node.content,
   }),
+  // [icon alt="..."]/icons/...[/icon], a small image inline with the text, e.g. in a table cell.
+  icon: (node: Node) => {
+    const raw = Array.isArray(node.content) ? node.content.join("") : node.content;
+    const src = typeof raw === "string" ? raw.trim() : "";
+    return {
+      tag: "img",
+      attrs: {
+        src: imageUrlTransform(src || null),
+        alt: node.attrs?.alt || "",
+        className: classes.inlineIcon,
+        loading: "lazy",
+      },
+    };
+  },
+  // [table align="center"] centres the cells, left aligned by default.
   table: (node: Node) => ({
     tag: "div",
     attrs: { className: classes.tableWrap },
     content: [
       {
         tag: TableElement,
-        attrs: { className: classes.table },
+        attrs: {
+          className:
+            node.attrs?.align === "center"
+              ? `${classes.table} ${classes.tableCenter}`
+              : classes.table,
+        },
         content: [{ tag: "tbody", attrs: {}, content: withoutWhitespace(node.content) }],
       },
     ],
@@ -99,7 +119,7 @@ const wikiPreset = createBBCodePreset({
   tr: (node: Node) => ({ tag: "tr", attrs: {}, content: withoutWhitespace(node.content) }),
 });
 
-const WIKI_TAGS = [...DEFAULT_BBCODE_TAGS, "note"];
+const WIKI_TAGS = [...DEFAULT_BBCODE_TAGS, "note", "icon"];
 
 export const WikiArticleBody = ({ contents }: { contents: string }) => {
   const prepared = useMemo(() => prepareWikiContents(contents), [contents]);

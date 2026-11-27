@@ -37,7 +37,6 @@
     "news": "Novinky",
     "other": "Ostatní",
     "otherMenu": {
-      "tiers": "Úrovně hodnocení",
       "openData": "Otevřená data",
       "playerExport": "API pro export hráčů"
     },

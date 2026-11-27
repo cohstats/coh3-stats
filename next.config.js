@@ -44,6 +44,16 @@ const nextConfig = {
   },
   // We need to increase static page generation because we have some heavy operations
   staticPageGenerationTimeout: 180,
+  // Pages moved elsewhere. With i18n the locale prefixed URLs (/de/...) are redirected too.
+  async redirects() {
+    return [
+      {
+        source: "/other/ranking-tiers",
+        destination: "/wiki/multiplayer/ranking-tiers",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const sentryWebpackPluginOptions = {

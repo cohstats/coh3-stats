@@ -255,6 +255,19 @@ h3.heading {
   background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }
 
+.tableCenter th,
+.tableCenter td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.inlineIcon {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+}
+
 /* Cards */
 .card {
   height: 100%;
