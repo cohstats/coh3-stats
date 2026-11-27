@@ -10,6 +10,16 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
     color: "teal",
   },
   {
+    slug: "tips",
+    title: "Game Tips",
+    description:
+      "Every tip from the loading screens of the game, sorted by topic: combat, vehicles, engineers, economy and more.",
+    icon: "bulb",
+    color: "yellow",
+    // Eight pages of tips would push the articles down the sidebar.
+    collapsed: true,
+  },
+  {
     slug: "combat",
     title: "Combat Mechanics",
     description:

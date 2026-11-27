@@ -95,6 +95,7 @@
   "notFound": "Nenalezeno",
   "ingameTips": {
     "title": "Herní tip",
-    "next": "Další tip"
+    "next": "Další tip",
+    "seeAll": "Zobrazit všechny herní tipy"
   }
 }

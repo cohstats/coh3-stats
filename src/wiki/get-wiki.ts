@@ -32,6 +32,8 @@ export type WikiNavCategory = {
   icon: WikiCategory["icon"];
   description: string;
   articleCount: number;
+  /** Closed in the sidebar of the wiki home. */
+  collapsed: boolean;
   groups: WikiNavGroup[];
 };
 
@@ -133,6 +135,7 @@ export const getWikiNavigation = (): WikiNavCategory[] =>
       icon: category.icon,
       description: category.description,
       articleCount: articles.length,
+      collapsed: category.collapsed ?? false,
       groups: groups.filter((group) => group.articles.length > 0),
     };
   }).filter((category) => category.articleCount > 0);

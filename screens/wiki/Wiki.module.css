@@ -294,3 +294,42 @@ h3.heading {
 .pageTitle {
   font-size: clamp(1.6rem, 6vw, 2.125rem);
 }
+
+/* Game Tips pages - one card per tip, the linked tip (#tip-...) is highlighted. */
+.tipList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+  margin: 0 0 var(--mantine-spacing-md);
+  padding: 0;
+  list-style: none;
+}
+
+.tip {
+  display: flex;
+  gap: var(--mantine-spacing-sm);
+  align-items: flex-start;
+  margin: 0;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  white-space: pre-line;
+  border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-left: 4px solid var(--mantine-color-yellow-6);
+  border-radius: var(--mantine-radius-md);
+  scroll-margin-top: 80px;
+}
+
+@media (min-width: 64em) and (max-width: 108em) {
+  .tip {
+    scroll-margin-top: 120px;
+  }
+}
+
+.tip:target {
+  background-color: light-dark(var(--mantine-color-yellow-0), rgba(250, 176, 5, 0.12));
+}
+
+.tipIcon {
+  flex: none;
+  margin-top: 5px;
+  color: var(--mantine-color-yellow-6);
+}

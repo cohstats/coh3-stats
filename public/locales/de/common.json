@@ -95,6 +95,7 @@
   "notFound": "Nicht gefunden",
   "ingameTips": {
     "title": "Spieltipp",
-    "next": "Nächster Tipp"
+    "next": "Nächster Tipp",
+    "seeAll": "Alle Spieltipps anzeigen"
   }
 }

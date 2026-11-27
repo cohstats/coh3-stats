@@ -95,6 +95,7 @@
   "notFound": "未找到",
   "ingameTips": {
     "title": "游戏提示",
-    "next": "下一条提示"
+    "next": "下一条提示",
+    "seeAll": "查看所有游戏提示"
   }
 }

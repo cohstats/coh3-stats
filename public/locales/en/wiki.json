@@ -34,5 +34,8 @@
   "previous": "Previous",
   "next": "Next",
   "allArticlesIn": "All articles in {{category}}",
-  "feedback": "Found a mistake or want to write an article? Let us know on Discord or GitHub."
+  "feedback": "Found a mistake or want to write an article? Let us know on Discord or GitHub.",
+  "tipCount_one": "{{count}} tip",
+  "tipCount_other": "{{count}} tips",
+  "tipsUnavailable": "The tips couldn't be loaded for this page. Please try again later."
 }

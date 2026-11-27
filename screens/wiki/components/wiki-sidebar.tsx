@@ -101,7 +101,8 @@ export const WikiSidebar = ({
                 <WikiCategoryIcon icon={category.icon} size={14} />
               </ThemeIcon>
             }
-            defaultOpened={isCurrent || !currentCategory}
+            // On the wiki home every category is open, except the ones marked collapsed.
+            defaultOpened={isCurrent || (!currentCategory && !category.collapsed)}
             childrenOffset={0}
             className={classes.navCategory}
             data-testid={`wiki-sidebar-category-${category.slug}`}

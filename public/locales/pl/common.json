@@ -95,6 +95,7 @@
   "notFound": "Nie znaleziono",
   "ingameTips": {
     "title": "Porada",
-    "next": "Następna porada"
+    "next": "Następna porada",
+    "seeAll": "Zobacz wszystkie porady"
   }
 }

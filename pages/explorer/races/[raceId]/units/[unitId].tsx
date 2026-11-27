@@ -98,6 +98,7 @@ import Link from "next/link";
 import ImageWithFallback, { symbolPlaceholder } from "../../../../../components/placeholders";
 import IngameTipCard, { IngameTipCardTip } from "../../../../../components/ingame-tip-card";
 import { getIngameTips } from "../../../../../src/explorer/ingame-tips/ingame-tips";
+import { getWikiTipHref } from "../../../../../src/wiki/tips/wiki-tips";
 import {
   filterIngameTipsForUnit,
   isEngineerUnit,
@@ -1606,7 +1607,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
             calculatedData.resolvedSquad.unitType,
             calculatedData.abilities.map((ability) => ability.id),
           ),
-        }).map(({ id, text }) => ({ id, text }))
+        }).map((tip) => ({ id: tip.id, text: tip.text, href: getWikiTipHref(tip) }))
       : [];
 
   return {
