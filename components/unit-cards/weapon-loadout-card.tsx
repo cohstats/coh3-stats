@@ -77,8 +77,8 @@ export const WeaponLoadoutCard = (
   const theme = useMantineTheme();
 
   const formatReloadFrequency = () => {
-    const min = weapon_bag.reload_frequency_min + 1;
-    const max = weapon_bag.reload_frequency_max + 1;
+    const min = roundValue(weapon_bag.reload_frequency_min + 1);
+    const max = roundValue(weapon_bag.reload_frequency_max + 1);
 
     const value = min === max ? `${min}` : `${min} - ${max}`;
     const unit = weapon_bag.burst_can_burst ? t("weaponCard.bursts") : t("weaponCard.shots");
@@ -373,7 +373,7 @@ export const WeaponLoadoutCard = (
 
   const aoeDisplayValue =
     weapon_bag.aoe_shape === "rectangle" && weapon_bag.aoe_width > 0
-      ? `${weapon_bag.aoe_width}×${weapon_bag.aoe_outer_length}`
+      ? `${roundValue(weapon_bag.aoe_width)}×${roundValue(weapon_bag.aoe_outer_length)}`
       : 0;
 
   const showAoeFalloff = weapon_bag.aoe_shape === "circle" && weapon_bag.aoe_outer_radius > 0;
@@ -770,9 +770,9 @@ export const WeaponLoadoutCard = (
               show: showIncrementalTargetRadius,
               label: t("weaponCard.incrementalTargetRadius"),
               tooltip: t("weaponCard.incrementalTargetRadiusTooltip"),
-              near: weapon_bag.burst_incremental_target_table_search_radius_near,
-              mid: weapon_bag.burst_incremental_target_table_search_radius_mid,
-              far: weapon_bag.burst_incremental_target_table_search_radius_far,
+              near: roundValue(weapon_bag.burst_incremental_target_table_search_radius_near),
+              mid: roundValue(weapon_bag.burst_incremental_target_table_search_radius_mid),
+              far: roundValue(weapon_bag.burst_incremental_target_table_search_radius_far),
             },
           ]}
         />
@@ -873,10 +873,11 @@ export const WeaponLoadoutCard = (
               alt: "weapon deflection damage",
               label: t("weaponCard.deflectionDamage"),
               tooltip: t("weaponCard.deflectionDamageTooltip"),
-              value:
+              value: roundValue(
                 (weapon_bag.deflection_damage_multiplier *
                   (weapon_bag.damage_max + weapon_bag.damage_min)) /
-                2,
+                  2,
+              ),
               show: weapon_bag.deflection_has_deflection_damage,
             },
             {
@@ -909,9 +910,9 @@ export const WeaponLoadoutCard = (
               alt: "weapon projectile avoidance arc max",
               label: t("weaponCard.projectileAvoidanceArcMax"),
               tooltip: t("weaponCard.projectileAvoidanceArcMaxTooltip", {
-                nonCollideMinAngle: weapon_bag.projectile_non_collide_start_angle,
+                nonCollideMinAngle: roundValue(weapon_bag.projectile_non_collide_start_angle),
               }),
-              value: `${weapon_bag.projectile_non_collide_end_angle}°`,
+              value: `${roundValue(weapon_bag.projectile_non_collide_end_angle)}°`,
               show:
                 weapon_bag.projectile_firing_angle_type === "lowest_non_collide_angle" &&
                 weapon_bag.projectile_type === "artillery",
@@ -937,7 +938,7 @@ export const WeaponLoadoutCard = (
               alt: "weapon traverse speed",
               label: t("weaponCard.traverseSpeed"),
               tooltip: t("weaponCard.traverseSpeedTooltip"),
-              value: weapon_bag.tracking_normal_speed_horizontal,
+              value: roundValue(weapon_bag.tracking_normal_speed_horizontal),
               show: weapon_bag.tracking_normal_speed_horizontal < 360,
             },
             {
@@ -953,7 +954,7 @@ export const WeaponLoadoutCard = (
               alt: "weapon setup time",
               label: t("weaponCard.setup"),
               tooltip: t("weaponCard.setupTooltip"),
-              value: `${weapon_bag.setup_time}s`,
+              value: formatSeconds(weapon_bag.setup_time),
               show: weapon_bag.setup_time > 0,
             },
             {
@@ -961,7 +962,7 @@ export const WeaponLoadoutCard = (
               alt: "weapon teardown time",
               label: t("weaponCard.teardown"),
               tooltip: t("weaponCard.teardownTooltip"),
-              value: `${weapon_bag.teardown_time}s`,
+              value: formatSeconds(weapon_bag.teardown_time),
               show: weapon_bag.teardown_time > 0,
             },
             {
@@ -969,7 +970,7 @@ export const WeaponLoadoutCard = (
               alt: "weapon suppression",
               label: t("weaponCard.suppression"),
               tooltip: t("weaponCard.suppressionTooltip"),
-              value: weapon_bag.suppression_amount * 100,
+              value: roundValue(weapon_bag.suppression_amount * 100),
               show: weapon_bag.suppression_amount > 0 && !showSustainedStats,
             },
             {
@@ -977,7 +978,7 @@ export const WeaponLoadoutCard = (
               alt: "weapon suppression radius",
               label: t("weaponCard.suppressionRadius"),
               tooltip: t("weaponCard.suppressionRadiusTooltip"),
-              value: weapon_bag.suppression_nearby_suppression_radius,
+              value: roundValue(weapon_bag.suppression_nearby_suppression_radius),
               show:
                 weapon_bag.suppression_amount > 0 &&
                 weapon_bag.projectile_type === "none" &&
@@ -1011,7 +1012,7 @@ export const WeaponLoadoutCard = (
               <Text fw={600}>{t("weaponCard.aoeFalloff")}</Text>
               <HelperIcon
                 text={t("weaponCard.aoeFalloffTooltip", {
-                  aoeCap: weapon_bag.aoe_damage_max_member,
+                  aoeCap: roundValue(weapon_bag.aoe_damage_max_member),
                 })}
                 width={300}
                 iconSize={16}

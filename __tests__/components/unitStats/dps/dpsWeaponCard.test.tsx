@@ -2,6 +2,7 @@ import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { MantineProvider } from "@mantine/core";
 import "@testing-library/jest-dom";
+import { WeaponLoadoutCardView } from "../../../../components/unit-cards/weapon-loadout-card";
 import { DpsWeaponCard } from "../../../../components/unitStats/dps/dpsWeaponCard";
 import { getDpsWeaponPreview } from "../../../../src/unitStats/dpsWeaponPreview";
 import { calculatorMember, calculatorUnit } from "../../../test-assets/calculator-fixtures";
@@ -45,9 +46,39 @@ afterEach(() => {
   container.remove();
 });
 
+it("scales single-shot suppression before rounding and keeps three decimals for setup timings", async () => {
+  const { weapon } = calculatorMember({
+    aoe_outer_radius: 0,
+    deflection_has_deflection_damage: true,
+    deflection_damage_multiplier: 0.123456,
+    suppression_amount: 0.000476,
+    setup_time: 1.23456,
+    teardown_time: 2.34567,
+  });
+  await act(async () =>
+    root.render(
+      <MantineProvider env="test">
+        <WeaponLoadoutCardView
+          weapon={{ ...weapon, weapon_class: "cannon" }}
+          context={{ source: "ability", abilityNumShots: 1 }}
+        />
+      </MantineProvider>,
+    ),
+  );
+
+  expect(container).toHaveTextContent("weaponCard.deflectionDamage12.35");
+  expect(container).toHaveTextContent("weaponCard.suppression0.05");
+  expect(container).toHaveTextContent("weaponCard.setup1.235s");
+  expect(container).toHaveTextContent("weaponCard.teardown2.346s");
+});
+
 it("prepares only an open hover and refreshes its stats and curve after in-place unit edits", async () => {
   const member = {
-    ...calculatorMember({ aoe_outer_radius: 0, accuracy_far: 0.05 }),
+    ...calculatorMember({
+      aoe_outer_radius: 0,
+      accuracy_far: 0.05,
+      deflection_has_deflection_damage: false,
+    }),
     image: "/gun.png",
     label: "Gun",
   };
