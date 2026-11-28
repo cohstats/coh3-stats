@@ -59,9 +59,7 @@ A few maps also have extra low fuel points (+6, 30 s capture, 25 s revert) and e
 Fuel, medium munitions and strategic points take [b]5 seconds less to revert than to capture[/b]. Low and high munitions points are the other way round: they are quicker to capture than to revert. Victory points take 25 seconds to capture but only [b]10 seconds[/b] to revert.
 
 [note title="Patch 2.5 and 3.0" color="orange"]2.5 reduced the time to capture low munitions from 20* to 12.5 and high munitions from 40* to 30. Decapture is unaffected. 3.0 reduced fuel income by 1 for low, and 2 for extra low, medium and extra medium.
-
-
-*The patch notes incorrectly reported 15 and 45 respectively.[/note]
+[br][br][i]*Relic’s patch notes incorrectly listed the previous capture times as 15s and 45s, respectively.[/i][/note]
 
 You can check the capture time, revert time and income of every point on a map in the [url=/explorer/maps]map explorer[/url]. Open a map, for example [url=/explorer/maps/ancona_railyard_2p]Ancona Railyard[/url], and hover over a point to see its details.
 
