@@ -7,7 +7,10 @@ const article: WikiArticle = {
   title: "Capture Times & Capture Rates by Faction",
   summary:
     "How long every territory point takes to capture and revert, how unit capture rates shorten that time, and the capture and revert rates of every unit, upgrade and ability for all four factions.",
-  authors: [{ name: "tightrope", url: "https://www.youtube.com/@tightropegaming" }],
+  authors: [
+    { name: "tightrope", url: "https://www.youtube.com/@tightropegaming" },
+    { name: "Tsuyara" },
+  ],
   date: "2025-08-03",
   updated: "2026-11-26",
   tags: ["territory", "capture", "revert", "capture rate", "resources", "battlegroups"],
@@ -16,7 +19,7 @@ const article: WikiArticle = {
   contents: `
 [previewyoutube=Mb_8pKNOqL0;full][/previewyoutube]
 
-This series is a written version of tightrope's video [url=https://www.youtube.com/watch?v=Mb_8pKNOqL0]Learn how to capture territory like a pro in COH3[/url] from August 2025, updated to match patch 3.0.3. This part covers how long points take to capture, what a capture rate is, and the capture and revert rates of every unit and ability. The next parts cover [url=/wiki/economy/territory-capture-tactics]principles and tactics[/url] and [url=/wiki/economy/territory-capture-micro-tips]micro tips[/url].
+This series is a written version of tightrope's video [url=https://www.youtube.com/watch?v=Mb_8pKNOqL0]Learn how to capture territory like a pro in COH3[/url] from August 2025, edited and updated by Tsuyara. This part covers how long points take to capture, what a capture rate is, and the capture and revert rates of every unit and ability. The next parts cover [url=/wiki/economy/territory-capture-tactics]principles and tactics[/url] and [url=/wiki/economy/territory-capture-micro-tips]micro tips[/url].
 
 [note title="TL;DR"]
 [list]
@@ -24,7 +27,7 @@ This series is a written version of tightrope's video [url=https://www.youtube.c
 [*]The map explorer shows the capture time, revert time and income of every point on a map.[/*]
 [*]Those times are for a capture rate of 1. The time is divided by the unit's capture rate.[/*]
 [*]All crewed team weapons capture at a rate of 1.[/*]
-[*]Capture rate bonuses from veterancy, upgrades and abilities are multipliers.[/*]
+[*]Capture rate bonuses from veterancy, upgrades and abilities are usually multipliers.[/*]
 [*]The fastest capturer in the tables is the Wehrmacht Kettenkrad with Communication Cables at vet 3, with a capture rate of 3.[/*]
 [/list]
 [/note]
@@ -40,7 +43,9 @@ These are the times for a unit with a capture rate of 1 in patch 3.0.3:
 [table]
 [tr][th]Point[/th][th]Income per minute[/th][th]Capture[/th][th]Revert[/th][/tr]
 [tr][td]Low fuel[/td][td]+4[/td][td]20 s[/td][td]15 s[/td][/tr]
+[tr][td]Extra low fuel[/td][td]+6[/td][td]30 s[/td][td]25 s[/td][/tr]
 [tr][td]Medium fuel[/td][td]+8[/td][td]30 s[/td][td]25 s[/td][/tr]
+[tr][td]Extra medium fuel[/td][td]+10[/td][td]40 s[/td][td]35 s[/td][/tr]
 [tr][td]High fuel[/td][td]+16[/td][td]40 s[/td][td]35 s[/td][/tr]
 [tr][td]Low munitions[/td][td]+5[/td][td]12.5 s[/td][td]15 s[/td][/tr]
 [tr][td]Medium munitions[/td][td]+10[/td][td]30 s[/td][td]25 s[/td][/tr]
@@ -53,7 +58,10 @@ A few maps also have extra low fuel points (+6, 30 s capture, 25 s revert) and e
 
 Fuel, medium munitions and strategic points take [b]5 seconds less to revert than to capture[/b]. Low and high munitions points are the other way round: they are quicker to capture than to revert. Victory points take 25 seconds to capture but only [b]10 seconds[/b] to revert.
 
-[note title="Video vs patch 3.0.3" color="orange"]In the video, fuel and munitions points share one set of times: 20 / 30 / 40 seconds to capture and +5 / +10 / +16 income. In patch 3.0.3, low munitions points capture in 12.5 seconds and high munitions points in 30 seconds, and low and medium fuel points give +4 and +8.[/note]
+[note title="Patch 2.5 and 3.0" color="orange"]2.5 reduced the time to capture low munitions from 20* to 12.5 and high munitions from 40* to 30. Decapture is unaffected. 3.0 reduced fuel income by 1 for low, and 2 for extra low, medium and extra medium.
+
+
+*The patch notes incorrectly reported 15 and 45 respectively.[/note]
 
 You can check the capture time, revert time and income of every point on a map in the [url=/explorer/maps]map explorer[/url]. Open a map, for example [url=/explorer/maps/ancona_railyard_2p]Ancona Railyard[/url], and hover over a point to see its details.
 
@@ -65,7 +73,7 @@ Many units have a capture or revert rate above 1, which shortens these times. Th
 [b]All crewed team weapons[/b], meaning heavy machine guns, anti-tank guns and mortars for every faction, have a capture rate of 1. They are left out of the tables below. Static team weapons ignore the capture command.
 
 [h3]Bonuses are multipliers[/h3]
-Capture rate bonuses multiply the unit's own rate, they are not added to it. The Scout gets +50% capture rate at vet 2, so its 1.5 capture rate is multiplied by 1.5 for a final rate of [b]2.25[/b]. The same applies to the vet and upgrade rows in all the tables below.
+Capture rate bonuses usually multiply the unit's own rate, they are not added to it. The Scout gets +50% capture rate at vet 2, so its 1.5 capture rate is multiplied by 1.5 for a final rate of [b]2.25[/b]. The same applies to the vet and upgrade rows in all the tables below.
 
 [h2]US Forces[/h2]
 Infantry, in alphabetical order. Rows with "vet" include the veterancy bonus.
@@ -88,7 +96,8 @@ Infantry, in alphabetical order. Rows with "vet" include the veterancy bonus.
 [tr][td][url=/explorer/races/american/units/resistance_fighters_battlegroup_partisans]Resistance Fighters[/url][/td][td]1[/td][td]1.25[/td][/tr]
 [/table]
 
-Saboteurs can't capture at all. Snipers capture at 1.33 in patch 3.0.3, in the video it was 1.
+Saboteurs can't capture at all.
+[note title="Patch 2.4" color="blue"]Changed sniper capture rate from 1 to 1.33[/note]
 
 The vehicles that can capture:
 
@@ -100,7 +109,7 @@ The vehicles that can capture:
 [tr][td][url=/explorer/races/american/units/m29_weasal_us]Weasel[/url] vet 2[/td][td]1.875[/td][td]1.25[/td][/tr]
 [/table]
 
-The 4x4 and the Greyhound only capture after picking that veterancy option. The Greyhound can only revert points, not capture them.
+The 4x4 unlocks capture and decapture with its veterancy. Greyhound unlocks decapture only.
 
 [h3]US Forces territory abilities[/h3]
 [b]Signal Layer[/b]: a vet 1 choice for the M29 Weasel. Resource points captured by the Weasel generate more fuel or munitions. In tightrope's demo, a low point captured by the Weasel gave +8 instead of +5.
@@ -110,6 +119,10 @@ The 4x4 and the Greyhound only capture after picking that veterancy option. The 
 [b]Assault Operation[/b] (Special Operations battlegroup): +200% capture and de-capture rate for infantry, which is a 3 times multiplier. A Scout squad then captures at 1.5 x 3 = 4.5, and takes 20 / 4.5 = [b]about 4.4 seconds[/b] for a low fuel point.
 
 [img alt="A scout squad capturing with Assault Operation active" caption="With Assault Operation a Scout squad captures a low point in about 4.4 seconds."]/images/wiki/territory-capture-rates/assault-operation.webp[/img]
+
+[b]Zone Rouge[/b] (Free French battlegroup): Deploys 5 mines around the territory point.
+
+[b]Boundary Lockdown[/b] (Free French battlegroup): Increases construction speed around the territory point by 67% and prevents decapture while infantry or structures are within range.
 
 [h2]Wehrmacht[/h2]
 [table]
@@ -152,6 +165,8 @@ Territory points don't give vision around their flag. [b]Communication Cables[/b
 
 [b]Contempt for the Weak[/b] (Terror battlegroup): +33% infantry capture and revert rate for 15 seconds after a nearby enemy retreats.
 
+[b]Critical Location[/b] (Siege Breaker battlegroup): Enemies take +15% damage within 35m of the designated territory point. Lasts a minimum of 30s.
+
 [h2]British Forces[/h2]
 [table]
 [tr][th]Unit[/th][th]Capture[/th][th]Revert[/th][/tr]
@@ -173,13 +188,19 @@ Territory points don't give vision around their flag. [b]Communication Cables[/b
 Every British squad captures faster than 1, but capture bonuses from upgrades and veterancy are rarer than for the other factions. The vet 3 Canadian Shock Troops and vet 2 SSB Commandos are the only ones, and the [url=/explorer/races/british/units/churchill_crocodile_africa_uk]Churchill Crocodile[/url] can capture and revert at vet 3.
 
 [h3]British territory abilities[/h3]
-[b]Naval Blockade[/b] (Air and Sea battlegroup): in the video it stopped enemies capturing neutral territory, but not reverting your points. In patch 3.0.3 it is a targeted ability that stops one friendly territory point from being captured for 30 seconds, for 45 munitions and with a 120 second recharge.
+[b]Naval Blockade[/b] (Air and Sea battlegroup): Stops one friendly territory point from being captured for 30 seconds, for 45 munitions and with a 120 second recharge.
+
+[note title="Patch 2.2" color="blue"]Changed Naval Blockade from a global to a targeted ability.[/note]
 
 [img alt="A point under the old Naval Blockade with its tooltip" caption="Naval Blockade as it worked in the video."]/images/wiki/territory-capture-rates/naval-blockade.webp[/img]
 
-[b]Burnout[/b] (Canadian Shock battlegroup): drops incendiary bombs on an enemy point for 35 seconds and slowly reverts it, unless the enemy keeps a unit inside the circle to prevent it. The tooltip says points neutralized by Burnout are captured 50% faster for 60 seconds. tightrope says that bonus applies to both capture and revert rate, and to any friendly [b]or enemy[/b] unit capturing that point.
+[b]Burnout[/b] (Canadian Shock battlegroup): drops incendiary bombs on an enemy point for 35 seconds and reverts it at a rate equivalent to 2x decapture speed, unless the enemy keeps a unit inside the circle to prevent it. After reverting, the territory is 100% faster to capture and decapture for 60s.
 
 [img alt="A point burned by Burnout with the ability tooltip" caption="After Burnout neutralizes a point it is quicker to capture for 60 seconds."]/images/wiki/territory-capture-rates/burnout.webp[/img]
+
+[b]Scorched Earth (Special Service battlegroup)[/b]: Destroys a territory point, rendering it neutral and requiring repairs before it can be captured.
+
+[b]Ultra (Special Service battlegroup)[/b]: Provides 35m vision around the targeted territory or victory point for 30s.
 
 [h2]Deutsches Afrikakorps[/h2]
 [table]
@@ -202,22 +223,29 @@ Every British squad captures faster than 1, but capture bonuses from upgrades an
 
 Only the vet 3 Kradschützen has a revert rate bonus.
 
-Other vehicles can capture through the Armory. In the video this came with Rapid Advance. In patch 3.0.3 it comes with [b]Survival Package[/b] (level 3), which can't be combined with the other level 3 upgrades. The game data gives it a 1.5 capture and revert modifier.
+Other vehicles can capture/revert through the Armory with [b]Survival Package[/b] at a rate of 1.5.
 
 [h3]Afrikakorps territory abilities[/h3]
 [b]Mechanized Advance[/b]: a vet 1 passive for the Panzergrenadiers. +33% capture rate while they are inside or on top of a vehicle, and it lasts 30 seconds after disembarking.
 
-[b]Vehicle Support: Secure Location[/b] (Italian Combined Arms battlegroup): +50% capture and revert rate for infantry near a friendly vehicle. It also works with allied vehicles. In the video it was +25%, in patch 3.0.3 it is +50%.
+[b]Vehicle Support: Secure Location[/b] (Italian Combined Arms battlegroup): +50% capture and revert rate for infantry near a friendly vehicle. It also works with allied vehicles.
+[note title="Patch 3.0" color="blue"]Changed the capture and revert rate buff from 25% to 50%.[/note]
 
-[b]Sound the Alarm[/b] (Italian Infantry battlegroup): use it on a friendly point to get vision of the area and slow the enemy's revert. It also helps allied units in the territory. tightrope found it slows the revert so much that a squad with a revert rate of 1 can only just neutralize a low point before the ability ends.
+
+[b]Sound the Alarm[/b] (Italian Infantry battlegroup): use it on a friendly point to get vision of the area and slow the enemy's revert by 60% for 45s. It also helps allied units in the territory.
+[note title="Error" color="blue"]The tooltip lists +250%, this is a mistake. It takes +150% longer, or 2.5 times as long.[/note]
 
 [img alt="Sound the Alarm used on a friendly point" caption="Sound the Alarm gives vision and makes the point much slower to revert."]/images/wiki/territory-capture-rates/sound-the-alarm.webp[/img]
 
-[b]Territory Booby Traps[/b] (Italian Infantry battlegroup): a booby trap planted on a territory point, once triggered, slows the enemy's capture of that point for the next 20 seconds. The tooltip in the video reads +100% capture and de-capture time.
+[b]Territory Booby Traps[/b] (Italian Infantry battlegroup): a booby trap planted on a territory point, once triggered, slows the enemy's capture of that point by 50% for the next 20 seconds.
 
-[b]Early Warning[/b] (Panzerjäger Kommando battlegroup): gives a circle of vision around the flags of friendly points. The tooltip reads +10 vision range for points captured by the player, and +25 for points you designate.
+[b]Early Warning[/b] (Panzerjäger Kommando battlegroup): gives 10m of vision around the flags of friendly points. Also allows territory points to be designated for an additional +25 vision range.
 
 [img alt="Early Warning tooltip with vision around a point" caption="Early Warning brings back vision around your flags."]/images/wiki/territory-capture-rates/early-warning.webp[/img]
+
+[b]Sector Subterfuge Beacon[/b] (Battlefield Espionage battlegroup): A structure that provides 50% of the resources from an enemy munitions or fuel point. When in friendly territory, points take 50% longer to decapture.
+
+[b]Daring Assault[/b] (Elite Forces battlegroup): Gives targeted unit an additional +1 decapture speed (linear) for 60s. Vehicles that cannot decapture can with a rate of 2. Due to an oversight, the command 8rad gets +2 to its decapture rate.
 `.trim(),
 };
 

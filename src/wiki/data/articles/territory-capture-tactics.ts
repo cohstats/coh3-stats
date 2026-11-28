@@ -14,7 +14,7 @@ const article: WikiArticle = {
   order: 2,
   series: { id: "territory-capture", part: 2 },
   contents: `
-Part 2 of the written version of tightrope's video [url=https://www.youtube.com/watch?v=Mb_8pKNOqL0]Learn how to capture territory like a pro in COH3[/url]. Updated to match patch 3.0.3. It uses the capture times and rates from [url=/wiki/economy/territory-capture-rates]part 1[/url].
+Part 2 of the written version of tightrope's video [url=https://www.youtube.com/watch?v=Mb_8pKNOqL0]Learn how to capture territory like a pro in COH3[/url]. It uses the capture times and rates from [url=/wiki/economy/territory-capture-rates]part 1[/url].
 
 [note title="TL;DR"]
 [list]
@@ -33,7 +33,7 @@ Having more units in the same circle does [b]not[/b] make the capture go faster.
 [h3]Pick the right unit[/h3]
 Prioritize the units with faster capture rates, but there are exceptions. Rangers have a great capture rate, but they are expensive and valuable in combat. It can be better to capture with an Engineer squad instead, even though it only has a capture rate of 1.
 
-[img alt="An engineer squad and a ranger squad with their capture rates and costs" caption="Engineers: 180 manpower and 4 pop. Rangers: 450 manpower and 14 pop. The Rangers capture faster, but are too valuable to spend on it."]/images/wiki/territory-capture-tactics/engineer-vs-rangers.webp[/img]
+[img alt="An engineer squad and a ranger squad with their capture rates and costs" caption="Engineers: 180 manpower and 4 pop. Rangers: 450 manpower and 14 pop. The Rangers capture faster, but are too valuable to spend on it. Rangers have since become cheaper and cost less pop."]/images/wiki/territory-capture-tactics/engineer-vs-rangers.webp[/img]
 
 If a unit with a good capture rate is far away, it is usually better to capture with whatever is closest.
 
@@ -56,15 +56,13 @@ Resource points have to be connected to your base to generate income. On many ma
 
 A strategic point takes only [b]15 seconds[/b] to revert, so a cutoff is much faster than reverting the points downstream one by one. In tightrope's example, the three points behind it are a low, a high and a medium point, which take 15 + 35 + 25 = 75 seconds to revert at a rate of 1.
 
-[note title="Mismatch in the video" color="orange"]The video's overlay gives the total as "65 seconds", but its own revert times (15, 35 and 25 seconds) add up to 75 seconds.[/note]
-
 [h2]Capture tactics[/h2]
 [h3]Partially captured points[/h3]
 You will often force an enemy off a point before they finish capturing it. Entering that point with a unit with a revert rate above 1 undoes their progress faster.
 
 [img alt="Three versions of a partially captured point: auto revert, revert rate 1 and revert rate 1.25" caption="Auto revert, a revert rate of 1, and a revert rate of 1.25 (the last two at 2x speed)."]/images/wiki/territory-capture-tactics/revert-rates-compared.webp[/img]
 
-Revert rates above 1 are much rarer than capture rates above 1, though. If the enemy had a lot of progress, tightrope keeps pushing forward and lets the point tick down to neutral on its own. Then tightrope gives the capture order to a more support oriented unit nearby, so the combat unit doesn't waste time.
+Revert rates above 1 are much rarer than capture rates above 1, though and usually on more expensive units that may be better served fighting.
 
 [h3]Capture with idle support weapons[/h3]
 After pushing an enemy off a point on your side of the map, keep pushing up the map with the attacking unit to take more territory. Give the capture order to a unit like a mortar. The area is now safe, and you may not know where the enemy is, so the mortar has nothing to shoot at anyway.
