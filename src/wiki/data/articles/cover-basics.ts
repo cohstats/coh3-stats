@@ -52,7 +52,7 @@ Most cover is [b]directional[/b]: it has to be between your unit and the source 
 
 [img alt="Squads behind a wall with an arrow showing the direction of damage" caption="Directional cover only protects against damage coming from the other side."]/images/wiki/cover-basics/direction-of-damage.webp[/img]
 
-Some light cover is [b]omnidirectional[/b] and protects no matter where the attack comes from, like the craters left by heavy artillery. There is no known omnidirectional heavy cover in COH3.
+Some light cover is [b]omnidirectional[/b] and protects no matter where the attack comes from, like the craters left by heavy artillery. The only source of omnidirectional heavy cover is in the rubble of a destroyed garrison
 
 [h2]When does cover count?[/h2]
 If an arcing explosive, like a grenade, is thrown over cover and explodes on your side, the cover offers no protection because it is not between the explosion and the squad. Direct fire explosives, like tank guns, instead calculate it from the shooter position.

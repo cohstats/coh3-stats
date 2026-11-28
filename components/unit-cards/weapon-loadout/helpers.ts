@@ -12,9 +12,10 @@ export const formatUnitType = (unitType: string): string =>
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
 export const formatBaseDamageModifier = (value: number): React.ReactNode => {
-  if (value === 0) return "—";
+  const roundedValue = roundValue(value);
+  if (roundedValue === 0) return "—";
 
-  return value > 0 ? `+${value}` : value;
+  return roundedValue > 0 ? `+${roundedValue}` : roundedValue;
 };
 
 export const formatMultiplier = (
